@@ -54,7 +54,7 @@ public:
     {
     }
 
-    ~SingleSelectionItem ()
+    ~SingleSelectionItem () override
     {
     }
 

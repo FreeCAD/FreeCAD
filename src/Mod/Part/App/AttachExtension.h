@@ -49,7 +49,7 @@ public:
    AttachEngineException(const char * sMessage);
    AttachEngineException(const std::string& sMessage);
    /// Destruction
-   virtual ~AttachEngineException() throw() {}
+   ~AttachEngineException() throw() override {}
 };
 
 /**
@@ -62,7 +62,7 @@ class PartExport AttachExtension : public App::DocumentObjectExtension
     EXTENSION_PROPERTY_HEADER(Part::AttachableObject);
 public:
     AttachExtension();
-    virtual ~AttachExtension();
+    ~AttachExtension() override;
 
     /**
      * @brief setAttacher sets the AttachEngine object. The class takes the
@@ -110,13 +110,13 @@ public:
     virtual bool isTouched_Mapping()
     {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
 
-    virtual short int extensionMustExecute();
-    virtual App::DocumentObjectExecReturn *extensionExecute();
-    virtual PyObject* getExtensionPyObject();
-    virtual void onExtendedDocumentRestored();
+    short int extensionMustExecute() override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
+    PyObject* getExtensionPyObject() override;
+    void onExtendedDocumentRestored() override;
 
 protected:
-    virtual void extensionOnChanged(const App::Property* /*prop*/);
+    void extensionOnChanged(const App::Property* /*prop*/) override;
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
     
     App::PropertyPlacement& getPlacement() const;

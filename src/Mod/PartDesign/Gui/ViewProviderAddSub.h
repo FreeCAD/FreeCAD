@@ -37,10 +37,10 @@ public:
     /// constructor
     ViewProviderAddSub();
     /// destructor
-    virtual ~ViewProviderAddSub();
+    ~ViewProviderAddSub() override;
     
-    virtual void attach(App::DocumentObject*);
-    virtual void updateData(const App::Property*);
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property*) override;
     
 protected: 
     void updateAddSubShapeIndicator();

@@ -52,17 +52,17 @@ public:
     SoBrepEdgeSet();
 
 protected:
-    virtual ~SoBrepEdgeSet() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void doAction(SoAction* action); 
-    virtual SoDetail * createLineSegmentDetail(
+    ~SoBrepEdgeSet() override {};
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void doAction(SoAction* action) override;
+    SoDetail * createLineSegmentDetail(
         SoRayPickAction *action,
         const SoPrimitiveVertex *v1,
         const SoPrimitiveVertex *v2,
-        SoPickedPoint *pp);
+        SoPickedPoint *pp) override;
 
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
     struct SelContext;

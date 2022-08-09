@@ -44,7 +44,7 @@ class TechDrawExport CosmeticExtension : public App::DocumentObjectExtension {
 
 public:
     CosmeticExtension();
-    virtual ~CosmeticExtension();
+    ~CosmeticExtension() override;
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
     TechDraw::PropertyCosmeticEdgeList   CosmeticEdges;
@@ -82,7 +82,7 @@ public:
     virtual void            removeGeomFormat(std::string tag);
 
 
-    PyObject* getExtensionPyObject();
+    PyObject* getExtensionPyObject() override;
 
 protected:
 /*    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, */

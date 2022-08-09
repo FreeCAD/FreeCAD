@@ -60,9 +60,9 @@ class InspectionExport InspectActualMesh : public InspectActualGeometry
 {
 public:
     InspectActualMesh(const Mesh::MeshObject& rMesh);
-    ~InspectActualMesh();
-    virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    ~InspectActualMesh() override;
+    unsigned long countPoints() const override;
+    Base::Vector3f getPoint(unsigned long) const override;
 
 private:
     const MeshCore::MeshKernel& _mesh;
@@ -74,8 +74,8 @@ class InspectionExport InspectActualPoints : public InspectActualGeometry
 {
 public:
     InspectActualPoints(const Points::PointKernel&);
-    virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    unsigned long countPoints() const override;
+    Base::Vector3f getPoint(unsigned long) const override;
 
 private:
     const Points::PointKernel& _rKernel;
@@ -85,8 +85,8 @@ class InspectionExport InspectActualShape : public InspectActualGeometry
 {
 public:
     InspectActualShape(const Part::TopoShape&);
-    virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    unsigned long countPoints() const override;
+    Base::Vector3f getPoint(unsigned long) const override;
 
 private:
     const Part::TopoShape& _rShape;
@@ -106,8 +106,8 @@ class InspectionExport InspectNominalMesh : public InspectNominalGeometry
 {
 public:
     InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset);
-    ~InspectNominalMesh();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalMesh() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 private:
     const MeshCore::MeshKernel& _mesh;
@@ -121,8 +121,8 @@ class InspectionExport InspectNominalFastMesh : public InspectNominalGeometry
 {
 public:
     InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset);
-    ~InspectNominalFastMesh();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalFastMesh() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 protected:
     const MeshCore::MeshKernel& _mesh;
@@ -137,8 +137,8 @@ class InspectionExport InspectNominalPoints : public InspectNominalGeometry
 {
 public:
     InspectNominalPoints(const Points::PointKernel&, float offset);
-    ~InspectNominalPoints();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalPoints() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 private:
     const Points::PointKernel& _rKernel;
@@ -149,8 +149,8 @@ class InspectionExport InspectNominalShape : public InspectNominalGeometry
 {
 public:
     InspectNominalShape(const TopoDS_Shape&, float offset);
-    ~InspectNominalShape();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalShape() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 private:
     BRepExtrema_DistShapeShape* distss;
@@ -174,10 +174,10 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyDistanceList();
+    ~PropertyDistanceList() override;
     
-    virtual void setSize(int newSize);
-    virtual int getSize() const;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     /** Sets the property 
      */
@@ -191,18 +191,18 @@ public:
     
     const std::vector<float> &getValues() const{return _lValueList;}
     
-    virtual PyObject *getPyObject();
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
     
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
     
-    virtual Property *Copy() const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize () const;
+    Property *Copy() const override;
+    void Paste(const Property &from) override;
+    unsigned int getMemSize () const override;
 
 private:
     std::vector<float> _lValueList;
@@ -220,7 +220,7 @@ class InspectionExport Feature : public App::DocumentObject
 public:
     /// Constructor
     Feature();
-    virtual ~Feature();
+    ~Feature() override;
 
     /** @name Properties */
     //@{
@@ -233,13 +233,13 @@ public:
 
     /** @name Actions */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute();
+    App::DocumentObjectExecReturn* execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const
+    const char* getViewProviderName() const override
     { return "InspectionGui::ViewProviderInspection"; }
 };
 
@@ -250,10 +250,10 @@ class InspectionExport Group : public App::DocumentObjectGroup
 public:
     /// Constructor
     Group();
-    virtual ~Group();
+    ~Group() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const
+    const char* getViewProviderName() const override
     { return "InspectionGui::ViewProviderInspectionGroup"; }
 };
 

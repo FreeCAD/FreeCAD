@@ -44,20 +44,20 @@ public:
     /// constructor
     ViewProviderHatch();
     /// destructor
-    virtual ~ViewProviderHatch();
+    ~ViewProviderHatch() override;
 
     App::PropertyColor       HatchColor;
     App::PropertyFloatConstraint HatchScale;
 
-    virtual bool useNewSelectionModel() const override {return false;}
-    virtual void onChanged(const App::Property* prop) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual bool doubleClicked() override;
-    virtual bool canDelete(App::DocumentObject* obj) const override;
+    bool useNewSelectionModel() const override {return false;}
+    void onChanged(const App::Property* prop) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawHatch* getViewObject() const;
 
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;

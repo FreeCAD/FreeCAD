@@ -43,12 +43,12 @@ class CurveOnMeshWidget : public QWidget
 
 public:
     CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent=nullptr);
-    ~CurveOnMeshWidget();
+    ~CurveOnMeshWidget() override;
 
     void reject();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void setup();
 
 private Q_SLOTS:
@@ -66,12 +66,12 @@ class TaskCurveOnMesh : public Gui::TaskView::TaskDialog
 
 public:
     TaskCurveOnMesh(Gui::View3DInventor* view);
-    ~TaskCurveOnMesh();
+    ~TaskCurveOnMesh() override;
 
 public:
-    bool reject();
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Close; }
 
 private:

@@ -56,7 +56,7 @@ public:
         STATUS_End
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -120,7 +120,7 @@ public:
 
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             CenterPoint = onSketchPos;
@@ -159,7 +159,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End) {
@@ -224,7 +224,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
     }
@@ -256,7 +256,7 @@ public:
         STATUS_End
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -371,7 +371,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             // 32 point curve + center + endpoint
@@ -399,7 +399,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -464,7 +464,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
     }

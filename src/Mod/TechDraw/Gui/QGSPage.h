@@ -70,7 +70,7 @@ class TechDrawGuiExport QGSPage : public QGraphicsScene
 
 public:
     QGSPage(ViewProviderPage *vp, QWidget *parent = nullptr);
-    virtual ~QGSPage();
+    ~QGSPage() override;
 
     QGIView * addViewDimension(TechDraw::DrawViewDimension *dim);
     QGIView * addViewBalloon(TechDraw::DrawViewBalloon *balloon);

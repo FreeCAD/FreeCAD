@@ -38,15 +38,15 @@ class DlgSettingsFemZ88Imp : public Gui::Dialog::PreferencePage
 
 public:
     DlgSettingsFemZ88Imp( QWidget* parent = nullptr );
-    ~DlgSettingsFemZ88Imp();
+    ~DlgSettingsFemZ88Imp() override;
 
 protected Q_SLOTS:
     void onfileNameChanged(QString FileName);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemZ88Imp> ui;

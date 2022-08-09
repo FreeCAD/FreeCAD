@@ -163,12 +163,12 @@ class TechDrawExport Circle: public BaseGeom
         Circle();
         Circle(const TopoDS_Edge &e);
         Circle(Base::Vector3d center, double radius);
-        virtual ~Circle() = default;
+        ~Circle() override = default;
 
     public:
-        virtual std::string toString() const override;
-        virtual void Save(Base::Writer& w) const override;
-        virtual void Restore(Base::XMLReader& r) override;
+        std::string toString() const override;
+        void Save(Base::Writer& w) const override;
+        void Restore(Base::XMLReader& r) override;
 
         Base::Vector3d center;
         double radius;
@@ -179,7 +179,7 @@ class TechDrawExport Ellipse: public BaseGeom
     public:
     Ellipse(const TopoDS_Edge &e);
     Ellipse(Base::Vector3d c, double mnr,  double mjr);
-    virtual ~Ellipse() = default;
+    ~Ellipse() override = default;
 
     public:
         Base::Vector3d center;
@@ -194,7 +194,7 @@ class TechDrawExport AOE: public Ellipse
 {
     public:
         AOE(const TopoDS_Edge &e);
-        ~AOE() = default;
+        ~AOE() override = default;
 
     public:
         Base::Vector3d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
@@ -218,12 +218,12 @@ class TechDrawExport AOC: public Circle
         AOC(const TopoDS_Edge &e);
         AOC(Base::Vector3d c, double r, double s, double e);
         AOC();
-        ~AOC() = default;
+        ~AOC() override = default;
 
     public:
-        virtual std::string toString() const override;
-        virtual void Save(Base::Writer& w) const override;
-        virtual void Restore(Base::XMLReader& r) override;
+        std::string toString() const override;
+        void Save(Base::Writer& w) const override;
+        void Restore(Base::XMLReader& r) override;
 
         Base::Vector3d startPnt;
         Base::Vector3d endPnt;
@@ -249,7 +249,7 @@ class TechDrawExport BezierSegment: public BaseGeom
 public:
     BezierSegment(const TopoDS_Edge &e);
     BezierSegment() { poles = degree = 0; }
-    ~BezierSegment() = default;
+    ~BezierSegment() override = default;
 
     int poles;
     int degree;
@@ -261,7 +261,7 @@ class TechDrawExport BSpline: public BaseGeom
 {
     public:
         BSpline(const TopoDS_Edge &e);
-        ~BSpline() = default;
+        ~BSpline() override = default;
 
     public:
         Base::Vector3d startPnt;
@@ -286,11 +286,11 @@ class TechDrawExport Generic: public BaseGeom
     public:
         Generic(const TopoDS_Edge &e);
         Generic();
-        ~Generic() = default;
+        ~Generic() override = default;
 
-        virtual std::string toString() const override;
-        virtual void Save(Base::Writer& w) const override;
-        virtual void Restore(Base::XMLReader& r) override;
+        std::string toString() const override;
+        void Save(Base::Writer& w) const override;
+        void Restore(Base::XMLReader& r) override;
         Base::Vector3d asVector();
         double slope();
         Base::Vector3d apparentInter(GenericPtr g);

@@ -54,7 +54,7 @@ public:
         STATUS_Close
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -161,7 +161,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -188,7 +188,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
+    bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -293,7 +293,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfParabola");
     }
 

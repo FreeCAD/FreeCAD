@@ -55,7 +55,7 @@ class TaskDriver : public Gui::TaskView::TaskBox
 
 public:
     TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskDriver();
+    ~TaskDriver() override;
 
 
 private Q_SLOTS:

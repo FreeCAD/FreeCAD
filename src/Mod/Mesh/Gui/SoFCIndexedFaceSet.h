@@ -80,9 +80,9 @@ public:
     SoEngineOutput trigger;
 
 private:
-    virtual ~SoFCMaterialEngine();
-    virtual void evaluate();
-    virtual void inputChanged(SoField *);
+    ~SoFCMaterialEngine() override;
+    void evaluate() override;
+    void inputChanged(SoField *) override;
 };
 
 /**
@@ -108,8 +108,8 @@ public:
 
 protected:
     // Force using the reference count mechanism.
-    virtual ~SoFCIndexedFaceSet() {}
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoFCIndexedFaceSet() override {}
+    void GLRender(SoGLRenderAction *action) override;
     void drawFaces(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *vertexindices,
@@ -122,7 +122,7 @@ protected:
                     const SoTextureCoordinateBundle * const texcoords,
                     const int32_t *texindices);
 
-    void doAction(SoAction * action);
+    void doAction(SoAction * action) override;
 
 private:
     void startSelection(SoAction * action);

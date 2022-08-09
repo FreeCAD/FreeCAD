@@ -45,12 +45,12 @@ class TechDrawGuiExport QGCustomImage : public QGraphicsPixmapItem
 {
 public:
     explicit QGCustomImage();
-    ~QGCustomImage();
+    ~QGCustomImage() override;
 
     enum {Type = QGraphicsItem::UserType + 201};
     int type() const override { return Type;}
 
-    virtual void paint( QPainter *painter,
+    void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);

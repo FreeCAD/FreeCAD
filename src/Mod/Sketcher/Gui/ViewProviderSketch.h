@@ -392,7 +392,7 @@ public:
     /// constructor
     ViewProviderSketch();
     /// destructor
-    virtual ~ViewProviderSketch();
+    ~ViewProviderSketch() override;
 
     /** @name Properties */
     //@{
@@ -463,7 +463,7 @@ public:
     bool isSelectable() const override;
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     //@}
 
     /** @name Access to Sketch and Solver objects */
@@ -504,29 +504,29 @@ public:
 
     /** @name base class implementer */
     //@{
-    virtual void attach(App::DocumentObject *) override;
-    virtual void updateData(const App::Property *) override;
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property *) override;
 
-    virtual void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
+    void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
     /// is called when the Provider is in edit and a deletion request occurs
-    virtual bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &) override;
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
-    virtual const char* getTransactionText() const override { return nullptr; }
+    const char* getTransactionText() const override { return nullptr; }
     /// is called by the tree if the user double clicks on the object
-    virtual bool doubleClicked() override;
+    bool doubleClicked() override;
     /// is called when the Provider is in edit and the mouse is moved
-    virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer) override;
+    bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer) override;
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
-    virtual bool keyPressed(bool pressed, int key) override;
+    bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
-    virtual bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
+    bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
+    bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
-    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
+    QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
     /** @name Signals for controlling information in Task dialogs */
     //@{
@@ -547,10 +547,10 @@ public:
 protected:
     /** @name enter/exit edit mode */
     //@{
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
-    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
-    virtual void unsetEditViewer(Gui::View3DInventorViewer*) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
+    void unsetEditViewer(Gui::View3DInventorViewer*) override;
     //@}
 
     /** @name miscelanea editing functions */
@@ -582,7 +582,7 @@ protected:
     /** @name base class implementer */
     //@{
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property *prop) override;
+    void onChanged(const App::Property *prop) override;
     //@}
 
 private:

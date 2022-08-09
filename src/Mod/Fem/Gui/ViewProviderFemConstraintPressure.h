@@ -34,11 +34,11 @@ class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProvid
 
 public:
     ViewProviderFemConstraintPressure();
-    virtual ~ViewProviderFemConstraintPressure();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintPressure() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

@@ -38,9 +38,9 @@ class DlgBindSheet : public QDialog
     
 public:
     explicit DlgBindSheet(Spreadsheet::Sheet *sheet, const std::vector<App::Range> &range, QWidget *parent = nullptr);
-    ~DlgBindSheet();
+    ~DlgBindSheet() override;
     
-    void accept();
+    void accept() override;
 
 public Q_SLOTS:
     void onDiscard();

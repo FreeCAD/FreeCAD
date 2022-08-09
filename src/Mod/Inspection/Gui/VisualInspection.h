@@ -37,9 +37,9 @@ class VisualInspection : public QDialog
 
 public:
     VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-  ~ VisualInspection();
+  ~ VisualInspection() override;
 
-    void accept();
+    void accept() override;
 
 protected Q_SLOTS:
     void onActivateItem(QTreeWidgetItem*);

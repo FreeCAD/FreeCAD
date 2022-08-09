@@ -56,7 +56,7 @@ class FemExport FemMesh : public Data::ComplexGeoData
 public:
     FemMesh();
     FemMesh(const FemMesh&);
-    ~FemMesh();
+    ~FemMesh() override;
 
     FemMesh &operator=(const FemMesh&);
     const SMESH_Mesh* getSMesh() const;
@@ -67,11 +67,11 @@ public:
     void compute();
 
     // from base class
-    virtual unsigned int getMemSize () const;
-    virtual void Save (Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
     /** @name Subelement management */
     //@{
@@ -79,10 +79,10 @@ public:
      *  List of different subelement types
      *  it is NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes() const;
-    virtual unsigned long countSubElements(const char* Type) const;
+    std::vector<const char*> getElementTypes() const override;
+    unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
+    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     //@}
 
     /** @name search and retrieval */
@@ -116,11 +116,11 @@ public:
     /** @name Placement control */
     //@{
     /// set the transformation
-    void setTransform(const Base::Matrix4D& rclTrf);
+    void setTransform(const Base::Matrix4D& rclTrf) override;
     /// get the transformation
-    Base::Matrix4D getTransform() const;
+    Base::Matrix4D getTransform() const override;
     /// Bound box from the shape
-    Base::BoundBox3d getBoundBox()const;
+    Base::BoundBox3d getBoundBox()const override;
     /// get the volume (when there are volume elements)
     Base::Quantity getVolume()const;
     //@}
@@ -128,7 +128,7 @@ public:
     /** @name Modification */
     //@{
     /// Applies a transformation on the real geometric data type
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
 
     /** @name Group management */

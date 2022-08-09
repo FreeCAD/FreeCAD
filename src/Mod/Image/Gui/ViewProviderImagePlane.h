@@ -44,12 +44,12 @@ public:
     ViewProviderImagePlane();
 
     /// destructor.
-    ~ViewProviderImagePlane();
+    ~ViewProviderImagePlane() override;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
 
 private:
     bool loadSvg(const char*, float x, float y, QImage& img);

@@ -41,7 +41,7 @@ class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewDraft();
-    virtual ~DrawViewDraft();
+    ~DrawViewDraft() override;
 
     App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;
@@ -55,15 +55,15 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDraft";
     }
 
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
 
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/

@@ -41,10 +41,10 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderImport";
     }
     //@}

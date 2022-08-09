@@ -37,12 +37,12 @@ class DlgSettingsFemExportAbaqusImp : public Gui::Dialog::PreferencePage
 
 public:
     DlgSettingsFemExportAbaqusImp( QWidget* parent = nullptr );
-    ~DlgSettingsFemExportAbaqusImp();
+    ~DlgSettingsFemExportAbaqusImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     Ui_DlgSettingsFemExportAbaqus* ui;

@@ -38,7 +38,7 @@ public:
         initialize("This module is the Measure module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

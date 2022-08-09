@@ -49,7 +49,7 @@ class TaskObjectName : public Gui::TaskView::TaskBox
 
 public:
     TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = nullptr);
-    ~TaskObjectName();
+    ~TaskObjectName() override;
 
 
     std::string name;

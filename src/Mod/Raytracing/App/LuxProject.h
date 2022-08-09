@@ -55,13 +55,13 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    const char* getViewProviderName(void) const {
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
+    const char* getViewProviderName(void) const override {
         return "RaytracingGui::ViewProviderLux";
     }
     /// get called after a document has been fully restored
-    virtual void onDocumentRestored();
+    void onDocumentRestored() override;
     //@}
 
 

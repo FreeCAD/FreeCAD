@@ -51,13 +51,13 @@ public:
         return i != end() ? i->second : defaultWidth;
     }
 
-    virtual Property *Copy() const;
+    Property *Copy() const override;
 
-    virtual void Paste(const Property &from);
+    void Paste(const Property &from) override;
 
-    virtual void Save (Base::Writer & writer) const;
+    void Save (Base::Writer & writer) const override;
 
-    virtual void Restore(Base::XMLReader & reader);
+    void Restore(Base::XMLReader & reader) override;
 
     bool isDirty() const { return !dirty.empty(); }
 
@@ -65,7 +65,7 @@ public:
 
     const std::set<int> & getDirty() const { return dirty; }
 
-    PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
     void clear();
 

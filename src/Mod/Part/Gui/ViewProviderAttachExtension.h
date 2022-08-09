@@ -37,12 +37,12 @@ class PartGuiExport ViewProviderAttachExtension : public Gui::ViewProviderExtens
 public:
     /// Constructor
     ViewProviderAttachExtension();
-    virtual ~ViewProviderAttachExtension() = default;
+    ~ViewProviderAttachExtension() override = default;
 
-    virtual QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;
+    QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;
 
-    virtual void extensionUpdateData(const App::Property*) override;
-    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
+    void extensionUpdateData(const App::Property*) override;
+    void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
 private:
     void showAttachmentEditor();

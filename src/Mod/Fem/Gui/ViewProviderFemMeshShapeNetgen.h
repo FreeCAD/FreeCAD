@@ -37,13 +37,13 @@ public:
     ViewProviderFemMeshShapeNetgen();
 
     /// destructor.
-    virtual ~ViewProviderFemMeshShapeNetgen();
+    ~ViewProviderFemMeshShapeNetgen() override;
 
-     virtual void updateData(const App::Property*);
+     void updateData(const App::Property*) override;
 
 protected:
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual bool setEdit(int ModNum);
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool setEdit(int ModNum) override;
 };
 
 } //namespace FemGui

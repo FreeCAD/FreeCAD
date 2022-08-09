@@ -41,7 +41,7 @@ class FemExport PropertyFemMesh : public App::PropertyComplexGeoData
 
 public:
     PropertyFemMesh();
-    ~PropertyFemMesh();
+    ~PropertyFemMesh() override;
 
     /** @name Getter/setter */
     //@{
@@ -52,38 +52,38 @@ public:
     void setValue(){}
     /// get the FemMesh shape
     const FemMesh &getValue() const;
-    const Data::ComplexGeoData* getComplexData() const;
+    const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
 
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const;
+    Base::BoundBox3d getBoundingBox() const override;
     /// Set the placement of the geometry
-    void setTransform(const Base::Matrix4D& rclTrf);
+    void setTransform(const Base::Matrix4D& rclTrf) override;
     /// Get the placement of the geometry
-    Base::Matrix4D getTransform() const;
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    Base::Matrix4D getTransform() const override;
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject();
-    void setPyObject(PyObject *value);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    App::Property *Copy() const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize () const;
-    const char* getEditorName() const { return "FemGui::PropertyFemMeshItem"; }
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
+    const char* getEditorName() const override { return "FemGui::PropertyFemMeshItem"; }
     //@}
 
 private:

@@ -53,12 +53,12 @@ class MeshGuiExport GmshWidget : public QWidget
 
 public:
     GmshWidget(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~GmshWidget();
+    ~GmshWidget() override;
     void accept();
     void reject();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     int meshingAlgorithm() const;
     double getAngle() const;
     double getMaxSize() const;
@@ -91,11 +91,11 @@ class MeshGuiExport RemeshGmsh : public GmshWidget
 
 public:
     RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~RemeshGmsh();
+    ~RemeshGmsh() override;
 
 protected:
-    virtual bool writeProject(QString& inpFile, QString& outFile);
-    virtual bool loadOutput();
+    bool writeProject(QString& inpFile, QString& outFile) override;
+    bool loadOutput() override;
 
 private:
     class Private;
@@ -111,14 +111,14 @@ class TaskRemeshGmsh : public Gui::TaskView::TaskDialog
 
 public:
     TaskRemeshGmsh(Mesh::Feature* mesh);
-    ~TaskRemeshGmsh();
+    ~TaskRemeshGmsh() override;
 
 public:
-    void clicked(int);
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return true; }
 
 private:

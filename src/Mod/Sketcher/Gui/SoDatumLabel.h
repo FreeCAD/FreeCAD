@@ -76,11 +76,11 @@ public:
     bool       useAntialiasing;
 
 protected:
-    virtual ~SoDatumLabel() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *, SbBox3f &box, SbVec3f &center);
-    virtual void generatePrimitives(SoAction * action);
-    virtual void notify(SoNotList * l);
+    ~SoDatumLabel() override {};
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *, SbBox3f &box, SbVec3f &center) override;
+    void generatePrimitives(SoAction * action) override;
+    void notify(SoNotList * l) override;
 
 private:
     void drawImage();

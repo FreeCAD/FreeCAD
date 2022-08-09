@@ -46,9 +46,9 @@ class TaskHelixParameters : public TaskSketchBasedParameters
 
 public:
     TaskHelixParameters(ViewProviderHelix* HelixView, QWidget* parent = nullptr);
-    ~TaskHelixParameters();
+    ~TaskHelixParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
     static bool showPreview(PartDesign::Helix*);
 

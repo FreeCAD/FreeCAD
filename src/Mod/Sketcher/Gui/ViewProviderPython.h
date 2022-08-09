@@ -37,11 +37,11 @@ public:
     /// constructor
     ViewProviderCustom();
     /// destructor
-    virtual ~ViewProviderCustom();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderCustom() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 

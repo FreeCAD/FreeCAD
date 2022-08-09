@@ -59,7 +59,7 @@ class TaskTrajectory : public Gui::TaskView::TaskBox
 
 public:
     TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = nullptr);
-    ~TaskTrajectory();
+    ~TaskTrajectory() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);

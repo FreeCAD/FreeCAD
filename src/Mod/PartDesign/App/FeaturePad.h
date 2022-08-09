@@ -51,9 +51,9 @@ public:
       * If Reversed is true then the direction of revolution will be reversed.
       * The created material will be fused with the sketch support (if there is one)
       */
-    App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPad";
     }
     //@}

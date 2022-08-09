@@ -49,11 +49,11 @@ class TechDrawGuiExport QGIViewPart : public QGIView
 public:
 
     explicit QGIViewPart();
-    ~QGIViewPart();
+    ~QGIViewPart() override;
 
     enum {Type = QGraphicsItem::UserType + 102};
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
@@ -61,9 +61,9 @@ public:
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
     void tidy();
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
     virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
     virtual void drawCenterLines(bool b);
@@ -71,8 +71,8 @@ public:
     virtual void drawMatting();
     bool showSection;
 
-    virtual void draw() override;
-    virtual void rotateView() override;
+    void draw() override;
+    void rotateView() override;
 
 
     static QPainterPath geomToPainterPath(TechDraw::BaseGeomPtr baseGeom, double rotation = 0.0);
@@ -99,7 +99,7 @@ protected:
     void drawViewPart();
     QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
     TechDraw::DrawGeomHatch* faceIsGeomHatched(int i,std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;

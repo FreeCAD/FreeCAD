@@ -37,8 +37,8 @@ class ViewProviderShapeBuilder : public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderShapeBuilder(){}
-    ~ViewProviderShapeBuilder(){}
-    virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
+    ~ViewProviderShapeBuilder() override{}
+    void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createShape(const App::Property*, SoSeparator*) const;
 };
 
@@ -50,8 +50,8 @@ public:
     /// constructor
     ViewProviderPart();
     /// destructor
-    virtual ~ViewProviderPart();
-    virtual bool doubleClicked(void);
+    ~ViewProviderPart() override;
+    bool doubleClicked(void) override;
 
 protected:
     void applyColor(const Part::ShapeHistory& hist,

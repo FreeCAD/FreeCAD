@@ -52,12 +52,12 @@ public:
 
     /** @name methods override Feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const { 
+    const char* getViewProviderName(void) const override {
         return "Gui::ViewProviderDocumentObject"; 
     }
     //@}

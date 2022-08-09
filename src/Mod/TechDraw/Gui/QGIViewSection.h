@@ -33,10 +33,10 @@ class TechDrawGuiExport QGIViewSection : public QGIViewPart
 public:
 
     QGIViewSection() = default;
-    ~QGIViewSection() = default;
+    ~QGIViewSection() override = default;
 
-    virtual void draw() override;
-    virtual void updateView(bool update = false) override;
+    void draw() override;
+    void updateView(bool update = false) override;
     enum {Type = QGraphicsItem::UserType + 108};
     int type() const override { return Type;}
     void drawSectionLine(TechDraw::DrawViewSection* s, bool b) override;

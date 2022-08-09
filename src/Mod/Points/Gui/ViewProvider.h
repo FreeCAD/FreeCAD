@@ -60,8 +60,8 @@ class ViewProviderPointsBuilder : public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderPointsBuilder(){}
-    ~ViewProviderPointsBuilder(){}
-    virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
+    ~ViewProviderPointsBuilder() override{}
+    void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createPoints(const App::Property*, SoCoordinate3*, SoPointSet*) const;
     void createPoints(const App::Property*, SoCoordinate3*, SoIndexedPointSet*) const;
 };
@@ -77,26 +77,26 @@ class PointsGuiExport ViewProviderPoints : public Gui::ViewProviderGeometryObjec
 
 public:
     ViewProviderPoints();
-    virtual ~ViewProviderPoints();
+    ~ViewProviderPoints() override;
 
     App::PropertyFloatConstraint PointSize;
 
     /// set the viewing mode
-    virtual void setDisplayMode(const char* ModeName);
+    void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes() const;
-    virtual QIcon getIcon() const;
+    std::vector<std::string> getDisplayModes() const override;
+    QIcon getIcon() const override;
 
     /// Sets the edit mnode
-    bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
     /// Unsets the edit mode
-    void unsetEdit(int ModNum);
+    void unsetEdit(int ModNum) override;
 
 public:
     static void clipPointsCallback(void * ud, SoEventCallback * n);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     void setVertexColorMode(App::PropertyColorList*);
     void setVertexGreyvalueMode(Points::PropertyGreyValueList*);
     void setVertexNormalMode(Points::PropertyNormalList*);
@@ -124,18 +124,18 @@ class PointsGuiExport ViewProviderScattered : public ViewProviderPoints
 
 public:
     ViewProviderScattered();
-    virtual ~ViewProviderScattered();
+    ~ViewProviderScattered() override;
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates
      * an Inventor node \a SoNode with these data.
      */
-    virtual void attach(App::DocumentObject *);
+    void attach(App::DocumentObject *) override;
     /// Update the point representation
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
+    void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer) override;
 
 protected:
     SoPointSet          * pcPoints;
@@ -152,18 +152,18 @@ class PointsGuiExport ViewProviderStructured : public ViewProviderPoints
 
 public:
     ViewProviderStructured();
-    virtual ~ViewProviderStructured();
+    ~ViewProviderStructured() override;
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates
      * an Inventor node \a SoNode with these data.
      */
-    virtual void attach(App::DocumentObject *);
+    void attach(App::DocumentObject *) override;
     /// Update the point representation
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
+    void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer) override;
 
 protected:
     SoIndexedPointSet   * pcPoints;

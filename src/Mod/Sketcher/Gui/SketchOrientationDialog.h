@@ -36,12 +36,12 @@ class SketcherGuiExport SketchOrientationDialog : public QDialog
 
 public:
     SketchOrientationDialog();
-    ~SketchOrientationDialog();
+    ~SketchOrientationDialog() override;
 
     Base::Placement Pos;
     int             DirType;
 
-    void accept();
+    void accept() override;
 
 protected Q_SLOTS:
     void onPreview();

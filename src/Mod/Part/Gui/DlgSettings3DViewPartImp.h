@@ -40,12 +40,12 @@ class DlgSettings3DViewPart : public Gui::Dialog::PreferencePage
 
 public:
     DlgSettings3DViewPart(QWidget* parent = nullptr);
-    ~DlgSettings3DViewPart();
+    ~DlgSettings3DViewPart() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private Q_SLOTS:
     void on_maxDeviation_valueChanged(double);

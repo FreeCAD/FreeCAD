@@ -1124,7 +1124,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_InsertKnot");
     }
 

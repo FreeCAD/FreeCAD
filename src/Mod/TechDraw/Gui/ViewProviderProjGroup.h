@@ -37,26 +37,26 @@ class TechDrawGuiExport ViewProviderProjGroup : public ViewProviderDrawingView
 public:
 
      ViewProviderProjGroup();  /// constructor
-     ~ViewProviderProjGroup(); /// destructor
+     ~ViewProviderProjGroup() override; /// destructor
 
-    virtual bool useNewSelectionModel() const {return false;}
+    bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
     /// Claim all the views for the page
-    std::vector<App::DocumentObject*> claimChildren() const;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
     /// Is called by the tree if the user double click on the object
-    virtual bool doubleClicked();
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    bool doubleClicked() override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     TechDraw::DrawProjGroup* getObject() const;
-    virtual TechDraw::DrawProjGroup* getViewObject() const;
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    TechDraw::DrawProjGroup* getViewObject() const override;
+    bool onDelete(const std::vector<std::string> &) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
 protected:
-    bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 
 };
 

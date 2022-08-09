@@ -37,11 +37,11 @@ class ImageGuiExport Workbench : public Gui::StdWorkbench
 
 public:
   Workbench();
-  virtual ~Workbench();
+  ~Workbench() override;
 
 protected:
-  Gui::ToolBarItem* setupToolBars() const;
-  Gui::ToolBarItem* setupCommandBars() const;
+  Gui::ToolBarItem* setupToolBars() const override;
+  Gui::ToolBarItem* setupCommandBars() const override;
 };
 
 } // namespace ImageGui

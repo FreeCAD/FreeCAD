@@ -246,7 +246,7 @@ public:
         initialize("This is a module working with the BRepFeat package."); // register with Python
     }
 
-    virtual ~BRepFeatModule() {}
+    ~BRepFeatModule() override {}
 };
 
 class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
@@ -257,7 +257,7 @@ public:
         initialize("This is a module working with the BRepOffsetAPI package."); // register with Python
     }
 
-    virtual ~BRepOffsetAPIModule() {}
+    ~BRepOffsetAPIModule() override {}
 };
 
 class Geom2dModule : public Py::ExtensionModule<Geom2dModule>
@@ -268,7 +268,7 @@ public:
         initialize("This is a module working with 2d geometries."); // register with Python
     }
 
-    virtual ~Geom2dModule() {}
+    ~Geom2dModule() override {}
 };
 
 class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
@@ -279,7 +279,7 @@ public:
         initialize("This is a module working with the GeomPlate framework."); // register with Python
     }
 
-    virtual ~GeomPlateModule() {}
+    ~GeomPlateModule() override {}
 };
 
 class HLRBRepModule : public Py::ExtensionModule<HLRBRepModule>
@@ -290,7 +290,7 @@ public:
         initialize("This is a module working with the HLRBRep framework."); // register with Python
     }
 
-    virtual ~HLRBRepModule() {}
+    ~HLRBRepModule() override {}
 };
 
 class ShapeFixModule : public Py::ExtensionModule<ShapeFixModule>
@@ -319,7 +319,7 @@ public:
         initialize("This is a module working with the ShapeFix framework."); // register with Python
     }
 
-    virtual ~ShapeFixModule() {}
+    ~ShapeFixModule() override {}
 
 private:
     Py::Object sameParameter(const Py::Tuple& args)
@@ -389,7 +389,7 @@ public:
         initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
     }
 
-    virtual ~ShapeUpgradeModule() {}
+    ~ShapeUpgradeModule() override {}
 };
 
 class ChFi2dModule : public Py::ExtensionModule<ChFi2dModule>
@@ -400,7 +400,7 @@ public:
         initialize("This is a module working with the ChFi2d framework."); // register with Python
     }
 
-    virtual ~ChFi2dModule() {}
+    ~ChFi2dModule() override {}
 };
 
 class Module : public Py::ExtensionModule<Module>
@@ -643,10 +643,10 @@ public:
         PyModule_AddObject(m_module, "ChFi2d", chFi2d.module().ptr());
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_keyword( void *method_def, 
+    Py::Object invoke_method_keyword( void *method_def,
             const Py::Tuple &args, const Py::Dict &keywords ) override
     {
         try {
@@ -680,7 +680,7 @@ private:
         }
     }
 
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);

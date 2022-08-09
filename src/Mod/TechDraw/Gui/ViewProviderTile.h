@@ -36,10 +36,10 @@ public:
     /// constructor
     ViewProviderTile();
     /// destructor
-    virtual ~ViewProviderTile();
+    ~ViewProviderTile() override;
 
-    virtual bool useNewSelectionModel() const {return false;}
-    virtual bool canDelete(App::DocumentObject *obj) const;
+    bool useNewSelectionModel() const override {return false;}
+    bool canDelete(App::DocumentObject *obj) const override;
 
 /*    virtual TechDraw::DrawTile* getViewObject() const;*/
     virtual TechDraw::DrawTile* getFeature() const;

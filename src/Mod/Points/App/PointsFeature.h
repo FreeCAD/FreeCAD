@@ -56,25 +56,25 @@ class PointsExport Feature : public App::GeoFeature
 public:
     /// Constructor
     Feature();
-    virtual ~Feature();
+    ~Feature() override;
 
     /** @name methods override Feature */
     //@{
-    void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader);
-    short mustExecute() const;
+    void Restore(Base::XMLReader &reader) override;
+    void RestoreDocFile(Base::Reader &reader) override;
+    short mustExecute() const override;
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PointsGui::ViewProviderScattered";
     }
 
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override {
         return &Points;
     }
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     //@}
 
 public:

@@ -41,7 +41,7 @@ public:
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

@@ -36,11 +36,11 @@ class FemGuiExport ViewProviderFemConstraintContact : public FemGui::ViewProvide
 
 public:
     ViewProviderFemConstraintContact();
-    virtual ~ViewProviderFemConstraintContact();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintContact() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 }
 

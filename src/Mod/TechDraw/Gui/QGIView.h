@@ -75,12 +75,12 @@ class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
     Q_OBJECT
 public:
     QGIView();
-    virtual ~QGIView();
+    ~QGIView() override;
 
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual void paint( QPainter *painter,
+    QRectF boundingRect() const override;
+    void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
 

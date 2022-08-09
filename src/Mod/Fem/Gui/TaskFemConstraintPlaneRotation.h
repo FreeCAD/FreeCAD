@@ -41,8 +41,8 @@ class TaskFemConstraintPlaneRotation : public TaskFemConstraint
 
 public:
     TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = nullptr);
-    ~TaskFemConstraintPlaneRotation();
-    const std::string getReferences() const;
+    ~TaskFemConstraintPlaneRotation() override;
+    const std::string getReferences() const override;
 
 private Q_SLOTS:
     void onReferenceDeleted();
@@ -50,8 +50,8 @@ private Q_SLOTS:
     void removeFromSelection();
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
 
 private:
     void updateUI();
@@ -65,9 +65,9 @@ class TaskDlgFemConstraintPlaneRotation : public TaskDlgFemConstraint
 
 public:
     TaskDlgFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

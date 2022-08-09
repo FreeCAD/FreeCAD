@@ -36,15 +36,15 @@ class PartGuiExport ViewProviderSplineExtension : public Gui::ViewProviderExtens
 public:
     /// Constructor
     ViewProviderSplineExtension();
-    virtual ~ViewProviderSplineExtension() = default;
+    ~ViewProviderSplineExtension() override = default;
 
     App::PropertyBool ControlPoints;
 
-    virtual void extensionUpdateData(const App::Property*) override;
-    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
+    void extensionUpdateData(const App::Property*) override;
+    void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
-    virtual void extensionOnChanged(const App::Property* p) override;
+    void extensionOnChanged(const App::Property* p) override;
     void toggleControlPoints(bool);
     void showControlPoints(bool, const App::Property* prop);
     void showControlPointsOfEdge(const TopoDS_Edge&);
@@ -61,9 +61,9 @@ public:
     /// constructor
     ViewProviderSpline();
     /// destructor
-    virtual ~ViewProviderSpline();
+    ~ViewProviderSpline() override;
 
-    QIcon getIcon() const;
+    QIcon getIcon() const override;
 
 private:
     ViewProviderSplineExtension extension;

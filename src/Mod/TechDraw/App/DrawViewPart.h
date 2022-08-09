@@ -81,7 +81,7 @@ class TechDrawExport DrawViewPart : public DrawView, public CosmeticExtension
 
 public:
     DrawViewPart();
-    virtual ~DrawViewPart();
+    ~DrawViewPart() override;
 
     App::PropertyLinkList     Source;
     App::PropertyXLinkList    XSource;
@@ -103,13 +103,13 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-    virtual short mustExecute() const override;
-    virtual void onDocumentRestored() override;
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual const char* getViewProviderName() const override {
+    short mustExecute() const override;
+    void onDocumentRestored() override;
+    App::DocumentObjectExecReturn *execute() override;
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     std::vector<TechDraw::DrawHatch*> getHatches() const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches() const;
@@ -132,7 +132,7 @@ public:
     virtual Base::BoundBox3d getBoundingBox() const;
     double getBoxX() const;
     double getBoxY() const;
-    virtual QRectF getRect() const override;
+    QRectF getRect() const override;
     virtual std::vector<DrawViewSection*> getSectionRefs() const;       //are there ViewSections based on this ViewPart?
     virtual std::vector<DrawViewDetail*> getDetailRefs() const;
 
@@ -204,8 +204,8 @@ protected:
     TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void unsetupObject() override;
+    void onChanged(const App::Property* prop) override;
+    void unsetupObject() override;
 
     virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
     virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??

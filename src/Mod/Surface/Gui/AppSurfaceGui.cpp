@@ -48,7 +48,7 @@ public:
         initialize("This module is the SurfaceGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

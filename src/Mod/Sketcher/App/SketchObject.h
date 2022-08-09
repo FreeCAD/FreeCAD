@@ -57,7 +57,7 @@ class SketcherExport SketchObject : public Part::Part2DObject
 
 public:
     SketchObject();
-    ~SketchObject();
+    ~SketchObject() override;
 
     /// Property
     /**
@@ -397,17 +397,17 @@ public:
     int port_reversedExternalArcs(bool justAnalyze);
 
     // from base class
-    virtual PyObject *getPyObject() override;
-    virtual unsigned int getMemSize() const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
+    PyObject *getPyObject() override;
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
     /// returns the number of construction lines (to be used as axes)
-    virtual int getAxisCount() const override;
+    int getAxisCount() const override;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
-    virtual Base::Axis getAxis(int axId) const override;
+    Base::Axis getAxis(int axId) const override;
     /// verify and accept the assigned geometry
-    virtual void acceptGeometry() override;
+    void acceptGeometry() override;
     /// Check if constraint has invalid indexes
     bool evaluateConstraint(const Constraint *constraint) const;
     /// Check for constraints with invalid indexes
@@ -546,11 +546,11 @@ public: // geometry extension functionalities for single element sketch object u
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged(const App::Property* /*prop*/) override;
-    virtual void onDocumentRestored() override;
-    virtual void restoreFinished() override;
+    void onChanged(const App::Property* /*prop*/) override;
+    void onDocumentRestored() override;
+    void restoreFinished() override;
 
-    virtual void setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr) override;
+    void setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr) override;
 
     std::string validateExpression(const App::ObjectIdentifier &path, std::shared_ptr<const App::Expression> expr);
 
@@ -581,7 +581,7 @@ protected:
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
 
-    virtual void onUndoRedoFinished() override;
+    void onUndoRedoFinished() override;
 
     // migration functions
     void migrateSketch();

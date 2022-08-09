@@ -46,15 +46,15 @@ public:
     App::PropertyVectorList Normals;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemConstraintFixed";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 };
 
 } //namespace Fem

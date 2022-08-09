@@ -39,7 +39,7 @@ class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 
 public:
     DrawLeaderLine();
-    virtual ~DrawLeaderLine();
+    ~DrawLeaderLine() override;
 
     App::PropertyLink         LeaderParent;
     App::PropertyVectorList   WayPoints;
@@ -52,14 +52,14 @@ public:
     App::PropertyBool         Scalable;
     App::PropertyBool         AutoHorizontal;
 
-    virtual short mustExecute() const override;
-    virtual App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
 
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderLeader";
     }
-    virtual PyObject *getPyObject() override;
-    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}
+    PyObject *getPyObject() override;
+    QRectF getRect() const override { return QRectF(0,0,1,1);}
 
     Base::Vector3d getAttachPoint();
     DrawView* getBaseView() const;
@@ -75,7 +75,7 @@ public:
     Base::Vector3d getTailPoint() const;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
 /*    static const char* ArrowTypeEnums[];*/

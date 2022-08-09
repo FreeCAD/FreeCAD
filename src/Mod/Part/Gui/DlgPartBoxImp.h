@@ -35,7 +35,7 @@ class DlgPartBoxImp : public Gui::LocationDialogUiImp
 
 public:
     DlgPartBoxImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgPartBoxImp();
+    ~DlgPartBoxImp() override;
 };
 
 } // namespace PartGui

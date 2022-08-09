@@ -42,22 +42,22 @@ public:
     /// constructor
     ViewProviderLoft();
     /// destructor
-    virtual ~ViewProviderLoft();
+    ~ViewProviderLoft() override;
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren(void)const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    bool onDelete(const std::vector<std::string> &) override;
     void highlightProfile(bool on);
     void highlightSection(bool on);
     void highlightReferences(Reference mode, bool on);
     
 protected:
-    virtual QIcon getIcon(void) const;
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual TaskDlgFeatureParameters* getEditDialog();
+    QIcon getIcon(void) const override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    TaskDlgFeatureParameters* getEditDialog() override;
 
 private:
     void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);

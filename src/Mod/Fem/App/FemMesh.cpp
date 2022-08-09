@@ -1169,7 +1169,7 @@ protected:
 typedef std::shared_ptr<NastranElement> NastranElementPtr;
 
 class GRIDElement : public NastranElement {
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddNodeWithID(node.x, node.y, node.z, element_id);
     }
 
@@ -1178,7 +1178,7 @@ protected:
 };
 
 class GRIDFreeFieldElement : public GRIDElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
         std::vector<string> token_results;
@@ -1194,7 +1194,7 @@ class GRIDFreeFieldElement : public GRIDElement {
 };
 
 class GRIDLongFieldElement : public GRIDElement {
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         element_id = atoi(str1.substr(8,24).c_str());
         node.x = atof(str1.substr(40,56).c_str());
         node.y = atof(str1.substr(56,72).c_str());
@@ -1203,13 +1203,13 @@ class GRIDLongFieldElement : public GRIDElement {
 };
 
 class GRIDSmallFieldElement : public GRIDElement {
-    void read(const std::string&, const std::string&) {
+    void read(const std::string&, const std::string&) override {
     }
 };
 
 class CTRIA3Element : public NastranElement {
 public:
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         const SMDS_MeshNode* n0 = meshds->FindNode(elements[0]);
         const SMDS_MeshNode* n1 = meshds->FindNode(elements[1]);
         const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
@@ -1232,7 +1232,7 @@ public:
 
 class CTRIA3FreeFieldElement : public CTRIA3Element {
 public:
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
         std::vector<string> token_results;
@@ -1249,7 +1249,7 @@ public:
 
 class CTRIA3LongFieldElement : public CTRIA3Element {
 public:
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
@@ -1259,13 +1259,13 @@ public:
 
 class CTRIA3SmallFieldElement : public CTRIA3Element {
 public:
-    void read(const std::string&, const std::string&) {
+    void read(const std::string&, const std::string&) override {
     }
 };
 
 class CTETRAElement : public NastranElement {
 public:
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         const SMDS_MeshNode* n0 = meshds->FindNode(elements[1]);
         const SMDS_MeshNode* n1 = meshds->FindNode(elements[0]);
         const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
@@ -1302,7 +1302,7 @@ public:
 
 class CTETRAFreeFieldElement : public CTETRAElement {
 public:
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
         std::vector<string> token_results;
@@ -1326,7 +1326,7 @@ public:
 
 class CTETRALongFieldElement : public CTETRAElement {
 public:
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         int id = atoi(str1.substr(8,16).c_str());
         int offset = 0;
 
@@ -1355,14 +1355,14 @@ public:
 
 class CTETRASmallFieldElement : public CTETRAElement {
 public:
-    void read(const std::string&, const std::string&) {
+    void read(const std::string&, const std::string&) override {
     }
 };
 
 // NASTRAN-95
 
 class GRIDNastran95Element : public GRIDElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8, 16).c_str());
         node.x = atof(str.substr(24, 32).c_str());
         node.y = atof(str.substr(32, 40).c_str());
@@ -1371,12 +1371,12 @@ class GRIDNastran95Element : public GRIDElement {
 };
 
 class CBARElement : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddEdgeWithID(
             elements[0],
             elements[1],
@@ -1386,13 +1386,13 @@ class CBARElement : public NastranElement {
 };
 
 class CTRMEMElement : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
         elements.push_back(atoi(str.substr(40,48).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1403,13 +1403,13 @@ class CTRMEMElement : public NastranElement {
 };
 
 class CTRIA1Element : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24, 32).c_str()));
         elements.push_back(atoi(str.substr(32, 40).c_str()));
         elements.push_back(atoi(str.substr(40, 48).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1420,14 +1420,14 @@ class CTRIA1Element : public NastranElement {
 };
 
 class CQUAD1Element : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24, 32).c_str()));
         elements.push_back(atoi(str.substr(32, 40).c_str()));
         elements.push_back(atoi(str.substr(40, 48).c_str()));
         elements.push_back(atoi(str.substr(48, 56).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1439,14 +1439,14 @@ class CQUAD1Element : public NastranElement {
 };
 
 class CTETRANastran95Element : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24, 32).c_str()));
         elements.push_back(atoi(str.substr(32, 40).c_str()));
         elements.push_back(atoi(str.substr(40, 48).c_str()));
         elements.push_back(atoi(str.substr(48, 56).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddFaceWithID(
             elements[0],
             elements[1],
@@ -1458,7 +1458,7 @@ class CTETRANastran95Element : public NastranElement {
 };
 
 class CWEDGEElement : public NastranElement {
-    void read(const std::string& str, const std::string&) {
+    void read(const std::string& str, const std::string&) override {
         element_id = atoi(str.substr(8,16).c_str());
         elements.push_back(atoi(str.substr(24,32).c_str()));
         elements.push_back(atoi(str.substr(32,40).c_str()));
@@ -1467,7 +1467,7 @@ class CWEDGEElement : public NastranElement {
         elements.push_back(atoi(str.substr(56,64).c_str()));
         elements.push_back(atoi(str.substr(64,72).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddVolumeWithID(
             elements[0],
             elements[1],
@@ -1481,7 +1481,7 @@ class CWEDGEElement : public NastranElement {
 };
 
 class CHEXA1Element : public NastranElement {
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         element_id = atoi(str1.substr(8,16).c_str());
         elements.push_back(atoi(str1.substr(24,32).c_str()));
         elements.push_back(atoi(str1.substr(32,40).c_str()));
@@ -1493,7 +1493,7 @@ class CHEXA1Element : public NastranElement {
         elements.push_back(atoi(str2.substr(8,16).c_str()));
         elements.push_back(atoi(str2.substr(16,24).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddVolumeWithID(
             elements[0],
             elements[1],
@@ -1509,7 +1509,7 @@ class CHEXA1Element : public NastranElement {
 };
 
 class CHEXA2Element : public NastranElement {
-    void read(const std::string& str1, const std::string& str2) {
+    void read(const std::string& str1, const std::string& str2) override {
         element_id = atoi(str1.substr(8,16).c_str());
         elements.push_back(atoi(str1.substr(24,32).c_str()));
         elements.push_back(atoi(str1.substr(32,40).c_str()));
@@ -1521,7 +1521,7 @@ class CHEXA2Element : public NastranElement {
         elements.push_back(atoi(str2.substr(8,16).c_str()));
         elements.push_back(atoi(str2.substr(16,24).c_str()));
     }
-    void addToMesh(SMESHDS_Mesh* meshds) {
+    void addToMesh(SMESHDS_Mesh* meshds) override {
         meshds->AddVolumeWithID(
             elements[0],
             elements[1],

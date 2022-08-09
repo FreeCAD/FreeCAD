@@ -67,7 +67,7 @@ public:
         initialize("This module is the Raytracing module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object writeProjectFile(const Py::Tuple& args)

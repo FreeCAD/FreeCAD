@@ -82,7 +82,7 @@ public:
     QtColorPicker(QWidget *parent = nullptr,
                   int columns = -1, bool enableColorDialog = true);
 
-    ~QtColorPicker();
+    ~QtColorPicker() override;
 
     void insertColor(const QColor &color, const QString &text = QString(), int index = -1);
 
@@ -105,7 +105,7 @@ Q_SIGNALS:
     void colorSet(const QColor &);
 
 protected:
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
 
 private Q_SLOTS:
     void buttonPressed(bool toggled);

@@ -37,17 +37,17 @@ class FemExport FemSetFacesObject : public FemSetObject
 public:
     /// Constructor
     FemSetFacesObject();
-    virtual ~FemSetFacesObject();
+    ~FemSetFacesObject() override;
 
     // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderSetFaces";
     }
-    virtual App::DocumentObjectExecReturn *execute() {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute() const;
-    virtual PyObject *getPyObject();
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 };
 
 } //namespace Fem

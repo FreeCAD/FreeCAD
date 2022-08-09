@@ -96,10 +96,10 @@ public:
 
         updateVirtualSpaceStatus();
     }
-    ~ConstraintItem()
+    ~ConstraintItem() override
     {
     }
-    void setData(int role, const QVariant & value)
+    void setData(int role, const QVariant & value) override
     {
         if (role == Qt::EditRole)
             this->value = value;
@@ -107,7 +107,7 @@ public:
         QListWidgetItem::setData(role, value);
     }
 
-    QVariant data (int role) const
+    QVariant data (int role) const override
     {
         if (ConstraintNbr < 0 || ConstraintNbr >= sketch->Constraints.getSize())
             return QVariant();
@@ -400,7 +400,7 @@ protected:
         return icon;
     }
 
-    void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
+    void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const override {
         QStyleOptionViewItem options = option;
         initStyleOption(&options, index);
 

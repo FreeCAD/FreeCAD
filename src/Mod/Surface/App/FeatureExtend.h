@@ -38,7 +38,7 @@ class SurfaceExport Extend :  public Part::Spline
 
 public:
     Extend();
-    ~Extend();
+    ~Extend() override;
 
     App::PropertyLinkSub Face;
     App::PropertyFloatConstraint Tolerance;
@@ -60,8 +60,8 @@ public:
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+    void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName,
                                            const char *PropName) override;
 

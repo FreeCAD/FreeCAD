@@ -36,7 +36,7 @@ class PartExport Spline :public Part::Feature
 public:
     Spline();
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderSpline";
     }
 };

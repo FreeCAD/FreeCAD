@@ -44,9 +44,9 @@ class TaskPadParameters : public TaskExtrudeParameters
 
 public:
     TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
-    ~TaskPadParameters();
+    ~TaskPadParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
 private:
     void onModeChanged(int index) override;

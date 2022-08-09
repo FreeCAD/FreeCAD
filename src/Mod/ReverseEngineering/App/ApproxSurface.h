@@ -190,7 +190,7 @@ public:
      * @param fParam Parameter value
      * @return ValueT
      */
-    virtual ValueT LocalSupport(int iIndex, double fParam);
+    ValueT LocalSupport(int iIndex, double fParam) override;
 
     /**
      * Calculates the function value Nik(t) at the point fParam
@@ -199,7 +199,7 @@ public:
      * @param fParam Parameter value
      * @return Function value Nik(t)
      */
-    virtual double BasisFunction(int iIndex, double fParam);
+    double BasisFunction(int iIndex, double fParam) override;
 
     /**
      * Calculates the function values of the first iMaxDer derivatives at the point fParam
@@ -211,13 +211,13 @@ public:
      * The list must be sufficiently long for iMaxDer+1 elements.
      * @return List of function values
      */
-    virtual void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
-                                            TColStd_Array1OfReal& Derivat);
+    void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
+                                            TColStd_Array1OfReal& Derivat) override;
 
     /**
      * Calculates the kth derivative at the point fParam
      */
-    virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam);
+    double DerivativeOfBasisFunction(int iIndex, int k, double fParam) override;
 
     /**
      * Calculates the integral of the product of two B-splines or their derivatives.
@@ -229,7 +229,7 @@ public:
     /**
      * Destructor
      */
-    virtual~ BSplineBasis();
+    ~ BSplineBasis() override;
 
 protected:
 
@@ -375,7 +375,7 @@ public:
                                unsigned usUCtrlpoints=6,          //Qty. of the control points in u-direction
                                unsigned usVCtrlpoints=6);         //Qty. of the control points in v-direction
 
-    virtual ~BSplineParameterCorrection(){}
+    ~BSplineParameterCorrection() override{}
 
 protected:
     /**
@@ -386,18 +386,18 @@ protected:
     /**
      * Carries out a parameter correction.
      */
-    virtual void DoParameterCorrection(int iIter);
+    void DoParameterCorrection(int iIter) override;
 
     /**
      * Solve an overdetermined LGS with the help of the Householder-Tansformation
      */
-    virtual bool SolveWithoutSmoothing();
+    bool SolveWithoutSmoothing() override;
 
     /**
      * Solve a regular system of equations by LU decomposition. Depending on the weighting,
      * smoothing terms are included
      */
-    virtual bool SolveWithSmoothing(double fWeight);
+    bool SolveWithSmoothing(double fWeight) override;
 
 public:
     /**
@@ -443,7 +443,7 @@ public:
     /**
      * Use smoothing-terms
      */
-    virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
+    void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f) override;
 
     /**
      * Use smoothing-terms

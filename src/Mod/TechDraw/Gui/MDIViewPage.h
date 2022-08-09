@@ -61,13 +61,13 @@ class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::Selection
 
 public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = nullptr);
-    virtual ~MDIViewPage();
+    ~MDIViewPage() override;
 
     void addChildrenToPage();
 
 
     /// Observer message from the Tree Selection mechanism
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void preSelectionChanged(const QPoint &pos);
 
     /// QGraphicsScene selection routines
@@ -80,14 +80,14 @@ public:
     void fixOrphans(bool force = false);
     void matchSceneRectToTemplate();
     
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
-    void print();
-    void print(QPrinter* printer);
-    void printPdf();
+    void print() override;
+    void print(QPrinter* printer) override;
+    void printPdf() override;
     void printPdf(std::string file);
-    void printPreview();
+    void printPreview() override;
 
     void saveSVG(std::string file);
     void saveDXF(std::string file);
@@ -95,7 +95,7 @@ public:
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
-    PyObject* getPyObject();
+    PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
     QGVPage* getQGVPage() {return m_view;}
@@ -113,10 +113,10 @@ public:
     bool addView(const App::DocumentObject *obj);
 
     static MDIViewPage *getFromScene(const QGSPage *scene);
-    void contextMenuEvent(QContextMenuEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 public Q_SLOTS:
-    void viewAll();
+    void viewAll() override;
     void saveSVG();
     void saveDXF();
     void savePDF();
@@ -134,7 +134,7 @@ protected:
     /// Attaches view of obj to m_scene.  Returns true on success, false otherwise
     bool attachView(App::DocumentObject *obj);
 
-    void closeEvent(QCloseEvent*);
+    void closeEvent(QCloseEvent*) override;
 
     void setDimensionGroups();
     void setBalloonGroups();
@@ -183,10 +183,10 @@ public:
     static void init_type();
 
     MDIViewPagePy(MDIViewPage *mdi);
-    ~MDIViewPagePy();
+    ~MDIViewPagePy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
     Py::Object getPage(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
 

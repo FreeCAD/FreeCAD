@@ -38,7 +38,7 @@ public:
     ViewProviderFemMeshShape();
 
     /// destructor.
-    virtual ~ViewProviderFemMeshShape();
+    ~ViewProviderFemMeshShape() override;
 };
 
 } //namespace FemGui

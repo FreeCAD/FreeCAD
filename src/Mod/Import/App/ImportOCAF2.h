@@ -133,7 +133,7 @@ private:
         {}
             
     private:
-        void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) {
+        void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
             myParent.applyFaceColors(part, colors);
         }
 

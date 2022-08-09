@@ -37,17 +37,17 @@ class FemExport FemSetGeometryObject : public FemSetObject
 public:
     /// Constructor
     FemSetGeometryObject();
-    virtual ~FemSetGeometryObject();
+    ~FemSetGeometryObject() override;
 
     // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderSetGeometry";
     }
-    virtual App::DocumentObjectExecReturn *execute() {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute() const;
-    virtual PyObject *getPyObject();
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
 
 };

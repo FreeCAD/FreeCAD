@@ -85,7 +85,7 @@ public:
         initialize("This module is the PartGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

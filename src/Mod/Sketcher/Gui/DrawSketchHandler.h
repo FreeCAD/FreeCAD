@@ -61,7 +61,7 @@ private:
     void updateCurvedEdgeCountSegmentsParameter();
 
     /** Observer for parameter group. */
-    virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
 private:
     int curvedEdgeCountSegments;

@@ -62,7 +62,7 @@ public:
         SNAP_DIR_Vert
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -132,7 +132,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -144,7 +144,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -283,7 +283,7 @@ public:
         return true;
     }
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Slot");
     }

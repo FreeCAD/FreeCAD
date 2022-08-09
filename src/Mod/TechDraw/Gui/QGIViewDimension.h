@@ -61,14 +61,14 @@ Q_OBJECT
 
 public:
     QGIDatumLabel();
-    virtual ~QGIDatumLabel() = default;
+    ~QGIDatumLabel() override = default;
 
     enum {Type = QGraphicsItem::UserType + 107};
     int type() const override { return Type;}
 
-    virtual QRectF boundingRect() const override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void paint( QPainter *painter,
+    QRectF boundingRect() const override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
@@ -115,12 +115,12 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 //    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_dimText;
@@ -150,25 +150,25 @@ public:
     enum {Type = QGraphicsItem::UserType + 106};
 
     explicit QGIViewDimension();
-    ~QGIViewDimension() = default;
+    ~QGIViewDimension() override = default;
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual void paint( QPainter * painter,
+    QRectF boundingRect() const override;
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
     TechDraw::DrawViewDimension *dvDimension;
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
     virtual QColor prefNormalColor();
     QString getLabelText();
     void setPrettyPre();
     void setPrettySel();
     void setPrettyNormal();
 
-    virtual void setGroupSelection(bool b) override;
+    void setGroupSelection(bool b) override;
     virtual QGIDatumLabel* getDatumLabel() { return datumLabel; }
 
     void setNormalColorAll();
@@ -183,9 +183,9 @@ public Q_SLOTS:
 
 protected:
 
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+    void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
+    void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     static double getAnglePlacementFactor(double testAngle, double endAngle, double startRotation);
     static int compareAngleStraightness(double straightAngle, double leftAngle, double rightAngle,
@@ -257,7 +257,7 @@ protected:
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens();
     virtual void setPens();

@@ -39,20 +39,20 @@ public:
     /// constructor
     ViewProviderViewClip();
     /// destructor
-    virtual ~ViewProviderViewClip();
+    ~ViewProviderViewClip() override;
 
-    virtual bool useNewSelectionModel() const {return false;}
+    bool useNewSelectionModel() const override {return false;}
 
-    virtual TechDraw::DrawViewClip* getViewObject() const;
+    TechDraw::DrawViewClip* getViewObject() const override;
     TechDraw::DrawViewClip* getObject() const;
 
     /// Hide the object in the view
-    virtual void hide();
+    void hide() override;
     /// Show the object in the view
-    virtual void show();
-    std::vector<App::DocumentObject*> claimChildren() const;
+    void show() override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool canDelete(App::DocumentObject* obj) const override;
 
 };
 } // namespace TechDrawGui

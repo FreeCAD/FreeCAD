@@ -61,18 +61,18 @@ public:
     enum {Type = QGraphicsItem::UserType + 340};
 
     explicit QGIWeldSymbol(QGILeaderLine* myParent = nullptr);
-    ~QGIWeldSymbol() = default;
+    ~QGIWeldSymbol() override = default;
 
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
     double getEdgeFuzz() const;
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
 
     virtual TechDraw::DrawWeldSymbol* getFeature();
     virtual void setFeature(TechDraw::DrawWeldSymbol* feat);
@@ -88,12 +88,12 @@ public:
     void getTileFeats();
 
 protected:
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
-    virtual void draw() override;
+    void draw() override;
     void drawTile(TechDraw::DrawTileWeld* tileFeat);
     void drawAllAround();
     void drawTailText();

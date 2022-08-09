@@ -38,12 +38,12 @@ public:
     /// constructor
     ViewProviderSketchBased();
     /// destructor
-    virtual ~ViewProviderSketchBased();
+    ~ViewProviderSketchBased() override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren()const;
+    std::vector<App::DocumentObject*> claimChildren()const override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    bool onDelete(const std::vector<std::string> &) override;
 
 };
 

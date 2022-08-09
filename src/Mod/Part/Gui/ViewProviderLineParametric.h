@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderLineParametric();
     /// destructor
-    virtual ~ViewProviderLineParametric();
+    ~ViewProviderLineParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes(void) const override;
 
 protected:
 

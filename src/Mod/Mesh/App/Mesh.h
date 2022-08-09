@@ -66,7 +66,7 @@ class MeshExport MeshSegment : public Data::Segment
     TYPESYSTEM_HEADER();
 
 public:
-    virtual std::string getName() const {
+    std::string getName() const override {
         return "MeshSegment";
     }
 
@@ -101,7 +101,7 @@ public:
     explicit MeshObject(const MeshCore::MeshKernel& Kernel);
     explicit MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D &Mtrx);
     MeshObject(const MeshObject&);
-    virtual ~MeshObject();
+    ~MeshObject() override;
 
     void operator = (const MeshObject&);
 
@@ -111,21 +111,21 @@ public:
      *  List of different subelement types
      *  its NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes() const;
-    virtual unsigned long countSubElements(const char* Type) const;
+    std::vector<const char*> getElementTypes() const override;
+    unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
+    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     /** Get faces from segment */
-    virtual void getFacesFromSubElement(
+    void getFacesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
-        std::vector<Facet> &faces) const;
+        std::vector<Facet> &faces) const override;
     //@}
 
-    void setTransform(const Base::Matrix4D& rclTrf);
-    Base::Matrix4D getTransform() const;
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    void setTransform(const Base::Matrix4D& rclTrf) override;
+    Base::Matrix4D getTransform() const override;
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
 
     /**
      * Swaps the content of \a Kernel and the internal mesh kernel.
@@ -148,11 +148,11 @@ public:
     double getSurface() const;
     double getVolume() const;
     /** Get points from object with given accuracy */
-    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+    void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
+        float Accuracy, uint16_t flags=0) const override;
+    void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
+        float Accuracy, uint16_t flags=0) const override;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
     bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
     std::vector<TFaceSection> foraminate(const TRay& ray, double maxAngle) const;
@@ -164,17 +164,17 @@ public:
     const MeshCore::MeshKernel& getKernel() const
     { return _kernel; }
 
-    virtual Base::BoundBox3d getBoundBox() const;
-    virtual bool getCenterOfGravity(Base::Vector3d& center) const;
+    Base::BoundBox3d getBoundBox() const override;
+    bool getCenterOfGravity(Base::Vector3d& center) const override;
 
     /** @name I/O */
     //@{
     // Implemented from Persistence
-    unsigned int getMemSize () const;
-    void Save (Base::Writer &writer) const;
-    void SaveDocFile (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader);
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &writer) const override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+    void RestoreDocFile(Base::Reader &reader) override;
     void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
         const MeshCore::Material* mat = nullptr,
         const char* objectname = nullptr) const;

@@ -194,7 +194,7 @@ public:
   /// Construction
   MeshFacetGrid (const MeshKernel &rclM, float fGridLen);
   /// Destruction
-  virtual ~MeshFacetGrid () { }
+  ~MeshFacetGrid () override { }
   //@}
  
   /** @name Search */
@@ -213,11 +213,11 @@ public:
   //@}
 
   /** Validates the grid structure and rebuilds it if needed. */
-  virtual void Validate (const MeshKernel &rclM);
+  void Validate (const MeshKernel &rclM) override;
   /** Validates the grid structure and rebuilds it if needed. */
   virtual void Validate ();
   /** Verifies the grid structure and returns false if inconsistencies are found. */
-  virtual bool Verify() const;
+  bool Verify() const override;
 
 protected:
   /** Returns the grid numbers to the given point \a rclPoint. */
@@ -229,10 +229,10 @@ protected:
    * the facet. */
   inline void AddFacet (const MeshGeomFacet &rclFacet, ElementIndex ulFacetIndex, float fEpsilon = 0.0f);
   /** Returns the number of stored elements. */
-  unsigned long HasElements () const
+  unsigned long HasElements () const override
   { return _pclMesh->CountFacets(); }
   /** Rebuilds the grid structure. */
-  virtual void RebuildGrid ();
+  void RebuildGrid () override;
 };
 
 /**
@@ -255,17 +255,17 @@ public:
   /// Construction
   MeshPointGrid (const MeshKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ);
   /// Destruction
-  virtual ~MeshPointGrid () {}
+  ~MeshPointGrid () override {}
   //@}
 
   /** Finds all points that lie in the same grid as the point \a rclPoint. */
   unsigned long FindElements(const Base::Vector3f &rclPoint, std::set<ElementIndex>& aulElements) const;
   /** Validates the grid structure and rebuilds it if needed. */
-  virtual void Validate (const MeshKernel &rclM);
+  void Validate (const MeshKernel &rclM) override;
   /** Validates the grid structure and rebuilds it if needed. */
   virtual void Validate ();
   /** Verifies the grid structure and returns false if inconsistencies are found. */
-  virtual bool Verify() const;
+  bool Verify() const override;
 
 protected:
   /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a ulPtIndex 
@@ -274,10 +274,10 @@ protected:
   /** Returns the grid numbers to the given point \a rclPoint. */
   void Pos(const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
   /** Returns the number of stored elements. */
-  unsigned long HasElements () const
+  unsigned long HasElements () const override
   { return _pclMesh->CountPoints(); }
   /** Rebuilds the grid structure. */
-  virtual void RebuildGrid ();
+  void RebuildGrid () override;
 };
 
 /**

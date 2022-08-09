@@ -77,7 +77,7 @@ public:
     enum RendererType { Native, OpenGL, Image };
 
     QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent = nullptr);
-    virtual ~QGVPage();
+    ~QGVPage() override;
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect) override;

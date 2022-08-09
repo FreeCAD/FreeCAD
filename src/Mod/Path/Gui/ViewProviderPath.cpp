@@ -90,7 +90,7 @@ public:
         }
     }
 
-    void onSelectionChanged(const Gui::SelectionChanges& msg) {
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override {
         if(msg.Type == Gui::SelectionChanges::RmvPreselect) {
             setArrow();
             return;
@@ -492,33 +492,33 @@ public:
         command2Edge.resize(tp.getSize(),-1);
     }
 
-    virtual void setup(const Base::Vector3d &last)
+    void setup(const Base::Vector3d &last) override
     {
         points.push_back(last);
         markers.push_back(last);
     }
 
-    virtual void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)last;
         gx(id, &next, pts, 0);
     }
 
-    virtual void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)last;
         gx(id, &next, pts, 1);
     }
 
-    virtual void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center)
+    void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center) override
     {
         (void)last;
         gx(id, &next, pts, 1);
         markers.push_back(center);
     }
 
-    virtual void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
-                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q)
+    void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
+                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q) override
     {
         (void)last;
 
@@ -547,7 +547,7 @@ public:
         pushCommand(id);
     }
 
-    virtual void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next)
+    void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
     {
 #if 0
       Base::Vector3d p1(next.x,next.y,last.z);

@@ -54,7 +54,7 @@ public:
 
 public:
     Measurement();
-    ~Measurement();
+    ~Measurement() override;
 
     void clear();
     bool has3DReferences();
@@ -66,7 +66,7 @@ public:
     MeasureType getType();
 
      // from base class
-    virtual PyObject *getPyObject();
+    PyObject *getPyObject() override;
     virtual unsigned int getMemSize() const;
 
 public:

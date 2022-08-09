@@ -36,16 +36,16 @@ public:
     /// constructor
     ViewProviderPrimitive();
     /// destructor
-    virtual ~ViewProviderPrimitive();
+    ~ViewProviderPrimitive() override;
     
-    virtual void attach(App::DocumentObject*);
-    virtual void updateData(const App::Property*);
+    void attach(App::DocumentObject*) override;
+    void updateData(const App::Property*) override;
     
 protected:
-    virtual QIcon getIcon(void) const;
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual bool  setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    QIcon getIcon(void) const override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool  setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
     
     void updateAddSubShapeIndicator();
     

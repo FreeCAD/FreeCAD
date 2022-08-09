@@ -47,16 +47,16 @@ public:
 
     /// Constructor
     ViewProviderDatumCoordinateSystem();
-    virtual ~ViewProviderDatumCoordinateSystem();
+    ~ViewProviderDatumCoordinateSystem() override;
 
-    virtual void attach ( App::DocumentObject *obj );
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property*);
+    void attach ( App::DocumentObject *obj ) override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property*) override;
 
-    virtual void setExtents (Base::BoundBox3d bbox);
+    void setExtents (Base::BoundBox3d bbox) override;
 
-    virtual SoDetail* getDetail(const char* subelement) const;
-    virtual std::string getElement(const SoDetail* detail) const;
+    SoDetail* getDetail(const char* subelement) const override;
+    std::string getElement(const SoDetail* detail) const override;
 
 private:
     void setupLabels();

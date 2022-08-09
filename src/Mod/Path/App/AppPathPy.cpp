@@ -97,7 +97,7 @@ namespace Path {
       {
           initialize("Working with Voronoi diagrams and data structures");
       }
-      virtual ~VoronoiModule() {}
+      ~VoronoiModule() override {}
   };
 
   class Module : public Py::ExtensionModule<Module>
@@ -144,7 +144,7 @@ namespace Path {
           PyModule_AddObject(m_module, "Voronoi", voronoi.module().ptr());
       }
 
-      virtual ~Module() {}
+      ~Module() override {}
 
   private:
 

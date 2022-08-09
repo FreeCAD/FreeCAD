@@ -51,13 +51,13 @@ public:
         return *this;
     }
 
-    virtual App::Property *Copy() const;
+    App::Property *Copy() const override;
 
-    virtual void Paste(const App::Property &from);
+    void Paste(const App::Property &from) override;
 
-    virtual void Save (Base::Writer & writer) const;
+    void Save (Base::Writer & writer) const override;
 
-    virtual void Restore(Base::XMLReader & reader);
+    void Restore(Base::XMLReader & reader) override;
 
     bool isDirty() const { return dirty.size() > 0; }
 
@@ -65,7 +65,7 @@ public:
 
     const std::set<int> & getDirty() const { return dirty; }
 
-    PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
     static const int defaultHeight;
 

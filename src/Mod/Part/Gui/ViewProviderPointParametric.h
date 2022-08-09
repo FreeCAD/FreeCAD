@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderPointParametric();
     /// destructor
-    virtual ~ViewProviderPointParametric();
+    ~ViewProviderPointParametric() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

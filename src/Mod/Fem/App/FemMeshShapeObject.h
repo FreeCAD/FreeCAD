@@ -37,13 +37,13 @@ class FemExport FemMeshShapeObject : public FemMeshObject
 public:
     /// Constructor
     FemMeshShapeObject();
-    virtual ~FemMeshShapeObject();
+    ~FemMeshShapeObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemMeshShape";
     }
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
 
     //virtual short mustExecute(void) const;
     //virtual PyObject *getPyObject(void);

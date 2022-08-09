@@ -37,15 +37,15 @@ class DlgPrefsTechDrawScaleImp : public Gui::Dialog::PreferencePage
 
 public:
     DlgPrefsTechDrawScaleImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawScaleImp();
+    ~DlgPrefsTechDrawScaleImp() override;
 
 protected Q_SLOTS:
     void onScaleTypeChanged(int index);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawScaleImp> ui;

@@ -121,7 +121,7 @@ public: //mode enumerations
     static const char* eDirModeStrings[];
 
 protected:
-    virtual void setupObject() override;
+    void setupObject() override;
 };
 
 /**
@@ -133,12 +133,12 @@ class FaceMakerExtrusion: public FaceMakerCheese
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual std::string getUserFriendlyName() const override;
-    virtual std::string getBriefExplanation() const override;
+    std::string getUserFriendlyName() const override;
+    std::string getBriefExplanation() const override;
 
-    virtual void Build() override;
+    void Build() override;
 protected:
-    virtual void Build_Essence() override {}
+    void Build_Essence() override {}
 };
 
 } //namespace Part

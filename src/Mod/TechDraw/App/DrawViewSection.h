@@ -62,7 +62,7 @@ class TechDrawExport DrawViewSection : public DrawViewPart
 
 public:
     DrawViewSection();
-    virtual ~DrawViewSection();
+    ~DrawViewSection() override;
 
     App::PropertyLink   BaseView;
     App::PropertyVector SectionNormal;
@@ -83,13 +83,13 @@ public:
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
 
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName() const override {
+    App::DocumentObjectExecReturn *execute() override;
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewSection";
     }
-    virtual void unsetupObject() override;
-    virtual short mustExecute() const override;
+    void unsetupObject() override;
+    short mustExecute() const override;
 
     void sectionExec(TopoDS_Shape s);
 
@@ -102,7 +102,7 @@ public:
                              Base::Vector3d axis,
                              double degAngle) const;
     gp_Ax2 getSectionCS() const;
-    virtual Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
+    Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
@@ -138,8 +138,8 @@ protected:
 
     TopoDS_Shape m_cutShape;
 
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
+    void onDocumentRestored() override;
+    void setupObject() override;
     void setupSvgIncluded();
     void setupPatIncluded();
     void replaceSvgIncluded(std::string newSvgFile);

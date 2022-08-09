@@ -35,13 +35,13 @@ class DlgRegularSolidImp : public QDialog
 
 public:
     DlgRegularSolidImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgRegularSolidImp();
+    ~DlgRegularSolidImp() override;
 
 public Q_SLOTS:
     void on_createSolidButton_clicked();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgRegularSolid> ui;

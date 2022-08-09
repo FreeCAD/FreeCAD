@@ -141,7 +141,7 @@ namespace Inspection {
                     std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
         }
 
-        void Validate (const MeshCore::MeshKernel&)
+        void Validate (const MeshCore::MeshKernel&) override
         {
             // do nothing
         }
@@ -151,24 +151,24 @@ namespace Inspection {
             // do nothing
         }
 
-        bool Verify() const
+        bool Verify() const override
         {
             // do nothing
             return true;
         }
 
     protected:
-        void CalculateGridLength (unsigned long /*ulCtGrid*/, unsigned long /*ulMaxGrids*/)
+        void CalculateGridLength (unsigned long /*ulCtGrid*/, unsigned long /*ulMaxGrids*/) override
         {
             // do nothing
         }
 
-        void CalculateGridLength (int /*iCtGridPerAxis*/)
+        void CalculateGridLength (int /*iCtGridPerAxis*/) override
         {
             // do nothing
         }
 
-        unsigned long HasElements (void) const
+        unsigned long HasElements (void) const override
         {
             return _pclMesh->CountFacets();
         }
@@ -210,7 +210,7 @@ namespace Inspection {
                 _aulGrid[ulX1][ulY1][ulZ1].insert(ulFacetIndex);
         }
 
-        void InitGrid (void)
+        void InitGrid (void) override
         {
             unsigned long i, j;
 
@@ -238,7 +238,7 @@ namespace Inspection {
             }
         }
 
-        void RebuildGrid (void)
+        void RebuildGrid (void) override
         {
             _ulCtElements = _pclMesh->CountFacets();
             InitGrid();

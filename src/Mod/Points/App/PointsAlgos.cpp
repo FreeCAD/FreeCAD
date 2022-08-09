@@ -228,7 +228,7 @@ private:
 template <typename T>
 class ConverterT : public Converter {
 public:
-    virtual std::string toString(double f) const {
+    std::string toString(double f) const override {
         T c = static_cast<T>(f);
         std::ostringstream oss;
         oss.precision(7);
@@ -236,12 +236,12 @@ public:
         oss << c;
         return oss.str();
     }
-    virtual double toDouble(Base::InputStream& str) const {
+    double toDouble(Base::InputStream& str) const override {
         T c;
         str >> c;
         return static_cast<double>(c);
     }
-    virtual int getSizeOf() const {
+    int getSizeOf() const override {
         return sizeof(T);
     }
 };
@@ -256,35 +256,35 @@ public:
         _end = data.size();
         _cur = 0;
     }
-    ~DataStreambuf() {
+    ~DataStreambuf() override {
     }
 
 protected:
-    virtual int_type uflow() {
+    int_type uflow() override {
         if (_cur == _end)
             return traits_type::eof();
 
         return static_cast<DataStreambuf::int_type>(_buffer[_cur++]) & 0x000000ff;
     }
-    virtual int_type underflow() {
+    int_type underflow() override {
         if (_cur == _end)
             return traits_type::eof();
 
         return static_cast<DataStreambuf::int_type>(_buffer[_cur]) & 0x000000ff;
     }
-    virtual int_type pbackfail(int_type ch) {
+    int_type pbackfail(int_type ch) override {
         if (_cur == _beg || (ch != traits_type::eof() && ch != _buffer[_cur-1]))
             return traits_type::eof();
 
         return static_cast<DataStreambuf::int_type>(_buffer[--_cur]) & 0x000000ff;
     }
-    virtual std::streamsize showmanyc() {
+    std::streamsize showmanyc() override {
         return _end - _cur;
     }
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
         std::ios_base::openmode =
-            std::ios::in | std::ios::out) {
+            std::ios::in | std::ios::out) override {
         int p_pos=-1;
         if (way == std::ios_base::beg)
             p_pos = _beg;
@@ -303,9 +303,9 @@ protected:
 
         return ((p_pos+off) - _beg);
     }
-    virtual pos_type seekpos(std::streambuf::pos_type pos,
+    pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
-        std::ios::in | std::ios::out) {
+        std::ios::in | std::ios::out) override {
         (void)which;
         return seekoff(pos, std::ios_base::beg);
     }

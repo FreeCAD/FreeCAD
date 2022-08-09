@@ -40,7 +40,7 @@ class TechDrawExport DrawPage: public App::DocumentObject
 
 public:
     DrawPage();
-    virtual ~DrawPage();
+    ~DrawPage() override;
 
     App::PropertyLinkList Views;
     App::PropertyLink Template;
@@ -54,9 +54,9 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
-    virtual void handleChangedPropertyType(
+    void handleChangedPropertyType(
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     int addView(App::DocumentObject *docObj);
@@ -65,7 +65,7 @@ public:
     boost::signals2::signal<void (const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderPage";
     }
 
@@ -108,8 +108,8 @@ public:
 protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
-    virtual void unsetupObject() override;
+    void onDocumentRestored() override;
+    void unsetupObject() override;
 
     bool m_forceRedraw;
 

@@ -54,9 +54,9 @@ class TaskExtrudeParameters : public TaskSketchBasedParameters
 public:
     TaskExtrudeParameters(ViewProviderSketchBased *SketchBasedView, QWidget *parent,
                           const std::string& pixmapname, const QString& parname);
-    ~TaskExtrudeParameters();
+    ~TaskExtrudeParameters() override;
 
-    virtual void saveHistory() override;
+    void saveHistory() override;
 
     void fillDirectionCombo();
     void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText,

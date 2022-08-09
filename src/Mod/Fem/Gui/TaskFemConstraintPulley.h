@@ -49,7 +49,7 @@ private Q_SLOTS:
     void onCheckIsDriven(bool);
 
 protected:
-    virtual void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 };
 
 /// simulation dialog for the TaskView
@@ -61,8 +61,8 @@ public:
     TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    void open();
+    bool accept() override;
+    void open() override;
 };
 
 } //namespace FemGui

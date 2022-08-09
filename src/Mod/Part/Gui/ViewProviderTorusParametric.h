@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderTorusParametric();
     /// destructor
-    virtual ~ViewProviderTorusParametric();
+    ~ViewProviderTorusParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes(void) const override;
 
 protected:
 

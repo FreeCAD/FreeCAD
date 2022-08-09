@@ -42,16 +42,16 @@ class TechDrawGuiExport QGIViewSymbol : public QGIView
 {
 public:
     QGIViewSymbol();
-    ~QGIViewSymbol();
+    ~QGIViewSymbol() override;
 
     enum {Type = QGraphicsItem::UserType + 121};
     int type() const override { return Type;}
 
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
     void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
 
-    virtual void draw() override;
-    virtual void rotateView() override;
+    void draw() override;
+    void rotateView() override;
 
 
 protected:

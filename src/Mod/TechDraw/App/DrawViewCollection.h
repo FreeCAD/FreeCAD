@@ -43,8 +43,8 @@ public:
 public:
     /// Constructor
     DrawViewCollection();
-    virtual ~DrawViewCollection();
-    short mustExecute() const;
+    ~DrawViewCollection() override;
+    short mustExecute() const override;
 
     int addView(DrawView *view);
     int removeView(DrawView *view);
@@ -54,18 +54,18 @@ public:
     int countChildren();
     void lockChildren();
 
-    virtual void onDocumentRestored();
-    virtual App::DocumentObjectExecReturn *execute();
-    virtual void unsetupObject();
+    void onDocumentRestored() override;
+    App::DocumentObjectExecReturn *execute() override;
+    void unsetupObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewCollection";
     }
-    virtual QRectF getRect() const;
+    QRectF getRect() const override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     bool nowUnsetting;
 };
 

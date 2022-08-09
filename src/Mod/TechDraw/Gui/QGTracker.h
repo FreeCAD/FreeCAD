@@ -49,15 +49,15 @@ public:
     enum TrackerMode { None, Line, Circle, Rectangle, Point };
 
     explicit QGTracker(QGSPage* scene = nullptr, QGTracker::TrackerMode m = QGTracker::TrackerMode::None);
-    ~QGTracker();
+    ~QGTracker() override;
 
 
     enum {Type = QGraphicsItem::UserType + 210};
 
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
-    virtual QPainterPath shape() const override;
-    virtual QRectF boundingRect() const override;
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
+    QPainterPath shape() const override;
+    QRectF boundingRect() const override;
 
     void onMousePress(QPointF);
     void onMouseMove(QPointF pos);
@@ -82,15 +82,15 @@ Q_SIGNALS:
     void qViewPicked(QPointF pos, TechDrawGui::QGIView* qgParent);
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
-    virtual void keyPressEvent(QKeyEvent * event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    void keyPressEvent(QKeyEvent * event) override;
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     void getPickedQGIV(QPointF pos);
 
     QColor getTrackerColor();

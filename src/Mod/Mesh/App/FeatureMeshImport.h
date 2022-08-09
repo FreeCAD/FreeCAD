@@ -49,8 +49,8 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
   //@}
 };
 

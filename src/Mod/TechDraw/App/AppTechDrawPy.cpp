@@ -191,10 +191,10 @@ public:
         );
         initialize("This is a module for making drawings"); // register with Python
     }
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);

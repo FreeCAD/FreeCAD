@@ -37,13 +37,13 @@ public:
     /// constructor
     ViewProviderPocket();
     /// destructor
-    virtual ~ViewProviderPocket();
+    ~ViewProviderPocket() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly created TaskDlgPocketParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

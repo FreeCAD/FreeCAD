@@ -40,19 +40,19 @@ public:
     /// constructor
     ViewProviderBoolean();
     /// destructor
-    virtual ~ViewProviderBoolean();
+    ~ViewProviderBoolean() override;
 
     App::PropertyEnumeration Display;
     
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &) override;
-    virtual void attach(App::DocumentObject*) override;
-    virtual void onChanged(const App::Property* prop) override;
+    bool onDelete(const std::vector<std::string> &) override;
+    void attach(App::DocumentObject*) override;
+    void onChanged(const App::Property* prop) override;
 
 protected:
-    virtual bool setEdit(int ModNum) override;
+    bool setEdit(int ModNum) override;
     
     static const char* DisplayEnum[];
 

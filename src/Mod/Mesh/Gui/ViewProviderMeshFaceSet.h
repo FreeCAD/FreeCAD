@@ -52,15 +52,15 @@ class MeshGuiExport ViewProviderMeshFaceSet : public ViewProviderMesh
 
 public:
     ViewProviderMeshFaceSet();
-    virtual ~ViewProviderMeshFaceSet();
+    ~ViewProviderMeshFaceSet() override;
 
-    void attach(App::DocumentObject *pcFeat);
-    virtual void updateData(const App::Property*);
+    void attach(App::DocumentObject *pcFeat) override;
+    void updateData(const App::Property*) override;
 
 protected:
-    void showOpenEdges(bool);
-    SoShape* getShapeNode() const;
-    SoNode* getCoordNode() const;
+    void showOpenEdges(bool) override;
+    SoShape* getShapeNode() const override;
+    SoNode* getCoordNode() const override;
 
 private:
     bool directRendering;

@@ -38,14 +38,14 @@ class ImageExport ImagePlane : public App::GeoFeature
 public:
     /// Constructor
     ImagePlane();
-    virtual ~ImagePlane();
+    ~ImagePlane() override;
 
     App::PropertyFileIncluded ImageFile;
     App::PropertyLength       XSize;
     App::PropertyLength       YSize;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "ImageGui::ViewProviderImagePlane";
     }
 };

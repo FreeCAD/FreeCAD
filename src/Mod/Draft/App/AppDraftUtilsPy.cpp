@@ -46,7 +46,7 @@ public:
         initialize("The DraftUtils module contains utility functions for the Draft module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object readDXF(const Py::Tuple& /*args*/)

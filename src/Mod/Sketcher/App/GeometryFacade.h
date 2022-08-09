@@ -133,7 +133,7 @@ public:
     GeometryFacade(GeometryFacade&&) = default;
     GeometryFacade& operator=(GeometryFacade&&) = default;
 
-    ~GeometryFacade();
+    ~GeometryFacade() override;
     void setGeometry(Part::Geometry *geometry);
 
     void setOwner(bool owner) {
@@ -146,17 +146,17 @@ public:
     }
 
     // Geometry Extension Interface
-    inline virtual long getId() const override {return getGeoExt()->getId();}
-    virtual void setId(long id) override {getGeoExt()->setId(id);}
+    inline long getId() const override {return getGeoExt()->getId();}
+    void setId(long id) override {getGeoExt()->setId(id);}
 
-    virtual InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
-    virtual void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
+    InternalType::InternalType getInternalType() const override {return getGeoExt()->getInternalType();}
+    void setInternalType(InternalType::InternalType type) override {getGeoExt()->setInternalType(type);}
 
-    virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
-    virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
+    bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
+    void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
 
-    virtual int getGeometryLayerId() const override { return getGeoExt()->getGeometryLayerId();}
-    virtual void setGeometryLayerId(int geolayer) override { getGeoExt()->setGeometryLayerId(geolayer);}
+    int getGeometryLayerId() const override { return getGeoExt()->getGeometryLayerId();}
+    void setGeometryLayerId(int geolayer) override { getGeoExt()->setGeometryLayerId(geolayer);}
 
     // Convenience accessor
     bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
@@ -186,7 +186,7 @@ public:
     >
     const GeometryT * getGeometry() const {return dynamic_cast<const GeometryT *>(Geo);}
 
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     // Geometry Interface
     TopoDS_Shape toShape() const {return getGeo()->toShape();}

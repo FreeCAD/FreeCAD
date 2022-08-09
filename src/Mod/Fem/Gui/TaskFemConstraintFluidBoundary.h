@@ -50,7 +50,7 @@ class TaskFemConstraintFluidBoundary : public TaskFemConstraintOnBoundary
 
 public:
     TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = nullptr);
-    virtual ~TaskFemConstraintFluidBoundary();
+    ~TaskFemConstraintFluidBoundary() override;
 
     const Fem::FemSolverObject* getFemSolver() const;
 
@@ -69,7 +69,7 @@ public:
     double getHeatFluxValue() const;
     double getHTCoeffValue() const;
 
-    const std::string getReferences() const;
+    const std::string getReferences() const override;
     const std::string getDirectionName() const;
     const std::string getDirectionObject() const;
     bool getReverse() const;
@@ -83,12 +83,12 @@ private Q_SLOTS:
     void onReferenceDeleted();
     void onButtonDirection(const bool pressed = true);
     void onCheckReverse(bool); // consider removing this slot as the UI is hidden
-    void addToSelection();
-    void removeFromSelection();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    virtual void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -115,9 +115,9 @@ public:
     TaskDlgFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual void open();
-    virtual bool accept();
-    virtual bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 
 };
 

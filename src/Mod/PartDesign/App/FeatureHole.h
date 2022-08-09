@@ -77,14 +77,14 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderHole";
     }
     //@}
-    short mustExecute() const;
+    short mustExecute() const override;
 
     typedef struct {
         const char * designation;
@@ -104,12 +104,12 @@ public:
     } UTSClearanceDefinition;
     static const UTSClearanceDefinition UTSHoleDiameters[22];
 
-    virtual void Restore(Base::XMLReader & reader);
+    void Restore(Base::XMLReader & reader) override;
 
     virtual void updateProps();
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:

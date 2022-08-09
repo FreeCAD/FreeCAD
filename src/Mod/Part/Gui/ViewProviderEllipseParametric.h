@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderEllipseParametric();
     /// destructor
-    virtual ~ViewProviderEllipseParametric();
+    ~ViewProviderEllipseParametric() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

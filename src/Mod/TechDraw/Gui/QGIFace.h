@@ -51,13 +51,13 @@ class QGIFace : public QGIPrimPath
 {
 public:
     explicit QGIFace(int index = -1);
-    ~QGIFace();
+    ~QGIFace() override;
 
     enum {Type = QGraphicsItem::UserType + 104};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
 public:
     enum fillMode {
@@ -73,9 +73,9 @@ public:
     int getProjIndex() const { return projIndex; }
 
     void draw();
-    virtual void setPrettyNormal() override;
-    virtual void setPrettyPre() override;
-    virtual void setPrettySel() override;
+    void setPrettyNormal() override;
+    void setPrettyPre() override;
+    void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
  

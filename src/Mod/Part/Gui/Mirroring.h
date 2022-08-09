@@ -41,11 +41,11 @@ class Mirroring : public QWidget
 
 public:
     Mirroring(QWidget* parent = nullptr);
-    ~Mirroring();
+    ~Mirroring() override;
     bool accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     void findShapes();
@@ -61,16 +61,16 @@ class TaskMirroring : public Gui::TaskView::TaskDialog
 
 public:
     TaskMirroring();
-    ~TaskMirroring();
+    ~TaskMirroring() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return false; }
-    virtual bool needsFullSpace() const
+    bool needsFullSpace() const override
     { return false; }
 
 private:

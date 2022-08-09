@@ -107,11 +107,11 @@ public:
         taskbox->groupLayout()->addWidget(box);
         Content.push_back(taskbox);
     }
-    bool shouldShow(void)
+    bool shouldShow(void) override
     {
         return true;
     }
-    void onSelectionChanged(const Gui::SelectionChanges&)
+    void onSelectionChanged(const Gui::SelectionChanges&) override
     {
         Base::BoundBox3d bbox;
         unsigned long countPoints=0, countFacets=0;

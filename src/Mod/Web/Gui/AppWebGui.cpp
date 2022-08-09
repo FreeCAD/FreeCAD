@@ -70,7 +70,7 @@ public:
         initialize("This module is the WebGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object openBrowser(const Py::Tuple& args)

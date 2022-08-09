@@ -67,7 +67,7 @@ public:
     {
         canSelect = false;
     }
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
         this->canSelect = false;
 

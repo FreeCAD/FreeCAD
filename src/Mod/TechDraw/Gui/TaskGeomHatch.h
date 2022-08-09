@@ -49,7 +49,7 @@ class TaskGeomHatch : public QWidget
 
 public:
     TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
-    ~TaskGeomHatch();
+    ~TaskGeomHatch() override;
 
 public:
     virtual bool accept();
@@ -61,7 +61,7 @@ protected Q_SLOTS:
     void onFileChanged();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void initUi();
 //    bool resetUi();
     void updateValues();
@@ -100,21 +100,21 @@ class TaskDlgGeomHatch : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
-    ~TaskDlgGeomHatch();
+    ~TaskDlgGeomHatch() override;
     const ViewProviderGeomHatch * getViewProvider() const { return viewProvider; }
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument() const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
     void setCreateMode(bool b);
 

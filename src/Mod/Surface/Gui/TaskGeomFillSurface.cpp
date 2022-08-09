@@ -148,7 +148,7 @@ public:
     /**
       * Allow the user to pick only edges.
       */
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 
 private:
     bool appendEdges;

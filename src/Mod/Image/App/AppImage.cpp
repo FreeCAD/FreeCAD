@@ -27,7 +27,7 @@ public:
         initialize("This module is the Image module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

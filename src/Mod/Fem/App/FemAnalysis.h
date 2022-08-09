@@ -58,7 +58,7 @@ public:
      * unique id because PropertyUUID doesn't initialize itself.
      */
     FemAnalysis();
-    virtual ~FemAnalysis();
+    ~FemAnalysis() override;
 
     /**
      * A unique identifier for each Analysis object. Useful when doing
@@ -68,7 +68,7 @@ public:
      */
     App::PropertyUUID    Uid;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemAnalysis";
     }
 
@@ -82,8 +82,8 @@ protected:
      *  property of DocumentObjectGroup. This methods translates old files
      *  still using the "Member" property.
      */
-    virtual void handleChangedPropertyName(
-        Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    void handleChangedPropertyName(
+        Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 };
 
 class FemExport DocumentObject : public App::DocumentObject

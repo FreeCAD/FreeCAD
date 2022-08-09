@@ -47,7 +47,7 @@ class TaskLoftParameters : public TaskSketchBasedParameters
 
 public:
     TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = nullptr);
-    ~TaskLoftParameters();
+    ~TaskLoftParameters() override;
 
 private Q_SLOTS:
     void onProfileButton(bool);
@@ -61,10 +61,10 @@ private Q_SLOTS:
 protected:
     enum selectionModes { none, refAdd, refRemove, refProfile };
 
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget*w, QString name);
@@ -85,13 +85,13 @@ class TaskDlgLoftParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
-    ~TaskDlgLoftParameters();
+    ~TaskDlgLoftParameters() override;
 
     ViewProviderLoft* getLoftView() const
     { return static_cast<ViewProviderLoft*>(vp); }
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 
 protected:
     TaskLoftParameters  *parameter;

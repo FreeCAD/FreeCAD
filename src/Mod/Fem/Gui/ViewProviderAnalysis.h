@@ -56,53 +56,53 @@ public:
     ViewProviderFemAnalysis();
 
     /// destructor.
-    virtual ~ViewProviderFemAnalysis();
+    ~ViewProviderFemAnalysis() override;
 
-    virtual void attach(App::DocumentObject*);
-    virtual bool doubleClicked();
+    void attach(App::DocumentObject*) override;
+    bool doubleClicked() override;
 
-    virtual std::vector<App::DocumentObject*> claimChildren()const;
+    std::vector<App::DocumentObject*> claimChildren()const override;
 
     // handling when object is deleted
-    virtual bool onDelete(const std::vector<std::string>&);
+    bool onDelete(const std::vector<std::string>&) override;
     /// Asks the view provider if the given object can be deleted.
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     //virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// A list of all possible display modes
-    virtual std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
     // shows solid in the tree
-    virtual bool isShow() const {
+    bool isShow() const override {
         return Visibility.getValue();
     }
     /// Hide the object in the view
-    virtual void hide();
+    void hide() override;
     /// Show the object in the view
-    virtual void show();
+    void show() override;
 
     void highlightView(Gui::ViewProviderDocumentObject*);
 
     /** @name Drag and drop */
     //@{
     /// Returns true if the view provider generally supports dragging objects
-    bool canDragObjects() const;
+    bool canDragObjects() const override;
     /// Check whether the object can be removed from the view provider by drag and drop
-    bool canDragObject(App::DocumentObject*) const;
+    bool canDragObject(App::DocumentObject*) const override;
     /// Starts to drag the object
-    void dragObject(App::DocumentObject*);
+    void dragObject(App::DocumentObject*) override;
     /// Returns true if the view provider generally accepts dropping of objects
-    bool canDropObjects() const;
+    bool canDropObjects() const override;
     /// Check whether the object can be dropped to the view provider by drag and drop
-    bool canDropObject(App::DocumentObject*) const;
+    bool canDropObject(App::DocumentObject*) const override;
     /// If the dropped object type is accepted the object will be added as child
-    void dropObject(App::DocumentObject*);
+    void dropObject(App::DocumentObject*) override;
     //@}
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
 private:
     ViewProviderFemHighlighter extension;

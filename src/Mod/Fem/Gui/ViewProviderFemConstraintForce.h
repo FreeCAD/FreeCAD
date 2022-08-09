@@ -37,12 +37,12 @@ class FemGuiExport ViewProviderFemConstraintForce : public FemGui::ViewProviderF
 public:
     /// Constructor
     ViewProviderFemConstraintForce();
-    virtual ~ViewProviderFemConstraintForce();
+    ~ViewProviderFemConstraintForce() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 
 private:
     /// Direction of the force

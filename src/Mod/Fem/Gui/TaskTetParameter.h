@@ -56,7 +56,7 @@ class TaskTetParameter : public Gui::TaskView::TaskBox
 
 public:
     TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = nullptr);
-    ~TaskTetParameter();
+    ~TaskTetParameter() override;
 
     void setInfo();
     bool touched;

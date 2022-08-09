@@ -37,11 +37,11 @@ class FemGuiExport ViewProviderFemConstraintTransform : public FemGui::ViewProvi
 
 public:
     ViewProviderFemConstraintTransform();
-    virtual ~ViewProviderFemConstraintTransform();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintTransform() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

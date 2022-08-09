@@ -39,7 +39,7 @@ public:
     /// constructor
     ViewProviderViewSection();
     /// destructor
-    virtual ~ViewProviderViewSection();
+    ~ViewProviderViewSection() override;
 
     App::PropertyBool   ShowCutSurface;        //obsolete - use CutSurfaceDisplay
     App::PropertyColor  CutSurfaceColor;
@@ -48,16 +48,16 @@ public:
     App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *prop);
-    virtual bool setEdit(int ModNum);
-    virtual bool doubleClicked();
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 
     void updateGraphic();
     void getParameters();
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool canDelete(App::DocumentObject* obj) const override;
 
-    virtual TechDraw::DrawViewSection* getViewObject() const;
+    TechDraw::DrawViewSection* getViewObject() const override;
 };
 
 } // namespace TechDrawGui

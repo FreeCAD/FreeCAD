@@ -44,7 +44,7 @@ public:
     App::PropertyLinkSub Base;
     App::PropertyBool SupportTransform;
 
-    short mustExecute() const;
+    short mustExecute() const override;
     /// updates the Placement property from the Placement of the BaseFeature
     void positionByBaseFeature();
     /**
@@ -54,17 +54,17 @@ public:
      *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
+    Part::Feature* getBaseObject(bool silent=false) const override;
     /// extracts all edges from the subshapes (including face edges) and furthermore adds
     /// all C0 continuous edges to the vector
     void getContinuousEdges(Part::TopoShape, std::vector< std::string >&);
     // add argument to return the selected face that edges were derived from
     void getContinuousEdges(Part::TopoShape, std::vector< std::string >&, std::vector< std::string >&);
 
-    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+    void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape) override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 };
 
 } //namespace PartDesign

@@ -63,7 +63,7 @@ public:
         initialize("This module is the PathGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object open(const Py::Tuple& args)

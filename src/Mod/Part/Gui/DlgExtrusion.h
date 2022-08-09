@@ -40,7 +40,7 @@ class DlgExtrusion : public QDialog, public Gui::SelectionObserver
 
 public:
     DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgExtrusion();
+    ~DlgExtrusion() override;
     void accept();
     void apply();
     void reject();
@@ -81,7 +81,7 @@ private Q_SLOTS:
 private:
     ///updates enabling of controls
     void on_DirMode_changed();
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToExtrude() const;
     ///if dirMode is not custom, it tries to compute the actual extrusion direction. Also, it does some auto-magic manipulation of length value.
@@ -103,14 +103,14 @@ class TaskExtrusion : public Gui::TaskView::TaskDialog
 
 public:
     TaskExtrusion();
-    ~TaskExtrusion();
+    ~TaskExtrusion() override;
 
 public:
-    bool accept();
-    bool reject();
-    void clicked(int);
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close; }
 
 private:

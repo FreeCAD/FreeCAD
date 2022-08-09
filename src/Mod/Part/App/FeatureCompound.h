@@ -36,17 +36,17 @@ class Compound : public Part::Feature
 
 public:
     Compound();
-    virtual ~Compound();
+    ~Compound() override;
 
     App::PropertyLinkList Links;
 
     /** @name methods override feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderCompound";
     }
     //@}
@@ -57,7 +57,7 @@ class Compound2 : public Compound {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Compound2);
 public:
     Compound2();
-    virtual void onDocumentRestored() override;
+    void onDocumentRestored() override;
 };
 
 } //namespace Part
