@@ -39,14 +39,14 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string PlacementPy::representation() const
 {
-    double A,B,C;
+    double yaw{}, pitch{}, roll{};
     PlacementPy::PointerType ptr = getPlacementPtr();
     std::stringstream str;
-    ptr->getRotation().getYawPitchRoll(A,B,C);
+    ptr->getRotation().getYawPitchRoll(yaw, pitch, roll);
 
     str << "Placement [Pos=(";
     str << ptr->getPosition().x << ","<< ptr->getPosition().y << "," << ptr->getPosition().z;
-    str << "), Yaw-Pitch-Roll=(" << A << "," << B << "," << C << ")]";
+    str << "), Yaw-Pitch-Roll=(" << yaw << "," << pitch << "," << roll << ")]";
 
     return str.str();
 }
@@ -163,17 +163,18 @@ PyObject* PlacementPy::translate(PyObject * args)
     return move(args);
 }
 
-PyObject* PlacementPy::rotate(PyObject *args, PyObject *kw) {
+PyObject* PlacementPy::rotate(PyObject *args, PyObject *kwds)
+{
     double angle;
     char *keywords[] =  { "center", "axis", "angle", "comp", nullptr };
     Vector3d center;
     Vector3d axis;
     PyObject* pyComp = Py_False;
-    
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "(ddd)(ddd)d|$O!", keywords, &center.x, &center.y, &center.z,
-                                         &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp))
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "(ddd)(ddd)d|$O!", keywords, &center.x, &center.y, &center.z,
+                                     &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp))
         return nullptr;
-    
+
     try {
         /*
          * if comp is False, we retain the original behaviour that - contrary to the documentation - generates
@@ -192,7 +193,7 @@ PyObject* PlacementPy::rotate(PyObject *args, PyObject *kw) {
             *getPlacementPtr() = Placement(
                         Vector3d(),Rotation(axis,toRadians<double>(angle)),center) * p;
         }
-        
+
         Py_Return;
     }
     catch (const Py::Exception&) {
