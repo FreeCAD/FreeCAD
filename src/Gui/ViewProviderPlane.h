@@ -32,7 +32,7 @@ namespace Gui
 
 class GuiExport ViewProviderPlane : public ViewProviderOriginFeature
 {
-    PROPERTY_HEADER(Gui::ViewProviderPlane);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlane);
 public:
     /// Constructor
     ViewProviderPlane();

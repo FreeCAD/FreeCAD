@@ -31,7 +31,7 @@ namespace Fem {
 
 class FemExport ConstraintPressure : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintPressure);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintPressure);
 
 public:
     ConstraintPressure();

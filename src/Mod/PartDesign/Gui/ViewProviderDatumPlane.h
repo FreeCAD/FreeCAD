@@ -31,7 +31,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatumPlane : public PartDesignGui::ViewProviderDatum
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumPlane);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDatumPlane);
 
 public:
     /// Constructor

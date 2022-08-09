@@ -31,7 +31,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderLinearPattern)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderLinearPattern);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderLinearPattern);
 public:
     ViewProviderLinearPattern()
         { featureName = std::string("LinearPattern");

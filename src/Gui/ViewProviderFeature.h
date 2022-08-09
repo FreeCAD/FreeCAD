@@ -34,7 +34,7 @@ class View3DInventorViewer;
 
 class GuiExport ViewProviderFeature:public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderFeature);
 
 public:
     /// constructor.

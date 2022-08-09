@@ -38,7 +38,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPointParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPointParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPointParametric);
 
 public:
     /// constructor

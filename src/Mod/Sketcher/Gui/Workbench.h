@@ -36,7 +36,7 @@ namespace SketcherGui {
  */
 class SketcherGuiExport Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Workbench();

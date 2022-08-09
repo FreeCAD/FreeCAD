@@ -73,7 +73,7 @@ namespace Part {
 
 class PartExport Geometry: public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ~Geometry() override;
 
@@ -138,7 +138,7 @@ private:
 
 class PartExport GeomPoint : public Geometry
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomPoint();
     GeomPoint(const Handle(Geom_CartesianPoint)&);
@@ -167,7 +167,7 @@ private:
 class GeomBSplineCurve;
 class PartExport GeomCurve : public Geometry
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCurve();
     ~GeomCurve() override;
@@ -215,7 +215,7 @@ protected:
 
 class PartExport GeomBoundedCurve : public GeomCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBoundedCurve();
     ~GeomBoundedCurve() override;
@@ -227,7 +227,7 @@ public:
 
 class PartExport GeomBezierCurve : public GeomBoundedCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBezierCurve();
     GeomBezierCurve(const Handle(Geom_BezierCurve)&);
@@ -253,7 +253,7 @@ private:
 
 class PartExport GeomBSplineCurve : public GeomBoundedCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBSplineCurve();
     GeomBSplineCurve(const Handle(Geom_BSplineCurve)&);
@@ -344,7 +344,7 @@ private:
 
 class PartExport GeomConic : public GeomCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 protected:
     GeomConic();
@@ -379,7 +379,7 @@ public:
 
 class PartExport GeomTrimmedCurve : public GeomBoundedCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomTrimmedCurve();
     GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)&);
@@ -411,7 +411,7 @@ protected:
 
 class PartExport GeomArcOfConic : public GeomTrimmedCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 protected:
     GeomArcOfConic();
@@ -461,7 +461,7 @@ public:
 
 class PartExport GeomCircle : public GeomConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCircle();
     GeomCircle(const Handle(Geom_Circle)&);
@@ -489,7 +489,7 @@ private:
 
 class PartExport GeomArcOfCircle : public GeomArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfCircle();
     GeomArcOfCircle(const Handle(Geom_Circle)&);
@@ -518,7 +518,7 @@ public:
 
 class PartExport GeomEllipse : public GeomConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomEllipse();
     GeomEllipse(const Handle(Geom_Ellipse)&);
@@ -550,7 +550,7 @@ private:
 
 class PartExport GeomArcOfEllipse : public GeomArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfEllipse();
     GeomArcOfEllipse(const Handle(Geom_Ellipse)&);
@@ -583,7 +583,7 @@ public:
 
 class PartExport GeomHyperbola : public GeomConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomHyperbola();
     GeomHyperbola(const Handle(Geom_Hyperbola)&);
@@ -612,7 +612,7 @@ private:
 
 class PartExport GeomArcOfHyperbola : public GeomArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfHyperbola();
     GeomArcOfHyperbola(const Handle(Geom_Hyperbola)&);
@@ -644,7 +644,7 @@ public:
 
 class PartExport GeomParabola : public GeomConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomParabola();
     GeomParabola(const Handle(Geom_Parabola)&);
@@ -671,7 +671,7 @@ private:
 
 class PartExport GeomArcOfParabola : public GeomArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomArcOfParabola();
     GeomArcOfParabola(const Handle(Geom_Parabola)&);
@@ -701,7 +701,7 @@ public:
 
 class PartExport GeomLine : public GeomCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomLine();
     GeomLine(const Handle(Geom_Line)&);
@@ -729,7 +729,7 @@ private:
 
 class PartExport GeomLineSegment : public GeomTrimmedCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomLineSegment();
     GeomLineSegment(const Handle(Geom_Line)& l);
@@ -757,7 +757,7 @@ public:
 
 class PartExport GeomOffsetCurve : public GeomCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomOffsetCurve();
     GeomOffsetCurve(const Handle(Geom_Curve)&, double, const gp_Dir&);
@@ -782,7 +782,7 @@ private:
 
 class PartExport GeomSurface : public Geometry
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     enum Curvature {
         Maximum,
@@ -814,7 +814,7 @@ public:
 
 class PartExport GeomBezierSurface : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBezierSurface();
     GeomBezierSurface(const Handle(Geom_BezierSurface)&);
@@ -837,7 +837,7 @@ private:
 
 class PartExport GeomBSplineSurface : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomBSplineSurface();
     GeomBSplineSurface(const Handle(Geom_BSplineSurface)&);
@@ -861,7 +861,7 @@ private:
 
 class PartExport GeomCylinder : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCylinder();
     GeomCylinder(const Handle(Geom_CylindricalSurface)&);
@@ -884,7 +884,7 @@ private:
 
 class PartExport GeomCone : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomCone();
     GeomCone(const Handle(Geom_ConicalSurface)&);
@@ -910,7 +910,7 @@ private:
 
 class PartExport GeomSphere : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomSphere();
     GeomSphere(const Handle(Geom_SphericalSurface)&);
@@ -933,7 +933,7 @@ private:
 
 class PartExport GeomToroid : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomToroid();
     GeomToroid(const Handle(Geom_ToroidalSurface)&);
@@ -956,7 +956,7 @@ private:
 
 class PartExport GeomPlane : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomPlane();
     GeomPlane(const Handle(Geom_Plane)&);
@@ -979,7 +979,7 @@ private:
 
 class PartExport GeomOffsetSurface : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomOffsetSurface();
     GeomOffsetSurface(const Handle(Geom_Surface)&, double);
@@ -1003,7 +1003,7 @@ private:
 
 class PartExport GeomPlateSurface : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomPlateSurface();
     GeomPlateSurface(const Handle(Geom_Surface)&, const Plate_Plate&);
@@ -1028,7 +1028,7 @@ private:
 
 class PartExport GeomTrimmedSurface : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomTrimmedSurface();
     GeomTrimmedSurface(const Handle(Geom_RectangularTrimmedSurface)&);
@@ -1051,7 +1051,7 @@ private:
 
 class PartExport GeomSurfaceOfRevolution : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomSurfaceOfRevolution();
     GeomSurfaceOfRevolution(const Handle(Geom_Curve)&, const gp_Ax1&);
@@ -1075,7 +1075,7 @@ private:
 
 class PartExport GeomSurfaceOfExtrusion : public GeomSurface
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     GeomSurfaceOfExtrusion();
     GeomSurfaceOfExtrusion(const Handle(Geom_Curve)&, const gp_Dir&);

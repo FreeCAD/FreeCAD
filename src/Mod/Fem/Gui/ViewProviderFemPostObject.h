@@ -66,7 +66,7 @@ class TaskDlgPost;
 class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject,
                                                public Base::Observer<int>
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostObject);
 
 public:
     /// constructor.

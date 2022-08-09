@@ -37,7 +37,7 @@ namespace PartDesign
 
 class PartDesignExport FeatureExtrude : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::FeatureExtrude);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureExtrude);
 
 public:
     FeatureExtrude();

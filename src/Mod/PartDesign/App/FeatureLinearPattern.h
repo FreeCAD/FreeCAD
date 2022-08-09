@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport LinearPattern : public PartDesign::Transformed
 {
-    PROPERTY_HEADER(PartDesign::LinearPattern);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::LinearPattern);
 
 public:
     LinearPattern();

@@ -33,7 +33,7 @@ namespace Part
 
 class ImportStep :public Part::Feature
 {
-    PROPERTY_HEADER(Part::FeaturePartImportStep);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeaturePartImportStep);
 
 public:
     ImportStep();

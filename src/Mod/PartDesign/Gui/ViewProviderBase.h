@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderBase : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderBase);
 
 public:
     /// constructor

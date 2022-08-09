@@ -35,7 +35,7 @@ namespace TechDraw {
 
 class TechDrawExport DrawViewDimExtent : public TechDraw::DrawViewDimension
 {
-    PROPERTY_HEADER(TechDraw::DrawViewDimExtent);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimExtent);
 
 public:
     /// Constructor

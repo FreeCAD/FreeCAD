@@ -46,7 +46,7 @@ namespace Part
  */
 class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     FaceMaker() {}
@@ -110,7 +110,7 @@ protected:
  */
 class PartExport FaceMakerPublic : public FaceMaker
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual std::string getUserFriendlyName() const = 0;
     virtual std::string getBriefExplanation() const = 0;

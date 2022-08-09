@@ -31,7 +31,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderCustom : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderCustom);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCustom);
 
 public:
     /// constructor

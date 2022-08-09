@@ -32,7 +32,7 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemConstraintGear : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintGear);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintGear);
 
 public:
     /// Constructor

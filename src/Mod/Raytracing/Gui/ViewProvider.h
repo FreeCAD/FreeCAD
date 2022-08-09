@@ -32,7 +32,7 @@ namespace RaytracingGui {
 
 class ViewProviderLux : public Gui::ViewProviderDocumentObjectGroup
 {
-    PROPERTY_HEADER(RaytracingGui::ViewProviderLux);
+    PROPERTY_HEADER_WITH_OVERRIDE(RaytracingGui::ViewProviderLux);
     Q_DECLARE_TR_FUNCTIONS(RaytracingGui::ViewProviderLux)
 
 public:
@@ -49,7 +49,7 @@ protected:
 
 class ViewProviderPovray : public Gui::ViewProviderDocumentObjectGroup
 {
-    PROPERTY_HEADER(RaytracingGui::ViewProviderPovray);
+    PROPERTY_HEADER_WITH_OVERRIDE(RaytracingGui::ViewProviderPovray);
     Q_DECLARE_TR_FUNCTIONS(RaytracingGui::ViewProviderPovray)
 
 public:

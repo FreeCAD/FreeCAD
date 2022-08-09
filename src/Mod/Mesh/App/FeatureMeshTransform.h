@@ -40,7 +40,7 @@ namespace Mesh
  */
 class Transform : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Transform);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Transform);
 
 public:
   Transform();

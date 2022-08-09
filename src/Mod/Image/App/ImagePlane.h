@@ -33,7 +33,7 @@ namespace Image
 
 class ImageExport ImagePlane : public App::GeoFeature
 {
-    PROPERTY_HEADER(Image::ImagePlane);
+    PROPERTY_HEADER_WITH_OVERRIDE(Image::ImagePlane);
 
 public:
     /// Constructor

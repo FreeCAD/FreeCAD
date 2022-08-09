@@ -33,7 +33,7 @@ namespace Part
 
 class Section : public Boolean
 {
-    PROPERTY_HEADER(Part::Section);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Section);
 
 public:
     Section();

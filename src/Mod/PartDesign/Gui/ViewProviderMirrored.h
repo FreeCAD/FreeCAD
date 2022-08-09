@@ -31,7 +31,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGuii::ViewProviderMirrored)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMirrored);
 public:
     ViewProviderMirrored() {
         featureName = std::string("Mirrored");

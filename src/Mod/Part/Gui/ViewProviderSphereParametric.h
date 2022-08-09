@@ -30,7 +30,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderSphereParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderSphereParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSphereParametric);
 
 public:
     /// constructor
@@ -46,7 +46,7 @@ protected:
 
 class PartGuiExport ViewProviderEllipsoid : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderEllipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderEllipsoid);
 
 public:
     /// constructor

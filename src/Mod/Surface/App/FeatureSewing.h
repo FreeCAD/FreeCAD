@@ -34,7 +34,7 @@ namespace Surface
 
 class SurfaceExport Sewing :  public Part::Feature
 {
-    PROPERTY_HEADER(Surface::Sewing);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Sewing);
 
 public:
     Sewing();

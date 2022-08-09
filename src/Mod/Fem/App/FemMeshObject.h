@@ -35,7 +35,7 @@ namespace Fem
 
 class FemExport FemMeshObject : public App::GeoFeature
 {
-    PROPERTY_HEADER(Fem::FemMeshObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshObject);
 
 public:
     /// Constructor

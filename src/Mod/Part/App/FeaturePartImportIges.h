@@ -31,7 +31,7 @@ namespace Part
 
 class ImportIges :public Part::Feature
 {
-    PROPERTY_HEADER(Part::FeaturePartImportIges);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeaturePartImportIges);
 
 public:
     ImportIges();

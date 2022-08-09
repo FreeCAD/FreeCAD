@@ -37,7 +37,7 @@ namespace Sketcher
 
 class SketchObjectSF :public Part::Part2DObject
 {
-    PROPERTY_HEADER(Sketcher::SketchObjectSF);
+    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher::SketchObjectSF);
 
 public:
     SketchObjectSF();

@@ -35,7 +35,7 @@ namespace Fem
 
 class FemExport ConstraintPulley : public Fem::ConstraintGear
 {
-    PROPERTY_HEADER(Fem::ConstraintPulley);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintPulley);
 
 public:
     /// Constructor

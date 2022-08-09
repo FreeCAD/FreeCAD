@@ -43,7 +43,7 @@ namespace FemGui
 
 class FemGuiExport ViewProviderSolver : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderSolver);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSolver);
 
 public:
     /// constructor

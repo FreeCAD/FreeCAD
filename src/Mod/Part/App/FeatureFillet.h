@@ -31,7 +31,7 @@ namespace Part
 
 class Fillet : public Part::FilletBase
 {
-    PROPERTY_HEADER(Part::Fillet);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Fillet);
 
 public:
     Fillet();

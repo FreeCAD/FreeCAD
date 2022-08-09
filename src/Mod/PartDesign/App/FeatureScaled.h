@@ -33,7 +33,7 @@ namespace PartDesign
 
 class PartDesignExport Scaled : public PartDesign::Transformed
 {
-    PROPERTY_HEADER(PartDesign::Scaled);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Scaled);
 
 public:
     Scaled();

@@ -52,7 +52,7 @@ class MeshPy;
  */
 class MeshExport PropertyNormalList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyNormalList();
@@ -110,7 +110,7 @@ struct MeshExport CurvatureInfo
  */
 class MeshExport PropertyCurvatureList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum { 
@@ -169,7 +169,7 @@ private:
  */
 class MeshExport PropertyMeshKernel : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyMeshKernel();

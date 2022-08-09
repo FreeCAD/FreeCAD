@@ -49,7 +49,7 @@ class ViewProviderInspection : public Gui::ViewProviderDocumentObject,
                                public Base::Observer<int>{
     typedef ViewProviderDocumentObject inherited;
 
-    PROPERTY_HEADER(InspectionGui::ViewProviderInspection);
+    PROPERTY_HEADER_WITH_OVERRIDE(InspectionGui::ViewProviderInspection);
 
 public:
     ViewProviderInspection();
@@ -100,7 +100,7 @@ private:
 
 class ViewProviderInspectionGroup : public Gui::ViewProviderDocumentObjectGroup
 {
-    PROPERTY_HEADER(InspectionGui::ViewProviderInspectionGroup);
+    PROPERTY_HEADER_WITH_OVERRIDE(InspectionGui::ViewProviderInspectionGroup);
 
 public:
     /// constructor

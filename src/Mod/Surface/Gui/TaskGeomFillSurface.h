@@ -41,7 +41,7 @@ class Ui_GeomFillSurface;
 
 class ViewProviderGeomFillSurface : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderGeomFillSurface);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderGeomFillSurface);
 public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool setEdit(int ModNum) override;

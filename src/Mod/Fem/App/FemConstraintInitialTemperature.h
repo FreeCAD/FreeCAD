@@ -34,7 +34,7 @@ namespace Fem
 
 class FemExport ConstraintInitialTemperature : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintInitialTemperature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintInitialTemperature);
 
 public:
     /// Constructor

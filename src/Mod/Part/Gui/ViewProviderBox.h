@@ -38,7 +38,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderBox : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderBox);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderBox);
 
 public:
     /// constructor

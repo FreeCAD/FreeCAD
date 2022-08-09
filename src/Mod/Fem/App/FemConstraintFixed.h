@@ -35,7 +35,7 @@ namespace Fem
 
 class FemExport ConstraintFixed : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintFixed);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintFixed);
 
 public:
     /// Constructor

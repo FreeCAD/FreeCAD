@@ -31,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport Pad : public FeatureExtrude
 {
-    PROPERTY_HEADER(PartDesign::Pad);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Pad);
 
 public:
     Pad();

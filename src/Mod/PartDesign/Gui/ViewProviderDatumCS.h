@@ -38,7 +38,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatumCoordinateSystem : public PartDesignGui::ViewProviderDatum
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumCoordinateSystem);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDatumCoordinateSystem);
 
 public:
     App::PropertyFloatConstraint Zoom;

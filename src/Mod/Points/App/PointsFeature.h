@@ -51,7 +51,7 @@ class PointsFeaturePy;
  */
 class PointsExport Feature : public App::GeoFeature
 {
-    PROPERTY_HEADER(Points::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Points::Feature);
 
 public:
     /// Constructor

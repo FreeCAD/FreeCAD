@@ -31,7 +31,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderBoolean : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderBoolean);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderBoolean);
 
 public:
     /// constructor
@@ -49,7 +49,7 @@ public:
 /// ViewProvider for the MultiFuse feature
 class PartGuiExport ViewProviderMultiFuse : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMultiFuse);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMultiFuse);
 
 public:
     /// constructor
@@ -75,7 +75,7 @@ public:
 /// ViewProvider for the MultiFuse feature
 class PartGuiExport ViewProviderMultiCommon : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMultiCommon);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMultiCommon);
 
 public:
     /// constructor

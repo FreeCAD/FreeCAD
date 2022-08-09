@@ -55,7 +55,7 @@ class SpreadsheetGuiExport SheetView : public Gui::MDIView
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWidget* parent);

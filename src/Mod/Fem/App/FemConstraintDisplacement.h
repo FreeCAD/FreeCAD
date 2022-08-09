@@ -34,7 +34,7 @@ namespace Fem
 
 class FemExport ConstraintDisplacement : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintDisplacement);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintDisplacement);
 
 public:
     /// Constructor

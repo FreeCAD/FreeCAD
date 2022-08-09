@@ -33,7 +33,7 @@ namespace Part
 
 class Polygon : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Polygon);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Polygon);
 
 public:
     Polygon();

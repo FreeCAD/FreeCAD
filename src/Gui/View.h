@@ -25,6 +25,7 @@
 #define GUI_VIEW_H
 
 #include <Base/BaseClass.h>
+#include <FCGlobal.h>
 
 namespace App
 {
@@ -49,7 +50,7 @@ class ViewProvider;
  */
 class GuiExport BaseView : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** View constructor

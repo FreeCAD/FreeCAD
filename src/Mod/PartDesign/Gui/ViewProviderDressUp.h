@@ -34,7 +34,7 @@ class TaskDlgDressUpParameters;
 
 class PartDesignGuiExport ViewProviderDressUp : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDressUp);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDressUp);
 
 public:
     /// constructor

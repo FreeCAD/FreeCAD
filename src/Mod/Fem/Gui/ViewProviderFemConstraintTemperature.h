@@ -32,7 +32,7 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintTemperature : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintTemperature);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintTemperature);
 
 public:
     ViewProviderFemConstraintTemperature();

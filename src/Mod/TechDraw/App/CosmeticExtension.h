@@ -40,7 +40,7 @@ class DrawViewPart;
 class GeometryObject;
 
 class TechDrawExport CosmeticExtension : public App::DocumentObjectExtension {
-    EXTENSION_PROPERTY_HEADER(TechDraw::CosmeticObject);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::CosmeticObject);
 
 public:
     CosmeticExtension();

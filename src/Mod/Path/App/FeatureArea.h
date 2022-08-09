@@ -36,7 +36,7 @@ namespace Path
 
 class PathExport FeatureArea : public Part::Feature
 {
-    PROPERTY_HEADER(Path::FeatureArea);
+    PROPERTY_HEADER_WITH_OVERRIDE(Path::FeatureArea);
 
 public:
     /// Constructor
@@ -74,7 +74,7 @@ typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;
 
 class PathExport FeatureAreaView : public Part::Feature
 {
-    PROPERTY_HEADER(Path::FeatureAreaView);
+    PROPERTY_HEADER_WITH_OVERRIDE(Path::FeatureAreaView);
 
 public:
     /// Constructor

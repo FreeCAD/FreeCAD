@@ -37,7 +37,7 @@ namespace Fem
  */
 class FemExport PropertyFemMesh : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFemMesh();

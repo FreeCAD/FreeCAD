@@ -41,7 +41,7 @@ namespace Raytracing
  */
 class RaytracingExport RaySegment: public App::DocumentObject
 {
-  PROPERTY_HEADER(Raytracing::RaySegment);
+  PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::RaySegment);
 
 public:
     /// Constructor

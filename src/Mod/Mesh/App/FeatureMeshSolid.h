@@ -37,7 +37,7 @@ namespace Mesh
  */
 class Sphere : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Sphere);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Sphere);
 
 public:
   Sphere();
@@ -58,7 +58,7 @@ public:
 
 class Ellipsoid : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Ellipsoid);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Ellipsoid);
 
 public:
   Ellipsoid();
@@ -80,7 +80,7 @@ public:
 
 class Cylinder : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Cylinder);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cylinder);
 
 public:
   Cylinder();
@@ -104,7 +104,7 @@ public:
 
 class Cone : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Cone);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cone);
 
 public:
   Cone();
@@ -129,7 +129,7 @@ public:
 
 class Torus : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Torus);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Torus);
 
 public:
   Torus();
@@ -151,7 +151,7 @@ public:
 
 class Cube : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Cube);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cube);
 
 public:
   Cube();

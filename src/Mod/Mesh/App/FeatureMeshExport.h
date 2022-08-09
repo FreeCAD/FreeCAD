@@ -40,7 +40,7 @@ namespace Mesh
  */
 class MeshExport Export : public App::DocumentObject
 {
-    PROPERTY_HEADER(Mesh::Export);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Export);
 
 public:
     Export();

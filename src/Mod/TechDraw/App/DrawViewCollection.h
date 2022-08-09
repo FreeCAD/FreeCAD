@@ -36,7 +36,7 @@ namespace TechDraw
  */
 class TechDrawExport DrawViewCollection : public DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewCollection);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewCollection);
 
 public:
     App::PropertyLinkList Views;

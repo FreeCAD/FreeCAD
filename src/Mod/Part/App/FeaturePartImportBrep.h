@@ -31,7 +31,7 @@ namespace Part
 
 class ImportBrep :public Part::Feature
 {
-    PROPERTY_HEADER(Part::ImportBrep);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::ImportBrep);
 
 public:
     ImportBrep();

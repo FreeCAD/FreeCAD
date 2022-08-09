@@ -36,7 +36,7 @@ namespace TechDraw
 
 class TechDrawExport DrawTileWeld : public TechDraw::DrawTile
 {
-    PROPERTY_HEADER(TechDraw::DrawTileWeld);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTileWeld);
 
 public:
     DrawTileWeld();

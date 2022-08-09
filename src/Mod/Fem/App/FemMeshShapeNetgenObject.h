@@ -31,7 +31,7 @@ namespace Fem
 
 class FemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeNetgenObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshShapeNetgenObject);
 
 public:
     /// Constructor

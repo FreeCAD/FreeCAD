@@ -36,7 +36,7 @@ class DrawTileWeld;
 
 class TechDrawExport DrawWeldSymbol : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawWeldSymbol);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawWeldSymbol);
 
 public:
     DrawWeldSymbol();

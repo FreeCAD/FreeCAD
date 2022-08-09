@@ -127,7 +127,7 @@ protected:
 
 class FilletBase : public Part::Feature
 {
-    PROPERTY_HEADER(Part::FilletBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
 public:
     FilletBase();
@@ -145,7 +145,7 @@ typedef App::FeaturePythonT<Feature> FeaturePython;
  */
 class PartExport FeatureExt : public Feature
 {
-    PROPERTY_HEADER(Part::FeatureExt);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureExt);
 
 public:
     const char* getViewProviderName() const override {

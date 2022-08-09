@@ -47,7 +47,7 @@ namespace Measure
     };
 
 class MeasureExport Measurement : public Base::BaseClass {
-      TYPESYSTEM_HEADER();
+      TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     App::PropertyLinkSubList References3D;

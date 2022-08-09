@@ -36,7 +36,7 @@ namespace Fem
 
 class FemExport ConstraintForce : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintForce);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintForce);
 
 public:
     /// Constructor

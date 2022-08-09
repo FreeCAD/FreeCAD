@@ -40,7 +40,7 @@ namespace Part
  */
 class PartExport PropertyPartShape : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPartShape();
@@ -119,7 +119,7 @@ struct PartExport ShapeHistory {
 
 class PartExport PropertyShapeHistory : public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyShapeHistory();
@@ -172,7 +172,7 @@ struct PartExport FilletElement {
 
 class PartExport PropertyFilletEdges : public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFilletEdges();

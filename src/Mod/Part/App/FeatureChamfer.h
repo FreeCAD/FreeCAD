@@ -31,7 +31,7 @@ namespace Part
 
 class Chamfer : public Part::FilletBase
 {
-    PROPERTY_HEADER(Part::Chamfer);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Chamfer);
 
 public:
     Chamfer();

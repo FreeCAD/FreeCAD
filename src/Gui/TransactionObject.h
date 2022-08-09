@@ -30,7 +30,7 @@ namespace Gui
 {
 class TransactionViewProvider : public App::TransactionObject
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     TransactionViewProvider();

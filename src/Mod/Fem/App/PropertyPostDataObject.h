@@ -39,7 +39,7 @@ namespace Fem
  */
 class FemExport PropertyPostDataObject : public App::Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPostDataObject();

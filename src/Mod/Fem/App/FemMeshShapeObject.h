@@ -32,7 +32,7 @@ namespace Fem
 
 class FemExport FemMeshShapeObject : public FemMeshObject
 {
-    PROPERTY_HEADER(Fem::FemMeshShapeObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshShapeObject);
 
 public:
     /// Constructor

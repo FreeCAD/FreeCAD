@@ -30,7 +30,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderTile : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderTile);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderTile);
 
 public:
     /// constructor

@@ -32,7 +32,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderHelixParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderHelixParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderHelixParametric);
 
 public:
     /// constructor
@@ -48,7 +48,7 @@ private:
 
 class PartGuiExport ViewProviderSpiralParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderSpiralParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSpiralParametric);
 
 public:
     /// constructor

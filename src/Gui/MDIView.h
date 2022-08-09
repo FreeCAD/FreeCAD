@@ -56,7 +56,7 @@ class GuiExport MDIView : public QMainWindow, public BaseView
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** View constructor

@@ -63,7 +63,7 @@ namespace Mesh
 class MeshObject;
 class MeshExport MeshSegment : public Data::Segment
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     std::string getName() const override {
@@ -82,7 +82,7 @@ public:
  */
 class MeshExport MeshObject : public Data::ComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum GeometryType {PLANE, CYLINDER, SPHERE};

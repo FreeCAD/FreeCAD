@@ -31,7 +31,7 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemPostClip : public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostClip);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostClip);
 
 public:
     /// constructor.
@@ -44,7 +44,7 @@ protected:
 
 class FemGuiExport ViewProviderFemPostDataAlongLine : public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostDataAlongLine);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostDataAlongLine);
 
 public:
     /// constructor.
@@ -57,7 +57,7 @@ protected:
 
 class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostDataAtPoint);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostDataAtPoint);
 
 public:
     /// constructor.
@@ -71,7 +71,7 @@ protected:
 };
 class FemGuiExport ViewProviderFemPostScalarClip : public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostScalarClip);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostScalarClip);
 
 public:
     /// constructor.
@@ -84,7 +84,7 @@ protected:
 
 class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostWarpVector);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostWarpVector);
 
 public:
     /// constructor.
@@ -97,7 +97,7 @@ protected:
 
 class FemGuiExport ViewProviderFemPostCut : public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostCut);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostCut);
 
 public:
     /// constructor.

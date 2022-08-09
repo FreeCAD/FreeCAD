@@ -45,7 +45,7 @@ namespace MeshPartGui
 
 class ViewProviderCurveOnMesh : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(MeshPartGui::ViewProviderCurveOnMesh);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshPartGui::ViewProviderCurveOnMesh);
 
 public:
     ViewProviderCurveOnMesh();

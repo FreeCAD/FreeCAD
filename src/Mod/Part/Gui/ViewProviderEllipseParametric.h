@@ -38,7 +38,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderEllipseParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderEllipseParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderEllipseParametric);
 
 public:
     /// constructor

@@ -42,7 +42,7 @@ class Ui_TaskFilling;
 
 class ViewProviderFilling : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderFilling);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderFilling);
     typedef std::vector<App::PropertyLinkSubList::SubSet> References;
 
 public:

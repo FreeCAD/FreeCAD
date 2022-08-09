@@ -31,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport Loft : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Loft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Loft);
 
 public:
     Loft();
@@ -61,14 +61,14 @@ private:
 
 class PartDesignExport AdditiveLoft : public Loft {
 
-    PROPERTY_HEADER(PartDesign::AdditiveLoft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveLoft);
 public:
     AdditiveLoft();
 };
 
 class PartDesignExport SubtractiveLoft : public Loft {
 
-    PROPERTY_HEADER(PartDesign::SubtractiveLoft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveLoft);
 public:
     SubtractiveLoft();
 };

@@ -33,7 +33,7 @@ namespace PartDesign
 
 class PartDesignExport Fillet : public DressUp
 {
-    PROPERTY_HEADER(PartDesign::Fillet);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Fillet);
 
 public:
     Fillet();

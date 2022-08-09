@@ -52,7 +52,7 @@ namespace MeshGui {
  */
 class ViewProviderMeshTransformDemolding : public ViewProviderMesh
 {
-  PROPERTY_HEADER(MeshGui::ViewProviderMeshTransformDemolding);
+  PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshTransformDemolding);
 
 public:
   ViewProviderMeshTransformDemolding();

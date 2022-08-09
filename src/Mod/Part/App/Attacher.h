@@ -212,7 +212,7 @@ struct SuggestResult{
  */
 class PartExport AttachEngine : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public: //methods
     AttachEngine();
     virtual void setUp(const App::PropertyLinkSubList &references,
@@ -417,7 +417,7 @@ protected:
 
 class PartExport AttachEngine3D : public AttachEngine
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     AttachEngine3D();
     AttachEngine3D* copy() const override;
@@ -429,7 +429,7 @@ private:
 //attacher specialized for datum planes
 class PartExport AttachEnginePlane : public AttachEngine
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     AttachEnginePlane();
     AttachEnginePlane* copy() const override;
@@ -439,7 +439,7 @@ public:
 //attacher specialized for datum lines
 class PartExport AttachEngineLine : public AttachEngine
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     AttachEngineLine();
     AttachEngineLine* copy() const override;
@@ -449,7 +449,7 @@ public:
 //attacher specialized for datum points
 class PartExport AttachEnginePoint : public AttachEngine
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     AttachEnginePoint();
     AttachEnginePoint* copy() const override;

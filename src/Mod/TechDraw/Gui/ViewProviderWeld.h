@@ -34,7 +34,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderWeld : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderWeld);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderWeld);
 
 public:
     /// constructor

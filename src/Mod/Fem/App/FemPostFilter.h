@@ -42,7 +42,7 @@ namespace Fem
 
 class FemExport FemPostFilter : public Fem::FemPostObject
 {
-    PROPERTY_HEADER(Fem::FemPostFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFilter);
 
 public:
     /// Constructor
@@ -74,7 +74,7 @@ private:
 
 class FemExport FemPostClipFilter : public FemPostFilter {
 
-    PROPERTY_HEADER(Fem::FemPostClipFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostClipFilter);
 
 public:
     FemPostClipFilter();
@@ -100,7 +100,7 @@ private:
 
 class FemExport FemPostDataAlongLineFilter : public FemPostFilter {
 
-    PROPERTY_HEADER(Fem::FemPostDataAlongLineFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostDataAlongLineFilter);
 
 public:
     FemPostDataAlongLineFilter();
@@ -133,7 +133,7 @@ private:
 
 class FemExport FemPostDataAtPointFilter : public FemPostFilter {
 
-    PROPERTY_HEADER(Fem::FemPostDataAtPointFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostDataAtPointFilter);
 
 public:
     FemPostDataAtPointFilter();
@@ -164,7 +164,7 @@ private:
 
 class FemExport FemPostScalarClipFilter : public FemPostFilter {
 
-    PROPERTY_HEADER(Fem::FemPostScalarClipFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostScalarClipFilter);
 
 public:
     FemPostScalarClipFilter();
@@ -192,7 +192,7 @@ private:
 
 class FemExport FemPostWarpVectorFilter : public FemPostFilter {
 
-    PROPERTY_HEADER(Fem::FemPostWarpVectorFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostWarpVectorFilter);
 
 public:
     FemPostWarpVectorFilter();
@@ -217,7 +217,7 @@ private:
 
 class FemExport FemPostCutFilter : public FemPostFilter {
 
-    PROPERTY_HEADER(Fem::FemPostCutFilter);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostCutFilter);
 
 public:
     FemPostCutFilter();

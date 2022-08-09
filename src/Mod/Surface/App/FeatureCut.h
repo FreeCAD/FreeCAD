@@ -34,7 +34,7 @@ namespace Surface
 
 class SurfaceExport Cut :  public Part::Feature
 {
-    PROPERTY_HEADER(Surface::Cut);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Cut);
 
 public:
     Cut();

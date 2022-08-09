@@ -32,7 +32,7 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintPlaneRotation : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPlaneRotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPlaneRotation);
 
 public:
     ViewProviderFemConstraintPlaneRotation();

@@ -41,7 +41,7 @@ class GuiExport AbstractSplitView : public MDIView, public ParameterGrp::Observe
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
@@ -111,7 +111,7 @@ private:
  */
 class GuiExport SplitView3DInventor : public AbstractSplitView
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());

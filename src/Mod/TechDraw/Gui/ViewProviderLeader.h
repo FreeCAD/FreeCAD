@@ -40,7 +40,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderLeader : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderLeader);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderLeader);
 
 public:
     /// constructor

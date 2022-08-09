@@ -33,7 +33,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderDraft)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDraft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderDraft);
 
 public:
     /// constructor

@@ -118,7 +118,7 @@ void GuiExport coinRemoveAllChildren(SoGroup *node);
   */
 class GuiExport ViewProvider : public App::TransactionalObject
 {
-    PROPERTY_HEADER(Gui::ViewProvider);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProvider);
 
 public:
     /// constructor.

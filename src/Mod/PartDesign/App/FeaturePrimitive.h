@@ -69,7 +69,7 @@ protected:
 
 class PartDesignExport Box : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(PartDesign::Box);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Box);
 
 public:
     
@@ -88,7 +88,7 @@ protected:
 };
 
 class PartDesignExport AdditiveBox : public Box {
-    PROPERTY_HEADER(PartDesign::AdditiveBox);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveBox);
     
     AdditiveBox() {
         addSubType = FeatureAddSub::Additive;
@@ -96,7 +96,7 @@ class PartDesignExport AdditiveBox : public Box {
 };
 
 class PartDesignExport SubtractiveBox : public Box {
-    PROPERTY_HEADER(PartDesign::SubtractiveBox);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveBox);
     
     SubtractiveBox() {
         addSubType = FeatureAddSub::Subtractive;
@@ -106,7 +106,7 @@ class PartDesignExport SubtractiveBox : public Box {
 
 class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
-    PROPERTY_HEADER(PartDesign::Cylinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Cylinder);
 
 public:
     
@@ -124,7 +124,7 @@ public:
 };
 
 class PartDesignExport AdditiveCylinder : public Cylinder {
-    PROPERTY_HEADER(PartDesign::AdditiveCylinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveCylinder);
     
     AdditiveCylinder() {
         addSubType = FeatureAddSub::Additive;
@@ -132,7 +132,7 @@ class PartDesignExport AdditiveCylinder : public Cylinder {
 };
 
 class PartDesignExport SubtractiveCylinder : public Cylinder {
-    PROPERTY_HEADER(PartDesign::SubtractiveCylinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveCylinder);
     
     SubtractiveCylinder() {
         addSubType = FeatureAddSub::Subtractive;
@@ -142,7 +142,7 @@ class PartDesignExport SubtractiveCylinder : public Cylinder {
 
 class PartDesignExport Sphere : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(PartDesign::Sphere);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Sphere);
 
 public:
     
@@ -164,7 +164,7 @@ protected:
 };
 
 class PartDesignExport AdditiveSphere : public Sphere {
-    PROPERTY_HEADER(PartDesign::AdditiveSphere);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveSphere);
     
     AdditiveSphere() {
         addSubType = FeatureAddSub::Additive;
@@ -172,7 +172,7 @@ class PartDesignExport AdditiveSphere : public Sphere {
 };
 
 class PartDesignExport SubtractiveSphere : public Sphere {
-    PROPERTY_HEADER(PartDesign::SubtractiveSphere);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveSphere);
     
     SubtractiveSphere() {
         addSubType = FeatureAddSub::Subtractive;
@@ -181,7 +181,7 @@ class PartDesignExport SubtractiveSphere : public Sphere {
 
 class PartDesignExport Cone : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(PartDesign::Cone);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Cone);
 
 public:
     
@@ -203,7 +203,7 @@ protected:
 };
 
 class PartDesignExport AdditiveCone : public Cone {
-    PROPERTY_HEADER(PartDesign::AdditiveCone);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveCone);
     
     AdditiveCone() {
         addSubType = FeatureAddSub::Additive;
@@ -211,7 +211,7 @@ class PartDesignExport AdditiveCone : public Cone {
 };
 
 class PartDesignExport SubtractiveCone : public Cone {
-    PROPERTY_HEADER(PartDesign::SubtractiveCone);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveCone);
     
     SubtractiveCone() {
         addSubType = FeatureAddSub::Subtractive;
@@ -221,7 +221,7 @@ class PartDesignExport SubtractiveCone : public Cone {
 
 class PartDesignExport Ellipsoid : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(PartDesign::Ellipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Ellipsoid);
 
 public:
     
@@ -245,7 +245,7 @@ protected:
 };
 
 class PartDesignExport AdditiveEllipsoid : public Ellipsoid {
-    PROPERTY_HEADER(PartDesign::AdditiveEllipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveEllipsoid);
     
     AdditiveEllipsoid() {
         addSubType = FeatureAddSub::Additive;
@@ -253,7 +253,7 @@ class PartDesignExport AdditiveEllipsoid : public Ellipsoid {
 };
 
 class PartDesignExport SubtractiveEllipsoid : public Ellipsoid {
-    PROPERTY_HEADER(PartDesign::SubtractiveEllipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveEllipsoid);
     
     SubtractiveEllipsoid() {
         addSubType = FeatureAddSub::Subtractive;
@@ -263,7 +263,7 @@ class PartDesignExport SubtractiveEllipsoid : public Ellipsoid {
 
 class PartDesignExport Torus : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(PartDesign::Torus);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Torus);
 
 public:
     
@@ -286,7 +286,7 @@ protected:
 };
 
 class PartDesignExport AdditiveTorus : public Torus {
-    PROPERTY_HEADER(PartDesign::AdditiveTorus);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveTorus);
     
     AdditiveTorus() {
         addSubType = FeatureAddSub::Additive;
@@ -294,7 +294,7 @@ class PartDesignExport AdditiveTorus : public Torus {
 };
 
 class PartDesignExport SubtractiveTorus : public Torus {
-    PROPERTY_HEADER(PartDesign::SubtractiveTorus);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveTorus);
     
     SubtractiveTorus() {
         addSubType = FeatureAddSub::Subtractive;
@@ -304,7 +304,7 @@ class PartDesignExport SubtractiveTorus : public Torus {
 
 class PartDesignExport Prism : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
-    PROPERTY_HEADER(PartDesign::Prism);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Prism);
 
 public:
     Prism();
@@ -321,7 +321,7 @@ public:
 };
 
 class PartDesignExport AdditivePrism : public Prism {
-    PROPERTY_HEADER(PartDesign::AdditivePrism);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditivePrism);
     
     AdditivePrism() {
         addSubType = FeatureAddSub::Additive;
@@ -329,7 +329,7 @@ class PartDesignExport AdditivePrism : public Prism {
 };
 
 class PartDesignExport SubtractivePrism : public Prism {
-    PROPERTY_HEADER(PartDesign::SubtractivePrism);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractivePrism);
     
     SubtractivePrism() {
         addSubType = FeatureAddSub::Subtractive;
@@ -339,7 +339,7 @@ class PartDesignExport SubtractivePrism : public Prism {
 
 class PartDesignExport Wedge : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(PartDesign::Wedge);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Wedge);
 
 public:
     
@@ -367,7 +367,7 @@ protected:
 };
 
 class PartDesignExport AdditiveWedge : public Wedge {
-    PROPERTY_HEADER(PartDesign::AdditiveWedge);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveWedge);
     
     AdditiveWedge() {
         addSubType = FeatureAddSub::Additive;
@@ -375,7 +375,7 @@ class PartDesignExport AdditiveWedge : public Wedge {
 };
 
 class PartDesignExport SubtractiveWedge : public Wedge {
-    PROPERTY_HEADER(PartDesign::SubtractiveWedge);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveWedge);
     
     SubtractiveWedge() {
         addSubType = FeatureAddSub::Subtractive;

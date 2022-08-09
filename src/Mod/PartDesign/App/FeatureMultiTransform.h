@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport MultiTransform : public PartDesign::Transformed
 {
-    PROPERTY_HEADER(PartDesign::MultiTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::MultiTransform);
 
 public:
     MultiTransform();

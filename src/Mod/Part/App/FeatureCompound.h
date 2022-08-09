@@ -32,7 +32,7 @@ namespace Part
 
 class Compound : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Compound);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Compound);
 
 public:
     Compound();

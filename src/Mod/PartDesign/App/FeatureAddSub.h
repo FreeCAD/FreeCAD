@@ -61,7 +61,7 @@ typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;
 
 class FeatureAdditivePython : public FeatureAddSubPython
 {
-    PROPERTY_HEADER(PartDesign::FeatureAdditivePython);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAdditivePython);
 
 public:
     FeatureAdditivePython();
@@ -70,7 +70,7 @@ public:
 
 class FeatureSubtractivePython : public FeatureAddSubPython
 {
-    PROPERTY_HEADER(PartDesign::FeatureSubtractivePython);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureSubtractivePython);
 
 public:
     FeatureSubtractivePython();

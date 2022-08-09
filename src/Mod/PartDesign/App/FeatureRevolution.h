@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport Revolution : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Revolution);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Revolution);
 
 public:
     Revolution();

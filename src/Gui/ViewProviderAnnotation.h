@@ -42,7 +42,7 @@ namespace Gui
 
 class GuiExport ViewProviderAnnotation : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderAnnotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderAnnotation);
 
 public:
     /// Constructor
@@ -86,7 +86,7 @@ private:
  */
 class GuiExport ViewProviderAnnotationLabel : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderAnnotationLabel);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderAnnotationLabel);
 
 public:
     /// Constructor

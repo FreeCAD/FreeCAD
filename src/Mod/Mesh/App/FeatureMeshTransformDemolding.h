@@ -39,7 +39,7 @@ namespace Mesh
  */
 class TransformDemolding : public Transform
 {
-    PROPERTY_HEADER(Mesh::TransformDemolding);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::TransformDemolding);
 
 public:
     TransformDemolding();

@@ -33,7 +33,7 @@ namespace Part
 
 class PartExport Box :public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Box);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Box);
 
 public:
     Box();

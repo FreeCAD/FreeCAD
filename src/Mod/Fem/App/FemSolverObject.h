@@ -33,7 +33,7 @@ namespace Fem
 /// Father of all result data in a Fem Analysis
 class FemExport FemSolverObject : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::FemSolverObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSolverObject);
 
 public:
     /// Constructor

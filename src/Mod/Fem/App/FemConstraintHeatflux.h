@@ -33,7 +33,7 @@ namespace Fem {
 
 class FemExport ConstraintHeatflux : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintHeatflux);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintHeatflux);
 
 public:
     ConstraintHeatflux();

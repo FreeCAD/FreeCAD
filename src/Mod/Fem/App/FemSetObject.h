@@ -33,7 +33,7 @@ namespace Fem
 
 class FemExport FemSetObject : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::FemSetObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSetObject);
 
 public:
     /// Constructor

@@ -31,7 +31,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPocket : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPocket);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPocket);
 
 public:
     /// constructor

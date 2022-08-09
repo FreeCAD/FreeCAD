@@ -32,7 +32,7 @@ namespace Gui
 
 class GuiExport ViewProviderInventorObject : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderInventorObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderInventorObject);
 
 public:
     /// constructor.

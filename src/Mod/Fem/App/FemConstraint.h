@@ -57,7 +57,7 @@ namespace Fem {
  *  scale&).
  */
 class FemExport Constraint : public App::DocumentObject {
-    PROPERTY_HEADER(Fem::Constraint);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::Constraint);
 
 public:
     Constraint();

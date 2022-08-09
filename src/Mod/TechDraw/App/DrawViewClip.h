@@ -37,7 +37,7 @@ namespace TechDraw
 
 class TechDrawExport DrawViewClip: public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewClip);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewClip);
 
 public:
     /// Constructor
