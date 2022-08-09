@@ -81,11 +81,11 @@ public:
     }
 
     // Auto generated code. See class document of LinkParams.
-    ~LinkParamsP() {
+    ~LinkParamsP() override {
     }
 
     // Auto generated code. See class document of LinkParams.
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override {
         if(!sReason)
             return;
         auto it = funcs.find(sReason);
