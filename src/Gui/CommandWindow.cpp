@@ -374,7 +374,7 @@ public:
 //    virtual ~FilterStatusBar() {}
 protected:
     Action * action;
-    bool eventFilter(QObject *obj, QEvent *event)
+    bool eventFilter(QObject *obj, QEvent *event) override
     {
         if (getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
             this->action->setChecked(getMainWindow()->statusBar()->isVisible());

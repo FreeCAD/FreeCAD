@@ -43,7 +43,7 @@ class DlgMacroRecordImp : public QDialog, public Gui::WindowParameter
 
 public:
     DlgMacroRecordImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-    virtual ~DlgMacroRecordImp();
+    ~DlgMacroRecordImp() override;
 
 protected Q_SLOTS:
     void on_buttonStart_clicked();

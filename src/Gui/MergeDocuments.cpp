@@ -48,11 +48,11 @@ public:
       : Base::XMLReader(FileName, str), nameMap(name)
     {}
 
-    void addName(const char* s1, const char* s2)
+    void addName(const char* s1, const char* s2) override
     {
         nameMap[s1] = s2;
     }
-    const char* getName(const char* name) const
+    const char* getName(const char* name) const override
     {
         std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
         if (it != nameMap.end())
@@ -60,7 +60,7 @@ public:
         else
             return name;
     }
-    bool doNameMapping() const
+    bool doNameMapping() const override
     {
         return true;
     }

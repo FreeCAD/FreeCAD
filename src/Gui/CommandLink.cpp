@@ -60,14 +60,14 @@ class StdCmdLinkMakeGroup : public Gui::Command
 {
 public:
     StdCmdLinkMakeGroup();
-    const char* className() const
+    const char* className() const override
     { return "StdCmdLinkMakeGroup"; }
 
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
-    virtual Action * createAction();
-    virtual void languageChange();
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Action * createAction() override;
+    void languageChange() override;
 };
 
 StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
@@ -857,7 +857,7 @@ public:
         addCommand(new StdCmdLinkSelectAllLinks());
     }
 
-    virtual const char* className() const {return "StdCmdLinkSelectActions";}
+    const char* className() const override {return "StdCmdLinkSelectActions";}
 };
 
 //======================================================================
@@ -885,7 +885,7 @@ public:
         addCommand(new StdCmdLinkImportAll());
     }
 
-    virtual const char* className() const {return "StdCmdLinkActions";}
+    const char* className() const override {return "StdCmdLinkActions";}
 };
 
 //===========================================================================

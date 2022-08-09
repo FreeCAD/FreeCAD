@@ -42,15 +42,15 @@ class DlgOnlineHelpImp : public PreferencePage
 
 public:
     DlgOnlineHelpImp( QWidget* parent = nullptr );
-    ~DlgOnlineHelpImp();
+    ~DlgOnlineHelpImp() override;
 
     static QString getStartpage();
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 protected:
     void on_lineEditDownload_fileNameSelected(const QString&);

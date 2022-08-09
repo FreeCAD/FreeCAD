@@ -42,7 +42,7 @@ class GuiExport TaskWatcher : public QObject, public Gui::SelectionFilter
 
 public:
     TaskWatcher(const char* Filter);
-    virtual ~TaskWatcher();
+    ~TaskWatcher() override;
 
     std::vector<QWidget*> &getWatcherContent();
 
@@ -68,7 +68,7 @@ public:
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow();
+    bool shouldShow() override;
 
 };
 
@@ -84,7 +84,7 @@ public:
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow();
+    bool shouldShow() override;
 
 };
 
@@ -97,11 +97,11 @@ class GuiExport TaskWatcherCommandsEmptySelection : public TaskWatcherCommands
 
 public:
     TaskWatcherCommandsEmptySelection(const char* commands[], const char* name, const char* pixmap);
-    ~TaskWatcherCommandsEmptySelection();
+    ~TaskWatcherCommandsEmptySelection() override;
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow();
+    bool shouldShow() override;
 
 };
 

@@ -57,12 +57,12 @@ class DlgDisplayPropertiesImp : public QDialog,
 
 public:
     DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgDisplayPropertiesImp();
+    ~DlgDisplayPropertiesImp() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+                  Gui::SelectionSingleton::MessageType Reason) override;
     void showDefaultButtons(bool);
-    void reject();
+    void reject() override;
 
 private Q_SLOTS:
     void on_changeMaterial_activated(int);
@@ -78,7 +78,7 @@ private Q_SLOTS:
     void on_buttonColorPlot_clicked();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
@@ -105,18 +105,18 @@ class TaskDisplayProperties : public Gui::TaskView::TaskDialog
 
 public:
     TaskDisplayProperties();
-    ~TaskDisplayProperties();
+    ~TaskDisplayProperties() override;
 
 public:
-    bool reject();
+    bool reject() override;
 
-    bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return true; }
-    bool isAllowedAlterView() const
+    bool isAllowedAlterView() const override
     { return true; }
-    bool isAllowedAlterSelection() const
+    bool isAllowedAlterSelection() const override
     { return true; }
-    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 private:
     DlgDisplayPropertiesImp* widget;

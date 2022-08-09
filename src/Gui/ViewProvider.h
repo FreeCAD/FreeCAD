@@ -125,7 +125,7 @@ public:
     ViewProvider();
 
     /// destructor.
-    virtual ~ViewProvider();
+    ~ViewProvider() override;
 
     // returns the root node of the Provider (3D)
     virtual SoSeparator* getRoot() const {return pcRoot;}
@@ -374,7 +374,7 @@ public:
     void setStatus(ViewStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
 
     std::string toString() const;
-    PyObject* getPyObject();
+    PyObject* getPyObject() override;
 
     /** @name Display mode methods
      */
@@ -497,7 +497,7 @@ public:
 
     //restoring the object from document:
     //this may be of interest to extensions, hence call them
-    virtual void Restore(Base::XMLReader& reader);
+    void Restore(Base::XMLReader& reader) override;
     bool isRestoring() {return testStatus(Gui::isRestoring);}
 
 
@@ -539,9 +539,9 @@ protected:
     SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir,
                                  const View3DInventorViewer* viewer) const;
     /// Reimplemented from subclass
-    void onBeforeChange(const App::Property* prop);
+    void onBeforeChange(const App::Property* prop) override;
     /// Reimplemented from subclass
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     /** @name Methods used by the Tree
      * If you want to take control over the

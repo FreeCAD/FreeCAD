@@ -57,10 +57,10 @@ class GuiExport TaskSelectLinkProperty : public TaskBox, public Gui::SelectionSi
 
 public:
     TaskSelectLinkProperty(const char *,App::Property *,QWidget *parent = nullptr);
-    ~TaskSelectLinkProperty();
+    ~TaskSelectLinkProperty() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+                  Gui::SelectionSingleton::MessageType Reason) override;
 
     /// set the filter criterion (same as in constructor)
     bool setFilter(const char*);
@@ -88,7 +88,7 @@ Q_SIGNALS:
     void emitSelectionMisfit();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     // checks for selection and set background color and signals

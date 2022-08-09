@@ -41,14 +41,14 @@ public:
     ViewProviderFeature();
 
     /// destructor.
-    virtual ~ViewProviderFeature();
+    ~ViewProviderFeature() override;
 
     App::PropertyColorList    ColourList;
 
     /**
      * Attaches the document object to this view provider.
      */
-    virtual void attach(App::DocumentObject *pcObj);
+    void attach(App::DocumentObject *pcObj) override;
 };
 
 } // namespace Gui

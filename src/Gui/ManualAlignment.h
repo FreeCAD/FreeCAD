@@ -191,7 +191,7 @@ class GuiExport ManualAlignment : public QObject
 
 protected:
     ManualAlignment();
-    ~ManualAlignment();
+    ~ManualAlignment() override;
 
 public:
     static ManualAlignment* instance();

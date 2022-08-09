@@ -1673,10 +1673,10 @@ public:
         eType         = ForEdit;
     }
 
-    virtual const char* className() const {return "StdCmdExpression";}
+    const char* className() const override {return "StdCmdExpression";}
 protected:
 
-    virtual void activated(int iMsg) {
+    void activated(int iMsg) override {
         std::map<App::Document*, std::set<App::DocumentObject*> > objs;
         switch(iMsg) {
         case 0:
@@ -1705,7 +1705,7 @@ protected:
         copyExpressions(objs);
     }
 
-    virtual Gui::Action * createAction() {
+    Gui::Action * createAction() override {
         ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
         pcAction->setDropDownMenu(true);
         applyCommandData(this->className(), pcAction);
@@ -1849,7 +1849,7 @@ protected:
         }
     }
 
-    bool isActive() {
+    bool isActive() override {
         if(!App::GetApplication().getActiveDocument()) {
             pcActionCopyAll->setEnabled(false);
             pcActionCopySel->setEnabled(false);

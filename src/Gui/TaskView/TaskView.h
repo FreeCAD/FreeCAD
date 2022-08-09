@@ -64,10 +64,10 @@ public:
     explicit TaskGroup(QWidget *parent = nullptr);
     explicit TaskGroup(const QString & headerText, QWidget *parent = nullptr);
     explicit TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *parent = nullptr);
-    ~TaskGroup();
+    ~TaskGroup() override;
 
 protected:
-    void actionEvent (QActionEvent*);
+    void actionEvent (QActionEvent*) override;
 };
 
 /// Father class of content with header and Icon
@@ -98,15 +98,15 @@ public:
                      const QString& title,
                      bool expandable = true,
                      QWidget *parent = nullptr);
-    virtual QSize minimumSizeHint() const;
+    QSize minimumSizeHint() const override;
 
-    ~TaskBox();
+    ~TaskBox() override;
     void hideGroupBox();
     bool isGroupVisible() const;
 
 protected:
-    void showEvent(QShowEvent*);
-    void actionEvent (QActionEvent*);
+    void showEvent(QShowEvent*) override;
+    void actionEvent (QActionEvent*) override;
 
 private:
     bool wasShown;
@@ -118,8 +118,8 @@ class GuiExport TaskPanel : public QSint::ActionPanel
 
 public:
     explicit TaskPanel(QWidget *parent = nullptr);
-    virtual ~TaskPanel();
-    virtual QSize minimumSizeHint() const;
+    ~TaskPanel() override;
+    QSize minimumSizeHint() const override;
 };
 
 /// Father class of content of a Free widget (without header and Icon), shut be an exception!
@@ -129,7 +129,7 @@ class GuiExport TaskWidget : public QWidget, public TaskContent
 
 public:
     TaskWidget(QWidget *parent=nullptr);
-    ~TaskWidget();
+    ~TaskWidget() override;
 };
 
 /** TaskView class
@@ -143,11 +143,11 @@ class GuiExport TaskView : public QScrollArea, public Gui::SelectionSingleton::O
 
 public:
     TaskView(QWidget *parent = nullptr);
-    ~TaskView();
+    ~TaskView() override;
 
     /// Observer message from the Selection
-    virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                          Gui::SelectionSingleton::MessageType Reason);
+    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
+                          Gui::SelectionSingleton::MessageType Reason) override;
 
     friend class Gui::DockWnd::ComboView;
     friend class Gui::ControlSingleton;
@@ -165,8 +165,8 @@ protected Q_SLOTS:
     void clicked (QAbstractButton * button);
 
 protected:
-    virtual void keyPressEvent(QKeyEvent*);
-    virtual bool event(QEvent*);
+    void keyPressEvent(QKeyEvent*) override;
+    bool event(QEvent*) override;
 
     void addTaskWatcher();
     void removeTaskWatcher();

@@ -1355,7 +1355,7 @@ public:
     {
     }
 
-    bool apply(const std::string &propName) {
+    bool apply(const std::string &propName) override {
         if (!ExpressionBinding::apply(propName)) { // clazy:exclude=skipped-base-method
             QVariant data = property("coords");
             if (data.canConvert<Base::Vector3d>()) {

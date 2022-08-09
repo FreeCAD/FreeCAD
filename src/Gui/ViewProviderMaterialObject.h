@@ -38,14 +38,14 @@ public:
     /// constructor.
     ViewProviderMaterialObject();
     /// destructor.
-    virtual ~ViewProviderMaterialObject();
+    ~ViewProviderMaterialObject() override;
 
-    QIcon getIcon() const;
+    QIcon getIcon() const override;
 
-    bool doubleClicked();
+    bool doubleClicked() override;
 
     // shows solid in the tree
-    virtual bool isShow() const{return true;}
+    bool isShow() const override{return true;}
 
 };
 

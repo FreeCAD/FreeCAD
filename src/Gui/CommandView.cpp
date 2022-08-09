@@ -254,15 +254,15 @@ class StdCmdFreezeViews : public Gui::Command
 {
 public:
     StdCmdFreezeViews();
-    virtual ~StdCmdFreezeViews(){}
-    const char* className() const
+    ~StdCmdFreezeViews() override{}
+    const char* className() const override
     { return "StdCmdFreezeViews"; }
 
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
-    virtual Action * createAction();
-    virtual void languageChange();
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Action * createAction() override;
+    void languageChange() override;
 
 private:
     void onSaveViews();
@@ -587,14 +587,14 @@ class StdCmdDrawStyle : public Gui::Command
 {
 public:
     StdCmdDrawStyle();
-    virtual ~StdCmdDrawStyle(){}
-    virtual void languageChange();
-    virtual const char* className() const {return "StdCmdDrawStyle";}
+    ~StdCmdDrawStyle() override{}
+    void languageChange() override;
+    const char* className() const override {return "StdCmdDrawStyle";}
     void updateIcon(const Gui::MDIView* view);
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
-    virtual Gui::Action * createAction();
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action * createAction() override;
 };
 
 StdCmdDrawStyle::StdCmdDrawStyle()
@@ -3567,7 +3567,7 @@ public:
         addCommand(new StdTreeDrag(),!cmds.empty());
         addCommand(new StdTreeSelection(),!cmds.empty());
     };
-    virtual const char* className() const {return "StdCmdTreeViewActions";}
+    const char* className() const override {return "StdCmdTreeViewActions";}
 };
 
 

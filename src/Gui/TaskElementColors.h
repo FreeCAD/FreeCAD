@@ -39,7 +39,7 @@ class GuiExport ElementColors : public QWidget, public SelectionObserver
 
 public:
     ElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
-    ~ElementColors();
+    ~ElementColors() override;
 
     bool accept();
     bool reject();
@@ -57,9 +57,9 @@ private Q_SLOTS:
     void on_boxSelect_clicked();
 
 protected:
-    void onSelectionChanged(const SelectionChanges& msg);
-    void changeEvent(QEvent *e);
-    void leaveEvent(QEvent *);
+    void onSelectionChanged(const SelectionChanges& msg) override;
+    void changeEvent(QEvent *e) override;
+    void leaveEvent(QEvent *) override;
     void slotDeleteDocument(const Document&);
     void slotDeleteObject(const ViewProvider&);
 private:
@@ -73,15 +73,15 @@ class GuiExport TaskElementColors : public TaskView::TaskDialog
 
 public:
     TaskElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
-    ~TaskElementColors();
+    ~TaskElementColors() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

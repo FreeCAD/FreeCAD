@@ -44,7 +44,7 @@ class DlgSettingsImageImp : public QWidget
 
 public:
     DlgSettingsImageImp( QWidget* parent = nullptr );
-    ~DlgSettingsImageImp();
+    ~DlgSettingsImageImp() override;
 
     /** @name Image dimensions */
     //@{
@@ -79,7 +79,7 @@ protected Q_SLOTS:
 protected:
     // helper to force an aspect ratio
     void adjustImageSize(float fRatio);
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 
 private:

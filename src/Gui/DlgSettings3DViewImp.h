@@ -44,16 +44,16 @@ class DlgSettings3DViewImp : public PreferencePage
 
 public:
     DlgSettings3DViewImp(QWidget* parent = nullptr);
-    ~DlgSettings3DViewImp();
+    ~DlgSettings3DViewImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 private Q_SLOTS:
     void onAliasingChanged(int);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettings3DView> ui;

@@ -36,9 +36,9 @@ class GuiExport ViewProviderPlane : public ViewProviderOriginFeature
 public:
     /// Constructor
     ViewProviderPlane();
-    virtual ~ViewProviderPlane();
+    ~ViewProviderPlane() override;
 
-    virtual void attach ( App::DocumentObject * );
+    void attach ( App::DocumentObject * ) override;
 };
 
 } //namespace Gui

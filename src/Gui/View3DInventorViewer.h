@@ -133,19 +133,19 @@ public:
 
     View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
-    virtual ~View3DInventorViewer();
+    ~View3DInventorViewer() override;
 
     void init();
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges &Reason);
+    void onSelectionChanged(const SelectionChanges &Reason) override;
     void checkGroupOnTop(const SelectionChanges &Reason);
     void clearGroupOnTop();
 
     SoDirectionalLight* getBacklight() const;
     void setBacklight(SbBool on);
     SbBool isBacklight() const;
-    void setSceneGraph (SoNode *root);
+    void setSceneGraph (SoNode *root) override;
     SbBool searchNode(SoNode*) const;
 
     void setAnimationEnabled(const SbBool enable);
@@ -173,7 +173,7 @@ public:
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
 
-    virtual void setViewing(SbBool enable);
+    void setViewing(SbBool enable) override;
     virtual void setCursorEnabled(SbBool enable);
 
     void addGraphicsItem(GLGraphicsItem*);
@@ -343,7 +343,7 @@ public:
      * set.
      */
     void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
-    void setCameraType(SoType t);
+    void setCameraType(SoType t) override;
     void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
     /**
      * Zooms the viewport to the size of the bounding box.
@@ -352,7 +352,7 @@ public:
     /**
      * Reposition the current camera so we can see the complete scene.
      */
-    void viewAll();
+    void viewAll() override;
     void viewAll(float factor);
 
     /// Breaks out a VR window for a Rift
@@ -404,14 +404,14 @@ protected:
     void renderFramebuffer();
     void renderGLImage();
     void animatedViewAll(int steps, int ms);
-    virtual void actualRedraw();
-    virtual void setSeekMode(SbBool enable);
-    virtual void afterRealizeHook();
-    virtual bool processSoEvent(const SoEvent * ev);
-    void dropEvent (QDropEvent * e);
-    void dragEnterEvent (QDragEnterEvent * e);
-    void dragMoveEvent(QDragMoveEvent *e);
-    void dragLeaveEvent(QDragLeaveEvent *e);
+    void actualRedraw() override;
+    void setSeekMode(SbBool enable) override;
+    void afterRealizeHook() override;
+    bool processSoEvent(const SoEvent * ev) override;
+    void dropEvent (QDropEvent * e) override;
+    void dragEnterEvent (QDragEnterEvent * e) override;
+    void dragMoveEvent(QDragMoveEvent *e) override;
+    void dragLeaveEvent(QDragLeaveEvent *e) override;
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
@@ -433,7 +433,7 @@ private:
     void drawAxisCross();
     static void drawArrow();
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext();
+    void aboutToDestroyGLContext() override;
     void createStandardCursors(double);
 
 private:

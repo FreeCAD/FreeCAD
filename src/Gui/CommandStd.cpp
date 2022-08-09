@@ -839,14 +839,14 @@ class StdCmdUserEditMode : public Gui::Command
 {
 public:
     StdCmdUserEditMode();
-    virtual ~StdCmdUserEditMode(){}
-    virtual void languageChange();
-    virtual const char* className() const {return "StdCmdUserEditMode";}
+    ~StdCmdUserEditMode() override{}
+    void languageChange() override;
+    const char* className() const override {return "StdCmdUserEditMode";}
     void updateIcon(int mode);
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
-    virtual Gui::Action * createAction();
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action * createAction() override;
 };
 
 StdCmdUserEditMode::StdCmdUserEditMode()

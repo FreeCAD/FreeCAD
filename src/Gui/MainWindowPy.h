@@ -43,9 +43,9 @@ public:
     static Py::ExtensionObject<MainWindowPy> create(MainWindow *mw);
 
     MainWindowPy(MainWindow *mw);
-    ~MainWindowPy();
+    ~MainWindowPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object getWindows(const Py::Tuple&);
     Py::Object getWindowsOfType(const Py::Tuple&);

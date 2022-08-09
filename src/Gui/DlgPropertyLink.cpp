@@ -54,8 +54,8 @@ class ItemDelegate: public QStyledItemDelegate {
 public:
     ItemDelegate(QObject* parent=nullptr): QStyledItemDelegate(parent) {}
 
-    virtual QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &option, const QModelIndex &index) const
+    QWidget* createEditor(QWidget *parent,
+            const QStyleOptionViewItem &option, const QModelIndex &index) const override
     {
         if(index.column() != 1)
             return nullptr;

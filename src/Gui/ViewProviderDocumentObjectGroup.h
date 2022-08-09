@@ -39,14 +39,14 @@ public:
     /// constructor.
     ViewProviderDocumentObjectGroup();
     /// destructor.
-    virtual ~ViewProviderDocumentObjectGroup();
+    ~ViewProviderDocumentObjectGroup() override;
 
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes() const override;
     bool isShow() const override;
 
     /// deliver the icon shown in the tree view
-    virtual QIcon getIcon() const override;
+    QIcon getIcon() const override;
 
 protected:
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;

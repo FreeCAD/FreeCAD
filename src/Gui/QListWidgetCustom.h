@@ -34,10 +34,10 @@ class QListWidgetCustom : public QListWidget
 
 public:
     QListWidgetCustom (QWidget *parent);
-    virtual ~QListWidgetCustom ();
+    ~QListWidgetCustom () override;
 
 protected:
-    void dragMoveEvent(QDragMoveEvent *e);
+    void dragMoveEvent(QDragMoveEvent *e) override;
 };
 
 #endif

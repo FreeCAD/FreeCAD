@@ -56,7 +56,7 @@ namespace Gui
     {
     public:
       FilterOrigin();
-      virtual bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
+      bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
     };
     
     /*! Hide nodes of type*/
@@ -65,7 +65,7 @@ namespace Gui
     public:
       explicit FilterTyped(const std::string &typeIn);
       std::string type;
-      virtual bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
+      bool goFilter(const Vertex &vertexIn, const Graph &graphIn, const GraphLinkContainer &linkIn) const override;
     };
   }
 }

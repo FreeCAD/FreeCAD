@@ -48,10 +48,10 @@ public:
     static void init_type();    // announce properties and methods
 
     PythonStdout(PythonConsole *pc);
-    ~PythonStdout();
+    ~PythonStdout() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -74,10 +74,10 @@ public:
     static void init_type();    // announce properties and methods
 
     PythonStderr(PythonConsole *pc);
-    ~PythonStderr();
+    ~PythonStderr() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -97,10 +97,10 @@ public:
     static void init_type();    // announce properties and methods
 
     OutputStdout();
-    ~OutputStdout();
+    ~OutputStdout() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -120,10 +120,10 @@ public:
     static void init_type();    // announce properties and methods
 
     OutputStderr();
-    ~OutputStderr();
+    ~OutputStderr() override;
 
-    Py::Object getattr(const char *name);
-    Py::Object repr();
+    Py::Object getattr(const char *name) override;
+    Py::Object repr() override;
     Py::Object write(const Py::Tuple&);
     Py::Object flush(const Py::Tuple&);
     Py::Object isatty();
@@ -142,9 +142,9 @@ public:
     static void init_type();    // announce properties and methods
 
     PythonStdin(PythonConsole *pc);
-    ~PythonStdin();
+    ~PythonStdin() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object readline(const Py::Tuple&);
 };
 

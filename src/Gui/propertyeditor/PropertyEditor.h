@@ -67,7 +67,7 @@ class PropertyEditor : public QTreeView
 
 public:
     PropertyEditor(QWidget *parent = nullptr);
-    ~PropertyEditor();
+    ~PropertyEditor() override;
 
     /** Builds up the list view with the properties. */
     void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList(), bool checkDocument=false);
@@ -78,7 +78,7 @@ public:
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
     /*! Reset the internal state of the view. */
-    virtual void reset();
+    void reset() override;
 
     QBrush groupBackground() const;
     void setGroupBackground(const QBrush& c);
@@ -97,16 +97,16 @@ protected Q_SLOTS:
     void onRowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
-    virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
-    virtual void commitData (QWidget * editor);
-    virtual void editorDestroyed (QObject * editor);
-    virtual void currentChanged (const QModelIndex & current, const QModelIndex & previous);
-    virtual void rowsInserted (const QModelIndex & parent, int start, int end);
-    virtual void rowsAboutToBeRemoved (const QModelIndex & parent, int start, int end);
-    virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
-    virtual QStyleOptionViewItem viewOptions() const;
-    virtual void contextMenuEvent(QContextMenuEvent *event);
-    virtual bool event(QEvent*);
+    void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint) override;
+    void commitData (QWidget * editor) override;
+    void editorDestroyed (QObject * editor) override;
+    void currentChanged (const QModelIndex & current, const QModelIndex & previous) override;
+    void rowsInserted (const QModelIndex & parent, int start, int end) override;
+    void rowsAboutToBeRemoved (const QModelIndex & parent, int start, int end) override;
+    void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const override;
+    QStyleOptionViewItem viewOptions() const override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
+    bool event(QEvent*) override;
 
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);

@@ -61,7 +61,7 @@ class GuiExport NavigationStyleEvent : public QEvent
 {
 public:
     NavigationStyleEvent(const Base::Type& s);
-    ~NavigationStyleEvent();
+    ~NavigationStyleEvent() override;
     const Base::Type& style() const;
 private:
     Base::Type t;
@@ -112,7 +112,7 @@ public:
 
 public:
     NavigationStyle();
-    virtual ~NavigationStyle();
+    ~NavigationStyle() override;
 
     NavigationStyle& operator = (const NavigationStyle& ns);
     void setViewer(View3DInventorViewer*);
@@ -282,7 +282,7 @@ class GuiExport UserNavigationStyle : public NavigationStyle {
 
 public:
     UserNavigationStyle(){}
-    ~UserNavigationStyle(){}
+    ~UserNavigationStyle() override{}
     virtual const char* mouseButtons(ViewerMode) = 0;
     virtual std::string userFriendlyName() const;
     static std::map<Base::Type, std::string> getUserFriendlyNames();
@@ -295,12 +295,12 @@ class GuiExport InventorNavigationStyle : public UserNavigationStyle {
 
 public:
     InventorNavigationStyle();
-    ~InventorNavigationStyle();
-    const char* mouseButtons(ViewerMode);
-    virtual std::string userFriendlyName() const;
+    ~InventorNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+    std::string userFriendlyName() const override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 };
 
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
@@ -310,11 +310,11 @@ class GuiExport CADNavigationStyle : public UserNavigationStyle {
 
 public:
     CADNavigationStyle();
-    ~CADNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~CADNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 
 private:
     SbBool lockButton1;
@@ -327,11 +327,11 @@ class GuiExport RevitNavigationStyle : public UserNavigationStyle {
 
 public:
     RevitNavigationStyle();
-    ~RevitNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~RevitNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 
 private:
     SbBool lockButton1;
@@ -344,11 +344,11 @@ class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
 
 public:
     BlenderNavigationStyle();
-    ~BlenderNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~BlenderNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 
 private:
     SbBool lockButton1;
@@ -361,11 +361,11 @@ class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
 
 public:
     MayaGestureNavigationStyle();
-    ~MayaGestureNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~MayaGestureNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 
     SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
     short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
@@ -385,11 +385,11 @@ class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
 
 public:
     TouchpadNavigationStyle();
-    ~TouchpadNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~TouchpadNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
@@ -399,11 +399,11 @@ class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
 
 public:
     OpenCascadeNavigationStyle();
-    ~OpenCascadeNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~OpenCascadeNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 };
 
 class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
@@ -413,11 +413,11 @@ class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
 
 public:
     OpenSCADNavigationStyle();
-    ~OpenSCADNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~OpenSCADNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 };
 
 class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
@@ -427,11 +427,11 @@ class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
 
 public:
     TinkerCADNavigationStyle();
-    ~TinkerCADNavigationStyle();
-    const char* mouseButtons(ViewerMode);
+    ~TinkerCADNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
 
 protected:
-    SbBool processSoEvent(const SoEvent * const ev);
+    SbBool processSoEvent(const SoEvent * const ev) override;
 };
 
 } // namespace Gui

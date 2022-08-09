@@ -200,9 +200,9 @@ class Gui::ViewerEventFilter : public QObject
 {
 public:
     ViewerEventFilter() {}
-    ~ViewerEventFilter() {}
+    ~ViewerEventFilter() override {}
 
-    bool eventFilter(QObject* obj, QEvent* event) {
+    bool eventFilter(QObject* obj, QEvent* event) override {
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
@@ -243,8 +243,8 @@ public:
 class SpaceNavigatorDevice : public Quarter::InputDevice {
 public:
     SpaceNavigatorDevice() {}
-    virtual ~SpaceNavigatorDevice() {}
-    virtual const SoEvent* translateEvent(QEvent* event) {
+    ~SpaceNavigatorDevice() override {}
+    const SoEvent* translateEvent(QEvent* event) override {
 
         if (event->type() == Spaceball::MotionEvent::MotionEventType) {
             Spaceball::MotionEvent* motionEvent = static_cast<Spaceball::MotionEvent*>(event);
@@ -2793,11 +2793,11 @@ namespace Gui {
             startPos = camera->position.getValue();
             startRot = camera->orientation.getValue();
         }
-        virtual ~CameraAnimation()
+        ~CameraAnimation() override
         {
         }
     protected:
-        void updateCurrentValue(const QVariant & value)
+        void updateCurrentValue(const QVariant & value) override
         {
             int steps = endValue().toInt();
             int curr = value.toInt();

@@ -321,7 +321,7 @@ class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
     PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
-    ~PythonDebuggerPy() {}
+    ~PythonDebuggerPy() override {}
     PythonDebugger* dbg;
     int depth;
 };

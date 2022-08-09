@@ -41,8 +41,8 @@ class DlgProjectInformationImp : public QDialog
 
 public:
     DlgProjectInformationImp(App::Document* doc, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgProjectInformationImp();
-    void accept();
+    ~DlgProjectInformationImp() override;
+    void accept() override;
 
 private Q_SLOTS:
     void open_url();

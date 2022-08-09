@@ -60,8 +60,8 @@ class GuiExport ViewProviderColorBuilder : public ViewProviderBuilder
 public:
     /// Constructor
     ViewProviderColorBuilder();
-    virtual ~ViewProviderColorBuilder();
-    virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
+    ~ViewProviderColorBuilder() override;
+    void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
 };
 
 } //namespace Gui

@@ -39,13 +39,13 @@ public:
     ViewProviderInventorObject();
 
     /// destructor.
-    ~ViewProviderInventorObject();
+    ~ViewProviderInventorObject() override;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
-    bool useNewSelectionModel() const {return true;}
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
+    bool useNewSelectionModel() const override {return true;}
 
 private:
     void adjustSelectionNodes(SoNode* child, const char* docname, const char* objname);

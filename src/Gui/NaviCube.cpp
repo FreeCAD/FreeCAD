@@ -113,12 +113,12 @@ public:
 class NaviCubeImplementation : public ParameterGrp::ObserverType {
 public:
 	NaviCubeImplementation(Gui::View3DInventorViewer*);
-	virtual ~NaviCubeImplementation();
+	~NaviCubeImplementation() override;
 	void drawNaviCube();
 	void createContextMenu(const std::vector<std::string>& cmd);
 
 	/// Observer message from the ParameterGrp
-	virtual void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason);
+	void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
 	bool processSoEvent(const SoEvent* ev);
 private:

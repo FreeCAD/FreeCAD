@@ -57,7 +57,7 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
 
 public:
     TreeWidget(const char *name, QWidget* parent=nullptr);
-    ~TreeWidget();
+    ~TreeWidget() override;
 
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
@@ -88,7 +88,7 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
-    virtual void selectAll() override;
+    void selectAll() override;
 
     const char *getTreeName() const;
 
@@ -259,7 +259,7 @@ class DocumentItem : public QTreeWidgetItem, public Base::Persistence
 {
 public:
     DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent);
-    ~DocumentItem();
+    ~DocumentItem() override;
 
     Gui::Document* document() const;
     void clearSelection(DocumentObjectItem *exclude=nullptr);
@@ -292,9 +292,9 @@ public:
 
     bool isObjectShowable(App::DocumentObject *obj);
 
-    virtual unsigned int getMemSize () const override;
-    virtual void Save (Base::Writer &) const override;
-    virtual void Restore(Base::XMLReader &) override;
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &) const override;
+    void Restore(Base::XMLReader &) override;
 
     class ExpandInfo;
     typedef std::shared_ptr<ExpandInfo> ExpandInfoPtr;
@@ -372,14 +372,14 @@ class DocumentObjectItem : public QTreeWidgetItem
 {
 public:
     DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjectDataPtr data);
-    ~DocumentObjectItem();
+    ~DocumentObjectItem() override;
 
     Gui::ViewProviderDocumentObject* object() const;
     void testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2);
     void testStatus(bool resetStatus);
     void displayStatusInfo();
     void setExpandedStatus(bool);
-    void setData(int column, int role, const QVariant & value);
+    void setData(int column, int role, const QVariant & value) override;
     bool isChildOfItem(DocumentObjectItem*);
 
     void restoreBackground();
@@ -447,9 +447,9 @@ class TreePanel : public QWidget
 
 public:
     TreePanel(const char *name, QWidget* parent=nullptr);
-    virtual ~TreePanel();
+    ~TreePanel() override;
 
-    bool eventFilter(QObject *obj, QEvent *ev);
+    bool eventFilter(QObject *obj, QEvent *ev) override;
 
 private Q_SLOTS:
     void accept();
@@ -472,7 +472,7 @@ class TreeDockWidget : public Gui::DockWindow
 
 public:
     TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
-    ~TreeDockWidget();
+    ~TreeDockWidget() override;
 };
 
 
@@ -483,8 +483,8 @@ class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
     TreeWidgetEditDelegate(QObject* parent=nullptr);
-    virtual QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &, const QModelIndex &index) const;
+    QWidget* createEditor(QWidget *parent,
+            const QStyleOptionViewItem &, const QModelIndex &index) const override;
 };
 
 
@@ -508,7 +508,7 @@ public:
 class GuiExport TreeParams : public ParameterGrp::ObserverType {
 public:
     TreeParams();
-    void OnChange(Base::Subject<const char*> &, const char* sReason);
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override;
     static TreeParams *Instance();
     bool getTreeViewStretchDescription() const;
 

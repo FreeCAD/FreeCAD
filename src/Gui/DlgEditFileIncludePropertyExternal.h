@@ -40,7 +40,7 @@ class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal
 
 public:
     DlgEditFileIncludePropertyExternal( App::PropertyFileIncluded& Prop, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-    virtual ~DlgEditFileIncludePropertyExternal();
+    ~DlgEditFileIncludePropertyExternal() override;
 
     int Do();
 

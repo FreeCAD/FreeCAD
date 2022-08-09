@@ -42,7 +42,7 @@ class GuiExport DlgRunExternal : public QDialog
 
 public:
     DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    virtual ~DlgRunExternal();
+    ~DlgRunExternal() override;
 
     int Do(void);
 
@@ -50,8 +50,8 @@ public:
     QStringList arguments;
 
 protected Q_SLOTS:
-    virtual void reject(void);
-    virtual void accept(void);
+    void reject(void) override;
+    void accept(void) override;
     virtual void abort(void);
     virtual void advanced(void);
     void finished (int exitCode, QProcess::ExitStatus exitStatus);

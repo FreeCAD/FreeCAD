@@ -42,16 +42,16 @@ public:
     ViewProviderExtern();
 
     /// destructor.
-    virtual ~ViewProviderExtern();
+    ~ViewProviderExtern() override;
 
     void setModeByString(const char* name, const char* ivFragment);
     void setModeByFile(const char* name, const char* ivFileName);
     void setModeBySoInput(const char* name, SoInput &ivFileInput);
     void adjustDocumentName(const char* docname);
 
-    virtual const char* getDefaultDisplayMode() const;
-    virtual std::vector<std::string> getDisplayModes() const;
-    virtual void updateData(const App::Property*){}
+    const char* getDefaultDisplayMode() const override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override{}
 
 private:
     void adjustRecursiveDocumentName(SoNode*, const char* docname);

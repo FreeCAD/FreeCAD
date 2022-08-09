@@ -58,7 +58,7 @@ namespace Gui {
             : QTreeWidgetItem(widget),
             systemWide(systemwide){}
 
-            ~MacroItem(){}
+            ~MacroItem() override{}
 
             bool systemWide;
         };

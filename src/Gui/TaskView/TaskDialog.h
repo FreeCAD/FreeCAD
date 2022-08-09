@@ -51,7 +51,7 @@ public:
     };
 
     TaskDialog();
-    ~TaskDialog();
+    ~TaskDialog() override;
 
     void setButtonPosition(ButtonPosition p)
     { pos = p; }

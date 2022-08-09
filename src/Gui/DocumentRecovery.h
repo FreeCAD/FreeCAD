@@ -44,14 +44,14 @@ class DocumentRecovery : public QDialog
 
 public:
     DocumentRecovery(const QList<QFileInfo>&, QWidget* parent = nullptr);
-    virtual ~DocumentRecovery();
+    ~DocumentRecovery() override;
 
-    void accept();
+    void accept() override;
     bool foundDocuments() const;
 
 protected:
-    void closeEvent(QCloseEvent*);
-    void contextMenuEvent(QContextMenuEvent*);
+    void closeEvent(QCloseEvent*) override;
+    void contextMenuEvent(QContextMenuEvent*) override;
     QString createProjectFile(const QString&);
     void cleanup(QDir&, const QList<QFileInfo>&, const QString&);
 

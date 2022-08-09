@@ -74,7 +74,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
     */
-    virtual ~ComboView();
+    ~ComboView() override;
 
     Gui::TaskView::TaskView *getTaskPanel(){return taskPanel;}
     QTabWidget* getTabPanel() const { return tabs;}
@@ -92,7 +92,7 @@ protected:
     void showDialog(Gui::TaskView::TaskDialog *dlg);
     void closeDialog();
     void closedDialog();
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     int oldTabIndex;

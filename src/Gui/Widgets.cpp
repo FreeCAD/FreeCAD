@@ -1241,12 +1241,12 @@ public:
         codeEditor = editor;
     }
 
-    QSize sizeHint() const {
+    QSize sizeHint() const override {
         return QSize(codeEditor->lineNumberAreaWidth(), 0);
     }
 
 protected:
-    void paintEvent(QPaintEvent *event) {
+    void paintEvent(QPaintEvent *event) override {
         codeEditor->lineNumberAreaPaintEvent(event);
     }
 
@@ -1359,7 +1359,7 @@ public:
     {
     }
 
-    void accept()
+    void accept() override
     {
         PropertyListEditor* edit = this->findChild<PropertyListEditor*>();
         QStringList lines;

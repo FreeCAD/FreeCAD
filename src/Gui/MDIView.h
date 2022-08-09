@@ -68,21 +68,21 @@ public:
     /** View destructor
      * Detach the view from the document, if attached.
      */
-    ~MDIView();
+    ~MDIView() override;
 
     /// get called when the document is updated
-    virtual void onRelabel(Gui::Document *pDoc);
+    void onRelabel(Gui::Document *pDoc) override;
     virtual void viewAll();
 
     /// Message handler
-    virtual bool onMsg(const char* pMsg,const char** ppReturn);
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
     /// Message handler test
-    virtual bool onHasMsg(const char* pMsg) const;
+    bool onHasMsg(const char* pMsg) const override;
     /// overwrite when checking on close state
-    virtual bool canClose();
+    bool canClose() override;
     /// delete itself
-    virtual void deleteSelf();
-    virtual PyObject *getPyObject();
+    void deleteSelf() override;
+    PyObject *getPyObject() override;
     /** @name Printing */
     //@{
 public Q_SLOTS:
@@ -107,7 +107,7 @@ public:
     virtual QStringList redoActions() const;
     //@}
 
-    QSize minimumSizeHint () const;
+    QSize minimumSizeHint () const override;
 
     /// MDI view mode enum
     enum ViewMode {
@@ -169,9 +169,9 @@ protected Q_SLOTS:
     virtual void windowStateChanged(Gui::MDIView*);
 
 protected:
-    void closeEvent(QCloseEvent *e);
+    void closeEvent(QCloseEvent *e) override;
     /** \internal */
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 protected:
     PyObject* pythonObject;

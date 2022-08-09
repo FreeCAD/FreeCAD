@@ -60,8 +60,8 @@ namespace Gui
             Q_OBJECT
         public:
             ButtonModel(QObject *parent);
-            virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-            virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+            int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+            QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
             void insertButtonRows(int number);
             void setCommand(int row, QString command);
             void goButtonPress(int number);
@@ -108,14 +108,14 @@ namespace Gui
             Q_OBJECT
         public:
             CommandModel(QObject *parent = nullptr);
-            ~CommandModel();
-            virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-            virtual QModelIndex parent(const QModelIndex &index) const;
-            virtual int rowCount(const QModelIndex &parent) const;
-            virtual int columnCount(const QModelIndex &parent) const;
-            virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-            virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-            virtual Qt::ItemFlags flags (const QModelIndex &index) const;
+            ~CommandModel() override;
+            QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+            QModelIndex parent(const QModelIndex &index) const override;
+            int rowCount(const QModelIndex &parent) const override;
+            int columnCount(const QModelIndex &parent) const override;
+            QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+            QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+            Qt::ItemFlags flags (const QModelIndex &index) const override;
             void goAddMacro(const QByteArray &macroName);
             void goRemoveMacro(const QByteArray &macroName);
         private:
@@ -131,10 +131,10 @@ namespace Gui
             Q_OBJECT
         public:
             PrintModel(QObject *parent, ButtonModel *buttonModelIn, CommandModel *commandModelIn);
-            virtual int rowCount(const QModelIndex &parent) const;
-            virtual int columnCount(const QModelIndex &parent) const;
-            virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-            virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+            int rowCount(const QModelIndex &parent) const override;
+            int columnCount(const QModelIndex &parent) const override;
+            QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+            QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         private:
             ButtonModel *buttonModel;
             CommandModel *commandModel;
@@ -145,17 +145,17 @@ namespace Gui
             Q_OBJECT
         public:
             DlgCustomizeSpaceball(QWidget *parent = nullptr);
-            virtual ~DlgCustomizeSpaceball();
+            ~DlgCustomizeSpaceball() override;
         protected:
-            void changeEvent(QEvent *e);
-            virtual bool event(QEvent *event);
-            virtual void hideEvent(QHideEvent *event);
-            virtual void showEvent (QShowEvent *event);
+            void changeEvent(QEvent *e) override;
+            bool event(QEvent *event) override;
+            void hideEvent(QHideEvent *event) override;
+            void showEvent (QShowEvent *event) override;
 
         protected Q_SLOTS:
-            void onAddMacroAction(const QByteArray &macroName);
-            void onRemoveMacroAction(const QByteArray &macroName);
-            void onModifyMacroAction(const QByteArray &macroName);
+            void onAddMacroAction(const QByteArray &macroName) override;
+            void onRemoveMacroAction(const QByteArray &macroName) override;
+            void onModifyMacroAction(const QByteArray &macroName) override;
 
         private Q_SLOTS:
             void goClear();

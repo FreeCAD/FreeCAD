@@ -58,7 +58,7 @@ public:
     UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
-    virtual ~UrlHandler() {
+    ~UrlHandler() override {
     }
     virtual void openUrl(App::Document*, const QUrl&) {
     }
@@ -87,11 +87,11 @@ public:
      */
     MainWindow(QWidget * parent = nullptr, Qt::WindowFlags f = Qt::Window);
     /** Destroys the object and frees any allocated resources. */
-    ~MainWindow();
+    ~MainWindow() override;
     /**
      * Filters events if this object has been installed as an event filter for the watched object.
      */
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
     /**
      * Adds an MDI window \a view to the main window's workspace and adds a new tab
      * to the tab bar.
@@ -129,7 +129,7 @@ public:
     /**
      * Returns true that the context menu contains the 'Customize...' menu item.
      */
-    QMenu * createPopupMenu();
+    QMenu * createPopupMenu() override;
 
     /** @name Splasher and access methods */
     //@{
@@ -253,28 +253,28 @@ protected:
     /**
      * This method checks if the main window can be closed by checking all open documents and views.
      */
-    void closeEvent (QCloseEvent * e);
-    void showEvent  (QShowEvent  * e);
-    void hideEvent  (QHideEvent  * e);
-    void timerEvent (QTimerEvent *  ) {
+    void closeEvent (QCloseEvent * e) override;
+    void showEvent  (QShowEvent  * e) override;
+    void hideEvent  (QHideEvent  * e) override;
+    void timerEvent (QTimerEvent *  ) override {
         Q_EMIT timeEvent();
     }
-    void customEvent(QEvent      * e);
-    bool event      (QEvent      * e);
+    void customEvent(QEvent      * e) override;
+    bool event      (QEvent      * e) override;
     /**
      * Try to interpret dropped elements.
      */
-    void dropEvent  (QDropEvent  * e);
+    void dropEvent  (QDropEvent  * e) override;
     /**
      * Checks if a mime source object can be interpreted.
      */
-    void dragEnterEvent(QDragEnterEvent * e);
+    void dragEnterEvent(QDragEnterEvent * e) override;
     /**
      * This method is called from the Qt framework automatically whenever a
      * QTranslator object has been installed. This allows to translate all
      * relevant user visible text.
      */
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private Q_SLOTS:
     /**
@@ -349,7 +349,7 @@ class StatusBarObserver: public WindowParameter, public Base::ILogger
 {
 public:
     StatusBarObserver();
-    virtual ~StatusBarObserver();
+    ~StatusBarObserver() override;
 
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;

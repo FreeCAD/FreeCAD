@@ -35,9 +35,9 @@ class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
 public:
     /// Constructor
     ViewProviderLine();
-    virtual ~ViewProviderLine();
+    ~ViewProviderLine() override;
 
-    virtual void attach ( App::DocumentObject * );
+    void attach ( App::DocumentObject * ) override;
 };
 
 } //namespace Gui

@@ -44,7 +44,7 @@ class GuiExport MacroManager : public Base::Observer<const char*>
 {
 protected:
     MacroManager();
-    ~MacroManager();
+    ~MacroManager() override;
 
 public:
 
@@ -90,7 +90,7 @@ public:
     /// Get the Python debugger
     PythonDebugger* debugger() const;
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
     /// Return the added lines regardless of recording or not
     long getLines() const {return totalLines;}

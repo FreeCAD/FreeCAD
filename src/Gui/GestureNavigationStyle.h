@@ -39,7 +39,7 @@ class GestureNavigationStyle: public UserNavigationStyle
 
 public:
     GestureNavigationStyle();
-    virtual ~GestureNavigationStyle() override;
+    ~GestureNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
 
 protected:

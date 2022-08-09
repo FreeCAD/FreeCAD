@@ -387,7 +387,7 @@ public:
     WorkbenchActionEvent(QAction* a)
       : QEvent(QEvent::User), act(a)
     { }
-    ~WorkbenchActionEvent()
+    ~WorkbenchActionEvent() override
     { }
     QAction* action() const
     { return act; }
@@ -680,12 +680,12 @@ public:
         handle->Attach(this);
     }
 
-    virtual ~Private()
+    ~Private() override
     {
         handle->Detach(this);
     }
 
-    void OnChange(Base::Subject<const char*> &, const char *reason)
+    void OnChange(Base::Subject<const char*> &, const char *reason) override
     {
         if (!updating && reason && strcmp(reason, "RecentFiles")==0) {
             Base::StateLocker guard(updating);

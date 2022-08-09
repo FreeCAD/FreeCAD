@@ -52,7 +52,7 @@ public:
     ViewProviderGeometryObject();
 
     /// destructor.
-    virtual ~ViewProviderGeometryObject();
+    ~ViewProviderGeometryObject() override;
 
     // Display properties
     App::PropertyColor ShapeColor;
@@ -64,10 +64,10 @@ public:
     /**
      * Attaches the document object to this view provider.
      */
-    void attach(App::DocumentObject *pcObject);
-    void updateData(const App::Property*);
+    void attach(App::DocumentObject *pcObject) override;
+    void updateData(const App::Property*) override;
 
-    bool isSelectable() const {return Selectable.getValue();}
+    bool isSelectable() const override {return Selectable.getValue();}
 
     /**
      * Returns a list of picked points from the geometry under \a getRoot().
@@ -89,7 +89,7 @@ public:
 
 protected:
     /// get called by the container whenever a property has been changed
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     void setSelectable(bool Selectable=true);
 
     virtual unsigned long getBoundColor() const;

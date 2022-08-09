@@ -119,16 +119,16 @@ public:
     static void reloadSettings();
 
     DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgPreferencesImp();
+    ~DlgPreferencesImp() override;
 
-    void accept();
+    void accept() override;
     void reload();
     void activateGroupPage(const QString& group, int id);
 
 protected:
-    void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
-    void resizeEvent(QResizeEvent*);
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
 
 protected Q_SLOTS:

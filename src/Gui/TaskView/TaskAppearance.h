@@ -46,10 +46,10 @@ class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverT
 
 public:
     TaskAppearance(QWidget *parent = nullptr);
-    ~TaskAppearance();
+    ~TaskAppearance() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+                  Gui::SelectionSingleton::MessageType Reason) override;
 
 private Q_SLOTS:
     void on_changeMode_activated(const QString&);
@@ -59,7 +59,7 @@ private Q_SLOTS:
     void on_spinLineWidth_valueChanged(int);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);

@@ -41,10 +41,10 @@ class DlgActivateWindowImp : public QDialog
 
 public:
     DlgActivateWindowImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgActivateWindowImp();
+    ~DlgActivateWindowImp() override;
 
 protected:
-    void accept();
+    void accept() override;
 
 private:
     Ui_DlgActivateWindow* ui;

@@ -55,8 +55,8 @@ public:
     SoSFFloat frameSize;
 
 protected:
-    virtual ~SoTextLabel() {}
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoTextLabel() override {}
+    void GLRender(SoGLRenderAction *action) override;
 };
 
 /**
@@ -91,8 +91,8 @@ public:
     SoSFInt32  size;
 
 protected:
-    virtual ~SoStringLabel() {};
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoStringLabel() override {};
+    void GLRender(SoGLRenderAction *action) override;
 };
 
 class GuiExport SoFrameLabel : public SoImage {
@@ -118,9 +118,9 @@ public:
   //SoSFImage  image;
 
 protected:
-    virtual ~SoFrameLabel() {};
-    virtual void notify(SoNotList * list);
-    virtual void GLRender(SoGLRenderAction *action);
+    ~SoFrameLabel() override {};
+    void notify(SoNotList * list) override;
+    void GLRender(SoGLRenderAction *action) override;
 
 private:
     void drawImage();
@@ -137,7 +137,7 @@ public:
 
 private:
     // Destructor
-    ~TranslateManip();
+    ~TranslateManip() override;
 };
 
 } // namespace Gui
