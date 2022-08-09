@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_FACE_H
 #define PART_FACE_H
 
-#include <Mod/Part/App/PartFeature.h>
+#include "PartFeature.h"
+
 
 namespace Part
 {
@@ -42,10 +42,10 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderFace";
     }
     void setupObject() override;

@@ -20,21 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MODELREFINE_H
 #define MODELREFINE_H
 
-#include <vector>
-#include <map>
 #include <list>
+#include <map>
+#include <vector>
+
+#include <BRepBuilderAPI_MakeShape.hxx>
 #include <GeomAbs_SurfaceType.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shell.hxx>
+
 #include <TopTools_DataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
-#include <BRepBuilderAPI_MakeShape.hxx>
+#include <TopTools_MapOfShape.hxx>
+
 #include <Mod/Part/PartGlobal.h>
 
 
@@ -72,9 +76,9 @@ namespace ModelRefine
     private:
         FaceTypedPlane();
     public:
-        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
-        virtual GeomAbs_SurfaceType getType() const;
-        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const override;
+        GeomAbs_SurfaceType getType() const override;
+        TopoDS_Face buildFace(const FaceVectorType &faces) const override;
         friend FaceTypedPlane& getPlaneObject();
     };
     FaceTypedPlane& getPlaneObject();
@@ -84,13 +88,13 @@ namespace ModelRefine
     private:
         FaceTypedCylinder();
     public:
-        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
-        virtual GeomAbs_SurfaceType getType() const;
-        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const override;
+        GeomAbs_SurfaceType getType() const override;
+        TopoDS_Face buildFace(const FaceVectorType &faces) const override;
         friend FaceTypedCylinder& getCylinderObject();
 
     protected:
-        virtual void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const;
+        void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const override;
     };
     FaceTypedCylinder& getCylinderObject();
 
@@ -99,9 +103,9 @@ namespace ModelRefine
     private:
         FaceTypedBSpline();
     public:
-        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
-        virtual GeomAbs_SurfaceType getType() const;
-        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const override;
+        GeomAbs_SurfaceType getType() const override;
+        TopoDS_Face buildFace(const FaceVectorType &faces) const override;
         friend FaceTypedBSpline& getBSplineObject();
     };
     FaceTypedBSpline& getBSplineObject();

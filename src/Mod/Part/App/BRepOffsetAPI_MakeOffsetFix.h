@@ -20,14 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
 #define PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
 
+#include <list>
+#include <map>
+
 #include <Mod/Part/PartGlobal.h>
+
 #include <BRepOffsetAPI_MakeOffset.hxx>
 #include <GeomAbs_CurveType.hxx>
 #include <Standard_Version.hxx>
+
 
 namespace Part {
 /*!
@@ -41,7 +45,7 @@ class PartExport BRepOffsetAPI_MakeOffsetFix : public BRepBuilderAPI_MakeShape
 public:
     BRepOffsetAPI_MakeOffsetFix();
     BRepOffsetAPI_MakeOffsetFix(const GeomAbs_JoinType Join, const Standard_Boolean IsOpenResult);
-    virtual ~BRepOffsetAPI_MakeOffsetFix();
+    ~BRepOffsetAPI_MakeOffsetFix() override;
 
     //! Initializes the algorithm to construct parallels to the wire Spine.
     void AddWire (const TopoDS_Wire& Spine);
@@ -72,22 +76,22 @@ public:
     //! Initialize the evaluation of Offsetting.
     void Init(const GeomAbs_JoinType Join = GeomAbs_Arc, const Standard_Boolean IsOpenResult = Standard_False);
 
-    virtual Standard_Boolean IsDone() const;
+    Standard_Boolean IsDone() const override;
 
     //! Returns a shape built by the shape construction algorithm.
     //! Raises exception StdFail_NotDone if the shape was not built.
-    virtual const TopoDS_Shape& Shape();
+    const TopoDS_Shape& Shape() override;
 
     //! returns a list of the created shapes
     //! from the shape <S>.
-    virtual const TopTools_ListOfShape& Generated (const TopoDS_Shape& S);
+    const TopTools_ListOfShape& Generated (const TopoDS_Shape& S) override;
 
     //! Returns the list  of shapes modified from the shape
     //! <S>.
-    virtual const TopTools_ListOfShape& Modified (const TopoDS_Shape& S);
+    const TopTools_ListOfShape& Modified (const TopoDS_Shape& S) override;
 
     //! Returns true if the shape S has been deleted.
-    virtual Standard_Boolean IsDeleted (const TopoDS_Shape& S);
+    Standard_Boolean IsDeleted (const TopoDS_Shape& S) override;
 
     //! Replaces the given curve type with a B-Spline. Input shape <S>
     //! must be a wire or a compound of wires
