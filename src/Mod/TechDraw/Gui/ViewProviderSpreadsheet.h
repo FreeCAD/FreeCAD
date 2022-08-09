@@ -39,11 +39,11 @@ public:
     /// constructor
     ViewProviderSpreadsheet();
     /// destructor
-    virtual ~ViewProviderSpreadsheet();
+    ~ViewProviderSpreadsheet() override;
 
-    virtual bool useNewSelectionModel() const {return false;}
+    bool useNewSelectionModel() const override {return false;}
 
-    virtual TechDraw::DrawViewSpreadsheet* getViewObject() const;
+    TechDraw::DrawViewSpreadsheet* getViewObject() const override;
 };
 
 } // namespace TechDrawGui

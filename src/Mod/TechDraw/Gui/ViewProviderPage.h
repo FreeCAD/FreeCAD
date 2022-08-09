@@ -51,34 +51,34 @@ public:
     /// constructor
     ViewProviderPage();
     /// destructor
-    virtual ~ViewProviderPage();
+    ~ViewProviderPage() override;
 
     App::PropertyBool  ShowFrames;
     App::PropertyBool  ShowGrid;
     App::PropertyDistance GridSpacing;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
-    virtual bool useNewSelectionModel() const override {return false;}
+    void attach(App::DocumentObject *) override;
+    void setDisplayMode(const char* ModeName) override;
+    bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes() const override;
+    std::vector<std::string> getDisplayModes() const override;
     /// Hides the view provider
-    virtual void hide() override;
+    void hide() override;
     /// Shows the view provider
-    virtual void show() override;
-    virtual bool isShow() const override;
+    void show() override;
+    bool isShow() const override;
 
     /// Claim all the views for the page
     std::vector<App::DocumentObject*> claimChildren() const override;
 
     /// Is called by the tree if the user double click on the object
-    virtual bool doubleClicked() override;
+    bool doubleClicked() override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
-    virtual bool onDelete(const std::vector<std::string> &) override;
-    virtual void onChanged(const App::Property *prop) override;
-    virtual void updateData(const App::Property* prop) override;
-    virtual void startRestoring() override;
-    virtual void finishRestoring() override;
+    bool onDelete(const std::vector<std::string> &) override;
+    void onChanged(const App::Property *prop) override;
+    void updateData(const App::Property* prop) override;
+    void startRestoring() override;
+    void finishRestoring() override;
     bool isRestoring() {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
@@ -91,7 +91,7 @@ public:
     bool showMDIViewPage();
     void removeMDIView();
 
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 
     bool getFrameState();
     void setFrameState(bool state);
@@ -101,7 +101,7 @@ public:
     QGSPage* getGraphicsScene() { return m_graphicsScene; }
     void setGraphicsView(QGVPage* gv);
     void setGraphicsScene(QGSPage* gs);
-    virtual bool canDelete(App::DocumentObject* obj) const override;
+    bool canDelete(App::DocumentObject* obj) const override;
     void  setGrid();
 
 protected:

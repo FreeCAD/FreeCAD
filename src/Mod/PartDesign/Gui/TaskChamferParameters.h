@@ -40,9 +40,9 @@ class TaskChamferParameters : public TaskDressUpParameters
 
 public:
     TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
-    ~TaskChamferParameters();
+    ~TaskChamferParameters() override;
 
-    virtual void apply();
+    void apply() override;
 
 private Q_SLOTS:
     void onTypeChanged(int);
@@ -50,15 +50,15 @@ private Q_SLOTS:
     void onSize2Changed(double);
     void onAngleChanged(double);
     void onFlipDirection(bool);
-    void onRefDeleted(void);
+    void onRefDeleted(void) override;
     void onAddAllEdges(void);
     void onCheckBoxUseAllEdgesToggled(bool checked);
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void clearButtons(const selectionModes notThis) override;
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     int getType(void) const;
     double getSize(void) const;
@@ -79,11 +79,11 @@ class TaskDlgChamferParameters : public TaskDlgDressUpParameters
 
 public:
     TaskDlgChamferParameters(ViewProviderChamfer *DressUpView);
-    ~TaskDlgChamferParameters();
+    ~TaskDlgChamferParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
 } //namespace PartDesignGui

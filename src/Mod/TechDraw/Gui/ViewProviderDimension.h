@@ -41,7 +41,7 @@ public:
     /// constructor
     ViewProviderDimension();
     /// destructor
-    virtual ~ViewProviderDimension();
+    ~ViewProviderDimension() override;
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
@@ -67,25 +67,25 @@ public:
     App::PropertyFloat GapFactorISO;
     App::PropertyFloat GapFactorASME;
 
-    virtual void attach(App::DocumentObject *);
-    virtual bool useNewSelectionModel() const {return false;}
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property* p);
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual bool doubleClicked();
+    void attach(App::DocumentObject *) override;
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* p) override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 
-    virtual TechDraw::DrawViewDimension* getViewObject() const;
+    TechDraw::DrawViewDimension* getViewObject() const override;
 
     App::Color prefColor() const;
     std::string prefFont() const;
     double prefFontSize() const;
     double prefWeight() const;
     int prefStandardAndStyle() const;
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool canDelete(App::DocumentObject* obj) const override;
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
     static const char *StandardAndStyleEnums[];

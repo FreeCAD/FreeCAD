@@ -53,7 +53,7 @@ class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 public:
     /// Constructor
     DrawProjGroup();
-    ~DrawProjGroup();
+    ~DrawProjGroup() override;
 
     App::PropertyLinkList   Source;
     App::PropertyXLinkList  XSource;
@@ -71,7 +71,7 @@ public:
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
-    virtual QRectF getRect() const override;
+    QRectF getRect() const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -97,15 +97,15 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderProjGroup";
     }
     //return PyObject as DrawProjGroupPy
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     /// Determines either "First Angle" or "Third Angle".
     App::Enumeration usedProjectionType();
@@ -176,7 +176,7 @@ protected:
     Base::Vector3d dir2vec(gp_Dir d);
     gp_Dir vec2dir(Base::Vector3d v);
 
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
     
     bool m_lockScale;
 };

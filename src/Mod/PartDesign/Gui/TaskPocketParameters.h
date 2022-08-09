@@ -44,9 +44,9 @@ class TaskPocketParameters : public TaskExtrudeParameters
 
 public:
     TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = nullptr, bool newObj=false);
-    ~TaskPocketParameters();
+    ~TaskPocketParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
 private:
     void onModeChanged(int index) override;

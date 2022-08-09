@@ -45,12 +45,12 @@ class SketcherExport Sketch :public Base::Persistence
 
 public:
     Sketch();
-    ~Sketch();
+    ~Sketch() override;
 
     // from base class
-    virtual unsigned int getMemSize() const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
     /// solve the actual set up sketch
     int solve();

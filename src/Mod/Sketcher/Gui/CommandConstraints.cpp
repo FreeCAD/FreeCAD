@@ -605,7 +605,7 @@ namespace SketcherGui {
             , object(obj), allowedSelTypes(0)
         {}
 
-        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
+        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName) override
         {
             if (pObj != this->object)
                 return false;
@@ -644,9 +644,9 @@ public:
     CmdSketcherConstraint(const char* name)
             : Command(name) {}
 
-    virtual ~CmdSketcherConstraint(){}
+    ~CmdSketcherConstraint() override{}
 
-    virtual const char* className() const
+    const char* className() const override
     { return "CmdSketcherConstraint"; }
 
 protected:
@@ -667,8 +667,8 @@ protected:
     std::vector<std::vector<SketcherGui::SelType> > allowedSelSequences;
 
     virtual void applyConstraint(std::vector<SelIdPair> &, int) {}
-    virtual void activated(int /*iMsg*/);
-    virtual bool isActive()
+    void activated(int /*iMsg*/) override;
+    bool isActive() override
     { return isCommandActive(getActiveGuiDocument()); }
 };
 
@@ -677,19 +677,19 @@ class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 public:
     DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
         : cmd(_cmd), seqIndex(0) {}
-    virtual ~DrawSketchHandlerGenConstraint()
+    ~DrawSketchHandlerGenConstraint() override
     {
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d /*onSketchPos*/) override {}
+    void mouseMove(Base::Vector2d /*onSketchPos*/) override {}
 
-    virtual bool pressButton(Base::Vector2d /*onSketchPos*/) override
+    bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -780,7 +780,7 @@ public:
     }
 
 private:
-    virtual void activated() override
+    void activated() override
     {
         selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
 
@@ -862,12 +862,12 @@ class CmdSketcherConstrainHorizontal : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainHorizontal();
-    virtual ~CmdSketcherConstrainHorizontal(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainHorizontal() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainHorizontal"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 
 };
 
@@ -1100,12 +1100,12 @@ class CmdSketcherConstrainVertical : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainVertical();
-    virtual ~CmdSketcherConstrainVertical(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainVertical() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainVertical"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 
 };
 
@@ -1334,13 +1334,13 @@ class CmdSketcherConstrainLock : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainLock();
-    virtual ~CmdSketcherConstrainLock(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainLock() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainLock"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainLock::CmdSketcherConstrainLock()
@@ -1561,12 +1561,12 @@ class CmdSketcherConstrainBlock : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainBlock();
-    virtual ~CmdSketcherConstrainBlock(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainBlock() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainBlock"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
@@ -1779,20 +1779,20 @@ public:
         GeoId1 = GeoId2 = GeoEnum::GeoUndef;
         PosId1 = PosId2 = Sketcher::PointPos::none;
     }
-    virtual ~DrawSketchHandlerCoincident()
+    ~DrawSketchHandlerCoincident() override
     {
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override {Q_UNUSED(onSketchPos);}
+    void mouseMove(Base::Vector2d onSketchPos) override {Q_UNUSED(onSketchPos);}
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         int VtId = getPreselectPoint();
         int CrsId = getPreselectCross();
@@ -1853,7 +1853,7 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    void activated() override
     {
         Gui::Selection().rmvSelectionGate();
         GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
@@ -1873,12 +1873,12 @@ class CmdSketcherConstrainCoincident : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainCoincident();
-    virtual ~CmdSketcherConstrainCoincident(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainCoincident() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainCoincident"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
     // returns true if a substitution took place
     bool substituteConstraintCombinations(SketchObject * Obj,
                                           int GeoId1, PointPos PosId1,
@@ -2082,13 +2082,13 @@ class CmdSketcherConstrainDistance : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDistance();
-    virtual ~CmdSketcherConstrainDistance(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDistance() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDistance"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
@@ -2429,12 +2429,12 @@ class CmdSketcherConstrainPointOnObject : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainPointOnObject();
-    virtual ~CmdSketcherConstrainPointOnObject(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainPointOnObject() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainPointOnObject"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
     // returns true if a substitution took place
     bool substituteConstraintCombinations(SketchObject * Obj,
                                           int GeoId1, PointPos PosId1, int GeoId2);
@@ -2679,13 +2679,13 @@ class CmdSketcherConstrainDistanceX : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDistanceX();
-    virtual ~CmdSketcherConstrainDistanceX(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDistanceX() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDistanceX"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
@@ -2933,13 +2933,13 @@ class CmdSketcherConstrainDistanceY : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDistanceY();
-    virtual ~CmdSketcherConstrainDistanceY(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDistanceY() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDistanceY"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
@@ -3180,12 +3180,12 @@ class CmdSketcherConstrainParallel : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainParallel();
-    virtual ~CmdSketcherConstrainParallel(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainParallel() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainParallel"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
@@ -3330,12 +3330,12 @@ class CmdSketcherConstrainPerpendicular : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainPerpendicular();
-    virtual ~CmdSketcherConstrainPerpendicular(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainPerpendicular() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainPerpendicular"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
@@ -3972,12 +3972,12 @@ class CmdSketcherConstrainTangent : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainTangent();
-    virtual ~CmdSketcherConstrainTangent(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainTangent() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainTangent"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
     // returns true if a substitution took place
     bool substituteConstraintCombinations(SketchObject * Obj, int GeoId1, int GeoId2);
 };
@@ -4692,13 +4692,13 @@ class CmdSketcherConstrainRadius : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainRadius();
-    virtual ~CmdSketcherConstrainRadius(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainRadius() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainRadius"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
@@ -4992,13 +4992,13 @@ class CmdSketcherConstrainDiameter : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDiameter();
-    virtual ~CmdSketcherConstrainDiameter(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDiameter() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDiameter"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDiameter::CmdSketcherConstrainDiameter()
@@ -5266,13 +5266,13 @@ class CmdSketcherConstrainRadiam : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainRadiam();
-    virtual ~CmdSketcherConstrainRadiam(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainRadiam() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainRadiam"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
@@ -5712,13 +5712,13 @@ class CmdSketcherConstrainAngle : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainAngle();
-    virtual ~CmdSketcherConstrainAngle(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainAngle() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainAngle"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
@@ -6240,12 +6240,12 @@ class CmdSketcherConstrainEqual : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainEqual();
-    virtual ~CmdSketcherConstrainEqual(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainEqual() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainEqual"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
@@ -6456,12 +6456,12 @@ class CmdSketcherConstrainSymmetric : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainSymmetric();
-    virtual ~CmdSketcherConstrainSymmetric(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainSymmetric() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainSymmetric"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()

@@ -286,7 +286,7 @@ public: //methods
      */
     void EnableAllSupportedModes();
 
-    virtual ~AttachEngine(){};
+    ~AttachEngine() override{};
 
 public://helper functions that may be useful outside of the class
     /**
@@ -420,8 +420,8 @@ class PartExport AttachEngine3D : public AttachEngine
     TYPESYSTEM_HEADER();
 public:
     AttachEngine3D();
-    virtual AttachEngine3D* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
+    AttachEngine3D* copy() const override;
+    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
 private:
     double calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp_Vec edB) const;
 };
@@ -432,8 +432,8 @@ class PartExport AttachEnginePlane : public AttachEngine
     TYPESYSTEM_HEADER();
 public:
     AttachEnginePlane();
-    virtual AttachEnginePlane* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
+    AttachEnginePlane* copy() const override;
+    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
 };
 
 //attacher specialized for datum lines
@@ -442,8 +442,8 @@ class PartExport AttachEngineLine : public AttachEngine
     TYPESYSTEM_HEADER();
 public:
     AttachEngineLine();
-    virtual AttachEngineLine* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
+    AttachEngineLine* copy() const override;
+    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
 };
 
 //attacher specialized for datum points
@@ -452,8 +452,8 @@ class PartExport AttachEnginePoint : public AttachEngine
     TYPESYSTEM_HEADER();
 public:
     AttachEnginePoint();
-    virtual AttachEnginePoint* copy() const;
-    virtual Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const;
+    AttachEnginePoint* copy() const override;
+    Base::Placement calculateAttachedPlacement(const Base::Placement& origPlacement) const override;
 
 private:
     gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
@@ -466,7 +466,7 @@ class ExceptionCancel : public Base::Exception
 public:
     ExceptionCancel(){}
     ExceptionCancel(char* msg){this->setMessage(msg);}
-    virtual ~ExceptionCancel() throw() {}
+    ~ExceptionCancel() throw() override {}
 };
 
 } // namespace Attacher

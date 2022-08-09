@@ -49,15 +49,15 @@ public:
     
     FeaturePrimitive();
     
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPrimitive";
     }
     Type         getPrimitiveType() {return primitiveType;}
-    virtual void onChanged(const App::Property* prop) override;
-    virtual PyObject* getPyObject() override;
+    void onChanged(const App::Property* prop) override;
+    PyObject* getPyObject() override;
     
     /// Do nothing, just to suppress warning, must be redefined in derived classes
-    virtual App::DocumentObjectExecReturn* execute() override {
+    App::DocumentObjectExecReturn* execute() override {
         return PartDesign::FeatureAddSub::execute();
     }
 protected:
@@ -80,8 +80,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     
 protected:
     
@@ -119,8 +119,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
 };
 
 class PartDesignExport AdditiveCylinder : public Cylinder {
@@ -156,8 +156,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     
 protected:
     
@@ -195,8 +195,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     
 protected:
     
@@ -237,8 +237,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     
 protected:
     
@@ -278,8 +278,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     
 protected:
     
@@ -316,8 +316,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
 };
 
 class PartDesignExport AdditivePrism : public Prism {
@@ -359,8 +359,8 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     
 protected:
     

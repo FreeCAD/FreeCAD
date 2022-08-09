@@ -41,7 +41,7 @@ class FaceColors : public QWidget, public Gui::SelectionObserver
 
 public:
     FaceColors(ViewProviderPartExt* vp, QWidget* parent = nullptr);
-    ~FaceColors();
+    ~FaceColors() override;
 
     void open();
     bool accept();
@@ -53,8 +53,8 @@ private Q_SLOTS:
     void on_boxSelection_toggled(bool checked);
 
 protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void changeEvent(QEvent *e);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void changeEvent(QEvent *e) override;
     void slotUndoDocument(const Gui::Document& Doc);
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
@@ -71,15 +71,15 @@ class TaskFaceColors : public Gui::TaskView::TaskDialog
 
 public:
     TaskFaceColors(ViewProviderPartExt* vp);
-    ~TaskFaceColors();
+    ~TaskFaceColors() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

@@ -1094,7 +1094,7 @@ public:
     {
     }
 
-    virtual ~DrawSketchHandlerCopy(){}
+    ~DrawSketchHandlerCopy() override{}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -1106,7 +1106,7 @@ public:
         Snap5Degree
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -1139,7 +1139,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d) override
+    bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1148,7 +1148,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End)
@@ -1203,7 +1203,7 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    void activated() override
     {
         setCursor(QPixmap(cursor_createcopy), 7, 7);
         Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
@@ -1351,13 +1351,13 @@ class CmdSketcherCopy : public SketcherCopy
 {
 public:
     CmdSketcherCopy();
-    virtual ~CmdSketcherCopy(){}
-    virtual const char* className() const
+    ~CmdSketcherCopy() override{}
+    const char* className() const override
     { return "CmdSketcherCopy"; }
-    virtual void activate();
+    void activate() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
+    void activated(int iMsg) override;
+    bool isActive() override;
 };
 
 CmdSketcherCopy::CmdSketcherCopy()
@@ -1397,13 +1397,13 @@ class CmdSketcherClone : public SketcherCopy
 {
 public:
     CmdSketcherClone();
-    virtual ~CmdSketcherClone(){}
-    virtual const char* className() const
+    ~CmdSketcherClone() override{}
+    const char* className() const override
     { return "CmdSketcherClone"; }
-    virtual void activate();
+    void activate() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
+    void activated(int iMsg) override;
+    bool isActive() override;
 };
 
 CmdSketcherClone::CmdSketcherClone()
@@ -1440,13 +1440,13 @@ class CmdSketcherMove : public SketcherCopy
 {
 public:
     CmdSketcherMove();
-    virtual ~CmdSketcherMove(){}
-    virtual const char* className() const
+    ~CmdSketcherMove() override{}
+    const char* className() const override
     { return "CmdSketcherMove"; }
-    virtual void activate();
+    void activate() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive();
+    void activated(int iMsg) override;
+    bool isActive() override;
 };
 
 CmdSketcherMove::CmdSketcherMove()
@@ -1643,7 +1643,7 @@ public:
     {
     }
 
-    virtual ~DrawSketchHandlerRectangularArray(){}
+    ~DrawSketchHandlerRectangularArray() override{}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -1655,7 +1655,7 @@ public:
         Snap5Degree
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
 
@@ -1690,7 +1690,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d) override
+    bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1699,7 +1699,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -1740,7 +1740,7 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    void activated() override
     {
         setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
         Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);

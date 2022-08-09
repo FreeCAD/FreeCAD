@@ -48,26 +48,26 @@ public:
     ViewProviderSheet();
 
     /// destructor.
-    ~ViewProviderSheet();
+    ~ViewProviderSheet() override;
 
     void setDisplayMode(const char* ModeName) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
+    bool useNewSelectionModel(void) const override {return false;}
     std::vector<std::string> getDisplayModes() const override;
 
-    virtual bool doubleClicked(void) override;
+    bool doubleClicked(void) override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
     Spreadsheet::Sheet* getSpreadsheetObject() const;
 
-    virtual void beforeDelete() override;
+    void beforeDelete() override;
 
     QIcon getIcon() const override;
 
-    virtual bool setEdit(int ModNum) override;
+    bool setEdit(int ModNum) override;
 
-    virtual bool isShow(void) const override { return true; }
+    bool isShow(void) const override { return true; }
 
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 
     inline SheetView* getView() const { return view; }
 

@@ -81,9 +81,9 @@ public:
   {
     canSelect = false;
   }
-  ~EdgeSelection() {}
+  ~EdgeSelection() override {}
 
-  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
+  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
     if (!aPart)
@@ -115,9 +115,9 @@ public:
   {
     canSelect = false;
   }
-  ~FaceSelection() {}
+  ~FaceSelection() override {}
 
-  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
+  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
     if (!aPart)

@@ -38,9 +38,9 @@ public:
     /// constructor
     ViewProviderRegularPolygon();
     /// destructor
-    virtual ~ViewProviderRegularPolygon();
+    ~ViewProviderRegularPolygon() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

@@ -59,19 +59,19 @@ class SpreadsheetGuiExport SheetView : public Gui::MDIView
 
 public:
     SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWidget* parent);
-    ~SheetView();
+    ~SheetView() override;
 
-    const char *getName(void) const {return "SheetView";}
+    const char *getName(void) const override {return "SheetView";}
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
     /** @name Printing */
     //@{
-    void print();
-    void printPdf();
-    void printPreview();
-    void print(QPrinter*);
+    void print() override;
+    void printPdf() override;
+    void printPreview() override;
+    void print(QPrinter*) override;
     //@}
 
     void updateCell(const App::Property * prop);
@@ -93,9 +93,9 @@ public:
 
     void deleteSelection();
 
-    PyObject *getPyObject(void);
+    PyObject *getPyObject(void) override;
 
-    virtual void deleteSelf();
+    void deleteSelf() override;
 
 protected Q_SLOTS:
     void editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
@@ -134,10 +134,10 @@ public:
     static void init_type();
 
     SheetViewPy(SheetView *mdi);
-    ~SheetViewPy();
+    ~SheetViewPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
     Py::Object getSheet(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
     

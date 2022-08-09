@@ -37,12 +37,12 @@ public:
     /// constructor
     ViewProviderRuledSurface();
     /// destructor
-    virtual ~ViewProviderRuledSurface();
+    ~ViewProviderRuledSurface() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
-    std::vector<App::DocumentObject*> claimChildren() const;
-    void updateData(const App::Property*);
-    bool onDelete(const std::vector<std::string> &);
+    std::vector<std::string> getDisplayModes(void) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    void updateData(const App::Property*) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
 protected:
 

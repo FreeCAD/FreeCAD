@@ -37,12 +37,12 @@ class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage
 
 public:
     DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawDimensionsImp();
+    ~DlgPrefsTechDrawDimensionsImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
     int prefArrowStyle() const;
 

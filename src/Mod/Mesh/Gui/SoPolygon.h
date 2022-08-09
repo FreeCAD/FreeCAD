@@ -51,11 +51,11 @@ public:
     SoSFBool  render;
 
 protected:
-    virtual ~SoPolygon() {}
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void rayPick (SoRayPickAction *action);
-    virtual void generatePrimitives(SoAction *action);
+    ~SoPolygon() override {}
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void rayPick (SoRayPickAction *action) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     void drawPolygon(const SbVec3f *,int32_t) const;

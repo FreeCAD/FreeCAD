@@ -44,8 +44,8 @@ class TaskFemConstraintTemperature : public TaskFemConstraintOnBoundary
 
 public:
     TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent = nullptr);
-    ~TaskFemConstraintTemperature();
-    const std::string getReferences() const;
+    ~TaskFemConstraintTemperature() override;
+    const std::string getReferences() const override;
     double get_temperature()const;
     double get_cflux() const;
     std::string get_constraint_type() const;
@@ -55,12 +55,12 @@ private Q_SLOTS:
     void onTempCfluxChanged(double val);
     void Temp();
     void Flux();
-    void addToSelection();
-    void removeFromSelection();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -75,9 +75,9 @@ class TaskDlgFemConstraintTemperature : public TaskDlgFemConstraint
 
 public:
     TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

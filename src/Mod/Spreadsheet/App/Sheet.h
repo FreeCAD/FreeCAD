@@ -63,10 +63,10 @@ class SpreadsheetExport PropertySpreadsheetQuantity : public App::PropertyQuanti
     TYPESYSTEM_HEADER();
 public:
     PropertySpreadsheetQuantity(void){}
-    virtual ~PropertySpreadsheetQuantity(){}
+    ~PropertySpreadsheetQuantity() override{}
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    Property *Copy(void) const override;
+    void Paste(const Property &from) override;
 };
 
 class SpreadsheetExport Sheet : public App::DocumentObject
@@ -77,10 +77,10 @@ public:
 
     /// Constructor
     Sheet();
-    virtual ~Sheet();
+    ~Sheet() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "SpreadsheetGui::ViewProviderSheet";
     }
 
@@ -171,19 +171,19 @@ public:
     void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
     bool hasCell(const std::vector<App::Range> &ranges) const;
-    PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
     PropertySheet *getCells() { return &cells; }
 
-    App::Property *getPropertyByName(const char *name) const;
+    App::Property *getPropertyByName(const char *name) const override;
 
-    App::Property *getDynamicPropertyByName(const char* name) const;
+    App::Property *getDynamicPropertyByName(const char* name) const override;
 
-    virtual void getPropertyNamedList(std::vector<std::pair<const char*,App::Property*> > &List) const;
+    void getPropertyNamedList(std::vector<std::pair<const char*,App::Property*> > &List) const override;
 
-    virtual short mustExecute(void) const;
+    short mustExecute(void) const override;
 
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
 
     bool getCellAddress(const App::Property *prop, App::CellAddress &address);
 
@@ -217,7 +217,7 @@ public:
 
     void observeDocument(App::Document *document);
 
-    virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths) override;
 
     void setCopyOrCutRanges(const std::vector<App::Range> &ranges, bool copy=true);
     const std::vector<App::Range> &getCopyOrCutRange(bool copy=true) const;
@@ -225,13 +225,13 @@ public:
 
 protected:
 
-    virtual void onChanged(const App::Property *prop);
+    void onChanged(const App::Property *prop) override;
 
     void updateColumnsOrRows(bool horizontal, int section, int count) ;
 
     std::set<App::CellAddress> providesTo(App::CellAddress address) const;
 
-    void onDocumentRestored();
+    void onDocumentRestored() override;
 
     void recomputeCell(App::CellAddress p);
 
@@ -251,7 +251,7 @@ protected:
 
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
-    virtual void onSettingDocument();
+    void onSettingDocument() override;
 
     void updateBindings();
 

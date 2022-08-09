@@ -47,12 +47,12 @@ public:
 class MeshExport TriangulationVerifierV2 : public TriangulationVerifier
 {
 public:
-    virtual bool Accept(const Base::Vector3f& n,
+    bool Accept(const Base::Vector3f& n,
                         const Base::Vector3f& p1,
                         const Base::Vector3f& p2,
-                        const Base::Vector3f& p3) const;
-    virtual bool MustFlip(const Base::Vector3f& n1,
-                          const Base::Vector3f& n2) const;
+                        const Base::Vector3f& p3) const override;
+    bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const override;
 };
 
 class MeshExport AbstractPolygonTriangulator
@@ -149,10 +149,10 @@ class MeshExport EarClippingTriangulator : public AbstractPolygonTriangulator
 {
 public:
     EarClippingTriangulator();
-    ~EarClippingTriangulator();
+    ~EarClippingTriangulator() override;
 
 protected:
-    bool Triangulate();
+    bool Triangulate() override;
 
 private:
     /**
@@ -191,42 +191,42 @@ class MeshExport QuasiDelaunayTriangulator : public EarClippingTriangulator
 {
 public:
     QuasiDelaunayTriangulator();
-    ~QuasiDelaunayTriangulator();
+    ~QuasiDelaunayTriangulator() override;
 
 protected:
-    bool Triangulate();
+    bool Triangulate() override;
 };
 
 class MeshExport DelaunayTriangulator : public AbstractPolygonTriangulator
 {
 public:
     DelaunayTriangulator();
-    ~DelaunayTriangulator();
+    ~DelaunayTriangulator() override;
 
 protected:
-    bool Triangulate();
+    bool Triangulate() override;
 };
 
 class MeshExport FlatTriangulator : public AbstractPolygonTriangulator
 {
 public:
     FlatTriangulator();
-    ~FlatTriangulator();
+    ~FlatTriangulator() override;
 
-    void PostProcessing(const std::vector<Base::Vector3f>&);
+    void PostProcessing(const std::vector<Base::Vector3f>&) override;
 
 protected:
-    bool Triangulate();
+    bool Triangulate() override;
 };
 
 class MeshExport ConstraintDelaunayTriangulator : public AbstractPolygonTriangulator
 {
 public:
     ConstraintDelaunayTriangulator(float area);
-    ~ConstraintDelaunayTriangulator();
+    ~ConstraintDelaunayTriangulator() override;
 
 protected:
-    bool Triangulate();
+    bool Triangulate() override;
 
 private:
     float fMaxArea;

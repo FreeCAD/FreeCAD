@@ -80,7 +80,7 @@ class TaskPipeParameters : public TaskSketchBasedParameters
 
 public:
     TaskPipeParameters(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
-    ~TaskPipeParameters();
+    ~TaskPipeParameters() override;
 
     bool accept();
 
@@ -95,7 +95,7 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     void clearButtons();
     void exitSelectionMode();
@@ -121,7 +121,7 @@ class TaskPipeOrientation : public TaskSketchBasedParameters
 
 public:
     TaskPipeOrientation(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
-    virtual ~TaskPipeOrientation();
+    ~TaskPipeOrientation() override;
 
 
 private Q_SLOTS:
@@ -137,7 +137,7 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void clearButtons();
     void exitSelectionMode();
 
@@ -155,7 +155,7 @@ class TaskPipeScaling : public TaskSketchBasedParameters
 
 public:
     TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = nullptr);
-    virtual ~TaskPipeScaling();
+    ~TaskPipeScaling() override;
 
 private Q_SLOTS:
     void onScalingChanged(int);
@@ -168,7 +168,7 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void clearButtons();
     void exitSelectionMode();
 
@@ -186,11 +186,11 @@ class TaskDlgPipeParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool newObj=false);
-    ~TaskDlgPipeParameters();
+    ~TaskDlgPipeParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
 
 protected Q_SLOTS:

@@ -68,7 +68,7 @@ class DlgPrimitives : public QWidget
 
 public:
     DlgPrimitives(QWidget* parent = nullptr, Part::Primitive* feature = nullptr);
-    ~DlgPrimitives();
+    ~DlgPrimitives() override;
     void createPrimitive(const QString&);
     void accept(const QString&);
     void reject();
@@ -143,7 +143,7 @@ class Location : public QWidget
 
 public:
     Location(QWidget* parent = nullptr, Part::Feature* feature = nullptr);
-    ~Location();
+    ~Location() override;
     QString toPlacement() const;
 
 private Q_SLOTS:
@@ -164,13 +164,13 @@ class TaskPrimitives : public Gui::TaskView::TaskDialog
 
 public:
     TaskPrimitives();
-    ~TaskPrimitives();
+    ~TaskPrimitives() override;
 
 public:
-    bool accept();
-    bool reject();
-    QDialogButtonBox::StandardButtons getStandardButtons() const;
-    void modifyStandardButtons(QDialogButtonBox*);
+    bool accept() override;
+    bool reject() override;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
+    void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
     DlgPrimitives* widget;
@@ -183,12 +183,12 @@ class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
 
 public:
     TaskPrimitivesEdit(Part::Primitive* feature);
-    ~TaskPrimitivesEdit();
+    ~TaskPrimitivesEdit() override;
     
 public:
-    bool accept();
-    bool reject();
-    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    bool accept() override;
+    bool reject() override;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 private:
     DlgPrimitives* widget;

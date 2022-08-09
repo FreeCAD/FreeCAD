@@ -36,14 +36,14 @@ class PartDesignGuiExport ViewProviderDatumPoint : public PartDesignGui::ViewPro
 public:
     /// Constructor
     ViewProviderDatumPoint();
-    virtual ~ViewProviderDatumPoint();
+    ~ViewProviderDatumPoint() override;
 
-    virtual void attach ( App::DocumentObject *obj );
+    void attach ( App::DocumentObject *obj ) override;
 
     // Note: don't overload setExtents () here because point doesn't really depends on it
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 };
 
 } // namespace PartDesignGui

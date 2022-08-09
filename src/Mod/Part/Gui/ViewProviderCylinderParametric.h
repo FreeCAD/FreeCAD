@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderCylinderParametric();
     /// destructor
-    virtual ~ViewProviderCylinderParametric();
+    ~ViewProviderCylinderParametric() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

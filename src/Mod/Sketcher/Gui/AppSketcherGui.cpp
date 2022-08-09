@@ -68,7 +68,7 @@ public:
         initialize("This module is the SketcherGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

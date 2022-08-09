@@ -43,9 +43,9 @@ class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
     Q_PROPERTY(int Groups READ countGroups CONSTANT)
     PROPERTYITEM_HEADER
 
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
+    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    void setEditorData(QWidget *editor, const QVariant& data) const override;
+    QVariant editorData(QWidget *editor) const override;
 
     int countNodes() const;
     int countEdges() const;
@@ -56,13 +56,13 @@ class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
     int countGroups() const;
 
 protected:
-    virtual QVariant toolTip(const App::Property*) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
+    QVariant toolTip(const App::Property*) const override;
+    QVariant value(const App::Property*) const override;
+    void setValue(const QVariant&) override;
 
 protected:
     PropertyFemMeshItem();
-    void initialize();
+    void initialize() override;
 
 private:
     Gui::PropertyEditor::PropertyIntegerItem* m_n;

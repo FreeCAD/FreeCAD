@@ -58,10 +58,10 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyConstraintList();
+    ~PropertyConstraintList() override;
 
-    virtual void setSize(int newSize) override;
-    virtual int getSize() const override;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     const char* getEditorName() const override {
         return "SketcherGui::PropertyConstraintListItem";
@@ -109,16 +109,16 @@ public:
         return  _lValueList;
     }
 
-    virtual PyObject *getPyObject() override;
-    virtual void setPyObject(PyObject *) override;
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save(Base::Writer &writer) const override;
-    virtual void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy() const override;
-    virtual void Paste(const App::Property &from) override;
+    Property *Copy() const override;
+    void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize() const override;
+    unsigned int getMemSize() const override;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
     bool checkGeometry(const std::vector<Part::Geometry *> &GeoList);
@@ -131,12 +131,12 @@ public:
 
 
     const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
-    virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const override;
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
+    void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
+    const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const override;
+    void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
 
-    virtual bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
+    bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
 
     typedef std::pair<int, const Constraint*> ConstraintInfo ;
 

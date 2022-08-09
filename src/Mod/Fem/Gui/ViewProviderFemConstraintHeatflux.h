@@ -36,11 +36,11 @@ class FemGuiExport ViewProviderFemConstraintHeatflux : public FemGui::ViewProvid
 
 public:
     ViewProviderFemConstraintHeatflux();
-    virtual ~ViewProviderFemConstraintHeatflux();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintHeatflux() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

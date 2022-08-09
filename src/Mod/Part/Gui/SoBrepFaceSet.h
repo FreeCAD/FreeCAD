@@ -88,18 +88,18 @@ public:
     SoMFInt32 partIndex;
 
 protected:
-    virtual ~SoBrepFaceSet();
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void doAction(SoAction* action); 
-    virtual SoDetail * createTriangleDetail(
+    ~SoBrepFaceSet() override;
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void doAction(SoAction* action) override;
+    SoDetail * createTriangleDetail(
         SoRayPickAction * action,
         const SoPrimitiveVertex * v1,
         const SoPrimitiveVertex * v2,
         const SoPrimitiveVertex * v3,
-        SoPickedPoint * pp);
-    virtual void generatePrimitives(SoAction * action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+        SoPickedPoint * pp) override;
+    void generatePrimitives(SoAction * action) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
     enum Binding {

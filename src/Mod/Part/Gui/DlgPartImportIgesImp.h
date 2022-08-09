@@ -34,7 +34,7 @@ class DlgPartImportIgesImp : public QDialog
 
 public:
   DlgPartImportIgesImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-  ~DlgPartImportIgesImp();
+  ~DlgPartImportIgesImp() override;
 
 public Q_SLOTS:
   virtual void OnApply();

@@ -42,8 +42,8 @@ class PartExport FaceMakerCheese: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual std::string getUserFriendlyName() const override;
-    virtual std::string getBriefExplanation() const override;
+    std::string getUserFriendlyName() const override;
+    std::string getBriefExplanation() const override;
 
 public: //in Extrusion, they used to be private. but they are also used by PartDesign, so made public.
     /**
@@ -63,7 +63,7 @@ private:
     static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&); // for internal use only
 
 protected:
-    virtual void Build_Essence() override;
+    void Build_Essence() override;
 };
 
 

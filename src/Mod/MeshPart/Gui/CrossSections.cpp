@@ -83,19 +83,19 @@ public:
         this->pcRoot->addChild(coords);
         this->pcRoot->addChild(planes);
     }
-    ~ViewProviderCrossSections()
+    ~ViewProviderCrossSections() override
     {
         coords->unref();
         planes->unref();
     }
-    void updateData(const App::Property*)
+    void updateData(const App::Property*) override
     {
     }
-    const char* getDefaultDisplayMode() const
+    const char* getDefaultDisplayMode() const override
     {
         return "";
     }
-    std::vector<std::string> getDisplayModes(void) const
+    std::vector<std::string> getDisplayModes(void) const override
     {
         return std::vector<std::string>();
     }

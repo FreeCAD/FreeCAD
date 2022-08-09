@@ -83,7 +83,7 @@ private:
     static App::PropertyFloatConstraint::Constraints angleRangeU;
 
 protected:
-    virtual void setupObject() override;
+    void setupObject() override;
 };
 
 } //namespace Part

@@ -173,7 +173,7 @@ public:
 
     Area(const AreaParams* params = nullptr);
     Area(const Area& other, bool deep_copy = true);
-    virtual ~Area();
+    ~Area() override;
 
     bool isBuilt() const;
 

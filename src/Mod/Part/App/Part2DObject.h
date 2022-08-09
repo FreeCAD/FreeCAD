@@ -55,7 +55,7 @@ class PartExport Part2DObject : public Part::Feature, public Part::AttachExtensi
 public:
     Part2DObject();
 
-    virtual void transformPlacement(const Base::Placement &transform) override;
+    void transformPlacement(const Base::Placement &transform) override;
 
     /// returns the number of construction lines (to be used as axes)
     virtual int getAxisCount() const;

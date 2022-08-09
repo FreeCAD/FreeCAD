@@ -44,22 +44,22 @@ class TechDrawExport DrawHatch : public App::DocumentObject
 
 public:
     DrawHatch();
-    virtual ~DrawHatch();
+    ~DrawHatch() override;
 
     App::PropertyLinkSub     Source;       // the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyFileIncluded SvgIncluded;
 
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
 
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderHatch";
     }
-    virtual void unsetupObject() override;
+    void unsetupObject() override;
 
     //return PyObject as DrawHatchPy
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     DrawViewPart* getSourceView() const;
     bool affectsFace(int i);
@@ -75,8 +75,8 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
+    void onDocumentRestored() override;
+    void setupObject() override;
     void setupFileIncluded();
     void replaceFileIncluded(std::string newSvgFile);
 

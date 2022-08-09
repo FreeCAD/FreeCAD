@@ -38,7 +38,7 @@ class PartExport PrismExtension : public App::DocumentObjectExtension
     EXTENSION_PROPERTY_HEADER(Part::PrismExtension);
 public:
     PrismExtension();
-    virtual ~PrismExtension();
+    ~PrismExtension() override;
 
 
     App::PropertyAngle FirstAngle;
@@ -46,11 +46,11 @@ public:
 
     TopoDS_Shape makePrism(double height, const TopoDS_Face& face) const;
 
-    virtual short int extensionMustExecute();
-    virtual App::DocumentObjectExecReturn *extensionExecute();
+    short int extensionMustExecute() override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
 
 protected:
-    virtual void extensionOnChanged(const App::Property* /*prop*/);
+    void extensionOnChanged(const App::Property* /*prop*/) override;
 };
 
 } // namespace Part

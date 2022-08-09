@@ -37,22 +37,22 @@ public:
     /// constructor
     ViewProviderHelix();
     /// destructor
-    virtual ~ViewProviderHelix();
+    ~ViewProviderHelix() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// grouping handling
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren(void)const override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    bool onDelete(const std::vector<std::string> &) override;
 
 protected:
-    virtual QIcon getIcon(void) const;
+    QIcon getIcon(void) const override;
 
     /// Returns a newly created TaskDlgHelixParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
-    virtual bool  setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    TaskDlgFeatureParameters *getEditDialog() override;
+    bool  setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 

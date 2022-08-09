@@ -47,7 +47,7 @@ class TaskProjGroup : public QWidget
 
 public:
     TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
-    ~TaskProjGroup();
+    ~TaskProjGroup() override;
 
 public:
     virtual bool accept();
@@ -81,7 +81,7 @@ protected Q_SLOTS:
     void scaleManuallyChanged(int i);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
     /// Connects and updates state of view checkboxes to match the state of multiView
     /*!
@@ -129,27 +129,27 @@ class TaskDlgProjGroup : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgProjGroup(TechDraw::DrawProjGroup* featView,bool mode);
-    ~TaskDlgProjGroup();
+    ~TaskDlgProjGroup() override;
 
     const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
     TechDraw::DrawProjGroup * getMultiView() const { return multiView; }
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
-    virtual void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument() const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
     void setCreateMode(bool b);
 

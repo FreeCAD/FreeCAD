@@ -50,14 +50,14 @@ public:
     FilletRadiusDelegate(QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const;
+                          const QModelIndex &index) const override;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
     void setModelData(QWidget *editor, QAbstractItemModel *model,
-                      const QModelIndex &index) const;
+                      const QModelIndex &index) const override;
 
     void updateEditorGeometry(QWidget *editor, 
-        const QStyleOptionViewItem &option, const QModelIndex &index) const;
+        const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
 class FilletRadiusModel : public QStandardItemModel
@@ -67,10 +67,10 @@ class FilletRadiusModel : public QStandardItemModel
 public:
     FilletRadiusModel(QObject * parent = nullptr);
 
-    Qt::ItemFlags flags (const QModelIndex & index) const;
+    Qt::ItemFlags flags (const QModelIndex & index) const override;
     bool setData (const QModelIndex & index, const QVariant & value,
-                  int role = Qt::EditRole);
-    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
+                  int role = Qt::EditRole) override;
+    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const override;
     void updateCheckStates();
 
 Q_SIGNALS:
@@ -85,17 +85,17 @@ public:
     enum FilletType { FILLET, CHAMFER };
 
     DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgFilletEdges();
+    ~DlgFilletEdges() override;
     bool accept();
 
 protected:
     void findShapes();
     void setupFillet(const std::vector<App::DocumentObject*>&);
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     virtual const char* getFilletType() const;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void onDeleteObject(const App::DocumentObject&);
     void onDeleteDocument(const App::Document&);
     void onSelectEdge(const QString& subelement, int type);
@@ -125,8 +125,8 @@ class FilletEdgesDialog : public QDialog
 
 public:
     FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~FilletEdgesDialog();
-    void accept();
+    ~FilletEdgesDialog() override;
+    void accept() override;
 
 private:
     DlgFilletEdges* widget;
@@ -138,10 +138,10 @@ class DlgChamferEdges : public DlgFilletEdges
 
 public:
     DlgChamferEdges(Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgChamferEdges();
+    ~DlgChamferEdges() override;
 
 protected:
-    virtual const char* getFilletType() const;
+    const char* getFilletType() const override;
 };
 
 class TaskFilletEdges : public Gui::TaskView::TaskDialog
@@ -150,17 +150,17 @@ class TaskFilletEdges : public Gui::TaskView::TaskDialog
 
 public:
     TaskFilletEdges(Part::Fillet*);
-    ~TaskFilletEdges();
+    ~TaskFilletEdges() override;
 
 public:
-    virtual void open();
-    virtual void clicked(int);
-    virtual bool accept();
-    virtual bool reject();
+    void open() override;
+    void clicked(int) override;
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-    virtual bool needsFullSpace() const
+    bool needsFullSpace() const override
     { return true; }
 
 private:
@@ -174,17 +174,17 @@ class TaskChamferEdges : public Gui::TaskView::TaskDialog
 
 public:
     TaskChamferEdges(Part::Chamfer*);
-    ~TaskChamferEdges();
+    ~TaskChamferEdges() override;
 
 public:
-    virtual void open();
-    virtual void clicked(int);
-    virtual bool accept();
-    virtual bool reject();
+    void open() override;
+    void clicked(int) override;
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-    virtual bool needsFullSpace() const
+    bool needsFullSpace() const override
     { return true; }
 
 private:

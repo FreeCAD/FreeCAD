@@ -35,9 +35,9 @@ class SketcherRegularPolygonDialog : public QDialog
 
 public:
     SketcherRegularPolygonDialog();
-    ~SketcherRegularPolygonDialog();
+    ~SketcherRegularPolygonDialog() override;
 
-    void accept();
+    void accept() override;
 
     int sides;
 

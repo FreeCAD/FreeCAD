@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderBox();
     /// destructor
-    virtual ~ViewProviderBox();
+    ~ViewProviderBox() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

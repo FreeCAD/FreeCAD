@@ -46,7 +46,7 @@ class RaytracingExport RaySegment: public App::DocumentObject
 public:
     /// Constructor
     RaySegment(void);
-    virtual ~RaySegment();
+    ~RaySegment() override;
 
     App::PropertyString Result;
 
@@ -54,10 +54,10 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
     
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const { 
+    const char* getViewProviderName(void) const override {
         return "Gui::ViewProviderDocumentObject"; 
     }
     //@}

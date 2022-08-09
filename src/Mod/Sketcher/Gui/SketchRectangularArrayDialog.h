@@ -35,9 +35,9 @@ class SketchRectangularArrayDialog : public QDialog
 
 public:
     SketchRectangularArrayDialog();
-    ~SketchRectangularArrayDialog();
+    ~SketchRectangularArrayDialog() override;
 
-    void accept();
+    void accept() override;
     
     int Rows;
     int Cols;

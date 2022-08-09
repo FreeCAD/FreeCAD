@@ -37,12 +37,12 @@ class FemGuiExport ViewProviderFemConstraintFluidBoundary : public FemGui::ViewP
 public:
     /// Constructor
     ViewProviderFemConstraintFluidBoundary();
-    virtual ~ViewProviderFemConstraintFluidBoundary();
+    ~ViewProviderFemConstraintFluidBoundary() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
     //virtual void onChanged(const App::Property*); //no further property for viewProvider
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 } //namespace FemGui

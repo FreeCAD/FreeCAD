@@ -43,7 +43,7 @@ class TaskSketcherSolverAdvanced : public Gui::TaskView::TaskBox
 
 public:
     TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
-    ~TaskSketcherSolverAdvanced();
+    ~TaskSketcherSolverAdvanced() override;
 
 private Q_SLOTS:
     void on_comboBoxDefaultSolver_currentIndexChanged(int index); 

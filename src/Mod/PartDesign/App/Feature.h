@@ -55,7 +55,7 @@ public:
     App::PropertyLink   BaseFeature;
     App::PropertyLinkHidden _Body;
 
-    short mustExecute() const;
+    short mustExecute() const override;
 
     /// Check whether the given feature is a datum feature
     static bool isDatum(const App::DocumentObject* feature);
@@ -75,9 +75,9 @@ public:
     /// Returns the BaseFeature property's TopoShape (if any)
     Part::TopoShape getBaseTopoShape(bool silent=false) const;
 
-    virtual PyObject* getPyObject();
+    PyObject* getPyObject() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProvider";
     }
 

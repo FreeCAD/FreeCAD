@@ -37,14 +37,14 @@ class ViewProviderLux : public Gui::ViewProviderDocumentObjectGroup
 
 public:
     ViewProviderLux();
-    virtual ~ViewProviderLux();
+    ~ViewProviderLux() override;
 
-    bool doubleClicked(void);
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    bool doubleClicked(void) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 class ViewProviderPovray : public Gui::ViewProviderDocumentObjectGroup
@@ -54,14 +54,14 @@ class ViewProviderPovray : public Gui::ViewProviderDocumentObjectGroup
 
 public:
     ViewProviderPovray();
-    virtual ~ViewProviderPovray();
+    ~ViewProviderPovray() override;
 
-    bool doubleClicked(void);
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    bool doubleClicked(void) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 } // namespace RaytracingGui

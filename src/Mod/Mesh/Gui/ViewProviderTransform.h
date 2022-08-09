@@ -51,23 +51,23 @@ class ViewProviderMeshTransform : public ViewProviderMesh
 
 public:
   ViewProviderMeshTransform();
-  virtual ~ViewProviderMeshTransform();
+  ~ViewProviderMeshTransform() override;
 
 
   /** 
    * Extracts the mesh data from the feature \a pcFeature and creates
    * an Inventor node \a SoNode with these data. 
    */
-  virtual void attach(App::DocumentObject *);
+  void attach(App::DocumentObject *) override;
 
   /// set the viewing mode
-  virtual void setDisplayMode(const char* ModeName);
+  void setDisplayMode(const char* ModeName) override;
   /// get the default display mode
-  virtual const char* getDefaultDisplayMode() const;
+  const char* getDefaultDisplayMode() const override;
   /// returns a list of all possible modes
-  virtual std::vector<std::string> getDisplayModes() const;
+  std::vector<std::string> getDisplayModes() const override;
   /// Update the Mesh representation
-  virtual void updateData(const App::Property*);
+  void updateData(const App::Property*) override;
 
 protected:
 

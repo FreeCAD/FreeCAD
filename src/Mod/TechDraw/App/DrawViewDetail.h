@@ -51,20 +51,20 @@ class TechDrawExport DrawViewDetail : public DrawViewPart
 public:
     /// Constructor
     DrawViewDetail();
-    virtual ~DrawViewDetail();
+    ~DrawViewDetail() override;
 
     App::PropertyLink   BaseView;
     App::PropertyVector AnchorPoint;
     App::PropertyFloat  Radius;
     App::PropertyString Reference;
 
-    virtual short mustExecute() const override;
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName() const override {
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
-    virtual void unsetupObject() override;
+    void unsetupObject() override;
 
 
     void detailExec(TopoDS_Shape s, 
@@ -73,7 +73,7 @@ public:
     double getFudgeRadius();
     TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir);
 
-    virtual std::vector<DrawViewDetail*> getDetailRefs() const override;
+    std::vector<DrawViewDetail*> getDetailRefs() const override;
 
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);

@@ -61,7 +61,7 @@ public:
                     bool singleFeatureSelect,
                     QWidget *parent = nullptr);
 
-    ~TaskFeaturePick();
+    ~TaskFeaturePick() override;
 
     std::vector<App::DocumentObject*> getFeatures();
     std::vector<App::DocumentObject*> buildFeatures();
@@ -72,17 +72,17 @@ public:
 
 protected Q_SLOTS:
     void onUpdate(bool);
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void onItemSelectionChanged();
     void onDoubleClick(QListWidgetItem *item);
 
 protected:
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
+    void slotUndoDocument(const Gui::Document& Doc) override;
     /** Notifies on document deletion */
-    virtual void slotDeleteDocument(const Gui::Document& Doc);
+    void slotDeleteDocument(const Gui::Document& Doc) override;
 
 private:
     std::unique_ptr<Ui_TaskFeaturePick> ui;
@@ -111,25 +111,25 @@ public:
                         std::function<void (std::vector<App::DocumentObject*>)> workfunc,
                         bool singleFeatureSelect,
                         std::function<void (void)> abortfunc = 0);
-    ~TaskDlgFeaturePick();
+    ~TaskDlgFeaturePick() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument(void) const override
     { return false; }
 
     void showExternal(bool val);
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 

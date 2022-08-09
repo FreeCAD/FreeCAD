@@ -45,7 +45,7 @@ class TaskLineDecor : public QWidget
 public:
     TaskLineDecor(TechDraw::DrawViewPart* partFeat,
                   std::vector<std::string> edgeNames);
-    ~TaskLineDecor();
+    ~TaskLineDecor() override;
 
 public:
     virtual bool accept();
@@ -60,7 +60,7 @@ protected Q_SLOTS:
     void onVisibleChanged();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void initUi();
     void applyDecorations();
     void getDefaults();
@@ -83,7 +83,7 @@ class TaskRestoreLines : public QWidget
 public:
     TaskRestoreLines(TechDraw::DrawViewPart* partFeat,
                      TechDrawGui::TaskLineDecor* parent);
-    ~TaskRestoreLines();
+    ~TaskRestoreLines() override;
 
 public:
     virtual bool accept();
@@ -96,7 +96,7 @@ protected Q_SLOTS:
     void onCenterPressed();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void initUi();
     int countInvisibleLines();
     int countInvisibleGeoms();
@@ -121,20 +121,20 @@ class TaskDlgLineDecor : public Gui::TaskView::TaskDialog
 public:
     TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
                      std::vector<std::string> edgeNames);
-    ~TaskDlgLineDecor();
+    ~TaskDlgLineDecor() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument() const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
 
 protected:

@@ -82,7 +82,7 @@ public:
             : Gui::SelectionFilterGate(nullPointer())
         {
         }
-        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
         {
             if (!sSubName || sSubName[0] == '\0') {
                 // If selecting again the same edge the passed sub-element is empty. If the whole

@@ -36,7 +36,7 @@ class TechDrawGuiExport QGIViewSpreadsheet : public QGIViewSymbol
 {
 public:
     QGIViewSpreadsheet();
-    ~QGIViewSpreadsheet() = default;
+    ~QGIViewSpreadsheet() override = default;
 
     enum {Type = QGraphicsItem::UserType + 124};
     int type() const override { return Type;}

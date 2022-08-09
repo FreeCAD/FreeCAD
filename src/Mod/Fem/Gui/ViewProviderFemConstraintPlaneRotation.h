@@ -36,11 +36,11 @@ class FemGuiExport ViewProviderFemConstraintPlaneRotation : public FemGui::ViewP
 
 public:
     ViewProviderFemConstraintPlaneRotation();
-    virtual ~ViewProviderFemConstraintPlaneRotation();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintPlaneRotation() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

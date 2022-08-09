@@ -60,9 +60,9 @@ public:
 
     App::PropertyBool AllowMultiFace;
 
-    short mustExecute() const;
+    short mustExecute() const override;
 
-    void setupObject();
+    void setupObject() override;
 
     /** calculates and updates the Placement property based on the features
      * this one is made from: either from Base, if there is one, or from sketch,
@@ -73,7 +73,7 @@ public:
     /** applies a transform on the Placement of the Sketch or its
      *  support if it has one
       */
-    virtual void transformPlacement(const Base::Placement &transform);
+    void transformPlacement(const Base::Placement &transform) override;
 
     /**
      * Verifies the linked Profile and returns it if it is a valid 2D object
@@ -112,11 +112,11 @@ public:
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount() const;
 
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
+    Part::Feature* getBaseObject(bool silent=false) const override;
 
     //backwards compatibility: profile property was renamed and has different type now
-    virtual void Restore(Base::XMLReader& reader);
-    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 
     // calculate the through all length
     double getThroughAllLength() const;
@@ -159,7 +159,7 @@ protected:
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
                  Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis) const;
 
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;

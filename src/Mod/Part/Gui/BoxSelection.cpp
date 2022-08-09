@@ -58,10 +58,10 @@ public:
         : Gui::SelectionFilterGate()
     {
     }
-    ~FaceSelectionGate()
+    ~FaceSelectionGate() override
     {
     }
-    bool allow(App::Document*, App::DocumentObject*, const char*sSubName)
+    bool allow(App::Document*, App::DocumentObject*, const char*sSubName) override
     {
         if (!sSubName || sSubName[0] == '\0')
             return false;

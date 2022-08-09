@@ -48,15 +48,15 @@ public:
     App::PropertyLink   Source;
     App::PropertyString FileName;
     App::PropertyString Format;
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "MeshGui::ViewProviderExport";
     }
 
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 };
 

@@ -68,12 +68,12 @@ public:
     App::PropertyBoolList ReversedList;     // Booleans to handle orientation of the curves
     App::PropertyEnumeration FillType;      // Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
-    short mustExecute() const;
-    void onChanged(const App::Property*);
-    App::DocumentObjectExecReturn *execute();
+    short mustExecute() const override;
+    void onChanged(const App::Property*) override;
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "SurfaceGui::ViewProviderGeomFillSurface";
     }
 

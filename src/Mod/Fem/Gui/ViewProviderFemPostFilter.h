@@ -36,10 +36,10 @@ class FemGuiExport ViewProviderFemPostClip : public ViewProviderFemPostObject {
 public:
     /// constructor.
     ViewProviderFemPostClip();
-    ~ViewProviderFemPostClip();
+    ~ViewProviderFemPostClip() override;
 
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
+    void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
 class FemGuiExport ViewProviderFemPostDataAlongLine : public ViewProviderFemPostObject {
@@ -49,10 +49,10 @@ class FemGuiExport ViewProviderFemPostDataAlongLine : public ViewProviderFemPost
 public:
     /// constructor.
     ViewProviderFemPostDataAlongLine();
-    ~ViewProviderFemPostDataAlongLine();
+    ~ViewProviderFemPostDataAlongLine() override;
 
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
+    void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
 class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObject {
@@ -64,10 +64,10 @@ public:
     ViewProviderFemPostDataAtPoint();
     void show() override;
     void onSelectionChanged(const Gui::SelectionChanges &) override;
-    ~ViewProviderFemPostDataAtPoint();
+    ~ViewProviderFemPostDataAtPoint() override;
 
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
+    void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 class FemGuiExport ViewProviderFemPostScalarClip : public ViewProviderFemPostObject {
 
@@ -76,10 +76,10 @@ class FemGuiExport ViewProviderFemPostScalarClip : public ViewProviderFemPostObj
 public:
     /// constructor.
     ViewProviderFemPostScalarClip();
-    ~ViewProviderFemPostScalarClip();
+    ~ViewProviderFemPostScalarClip() override;
 
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
+    void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
 class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject {
@@ -89,10 +89,10 @@ class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObj
 public:
     /// constructor.
     ViewProviderFemPostWarpVector();
-    ~ViewProviderFemPostWarpVector();
+    ~ViewProviderFemPostWarpVector() override;
 
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
+    void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
 class FemGuiExport ViewProviderFemPostCut : public ViewProviderFemPostObject {
@@ -102,10 +102,10 @@ class FemGuiExport ViewProviderFemPostCut : public ViewProviderFemPostObject {
 public:
     /// constructor.
     ViewProviderFemPostCut();
-    ~ViewProviderFemPostCut();
+    ~ViewProviderFemPostCut() override;
 
 protected:
-    virtual void setupTaskDialog(TaskDlgPost* dlg);
+    void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
 } //namespace FemGui

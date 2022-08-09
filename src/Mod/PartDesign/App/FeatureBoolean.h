@@ -57,7 +57,7 @@ public:
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderBoolean";
     }
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     //@}
 
 protected:

@@ -41,12 +41,12 @@ public:
     /// constructor
     ViewProviderSymbol();
     /// destructor
-    virtual ~ViewProviderSymbol();
+    ~ViewProviderSymbol() override;
 
-    virtual bool useNewSelectionModel() const {return false;}
-    virtual void updateData(const App::Property*);
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
 
-    virtual TechDraw::DrawViewSymbol* getViewObject() const;
+    TechDraw::DrawViewSymbol* getViewObject() const override;
 };
 
 class TechDrawGuiExport ViewProviderDraft : public ViewProviderSymbol
@@ -57,7 +57,7 @@ public:
     /// constructor
     ViewProviderDraft();
     /// destructor
-    virtual ~ViewProviderDraft();
+    ~ViewProviderDraft() override;
 };
 
 class TechDrawGuiExport ViewProviderArch : public ViewProviderSymbol
@@ -68,7 +68,7 @@ public:
     /// constructor
     ViewProviderArch();
     /// destructor
-    virtual ~ViewProviderArch();
+    ~ViewProviderArch() override;
 };
 
 } // namespace TechDrawGui

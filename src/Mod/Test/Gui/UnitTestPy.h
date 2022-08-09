@@ -38,11 +38,11 @@ public:
     static void init_type();    // announce properties and methods
 
     UnitTestDialogPy();
-    ~UnitTestDialogPy();
+    ~UnitTestDialogPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
-    int setattr(const char *, const Py::Object &);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
+    int setattr(const char *, const Py::Object &) override;
 
     Py::Object clearErrorList   (const Py::Tuple&);
     Py::Object insertError      (const Py::Tuple&);

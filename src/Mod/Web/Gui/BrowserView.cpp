@@ -91,7 +91,7 @@ public:
     {
     }
 
-    void interceptRequest(QWebEngineUrlRequestInfo &info)
+    void interceptRequest(QWebEngineUrlRequestInfo &info) override
     {
         // do something with this resource, click or get img for example
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
@@ -157,10 +157,10 @@ public:
     static void init_type();    // announce properties and methods
 
     BrowserViewPy(BrowserView* view);
-    ~BrowserViewPy();
+    ~BrowserViewPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
     Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object setHtml(const Py::Tuple&);

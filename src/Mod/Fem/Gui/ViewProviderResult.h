@@ -40,10 +40,10 @@ public:
     ViewProviderResult();
 
     /// destructor
-    virtual ~ViewProviderResult();
+    ~ViewProviderResult() override;
 
     // shows solid in the tree
-    virtual bool isShow() const
+    bool isShow() const override
     { return true; }
 };
 

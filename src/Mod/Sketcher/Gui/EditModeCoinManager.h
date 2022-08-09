@@ -118,7 +118,7 @@ class SketcherGuiExport EditModeCoinManager
 
     public:
         ParameterObserver(EditModeCoinManager & client);
-        ~ParameterObserver();
+        ~ParameterObserver() override;
 
         void subscribeToParameters();
 

@@ -43,7 +43,7 @@ class DlgBooleanOperation : public QWidget
 
 public:
     DlgBooleanOperation(QWidget* parent = nullptr);
-    ~DlgBooleanOperation();
+    ~DlgBooleanOperation() override;
     void accept();
 
 private:
@@ -54,7 +54,7 @@ private:
     bool hasSolids(const App::DocumentObject*) const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 public Q_SLOTS:
     void on_swapButton_clicked();
@@ -75,16 +75,16 @@ class TaskBooleanOperation : public Gui::TaskView::TaskDialog
 
 public:
     TaskBooleanOperation();
-    ~TaskBooleanOperation();
+    ~TaskBooleanOperation() override;
 
 public:
-    void clicked(int);
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return true; }
-    virtual bool needsFullSpace() const
+    bool needsFullSpace() const override
     { return true; }
 
 private:

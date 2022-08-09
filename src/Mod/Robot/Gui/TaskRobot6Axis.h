@@ -52,7 +52,7 @@ class TaskRobot6Axis : public Gui::TaskView::TaskBox
 
 public:
     TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
-    ~TaskRobot6Axis();
+    ~TaskRobot6Axis() override;
 
     void setRobot(Robot::RobotObject *pcRobotObject);
 

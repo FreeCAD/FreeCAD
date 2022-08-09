@@ -37,20 +37,20 @@ public:
     /// constructor
     ViewProviderCompound();
     /// destructor
-    virtual ~ViewProviderCompound();
-    std::vector<App::DocumentObject*> claimChildren() const;
-    bool onDelete(const std::vector<std::string> &);
+    ~ViewProviderCompound() override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /// drag and drop
-    bool canDragObjects() const;
-    bool canDragObject(App::DocumentObject*) const;
-    void dragObject(App::DocumentObject*);
-    bool canDropObjects() const;
-    bool canDropObject(App::DocumentObject*) const;
-    void dropObject(App::DocumentObject*);
+    bool canDragObjects() const override;
+    bool canDragObject(App::DocumentObject*) const override;
+    void dragObject(App::DocumentObject*) override;
+    bool canDropObjects() const override;
+    bool canDropObject(App::DocumentObject*) const override;
+    void dropObject(App::DocumentObject*) override;
 
 protected:
-    void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 };
 
 } // namespace PartGui

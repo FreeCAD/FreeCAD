@@ -63,8 +63,8 @@ public:
      * Add the feature into the body at the current insert point.
      * The insertion poin is the before next solid after the Tip feature
      */
-    virtual std::vector<App::DocumentObject*> addObject(App::DocumentObject*) override;
-    virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
+    std::vector<App::DocumentObject*> addObject(App::DocumentObject*) override;
+    std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
 
     /**
      * Insert the feature into the body after the given feature.
@@ -82,7 +82,7 @@ public:
     void setBaseProperty(App::DocumentObject* feature);
 
     /// Remove the feature from the body
-    virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj) override;
+    std::vector<DocumentObject*> removeObject(DocumentObject* obj) override;
 
     /**
      * Checks if the given document object lays after the current insert point
@@ -105,7 +105,7 @@ public:
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
     static bool isAllowed(const App::DocumentObject *obj);
-    virtual bool allowObject(DocumentObject *obj) override {
+    bool allowObject(DocumentObject *obj) override {
       return isAllowed(obj);
     }
 
@@ -117,8 +117,8 @@ public:
 
     PyObject *getPyObject() override;
 
-    virtual std::vector<std::string> getSubObjects(int reason=0) const override;
-    virtual App::DocumentObject *getSubObject(const char *subname,
+    std::vector<std::string> getSubObjects(int reason=0) const override;
+    App::DocumentObject *getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
 
     void setShowTip(bool enable) {
@@ -141,17 +141,17 @@ public:
     bool isSolid();
 
 protected:
-    virtual void onSettingDocument() override;
+    void onSettingDocument() override;
 
     /// Adjusts the first solid's feature's base on BaseFeature getting set
-    virtual void onChanged (const App::Property* prop) override;
+    void onChanged (const App::Property* prop) override;
 
     /// Creates the corresponding Origin object
-    virtual void setupObject () override;
+    void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject () override;
+    void unsetupObject () override;
 
-    virtual void onDocumentRestored() override;
+    void onDocumentRestored() override;
 
 private:
     boost::signals2::scoped_connection connection;

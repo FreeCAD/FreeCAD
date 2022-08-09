@@ -37,7 +37,7 @@ class Polygon : public Part::Feature
 
 public:
     Polygon();
-    virtual ~Polygon();
+    ~Polygon() override;
 
     App::PropertyVectorList Nodes;
     App::PropertyBool       Close;
@@ -45,8 +45,8 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 };
 

@@ -48,8 +48,8 @@ public:
     App::PropertyBool Nonmanifold;     //Option for non-manifold processing
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
 };
 
 }//Namespace Surface

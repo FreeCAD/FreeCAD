@@ -38,16 +38,16 @@ class FemGuiExport ViewProviderFemPostPipeline : public ViewProviderFemPostObjec
 public:
     /// constructor.
     ViewProviderFemPostPipeline();
-    ~ViewProviderFemPostPipeline();
+    ~ViewProviderFemPostPipeline() override;
 
-    virtual std::vector< App::DocumentObject* > claimChildren() const;
-    virtual std::vector< App::DocumentObject* > claimChildren3D() const;
-    virtual void updateData(const App::Property* prop);
-    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
+    std::vector< App::DocumentObject* > claimChildren() const override;
+    std::vector< App::DocumentObject* > claimChildren3D() const override;
+    void updateData(const App::Property* prop) override;
+    void onSelectionChanged(const Gui::SelectionChanges &sel) override;
     void updateColorBars();
     void transformField(char *FieldName, double FieldFactor);
     void scaleField(vtkDataSet *dset, vtkDataArray *pdata, double FieldFactor);
-    PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
 private:
     Py::Object PythonObject;

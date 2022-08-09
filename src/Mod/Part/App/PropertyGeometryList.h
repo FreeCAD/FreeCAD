@@ -53,10 +53,10 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyGeometryList();
+    ~PropertyGeometryList() override;
 
-    virtual void setSize(int newSize);
-    virtual int getSize() const;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     /** Sets the property
      */
@@ -75,16 +75,16 @@ public:
 
     void set1Value(int idx, std::unique_ptr<Geometry> &&);
 
-    virtual PyObject *getPyObject();
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save(Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual App::Property *Copy() const;
-    virtual void Paste(const App::Property &from);
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize() const;
+    unsigned int getMemSize() const override;
 
 private:
     std::vector<Geometry*> _lValueList;

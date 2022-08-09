@@ -38,11 +38,11 @@ class PartExport GeometryExtension: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 public:
-    virtual ~GeometryExtension() = default;
+    ~GeometryExtension() override = default;
 
     virtual std::unique_ptr<GeometryExtension> copy() const = 0;
 
-    virtual PyObject *getPyObject() = 0;
+    PyObject *getPyObject() override = 0;
     PyObject* copyPyObject() const;
 
     inline void setName(const std::string& str) {name = str;}
@@ -69,7 +69,7 @@ class PartExport GeometryPersistenceExtension : public Part::GeometryExtension
 {
     TYPESYSTEM_HEADER();
 public:
-    virtual ~GeometryPersistenceExtension() = default;
+    ~GeometryPersistenceExtension() override = default;
 
     // Own Persistence implementer - Not Base::Persistence - managed by Part::Geometry
     void Save(Base::Writer &/*writer*/) const;

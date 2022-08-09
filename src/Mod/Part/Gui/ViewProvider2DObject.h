@@ -45,9 +45,9 @@ public:
     /// constructor
     ViewProvider2DObject();
     /// destructor
-    virtual ~ViewProvider2DObject();
-    virtual std::vector<std::string> getDisplayModes() const;
-    virtual const char* getDefaultDisplayMode() const;
+    ~ViewProvider2DObject() override;
+    std::vector<std::string> getDisplayModes() const override;
+    const char* getDefaultDisplayMode() const override;
 };
 
 class PartGuiExport ViewProvider2DObjectGrid : public ViewProvider2DObject
@@ -58,7 +58,7 @@ public:
     /// constructor
     ViewProvider2DObjectGrid();
     /// destructor
-    virtual ~ViewProvider2DObjectGrid();
+    ~ViewProvider2DObjectGrid() override;
 
     /// Property to switch the grid on and off
     App::PropertyBool ShowGrid;
@@ -70,19 +70,19 @@ public:
     App::PropertyBool GridAutoSize;
     App::PropertyInteger maxNumberOfLines;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property*);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property*) override;
 
     /// creates the grid
     SoSeparator* createGrid();
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
-    virtual void Restore(Base::XMLReader &reader);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    void onChanged(const App::Property* prop) override;
+    void Restore(Base::XMLReader &reader) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     SoSeparator  *GridRoot;
 

@@ -45,18 +45,18 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderMirror";
     }
     //@}
 
 protected:
-    void onChanged (const App::Property* prop);
+    void onChanged (const App::Property* prop) override;
 
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 };
 

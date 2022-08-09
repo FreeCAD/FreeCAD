@@ -52,7 +52,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~CylinderFit();
+    ~CylinderFit() override;
 
     /**
      * Set approximations before calling Fit()
@@ -87,7 +87,7 @@ public:
     /**
      * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
      * called FLOAT_MAX is returned.

@@ -50,7 +50,7 @@ public:
     };
 
     DlgSmoothing(QWidget* parent = nullptr);
-    ~DlgSmoothing();
+    ~DlgSmoothing() override;
     int iterations() const;
     double lambdaStep() const;
     double microStep() const;
@@ -78,7 +78,7 @@ class MeshGuiExport SmoothingDialog : public QDialog
 
 public:
     SmoothingDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SmoothingDialog();
+    ~SmoothingDialog() override;
 
     int iterations() const
     { return widget->iterations(); }
@@ -104,14 +104,14 @@ class TaskSmoothing : public Gui::TaskView::TaskDialog
 
 public:
     TaskSmoothing();
-    ~TaskSmoothing();
+    ~TaskSmoothing() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return true; }
 
 private:

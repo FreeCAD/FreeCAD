@@ -52,8 +52,8 @@ private Q_SLOTS:
     void onCheckReversed(bool);
 
 protected:
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 };
 
 /// simulation dialog for the TaskView
@@ -66,7 +66,7 @@ public:
     TaskDlgFemConstraintGear(ViewProviderFemConstraintGear *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 
 };
 

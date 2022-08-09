@@ -38,13 +38,13 @@ class PartDesignExport Line : public Part::Datum
 
 public:
     Line();
-    virtual ~Line();
+    ~Line() override;
 
     App::PropertyEnumeration ResizeMode;
     App::PropertyLength Length;
-    virtual void onChanged(const App::Property *prop);
+    void onChanged(const App::Property *prop) override;
     
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumLine";
     }
 

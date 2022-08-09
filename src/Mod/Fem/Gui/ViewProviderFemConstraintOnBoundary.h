@@ -36,7 +36,7 @@ class FemGuiExport ViewProviderFemConstraintOnBoundary : public FemGui::ViewProv
 
 public:
     ViewProviderFemConstraintOnBoundary();
-    virtual ~ViewProviderFemConstraintOnBoundary();
+    ~ViewProviderFemConstraintOnBoundary() override;
 
     void highlightReferences(const bool on) override;
 

@@ -43,13 +43,13 @@ class TechDrawGuiExport QGIMatting : public QGraphicsItemGroup
 {
 public:
     explicit QGIMatting();
-    ~QGIMatting() {}
+    ~QGIMatting() override {}
 
     enum {Type = QGraphicsItem::UserType + 205};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-    virtual QRectF boundingRect() const;
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
+    QRectF boundingRect() const override;
 
     virtual void setSize(double w, double h) {m_height = h; m_width = w;}
     //virtual void setHoleStyle(int hs) {m_holeStyle = hs;}

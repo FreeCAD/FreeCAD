@@ -49,12 +49,12 @@ class ViewProviderCurveOnMesh : public Gui::ViewProviderDocumentObject
 
 public:
     ViewProviderCurveOnMesh();
-    virtual ~ViewProviderCurveOnMesh();
+    ~ViewProviderCurveOnMesh() override;
     void addVertex(const SbVec3f&);
     void clearVertex();
     void setPoints(const std::vector<SbVec3f>&);
     void clearPoints();
-    void setDisplayMode(const char* ModeName);
+    void setDisplayMode(const char* ModeName) override;
 
 private:
     SoCoordinate3 * pcCoords;
@@ -69,7 +69,7 @@ class CurveOnMeshHandler : public QObject
 
 public:
     CurveOnMeshHandler(QObject* parent = nullptr);
-    ~CurveOnMeshHandler();
+    ~CurveOnMeshHandler() override;
     void enableApproximation(bool);
     void setParameters(int maxDegree, GeomAbs_Shape cont, double tol3d, double angle);
     void enableCallback(Gui::View3DInventor* viewer);

@@ -64,10 +64,10 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn* execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderHelix";
     }
     //@}
@@ -89,9 +89,9 @@ protected:
     Base::Vector3d getProfileCenterPoint();
 
     // handle changed property types for backward compatibility
-    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
 
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     static const App::PropertyFloatConstraint::Constraints floatTurns;
     static const App::PropertyAngle::Constraints floatAngle;

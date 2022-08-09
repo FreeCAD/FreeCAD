@@ -39,12 +39,12 @@ public:
     ViewProviderTransformed()
         : featureName("undefined"), pcRejectedRoot(nullptr) {}
     /// destructor
-    virtual ~ViewProviderTransformed()
+    ~ViewProviderTransformed() override
         {}
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /// signals if the transformation contains errors
     boost::signals2::signal<void (QString msg)> signalDiagnosis;
@@ -54,11 +54,11 @@ public:
     // Name of menu dialog
     QString menuName;
 
-    virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
+    Gui::ViewProvider *startEditing(int ModNum=0) override;
 
 protected:
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 

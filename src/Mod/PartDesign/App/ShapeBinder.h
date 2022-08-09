@@ -47,7 +47,7 @@ class PartDesignExport ShapeBinder : public Part::Feature
 
 public:
     ShapeBinder();
-    virtual ~ShapeBinder();
+    ~ShapeBinder() override;
 
     App::PropertyLinkSubListGlobal    Support;
     App::PropertyBool TraceSupport;
@@ -62,14 +62,14 @@ public:
 protected:
     Part::TopoShape updatedShape() const;
     bool hasPlacementChanged() const;
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-    virtual short int mustExecute() const override;
-    virtual App::DocumentObjectExecReturn* execute() override;
-    virtual void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    short int mustExecute() const override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    virtual void onSettingDocument() override;
+    void onSettingDocument() override;
 
     typedef boost::signals2::connection Connection;
     Connection connectDocumentChangedObject;
@@ -81,7 +81,7 @@ public:
     typedef Part::Feature inherited;
 
     SubShapeBinder();
-    ~SubShapeBinder();
+    ~SubShapeBinder() override;
 
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderSubShapeBinder";
@@ -113,24 +113,24 @@ public:
     };
     void update(UpdateOption options = UpdateNone);
 
-    virtual int canLoadPartial() const override {
+    int canLoadPartial() const override {
         return PartialLoad.getValue()?1:0;
     }
 
-    virtual bool canLinkProperties() const override {return false;}
+    bool canLinkProperties() const override {return false;}
 
-    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr, 
+    App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr,
             Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const override;
 
 protected:
-    virtual App::DocumentObjectExecReturn* execute() override;
-    virtual void onChanged(const App::Property *prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onChanged(const App::Property *prop) override;
 
-    virtual void handleChangedPropertyType(
+    void handleChangedPropertyType(
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
+    void onDocumentRestored() override;
+    void setupObject() override;
 
     void setupCopyOnChange();
     void checkCopyOnChange(const App::Property &prop);

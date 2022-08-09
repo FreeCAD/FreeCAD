@@ -37,7 +37,7 @@ class ShapeBuilderWidget : public QWidget,
 
 public:
     ShapeBuilderWidget(QWidget* parent = nullptr);
-    ~ShapeBuilderWidget();
+    ~ShapeBuilderWidget() override;
 
     bool accept();
     bool reject();
@@ -48,7 +48,7 @@ private Q_SLOTS:
     void switchMode(int);
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     void createEdgeFromVertex();
@@ -57,7 +57,7 @@ private:
     void createFaceFromEdge();
     void createShellFromFace();
     void createSolidFromShell();
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -70,15 +70,15 @@ class TaskShapeBuilder : public Gui::TaskView::TaskDialog
 
 public:
     TaskShapeBuilder();
-    ~TaskShapeBuilder();
+    ~TaskShapeBuilder() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Close; }
 
 private:

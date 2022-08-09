@@ -63,7 +63,7 @@ public:
         MOUSE_NOT_PRESSED
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         prevCursorPosition = onSketchPos;
 
@@ -88,7 +88,7 @@ public:
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         prevCursorPosition = onSketchPos;
 
@@ -199,7 +199,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         prevCursorPosition = onSketchPos;
         MousePressMode = MOUSE_NOT_PRESSED;
@@ -207,7 +207,7 @@ public:
         return finishCommand(onSketchPos);
     }
 
-    virtual void registerPressedKey(bool pressed, int key) override
+    void registerPressedKey(bool pressed, int key) override
     {
         if (SoKeyboardEvent::D == key && pressed) {
             SplineDegree = QInputDialog::getInt(
@@ -281,7 +281,7 @@ public:
         return;
     }
 
-    virtual void quit() override
+    void quit() override
     {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
@@ -335,7 +335,7 @@ private:
         IsClosed = false;
     }
 
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
     }
 

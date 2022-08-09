@@ -58,9 +58,9 @@ public:
     ParametersDialog(std::vector<float>&, FitParameter*,
                      ParameterList, Mesh::Feature* mesh,
                      QWidget* parent=nullptr);
-    ~ParametersDialog();
-    void accept();
-    void reject();
+    ~ParametersDialog() override;
+    void accept() override;
+    void reject() override;
 
 private Q_SLOTS:
     void on_region_clicked();
@@ -83,11 +83,11 @@ class MeshGuiExport SegmentationBestFit : public QWidget
 
 public:
     SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SegmentationBestFit();
+    ~SegmentationBestFit() override;
     void accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private Q_SLOTS:
     void on_planeParameters_clicked();
@@ -110,12 +110,12 @@ class TaskSegmentationBestFit : public Gui::TaskView::TaskDialog
 {
 public:
     TaskSegmentationBestFit(Mesh::Feature* mesh);
-    ~TaskSegmentationBestFit();
+    ~TaskSegmentationBestFit() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

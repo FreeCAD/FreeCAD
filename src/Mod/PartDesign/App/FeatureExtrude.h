@@ -59,7 +59,7 @@ public:
 
     /** @name methods override feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     //@}
 
 protected:

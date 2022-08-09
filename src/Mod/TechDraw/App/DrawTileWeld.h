@@ -40,7 +40,7 @@ class TechDrawExport DrawTileWeld : public TechDraw::DrawTile
 
 public:
     DrawTileWeld();
-    virtual ~DrawTileWeld();
+    ~DrawTileWeld() override;
 
     App::PropertyString       LeftText;
     App::PropertyString       RightText;
@@ -48,15 +48,15 @@ public:
     App::PropertyFile         SymbolFile;
     App::PropertyFileIncluded SymbolIncluded;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute();
-    virtual void onDocumentRestored();
-    virtual void setupObject();
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onDocumentRestored() override;
+    void setupObject() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderTile";
     }
-    virtual PyObject *getPyObject();
+    PyObject *getPyObject() override;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
     void replaceSymbolIncluded(std::string newSymbolFile);
@@ -66,7 +66,7 @@ public:
     std::string prefSymbol();
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
 };

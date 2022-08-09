@@ -37,10 +37,10 @@ public:
     /// constructor
     ViewProviderExtrusion();
     /// destructor
-    virtual ~ViewProviderExtrusion();
+    ~ViewProviderExtrusion() override;
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
+    std::vector<App::DocumentObject*> claimChildren(void)const override;
 };
 
 } // namespace PartGui

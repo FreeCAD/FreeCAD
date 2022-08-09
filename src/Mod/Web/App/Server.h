@@ -51,8 +51,8 @@ class FirewallPython : public Firewall
 {
 public:
     FirewallPython(const Py::Object&);
-    virtual ~FirewallPython();
-    virtual bool filter(const QByteArray&) const;
+    ~FirewallPython() override;
+    bool filter(const QByteArray&) const override;
 
 private:
     Py::Object obj;
@@ -62,7 +62,7 @@ class ServerEvent : public QEvent
 {
 public:
     ServerEvent(QTcpSocket* socket, const QByteArray&);
-    ~ServerEvent();
+    ~ServerEvent() override;
 
     QTcpSocket* socket() const;
     const QByteArray& request() const;
@@ -83,8 +83,8 @@ public:
     AppServer(bool direct = false, QObject* parent = nullptr);
 
 protected:
-    void incomingConnection(qintptr socket);
-    void customEvent(QEvent* e);
+    void incomingConnection(qintptr socket) override;
+    void customEvent(QEvent* e) override;
 
 private:
     std::string handleRequest(QByteArray);

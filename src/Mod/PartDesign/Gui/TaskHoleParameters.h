@@ -51,7 +51,7 @@ class TaskHoleParameters : public TaskSketchBasedParameters
 
 public:
     TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = nullptr);
-    ~TaskHoleParameters();
+    ~TaskHoleParameters() override;
 
     void apply() override;
 
@@ -114,7 +114,7 @@ private:
     public:
         Observer(TaskHoleParameters * _owner, PartDesign::Hole * _hole);
     private:
-        virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+        void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
         TaskHoleParameters * owner;
         PartDesign::Hole * hole;
     };
@@ -144,7 +144,7 @@ class TaskDlgHoleParameters : public TaskDlgSketchBasedParameters
 
 public:
     TaskDlgHoleParameters(ViewProviderHole *HoleView);
-    ~TaskDlgHoleParameters();
+    ~TaskDlgHoleParameters() override;
 
     ViewProviderHole* getHoleView() const { return static_cast<ViewProviderHole*>(vp); }
 

@@ -48,29 +48,29 @@ public:
     /// constructor
     ViewProviderDrawingView();
     /// destructor
-    virtual ~ViewProviderDrawingView();
+    ~ViewProviderDrawingView() override;
 
     App::PropertyBool  KeepLabel;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual bool useNewSelectionModel() const override {return false;}
+    void attach(App::DocumentObject *) override;
+    bool useNewSelectionModel() const override {return false;}
     /// Hide the object in the view
-    virtual void hide() override;
+    void hide() override;
     /// Show the object in the view
-    virtual void show() override;
-    virtual bool isShow() const override;
+    void show() override;
+    bool isShow() const override;
 
-    virtual void onChanged(const App::Property *prop) override;
-    virtual void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
+    void updateData(const App::Property*) override;
 
     QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
 
     /** @name Restoring view provider from document load */
     //@{
-    virtual void startRestoring() override;
-    virtual void finishRestoring() override;
+    void startRestoring() override;
+    void finishRestoring() override;
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;

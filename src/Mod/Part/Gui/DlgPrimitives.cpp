@@ -164,13 +164,13 @@ public:
     CircleFromThreePoints() : Picker()
     {
     }
-    bool pickedPoint(const SoPickedPoint * point)
+    bool pickedPoint(const SoPickedPoint * point) override
     {
         SbVec3f pnt = point->getPoint();
         points.emplace_back(pnt[0],pnt[1],pnt[2]);
         return points.size() == 3;
     }
-    QString command(App::Document* doc) const
+    QString command(App::Document* doc) const override
     {
         GC_MakeArcOfCircle arc(points[0], points[1], points[2]);
         if (!arc.IsDone())

@@ -58,7 +58,7 @@ public:
                         std::vector<bool> is3d);
     TaskCosmeticLine(TechDraw::DrawViewPart* baseFeat,
                         std::string edgeName);
-    ~TaskCosmeticLine();
+    ~TaskCosmeticLine() override;
 
 public Q_SLOTS:
 
@@ -70,7 +70,7 @@ public:
 protected Q_SLOTS:
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
     void setUiPrimary();
     void setUiEdit();
@@ -103,20 +103,20 @@ public:
                         std::vector<bool> is3d);
     TaskDlgCosmeticLine(TechDraw::DrawViewPart* baseFeat,
                         std::string edgeName);
-    ~TaskDlgCosmeticLine();
+    ~TaskDlgCosmeticLine() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument() const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 

@@ -37,13 +37,13 @@ public:
     /// constructor
     ViewProviderRevolution();
     /// destructor
-    virtual ~ViewProviderRevolution();
+    ~ViewProviderRevolution() override;
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
     /// Returns a newly created TaskDlgRevolutionParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 
 };

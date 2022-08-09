@@ -37,7 +37,7 @@ class PartExport Offset : public Part::Feature
 
 public:
     Offset();
-    ~Offset();
+    ~Offset() override;
 
     App::PropertyLink  Source;
     App::PropertyFloat Value;
@@ -50,9 +50,9 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual short mustExecute() const override;
-    virtual const char* getViewProviderName() const override {
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderOffset";
     }
     //@}
@@ -67,14 +67,14 @@ class PartExport Offset2D : public Offset
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Offset2D);
 public:
     Offset2D();
-    ~Offset2D();
+    ~Offset2D() override;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual short mustExecute() const override;
-    virtual const char* getViewProviderName() const override {
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderOffset2D";
     }
     //@}

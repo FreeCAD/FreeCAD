@@ -37,12 +37,12 @@ class FemGuiExport ViewProviderFemConstraintPulley : public FemGui::ViewProvider
 public:
     /// Constructor
     ViewProviderFemConstraintPulley();
-    virtual ~ViewProviderFemConstraintPulley();
+    ~ViewProviderFemConstraintPulley() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 } //namespace FemGui

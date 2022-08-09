@@ -36,12 +36,12 @@ class PartDesignGuiExport ViewProviderDatumPlane : public PartDesignGui::ViewPro
 public:
     /// Constructor
     ViewProviderDatumPlane();
-    virtual ~ViewProviderDatumPlane();
+    ~ViewProviderDatumPlane() override;
 
-    virtual void attach ( App::DocumentObject *obj );
-    virtual void updateData(const App::Property*);
+    void attach ( App::DocumentObject *obj ) override;
+    void updateData(const App::Property*) override;
 
-    void setExtents (Base::BoundBox3d bbox);
+    void setExtents (Base::BoundBox3d bbox) override;
     void setExtents(double l, double w);
 
 private:

@@ -130,7 +130,7 @@ class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewDimension();
-    virtual ~DrawViewDimension();
+    ~DrawViewDimension() override;
 
     App::PropertyEnumeration        MeasureType;           //True/Projected
     App::PropertyLinkSubList        References2D;          //Points to Projection SubFeatures
@@ -170,15 +170,15 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDimension";
     }
     //return PyObject as DrawViewDimensionPy
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     virtual std::string getFormattedToleranceValue(int partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
@@ -191,7 +191,7 @@ public:
     QStringList getPrefixSuffixSpec(QString fSpec);
 
     virtual DrawViewPart* getViewPart() const;
-    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
+    QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
     static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
@@ -213,10 +213,10 @@ public:
     bool useDecimals() const;
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
-    virtual void Restore(Base::XMLReader& reader) override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
+    void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
+    void Restore(Base::XMLReader& reader) override;
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec(bool isToleranceFormat = false) const;
     virtual pointPair getPointsOneEdge();

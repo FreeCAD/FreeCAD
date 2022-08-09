@@ -44,11 +44,11 @@ public:
     /// constructor
     ViewProviderImport();
     /// destructor
-    virtual ~ViewProviderImport();
+    ~ViewProviderImport() override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 } // namespace PartGui

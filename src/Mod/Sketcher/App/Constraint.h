@@ -95,17 +95,17 @@ public:
     Constraint(Constraint&&) = delete;
     Constraint& operator=(Constraint&&) = delete;
 
-    virtual ~Constraint() = default;
+    ~Constraint() override = default;
 
     Constraint *clone() const; // does copy the tag, it will be treated as a rename by the expression engine.
     Constraint *copy() const; // does not copy the tag, but generates a new one
 
     // from base class
-    virtual unsigned int getMemSize() const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     Base::Quantity getPresentationValue() const;
     inline void setValue(double newValue) {

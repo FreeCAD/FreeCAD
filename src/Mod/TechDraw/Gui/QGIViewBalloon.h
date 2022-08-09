@@ -59,14 +59,14 @@ Q_OBJECT
 
 public:
     QGIBalloonLabel();
-    virtual ~QGIBalloonLabel() = default;
+    ~QGIBalloonLabel() override = default;
 
     enum {Type = QGraphicsItem::UserType + 141};
     int type() const override { return Type;}
 
-    virtual QRectF boundingRect() const override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void paint( QPainter *painter,
+    QRectF boundingRect() const override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
@@ -100,12 +100,12 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 //    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_labelText;
@@ -129,14 +129,14 @@ public:
     enum {Type = QGraphicsItem::UserType + 140};
 
     explicit QGIViewBalloon();
-    virtual ~QGIViewBalloon() = default;
+    ~QGIViewBalloon() override = default;
 
     void setViewPartFeature(TechDraw::DrawViewBalloon *obj);
     int type() const override { return Type;}
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
-    virtual void paint( QPainter * painter,
+    void drawBorder() override;
+    void updateView(bool update = false) override;
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
@@ -147,10 +147,10 @@ public:
     void setPrettySel();
     void setPrettyNormal();
 
-    virtual void setGroupSelection(bool b) override;
+    void setGroupSelection(bool b) override;
     virtual QGIBalloonLabel* getBalloonLabel() { return balloonLabel; }
 
-    virtual QColor getNormalColor() override;
+    QColor getNormalColor() override;
     int prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
@@ -163,13 +163,13 @@ public Q_SLOTS:
     void updateBalloon(bool obtuse = false);
 
 protected:
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+    void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
+    void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     void draw() override;
     void drawBalloon(bool dragged = false);
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens();
     virtual void setPens();

@@ -37,16 +37,16 @@ class TechDrawGuiExport  QGIViewCollection : public QGIView
 {
 public:
     QGIViewCollection();
-    ~QGIViewCollection() = default;
+    ~QGIViewCollection() override = default;
 
     enum {Type = QGraphicsItem::UserType + 110};
     int type() const override { return Type;}
 
-    virtual void updateView(bool update = false) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    void updateView(bool update = false) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 };
 

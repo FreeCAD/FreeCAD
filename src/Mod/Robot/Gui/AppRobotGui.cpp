@@ -60,7 +60,7 @@ public:
         initialize("This module is the RobotGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

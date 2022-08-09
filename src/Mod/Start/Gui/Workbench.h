@@ -37,24 +37,24 @@ class Workbench : public Gui::StdWorkbench
 
 public:
     Workbench();
-    virtual ~Workbench();
+    ~Workbench() override;
 
     /** Defines the standard context menu. */
-    virtual void setupContextMenu(const char* recipient,Gui::MenuItem*) const;
+    void setupContextMenu(const char* recipient,Gui::MenuItem*) const override;
     /** Run some actions when the workbench gets activated. */
-    virtual void activated();
+    void activated() override;
 
     static void loadStartPage();
 
 protected:
     /** Defines the standard menus. */
-    virtual Gui::MenuItem* setupMenuBar() const;
+    Gui::MenuItem* setupMenuBar() const override;
     /** Defines the standard toolbars. */
-    virtual Gui::ToolBarItem* setupToolBars() const;
+    Gui::ToolBarItem* setupToolBars() const override;
     /** Defines the standard command bars. */
-    virtual Gui::ToolBarItem* setupCommandBars() const;
+    Gui::ToolBarItem* setupCommandBars() const override;
     /** Returns a DockWindowItems structure of dock windows this workbench. */
-    virtual Gui::DockWindowItems* setupDockWindows() const;
+    Gui::DockWindowItems* setupDockWindows() const override;
 
 }; // namespace StartGui
 

@@ -34,11 +34,11 @@ class ViewProviderSetNodes : public Gui::ViewProviderGeometryObject
     PROPERTY_HEADER(FemGui::ViewProviderSetNodes);
 
 public:
-    virtual bool doubleClicked();
+    bool doubleClicked() override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 } //namespace FemGui

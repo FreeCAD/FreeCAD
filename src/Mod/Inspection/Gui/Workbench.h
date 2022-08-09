@@ -34,11 +34,11 @@ class Workbench : public Gui::StdWorkbench
 
 public:
     Workbench();
-    virtual ~Workbench();
+    ~Workbench() override;
 
 protected:
-    Gui::MenuItem* setupMenuBar() const;
-    Gui::ToolBarItem* setupToolBars() const;
+    Gui::MenuItem* setupMenuBar() const override;
+    Gui::ToolBarItem* setupToolBars() const override;
 };
 
 } // namespace InspectionGui

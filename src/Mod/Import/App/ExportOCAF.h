@@ -106,7 +106,7 @@ public:
     }
 
 private:
-    virtual void findColors(Part::Feature*, std::vector<App::Color>&) const;
+    void findColors(Part::Feature*, std::vector<App::Color>&) const override;
 
 private:
     std::map<Part::Feature*, std::vector<App::Color> > partColors;

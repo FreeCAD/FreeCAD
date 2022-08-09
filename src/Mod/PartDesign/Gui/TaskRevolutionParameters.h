@@ -47,9 +47,9 @@ class TaskRevolutionParameters : public TaskSketchBasedParameters
 
 public:
     TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
-    ~TaskRevolutionParameters();
+    ~TaskRevolutionParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to

@@ -38,12 +38,12 @@ class FemGuiExport Workbench : public Gui::StdWorkbench
 
 public:
   Workbench();
-  virtual ~Workbench();
-  void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
+  ~Workbench() override;
+  void setupContextMenu(const char* recipient, Gui::MenuItem*) const override;
 
 protected:
-  Gui::ToolBarItem* setupToolBars() const;
-  Gui::MenuItem*    setupMenuBar() const;
+  Gui::ToolBarItem* setupToolBars() const override;
+  Gui::MenuItem*    setupMenuBar() const override;
 };
 
 } // namespace FemGui

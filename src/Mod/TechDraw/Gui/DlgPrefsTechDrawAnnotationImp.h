@@ -37,15 +37,15 @@ class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
 
 public:
     DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawAnnotationImp();
+    ~DlgPrefsTechDrawAnnotationImp() override;
 
 public Q_SLOTS:
     void onLineGroupChanged(int);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
     int prefBalloonArrow() const;
 

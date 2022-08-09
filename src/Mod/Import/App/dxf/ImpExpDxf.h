@@ -38,16 +38,16 @@ namespace Import
         ImpExpDxfRead(std::string filepath, App::Document *pcDoc);
     
         // CDxfRead's virtual functions
-        void OnReadLine(const double* s, const double* e, bool hidden);
-        void OnReadPoint(const double* s);
-        void OnReadText(const double* point, const double height, const char* text);
-        void OnReadArc(const double* s, const double* e, const double* c, bool dir, bool hidden);
-        void OnReadCircle(const double* s, const double* c, bool dir, bool hidden);
-        void OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir);
-        void OnReadSpline(struct SplineData& sd);
-        void OnReadInsert(const double* point, const double* scale, const char* name, double rotation);
-        void OnReadDimension(const double* s, const double* e, const double* point, double rotation);
-        void AddGraphics() const;
+        void OnReadLine(const double* s, const double* e, bool hidden) override;
+        void OnReadPoint(const double* s) override;
+        void OnReadText(const double* point, const double height, const char* text) override;
+        void OnReadArc(const double* s, const double* e, const double* c, bool dir, bool hidden) override;
+        void OnReadCircle(const double* s, const double* c, bool dir, bool hidden) override;
+        void OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir) override;
+        void OnReadSpline(struct SplineData& sd) override;
+        void OnReadInsert(const double* point, const double* scale, const char* name, double rotation) override;
+        void OnReadDimension(const double* s, const double* e, const double* point, double rotation) override;
+        void AddGraphics() const override;
     
         // FreeCAD-specific functions
         void AddObject(Part::TopoShape *shape); //Called by OnRead functions to add Part objects

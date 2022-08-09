@@ -44,9 +44,9 @@ public:
     /// constructor
     ViewProviderConeParametric();
     /// destructor
-    virtual ~ViewProviderConeParametric();
+    ~ViewProviderConeParametric() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

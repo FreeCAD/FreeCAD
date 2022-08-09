@@ -56,7 +56,7 @@ public:
     }
     //@}
 
-    virtual void onChanged(const App::Property* /*prop*/) override;
+    void onChanged(const App::Property* /*prop*/) override;
 
     void updateProperties();
 

@@ -46,33 +46,33 @@ public:
     /// constructor
     ViewProviderLeader();
     /// destructor
-    virtual ~ViewProviderLeader();
+    ~ViewProviderLeader() override;
 
     App::PropertyLength             LineWidth;
     App::PropertyEnumeration        LineStyle;
     App::PropertyColor              Color;
 
 /*    virtual void setDisplayMode(const char* ModeName);*/
-    virtual bool useNewSelectionModel() const {return false;}
+    bool useNewSelectionModel() const override {return false;}
 /*    virtual std::vector<std::string> getDisplayModes(void) const;*/
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property* p);
-    virtual bool setEdit(int ModNum);
-    virtual bool doubleClicked();
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* p) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
+    bool onDelete(const std::vector<std::string> &) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     static const char* LineStyleEnums[];
 
-    std::vector<App::DocumentObject*> claimChildren() const;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
-    virtual TechDraw::DrawLeaderLine* getViewObject() const;
+    TechDraw::DrawLeaderLine* getViewObject() const override;
     TechDraw::DrawLeaderLine* getFeature()  const;
 
 protected:
     double getDefLineWeight();
     App::Color getDefLineColor();
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
     static App::PropertyIntegerConstraint::Constraints LineStyleRange;

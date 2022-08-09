@@ -41,17 +41,17 @@ class FemExport FemPostPipeline : public Fem::FemPostFilter
 public:
     /// Constructor
     FemPostPipeline();
-    virtual ~FemPostPipeline();
+    ~FemPostPipeline() override;
 
     App::PropertyLinkList       Filter;
     App::PropertyLink           Functions;
     App::PropertyEnumeration    Mode;
 
-    short mustExecute() const;
-    virtual App::DocumentObjectExecReturn* execute();
-    PyObject* getPyObject();
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn* execute() override;
+    PyObject* getPyObject() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemPostPipeline";
     }
 
@@ -69,7 +69,7 @@ public:
     bool holdsPostObject(FemPostObject *obj);
 
 protected:
-    virtual void onChanged(const App::Property *prop);
+    void onChanged(const App::Property *prop) override;
 
 private:
     static const char* ModeEnums[];

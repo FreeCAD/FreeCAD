@@ -70,7 +70,7 @@ namespace PartGui {
         {
             this->mode = mode;
         }
-        bool allow(App::Document*, App::DocumentObject* obj, const char*sSubName)
+        bool allow(App::Document*, App::DocumentObject* obj, const char*sSubName) override
         {
             if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return false;

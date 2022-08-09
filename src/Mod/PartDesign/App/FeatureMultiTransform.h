@@ -41,10 +41,10 @@ public:
 
    /** @name methods override feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderMultiTransform";
     }
     //@}
@@ -56,10 +56,10 @@ public:
       * by the Transformations property. Subfeatures can be Mirrored, LinearPattern, PolarPattern and
       * Scaled.
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals);
+    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals) override;
 
 protected:
-    virtual void positionBySupport();
+    void positionBySupport() override;
 };
 
 } //namespace PartDesign

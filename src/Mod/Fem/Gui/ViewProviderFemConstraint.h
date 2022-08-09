@@ -49,7 +49,7 @@ class FemGuiExport ViewProviderFemConstraint : public Gui::ViewProviderGeometryO
 public:
     /// Constructor
     ViewProviderFemConstraint();
-    virtual ~ViewProviderFemConstraint();
+    ~ViewProviderFemConstraint() override;
 
     // Display properties
     App::PropertyColor          TextColor;
@@ -59,13 +59,13 @@ public:
     App::PropertyFloat          DistFactor;
     App::PropertyBool           Mirror;
 
-    void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property* prop) { Gui::ViewProviderGeometryObject::updateData(prop); }
-    std::vector<std::string> getDisplayModes() const;
-    void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property* prop) override { Gui::ViewProviderGeometryObject::updateData(prop); }
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char* ModeName) override;
 
-    std::vector<App::DocumentObject*> claimChildren()const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren()const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// Highlight the references that have been selected
     virtual void highlightReferences(const bool /* on */) {}
@@ -74,9 +74,9 @@ public:
     static std::string gethideMeshShowPartStr(const std::string showConstr);
 
 protected:
-    void onChanged(const App::Property* prop);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    void onChanged(const App::Property* prop) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     static void createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r);
     static void updatePlacement(const SoSeparator* sep, const int idx, const SbVec3f &base, const SbRotation &r);

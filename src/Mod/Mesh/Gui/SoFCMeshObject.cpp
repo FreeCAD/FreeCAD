@@ -75,7 +75,7 @@ public:
     {
     }
 protected:
-    int overflow(int c = EOF)
+    int overflow(int c = EOF) override
     {
         if (c != EOF) {
             char z = static_cast<char>(c);
@@ -83,7 +83,7 @@ protected:
         }
         return c;
     }
-    std::streamsize xsputn (const char* s, std::streamsize num)
+    std::streamsize xsputn (const char* s, std::streamsize num) override
     {
         out->write(s);
         return num;
@@ -114,7 +114,7 @@ public:
               buffer+pbSize);
     }
 protected:
-    int underflow()
+    int underflow() override
     {
         if (gptr() < egptr()) {
             return *gptr();
@@ -164,7 +164,7 @@ public:
     {
         this->rdbuf(&buf);
     }
-    ~SoInputStream()
+    ~SoInputStream() override
     {
     }
 

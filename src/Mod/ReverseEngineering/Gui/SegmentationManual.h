@@ -44,7 +44,7 @@ class SegmentationManual : public QWidget
 
 public:
     SegmentationManual(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~SegmentationManual();
+    ~SegmentationManual() override;
     void reject();
     void createSegment();
 
@@ -62,7 +62,7 @@ public Q_SLOTS:
     void on_sphereDetect_clicked();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -81,17 +81,17 @@ class TaskSegmentationManual : public Gui::TaskView::TaskDialog
 
 public:
     TaskSegmentationManual();
-    ~TaskSegmentationManual();
+    ~TaskSegmentationManual() override;
 
 public:
-    bool accept();
-    void clicked(int);
+    bool accept() override;
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument(void) const override
     { return true; }
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
     SegmentationManual* widget;

@@ -39,16 +39,16 @@ public:
     /// constructor
     ViewProviderImage();
     /// destructor
-    virtual ~ViewProviderImage();
+    ~ViewProviderImage() override;
 
     App::PropertyBool  Crop;              //crop to feature width x height
 
-    virtual bool useNewSelectionModel() const {return false;}
+    bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *prop);
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
 
-    virtual TechDraw::DrawViewImage* getViewObject() const;
+    TechDraw::DrawViewImage* getViewObject() const override;
 };
 
 

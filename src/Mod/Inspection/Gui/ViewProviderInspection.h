@@ -53,32 +53,32 @@ class ViewProviderInspection : public Gui::ViewProviderDocumentObject,
 
 public:
     ViewProviderInspection();
-    virtual ~ViewProviderInspection();
+    ~ViewProviderInspection() override;
 
     App::PropertyBool OutsideGrayed;
     App::PropertyFloatConstraint PointSize;
 
-    void attach(App::DocumentObject *pcFeat);
+    void attach(App::DocumentObject *pcFeat) override;
     /// Sets the viewing mode
-    void setDisplayMode(const char* ModeName);
+    void setDisplayMode(const char* ModeName) override;
     /// Returns a list of all possible modes
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
     /// Update colorbar after recomputation of distances.
-    void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
     /// Once the color bar settings has been changed this method gets called to update the feature's representation
-    void OnChange(Base::Subject<int> &rCaller,int rcReason);
-    QIcon getIcon() const;
+    void OnChange(Base::Subject<int> &rCaller,int rcReason) override;
+    QIcon getIcon() const override;
     /// Returns a color bar
-    SoSeparator* getFrontRoot() const;
+    SoSeparator* getFrontRoot() const override;
     /// Hide the object in the view
-    virtual void hide();
+    void hide() override;
     /// Show the object in the view
-    virtual void show();
+    void show() override;
 
     static void inspectCallback(void * ud, SoEventCallback * n);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     void setDistances();
     QString inspectDistance(const SoPickedPoint* pp) const;
 
@@ -106,8 +106,8 @@ public:
     /// constructor
     ViewProviderInspectionGroup();
     /// destructor
-    virtual ~ViewProviderInspectionGroup();
-    QIcon getIcon() const;
+    ~ViewProviderInspectionGroup() override;
+    QIcon getIcon() const override;
 };
 
 } // namespace InspectionGui

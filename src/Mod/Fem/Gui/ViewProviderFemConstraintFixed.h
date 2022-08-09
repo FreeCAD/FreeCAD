@@ -37,12 +37,12 @@ class FemGuiExport ViewProviderFemConstraintFixed : public FemGui::ViewProviderF
 public:
     /// Constructor
     ViewProviderFemConstraintFixed();
-    virtual ~ViewProviderFemConstraintFixed();
+    ~ViewProviderFemConstraintFixed() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 } //namespace FemGui

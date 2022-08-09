@@ -49,7 +49,7 @@ class TaskBooleanParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
 
 public:
     TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=nullptr);
-    ~TaskBooleanParameters();
+    ~TaskBooleanParameters() override;
 
     const std::vector<std::string> getBodies() const;
     int getType() const;
@@ -64,8 +64,8 @@ protected:
     void exitSelectionMode();
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     QWidget* proxy;
@@ -84,7 +84,7 @@ class TaskDlgBooleanParameters : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgBooleanParameters(ViewProviderBoolean *BooleanView);
-    ~TaskDlgBooleanParameters();
+    ~TaskDlgBooleanParameters() override;
 
     ViewProviderBoolean* getBooleanView() const
     { return BooleanView; }
@@ -92,19 +92,19 @@ public:
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

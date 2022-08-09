@@ -45,7 +45,7 @@ class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewSymbol();
-    virtual ~DrawViewSymbol();
+    ~DrawViewSymbol() override;
 
     App::PropertyString       Symbol;
     App::PropertyStringList   EditableTexts;
@@ -53,21 +53,21 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSymbol";
     }
-    virtual QRectF getRect() const override;
-    virtual bool checkFit(TechDraw::DrawPage* p) const override;
+    QRectF getRect() const override;
+    bool checkFit(TechDraw::DrawPage* p) const override;
 
     //return PyObject as DrawViewSymbolPy
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
 
     std::vector<std::string> getEditableFields();

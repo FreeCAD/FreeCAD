@@ -35,12 +35,12 @@ class SketchMirrorDialog : public QDialog
 
 public:
     SketchMirrorDialog();
-    ~SketchMirrorDialog();
+    ~SketchMirrorDialog() override;
 
     int RefGeoid;
     Sketcher::PointPos RefPosid;
 
-    void accept();
+    void accept() override;
 
 private:
     std::unique_ptr<Ui_SketchMirrorDialog> ui;

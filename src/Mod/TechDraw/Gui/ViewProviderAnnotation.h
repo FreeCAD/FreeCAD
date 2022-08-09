@@ -40,12 +40,12 @@ public:
     /// constructor
     ViewProviderAnnotation();
     /// destructor
-    virtual ~ViewProviderAnnotation();
+    ~ViewProviderAnnotation() override;
 
-    virtual bool useNewSelectionModel() const {return false;}
-    virtual void updateData(const App::Property*);
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
 
-    virtual TechDraw::DrawViewAnnotation* getViewObject() const;
+    TechDraw::DrawViewAnnotation* getViewObject() const override;
 };
 
 } // namespace TechDrawGui

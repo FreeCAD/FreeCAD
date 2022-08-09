@@ -38,19 +38,19 @@ class FemExport FemSolverObject : public App::DocumentObject
 public:
     /// Constructor
     FemSolverObject();
-    virtual ~FemSolverObject();
+    ~FemSolverObject() override;
 
     // Attributes are implemented in the FemSolverObjectPython
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderSolver";
     }
-    virtual App::DocumentObjectExecReturn *execute() {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute() const;
-    virtual PyObject *getPyObject();
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
 };
 

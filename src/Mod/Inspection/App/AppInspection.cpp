@@ -37,7 +37,7 @@ public:
         initialize("This module is the Inspection module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

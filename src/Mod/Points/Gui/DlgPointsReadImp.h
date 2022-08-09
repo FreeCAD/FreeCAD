@@ -39,7 +39,7 @@ class DlgPointsReadImp : public QDialog
 
 public:
   DlgPointsReadImp(const char *FileName, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-  ~DlgPointsReadImp();
+  ~DlgPointsReadImp() override;
 
 private:
   std::unique_ptr<Ui_DlgPointsRead> ui;

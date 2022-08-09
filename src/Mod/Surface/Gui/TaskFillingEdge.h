@@ -59,7 +59,7 @@ private:
 
 public:
     FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~FillingEdgePanel();
+    ~FillingEdgePanel() override;
 
     void open();
     void checkOpenCommand();
@@ -68,14 +68,14 @@ public:
     void setEditedObject(Surface::Filling* obj);
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
+    void slotUndoDocument(const Gui::Document& Doc) override;
     /** Notifies on redo */
-    virtual void slotRedoDocument(const Gui::Document& Doc);
+    void slotRedoDocument(const Gui::Document& Doc) override;
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     void modifyBoundary(bool);
 
 private Q_SLOTS:

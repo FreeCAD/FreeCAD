@@ -193,14 +193,14 @@ public:
         , editedObject(editedObject)
     {
     }
-    ~ShapeSelection()
+    ~ShapeSelection() override
     {
         mode = SectionsPanel::None;
     }
     /**
       * Allow the user to pick only edges.
       */
-    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
     {
         // don't allow references to itself
         if (pObj == editedObject)

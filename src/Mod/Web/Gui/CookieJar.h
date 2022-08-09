@@ -39,8 +39,8 @@ namespace WebGui {
 
     public:
         FcCookieJar(QObject* parent = nullptr);
-        virtual ~FcCookieJar();
-        virtual bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&);
+        ~FcCookieJar() override;
+        bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&) override;
 
     public Q_SLOTS:
         void scheduleSaveToDisk();

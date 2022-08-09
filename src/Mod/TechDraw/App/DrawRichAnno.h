@@ -38,25 +38,25 @@ class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 
 public:
     DrawRichAnno();
-    virtual ~DrawRichAnno();
+    ~DrawRichAnno() override;
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;
     App::PropertyBool         ShowFrame;
     App::PropertyFloat        MaxWidth;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute();
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderRichAnno";
     }
-    virtual PyObject *getPyObject();
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}
+    PyObject *getPyObject() override;
+    QRectF getRect() const override { return QRectF(0,0,1,1);}
     DrawView* getBaseView() const;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
 };

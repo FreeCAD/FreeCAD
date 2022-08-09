@@ -38,9 +38,9 @@ public:
     /// constructor
     ViewProviderPrism();
     /// destructor
-    virtual ~ViewProviderPrism();
+    ~ViewProviderPrism() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 
@@ -54,9 +54,9 @@ public:
     /// constructor
     ViewProviderWedge();
     /// destructor
-    virtual ~ViewProviderWedge();
+    ~ViewProviderWedge() override;
 
-    std::vector<std::string> getDisplayModes() const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

@@ -35,9 +35,9 @@ class ShapeFromMesh : public QDialog
 
 public:
     ShapeFromMesh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~ShapeFromMesh();
+    ~ShapeFromMesh() override;
 
-    virtual void accept();
+    void accept() override;
 
 private:
     void perform();

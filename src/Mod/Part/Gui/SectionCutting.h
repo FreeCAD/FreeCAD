@@ -37,7 +37,7 @@ class SectionCut : public QDialog
 public:
     static SectionCut* makeDockWidget(QWidget* parent = nullptr);
     SectionCut(QWidget* parent = nullptr);
-    ~SectionCut();
+    ~SectionCut() override;
 
 protected Q_SLOTS:
     void onGroupBoxXtoggled();
@@ -61,7 +61,7 @@ protected Q_SLOTS:
     void onTransparencyChanged(int);
 
 public:
-    void reject();
+    void reject() override;
 
 private:
     Ui_SectionCut* ui;

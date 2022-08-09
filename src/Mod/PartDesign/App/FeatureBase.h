@@ -37,17 +37,17 @@ class PartDesignExport FeatureBase : public PartDesign::Feature
 public:
     FeatureBase();
       
-    virtual short int mustExecute() const;
+    short int mustExecute() const override;
     
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
+    Part::Feature* getBaseObject(bool silent=false) const override;
         
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderBase";
     }
     
-    virtual void onChanged(const App::Property* prop);
-    virtual App::DocumentObjectExecReturn* execute();
-    virtual void onDocumentRestored();
+    void onChanged(const App::Property* prop) override;
+    App::DocumentObjectExecReturn* execute() override;
+    void onDocumentRestored() override;
 };
 
 } //namespace PartDesign

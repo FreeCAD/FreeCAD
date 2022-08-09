@@ -45,10 +45,10 @@ class ShortcutListener: public QObject
 
 public:
     ShortcutListener(ViewProviderSketch * vp);
-    ~ShortcutListener();
+    ~ShortcutListener() override;
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
     ViewProviderSketch * pViewProvider;
 };

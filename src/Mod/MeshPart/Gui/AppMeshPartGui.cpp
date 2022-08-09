@@ -52,7 +52,7 @@ public:
         initialize("This module is the MeshPartGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

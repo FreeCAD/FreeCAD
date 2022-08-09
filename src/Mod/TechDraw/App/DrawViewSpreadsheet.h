@@ -39,7 +39,7 @@ class TechDrawExport DrawViewSpreadsheet : public TechDraw::DrawViewSymbol
 
 public:
     DrawViewSpreadsheet();
-    virtual ~DrawViewSpreadsheet();
+    ~DrawViewSpreadsheet() override;
     App::PropertyLink         Source;
     App::PropertyString       CellStart;
     App::PropertyString       CellEnd;
@@ -49,16 +49,16 @@ public:
     App::PropertyFloat        TextSize;
 
 
-    virtual App::DocumentObjectExecReturn *execute();
-    virtual short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     std::string getSheetImage();
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSpreadsheet";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     std::vector<std::string> getAvailColumns();
     std::string getSVGHead();
     std::string getSVGTail();

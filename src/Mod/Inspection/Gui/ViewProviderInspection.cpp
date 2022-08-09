@@ -395,8 +395,8 @@ class ViewProviderProxyObject : public QObject
 {
 public:
     ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
-    ~ViewProviderProxyObject() {}
-    void customEvent(QEvent *)
+    ~ViewProviderProxyObject() override {}
+    void customEvent(QEvent *) override
     {
         if (!widget.isNull()) {
             QList<Gui::Flag*> flags = widget->findChildren<Gui::Flag*>();

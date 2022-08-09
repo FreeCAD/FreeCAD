@@ -220,21 +220,21 @@ public:
     BoundBoxSegmentVisitor()
     { }
 
-    virtual void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
       (void)id;
       processPt(last);
       processPts(pts);
       processPt(next);
     }
-    virtual void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
       (void)id;
       processPt(last);
       processPts(pts);
       processPt(next);
     }
-    virtual void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center)
+    void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center) override
     {
       (void)id;
       (void)center;
@@ -242,8 +242,8 @@ public:
       processPts(pts);
       processPt(next);
     }
-    virtual void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
-                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q)
+    void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
+                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q) override
     {
       (void)id;
       (void)q; // always within the bounds of p
@@ -252,7 +252,7 @@ public:
       processPts(p);
       processPt(next);
     }
-    virtual void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next)
+    void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
     {
       (void)id;
       processPt(last);

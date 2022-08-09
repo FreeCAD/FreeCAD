@@ -44,13 +44,13 @@ class FemExport FemPostFunction : public App::DocumentObject
 public:
     /// Constructor
     FemPostFunction();
-    virtual ~FemPostFunction();
+    ~FemPostFunction() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemPostFunction";
     }
 
-    virtual App::DocumentObjectExecReturn* execute();
+    App::DocumentObjectExecReturn* execute() override;
 
     //bound box handling
     void setBoundingBox(vtkBoundingBox b) {m_boundingBox = b;};
@@ -69,16 +69,16 @@ class FemExport FemPostFunctionProvider : public App::DocumentObject {
 
 public:
     FemPostFunctionProvider();
-    virtual ~FemPostFunctionProvider();
+    ~FemPostFunctionProvider() override;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemPostFunctionProvider";
     }
 
     App::PropertyLinkList Functions;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 };
 
 
@@ -91,19 +91,19 @@ class FemExport FemPostPlaneFunction : public FemPostFunction
 public:
 
     FemPostPlaneFunction();
-    virtual ~FemPostPlaneFunction();
+    ~FemPostPlaneFunction() override;
 
     App::PropertyVector           Normal;
     App::PropertyVectorDistance   Origin;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemPostPlaneFunction";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     /// get called after a document has been fully restored
-    virtual void onDocumentRestored();
+    void onDocumentRestored() override;
 
     vtkSmartPointer<vtkPlane> m_plane;
 };
@@ -117,17 +117,17 @@ class FemExport FemPostSphereFunction : public FemPostFunction
 public:
 
     FemPostSphereFunction();
-    virtual ~FemPostSphereFunction();
+    ~FemPostSphereFunction() override;
 
     App::PropertyDistance         Radius;
     App::PropertyVectorDistance   Center;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemPostSphereFunction";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     vtkSmartPointer<vtkSphere> m_sphere;
 };

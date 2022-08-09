@@ -48,10 +48,10 @@ public:
 
 private:
     ActiveAnalysisObserver();
-    ~ActiveAnalysisObserver();
+    ~ActiveAnalysisObserver() override;
 
-    void slotDeletedDocument(const App::Document& Doc);
-    void slotDeletedObject(const App::DocumentObject& Obj);
+    void slotDeletedDocument(const App::Document& Doc) override;
+    void slotDeletedObject(const App::DocumentObject& Obj) override;
 
 private:
     static ActiveAnalysisObserver* inst;

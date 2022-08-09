@@ -170,8 +170,8 @@ public:
     MeshingOutput();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;

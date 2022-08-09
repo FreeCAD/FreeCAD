@@ -48,10 +48,10 @@ class ConstraintView : public QListWidget
 
 public:
     explicit ConstraintView(QWidget *parent = nullptr);
-    ~ConstraintView();
+    ~ConstraintView() override;
 
 protected:
-    void contextMenuEvent (QContextMenuEvent* event);
+    void contextMenuEvent (QContextMenuEvent* event) override;
 
 Q_SIGNALS:
     void onUpdateDrivingStatus(QListWidgetItem *item, bool status);
@@ -84,10 +84,10 @@ class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::Selec
 
 public:
     TaskSketcherConstraints(ViewProviderSketch *sketchView);
-    ~TaskSketcherConstraints();
+    ~TaskSketcherConstraints() override;
 
     /// Observer message from the Selection
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     void slotConstraintsChanged();
@@ -125,7 +125,7 @@ public Q_SLOTS:
     void on_settingsDialogButton_clicked(bool);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     ViewProviderSketch *sketchView;
     typedef boost::signals2::connection Connection;
     Connection connectionConstraintsChanged;

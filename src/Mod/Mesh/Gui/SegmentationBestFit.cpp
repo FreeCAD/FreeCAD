@@ -51,8 +51,8 @@ class PlaneFitParameter : public FitParameter
 {
 public:
     PlaneFitParameter() {}
-    virtual ~PlaneFitParameter() {}
-    virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+    ~PlaneFitParameter() override {}
+    std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
         fit.AddPoints(pts.points);
@@ -74,8 +74,8 @@ class CylinderFitParameter : public FitParameter
 {
 public:
     CylinderFitParameter() {}
-    virtual ~CylinderFitParameter() {}
-    virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+    ~CylinderFitParameter() override {}
+    std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
         fit.AddPoints(pts.points);
@@ -129,8 +129,8 @@ class SphereFitParameter : public FitParameter
 {
 public:
     SphereFitParameter() {}
-    virtual ~SphereFitParameter() {}
-    virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+    ~SphereFitParameter() override {}
+    std::vector<float> getParameter(FitParameter::Points pts) const override {
         std::vector<float> values;
         MeshCore::SphereFit fit;
         fit.AddPoints(pts.points);

@@ -37,12 +37,12 @@ class DlgSettingsFemGeneralImp : public Gui::Dialog::PreferencePage
 
 public:
     DlgSettingsFemGeneralImp( QWidget* parent = nullptr );
-    ~DlgSettingsFemGeneralImp();
+    ~DlgSettingsFemGeneralImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemGeneralImp> ui;

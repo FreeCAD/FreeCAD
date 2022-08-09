@@ -34,7 +34,7 @@ class ViewProviderExtend : public PartGui::ViewProviderSpline
     PROPERTY_HEADER(SurfaceGui::ViewProviderExtend);
 
 public:
-    QIcon getIcon() const;
+    QIcon getIcon() const override;
 };
 
 } //namespace SurfaceGui

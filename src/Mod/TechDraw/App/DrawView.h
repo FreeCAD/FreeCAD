@@ -52,7 +52,7 @@ class TechDrawExport DrawView : public App::DocumentObject
 public:
     /// Constructor
     DrawView();
-    virtual ~DrawView();
+    ~DrawView() override;
 
     App::PropertyDistance X;
     App::PropertyDistance Y;
@@ -66,22 +66,22 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual void onDocumentRestored() override;
-    virtual short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onDocumentRestored() override;
+    short mustExecute() const override;
     //@}
-    virtual void handleChangedPropertyType(
+    void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     bool isInClip();
     DrawViewClip* getClipGroup();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDrawingView";
     }
     //return PyObject as DrawViewPy
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     virtual DrawPage* findParentPage() const;
     virtual std::vector<DrawPage*> findAllParentPages() const;
@@ -105,7 +105,7 @@ public:
     void setScaleAttribute();
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     virtual void validateScale();
     std::string pageFeatName;
     bool autoPos;

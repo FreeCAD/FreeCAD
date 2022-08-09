@@ -46,7 +46,7 @@ class TechDrawExport DrawViewBalloon : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewBalloon();
-    virtual ~DrawViewBalloon();
+    ~DrawViewBalloon() override;
 
     App::PropertyLink            SourceView;
     App::PropertyString          Text;
@@ -68,9 +68,9 @@ public:
 
     //virtual PyObject *getPyObject(void);
 
-    virtual App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn *execute() override;
 
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderBalloon";
     }
 
@@ -87,10 +87,10 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, 
+    void handleChangedPropertyType(Base::XMLReader &reader,
                                            const char *TypeName, 
                                            App::Property * prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader, 
+    void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName, 
                                            const char *PropName) override;
 

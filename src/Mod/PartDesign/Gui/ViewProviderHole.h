@@ -37,14 +37,14 @@ public:
     /// constructor
     ViewProviderHole();
     /// destructor
-    virtual ~ViewProviderHole();
+    ~ViewProviderHole() override;
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren()const;
-    void setupContextMenu(QMenu *menu, QObject *receiver, const char *member);
-    bool onDelete(const std::vector<std::string> &s);
+    std::vector<App::DocumentObject*> claimChildren()const override;
+    void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
+    bool onDelete(const std::vector<std::string> &s) override;
 protected:
-    bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 

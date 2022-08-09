@@ -36,7 +36,7 @@ class FemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
 public:
     /// Constructor
     FemMeshShapeNetgenObject();
-    virtual ~FemMeshShapeNetgenObject();
+    ~FemMeshShapeNetgenObject() override;
 
     App::PropertyFloat          MaxSize;
     App::PropertyBool           SecondOrder;
@@ -47,10 +47,10 @@ public:
     App::PropertyBool           Optimize;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemMeshShapeNetgen";
     }
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
 
     //virtual short mustExecute(void) const;
     //virtual PyObject *getPyObject(void);

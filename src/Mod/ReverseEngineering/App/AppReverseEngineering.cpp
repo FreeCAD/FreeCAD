@@ -147,7 +147,7 @@ public:
         initialize("This module is the ReverseEngineering module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object approxSurface(const Py::Tuple& args, const Py::Dict& kwds)
