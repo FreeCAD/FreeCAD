@@ -50,7 +50,7 @@ public:
     ViewProviderDragger();
 
     /// destructor.
-    virtual ~ViewProviderDragger();
+    ~ViewProviderDragger() override;
 
     /** @name Edit methods */
     //@{
@@ -58,7 +58,7 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 
-    virtual ViewProvider *startEditing(int ModNum=0) override;
+    ViewProvider *startEditing(int ModNum=0) override;
 
     /*! synchronize From FC placement to Coin placement*/
     static void updateTransform(const Base::Placement &from, SoTransform *to);

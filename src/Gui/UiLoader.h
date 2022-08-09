@@ -90,7 +90,7 @@ class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
 
 public:
     PySideUicModule();
-    virtual ~PySideUicModule() {}
+    ~PySideUicModule() override {}
 
 private:
     Py::Object loadUiType(const Py::Tuple& args);
@@ -108,14 +108,14 @@ class UiLoader : public QUiLoader
 {
 public:
     UiLoader(QObject* parent=nullptr);
-    virtual ~UiLoader();
+    ~UiLoader() override;
 
     /**
      * Creates a widget of the type \a className with the parent \a parent.
      * For more details see the documentation to QWidgetFactory.
      */
     QWidget* createWidget(const QString & className, QWidget * parent=nullptr,
-                          const QString& name = QString());
+                          const QString& name = QString()) override;
 
 private:
     QStringList cw;
@@ -129,9 +129,9 @@ public:
     static void init_type();    // announce properties and methods
 
     UiLoaderPy();
-    ~UiLoaderPy();
+    ~UiLoaderPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object createWidget(const Py::Tuple&);
     Py::Object load(const Py::Tuple&);
 

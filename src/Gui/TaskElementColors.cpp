@@ -100,7 +100,7 @@ public:
         px = QPixmap(w,w);
     }
 
-    ~Private() {
+    ~Private() override {
         try {
             vpParent->OnTopWhenSelected.setValue(onTopMode);
         }
@@ -109,7 +109,7 @@ public:
         }
     }
 
-    bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) {
+    bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) override {
         if(editDoc!=doc->getName() ||
            editObj!=obj->getNameInDocument() ||
            !boost::starts_with(subname,editSub))

@@ -56,7 +56,7 @@ class GuiExport ViewProviderExtension : public App::Extension
 public:
 
     ViewProviderExtension ();
-    virtual ~ViewProviderExtension ();
+    ~ViewProviderExtension () override;
 
     Gui::ViewProviderDocumentObject*       getExtendedViewProvider();
     const Gui::ViewProviderDocumentObject* getExtendedViewProvider() const;
@@ -105,7 +105,7 @@ public:
 
     // update data of extended object
     virtual void extensionUpdateData(const App::Property*);
-    virtual PyObject* getExtensionPyObject();
+    PyObject* getExtensionPyObject() override;
 
     void setIgnoreOverlayIcon(bool on) {
         m_ignoreOverlayIcon = on;

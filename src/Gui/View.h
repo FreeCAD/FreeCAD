@@ -61,7 +61,7 @@ public:
     /** View destructor
      * Detach the view from the document, if attached!
      */
-    virtual ~BaseView();
+    ~BaseView() override;
 
 
     /** @name methods used by the Application and the GuiDocument

@@ -567,10 +567,10 @@ public:
     BarThread(unsigned long s) : steps(s)
     {
     }
-    ~BarThread()
+    ~BarThread() override
     {
     }
-    void run()
+    void run() override
     {
         QMutex mutex;
         QMutexLocker ml(&mutex);
@@ -728,7 +728,7 @@ public:
     TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
     {
     }
-    void SendLog(const std::string& msg, Base::LogStyle level){
+    void SendLog(const std::string& msg, Base::LogStyle level) override{
 
         QMutexLocker ml(&mutex);
 
@@ -752,7 +752,7 @@ public:
 class ConsoleMessageTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Message("Write a message to the console output.\n");
@@ -762,7 +762,7 @@ public:
 class ConsoleWarningTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Warning("Write a warning to the console output.\n");
@@ -772,7 +772,7 @@ public:
 class ConsoleErrorTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Error("Write an error to the console output.\n");
@@ -782,7 +782,7 @@ public:
 class ConsoleLogTask : public QRunnable
 {
 public:
-    void run()
+    void run() override
     {
         for (int i=0; i<10; i++)
             Base::Console().Log("Write a log to the console output.\n");

@@ -40,27 +40,27 @@ class GuiExport SequencerDialog : public Base::SequencerBase
 {
 public:
     static SequencerDialog* instance();
-    void pause();
-    void resume();
-    bool isBlocking() const;
+    void pause() override;
+    void resume() override;
+    bool isBlocking() const override;
     bool canAbort() const;
 
 protected:
     /** Construction */
     SequencerDialog ();
     /** Destruction */
-    ~SequencerDialog ();
+    ~SequencerDialog () override;
 
     /** Puts text to the progress dialog */
-    void setText (const char* pszTxt);
+    void setText (const char* pszTxt) override;
     /** Starts the progress dialog */
-    void startStep();
+    void startStep() override;
     /** Increase the step indicator of the progress dialog. */
-    void nextStep(bool canAbort);
+    void nextStep(bool canAbort) override;
     /** Sets the progress indicator to a certain position. */
-    void setProgress(size_t);
+    void setProgress(size_t) override;
     /** Resets the sequencer */
-    void resetData();
+    void resetData() override;
     void showRemainingTime();
 
 private:
@@ -85,7 +85,7 @@ public:
     /** Construction */
     ProgressDialog (SequencerDialog* s, QWidget * parent=nullptr);
     /** Destruction */
-    ~ProgressDialog ();
+    ~ProgressDialog () override;
 
 protected Q_SLOTS:
     void onCancel();
@@ -96,8 +96,8 @@ private Q_SLOTS:
     void setValueEx(int value);
     void aboutToShow();
     void aboutToHide();
-    void showEvent(QShowEvent*);
-    void hideEvent(QHideEvent*);
+    void showEvent(QShowEvent*) override;
+    void hideEvent(QHideEvent*) override;
 
 protected:
     bool canAbort() const;

@@ -46,10 +46,10 @@ class DlgCustomKeyboardImp : public CustomizeActionPage
 
 public:
     DlgCustomKeyboardImp( QWidget* parent = nullptr );
-    ~DlgCustomKeyboardImp();
+    ~DlgCustomKeyboardImp() override;
 
 protected:
-    void showEvent(QShowEvent* e);
+    void showEvent(QShowEvent* e) override;
 
 protected Q_SLOTS:
     void on_categoryBox_activated(int index);
@@ -59,12 +59,12 @@ protected Q_SLOTS:
     void on_buttonReset_clicked();
     void on_buttonResetAll_clicked();
     void on_editShortcut_textChanged(const QString&);
-    void onAddMacroAction(const QByteArray&);
-    void onRemoveMacroAction(const QByteArray&);
-    void onModifyMacroAction(const QByteArray&);
+    void onAddMacroAction(const QByteArray&) override;
+    void onRemoveMacroAction(const QByteArray&) override;
+    void onModifyMacroAction(const QByteArray&) override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void setShortcutOfCurrentAction(const QString&);
 
 private:

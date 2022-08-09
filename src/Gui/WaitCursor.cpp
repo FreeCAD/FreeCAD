@@ -47,7 +47,7 @@ public:
     void setIgnoreEvents(WaitCursor::FilterEventsFlags flags);
 
 protected:
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent*) override;
     bool isModalDialog(QObject* o) const;
 
 private:

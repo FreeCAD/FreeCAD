@@ -52,7 +52,7 @@ class DlgCustomizeImp : public QDialog
 
 public:
     DlgCustomizeImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgCustomizeImp();
+    ~DlgCustomizeImp() override;
 
     static void addPage(const char* className);
     void addPage (QWidget* w);
@@ -63,7 +63,7 @@ Q_SIGNALS:
     void modifyMacroAction(const QByteArray&);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     /** @name for internal use only */

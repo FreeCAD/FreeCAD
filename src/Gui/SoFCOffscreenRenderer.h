@@ -154,9 +154,9 @@ public:
     static void init_type();
 
     SoQtOffscreenRendererPy(const SbViewportRegion&);
-    ~SoQtOffscreenRendererPy();
+    ~SoQtOffscreenRendererPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object setViewportRegion(const Py::Tuple&);
     Py::Object getViewportRegion(const Py::Tuple&);

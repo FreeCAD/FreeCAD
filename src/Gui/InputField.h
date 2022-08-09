@@ -75,7 +75,7 @@ class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
 
 public:
     InputField (QWidget * parent = nullptr);
-    virtual ~InputField();
+    ~InputField() override;
 
     /// set the field with a quantity
     void setValue(const Base::Quantity&);
@@ -166,9 +166,9 @@ public:
     std::vector<QString> getSavedValues();
     //@}
 
-    void bind(const App::ObjectIdentifier &_path);
-    bool apply(const std::string &propName);
-    bool apply();
+    void bind(const App::ObjectIdentifier &_path) override;
+    bool apply(const std::string &propName) override;
+    bool apply() override;
 
 Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
@@ -194,13 +194,13 @@ protected Q_SLOTS:
     void updateIconLabel(const QString& text);
 
 protected:
-    virtual void showEvent(QShowEvent * event);
-    virtual void focusInEvent(QFocusEvent * event);
-    virtual void focusOutEvent(QFocusEvent * event);
-    virtual void keyPressEvent(QKeyEvent * event);
-    virtual void wheelEvent(QWheelEvent * event);
-    virtual void contextMenuEvent(QContextMenuEvent * event);
-    virtual void resizeEvent(QResizeEvent*);
+    void showEvent(QShowEvent * event) override;
+    void focusInEvent(QFocusEvent * event) override;
+    void focusOutEvent(QFocusEvent * event) override;
+    void keyPressEvent(QKeyEvent * event) override;
+    void wheelEvent(QWheelEvent * event) override;
+    void contextMenuEvent(QContextMenuEvent * event) override;
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;

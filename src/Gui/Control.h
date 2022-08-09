@@ -122,7 +122,7 @@ private:
     /// Construction
     ControlSingleton();
     /// Destruction
-    virtual ~ControlSingleton();
+    ~ControlSingleton() override;
 
     static ControlSingleton* _pcSingleton;
 };

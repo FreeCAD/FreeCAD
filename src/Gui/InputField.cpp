@@ -53,10 +53,10 @@ class InputValidator : public QValidator
 {
 public:
     InputValidator(InputField* parent);
-    ~InputValidator();
+    ~InputValidator() override;
 
-    void fixup(QString& input) const;
-    State validate(QString& input, int& pos) const;
+    void fixup(QString& input) const override;
+    State validate(QString& input, int& pos) const override;
 
 private:
     InputField* dptr;

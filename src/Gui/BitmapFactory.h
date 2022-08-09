@@ -143,7 +143,7 @@ private:
 
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();
-    ~BitmapFactoryInst();
+    ~BitmapFactoryInst() override;
 
     BitmapFactoryInstP* d;
 };

@@ -281,13 +281,13 @@ class GuiExport SelectionObserverPython : public SelectionObserver
 public:
     /// Constructor
     SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
-    virtual ~SelectionObserverPython();
+    ~SelectionObserverPython() override;
 
     static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
     static void removeObserver(const Py::Object& obj);
 
 private:
-    void onSelectionChanged(const SelectionChanges& msg);
+    void onSelectionChanged(const SelectionChanges& msg) override;
     void addSelection(const SelectionChanges&);
     void removeSelection(const SelectionChanges&);
     void setSelection(const SelectionChanges&);
@@ -343,7 +343,7 @@ class GuiExport SelectionGateFilterExternal: public SelectionGate
 {
 public:
     SelectionGateFilterExternal(const char *docName, const char *objName=nullptr);
-    virtual bool allow(App::Document*,App::DocumentObject*, const char*) override;
+    bool allow(App::Document*,App::DocumentObject*, const char*) override;
 private:
     std::string DocName;
     std::string ObjName;
@@ -681,7 +681,7 @@ protected:
     /// Construction
     SelectionSingleton();
     /// Destruction
-    virtual ~SelectionSingleton();
+    ~SelectionSingleton() override;
 
     /// Observer message from the App doc
     void slotDeletedObject(const App::DocumentObject&);

@@ -52,10 +52,10 @@ class ReportView : public QWidget
 
 public:
     ReportView( QWidget* parent = nullptr);
-    ~ReportView();
+    ~ReportView() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     QTabWidget* tabWidget;
@@ -78,10 +78,10 @@ public:
 
 public:
     ReportHighlighter(QTextEdit* );
-    ~ReportHighlighter();
+    ~ReportHighlighter() override;
 
     /** Parses the given text and highlight it in the right colors. */
-    void highlightBlock ( const QString & text );
+    void highlightBlock ( const QString & text ) override;
     /**
      * Sets the current paragraph type used in ReportOutput
      * @see ReportOutput::Message
@@ -129,7 +129,7 @@ class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public 
 
 public:
     ReportOutput(QWidget* parent=nullptr);
-    virtual ~ReportOutput();
+    ~ReportOutput() override;
 
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
@@ -208,7 +208,7 @@ class ReportOutputObserver : public QObject
 
 public:
     ReportOutputObserver (ReportOutput* view);
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected:
     QPointer <ReportOutput> reportView;

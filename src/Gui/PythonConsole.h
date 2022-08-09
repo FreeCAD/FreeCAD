@@ -106,9 +106,9 @@ public:
     };
 
     PythonConsole(QWidget *parent = nullptr);
-    ~PythonConsole();
+    ~PythonConsole() override;
 
-    void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason );
+    void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
     void printStatement( const QString& cmd );
     QString readline( );
 
@@ -124,21 +124,21 @@ private Q_SLOTS:
     void visibilityChanged (bool visible);
 
 protected:
-    void keyPressEvent  ( QKeyEvent         * e );
-    void showEvent      ( QShowEvent        * e );
-    void dropEvent      ( QDropEvent        * e );
-    void dragEnterEvent ( QDragEnterEvent   * e );
-    void dragMoveEvent  ( QDragMoveEvent    * e );
-    void changeEvent    ( QEvent            * e );
-    void mouseReleaseEvent( QMouseEvent     * e );
+    void keyPressEvent  ( QKeyEvent         * e ) override;
+    void showEvent      ( QShowEvent        * e ) override;
+    void dropEvent      ( QDropEvent        * e ) override;
+    void dragEnterEvent ( QDragEnterEvent   * e ) override;
+    void dragMoveEvent  ( QDragMoveEvent    * e ) override;
+    void changeEvent    ( QEvent            * e ) override;
+    void mouseReleaseEvent( QMouseEvent     * e ) override;
 
     void overrideCursor(const QString& txt);
 
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e );
-    bool canInsertFromMimeData ( const QMimeData * source ) const;
-    QMimeData * createMimeDataFromSelection () const;
-    void insertFromMimeData ( const QMimeData * source );
+    void contextMenuEvent ( QContextMenuEvent* e ) override;
+    bool canInsertFromMimeData ( const QMimeData * source ) const override;
+    QMimeData * createMimeDataFromSelection () const override;
+    void insertFromMimeData ( const QMimeData * source ) override;
     QTextCursor inputBegin( ) const;
 
 private:
@@ -175,7 +175,7 @@ class GuiExport PythonConsoleHighlighter : public PythonSyntaxHighlighter
 {
 public:
     PythonConsoleHighlighter(QObject* parent);
-    ~PythonConsoleHighlighter();
+    ~PythonConsoleHighlighter() override;
 
     void highlightBlock (const QString & text);
 

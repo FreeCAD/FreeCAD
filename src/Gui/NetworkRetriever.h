@@ -43,7 +43,7 @@ class NetworkRetriever : public QObject
 
 public:
     NetworkRetriever( QObject * parent = nullptr );
-    virtual ~NetworkRetriever();
+    ~NetworkRetriever() override;
 
     void setNumberOfTries( int );
     void setOutputFile( const QString& );
@@ -83,15 +83,15 @@ class StdCmdDownloadOnlineHelp : public QObject, public Command
 
 public:
     StdCmdDownloadOnlineHelp(QObject * parent = nullptr);
-    virtual ~StdCmdDownloadOnlineHelp();
+    ~StdCmdDownloadOnlineHelp() override;
     /** i18n stuff of the command. */
-    virtual void languageChange();
+    void languageChange() override;
 
 protected:
-    virtual void activated(int iMsg);
+    void activated(int iMsg) override;
 
     /** Creates the action object. */
-    virtual Action* createAction();
+    Action* createAction() override;
 
 private Q_SLOTS:
     void wgetFinished();

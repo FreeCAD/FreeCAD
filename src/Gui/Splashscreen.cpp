@@ -97,7 +97,7 @@ public:
                 textColor = col;
         }
     }
-    virtual ~SplashObserver()
+    ~SplashObserver() override
     {
         Base::Console().DetachObserver(this);
     }

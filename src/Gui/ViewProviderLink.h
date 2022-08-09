@@ -44,7 +44,7 @@ class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
     EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ViewProviderLinkObserver();
-    virtual ~ViewProviderLinkObserver();
+    ~ViewProviderLinkObserver() override;
     void extensionReattach(App::DocumentObject *) override;
     void extensionBeforeDelete() override;
     void extensionOnChanged(const App::Property *) override;
@@ -74,15 +74,15 @@ class GuiExport LinkView : public Base::BaseClass, public LinkOwner {
 public:
 
     LinkView();
-    ~LinkView();
+    ~LinkView() override;
     LinkView &operator=(const LinkView&) = delete;
     LinkView(const LinkView&) = delete;
 
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
-    virtual void unlink(LinkInfoPtr) override;
-    virtual void onLinkedIconChange(LinkInfoPtr) override;
-    virtual void onLinkedUpdateData(LinkInfoPtr, const App::Property *) override;
+    void unlink(LinkInfoPtr) override;
+    void onLinkedIconChange(LinkInfoPtr) override;
+    void onLinkedUpdateData(LinkInfoPtr, const App::Property *) override;
 
     bool isLinked() const;
 
@@ -196,7 +196,7 @@ public:
     App::PropertyPersistentObject ChildViewProvider;
 
     ViewProviderLink();
-    virtual ~ViewProviderLink();
+    ~ViewProviderLink() override;
 
     void attach(App::DocumentObject *pcObj) override;
     void reattach(App::DocumentObject *pcObj) override;
@@ -252,24 +252,24 @@ public:
 
     void setOverrideMode(const std::string &mode) override;
 
-    virtual void onBeforeChange(const App::Property*) override;
+    void onBeforeChange(const App::Property*) override;
     ViewProviderDocumentObject *getChildViewProvider() const {
         return childVp;
     }
 
-    virtual App::Property *getPropertyByName(const char* name) const override;
-    virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
-    virtual void getPropertyList(std::vector<App::Property*> &List) const override;
+    App::Property *getPropertyByName(const char* name) const override;
+    void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
+    void getPropertyList(std::vector<App::Property*> &List) const override;
 
-    virtual ViewProviderDocumentObject *getLinkedViewProvider(
+    ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=nullptr, bool recursive=false) const override;
 
-    virtual bool allowOverride(const App::DocumentObject &) const override {
+    bool allowOverride(const App::DocumentObject &) const override {
         return true;
     }
 
-    virtual void setTransformation(const Base::Matrix4D &rcMatrix) override;
-    virtual void setTransformation(const SbMatrix &rcMatrix) override;
+    void setTransformation(const Base::Matrix4D &rcMatrix) override;
+    void setTransformation(const SbMatrix &rcMatrix) override;
 
 protected:
     bool setEdit(int ModNum) override;

@@ -69,7 +69,7 @@ public:
     {
     }
 
-    virtual ~GraphvizWorker()
+    ~GraphvizWorker() override
     {
         dotProc.moveToThread(this);
         unflattenProc.moveToThread(this);
@@ -90,7 +90,7 @@ public:
         Q_EMIT emitFinished();
     }
 
-    void run() {
+    void run() override {
         QByteArray preprocessed = str;
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -140,7 +140,7 @@ class GraphvizGraphicsView final : public QGraphicsView
 {
   public:
     GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent);
-    ~GraphvizGraphicsView() = default;
+    ~GraphvizGraphicsView() override = default;
 
     GraphvizGraphicsView(const GraphvizGraphicsView&) = delete;
     GraphvizGraphicsView(GraphvizGraphicsView&&) = delete;

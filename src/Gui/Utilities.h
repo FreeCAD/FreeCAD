@@ -115,14 +115,14 @@ class GuiExport ViewVolumeProjection : public Base::ViewProjMethod
 {
 public:
     ViewVolumeProjection (const SbViewVolume &vv);
-    virtual ~ViewVolumeProjection(){}
+    ~ViewVolumeProjection() override{}
 
-    Base::Vector3f operator()(const Base::Vector3f &rclPt) const;
-    Base::Vector3d operator()(const Base::Vector3d &rclPt) const;
-    Base::Vector3f inverse (const Base::Vector3f &rclPt) const;
-    Base::Vector3d inverse (const Base::Vector3d &rclPt) const;
+    Base::Vector3f operator()(const Base::Vector3f &rclPt) const override;
+    Base::Vector3d operator()(const Base::Vector3d &rclPt) const override;
+    Base::Vector3f inverse (const Base::Vector3f &rclPt) const override;
+    Base::Vector3d inverse (const Base::Vector3d &rclPt) const override;
 
-    Base::Matrix4D getProjectionMatrix () const;
+    Base::Matrix4D getProjectionMatrix () const override;
 
 protected:
     SbViewVolume viewVolume;

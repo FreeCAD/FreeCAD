@@ -40,7 +40,7 @@ class DlgRevertToBackupConfigImp : public QDialog
 
 public:
     DlgRevertToBackupConfigImp( QWidget* parent = nullptr );
-    ~DlgRevertToBackupConfigImp();
+    ~DlgRevertToBackupConfigImp() override;
 
 public Q_SLOTS:
     void accept() override;

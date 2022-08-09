@@ -41,13 +41,13 @@ class DlgReportViewImp : public PreferencePage
 
 public:
     DlgReportViewImp( QWidget* parent = nullptr );
-    ~DlgReportViewImp();
+    ~DlgReportViewImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgReportView> ui;

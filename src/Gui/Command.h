@@ -314,7 +314,7 @@ class GuiExport Command : public CommandBase
 {
 protected:
     Command(const char* name);
-    virtual ~Command();
+    ~Command() override;
 
 protected:
     /** @name Methods to override when creating a new command
@@ -323,7 +323,7 @@ protected:
     /// Methods which gets called when activated, needs to be reimplemented!
     virtual void activated(int iMsg)=0;
     /// Creates the used Action
-    virtual Action * createAction();
+    Action * createAction() override;
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
@@ -419,9 +419,9 @@ public:
     /// Checks if the active object of the active document is valid
     static bool isActiveObjectValid();
     /// Translate command
-    void languageChange();
+    void languageChange() override;
     /// Updates the QAction with respect to the passed mode.
-    void updateAction(int mode);
+    void updateAction(int mode) override;
     /// Setup checkable actions based on current TriggerSource
     void setupCheckable(int iMsg);
     //@}
@@ -642,9 +642,9 @@ public:
     Command *addCommand(const char *cmdName);
 
 protected:
-    virtual void activated(int iMsg);
-    virtual Gui::Action * createAction();
-    virtual void languageChange();
+    void activated(int iMsg) override;
+    Gui::Action * createAction() override;
+    void languageChange() override;
 
     void setup(Action *);
 
@@ -665,34 +665,34 @@ class PythonCommand: public Command
 {
 public:
     PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString);
-    virtual ~PythonCommand();
+    ~PythonCommand() override;
 
 protected:
     /** @name Methods reimplemented for Command Framework */
     //@{
     /// Method which gets called when activated
-    virtual void activated(int iMsg);
+    void activated(int iMsg) override;
     /// if the command is not always active
-    virtual bool isActive();
+    bool isActive() override;
     /// Get the help URL
-    const char* getHelpUrl() const;
+    const char* getHelpUrl() const override;
     /// Creates the used Action
-    virtual Action * createAction();
+    Action * createAction() override;
     //@}
 
 public:
     /** @name Methods to get the properties of the command */
     //@{
     /// Reassigns QAction stuff after the language has changed.
-    void languageChange();
-    const char* className() const
+    void languageChange() override;
+    const char* className() const override
     { return "PythonCommand"; }
-    const char* getWhatsThis  () const;
-    const char* getMenuText   () const;
-    const char* getToolTipText() const;
-    const char* getStatusTip  () const;
-    const char* getPixmap     () const;
-    const char* getAccel      () const;
+    const char* getWhatsThis  () const override;
+    const char* getMenuText   () const override;
+    const char* getToolTipText() const override;
+    const char* getStatusTip  () const override;
+    const char* getPixmap     () const override;
+    const char* getAccel      () const override;
     bool isCheckable          () const;
     bool isChecked            () const;
     //@}
@@ -716,34 +716,34 @@ class PythonGroupCommand: public Command
 {
 public:
     PythonGroupCommand(const char* name, PyObject * pcPyCommand);
-    virtual ~PythonGroupCommand();
+    ~PythonGroupCommand() override;
 
 protected:
     /** @name Methods reimplemented for Command Framework */
     //@{
     /// Method which gets called when activated
-    virtual void activated(int iMsg);
+    void activated(int iMsg) override;
     /// if the command is not always active
-    virtual bool isActive();
+    bool isActive() override;
     /// Get the help URL
-    const char* getHelpUrl() const;
+    const char* getHelpUrl() const override;
     /// Creates the used Action
-    virtual Action * createAction();
+    Action * createAction() override;
     //@}
 
 public:
     /** @name Methods to get the properties of the command */
     //@{
     /// Reassigns QAction stuff after the language has changed.
-    void languageChange();
-    const char* className() const
+    void languageChange() override;
+    const char* className() const override
     { return "PythonGroupCommand"; }
-    const char* getWhatsThis  () const;
-    const char* getMenuText   () const;
-    const char* getToolTipText() const;
-    const char* getStatusTip  () const;
-    const char* getPixmap     () const;
-    const char* getAccel      () const;
+    const char* getWhatsThis  () const override;
+    const char* getMenuText   () const override;
+    const char* getToolTipText() const override;
+    const char* getStatusTip  () const override;
+    const char* getPixmap     () const override;
+    const char* getAccel      () const override;
     bool isExclusive          () const;
     bool hasDropDownMenu      () const;
     //@}
@@ -771,23 +771,23 @@ class MacroCommand: public Command
 {
 public:
     MacroCommand(const char* name, bool system = false);
-    virtual ~MacroCommand();
+    ~MacroCommand() override;
 
 protected:
     /** @name methods reimplemented for Command Framework */
     //@{
     /// Method which get called when activated
-    void activated(int iMsg);
+    void activated(int iMsg) override;
     /// Creates the used Action
-    Action * createAction();
+    Action * createAction() override;
     //@}
 
 public:
     /// Returns the script name
     const char* getScriptName () const { return sScriptName; }
     /// Ignore when language has changed.
-    void languageChange() {}
-    const char* className() const
+    void languageChange() override {}
+    const char* className() const override
     { return "Gui::MacroCommand"; }
 
     /** @name Methods to set the properties of the Script Command */

@@ -40,12 +40,12 @@ namespace Gui
 
         public:
             explicit DlgCustomizeSpNavSettings(QWidget *parent = nullptr);
-            ~DlgCustomizeSpNavSettings();
+            ~DlgCustomizeSpNavSettings() override;
 
         protected Q_SLOTS:
-            void onAddMacroAction(const QByteArray&);
-            void onRemoveMacroAction(const QByteArray&);
-            void onModifyMacroAction(const QByteArray&);
+            void onAddMacroAction(const QByteArray&) override;
+            void onRemoveMacroAction(const QByteArray&) override;
+            void onModifyMacroAction(const QByteArray&) override;
             void on_CBDominant_clicked();
             void on_CBFlipYZ_clicked();
             void on_CBRotations_clicked();
@@ -73,7 +73,7 @@ namespace Gui
             void on_ButtonCalibrate_clicked();
 
         protected:
-            void changeEvent(QEvent *e);
+            void changeEvent(QEvent *e) override;
 
         private:
             ParameterGrp::handle spaceballMotionGroup() const;

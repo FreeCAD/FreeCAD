@@ -47,11 +47,11 @@ class GuiExport GLOverlayWidget : public QWidget
 public:
     GLOverlayWidget(QWidget* parent=nullptr) : QWidget(parent)
     {}
-    ~GLOverlayWidget()
+    ~GLOverlayWidget() override
     {}
     virtual void setImage(const QImage& img)
     { image = img; }
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*) override;
 
 protected:
     QImage image;
@@ -69,27 +69,27 @@ class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverTy
 
 public:
     View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
-    ~View3DInventor();
+    ~View3DInventor() override;
 
     /// Message handler
-    virtual bool onMsg(const char* pMsg, const char** ppReturn);
-    virtual bool onHasMsg(const char* pMsg) const;
-    virtual void deleteSelf();
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
+    void deleteSelf() override;
     /// Observer message from the ParameterGrp
-    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
     /// get called when the document is updated
-    virtual void onRename(Gui::Document *pDoc);
-    virtual void onUpdate();
-    virtual void viewAll();
-    virtual const char *getName() const;
+    void onRename(Gui::Document *pDoc) override;
+    void onUpdate() override;
+    void viewAll() override;
+    const char *getName() const override;
 
     /// print function of the view
-    virtual void print();
-    virtual void printPdf();
-    virtual void printPreview();
-    virtual void print(QPrinter*);
+    void print() override;
+    void printPdf() override;
+    void printPreview() override;
+    void print(QPrinter*) override;
 
-    virtual PyObject *getPyObject();
+    PyObject *getPyObject() override;
     /**
      * If \a b is set to \a FullScreen the MDI view is displayed in full screen mode, if \a b
      * is set to \a TopLevel then it is displayed as an own top-level window, otherwise (\a Normal)
@@ -97,7 +97,7 @@ public:
      * This method is reimplemented from MDIView to set the this widget as the proxy of the embedded
      * GL widget to get all key events in \a TopLevel or \a Fullscreen mode.
      */
-    void setCurrentViewMode(ViewMode b);
+    void setCurrentViewMode(ViewMode b) override;
     bool setCamera(const char* pCamera);
     void toggleClippingPlane();
     bool hasClippingPlane() const;
@@ -106,12 +106,12 @@ public:
     void removeOverlayWidget();
 
     View3DInventorViewer *getViewer() const {return _viewer;}
-    virtual bool containsViewProvider(const ViewProvider*) const;
+    bool containsViewProvider(const ViewProvider*) const override;
 
 public Q_SLOTS:
     /// override the cursor in this view
-    void setOverrideCursor(const QCursor&);
-    void restoreOverrideCursor();
+    void setOverrideCursor(const QCursor&) override;
+    void restoreOverrideCursor() override;
 
     void dump(const char* filename, bool onlyVisible=false);
 
@@ -119,17 +119,17 @@ protected Q_SLOTS:
     void stopAnimating();
 
 public:
-    bool eventFilter(QObject*, QEvent* );
+    bool eventFilter(QObject*, QEvent* ) override;
 
 protected:
-    void windowStateChanged(MDIView* );
-    void dropEvent        (QDropEvent      * e);
-    void dragEnterEvent   (QDragEnterEvent * e);
-    void keyPressEvent    (QKeyEvent       * e);
-    void keyReleaseEvent  (QKeyEvent       * e);
-    void focusInEvent     (QFocusEvent     * e);
-    void customEvent      (QEvent          * e);
-    void contextMenuEvent (QContextMenuEvent*e);
+    void windowStateChanged(MDIView* ) override;
+    void dropEvent        (QDropEvent      * e) override;
+    void dragEnterEvent   (QDragEnterEvent * e) override;
+    void keyPressEvent    (QKeyEvent       * e) override;
+    void keyReleaseEvent  (QKeyEvent       * e) override;
+    void focusInEvent     (QFocusEvent     * e) override;
+    void customEvent      (QEvent          * e) override;
+    void contextMenuEvent (QContextMenuEvent*e) override;
 
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;

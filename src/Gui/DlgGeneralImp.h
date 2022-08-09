@@ -46,13 +46,13 @@ class DlgGeneralImp : public PreferencePage
 
 public:
     DlgGeneralImp( QWidget* parent = nullptr );
-    ~DlgGeneralImp();
+    ~DlgGeneralImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 protected Q_SLOTS:
     void onLoadPreferencePackClicked(const std::string &packName);

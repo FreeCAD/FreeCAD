@@ -40,7 +40,7 @@ public:
     }
 
 protected:
-    void mouseReleaseEvent(QMouseEvent * event) {
+    void mouseReleaseEvent(QMouseEvent * event) override {
         if (rect().contains(event->pos()))
                 Q_EMIT clicked();
     }

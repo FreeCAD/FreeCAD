@@ -99,16 +99,16 @@ public:
     SoSFString subElementName;
     SoSFBool useNewSelection;
 
-    virtual void doAction(SoAction *action);
-    virtual void GLRender(SoGLRenderAction * action);
+    void doAction(SoAction *action) override;
+    void GLRender(SoGLRenderAction * action) override;
 
-    virtual void handleEvent(SoHandleEventAction * action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void GLRenderInPath(SoGLRenderAction * action);
+    void handleEvent(SoHandleEventAction * action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void GLRenderInPath(SoGLRenderAction * action) override;
     static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
 protected:
-    virtual ~SoFCSelection();
+    ~SoFCSelection() override;
 
     typedef SoFCSelectionContext SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;
@@ -117,7 +117,7 @@ protected:
 
     virtual void redrawHighlighted(SoAction * act, SbBool flag);
 
-    virtual SbBool readInstance(SoInput *  in, unsigned short  flags);
+    SbBool readInstance(SoInput *  in, unsigned short  flags) override;
 
 private:
     static int getPriority(const SoPickedPoint*);

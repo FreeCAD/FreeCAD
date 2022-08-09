@@ -57,21 +57,21 @@ public:
   /** View destructor
    * Detach the view from the document, if attached.
    */
-  virtual ~DockWindow();
+  ~DockWindow() override;
 
   /** @name methods to override
    */
   //@{
   /// get called when the document is updated
-  virtual void onUpdate(){}
+  void onUpdate() override{}
   /// returns the name of the view (important for messages)
-  virtual const char *getName() const { return "DockWindow"; }
+  const char *getName() const override { return "DockWindow"; }
   /// Message handler
-  virtual bool onMsg(const char* ,const char** ){ return false; }
+  bool onMsg(const char* ,const char** ) override{ return false; }
   /// Message handler test
-  virtual bool onHasMsg(const char*) const { return false; }
+  bool onHasMsg(const char*) const override { return false; }
   /// overwrite when checking on close state
-  virtual bool canClose(){return true;}
+  bool canClose() override{return true;}
   //@}
 
 Q_SIGNALS:

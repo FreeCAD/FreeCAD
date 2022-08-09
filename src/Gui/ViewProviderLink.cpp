@@ -777,7 +777,7 @@ public:
         pcNode->addChild(pcTransform);
     }
 
-    ~SubInfo() {
+    ~SubInfo() override {
         unlink();
         auto root = handle.getLinkRoot();
         if(root) {
@@ -787,12 +787,12 @@ public:
         }
     }
 
-    virtual void onLinkedIconChange(LinkInfoPtr) override {
+    void onLinkedIconChange(LinkInfoPtr) override {
         if(handle.autoSubLink && handle.subInfo.size()==1)
             handle.onLinkedIconChange(handle.linkInfo);
     }
 
-    virtual void unlink(LinkInfoPtr info=LinkInfoPtr()) override {
+    void unlink(LinkInfoPtr info=LinkInfoPtr()) override {
         (void)info;
         if(linkInfo) {
             linkInfo->remove(this);
@@ -838,7 +838,7 @@ public:
         pcSwitch->whichChild = 0;
     }
 
-    ~Element() {
+    ~Element() override {
         unlink();
         auto root = handle.getLinkRoot();
         if(root) {
@@ -848,7 +848,7 @@ public:
         }
     }
 
-    virtual void unlink(LinkInfoPtr info=LinkInfoPtr()) override{
+    void unlink(LinkInfoPtr info=LinkInfoPtr()) override{
         (void)info;
         if(linkInfo) {
             linkInfo->remove(this);

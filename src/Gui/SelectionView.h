@@ -57,19 +57,19 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
     */
-    virtual ~SelectionView();
+    ~SelectionView() override;
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges& msg) override;
+    void onSelectionChanged(const SelectionChanges& msg) override;
 
-    virtual void leaveEvent(QEvent*) override;
+    void leaveEvent(QEvent*) override;
 
     bool onMsg(const char* pMsg,const char** ppReturn) override;
 
-    virtual const char *getName() const override {return "SelectionView";}
+    const char *getName() const override {return "SelectionView";}
 
     /// get called when the document is changed or updated
-    virtual void onUpdate() override;
+    void onUpdate() override;
 
     QListWidget* selectionView;
     QLabel*      countLabel;

@@ -57,7 +57,7 @@ private:
   static WorkbenchFactoryInst* _pcSingleton;
 
   WorkbenchFactoryInst(){}
-  ~WorkbenchFactoryInst(){}
+  ~WorkbenchFactoryInst() override{}
 };
 
 inline GuiExport WorkbenchFactoryInst& WorkbenchFactory()
@@ -80,9 +80,9 @@ public:
   {
   }
 
-  virtual ~WorkbenchProducer (){}
+  ~WorkbenchProducer () override{}
 
-  virtual void* Produce () const
+  void* Produce () const override
   {
     return (new CLASS);
   }

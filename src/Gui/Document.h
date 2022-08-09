@@ -69,7 +69,7 @@ class GuiExport Document : public Base::Persistence
 {
 public:
     Document(App::Document* pcDocument, Application * app);
-    ~Document();
+    ~Document() override;
 
 protected:
     /** @name I/O of the document */
@@ -141,7 +141,7 @@ public:
 
     /** @name I/O of the document */
     //@{
-    unsigned int getMemSize () const;
+    unsigned int getMemSize () const override;
     /// Save the document
     bool save();
     /// Save the document under a new file name
@@ -151,13 +151,13 @@ public:
     /// Save all open document
     static void saveAll();
     /// This method is used to save properties or very small amounts of data to an XML document.
-    virtual void Save (Base::Writer &writer) const;
+    void Save (Base::Writer &writer) const override;
     /// This method is used to restore properties from an XML document.
-    virtual void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
     /// This method is used to save large amounts of data to a binary file.
-    virtual void SaveDocFile (Base::Writer &writer) const;
+    void SaveDocFile (Base::Writer &writer) const override;
     /// This method is used to restore large amounts of data from a binary file.
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader) override;
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
     void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&,
                        const std::map<std::string, std::string>& nameMapping);
@@ -293,7 +293,7 @@ public:
     /// called by Application before being deleted
     void beforeDelete();
 
-    virtual PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;

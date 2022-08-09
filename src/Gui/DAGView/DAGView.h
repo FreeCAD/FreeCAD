@@ -44,13 +44,13 @@ namespace Gui
       Q_OBJECT
     public:
       View(QWidget *parentIn = nullptr);
-      virtual ~View() override;
+      ~View() override;
       
     public Q_SLOTS:
       void awakeSlot(); //!< hooked up to event dispatcher for update when idle.
       
     private:
-      virtual void onSelectionChanged(const SelectionChanges& msg) override;
+      void onSelectionChanged(const SelectionChanges& msg) override;
       
       void slotActiveDocument(const Gui::Document &documentIn);
       void slotDeleteDocument(const Gui::Document &documentIn);
@@ -67,7 +67,7 @@ namespace Gui
         Q_OBJECT
     public:
         DockWindow(Gui::Document* gDocumentIn = nullptr, QWidget *parent = nullptr);
-        ~DockWindow(){}
+        ~DockWindow() override{}
 
     private:
         View *dagView;

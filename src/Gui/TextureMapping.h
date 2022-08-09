@@ -66,13 +66,13 @@ class TaskTextureMapping : public Gui::TaskView::TaskDialog
 
 public:
     TaskTextureMapping();
-    ~TaskTextureMapping();
+    ~TaskTextureMapping() override;
 
 public:
-    bool accept();
-    bool reject();
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Close; }
 
 private:

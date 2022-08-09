@@ -37,7 +37,7 @@ namespace Gui
 	Q_OBJECT
 	public:
 		GuiAbstractNativeEvent(GUIApplicationNativeEventAware *app);
-		virtual ~GuiAbstractNativeEvent()=0;
+		~GuiAbstractNativeEvent() override =0;
 		virtual void initSpaceball(QMainWindow *window)=0;
 	private:
 		GuiAbstractNativeEvent();

@@ -138,7 +138,7 @@ public:
         return res;
     }
 
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const {
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override {
         if(role!=Qt::EditRole && role!=Qt::DisplayRole && role!=Qt::UserRole)
             return QVariant();
         QVariant v;
@@ -260,7 +260,7 @@ public:
         return;
     }
 
-    QModelIndex parent(const QModelIndex & index) const {
+    QModelIndex parent(const QModelIndex & index) const override {
         if(!index.isValid())
             return QModelIndex();
         Info info;
@@ -277,7 +277,7 @@ public:
         return QModelIndex();
     }
 
-    QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const {
+    QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const override {
         if(row<0)
             return QModelIndex();
         Info info;
@@ -296,7 +296,7 @@ public:
         return createIndex(row,column,infoId(info));
     }
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const {
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override {
         Info info;
         int row = 0;
         if(!parent.isValid()) {
@@ -318,7 +318,7 @@ public:
         return count;
     }
 
-    int columnCount(const QModelIndex &) const {
+    int columnCount(const QModelIndex &) const override {
         return 1;
     }
 

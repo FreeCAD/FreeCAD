@@ -34,9 +34,9 @@ public:
     static void init_type();    // announce properties and methods
 
     ExpressionBindingPy(ExpressionBinding*);
-    ~ExpressionBindingPy();
+    ~ExpressionBindingPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object bind(const Py::Tuple&);
     Py::Object isBound(const Py::Tuple&);

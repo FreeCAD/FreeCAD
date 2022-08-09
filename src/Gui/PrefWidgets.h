@@ -75,7 +75,7 @@ public:
    */
   void setPrefPath(const QByteArray& name);
 
-  virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+  void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
   void onSave();
   void onRestore();
 
@@ -96,7 +96,7 @@ protected:
   void failedToRestore(const QString&) const;
 
   PrefWidget();
-  virtual ~PrefWidget();
+  ~PrefWidget() override;
 
 private:
   QByteArray m_sPrefName;
@@ -118,12 +118,12 @@ class GuiExport PrefSpinBox : public QSpinBox, public PrefWidget
 
 public:
   PrefSpinBox ( QWidget * parent = nullptr );
-  virtual ~PrefSpinBox();
+  ~PrefSpinBox() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /** The PrefDoubleSpinBox class.
@@ -138,12 +138,12 @@ class GuiExport PrefDoubleSpinBox : public QDoubleSpinBox, public PrefWidget
 
 public:
   PrefDoubleSpinBox ( QWidget * parent = nullptr );
-  virtual ~PrefDoubleSpinBox();
+  ~PrefDoubleSpinBox() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -159,12 +159,12 @@ class GuiExport PrefLineEdit : public QLineEdit, public PrefWidget
 
 public:
   PrefLineEdit ( QWidget * parent = nullptr );
-  virtual ~PrefLineEdit();
+  ~PrefLineEdit() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -180,12 +180,12 @@ class GuiExport PrefTextEdit : public QTextEdit, public PrefWidget
 
 public:
     PrefTextEdit(QWidget* parent = nullptr);
-    virtual ~PrefTextEdit();
+    ~PrefTextEdit() override;
 
 protected:
     // restore from/save to parameters
-    void restorePreferences();
-    void savePreferences();
+    void restorePreferences() override;
+    void savePreferences() override;
 };
 
 /**
@@ -201,12 +201,12 @@ class GuiExport PrefFileChooser : public FileChooser, public PrefWidget
 
 public:
   PrefFileChooser ( QWidget * parent = nullptr );
-  virtual ~PrefFileChooser();
+  ~PrefFileChooser() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -222,12 +222,12 @@ class GuiExport PrefComboBox : public QComboBox, public PrefWidget
 
 public:
   PrefComboBox ( QWidget * parent = nullptr );
-  virtual ~PrefComboBox();
+  ~PrefComboBox() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -243,12 +243,12 @@ class GuiExport PrefCheckBox : public QCheckBox, public PrefWidget
 
 public:
   PrefCheckBox ( QWidget * parent = nullptr );
-  virtual ~PrefCheckBox();
+  ~PrefCheckBox() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -264,12 +264,12 @@ class GuiExport PrefRadioButton : public QRadioButton, public PrefWidget
 
 public:
   PrefRadioButton ( QWidget * parent = nullptr );
-  virtual ~PrefRadioButton();
+  ~PrefRadioButton() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -285,12 +285,12 @@ class GuiExport PrefSlider : public QSlider, public PrefWidget
 
 public:
   PrefSlider ( QWidget * parent = nullptr );
-  virtual ~PrefSlider();
+  ~PrefSlider() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /**
@@ -306,12 +306,12 @@ class GuiExport PrefColorButton : public ColorButton, public PrefWidget
 
 public:
   PrefColorButton ( QWidget * parent = nullptr );
-  virtual ~PrefColorButton();
+  ~PrefColorButton() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 /** The PrefUnitSpinBox class.
@@ -328,12 +328,12 @@ class GuiExport PrefUnitSpinBox : public QuantitySpinBox, public PrefWidget
 
 public:
     PrefUnitSpinBox ( QWidget * parent = nullptr );
-    virtual ~PrefUnitSpinBox();
+    ~PrefUnitSpinBox() override;
 
 protected:
     // restore from/save to parameters
-    void restorePreferences();
-    void savePreferences();
+    void restorePreferences() override;
+    void savePreferences() override;
 };
 
 class PrefQuantitySpinBoxPrivate;
@@ -352,7 +352,7 @@ class GuiExport PrefQuantitySpinBox : public QuantitySpinBox, public PrefWidget
 
 public:
     PrefQuantitySpinBox (QWidget * parent = nullptr);
-    virtual ~PrefQuantitySpinBox();
+    ~PrefQuantitySpinBox() override;
 
     /// set the input field to the last used value (works only if the setParamGrpPath() was called)
     void setToLastUsedValue();
@@ -370,10 +370,10 @@ public:
     //@}
 
 protected:
-    virtual void contextMenuEvent(QContextMenuEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event) override;
     // restore from/save to parameters
-    void restorePreferences();
-    void savePreferences();
+    void restorePreferences() override;
+    void savePreferences() override;
 
 private:
     QScopedPointer<PrefQuantitySpinBoxPrivate> d_ptr;
@@ -393,12 +393,12 @@ class GuiExport PrefFontBox : public QFontComboBox, public PrefWidget
 
 public:
   PrefFontBox ( QWidget * parent = nullptr );
-  virtual ~PrefFontBox();
+  ~PrefFontBox() override;
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
 };
 
 } // namespace Gui

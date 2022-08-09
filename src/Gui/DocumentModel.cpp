@@ -51,7 +51,7 @@ namespace Gui {
         TYPESYSTEM_HEADER();
 
     public:
-        virtual ~DocumentModelIndex()
+        ~DocumentModelIndex() override
         { qDeleteAll(childItems); }
 
         void setParent(DocumentModelIndex* parent)
@@ -118,8 +118,8 @@ namespace Gui {
     public:
         ApplicationIndex(){}
         int findChild(const Gui::Document& d) const;
-        Qt::ItemFlags flags() const;
-        QVariant data(int role) const;
+        Qt::ItemFlags flags() const override;
+        QVariant data(int role) const override;
     };
 
     // ------------------------------------------------------------------------
@@ -142,14 +142,14 @@ namespace Gui {
             if (!documentIcon)
                 documentIcon = new QIcon(Gui::BitmapFactory().pixmap("Document"));
         }
-        ~DocumentIndex()
+        ~DocumentIndex() override
         {
             qDeleteAll(childItems); childItems.clear();
         }
         ViewProviderIndex* cloneViewProvider(const ViewProviderDocumentObject&) const;
         int rowOfViewProvider(const ViewProviderDocumentObject&) const;
         void findViewProviders(const ViewProviderDocumentObject&, QList<ViewProviderIndex*>&) const;
-        QVariant data(int role) const;
+        QVariant data(int role) const override;
     };
 
     // ------------------------------------------------------------------------
@@ -162,10 +162,10 @@ namespace Gui {
     public:
         const Gui::ViewProviderDocumentObject& v;
         ViewProviderIndex(const Gui::ViewProviderDocumentObject& v, DocumentIndex* d);
-        ~ViewProviderIndex();
+        ~ViewProviderIndex() override;
         ViewProviderIndex* clone() const;
         void findViewProviders(const ViewProviderDocumentObject&, QList<ViewProviderIndex*>&) const;
-        QVariant data(int role) const;
+        QVariant data(int role) const override;
 
     private:
         DocumentIndex* d;

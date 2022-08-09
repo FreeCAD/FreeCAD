@@ -50,11 +50,11 @@ public:
      */
     SelectionObject(const SelectionChanges& msg);
     explicit SelectionObject(App::DocumentObject*);
-    virtual ~SelectionObject();
+    ~SelectionObject() override;
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.
      */
-    PyObject* getPyObject();
+    PyObject* getPyObject() override;
 
     /// get the SubElement name of this SelectionObject
     inline const std::vector<std::string> &getSubNames() const { return SubNames; }

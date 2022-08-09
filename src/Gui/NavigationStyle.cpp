@@ -93,23 +93,23 @@ public:
     {
     }
 
-    void setViewVolume (const SbViewVolume &vol)
+    void setViewVolume (const SbViewVolume &vol) override
     {
         inherited::setViewVolume(vol);
     }
 
-    void setWorkingSpace (const SbMatrix &space)
+    void setWorkingSpace (const SbMatrix &space) override
     {
         //inherited::setWorkingSpace(space);
         this->worldToScreen = space.inverse();
     }
 
-    SbVec3f project(const SbVec2f &point)
+    SbVec3f project(const SbVec2f &point) override
     {
         return inherited::project(point);
     }
 
-    SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2)
+    SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
     {
         SbRotation rot = inherited::getRotation(point1, point2);
         if (orbit == Trackball)

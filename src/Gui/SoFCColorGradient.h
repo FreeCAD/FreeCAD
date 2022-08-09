@@ -50,36 +50,36 @@ public:
    * Sets the range of the colorbar from the maximum \a fMax to the minimum \a fMin.
    * \a prec indicates the post decimal positions, \a prec should be in between 0 and 6.
    */
-  void setRange( float fMin, float fMax, int prec=3 );
+  void setRange( float fMin, float fMax, int prec=3 ) override;
   /**
    * Returns the associated color to the value \a fVal.
    */
-  App::Color getColor (float fVal) const { return _cColGrad.getColor(fVal); }
-  void setOutsideGrayed (bool bVal) { _cColGrad.setOutsideGrayed(bVal); }
+  App::Color getColor (float fVal) const override { return _cColGrad.getColor(fVal); }
+  void setOutsideGrayed (bool bVal) override { _cColGrad.setOutsideGrayed(bVal); }
   /**
    * Returns always true if the gradient is in mode to show colors to arbitrary values of \a fVal,
    * otherwise true is returned if \a fVal is within the specified parameter range, if not false is
    * returned.
    */
-  bool isVisible (float fVal) const;
+  bool isVisible (float fVal) const override;
   /** Returns the current minimum of the parameter range. */
-  float getMinValue () const { return _cColGrad.getMinValue(); }
+  float getMinValue () const override { return _cColGrad.getMinValue(); }
   /** Returns the current maximum of the parameter range. */
-  float getMaxValue () const { return _cColGrad.getMaxValue(); }
+  float getMaxValue () const override { return _cColGrad.getMaxValue(); }
   /**
    * Opens a dialog to customize the current settings of the color gradient bar.
    */
-  void customize(SoFCColorBarBase*);
+  void customize(SoFCColorBarBase*) override;
   /** Returns the name of the color bar. */
-  const char* getColorBarName() const { return "Color Gradient"; }
+  const char* getColorBarName() const override { return "Color Gradient"; }
 
 protected:
   /**
    * Sets the current viewer size this color gradient is embedded into, to recalculate its new position.
    */
-  void setViewportSize( const SbVec2s& size );
+  void setViewportSize( const SbVec2s& size ) override;
 
-  virtual ~SoFCColorGradient();
+  ~SoFCColorGradient() override;
   /**
    * Sets the color model of the underlying color gradient to \a index.
    */

@@ -126,7 +126,7 @@ public:
     CustomMessageEvent(int t, const QString& s, int timeout=0)
       : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
-    ~CustomMessageEvent()
+    ~CustomMessageEvent() override
     { }
     int type() const
     { return _type; }
@@ -172,13 +172,13 @@ public:
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     }
 
-    ~MDITabbar()
+    ~MDITabbar() override
     {
         delete menu;
     }
 
 protected:
-    void contextMenuEvent ( QContextMenuEvent * e )
+    void contextMenuEvent ( QContextMenuEvent * e ) override
     {
         menu->clear();
         CommandManager& cMgr = Application::Instance->commandManager();

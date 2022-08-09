@@ -46,11 +46,11 @@ class DlgSettingsEditorImp : public PreferencePage
 
 public:
     DlgSettingsEditorImp( QWidget* parent = nullptr );
-    ~DlgSettingsEditorImp();
+    ~DlgSettingsEditorImp() override;
 
 public:
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected Q_SLOTS:
     void on_displayItems_currentItemChanged(QTreeWidgetItem *i);
@@ -59,7 +59,7 @@ protected Q_SLOTS:
     void on_fontSize_valueChanged(const QString&);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void setEditorTabWidth(int);
 
 private:

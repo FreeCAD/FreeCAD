@@ -39,7 +39,7 @@ class TaskBoxPosition : public Gui::TaskView::TaskBox
 
 public:
     TaskBoxPosition(QWidget *parent = nullptr);
-    ~TaskBoxPosition();
+    ~TaskBoxPosition() override;
 
 
 private Q_SLOTS:
@@ -57,7 +57,7 @@ class TaskBoxAngle : public Gui::TaskView::TaskBox
 
 public:
     TaskBoxAngle(QWidget *parent = nullptr);
-    ~TaskBoxAngle();
+    ~TaskBoxAngle() override;
 
 
 private Q_SLOTS:
@@ -77,22 +77,22 @@ class GuiExport TaskDlgRelocation : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgRelocation();
-    ~TaskDlgRelocation();
+    ~TaskDlgRelocation() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or rject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user press the help button
-    virtual void helpRequested();
+    void helpRequested() override;
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
 	{ return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

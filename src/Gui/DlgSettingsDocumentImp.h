@@ -42,16 +42,16 @@ class DlgSettingsDocumentImp : public PreferencePage
 
 public:
     DlgSettingsDocumentImp( QWidget* parent = nullptr );
-    ~DlgSettingsDocumentImp();
+    ~DlgSettingsDocumentImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected Q_SLOTS:
     void onLicenseTypeChanged(int index);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsDocument> ui;

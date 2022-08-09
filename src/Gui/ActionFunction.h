@@ -68,7 +68,7 @@ class GuiExport ActionFunction : public QObject
 public:
     /// Constructor
     ActionFunction(QObject*);
-    virtual ~ActionFunction();
+    ~ActionFunction() override;
 
     /*!
        Connects the QAction's triggered() signal with the function \a func
@@ -97,7 +97,7 @@ class GuiExport TimerFunction : public QObject
 public:
     /// Constructor
     TimerFunction(QObject* = nullptr);
-    virtual ~TimerFunction();
+    ~TimerFunction() override;
 
     void setFunction(std::function<void()> func);
     void setFunction(std::function<void(QObject*)> func, QObject* args);

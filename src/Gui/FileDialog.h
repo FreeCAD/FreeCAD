@@ -77,9 +77,9 @@ public:
     static void saveLocation(const QString&);
 
     FileDialog(QWidget * parent = nullptr);
-    ~FileDialog();
+    ~FileDialog() override;
 
-    void accept();
+    void accept() override;
 
 private Q_SLOTS:
     void onSelectedFilter(const QString&);
@@ -107,9 +107,9 @@ public:
     };
 
     FileOptionsDialog ( QWidget* parent, Qt::WindowFlags );
-    virtual ~FileOptionsDialog();
+    ~FileOptionsDialog() override;
 
-    void accept();
+    void accept() override;
 
     void setOptionsWidget( ExtensionPosition pos , QWidget*, bool show = false );
     QWidget* getOptionsWidget() const;
@@ -134,11 +134,11 @@ class FileIconProvider : public QFileIconProvider
 {
 public:
     FileIconProvider();
-    ~FileIconProvider();
+    ~FileIconProvider() override;
 
-    QIcon icon(IconType type) const;
-    QIcon icon(const QFileInfo & info) const;
-    QString type(const QFileInfo & info) const;
+    QIcon icon(IconType type) const override;
+    QIcon icon(const QFileInfo & info) const override;
+    QString type(const QFileInfo & info) const override;
 };
 
 // ----------------------------------------------------------------------
@@ -166,7 +166,7 @@ public:
 
 public:
     FileChooser ( QWidget * parent = nullptr );
-    virtual ~FileChooser();
+    ~FileChooser() override;
 
     /**
     * Returns the set filter.
@@ -219,7 +219,7 @@ private Q_SLOTS:
     void editingFinished();
 
 protected:
-    void resizeEvent(QResizeEvent*);
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     QLineEdit *lineEdit;
@@ -246,7 +246,7 @@ public:
     typedef QMap<QString, QString> Dict;
 
     SelectModule (const QString& type, const Dict&, QWidget* parent);
-    virtual ~SelectModule();
+    ~SelectModule() override;
     QString getModule() const;
 
     /** @name Import/Export handler
@@ -261,8 +261,8 @@ public:
     static Dict importHandler(const QStringList& fn, const QString& filter=QString());
     //@}
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 private Q_SLOTS:
     void onButtonClicked();
