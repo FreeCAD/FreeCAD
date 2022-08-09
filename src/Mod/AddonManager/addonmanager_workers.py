@@ -131,7 +131,7 @@ class ConnectionChecker(QtCore.QThread):
             return
 
         result = result.data().decode("utf8")
-        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {result}\n")
+        FreeCAD.Console.PrintLog("GitHub's zen message response: {result}\n")
         self.success.emit()
 
 
@@ -191,11 +191,11 @@ class UpdateWorker(QtCore.QThread):
                                     macros_reject_list.append(item["name"])
                                 else:
                                     FreeCAD.Console.PrintMessage(
-                                        f'Unrecognized Addon kind {item["kind"]} in deprecation list.'
+                                        'Unrecognized Addon kind {item["kind"]} in deprecation list.'
                                     )
                         except Exception:
                             FreeCAD.Console.PrintMessage(
-                                f"Exception caught when parsing deprecated Addon {item['name']}, version {item['as_of']}"
+                                "Exception caught when parsing deprecated Addon {item['name']}, version {item['as_of']}"
                             )
 
         else:
@@ -337,7 +337,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                             )
                         except Exception:
                             FreeCAD.Console.PrintLog(
-                                f"Failed loading {repo_metadata_cache_path}\n"
+                                "Failed loading {repo_metadata_cache_path}\n"
                             )
                     self.addon_repo.emit(repo)
 
@@ -650,9 +650,9 @@ class FillMacroListWorker(QtCore.QThread):
                     "AddonsInstaller",
                     "An error occurred updating macros from GitHub, trying clean checkout...",
                 )
-                + f":\n{e}\n"
+                + ":\n{e}\n"
             )
-            FreeCAD.Console.PrintMessage(f"{self.repo_dir}\n")
+            FreeCAD.Console.PrintMessage("{self.repo_dir}\n")
             FreeCAD.Console.PrintMessage(
                 translate("AddonsInstaller", "Attempting to do a clean checkout...")
                 + "\n"
@@ -671,7 +671,7 @@ class FillMacroListWorker(QtCore.QThread):
                         "AddonsInstaller",
                         "Failed to update macros from GitHub -- try clearing the Addon Manager's cache.",
                     )
-                    + f":\n{str(e)}\n"
+                    + ":\n{str(e)}\n"
                 )
                 return
         n_files = 0
@@ -694,7 +694,7 @@ class FillMacroListWorker(QtCore.QThread):
                     macro.src_filename = os.path.join(dirpath, filename)
                     macro.fill_details_from_file(macro.src_filename)
                     repo = Addon.from_macro(macro)
-                    FreeCAD.Console.PrintLog(f"Found macro {repo.name}\n")
+                    FreeCAD.Console.PrintLog("Found macro {repo.name}\n")
                     repo.url = "https://github.com/FreeCAD/FreeCAD-macros.git"
                     utils.update_macro_installation_details(repo)
                     self.add_macro_signal.emit(repo)
@@ -1243,7 +1243,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         with zipfile.ZipFile(filename, "r") as zfile:
             master = zfile.namelist()[0]  # github will put everything in a subfolder
             self.status_message.emit(
-                translate("AddonsInstaller", f"Download complete. Unzipping file...")
+                translate("AddonsInstaller", "Download complete. Unzipping file...")
             )
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
             zfile.extractall(self.zipdir)
@@ -1317,7 +1317,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             else:
                 pip_failed = True
             if pip_failed:
-                self.no_pip.emit(f"{python_exe} -m pip --version")
+                self.no_pip.emit("{python_exe} -m pip --version")
                 return
             FreeCAD.Console.PrintMessage(proc.stdout)
             FreeCAD.Console.PrintWarning(proc.stderr)
@@ -1536,7 +1536,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     if wb_name:
                         repo.requires.add(wb_name)
                         FreeCAD.Console.PrintLog(
-                            f"{repo.display_name} requires FreeCAD Addon '{wb_name}'\n"
+                            "{repo.display_name} requires FreeCAD Addon '{wb_name}'\n"
                         )
 
             elif line.startswith("pylibs="):
@@ -1546,7 +1546,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     if dep:
                         repo.python_requires.add(dep)
                         FreeCAD.Console.PrintLog(
-                            f"{repo.display_name} requires python package '{dep}'\n"
+                            "{repo.display_name} requires python package '{dep}'\n"
                         )
 
             elif line.startswith("optionalpylibs="):
@@ -1556,7 +1556,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     if dep:
                         repo.python_optional.add(dep)
                         FreeCAD.Console.PrintLog(
-                            f"{repo.display_name} optionally imports python package '{pl.strip()}'\n"
+                            "{repo.display_name} optionally imports python package '{pl.strip()}'\n"
                         )
         # For review and debugging purposes, store the file locally
         package_cache_directory = os.path.join(self.store, repo.name)
@@ -1650,14 +1650,14 @@ class UpdateAllWorker(QtCore.QThread):
         for repo in self.repos:
             self.repo_queue.put(repo)
             FreeCAD.Console.PrintLog(
-                f"  UPDATER: Adding '{repo.name}' to update queue\n"
+                "  UPDATER: Adding '{repo.name}' to update queue\n"
             )
 
         # The original design called for multiple update threads at the same time, but the updater
         # itself is not thread-safe, so for the time being only spawn one update thread.
         workers = []
         for _ in range(1):
-            FreeCAD.Console.PrintLog(f"  UPDATER: Starting worker\n")
+            FreeCAD.Console.PrintLog("  UPDATER: Starting worker\n")
             worker = UpdateSingleWorker(self.repo_queue)
             worker.success.connect(self.on_success)
             worker.failure.connect(self.on_failure)
@@ -1682,7 +1682,7 @@ class UpdateAllWorker(QtCore.QThread):
 
     def on_success(self, repo: Addon) -> None:
         FreeCAD.Console.PrintLog(
-            f"  UPDATER: Main thread received notice that worker successfully updated {repo.name}\n"
+            "  UPDATER: Main thread received notice that worker successfully updated {repo.name}\n"
         )
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
@@ -1691,7 +1691,7 @@ class UpdateAllWorker(QtCore.QThread):
 
     def on_failure(self, repo: Addon) -> None:
         FreeCAD.Console.PrintLog(
-            f"  UPDATER:  Main thread received notice that worker failed to update {repo.name}\n"
+            "  UPDATER:  Main thread received notice that worker failed to update {repo.name}\n"
         )
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
@@ -1712,28 +1712,28 @@ class UpdateSingleWorker(QtCore.QThread):
         while True:
             if current_thread.isInterruptionRequested():
                 FreeCAD.Console.PrintLog(
-                    f"  UPDATER: Interruption requested, stopping all updates\n"
+                    "  UPDATER: Interruption requested, stopping all updates\n"
                 )
                 return
             try:
                 repo = self.repo_queue.get_nowait()
                 FreeCAD.Console.PrintLog(
-                    f"  UPDATER: Pulling {repo.name} from the update queue\n"
+                    "  UPDATER: Pulling {repo.name} from the update queue\n"
                 )
             except queue.Empty:
                 FreeCAD.Console.PrintLog(
-                    f"  UPDATER: Worker thread queue is empty, exiting thread\n"
+                    "  UPDATER: Worker thread queue is empty, exiting thread\n"
                 )
                 return
             if repo.repo_type == Addon.Kind.MACRO:
-                FreeCAD.Console.PrintLog(f"  UPDATER: Updating macro '{repo.name}'\n")
+                FreeCAD.Console.PrintLog("  UPDATER: Updating macro '{repo.name}'\n")
                 self.update_macro(repo)
             else:
-                FreeCAD.Console.PrintLog(f"  UPDATER: Updating addon '{repo.name}'\n")
+                FreeCAD.Console.PrintLog("  UPDATER: Updating addon '{repo.name}'\n")
                 self.update_package(repo)
             self.repo_queue.task_done()
             FreeCAD.Console.PrintLog(
-                f"  UPDATER: Worker thread completed action for '{repo.name}' and reported result to main thread\n"
+                "  UPDATER: Worker thread completed action for '{repo.name}' and reported result to main thread\n"
             )
 
     def update_macro(self, repo: Addon):
