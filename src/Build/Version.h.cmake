@@ -2,6 +2,7 @@
 // Version Number
 #define FCVersionMajor "${PACKAGE_VERSION_MAJOR}"
 #define FCVersionMinor "${PACKAGE_VERSION_MINOR}"
+#define FCVersionPoint "${FREECAD_VERSION_PATCH}"
 #define FCVersionName  "${PACKAGE_VERSION_NAME}"
 // test: $Format:Hash (%H), Date: %ci$
 #define FCRevision      "${PACKAGE_WCREF}"      //Highest committed revision number

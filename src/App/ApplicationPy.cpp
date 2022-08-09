@@ -492,6 +492,9 @@ PyObject* Application::sGetVersion(PyObject * /*self*/, PyObject *args)
     it = cfg.find("BuildVersionMinor");
     list.append(Py::String(it != cfg.end() ? it->second : ""));
 
+    it = cfg.find("BuildVersionPoint");
+    list.append(Py::String(it != cfg.end() ? it->second : ""));
+
     it = cfg.find("BuildRevision");
     list.append(Py::String(it != cfg.end() ? it->second : ""));
 

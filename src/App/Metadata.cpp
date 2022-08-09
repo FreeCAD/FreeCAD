@@ -452,6 +452,7 @@ bool Metadata::satisfies(const Meta::Dependency& dep)
         std::map<std::string, std::string>& config = App::Application::Config();
         replacements.insert(std::make_pair("$BuildVersionMajor", config["BuildVersionMajor"]));
         replacements.insert(std::make_pair("$BuildVersionMinor", config["BuildVersionMinor"]));
+        replacements.insert(std::make_pair("$BuildVersionMinor", config["BuildVersionPoint"]));
         replacements.insert(std::make_pair("$BuildRevision", config["BuildRevision"]));
         for (const auto& replacement : replacements) {
             auto pos = injectedString.find(replacement.first);
@@ -496,7 +497,10 @@ bool App::Metadata::supportsCurrentFreeCAD() const
     if (fcVersion == Meta::Version()) {
         std::map<std::string, std::string>& config = App::Application::Config();
         std::stringstream ss;
-        ss << config["BuildVersionMajor"] << "." << config["BuildVersionMinor"] << "." << (config["BuildRevision"].empty() ? "0" : config["BuildRevision"]);
+        ss << config["BuildVersionMajor"]
+            << "." << config["BuildVersionMinor"]
+            << "." << config["BuildVersionPoint"]
+            << "." << (config["BuildRevision"].empty() ? "0" : config["BuildRevision"]);
         fcVersion = Meta::Version(ss.str());
     }
 
