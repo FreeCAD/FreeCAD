@@ -225,6 +225,7 @@ class Addon:
                 "PackageMetadata",
                 instance.name,
             )
+            print (f"Trying to load from {cached_package_xml_file}\n")
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
 

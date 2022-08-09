@@ -33,7 +33,9 @@ from PySide2 import QtCore
 import NetworkManager
 from Addon import Addon
 from addonmanager_workers_startup import (
-    CreateAddonListWorker
+    CreateAddonListWorker,
+    LoadPackagesFromCacheWorker,
+    LoadMacrosFromCacheWorker,
     )
 
 class TestWorkersStartup(unittest.TestCase):
@@ -41,7 +43,16 @@ class TestWorkersStartup(unittest.TestCase):
     MODULE = "test_workers_startup"  # file name without extension
 
     def setUp(self):
+        """ Set up the test """
         self.test_dir = os.path.join(FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data")
+        
+        self.saved_mod_directory = Addon.mod_directory
+        self.saved_cache_directory = Addon.cache_directory
+        Addon.mod_directory = os.path.join(tempfile.gettempdir(),"FreeCADTesting","Mod")
+        Addon.cache_directory = os.path.join(tempfile.gettempdir(),"FreeCADTesting","Cache")
+
+        os.makedirs(Addon.mod_directory, mode=0o777, exist_ok=True)
+        os.makedirs(Addon.cache_directory, mode=0o777, exist_ok=True)
 
         url = "https://api.github.com/zen"
         NetworkManager.InitializeNetworkManager()
@@ -53,13 +64,20 @@ class TestWorkersStartup(unittest.TestCase):
         self.macro_counter = 0
         self.workbench_counter = 0
         self.prefpack_counter = 0
+        self.addon_from_cache_counter = 0
+        self.macro_from_cache_counter = 0
         
         # Populated when the addon list is created in the first test
         self.package_cache = {}
         self.macro_cache = []
 
-        self.package_cache_file = tempfile.NamedTemporaryFile(mode='w', encoding="utf-8", delete=False)
-        self.macro_cache_file = tempfile.NamedTemporaryFile(mode='w', encoding="utf-8", delete=False)
+        self.package_cache_filename = os.path.join(Addon.cache_directory,"packages.json")
+        self.macro_cache_filename = os.path.join(Addon.cache_directory,"macros.json")
+
+    def tearDown(self):
+        """ Tear down the test """
+        Addon.mod_directory = self.saved_mod_directory
+        Addon.cache_directory = self.saved_cache_directory
 
     def test_create_addon_list_worker(self):
         """ Test whether any addons are added: runs the full query, so this potentially is a SLOW 
@@ -70,6 +88,7 @@ class TestWorkersStartup(unittest.TestCase):
         worker.start()
         while worker.isRunning():
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
 
         self.assertGreater(self.macro_counter,0, "No macros returned")
         self.assertGreater(self.workbench_counter,0, "No workbenches returned")
@@ -77,11 +96,11 @@ class TestWorkersStartup(unittest.TestCase):
 
         # Write the cache data
         if hasattr(self, "package_cache"):
-            self.package_cache_file.write(json.dumps(self.package_cache, indent="  "))
-            self.package_cache_file.close()
+            with open(self.package_cache_filename,"w",encoding="utf-8") as f:
+                f.write(json.dumps(self.package_cache, indent="  "))
         if hasattr(self, "macro_cache"):
-            self.macro_cache_file.write(json.dumps(self.macro_cache, indent="  "))
-            self.macro_cache_file.close()
+            with open(self.macro_cache_filename,"w",encoding="utf-8") as f:
+                f.write(json.dumps(self.macro_cache, indent="  "))
 
     def _addon_added(self, addon:Addon):
         """ Callback for adding an Addon: tracks the list, and counts the various types """
@@ -101,7 +120,38 @@ class TestWorkersStartup(unittest.TestCase):
             self.macro_cache.append(addon.macro.to_cache())
 
     def test_load_packages_from_cache_worker(self):
-        pass
+        """ Test loading packages from the cache """
+        worker = LoadPackagesFromCacheWorker(self.package_cache_filename)
+        worker.override_metadata_cache_path(os.path.join(Addon.cache_directory,"PackageMetadata"))
+        worker.addon_repo.connect(self._addon_added_from_cache)
+        self.addon_from_cache_counter = 0
+        
+        worker.start()
+        while worker.isRunning():
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+        
+        self.assertGreater(self.addon_from_cache_counter,0, "No addons in the cache")
+
+    def _addon_added_from_cache(self, addon:Addon):
+        """ Callback when addon added from cache """
+        print (f"Addon Cache Test: {addon.name}")
+        self.addon_from_cache_counter += 1
 
     def test_load_macros_from_cache_worker(self):
-        pass
+        """ Test loading macros from the cache """
+        worker = LoadMacrosFromCacheWorker(self.macro_cache_filename)
+        worker.add_macro_signal.connect(self._macro_added_from_cache)
+        self.macro_from_cache_counter = 0
+        
+        worker.start()
+        while worker.isRunning():
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+        QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+        
+        self.assertGreater(self.macro_from_cache_counter,0, "No macros in the cache")
+
+    def _macro_added_from_cache(self, addon:Addon):
+        """ Callback for adding macros from the cache """
+        print (f"Macro Cache Test: {addon.name}")
+        self.macro_from_cache_counter += 1
