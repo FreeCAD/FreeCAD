@@ -81,7 +81,7 @@ public:
     {
     }
 
-    void visit(Expression &node) {
+    void visit(Expression &node) override {
         this->relabeledDocument(node,doc.getOldLabel(),doc.Label.getStrValue());
     }
 

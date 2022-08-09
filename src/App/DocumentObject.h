@@ -130,7 +130,7 @@ public:
 
     /// Constructor
     DocumentObject();
-    virtual ~DocumentObject();
+    ~DocumentObject() override;
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument() const;
@@ -139,9 +139,9 @@ public:
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
-    virtual std::string getFullName() const override;
-    virtual bool isAttachedToDocument() const override;
-    virtual const char* detachFromDocument() override;
+    std::string getFullName() const override;
+    bool isAttachedToDocument() const override;
+    const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
     App::Document *getDocument() const;
 
@@ -317,7 +317,7 @@ public:
      * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 
     /** Get the sub element/object by name
      *
@@ -419,7 +419,7 @@ public:
 
     static DocumentObjectExecReturn *StdReturn;
 
-    virtual void Save (Base::Writer &writer) const override;
+    void Save (Base::Writer &writer) const override;
 
     /* Expression support */
 
@@ -437,9 +437,9 @@ public:
         return _pcViewProviderName.c_str();
     }
 
-    virtual bool removeDynamicProperty(const char* prop) override;
+    bool removeDynamicProperty(const char* prop) override;
 
-    virtual App::Property* addDynamicProperty(
+    App::Property* addDynamicProperty(
             const char* type, const char* name=nullptr,
             const char* group=nullptr, const char* doc=nullptr,
             short attr=0, bool ro=false, bool hidden=false) override;
@@ -597,9 +597,9 @@ protected:
     void setDocument(App::Document* doc);
 
     /// get called before the value is changed
-    virtual void onBeforeChange(const Property* prop) override;
+    void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
-    virtual void onChanged(const Property* prop) override;
+    void onChanged(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after an undo/redo transaction is finished
@@ -612,7 +612,7 @@ protected:
     virtual void unsetupObject();
 
     /// get called when a property status has changed
-    virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
+    void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
 
      /// python object of this class and all descendent
 protected: // attributes
