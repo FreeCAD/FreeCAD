@@ -1202,13 +1202,15 @@ class Writer(object):
         return youngsModulus
 
     def _isMaterialFlow(self, body):
-        m = self._getBodyMaterial(body).Material
-        return "KinematicViscosity" in m
+        mat = self._getBodyMaterial(body).Material
+        return "KinematicViscosity" in mat
 
     def _handleFlow(self):
         activeIn = []
+        hasFluidMaterial = True
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
+                hasFluidMaterial = False
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -1217,7 +1219,13 @@ class Writer(object):
                 for body in activeIn:
                     if self._isMaterialFlow(body):
                         self._addSolver(body, solverSection)
-                self._handleFlowEquation(activeIn, equation)
+                        hasFluidMaterial = True
+                if hasFluidMaterial: 
+                    self._handleFlowEquation(activeIn, equation)
+        if not hasFluidMaterial:
+            raise WriteError(
+                "The Flow equation requires at least one body with a fluid material!"
+            )
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
