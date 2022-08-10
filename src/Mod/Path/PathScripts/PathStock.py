@@ -23,7 +23,7 @@
 """Used to create material stock around a machined part - for visualization"""
 
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore
@@ -36,10 +36,10 @@ Part = LazyLoader("Part", globals(), "Part")
 translate = FreeCAD.Qt.translate
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class StockType:
@@ -69,7 +69,7 @@ class StockType:
 
 
 def shapeBoundBox(obj):
-    PathLog.track(type(obj))
+    Path.Log.track(type(obj))
     if list == type(obj) and obj:
         bb = FreeCAD.BoundBox()
         for o in obj:
@@ -86,7 +86,7 @@ def shapeBoundBox(obj):
                 bb = bb.united(b)
             return bb
     if obj:
-        PathLog.error(
+        Path.Log.error(
             translate("PathStock", "Invalid base object %s - no shape found") % obj.Name
         )
     return None
@@ -185,7 +185,7 @@ class StockFromBase(Stock):
                 FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Rotation()
             )
         else:
-            PathLog.track(obj.Label, base.Label)
+            Path.Log.track(obj.Label, base.Label)
         obj.Proxy = self
 
         # debugging aids
@@ -206,7 +206,7 @@ class StockFromBase(Stock):
             if obj.Base and hasattr(obj.Base, "Group")
             else None
         )
-        PathLog.track(obj.Label, bb)
+        Path.Log.track(obj.Label, bb)
 
         # Sometimes, when the Base changes it's temporarily not assigned when
         # Stock.execute is triggered - it'll be set correctly the next time around.
@@ -327,7 +327,7 @@ class StockCreateCylinder(Stock):
 
 
 def SetupStockObject(obj, stockType):
-    PathLog.track(obj.Label, stockType)
+    Path.Log.track(obj.Label, stockType)
     if FreeCAD.GuiUp and obj.ViewObject:
         obj.addProperty(
             "App::PropertyString",
@@ -362,7 +362,7 @@ def _getBase(job):
 
 
 def CreateFromBase(job, neg=None, pos=None, placement=None):
-    PathLog.track(job.Label, neg, pos, placement)
+    Path.Log.track(job.Label, neg, pos, placement)
     base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Stock")
     obj.Proxy = StockFromBase(obj, base)
@@ -512,7 +512,7 @@ def CreateFromTemplate(job, template):
                 or rotZ is not None
                 or rotW is not None
             ):
-                PathLog.warning(
+                Path.Log.warning(
                     "Corrupted or incomplete placement information in template - ignoring"
                 )
 
@@ -551,30 +551,30 @@ def CreateFromTemplate(job, template):
                     or zneg is not None
                     or zpos is not None
                 ):
-                    PathLog.error(
+                    Path.Log.error(
                         "Corrupted or incomplete specification for creating stock from base - ignoring extent"
                     )
                 return CreateFromBase(job, neg, pos, placement)
 
             if stockType == StockType.CreateBox:
-                PathLog.track(" create box")
+                Path.Log.track(" create box")
                 length = template.get("length")
                 width = template.get("width")
                 height = template.get("height")
                 extent = None
                 if length is not None and width is not None and height is not None:
-                    PathLog.track("  have extent")
+                    Path.Log.track("  have extent")
                     extent = FreeCAD.Vector(
                         FreeCAD.Units.Quantity(length).Value,
                         FreeCAD.Units.Quantity(width).Value,
                         FreeCAD.Units.Quantity(height).Value,
                     )
                 elif length is not None or width is not None or height is not None:
-                    PathLog.error(
+                    Path.Log.error(
                         "Corrupted or incomplete size for creating a stock box - ignoring size"
                     )
                 else:
-                    PathLog.track(
+                    Path.Log.track(
                         "  take placement (%s) and extent (%s) from model"
                         % (placement, extent)
                     )
@@ -588,18 +588,18 @@ def CreateFromTemplate(job, template):
                 elif radius is not None or height is not None:
                     radius = None
                     height = None
-                    PathLog.error(
+                    Path.Log.error(
                         "Corrupted or incomplete size for creating a stock cylinder - ignoring size"
                     )
                 return CreateCylinder(job, radius, height, placement)
 
-            PathLog.error(
+            Path.Log.error(
                 translate("PathStock", "Unsupported stock type named {}").format(
                     stockType
                 )
             )
         else:
-            PathLog.error(
+            Path.Log.error(
                 translate(
                     "PathStock", "Unsupported PathStock template version {}"
                 ).format(template.get("version"))

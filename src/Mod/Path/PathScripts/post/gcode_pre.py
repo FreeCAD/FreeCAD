@@ -42,10 +42,10 @@ Read the Path Workbench documentation to know how to create Path objects
 from GCode.
 """
 
-import os
 import FreeCAD
+import Path
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathLog as PathLog
+import os
 import re
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -60,10 +60,10 @@ translate = FreeCAD.Qt.translate
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class PathNoActiveDocumentException(Exception):
@@ -87,7 +87,7 @@ if open.__module__ in ["__builtin__", "io"]:
 
 def open(filename):
     """called when freecad opens a file."""
-    PathLog.track(filename)
+    Path.Log.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     insert(filename, doc.Name)
@@ -140,7 +140,7 @@ def parse(inputstring):
     axis = ["X", "Y", "Z", "A", "B", "C", "U", "V", "W"]
 
     FreeCAD.Console.PrintMessage("preprocessing...\n")
-    PathLog.track(inputstring)
+    Path.Log.track(inputstring)
     # split the input by line
     lines = inputstring.splitlines()
     output = []
@@ -183,7 +183,7 @@ def parse(inputstring):
 
 def _identifygcodeByToolNumberList(filename):
     """called when freecad imports a file"""
-    PathLog.track(filename)
+    Path.Log.track(filename)
     gcodeByToolNumberList = []
 
     gfile = pythonopen(filename)
@@ -217,16 +217,16 @@ def _identifygcodeByToolNumberList(filename):
 
 def insert(filename, docname=None):
     """called when freecad imports a file"""
-    PathLog.track(filename)
+    Path.Log.track(filename)
 
     try:
         if not _isImportEnvironmentReady():
             return
     except PathNoActiveDocumentException:
-        PathLog.error(translate("Path_Gcode_pre", "No active document"))
+        Path.Log.error(translate("Path_Gcode_pre", "No active document"))
         return
     except PathNoJobException:
-        PathLog.error(translate("Path_Gcode_pre", "No job object"))
+        Path.Log.error(translate("Path_Gcode_pre", "No job object"))
         return
 
     # Create a Custom operation for each gcode-toolNumber pair

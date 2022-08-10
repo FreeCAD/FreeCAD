@@ -23,9 +23,9 @@
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
@@ -37,10 +37,10 @@ Part = LazyLoader("Part", globals(), "Part")
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -69,7 +69,7 @@ class TagSolid:
             # cylinder
             self.solid = Part.makeCylinder(r1, height)
             radius = min(min(self.radius, r1), self.height)
-            PathLog.debug("Part.makeCylinder(%f, %f)" % (r1, height))
+            Path.Log.debug("Part.makeCylinder(%f, %f)" % (r1, height))
         elif self.angle > 0.0 and height > 0.0:
             # cone
             rad = math.radians(self.angle)
@@ -86,17 +86,17 @@ class TagSolid:
                 height = r1 * tangens * 1.01
                 self.actualHeight = height
             self.r2 = r2
-            PathLog.debug("Part.makeCone(r1=%.2f, r2=%.2f, h=%.2f)" % (r1, r2, height))
+            Path.Log.debug("Part.makeCone(r1=%.2f, r2=%.2f, h=%.2f)" % (r1, r2, height))
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
-            PathLog.debug("Part.makeSphere(%.2f)" % (r1 / 10000))
+            Path.Log.debug("Part.makeSphere(%.2f)" % (r1 / 10000))
             self.solid = Part.makeSphere(r1 / 10000)
 
         radius = min(self.radius, radius)
         self.realRadius = radius
         if radius != 0:
-            PathLog.debug("makeFillet(%.4f)" % radius)
+            Path.Log.debug("makeFillet(%.4f)" % radius)
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
         # lastly determine the center of the model, we want to make sure the seam of
@@ -197,22 +197,22 @@ class ObjectDressup:
         self.obj.Radius = HoldingTagPreferences.defaultRadius()
 
     def execute(self, obj):
-        PathLog.track()
+        Path.Log.track()
         if not obj.Base:
-            PathLog.error(translate("Path_DressupTag", "No Base object found."))
+            Path.Log.error(translate("Path_DressupTag", "No Base object found."))
             return
         if not obj.Base.isDerivedFrom("Path::Feature"):
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupTag", "Base is not a Path::Feature object.")
             )
             return
         if not obj.Base.Path:
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupTag", "Base doesn't have a Path to dress-up.")
             )
             return
         if not obj.Base.Path.Commands:
-            PathLog.error(translate("Path_DressupTag", "Base Path is empty."))
+            Path.Log.error(translate("Path_DressupTag", "Base Path is empty."))
             return
 
         self.obj = obj
@@ -241,7 +241,7 @@ class ObjectDressup:
                 maxZ = max(pt.z, maxZ)
                 minZ = min(pt.z, minZ)
             lastPt = pt
-        PathLog.debug(
+        Path.Log.debug(
             "bb = (%.2f, %.2f, %.2f) ... (%.2f, %.2f, %.2f)"
             % (minX, minY, minZ, maxX, maxY, maxZ)
         )
@@ -273,7 +273,7 @@ class ObjectDressup:
 
         obj.Path = obj.Base.Path
 
-        PathLog.track()
+        Path.Log.track()
 
     def toolRadius(self):
         return float(PathDressup.toolController(self.obj.Base).Tool.Diameter) / 2.0
@@ -298,13 +298,13 @@ def Create(baseObject, name="DressupTag"):
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     """
     if not baseObject.isDerivedFrom("Path::Feature"):
-        PathLog.error(
+        Path.Log.error(
             translate("Path_DressupTag", "The selected object is not a path") + "\n"
         )
         return None
 
     if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-        PathLog.error(translate("Path_DressupTag", "Please select a Profile object"))
+        Path.Log.error(translate("Path_DressupTag", "Please select a Profile object"))
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
@@ -315,4 +315,4 @@ def Create(baseObject, name="DressupTag"):
     return obj
 
 
-PathLog.notice("Loading Path_DressupTag... done\n")
+Path.Log.notice("Loading Path_DressupTag... done\n")

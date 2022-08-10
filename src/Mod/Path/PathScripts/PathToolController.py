@@ -25,7 +25,6 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 from Generators import toolchange_generator as toolchange_generator
@@ -33,10 +32,10 @@ from Generators.toolchange_generator import SpindleDirection
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -62,7 +61,7 @@ class ToolControllerTemplate:
 
 class ToolController:
     def __init__(self, obj, legacyTool=False, createTool=True):
-        PathLog.track("tool: {}".format(legacyTool))
+        Path.Log.track("tool: {}".format(legacyTool))
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",
@@ -143,11 +142,11 @@ class ToolController:
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -165,7 +164,7 @@ class ToolController:
         setFromTemplate(obj, xmlItem) ... extract properties from xmlItem
         and assign to receiver.
         """
-        PathLog.track(obj.Name, template)
+        Path.Log.track(obj.Name, template)
         version = 0
         if template.get(ToolControllerTemplate.Version):
             version = int(template.get(ToolControllerTemplate.Version))
@@ -218,13 +217,13 @@ class ToolController:
                                 exprDef[ToolControllerTemplate.ExprExpr],
                             )
             else:
-                PathLog.error(
+                Path.Log.error(
                     "Unsupported PathToolController template version {}".format(
                         template.get(ToolControllerTemplate.Version)
                     )
                 )
         else:
-            PathLog.error(
+            Path.Log.error(
                 "PathToolController template has no version - corrupted template file?"
             )
 
@@ -247,7 +246,7 @@ class ToolController:
             attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.templateAttrs(obj.Tool)
         expressions = []
         for expr in obj.ExpressionEngine:
-            PathLog.debug("%s: %s" % (expr[0], expr[1]))
+            Path.Log.debug("%s: %s" % (expr[0], expr[1]))
             expressions.append(
                 {
                     ToolControllerTemplate.ExprProp: expr[0],
@@ -259,7 +258,7 @@ class ToolController:
         return attrs
 
     def execute(self, obj):
-        PathLog.track()
+        Path.Log.track()
 
         args = {
             "toolnumber": obj.ToolNumber,
@@ -294,7 +293,7 @@ class ToolController:
 
     def getTool(self, obj):
         """returns the tool associated with this tool controller"""
-        PathLog.track()
+        Path.Log.track()
         return obj.Tool
 
     def usesLegacyTool(self, obj):
@@ -344,7 +343,7 @@ def Create(
         else isinstance(tool, Path.Tool)
     )
 
-    PathLog.track(tool, toolNumber, legacyTool)
+    Path.Log.track(tool, toolNumber, legacyTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
@@ -376,7 +375,7 @@ def Create(
 
 
 def FromTemplate(template, assignViewProvider=True):
-    PathLog.track()
+    Path.Log.track()
 
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
     obj = Create(name, assignViewProvider=True, assignTool=False)

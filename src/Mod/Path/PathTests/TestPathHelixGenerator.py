@@ -23,13 +23,12 @@
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathLog as PathLog
 import Generators.helix_generator as generator
 import PathTests.PathTestUtils as PathTestUtils
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 def _resetArgs():

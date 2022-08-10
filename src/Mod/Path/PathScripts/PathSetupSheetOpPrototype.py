@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathLog as PathLog
+import Path
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
@@ -28,8 +28,8 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+# Path.Log.trackModule(Path.Log.thisModule())
 
 
 class Property(object):

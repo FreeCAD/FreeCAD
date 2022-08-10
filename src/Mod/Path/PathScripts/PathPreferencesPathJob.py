@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import json
@@ -32,7 +31,7 @@ from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class JobPreferencesPage:

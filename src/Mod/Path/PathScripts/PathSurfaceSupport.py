@@ -29,7 +29,7 @@ __doc__ = "Support functions and classes for 3D Surface and Waterline operations
 __contributors__ = ""
 
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOpTools as PathOpTools
 import math
@@ -42,10 +42,10 @@ Part = LazyLoader("Part", globals(), "Part")
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -225,7 +225,7 @@ class PathGeometryGenerator:
         if minRad < minRadSI:
             minRad = minRadSI
 
-        PathLog.debug(" -centerOfPattern: {}".format(self.centerOfPattern))
+        Path.Log.debug(" -centerOfPattern: {}".format(self.centerOfPattern))
         # Make small center circle to start pattern
         if self.obj.StepOver > 50:
             circle = Part.makeCircle(minRad, self.centerOfPattern)
@@ -418,7 +418,7 @@ class PathGeometryGenerator:
         return FreeCAD.Vector(-1 * x, y, 0.0).add(move)
 
     def _extractOffsetFaces(self):
-        PathLog.debug("_extractOffsetFaces()")
+        Path.Log.debug("_extractOffsetFaces()")
         wires = []
         shape = self.shape
         offset = 0.0  # Start right at the edge of cut area
@@ -548,7 +548,7 @@ class ProcessSelectedFaces:
         self.showDebugObjects = val
 
     def preProcessModel(self, module):
-        PathLog.debug("preProcessModel()")
+        Path.Log.debug("preProcessModel()")
 
         if not self._isReady(module):
             return False
@@ -570,7 +570,7 @@ class ProcessSelectedFaces:
 
         # The user has selected subobjects from the base.  Pre-Process each.
         if self.checkBase:
-            PathLog.debug(" -obj.Base exists. Pre-processing for selected faces.")
+            Path.Log.debug(" -obj.Base exists. Pre-processing for selected faces.")
 
             (hasFace, hasVoid) = self._identifyFacesAndVoids(
                 FACES, VOIDS
@@ -591,14 +591,14 @@ class ProcessSelectedFaces:
             if hasGeometry and not proceed:
                 return False
         else:
-            PathLog.debug(" -No obj.Base data.")
+            Path.Log.debug(" -No obj.Base data.")
             for m in range(0, lenGRP):
                 self.modelSTLs[m] = True
 
         # Process each model base, as a whole, as needed
         for m in range(0, lenGRP):
             if self.modelSTLs[m] and not fShapes[m]:
-                PathLog.debug(" -Pre-processing {} as a whole.".format(GRP[m].Label))
+                Path.Log.debug(" -Pre-processing {} as a whole.".format(GRP[m].Label))
                 if self.obj.BoundBox == "BaseBoundBox":
                     base = GRP[m]
                 elif self.obj.BoundBox == "Stock":
@@ -618,24 +618,24 @@ class ProcessSelectedFaces:
                     (fcShp, prflShp) = pPEB
                     if fcShp:
                         if fcShp is True:
-                            PathLog.debug(" -fcShp is True.")
+                            Path.Log.debug(" -fcShp is True.")
                             fShapes[m] = True
                         else:
                             fShapes[m] = [fcShp]
                     if prflShp:
                         if fcShp:
-                            PathLog.debug("vShapes[{}]: {}".format(m, vShapes[m]))
+                            Path.Log.debug("vShapes[{}]: {}".format(m, vShapes[m]))
                             if vShapes[m]:
-                                PathLog.debug(" -Cutting void from base profile shape.")
+                                Path.Log.debug(" -Cutting void from base profile shape.")
                                 adjPS = prflShp.cut(vShapes[m][0])
                                 self.profileShapes[m] = [adjPS]
                             else:
-                                PathLog.debug(" -vShapes[m] is False.")
+                                Path.Log.debug(" -vShapes[m] is False.")
                                 self.profileShapes[m] = [prflShp]
                         else:
-                            PathLog.debug(" -Saving base profile shape.")
+                            Path.Log.debug(" -Saving base profile shape.")
                             self.profileShapes[m] = [prflShp]
-                        PathLog.debug(
+                        Path.Log.debug(
                             "self.profileShapes[{}]: {}".format(
                                 m, self.profileShapes[m]
                             )
@@ -648,21 +648,21 @@ class ProcessSelectedFaces:
     def _isReady(self, module):
         """_isReady(module)... Internal method.
         Checks if required attributes are available for processing obj.Base (the Base Geometry)."""
-        PathLog.debug("ProcessSelectedFaces _isReady({})".format(module))
+        Path.Log.debug("ProcessSelectedFaces _isReady({})".format(module))
         if hasattr(self, module):
             self.module = module
             modMethod = getattr(self, module)  # gets the attribute only
             modMethod()  # executes as method
         else:
-            PathLog.error('PSF._isReady() no "{}" method.'.format(module))
+            Path.Log.error('PSF._isReady() no "{}" method.'.format(module))
             return False
 
         if not self.radius:
-            PathLog.error("PSF._isReady() no cutter radius available.")
+            Path.Log.error("PSF._isReady() no cutter radius available.")
             return False
 
         if not self.depthParams:
-            PathLog.error("PSF._isReady() no depth params available.")
+            Path.Log.error("PSF._isReady() no depth params available.")
             return False
 
         return True
@@ -698,13 +698,13 @@ class ProcessSelectedFaces:
                     if F[m] is False:
                         F[m] = []
                     F[m].append((shape, faceIdx))
-                    PathLog.debug(".. Cutting {}".format(sub))
+                    Path.Log.debug(".. Cutting {}".format(sub))
                     hasFace = True
                 else:
                     if V[m] is False:
                         V[m] = []
                     V[m].append((shape, faceIdx))
-                    PathLog.debug(".. Avoiding {}".format(sub))
+                    Path.Log.debug(".. Avoiding {}".format(sub))
                     hasVoid = True
         return (hasFace, hasVoid)
 
@@ -718,7 +718,7 @@ class ProcessSelectedFaces:
             isHole = False
             if self.obj.HandleMultipleFeatures == "Collectively":
                 cont = True
-                PathLog.debug("Attempting to get cross-section of collective faces.")
+                Path.Log.debug("Attempting to get cross-section of collective faces.")
                 outFCS, ifL = self.findUnifiedRegions(FCS)
                 if self.obj.InternalFeaturesCut and ifL:
                     ifL = []  # clear avoid shape list
@@ -732,7 +732,7 @@ class ProcessSelectedFaces:
 
                 # Handle profile edges request
                 if cont and self.profileEdges != "None":
-                    PathLog.debug(".. include Profile Edge")
+                    Path.Log.debug(".. include Profile Edge")
                     ofstVal = self._calculateOffsetValue(isHole)
                     psOfst = PathUtils.getOffsetArea(cfsL, ofstVal, plane=self.wpc)
                     if psOfst:
@@ -763,7 +763,7 @@ class ProcessSelectedFaces:
                     lenIfL = len(ifL)
                     if not self.obj.InternalFeaturesCut:
                         if lenIfL == 0:
-                            PathLog.debug(" -No internal features saved.")
+                            Path.Log.debug(" -No internal features saved.")
                         else:
                             if lenIfL == 1:
                                 casL = ifL[0]
@@ -798,7 +798,7 @@ class ProcessSelectedFaces:
                         ifL = []  # avoid shape list
 
                     if outerFace:
-                        PathLog.debug(
+                        Path.Log.debug(
                             "Attempting to create offset face of Face{}".format(fNum)
                         )
 
@@ -854,7 +854,7 @@ class ProcessSelectedFaces:
                 mVS.append(ifs)
 
         if VDS:
-            PathLog.debug("Processing avoid faces.")
+            Path.Log.debug("Processing avoid faces.")
             cont = True
             isHole = False
 
@@ -928,7 +928,7 @@ class ProcessSelectedFaces:
                 partshape=base.Shape, subshape=None, depthparams=self.depthParams
             )  # Produces .Shape
         except Exception as ee:
-            PathLog.error(str(ee))
+            Path.Log.error(str(ee))
             shell = base.Shape.Shells[0]
             solid = Part.makeSolid(shell)
             try:
@@ -936,7 +936,7 @@ class ProcessSelectedFaces:
                     partshape=solid, subshape=None, depthparams=self.depthParams
                 )  # Produces .Shape
             except Exception as eee:
-                PathLog.error(str(eee))
+                Path.Log.error(str(eee))
                 cont = False
 
         if cont:
@@ -946,11 +946,11 @@ class ProcessSelectedFaces:
                 if csFaceShape is False:
                     csFaceShape = getSliceFromEnvelope(baseEnv)
             if csFaceShape is False:
-                PathLog.debug("Failed to slice baseEnv shape.")
+                Path.Log.debug("Failed to slice baseEnv shape.")
                 cont = False
 
         if cont and self.profileEdges != "None":
-            PathLog.debug(" -Attempting profile geometry for model base.")
+            Path.Log.debug(" -Attempting profile geometry for model base.")
             ofstVal = self._calculateOffsetValue(isHole)
             psOfst = PathUtils.getOffsetArea(csFaceShape, ofstVal, plane=self.wpc)
             if psOfst:
@@ -966,7 +966,7 @@ class ProcessSelectedFaces:
                 csFaceShape, ofstVal, plane=self.wpc
             )
             if faceOffsetShape is False:
-                PathLog.debug("getOffsetArea() failed for entire base.")
+                Path.Log.debug("getOffsetArea() failed for entire base.")
             else:
                 faceOffsetShape.translate(
                     FreeCAD.Vector(0.0, 0.0, 0.0 - faceOffsetShape.BoundBox.ZMin)
@@ -1005,7 +1005,7 @@ class ProcessSelectedFaces:
     def findUnifiedRegions(self, shapeAndIndexTuples, useAreaImplementation=True):
         """Wrapper around area and wire based region unification
         implementations."""
-        PathLog.debug("findUnifiedRegions()")
+        Path.Log.debug("findUnifiedRegions()")
         # Allow merging of faces within the LinearDeflection tolerance.
         tolerance = self.obj.LinearDeflection.Value
         # Default: normal to Z=1 (XY plane), at Z=0
@@ -1038,7 +1038,7 @@ class ProcessSelectedFaces:
                 internalFaces = Part.makeCompound(internalFaces)
             return ([outlineShape], [internalFaces])
         except Exception as e:
-            PathLog.warning(
+            Path.Log.warning(
                 "getOffsetArea failed: {}; Using FindUnifiedRegions.".format(e)
             )
         # Use face-unifying class
@@ -1053,14 +1053,14 @@ class ProcessSelectedFaces:
 
 # Functions for getting a shape envelope and cross-section
 def getExtrudedShape(wire):
-    PathLog.debug("getExtrudedShape()")
+    Path.Log.debug("getExtrudedShape()")
     wBB = wire.BoundBox
     extFwd = math.floor(2.0 * wBB.ZLength) + 10.0
 
     try:
         shell = wire.extrude(FreeCAD.Vector(0.0, 0.0, extFwd))
     except Exception as ee:
-        PathLog.error(" -extrude wire failed: \n{}".format(ee))
+        Path.Log.error(" -extrude wire failed: \n{}".format(ee))
         return False
 
     SHP = Part.makeSolid(shell)
@@ -1068,7 +1068,7 @@ def getExtrudedShape(wire):
 
 
 def getShapeSlice(shape):
-    PathLog.debug("getShapeSlice()")
+    Path.Log.debug("getShapeSlice()")
 
     bb = shape.BoundBox
     mid = (bb.ZMin + bb.ZMax) / 2.0
@@ -1096,7 +1096,7 @@ def getShapeSlice(shape):
     if slcArea < midArea:
         for W in slcShp.Wires:
             if W.isClosed() is False:
-                PathLog.debug(" -wire.isClosed() is False")
+                Path.Log.debug(" -wire.isClosed() is False")
                 return False
         if len(slcShp.Wires) == 1:
             wire = slcShp.Wires[0]
@@ -1118,7 +1118,7 @@ def getShapeSlice(shape):
 def getProjectedFace(tempGroup, wire):
     import Draft
 
-    PathLog.debug("getProjectedFace()")
+    Path.Log.debug("getProjectedFace()")
     F = FreeCAD.ActiveDocument.addObject("Part::Feature", "tmpProjectionWire")
     F.Shape = wire
     F.purgeTouched()
@@ -1129,7 +1129,7 @@ def getProjectedFace(tempGroup, wire):
         prj.purgeTouched()
         tempGroup.addObject(prj)
     except Exception as ee:
-        PathLog.error(str(ee))
+        Path.Log.error(str(ee))
         return False
     else:
         pWire = Part.Wire(prj.Shape.Edges)
@@ -1141,7 +1141,7 @@ def getProjectedFace(tempGroup, wire):
 
 
 def getCrossSection(shape):
-    PathLog.debug("getCrossSection()")
+    Path.Log.debug("getCrossSection()")
     wires = []
     bb = shape.BoundBox
     mid = (bb.ZMin + bb.ZMax) / 2.0
@@ -1154,19 +1154,19 @@ def getCrossSection(shape):
         comp.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - comp.BoundBox.ZMin))
         csWire = comp.Wires[0]
         if csWire.isClosed() is False:
-            PathLog.debug(" -comp.Wires[0] is not closed")
+            Path.Log.debug(" -comp.Wires[0] is not closed")
             return False
         CS = Part.Face(csWire)
         CS.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - CS.BoundBox.ZMin))
         return CS
     else:
-        PathLog.debug(" -No wires from .slice() method")
+        Path.Log.debug(" -No wires from .slice() method")
 
     return False
 
 
 def getShapeEnvelope(shape):
-    PathLog.debug("getShapeEnvelope()")
+    Path.Log.debug("getShapeEnvelope()")
 
     wBB = shape.BoundBox
     extFwd = wBB.ZLength + 10.0
@@ -1187,7 +1187,7 @@ def getShapeEnvelope(shape):
 
 
 def getSliceFromEnvelope(env):
-    PathLog.debug("getSliceFromEnvelope()")
+    Path.Log.debug("getSliceFromEnvelope()")
     eBB = env.BoundBox
     extFwd = eBB.ZLength + 10.0
     maxz = eBB.ZMin + extFwd
@@ -1217,7 +1217,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     Creates and OCL.stl object with combined data with waste stock,
     model, and avoided faces.  Travel lines can be checked against this
     STL object to determine minimum travel height to clear stock and model."""
-    PathLog.debug("_makeSafeSTL()")
+    Path.Log.debug("_makeSafeSTL()")
 
     fuseShapes = []
     Mdl = JOB.Model.Group[mdlIdx]
@@ -1243,7 +1243,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
             )  # Produces .Shape
             cont = True
         except Exception as ee:
-            PathLog.error(str(ee))
+            Path.Log.error(str(ee))
             shell = Mdl.Shape.Shells[0]
             solid = Part.makeSolid(shell)
             try:
@@ -1252,7 +1252,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
                 )  # Produces .Shape
                 cont = True
             except Exception as eee:
-                PathLog.error(str(eee))
+                Path.Log.error(str(eee))
 
         if cont:
             stckWst = JOB.Stock.Shape.cut(envBB)
@@ -1330,7 +1330,7 @@ def _makeSTL(model, obj, ocl, model_type=None):
 def pathGeomToLinesPointSet(self, obj, compGeoShp):
     """pathGeomToLinesPointSet(self, obj, compGeoShp)...
     Convert a compound set of sequential line segments to directionally-oriented collinear groupings."""
-    PathLog.debug("pathGeomToLinesPointSet()")
+    Path.Log.debug("pathGeomToLinesPointSet()")
     # Extract intersection line segments for return value as []
     LINES = []
     inLine = []
@@ -1426,9 +1426,9 @@ def pathGeomToLinesPointSet(self, obj, compGeoShp):
 
     isEven = lnCnt % 2
     if isEven == 0:
-        PathLog.debug("Line count is ODD: {}.".format(lnCnt))
+        Path.Log.debug("Line count is ODD: {}.".format(lnCnt))
     else:
-        PathLog.debug("Line count is even: {}.".format(lnCnt))
+        Path.Log.debug("Line count is even: {}.".format(lnCnt))
 
     return LINES
 
@@ -1437,7 +1437,7 @@ def pathGeomToZigzagPointSet(self, obj, compGeoShp):
     """_pathGeomToZigzagPointSet(self, obj, compGeoShp)...
     Convert a compound set of sequential line segments to directionally-oriented collinear groupings
     with a ZigZag directional indicator included for each collinear group."""
-    PathLog.debug("_pathGeomToZigzagPointSet()")
+    Path.Log.debug("_pathGeomToZigzagPointSet()")
     # Extract intersection line segments for return value as []
     LINES = []
     inLine = []
@@ -1516,9 +1516,9 @@ def pathGeomToZigzagPointSet(self, obj, compGeoShp):
     # Fix directional issue with LAST line when line count is even
     isEven = lnCnt % 2
     if isEven == 0:  #  Changed to != with 90 degree CutPatternAngle
-        PathLog.debug("Line count is even: {}.".format(lnCnt))
+        Path.Log.debug("Line count is even: {}.".format(lnCnt))
     else:
-        PathLog.debug("Line count is ODD: {}.".format(lnCnt))
+        Path.Log.debug("Line count is ODD: {}.".format(lnCnt))
         dirFlg = -1 * dirFlg
         if not obj.CutPatternReversed:
             if self.CutClimb:
@@ -1561,7 +1561,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
     Convert a compound set of arcs/circles to a set of directionally-oriented arc end points
     and the corresponding center point."""
     # Extract intersection line segments for return value as []
-    PathLog.debug("pathGeomToCircularPointSet()")
+    Path.Log.debug("pathGeomToCircularPointSet()")
     ARCS = []
     stpOvrEI = []
     segEI = []
@@ -1668,7 +1668,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
     for so in range(0, len(stpOvrEI)):
         SO = stpOvrEI[so]
         if SO[0] == "L":  # L = Loop/Ring/Circle
-            # PathLog.debug("SO[0] == 'Loop'")
+            # Path.Log.debug("SO[0] == 'Loop'")
             lei = SO[1]  # loop Edges index
             v1 = compGeoShp.Edges[lei].Vertexes[0]
 
@@ -1703,7 +1703,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
                 )  # OCL.Arc(firstPnt, lastPnt, centerPnt, dir=True(CCW direction))
             ARCS.append(("L", dirFlg, [arc]))
         elif SO[0] == "A":  # A = Arc
-            # PathLog.debug("SO[0] == 'Arc'")
+            # Path.Log.debug("SO[0] == 'Arc'")
             PRTS = []
             EI = SO[1]  # list of corresponding Edges indexes
             CONN = SO[2]  # list of corresponding connected edges tuples (iE, iS)
@@ -1803,7 +1803,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
 def pathGeomToSpiralPointSet(obj, compGeoShp):
     """_pathGeomToSpiralPointSet(obj, compGeoShp)...
     Convert a compound set of sequential line segments to directional, connected groupings."""
-    PathLog.debug("_pathGeomToSpiralPointSet()")
+    Path.Log.debug("_pathGeomToSpiralPointSet()")
     # Extract intersection line segments for return value as []
     LINES = []
     inLine = []
@@ -1856,7 +1856,7 @@ def pathGeomToSpiralPointSet(obj, compGeoShp):
 def pathGeomToOffsetPointSet(obj, compGeoShp):
     """pathGeomToOffsetPointSet(obj, compGeoShp)...
     Convert a compound set of 3D profile segmented wires to 2D segments, applying linear optimization."""
-    PathLog.debug("pathGeomToOffsetPointSet()")
+    Path.Log.debug("pathGeomToOffsetPointSet()")
 
     LINES = []
     optimize = obj.OptimizeLinearPaths
@@ -1952,7 +1952,7 @@ class FindUnifiedRegions:
             base = ef.cut(cutBox)
 
             if base.Volume == 0:
-                PathLog.debug(
+                Path.Log.debug(
                     "Ignoring Face{}.  It is likely vertical with no horizontal exposure.".format(
                         fcIdx
                     )
@@ -2026,7 +2026,7 @@ class FindUnifiedRegions:
                     count[1] += 1
 
     def _groupEdgesByLength(self):
-        PathLog.debug("_groupEdgesByLength()")
+        Path.Log.debug("_groupEdgesByLength()")
         threshold = self.geomToler
         grp = []
         processLast = False
@@ -2074,7 +2074,7 @@ class FindUnifiedRegions:
                 self.idGroups.append(grp)
 
     def _identifySharedEdgesByLength(self, grp):
-        PathLog.debug("_identifySharedEdgesByLength()")
+        Path.Log.debug("_identifySharedEdgesByLength()")
         holds = []
         specialIndexes = []
         threshold = self.geomToler
@@ -2132,7 +2132,7 @@ class FindUnifiedRegions:
             self.noSharedEdges = False
 
     def _extractWiresFromEdges(self):
-        PathLog.debug("_extractWiresFromEdges()")
+        Path.Log.debug("_extractWiresFromEdges()")
         DATA = self.edgeData
         holds = []
         firstEdge = None
@@ -2229,7 +2229,7 @@ class FindUnifiedRegions:
         # Ewhile
 
         numLoops = len(LOOPS)
-        PathLog.debug(" -numLoops: {}.".format(numLoops))
+        Path.Log.debug(" -numLoops: {}.".format(numLoops))
         if numLoops > 0:
             for li in range(0, numLoops):
                 Edges = LOOPS[li]
@@ -2258,7 +2258,7 @@ class FindUnifiedRegions:
             self.REGIONS.sort(key=faceArea, reverse=True)
 
     def _identifyInternalFeatures(self):
-        PathLog.debug("_identifyInternalFeatures()")
+        Path.Log.debug("_identifyInternalFeatures()")
         remList = []
 
         for (top, fcIdx) in self.topFaces:
@@ -2273,14 +2273,14 @@ class FindUnifiedRegions:
                             remList.append(s)
                             break
                         else:
-                            PathLog.debug(" - No common area.\n")
+                            Path.Log.debug(" - No common area.\n")
 
         remList.sort(reverse=True)
         for ri in remList:
             self.REGIONS.pop(ri)
 
     def _processNestedRegions(self):
-        PathLog.debug("_processNestedRegions()")
+        Path.Log.debug("_processNestedRegions()")
         cont = True
         hold = []
         Ids = []
@@ -2325,7 +2325,7 @@ class FindUnifiedRegions:
 
     # Accessory methods
     def _getCompleteCrossSection(self, shape):
-        PathLog.debug("_getCompleteCrossSection()")
+        Path.Log.debug("_getCompleteCrossSection()")
         wires = []
         bb = shape.BoundBox
         mid = (bb.ZMin + bb.ZMax) / 2.0
@@ -2339,7 +2339,7 @@ class FindUnifiedRegions:
             CS.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - CS.BoundBox.ZMin))
             return CS
 
-        PathLog.debug(" -No wires from .slice() method")
+        Path.Log.debug(" -No wires from .slice() method")
         return False
 
     def _edgesAreConnected(self, e1, e2):
@@ -2382,7 +2382,7 @@ class FindUnifiedRegions:
     def getUnifiedRegions(self):
         """getUnifiedRegions()... Returns a list of unified regions from list
         of tuples (faceShape, faceIndex) received at instantiation of the class object."""
-        PathLog.debug("getUnifiedRegions()")
+        Path.Log.debug("getUnifiedRegions()")
         if len(self.FACES) == 0:
             msg = "No FACE data tuples received at instantiation of class.\n"
             FreeCAD.Console.PrintError(msg)
@@ -2431,7 +2431,7 @@ class FindUnifiedRegions:
             self._identifySharedEdgesByLength(grp)
 
         if self.noSharedEdges:
-            PathLog.debug("No shared edges by length detected.")
+            Path.Log.debug("No shared edges by length detected.")
             allTopFaces = []
             for (topFace, fcIdx) in self.topFaces:
                 allTopFaces.append(topFace)
@@ -2505,7 +2505,7 @@ class OCL_Tool:
                     self.toolType = self.tool.ToolType  # Indicates Legacy tool
                     self.toolMode = "Legacy"
         if self.toolType:
-            PathLog.debug(
+            Path.Log.debug(
                 "OCL_Tool tool mode, type: {}, {}".format(self.toolMode, self.toolType)
             )
 
@@ -2780,7 +2780,7 @@ class OCL_Tool:
             FreeCAD.Console.PrintError(err + "\n")
             return False
         else:
-            PathLog.debug("OCL_Tool tool method: {}".format(self.toolMethod))
+            Path.Log.debug("OCL_Tool tool method: {}".format(self.toolMethod))
             oclToolMethod = getattr(self, "_ocl" + self.toolMethod)
             oclToolMethod()
 
@@ -2812,7 +2812,7 @@ class OCL_Tool:
 
 # Support functions
 def makeExtendedBoundBox(wBB, bbBfr, zDep):
-    PathLog.debug("makeExtendedBoundBox()")
+    Path.Log.debug("makeExtendedBoundBox()")
     p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
     p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
     p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)

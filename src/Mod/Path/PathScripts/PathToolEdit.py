@@ -23,13 +23,12 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathLog as PathLog
 import math
 
 from PySide import QtGui
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+# Path.Log.trackModule(Path.Log.thisModule())
 
 
 class ToolEditorDefault:
@@ -113,7 +112,7 @@ class ToolEditorImage(object):
         }
 
     def setupUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.paramGeneric.hide()
         self.form.paramImage.show()
 
@@ -129,14 +128,14 @@ class ToolEditorImage(object):
         self.form.image.setPixmap(self.image)
 
     def updateUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.value_D.setText(self.quantityDiameter(True).UserString)
         self.form.value_d.setText(self.quantityFlatRadius(True).UserString)
         self.form.value_a.setText(self.quantityCuttingEdgeAngle(True).UserString)
         self.form.value_H.setText(self.quantityCuttingEdgeHeight(True).UserString)
 
     def updateTool(self):
-        PathLog.track()
+        Path.Log.track()
         toolDefault = Path.Tool()
         if "D" in self.hide:
             self.editor.tool.Diameter = toolDefault.Diameter
@@ -227,7 +226,7 @@ class ToolEditorEngrave(ToolEditorImage):
         super(ToolEditorEngrave, self).__init__(editor, "v-bit.svg", "", "dS")
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
-        PathLog.track()
+        Path.Log.track()
         dr = (self.quantityDiameter(False) - self.quantityFlatRadius(False)) / 2
         da = self.quantityCuttingEdgeAngle(False).Value
         return dr / math.tan(math.radians(da) / 2)
@@ -297,7 +296,7 @@ class ToolEditor:
         return matslist[material]
 
     def updateUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.toolName.setText(self.tool.Name)
         self.form.toolType.setCurrentIndex(self.getType(self.tool.ToolType))
         self.form.toolMaterial.setCurrentIndex(self.getMaterial(self.tool.Material))
@@ -310,7 +309,7 @@ class ToolEditor:
         self.editor.updateUI()
 
     def updateToolType(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.blockSignals(True)
         self.tool.ToolType = self.getType(self.form.toolType.currentIndex())
         self.setupToolType(self.tool.ToolType)
@@ -318,19 +317,19 @@ class ToolEditor:
         self.form.blockSignals(False)
 
     def setupToolType(self, tt):
-        PathLog.track()
+        Path.Log.track()
         print("Tool type: %s" % (tt))
         if "Undefined" == tt:
             tt = Path.Tool.getToolTypes(Path.Tool())[0]
         if tt in self.ToolTypeImage:
             self.editor = self.ToolTypeImage[tt](self)
         else:
-            PathLog.debug("weak supported ToolType = %s" % (tt))
+            Path.Log.debug("weak supported ToolType = %s" % (tt))
             self.editor = ToolEditorDefault(self)
         self.editor.setupUI()
 
     def updateTool(self):
-        PathLog.track()
+        Path.Log.track()
         self.tool.Name = str(self.form.toolName.text())
         self.tool.Material = self.getMaterial(self.form.toolMaterial.currentIndex())
         self.tool.LengthOffset = FreeCAD.Units.parseQuantity(
@@ -339,14 +338,14 @@ class ToolEditor:
         self.editor.updateTool()
 
     def refresh(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.blockSignals(True)
         self.updateTool()
         self.updateUI()
         self.form.blockSignals(False)
 
     def setupUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.updateUI()
 
         self.form.toolName.editingFinished.connect(self.refresh)

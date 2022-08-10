@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import traceback
 
 from PathScripts.PathUtils import loopdetect
@@ -80,7 +80,7 @@ class _CommandSelectLoop:
                 self.active = False
             return self.active
         except Exception as exc:
-            PathLog.error(exc)
+            Path.Log.error(exc)
             traceback.print_exc(exc)
             return False
 

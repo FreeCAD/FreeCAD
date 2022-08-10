@@ -22,8 +22,8 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 
@@ -47,10 +47,10 @@ __doc__ = "Class and implementation of shape based Pocket operation."
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
@@ -89,10 +89,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
-        PathLog.track()
+        Path.Log.track()
         self.removalshapes = []
 
-        # self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
+        # self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
         self.removalshapes = []
         avoidFeatures = list()
 
@@ -103,14 +103,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 avoidFeatures.append(e.feature)
 
         if obj.Base:
-            PathLog.debug("base items exist.  Processing...")
+            Path.Log.debug("base items exist.  Processing...")
             self.horiz = []
             self.vert = []
             for (base, subList) in obj.Base:
                 for sub in subList:
                     if "Face" in sub:
                         if sub not in avoidFeatures and not self.clasifySub(base, sub):
-                            PathLog.error(
+                            Path.Log.error(
                                 "Pocket does not support shape {}.{}".format(
                                     base.Label, sub
                                 )
@@ -133,7 +133,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     face = Part.Face(w)
                     # face.tessellate(0.1)
                     if PathGeom.isRoughly(face.Area, 0):
-                        PathLog.error("Vertical faces do not form a loop - ignoring")
+                        Path.Log.error("Vertical faces do not form a loop - ignoring")
                     else:
                         self.horiz.append(face)
 
@@ -174,7 +174,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             ]
 
         else:  # process the job base object as a whole
-            PathLog.debug("processing the whole job base object")
+            Path.Log.debug("processing the whole job base object")
             self.outlines = [
                 Part.Face(
                     TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))
@@ -218,15 +218,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         face = bs.Shape.getElement(sub)
 
         if type(face.Surface) == Part.Plane:
-            PathLog.debug("type() == Part.Plane")
+            Path.Log.debug("type() == Part.Plane")
             if PathGeom.isVertical(face.Surface.Axis):
-                PathLog.debug("  -isVertical()")
+                Path.Log.debug("  -isVertical()")
                 # it's a flat horizontal face
                 self.horiz.append(face)
                 return True
 
             elif PathGeom.isHorizontal(face.Surface.Axis):
-                PathLog.debug("  -isHorizontal()")
+                Path.Log.debug("  -isHorizontal()")
                 self.vert.append(face)
                 return True
 
@@ -236,10 +236,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(
             face.Surface.Axis
         ):
-            PathLog.debug("type() == Part.Cylinder")
+            Path.Log.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
-                PathLog.debug("  -e.isClosed()")
+                Path.Log.debug("  -e.isClosed()")
                 # complete cylinder
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
@@ -250,23 +250,23 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
 
             else:
-                PathLog.debug("  -none isClosed()")
+                Path.Log.debug("  -none isClosed()")
                 # partial cylinder wall
                 self.vert.append(face)
                 return True
 
         elif type(face.Surface) == Part.SurfaceOfExtrusion:
             # extrusion wall
-            PathLog.debug("type() == Part.SurfaceOfExtrusion")
+            Path.Log.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
             if self.isVerticalExtrusionFace(face):
                 self.vert.append(face)
                 return True
             else:
-                PathLog.error("Failed to identify vertical face from {}".format(sub))
+                Path.Log.error("Failed to identify vertical face from {}".format(sub))
 
         else:
-            PathLog.debug("  -type(face.Surface): {}".format(type(face.Surface)))
+            Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
             return False
 
 

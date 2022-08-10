@@ -28,7 +28,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathJob as PathJob
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
@@ -43,10 +42,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 LOG_MODULE = PathLog.thisModule()
 
 if True:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -70,7 +69,7 @@ def processFileNameSubstitutions(
     """Process any substitutions in the outputpath or filename."""
 
     # The following section allows substitution within the path part
-    PathLog.track(f"path before substitution: {outputpath}")
+    Path.Log.track(f"path before substitution: {outputpath}")
 
     if "%D" in outputpath:  # Directory of active document
         D = FreeCAD.ActiveDocument.FileName
@@ -100,10 +99,10 @@ def processFileNameSubstitutions(
         j = job.Label
         outputpath = outputpath.replace("%j", j)
 
-    PathLog.track(f"path after substitution: {outputpath}")
+    Path.Log.track(f"path after substitution: {outputpath}")
 
     # The following section allows substitution within the filename part
-    PathLog.track(f"filename before substitution: {filename}")
+    Path.Log.track(f"filename before substitution: {filename}")
 
     # Use the file label
     if "%d" in filename:
@@ -122,7 +121,7 @@ def processFileNameSubstitutions(
 
     # This section handles unique names for splitting output
     if job.SplitOutput:
-        PathLog.track()
+        Path.Log.track()
         if "%T" in filename and job.OrderOutputBy == "Tool":
             filename = filename.replace("%T", subpartname)
 
@@ -142,20 +141,20 @@ def processFileNameSubstitutions(
         else:
             filename = f"{filename}-{sequencenumber}"
 
-    PathLog.track(f"filename after substitution: {filename}")
+    Path.Log.track(f"filename after substitution: {filename}")
 
     if not ext:
         ext = ".nc"
-    PathLog.track(f"file extension: {ext}")
+    Path.Log.track(f"file extension: {ext}")
 
     fullPath = f"{outputpath}{os.path.sep}{filename}{ext}"
 
-    PathLog.track(f"full filepath: {fullPath}")
+    Path.Log.track(f"full filepath: {fullPath}")
     return fullPath
 
 
 def resolveFileName(job, subpartname, sequencenumber):
-    PathLog.track(subpartname, sequencenumber)
+    Path.Log.track(subpartname, sequencenumber)
 
     validPathSubstitutions = ["D", "d", "M", "j"]
     validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
@@ -198,7 +197,7 @@ def resolveFileName(job, subpartname, sequencenumber):
         ext = ".nc"
 
     # By now we should have a sanitized path, filename and extension to work with
-    PathLog.track(f"path: {outputpath} name: {filename} ext: {ext}")
+    Path.Log.track(f"path: {outputpath} name: {filename} ext: {ext}")
 
     fullPath = processFileNameSubstitutions(
         job,
@@ -238,7 +237,7 @@ def resolveFileName(job, subpartname, sequencenumber):
 
     if openDialog:
         foo = QtGui.QFileDialog.getSaveFileName(
-            QtGui.QApplication.activeWindow(), "Output File", fullPath
+            QtGui.QApplication.activeWindow(), "Output File", filename
         )
         if foo[0]:
             fullPath = foo[0]
@@ -250,9 +249,8 @@ def resolveFileName(job, subpartname, sequencenumber):
         for s in validPathSubstitutions + validFilenameSubstitutions:
             fullPath = fullPath.replace(f"%{s}", "")
 
-        fullPath = os.path.normpath(fullPath)
-        PathLog.track(fullPath)
-
+    fullPath = os.path.normpath(fullPath)
+    Path.Log.track(fullPath)
     return fullPath
 
 
@@ -266,7 +264,7 @@ def buildPostList(job):
     postlist = []
 
     if orderby == "Fixture":
-        PathLog.debug("Ordering by Fixture")
+        Path.Log.debug("Ordering by Fixture")
         # Order by fixture means all operations and tool changes will be
         # completed in one fixture before moving to the next.
 
@@ -294,13 +292,13 @@ def buildPostList(job):
                 if tc is not None and PathUtil.opProperty(obj, "Active"):
                     if tc.ToolNumber != currTool:
                         sublist.append(tc)
-                        PathLog.debug("Appending TC: {}".format(tc.Name))
+                        Path.Log.debug("Appending TC: {}".format(tc.Name))
                         currTool = tc.ToolNumber
                 sublist.append(obj)
             postlist.append((f, sublist))
 
     elif orderby == "Tool":
-        PathLog.debug("Ordering by Tool")
+        Path.Log.debug("Ordering by Tool")
         # Order by tool means tool changes are minimized.
         # all operations with the current tool are processed in the current
         # fixture before moving to the next fixture.
@@ -329,13 +327,13 @@ def buildPostList(job):
         curlist = []  # list of ops for tool, will repeat for each fixture
         sublist = []  # list of ops for output splitting
 
-        PathLog.track(job.PostProcessorOutputFile)
+        Path.Log.track(job.PostProcessorOutputFile)
         for idx, obj in enumerate(job.Operations.Group):
-            PathLog.track(obj.Label)
+            Path.Log.track(obj.Label)
 
             # check if the operation is active
             if not getattr(obj, "Active", True):
-                PathLog.track()
+                Path.Log.track()
                 continue
 
             # Determine the proper string for the Op's TC
@@ -346,7 +344,7 @@ def buildPostList(job):
                 tcstring = f"{tc.ToolNumber}"
             else:
                 tcstring = re.sub(r"[^\w\d-]", "_", tc.Label)
-            PathLog.track(toolstring)
+            Path.Log.track(toolstring)
 
             if tc is None or tc.ToolNumber == currTool:
                 curlist.append(obj)
@@ -374,7 +372,7 @@ def buildPostList(job):
                 postlist.append((toolstring, sublist))
 
     elif orderby == "Operation":
-        PathLog.debug("Ordering by Operation")
+        Path.Log.debug("Ordering by Operation")
         # Order by operation means ops are done in each fixture in
         # sequence.
         currTool = None
@@ -388,7 +386,7 @@ def buildPostList(job):
                 continue
 
             sublist = []
-            PathLog.debug("obj: {}".format(obj.Name))
+            Path.Log.debug("obj: {}".format(obj.Name))
 
             for f in wcslist:
                 fobj = _TempObject()
@@ -415,10 +413,10 @@ def buildPostList(job):
             postlist.append((obj.Label, sublist))
 
     if job.SplitOutput:
-        PathLog.track()
+        Path.Log.track()
         return postlist
     else:
-        PathLog.track()
+        Path.Log.track()
         finalpostlist = [
             ("allitems", [item for slist in postlist for item in slist[1]])
         ]
@@ -493,16 +491,16 @@ class CommandPathPost:
         return False
 
     def exportObjectsWith(self, objs, partname, job, sequence, extraargs=None):
-        PathLog.track(extraargs)
+        Path.Log.track(extraargs)
         # check if the user has a project and has set the default post and
         # output filename
         # extraargs can be passed in at this time
-        PathLog.track(partname, sequence)
-        PathLog.track(objs)
+        Path.Log.track(partname, sequence)
+        Path.Log.track(objs)
 
         # partname = objs[0]
         # slist = objs[1]
-        PathLog.track(objs, partname)
+        Path.Log.track(objs, partname)
 
         postArgs = PathPreferences.defaultPostProcessorArgs()
         if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
@@ -513,7 +511,7 @@ class CommandPathPost:
         if extraargs is not None:
             postArgs += " {}".format(extraargs)
 
-        PathLog.track(postArgs)
+        Path.Log.track(postArgs)
 
         postname = self.resolvePostProcessor(job)
         # filename = "-"
@@ -530,7 +528,7 @@ class CommandPathPost:
             return (True, "", filename)
 
     def Activated(self):
-        PathLog.track()
+        Path.Log.track()
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected path(s)")
         FreeCADGui.addModule("PathScripts.PathPost")
 
@@ -564,7 +562,7 @@ class CommandPathPost:
                 if hasattr(o, "Proxy"):
                     if isinstance(o.Proxy, PathJob.ObjectJob):
                         targetlist.append(o.Label)
-            PathLog.debug("Possible post objects: {}".format(targetlist))
+            Path.Log.debug("Possible post objects: {}".format(targetlist))
             if len(targetlist) > 1:
                 jobname, result = QtGui.QInputDialog.getItem(
                     None, translate("Path", "Choose a Path Job"), None, targetlist
@@ -576,7 +574,7 @@ class CommandPathPost:
                 jobname = targetlist[0]
             job = FreeCAD.ActiveDocument.getObject(jobname)
 
-        PathLog.debug("about to postprocess job: {}".format(job.Name))
+        Path.Log.debug("about to postprocess job: {}".format(job.Name))
 
         postlist = buildPostList(job)
         # filename = resolveFileName(job, "allitems", 0)
@@ -591,7 +589,7 @@ class CommandPathPost:
 
             result, gcode, name = self.exportObjectsWith(sublist, partname, job, idx)
             filenames.append(name)
-            PathLog.track(result, gcode, name)
+            Path.Log.track(result, gcode, name)
 
             if name is None:
                 success = False
@@ -612,13 +610,13 @@ class CommandPathPost:
         #     gcode = self.exportObjectsWith(finalpostlist, "allitems", job, 1)
         #     success = gcode is not None
 
-        PathLog.track(success)
+        Path.Log.track(success)
         if success:
             if hasattr(job, "LastPostProcessDate"):
                 job.LastPostProcessDate = str(datetime.now())
             if hasattr(job, "LastPostProcessOutput"):
                 job.LastPostProcessOutput = " \n".join(filenames)
-                PathLog.track(job.LastPostProcessOutput)
+                Path.Log.track(job.LastPostProcessOutput)
             FreeCAD.ActiveDocument.commitTransaction()
         else:
             FreeCAD.ActiveDocument.abortTransaction()

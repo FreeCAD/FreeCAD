@@ -22,16 +22,14 @@
 
 import FreeCAD
 
-# import Part
 import Path
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 from importlib import reload
 from PathScripts.post import grbl_post as postprocessor
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestGrblPost(PathTestUtils.PathTestBase):

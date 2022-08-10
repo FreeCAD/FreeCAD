@@ -23,7 +23,6 @@
 import FreeCAD
 import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
@@ -32,10 +31,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 __doc__ = "Class and implementation of Path Engrave operation"
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -101,12 +100,12 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def opExecute(self, obj):
         """opExecute(obj) ... process engraving operation"""
-        PathLog.track()
+        Path.Log.track()
 
         jobshapes = []
 
         if len(obj.Base) >= 1:  # user has selected specific subelements
-            PathLog.track(len(obj.Base))
+            Path.Log.track(len(obj.Base))
             wires = []
             for base, subs in obj.Base:
                 edges = []
@@ -129,9 +128,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         elif len(obj.BaseShapes) > 0:  # user added specific shapes
             jobshapes.extend([base.Shape for base in obj.BaseShapes])
         else:
-            PathLog.track(self.model)
+            Path.Log.track(self.model)
             for base in self.model:
-                PathLog.track(base.Label)
+                Path.Log.track(base.Label)
                 if base.isDerivedFrom("Part::Part2DObject"):
                     jobshapes.append(base.Shape)
                 elif base.isDerivedFrom("Sketcher::SketchObject"):
@@ -140,11 +139,11 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                     jobshapes.append(base.Shape)
 
         if len(jobshapes) > 0:
-            PathLog.debug("processing {} jobshapes".format(len(jobshapes)))
+            Path.Log.debug("processing {} jobshapes".format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
                 shapeWires = shape.Wires
-                PathLog.debug("jobshape has {} edges".format(len(shape.Edges)))
+                Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
                 self.commandlist.append(
                     Path.Command(
                         "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
@@ -153,7 +152,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
-            PathLog.debug(
+            Path.Log.debug(
                 "processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires))
             )
         # the last command is a move to clearance, which is automatically added by PathOp

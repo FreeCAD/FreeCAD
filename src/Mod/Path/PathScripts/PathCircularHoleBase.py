@@ -22,7 +22,7 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathOp as PathOp
 import PathScripts.drillableLib as drillableLib
 
@@ -44,10 +44,10 @@ translate = FreeCAD.Qt.translate
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectOp(PathOp.ObjectOp):
@@ -109,7 +109,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
-            PathLog.warning(
+            Path.Log.warning(
                 translate(
                     "Path",
                     "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.",
@@ -117,7 +117,7 @@ class ObjectOp(PathOp.ObjectOp):
             )
             return shape.BoundBox.XLength
         except Part.OCCError as e:
-            PathLog.error(e)
+            Path.Log.error(e)
 
         return 0
 
@@ -141,9 +141,9 @@ class ObjectOp(PathOp.ObjectOp):
                 if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
                     return shape.Edges[0].Curve.Center
         except Part.OCCError as e:
-            PathLog.error(e)
+            Path.Log.error(e)
 
-        PathLog.error(
+        Path.Log.error(
             translate(
                 "Path",
                 "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.",
@@ -164,7 +164,7 @@ class ObjectOp(PathOp.ObjectOp):
         drillable features are added to Base. In this case appropriate values for depths are also
         calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
-        PathLog.track()
+        Path.Log.track()
 
         def haveLocations(self, obj):
             if PathOp.FeatureLocations & self.opFeatures(obj):
@@ -174,7 +174,7 @@ class ObjectOp(PathOp.ObjectOp):
         holes = []
         for base, subs in obj.Base:
             for sub in subs:
-                PathLog.debug("processing {} in {}".format(sub, base.Name))
+                Path.Log.debug("processing {} in {}".format(sub, base.Name))
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
                     if pos:
@@ -202,7 +202,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def findAllHoles(self, obj):
         """findAllHoles(obj) ... find all holes of all base models and assign as features."""
-        PathLog.track()
+        Path.Log.track()
         job = self.getJob(obj)
         if not job:
             return

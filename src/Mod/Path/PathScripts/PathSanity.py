@@ -32,8 +32,8 @@ from __future__ import print_function
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathPreferences as PathPreferences
 from collections import Counter
@@ -47,8 +47,8 @@ translate = FreeCAD.Qt.translate
 
 
 LOG_MODULE = "PathSanity"
-# PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-# PathLog.trackModule('PathSanity')
+# Path.Log.setLevel(Path.Log.Level.INFO, LOG_MODULE)
+# Path.Log.trackModule('PathSanity')
 
 
 class CommandPathSanity:
@@ -87,14 +87,14 @@ class CommandPathSanity:
             M = pref.GetString("MacroPath", FreeCAD.getUserAppDataDir())
             filepath = filepath.replace("%M", M)
 
-        PathLog.debug("filepath: {}".format(filepath))
+        Path.Log.debug("filepath: {}".format(filepath))
 
         # starting at the derived filename, iterate up until we have a valid
         # directory to write to
         while not os.path.isdir(filepath):
             filepath = os.path.dirname(filepath)
 
-        PathLog.debug("filepath: {}".format(filepath))
+        Path.Log.debug("filepath: {}".format(filepath))
         return filepath + os.sep
 
     def GetResources(self):

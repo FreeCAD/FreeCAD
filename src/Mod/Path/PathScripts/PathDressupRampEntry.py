@@ -26,7 +26,6 @@ import FreeCAD
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import math
 
 
@@ -43,10 +42,10 @@ translate = FreeCAD.Qt.translate
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectDressup:
@@ -158,11 +157,11 @@ class ObjectDressup:
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -263,7 +262,7 @@ class ObjectDressup:
                     projectionlen = plungelen * math.tan(
                         math.radians(rampangle)
                     )  # length of the forthcoming ramp projected to XY plane
-                    PathLog.debug(
+                    Path.Log.debug(
                         "Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(
                             p0.x, p0.y, p0.z, p1.z, projectionlen
                         )
@@ -284,7 +283,7 @@ class ObjectDressup:
                         if abs(cp0.z - cp1.z) > 1e-6:
                             # this edge is not parallel to XY plane, not qualified for ramping.
                             break
-                        # PathLog.debug("Next edge length {}".format(candidate.Length))
+                        # Path.Log.debug("Next edge length {}".format(candidate.Length))
                         rampedges.append(candidate)
                         coveredlen = coveredlen + candidate.Length
 
@@ -294,7 +293,7 @@ class ObjectDressup:
                         if i >= len(edges):
                             break
                     if len(rampedges) == 0:
-                        PathLog.debug(
+                        Path.Log.debug(
                             "No suitable edges for ramping, plunge will remain as such"
                         )
                         outedges.append(edge)
@@ -310,13 +309,13 @@ class ObjectDressup:
                                     )
                                 else:
                                     rampangle = math.degrees(math.atan(l / plungelen))
-                                PathLog.warning(
+                                Path.Log.warning(
                                     "Cannot cover with desired angle, tightening angle to: {}".format(
                                         rampangle
                                     )
                                 )
 
-                        # PathLog.debug("Doing ramp to edges: {}".format(rampedges))
+                        # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
                         if self.method == "RampMethod1":
                             outedges.extend(
                                 self.createRampMethod1(
@@ -355,7 +354,7 @@ class ObjectDressup:
     def generateHelix(self):
         edges = self.wire.Edges
         minZ = self.findMinZ(edges)
-        PathLog.debug("Minimum Z in this path is {}".format(minZ))
+        Path.Log.debug("Minimum Z in this path is {}".format(minZ))
         outedges = []
         i = 0
         while i < len(edges):
@@ -375,7 +374,7 @@ class ObjectDressup:
                     and p0.z > p1.z
                 ):
                     # plungelen = abs(p0.z-p1.z)
-                    PathLog.debug(
+                    Path.Log.debug(
                         "Found plunge move at X:{} Y:{} From Z:{} to Z{}, Searching for closed loop".format(
                             p0.x, p0.y, p0.z, p1.z
                         )
@@ -404,13 +403,13 @@ class ObjectDressup:
                         if abs(cp0.z - cp1.z) > 1e-6:
                             # this edge is not parallel to XY plane, not qualified for ramping.
                             break
-                        # PathLog.debug("Next edge length {}".format(candidate.Length))
+                        # Path.Log.debug("Next edge length {}".format(candidate.Length))
                         rampedges.append(candidate)
                         j = j + 1
                         if j >= len(edges):
                             break
                     if len(rampedges) == 0 or not loopFound:
-                        PathLog.debug("No suitable helix found")
+                        Path.Log.debug("No suitable helix found")
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, p0, p1))
@@ -434,12 +433,12 @@ class ObjectDressup:
                 p1.z > self.ignoreAbove
                 or PathGeom.isRoughly(p1.z, self.ignoreAbove.Value)
             ):
-                PathLog.debug("Whole plunge move above 'ignoreAbove', ignoring")
+                Path.Log.debug("Whole plunge move above 'ignoreAbove', ignoring")
                 return (edge, True)
             elif p0.z > self.ignoreAbove and not PathGeom.isRoughly(
                 p0.z, self.ignoreAbove.Value
             ):
-                PathLog.debug(
+                Path.Log.debug(
                     "Plunge move partially above 'ignoreAbove', splitting into two"
                 )
                 newPoint = FreeCAD.Base.Vector(p0.x, p0.y, self.ignoreAbove)
@@ -474,7 +473,7 @@ class ObjectDressup:
         return outedges
 
     def createRampEdge(self, originalEdge, startPoint, endPoint):
-        # PathLog.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
+        # Path.Log.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
         if (
             type(originalEdge.Curve) == Part.Line
             or type(originalEdge.Curve) == Part.LineSegment
@@ -487,7 +486,7 @@ class ObjectDressup:
             arcMid.z = (startPoint.z + endPoint.z) / 2
             return Part.Arc(startPoint, arcMid, endPoint).toShape()
         else:
-            PathLog.error("Edge should not be helix")
+            Path.Log.error("Edge should not be helix")
 
     def getreversed(self, edges):
         """
@@ -504,7 +503,7 @@ class ObjectDressup:
                 arcMid = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
                 outedges.append(Part.Arc(startPoint, arcMid, endPoint).toShape())
             else:
-                PathLog.error("Edge should not be helix")
+                Path.Log.error("Edge should not be helix")
         return outedges
 
     def findMinZ(self, edges):
@@ -545,8 +544,8 @@ class ObjectDressup:
                     # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
-                    PathLog.debug("Ramp remaining: {}".format(rampremaining))
-                    PathLog.debug(
+                    Path.Log.debug("Ramp remaining: {}".format(rampremaining))
+                    Path.Log.debug(
                         "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
                             i, redge.Length, splitEdge[0].Length, splitEdge[1].Length
                         )
@@ -585,7 +584,7 @@ class ObjectDressup:
             if not done:
                 # we did not reach the end of the ramp going this direction, lets reverse.
                 rampedges = self.getreversed(rampedges)
-                PathLog.debug("Reversing")
+                Path.Log.debug("Reversing")
                 if goingForward:
                     goingForward = False
                 else:
@@ -628,7 +627,7 @@ class ObjectDressup:
                     # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
-                    PathLog.debug(
+                    Path.Log.debug(
                         "Got split edge (index: {}) with lengths: {}, {}".format(
                             i, splitEdge[0].Length, splitEdge[1].Length
                         )
@@ -707,7 +706,7 @@ class ObjectDressup:
             PathGeom.xy(p0),
             PathGeom.xy(rampedges[-1].valueAt(rampedges[-1].LastParameter)),
         ):
-            PathLog.debug(
+            Path.Log.debug(
                 "The ramp forms a closed wire, needless to move on original Z height"
             )
         else:
@@ -716,7 +715,7 @@ class ObjectDressup:
                     # this edge needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = PathGeom.splitEdgeAt(redge, p1)
-                    PathLog.debug(
+                    Path.Log.debug(
                         "Got split edges with lengths: {}, {}".format(
                             splitEdge[0].Length, splitEdge[1].Length
                         )
@@ -877,7 +876,7 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        PathLog.debug("Deleting Dressup")
+        Path.Log.debug("Deleting Dressup")
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(self.obj)
@@ -917,20 +916,20 @@ class CommandPathDressupRampEntry:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupRampEntry", "Please select one path object")
                 + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupRampEntry", "The selected object is not a path")
                 + "\n"
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupRampEntry", "Please select a Profile object")
             )
             return
@@ -964,4 +963,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("Path_DressupRampEntry", CommandPathDressupRampEntry())
 
-PathLog.notice("Loading Path_DressupRampEntry... done\n")
+Path.Log.notice("Loading Path_DressupRampEntry... done\n")

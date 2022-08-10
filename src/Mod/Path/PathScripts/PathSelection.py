@@ -25,13 +25,13 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.drillableLib as drillableLib
 import math
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+# Path.Log.trackModule(Path.Log.thisModule())
 
 
 class PathBaseGate(object):
@@ -123,7 +123,7 @@ class CHAMFERGate(PathBaseGate):
 
 class DRILLGate(PathBaseGate):
     def allow(self, doc, obj, sub):
-        PathLog.debug("obj: {} sub: {}".format(obj, sub))
+        Path.Log.debug("obj: {} sub: {}".format(obj, sub))
         if not hasattr(obj, "Shape"):
             return False
         shape = obj.Shape
@@ -233,7 +233,7 @@ class PROBEGate:
 
 class TURNGate(PathBaseGate):
     def allow(self, doc, obj, sub):
-        PathLog.debug("obj: {} sub: {}".format(obj, sub))
+        Path.Log.debug("obj: {} sub: {}".format(obj, sub))
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
             subobj = shape.getElement(sub)

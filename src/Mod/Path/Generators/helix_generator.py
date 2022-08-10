@@ -23,7 +23,6 @@
 
 from numpy import ceil, linspace, isclose
 import Path
-import PathScripts.PathLog as PathLog
 
 __title__ = "Helix Path Generator"
 __author__ = "sliptonic (Brad Collette)"
@@ -33,10 +32,10 @@ __contributors__ = "russ4262 (Russell Johnson), Lorenz Hüdepohl"
 
 
 if True:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def generate(
@@ -56,7 +55,7 @@ def generate(
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
-    PathLog.track(
+    Path.Log.track(
         "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
             startPoint.x,
             startPoint.y,
@@ -121,7 +120,7 @@ def generate(
         raise ValueError("start point is below end point")
 
     if hole_radius <= tool_diameter:
-        PathLog.debug("(single helix mode)\n")
+        Path.Log.debug("(single helix mode)\n")
         radii = [hole_radius - tool_diameter / 2]
         if radii[0] <= 0:
             raise ValueError(
@@ -132,7 +131,7 @@ def generate(
         outer_radius = hole_radius
 
     else:  # inner_radius > 0:
-        PathLog.debug("(annulus mode / full hole)\n")
+        Path.Log.debug("(annulus mode / full hole)\n")
         outer_radius = hole_radius - tool_diameter / 2
         step_radius = inner_radius + tool_diameter / 2
         if abs((outer_radius - step_radius) / step_over_distance) < 1e-5:
@@ -141,7 +140,7 @@ def generate(
             nr = max(int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
             radii = linspace(outer_radius, step_radius, nr)
 
-    PathLog.debug("Radii: {}".format(radii))
+    Path.Log.debug("Radii: {}".format(radii))
     # calculate the number of full and partial turns required
     # Each full turn is two 180 degree arcs. Zsteps is equally spaced step
     # down values

@@ -22,11 +22,11 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathProbe as PathProbe
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore, QtGui
@@ -38,10 +38,10 @@ __doc__ = "Probing operation page controller and command implementation."
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 

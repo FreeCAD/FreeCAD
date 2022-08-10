@@ -24,8 +24,8 @@ from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts.PathIconViewProvider as PathIconViewProvider
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitEdit as PathToolBitEdit
@@ -38,10 +38,10 @@ __doc__ = "Task panel editor for a ToolBit"
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -51,7 +51,7 @@ class ViewProvider(object):
     It's sole job is to provide an icon and invoke the TaskPanel on edit."""
 
     def __init__(self, vobj, name):
-        PathLog.track(name, vobj.Object)
+        Path.Log.track(name, vobj.Object)
         self.panel = None
         self.icon = name
         self.obj = vobj.Object
@@ -59,7 +59,7 @@ class ViewProvider(object):
         vobj.Proxy = self
 
     def attach(self, vobj):
-        PathLog.track(vobj.Object)
+        Path.Log.track(vobj.Object)
         self.vobj = vobj
         self.obj = vobj.Object
 
@@ -78,21 +78,21 @@ class ViewProvider(object):
         return None
 
     def onDelete(self, vobj, arg2=None):
-        PathLog.track(vobj.Object.Label)
+        Path.Log.track(vobj.Object.Label)
         vobj.Object.Proxy.onDelete(vobj.Object)
 
     def getDisplayMode(self, mode):
         return "Default"
 
     def _openTaskPanel(self, vobj, deleteOnReject):
-        PathLog.track()
+        Path.Log.track()
         self.panel = TaskPanel(vobj, deleteOnReject)
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(self.panel)
         self.panel.setupUi()
 
     def setCreate(self, vobj):
-        PathLog.track()
+        Path.Log.track()
         self._openTaskPanel(vobj, True)
 
     def setEdit(self, vobj, mode=0):
@@ -125,7 +125,7 @@ class TaskPanel:
     """TaskPanel for the SetupSheet - if it is being edited directly."""
 
     def __init__(self, vobj, deleteOnReject):
-        PathLog.track(vobj.Object.Label)
+        Path.Log.track(vobj.Object.Label)
         self.vobj = vobj
         self.obj = vobj.Object
         self.editor = PathToolBitEdit.ToolBitEditor(self.obj)
@@ -153,7 +153,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def updateUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.editor.updateUI()
 
     def updateModel(self):
@@ -169,7 +169,7 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         """Create(name = 'ToolBit') ... creates a new tool bit.
         It is assumed the tool will be edited immediately so the internal bit body is still attached."""
 
-        PathLog.track(name, shapeFile, path)
+        Path.Log.track(name, shapeFile, path)
         FreeCAD.ActiveDocument.openTransaction("Create ToolBit")
         tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
         PathIconViewProvider.Attach(tool.ViewObject, name)

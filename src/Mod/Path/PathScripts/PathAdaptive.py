@@ -22,11 +22,10 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Path
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathLog as PathLog
 import PathScripts.PathGeom as PathGeom
-import Path
 import FreeCAD
 import time
 import json
@@ -52,10 +51,10 @@ DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -653,7 +652,7 @@ def Execute(op, obj):
     if FreeCAD.GuiUp:
         sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
 
-    PathLog.info("*** Adaptive toolpath processing started...\n")
+    Path.Log.info("*** Adaptive toolpath processing started...\n")
 
     # hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
@@ -680,7 +679,7 @@ def Execute(op, obj):
         # Get list of working edges for adaptive algorithm
         pathArray = op.pathArray
         if not pathArray:
-            PathLog.error("No wire data returned.")
+            Path.Log.error("No wire data returned.")
             return
 
         path2d = convertTo2d(pathArray)
@@ -798,12 +797,12 @@ def Execute(op, obj):
         GenerateGCode(op, obj, adaptiveResults, helixDiameter)
 
         if not obj.StopProcessing:
-            PathLog.info("*** Done. Elapsed time: %f sec\n\n" % (time.time() - start))
+            Path.Log.info("*** Done. Elapsed time: %f sec\n\n" % (time.time() - start))
             obj.AdaptiveOutputState = adaptiveResults
             obj.AdaptiveInputState = inputStateObject
 
         else:
-            PathLog.info(
+            Path.Log.info(
                 "*** Processing cancelled (after: %f sec).\n\n" % (time.time() - start)
             )
 
@@ -927,11 +926,11 @@ class PathAdaptive(PathOp.ObjectOp):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 

@@ -22,8 +22,8 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 
 from PySide import QtCore, QtGui
@@ -36,10 +36,10 @@ __doc__ = "Implementation of circular hole specific base geometry page controlle
 LOGLEVEL = False
 
 if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.NOTICE, Path.Log.thisModule())
 
 
 class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
@@ -63,7 +63,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def setFields(self, obj):
         """setFields(obj) ... fill form with values from obj"""
-        PathLog.track()
+        Path.Log.track()
         self.form.baseList.blockSignals(True)
         self.form.baseList.clearContents()
         self.form.baseList.setRowCount(0)
@@ -98,7 +98,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def itemActivated(self):
         """itemActivated() ... callback when item in table is selected"""
-        PathLog.track()
+        Path.Log.track()
         if self.form.baseList.selectedItems():
             self.form.deleteBase.setEnabled(True)
             FreeCADGui.Selection.clearSelection()
@@ -109,7 +109,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     activatedRows.append(row)
                     obj = item.data(self.DataObject)
                     sub = str(item.data(self.DataObjectSub))
-                    PathLog.debug("itemActivated() -> %s.%s" % (obj.Label, sub))
+                    Path.Log.debug("itemActivated() -> %s.%s" % (obj.Label, sub))
                     if sub:
                         FreeCADGui.Selection.addSelection(obj, sub)
                     else:
@@ -119,7 +119,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def deleteBase(self):
         """deleteBase() ... callback for push button"""
-        PathLog.track()
+        Path.Log.track()
         selected = [
             self.form.baseList.row(item) for item in self.form.baseList.selectedItems()
         ]
@@ -135,23 +135,23 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def updateBase(self):
         """updateBase() ... helper function to transfer current table to obj"""
-        PathLog.track()
+        Path.Log.track()
         newlist = []
         for i in range(self.form.baseList.rowCount()):
             item = self.form.baseList.item(i, 0)
             obj = item.data(self.DataObject)
             sub = str(item.data(self.DataObjectSub))
             base = (obj, sub)
-            PathLog.debug("keeping (%s.%s)" % (obj.Label, sub))
+            Path.Log.debug("keeping (%s.%s)" % (obj.Label, sub))
             newlist.append(base)
-        PathLog.debug("obj.Base=%s newlist=%s" % (self.obj.Base, newlist))
+        Path.Log.debug("obj.Base=%s newlist=%s" % (self.obj.Base, newlist))
         self.updating = True
         self.obj.Base = newlist
         self.updating = False
 
     def checkedChanged(self):
         """checkeChanged() ... callback when checked status of a base feature changed"""
-        PathLog.track()
+        Path.Log.track()
         disabled = []
         for i in range(0, self.form.baseList.rowCount()):
             item = self.form.baseList.item(i, 0)

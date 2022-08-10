@@ -26,8 +26,8 @@ from threading import Thread, Lock
 import FreeCAD
 import FreeCADGui
 import Mesh
+import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPost as PathPost
 import camotics
 import io
@@ -43,10 +43,10 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel for Camotics Simulation"
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -76,7 +76,7 @@ class CAMoticsUI:
         subprocess.Popen(["camotics", filename])
 
     def makeCamoticsFile(self):
-        PathLog.track()
+        Path.Log.track()
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("Path", "Save Project As"),
@@ -139,7 +139,7 @@ class CamoticsSimulation(QtCore.QObject):
     def worker(self, lock):
         while True:
             item = self.q.get()
-            PathLog.debug("worker processing: {}".format(item))
+            Path.Log.debug("worker processing: {}".format(item))
             with lock:
                 if item["TYPE"] == "STATUS":
                     self.statusChange.emit(item["VALUE"])
@@ -199,7 +199,7 @@ class CamoticsSimulation(QtCore.QObject):
             )
 
         postlist = PathPost.buildPostList(self.job)
-        PathLog.track(postlist)
+        Path.Log.track(postlist)
         # self.filenames = [PathPost.resolveFileName(self.job)]
 
         success = True
@@ -217,7 +217,7 @@ class CamoticsSimulation(QtCore.QObject):
                 extraargs="--no-show-editor",
             )
             self.filenames.append(name)
-            PathLog.track(result, gcode, name)
+            Path.Log.track(result, gcode, name)
 
             if result is None:
                 success = False
@@ -231,11 +231,11 @@ class CamoticsSimulation(QtCore.QObject):
         self.SIM.wait()
 
         tot = sum([step["time"] for step in self.SIM.get_path()])
-        PathLog.debug("sim time: {}".format(tot))
+        Path.Log.debug("sim time: {}".format(tot))
         self.taskForm.setRunTime(tot)
 
     def execute(self, timeIndex):
-        PathLog.track()
+        Path.Log.track()
         self.SIM.start(self.callback, time=timeIndex, done=self.isDone)
 
     def accept(self):
@@ -245,7 +245,7 @@ class CamoticsSimulation(QtCore.QObject):
         pass
 
     def buildproject(self):  # , files=[]):
-        PathLog.track()
+        Path.Log.track()
 
         job = self.job
 

@@ -21,14 +21,14 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 from PySide import QtCore
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = "PathCollision"
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule("PathCollision")
+Path.Log.setLevel(Path.Log.Level.DEBUG, LOG_MODULE)
+Path.Log.trackModule("PathCollision")
 FreeCAD.setLogLevel("Path.Area", 0)
 
 __title__ = "Path Collision Utility"

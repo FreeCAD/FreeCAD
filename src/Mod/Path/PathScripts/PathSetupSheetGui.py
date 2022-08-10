@@ -22,10 +22,10 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
-import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
 import PathScripts.PathUtil as PathUtil
@@ -41,10 +41,10 @@ __doc__ = "Task panel editor for a SetupSheet"
 LOGLEVEL = False
 
 if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ViewProvider:
@@ -52,7 +52,7 @@ class ViewProvider:
     It's sole job is to provide an icon and invoke the TaskPanel on edit."""
 
     def __init__(self, vobj, name):
-        PathLog.track(name)
+        Path.Log.track(name)
         vobj.Proxy = self
         self.icon = name
         # mode = 2
@@ -60,7 +60,7 @@ class ViewProvider:
         self.vobj = None
 
     def attach(self, vobj):
-        PathLog.track()
+        Path.Log.track()
         self.vobj = vobj
         self.obj = vobj.Object
 
@@ -77,7 +77,7 @@ class ViewProvider:
         return "Default"
 
     def setEdit(self, vobj, mode=0):
-        PathLog.track()
+        Path.Log.track()
         taskPanel = TaskPanel(vobj)
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(taskPanel)
@@ -106,11 +106,11 @@ class Delegate(QtGui.QStyledItemDelegate):
         return index.data(self.EditorRole).widget(parent)
 
     def setEditorData(self, widget, index):
-        PathLog.track(index.row(), index.column())
+        Path.Log.track(index.row(), index.column())
         index.data(self.EditorRole).setEditorData(widget)
 
     def setModelData(self, widget, model, index):
-        PathLog.track(index.row(), index.column())
+        Path.Log.track(index.row(), index.column())
         editor = index.data(self.EditorRole)
         editor.setModelData(widget)
         index.model().setData(index, editor.prop.displayString(), QtCore.Qt.DisplayRole)
@@ -150,7 +150,7 @@ class OpTaskPanel:
             self.model.item(topLeft.row(), 2).setEnabled(isset)
 
     def setupUi(self):
-        PathLog.track()
+        Path.Log.track()
 
         self.delegate = Delegate(self.form)
         self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
@@ -242,7 +242,7 @@ class OpsDefaultEditor:
 
     def accept(self):
         if any([op.accept() for op in self.ops]):
-            PathLog.track()
+            Path.Log.track()
 
     def getFields(self):
         pass
@@ -259,7 +259,7 @@ class OpsDefaultEditor:
             self.currentOp.form.show()
 
     def updateModel(self, recomp=True):
-        PathLog.track()
+        Path.Log.track()
         self.getFields()
         self.updateUI()
         if recomp:
@@ -324,7 +324,7 @@ class GlobalEditor(object):
             combo.blockSignals(False)
 
     def updateUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.setupStartDepthExpr.setText(self.obj.StartDepthExpression)
         self.form.setupFinalDepthExpr.setText(self.obj.FinalDepthExpression)
         self.form.setupStepDownExpr.setText(self.obj.StepDownExpression)
@@ -337,7 +337,7 @@ class GlobalEditor(object):
         self.selectInComboBox(self.obj.CoolantMode, self.form.setupCoolantMode)
 
     def updateModel(self, recomp=True):
-        PathLog.track()
+        Path.Log.track()
         self.getFields()
         self.updateUI()
         if recomp:
@@ -369,7 +369,7 @@ class TaskPanel:
     def __init__(self, vobj):
         self.vobj = vobj
         self.obj = vobj.Object
-        PathLog.track(self.obj.Label)
+        Path.Log.track(self.obj.Label)
         self.globalForm = FreeCADGui.PySideUic.loadUi(":/panels/SetupGlobal.ui")
         self.globalEditor = GlobalEditor(self.obj, self.globalForm)
         self.opsEditor = OpsDefaultEditor(self.obj, None)

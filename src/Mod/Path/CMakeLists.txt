@@ -27,6 +27,7 @@ INSTALL(
 
 SET(PathPython_SRCS
     Path/__init__.py
+    Path/Log.py
 )
 
 SET(PathScripts_SRCS
@@ -78,7 +79,6 @@ SET(PathScripts_SRCS
     PathScripts/PathJobCmd.py
     PathScripts/PathJobDlg.py
     PathScripts/PathJobGui.py
-    PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathMillFaceGui.py
     PathScripts/PathOp.py

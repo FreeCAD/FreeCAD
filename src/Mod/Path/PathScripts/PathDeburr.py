@@ -22,9 +22,9 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import math
@@ -43,10 +43,10 @@ __doc__ = "Deburr operation."
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -118,7 +118,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         )
 
     def initOperation(self, obj):
-        PathLog.track(obj.Label)
+        Path.Log.track(obj.Label)
         obj.addProperty(
             "App::PropertyDistance",
             "Width",
@@ -197,12 +197,12 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             # data[k] = [tup[idx] for tup in v]
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -210,7 +210,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.setEditorMode("Join", 2)  # hide for now
 
     def opExecute(self, obj):
-        PathLog.track(obj.Label)
+        Path.Log.track(obj.Label)
         if not hasattr(self, "printInfo"):
             self.printInfo = True
         try:
@@ -224,7 +224,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             # QtGui.QMessageBox.information(None, "Tool Error", msg)
             # return
 
-        PathLog.track(obj.Label, depth, offset)
+        Path.Log.track(obj.Label, depth, offset)
 
         self.basewires = []
         self.adjusted_basewires = []
@@ -431,7 +431,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 zValues.append(z)
 
         zValues.append(depth)
-        PathLog.track(obj.Label, depth, zValues)
+        Path.Log.track(obj.Label, depth, zValues)
 
         if obj.EntryPoint < 0:
             obj.EntryPoint = 0
@@ -444,7 +444,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         return base not in self.model
 
     def opSetDefaultValues(self, obj, job):
-        PathLog.track(obj.Label, job.Label)
+        Path.Log.track(obj.Label, job.Label)
         obj.Width = "1 mm"
         obj.ExtraDepth = "0.5 mm"
         obj.Join = "Round"

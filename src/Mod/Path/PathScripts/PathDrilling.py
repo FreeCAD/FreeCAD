@@ -31,7 +31,6 @@ import Path
 import PathFeedRate
 import PathMachineState
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -43,10 +42,10 @@ __doc__ = "Path Drilling operation."
 __contributors__ = "IMBack!"
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -84,11 +83,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -180,7 +179,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""
-        PathLog.track()
+        Path.Log.track()
         machine = PathMachineState.MachineState()
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
@@ -220,7 +219,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # iterate the edgelist and generate gcode
         for edge in edgelist:
 
-            PathLog.debug(edge)
+            Path.Log.debug(edge)
 
             # move to hole location
 
@@ -259,7 +258,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
-                PathLog.info(e)
+                Path.Log.info(e)
                 continue
 
             for command in drillcommands:

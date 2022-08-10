@@ -28,7 +28,6 @@ import FreeCADGui
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 import copy
@@ -42,10 +41,10 @@ from PathPythonGui.simple_edit_panel import SimpleEditPanel
 translate = FreeCAD.Qt.translate
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 movecommands = ["G1", "G01", "G2", "G02", "G3", "G03"]
@@ -186,7 +185,7 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
         if obj.Length < 0:
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupLeadInOut", "Length/Radius positive not Null")
                 + "\n"
             )
@@ -268,12 +267,12 @@ class ObjectDressup:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            PathLog.debug(" CURRENT_IN Line : P0 Z:{} p1 Z:{}".format(p0.z, p1.z))
+            Path.Log.debug(" CURRENT_IN Line : P0 Z:{} p1 Z:{}".format(p0.z, p1.z))
         else:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            PathLog.debug(
+            Path.Log.debug(
                 " CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(
                     p0.x, p0.y, p1.x, p1.y
                 )
@@ -292,7 +291,7 @@ class ObjectDressup:
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
             vec_off = self.multiply(vec_inv, obj.ExtendLeadIn)
-            PathLog.debug(
+            Path.Log.debug(
                 "LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(
                     queue[0].Name, vec_inv.x, vec_inv.y, vec_off.x, vec_off.y
                 )
@@ -423,7 +422,7 @@ class ObjectDressup:
             extendcommand = Path.Command("G1", {"X": p0.x, "Y": p0.y, "F": horizFeed})
             results.append(extendcommand)
         else:
-            PathLog.debug(" CURRENT_IN Perp")
+            Path.Log.debug(" CURRENT_IN Perp")
 
         currLocation.update(results[-1].Parameters)
         currLocation["Z"] = p1.z
@@ -464,7 +463,7 @@ class ObjectDressup:
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
             vec_off = self.multiply(vec_inv, obj.ExtendLeadOut)
-            PathLog.debug(
+            Path.Log.debug(
                 "LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(
                     queue[0].Name, vec_inv.x, vec_inv.y, vec_off.x, vec_off.y
                 )
@@ -540,7 +539,7 @@ class ObjectDressup:
             )
             results.append(extendcommand)
         else:
-            PathLog.debug(" CURRENT_IN Perp")
+            Path.Log.debug(" CURRENT_IN Perp")
 
         if obj.UseMachineCRC:  # crc off
             results.append(Path.Command("G40", {}))
@@ -560,7 +559,7 @@ class ObjectDressup:
 
         # Read in all commands
         for curCommand in obj.Base.Path.Commands:
-            PathLog.debug("CurCMD: {}".format(curCommand))
+            Path.Log.debug("CurCMD: {}".format(curCommand))
             if curCommand.Name not in movecommands + rapidcommands:
                 # Don't worry about non-move commands, just add to output
                 newpath.append(curCommand)
@@ -587,7 +586,7 @@ class ObjectDressup:
                     and prevCmd.Name in movecommands
                 ):
                     # Layer change within move cmds
-                    PathLog.debug(
+                    Path.Log.debug(
                         "Layer change in move: {}->{}".format(
                             currLocation["Z"], curCommand.z
                         )
@@ -608,14 +607,14 @@ class ObjectDressup:
         # Go through each layer and add leadIn/Out
         idx = 0
         for layer in layers:
-            PathLog.debug("Layer {}".format(idx))
+            Path.Log.debug("Layer {}".format(idx))
 
             if obj.LeadIn:
                 temp = self.getLeadStart(obj, layer, action)
                 newpath.extend(temp)
 
             for cmd in layer:
-                PathLog.debug("CurLoc: {}, NewCmd: {}!!".format(currLocation, cmd))
+                Path.Log.debug("CurLoc: {}, NewCmd: {}!!".format(currLocation, cmd))
                 newpath.append(cmd)
 
             if obj.LeadOut:
@@ -690,7 +689,7 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        PathLog.debug("Deleting Dressup")
+        Path.Log.debug("Deleting Dressup")
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(self.obj)
@@ -730,20 +729,20 @@ class CommandPathDressupLeadInOut:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupLeadInOut", "Please select one path object")
                 + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupLeadInOut", "The selected object is not a path")
                 + "\n"
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupLeadInOut", "Please select a Profile object")
             )
             return
@@ -777,4 +776,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("Path_DressupLeadInOut", CommandPathDressupLeadInOut())
 
-PathLog.notice("Loading Path_DressupLeadInOut... done\n")
+Path.Log.notice("Loading Path_DressupLeadInOut... done\n")

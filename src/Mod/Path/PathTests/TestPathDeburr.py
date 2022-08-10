@@ -22,11 +22,10 @@
 
 import Path
 import PathScripts.PathDeburr as PathDeburr
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+# Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestPathDeburr(PathTestUtils.PathTestBase):

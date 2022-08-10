@@ -27,20 +27,20 @@ PathUtils depends on PathJob. Which makes it impossible to use the functions
 and classes defined there in PathJob.
 
 So if you add to this file and think about importing anything from PathScripts
-other than PathLog, then it probably doesn't belong here.
+other than Path.Log, then it probably doesn't belong here.
 """
 
 import FreeCAD
 import six
-import PathScripts.PathLog as PathLog
+import Path
 
 translate = FreeCAD.Qt.translate
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def _getProperty(obj, prop):
@@ -54,13 +54,13 @@ def _getProperty(obj, prop):
         attr = getattr(o, name)
 
     if o == attr:
-        PathLog.warning(
+        Path.Log.warning(
             translate("PathGui", "%s has no property %s (%s))")
             % (obj.Label, prop, name)
         )
         return (None, None, None)
 
-    # PathLog.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
+    # Path.Log.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
     return (o, attr, name)
 
 
@@ -98,18 +98,18 @@ def isValidBaseObject(obj):
     """isValidBaseObject(obj) ... returns true if the object can be used as a base for a job."""
     if hasattr(obj, "getParentGeoFeatureGroup") and obj.getParentGeoFeatureGroup():
         # Can't link to anything inside a geo feature group anymore
-        PathLog.debug("%s is inside a geo feature group" % obj.Label)
+        Path.Log.debug("%s is inside a geo feature group" % obj.Label)
         return False
     if hasattr(obj, "BitBody") and hasattr(obj, "BitShape"):
         # ToolBit's are not valid base objects
         return False
     if obj.TypeId in NotValidBaseTypeIds:
-        PathLog.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
+        Path.Log.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
     if hasattr(obj, "Sheets") or hasattr(
         obj, "TagText"
     ):  # Arch.Panels and Arch.PanelCut
-        PathLog.debug("%s is not an Arch.Panel" % (obj.Label))
+        Path.Log.debug("%s is not an Arch.Panel" % (obj.Label))
         return False
     import Part
 

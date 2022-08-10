@@ -22,8 +22,8 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 from PySide import QtGui, QtCore
 
@@ -36,10 +36,10 @@ __doc__ = "A collection of helper and utility functions for the Path GUI."
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def populateCombobox(form, enumTups, comboBoxesPropertyMap):
@@ -50,7 +50,7 @@ def populateCombobox(form, enumTups, comboBoxesPropertyMap):
         enumTups = list of (translated_text, data_string) tuples
         comboBoxesPropertyMap = list of (translated_text, data_string) tuples
     """
-    PathLog.track(enumTups)
+    Path.Log.track(enumTups)
 
     # Load appropriate enumerations in each combobox
     for cb, prop in comboBoxesPropertyMap:
@@ -70,7 +70,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     Returns True if a new value was assigned, False otherwise (new value is the same as the current).
     """
     value = widget.property("rawValue")
-    PathLog.track("value: {}".format(value))
+    Path.Log.track("value: {}".format(value))
     attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, "Value") else attr
 
@@ -83,7 +83,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
             for (prp, expr) in obj.ExpressionEngine:
                 if prp == prop:
                     exprSet = True
-                    PathLog.debug('prop = "expression": {} = "{}"'.format(prp, expr))
+                    Path.Log.debug('prop = "expression": {} = "{}"'.format(prp, expr))
                     value = FreeCAD.Units.Quantity(obj.evalExpression(expr)).Value
                     if not PathGeom.isRoughly(attrValue, value):
                         isDiff = True
@@ -97,7 +97,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
             widget.update()
 
     if isDiff:
-        PathLog.debug(
+        Path.Log.debug(
             "updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value)
         )
         if onBeforeChange:
@@ -120,7 +120,7 @@ class QuantitySpinBox(QtCore.QObject):
 
     def __init__(self, widget, obj, prop, onBeforeChange=None):
         super().__init__()
-        PathLog.track(widget)
+        Path.Log.track(widget)
         self.widget = widget
         self.onBeforeChange = onBeforeChange
         self.prop = None
@@ -150,7 +150,7 @@ class QuantitySpinBox(QtCore.QObject):
 
     def attachTo(self, obj, prop=None):
         """attachTo(obj, prop=None) ... use an existing editor for the given object and property"""
-        PathLog.track(self.prop, prop)
+        Path.Log.track(self.prop, prop)
         self.obj = obj
         self.prop = prop
         if obj and prop:
@@ -161,21 +161,21 @@ class QuantitySpinBox(QtCore.QObject):
                 self.widget.setProperty("binding", "%s.%s" % (obj.Name, prop))
                 self.valid = True
             else:
-                PathLog.warning("Cannot find property {} of {}".format(prop, obj.Label))
+                Path.Log.warning("Cannot find property {} of {}".format(prop, obj.Label))
                 self.valid = False
         else:
             self.valid = False
 
     def expression(self):
         """expression() ... returns the expression if one is bound to the property"""
-        PathLog.track(self.prop, self.valid)
+        Path.Log.track(self.prop, self.valid)
         if self.valid:
             return self.widget.property("expression")
         return ""
 
     def setMinimum(self, quantity):
         """setMinimum(quantity) ... set the minimum"""
-        PathLog.track(self.prop, self.valid)
+        Path.Log.track(self.prop, self.valid)
         if self.valid:
             value = quantity.Value if hasattr(quantity, "Value") else quantity
             self.widget.setProperty("setMinimum", value)
@@ -184,7 +184,7 @@ class QuantitySpinBox(QtCore.QObject):
         """updateSpinBox(quantity=None) ... update the display value of the spin box.
         If no value is provided the value of the bound property is used.
         quantity can be of type Quantity or Float."""
-        PathLog.track(self.prop, self.valid, quantity)
+        Path.Log.track(self.prop, self.valid, quantity)
 
         if self.valid:
             expr = self._hasExpression()
@@ -205,7 +205,7 @@ class QuantitySpinBox(QtCore.QObject):
 
     def updateProperty(self):
         """updateProperty() ... update the bound property with the value from the spin box"""
-        PathLog.track(self.prop, self.valid)
+        Path.Log.track(self.prop, self.valid)
         if self.valid:
             return updateInputField(
                 self.obj, self.prop, self.widget, self.onBeforeChange

@@ -26,15 +26,14 @@ import math
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PathScripts.PathGeom import CmdMoveArc
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 if FreeCAD.GuiUp:

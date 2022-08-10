@@ -22,8 +22,8 @@
 
 from PySide import QtCore, QtGui
 import FreeCADGui
+import Path
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathUtil as PathUtil
@@ -32,10 +32,10 @@ import re
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class _Delegate(QtGui.QStyledItemDelegate):
@@ -76,7 +76,7 @@ class ToolBitEditor(object):
     """
 
     def __init__(self, tool, parentWidget=None, loadBitBody=True):
-        PathLog.track()
+        Path.Log.track()
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitEditor.ui")
 
         if parentWidget:
@@ -102,7 +102,7 @@ class ToolBitEditor(object):
         self.setupAttributes(self.tool)
 
     def setupTool(self, tool):
-        PathLog.track()
+        Path.Log.track()
         # Can't delete and add fields to the form because of dangling references in case of
         # a focus change. see https://forum.freecadweb.org/viewtopic.php?f=10&t=52246#p458583
         # Instead we keep widgets once created and use them for new properties, and hide all
@@ -120,7 +120,7 @@ class ToolBitEditor(object):
         usedRows = 0
         for nr, name in enumerate(tool.Proxy.toolShapeProperties(tool)):
             if nr < len(self.widgets):
-                PathLog.debug("re-use row: {} [{}]".format(nr, name))
+                Path.Log.debug("re-use row: {} [{}]".format(nr, name))
                 label, qsb, editor = self.widgets[nr]
                 label.setText(labelText(name))
                 editor.attachTo(tool, name)
@@ -131,7 +131,7 @@ class ToolBitEditor(object):
                 editor = PathGui.QuantitySpinBox(qsb, tool, name)
                 label = QtGui.QLabel(labelText(name))
                 self.widgets.append((label, qsb, editor))
-                PathLog.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
+                Path.Log.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
                 if hasattr(qsb, "editingFinished"):
                     qsb.editingFinished.connect(self.updateTool)
 
@@ -140,13 +140,13 @@ class ToolBitEditor(object):
             usedRows = usedRows + 1
 
         # hide all rows which aren't being used
-        PathLog.track(usedRows, len(self.widgets))
+        Path.Log.track(usedRows, len(self.widgets))
         for i in range(usedRows, len(self.widgets)):
             label, qsb, editor = self.widgets[i]
             label.hide()
             qsb.hide()
             editor.attachTo(None)
-            PathLog.debug("  hide row: {}".format(i))
+            Path.Log.debug("  hide row: {}".format(i))
 
         img = tool.Proxy.getBitThumbnail(tool)
         if img:
@@ -155,7 +155,7 @@ class ToolBitEditor(object):
             self.form.image.setPixmap(QtGui.QPixmap())
 
     def setupAttributes(self, tool):
-        PathLog.track()
+        Path.Log.track()
 
         setup = True
         if not hasattr(self, "delegate"):
@@ -195,16 +195,16 @@ class ToolBitEditor(object):
         # self.form.attrTree.collapseAll()
 
     def accept(self):
-        PathLog.track()
+        Path.Log.track()
         self.refresh()
         self.tool.Proxy.unloadBitBody(self.tool)
 
     def reject(self):
-        PathLog.track()
+        Path.Log.track()
         self.tool.Proxy.unloadBitBody(self.tool)
 
     def updateUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.toolName.setText(self.tool.Label)
         self.form.shapePath.setText(self.tool.BitShape)
 
@@ -230,7 +230,7 @@ class ToolBitEditor(object):
         return False
 
     def updateShape(self):
-        PathLog.track()
+        Path.Log.track()
         shapePath = str(self.form.shapePath.text())
         # Only need to go through this exercise if the shape actually changed.
         if self._updateBitShape(shapePath):
@@ -238,7 +238,7 @@ class ToolBitEditor(object):
                 editor.updateSpinBox()
 
     def updateTool(self):
-        PathLog.track()
+        Path.Log.track()
 
         label = str(self.form.toolName.text())
         shape = str(self.form.shapePath.text())
@@ -252,14 +252,14 @@ class ToolBitEditor(object):
         self.tool.Proxy._updateBitShape(self.tool)
 
     def refresh(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.blockSignals(True)
         self.updateTool()
         self.updateUI()
         self.form.blockSignals(False)
 
     def selectShape(self):
-        PathLog.track()
+        Path.Log.track()
         path = self.tool.BitShape
         if not path:
             path = PathPreferences.lastPathToolShape()
@@ -272,7 +272,7 @@ class ToolBitEditor(object):
             self.updateShape()
 
     def setupUI(self):
-        PathLog.track()
+        Path.Log.track()
         self.updateUI()
 
         self.form.toolName.editingFinished.connect(self.refresh)

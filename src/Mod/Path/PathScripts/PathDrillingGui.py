@@ -22,11 +22,11 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathDrilling as PathDrilling
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 
 from PySide import QtCore
@@ -38,10 +38,10 @@ __doc__ = "UI and Command for Path Drilling Operation."
 __contributors__ = "IMBack!"
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
@@ -105,7 +105,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""
-        PathLog.track()
+        Path.Log.track()
         self.peckDepthSpinBox.updateProperty()
         self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
@@ -124,7 +124,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def setFields(self, obj):
         """setFields(obj) ... update UI with obj properties' values"""
-        PathLog.track()
+        Path.Log.track()
         self.updateQuantitySpinBoxes()
 
         if obj.DwellEnabled:

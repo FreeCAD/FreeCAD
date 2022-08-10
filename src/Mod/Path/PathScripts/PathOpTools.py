@@ -23,8 +23,8 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import math
 
 # lazily loaded modules
@@ -41,10 +41,10 @@ __doc__ = "Collection of functions used by various Path operations. The function
 PrintWireDebug = False
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -109,7 +109,7 @@ def debugWire(label, w):
 def _orientEdges(inEdges):
     """_orientEdges(inEdges) ... internal worker function to orient edges so the last vertex of one edge connects to the first vertex of the next edge.
     Assumes the edges are in an order so they can be connected."""
-    PathLog.track()
+    Path.Log.track()
     # orient all edges of the wire so each edge's last value connects to the next edge's first value
     e0 = inEdges[0]
     # well, even the very first edge could be misoriented, so let's try and connect it to the second
@@ -153,7 +153,7 @@ def _isWireClockwise(w):
         v0 = e.valueAt(e.FirstParameter)
         v1 = e.valueAt(e.LastParameter)
         area = area + (v0.x * v1.y - v1.x * v0.y)
-    PathLog.track(area)
+    Path.Log.track(area)
     return area < 0
 
 
@@ -167,13 +167,13 @@ def orientWire(w, forward=True):
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire."""
-    PathLog.debug("orienting forward: {}: {} edges".format(forward, len(w.Edges)))
+    Path.Log.debug("orienting forward: {}: {} edges".format(forward, len(w.Edges)))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
-            PathLog.track("orientWire - needs flipping")
+            Path.Log.track("orientWire - needs flipping")
             return PathGeom.flipWire(wire)
-        PathLog.track("orientWire - ok")
+        Path.Log.track("orientWire - ok")
     return wire
 
 
@@ -182,7 +182,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
     """
-    PathLog.track("offsetWire")
+    Path.Log.track("offsetWire")
 
     if 1 == len(wire.Edges):
         edge = wire.Edges[0]
@@ -297,11 +297,11 @@ def offsetWire(wire, base, offset, forward, Side=None):
 
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset / 2, True):
-            PathLog.track("closed - outside")
+            Path.Log.track("closed - outside")
             if Side:
                 Side[0] = "Outside"
             return orientWire(owire, forward)
-        PathLog.track("closed - inside")
+        Path.Log.track("closed - inside")
         if Side:
             Side[0] = "Inside"
         try:
@@ -412,18 +412,18 @@ def offsetWire(wire, base, offset, forward, Side=None):
         for e0 in rightSideEdges:
             if PathGeom.edgesMatch(e, e0):
                 edges = rightSideEdges
-                PathLog.debug("#use right side edges")
+                Path.Log.debug("#use right side edges")
                 if not forward:
-                    PathLog.debug("#reverse")
+                    Path.Log.debug("#reverse")
                     edges.reverse()
                 return orientWire(Part.Wire(edges), None)
 
     # at this point we have the correct edges and they are in the order for forward
     # traversal (climb milling). If that's not what we want just reverse the order,
     # orientWire takes care of orienting the edges appropriately.
-    PathLog.debug("#use left side edges")
+    Path.Log.debug("#use left side edges")
     if not forward:
-        PathLog.debug("#reverse")
+        Path.Log.debug("#reverse")
         edges.reverse()
 
     return orientWire(Part.Wire(edges), None)

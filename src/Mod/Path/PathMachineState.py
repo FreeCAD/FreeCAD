@@ -26,15 +26,15 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Dataclass to implement a machinestate tracker"
 __contributors__ = ""
 
-import PathScripts.PathLog as PathLog
+import Path
 import FreeCAD
 from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll, CmdMoveDrill
 
 if True:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class MachineState:

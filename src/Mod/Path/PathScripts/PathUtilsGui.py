@@ -22,18 +22,18 @@
 
 import FreeCADGui
 import FreeCAD
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui
-import PathScripts.PathLog as PathLog
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 

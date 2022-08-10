@@ -25,26 +25,26 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from pivy import coin
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
 
 def addDebugDisplay():
-    return PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
+    return Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG
 
 
 class PathDressupTagTaskPanel:
@@ -164,7 +164,7 @@ class PathDressupTagTaskPanel:
             self.isDirty = True
 
     def updateTagsView(self):
-        PathLog.track()
+        Path.Log.track()
         self.form.lwTags.blockSignals(True)
         self.form.lwTags.clear()
         for i, pos in enumerate(self.Positions):
@@ -189,7 +189,7 @@ class PathDressupTagTaskPanel:
 
     def generateNewTags(self):
         count = self.form.sbCount.value()
-        PathLog.track(count)
+        Path.Log.track(count)
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
         self.Positions = self.obj.Positions
@@ -206,7 +206,7 @@ class PathDressupTagTaskPanel:
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
         else:
-            PathLog.error("Cannot copy tags - internal error")
+            Path.Log.error("Cannot copy tags - internal error")
 
     def updateModel(self):
         self.getFields()
@@ -218,7 +218,7 @@ class PathDressupTagTaskPanel:
         self.form.pbGenerate.setEnabled(count)
 
     def selectTagWithId(self, index):
-        PathLog.track(index)
+        Path.Log.track(index)
         self.form.lwTags.setCurrentRow(index)
 
     def whenTagSelectionChanged(self):
@@ -242,18 +242,18 @@ class PathDressupTagTaskPanel:
 
     def addNewTagAt(self, point, obj):
         if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
-            PathLog.info("addNewTagAt(%.2f, %.2f)" % (point.x, point.y))
+            Path.Log.info("addNewTagAt(%.2f, %.2f)" % (point.x, point.y))
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            PathLog.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
+            Path.Log.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
 
     def addNewTag(self):
         self.tags = self.getTags(True)
         self.getPoint.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
-        PathLog.track(point, obj)
+        Path.Log.track(point, obj)
         if point and self.obj.Proxy.pointIsOnPath(self.obj, point):
             tags = []
             for i, (x, y, enabled) in enumerate(self.tags):
@@ -363,7 +363,7 @@ class HoldingTagMarker:
 
 class PathDressupTagViewProvider:
     def __init__(self, vobj):
-        PathLog.track()
+        Path.Log.track()
         self.vobj = vobj
         self.panel = None
 
@@ -413,7 +413,7 @@ class PathDressupTagViewProvider:
         ]
 
     def attach(self, vobj):
-        PathLog.track()
+        Path.Log.track()
         self.setupColors()
         self.vobj = vobj
         self.obj = vobj.Object
@@ -438,14 +438,14 @@ class PathDressupTagViewProvider:
         self.switch.whichChild = sw
 
     def claimChildren(self):
-        PathLog.track()
+        Path.Log.track()
         # if self.debugDisplay():
         #    return [self.obj.Base, self.vobj.Debug]
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the job and visible"""
-        PathLog.track()
+        Path.Log.track()
         if self.obj.Base and self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
@@ -472,12 +472,12 @@ class PathDressupTagViewProvider:
         self.tags = tags
 
     def updateData(self, obj, propName):
-        PathLog.track(propName)
+        Path.Log.track(propName)
         if "Disabled" == propName:
             self.updatePositions(obj.Positions, obj.Disabled)
 
     def onModelChanged(self):
-        PathLog.track()
+        Path.Log.track()
         # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
         #    for solid in self.obj.Proxy.solids:
@@ -515,7 +515,7 @@ class PathDressupTagViewProvider:
     # SelectionObserver interface
 
     def selectTag(self, index):
-        PathLog.track(index)
+        Path.Log.track(index)
         for i, tag in enumerate(self.tags):
             tag.setSelected(i == index)
 
@@ -539,7 +539,7 @@ class PathDressupTagViewProvider:
         return False
 
     def addSelection(self, doc, obj, sub, point):
-        PathLog.track(doc, obj, sub, point)
+        Path.Log.track(doc, obj, sub, point)
         if self.panel:
             i = self.tagAtPoint(point, sub is None)
             self.panel.selectTagWithId(i)
@@ -580,7 +580,7 @@ class CommandPathDressupTag:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(
+            Path.Log.error(
                 translate("Path_DressupTag", "Please select one path object") + "\n"
             )
             return
@@ -601,4 +601,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("Path_DressupTag", CommandPathDressupTag())
 
-PathLog.notice("Loading PathDressupTagGui... done\n")
+Path.Log.notice("Loading PathDressupTagGui... done\n")

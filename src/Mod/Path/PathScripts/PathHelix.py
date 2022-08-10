@@ -28,7 +28,6 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathFeedRate
 
@@ -44,10 +43,10 @@ __lastModified__ = "2019-07-12 09:50 CST"
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -84,11 +83,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -170,7 +169,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes"""
-        PathLog.track()
+        Path.Log.track()
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
         self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))

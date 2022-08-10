@@ -32,17 +32,16 @@ Read the Path Workbench documentation to know how to create Path objects
 from GCode.
 """
 
-import os
-import Path
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
+import os
 
-# LEVEL = PathLog.Level.DEBUG
-LEVEL = PathLog.Level.INFO
-PathLog.setLevel(LEVEL, PathLog.thisModule())
+# LEVEL = Path.Log.Level.DEBUG
+LEVEL = Path.Log.Level.INFO
+Path.Log.setLevel(LEVEL, Path.Log.thisModule())
 
-if LEVEL == PathLog.Level.DEBUG:
-    PathLog.trackModule(PathLog.thisModule())
+if LEVEL == Path.Log.Level.DEBUG:
+    Path.Log.trackModule(Path.Log.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
@@ -52,7 +51,7 @@ if open.__module__ in ["__builtin__", "io"]:
 
 def open(filename):
     "called when freecad opens a file."
-    PathLog.track(filename)
+    Path.Log.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     insert(filename, doc.Name)
@@ -60,7 +59,7 @@ def open(filename):
 
 def insert(filename, docname):
     "called when freecad imports a file"
-    PathLog.track(filename)
+    Path.Log.track(filename)
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
@@ -74,7 +73,7 @@ def insert(filename, docname):
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
     print("preprocessing...")
-    PathLog.track(inputstring)
+    Path.Log.track(inputstring)
     # split the input by line
     lines = inputstring.split("\n")
     output = []

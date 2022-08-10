@@ -27,7 +27,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBitLibraryCmd as PathToolBitLibraryCmd
 import PathScripts.PathToolEdit as PathToolEdit
@@ -36,10 +35,10 @@ import PathScripts.PathUtils as PathUtils
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -287,7 +286,7 @@ class EditorPanel:
 
         for toolnum in tools:
             tool = self.TLM.getTool(currList, int(toolnum))
-            PathLog.debug("tool: {}, toolnum: {}".format(tool, toolnum))
+            Path.Log.debug("tool: {}, toolnum: {}".format(tool, toolnum))
             if self.job:
                 label = "T{}: {}".format(toolnum, tool.Name)
                 tc = PathScripts.PathToolController.Create(

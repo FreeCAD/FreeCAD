@@ -22,7 +22,7 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathMillFace as PathMillFace
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
@@ -35,17 +35,17 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Face Mill operation page controller and command implementation."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     """Page controller class for the face milling operation."""
 
     def getForm(self):
-        PathLog.track()
+        Path.Log.track()
         """getForm() ... return UI"""
 
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")

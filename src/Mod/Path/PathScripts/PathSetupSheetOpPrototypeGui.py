@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 
 from PySide import QtCore, QtGui
@@ -35,10 +35,10 @@ __doc__ = "Task panel editor for a SetupSheet"
 LOGLEVEL = False
 
 if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class _PropertyEditor(object):
@@ -68,7 +68,7 @@ class _PropertyEnumEditor(_PropertyEditor):
     """Editor for enumeration values - uses a combo box."""
 
     def widget(self, parent):
-        PathLog.track(self.prop.name, self.prop.getEnumValues())
+        Path.Log.track(self.prop.name, self.prop.getEnumValues())
         return QtGui.QComboBox(parent)
 
     def setEditorData(self, widget):

@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathUtil as PathUtil
@@ -46,14 +46,14 @@ _DebugFindTool = False
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def _findToolFile(name, containerFile, typ):
-    PathLog.track(name)
+    Path.Log.track(name)
     if os.path.exists(name):  # absolute reference
         return name
 
@@ -65,7 +65,7 @@ def _findToolFile(name, containerFile, typ):
     paths.extend(PathPreferences.searchPathsTool(typ))
 
     def _findFile(path, name):
-        PathLog.track(path, name)
+        Path.Log.track(path, name)
         fullPath = os.path.join(path, name)
         if os.path.exists(fullPath):
             return (True, fullPath)
@@ -85,13 +85,13 @@ def _findToolFile(name, containerFile, typ):
 
 def findToolShape(name, path=None):
     """findToolShape(name, path) ... search for name, if relative path look in path"""
-    PathLog.track(name, path)
+    Path.Log.track(name, path)
     return _findToolFile(name, path, "Shape")
 
 
 def findToolBit(name, path=None):
     """findToolBit(name, path) ... search for name, if relative path look in path"""
-    PathLog.track(name, path)
+    Path.Log.track(name, path)
     if name.endswith(".fctb"):
         return _findToolFile(name, path, "Bit")
     return _findToolFile("{}.fctb".format(name), path, "Bit")
@@ -100,14 +100,14 @@ def findToolBit(name, path=None):
 # Only used in ToolBit unit test module: TestPathToolBit.py
 def findToolLibrary(name, path=None):
     """findToolLibrary(name, path) ... search for name, if relative path look in path"""
-    PathLog.track(name, path)
+    Path.Log.track(name, path)
     if name.endswith(".fctl"):
         return _findToolFile(name, path, "Library")
     return _findToolFile("{}.fctl".format(name), path, "Library")
 
 
 def _findRelativePath(path, typ):
-    PathLog.track(path, typ)
+    Path.Log.track(path, typ)
     relative = path
     for p in PathPreferences.searchPathsTool(typ):
         if path.startswith(p):
@@ -136,7 +136,7 @@ def findRelativePathLibrary(path):
 
 class ToolBit(object):
     def __init__(self, obj, shapeFile, path=None):
-        PathLog.track(obj.Label, shapeFile, path)
+        Path.Log.track(obj.Label, shapeFile, path)
         self.obj = obj
         obj.addProperty(
             "App::PropertyFile",
@@ -238,12 +238,12 @@ class ToolBit(object):
                 obj.setEditorMode(prop, 0)
 
     def onChanged(self, obj, prop):
-        PathLog.track(obj.Label, prop)
+        Path.Log.track(obj.Label, prop)
         if prop == "BitShape" and "Restore" not in obj.State:
             self._setupBitShape(obj)
 
     def onDelete(self, obj, arg2=None):
-        PathLog.track(obj.Label)
+        Path.Log.track(obj.Label)
         self.unloadBitBody(obj)
         obj.Document.removeObject(obj.Name)
 
@@ -276,7 +276,7 @@ class ToolBit(object):
             obj.Shape = Part.Shape()
 
     def _loadBitBody(self, obj, path=None):
-        PathLog.track(obj.Label, path)
+        Path.Log.track(obj.Label, path)
         p = path if path else obj.BitShape
         docOpened = False
         doc = None
@@ -291,12 +291,12 @@ class ToolBit(object):
 
             if not path and p != obj.BitShape:
                 obj.BitShape = p
-            PathLog.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
+            Path.Log.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
             doc = FreeCAD.openDocument(p, True)
             obj.ShapeName = doc.Name
             docOpened = True
         else:
-            PathLog.debug("ToolBit {} already open: {}".format(obj.Label, doc))
+            Path.Log.debug("ToolBit {} already open: {}".format(obj.Label, doc))
         return (doc, docOpened)
 
     def _removeBitBody(self, obj):
@@ -306,7 +306,7 @@ class ToolBit(object):
             obj.BitBody = None
 
     def _deleteBitSetup(self, obj):
-        PathLog.track(obj.Label)
+        Path.Log.track(obj.Label)
         self._removeBitBody(obj)
         self._copyBitShape(obj)
         for prop in obj.BitPropertyNames:
@@ -342,7 +342,7 @@ class ToolBit(object):
         PathUtil.setProperty(obj, prop, val)
 
     def _setupBitShape(self, obj, path=None):
-        PathLog.track(obj.Label)
+        Path.Log.track(obj.Label)
 
         activeDoc = FreeCAD.ActiveDocument
         (doc, docOpened) = self._loadBitBody(obj, path)
@@ -359,7 +359,7 @@ class ToolBit(object):
         if bitBody.ViewObject:
             bitBody.ViewObject.Visibility = False
 
-        PathLog.debug(
+        Path.Log.debug(
             "bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody))
         )
 
@@ -367,12 +367,12 @@ class ToolBit(object):
         for attributes in [
             o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)
         ]:
-            PathLog.debug("Process properties from {}".format(attributes.Label))
+            Path.Log.debug("Process properties from {}".format(attributes.Label))
             for prop in attributes.Proxy.getCustomProperties():
                 self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
-            PathLog.error(
+            Path.Log.error(
                 "Did not find a PropertyBag in {} - not a ToolBit shape?".format(
                     docName
                 )
@@ -430,7 +430,7 @@ class ToolBit(object):
         return None
 
     def saveToFile(self, obj, path, setFile=True):
-        PathLog.track(path)
+        Path.Log.track(path)
         try:
             with open(path, "w") as fp:
                 json.dump(self.templateAttrs(obj), fp, indent="  ")
@@ -438,7 +438,7 @@ class ToolBit(object):
                 obj.File = path
             return True
         except (OSError, IOError) as e:
-            PathLog.error(
+            Path.Log.error(
                 "Could not save tool {} to {} ({})".format(obj.Label, path, e)
             )
             raise
@@ -466,14 +466,14 @@ class ToolBit(object):
 
 
 def Declaration(path):
-    PathLog.track(path)
+    Path.Log.track(path)
     with open(path, "r") as fp:
         return json.load(fp)
 
 
 class ToolBitFactory(object):
     def CreateFromAttrs(self, attrs, name="ToolBit", path=None):
-        PathLog.track(attrs, path)
+        Path.Log.track(attrs, path)
         obj = Factory.Create(name, attrs["shape"], path)
         obj.Label = attrs["name"]
         params = attrs["parameter"]
@@ -484,7 +484,7 @@ class ToolBitFactory(object):
         return obj
 
     def CreateFrom(self, path, name="ToolBit"):
-        PathLog.track(name, path)
+        Path.Log.track(name, path)
 
         if not os.path.isfile(path):
             raise FileNotFoundError(f"{path} not found")
@@ -493,11 +493,11 @@ class ToolBitFactory(object):
             bit = Factory.CreateFromAttrs(data, name, path)
             return bit
         except (OSError, IOError) as e:
-            PathLog.error("%s not a valid tool file (%s)" % (path, e))
+            Path.Log.error("%s not a valid tool file (%s)" % (path, e))
             raise
 
     def Create(self, name="ToolBit", shapeFile=None, path=None):
-        PathLog.track(name, shapeFile, path)
+        Path.Log.track(name, shapeFile, path)
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
         obj.Proxy = ToolBit(obj, shapeFile, path)
         return obj

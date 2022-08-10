@@ -24,8 +24,8 @@ from PySide import QtCore, QtGui
 from collections import Counter
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts.PathJob as PathJob
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil
@@ -36,10 +36,10 @@ translate = FreeCAD.Qt.translate
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class _ItemDelegate(QtGui.QStyledItemDelegate):
@@ -238,7 +238,7 @@ class JobCreate:
                 while name in template:
                     i = i + 1
                     name = basename + " (%s)" % i
-            PathLog.track(name, tFile)
+            Path.Log.track(name, tFile)
             template[name] = tFile
         selectTemplate = PathPreferences.defaultJobTemplate()
         index = 0
@@ -253,7 +253,7 @@ class JobCreate:
     def templateFilesIn(self, path):
         """templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
         PathJob template files are name job_*.json"""
-        PathLog.track(path)
+        Path.Log.track(path)
         return glob.glob(path + "/job_*.json")
 
     def getModels(self):
@@ -353,7 +353,7 @@ class JobTemplateExport:
 
             else:  # Existing Solid
                 seHint = "-"
-                PathLog.error(translate("Path_Job", "Unsupported stock type"))
+                Path.Log.error(translate("Path_Job", "Unsupported stock type"))
             self.dialog.stockExtentHint.setText(seHint)
             spHint = "%s" % job.Stock.Placement
             self.dialog.stockPlacementHint.setText(spHint)

@@ -21,7 +21,6 @@
 # ***************************************************************************
 
 
-import PathScripts.PathLog as PathLog
 import Path
 import numpy
 
@@ -32,10 +31,10 @@ __doc__ = "Generates the drilling toolpath for a single spotshape"
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, chipBreak=False):
@@ -62,12 +61,12 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, c
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
-    PathLog.debug(startPoint)
-    PathLog.debug(endPoint)
+    Path.Log.debug(startPoint)
+    Path.Log.debug(endPoint)
 
-    PathLog.debug(numpy.isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06))
-    PathLog.debug(numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
-    PathLog.debug(endPoint)
+    Path.Log.debug(numpy.isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06))
+    Path.Log.debug(numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
+    Path.Log.debug(endPoint)
 
     if dwelltime > 0.0 and peckdepth > 0.0:
         raise ValueError("Peck and Dwell cannot be used together")

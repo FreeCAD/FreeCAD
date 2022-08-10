@@ -24,7 +24,7 @@ from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
@@ -42,10 +42,10 @@ Draft = LazyLoader("Draft", globals(), "Draft")
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -272,11 +272,11 @@ class ObjectJob:
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -316,7 +316,7 @@ class ObjectJob:
         self.setupSheet = obj.SetupSheet.Proxy
 
     def setupBaseModel(self, obj, models=None):
-        PathLog.track(obj.Label, models)
+        Path.Log.track(obj.Label, models)
         addModels = False
 
         if not hasattr(obj, "Model"):
@@ -346,7 +346,7 @@ class ObjectJob:
             obj.Model.Label = "Model"
 
         if hasattr(obj, "Base"):
-            PathLog.info(
+            Path.Log.info(
                 "Converting Job.Base to new Job.Model for {}".format(obj.Label)
             )
             obj.Model.addObject(obj.Base)
@@ -403,12 +403,12 @@ class ObjectJob:
 
     def onDelete(self, obj, arg2=None):
         """Called by the view provider, there doesn't seem to be a callback on the obj itself."""
-        PathLog.track(obj.Label, arg2)
+        Path.Log.track(obj.Label, arg2)
         doc = obj.Document
 
         if getattr(obj, "Operations", None):
             # the first to tear down are the ops, they depend on other resources
-            PathLog.debug(
+            Path.Log.debug(
                 "taking down ops: %s" % [o.Name for o in self.allOperations()]
             )
             while obj.Operations.Group:
@@ -426,7 +426,7 @@ class ObjectJob:
 
         # stock could depend on Model, so delete it first
         if getattr(obj, "Stock", None):
-            PathLog.debug("taking down stock")
+            Path.Log.debug("taking down stock")
             PathUtil.clearExpressionEngine(obj.Stock)
             doc.removeObject(obj.Stock.Name)
             obj.Stock = None
@@ -434,7 +434,7 @@ class ObjectJob:
         # base doesn't depend on anything inside job
         if getattr(obj, "Model", None):
             for base in obj.Model.Group:
-                PathLog.debug("taking down base %s" % base.Label)
+                Path.Log.debug("taking down base %s" % base.Label)
                 self.removeBase(obj, base, False)
             obj.Model.Group = []
             doc.removeObject(obj.Model.Name)
@@ -442,7 +442,7 @@ class ObjectJob:
 
         # Tool controllers might refer to either legacy tool or toolbit
         if getattr(obj, "Tools", None):
-            PathLog.debug("taking down tool controller")
+            Path.Log.debug("taking down tool controller")
             for tc in obj.Tools.Group:
                 if hasattr(tc.Tool, "Proxy"):
                     PathUtil.clearExpressionEngine(tc.Tool)
@@ -631,10 +631,10 @@ class ObjectJob:
                 if attrs.get(JobTemplate.SplitOutput):
                     obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
 
-                PathLog.debug("setting tool controllers (%d)" % len(tcs))
+                Path.Log.debug("setting tool controllers (%d)" % len(tcs))
                 obj.Tools.Group = tcs
             else:
-                PathLog.error(
+                Path.Log.error(
                     "Unsupported PathJob template version {}".format(
                         attrs.get(JobTemplate.Version)
                     )
@@ -719,7 +719,7 @@ class ObjectJob:
                     if removeBefore:
                         group.remove(before)
                 except Exception as e:
-                    PathLog.error(e)
+                    Path.Log.error(e)
                     group.append(op)
             else:
                 group.append(op)
@@ -736,7 +736,7 @@ class ObjectJob:
 
     def addToolController(self, tc):
         group = self.obj.Tools.Group
-        PathLog.debug(
+        Path.Log.debug(
             "addToolController(%s): %s" % (tc.Label, [t.Label for t in group])
         )
         if tc.Name not in [str(t.Name) for t in group]:
@@ -795,7 +795,7 @@ class ObjectJob:
             suffix = job.Name[3:]
 
         def errorMessage(grp, job):
-            PathLog.error("{} corrupt in {} job.".format(grp, job.Name))
+            Path.Log.error("{} corrupt in {} job.".format(grp, job.Name))
 
         if not job.Operations:
             self.setupOperations(job)

@@ -25,7 +25,6 @@
 # The main generator function should be extended to include other flavors of 3+2
 
 
-import PathScripts.PathLog as PathLog
 import math
 import Path
 import FreeCAD
@@ -38,10 +37,10 @@ __doc__ = "Generates the rotation toolpath"
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class refAxis(Enum):
@@ -56,7 +55,7 @@ def relAngle(vec, ref):
     relative angle.  The result is returned in degrees (plus or minus)
     """
 
-    PathLog.debug("vec: {}  ref: {}".format(vec, ref))
+    Path.Log.debug("vec: {}  ref: {}".format(vec, ref))
     norm = vec * 1  # copy vec so we don't alter original
 
     if ref == refAxis.x:
@@ -72,7 +71,7 @@ def relAngle(vec, ref):
     rot = FreeCAD.Rotation(norm, ref)
     ang = math.degrees(rot.Angle)
     angle = ang * plane.dot(rot.Axis)
-    PathLog.debug("relative ang: {}".format(angle))
+    Path.Log.debug("relative ang: {}".format(angle))
 
     return angle
 
@@ -83,7 +82,7 @@ def __getCRotation(normalVector, cMin=-360, cMax=360):
     with either the +y or -y axis.
     multiple poses may be possible.  Returns a list of all valid poses
     """
-    PathLog.debug("normalVector: {} cMin: {} cMax: {}".format(normalVector, cMin, cMax))
+    Path.Log.debug("normalVector: {} cMin: {} cMax: {}".format(normalVector, cMin, cMax))
 
     angle = relAngle(normalVector, refAxis.y)
 
@@ -152,7 +151,7 @@ def generate(normalVector, aMin=-360, aMax=360, cMin=-360, cMax=360, compound=Fa
         normalVector = rot.multVec(n
     """
 
-    PathLog.track(
+    Path.Log.track(
         "\n=============\n normalVector: {}\n aMin: {}\n aMax: {}\n cMin: {}\n cMax: {}".format(
             normalVector, aMin, aMax, cMin, cMax
         )
@@ -160,7 +159,7 @@ def generate(normalVector, aMin=-360, aMax=360, cMin=-360, cMax=360, compound=Fa
 
     # Calculate C rotation
     cResults = __getCRotation(normalVector, cMin, cMax)
-    PathLog.debug("C Rotation results {}".format(cResults))
+    Path.Log.debug("C Rotation results {}".format(cResults))
 
     solutions = []
     for result in cResults:
@@ -172,7 +171,7 @@ def generate(normalVector, aMin=-360, aMax=360, cMin=-360, cMax=360, compound=Fa
         # Get the candidate A rotation for the new vector
         aResult = __getARotation(newvec, aMin, aMax)
 
-        PathLog.debug(
+        Path.Log.debug(
             "\n=====\nFor C Rotation: {}\n Calculated A {}\n".format(result, aResult)
         )
 
@@ -191,7 +190,7 @@ def generate(normalVector, aMin=-360, aMax=360, cMin=-360, cMax=360, compound=Fa
             best = solution
             curlen = testlen
 
-    PathLog.debug("best result: {}".format(best))
+    Path.Log.debug("best result: {}".format(best))
 
     # format and return rotation commands
     commands = []

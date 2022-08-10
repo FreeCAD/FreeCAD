@@ -28,7 +28,6 @@ import unittest
 import FreeCAD
 import Path
 
-from PathScripts import PathLog
 from PathScripts import PathPost
 from PathScripts import PathPreferences
 from PathScripts import PostUtils
@@ -40,8 +39,8 @@ from PathScripts.PathPostProcessor import PostProcessor
 # so it can be looked at easily.
 KEEP_DEBUG_OUTPUT = False
 
-PathPost.LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.INFO, PathPost.LOG_MODULE)
+PathPost.LOG_MODULE = Path.Log.thisModule()
+Path.Log.setLevel(Path.Log.Level.INFO, PathPost.LOG_MODULE)
 
 
 class TestPathPost(unittest.TestCase):

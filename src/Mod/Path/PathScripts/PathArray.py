@@ -24,7 +24,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
-from PathScripts import PathLog
 from PathScripts.PathDressup import toolController
 from PySide import QtCore
 import math
@@ -373,7 +372,7 @@ class PathArray:
         path data for the requested path array."""
 
         if len(self.baseList) == 0:
-            PathLog.error(translate("PathArray", "No base objects for PathArray."))
+            Path.Log.error(translate("PathArray", "No base objects for PathArray."))
             return None
 
         base = self.baseList
@@ -389,7 +388,7 @@ class PathArray:
 
             if b_tool_controller != toolController(base[0]):
                 # this may be important if Job output is split by tool controller
-                PathLog.warning(
+                Path.Log.warning(
                     translate(
                         "PathArray",
                         "Arrays of paths having different tool controllers are handled according to the tool controller of the first path.",

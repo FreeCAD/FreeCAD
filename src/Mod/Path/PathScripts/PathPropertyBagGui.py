@@ -23,8 +23,8 @@
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts.PathIconViewProvider as PathIconViewProvider
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathUtil as PathUtil
@@ -37,10 +37,10 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a PropertyBag"
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -50,7 +50,7 @@ class ViewProvider(object):
     It's sole job is to provide an icon and invoke the TaskPanel on edit."""
 
     def __init__(self, vobj, name):
-        PathLog.track(name)
+        Path.Log.track(name)
         vobj.Proxy = self
         self.icon = name
         # mode = 2
@@ -58,7 +58,7 @@ class ViewProvider(object):
         self.vobj = None
 
     def attach(self, vobj):
-        PathLog.track()
+        Path.Log.track()
         self.vobj = vobj
         self.obj = vobj.Object
 
@@ -75,7 +75,7 @@ class ViewProvider(object):
         return "Default"
 
     def setEdit(self, vobj, mode=0):
-        PathLog.track()
+        Path.Log.track()
         taskPanel = TaskPanel(vobj)
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(taskPanel)
@@ -99,7 +99,7 @@ class Delegate(QtGui.QStyledItemDelegate):
     RoleEditor = QtCore.Qt.UserRole + 3
 
     # def paint(self, painter, option, index):
-    #    #PathLog.track(index.column(), type(option))
+    #    #Path.Log.track(index.column(), type(option))
 
     def createEditor(self, parent, option, index):
         editor = PathPropertyEditor.Editor(
@@ -109,11 +109,11 @@ class Delegate(QtGui.QStyledItemDelegate):
         return editor.widget(parent)
 
     def setEditorData(self, widget, index):
-        PathLog.track(index.row(), index.column())
+        Path.Log.track(index.row(), index.column())
         index.data(self.RoleEditor).setEditorData(widget)
 
     def setModelData(self, widget, model, index):
-        PathLog.track(index.row(), index.column())
+        Path.Log.track(index.row(), index.column())
         editor = index.data(self.RoleEditor)
         editor.setModelData(widget)
         index.model().setData(index, editor.displayString(), QtCore.Qt.DisplayRole)
@@ -273,7 +273,7 @@ class TaskPanel(object):
         # self.model.item(i, self.ColumnType).setEditable(False)
 
     def setupUi(self):
-        PathLog.track()
+        Path.Log.track()
 
         self.delegate = Delegate(self.form)
         self.model = QtGui.QStandardItemModel(
@@ -308,7 +308,7 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.recompute()
 
     def propertySelected(self, selection):
-        PathLog.track()
+        Path.Log.track()
         if selection:
             self.form.modify.setEnabled(True)
             self.form.remove.setEnabled(True)
@@ -327,7 +327,7 @@ class TaskPanel(object):
         return (propname, info)
 
     def propertyAdd(self):
-        PathLog.track()
+        Path.Log.track()
         more = False
         grp = None
         typ = None
@@ -358,7 +358,7 @@ class TaskPanel(object):
                 break
 
     def propertyModifyIndex(self, index):
-        PathLog.track(index.row(), index.column())
+        Path.Log.track(index.row(), index.column())
         row = index.row()
 
         obj = self.model.item(row, self.ColumnVal).data(Delegate.RoleObject)
@@ -387,7 +387,7 @@ class TaskPanel(object):
             )
 
     def propertyModify(self):
-        PathLog.track()
+        Path.Log.track()
         rows = []
         for index in self.form.table.selectionModel().selectedIndexes():
             row = index.row()
@@ -398,7 +398,7 @@ class TaskPanel(object):
             self.propertyModifyIndex(index)
 
     def propertyRemove(self):
-        PathLog.track()
+        Path.Log.track()
         # first find all rows which need to be removed
         rows = []
         for index in self.form.table.selectionModel().selectedIndexes():

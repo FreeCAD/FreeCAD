@@ -23,7 +23,6 @@
 from lazy_loader.lazy_loader import LazyLoader
 import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import copy
@@ -35,10 +34,10 @@ DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = LazyLoader("Part", globals(), "Part")
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectOp(PathOp.ObjectOp):
@@ -61,7 +60,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True, start_idx=0):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
-        PathLog.track(obj.Label, len(wires), zValues)
+        Path.Log.track(obj.Label, len(wires), zValues)
 
         decomposewires = []
         for wire in wires:
@@ -77,14 +76,14 @@ class ObjectOp(PathOp.ObjectOp):
             edges = wire.Edges
 
             # edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
-            # PathLog.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
+            # Path.Log.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
             # edges = Part.sortEdges(edges)[0]
-            # PathLog.track("edges: {}".format(len(edges)))
+            # Path.Log.track("edges: {}".format(len(edges)))
 
             last = None
 
             for z in zValues:
-                PathLog.debug(z)
+                Path.Log.debug(z)
                 if last:
                     self.appendCommand(
                         Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
@@ -99,19 +98,19 @@ class ObjectOp(PathOp.ObjectOp):
 
                 edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
-                    PathLog.debug(
+                    Path.Log.debug(
                         "points: {} -> {}".format(
                             edge.Vertexes[0].Point, edge.Vertexes[-1].Point
                         )
                     )
-                    PathLog.debug(
+                    Path.Log.debug(
                         "valueat {} -> {}".format(
                             edge.valueAt(edge.FirstParameter),
                             edge.valueAt(edge.LastParameter),
                         )
                     )
                     if first and (not last or not wire.isClosed()):
-                        PathLog.debug("processing first edge entry")
+                        Path.Log.debug("processing first edge entry")
                         # we set the first move to our first point
                         last = edge.Vertexes[0].Point
 

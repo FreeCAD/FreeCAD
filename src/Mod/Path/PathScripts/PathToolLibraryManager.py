@@ -25,7 +25,6 @@ from __future__ import print_function
 import FreeCAD
 import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import json
 import os
@@ -33,10 +32,10 @@ import xml.sax
 from PySide import QtGui
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -217,10 +216,10 @@ class ToolLibraryManager:
         """renames a tool table with the new name"""
         currentTableName = self.toolTables[index].Name
         if newName == currentTableName:
-            PathLog.error(translate("PathToolLibraryManager", "Tool Table Same Name"))
+            Path.Log.error(translate("PathToolLibraryManager", "Tool Table Same Name"))
             return False
         if newName in self.toolTables:
-            PathLog.error(translate("PathToolLibraryManager", "Tool Table Name Exists"))
+            Path.Log.error(translate("PathToolLibraryManager", "Tool Table Name Exists"))
             return False
         tt = self.getTableFromName(currentTableName)
         if tt:
@@ -275,7 +274,7 @@ class ToolLibraryManager:
 
             return tt
         else:
-            PathLog.error(
+            Path.Log.error(
                 translate(
                     "PathToolLibraryManager",
                     "Unsupported Path tooltable template version %s",
@@ -293,7 +292,7 @@ class ToolLibraryManager:
             if tt:
                 self.toolTables.append(tt)
             else:
-                PathLog.error(
+                Path.Log.error(
                     translate("PathToolLibraryManager", "Unsupported Path tooltable")
                 )
 

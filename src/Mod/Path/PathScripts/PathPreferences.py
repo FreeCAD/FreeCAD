@@ -21,16 +21,16 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import glob
 import os
-import PathScripts.PathLog as PathLog
 from PySide.QtGui import QMessageBox
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -208,7 +208,7 @@ def defaultJobTemplate():
 
 
 def setJobDefaults(fileName, jobTemplate, geometryTolerance, curveAccuracy):
-    PathLog.track(
+    Path.Log.track(
         "(%s='%s', %s, %s, %s)"
         % (DefaultFilePath, fileName, jobTemplate, geometryTolerance, curveAccuracy)
     )
@@ -320,14 +320,14 @@ def lastFileToolLibrary():
     if len(libFiles) >= 1:
         filename = libFiles[0]
         setLastFileToolLibrary(filename)
-        PathLog.track(filename)
+        Path.Log.track(filename)
         return filename
     else:
         return None
 
 
 def setLastFileToolLibrary(path):
-    PathLog.track(path)
+    Path.Log.track(path)
     if os.path.isfile(path):  # keep the path and file in sync
         preferences().SetString(LastPathToolLibrary, os.path.split(path)[0])
     return preferences().SetString(LastFileToolLibrary, path)
@@ -342,14 +342,14 @@ def setLastPathToolBit(path):
 
 
 def lastPathToolLibrary():
-    PathLog.track()
+    Path.Log.track()
     return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath("Library"))
 
 
 def setLastPathToolLibrary(path):
-    PathLog.track(path)
+    Path.Log.track(path)
     curLib = lastFileToolLibrary()
-    PathLog.debug("curLib: {}".format(curLib))
+    Path.Log.debug("curLib: {}".format(curLib))
     if curLib and os.path.split(curLib)[0] != path:
         setLastFileToolLibrary("")  # a path is known but not specific file
     return preferences().SetString(LastPathToolLibrary, path)

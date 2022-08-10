@@ -25,7 +25,6 @@ from __future__ import print_function
 import FreeCAD
 import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -35,10 +34,10 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Path thread milling operation."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -184,12 +183,12 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
     a = math.atan2(y - center.y, x - center.x)
     dx = math.cos(a) * (radius - elevator)
     dy = math.sin(a) * (radius - elevator)
-    PathLog.debug("")
-    PathLog.debug("a={}: dx={:.2f}, dy={:.2f}".format(a / math.pi * 180, dx, dy))
+    Path.Log.debug("")
+    Path.Log.debug("a={}: dx={:.2f}, dy={:.2f}".format(a / math.pi * 180, dx, dy))
 
     elevatorX = x - dx
     elevatorY = y - dy
-    PathLog.debug(
+    Path.Log.debug(
         "({:.2f}, {:.2f}) -> ({:.2f}, {:.2f})".format(x, y, elevatorX, elevatorY)
     )
 

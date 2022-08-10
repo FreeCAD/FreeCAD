@@ -22,9 +22,9 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathEngrave as PathEngrave
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathUtils as PathUtils
 
@@ -37,10 +37,10 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -70,7 +70,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             job = PathUtils.findParentJob(self.obj)
             base = job.Proxy.resourceClone(job, sel.Object)
             if not base:
-                PathLog.notice(
+                Path.Log.notice(
                     (
                         translate("Path", "%s is not a Base Model object of the job %s")
                         + "\n"
@@ -79,7 +79,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 )
                 continue
             if base in shapes:
-                PathLog.notice(
+                Path.Log.notice(
                     (translate("Path", "Base shape %s already in the list") + "\n")
                     % (sel.Object.Label)
                 )
@@ -89,7 +89,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
                         if "Vertex" in sub:
-                            PathLog.info("Ignoring vertex")
+                            Path.Log.info("Ignoring vertex")
                         else:
                             self.obj.Proxy.addBase(self.obj, base, sub)
                 else:
@@ -116,7 +116,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.blockSignals(False)
 
     def updateBase(self):
-        PathLog.track()
+        Path.Log.track()
         shapes = []
         for i in range(self.form.baseList.count()):
             item = self.form.baseList.item(i)
@@ -124,7 +124,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             sub = item.data(self.super().DataObjectSub)
             if not sub:
                 shapes.append(obj)
-        PathLog.debug(
+        Path.Log.debug(
             "Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes)
         )
         self.obj.BaseShapes = shapes

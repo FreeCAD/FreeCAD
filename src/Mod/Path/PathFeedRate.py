@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathLog as PathLog
+import Path
 import PathMachineState
 import PathScripts.PathGeom as PathGeom
 import Part
@@ -37,10 +37,10 @@ TODO:  This needs to be able to handle feedrates for axes other than X,Y,Z
 """
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 def setFeedRate(commandlist, ToolController):

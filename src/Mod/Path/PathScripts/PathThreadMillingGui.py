@@ -22,11 +22,11 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathThreadMilling as PathThreadMilling
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import csv
 
@@ -41,10 +41,10 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "UI and Command for Path Thread Milling Operation."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -52,7 +52,7 @@ translate = FreeCAD.Qt.translate
 def fillThreads(form, dataFile, defaultSelect):
     form.threadName.blockSignals(True)
     select = form.threadName.currentText()
-    PathLog.debug("select = '{}'".format(select))
+    Path.Log.debug("select = '{}'".format(select))
     form.threadName.clear()
     with open(
         "{}Mod/Path/Data/Threads/{}".format(FreeCAD.getHomePath(), dataFile)
@@ -97,7 +97,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getFields(self, obj):
         """getFields(obj) ... update obj's properties with values from the UI"""
-        PathLog.track()
+        Path.Log.track()
 
         self.majorDia.updateProperty()
         self.minorDia.updateProperty()
@@ -115,7 +115,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def setFields(self, obj):
         """setFields(obj) ... update UI with obj properties' values"""
-        PathLog.track()
+        Path.Log.track()
 
         self.selectInComboBox(obj.ThreadOrientation, self.form.threadOrientation)
         self.selectInComboBox(obj.ThreadType, self.form.threadType)

@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathLog as PathLog
+import Path
 import PathScripts.PathPreferences as PathPreferences
 import sys
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class PostProcessor:
@@ -34,7 +34,7 @@ class PostProcessor:
 
     @classmethod
     def load(cls, processor):
-        PathLog.track(processor)
+        Path.Log.track(processor)
         syspath = sys.path
         paths = PathPreferences.searchPathsPost()
         paths.extend(sys.path)

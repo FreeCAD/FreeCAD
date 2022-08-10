@@ -27,7 +27,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtGui
@@ -44,13 +43,13 @@ Part = LazyLoader("Part", globals(), "Part")
 
 LOGLEVEL = False
 
-LOG_MODULE = PathLog.thisModule()
+LOG_MODULE = Path.Log.thisModule()
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -130,12 +129,12 @@ class ObjectDressup:
                 zval = round(float(w[2]), 2)
 
                 pointlist.append([xval, yval, zval])
-            PathLog.debug(pointlist)
+            Path.Log.debug(pointlist)
 
             cols = list(zip(*pointlist))
-            PathLog.debug("cols: {}".format(cols))
+            Path.Log.debug("cols: {}".format(cols))
             yindex = list(sorted(set(cols[1])))
-            PathLog.debug("yindex: {}".format(yindex))
+            Path.Log.debug("yindex: {}".format(yindex))
 
             array = []
             for y in yindex:
@@ -173,8 +172,8 @@ class ObjectDressup:
                         currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
                         for c in pathlist:
-                            PathLog.debug(c)
-                            PathLog.debug("     curLoc:{}".format(currLocation))
+                            Path.Log.debug(c)
+                            Path.Log.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
                             zval = newparams.get("Z", currLocation["Z"])
                             if c.Name in CmdMoveStraight + CmdMoveArc:
@@ -254,18 +253,18 @@ class TaskPanel:
 
     def updateUI(self):
 
-        if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+        if Path.Log.getLevel(LOG_MODULE) == Path.Log.Level.DEBUG:
             for obj in FreeCAD.ActiveDocument.Objects:
                 if obj.Name.startswith("Shape"):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
             print("object name %s" % self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
-                PathLog.info("showing shapes attribute")
+                Path.Log.info("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.itervalues():
                     for shape in shapes:
                         Part.show(shape)
             else:
-                PathLog.info("no shapes attribute found")
+                Path.Log.info("no shapes attribute found")
 
     def updateModel(self):
         self.getFields()

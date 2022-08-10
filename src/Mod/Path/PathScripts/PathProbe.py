@@ -24,7 +24,6 @@ from __future__ import print_function
 
 import FreeCAD
 import Path
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -36,10 +35,10 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Probing operation."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectProbing(PathOp.ObjectOp):
@@ -96,7 +95,7 @@ class ObjectProbing(PathOp.ObjectOp):
 
     def opExecute(self, obj):
         """opExecute(obj) ... generate probe locations."""
-        PathLog.track()
+        Path.Log.track()
         self.commandlist.append(Path.Command("(Begin Probing)"))
 
         stock = PathUtils.findParentJob(obj).Stock

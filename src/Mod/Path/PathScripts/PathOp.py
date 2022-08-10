@@ -25,7 +25,6 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
@@ -44,10 +43,10 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -164,7 +163,7 @@ class ObjectOp(object):
             obj.setEditorMode("OpStockZMin", 1)  # read-only
 
     def __init__(self, obj, name, parentJob=None):
-        PathLog.track()
+        Path.Log.track()
 
         obj.addProperty(
             "App::PropertyBool",
@@ -336,8 +335,8 @@ class ObjectOp(object):
             )
 
         for n in self.opPropertyEnumerations():
-            PathLog.debug("n: {}".format(n))
-            PathLog.debug("n[0]: {}  n[1]: {}".format(n[0], n[1]))
+            Path.Log.debug("n: {}".format(n))
+            Path.Log.debug("n[0]: {}  n[1]: {}".format(n[0], n[1]))
             if hasattr(obj, n[0]):
                 setattr(obj, n[0], n[1])
 
@@ -390,11 +389,11 @@ class ObjectOp(object):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -410,13 +409,13 @@ class ObjectOp(object):
                 obj.setEditorMode("OpFinalDepth", 2)
 
     def onDocumentRestored(self, obj):
-        PathLog.track()
+        Path.Log.track()
         features = self.opFeatures(obj)
         if (
             FeatureBaseGeometry & features
             and "App::PropertyLinkSubList" == obj.getTypeIdOfProperty("Base")
         ):
-            PathLog.info("Replacing link property with global link (%s)." % obj.State)
+            Path.Log.info("Replacing link property with global link (%s)." % obj.State)
             base = obj.Base
             obj.removeProperty("Base")
             self.addBaseProperty(obj)
@@ -580,8 +579,8 @@ class ObjectOp(object):
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
 
         if FeatureCoolant & features:
-            PathLog.track()
-            PathLog.debug(obj.getEnumerationsOfProperty("CoolantMode"))
+            Path.Log.track()
+            Path.Log.debug(obj.getEnumerationsOfProperty("CoolantMode"))
             obj.CoolantMode = job.SetupSheet.CoolantMode
 
         if FeatureDepths & features:
@@ -635,11 +634,11 @@ class ObjectOp(object):
 
         if not job:
             if not ignoreErrors:
-                PathLog.error(translate("Path", "No parent job found for operation."))
+                Path.Log.error(translate("Path", "No parent job found for operation."))
             return False
         if not job.Model.Group:
             if not ignoreErrors:
-                PathLog.error(
+                Path.Log.error(
                     translate("Path", "Parent job %s doesn't have a base object")
                     % job.Label
                 )
@@ -694,7 +693,7 @@ class ObjectOp(object):
                         zmin = max(zmin, faceZmin(bb, fbb))
                         zmax = max(zmax, fbb.ZMax)
                     except Part.OCCError as e:
-                        PathLog.error(e)
+                        Path.Log.error(e)
 
         else:
             # clearing with stock boundaries
@@ -738,7 +737,7 @@ class ObjectOp(object):
                     for sub in sublist:
                         o.Shape.getElement(sub)
             except Part.OCCError:
-                PathLog.error(
+                Path.Log.error(
                     "{} - stale base geometry detected - clearing.".format(obj.Label)
                 )
                 obj.Base = []
@@ -766,7 +765,7 @@ class ObjectOp(object):
         Finally the base implementation adds a rapid move to clearance height and assigns
         the receiver's Path property from the command list.
         """
-        PathLog.track()
+        Path.Log.track()
 
         if not obj.Active:
             path = Path.Path("(inactive operation)")
@@ -782,7 +781,7 @@ class ObjectOp(object):
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
             if tc is None or tc.ToolNumber == 0:
-                PathLog.error(
+                Path.Log.error(
                     translate(
                         "Path",
                         "No Tool Controller is selected. We need a tool to build a Path.",
@@ -796,7 +795,7 @@ class ObjectOp(object):
                 self.horizRapid = tc.HorizRapid.Value
                 tool = tc.Proxy.getTool(tc)
                 if not tool or float(tool.Diameter) == 0:
-                    PathLog.error(
+                    Path.Log.error(
                         translate(
                             "Path",
                             "No Tool found or diameter is zero. We need a tool to build a Path.",
@@ -836,7 +835,7 @@ class ObjectOp(object):
         tc = obj.ToolController
 
         if tc is None or tc.ToolNumber == 0:
-            PathLog.error(translate("Path", "No Tool Controller selected."))
+            Path.Log.error(translate("Path", "No Tool Controller selected."))
             return translate("Path", "Tool Error")
 
         hFeedrate = tc.HorizFeed.Value
@@ -847,7 +846,7 @@ class ObjectOp(object):
         if (
             hFeedrate == 0 or vFeedrate == 0
         ) and not PathPreferences.suppressAllSpeedsWarning():
-            PathLog.warning(
+            Path.Log.warning(
                 translate(
                     "Path",
                     "Tool Controller feedrates required to calculate the cycle time.",
@@ -858,7 +857,7 @@ class ObjectOp(object):
         if (
             hRapidrate == 0 or vRapidrate == 0
         ) and not PathPreferences.suppressRapidSpeedsWarning():
-            PathLog.warning(
+            Path.Log.warning(
                 translate(
                     "Path",
                     "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
@@ -877,7 +876,7 @@ class ObjectOp(object):
         return cycleTime
 
     def addBase(self, obj, base, sub):
-        PathLog.track(obj, base, sub)
+        Path.Log.track(obj, base, sub)
         base = PathUtil.getPublicObject(base)
 
         if self._setBaseAndStock(obj):
@@ -892,7 +891,7 @@ class ObjectOp(object):
 
             for p, el in baselist:
                 if p == base and sub in el:
-                    PathLog.notice(
+                    Path.Log.notice(
                         (
                             translate("Path", "Base object %s.%s already in the list")
                             + "\n"
@@ -905,7 +904,7 @@ class ObjectOp(object):
                 baselist.append((base, sub))
                 obj.Base = baselist
             else:
-                PathLog.notice(
+                Path.Log.notice(
                     (
                         translate("Path", "Base object %s.%s rejected by operation")
                         + "\n"

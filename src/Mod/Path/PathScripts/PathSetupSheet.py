@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -36,10 +36,10 @@ _RegisteredOps: dict = {}
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class Template:
@@ -73,20 +73,20 @@ class Template:
 
 
 def _traverseTemplateAttributes(attrs, codec):
-    PathLog.debug(attrs)
+    Path.Log.debug(attrs)
     coded = {}
     for key, value in PathUtil.keyValueIter(attrs):
         if type(value) == dict:
-            PathLog.debug("%s is a dict" % key)
+            Path.Log.debug("%s is a dict" % key)
             coded[key] = _traverseTemplateAttributes(value, codec)
         elif type(value) == list:
-            PathLog.debug("%s is a list" % key)
+            Path.Log.debug("%s is a list" % key)
             coded[key] = [_traverseTemplateAttributes(attr, codec) for attr in value]
         elif PathUtil.isString(value):
-            PathLog.debug("%s is a string" % key)
+            Path.Log.debug("%s is a string" % key)
             coded[key] = codec(value)
         else:
-            PathLog.debug("%s is %s" % (key, type(value)))
+            Path.Log.debug("%s is %s" % (key, type(value)))
             coded[key] = value
     return coded
 
@@ -394,7 +394,7 @@ class SetupSheet:
         return list(sorted(ops))
 
     def setOperationProperties(self, obj, opName):
-        PathLog.track(obj.Label, opName)
+        Path.Log.track(obj.Label, opName)
         try:
             op = _RegisteredOps[opName]
             for prop in op.properties():
@@ -402,7 +402,7 @@ class SetupSheet:
                 if hasattr(self.obj, propName):
                     setattr(obj, prop, getattr(self.obj, propName))
         except Exception:
-            PathLog.info("SetupSheet has no support for {}".format(opName))
+            Path.Log.info("SetupSheet has no support for {}".format(opName))
 
     def onDocumentRestored(self, obj):
 

@@ -24,7 +24,6 @@ import FreeCAD
 import Part
 import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
@@ -46,10 +45,10 @@ TWIN = 5
 BORDERLINE = 6
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 translate = FreeCAD.Qt.translate
@@ -181,7 +180,7 @@ def _calculate_depth(MIC, geom):
     # given a maximum inscribed circle (MIC) and tool angle,
     # return depth of cut relative to zStart.
     depth = geom.start - round(MIC * geom.scale, 4)
-    PathLog.debug("zStart value: {} depth: {}".format(geom.start, depth))
+    Path.Log.debug("zStart value: {} depth: {}".format(geom.start, depth))
 
     return max(depth, geom.stop)
 
@@ -264,7 +263,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         def insert_many_wires(vd, wires):
             for wire in wires:
-                PathLog.debug("discretize value: {}".format(obj.Discretize))
+                Path.Log.debug("discretize value: {}".format(obj.Discretize))
                 pts = wire.discretize(QuasiDeflection=obj.Discretize)
                 ptv = [FreeCAD.Vector(p.x, p.y) for p in pts]
                 ptv.append(ptv[0])
@@ -336,10 +335,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
     def opExecute(self, obj):
         """opExecute(obj) ... process engraving operation"""
-        PathLog.track()
+        Path.Log.track()
 
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
-            PathLog.error(
+            Path.Log.error(
                 translate(
                     "Path_Vcarve",
                     "VCarve requires an engraving cutter with CuttingEdgeAngle",
@@ -347,7 +346,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             )
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
-            PathLog.error(
+            Path.Log.error(
                 translate(
                     "Path_Vcarve", "Engraver Cutting Edge Angle must be < 180 degrees."
                 )
@@ -376,7 +375,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             if faces:
                 self.buildPathMedial(obj, faces)
             else:
-                PathLog.error(
+                Path.Log.error(
                     translate(
                         "PathVcarve",
                         "The Job Base Object has no engraveable element. Engraving operation will produce no output.",
@@ -384,7 +383,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 )
 
         except Exception as e:
-            PathLog.error(
+            Path.Log.error(
                 "Error processing Base object. Engraving operation will produce no output."
             )
 

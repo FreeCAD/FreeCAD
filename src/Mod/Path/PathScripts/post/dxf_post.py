@@ -22,12 +22,11 @@
 # ***************************************************************************/
 from __future__ import print_function
 import FreeCAD
-import datetime
-import PathScripts.PathGeom as PathGeom
 import Part
-import importDXF
 import Path
-import PathScripts.PathLog as PathLog
+import PathScripts.PathGeom as PathGeom
+import datetime
+import importDXF
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
@@ -52,11 +51,11 @@ now = datetime.datetime.now()
 OUTPUT_HEADER = True
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
@@ -103,7 +102,7 @@ def parse(pathobj):
     # Gotta start somewhere.  Assume 0,0,0
     curPoint = FreeCAD.Vector(0, 0, 0)
     for c in pathobj.Path.Commands:
-        PathLog.debug("{} -> {}".format(curPoint, c))
+        Path.Log.debug("{} -> {}".format(curPoint, c))
         if "Z" in c.Parameters:
             newparams = c.Parameters
             newparams.pop("Z", None)
@@ -114,7 +113,7 @@ def parse(pathobj):
 
         # ignore gcode that isn't moving
         if flatcommand.Name not in feedcommands + rapidcommands:
-            PathLog.debug("non move")
+            Path.Log.debug("non move")
             continue
 
         # ignore pure vertical feed and rapid
@@ -122,13 +121,13 @@ def parse(pathobj):
             flatcommand.Parameters.get("X", curPoint.x) == curPoint.x
             and flatcommand.Parameters.get("Y", curPoint.y) == curPoint.y
         ):
-            PathLog.debug("vertical")
+            Path.Log.debug("vertical")
             continue
 
         # feeding move.  Build an edge
         if flatcommand.Name in feedcommands:
             edges.append(PathGeom.edgeForCmd(flatcommand, curPoint))
-            PathLog.debug("feeding move")
+            Path.Log.debug("feeding move")
 
         # update the curpoint
         curPoint.x = flatcommand.Parameters.get("X", curPoint.x)

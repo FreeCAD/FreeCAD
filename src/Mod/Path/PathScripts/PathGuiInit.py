@@ -20,16 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathLog as PathLog
+import Path
 import subprocess
 
 LOGLEVEL = False
 
 if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 Processed = False
 
@@ -37,7 +37,7 @@ Processed = False
 def Startup():
     global Processed
     if not Processed:
-        PathLog.debug("Initializing PathGui")
+        Path.Log.debug("Initializing PathGui")
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
         from PathScripts import PathComment
@@ -98,4 +98,4 @@ def Startup():
 
         Processed = True
     else:
-        PathLog.debug("Skipping PathGui initialisation")
+        Path.Log.debug("Skipping PathGui initialisation")

@@ -22,16 +22,16 @@
 
 import FreeCAD
 import Part
+import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathOpTools as PathOpTools
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 import math
 
 from FreeCAD import Vector
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+# Path.Log.trackModule(Path.Log.thisModule())
 
 
 def getWire(obj, nr=0):

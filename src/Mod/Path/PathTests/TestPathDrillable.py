@@ -20,18 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-# import Path
 import FreeCAD as App
-import PathScripts.PathLog as PathLog
+import Path
 import PathTests.PathTestUtils as PathTestUtils
 import PathScripts.drillableLib as drillableLib
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class TestPathDrillable(PathTestUtils.PathTestBase):

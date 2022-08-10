@@ -24,10 +24,10 @@ from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
+import Path
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts
 import PathScripts.PathGui as PathGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
@@ -39,10 +39,10 @@ Part = LazyLoader("Part", globals(), "Part")
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -111,7 +111,7 @@ class ViewProvider:
         return False
 
     def setupContextMenu(self, vobj, menu):
-        PathLog.track()
+        Path.Log.track()
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("Path", "Edit"), menu)
@@ -126,7 +126,7 @@ class ViewProvider:
 
 
 def Create(name="Default Tool", tool=None, toolNumber=1):
-    PathLog.track(tool, toolNumber)
+    Path.Log.track(tool, toolNumber)
 
     obj = PathScripts.PathToolController.Create(name, tool, toolNumber)
     ViewProvider(obj.ViewObject)
@@ -161,7 +161,7 @@ class CommandPathToolController(object):
         return self.selectedJob() is not None
 
     def Activated(self):
-        PathLog.track()
+        Path.Log.track()
         job = self.selectedJob()
         if job:
             tool = PathToolBitGui.ToolBitSelector().getTool()
@@ -265,7 +265,7 @@ class ToolControllerEditor(object):
                 tc.Tool = self.editor.tool
 
         except Exception as e:
-            PathLog.error("Error updating TC: {}".format(e))
+            Path.Log.error("Error updating TC: {}".format(e))
 
     def refresh(self):
         self.form.blockSignals(True)
@@ -353,7 +353,7 @@ class DlgToolControllerEdit:
 
         rc = False
         if not self.editor.form.exec_():
-            PathLog.info("revert")
+            Path.Log.info("revert")
             self.obj.Proxy.setFromTemplate(self.obj, restoreTC)
             rc = True
         return rc

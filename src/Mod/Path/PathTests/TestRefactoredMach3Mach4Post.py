@@ -25,14 +25,12 @@ from importlib import reload
 
 import FreeCAD
 
-# import Part
 import Path
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 from PathScripts.post import refactored_mach3_mach4_post as postprocessor
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):

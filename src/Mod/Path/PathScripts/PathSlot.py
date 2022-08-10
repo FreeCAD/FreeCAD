@@ -32,7 +32,6 @@ __contributors__ = ""
 import FreeCAD
 from PySide import QtCore
 import Path
-import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOp as PathOp
 import math
@@ -51,10 +50,10 @@ translate = FreeCAD.Qt.translate
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectSlot(PathOp.ObjectOp):
@@ -81,7 +80,7 @@ class ObjectSlot(PathOp.ObjectOp):
         self.initOpProperties(obj)  # Initialize operation-specific properties
 
         # For debugging
-        if PathLog.getLevel(PathLog.thisModule()) != 4:
+        if Path.Log.getLevel(Path.Log.thisModule()) != 4:
             obj.setEditorMode("ShowTempObjects", 2)  # hide
 
         if not hasattr(obj, "DoNotSetDefaultValues"):
@@ -89,7 +88,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def initOpProperties(self, obj, warn=False):
         """initOpProperties(obj) ... create operation specific properties"""
-        PathLog.track()
+        Path.Log.track()
         self.addNewProps = list()
 
         for (prtyp, nm, grp, tt) in self.opPropertyDefinitions():
@@ -251,7 +250,7 @@ class ObjectSlot(PathOp.ObjectOp):
         'raw' is list of (translated_text, data_string) tuples
         'translated' is list of translated string literals
         """
-        PathLog.track()
+        Path.Log.track()
 
         enums = {
             "CutPattern": [
@@ -296,11 +295,11 @@ class ObjectSlot(PathOp.ObjectOp):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -354,7 +353,7 @@ class ObjectSlot(PathOp.ObjectOp):
         in the operation.  Returns the updated enumerations dictionary.
         Existing property values must be stored, and then restored after
         the assignment of updated enumerations."""
-        PathLog.debug("updateEnumerations()")
+        Path.Log.debug("updateEnumerations()")
         # Save existing values
         pre_Ref1 = obj.Reference1
         pre_Ref2 = obj.Reference2
@@ -410,7 +409,7 @@ class ObjectSlot(PathOp.ObjectOp):
         self.initOpProperties(obj, warn=True)
         self.opApplyPropertyDefaults(obj, job, self.addNewProps)
 
-        mode = 2 if PathLog.getLevel(PathLog.thisModule()) != 4 else 0
+        mode = 2 if Path.Log.getLevel(Path.Log.thisModule()) != 4 else 0
         obj.setEditorMode("ShowTempObjects", mode)
 
         # Repopulate enumerations in case of changes
@@ -454,11 +453,11 @@ class ObjectSlot(PathOp.ObjectOp):
         if job:
             if job.Stock:
                 d = PathUtils.guessDepths(job.Stock.Shape, None)
-                PathLog.debug("job.Stock exists")
+                Path.Log.debug("job.Stock exists")
             else:
-                PathLog.debug("job.Stock NOT exist")
+                Path.Log.debug("job.Stock NOT exist")
         else:
-            PathLog.debug("job NOT exist")
+            Path.Log.debug("job NOT exist")
 
         if d is not None:
             obj.OpFinalDepth.Value = d.final_depth
@@ -467,8 +466,8 @@ class ObjectSlot(PathOp.ObjectOp):
             obj.OpFinalDepth.Value = -10
             obj.OpStartDepth.Value = 10
 
-        PathLog.debug("Default OpFinalDepth: {}".format(obj.OpFinalDepth.Value))
-        PathLog.debug("Default OpStartDepth: {}".format(obj.OpStartDepth.Value))
+        Path.Log.debug("Default OpFinalDepth: {}".format(obj.OpFinalDepth.Value))
+        Path.Log.debug("Default OpStartDepth: {}".format(obj.OpStartDepth.Value))
 
     def opApplyPropertyLimits(self, obj):
         """opApplyPropertyLimits(obj) ... Apply necessary limits to user input property values before performing main operation."""
@@ -485,12 +484,12 @@ class ObjectSlot(PathOp.ObjectOp):
                         fbb = base.Shape.getElement(sub).BoundBox
                         zmin = min(zmin, fbb.ZMin)
                     except Part.OCCError as e:
-                        PathLog.error(e)
+                        Path.Log.error(e)
             obj.OpFinalDepth = zmin
 
     def opExecute(self, obj):
         """opExecute(obj) ... process surface operation"""
-        PathLog.track()
+        Path.Log.track()
 
         self.base = None
         self.shape1 = None
@@ -509,7 +508,7 @@ class ObjectSlot(PathOp.ObjectOp):
         self.arcRadius = 0.0
         self.newRadius = 0.0
         self.featureDetails = ["", ""]
-        self.isDebug = False if PathLog.getLevel(PathLog.thisModule()) != 4 else True
+        self.isDebug = False if Path.Log.getLevel(Path.Log.thisModule()) != 4 else True
         self.showDebugObjects = False
         self.stockZMin = self.job.Stock.Shape.BoundBox.ZMin
         CMDS = list()
@@ -630,14 +629,14 @@ class ObjectSlot(PathOp.ObjectOp):
 
             featureCount = len(subsList)
             if featureCount == 1:
-                PathLog.debug("Reference 1: {}".format(obj.Reference1))
+                Path.Log.debug("Reference 1: {}".format(obj.Reference1))
                 sub1 = subsList[0]
                 shape_1 = getattr(base.Shape, sub1)
                 self.shape1 = shape_1
                 pnts = self._processSingle(obj, shape_1, sub1)
             else:
-                PathLog.debug("Reference 1: {}".format(obj.Reference1))
-                PathLog.debug("Reference 2: {}".format(obj.Reference2))
+                Path.Log.debug("Reference 1: {}".format(obj.Reference1))
+                Path.Log.debug("Reference 2: {}".format(obj.Reference2))
                 sub1 = subsList[0]
                 sub2 = subsList[1]
                 shape_1 = getattr(base.Shape, sub1)
@@ -662,16 +661,16 @@ class ObjectSlot(PathOp.ObjectOp):
     def _finishArc(self, obj, pnts, featureCnt):
         """This method finishes an Arc Slot operation.
         It returns the gcode for the slot operation."""
-        PathLog.debug("arc center: {}".format(self.arcCenter))
+        Path.Log.debug("arc center: {}".format(self.arcCenter))
         self._addDebugObject(
             Part.makeLine(self.arcCenter, self.arcMidPnt), "CentToMidPnt"
         )
 
-        # PathLog.debug('Pre-offset points are:\np1 = {}\np2 = {}'.format(p1, p2))
+        # Path.Log.debug('Pre-offset points are:\np1 = {}\np2 = {}'.format(p1, p2))
         if obj.ExtendRadius.Value != 0:
             # verify offset does not force radius < 0
             newRadius = self.arcRadius + obj.ExtendRadius.Value
-            PathLog.debug(
+            Path.Log.debug(
                 "arc radius: {};  offset radius: {}".format(self.arcRadius, newRadius)
             )
             if newRadius <= 0:
@@ -686,11 +685,11 @@ class ObjectSlot(PathOp.ObjectOp):
                 pnts = self._makeOffsetArc(p1, p2, self.arcCenter, newRadius)
                 self.newRadius = newRadius
         else:
-            PathLog.debug("arc radius: {}".format(self.arcRadius))
+            Path.Log.debug("arc radius: {}".format(self.arcRadius))
             self.newRadius = self.arcRadius
 
         # Apply path extension for arcs
-        # PathLog.debug('Pre-extension points are:\np1 = {}\np2 = {}'.format(p1, p2))
+        # Path.Log.debug('Pre-extension points are:\np1 = {}\np2 = {}'.format(p1, p2))
         if self.isArc == 1:
             # Complete circle
             if obj.ExtendPathStart.Value != 0 or obj.ExtendPathEnd.Value != 0:
@@ -712,9 +711,9 @@ class ObjectSlot(PathOp.ObjectOp):
             return False
 
         (p1, p2) = pnts
-        # PathLog.error('Post-offset points are:\np1 = {}\np2 = {}'.format(p1, p2))
+        # Path.Log.error('Post-offset points are:\np1 = {}\np2 = {}'.format(p1, p2))
         if self.isDebug:
-            PathLog.debug("Path Points are:\np1 = {}\np2 = {}".format(p1, p2))
+            Path.Log.debug("Path Points are:\np1 = {}\np2 = {}".format(p1, p2))
             if p1.sub(p2).Length != 0:
                 self._addDebugObject(Part.makeLine(p1, p2), "Path")
 
@@ -727,7 +726,7 @@ class ObjectSlot(PathOp.ObjectOp):
             msg += translate("Path_Slot", "operation collides with model.")
             FreeCAD.Console.PrintError(msg + "\n")
 
-        # PathLog.warning('Unable to create G-code.  _makeArcGCode() is incomplete.')
+        # Path.Log.warning('Unable to create G-code.  _makeArcGCode() is incomplete.')
         cmds = self._makeArcGCode(obj, p1, p2)
         return cmds
 
@@ -790,7 +789,7 @@ class ObjectSlot(PathOp.ObjectOp):
         )
 
         if self.isDebug:
-            PathLog.debug("G-code arc command is: {}".format(PATHS[path_index][2]))
+            Path.Log.debug("G-code arc command is: {}".format(PATHS[path_index][2]))
 
         return CMDS
 
@@ -808,7 +807,7 @@ class ObjectSlot(PathOp.ObjectOp):
                         pnts = self._processSingleVertFace(obj, BE)
                         perpZero = False
                 elif self.shapeType1 == "Edge" and self.shapeType2 == "Edge":
-                    PathLog.debug("_finishLine() Perp, featureCnt == 2")
+                    Path.Log.debug("_finishLine() Perp, featureCnt == 2")
             if perpZero:
                 (p1, p2) = pnts
                 initPerpDist = p1.sub(p2).Length
@@ -825,7 +824,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 if self.featureDetails[0] == "arc" and self.featureDetails[1] == "arc":
                     perpZero = False
                 elif self._isParallel(self.dYdX1, self.dYdX2):
-                    PathLog.debug("_finishLine() StE, featureCnt == 2 // edges")
+                    Path.Log.debug("_finishLine() StE, featureCnt == 2 // edges")
                     (p1, p2) = pnts
                     edg1_len = self.shape1.Length
                     edg2_len = self.shape2.Length
@@ -862,7 +861,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         (p1, p2) = pnts
         if self.isDebug:
-            PathLog.debug("Path Points are:\np1 = {}\np2 = {}".format(p1, p2))
+            Path.Log.debug("Path Points are:\np1 = {}\np2 = {}".format(p1, p2))
             if p1.sub(p2).Length != 0:
                 self._addDebugObject(Part.makeLine(p1, p2), "Path")
 
@@ -946,7 +945,7 @@ class ObjectSlot(PathOp.ObjectOp):
         if cat1 == "Face":
             pnts = False
             norm = shape_1.normalAt(0.0, 0.0)
-            PathLog.debug("{}.normalAt(): {}".format(sub1, norm))
+            Path.Log.debug("{}.normalAt(): {}".format(sub1, norm))
 
             if PathGeom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
                 # Horizontal face
@@ -978,7 +977,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 done = True
 
         elif cat1 == "Edge":
-            PathLog.debug("Single edge")
+            Path.Log.debug("Single edge")
             pnts = self._processSingleEdge(obj, shape_1)
             if pnts:
                 (p1, p2) = pnts
@@ -998,7 +997,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _processSingleHorizFace(self, obj, shape):
         """Determine slot path endpoints from a single horizontally oriented face."""
-        PathLog.debug("_processSingleHorizFace()")
+        Path.Log.debug("_processSingleHorizFace()")
         lineTypes = ["Part::GeomLine"]
 
         def getRadians(self, E):
@@ -1056,19 +1055,19 @@ class ObjectSlot(PathOp.ObjectOp):
                             flag += 1
                     if debug:
                         msg = "Erroneous Curve.TypeId: {}".format(debug)
-                        PathLog.debug(msg)
+                        Path.Log.debug(msg)
 
         pairCnt = len(parallel_edge_pairs)
         if pairCnt > 1:
             parallel_edge_pairs.sort(key=lambda tup: tup[0].Length, reverse=True)
 
         if self.isDebug:
-            PathLog.debug(" -pairCnt: {}".format(pairCnt))
+            Path.Log.debug(" -pairCnt: {}".format(pairCnt))
             for (a, b) in parallel_edge_pairs:
-                PathLog.debug(
+                Path.Log.debug(
                     " -pair: {}, {}".format(round(a.Length, 4), round(b.Length, 4))
                 )
-            PathLog.debug(" -parallel_edge_flags: {}".format(parallel_edge_flags))
+            Path.Log.debug(" -parallel_edge_flags: {}".format(parallel_edge_flags))
 
         if pairCnt == 0:
             msg = translate("Path_Slot", "No parallel edges identified.")
@@ -1104,7 +1103,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _processSingleComplexFace(self, obj, shape):
         """Determine slot path endpoints from a single complex face."""
-        PathLog.debug("_processSingleComplexFace()")
+        Path.Log.debug("_processSingleComplexFace()")
         pnts = list()
 
         def zVal(p):
@@ -1119,7 +1118,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processSingleVertFace(self, obj, shape):
         """Determine slot path endpoints from a single vertically oriented face
         with no single bottom edge."""
-        PathLog.debug("_processSingleVertFace()")
+        Path.Log.debug("_processSingleVertFace()")
         eCnt = len(shape.Edges)
         V0 = shape.Edges[0].Vertexes[0]
         V1 = shape.Edges[eCnt - 1].Vertexes[1]
@@ -1149,7 +1148,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _processSingleEdge(self, obj, edge):
         """Determine slot path endpoints from a single horizontally oriented edge."""
-        PathLog.debug("_processSingleEdge()")
+        Path.Log.debug("_processSingleEdge()")
         tolrnc = 0.0000001
         lineTypes = ["Part::GeomLine"]
         curveTypes = ["Part::GeomCircle"]
@@ -1180,7 +1179,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Circle radius (not used)
             # r = vP1P2.Length * vP2P3.Length * vP3P1.Length / 2 / l
             if round(L, 8) == 0.0:
-                PathLog.error("The three points are colinear, arc is a straight.")
+                Path.Log.error("The three points are colinear, arc is a straight.")
                 return False
 
             # Sphere center.
@@ -1205,7 +1204,7 @@ class ObjectSlot(PathOp.ObjectOp):
         elif edge.Curve.TypeId in curveTypes:
             if len(edge.Vertexes) == 1:
                 # Circle edge
-                PathLog.debug("Arc with single vertex.")
+                Path.Log.debug("Arc with single vertex.")
                 if oversizedTool(edge.BoundBox.XLength):
                     return False
 
@@ -1222,7 +1221,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 self.arcRadius = edge.BoundBox.XLength / 2.0
             else:
                 # Arc edge
-                PathLog.debug("Arc with multiple vertices.")
+                Path.Log.debug("Arc with multiple vertices.")
                 self.isArc = 2
                 midPnt = edge.valueAt(edge.getParameterByLength(edge.Length / 2.0))
                 if not isHorizontal(V1.Z, V2.Z, midPnt.z):
@@ -1253,7 +1252,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processDouble(self, obj, shape_1, sub1, shape_2, sub2):
         """This is the control method for slots based on a
         two Base Geometry features."""
-        PathLog.debug("_processDouble()")
+        Path.Log.debug("_processDouble()")
 
         p1 = None
         p2 = None
@@ -1283,7 +1282,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         # Parallel check for twin face, and face-edge cases
         if dYdX1 and dYdX2:
-            PathLog.debug("dYdX1, dYdX2: {}, {}".format(dYdX1, dYdX2))
+            Path.Log.debug("dYdX1, dYdX2: {}, {}".format(dYdX1, dYdX2))
             if not self._isParallel(dYdX1, dYdX2):
                 if self.shapeType1 != "Edge" or self.shapeType2 != "Edge":
                     msg = translate("Path_Slot", "Selected geometry not parallel.")
@@ -1389,7 +1388,7 @@ class ObjectSlot(PathOp.ObjectOp):
         p = None
         dYdX = None
         cat = sub[:4]
-        PathLog.debug("sub-feature is {}".format(cat))
+        Path.Log.debug("sub-feature is {}".format(cat))
         Ref = getattr(obj, "Reference" + str(pNum))
         if cat == "Face":
             BE = self._getBottomEdge(shape)
@@ -1488,7 +1487,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     2 * ExtRadians
                 )  # positive Ext lengthens slot so decrease start point angle
 
-            # PathLog.debug('begExt angles are: {},  {}'.format(beginRadians, math.degrees(beginRadians)))
+            # Path.Log.debug('begExt angles are: {},  {}'.format(beginRadians, math.degrees(beginRadians)))
 
             chord.rotate(origin, FreeCAD.Vector(0, 0, 1), math.degrees(beginRadians))
             chord.translate(self.arcCenter)
@@ -1509,7 +1508,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     2 * ExtRadians
                 )  # negative Ext shortens slot so decrease end point angle
 
-            # PathLog.debug('endExt angles are: {},  {}'.format(endRadians, math.degrees(endRadians)))
+            # Path.Log.debug('endExt angles are: {},  {}'.format(endRadians, math.degrees(endRadians)))
 
             chord.rotate(origin, FreeCAD.Vector(0, 0, 1), math.degrees(endRadians))
             chord.translate(self.arcCenter)
@@ -1773,7 +1772,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _makeReference1Enumerations(self, sub, single=False):
         """Customize Reference1 enumerations based on feature type."""
-        PathLog.debug("_makeReference1Enumerations()")
+        Path.Log.debug("_makeReference1Enumerations()")
         cat = sub[:4]
         if single:
             if cat == "Face":
@@ -1789,7 +1788,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _makeReference2Enumerations(self, sub):
         """Customize Reference2 enumerations based on feature type."""
-        PathLog.debug("_makeReference2Enumerations()")
+        Path.Log.debug("_makeReference2Enumerations()")
         cat = sub[:4]
         if cat == "Vert":
             return ["Vertex"]
@@ -1859,7 +1858,7 @@ class ObjectSlot(PathOp.ObjectOp):
             if cmn.Volume > 0.000001:
                 return True
         except Exception:
-            PathLog.debug("Failed to complete path collision check.")
+            Path.Log.debug("Failed to complete path collision check.")
 
         return False
 
@@ -1917,7 +1916,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
             # verify offset does not force radius < 0
             newRadius = arcRadius - rad
-            # PathLog.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
+            # Path.Log.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
             if newRadius <= 0:
                 msg = translate(
                     "Path_Slot", "Current offset value produces negative radius."
@@ -1931,7 +1930,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Arc 2 - outside
             # verify offset does not force radius < 0
             newRadius = arcRadius + rad
-            # PathLog.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
+            # Path.Log.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
             if newRadius <= 0:
                 msg = translate(
                     "Path_Slot", "Current offset value produces negative radius."
@@ -1975,7 +1974,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 # print("volume=", cmn.Volume)
                 return True
         except Exception:
-            PathLog.debug("Failed to complete path collision check.")
+            Path.Log.debug("Failed to complete path collision check.")
 
         return False
 

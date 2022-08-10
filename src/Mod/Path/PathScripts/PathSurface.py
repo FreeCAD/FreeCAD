@@ -47,7 +47,6 @@ except ImportError:
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathSurfaceSupport as PathSurfaceSupport
 import PathScripts.PathUtils as PathUtils
@@ -64,10 +63,10 @@ if FreeCAD.GuiUp:
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectSurface(PathOp.ObjectOp):
@@ -92,7 +91,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.initOpProperties(obj)  # Initialize operation-specific properties
 
         # For debugging
-        if PathLog.getLevel(PathLog.thisModule()) != 4:
+        if Path.Log.getLevel(Path.Log.thisModule()) != 4:
             obj.setEditorMode("ShowTempObjects", 2)  # hide
 
         if not hasattr(obj, "DoNotSetDefaultValues"):
@@ -603,7 +602,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.initOpProperties(obj, warn=True)
         self.opApplyPropertyDefaults(obj, job, self.addNewProps)
 
-        mode = 2 if PathLog.getLevel(PathLog.thisModule()) != 4 else 0
+        mode = 2 if Path.Log.getLevel(Path.Log.thisModule()) != 4 else 0
         obj.setEditorMode("ShowTempObjects", mode)
 
         # Repopulate enumerations in case of changes
@@ -645,11 +644,11 @@ class ObjectSurface(PathOp.ObjectOp):
         if job:
             if job.Stock:
                 d = PathUtils.guessDepths(job.Stock.Shape, None)
-                PathLog.debug("job.Stock exists")
+                Path.Log.debug("job.Stock exists")
             else:
-                PathLog.debug("job.Stock NOT exist")
+                Path.Log.debug("job.Stock NOT exist")
         else:
-            PathLog.debug("job NOT exist")
+            Path.Log.debug("job NOT exist")
 
         if d is not None:
             obj.OpFinalDepth.Value = d.final_depth
@@ -658,8 +657,8 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.OpFinalDepth.Value = -10
             obj.OpStartDepth.Value = 10
 
-        PathLog.debug("Default OpFinalDepth: {}".format(obj.OpFinalDepth.Value))
-        PathLog.debug("Default OpStartDepth: {}".format(obj.OpStartDepth.Value))
+        Path.Log.debug("Default OpFinalDepth: {}".format(obj.OpFinalDepth.Value))
+        Path.Log.debug("Default OpStartDepth: {}".format(obj.OpStartDepth.Value))
 
     def opApplyPropertyLimits(self, obj):
         """opApplyPropertyLimits(obj) ... Apply necessary limits to user input property values before performing main operation."""
@@ -684,20 +683,20 @@ class ObjectSurface(PathOp.ObjectOp):
         # Limit sample interval
         if obj.SampleInterval.Value < 0.0001:
             obj.SampleInterval.Value = 0.0001
-            PathLog.error("Sample interval limits are 0.001 to 25.4 millimeters.")
+            Path.Log.error("Sample interval limits are 0.001 to 25.4 millimeters.")
 
         if obj.SampleInterval.Value > 25.4:
             obj.SampleInterval.Value = 25.4
-            PathLog.error("Sample interval limits are 0.001 to 25.4 millimeters.")
+            Path.Log.error("Sample interval limits are 0.001 to 25.4 millimeters.")
 
         # Limit cut pattern angle
         if obj.CutPatternAngle < -360.0:
             obj.CutPatternAngle = 0.0
-            PathLog.error("Cut pattern angle limits are +-360 degrees.")
+            Path.Log.error("Cut pattern angle limits are +-360 degrees.")
 
         if obj.CutPatternAngle >= 360.0:
             obj.CutPatternAngle = 0.0
-            PathLog.error("Cut pattern angle limits are +- 360 degrees.")
+            Path.Log.error("Cut pattern angle limits are +- 360 degrees.")
 
         # Limit StepOver to natural number percentage
         if obj.StepOver > 100.0:
@@ -708,11 +707,11 @@ class ObjectSurface(PathOp.ObjectOp):
         # Limit AvoidLastX_Faces to zero and positive values
         if obj.AvoidLastX_Faces < 0:
             obj.AvoidLastX_Faces = 0
-            PathLog.error("AvoidLastX_Faces: Only zero or positive values permitted.")
+            Path.Log.error("AvoidLastX_Faces: Only zero or positive values permitted.")
 
         if obj.AvoidLastX_Faces > 100:
             obj.AvoidLastX_Faces = 100
-            PathLog.error("AvoidLastX_Faces: Avoid last X faces count limited to 100.")
+            Path.Log.error("AvoidLastX_Faces: Avoid last X faces count limited to 100.")
 
     def opUpdateDepths(self, obj):
         if hasattr(obj, "Base") and obj.Base:
@@ -725,7 +724,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         fbb = base.Shape.getElement(sub).BoundBox
                         zmin = min(zmin, fbb.ZMin)
                     except Part.OCCError as e:
-                        PathLog.error(e)
+                        Path.Log.error(e)
             obj.OpFinalDepth = zmin
         elif self.job:
             if hasattr(obj, "BoundBox"):
@@ -741,7 +740,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def opExecute(self, obj):
         """opExecute(obj) ... process surface operation"""
-        PathLog.track()
+        Path.Log.track()
 
         self.modelSTLs = []
         self.safeSTLs = []
@@ -771,7 +770,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.showDebugObjects = False  # Set to true if you want a visual DocObjects created for some path construction objects
         self.showDebugObjects = obj.ShowTempObjects
         deleteTempsFlag = True  # Set to False for debugging
-        if PathLog.getLevel(PathLog.thisModule()) == 4:
+        if Path.Log.getLevel(Path.Log.thisModule()) == 4:
             deleteTempsFlag = False
         else:
             self.showDebugObjects = False
@@ -783,7 +782,7 @@ class ObjectSurface(PathOp.ObjectOp):
         JOB = PathUtils.findParentJob(obj)
         self.JOB = JOB
         if JOB is None:
-            PathLog.error(translate("PathSurface", "No JOB"))
+            Path.Log.error(translate("PathSurface", "No JOB"))
             return
         self.stockZMin = JOB.Stock.Shape.BoundBox.ZMin
 
@@ -803,7 +802,7 @@ class ObjectSurface(PathOp.ObjectOp):
         oclTool = PathSurfaceSupport.OCL_Tool(ocl, obj)
         self.cutter = oclTool.getOclTool()
         if not self.cutter:
-            PathLog.error(
+            Path.Log.error(
                 translate(
                     "PathSurface",
                     "Canceling 3D Surface operation. Error creating OCL cutter.",
@@ -933,12 +932,12 @@ class ObjectSurface(PathOp.ObjectOp):
             self.profileShapes = PSF.profileShapes
 
             for idx, model in enumerate(JOB.Model.Group):
-                PathLog.debug(idx)
+                Path.Log.debug(idx)
                 # Create OCL.stl model objects
                 PathSurfaceSupport._prepareModelSTLs(self, JOB, obj, idx, ocl)
 
                 if FACES[idx]:
-                    PathLog.debug(
+                    Path.Log.debug(
                         "Working on Model.Group[{}]: {}".format(idx, model.Label)
                     )
                     if idx > 0:
@@ -963,12 +962,12 @@ class ObjectSurface(PathOp.ObjectOp):
                         self._processCutAreas(JOB, obj, idx, FACES[idx], VOIDS[idx])
                     )
                 else:
-                    PathLog.debug("No data for model base: {}".format(model.Label))
+                    Path.Log.debug("No data for model base: {}".format(model.Label))
 
             # Save gcode produced
             self.commandlist.extend(CMDS)
         else:
-            PathLog.error("Failed to pre-process model and/or selected face(s).")
+            Path.Log.error("Failed to pre-process model and/or selected face(s).")
 
         # ######  CLOSING COMMANDS FOR OPERATION ######
 
@@ -1055,7 +1054,7 @@ class ObjectSurface(PathOp.ObjectOp):
         """_processCutAreas(JOB, obj, mdlIdx, FCS, VDS)...
         This method applies any avoided faces or regions to the selected faces.
         It then calls the correct scan method depending on the ScanType property."""
-        PathLog.debug("_processCutAreas()")
+        Path.Log.debug("_processCutAreas()")
 
         final = []
 
@@ -1108,7 +1107,7 @@ class ObjectSurface(PathOp.ObjectOp):
         It makes the necessary facial geometries for the actual cut area.
         It calls the correct Single or Multi-pass method as needed.
         It returns the gcode for the operation."""
-        PathLog.debug("_processPlanarOp()")
+        Path.Log.debug("_processPlanarOp()")
         final = []
         SCANDATA = []
 
@@ -1144,14 +1143,14 @@ class ObjectSurface(PathOp.ObjectOp):
             prflShp = self.profileShapes[mdlIdx][fsi]
             if prflShp is False:
                 msg = translate("PathSurface", "No profile geometry shape returned.")
-                PathLog.error(msg)
+                Path.Log.error(msg)
                 return []
             self.showDebugObject(prflShp, "NewProfileShape")
             # get offset path geometry and perform OCL scan with that geometry
             pathOffsetGeom = self._offsetFacesToPointData(obj, prflShp)
             if pathOffsetGeom is False:
                 msg = translate("PathSurface", "No profile path geometry returned.")
-                PathLog.error(msg)
+                Path.Log.error(msg)
                 return []
             profScan = [self._planarPerformOclScan(obj, pdc, pathOffsetGeom, True)]
 
@@ -1166,7 +1165,7 @@ class ObjectSurface(PathOp.ObjectOp):
             pathGeom = PGG.generatePathGeometry()
             if pathGeom is False:
                 msg = translate("PathSurface", "No clearing shape returned.")
-                PathLog.error(msg)
+                Path.Log.error(msg)
                 return []
             if obj.CutPattern == "Offset":
                 useGeom = self._offsetFacesToPointData(obj, pathGeom, profile=False)
@@ -1174,7 +1173,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     msg = translate(
                         "PathSurface", "No clearing path geometry returned."
                     )
-                    PathLog.error(msg)
+                    Path.Log.error(msg)
                     return []
                 geoScan = [self._planarPerformOclScan(obj, pdc, useGeom, True)]
             else:
@@ -1194,7 +1193,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         if len(SCANDATA) == 0:
             msg = translate("PathSurface", "No scan data to convert to Gcode.")
-            PathLog.error(msg)
+            Path.Log.error(msg)
             return []
 
         # Apply depth offset
@@ -1230,7 +1229,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return final
 
     def _offsetFacesToPointData(self, obj, subShp, profile=True):
-        PathLog.debug("_offsetFacesToPointData()")
+        Path.Log.debug("_offsetFacesToPointData()")
 
         offsetLists = []
         dist = obj.SampleInterval.Value / 5.0
@@ -1263,7 +1262,7 @@ class ObjectSurface(PathOp.ObjectOp):
         """_planarPerformOclScan(obj, pdc, pathGeom, offsetPoints=False)...
         Switching function for calling the appropriate path-geometry to OCL points conversion function
         for the various cut patterns."""
-        PathLog.debug("_planarPerformOclScan()")
+        Path.Log.debug("_planarPerformOclScan()")
         SCANS = []
 
         if offsetPoints or obj.CutPattern == "Offset":
@@ -1375,7 +1374,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     # Main planar scan functions
     def _planarDropCutSingle(self, JOB, obj, pdc, safePDC, depthparams, SCANDATA):
-        PathLog.debug("_planarDropCutSingle()")
+        Path.Log.debug("_planarDropCutSingle()")
 
         GCODE = [Path.Command("N (Beginning of Single-pass layer.)", {})]
         tolrnc = JOB.GeometryTolerance.Value
@@ -1513,7 +1512,7 @@ class ObjectSurface(PathOp.ObjectOp):
             #         lastPrvStpLast = prvStpLast
             prvStpLast = None
             lyrDep = depthparams[lyr]
-            PathLog.debug("Multi-pass lyrDep: {}".format(round(lyrDep, 4)))
+            Path.Log.debug("Multi-pass lyrDep: {}".format(round(lyrDep, 4)))
 
             # Cycle through step-over sections (line segments or arcs)
             for so in range(0, len(SCANDATA)):
@@ -1676,7 +1675,7 @@ class ObjectSurface(PathOp.ObjectOp):
             prevDepth = lyrDep
         # Efor
 
-        PathLog.debug("Multi-pass op has {} layers (step downs).".format(lyr + 1))
+        Path.Log.debug("Multi-pass op has {} layers (step downs).".format(lyr + 1))
 
         return GCODE
 
@@ -1877,9 +1876,9 @@ class ObjectSurface(PathOp.ObjectOp):
                 stepDown = obj.StepDown.Value if hasattr(obj, "StepDown") else 0
                 rtpd = min(height, p2.z + stepDown + 2)
             elif not p1:
-                PathLog.debug("_stepTransitionCmds() p1 is None")
+                Path.Log.debug("_stepTransitionCmds() p1 is None")
             elif not p2:
-                PathLog.debug("_stepTransitionCmds() p2 is None")
+                Path.Log.debug("_stepTransitionCmds() p2 is None")
 
         # Create raise, shift, and optional lower commands
         if height is not False:
@@ -2025,7 +2024,7 @@ class ObjectSurface(PathOp.ObjectOp):
         return (coPlanar, cmds)
 
     def _planarApplyDepthOffset(self, SCANDATA, DepthOffset):
-        PathLog.debug("Applying DepthOffset value: {}".format(DepthOffset))
+        Path.Log.debug("Applying DepthOffset value: {}".format(DepthOffset))
         lenScans = len(SCANDATA)
         for s in range(0, lenScans):
             SO = SCANDATA[s]  # StepOver
@@ -2047,7 +2046,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     # Main rotational scan functions
     def _processRotationalOp(self, JOB, obj, mdlIdx, compoundFaces=None):
-        PathLog.debug(
+        Path.Log.debug(
             "_processRotationalOp(self, JOB, obj, mdlIdx, compoundFaces=None)"
         )
 
@@ -2138,7 +2137,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 line
             ) in scanLines:  # extract circular set(ring) of points from scan lines
                 if len(line) != numPnts:
-                    PathLog.debug("Error: line lengths not equal")
+                    Path.Log.debug("Error: line lengths not equal")
                     return rngs
 
             for num in range(0, numPnts):
@@ -2301,7 +2300,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
             prevDepth = layDep
             lCnt += 1  # increment layer count
-            PathLog.debug(
+            Path.Log.debug(
                 "--Layer "
                 + str(lCnt)
                 + ": "
@@ -2330,7 +2329,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # if self.useTiltCutter == True:
         if obj.CutterTilt != 0.0:
             cutterOfst = layDep * math.sin(math.radians(obj.CutterTilt))
-            PathLog.debug("CutterTilt: cutterOfst is " + str(cutterOfst))
+            Path.Log.debug("CutterTilt: cutterOfst is " + str(cutterOfst))
 
         sumAdv = 0.0
         for adv in advances:
@@ -2686,7 +2685,7 @@ class ObjectSurface(PathOp.ObjectOp):
             if FR != 0.0:
                 FR += 2.0
 
-        PathLog.debug("ToolType: {}".format(obj.ToolController.Tool.ToolType))
+        Path.Log.debug("ToolType: {}".format(obj.ToolController.Tool.ToolType))
         if obj.ToolController.Tool.ToolType == "EndMill":
             # Standard End Mill
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
@@ -2716,7 +2715,7 @@ class ObjectSurface(PathOp.ObjectOp):
             return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
         else:
             # Default to standard end mill
-            PathLog.warning("Defaulting cutter to standard end mill.")
+            Path.Log.warning("Defaulting cutter to standard end mill.")
             return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
     def _getTransitionLine(self, pdc, p1, p2, obj):

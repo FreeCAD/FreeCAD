@@ -21,10 +21,11 @@
 # ***************************************************************************
 
 import FreeCAD
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import Path
 import PathScripts.PathAreaOp as PathAreaOp
-import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 __title__ = "Base Path Pocket Operation"
@@ -33,10 +34,10 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -79,11 +80,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         data = list()
         idx = 0 if dataType == "translated" else 1
 
-        PathLog.debug(enums)
+        Path.Log.debug(enums)
 
         for k, v in enumerate(enums):
             data.append((v, [tup[idx] for tup in enums[v]]))
-        PathLog.debug(data)
+        Path.Log.debug(data)
 
         return data
 
@@ -114,7 +115,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... create pocket specific properties.
         Do not overwrite, implement initPocketOp(obj) instead."""
-        PathLog.track()
+        Path.Log.track()
 
         # Pocket Properties
         obj.addProperty(
@@ -191,7 +192,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         self.initPocketOp(obj)
 
     def areaOpRetractTool(self, obj):
-        PathLog.debug("retracting tool: %d" % (not obj.KeepToolDown))
+        Path.Log.debug("retracting tool: %d" % (not obj.KeepToolDown))
         return not obj.KeepToolDown
 
     def areaOpUseProjection(self, obj):
@@ -200,7 +201,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's area parameters"""
-        PathLog.track()
+        Path.Log.track()
         params = {}
         params["Fill"] = 0
         params["Coplanar"] = 0
@@ -245,7 +246,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
             obj.PocketLastStepOver = 0
-        PathLog.track()
+        Path.Log.track()
 
     def areaOpPathParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters"""
