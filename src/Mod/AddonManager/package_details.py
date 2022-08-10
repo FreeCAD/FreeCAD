@@ -35,7 +35,7 @@ import FreeCAD
 import FreeCADGui
 
 import addonmanager_utilities as utils
-from addonmanager_workers import GetMacroDetailsWorker, CheckSingleUpdateWorker
+from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from Addon import Addon
 import NetworkManager
 from change_branch import ChangeBranchDialog

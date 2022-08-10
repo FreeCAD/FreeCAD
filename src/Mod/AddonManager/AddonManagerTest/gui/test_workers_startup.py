@@ -155,3 +155,12 @@ class TestWorkersStartup(unittest.TestCase):
         """ Callback for adding macros from the cache """
         print (f"Macro Cache Test: {addon.name}")
         self.macro_from_cache_counter += 1
+
+    def test_update_checker(self):
+        """ Test the code that checks a single addon for available updates. """
+
+        # First, install a specific Addon of each kind
+
+        # Arrange for those addons to be out-of-date
+
+        # Check for updates
