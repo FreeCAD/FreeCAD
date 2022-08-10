@@ -657,7 +657,7 @@ class Writer(object):
                                     "Potential",
                                     "Parameter",
                                     "Electric Potential"
-                                    ),
+                                )
                                 # scale to match SI units
                                 obj.Potential = savePotential * 1e6
                             potential = float(obj.Potential.getValueAs("V"))
