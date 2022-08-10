@@ -648,6 +648,18 @@ class Writer(object):
                 for name in obj.References[0][1]:
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
+                            # Potential was once a float and scaled not fitting SI units
+                            if isinstance(obj.Potential, float):
+                                savePotential = obj.Potential
+                                obj.removeProperty("Potential")
+                                obj.addProperty(
+                                    "App::PropertyElectricPotential",
+                                    "Potential",
+                                    "Parameter",
+                                    "Electric Potential"
+                                    ),
+                                # scale to match SI units
+                                obj.Potential = savePotential * 1e6
                             potential = float(obj.Potential.getValueAs("V"))
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
