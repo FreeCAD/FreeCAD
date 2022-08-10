@@ -130,12 +130,9 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.SteadyStateMinIterations = 1
         solver_obj.SteadyStateMaxIterations = 10
         eq_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
-        eq_heat.Bubbles = True
         eq_heat.Priority = 2
         eq_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_obj)
-        eq_elasticity.Bubbles = True
         eq_elasticity.Priority = 1
-        eq_elasticity.LinearSolverType = "Direct"
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "
@@ -156,12 +153,12 @@ def setup(doc=None, solvertype="ccxtools"):
     material_obj_bottom = ObjectsFem.makeMaterialSolid(doc, "MaterialCopper")
     mat = material_obj_bottom.Material
     mat["Name"] = "Copper"
-    mat["YoungsModulus"] = "130000 MPa"
-    mat["PoissonRatio"] = "0.354"
+    mat["YoungsModulus"] = "119 GPa"
+    mat["PoissonRatio"] = "0.343"
     mat["SpecificHeat"] = "385 J/kg/K"
-    mat["ThermalConductivity"] = "200 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.00002 m/m/K"
-    mat["Density"] = "1.00 kg/m^3"
+    mat["ThermalConductivity"] = "398 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "0.0000165 m/m/K"
+    mat["Density"] = "8960.0 kg/m^3"
     material_obj_bottom.Material = mat
     material_obj_bottom.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj_bottom)
@@ -169,11 +166,12 @@ def setup(doc=None, solvertype="ccxtools"):
     material_obj_top = ObjectsFem.makeMaterialSolid(doc, "MaterialInvar")
     mat = material_obj_top.Material
     mat["Name"] = "Invar"
-    mat["YoungsModulus"] = "137000 MPa"
-    mat["PoissonRatio"] = "0.28"
-    mat["SpecificHeat"] = "510 J/kg/K"
-    mat["ThermalConductivity"] = "13 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "0.0000012 m/m/K"
+    mat["Density"] = "8150 kg/m^3"
+    mat["YoungsModulus"] = "140 GPa"
+    mat["PoissonRatio"] = "0.29"
+    mat["SpecificHeat"] = "515 J/kg/K"
+    mat["ThermalConductivity"] = "13.5 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "0.00000125 m/m/K"
     material_obj_top.Material = mat
     material_obj_top.References = [(geom_obj, "Solid2")]
     analysis.addObject(material_obj_top)
@@ -192,20 +190,21 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_inittemp)
 
     # constraint temperature
-    con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperature")
+    con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureHot")
     con_temp.References = [
-        (geom_obj, "Face1"),
-        (geom_obj, "Face2"),
-        (geom_obj, "Face3"),
-        (geom_obj, "Face4"),
         (geom_obj, "Face5"),
-        (geom_obj, "Face7"),
-        (geom_obj, "Face8"),
-        (geom_obj, "Face9"),
-        (geom_obj, "Face10"),
-        (geom_obj, "Face11"),
+        (geom_obj, "Face11")
     ]
     con_temp.Temperature = 373.0
+    con_temp.CFlux = 0.0
+    analysis.addObject(con_temp)
+
+    con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureNormal")
+    con_temp.References = [
+        (geom_obj, "Face1"),
+        (geom_obj, "Face7")
+    ]
+    con_temp.Temperature = 273.0
     con_temp.CFlux = 0.0
     analysis.addObject(con_temp)
 
