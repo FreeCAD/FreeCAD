@@ -810,10 +810,22 @@ class Writer(object):
             equation.ExecSolver = electricforce.SOLVER_EXEC_METHODS
             equation.ExecSolver = "After Timestep"
 
+    def _haveMaterialSolid(self):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined
+            if not ("KinematicViscosity" in m):
+                return True
+        return False
+
     def _handleElasticity(self):
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
+                if not self._haveMaterialSolid():
+                    raise WriteError(
+                        "The Elasticity equation requires at least one body with a solid material!"
+                    )
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -1176,9 +1188,12 @@ class Writer(object):
             refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
             for name in bodies:
                 self._material(name, "Reference Temperature", refTemp)
-        # get the material data for all boddies
+        # get the material data for all bodies
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
+            # don't evaluate fluid material
+            if "KinematicViscosity" in m:
+                break
             refs = (
                 obj.References[0][1]
                 if obj.References
@@ -1216,31 +1231,30 @@ class Writer(object):
             youngsModulus *= 1e3
         return youngsModulus
 
-    def _isMaterialFlow(self, body):
-        mat = self._getBodyMaterial(body).Material
-        return "KinematicViscosity" in mat
+    def _haveMaterialFluid(self):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined 
+            if "KinematicViscosity" in m:
+                return True
+        return False
 
     def _handleFlow(self):
         activeIn = []
-        hasFluidMaterial = True
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
-                hasFluidMaterial = False
+                if not self._haveMaterialFluid():
+                    raise WriteError(
+                        "The Flow equation requires at least one body with a fluid material!"
+                    )
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllBodies()
                 solverSection = self._getFlowSolver(equation)
                 for body in activeIn:
-                    if self._isMaterialFlow(body):
-                        self._addSolver(body, solverSection)
-                        hasFluidMaterial = True
-                if hasFluidMaterial: 
-                    self._handleFlowEquation(activeIn, equation)
-        if not hasFluidMaterial:
-            raise WriteError(
-                "The Flow equation requires at least one body with a fluid material!"
-            )
+                    self._addSolver(body, solverSection)
+                self._handleFlowEquation(activeIn, equation)
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
