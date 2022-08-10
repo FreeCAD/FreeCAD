@@ -12,6 +12,7 @@ KindOfMaterial = Aluminium
 [Mechanical]
 Density = 2700 kg/m^3
 PoissonRatio = 0.35
+ShearModulus = 25.0 GPa
 UltimateTensileStrength = 310 MPa
 YoungsModulus = 70000 MPa
 
@@ -19,3 +20,6 @@ YoungsModulus = 70000 MPa
 SpecificHeat = 897.0 J/kg/K
 ThermalConductivity = 237.0 W/m/K
 ThermalExpansionCoefficient = 23.1 µm/m/K
+
+[Electrical]
+ElectricalConductivity = 370370.4 S/m

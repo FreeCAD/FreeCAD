@@ -32,10 +32,12 @@ SET (MaterialLib_Files
     StandardMaterial/AlZn4-5Mg1F35.FCMat
     StandardMaterial/CalculiX-Steel.FCMat
     StandardMaterial/Concrete-Generic.FCMat
+    StandardMaterial/Copper-Generic.FCMat
     StandardMaterial/Glass-E-GlassFibre.FCMat
     StandardMaterial/Glass-Generic.FCMat
     StandardMaterial/Glass-S2-GlassFibre.FCMat
     StandardMaterial/Graphite.FCMat
+    StandardMaterial/Invar-Generic.FCMat
     StandardMaterial/PA6-Generic.FCMat
     StandardMaterial/PET-Generic.FCMat
     StandardMaterial/PLA-Generic.FCMat
