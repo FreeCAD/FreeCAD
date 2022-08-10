@@ -136,6 +136,8 @@ protected:
 
     bool m_isFramed;
     double m_lineWidth;
+
+    int m_dragState;
     
 private:
 };
