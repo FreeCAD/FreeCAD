@@ -130,7 +130,7 @@ macro(SetupSalomeSMESH)
         endif()
 
         set(SMESH_FOUND TRUE)
-        configure_file(SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
+        configure_file(${CMAKE_SOURCE_DIR}/cMake/header/SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
     endif(BUILD_SMESH)
 
 endmacro(SetupSalomeSMESH)
