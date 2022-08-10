@@ -1,3 +1,6 @@
+
+
+
 macro(SetupSalomeSMESH)
 # -------------------------------- Salome SMESH --------------------------
 
@@ -130,7 +133,14 @@ macro(SetupSalomeSMESH)
         endif()
 
         set(SMESH_FOUND TRUE)
-        configure_file(SMESH_Version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/SMESH_Version.h)
+        #ifndef SMESH_VERSION_H
+			#define SMESH_VERSION_H
+			#define SMESH_VERSION_MAJOR ${SMESH_VERSION_MAJOR}
+			#define SMESH_VERSION_MINOR ${SMESH_VERSION_MINOR}
+			#define SMESH_VERSION_PATCH ${SMESH_VERSION_PATCH}
+			#define SMESH_VERSION_TWEAK ${SMESH_VERSION_TWEAK}
+		#endif // SMESH_VERSION_H
+
     endif(BUILD_SMESH)
 
 endmacro(SetupSalomeSMESH)
