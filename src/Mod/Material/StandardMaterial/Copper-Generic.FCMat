@@ -1,0 +1,26 @@
+; Copper Generic
+; Uwe Stöhr
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD 0.21.30044 (Git)
+
+[General]
+Name = Copper Generic
+Father = Metal
+KindOfMaterial = Copper
+
+[Mechanical]
+Density = 8960 kg/m^3
+PoissonRatio = 0.343
+ShearModulus = 46.0 GPa
+UltimateTensileStrength = 210 MPa
+YieldStrength = 33.3 MPa
+YoungsModulus = 119 GPa
+
+[Thermal]
+SpecificHeat = 385.0 J/kg/K
+ThermalConductivity = 398.0 W/m/K
+ThermalExpansionCoefficient = 16.5 µm/m/K
+
+[Electrical]
+ElectricalConductivity = 588235.3 S/m
