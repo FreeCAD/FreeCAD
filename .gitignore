@@ -2,7 +2,6 @@
 .*
 !/.gitignore
 !/.clang-format
-!/.git-blame-ignore-revs
 !/.gitattributes
 *.DS_Store
 *.pyc
