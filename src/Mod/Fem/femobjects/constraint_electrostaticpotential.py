@@ -52,7 +52,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Potential",
                 "Parameter",
                 "Electric Potential"
-            ),
+            )
             obj.Potential = 0.0
 
         if not hasattr(obj, "PotentialEnabled"):
@@ -61,7 +61,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "PotentialEnabled",
                 "Parameter",
                 "Potential Enabled"
-            ),
+            )
             obj.PotentialEnabled = False
 
         if not hasattr(obj, "PotentialConstant"):
@@ -70,7 +70,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "PotentialConstant",
                 "Parameter",
                 "Potential Constant"
-            ),
+            )
             obj.PotentialConstant = False
 
         if not hasattr(obj, "ElectricInfinity"):
@@ -79,7 +79,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "ElectricInfinity",
                 "Parameter",
                 "Electric Infinity"
-            ),
+            )
             obj.ElectricInfinity = False
 
         if not hasattr(obj, "ElectricForcecalculation"):
@@ -88,7 +88,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "ElectricForcecalculation",
                 "Parameter",
                 "Electric Force Calculation"
-            ),
+            )
             obj.ElectricForcecalculation = False
 
         if not hasattr(obj, "CapacitanceBody"):
@@ -97,7 +97,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "CapacitanceBody",
                 "Parameter",
                 "Capacitance Body"
-            ),
+            )
             obj.CapacitanceBody = 0
 
         if not hasattr(obj, "CapacitanceBodyEnabled"):
