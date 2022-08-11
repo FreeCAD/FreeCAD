@@ -40,6 +40,22 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Adaptive.py
 )
 
+SET(PathPythonTools_SRCS
+    Path/Tools/__init__.py
+    Path/Tools/Bit.py
+    Path/Tools/Controller.py
+)
+
+SET(PathPythonToolsGui_SRCS
+    Path/Tools/Gui/__init__.py
+    Path/Tools/Gui/Bit.py
+    Path/Tools/Gui/BitCmd.py
+    Path/Tools/Gui/BitEdit.py
+    Path/Tools/Gui/BitLibraryCmd.py
+    Path/Tools/Gui/BitLibrary.py
+    Path/Tools/Gui/Controller.py
+)
+
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
@@ -176,14 +192,6 @@ SET(PathScripts_SRCS
     PathScripts/PathSurfaceSupport.py
     PathScripts/PathThreadMilling.py
     PathScripts/PathThreadMillingGui.py
-    PathScripts/PathToolBit.py
-    PathScripts/PathToolBitCmd.py
-    PathScripts/PathToolBitEdit.py
-    PathScripts/PathToolBitGui.py
-    PathScripts/PathToolBitLibraryCmd.py
-    PathScripts/PathToolBitLibraryGui.py
-    PathScripts/PathToolController.py
-    PathScripts/PathToolControllerGui.py
     PathScripts/PathToolEdit.py
     PathScripts/PathToolLibraryEditor.py
     PathScripts/PathToolLibraryManager.py
@@ -334,6 +342,8 @@ SET(all_files
     ${PathPythonOpGui_SRCS}
     ${PathPythonPost_SRCS}
     ${PathPythonPostScripts_SRCS}
+    ${PathPythonTools_SRCS}
+    ${PathPythonToolsGui_SRCS}
     ${Generator_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
@@ -392,6 +402,20 @@ INSTALL(
         ${PathPythonPost_SRCS}
     DESTINATION
         Mod/Path/Path/Post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonTools_SRCS}
+    DESTINATION
+        Mod/Path/Path/Tools
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Tools/Gui
 )
 
 INSTALL(

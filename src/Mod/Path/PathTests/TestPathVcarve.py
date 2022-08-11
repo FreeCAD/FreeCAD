@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path.Tools.Bit as PathToolBit
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathVcarve as PathVcarve
 import math
 

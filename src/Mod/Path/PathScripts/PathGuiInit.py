@@ -39,6 +39,9 @@ def Startup():
     if not Processed:
         Path.Log.debug("Initializing PathGui")
         from Path.Op.Gui import Adaptive
+        from Path.Post import Command
+        from Path.Tools import Controller
+        from Path.Tools.Gui import Controller
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathCustomGui
@@ -60,7 +63,6 @@ def Startup():
         from PathScripts import PathMillFaceGui
         from PathScripts import PathPocketGui
         from PathScripts import PathPocketShapeGui
-        from Path.Post import Command
         from PathScripts import PathProbeGui
         from PathScripts import PathProfileGui
         from PathScripts import PathPropertyBagGui
@@ -71,8 +73,6 @@ def Startup():
         from PathScripts import PathSlotGui
         from PathScripts import PathStop
         from PathScripts import PathThreadMillingGui
-        from PathScripts import PathToolController
-        from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui

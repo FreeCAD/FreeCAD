@@ -82,8 +82,8 @@ class PathWorkbench(Workbench):
         from PathScripts import PathGuiInit
         from PathScripts import PathJobCmd
 
-        from PathScripts import PathToolBitCmd
-        from PathScripts import PathToolBitLibraryCmd
+        from Path.Tools.Gui import BitCmd as PathToolBitCmd
+        from Path.Tools.Gui import BitLibraryCmd as PathToolBitLibraryCmd
 
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -341,7 +341,7 @@ class PathWorkbench(Workbench):
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
                     menuAppended = True
-            if isinstance(obj.Proxy, PathScripts.PathToolBit.ToolBit):
+            if isinstance(obj.Proxy, Path.Tools.Bit.ToolBit):
                 self.appendContextMenu("", ["Path_ToolBitSave", "Path_ToolBitSaveAs"])
                 menuAppended = True
         if menuAppended:

@@ -25,10 +25,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Tools.Controller as PathToolController
+import Path.Tools.Gui.Bit as PathToolBitGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts
 import PathScripts.PathGui as PathGui
-import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 
@@ -128,7 +128,7 @@ class ViewProvider:
 def Create(name="Default Tool", tool=None, toolNumber=1):
     Path.Log.track(tool, toolNumber)
 
-    obj = PathScripts.PathToolController.Create(name, tool, toolNumber)
+    obj = PathToolController.Create(name, tool, toolNumber)
     ViewProvider(obj.ViewObject)
     if not obj.Proxy.usesLegacyTool(obj):
         # ToolBits are visible by default, which is typically not what the user wants
@@ -186,7 +186,7 @@ class ToolControllerEditor(object):
         self.obj = obj
 
         comboToPropertyMap = [("spindleDirection", "SpindleDir")]
-        enumTups = PathScripts.PathToolController.ToolController.propertyEnumerations(
+        enumTups = PathToolController.ToolController.propertyEnumerations(
             dataType="raw"
         )
 

@@ -23,7 +23,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts
+import Path.Tools
 import os
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -56,7 +56,7 @@ class CommandToolBitCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        obj = PathScripts.PathToolBit.Factory.Create()
+        obj = Path.Tools.Bit.Factory.Create()
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
 
@@ -84,7 +84,7 @@ class CommandToolBitSave:
     def selectedTool(self):
         sel = FreeCADGui.Selection.getSelectionEx()
         if 1 == len(sel) and isinstance(
-            sel[0].Object.Proxy, PathScripts.PathToolBit.ToolBit
+            sel[0].Object.Proxy, Path.Tools.Bit.ToolBit
         ):
             return sel[0].Object
         return None
@@ -146,7 +146,7 @@ class CommandToolBitLoad:
     def selectedTool(self):
         sel = FreeCADGui.Selection.getSelectionEx()
         if 1 == len(sel) and isinstance(
-            sel[0].Object.Proxy, PathScripts.PathToolBit.ToolBit
+            sel[0].Object.Proxy, Path.Tools.Bit.ToolBit
         ):
             return sel[0].Object
         return None
@@ -155,7 +155,7 @@ class CommandToolBitLoad:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        if PathScripts.PathToolBitGui.LoadTools():
+        if Path.Tools.Bit.Gui.LoadTools():
             FreeCAD.ActiveDocument.recompute()
 
 

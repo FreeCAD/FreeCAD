@@ -26,9 +26,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Tools.Controller as PathToolController
+import Path.Tools.Gui.BitLibraryCmd as PathToolBitLibraryCmd
 import PathScripts
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathToolBitLibraryCmd as PathToolBitLibraryCmd
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathToolLibraryManager as ToolLibraryManager
 import PathScripts.PathUtils as PathUtils
@@ -289,7 +290,7 @@ class EditorPanel:
             Path.Log.debug("tool: {}, toolnum: {}".format(tool, toolnum))
             if self.job:
                 label = "T{}: {}".format(toolnum, tool.Name)
-                tc = PathScripts.PathToolController.Create(
+                tc = PathToolController.Create(
                     label, tool=tool, toolNumber=int(toolnum)
                 )
                 self.job.Proxy.addToolController(tc)
@@ -300,7 +301,7 @@ class EditorPanel:
                         and job.Label == targetlist
                     ):
                         label = "T{}: {}".format(toolnum, tool.Name)
-                        tc = PathScripts.PathToolController.Create(
+                        tc = PathToolController.Create(
                             label, tool=tool, toolNumber=int(toolnum)
                         )
                         job.Proxy.addToolController(tc)

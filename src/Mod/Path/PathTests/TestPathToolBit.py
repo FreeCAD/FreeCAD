@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathToolBit as PathToolBit
+import Path.Tools.Bit as PathToolBit
 import PathTests.PathTestUtils as PathTestUtils
 import glob
 import os

@@ -25,10 +25,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Tools.Bit as PathToolBit
+import Path.Tools.Gui.BitEdit as PathToolBitEdit
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathToolBit as PathToolBit
-import PathScripts.PathToolBitEdit as PathToolBitEdit
 import os
 
 __title__ = "Tool Bit UI"

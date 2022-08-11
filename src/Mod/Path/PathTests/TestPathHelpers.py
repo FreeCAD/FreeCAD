@@ -23,10 +23,10 @@
 import FreeCAD
 import Part
 import Path
+import Path.Tools.Controller as PathToolController
 import PathFeedRate
 import PathMachineState
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtils as PathUtils
 
 from PathTests.PathTestUtils import PathTestBase

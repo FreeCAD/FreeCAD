@@ -46,7 +46,7 @@ TOOLTIP = """ Post processor for UC-CNC.
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode. This postprocessor, once placed in the appropriate
-PathScripts folder, can be used directly from inside FreeCAD,
+Path/Tools folder, can be used directly from inside FreeCAD,
 via the GUI importer or via python scripts with:
 
 import UCCNC_post
@@ -453,7 +453,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         gcode += append("(preamble: begin)\n")
         # for obj in objectslist:
-        #    if isinstance(obj.Proxy, PathScripts.PathToolController.ToolController):
+        #    if isinstance(obj.Proxy, Path.Tools.Controller.ToolController):
         #        gcode += append("(T{}={})\n".format(obj.ToolNumber, item.Name))
         # error: global name 'PathScripts' is not defined
     for line in PREAMBLE.splitlines(False):

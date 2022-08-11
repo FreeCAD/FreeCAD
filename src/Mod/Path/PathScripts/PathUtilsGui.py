@@ -23,8 +23,8 @@
 import FreeCADGui
 import FreeCAD
 import Path
+import Path.Tools.Controller as PathToolsController
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui
@@ -46,7 +46,7 @@ class PathUtilsUserInput(object):
         for sel in FreeCADGui.Selection.getSelectionEx():
             if hasattr(sel.Object, "Proxy"):
                 if isinstance(
-                    sel.Object.Proxy, PathScripts.PathToolController.ToolController
+                    sel.Object.Proxy, PathToolController.ToolController
                 ):
                     if tc is None:
                         tc = sel.Object

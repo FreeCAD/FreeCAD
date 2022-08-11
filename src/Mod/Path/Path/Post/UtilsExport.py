@@ -34,7 +34,7 @@ import FreeCAD
 import Path.Post.Utils as PostUtils
 import Path.Post.UtilsParse as PostUtilsParse
 
-from PathScripts import PathToolController
+import Path.Tools.Controller as PathToolController
 
 
 # to distinguish python built-in open function from the one declared below

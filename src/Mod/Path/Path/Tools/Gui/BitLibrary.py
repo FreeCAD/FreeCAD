@@ -25,12 +25,12 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Tools.Bit as PathToolBit
+import Path.Tools.Gui.Bit as PathToolBitGui
+import Path.Tools.Gui.BitEdit as PathToolBitEdit
+import Path.Tools.Gui.Controller as PathToolControllerGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathToolBit as PathToolBit
-import PathScripts.PathToolBitEdit as PathToolBitEdit
-import PathScripts.PathToolBitGui as PathToolBitGui
-import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
 import PySide
 import glob
