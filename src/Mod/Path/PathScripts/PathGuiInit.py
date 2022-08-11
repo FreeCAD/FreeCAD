@@ -38,7 +38,7 @@ def Startup():
     global Processed
     if not Processed:
         Path.Log.debug("Initializing PathGui")
-        from PathScripts import PathAdaptiveGui
+        from Path.Op.Gui import Adaptive
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathCustomGui

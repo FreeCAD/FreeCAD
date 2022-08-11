@@ -30,10 +30,18 @@ SET(PathPython_SRCS
     Path/Log.py
 )
 
+SET(PathPythonOp_SRCS
+    Path/Op/__init__.py
+    Path/Op/Adaptive.py
+)
+
+SET(PathPythonOpGui_SRCS
+    Path/Op/Gui/__init__.py
+    Path/Op/Gui/Adaptive.py
+)
+
 SET(PathScripts_SRCS
     PathScripts/drillableLib.py
-    PathScripts/PathAdaptive.py
-    PathScripts/PathAdaptiveGui.py
     PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
     PathScripts/PathCircularHoleBase.py
@@ -318,6 +326,8 @@ SET(Path_Data
 SET(all_files
     ${PathScripts_SRCS}
     ${PathPython_SRCS}
+    ${PathPythonOp_SRCS}
+    ${PathPythonOpGui_SRCS}
     ${Generator_SRCS}
     ${PathScripts_post_SRCS}
     ${PathPythonGui_SRCS}
@@ -357,6 +367,19 @@ INSTALL(
         ${PathPython_SRCS}
     DESTINATION
         Mod/Path/Path
+)
+
+INSTALL(
+    FILES
+        ${PathPythonOp_SRCS}
+    DESTINATION
+        Mod/Path/Path/Op
+)
+INSTALL(
+    FILES
+        ${PathPythonOpGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Op/Gui
 )
 
 INSTALL(
