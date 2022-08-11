@@ -28,11 +28,11 @@ import unittest
 import FreeCAD
 import Path
 
-from PathScripts import PathPost
+import Path.Post.Command as PathPost
 from PathScripts import PathPreferences
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
-from PathScripts.PathPostProcessor import PostProcessor
+import Path.Post.Processor as PostProcessor
 
 # If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test succeeds.
 # If KEEP_DEBUG_OUTPUT is True or the test fails leave the gcode file behind

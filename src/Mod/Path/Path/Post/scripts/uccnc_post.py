@@ -37,7 +37,7 @@ import argparse
 import datetime
 
 # import shlex
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
 VERSION = "0.0.4"
 

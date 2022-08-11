@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,8 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
-
+# ***************************************************************************/
 from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units
@@ -28,22 +27,22 @@ import Path
 import argparse
 import datetime
 import shlex
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a jtech photonics laser. This postprocessor, once placed
+real GCode suitable for a mach3_4 3 axis mill. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
-import jtech_post
-jtech_post.export(object,"/path/to/file.ngc","")
+import mach3_4_post
+mach3_4_post.export(object,"/path/to/file.ncc","")
 """
 
 now = datetime.datetime.now()
 
-parser = argparse.ArgumentParser(prog="jtech", add_help=False)
+parser = argparse.ArgumentParser(prog="mach3_4", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument(
     "--no-comments", action="store_true", help="suppress comment output"
@@ -61,11 +60,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="M05 S0\nG90"',
+    help='set commands to be issued before the first command, default="G17\nG90"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05 S0\nM2"',
+    help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -79,11 +78,10 @@ parser.add_argument(
     "--axis-modal", action="store_true", help="Output the Same Axis Value Mode"
 )
 parser.add_argument(
-    "--power-on-delay",
-    default="255",
-    help="milliseconds - Add a delay after laser on before moving to pre-heat material. Default=0",
+    "--no-tlo",
+    action="store_true",
+    help="suppress tool length offset (G43) following tool changes",
 )
-
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -93,6 +91,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
+USE_TLO = True  # if true G43 will be output following tool changes
 OUTPUT_DOUBLES = (
     True  # if false duplicate axis values are suppressed if the same as previous line.
 )
@@ -104,24 +103,19 @@ UNITS = "G21"  # G21 for metric, G20 for us standard
 UNIT_SPEED_FORMAT = "mm/min"
 UNIT_FORMAT = "mm"
 
-MACHINE_NAME = "JTECH Photonic Laser"
+MACHINE_NAME = "mach3_4"
+CORNER_MIN = {"x": 0, "y": 0, "z": 0}
+CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 PRECISION = 3
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """M05 S0
-G90
+PREAMBLE = """G17 G54 G40 G49 G80 G90
 """
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = """M05 S0
+POSTAMBLE = """M05
+G17 G54 G90 G80 G40
 M2
-"""
-
-PRE_FEED = """M03
-G4 P{}
-"""
-
-POST_FEED = """M05
 """
 
 # Pre operation text will be inserted before every operation
@@ -133,10 +127,8 @@ POST_OPERATION = """"""
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = """"""
 
-POWER_ON_DELAY = 0
-
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == "__builtin__":
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
@@ -152,8 +144,8 @@ def processArguments(argstring):
     global UNIT_SPEED_FORMAT
     global UNIT_FORMAT
     global MODAL
+    global USE_TLO
     global OUTPUT_DOUBLES
-    global POWER_ON_DELAY
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -178,9 +170,11 @@ def processArguments(argstring):
             PRECISION = 4
         if args.modal:
             MODAL = True
+        if args.no_tlo:
+            USE_TLO = False
         if args.axis_modal:
+            print("here")
             OUTPUT_DOUBLES = False
-        POWER_ON_DELAY = float(args.power_on_delay) / 1000  # milliseconds
 
     except Exception:
         return False
@@ -191,6 +185,9 @@ def processArguments(argstring):
 def export(objectslist, filename, argstring):
     if not processArguments(argstring):
         return None
+    global UNITS
+    global UNIT_FORMAT
+    global UNIT_SPEED_FORMAT
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -219,12 +216,46 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # Skip inactive operations
+        if hasattr(obj, "Active"):
+            if not obj.Active:
+                continue
+        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
+            if not obj.Base.Active:
+                continue
+
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
+            gcode += linenumber() + "(machine: %s, %s)\n" % (
+                MACHINE_NAME,
+                UNIT_SPEED_FORMAT,
+            )
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # get coolant mode
+        coolantMode = "None"
+        if (
+            hasattr(obj, "CoolantMode")
+            or hasattr(obj, "Base")
+            and hasattr(obj.Base, "CoolantMode")
+        ):
+            if hasattr(obj, "CoolantMode"):
+                coolantMode = obj.CoolantMode
+            else:
+                coolantMode = obj.Base.CoolantMode
+
+        # turn coolant on if required
+        if OUTPUT_COMMENTS:
+            if not coolantMode == "None":
+                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+        if coolantMode == "Flood":
+            gcode += linenumber() + "M8" + "\n"
+        if coolantMode == "Mist":
+            gcode += linenumber() + "M7" + "\n"
+
+        # process the operation gcode
         gcode += parse(obj)
 
         # do the post_op
@@ -232,6 +263,12 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
+
+        # turn coolant off if required
+        if not coolantMode == "None":
+            if OUTPUT_COMMENTS:
+                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+            gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -253,7 +290,7 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     if not filename == "-":
-        gfile = pythonopen(filename, "wb")
+        gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
 
@@ -269,13 +306,19 @@ def linenumber():
 
 
 def parse(pathobj):
+    global PRECISION
+    global MODAL
+    global OUTPUT_DOUBLES
+    global UNIT_FORMAT
+    global UNIT_SPEED_FORMAT
+
     out = ""
     lastcommand = None
     precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
-    RAPID_MOVES = ["G0", "G00"]
-    FEED_MOVES = ["G1", "G01", "G2", "G02", "G3", "G03"]
+
     # the order of parameters
+    # mach3_4 doesn't want K properties on XY plane  Arcs need work.
     params = [
         "X",
         "Y",
@@ -299,6 +342,8 @@ def parse(pathobj):
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
+        # if OUTPUT_COMMENTS:
+        #     out += linenumber() + "(compound: " + pathobj.Label + ")\n"
         for p in pathobj.Group:
             out += parse(p)
         return out
@@ -308,18 +353,50 @@ def parse(pathobj):
         if not hasattr(pathobj, "Path"):
             return out
 
+        # if OUTPUT_COMMENTS:
+        #     out += linenumber() + "(" + pathobj.Label + ")\n"
+
+        adaptiveOp = False
+        opHorizRapid = 0
+        opVertRapid = 0
+
+        if "Adaptive" in pathobj.Name:
+            adaptiveOp = True
+            if hasattr(pathobj, "ToolController"):
+                if (
+                    hasattr(pathobj.ToolController, "HorizRapid")
+                    and pathobj.ToolController.HorizRapid > 0
+                ):
+                    opHorizRapid = Units.Quantity(
+                        pathobj.ToolController.HorizRapid, FreeCAD.Units.Velocity
+                    )
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Tool Controller Horizontal Rapid Values are unset" + "\n"
+                    )
+
+                if (
+                    hasattr(pathobj.ToolController, "VertRapid")
+                    and pathobj.ToolController.VertRapid > 0
+                ):
+                    opVertRapid = Units.Quantity(
+                        pathobj.ToolController.VertRapid, FreeCAD.Units.Velocity
+                    )
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Tool Controller Vertical Rapid Values are unset" + "\n"
+                    )
+
         for c in pathobj.Path.Commands:
 
             outstring = []
             command = c.Name
 
-            controlstring = ""
-            if command in FEED_MOVES and lastcommand in RAPID_MOVES:
-                controlstring = PRE_FEED.format(POWER_ON_DELAY)
-            elif command in RAPID_MOVES and lastcommand in FEED_MOVES:
-                controlstring = POST_FEED
-            if len(controlstring) > 0:
-                out += controlstring
+            if adaptiveOp and c.Name in ["G0", "G00"]:
+                if opHorizRapid and opVertRapid:
+                    command = "G1"
+                else:
+                    outstring.append("(Tool Controller Rapid Values are unset)" + "\n")
 
             outstring.append(command)
 
@@ -337,9 +414,10 @@ def parse(pathobj):
                     if param == "F" and (
                         currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
                     ):
-                        if (
-                            c.Name not in RAPID_MOVES
-                        ):  # linuxcnc doesn't use rapid speeds
+                        if c.Name not in [
+                            "G0",
+                            "G00",
+                        ]:  # mach3_4 doesn't use rapid speeds
                             speed = Units.Quantity(
                                 c.Parameters["F"], FreeCAD.Units.Velocity
                             )
@@ -351,8 +429,8 @@ def parse(pathobj):
                                         precision_string,
                                     )
                                 )
-                        else:
-                            continue
+                            else:
+                                continue
                     elif param == "T":
                         outstring.append(param + str(int(c.Parameters["T"])))
                     elif param == "H":
@@ -379,13 +457,40 @@ def parse(pathobj):
                                 )
                             )
 
+            if adaptiveOp and c.Name in ["G0", "G00"]:
+                if opHorizRapid and opVertRapid:
+                    if "Z" not in c.Parameters:
+                        outstring.append(
+                            "F"
+                            + format(
+                                float(opHorizRapid.getValueAs(UNIT_SPEED_FORMAT)),
+                                precision_string,
+                            )
+                        )
+                    else:
+                        outstring.append(
+                            "F"
+                            + format(
+                                float(opVertRapid.getValueAs(UNIT_SPEED_FORMAT)),
+                                precision_string,
+                            )
+                        )
+
             # store the latest command
             lastcommand = command
             currLocation.update(c.Parameters)
 
             # Check for Tool Change:
             if command == "M6":
-                continue
+                # stop the spindle
+                out += linenumber() + "M5\n"
+                for line in TOOL_CHANGE.splitlines(True):
+                    out += linenumber() + line
+
+                # add height offset
+                if USE_TLO:
+                    tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
+                    outstring.append(tool_height)
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:

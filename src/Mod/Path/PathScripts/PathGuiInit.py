@@ -60,7 +60,7 @@ def Startup():
         from PathScripts import PathMillFaceGui
         from PathScripts import PathPocketGui
         from PathScripts import PathPocketShapeGui
-        from PathScripts import PathPost
+        from Path.Post import Command
         from PathScripts import PathProbeGui
         from PathScripts import PathProfileGui
         from PathScripts import PathPropertyBagGui

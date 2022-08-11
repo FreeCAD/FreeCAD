@@ -30,7 +30,7 @@ doesn't do any manipulation of the path and doesn't write anything to disk.  It 
 shows the dialog so you can see it.  Useful for debugging, but not much else.
 """
 import datetime
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
 now = datetime.datetime.now()
 SHOW_EDITOR = True

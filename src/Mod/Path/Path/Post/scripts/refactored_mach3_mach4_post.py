@@ -23,8 +23,8 @@
 # ***************************************************************************/
 from __future__ import print_function
 
-from PathScripts import PostUtilsArguments
-from PathScripts import PostUtilsExport
+import Path.Post.UtilsArguments as PostUtilsArguments
+import Path.Post.UtilsExport as PostUtilsExport
 
 #
 # The following variables need to be global variables

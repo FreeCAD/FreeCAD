@@ -23,7 +23,7 @@
 
 from __future__ import print_function
 import datetime
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
 
 TOOLTIP = """

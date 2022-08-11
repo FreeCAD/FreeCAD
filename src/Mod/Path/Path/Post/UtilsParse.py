@@ -33,8 +33,7 @@ import FreeCAD
 from FreeCAD import Units
 
 import Path
-
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
 
 def create_comment(comment_string, comment_symbol):

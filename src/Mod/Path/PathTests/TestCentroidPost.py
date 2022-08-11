@@ -27,7 +27,7 @@ import FreeCAD
 
 import Path
 import PathTests.PathTestUtils as PathTestUtils
-from PathScripts.post import centroid_post as postprocessor
+from Path.Post.scripts import centroid_post as postprocessor
 
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

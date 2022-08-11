@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # *****************************************************************************
-# *                                                                           *
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                           *
-# *   (c) Gauthier Briere - 2018, 2019                                        *
-# *   (c) Schildkroet - 2019-2020                                             *
-# *   (c) Gary L Hasson - 2020                                                *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>                 *
+# *   Copyright (c) 2018-2019 Gauthier Briere                                 *
+# *   Copyright (c) 2019-2020 Schildkroet                                     *
+# *   Copyright (c) 2020 Gary L Hasson                                        *
 # *                                                                           *
 # *   This file is part of the FreeCAD CAx development system.                *
 # *                                                                           *
@@ -33,9 +32,9 @@ import shlex
 import FreeCAD
 from FreeCAD import Units
 import PathScripts.PathUtil as PathUtil
-import PathScripts.PostUtils as PostUtils
+import Path.Post.Utils as PostUtils
 
-Revised = "2020-11-03"  # Revision date for this file.
+Revised = "2021-10-21"  # Revision date for this file.
 
 # *****************************************************************************
 # *   Due to the fundamentals of the FreeCAD pre-processor,                   *
@@ -48,9 +47,9 @@ Revised = "2020-11-03"  # Revision date for this file.
 
 
 TOOLTIP = """
-Generate g-code from a Path that is compatible with the Marlin controller.
-import marlin_post
-marlin_post.export(object, "/path/to/file.nc")
+Generate g-code from a Path that is compatible with the Duet controller (RepRapFirmware).
+import rrf_post
+rrf_post.export(object, "/path/to/file.nc")
 """
 
 # *****************************************************************************
@@ -70,7 +69,6 @@ DRILL_RETRACT_MODE = "G98"  # End of drill-cycle retractation type. G99
 # is the alternative.
 TRANSLATE_DRILL_CYCLES = True  # If true, G81, G82, and G83 are translated
 # into G0/G1 moves
-OUTPUT_TOOL_CHANGE = False  # Do not output M6 tool change (comment it)
 RETURN_TO = None  # None = No movement at end of program
 SPINDLE_WAIT = 3  # 0 == No waiting after M3 / M4
 MODAL = False  # True: Commands are suppressed if they are
@@ -91,16 +89,16 @@ OUTPUT_HEADER = True  # Output header in output gcode file
 OUTPUT_COMMENTS = True  # Comments in output gcode file
 OUTPUT_FINISH = False  # Include an operation finished comment
 OUTPUT_PATH = False  # Include a Path: comment
-OUTPUT_MARLIN_CONFIG = False  # Display expected #defines for Marlin config
+OUTPUT_RRF_CONFIG = True  # Display expected #defines for RRF config
 OUTPUT_LINE_NUMBERS = False  # Output line numbers in output gcode file
 OUTPUT_BCNC = False  # Add bCNC operation block headers in output
 # gcode file
 SHOW_EDITOR = True  # Display the resulting gcode file
-
+OUTPUT_TOOL_CHANGE = True
 # *****************************************************************************
 # * Command line arguments                                                    *
 # *****************************************************************************
-parser = argparse.ArgumentParser(prog="marlin", add_help=False)
+parser = argparse.ArgumentParser(prog="rrf", add_help=False)
 parser.add_argument("--header", action="store_true", help="output headers (default)")
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument("--comments", action="store_true", help="output comment (default)")
@@ -121,13 +119,11 @@ parser.add_argument(
     action="store_true",
     help="suppress path-comment output (default)",
 )
+parser.add_argument("--rrf-config", action="store_true", help="output #defines for RRF")
 parser.add_argument(
-    "--marlin-config", action="store_true", help="output #defines for Marlin"
-)
-parser.add_argument(
-    "--no-marlin-config",
+    "--no-rrf-config",
     action="store_true",
-    help="suppress output #defines for Marlin (default)",
+    help="suppress output #defines for RRF (default)",
 )
 parser.add_argument(
     "--line-numbers", action="store_true", help="prefix with line numbers"
@@ -192,12 +188,12 @@ parser.add_argument(
 TOOLTIP_ARGS = parser.format_help()
 
 # *****************************************************************************
-# * Marlin 2.x:                                                               *
+# * RRF                                                               *
 # * Ignores commands that it does not implement.                              *
-# * Some machining-related commands may conflict with gcodes that Marlin      *
+# * Some machining-related commands may conflict with gcodes that RRF      *
 # * has assigned to 3D printing commands.                                     *
-# * Therefore, check FreeCAD gcodes for conflicts with Marlin.                *
-# * Marlin 2.x ignores the ENTIRE COMMAND LINE if there is more than          *
+# * Therefore, check FreeCAD gcodes for conflicts with RRF.                *
+# * RRF ignores the ENTIRE COMMAND LINE if there is more than          *
 # * one command per line.                                                     *
 # *****************************************************************************
 
@@ -213,7 +209,7 @@ POSTAMBLE = """M5
 # *****************************************************************************
 MOTION_COMMANDS = ["G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"]
 RAPID_MOVES = ["G0", "G00"]  # Rapid moves gcode commands definition
-SUPPRESS_COMMANDS = [""]  # These commands are ignored by commenting them out
+SUPPRESS_COMMANDS = []  # These commands are ignored by commenting them out
 COMMAND_SPACE = " "
 # Global variables storing current position (Use None for safety.)
 CURRENT_X = None
@@ -226,7 +222,7 @@ def processArguments(argstring):
     global OUTPUT_COMMENTS
     global OUTPUT_FINISH
     global OUTPUT_PATH
-    global OUTPUT_MARLIN_CONFIG
+    global OUTPUT_RRF_CONFIG
     global OUTPUT_LINE_NUMBERS
     global SHOW_EDITOR
     global PREAMBLE
@@ -259,10 +255,10 @@ def processArguments(argstring):
             OUTPUT_PATH = False
         if args.path_comments:
             OUTPUT_PATH = True
-        if args.no_marlin_config:
-            OUTPUT_MARLIN_CONFIG = False
-        if args.marlin_config:
-            OUTPUT_MARLIN_CONFIG = True
+        if args.no_rrf_config:
+            OUTPUT_RRF_CONFIG = False
+        if args.rrf_config:
+            OUTPUT_RRF_CONFIG = True
         if args.no_line_numbers:
             OUTPUT_LINE_NUMBERS = False
         if args.line_numbers:
@@ -444,17 +440,12 @@ def export(objectslist, filename, argstring):
 
         gcode += linenumber() + "G0" + ref_X + ref_Y + ref_Z + "\n"
 
-    # Optionally add recommended Marlin 2.x configuration to gcode file:
-    if OUTPUT_MARLIN_CONFIG:
-        gcode += linenumber() + "(Marlin 2.x Configuration)\n"
+    # Optionally add recommended RRF configuration to gcode file:
+    if OUTPUT_RRF_CONFIG:
+        gcode += linenumber() + "(RRF Configuration)\n"
         gcode += linenumber() + "(The following should be enabled in)\n"
-        gcode += linenumber() + "(the configuration files of Marlin 2.x)\n"
-        gcode += linenumber() + "(#define ARC_SUPPORT)\n"
-        gcode += linenumber() + "(#define CNC_COORDINATE_SYSTEMS)\n"
-        gcode += linenumber() + "(#define PAREN_COMMENTS)\n"
-        gcode += linenumber() + "(#define GCODE_MOTION_MODES)\n"
-        gcode += linenumber() + "(#define G0_FEEDRATE)\n"
-        gcode += linenumber() + "(define VARIABLE_G0_FEEDRATE)\n"
+        gcode += linenumber() + "(the config.g)\n"
+        gcode += linenumber() + "(M453)\n"
 
     # Show the gcode result dialog:
     if FreeCAD.GuiUp and SHOW_EDITOR:
@@ -569,7 +560,10 @@ def parse(pathobj):
                                         precision_string,
                                     )
                                 )
-                    elif param in ["T", "H", "D", "S", "P", "L"]:
+                    elif param == "T":
+                        outlist.append(param + str(int(c.Parameters[param])))
+
+                    elif param in ["H", "D", "S", "P", "L"]:
                         outlist.append(param + str(c.Parameters[param]))
                     elif param in ["A", "B", "C"]:
                         outlist.append(
@@ -609,7 +603,7 @@ def parse(pathobj):
             if SPINDLE_WAIT > 0:
                 if command in ("M3", "M03", "M4", "M04"):
                     out += linenumber() + format_outlist(outlist) + "\n"
-                    # Marlin: P for milliseconds, S for seconds, change P to S
+                    # RRF: P for milliseconds, S for seconds, change P to S
                     out += linenumber()
                     out += format_outlist(["G4", "S%s" % SPINDLE_WAIT])
                     out += "\n"
@@ -617,14 +611,21 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command in ("M6", "M06"):
+
                 if OUTPUT_COMMENTS:
                     out += linenumber() + "(Begin toolchange)\n"
+
                 if OUTPUT_TOOL_CHANGE:
                     for line in TOOL_CHANGE.splitlines(True):
-                        out += linenumber() + line
+                        out += linenumber() + line + "\n"
+                    outlist[0] = " "
+                    outlist[-1] = "T" + str(int(c.Parameters["T"]))
+
                 if not OUTPUT_TOOL_CHANGE and OUTPUT_COMMENTS:
-                    outlist[0] = "(" + outlist[0]
-                    outlist[-1] = outlist[-1] + ")"
+                    # next 2 lines could also be replaced by a single line as "outlist = []"
+                    outlist[0] = " "
+                    outlist[-1] = " "
+
                 if not OUTPUT_TOOL_CHANGE and not OUTPUT_COMMENTS:
                     outlist = []
 
@@ -667,9 +668,9 @@ def parse(pathobj):
 
 
 # *****************************************************************************
-# * As of Marlin 2.0.7.bugfix, canned drill cycles do not exist.              *
+# * As of RRF 3.3 canned drill cycles do not exist.              *
 # * The following code converts FreeCAD's canned drill cycles into            *
-# * gcode that Marlin can use.                                                *
+# * gcode that RRF can use.                                                *
 # *****************************************************************************
 def drill_translate(outlist, cmd, params):
     global DRILL_RETRACT_MODE
@@ -751,7 +752,7 @@ def drill_translate(outlist, cmd, params):
         feed_Z_to(drill_Z)  # Drill hole in one step
         if cmd == "G82":  # Dwell time delay at the bottom of the hole
             Drill.gcode += linenumber() + "G4 S" + str(drill_DwellTime) + "\n"
-            # Marlin uses P for milliseconds, S for seconds, change P to S
+            # RRF uses P for milliseconds, S for seconds, change P to S
 
     elif cmd == "G83":  # Peck drill cycle:
         chip_Space = drill_Step * 0.5

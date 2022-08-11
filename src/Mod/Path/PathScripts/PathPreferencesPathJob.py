@@ -22,13 +22,13 @@
 
 import FreeCAD
 import Path
+import Path.Post.Processor as PostProcessor
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import json
 
 from FreeCAD import Units
 from PySide import QtCore, QtGui
-from PathScripts.PathPostProcessor import PostProcessor
 
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())

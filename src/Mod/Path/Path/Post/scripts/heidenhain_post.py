@@ -21,9 +21,9 @@
 # HEDENHAIN Post-Processor for FreeCAD
 
 import argparse
-import shlex
+import Path.Post.Utils as PostUtils
 import PathScripts
-from PathScripts import PostUtils
+import shlex
 import math
 
 # **************************************************************************#

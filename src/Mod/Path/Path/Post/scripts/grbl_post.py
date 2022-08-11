@@ -26,7 +26,7 @@
 
 import FreeCAD
 from FreeCAD import Units
-import PathScripts.PostUtils as PostUtils
+import Path.Post.Utils as PostUtils
 import argparse
 import datetime
 import shlex

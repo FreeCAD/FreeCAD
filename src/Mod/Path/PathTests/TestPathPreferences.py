@@ -32,14 +32,14 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
         self.assertGreater(len(paths), 0)
 
     def test01(self):
-        """PathScripts is part of the posts search path."""
+        """Path/Post is part of the posts search path."""
         paths = PathPreferences.searchPathsPost()
-        self.assertEqual(len([p for p in paths if p.endswith("/PathScripts/")]), 1)
+        self.assertEqual(len([p for p in paths if p.endswith("/Path/Post/")]), 1)
 
     def test02(self):
-        """PathScripts/post is part of the posts search path."""
+        """Path/Post/scripts is part of the posts search path."""
         paths = PathPreferences.searchPathsPost()
-        self.assertEqual(len([p for p in paths if p.endswith("/PathScripts/post/")]), 1)
+        self.assertEqual(len([p for p in paths if p.endswith("/Path/Post/scripts/")]), 1)
 
     def test03(self):
         """Available post processors include linuxcnc, grbl and opensbp."""

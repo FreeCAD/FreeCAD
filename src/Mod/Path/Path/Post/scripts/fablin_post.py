@@ -25,7 +25,7 @@
 # ***************************************************************************
 
 import datetime
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 
 now = datetime.datetime.now()
 

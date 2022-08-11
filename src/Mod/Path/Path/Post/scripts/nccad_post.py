@@ -22,7 +22,7 @@
 # ****************************************************************************/
 """Postprocessor to output real GCode for Max Computer GmbH nccad9."""
 import FreeCAD
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 import datetime
 
 

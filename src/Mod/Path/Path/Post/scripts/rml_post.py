@@ -36,7 +36,7 @@ http://paulbourke.net/dataformats/hpgl/
 
 import FreeCAD
 import Part
-import PathScripts.PostUtils as PostUtils
+import Path.Post.Utils as PostUtils
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ["__builtin__", "io"]:

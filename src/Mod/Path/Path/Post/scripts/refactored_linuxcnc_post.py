@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
-# *   Copyright (c) 2020 Schildkroet                                        *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -26,8 +24,8 @@
 
 from __future__ import print_function
 
-from PathScripts import PostUtilsArguments
-from PathScripts import PostUtilsExport
+import Path.Post.UtilsArguments as PostUtilsArguments
+import Path.Post.UtilsExport as PostUtilsExport
 
 #
 # The following variables need to be global variables
@@ -40,17 +38,15 @@ from PathScripts import PostUtilsExport
 #    The "argument_defaults", "arguments_visible", and the "values" hashes
 #    need to be defined before the "init_shared_arguments" routine can be
 #    called to create TOOLTIP_ARGS, so they also end up having to be globals.
-#    TOOLTIP_ARGS can be defined, so they end up being global variables also.
 #
-TOOLTIP = """
-This is a postprocessor file for the Path workbench. It is used to
+TOOLTIP = """This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a centroid 3 axis mill. This postprocessor, once placed
+real GCode suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
 in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
-import refactored_centroid_post
-refactored_centroid_post.export(object,"/path/to/file.ncc","")
+import refactored_linuxcnc_post
+refactored_linuxcnc_post.export(object,"/path/to/file.ncc","")
 """
 #
 # Default to metric mode
@@ -68,47 +64,16 @@ def init_values(values):
     # Set any values here that need to override the default values set
     # in the init_shared_values routine.
     #
-    # Use 4 digits for axis precision by default.
-    #
-    values["AXIS_PRECISION"] = 4
-    values["DEFAULT_AXIS_PRECISION"] = 4
-    values["DEFAULT_INCH_AXIS_PRECISION"] = 4
-    #
-    # Use ";" as the comment symbol
-    #
-    values["COMMENT_SYMBOL"] = ";"
-    #
-    # Use 1 digit for feed precision by default.
-    #
-    values["FEED_PRECISION"] = 1
-    values["DEFAULT_FEED_PRECISION"] = 1
-    values["DEFAULT_INCH_FEED_PRECISION"] = 1
-    #
-    # This value usually shows up in the post_op comment as "Finish operation:".
-    # Change it to "End" to produce "End operation:".
-    #
-    values["FINISH_LABEL"] = "End"
-    #
-    # If this value is True, then a list of tool numbers
-    # with their labels are output just before the preamble.
-    #
-    values["LIST_TOOLS_IN_PREAMBLE"] = True
-    #
-    # Used in the argparser code as the "name" of the postprocessor program.
-    # This would normally show up in the usage message in the TOOLTIP_ARGS,
-    # but we are suppressing the usage message, so it doesn't show up after all.
-    #
-    values["MACHINE_NAME"] = "Centroid"
-    #
-    # This list controls the order of parameters in a line during output.
-    # centroid doesn't want K properties on XY plane; Arcs need work.
-    #
+    values["ENABLE_COOLANT"] = True
+    # the order of parameters
+    # linuxcnc doesn't want K properties on XY plane; Arcs need work.
     values["PARAMETER_ORDER"] = [
         "X",
         "Y",
         "Z",
         "A",
         "B",
+        "C",
         "I",
         "J",
         "F",
@@ -118,59 +83,31 @@ def init_values(values):
         "R",
         "L",
         "H",
+        "D",
+        "P",
     ]
+    #
+    # Used in the argparser code as the "name" of the postprocessor program.
+    # This would normally show up in the usage message in the TOOLTIP_ARGS,
+    # but we are suppressing the usage message, so it doesn't show up after all.
+    #
+    values["MACHINE_NAME"] = "LinuxCNC"
     #
     # Any commands in this value will be output as the last commands
     # in the G-code file.
     #
-    values["POSTAMBLE"] = """M99"""
+    values[
+        "POSTAMBLE"
+    ] = """M05
+G17 G54 G90 G80 G40
+M2"""
     values["POSTPROCESSOR_FILE_NAME"] = __name__
     #
     # Any commands in this value will be output after the header and
     # safety block at the beginning of the G-code file.
     #
-    values["PREAMBLE"] = """G53 G00 G17"""
-    #
-    # Output any messages.
-    #
-    values["REMOVE_MESSAGES"] = False
-    #
-    # Any commands in this value are output after the header but before the preamble,
-    # then again after the TOOLRETURN but before the POSTAMBLE.
-    #
-    values["SAFETYBLOCK"] = """G90 G80 G40 G49"""
-    #
-    # Do not show the current machine units just before the PRE_OPERATION.
-    #
-    values["SHOW_MACHINE_UNITS"] = False
-    #
-    # Do not show the current operation label just before the PRE_OPERATION.
-    #
-    values["SHOW_OPERATION_LABELS"] = False
-    #
-    # Do not output an M5 command to stop the spindle for tool changes.
-    #
-    values["STOP_SPINDLE_FOR_TOOL_CHANGE"] = False
-    #
-    # spindle off, height offset canceled, spindle retracted
-    # (M25 is a centroid command to retract spindle)
-    #
-    values[
-        "TOOLRETURN"
-    ] = """M5
-M25
-G49 H0"""
+    values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
     values["UNITS"] = UNITS
-    #
-    # Default to not outputting a G43 following tool changes
-    #
-    values["USE_TLO"] = False
-    #
-    # This was in the original centroid postprocessor file
-    # but does not appear to be used anywhere.
-    #
-    # ZAXISRETURN = """G91 G28 X0 Z0 G90"""
-    #
 
 
 def init_argument_defaults(argument_defaults):
@@ -199,9 +136,6 @@ def init_arguments_visible(arguments_visible):
     #
     # Modify the visibility of any arguments from the defaults here.
     #
-    arguments_visible["axis-modal"] = False
-    arguments_visible["precision"] = False
-    arguments_visible["tlo"] = False
 
 
 def init_arguments(values, argument_defaults, arguments_visible):

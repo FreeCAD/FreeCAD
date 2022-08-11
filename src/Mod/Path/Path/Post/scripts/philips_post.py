@@ -27,7 +27,7 @@
 import FreeCAD
 import argparse
 import time
-from PathScripts import PostUtils
+import Path.Post.Utils as PostUtils
 import math
 
 TOOLTIP = """Post processor for Maho M 600E mill

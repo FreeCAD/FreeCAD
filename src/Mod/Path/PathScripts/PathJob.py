@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Post.Processor as PostProcessor
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock

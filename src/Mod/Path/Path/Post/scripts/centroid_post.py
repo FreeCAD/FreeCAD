@@ -27,9 +27,9 @@ from __future__ import print_function
 import os
 import FreeCAD
 from FreeCAD import Units
+import Path.Post.Utils as PostUtils
 import datetime
 import PathScripts
-import PathScripts.PostUtils as PostUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to

@@ -34,7 +34,7 @@ import PathScripts.PathUtils as PathUtils
 import os
 import re
 
-from PathScripts.PathPostProcessor import PostProcessor
+from Path.Post.Processor import PostProcessor
 from PySide import QtCore, QtGui
 from datetime import datetime
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -530,7 +530,7 @@ class CommandPathPost:
     def Activated(self):
         Path.Log.track()
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected path(s)")
-        FreeCADGui.addModule("PathScripts.PathPost")
+        FreeCADGui.addModule("Path.Post.Command")
 
         # Attempt to figure out what the user wants to post-process
         # If a job is selected, post that.

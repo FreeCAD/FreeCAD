@@ -40,6 +40,49 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Adaptive.py
 )
 
+SET(PathPythonPost_SRCS
+    Path/Post/__init__.py
+    Path/Post/Command.py
+    Path/Post/Processor.py
+    Path/Post/Utils.py
+    Path/Post/UtilsArguments.py
+    Path/Post/UtilsExport.py
+    Path/Post/UtilsParse.py
+)
+
+SET(PathPythonPostScripts_SRCS
+    Path/Post/scripts/__init__.py
+    Path/Post/scripts/centroid_post.py
+    Path/Post/scripts/comparams_post.py
+    Path/Post/scripts/dxf_post.py
+    Path/Post/scripts/dynapath_post.py
+    Path/Post/scripts/example_pre.py
+    Path/Post/scripts/fablin_post.py
+    Path/Post/scripts/fanuc_post.py
+    Path/Post/scripts/gcode_pre.py
+    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/heidenhain_post.py
+    Path/Post/scripts/jtech_post.py
+    Path/Post/scripts/KineticNCBeamicon2_post.py
+    Path/Post/scripts/linuxcnc_post.py
+    Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/marlin_post.py
+    Path/Post/scripts/nccad_post.py
+    Path/Post/scripts/opensbp_post.py
+    Path/Post/scripts/opensbp_pre.py
+    Path/Post/scripts/philips_post.py
+    Path/Post/scripts/refactored_centroid_post.py
+    Path/Post/scripts/refactored_grbl_post.py
+    Path/Post/scripts/refactored_linuxcnc_post.py
+    Path/Post/scripts/refactored_mach3_mach4_post.py
+    Path/Post/scripts/refactored_test_post.py
+    Path/Post/scripts/rml_post.py
+    Path/Post/scripts/rrf_post.py
+    Path/Post/scripts/slic3r_pre.py
+    Path/Post/scripts/smoothie_post.py
+    Path/Post/scripts/uccnc_post.py
+)
+
 SET(PathScripts_SRCS
     PathScripts/drillableLib.py
     PathScripts/PathAreaOp.py
@@ -98,8 +141,6 @@ SET(PathScripts_SRCS
     PathScripts/PathPocketGui.py
     PathScripts/PathPocketShape.py
     PathScripts/PathPocketShapeGui.py
-    PathScripts/PathPost.py
-    PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathDressup.py
@@ -153,10 +194,6 @@ SET(PathScripts_SRCS
     PathScripts/PathVcarveGui.py
     PathScripts/PathWaterline.py
     PathScripts/PathWaterlineGui.py
-    PathScripts/PostUtils.py
-    PathScripts/PostUtilsArguments.py
-    PathScripts/PostUtilsExport.py
-    PathScripts/PostUtilsParse.py
     PathScripts/__init__.py
 )
 
@@ -166,39 +203,6 @@ SET(Generator_SRCS
     Generators/rotation_generator.py
     Generators/threadmilling_generator.py
     Generators/toolchange_generator.py
-)
-
-SET(PathScripts_post_SRCS
-    PathScripts/post/__init__.py
-    PathScripts/post/centroid_post.py
-    PathScripts/post/comparams_post.py
-    PathScripts/post/dxf_post.py
-    PathScripts/post/dynapath_post.py
-    PathScripts/post/example_pre.py
-    PathScripts/post/fablin_post.py
-    PathScripts/post/fanuc_post.py
-    PathScripts/post/gcode_pre.py
-    PathScripts/post/grbl_post.py
-    PathScripts/post/heidenhain_post.py
-    PathScripts/post/jtech_post.py
-    PathScripts/post/KineticNCBeamicon2_post.py
-    PathScripts/post/linuxcnc_post.py
-    PathScripts/post/mach3_mach4_post.py
-    PathScripts/post/marlin_post.py
-    PathScripts/post/nccad_post.py
-    PathScripts/post/opensbp_post.py
-    PathScripts/post/opensbp_pre.py
-    PathScripts/post/philips_post.py
-    PathScripts/post/refactored_centroid_post.py
-    PathScripts/post/refactored_grbl_post.py
-    PathScripts/post/refactored_linuxcnc_post.py
-    PathScripts/post/refactored_mach3_mach4_post.py
-    PathScripts/post/refactored_test_post.py
-    PathScripts/post/rml_post.py
-    PathScripts/post/rrf_post.py
-    PathScripts/post/slic3r_pre.py
-    PathScripts/post/smoothie_post.py
-    PathScripts/post/uccnc_post.py
 )
 
 SET(PathPythonGui_SRCS
@@ -328,8 +332,9 @@ SET(all_files
     ${PathPython_SRCS}
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
+    ${PathPythonPost_SRCS}
+    ${PathPythonPostScripts_SRCS}
     ${Generator_SRCS}
-    ${PathScripts_post_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -384,6 +389,20 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonPost_SRCS}
+    DESTINATION
+        Mod/Path/Path/Post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonPostScripts_SRCS}
+    DESTINATION
+        Mod/Path/Path/Post/scripts
+)
+
+INSTALL(
+    FILES
         ${Generator_SRCS}
     DESTINATION
         Mod/Path/Generators
@@ -403,13 +422,6 @@ INSTALL(
         Mod/Path/PathTests
 )
 
-
-INSTALL(
-    FILES
-        ${PathScripts_post_SRCS}
-    DESTINATION
-        Mod/Path/PathScripts/post
-)
 
 INSTALL(
     FILES

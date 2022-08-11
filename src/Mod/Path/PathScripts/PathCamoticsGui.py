@@ -28,7 +28,7 @@ import FreeCADGui
 import Mesh
 import Path
 import PathScripts
-import PathScripts.PathPost as PathPost
+import Path.Post.Command as PathPost
 import camotics
 import io
 import json

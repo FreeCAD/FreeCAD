@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2021 shadowbane1000 <tyler@colberts.us>                 *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -27,22 +28,25 @@ import Path
 import argparse
 import datetime
 import shlex
-from PathScripts import PostUtils
+import os.path
+import Path.Post.Utils import PostUtils
 
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a mach3_4 3 axis mill. This postprocessor, once placed
-in the appropriate PathScripts folder, can be used directly from inside
-FreeCAD, via the GUI importer or via python scripts with:
+real GCode suitable should be suitable for most Fanuc controllers.
+It has only been tested on a 21i-MB controller on a 3 axis mill.
+This postprocessor, once placed in the appropriate PathScripts folder,
+can be used directly from inside FreeCAD, via the GUI importer or via
+python scripts with:
 
-import mach3_4_post
-mach3_4_post.export(object,"/path/to/file.ncc","")
+import fanuc_post
+fanuc_post.export(object,"/path/to/file.ncc","")
 """
 
 now = datetime.datetime.now()
 
-parser = argparse.ArgumentParser(prog="mach3_4", add_help=False)
+parser = argparse.ArgumentParser(prog="fanuc", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument(
     "--no-comments", action="store_true", help="suppress comment output"
@@ -70,12 +74,12 @@ parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
 )
 parser.add_argument(
-    "--modal",
+    "--no-modal",
     action="store_true",
-    help="Output the Same G-command Name USE NonModal Mode",
+    help="Don't output the Same G-command Name USE NonModal Mode",
 )
 parser.add_argument(
-    "--axis-modal", action="store_true", help="Output the Same Axis Value Mode"
+    "--no-axis-modal", action="store_true", help="Don't output the Same Axis Value Mode"
 )
 parser.add_argument(
     "--no-tlo",
@@ -90,10 +94,10 @@ OUTPUT_COMMENTS = True
 OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
-MODAL = False  # if true commands are suppressed if the same as previous line.
+MODAL = True  # if true commands are suppressed if the same as previous line.
 USE_TLO = True  # if true G43 will be output following tool changes
 OUTPUT_DOUBLES = (
-    True  # if false duplicate axis values are suppressed if the same as previous line.
+    False  # if false duplicate axis values are suppressed if the same as previous line.
 )
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -103,10 +107,14 @@ UNITS = "G21"  # G21 for metric, G20 for us standard
 UNIT_SPEED_FORMAT = "mm/min"
 UNIT_FORMAT = "mm"
 
-MACHINE_NAME = "mach3_4"
+MACHINE_NAME = "fanuc"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 PRECISION = 3
+
+# this global is used to pass spindle speed from the tool command into the machining command for
+# rigid tapping.
+tapSpeed = 0
 
 # Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = """G17 G54 G40 G49 G80 G90
@@ -115,6 +123,7 @@ PREAMBLE = """G17 G54 G40 G49 G80 G90
 # Postamble text will appear following the last operation.
 POSTAMBLE = """M05
 G17 G54 G90 G80 G40
+M6 T0
 M2
 """
 
@@ -168,13 +177,12 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 4
-        if args.modal:
-            MODAL = True
+        if args.no_modal:
+            MODAL = False
         if args.no_tlo:
             USE_TLO = False
-        if args.axis_modal:
-            print("here")
-            OUTPUT_DOUBLES = False
+        if args.no_axis_modal:
+            OUTPUT_DOUBLES = True
 
     except Exception:
         return False
@@ -188,6 +196,8 @@ def export(objectslist, filename, argstring):
     global UNITS
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
+    global HORIZRAPID
+    global VERTRAPID
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -203,13 +213,23 @@ def export(objectslist, filename, argstring):
 
     # write header
     if OUTPUT_HEADER:
-        gcode += linenumber() + "(Exported by FreeCAD)\n"
-        gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
-        gcode += linenumber() + "(Output Time:" + str(now) + ")\n"
+        gcode += "%\n"
+        gcode += ";\n"
+        gcode += (
+            os.path.split(filename)[-1]
+            + " ("
+            + "FREECAD-FILENAME-GOES-HERE"
+            + ", "
+            + "JOB-NAME-GOES-HERE"
+            + ")\n"
+        )
+        gcode += linenumber() + "(" + filename.upper() + ",EXPORTED BY FREECAD!)\n"
+        gcode += linenumber() + "(POST PROCESSOR: " + __name__.upper() + ")\n"
+        gcode += linenumber() + "(OUTPUT TIME:" + str(now).upper() + ")\n"
 
     # Write the preamble
     if OUTPUT_COMMENTS:
-        gcode += linenumber() + "(begin preamble)\n"
+        gcode += linenumber() + "(BEGIN PREAMBLE)\n"
     for line in PREAMBLE.splitlines(False):
         gcode += linenumber() + line + "\n"
     gcode += linenumber() + UNITS + "\n"
@@ -226,10 +246,9 @@ def export(objectslist, filename, argstring):
 
         # do the pre_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + "(machine: %s, %s)\n" % (
-                MACHINE_NAME,
-                UNIT_SPEED_FORMAT,
+            gcode += linenumber() + "(BEGIN OPERATION: %s)\n" % obj.Label.upper()
+            gcode += linenumber() + "(MACHINE UNITS: %s)\n" % (
+                UNIT_SPEED_FORMAT.upper()
             )
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
@@ -249,7 +268,7 @@ def export(objectslist, filename, argstring):
         # turn coolant on if required
         if OUTPUT_COMMENTS:
             if not coolantMode == "None":
-                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+                gcode += linenumber() + "(COOLANT ON:" + coolantMode.upper() + ")\n"
         if coolantMode == "Flood":
             gcode += linenumber() + "M8" + "\n"
         if coolantMode == "Mist":
@@ -260,21 +279,22 @@ def export(objectslist, filename, argstring):
 
         # do the post_op
         if OUTPUT_COMMENTS:
-            gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
+            gcode += linenumber() + "(FINISH OPERATION: %s)\n" % obj.Label.upper()
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
         # turn coolant off if required
         if not coolantMode == "None":
             if OUTPUT_COMMENTS:
-                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+                gcode += linenumber() + "(COOLANT OFF:" + coolantMode.upper() + ")\n"
             gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
-        gcode += "(begin postamble)\n"
+        gcode += "(BEGIN POSTAMBLE)\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
+    gcode += "%\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
@@ -311,14 +331,17 @@ def parse(pathobj):
     global OUTPUT_DOUBLES
     global UNIT_FORMAT
     global UNIT_SPEED_FORMAT
+    global tapSpeed
 
     out = ""
     lastcommand = None
     precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
+    print("Startup!")
 
     # the order of parameters
-    # mach3_4 doesn't want K properties on XY plane  Arcs need work.
+    # arcs need work.  original code from mach3_4 doesn't want K properties on XY plane.  Not sure
+    # what fanuc does here.
     params = [
         "X",
         "Y",
@@ -387,16 +410,109 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        for c in pathobj.Path.Commands:
+        for index, c in enumerate(pathobj.Path.Commands):
 
             outstring = []
             command = c.Name
+            if index + 1 == len(pathobj.Path.Commands):
+                nextcommand = ""
+            else:
+                nextcommand = pathobj.Path.Commands[index + 1].Name
 
             if adaptiveOp and c.Name in ["G0", "G00"]:
                 if opHorizRapid and opVertRapid:
                     command = "G1"
                 else:
-                    outstring.append("(Tool Controller Rapid Values are unset)" + "\n")
+                    outstring.append("(TOOL CONTROLLER RAPID VALUES ARE UNSET)" + "\n")
+
+            # suppress moves in fixture selection
+            if pathobj.Label == "Fixture":
+                if command == "G0":
+                    continue
+
+            # if it's a tap, we rigid tap, so don't start the spindle yet...
+            if command == "M03" or command == "M3":
+                if pathobj.Tool.ToolType == "Tap":
+                    tapSpeed = int(pathobj.SpindleSpeed)
+                    continue
+
+            # convert drill cycles to tap cycles if tool is a tap
+            if command == "G81" or command == "G83":
+                if (
+                    hasattr(pathobj, "ToolController")
+                    and pathobj.ToolController.Tool.ToolType == "Tap"
+                ):
+                    command = "G84"
+                    out += linenumber() + "G95\n"
+                    paramstring = ""
+                    for param in ["X", "Y"]:
+                        if param in c.Parameters:
+                            if (
+                                (not OUTPUT_DOUBLES)
+                                and (param in currLocation)
+                                and (currLocation[param] == c.Parameters[param])
+                            ):
+                                continue
+                            else:
+                                pos = Units.Quantity(
+                                    c.Parameters[param], FreeCAD.Units.Length
+                                )
+                                paramstring += (
+                                    " "
+                                    + param
+                                    + format(
+                                        float(pos.getValueAs(UNIT_FORMAT)),
+                                        precision_string,
+                                    )
+                                )
+                    if paramstring != "":
+                        out += linenumber() + "G00" + paramstring + "\n"
+
+                    if "S" in c.Parameters:
+                        tapSpeed = int(c.Parameters["S"])
+                    out += "M29 S" + str(tapSpeed) + "\n"
+
+                    for param in ["Z", "R"]:
+                        if param in c.Parameters:
+                            if (
+                                (not OUTPUT_DOUBLES)
+                                and (param in currLocation)
+                                and (currLocation[param] == c.Parameters[param])
+                            ):
+                                continue
+                            else:
+                                pos = Units.Quantity(
+                                    c.Parameters[param], FreeCAD.Units.Length
+                                )
+                                paramstring += (
+                                    " "
+                                    + param
+                                    + format(
+                                        float(pos.getValueAs(UNIT_FORMAT)),
+                                        precision_string,
+                                    )
+                                )
+                    # in this mode, F is the distance per revolution of the thread (pitch)
+                    # P is the dwell time in seconds at the bottom of the thread
+                    # Q is the peck depth of the threading operation
+                    for param in ["F", "P", "Q"]:
+                        if param in c.Parameters:
+                            value = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
+                            paramstring += (
+                                " "
+                                + param
+                                + format(
+                                    float(value.getValueAs(UNIT_FORMAT)),
+                                    precision_string,
+                                )
+                            )
+
+                    out += linenumber() + "G84" + paramstring + "\n"
+                    out += linenumber() + "G80\n"
+                    out += linenumber() + "G94\n"
+                    continue
 
             outstring.append(command)
 
@@ -404,6 +520,10 @@ def parse(pathobj):
             if MODAL is True:
                 if command == lastcommand:
                     outstring.pop(0)
+
+            # suppress a G80 between two identical command
+            if command == "G80" and lastcommand == nextcommand:
+                continue
 
             if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
                 continue
@@ -417,7 +537,7 @@ def parse(pathobj):
                         if c.Name not in [
                             "G0",
                             "G00",
-                        ]:  # mach3_4 doesn't use rapid speeds
+                        ]:  # fanuc doesn't use rapid speeds
                             speed = Units.Quantity(
                                 c.Parameters["F"], FreeCAD.Units.Velocity
                             )
@@ -505,7 +625,7 @@ def parse(pathobj):
 
                 # append the line to the final output
                 for w in outstring:
-                    out += w + COMMAND_SPACE
+                    out += w.upper() + COMMAND_SPACE
                 out = out.strip() + "\n"
 
         return out

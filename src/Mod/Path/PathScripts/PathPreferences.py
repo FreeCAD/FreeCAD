@@ -75,8 +75,8 @@ def preferences():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
 
 
-def pathScriptsSourcePath():
-    return os.path.join(FreeCAD.getHomePath(), "Mod/Path/PathScripts/")
+def pathPostSourcePath():
+    return os.path.join(FreeCAD.getHomePath(), "Mod/Path/Path/Post/")
 
 
 def pathDefaultToolsPath(sub=None):
@@ -160,8 +160,8 @@ def searchPathsPost():
     if p:
         paths.append(p)
     paths.append(macroFilePath())
-    paths.append(os.path.join(pathScriptsSourcePath(), "post/"))
-    paths.append(pathScriptsSourcePath())
+    paths.append(os.path.join(pathPostSourcePath(), "scripts/"))
+    paths.append(pathPostSourcePath())
     return paths
 
 

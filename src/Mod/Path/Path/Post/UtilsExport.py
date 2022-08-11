@@ -31,10 +31,10 @@ import datetime
 import os
 
 import FreeCAD
+import Path.Post.Utils as PostUtils
+import Path.Post.UtilsParse as PostUtilsParse
 
 from PathScripts import PathToolController
-from PathScripts import PostUtils
-from PathScripts import PostUtilsParse
 
 
 # to distinguish python built-in open function from the one declared below

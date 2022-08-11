@@ -25,7 +25,7 @@ import FreeCAD
 import Path
 import PathTests.PathTestUtils as PathTestUtils
 from importlib import reload
-from PathScripts.post import linuxcnc_post as postprocessor
+from Path.Post.scripts import linuxcnc_post as postprocessor
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
