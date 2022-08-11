@@ -39,6 +39,14 @@ def Startup():
     if not Processed:
         Path.Log.debug("Initializing PathGui")
         from Path.Op.Gui import Adaptive
+        from Path.Dressup.Gui import AxisMap
+        from Path.Dressup.Gui import Dogbone
+        from Path.Dressup.Gui import Dragknife
+        from Path.Dressup.Gui import LeadInOut
+        from Path.Dressup.Gui import PathBoundary
+        from Path.Dressup.Gui import RampEntry
+        from Path.Dressup.Gui import Tags
+        from Path.Dressup.Gui import ZCorrect
         from Path.Post import Command
         from Path.Tools import Controller
         from Path.Tools.Gui import Controller
@@ -46,14 +54,6 @@ def Startup():
         from PathScripts import PathComment
         from PathScripts import PathCustomGui
         from PathScripts import PathDeburrGui
-        from PathScripts import PathDressupAxisMap
-        from PathScripts import PathDressupDogbone
-        from PathScripts import PathDressupDragknife
-        from PathScripts import PathDressupLeadInOut
-        from PathScripts import PathDressupPathBoundaryGui
-        from PathScripts import PathDressupRampEntry
-        from PathScripts import PathDressupTagGui
-        from PathScripts import PathDressupZCorrect
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
         from PathScripts import PathFixture

@@ -23,7 +23,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import PathScripts.PathDressup as PathDressup
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil

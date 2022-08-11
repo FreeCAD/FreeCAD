@@ -22,8 +22,8 @@
 
 import FreeCAD
 import Path
+import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

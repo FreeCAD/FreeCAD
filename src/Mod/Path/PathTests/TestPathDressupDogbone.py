@@ -22,7 +22,7 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathDressupDogbone as PathDressupDogbone
+import Path.Dressup.Gui.Dogbone as PathDressupDogbone
 import PathScripts.PathJob as PathJob
 import PathScripts.PathProfileFaces as PathProfileFaces
 

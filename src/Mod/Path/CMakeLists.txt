@@ -30,6 +30,27 @@ SET(PathPython_SRCS
     Path/Log.py
 )
 
+SET(PathPythonDressup_SRCS
+    Path/Dressup/__init__.py
+    Path/Dressup/Utils.py
+    Path/Dressup/PathBoundary.py
+    Path/Dressup/Tags.py
+)
+
+SET(PathPythonDressupGui_SRCS
+    Path/Dressup/Gui/__init__.py
+    Path/Dressup/Gui/AxisMap.py
+    Path/Dressup/Gui/Dogbone.py
+    Path/Dressup/Gui/Dragknife.py
+    Path/Dressup/Gui/LeadInOut.py
+    Path/Dressup/Gui/PathBoundary.py
+    Path/Dressup/Gui/Preferences.py
+    Path/Dressup/Gui/RampEntry.py
+    Path/Dressup/Gui/Tags.py
+    Path/Dressup/Gui/TagPreferences.py
+    Path/Dressup/Gui/ZCorrect.py
+)
+
 SET(PathPythonOp_SRCS
     Path/Op/__init__.py
     Path/Op/Adaptive.py
@@ -112,19 +133,6 @@ SET(PathScripts_SRCS
     PathScripts/PathCustomGui.py
     PathScripts/PathDeburr.py
     PathScripts/PathDeburrGui.py
-    PathScripts/PathDressup.py
-    PathScripts/PathDressupAxisMap.py
-    PathScripts/PathDressupDogbone.py
-    PathScripts/PathDressupDragknife.py
-    PathScripts/PathDressupHoldingTags.py
-    PathScripts/PathDressupLeadInOut.py
-    PathScripts/PathDressupPathBoundary.py
-    PathScripts/PathDressupPathBoundaryGui.py
-    PathScripts/PathDressupRampEntry.py
-    PathScripts/PathDressupTag.py
-    PathScripts/PathDressupTagGui.py
-    PathScripts/PathDressupTagPreferences.py
-    PathScripts/PathDressupZCorrect.py
     PathScripts/PathDrilling.py
     PathScripts/PathDrillingGui.py
     PathScripts/PathEngrave.py
@@ -159,7 +167,6 @@ SET(PathScripts_SRCS
     PathScripts/PathPocketShapeGui.py
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesAdvanced.py
-    PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathProbe.py
     PathScripts/PathProbeGui.py
@@ -338,6 +345,8 @@ SET(Path_Data
 SET(all_files
     ${PathScripts_SRCS}
     ${PathPython_SRCS}
+    ${PathPythonDressup_SRCS}
+    ${PathPythonDressupGui_SRCS}
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
     ${PathPythonPost_SRCS}
@@ -382,6 +391,20 @@ INSTALL(
         ${PathPython_SRCS}
     DESTINATION
         Mod/Path/Path
+)
+
+INSTALL(
+    FILES
+        ${PathPythonDressup_SRCS}
+    DESTINATION
+        Mod/Path/Path/Dressup
+)
+
+INSTALL(
+    FILES
+        ${PathPythonDressupGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Dressup/Gui
 )
 
 INSTALL(

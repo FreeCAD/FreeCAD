@@ -30,7 +30,7 @@ import Path
 import FreeCAD
 from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll, CmdMoveDrill
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:

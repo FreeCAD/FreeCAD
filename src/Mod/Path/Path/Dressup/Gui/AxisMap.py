@@ -298,19 +298,19 @@ class CommandPathDressup:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupAxisMap")
+        FreeCADGui.addModule("Path.Dressup.Gui.AxisMap")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")'
         )
-        FreeCADGui.doCommand("PathScripts.PathDressupAxisMap.ObjectDressup(obj)")
+        FreeCADGui.doCommand("Path.Dressup.Gui.AxisMap.ObjectDressup(obj)")
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("obj.Radius = 45")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)"
+            "obj.ViewObject.Proxy = Path.Dressup.Gui.AxisMap.ViewProviderDressup(obj.ViewObject)"
         )
         FreeCADGui.doCommand(
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"

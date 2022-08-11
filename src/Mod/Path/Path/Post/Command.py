@@ -41,7 +41,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = Path.Log.thisModule()
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:

@@ -26,8 +26,8 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Dressup.Tags as PathDressupTag
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathPreferences as PathPreferences
@@ -588,9 +588,9 @@ class CommandPathDressupTag:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Tag Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupTagGui")
+        FreeCADGui.addModule("Path.Dressup.Gui.Tags")
         FreeCADGui.doCommand(
-            "PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)"
+            "Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)"
             % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

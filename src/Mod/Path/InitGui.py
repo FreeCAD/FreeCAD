@@ -59,7 +59,8 @@ class PathWorkbench(Workbench):
         global PathCommandGroup
 
         # Add preferences pages - before loading PathGui to properly order pages of Path group
-        from PathScripts import PathPreferencesPathJob, PathPreferencesPathDressup
+        from PathScripts import PathPreferencesPathJob
+        import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
 
         translate = FreeCAD.Qt.translate
 

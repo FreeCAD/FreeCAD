@@ -25,8 +25,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Dressup.PathBoundary as PathDressupPathBoundary
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathDressupPathBoundary as PathDressupPathBoundary
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -289,9 +289,9 @@ class CommandPathDressupPathBoundary:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Path Boundary Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupPathBoundaryGui")
+        FreeCADGui.addModule("Path.Dressup.Gui.PathBoundary")
         FreeCADGui.doCommand(
-            "PathScripts.PathDressupPathBoundaryGui.Create(App.ActiveDocument.%s)"
+            "Path.Dressup.Gui.PathBoundary.Create(App.ActiveDocument.%s)"
             % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

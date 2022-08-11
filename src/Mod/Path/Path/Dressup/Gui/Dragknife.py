@@ -639,18 +639,18 @@ class CommandDressupDragknife:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupDragknife")
+        FreeCADGui.addModule("Path.Dressup.Gui.Dragknife")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")'
         )
-        FreeCADGui.doCommand("PathScripts.PathDressupDragknife.ObjectDressup(obj)")
+        FreeCADGui.doCommand("Path.Dressup.Gui.Dragknife.ObjectDressup(obj)")
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = PathScripts.PathDressupDragknife.ViewProviderDressup(obj.ViewObject)"
+            "obj.ViewObject.Proxy = Path.Dressup.Gui.Dragknife.ViewProviderDressup(obj.ViewObject)"
         )
         FreeCADGui.doCommand(
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"

@@ -161,7 +161,7 @@ class _ToggleOperation:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                selProxy = PathScripts.PathDressup.baseOp(sel.Object).Proxy
+                selProxy = Path.Dressup.Utils.baseOp(sel.Object).Proxy
                 if not isinstance(
                     selProxy, PathScripts.PathOp.ObjectOp
                 ) and not isinstance(selProxy, PathScripts.PathArray.ObjectArray):
@@ -172,7 +172,7 @@ class _ToggleOperation:
 
     def Activated(self):
         for sel in FreeCADGui.Selection.getSelectionEx():
-            op = PathScripts.PathDressup.baseOp(sel.Object)
+            op = Path.Dressup.Utils.baseOp(sel.Object)
             op.Active = not op.Active
             op.ViewObject.Visibility = op.Active
 

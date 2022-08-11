@@ -20,12 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
+from Path.Dressup.Gui.TagPreferences import HoldingTagPreferences
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import PathScripts.PathDressup as PathDressup
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils

@@ -26,7 +26,7 @@ from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathDressup as PathDressup
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 import math
@@ -749,13 +749,13 @@ class CommandPathDressupLeadInOut:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create LeadInOut Dressup")
-        FreeCADGui.addModule("PathScripts.PathDressupLeadInOut")
+        FreeCADGui.addModule("Path.Dressup.Gui.LeadInOut")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "LeadInOutDressup")'
         )
         FreeCADGui.doCommand(
-            "dbo = PathScripts.PathDressupLeadInOut.ObjectDressup(obj)"
+            "dbo = Path.Dressup.Gui.LeadInOut.ObjectDressup(obj)"
         )
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
@@ -763,7 +763,7 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand("dbo.setup(obj)")
         FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = PathScripts.PathDressupLeadInOut.ViewProviderDressup(obj.ViewObject)"
+            "obj.ViewObject.Proxy = Path.Dressup.Gui.LeadInOut.ViewProviderDressup(obj.ViewObject)"
         )
         FreeCADGui.doCommand(
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"

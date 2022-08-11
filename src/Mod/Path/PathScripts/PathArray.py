@@ -24,7 +24,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
-from PathScripts.PathDressup import toolController
+from Path.Dressup.Utils import toolController
 from PySide import QtCore
 import math
 import random

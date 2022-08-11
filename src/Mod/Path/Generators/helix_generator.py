@@ -31,7 +31,7 @@ __doc__ = "Generates the helix for a single spot targetshape"
 __contributors__ = "russ4262 (Russell Johnson), Lorenz Hüdepohl"
 
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:

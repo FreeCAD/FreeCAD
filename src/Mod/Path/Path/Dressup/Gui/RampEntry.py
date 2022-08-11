@@ -24,7 +24,7 @@ from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import PathScripts.PathDressup as PathDressup
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathGeom as PathGeom
 import math
 
@@ -936,20 +936,20 @@ class CommandPathDressupRampEntry:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create RampEntry Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupRampEntry")
+        FreeCADGui.addModule("Path.Dressup.Gui.RampEntry")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")'
         )
         FreeCADGui.doCommand(
-            "dbo = PathScripts.PathDressupRampEntry.ObjectDressup(obj)"
+            "dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)"
         )
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = PathScripts.PathDressupRampEntry.ViewProviderDressup(obj.ViewObject)"
+            "obj.ViewObject.Proxy = Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)"
         )
         FreeCADGui.doCommand(
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"

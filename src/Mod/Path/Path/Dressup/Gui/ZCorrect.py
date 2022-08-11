@@ -380,15 +380,15 @@ class CommandPathDressup:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupZCorrect")
+        FreeCADGui.addModule("Path.Dressup.Gui.ZCorrect")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
         )
-        FreeCADGui.doCommand("PathScripts.PathDressupZCorrect.ObjectDressup(obj)")
+        FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ObjectDressup(obj)")
         FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand(
-            "PathScripts.PathDressupZCorrect.ViewProviderDressup(obj.ViewObject)"
+            "Path.Dressup.Gui.ZCorrect.ViewProviderDressup(obj.ViewObject)"
         )
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCADGui.doCommand(

@@ -26,7 +26,7 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import PathScripts.PathDressup as PathDressup
+import Path.Dressup.Utils as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
@@ -1394,9 +1394,9 @@ class CommandDressupDogbone(object):
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
-        FreeCADGui.addModule("PathScripts.PathDressupDogbone")
+        FreeCADGui.addModule("Path.Dressup.Gui.Dogbone")
         FreeCADGui.doCommand(
-            "PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)"
+            "Path.Dressup.Gui.Dogbone.Create(FreeCAD.ActiveDocument.%s)"
             % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

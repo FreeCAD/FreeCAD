@@ -22,8 +22,8 @@
 
 import FreeCAD
 import Path
+import Path.Dressup.Utils as PathDressup
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathJob as PathJob
