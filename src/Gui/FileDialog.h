@@ -86,6 +86,7 @@ private Q_SLOTS:
 
 private:
     bool hasSuffix(const QString&) const;
+    static QList<QUrl> fetchSidebarUrls();
     static QString workingDirectory;
 };
 
