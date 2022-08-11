@@ -24,10 +24,10 @@ import Path
 import unittest
 
 
-class TestPath.Log(unittest.TestCase):
+class TestPathLog(unittest.TestCase):
     """Some basic tests for the logging framework."""
 
-    MODULE = "TestPath.Log"  # file name without extension
+    MODULE = "TestPathLog"  # file name without extension
 
     def setUp(self):
         Path.Log.setLevel(Path.Log.Level.RESET)

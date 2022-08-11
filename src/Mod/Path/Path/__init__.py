@@ -1,3 +1,3 @@
 from PathApp import *
 
-import Path.Log
+import Path.Log as Log
