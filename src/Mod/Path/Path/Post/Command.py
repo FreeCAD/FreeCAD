@@ -39,7 +39,7 @@ from PySide import QtCore, QtGui
 from datetime import datetime
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-LOG_MODULE = PathLog.thisModule()
+LOG_MODULE = Path.Log.thisModule()
 
 if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
