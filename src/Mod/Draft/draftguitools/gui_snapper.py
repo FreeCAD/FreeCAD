@@ -1136,13 +1136,18 @@ class Snapper:
         # This should be in device-independent pixels
         return 32
 
+    def get_quarter_widget(self, mw):
+        views = []
+        for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
+            if w.inherits("SIM::Coin3D::Quarter::QuarterWidget"):
+                views.append(w)
+        return views
+
     def device_pixel_ratio(self):
         device_pixel_ratio = 1
-        mw = Gui.getMainWindow()
-        for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
-            if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
-                if int(QtCore.qVersion().split('.')[0]) > 4:
-                    device_pixel_ratio = w.devicePixelRatio()
+        for w in self.get_quarter_widget(Gui.getMainWindow()):
+            if int(QtCore.qVersion().split('.')[0]) > 4:
+                device_pixel_ratio = w.devicePixelRatio()
         return device_pixel_ratio
 
     def get_cursor_with_tail(self, base_icon_name, tail_icon_name=None):
@@ -1174,16 +1179,12 @@ class Snapper:
     def setCursor(self, mode=None):
         """Set or reset the cursor to the given mode or resets."""
         if self.selectMode:
-            mw = Gui.getMainWindow()
-            for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
-                if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
-                    w.unsetCursor()
+            for w in self.get_quarter_widget(Gui.getMainWindow()):
+                w.unsetCursor()
             self.cursorMode = None
         elif not mode:
-            mw = Gui.getMainWindow()
-            for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
-                if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
-                    w.unsetCursor()
+            for w in self.get_quarter_widget(Gui.getMainWindow()):
+                w.unsetCursor()
             self.cursorMode = None
         else:
             if mode != self.cursorMode:
@@ -1192,10 +1193,8 @@ class Snapper:
                 if not (mode == 'passive'):
                     tail_icon_name = self.cursors[mode]
                 cur = self.get_cursor_with_tail(base_icon_name, tail_icon_name)
-                mw = Gui.getMainWindow()
-                for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
-                    if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
-                        w.setCursor(cur)
+                for w in self.get_quarter_widget(Gui.getMainWindow()):
+                    w.setCursor(cur)
                 self.cursorMode = mode
 
     def restack(self):
