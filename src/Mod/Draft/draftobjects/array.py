@@ -479,11 +479,8 @@ def polar_placements(base_placement,
     for i in range(number - 1):
         currangle = fraction + (i * fraction)
         npl = base_placement.copy()
-        # Workaround for `faulty` implementation of Base.Placement.rotate(center, axis, angle).
-        # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
-        offset_rotation = App.Placement(App.Vector(0, 0, 0), App.Rotation(axis, currangle), center)
-        npl = offset_rotation * npl
-
+        print("hier")
+        npl.rotate(center, axis, currangle, comp=True)
         if axisvector:
             if not DraftVecUtils.isNull(axisvector):
                 npl.translate(App.Vector(axisvector).multiply(i + 1))
@@ -519,10 +516,8 @@ def circ_placements(base_placement,
         for ycount in range(0, n):
             npl = base_placement.copy()
             npl.translate(trans)
-            # Workaround for `faulty` implementation of Base.Placement.rotate(center, axis, angle).
-            # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
-            offset_rotation = App.Placement(App.Vector(0, 0, 0), App.Rotation(axis, ycount * angle), center)
-            npl = offset_rotation * npl
+            print("hier")
+            npl.rotate(center, axis, ycount * angle, comp=True)
             placements.append(npl)
 
     return placements
