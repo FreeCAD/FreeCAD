@@ -972,7 +972,10 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 return
 
         basedir = FreeCAD.getUserAppDataDir()
-        moddir = basedir + os.sep + "Mod"
+        if basedir[-1:] != os.sep:
+            moddir = basedir + os.sep + "Mod"
+        else:
+            moddir = basedir + "Mod"
         if not os.path.exists(moddir):
             os.makedirs(moddir)
         target_dir = moddir + os.sep + self.repo.name
