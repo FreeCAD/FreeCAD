@@ -31,7 +31,6 @@
 
 #include "Geometry.h"
 
-
 class TopoDS_Edge;
 
 namespace TechDraw {
@@ -44,7 +43,7 @@ class TechDrawExport LineFormat
 public:
     LineFormat(int style = getDefEdgeStyle(),
                double weight = getDefEdgeWidth(),
-               App::Color color = getDefEdgeWidth(),
+               App::Color color = getDefEdgeColor(),
                bool visible = true);
     ~LineFormat() = default;
 
