@@ -259,6 +259,8 @@ void DlgGeneralImp::loadSettings()
         model->sort(0);
 
     int current = getMainWindow()->iconSize().width();
+    current = hGrp->GetInt("ToolbarIconSize", current);
+    ui->toolbarIconSize->clear();
     ui->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
     ui->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
     ui->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
@@ -270,6 +272,7 @@ void DlgGeneralImp::loadSettings()
     }
     ui->toolbarIconSize->setCurrentIndex(index);
 
+    ui->treeMode->clear();
     ui->treeMode->addItem(tr("Combo View"));
     ui->treeMode->addItem(tr("TreeView and PropertyView"));
     ui->treeMode->addItem(tr("Both"));
@@ -308,6 +311,7 @@ void DlgGeneralImp::loadSettings()
     }
 
     // now add all unique items
+    ui->StyleSheets->clear();
     ui->StyleSheets->addItem(tr("No style sheet"), QString::fromLatin1(""));
     for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
         ui->StyleSheets->addItem(it.key(), it.value());
@@ -333,7 +337,8 @@ void DlgGeneralImp::loadSettings()
         }
     }
 
-    if (index > -1) ui->StyleSheets->setCurrentIndex(index);
+    if (index > -1)
+        ui->StyleSheets->setCurrentIndex(index);
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)
