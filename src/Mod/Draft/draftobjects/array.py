@@ -479,7 +479,6 @@ def polar_placements(base_placement,
     for i in range(number - 1):
         currangle = fraction + (i * fraction)
         npl = base_placement.copy()
-        print("hier")
         npl.rotate(center, axis, currangle, comp=True)
         if axisvector:
             if not DraftVecUtils.isNull(axisvector):
@@ -516,7 +515,6 @@ def circ_placements(base_placement,
         for ycount in range(0, n):
             npl = base_placement.copy()
             npl.translate(trans)
-            print("hier")
             npl.rotate(center, axis, ycount * angle, comp=True)
             placements.append(npl)
 
