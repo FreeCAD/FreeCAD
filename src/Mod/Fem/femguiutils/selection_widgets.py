@@ -479,12 +479,12 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        FreeCAD.Console.PrintMessage("Selection: {}  {}  {}\n".format(
-            selection[0].Shape.ShapeType,
-            selection[0].Name,
-            selection[1]
-        ))
         if hasattr(selection[0], "Shape") and selection[1]:
+            FreeCAD.Console.PrintMessage("Selection: {}  {}  {}\n".format(
+                selection[0].Shape.ShapeType,
+                selection[0].Name,
+                selection[1]
+            ))
             sobj = selection[0]
             elt = sobj.Shape.getElement(selection[1])
             ele_ShapeType = elt.ShapeType
