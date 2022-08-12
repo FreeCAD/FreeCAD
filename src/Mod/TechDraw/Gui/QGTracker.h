@@ -34,6 +34,7 @@ class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
 #include <Base/Parameter.h>
+#include <Base/Vector3D.h>
 
 #include "QGIPrimPath.h"
 
@@ -88,8 +89,6 @@ protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
     void keyPressEvent(QKeyEvent * event) override;
-
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     void getPickedQGIV(QPointF pos);
 
