@@ -829,8 +829,9 @@ class Writer(object):
                     activeIn = self._getAllBodies()
                 solverSection = self._getElasticitySolver(equation)
                 for body in activeIn:
-                    self._addSolver(body, solverSection)
-                self._handleElasticityEquation(activeIn, equation)
+                    if not self._isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        self._handleElasticityEquation(activeIn, equation)
         if activeIn:
             self._handleElasticityConstants()
             self._handleElasticityBndConditions()
@@ -890,8 +891,10 @@ class Writer(object):
 
     def _handleElasticityEquation(self, bodies, equation):
         for b in bodies:
-            if equation.PlaneStress:
-                self._equation(b, "Plane Stress", equation.PlaneStress)
+            # not for bodies with fluid material
+            if not self._isBodyMaterialFluid(b):
+                if equation.PlaneStress:
+                    self._equation(b, "Plane Stress", equation.PlaneStress)
 
     def _updateElasticitySolver(self, equation):
         # updates older Elasticity equations
@@ -1163,8 +1166,12 @@ class Writer(object):
 
     def _getBodyMaterial(self, name):
         for obj in self._getMember("App::MaterialObject"):
-            if not obj.References or name in obj.References[0][1]:
+            # we can have e.g. the case there are 2 bodies and 2 materials
+            # body 2 has material 2 as reference while material 1 has no reference
+            # therefore we must not return a material when it is not referenced
+            if obj.References and (name in obj.References[0][1]):
                 return obj
+        # 'name' was not in the reference of any material
         return None
 
     def _handleElasticityMaterial(self, bodies):
@@ -1188,15 +1195,24 @@ class Writer(object):
         # get the material data for all bodies
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
-            # don't evaluate fluid material
-            if "KinematicViscosity" in m:
-                break
             refs = (
                 obj.References[0][1]
                 if obj.References
                 else self._getAllBodies()
             )
             for name in (n for n in refs if n in bodies):
+                # don't evaluate fluid material
+                if self._isBodyMaterialFluid(name):
+                    break
+                if not "YoungsModulus" in m:
+                    Console.PrintMessage("m: {}\n".format(m))
+                    # it is no fluid but also no solid
+                    # -> user set no material reference at all
+                    # that now material is known
+                    raise WriteError(
+                        "There are two or more materials with empty references.\n\n"
+                        "Set for the materials to what solid they belong to.\n"
+                    )
                 if density_needed is True:
                     self._material(
                         name, "Density",
@@ -1236,6 +1252,14 @@ class Writer(object):
                 return True
         return False
 
+    def _isBodyMaterialFluid(self, body):
+        # we can have the case that a body has no assigned material
+        # then assume it is a solid
+        if self._getBodyMaterial(body) is not None:
+            m = self._getBodyMaterial(body).Material
+            return "KinematicViscosity" in m
+        return False
+
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
@@ -1250,8 +1274,9 @@ class Writer(object):
                     activeIn = self._getAllBodies()
                 solverSection = self._getFlowSolver(equation)
                 for body in activeIn:
-                    self._addSolver(body, solverSection)
-                self._handleFlowEquation(activeIn, equation)
+                    if self._isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        self._handleFlowEquation(activeIn, equation)
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
@@ -1423,10 +1448,12 @@ class Writer(object):
 
     def _handleFlowEquation(self, bodies, equation):
         for b in bodies:
-            if equation.Convection != "None":
-                self._equation(b, "Convection", equation.Convection)
-            if equation.MagneticInduction is True:
-                self._equation(b, "Magnetic Induction", equation.MagneticInduction)
+            # not for bodies with solid material
+            if self._isBodyMaterialFluid(b):
+                if equation.Convection != "None":
+                    self._equation(b, "Convection", equation.Convection)
+                if equation.MagneticInduction is True:
+                    self._equation(b, "Magnetic Induction", equation.MagneticInduction)
 
     def _createEmptySolver(self):
         s = sifio.createSection(sifio.SOLVER)
