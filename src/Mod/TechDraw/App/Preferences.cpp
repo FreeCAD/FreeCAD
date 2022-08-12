@@ -277,13 +277,12 @@ std::string Preferences::svgFile()
     if (prefHatchFile.empty()) {
         prefHatchFile = defaultFileName;
     }
-    std::string result = prefHatchFile;
-    Base::FileInfo fi(result);
+    Base::FileInfo fi(prefHatchFile);
     if (!fi.isReadable()) {
-        result = defaultFileName;
         Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        prefHatchFile = defaultFileName;
     }
-    return result;
+    return prefHatchFile;
 }
 
 std::string Preferences::patFile()
@@ -294,13 +293,16 @@ std::string Preferences::patFile()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
     std::string defaultFileName = defaultDir + "FCPAT.pat";
     std::string prefHatchFile = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
-    std::string result = prefHatchFile;
-    Base::FileInfo fi(result);
-    if (!fi.isReadable()) {
-        result = defaultFileName;
-        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+    if (prefHatchFile.empty()) {
+        prefHatchFile = defaultFileName;
     }
-    return result;
+    Base::FileInfo fi(prefHatchFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        prefHatchFile = defaultFileName;
+    }
+
+    return prefHatchFile;
 }
 
 std::string Preferences::bitmapFill(void)
@@ -311,11 +313,13 @@ std::string Preferences::bitmapFill(void)
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "default.png";
     std::string prefBitmapFile = hGrp->GetASCII("BitmapFill", defaultFileName.c_str());
-    std::string result = prefBitmapFile;
-    Base::FileInfo fi(result);
-    if (!fi.isReadable()) {
-        result = defaultFileName;
-        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+    if (prefBitmapFile.empty()) {
+        prefBitmapFile = defaultFileName;
     }
-    return result;
+    Base::FileInfo fi(prefBitmapFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+        prefBitmapFile = defaultFileName;
+    }
+    return prefBitmapFile;
 }
