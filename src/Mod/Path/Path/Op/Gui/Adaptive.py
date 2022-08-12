@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 import Path.Op.Adaptive as PathAdaptive
-import PathScripts.PathOpGui as PathOpGui
+import Path.Op.Gui.Base as PathOpGui
 from PySide import QtCore
 import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
 import FreeCADGui

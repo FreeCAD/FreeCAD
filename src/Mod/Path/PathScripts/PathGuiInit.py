@@ -47,36 +47,36 @@ def Startup():
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
         from Path.Dressup.Gui import ZCorrect
+        from Path.Op.Gui import Custom
+        from Path.Op.Gui import Deburr
+        from Path.Op.Gui import Drilling
+        from Path.Op.Gui import Engrave
+        from Path.Op.Gui import Helix
+        from Path.Op.Gui import MillFace
+        from Path.Op.Gui import Pocket
+        from Path.Op.Gui import PocketShape
+        from Path.Op.Gui import Probe
+        from Path.Op.Gui import Profile
+        from Path.Op.Gui import Slot
+        from Path.Op.Gui import ThreadMilling
+        from Path.Op.Gui import Vcarve
         from Path.Post import Command
         from Path.Tools import Controller
         from Path.Tools.Gui import Controller
         from PathScripts import PathArray
         from PathScripts import PathComment
-        from PathScripts import PathCustomGui
-        from PathScripts import PathDeburrGui
-        from PathScripts import PathDrillingGui
-        from PathScripts import PathEngraveGui
         from PathScripts import PathFixture
-        from PathScripts import PathHelixGui
         from PathScripts import PathHop
         from PathScripts import PathInspect
-        from PathScripts import PathMillFaceGui
-        from PathScripts import PathPocketGui
-        from PathScripts import PathPocketShapeGui
-        from PathScripts import PathProbeGui
-        from PathScripts import PathProfileGui
         from PathScripts import PathPropertyBagGui
         from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
-        from PathScripts import PathSlotGui
         from PathScripts import PathStop
-        from PathScripts import PathThreadMillingGui
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui
-        from PathScripts import PathVcarveGui
 
         from packaging.version import Version, parse
 

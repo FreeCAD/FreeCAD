@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import Path
-import PathScripts.PathDeburr as PathDeburr
+import Path.Op.Deburr as PathDeburr
 import PathTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())

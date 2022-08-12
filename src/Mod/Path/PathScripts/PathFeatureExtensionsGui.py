@@ -25,10 +25,10 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Op.Gui.Base as PathOpGui
 import PathScripts.PathFeatureExtensions as FeatureExtensions
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
-import PathScripts.PathOpGui as PathOpGui
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

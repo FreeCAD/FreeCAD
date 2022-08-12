@@ -22,9 +22,9 @@
 # *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
-import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathProfile as PathProfile
-import PathScripts.PathProfileGui as PathProfileGui
+import Path.Op.Gui.Base as PathOpGui
+import Path.Op.Gui.Profile as PathProfileGui
+import Path.Op.Profile as PathProfile
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Profile Edges Operation UI (depreciated)"

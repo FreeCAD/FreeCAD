@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 Schildkroet                                        *
+# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,36 +19,46 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
-import Path.Op.Profile as PathProfile
+import Path
+import Path.Op.Gui.Base as PathOpGui
+import Path.Op.Gui.PocketBase as PathPocketBaseGui
+import Path.Op.Pocket as PathPocket
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-__title__ = "Path Profile Faces Operation (depreciated)"
+__title__ = "Path Pocket Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
-__doc__ = "Path Profile operation based on faces (depreciated)."
-__contributors__ = "Schildkroet"
+__doc__ = "Pocket operation page controller and command implementation."
 
 
-class ObjectProfile(PathProfile.ObjectProfile):
-    """Pseudo class for Profile operation,
-    allowing for backward compatibility with pre-existing "Profile Faces" operations."""
+class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
+    """Page controller class for Pocket operation"""
 
-    pass
-
-
-# Eclass
+    def pocketFeatures(self):
+        """pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)"""
+        return PathPocketBaseGui.FeaturePocket
 
 
-def SetupProperties():
-    return PathProfile.SetupProperties()
+Command = PathOpGui.SetupOperation(
+    "Pocket3D",
+    PathPocket.Create,
+    TaskPanelOpPage,
+    "Path_3DPocket",
+    QT_TRANSLATE_NOOP("Path_Pocket3D", "3D Pocket"),
+    QT_TRANSLATE_NOOP(
+        "Path_Pocket3D", "Creates a Path 3D Pocket object from a face or faces"
+    ),
+    PathPocket.SetupProperties,
+)
 
-
-def Create(name, obj=None, parentJob=None):
-    """Create(name) ... Creates and returns a Profile operation."""
-    if obj is None:
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectProfile(obj, name, parentJob)
-    return obj
+FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")

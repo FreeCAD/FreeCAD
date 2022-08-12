@@ -173,8 +173,8 @@ class PathWorkbench(Workbench):
 
             try:
                 import ocl  # pylint: disable=unused-variable
-                from PathScripts import PathSurfaceGui
-                from PathScripts import PathWaterlineGui
+                from Path.Op.Gui import Surface
+                from Path.Op.Gui import Waterline
 
                 threedopcmdlist.extend(["Path_Surface", "Path_Waterline"])
                 threedcmdgroup = ["Path_3dTools"]
@@ -325,7 +325,7 @@ class PathWorkbench(Workbench):
                         "", ["Path_ExportTemplate"] + self.toolbitctxmenu
                     )
                 menuAppended = True
-            if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
+            if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu(
                     "", ["Path_OperationCopy", "Path_OpActiveToggle"]
                 )

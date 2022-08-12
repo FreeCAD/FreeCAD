@@ -50,11 +50,11 @@ import re
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
-    import PathScripts.PathCustomGui as PathCustomGui
+    import Path.Op.Gui.Custom as PathCustomGui
 
     PathCustom = PathCustomGui.PathCustom
 else:
-    import PathScripts.PathCustom as PathCustom
+    import Path.Op.Custom as PathCustom
 
 translate = FreeCAD.Qt.translate
 

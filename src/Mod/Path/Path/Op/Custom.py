@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,36 +19,61 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
-import Path.Op.Profile as PathProfile
+import Path
+import Path.Op.Base as PathOp
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Profile Faces Operation (depreciated)"
+__title__ = "Path Custom Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
-__doc__ = "Path Profile operation based on faces (depreciated)."
-__contributors__ = "Schildkroet"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Path Custom object and FreeCAD command"
 
 
-class ObjectProfile(PathProfile.ObjectProfile):
-    """Pseudo class for Profile operation,
-    allowing for backward compatibility with pre-existing "Profile Faces" operations."""
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-    pass
+
+translate = FreeCAD.Qt.translate
 
 
-# Eclass
+class ObjectCustom(PathOp.ObjectOp):
+    def opFeatures(self, obj):
+        return PathOp.FeatureTool | PathOp.FeatureCoolant
+
+    def initOperation(self, obj):
+        obj.addProperty(
+            "App::PropertyStringList",
+            "Gcode",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"),
+        )
+
+        obj.Proxy = self
+
+    def opExecute(self, obj):
+        self.commandlist.append(Path.Command("(Begin Custom)"))
+        if obj.Gcode:
+            for l in obj.Gcode:
+                newcommand = Path.Command(str(l))
+                self.commandlist.append(newcommand)
+
+        self.commandlist.append(Path.Command("(End Custom)"))
 
 
 def SetupProperties():
-    return PathProfile.SetupProperties()
+    setup = []
+    return setup
 
 
 def Create(name, obj=None, parentJob=None):
-    """Create(name) ... Creates and returns a Profile operation."""
+    """Create(name) ... Creates and returns a Custom operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectProfile(obj, name, parentJob)
+    obj.Proxy = ObjectCustom(obj, name, parentJob)
     return obj

@@ -350,15 +350,15 @@ def export(objectslist, filename, argstring):
             MACHINE_LAST_POSITION["X"] = 99999
             MACHINE_LAST_POSITION["Y"] = 99999
             MACHINE_LAST_POSITION["Z"] = 99999
-        elif isinstance(obj.Proxy, PathScripts.PathProfileEdges.ObjectProfile):
+        elif isinstance(obj.Proxy, Path.Op.ProfileEdges.ObjectProfile):
             Object_Kind = "PROFILE"
             if LBLIZE_ACTIVE:
                 LBLIZE_STAUS = True
-        elif isinstance(obj.Proxy, PathScripts.PathMillFace.ObjectFace):
+        elif isinstance(obj.Proxy, Path.Op.MillFace.ObjectFace):
             Object_Kind = "FACE"
             if LBLIZE_ACTIVE:
                 LBLIZE_STAUS = True
-        elif isinstance(obj.Proxy, PathScripts.PathHelix.ObjectHelix):
+        elif isinstance(obj.Proxy, Path.Op.Helix.ObjectHelix):
             Object_Kind = "HELIX"
 
         # If used compensated path, store, recompute and diff when asked

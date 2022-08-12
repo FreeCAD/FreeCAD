@@ -21,9 +21,9 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path.Op.Vcarve as PathVcarve
 import Path.Tools.Bit as PathToolBit
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathVcarve as PathVcarve
 import math
 
 from PathTests.PathTestUtils import PathTestBase

@@ -24,7 +24,6 @@
 import FreeCAD
 from FreeCAD import Vector
 from PySide import QtCore
-from PySide import QtGui
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathJob as PathJob
@@ -64,6 +63,7 @@ def waiting_effects(function):
     def new_function(*args, **kwargs):
         if not FreeCAD.GuiUp:
             return function(*args, **kwargs)
+        from PySide import QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         res = None
         try:
@@ -299,7 +299,7 @@ def getOffsetArea(
 ):
     """Make an offset area of a shape, projected onto a plane.
     Positive offsets expand the area, negative offsets shrink it.
-    Inspired by _buildPathArea() from PathAreaOp.py module. Adjustments made
+    Inspired by _buildPathArea() from Path.Op.Area.py module. Adjustments made
     based on notes by @sliptonic at this webpage:
     https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes."""
     Path.Log.debug("getOffsetArea()")

@@ -22,7 +22,7 @@
 
 import FreeCAD
 import PathScripts.PathGeom as PathGeom
-import PathScripts.PathThreadMilling as PathThreadMilling
+import Path.Op.ThreadMilling as PathThreadMilling
 import math
 
 from PathTests.PathTestUtils import PathTestBase

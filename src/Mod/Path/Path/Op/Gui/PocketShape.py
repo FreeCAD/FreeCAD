@@ -19,38 +19,59 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
 import Path
 import Path.Op.Gui.Base as PathOpGui
-import Path.Op.Gui.Profile as PathProfileGui
-import Path.Op.Profile as PathProfile
+import Path.Op.Gui.PocketBase as PathPocketBaseGui
+import Path.Op.PocketShape as PathPocketShape
+import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Contour Operation UI (depreciated)"
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+
+Part = LazyLoader("Part", globals(), "Part")
+
+__title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
-__doc__ = "Contour operation page controller and command implementation (deprecated)."
+__doc__ = "Pocket Shape operation page controller and command implementation."
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
-class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    """Pseudo page controller class for Profile operation,
-    allowing for backward compatibility with pre-existing "Contour" operations."""
+class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
+    """Page controller class for Pocket operation"""
 
-    pass
+    def pocketFeatures(self):
+        """pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)"""
+        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
+
+    def taskPanelBaseLocationPage(self, obj, features):
+        if not hasattr(self, "extensionsPanel"):
+            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(
+                obj, features
+            )
+        return self.extensionsPanel
 
 
 Command = PathOpGui.SetupOperation(
-    "Profile",
-    PathProfile.Create,
+    "Pocket Shape",
+    PathPocketShape.Create,
     TaskPanelOpPage,
-    "Path_Contour",
-    QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+    "Path_Pocket",
+    QT_TRANSLATE_NOOP("Path_Pocket_Shape", "Pocket Shape"),
     QT_TRANSLATE_NOOP(
-        "Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"
+        "Path_Pocket_Shape", "Creates a Path Pocket object from a face or faces"
     ),
-    PathProfile.SetupProperties,
+    PathPocketShape.SetupProperties,
 )
 
-FreeCAD.Console.PrintLog("Loading PathProfileContourGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathPocketShapeGui... done\n")

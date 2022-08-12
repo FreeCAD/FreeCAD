@@ -19,38 +19,65 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Op.Gui.Base as PathOpGui
-import Path.Op.Gui.Profile as PathProfileGui
-import Path.Op.Profile as PathProfile
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import Path.Op.Gui.PocketBase as PathPocketBaseGui
+import Path.Op.MillFace as PathMillFace
+import Path.Op.PocketShape as PathPocketShape
+import FreeCADGui
 
-__title__ = "Path Contour Operation UI (depreciated)"
+__title__ = "Path Face Mill Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
-__doc__ = "Contour operation page controller and command implementation (deprecated)."
+__doc__ = "Face Mill operation page controller and command implementation."
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    """Pseudo page controller class for Profile operation,
-    allowing for backward compatibility with pre-existing "Contour" operations."""
+class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
+    """Page controller class for the face milling operation."""
 
-    pass
+    def getForm(self):
+        Path.Log.track()
+        """getForm() ... return UI"""
+
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
+        comboToPropertyMap = [
+            ("cutMode", "CutMode"),
+            ("offsetPattern", "OffsetPattern"),
+            ("boundaryShape", "BoundaryShape"),
+        ]
+
+        enumTups = PathMillFace.ObjectFace.propertyEnumerations(dataType="raw")
+        enumTups.update(
+            PathPocketShape.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
+        )
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
+
+    def pocketFeatures(self):
+        """pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)"""
+        return PathPocketBaseGui.FeatureFacing
 
 
 Command = PathOpGui.SetupOperation(
-    "Profile",
-    PathProfile.Create,
+    "MillFace",
+    PathMillFace.Create,
     TaskPanelOpPage,
-    "Path_Contour",
-    QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+    "Path_Face",
+    QT_TRANSLATE_NOOP("Path_MillFace", "Face"),
     QT_TRANSLATE_NOOP(
-        "Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"
+        "Path_MillFace", "Create a Facing Operation from a model or face"
     ),
-    PathProfile.SetupProperties,
+    PathMillFace.SetupProperties,
 )
 
-FreeCAD.Console.PrintLog("Loading PathProfileContourGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")

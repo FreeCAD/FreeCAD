@@ -163,7 +163,7 @@ class _ToggleOperation:
             for sel in FreeCADGui.Selection.getSelectionEx():
                 selProxy = Path.Dressup.Utils.baseOp(sel.Object).Proxy
                 if not isinstance(
-                    selProxy, PathScripts.PathOp.ObjectOp
+                    selProxy, Path.Op.Base.ObjectOp
                 ) and not isinstance(selProxy, PathScripts.PathArray.ObjectArray):
                     return False
             return True
@@ -203,7 +203,7 @@ class _CopyOperation:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, PathScripts.PathOp.ObjectOp):
+                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
                     return False
             return True
         except (IndexError, AttributeError):

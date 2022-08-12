@@ -19,38 +19,59 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
-import Path
+import FreeCADGui
+import Path.Op.Custom as PathCustom
 import Path.Op.Gui.Base as PathOpGui
-import Path.Op.Gui.Profile as PathProfileGui
-import Path.Op.Profile as PathProfile
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-__title__ = "Path Contour Operation UI (depreciated)"
+
+__title__ = "Path Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
-__doc__ = "Contour operation page controller and command implementation (deprecated)."
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Custom operation page controller and command implementation."
 
 
-class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    """Pseudo page controller class for Profile operation,
-    allowing for backward compatibility with pre-existing "Contour" operations."""
+class TaskPanelOpPage(PathOpGui.TaskPanelPage):
+    """Page controller class for the Custom operation."""
 
-    pass
+    def getForm(self):
+        """getForm() ... returns UI"""
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpCustomEdit.ui")
+
+    def getFields(self, obj):
+        """getFields(obj) ... transfers values from UI to obj's properties"""
+        self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
+
+    def setFields(self, obj):
+        """setFields(obj) ... transfers obj's property values to UI"""
+        self.setupToolController(obj, self.form.toolController)
+        self.form.txtGCode.setText("\n".join(obj.Gcode))
+        self.setupCoolant(obj, self.form.coolantController)
+
+    def getSignalsForUpdate(self, obj):
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
+        signals = []
+        signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
+        self.form.txtGCode.textChanged.connect(self.setGCode)
+        return signals
+
+    def setGCode(self):
+        self.obj.Gcode = self.form.txtGCode.toPlainText().splitlines()
 
 
 Command = PathOpGui.SetupOperation(
-    "Profile",
-    PathProfile.Create,
+    "Custom",
+    PathCustom.Create,
     TaskPanelOpPage,
-    "Path_Contour",
-    QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
-    QT_TRANSLATE_NOOP(
-        "Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"
-    ),
-    PathProfile.SetupProperties,
+    "Path_Custom",
+    QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+    QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
+    PathCustom.SetupProperties,
 )
 
-FreeCAD.Console.PrintLog("Loading PathProfileContourGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathCustomGui... done\n")

@@ -22,7 +22,7 @@
 # *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
-import PathScripts.PathProfile as PathProfile
+import Path.Op.Profile as PathProfile
 
 
 __title__ = "Path Contour Operation (depreciated)"

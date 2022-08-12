@@ -23,7 +23,7 @@
 import Draft
 import FreeCAD
 import Path
-import PathScripts.PathHelix as PathHelix
+import Path.Op.Helix as PathHelix
 import PathScripts.PathJob as PathJob
 import PathTests.PathTestUtils as PathTestUtils
 

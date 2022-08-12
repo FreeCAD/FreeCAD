@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -45,7 +46,7 @@ class CommandPathSimpleCopy:
             return False
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+            return isinstance(obj.Proxy, Path.Op.Base.ObjectOp)
         except Exception:
             return False
 
@@ -71,9 +72,9 @@ class CommandPathSimpleCopy:
         )
 
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.addModule("PathScripts.PathCustom")
+        FreeCADGui.addModule("Path.Op.Custom")
         FreeCADGui.doCommand(
-            'obj = PathScripts.PathCustom.Create("'
+            'obj = Path.Op.Custom.Create("'
             + selection[0].Name
             + '_SimpleCopy")'
         )

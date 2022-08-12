@@ -23,7 +23,7 @@
 # ***************************************************************************
 
 import Path
-import PathScripts.PathOp as PathOp
+import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
 import FreeCAD
