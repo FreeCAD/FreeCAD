@@ -83,9 +83,9 @@ class GuiExport SoSkipBoundingGroup : public SoGroup {
     SO_NODE_HEADER(Gui::SoSkipBoundingGroup);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoSkipBoundingGroup(void);
+    static void initClass();
+    static void finish();
+    SoSkipBoundingGroup();
 
     enum Modes {
         INCLUDE_BBOX, EXCLUDE_BBOX

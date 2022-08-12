@@ -28,7 +28,6 @@
 
 #include "SoFCInteractiveElement.h"
 
-
 using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoFCInteractiveElement)

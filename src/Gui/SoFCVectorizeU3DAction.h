@@ -36,7 +36,7 @@ public:
     virtual ~SoU3DVectorOutput();
 
     virtual SbBool openFile (const char *filename);
-    virtual void closeFile (void);
+    virtual void closeFile ();
     std::fstream& getFileStream();
 
 private:
@@ -53,20 +53,20 @@ class GuiExport SoFCVectorizeU3DAction : public SoVectorizeAction {
     SO_ACTION_HEADER(SoFCVectorizeU3DAction);
 
 public:
-    SoFCVectorizeU3DAction(void);
+    SoFCVectorizeU3DAction();
     virtual ~SoFCVectorizeU3DAction();
 
-    static void initClass(void);
-    SoU3DVectorOutput * getU3DOutput(void) const;
+    static void initClass();
+    SoU3DVectorOutput * getU3DOutput() const;
 
 protected:
     virtual void beginTraversal(SoNode * node);
     virtual void endTraversal(SoNode *node);
-    virtual void printHeader(void) const;
-    virtual void printFooter(void) const;
-    virtual void printBackground(void) const;
+    virtual void printHeader() const;
+    virtual void printFooter() const;
+    virtual void printBackground() const;
     virtual void printItem(const SoVectorizeItem * item) const;
-    virtual void printViewport(void) const;
+    virtual void printViewport() const;
 
 private:
     static void actionMethod(SoAction *, SoNode *);

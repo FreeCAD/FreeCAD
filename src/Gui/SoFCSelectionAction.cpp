@@ -1116,7 +1116,6 @@ SoBoxSelectionRenderAction::constructorCommon()
     // Initialize local variables
     PRIVATE(this)->initBoxGraph();
 
-    // this->hlVisible = true;
     this->hlVisible = false;
 
     PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
@@ -1154,7 +1153,7 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
 {
     SoGLRenderAction::apply(node);
     if (this->hlVisible) {
-        if (PRIVATE(this)->searchaction == nullptr) {
+        if (!PRIVATE(this)->searchaction) {
             PRIVATE(this)->searchaction = new SoSearchAction;
         }
         PRIVATE(this)->searchaction->setType(SoFCSelection::getClassTypeId());
@@ -1169,7 +1168,7 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                 assert(selection->getTypeId().isDerivedFrom(SoFCSelection::getClassTypeId()));
                 if (selection->selected.getValue() && selection->style.getValue() == SoFCSelection::BOX) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
-                    if (PRIVATE(this)->selectsearch == nullptr) {
+                    if (!PRIVATE(this)->selectsearch) {
                         PRIVATE(this)->selectsearch = new SoSearchAction;
                     }
                     PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
@@ -1188,8 +1187,8 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                          selection->style.getValue() == SoFCSelection::BOX) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
-                    if (PRIVATE(this)->selectsearch == nullptr) {
-                      PRIVATE(this)->selectsearch = new SoSearchAction;
+                    if (!PRIVATE(this)->selectsearch) {
+                        PRIVATE(this)->selectsearch = new SoSearchAction;
                     }
                     PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
                     PRIVATE(this)->selectsearch->setInterest(SoSearchAction::FIRST);
@@ -1236,8 +1235,8 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
                  selection->style.getValue() == SoFCSelection::BOX) {
             PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
-            if (PRIVATE(this)->selectsearch == nullptr) {
-              PRIVATE(this)->selectsearch = new SoSearchAction;
+            if (!PRIVATE(this)->selectsearch) {
+                PRIVATE(this)->selectsearch = new SoSearchAction;
             }
             PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
             PRIVATE(this)->selectsearch->setInterest(SoSearchAction::FIRST);
