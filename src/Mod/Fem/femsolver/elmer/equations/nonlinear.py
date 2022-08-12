@@ -83,7 +83,7 @@ class Proxy(linear.Proxy):
         # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
         obj.setExpression("NonlinearTolerance", "1e-7")
         obj.setExpression("NonlinearNewtonAfterTolerance", "1e-3")
-        obj.RelaxationFactor = (1.0, 0.01, 2.0, 0.1)
+        obj.RelaxationFactor = (1.0, 0.0001, 2.0, 0.1)
 
 
 class ViewProxy(linear.ViewProxy):
