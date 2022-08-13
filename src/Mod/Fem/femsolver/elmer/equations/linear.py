@@ -64,62 +64,43 @@ class Proxy(equation.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearSolverType",
-            "Linear System",
-            ""
-        )
-        obj.LinearSolverType = LINEAR_SOLVER
-        obj.LinearSolverType = "Iterative"
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearDirectMethod",
-            "Linear System",
-            ""
-        )
-        obj.LinearDirectMethod = LINEAR_DIRECT
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearIterativeMethod",
-            "Linear System",
-            ""
-        )
-        obj.LinearIterativeMethod = LINEAR_ITERATIVE
-        obj.LinearIterativeMethod = "BiCGStab"
+
         obj.addProperty(
             "App::PropertyInteger",
             "BiCGstablDegree",
             "Linear System",
             "Polynom degree for iterative method 'BiCGstabl'"
         )
-        obj.BiCGstablDegree = 2
         obj.addProperty(
             "App::PropertyEnumeration",
-            "LinearPreconditioning",
+            "LinearDirectMethod",
             "Linear System",
             ""
         )
-        obj.LinearPreconditioning = LINEAR_PRECONDITIONING
-        obj.LinearPreconditioning = "ILU0"
-        obj.addProperty(
-            "App::PropertyFloat",
-            "LinearTolerance",
-            "Linear System",
-            "Linear preconditioning method"
-        )
-        # we must set an expression because we don't have a UI, the user has to
-        # view and edit the tolerance via the property editor and this does not
-        # yet allow to view and edit small numbers in scientific notation
-        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
-        obj.setExpression("LinearTolerance", "1e-10")
         obj.addProperty(
             "App::PropertyInteger",
             "LinearIterations",
             "Linear System",
             ""
         )
-        obj.LinearIterations = 500
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinearIterativeMethod",
+            "Linear System",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinearPreconditioning",
+            "Linear System",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinearSolverType",
+            "Linear System",
+            ""
+        )
         obj.addProperty(
             "App::PropertyBool",
             "LinearSystemSolverDisabled",
@@ -132,19 +113,39 @@ class Proxy(equation.Proxy):
         )
         obj.addProperty(
             "App::PropertyFloat",
-            "SteadyStateTolerance",
-            "Steady State",
-            ""
+            "LinearTolerance",
+            "Linear System",
+            "Linear preconditioning method"
         )
-        # same as with LinearTolerance
-        obj.setExpression("SteadyStateTolerance", "1e-5")
-
         obj.addProperty(
             "App::PropertyBool",
             "Stabilize",
             "Base",
             ""
         )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "SteadyStateTolerance",
+            "Steady State",
+            ""
+        )
+        
+        obj.BiCGstablDegree = 2
+        obj.LinearDirectMethod = LINEAR_DIRECT
+        obj.LinearIterations = 500
+        obj.LinearIterativeMethod = LINEAR_ITERATIVE
+        obj.LinearIterativeMethod = "BiCGStab"
+        obj.LinearPreconditioning = LINEAR_PRECONDITIONING
+        obj.LinearPreconditioning = "ILU0"
+        # we must set an expression because we don't have a UI, the user has to
+        # view and edit the tolerance via the property editor and this does not
+        # yet allow to view and edit small numbers in scientific notation
+        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
+        obj.setExpression("LinearTolerance", "1e-10")
+        obj.LinearSolverType = LINEAR_SOLVER
+        obj.LinearSolverType = "Iterative"
+        # same reason to setup an expression as with LinearTolerance
+        obj.setExpression("SteadyStateTolerance", "1e-5")
         obj.Stabilize = True
 
 

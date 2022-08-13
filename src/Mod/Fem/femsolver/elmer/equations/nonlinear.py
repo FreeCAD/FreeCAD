@@ -42,12 +42,6 @@ class Proxy(linear.Proxy):
         super(Proxy, self).__init__(obj)
 
         obj.addProperty(
-            "App::PropertyFloat",
-            "NonlinearTolerance",
-            "Nonlinear System",
-            ""
-        )
-        obj.addProperty(
             "App::PropertyInteger",
             "NonlinearIterations",
             "Nonlinear System",
@@ -62,6 +56,12 @@ class Proxy(linear.Proxy):
         obj.addProperty(
             "App::PropertyFloat",
             "NonlinearNewtonAfterTolerance",
+            "Nonlinear System",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "NonlinearTolerance",
             "Nonlinear System",
             ""
         )

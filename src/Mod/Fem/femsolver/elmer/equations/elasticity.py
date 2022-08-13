@@ -56,15 +56,9 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
 
         obj.addProperty(
             "App::PropertyBool",
-            "CalculateStrains",
+            "CalculatePangle",
             "Elasticity",
-            "Compute the strain tensor"
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateStresses",
-            "Elasticity",
-            "Compute stress tensor and vanMises"
+            "Compute principal stress angles"
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -74,9 +68,15 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "CalculatePangle",
+            "CalculateStrains",
             "Elasticity",
-            "Compute principal stress angles"
+            "Compute the strain tensor"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateStresses",
+            "Elasticity",
+            "Compute stress tensor and vanMises"
         )
         obj.addProperty(
             "App::PropertyBool",
