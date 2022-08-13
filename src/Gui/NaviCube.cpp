@@ -1267,10 +1267,9 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
 		int pick = pickFace(x, y);
 
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-		long step = Base::clamp(hGrp->GetInt("NaviStepByTurn", 8), 4L, 36L);
-		float rotStepAngle = 360.0f / step;
 		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+        long step = Base::clamp(hGrpNavi->GetInt("NaviStepByTurn", 8), 4L, 36L);
+		float rotStepAngle = 360.0f / step;
 		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
 		bool applyRotation = true;
 
