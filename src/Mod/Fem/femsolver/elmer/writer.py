@@ -241,9 +241,9 @@ class Writer(object):
                 )
             else:
                 subprocess.call(args, stdout=subprocess.DEVNULL)
-            if int(num_cores) > 1:
+            if num_cores > 1:
                 args = argsBasic
-                args.extend(["-partdual", "-metiskway", num_cores,
+                args.extend(["-partdual", "-metiskway", str(num_cores),
                              "-out", self.directory])
                 if system() == "Windows":
                     subprocess.call(
