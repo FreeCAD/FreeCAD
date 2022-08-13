@@ -44,6 +44,7 @@ from . import sifio
 from . import solver as solverClass
 from .. import settings
 from femmesh import gmshtools
+from femmesh import meshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
@@ -446,14 +447,26 @@ class Writer(object):
             equation.PhaseChangeModel = "None"
 
     def _handleHeatBndConditions(self):
+        i = -1
         for obj in self._getMember("Fem::ConstraintTemperature"):
+            i = i + 1
+            femobjects = membertools.get_several_member(self.analysis, "Fem::ConstraintTemperature")
+            femobjects[i]["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                self._getSingleMember("Fem::FemMeshObject").FemMesh,
+                femobjects[i]
+            )
+            NumberOfNodes = len(femobjects[i]["Nodes"])
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.ConstraintType == "Temperature":
                         temp = self._getFromUi(obj.Temperature, "K", "O")
                         self._boundary(name, "Temperature", temp)
                     elif obj.ConstraintType == "CFlux":
-                        flux = self._getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
+                        # the CFLUX property stores the value in µW
+                        # but the unit system is not aware of µW, only of mW
+                        flux = 0.001 * self._getFromUi(obj.CFlux, "mW", "M*L^2*T^-3")
+                        # CFLUX is the flux per mesh node
+                        flux = flux / NumberOfNodes
                         self._boundary(name, "Temperature Load", flux)
                 self._handled(obj)
         for obj in self._getMember("Fem::ConstraintHeatflux"):
