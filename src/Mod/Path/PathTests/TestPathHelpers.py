@@ -23,8 +23,8 @@
 import FreeCAD
 import Part
 import Path
-import Path.Tools.Bit as PathToolBit
-import Path.Tools.Controller as PathToolController
+import Path.Tool.Bit as PathToolBit
+import Path.Tool.Controller as PathToolController
 import PathFeedRate
 import PathMachineState
 import PathScripts.PathGeom as PathGeom

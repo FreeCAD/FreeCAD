@@ -52,19 +52,19 @@ SET(PathPythonDressupGui_SRCS
 )
 
 SET(PathPythonTools_SRCS
-    Path/Tools/__init__.py
-    Path/Tools/Bit.py
-    Path/Tools/Controller.py
+    Path/Tool/__init__.py
+    Path/Tool/Bit.py
+    Path/Tool/Controller.py
 )
 
 SET(PathPythonToolsGui_SRCS
-    Path/Tools/Gui/__init__.py
-    Path/Tools/Gui/Bit.py
-    Path/Tools/Gui/BitCmd.py
-    Path/Tools/Gui/BitEdit.py
-    Path/Tools/Gui/BitLibraryCmd.py
-    Path/Tools/Gui/BitLibrary.py
-    Path/Tools/Gui/Controller.py
+    Path/Tool/Gui/__init__.py
+    Path/Tool/Gui/Bit.py
+    Path/Tool/Gui/BitCmd.py
+    Path/Tool/Gui/BitEdit.py
+    Path/Tool/Gui/BitLibraryCmd.py
+    Path/Tool/Gui/BitLibrary.py
+    Path/Tool/Gui/Controller.py
 )
 
 SET(PathPythonPost_SRCS
@@ -420,14 +420,14 @@ INSTALL(
     FILES
         ${PathPythonTools_SRCS}
     DESTINATION
-        Mod/Path/Path/Tools
+        Mod/Path/Path/Tool
 )
 
 INSTALL(
     FILES
         ${PathPythonToolsGui_SRCS}
     DESTINATION
-        Mod/Path/Path/Tools/Gui
+        Mod/Path/Path/Tool/Gui
 )
 
 INSTALL(

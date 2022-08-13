@@ -25,8 +25,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Tools.Controller as PathToolController
-import Path.Tools.Gui.Bit as PathToolBitGui
+import Path.Tool.Controller as PathToolController
+import Path.Tool.Gui.Bit as PathToolBitGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathUtil as PathUtil

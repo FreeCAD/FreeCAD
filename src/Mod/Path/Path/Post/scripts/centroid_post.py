@@ -35,7 +35,7 @@ TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a centroid 3 axis mill. This postprocessor, once placed
-in the appropriate Path/Tools folder, can be used directly from inside
+in the appropriate Path/Tool folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
 import centroid_post
@@ -188,7 +188,7 @@ def export(objectslist, filename, argstring):
     if OUTPUT_COMMENTS:
         for item in objectslist:
             if hasattr(item, "Proxy") and isinstance(
-                item.Proxy, Path.Tools.Controller.ToolController
+                item.Proxy, Path.Tool.Controller.ToolController
             ):
                 gcode += ";T{}={}\n".format(item.ToolNumber, item.Name)
         gcode += linenumber() + ";begin preamble\n"

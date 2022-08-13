@@ -22,7 +22,7 @@
 
 import Path
 import Path.Op.Deburr as PathDeburr
-import Path.Tools.Bit as PathToolBit
+import Path.Tool.Bit as PathToolBit
 import PathTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())

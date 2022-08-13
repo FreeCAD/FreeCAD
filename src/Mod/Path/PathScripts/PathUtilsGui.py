@@ -23,7 +23,7 @@
 import FreeCADGui
 import FreeCAD
 import Path
-import Path.Tools.Controller as PathToolController
+import Path.Tool.Controller as PathToolController
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils

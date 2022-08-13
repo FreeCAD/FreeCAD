@@ -61,8 +61,8 @@ def Startup():
         from Path.Op.Gui import ThreadMilling
         from Path.Op.Gui import Vcarve
         from Path.Post import Command
-        from Path.Tools import Controller
-        from Path.Tools.Gui import Controller
+        from Path.Tool import Controller
+        from Path.Tool.Gui import Controller
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathFixture

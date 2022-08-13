@@ -187,7 +187,7 @@ TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a heidenhain 3 axis mill. This postprocessor, once placed
-in the appropriate Path/Tools folder, can be used directly from inside
+in the appropriate Path/Tool folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
 import heidenhain_post
@@ -344,7 +344,7 @@ def export(objectslist, filename, argstring):
         LBLIZE_STAUS = False
 
         # useful to get idea of object kind
-        if isinstance(obj.Proxy, Path.Tools.Controller.ToolController):
+        if isinstance(obj.Proxy, Path.Tool.Controller.ToolController):
             Object_Kind = "TOOL"
             # like we go to change tool position
             MACHINE_LAST_POSITION["X"] = 99999

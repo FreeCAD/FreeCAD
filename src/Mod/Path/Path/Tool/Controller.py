@@ -25,7 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Tools.Bit as PathToolBit
+import Path.Tool.Bit as PathToolBit
 import PathScripts.PathPreferences as PathPreferences
 from Generators import toolchange_generator as toolchange_generator
 from Generators.toolchange_generator import SpindleDirection
@@ -341,6 +341,6 @@ def FromTemplate(template, assignViewProvider=True):
 
 if FreeCAD.GuiUp:
     # need ViewProvider class in this file to support loading of old files
-    from Path.Tools.Gui.Controller import ViewProvider
+    from Path.Tool.Gui.Controller import ViewProvider
 
-FreeCAD.Console.PrintLog("Loading Path.Tools.Gui.Controller... done\n")
+FreeCAD.Console.PrintLog("Loading Path.Tool.Gui.Controller... done\n")

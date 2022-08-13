@@ -25,10 +25,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Tools.Bit as PathToolBit
-import Path.Tools.Gui.Bit as PathToolBitGui
-import Path.Tools.Gui.BitEdit as PathToolBitEdit
-import Path.Tools.Gui.Controller as PathToolControllerGui
+import Path.Tool.Bit as PathToolBit
+import Path.Tool.Gui.Bit as PathToolBitGui
+import Path.Tool.Gui.BitEdit as PathToolBitEdit
+import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtilsGui as PathUtilsGui
@@ -97,7 +97,7 @@ def checkWorkingDir():
     PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
     Path.Log.debug("setting workingdir to: {}".format(workingdir))
 
-    # Copy only files of default Path\Tools folder to working directory (targeting the README.md help file)
+    # Copy only files of default Path/Tool folder to working directory (targeting the README.md help file)
     src_toolfiles = os.listdir(defaultdir)
     for file_name in src_toolfiles:
         if file_name in ["README.md"]:

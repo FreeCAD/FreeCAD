@@ -55,7 +55,7 @@ class CommandToolBitSelectorOpen:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        import Path.Tools.Gui.BitLibrary as PathToolBitLibraryGui
+        import Path.Tool.Gui.BitLibrary as PathToolBitLibraryGui
 
         dock = PathToolBitLibraryGui.ToolBitSelector()
         dock.open()
@@ -85,7 +85,7 @@ class CommandToolBitLibraryOpen:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        import Path.Tools.Gui.BitLibrary as PathToolBitLibraryGui
+        import Path.Tool.Gui.BitLibrary as PathToolBitLibraryGui
 
         library = PathToolBitLibraryGui.ToolBitLibrary()
 

@@ -28,8 +28,8 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Tools.Gui.Bit as PathToolBitGui
-import Path.Tools.Gui.Controller as PathToolControllerGui
+import Path.Tool.Gui.Bit as PathToolBitGui
+import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathJob as PathJob
