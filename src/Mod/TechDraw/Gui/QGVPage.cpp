@@ -22,27 +22,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QBitmap>
-# include <QContextMenuEvent>
-# include <QFileInfo>
-# include <QFileDialog>
-# include <QGLWidget>
-# include <QGraphicsEffect>
-# include <QMouseEvent>
-# include <QPainter>
-# include <QPaintEvent>
-# include <QSvgGenerator>
+#include <cmath>
+
+#include <QAction>
+#include <QApplication>
+#include <QBitmap>
+#include <QContextMenuEvent>
+#include <QFileInfo>
+#include <QFileDialog>
+#include <QGLWidget>
+#include <QGraphicsEffect>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QSvgGenerator>
 #include <QScrollBar>
-# include <QWheelEvent>
+#include <QWheelEvent>
 #include <QTemporaryFile>
 #include <QDomDocument>
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
 #include <QTextCodec>
-#include <cmath>
 #endif
 
 #include <App/Application.h>

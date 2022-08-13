@@ -37,9 +37,6 @@
 #include <vector>
 #endif
 
-
-
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>

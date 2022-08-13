@@ -23,14 +23,13 @@
 #ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
 #define TECHDRAWGUI_QGIHIGHLIGHT_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsScene>
 #include <QPointF>
-#endif
 
 #include "QGIArrow.h"
 #include "QGCustomText.h"

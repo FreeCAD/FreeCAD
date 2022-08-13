@@ -23,15 +23,14 @@
 #ifndef TECHDRAWGUI_QGIRICHANNO_H
 #define TECHDRAWGUI_QGIRICHANNO_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QFont>
 #include <QGraphicsItem>
 #include <QObject>
 #include <QPainterPath>
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
-#endif
 
 
 namespace TechDraw {

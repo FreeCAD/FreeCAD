@@ -23,6 +23,8 @@
 #ifndef _Preferences_h_
 #define _Preferences_h_
 
+#include <App/Material.h>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>

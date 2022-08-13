@@ -23,12 +23,10 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#endif
-
 #include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIView.h"

@@ -23,12 +23,11 @@
 #ifndef DRAWINGGUI_QGCUSTOMBORDER_H
 #define DRAWINGGUI_QGCUSTOMBORDER_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
-#endif
 
 QT_BEGIN_NAMESPACE
 class QPainter;

@@ -24,10 +24,9 @@
 #ifndef GUI_TASKVIEW_TASKVIEWGROUP_H
 #define GUI_TASKVIEW_TASKVIEWGROUP_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QString>
-#endif
 
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>

@@ -25,6 +25,7 @@
 #include <cassert>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QPaintDevice>
 #include <QPainter>
@@ -39,7 +40,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
 #include "QGICaption.h"
 
 using namespace TechDrawGui;

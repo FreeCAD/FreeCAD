@@ -23,12 +23,11 @@
 #ifndef DRAWINGGUI_QGCUSTOMLABEL_H
 #define DRAWINGGUI_QGCUSTOMLABEL_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>
-#endif
 
 QT_BEGIN_NAMESPACE
 class QPainter;

@@ -21,6 +21,10 @@
  ***************************************************************************/
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+
+#endif
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>

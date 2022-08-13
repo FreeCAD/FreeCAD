@@ -24,6 +24,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cstdlib>
+
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QImage>
@@ -32,7 +34,6 @@
 #endif
 
 #include "mtextedit.h"
-#include <cstdlib>
 
 
 MTextEdit::MTextEdit(QWidget *parent) : QTextEdit(parent) {

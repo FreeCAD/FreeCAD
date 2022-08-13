@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <qmath.h>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPainterPathStroker>
@@ -36,11 +37,11 @@
 //#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-#include <qmath.h>
-#include "Rez.h"
-#include "PreferencesGui.h"
-#include "QGIView.h"
+#include "QGIArrow.h"
 #include "QGISectionLine.h"
+#include "QGIView.h"
+#include "PreferencesGui.h"
+#include "Rez.h"
 
 #define ANSISTANDARD 0
 #define ISOSTANDARD 1

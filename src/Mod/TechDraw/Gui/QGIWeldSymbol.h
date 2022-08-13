@@ -23,15 +23,14 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
 #include <QPainterPath>
 #include <QPointF>
 #include <QStyleOptionGraphicsItem>
-#endif
 
 #include "QGIView.h"
 

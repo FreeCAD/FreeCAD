@@ -23,16 +23,14 @@
 #ifndef TECHDRAWGUI_EDITABLEPATH_H
 #define TECHDRAWGUI_EDITABLEPATH_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QObject>
-#endif
 
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
-
 
 namespace TechDrawGui
 {

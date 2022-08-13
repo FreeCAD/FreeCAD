@@ -23,12 +23,11 @@
 #ifndef DRAWINGGUI_QGIDECORATION_H
 #define DRAWINGGUI_QGIDECORATION_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QBrush>
 #include <QGraphicsItemGroup>
 #include <QPen>
-#endif
 
 
 QT_BEGIN_NAMESPACE
