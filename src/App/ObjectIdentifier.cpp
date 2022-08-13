@@ -856,7 +856,7 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
         if (strcmp((*j)->Label.getValue(), static_cast<const char*>(name)) == 0) {
             // Found object with matching label
             if (objectByLabel)  {
-                FC_WARN("duplicate object label " << doc->getName() << '#' << name);
+                FC_WARN("duplicate object label " << doc->getName() << '#' << static_cast<const char*>(name));
                 return nullptr;
             }
             objectByLabel = *j;
@@ -935,13 +935,12 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
         if (!results.resolvedDocumentObject)
             return;
 
-        if (!components.empty()) {
-            results.propertyName = components[0].name.getString();
-            results.propertyIndex = 0;
-            results.getProperty(*this);
-        }
-        else
+        if (components.empty())
             return;
+
+        results.propertyName = components[ 0 ].name.getString();
+        results.propertyIndex = 0;
+        results.getProperty( *this );
     }
     else {
         /* Document object name not specified, resolve from path */
@@ -966,8 +965,10 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
             /* Possible to resolve component to a document object? */
             if (results.resolvedDocumentObject) {
                 /* Yes */
-                results.resolvedDocumentObjectName = String(
-                        components[0].name, false, results.flags.test(ResolveByIdentifier));
+                results.resolvedDocumentObjectName = String {
+                        components[0].name.getString(),
+                        false,
+                        results.flags.test(ResolveByIdentifier)};
                 results.propertyName = components[1].name.getString();
                 results.propertyIndex = 1;
                 results.getProperty(*this);
@@ -976,7 +977,10 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
                     // interpret the first component as the property name.
                     DocumentObject *sobj = nullptr;
                     results.resolvedProperty = resolveProperty(
-                            owner,components[0].name,sobj,results.propertyType);
+                            owner,
+                            components[0].name.toString().c_str(),
+                            sobj,
+                            results.propertyType);
                     if(results.resolvedProperty) {
                         results.propertyName = components[0].name.getString();
                         results.resolvedDocument = owner->getDocument();
@@ -1018,7 +1022,7 @@ Document * ObjectIdentifier::getDocument(String name, bool *ambiguous) const
     App::Document * docById = nullptr;
 
     if(!name.isRealString()) {
-        docById = App::GetApplication().getDocument(name);
+        docById = App::GetApplication().getDocument(name.toString().c_str());
         if (name.isForceIdentifier())
             return docById;
     }
@@ -1267,7 +1271,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         const char *propertyName, App::DocumentObject *&sobj, int &ptype) const
 {
     if(obj && !subObjectName.getString().empty()) {
-        sobj = obj->getSubObject(subObjectName);
+        sobj = obj->getSubObject(subObjectName.toString().c_str());
         obj = sobj;
     }
     if(!obj)

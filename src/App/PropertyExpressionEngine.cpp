@@ -632,7 +632,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
 
     class resetter {
     public:
-        resetter(bool & b) : _b(b) { _b = true; }
+        explicit resetter(bool & b) : _b(b) { _b = true; }
         ~resetter() { _b = false; }
 
     private:

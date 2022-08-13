@@ -137,7 +137,7 @@ private:
     class OriginExtension : public GeoFeatureGroupExtension {
         Origin* obj;
     public:
-        OriginExtension(Origin* obj);
+        explicit OriginExtension(Origin* obj);
         void initExtension(ExtensionContainer* obj) override;
         bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
                 PyObject **, Base::Matrix4D *, bool, int) const override;

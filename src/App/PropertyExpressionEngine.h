@@ -87,7 +87,7 @@ public:
         std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
         bool busy;
 
-        ExpressionInfo(std::shared_ptr<App::Expression> expression = std::shared_ptr<App::Expression>()) {
+        explicit ExpressionInfo(std::shared_ptr<App::Expression> expression = std::shared_ptr<App::Expression>()) {
             this->expression = expression;
             this->busy = false;
         }

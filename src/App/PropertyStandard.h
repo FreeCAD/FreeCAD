@@ -148,7 +148,7 @@ public:
     PropertyEnumeration();
 
     /// Obvious constructor
-    PropertyEnumeration(const Enumeration &e);
+    explicit PropertyEnumeration(const Enumeration &e);
 
     /// destructor
     ~PropertyEnumeration() override;

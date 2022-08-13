@@ -73,8 +73,8 @@ struct AppExport PropertyData
   //accepting void*
   struct OffsetBase
   {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
-      OffsetBase(const App::Extension* container) : m_container(container) {}
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}//explicit bombs
+      OffsetBase(const App::Extension* container) : m_container(container) {}//explicit bombs
 
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;

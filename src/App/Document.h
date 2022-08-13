@@ -510,7 +510,7 @@ public:
 
 protected:
     /// Construction
-    Document(const char *name = "");
+    explicit Document(const char *name = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

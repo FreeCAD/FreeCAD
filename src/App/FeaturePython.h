@@ -44,7 +44,7 @@ public:
         Rejected = 2  // handled and rejected
     };
 
-    FeaturePythonImp(App::DocumentObject*);
+    explicit FeaturePythonImp(App::DocumentObject*);
     ~FeaturePythonImp();
 
     bool execute();

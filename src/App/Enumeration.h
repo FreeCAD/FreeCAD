@@ -68,7 +68,7 @@ namespace App
         Enumeration(const Enumeration& other);
 
         /// Constructs an Enumeration with a single element
-        Enumeration(const char *valStr);
+        explicit Enumeration(const char *valStr);
 
         /// Constructs an Enumeration using val within list
         Enumeration(const char **list, const char *valStr);

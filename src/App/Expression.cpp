@@ -380,7 +380,7 @@ struct PyObjectWrapper {
 public:
     typedef std::shared_ptr<PyObjectWrapper> Pointer;
 
-    PyObjectWrapper(PyObject *obj):pyobj(obj) {
+    explicit PyObjectWrapper(PyObject *obj):pyobj(obj) {
         Py::_XINCREF(pyobj);
     }
     ~PyObjectWrapper() {
@@ -940,7 +940,7 @@ std::map<App::DocumentObject*,bool> Expression::getDepObjects(std::vector<std::s
 
 class GetIdentifiersExpressionVisitor : public ExpressionVisitor {
 public:
-    GetIdentifiersExpressionVisitor(std::map<App::ObjectIdentifier,bool> &deps)
+    explicit GetIdentifiersExpressionVisitor(std::map<App::ObjectIdentifier,bool> &deps)
         :deps(deps)
     {}
 
@@ -964,7 +964,7 @@ std::map<App::ObjectIdentifier,bool> Expression::getIdentifiers()  const {
 
 class AdjustLinksExpressionVisitor : public ExpressionVisitor {
 public:
-    AdjustLinksExpressionVisitor(const std::set<App::DocumentObject*> &inList)
+    explicit AdjustLinksExpressionVisitor(const std::set<App::DocumentObject*> &inList)
         :inList(inList),res(false)
     {}
 
@@ -985,7 +985,7 @@ bool Expression::adjustLinks(const std::set<App::DocumentObject*> &inList) {
 
 class ImportSubNamesExpressionVisitor : public ExpressionVisitor {
 public:
-    ImportSubNamesExpressionVisitor(const ObjectIdentifier::SubNameMap &subNameMap)
+    explicit ImportSubNamesExpressionVisitor(const ObjectIdentifier::SubNameMap &subNameMap)
         :subNameMap(subNameMap)
     {}
 
@@ -1698,7 +1698,7 @@ TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 static int _HiddenReference;
 
 struct HiddenReference {
-    HiddenReference(bool cond)
+    explicit HiddenReference(bool cond)
         :cond(cond)
     {
         if(cond)

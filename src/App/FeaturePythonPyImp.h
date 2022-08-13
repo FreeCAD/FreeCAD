@@ -88,7 +88,7 @@ public:
     static PyTypeObject   Type;
 
 public:
-    FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T = &Type);
+    explicit FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T = &Type);
     virtual ~FeaturePythonPyT();
 
     /** @name callbacks and implementers for the python object methods */

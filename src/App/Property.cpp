@@ -162,7 +162,7 @@ namespace App {
  * active.
  */
 struct PropertyCleaner {
-    PropertyCleaner(Property *p)
+    explicit PropertyCleaner(Property *p)
         : prop(p)
     {
         ++_PropCleanerCounter;

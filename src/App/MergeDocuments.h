@@ -37,7 +37,7 @@ class DocumentObject;
 class AppExport MergeDocuments : public Base::Persistence
 {
 public:
-    MergeDocuments(App::Document* doc);
+    explicit MergeDocuments(App::Document* doc);
     ~MergeDocuments() override;
     bool isVerbose() const { return verbose; }
     void setVerbose(bool on) { verbose = on; }

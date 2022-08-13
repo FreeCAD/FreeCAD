@@ -34,7 +34,7 @@ using namespace App;
 
 namespace {
 struct StringCopy : public Enumeration::Object {
-    StringCopy(const char* str) : d(str) {
+    explicit StringCopy(const char* str) : d(str) {
     }
     const char* data() const override {
         return d.data();
@@ -51,7 +51,7 @@ private:
 };
 
 struct StringView : public Enumeration::Object {
-    StringView(const char* str) : d(str) {
+    explicit StringView(const char* str) : d(str) {
     }
     const char* data() const override {
         return d.data();

@@ -55,7 +55,7 @@ public:
      * transactions from different document, so that they can be undo/redo
      * together.
      */
-    Transaction(int id = 0);
+    explicit Transaction(int id = 0);
     /// Construction
     ~Transaction() override;
 
@@ -176,7 +176,7 @@ template <class CLASS>
 class TransactionProducer : public Base::AbstractProducer
 {
 public:
-    TransactionProducer (const Base::Type& type)
+    explicit TransactionProducer (const Base::Type& type)
     {
         TransactionFactory::instance().addProducer(type, this);
     }
