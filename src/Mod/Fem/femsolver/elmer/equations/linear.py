@@ -89,7 +89,7 @@ class Proxy(equation.Proxy):
             "App::PropertyInteger",
             "BiCGstablDegree",
             "Linear System",
-            ""
+            "Polynom degree for iterative method 'BiCGstabl'"
         )
         obj.BiCGstablDegree = 2
         obj.addProperty(
@@ -104,7 +104,7 @@ class Proxy(equation.Proxy):
             "App::PropertyFloat",
             "LinearTolerance",
             "Linear System",
-            ""
+            "Linear preconditioning method"
         )
         # we must set an expression because we don't have a UI, the user has to
         # view and edit the tolerance via the property editor and this does not
