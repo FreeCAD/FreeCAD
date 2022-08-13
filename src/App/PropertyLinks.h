@@ -1054,7 +1054,7 @@ class AppExport PropertyXLink : public PropertyLinkGlobal
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
+    explicit PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
 
     ~PropertyXLink() override;
 
@@ -1178,7 +1178,7 @@ class AppExport PropertyXLinkSub: public PropertyXLink {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyXLinkSub(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
+    explicit PropertyXLinkSub(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
 
     ~PropertyXLinkSub() override;
 

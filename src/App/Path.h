@@ -40,7 +40,7 @@ protected:
 public:
     /// Constructor
     Path();
-	Path(const std::vector<Base::Persistence *> & PathVector);
+	explicit Path(const std::vector<Base::Persistence *> & PathVector);
 
     virtual ~Path();
 

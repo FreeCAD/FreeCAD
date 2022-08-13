@@ -328,7 +328,7 @@ void Document::exportGraphviz(std::ostream& out) const
     class GraphCreator {
     public:
 
-        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
+        explicit GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
             build();
         }
 
@@ -1793,7 +1793,7 @@ static DocExportStatus _ExportStatus;
 // Exception-safe exporting status setter
 class DocumentExporting {
 public:
-    DocumentExporting(const std::vector<App::DocumentObject*> &objs) {
+    explicit DocumentExporting(const std::vector<App::DocumentObject*> &objs) {
         _ExportStatus.status = Document::Exporting;
         _ExportStatus.objs.insert(objs.begin(),objs.end());
     }

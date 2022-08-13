@@ -80,7 +80,7 @@ protected:
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
-    ExpressionModifier(P & _prop)
+    explicit ExpressionModifier(P & _prop)
         : prop(_prop)
         , propLink(Base::freecad_dynamic_cast<App::PropertyLinkBase>(&prop))
         , signaller(_prop,false)
@@ -117,7 +117,7 @@ class AppExport Expression : public Base::BaseClass {
 
 public:
 
-    Expression(const App::DocumentObject * _owner);
+    explicit Expression(const App::DocumentObject * _owner);
 
     ~Expression() override;
 
@@ -164,7 +164,7 @@ public:
 
     class Exception : public Base::Exception {
     public:
-        Exception(const char *sMessage) : Base::Exception(sMessage) { }
+        explicit Exception(const char *sMessage) : Base::Exception(sMessage) { }
     };
 
     App::DocumentObject *  getOwner() const { return owner; }

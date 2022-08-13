@@ -488,7 +488,7 @@ protected:
 
 private:
     /// Constructor
-    Application(std::map<std::string,std::string> &mConfig);
+    explicit Application(std::map<std::string,std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 
