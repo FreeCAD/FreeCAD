@@ -66,7 +66,7 @@ class Proxy(equation.Proxy):
         super(Proxy, self).__init__(obj)
 
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "BiCGstablDegree",
             "Linear System",
             "Polynom degree for iterative method 'BiCGstabl'"
@@ -78,7 +78,7 @@ class Proxy(equation.Proxy):
             ""
         )
         obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "LinearIterations",
             "Linear System",
             ""
@@ -130,9 +130,9 @@ class Proxy(equation.Proxy):
             ""
         )
         
-        obj.BiCGstablDegree = 2
+        obj.BiCGstablDegree = (2, 2, 10, 1)
         obj.LinearDirectMethod = LINEAR_DIRECT
-        obj.LinearIterations = 500
+        obj.LinearIterations = (500, 1, int(1e6), 50)
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
         obj.LinearIterativeMethod = "BiCGStab"
         obj.LinearPreconditioning = LINEAR_PRECONDITIONING
