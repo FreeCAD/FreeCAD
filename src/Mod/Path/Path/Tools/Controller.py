@@ -60,8 +60,8 @@ class ToolControllerTemplate:
 
 
 class ToolController:
-    def __init__(self, obj, legacyTool=False, createTool=True):
-        Path.Log.track("tool: {}".format(legacyTool))
+    def __init__(self, obj, createTool=True):
+        Path.Log.track("tool: ")
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",
@@ -114,7 +114,7 @@ class ToolController:
             setattr(obj, n[0], n[1])
 
         if createTool:
-            self.ensureUseLegacyTool(obj, legacyTool)
+            self.ensureToolBit(obj)
 
     @classmethod
     def propertyEnumerations(self, dataType="data"):
@@ -154,10 +154,9 @@ class ToolController:
         obj.setEditorMode("Placement", 2)
 
     def onDelete(self, obj, arg2=None):
-        if not self.usesLegacyTool(obj):
-            if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
-                if hasattr(obj.Tool.Proxy, "onDelete"):
-                    obj.Tool.Proxy.onDelete(obj.Tool)
+        if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
+            if hasattr(obj.Tool.Proxy, "onDelete"):
+                obj.Tool.Proxy.onDelete(obj.Tool)
 
     def setFromTemplate(self, obj, template):
         """
@@ -193,22 +192,16 @@ class ToolController:
                     toolVersion = template.get(ToolControllerTemplate.Tool).get(
                         ToolControllerTemplate.Version
                     )
-                    if toolVersion == 1:
-                        self.ensureUseLegacyTool(obj, True)
-                        obj.Tool.setFromTemplate(
-                            template.get(ToolControllerTemplate.Tool)
-                        )
-                    else:
-                        self.ensureUseLegacyTool(obj, False)
-                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(
-                            template.get(ToolControllerTemplate.Tool)
-                        )
-                        if (
-                            obj.Tool
-                            and obj.Tool.ViewObject
-                            and obj.Tool.ViewObject.Visibility
-                        ):
-                            obj.Tool.ViewObject.Visibility = False
+                    self.ensureToolBit(obj)
+                    obj.Tool = PathToolBit.Factory.CreateFromAttrs(
+                        template.get(ToolControllerTemplate.Tool)
+                    )
+                    if (
+                        obj.Tool
+                        and obj.Tool.ViewObject
+                        and obj.Tool.ViewObject.Visibility
+                    ):
+                        obj.Tool.ViewObject.Visibility = False
                 if template.get(ToolControllerTemplate.Expressions):
                     for exprDef in template.get(ToolControllerTemplate.Expressions):
                         if exprDef[ToolControllerTemplate.ExprExpr]:
@@ -240,10 +233,7 @@ class ToolController:
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir] = obj.SpindleDir
-        if self.usesLegacyTool(obj):
-            attrs[ToolControllerTemplate.Tool] = obj.Tool.templateAttrs()
-        else:
-            attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.templateAttrs(obj.Tool)
+        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.templateAttrs(obj.Tool)
         expressions = []
         for expr in obj.ExpressionEngine:
             Path.Log.debug("%s: %s" % (expr[0], expr[1]))
@@ -296,38 +286,16 @@ class ToolController:
         Path.Log.track()
         return obj.Tool
 
-    def usesLegacyTool(self, obj):
-        """returns True if the tool being controlled is a legacy tool"""
-        return isinstance(obj.Tool, Path.Tool)
-
-    def ensureUseLegacyTool(self, obj, legacy):
-        if not hasattr(obj, "Tool") or (legacy != self.usesLegacyTool(obj)):
-            if legacy and hasattr(obj, "Tool") and len(obj.Tool.InList) == 1:
-                if hasattr(obj.Tool.Proxy, "onDelete"):
-                    obj.Tool.Proxy.onDelete(obj.Tool)
-                obj.Document.removeObject(obj.Tool.Name)
-
-            if hasattr(obj, "Tool"):
-                obj.removeProperty("Tool")
-
-            if legacy:
-                obj.addProperty(
-                    "Path::PropertyTool",
-                    "Tool",
-                    "Base",
-                    QT_TRANSLATE_NOOP(
-                        "App::Property", "The tool used by this controller"
-                    ),
-                )
-            else:
-                obj.addProperty(
-                    "App::PropertyLink",
-                    "Tool",
-                    "Base",
-                    QT_TRANSLATE_NOOP(
-                        "App::Property", "The tool used by this controller"
-                    ),
-                )
+    def ensureToolBit(self, obj):
+        if not hasattr(obj, "Tool"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "Tool",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "The tool used by this controller"
+                ),
+            )
 
 
 def Create(
@@ -337,34 +305,21 @@ def Create(
     assignViewProvider=True,
     assignTool=True,
 ):
-    legacyTool = (
-        PathPreferences.toolsUseLegacyTools()
-        if tool is None
-        else isinstance(tool, Path.Tool)
-    )
 
-    Path.Log.track(tool, toolNumber, legacyTool)
+    Path.Log.track(tool, toolNumber)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
-    obj.Proxy = ToolController(obj, legacyTool, assignTool)
+    obj.Proxy = ToolController(obj, assignTool)
 
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
     if assignTool:
         if not tool:
-            if legacyTool:
-                tool = Path.Tool()
-                tool.Diameter = 5.0
-                tool.Name = "Default Tool"
-                tool.CuttingEdgeHeight = 15.0
-                tool.ToolType = "EndMill"
-                tool.Material = "HighSpeedSteel"
-            else:
-                tool = PathToolBit.Factory.Create()
-                if tool.ViewObject:
-                    tool.ViewObject.Visibility = False
+            tool = PathToolBit.Factory.Create()
+            if tool.ViewObject:
+                tool.ViewObject.Visibility = False
         obj.Tool = tool
 
         if hasattr(obj.Tool, "SpindleDirection"):

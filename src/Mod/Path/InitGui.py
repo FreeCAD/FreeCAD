@@ -135,12 +135,8 @@ class PathWorkbench(Workbench):
         # remotecmdlist = ["Path_Remote"]
         specialcmdlist = []
 
-        if PathPreferences.toolsUseLegacyTools():
-            toolcmdlist.append("Path_ToolLibraryEdit")
-            toolbitcmdlist = []
-        else:
-            toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
-            toolbitcmdlist = PathToolBitLibraryCmd.MenuList
+        toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
+        toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
         engravecmdgroup = ["Path_EngraveTools"]
         FreeCADGui.addCommand(

@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <Mod/Path/App/ToolPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShapePy.h>

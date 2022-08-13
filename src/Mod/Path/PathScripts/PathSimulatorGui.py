@@ -188,20 +188,7 @@ class PathSimulation:
             self.tool = None
 
         if self.tool is not None:
-            if isinstance(self.tool, Path.Tool):
-                # handle legacy tools
-                toolProf = self.CreateToolProfile(
-                    self.tool,
-                    Vector(0, 1, 0),
-                    Vector(0, 0, 0),
-                    float(self.tool.Diameter) / 2.0,
-                )
-                self.cutTool.Shape = Part.makeSolid(
-                    toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1))
-                )
-            else:
-                # handle tool bits
-                self.cutTool.Shape = self.tool.Shape
+            self.cutTool.Shape = self.tool.Shape
 
             if not self.cutTool.Shape.isValid() or self.cutTool.Shape.isNull():
                 self.EndSimulation()

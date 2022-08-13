@@ -197,9 +197,6 @@ SET(PathScripts_SRCS
     PathScripts/PathSimulatorGui.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
-    PathScripts/PathToolEdit.py
-    PathScripts/PathToolLibraryEditor.py
-    PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
@@ -290,10 +287,8 @@ SET(PathTests_SRCS
     PathTests/TestPathToolChangeGenerator.py
     PathTests/TestPathThreadMilling.py
     PathTests/TestPathThreadMillingGenerator.py
-    PathTests/TestPathTool.py
     PathTests/TestPathToolBit.py
     PathTests/TestPathToolController.py
-    PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
     PathTests/TestPathVcarve.py
     PathTests/TestPathVoronoi.py

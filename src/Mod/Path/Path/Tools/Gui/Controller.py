@@ -29,7 +29,6 @@ import Path.Tools.Controller as PathToolController
 import Path.Tools.Gui.Bit as PathToolBitGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
-import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 
 # lazily loaded modules
@@ -120,7 +119,7 @@ class ViewProvider:
 
     def claimChildren(self):
         obj = self.vobj.Object
-        if obj and obj.Proxy and not obj.Proxy.usesLegacyTool(obj):
+        if obj and obj.Proxy:
             return [obj.Tool]
         return []
 
@@ -130,10 +129,9 @@ def Create(name="Default Tool", tool=None, toolNumber=1):
 
     obj = PathToolController.Create(name, tool, toolNumber)
     ViewProvider(obj.ViewObject)
-    if not obj.Proxy.usesLegacyTool(obj):
-        # ToolBits are visible by default, which is typically not what the user wants
-        if tool and tool.ViewObject and tool.ViewObject.Visibility:
-            tool.ViewObject.Visibility = False
+    # ToolBits are visible by default, which is typically not what the user wants
+    if tool and tool.ViewObject and tool.ViewObject.Visibility:
+        tool.ViewObject.Visibility = False
     return obj
 
 
@@ -198,12 +196,9 @@ class ToolControllerEditor(object):
             self.form.horizRapid, obj, "HorizRapid"
         )
 
-        if obj.Proxy.usesLegacyTool(obj):
-            self.editor = PathToolEdit.ToolEditor(obj.Tool, self.form.toolEditor)
-        else:
-            self.editor = None
-            self.form.toolBox.widget(1).hide()
-            self.form.toolBox.removeItem(1)
+        self.editor = None
+        self.form.toolBox.widget(1).hide()
+        self.form.toolBox.removeItem(1)
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...

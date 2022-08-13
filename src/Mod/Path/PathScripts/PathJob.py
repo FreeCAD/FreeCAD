@@ -549,14 +549,6 @@ class ObjectJob:
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
-        if True in [isinstance(t.Tool, Path.Tool) for t in obj.Tools.Group]:
-            FreeCAD.Console.PrintWarning(
-                translate(
-                    "Path",
-                    "This job contains Legacy tools. Legacy tools are deprecated. They will be removed after version 0.20",
-                )
-            )
-
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)

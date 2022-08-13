@@ -54,7 +54,6 @@ LastFileToolBit = "LastFileToolBit"
 LastFileToolLibrary = "LastFileToolLibrary"
 LastFileToolShape = "LastFileToolShape"
 
-UseLegacyTools = "UseLegacyTools"
 UseAbsoluteToolPaths = "UseAbsoluteToolPaths"
 # OpenLastLibrary                 = "OpenLastLibrary"
 
@@ -171,9 +170,6 @@ def searchPathsTool(sub):
     return paths
 
 
-def toolsUseLegacyTools():
-    return preferences().GetBool(UseLegacyTools, False)
-
 
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
@@ -183,19 +179,8 @@ def toolsStoreAbsolutePaths():
 #     return preferences().GetBool(OpenLastLibrary, False)
 
 
-def setToolsSettings(legacy, relative):
+def setToolsSettings(relative):
     pref = preferences()
-    if legacy:
-        msgBox = QMessageBox()
-        msgBox.setIcon(QMessageBox.Warning)
-        msgBox.setText(
-            translate(
-                "Path",
-                "Legacy tools are deprecated. They will be removed after version 0.20",
-            )
-        )
-        msgBox.exec_()
-    pref.SetBool(UseLegacyTools, legacy)
     pref.SetBool(UseAbsoluteToolPaths, relative)
     # pref.SetBool(OpenLastLibrary, lastlibrary)
 

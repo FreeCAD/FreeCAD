@@ -2473,8 +2473,8 @@ class FindUnifiedRegions:
 
 
 class OCL_Tool:
-    """The OCL_Tool class is designed to translate a FreeCAD standard ToolBit shape,
-    or Legacy tool type, in the active Tool Controller, into an OCL tool type."""
+    """The OCL_Tool class is designed to translate a FreeCAD standard ToolBit shape
+    in the active Tool Controller, into an OCL tool type."""
 
     def __init__(self, ocl, obj, safe=False):
         self.ocl = ocl
@@ -2501,9 +2501,6 @@ class OCL_Tool:
                 if hasattr(self.tool, "ShapeName"):
                     self.toolType = self.tool.ShapeName  # Indicates ToolBit tool
                     self.toolMode = "ToolBit"
-                elif hasattr(self.tool, "ToolType"):
-                    self.toolType = self.tool.ToolType  # Indicates Legacy tool
-                    self.toolMode = "Legacy"
         if self.toolType:
             Path.Log.debug(
                 "OCL_Tool tool mode, type: {}, {}".format(self.toolMode, self.toolType)
@@ -2726,25 +2723,7 @@ class OCL_Tool:
     def _setToolMethod(self):
         toolMap = dict()
 
-        if self.toolMode == "Legacy":
-            # Set cutter details
-            # https://www.freecadweb.org/api/dd/dfe/classPath_1_1Tool.html#details
-            toolMap = {
-                "EndMill": "CylCutter",
-                "BallEndMill": "BallCutter",
-                "SlotCutter": "CylCutter",
-                "Engraver": "ConeCutter",
-                "Drill": "ConeCutter",
-                "CounterSink": "ConeCutter",
-                "FlyCutter": "CylCutter",
-                "CenterDrill": "None",
-                "CounterBore": "None",
-                "Reamer": "None",
-                "Tap": "None",
-                "ChamferMill": "None",
-                "CornerRound": "None",
-            }
-        elif self.toolMode == "ToolBit":
+        if self.toolMode == "ToolBit":
             toolMap = {
                 "endmill": "CylCutter",
                 "ballend": "BallCutter",

@@ -38,7 +38,6 @@ import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
-import PathScripts.PathToolLibraryEditor as PathToolLibraryEditor
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import json
@@ -999,35 +998,30 @@ class TaskPanel:
         # Try to find a tool number from the currently selected lib. Otherwise
         # use next available number
 
-        if PathPreferences.toolsUseLegacyTools():
-            PathToolLibraryEditor.CommandToolLibraryEdit().edit(
-                self.obj, self.updateToolController
+        tools = PathToolBitGui.LoadTools()
+
+        curLib = PathPreferences.lastFileToolLibrary()
+
+        library = None
+        if curLib is not None:
+            with open(curLib) as fp:
+                library = json.load(fp)
+
+        for tool in tools:
+            toolNum = self.obj.Proxy.nextToolNumber()
+            if library is not None:
+                for toolBit in library["tools"]:
+
+                    if toolBit["path"] == tool.File:
+                        toolNum = toolBit["nr"]
+
+            tc = PathToolControllerGui.Create(
+                name=tool.Label, tool=tool, toolNumber=toolNum
             )
-        else:
-            tools = PathToolBitGui.LoadTools()
+            self.obj.Proxy.addToolController(tc)
 
-            curLib = PathPreferences.lastFileToolLibrary()
-
-            library = None
-            if curLib is not None:
-                with open(curLib) as fp:
-                    library = json.load(fp)
-
-            for tool in tools:
-                toolNum = self.obj.Proxy.nextToolNumber()
-                if library is not None:
-                    for toolBit in library["tools"]:
-
-                        if toolBit["path"] == tool.File:
-                            toolNum = toolBit["nr"]
-
-                tc = PathToolControllerGui.Create(
-                    name=tool.Label, tool=tool, toolNumber=toolNum
-                )
-                self.obj.Proxy.addToolController(tc)
-
-            FreeCAD.ActiveDocument.recompute()
-            self.updateToolController()
+        FreeCAD.ActiveDocument.recompute()
+        self.updateToolController()
 
     def toolControllerDelete(self):
         self.objectDelete(self.form.toolControllerList)

@@ -147,8 +147,7 @@ class JobPreferencesPage:
 
     def saveToolsSettings(self):
         PathPreferences.setToolsSettings(
-            self.form.toolsUseLegacy.isChecked(),
-            self.form.toolsAbsolutePaths.isChecked(),
+            self.form.toolsAbsolutePaths.isChecked()
         )
 
     def selectComboEntry(self, widget, text):
@@ -328,7 +327,6 @@ class JobPreferencesPage:
             self.form.stockCreateCylinder.hide()
 
     def loadToolSettings(self):
-        self.form.toolsUseLegacy.setChecked(PathPreferences.toolsUseLegacyTools())
         self.form.toolsAbsolutePaths.setChecked(
             PathPreferences.toolsStoreAbsolutePaths()
         )

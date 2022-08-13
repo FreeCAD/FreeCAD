@@ -129,8 +129,6 @@
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
         <file>panels/ToolBitSelector.ui</file>
-        <file>panels/ToolEditor.ui</file>
-        <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>

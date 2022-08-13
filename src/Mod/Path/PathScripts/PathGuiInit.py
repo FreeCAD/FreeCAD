@@ -74,8 +74,6 @@ def Startup():
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
         from PathScripts import PathStop
-        from PathScripts import PathToolLibraryEditor
-        from PathScripts import PathToolLibraryManager
         from PathScripts import PathUtilsGui
 
         from packaging.version import Version, parse

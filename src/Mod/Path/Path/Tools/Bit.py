@@ -445,7 +445,7 @@ class ToolBit(object):
 
     def templateAttrs(self, obj):
         attrs = {}
-        attrs["version"] = 2  # Path.Tool is version 1
+        attrs["version"] = 2
         attrs["name"] = obj.Label
         if PathPreferences.toolsStoreAbsolutePaths():
             attrs["shape"] = obj.BitShape

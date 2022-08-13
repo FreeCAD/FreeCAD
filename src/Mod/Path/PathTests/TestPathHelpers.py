@@ -23,6 +23,7 @@
 import FreeCAD
 import Part
 import Path
+import Path.Tools.Bit as PathToolBit
 import Path.Tools.Controller as PathToolController
 import PathFeedRate
 import PathMachineState
@@ -31,6 +32,15 @@ import PathScripts.PathUtils as PathUtils
 
 from PathTests.PathTestUtils import PathTestBase
 
+
+def createTool(name="t1", diameter=1.75):
+    attrs = {
+        "shape": None,
+        "name": name,
+        "parameter": {"Diameter": diameter},
+        "attribute": [],
+    }
+    return PathToolBit.Factory.CreateFromAttrs(attrs, name)
 
 class TestPathHelpers(PathTestBase):
     def setUp(self):
@@ -48,7 +58,7 @@ class TestPathHelpers(PathTestBase):
 
     def test00(self):
         """Test that FeedRate Helper populates horiz and vert feed rate based on TC"""
-        t = Path.Tool("test", "5.0")
+        t = createTool("test", 5.0)
         tc = PathToolController.Create("TC0", t)
         tc.VertRapid = 5
         tc.HorizRapid = 10

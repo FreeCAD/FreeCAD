@@ -22,16 +22,23 @@
 
 import Path
 import Path.Op.Deburr as PathDeburr
+import Path.Tools.Bit as PathToolBit
 import PathTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 # Path.Log.trackModule(Path.Log.thisModule())
 
 
+class MockToolBit(object):
+    def __init__(self, name="t1", diameter=5.0):
+        self.Diameter = diameter
+        self.FlatRadius = 0
+        self.CuttingEdgeAngle = 60
+
 class TestPathDeburr(PathTestUtils.PathTestBase):
     def test00(self):
         """Verify chamfer depth and offset for an end mill."""
-        tool = Path.Tool()
+        tool = MockToolBit()
         tool.Diameter = 20
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 180
@@ -51,7 +58,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
 
     def test01(self):
         """Verify chamfer depth and offset for a 90 deg v-bit."""
-        tool = Path.Tool()
+        tool = MockToolBit()
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 90
 
@@ -67,7 +74,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
 
     def test02(self):
         """Verify chamfer depth and offset for a 90 deg v-bit with non 0 flat radius."""
-        tool = Path.Tool()
+        tool = MockToolBit()
         tool.FlatRadius = 0.3
         tool.CuttingEdgeAngle = 90
 
@@ -83,7 +90,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
 
     def test03(self):
         """Verify chamfer depth and offset for a 60 deg v-bit with non 0 flat radius."""
-        tool = Path.Tool()
+        tool = MockToolBit()
         tool.FlatRadius = 10
         tool.CuttingEdgeAngle = 60
 

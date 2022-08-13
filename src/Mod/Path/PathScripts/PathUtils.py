@@ -541,10 +541,6 @@ def guessDepths(objshape, subs=None):
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
 
-    if isinstance(tool, Path.Tool):
-        Path.Log.error(translate("Path", "Legacy Tools not supported"))
-        return 0.0
-
     if not hasattr(tool, "TipAngle"):
         Path.Log.error(translate("Path", "Selected tool is not a drill"))
         return 0.0
