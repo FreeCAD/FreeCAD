@@ -1513,6 +1513,14 @@ class Writer(object):
                     "and consult the Elmer docs."
                 )
             )
+        if not hasattr(equation, "IdrsParameter"):
+            equation.addProperty(
+                "App::PropertyIntegerConstraint",
+                "IdrsParameter",
+                "Linear System",
+                "Parameter for iterative method 'Idrs'"
+            )
+            equation.IdrsParameter = (2, 1, 10, 1)
 
     def _createLinearSolver(self, equation):
         # first check if we have to update
@@ -1532,6 +1540,9 @@ class Writer(object):
             if equation.LinearIterativeMethod == "BiCGStabl":
                 s["BiCGstabl polynomial degree"] = \
                     equation.BiCGstablDegree
+            if equation.LinearIterativeMethod == "Idrs":
+                s["Idrs Parameter"] = \
+                    equation.IdrsParameter
             s["Linear System Max Iterations"] = \
                 equation.LinearIterations
             s["Linear System Convergence Tolerance"] = \
