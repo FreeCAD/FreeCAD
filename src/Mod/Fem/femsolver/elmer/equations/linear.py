@@ -72,6 +72,12 @@ class Proxy(equation.Proxy):
             "Polynom degree for iterative method 'BiCGstabl'"
         )
         obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "IdrsParameter",
+            "Linear System",
+            "Parameter for iterative method 'Idrs'"
+        )
+        obj.addProperty(
             "App::PropertyEnumeration",
             "LinearDirectMethod",
             "Linear System",
@@ -131,6 +137,7 @@ class Proxy(equation.Proxy):
         )
         
         obj.BiCGstablDegree = (2, 2, 10, 1)
+        obj.IdrsParameter = (2, 1, 10, 1)
         obj.LinearDirectMethod = LINEAR_DIRECT
         obj.LinearIterations = (500, 1, int(1e6), 50)
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
