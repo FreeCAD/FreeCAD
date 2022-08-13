@@ -24,10 +24,9 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QByteArray>
-#endif
 
 #include "QGIView.h"
 

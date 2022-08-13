@@ -24,8 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <string>
+#include <sstream>
 #include <QDialogButtonBox>
 #include <QGraphicsScene>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsItem>
@@ -36,7 +39,6 @@
 #include <QString>
 #include <QTextOption>
 #include <QVBoxLayout>
-#include <string>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextBlockFormat>
@@ -44,10 +46,7 @@
 #include <QSizeF>
 #endif
 
-#include <sstream>
 #include <regex>
-
-#include <qmath.h>
 
 #include <App/Application.h>
 #include <App/Material.h>

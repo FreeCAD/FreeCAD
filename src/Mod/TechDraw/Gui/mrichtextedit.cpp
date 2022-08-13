@@ -54,7 +54,10 @@
 #include <Base/Tools.h>
 #include <Gui/FileDialog.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
+
 #include <App/Application.h>
+
 #include "PreferencesGui.h"
 #include "mrichtextedit.h"
 

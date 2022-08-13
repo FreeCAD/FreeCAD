@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QGraphicsScene>
 #include <QLineEdit>
 #include <QGraphicsProxyWidget>
 #include <QComboBox>
@@ -32,8 +31,10 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/Gui/ui_TaskSurfaceFinishSymbols.h>
+
 #include "TaskSurfaceFinishSymbols.h"
 
 using namespace Gui;

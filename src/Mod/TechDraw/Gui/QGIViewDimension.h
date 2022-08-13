@@ -23,16 +23,13 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
 #include <QGraphicsObject>
 #include <QStyleOptionGraphicsItem>
-#endif
-
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Base/Vector3D.h>
 

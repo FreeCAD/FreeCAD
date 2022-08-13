@@ -25,8 +25,6 @@
 #ifndef _PreComp_
 #include <string>
 #include <QString>
-//#include <QFont>
-//#include <QColor>
 #endif
 
 #include <App/Application.h>

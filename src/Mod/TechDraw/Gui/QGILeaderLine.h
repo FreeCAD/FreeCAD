@@ -23,15 +23,14 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 #define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QGraphicsItem>
 #include <QObject>
 #include <QPainterPath>
 #include <QPointF>
 #include <QStyleOptionGraphicsItem>
-#endif
 
 #include <Base/Vector3D.h>
 

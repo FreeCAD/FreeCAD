@@ -25,6 +25,7 @@
 #include <cassert>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QRectF>
@@ -36,7 +37,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
 #include "QGCustomRect.h"
 
 using namespace TechDrawGui;

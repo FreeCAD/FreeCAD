@@ -26,10 +26,7 @@
 #ifndef TECHDRAWGUI_TASKDIALOG
 #define TECHDRAWGUI_TASKDIALOG
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QWidget>
-#endif
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>

@@ -23,12 +23,9 @@
 #ifndef _MTEXTEDIT_H_
 #define _MTEXTEDIT_H_
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QImage>
 #include <QMimeData>
 #include <QTextEdit>
-#endif
 
 
 class MTextEdit : public QTextEdit {

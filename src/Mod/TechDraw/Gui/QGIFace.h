@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <Qt>

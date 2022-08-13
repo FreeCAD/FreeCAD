@@ -29,10 +29,7 @@
 #ifndef _MRICHTEXTEDIT_H_
 #define _MRICHTEXTEDIT_H_
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QPointer>
-#endif
 
 #include "ui_mrichtextedit.h"
 

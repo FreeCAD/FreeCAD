@@ -24,12 +24,11 @@
 #ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
 #define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDialog>
 #include <QString>
 #include <memory>
-#endif
 
 namespace TechDrawGui {
 

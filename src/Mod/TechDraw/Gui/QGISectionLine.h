@@ -23,24 +23,22 @@
 #ifndef TECHDRAWGUI_QGISECTIONLINE_H
 #define TECHDRAWGUI_QGISECTIONLINE_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QGraphicsItemGroup>
-#include <QObject>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QPointF>
-#endif
 
 #include <Base/Vector3D.h>
 
 #include "QGCustomText.h"
-#include "QGIArrow.h"
 #include "QGIDecoration.h"
-
 
 namespace TechDrawGui
 {
+
+class QGIArrow;
+class QGCustomText;
 
 class TechDrawGuiExport QGISectionLine : public QGIDecoration
 {
