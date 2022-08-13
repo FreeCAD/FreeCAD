@@ -169,4 +169,4 @@ Command = PathOpGui.SetupOperation(
     PathProfile.SetupProperties,
 )
 
-FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathProfileGui ... done\n")

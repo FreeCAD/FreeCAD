@@ -24,7 +24,7 @@ import FreeCAD
 import Path
 import Path.Dressup.Gui.Dogbone as PathDressupDogbone
 import PathScripts.PathJob as PathJob
-import PathScripts.PathProfileFaces as PathProfileFaces
+import Path.Op.Profile as PathProfile
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -135,7 +135,7 @@ class TestDressupDogbone(PathTestBase):
 
         PathJob.Create("Job", [cut], None)
 
-        profile = PathProfileFaces.Create("Profile Faces")
+        profile = PathProfile.Create("Profile")
         profile.Base = (cut, face)
         profile.StepDown = 5
         # set start and final depth in order to eliminate effects of stock (and its default values)

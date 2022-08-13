@@ -183,12 +183,6 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathProfileContour.py
-    PathScripts/PathProfileContourGui.py
-    PathScripts/PathProfileEdges.py
-    PathScripts/PathProfileEdgesGui.py
-    PathScripts/PathProfileFaces.py
-    PathScripts/PathProfileFacesGui.py
     PathScripts/PathProperty.py
     PathScripts/PathPropertyBag.py
     PathScripts/PathPropertyBagGui.py
