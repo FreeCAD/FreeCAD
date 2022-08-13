@@ -46,15 +46,17 @@ LINEAR_ITERATIVE = [
     "TFQMR",
     "GMRES",
     "GCR",
+    "Idrs"
 ]
 LINEAR_PRECONDITIONING = [
     "None",
     "Diagonal",
+    "ILUT",
     "ILU0",
     "ILU1",
     "ILU2",
     "ILU3",
-    "ILU4",
+    "ILU4"
 ]
 
 
@@ -118,6 +120,16 @@ class Proxy(equation.Proxy):
             ""
         )
         obj.LinearIterations = 500
+        obj.addProperty(
+            "App::PropertyBool",
+            "LinearSystemSolverDisabled",
+            "Linear System",
+            (
+                "Disable the linear system.\n"
+                "Only use for special cases\n"
+                "and consult the Elmer docs."
+            )
+        )
         obj.addProperty(
             "App::PropertyFloat",
             "SteadyStateTolerance",

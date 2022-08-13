@@ -1489,6 +1489,17 @@ class Writer(object):
             equation.setExpression("SteadyStateTolerance", str(equation.SteadyStateTolerance))
         if equation.BiCGstablDegree == 0:
             equation.BiCGstablDegree = 2
+        if not hasattr(equation, "LinearSystemSolverDisabled"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "LinearSystemSolverDisabled",
+                "Linear System",
+                (
+                    "Disable the linear system.\n"
+                    "Only use for special cases\n"
+                    "and consult the Elmer docs."
+                )
+            )
 
     def _createLinearSolver(self, equation):
         # first check if we have to update
@@ -1497,6 +1508,7 @@ class Writer(object):
         s = sifio.createSection(sifio.SOLVER)
         s.priority = equation.Priority
         s["Linear System Solver"] = equation.LinearSolverType
+        s["Linear System Solver Disabled"] = equation.LinearSystemSolverDisabled
         if equation.LinearSolverType == "Direct":
             s["Linear System Direct Method"] = \
                 equation.LinearDirectMethod
