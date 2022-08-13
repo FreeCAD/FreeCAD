@@ -1506,7 +1506,8 @@ class Writer(object):
         s = sifio.createSection(sifio.SOLVER)
         s.priority = equation.Priority
         s["Linear System Solver"] = equation.LinearSolverType
-        s["Linear System Solver Disabled"] = equation.LinearSystemSolverDisabled
+        if equation.LinearSystemSolverDisabled is True:
+            s["Linear System Solver Disabled"] = equation.LinearSystemSolverDisabled
         if equation.LinearSolverType == "Direct":
             s["Linear System Direct Method"] = \
                 equation.LinearDirectMethod
