@@ -24,10 +24,10 @@
 
 import FreeCAD
 import Path
+import Path.Base.Drillable as Drillable
 import Path.Op.Area as PathAreaOp
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
-import PathScripts.drillableLib as drillableLib
 import math
 import numpy
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -450,7 +450,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 for baseShape, wire in holes:
                     cont = False
                     f = Part.makeFace(wire, "Part::FaceMakerSimple")
-                    drillable = drillableLib.isDrillable(baseShape, f, vector=None)
+                    drillable = Drillable.isDrillable(baseShape, f, vector=None)
                     Path.Log.debug(drillable)
 
                     if obj.processCircles:

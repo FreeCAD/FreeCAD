@@ -26,8 +26,8 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.Util as PathGuiUtil
+import Path.Op.FeatureExtension as FeatureExtensions
 import Path.Op.Gui.Base as PathOpGui
-import PathScripts.PathFeatureExtensions as FeatureExtensions
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

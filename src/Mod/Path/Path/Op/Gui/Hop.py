@@ -125,13 +125,13 @@ class CommandPathHop:
             return
 
         FreeCAD.ActiveDocument.openTransaction("Create Hop")
-        FreeCADGui.addModule("PathScripts.PathHop")
+        FreeCADGui.addModule("Path.Op.Gui.Hop")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Hop")'
         )
-        FreeCADGui.doCommand("PathScripts.PathHop.ObjectHop(obj)")
-        FreeCADGui.doCommand("PathScripts.PathHop.ViewProviderPathHop(obj.ViewObject)")
+        FreeCADGui.doCommand("Path.Op.Gui.Hop.ObjectHop(obj)")
+        FreeCADGui.doCommand("Path.Op.Gui.Hop.ViewProviderPathHop(obj.ViewObject)")
         FreeCADGui.doCommand(
             "obj.NextObject = FreeCAD.ActiveDocument." + selection[0].Name
         )

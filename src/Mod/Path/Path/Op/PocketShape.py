@@ -35,7 +35,7 @@ TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
 math = LazyLoader("math", globals(), "math")
 PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
 FeatureExtensions = LazyLoader(
-    "PathScripts.PathFeatureExtensions", globals(), "PathScripts.PathFeatureExtensions"
+    "Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension"
 )
 
 

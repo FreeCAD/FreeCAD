@@ -1272,12 +1272,12 @@ class TaskPanel(object):
 
 class SelObserver(object):
     def __init__(self):
-        import PathScripts.PathSelection as PST
+        import Path.Op.Gui.Selection as PST
 
         PST.eselect()
 
     def __del__(self):
-        import PathScripts.PathSelection as PST
+        import Path.Op.Gui.Selection as PST
 
         PST.clear()
 

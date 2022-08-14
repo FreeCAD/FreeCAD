@@ -115,14 +115,14 @@ class CommandPathComment:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create a Comment in your CNC program")
-        FreeCADGui.addModule("PathScripts.PathComment")
+        FreeCADGui.addModule("Path.Op.Gui.Comment")
         snippet = """
 import Path
 import PathScripts
 from PathScripts import PathUtils
 obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Comment")
-PathScripts.PathComment.Comment(obj)
-PathScripts.PathComment._ViewProviderComment(obj.ViewObject)
+Path.Op.Gui.Comment.Comment(obj)
+Path.Op.Gui.Comment._ViewProviderComment(obj.ViewObject)
 
 PathUtils.addToJob(obj)
 """

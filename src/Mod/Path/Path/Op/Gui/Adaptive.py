@@ -21,11 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCADGui
 import Path.Op.Adaptive as PathAdaptive
 import Path.Op.Gui.Base as PathOpGui
+import Path.Op.Gui.FeatureExtension as PathFeatureExtensionsGui
 from PySide import QtCore
-import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
-import FreeCADGui
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):

@@ -104,12 +104,11 @@ class CommandPathCopy:
     def Activated(self):
 
         FreeCAD.ActiveDocument.openTransaction("Create Copy")
-        FreeCADGui.addModule("PathScripts.PathCopy")
+        FreeCADGui.addModule("Path.Op.Gui.Copy")
 
         consolecode = """
 import Path
-import PathScripts
-from PathScripts import PathCopy
+import Path.Op.Gui.Copy
 selGood = True
 # check that the selection contains exactly what we want
 selection = FreeCADGui.Selection.getSelection()
@@ -125,8 +124,8 @@ if not selection[0].isDerivedFrom("Path::Feature"):
 
 if selGood:
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", str(selection[0].Name)+'_Copy')
-    PathScripts.PathCopy.ObjectPathCopy(obj)
-    PathScripts.PathCopy.ViewProviderPathCopy(obj.ViewObject)
+    Path.Op.Gui.Copy.ObjectPathCopy(obj)
+    Path.Op.Gui.Copy.ViewProviderPathCopy(obj.ViewObject)
     obj.Base = FreeCAD.ActiveDocument.getObject(selection[0].Name)
     if hasattr(obj.Base, 'ToolController'):
         obj.ToolController = obj.Base.ToolController

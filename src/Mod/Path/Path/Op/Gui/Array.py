@@ -539,14 +539,14 @@ class CommandPathArray:
         # if everything is ok, execute and register the transaction in the
         # undo/redo stack
         FreeCAD.ActiveDocument.openTransaction("Create Array")
-        FreeCADGui.addModule("PathScripts.PathArray")
+        FreeCADGui.addModule("Path.Op.Gui.Array")
         FreeCADGui.addModule("PathScripts.PathUtils")
 
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Array")'
         )
 
-        FreeCADGui.doCommand("PathScripts.PathArray.ObjectArray(obj)")
+        FreeCADGui.doCommand("Path.Op.Gui.Array.ObjectArray(obj)")
 
         baseString = "[%s]" % ",".join(
             ["FreeCAD.ActiveDocument.%s" % sel.Name for sel in selection]

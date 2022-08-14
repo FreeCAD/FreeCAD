@@ -33,6 +33,7 @@ SET(PathPython_SRCS
 
 SET(PathPythonBase_SRCS
     Path/Base/__init__.py
+    Path/Base//Drillable.py
     Path/Base/MachineState.py
     Path/Base/FeedRate.py
     Path/Base/Property.py
@@ -144,6 +145,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Deburr.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
+    Path/Op/FeatureExtensions.py
     Path/Op/Drilling.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
@@ -164,20 +166,28 @@ SET(PathPythonOp_SRCS
 SET(PathPythonOpGui_SRCS
     Path/Op/Gui/__init__.py
     Path/Op/Gui/Adaptive.py
+    Path/Op/Gui/Array.py
     Path/Op/Gui/Base.py
     Path/Op/Gui/CircularHoleBase.py
+    Path/Op/Gui/Comment.py
+    Path/Op/Gui/Copy.py
     Path/Op/Gui/Custom.py
     Path/Op/Gui/Deburr.py
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
+    Path/Op/Gui/FeatureExtensions.py
     Path/Op/Gui/Helix.py
+    Path/Op/Gui/Hop.py
     Path/Op/Gui/MillFace.py
-    Path/Op/Gui/PocketBase.py
     Path/Op/Gui/Pocket.py
+    Path/Op/Gui/PocketBase.py
     Path/Op/Gui/PocketShape.py
     Path/Op/Gui/Probe.py
     Path/Op/Gui/Profile.py
+    Path/Op/Gui/Selection.py
+    Path/Op/Gui/SimpleCopy.py
     Path/Op/Gui/Slot.py
+    Path/Op/Gui/Stop.py
     Path/Op/Gui/Surface.py
     Path/Op/Gui/ThreadMilling.py
     Path/Op/Gui/Vcarve.py
@@ -185,15 +195,8 @@ SET(PathPythonOpGui_SRCS
 )
 
 SET(PathScripts_SRCS
-    PathScripts/drillableLib.py
-    PathScripts/PathArray.py
     PathScripts/PathCamoticsGui.py
-    PathScripts/PathComment.py
-    PathScripts/PathCopy.py
-    PathScripts/PathFeatureExtensions.py
-    PathScripts/PathFeatureExtensionsGui.py
     PathScripts/PathFixture.py
-    PathScripts/PathHop.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathJobCmd.py
@@ -201,11 +204,8 @@ SET(PathScripts_SRCS
     PathScripts/PathJobGui.py
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathSanity.py
-    PathScripts/PathSelection.py
-    PathScripts/PathSimpleCopy.py
     PathScripts/PathSimulatorGui.py
     PathScripts/PathStock.py
-    PathScripts/PathStop.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
     PathScripts/__init__.py

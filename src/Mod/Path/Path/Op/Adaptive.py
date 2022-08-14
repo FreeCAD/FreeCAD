@@ -44,7 +44,7 @@ from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader("Part", globals(), "Part")
 # TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
 FeatureExtensions = LazyLoader(
-    "PathScripts.PathFeatureExtensions", globals(), "PathScripts.PathFeatureExtensions"
+    "Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension"
 )
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 

@@ -26,7 +26,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.drillableLib as drillableLib
+import Path.Base.Drillable as Drillable
 import math
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
@@ -129,7 +129,7 @@ class DRILLGate(PathBaseGate):
         subobj = shape.getElement(sub)
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
-        return drillableLib.isDrillable(shape, subobj, vector=None)
+        return Drillable.isDrillable(shape, subobj, vector=None)
 
 
 class FACEGate(PathBaseGate):
@@ -236,7 +236,7 @@ class TURNGate(PathBaseGate):
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
             subobj = shape.getElement(sub)
-            return drillableLib.isDrillable(shape, subobj, vector=None)
+            return Drillable.isDrillable(shape, subobj, vector=None)
         else:
             return False
 

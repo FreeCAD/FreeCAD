@@ -24,7 +24,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Op.Base as PathOp
-import PathScripts.drillableLib as drillableLib
+import Path.Base.Drillable as Drillable
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -213,7 +213,7 @@ class ObjectOp(PathOp.ObjectOp):
         features = []
         for base in self.model:
             features.extend(
-                drillableLib.getDrillableTargets(
+                Drillable.getDrillableTargets(
                     base, ToolDiameter=tooldiameter, vector=matchvector
                 )
             )

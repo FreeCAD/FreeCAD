@@ -164,7 +164,7 @@ class _ToggleOperation:
                 selProxy = Path.Dressup.Utils.baseOp(sel.Object).Proxy
                 if not isinstance(
                     selProxy, Path.Op.Base.ObjectOp
-                ) and not isinstance(selProxy, PathScripts.PathArray.ObjectArray):
+                ) and not isinstance(selProxy, Path.Op.Gui.Array.ObjectArray):
                     return False
             return True
         except (IndexError, AttributeError):
