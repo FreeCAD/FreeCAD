@@ -25,7 +25,9 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <QBrush>
 #include <QGraphicsItem>
+#include <QPen>
 
 #include <Base/Parameter.h>
 
