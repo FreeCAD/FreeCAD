@@ -50,7 +50,7 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 
           Following parameters are allowed:
           getValueAs('m/s')  # unit string to parse
-          getValueAs(2.45,1) # translatrion value and unit signature
+          getValueAs(2.45,1) # translation value and unit signature
           getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
           getValueAs(Qantity('N/m^2')) # a quantity
           getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
