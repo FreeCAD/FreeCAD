@@ -198,13 +198,6 @@ class Writer(object):
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
 
-    def _setConstant(self, name, quantityStr):
-        # TODO without method directly use self.constsdef[name]
-        if name == "PermittivityOfVacuum":
-            theUnit = "s^4*A^2 / (m^3*kg)"
-            self.constsdef[name] = "{} {}".format(self._convert(quantityStr, theUnit), theUnit)
-        return True
-
     def _writeMesh(self):
         mesh = self._getSingleMember("Fem::FemMeshObject")
         unvPath = os.path.join(self.directory, "mesh.unv")
@@ -300,15 +293,19 @@ class Writer(object):
         """
         redefine constants in self.constsdef according constant redefine objects
         """
-        permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
-        if len(permittivity_objs) == 1:
-            Console.PrintLog("Constand permittivity overwriting.\n")
-            self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
-        elif len(permittivity_objs) > 1:
+        objs = self._getMember("Fem::ConstantVacuumPermittivity")
+        if len(objs) == 1:
+            permittivity = float(objs[0].VacuumPermittivity.getValueAs("F/m"))
+            # since the base unit of FC is in mm, we must scale it to get plain SI
+            permittivity = permittivity * 1e-9
+            Console.PrintLog("Overwriting vacuum permittivity with: {}\n".format(permittivity))
+            self.constsdef["PermittivityOfVacuum"] = "{} {}".format(permittivity, "F/m")
+            self._handled(objs[0])
+        elif len(objs) > 1:
             Console.PrintError(
                 "More than one permittivity constant overwriting objects ({} objs). "
                 "The permittivity constant overwriting is ignored.\n"
-                .format(len(permittivity_objs))
+                .format(len(objs))
             )
 
     def _handleSimulation(self):
