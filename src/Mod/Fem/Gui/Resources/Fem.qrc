@@ -152,6 +152,7 @@
         <file>translations/Fem_zh-TW.qm</file>
 
         <!-- task panels -->
+        <file>ui/BodyHeatSource.ui</file>
         <file>ui/ConstraintCentrif.ui</file>
         <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
