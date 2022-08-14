@@ -501,15 +501,31 @@ class Writer(object):
                 self._initial(name, "Temperature", temp)
             self._handled(obj)
 
+    def _outputHeatBodyForce(self, obj, name):
+        heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+        if heatSource == 0.0:
+            # a zero heat would break Elmer (division by zero)
+            raise WriteError("The body heat source must not be zero!")
+        self._bodyForce(name, "Heat Source", heatSource)
+
     def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
-        if obj is not None:
-            for name in bodies:
-                heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
-                # according Elmer forum W/kg is correct
-                # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
-                # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
-                self._bodyForce(name, "Heat Source", heatSource)
+        bodyHeats = self._getMember("Fem::ConstraintBodyHeatSource")
+        for obj in bodyHeats:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputHeatBodyForce(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one body heat without a reference
+                # add it to all bodies
+                if len(bodyHeats) == 1:
+                    for name in bodies:
+                        self._outputHeatBodyForce(obj, name)
+                else:
+                    raise WriteError(
+                        "Several body heat constraints found without reference to a body.\n"
+                        "Please set a body for each body heat constraint."
+                    )
             self._handled(obj)
 
     def _handleHeatMaterial(self, bodies):

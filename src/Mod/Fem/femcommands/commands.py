@@ -187,7 +187,7 @@ class _ConstraintBodyHeatSource(CommandManager):
             "Creates a FEM constraint body heat source"
         )
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_noset_edit"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ConstraintCentrif(CommandManager):
