@@ -383,10 +383,6 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1e6;
         }
     }
-    else if (unit == Unit::VacuumPermittivity) {
-            unitString = QString::fromLatin1("F/m");
-            factor = 1;
-    }
     else if (unit == Unit::Work) {
         if (UnitValue < 1.602176634e-10) {
             unitString = QString::fromLatin1("eV");

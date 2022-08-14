@@ -435,10 +435,6 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e6;
         }
     }
-    else if (unit == Unit::VacuumPermittivity) {
-        unitString = QString::fromLatin1("F/m");
-        factor = 1;
-    }
     else if (unit == Unit::Frequency) {
         if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("Hz");
