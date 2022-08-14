@@ -21,9 +21,7 @@
 # ***************************************************************************
 
 import Path
-import Generators.toolchange_generator as generator
-from Generators.toolchange_generator import SpindleDirection
-
+import Path.Base.Generator.toolchange as generator
 import PathTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -38,7 +36,7 @@ class TestPathToolChangeGenerator(PathTestUtils.PathTestBase):
             "toolnumber": 1,
             "toollabel": "My Label",
             "spindlespeed": 500,
-            "spindledirection": SpindleDirection.OFF,
+            "spindledirection": generator.SpindleDirection.OFF,
         }
 
         results = generator.generate(**args)
@@ -54,7 +52,7 @@ class TestPathToolChangeGenerator(PathTestUtils.PathTestBase):
         self.assertTrue(toolcommand.Name == "M6")
 
         # Turn on the spindle
-        args["spindledirection"] = SpindleDirection.CW
+        args["spindledirection"] = generator.SpindleDirection.CW
         results = generator.generate(**args)
         self.assertTrue(len(results) == 3)
 

@@ -23,7 +23,7 @@
 import FreeCAD
 import Part
 import Path
-import Generators.helix_generator as generator
+import Path.Base.Generator.helix as generator
 import PathTests.PathTestUtils as PathTestUtils
 
 

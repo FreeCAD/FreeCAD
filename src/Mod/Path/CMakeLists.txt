@@ -145,7 +145,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Deburr.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
-    Path/Op/FeatureExtensions.py
+    Path/Op/FeatureExtension.py
     Path/Op/Drilling.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
@@ -175,7 +175,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Deburr.py
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
-    Path/Op/Gui/FeatureExtensions.py
+    Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/Hop.py
     Path/Op/Gui/MillFace.py
@@ -211,12 +211,12 @@ SET(PathScripts_SRCS
     PathScripts/__init__.py
 )
 
-SET(Generator_SRCS
-    Generators/drill_generator.py
-    Generators/helix_generator.py
-    Generators/rotation_generator.py
-    Generators/threadmilling_generator.py
-    Generators/toolchange_generator.py
+SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/drill.py
+    Path/Base/Generator/helix.py
+    Path/Base/Generator/rotation.py
+    Path/Base/Generator/threadmilling.py
+    Path/Base/Generator/toolchange.py
 )
 
 SET(PathPythonGui_SRCS
@@ -342,6 +342,9 @@ SET(Path_Data
 SET(all_files
     ${PathScripts_SRCS}
     ${PathPython_SRCS}
+    ${PathPythonBase_SRCS}
+    ${PathPythonBaseGui_SRCS}
+    ${PathPythonBaseGenerator_SRCS}
     ${PathPythonDressup_SRCS}
     ${PathPythonDressupGui_SRCS}
     ${PathPythonOp_SRCS}
@@ -350,7 +353,6 @@ SET(all_files
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathPythonToolsGui_SRCS}
-    ${Generator_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -392,6 +394,27 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonBase_SRCS}
+    DESTINATION
+        Mod/Path/Path/Base
+)
+
+INSTALL(
+    FILES
+        ${PathPythonBaseGenerator_SRCS}
+    DESTINATION
+        Mod/Path/Path/Base/Generator
+)
+
+INSTALL(
+    FILES
+        ${PathPythonBaseGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Base/Gui
+)
+
+INSTALL(
+    FILES
         ${PathPythonDressup_SRCS}
     DESTINATION
         Mod/Path/Path/Dressup
@@ -426,6 +449,13 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonPostScripts_SRCS}
+    DESTINATION
+        Mod/Path/Path/Post/scripts
+)
+
+INSTALL(
+    FILES
         ${PathPythonTools_SRCS}
     DESTINATION
         Mod/Path/Path/Tool
@@ -436,20 +466,6 @@ INSTALL(
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/Path/Path/Tool/Gui
-)
-
-INSTALL(
-    FILES
-        ${PathPythonPostScripts_SRCS}
-    DESTINATION
-        Mod/Path/Path/Post/scripts
-)
-
-INSTALL(
-    FILES
-        ${Generator_SRCS}
-    DESTINATION
-        Mod/Path/Generators
 )
 
 INSTALL(

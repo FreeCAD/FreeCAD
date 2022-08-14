@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-from Generators import helix_generator
+import Path.Base.Generator.helix as helix
 from PathScripts.PathUtils import fmt
 from PathScripts.PathUtils import sort_locations
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -218,7 +218,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 )
             )
 
-            results = helix_generator.generate(**args)
+            results = helix.generate(**args)
 
             for command in results:
                 self.commandlist.append(command)

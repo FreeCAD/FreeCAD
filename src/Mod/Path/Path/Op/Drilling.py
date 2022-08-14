@@ -24,11 +24,11 @@
 from __future__ import print_function
 
 
-from Generators import drill_generator as generator
 import FreeCAD
 import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
+import Path.Base.Generator.drill as drill
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
@@ -248,7 +248,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             chipBreak = (obj.chipBreakEnabled and obj.PeckEnabled)
 
             try:
-                drillcommands = generator.generate(
+                drillcommands = drill.generate(
                     edge,
                     dwelltime,
                     peckdepth,

@@ -26,8 +26,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Tool.Bit as PathToolBit
-from Generators import toolchange_generator as toolchange_generator
-from Generators.toolchange_generator import SpindleDirection
+import Path.Base.Generator.toolchange as toolchange
 
 
 if False:
@@ -253,27 +252,27 @@ class ToolController:
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
             "spindlespeed": obj.SpindleSpeed,
-            "spindledirection": SpindleDirection.OFF,
+            "spindledirection": toolchange.SpindleDirection.OFF,
         }
 
         if hasattr(obj.Tool, "SpindlePower"):
             if not obj.Tool.SpindlePower:
-                args["spindledirection"] = SpindleDirection.OFF
+                args["spindledirection"] = toolchange.SpindleDirection.OFF
             else:
                 if obj.SpindleDir == "Forward":
-                    args["spindledirection"] = SpindleDirection.CW
+                    args["spindledirection"] = toolchange.SpindleDirection.CW
                 else:
-                    args["spindledirection"] = SpindleDirection.CCW
+                    args["spindledirection"] = toolchange.SpindleDirection.CCW
 
         elif obj.SpindleDir == "None":
-            args["spindledirection"] = SpindleDirection.OFF
+            args["spindledirection"] = toolchange.SpindleDirection.OFF
         else:
             if obj.SpindleDir == "Forward":
-                args["spindledirection"] = SpindleDirection.CW
+                args["spindledirection"] = toolchange.SpindleDirection.CW
             else:
-                args["spindledirection"] = SpindleDirection.CCW
+                args["spindledirection"] = toolchange.SpindleDirection.CCW
 
-        commands = toolchange_generator.generate(**args)
+        commands = toolchange.generate(**args)
 
         path = Path.Path(commands)
         obj.Path = path

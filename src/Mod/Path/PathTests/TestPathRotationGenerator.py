@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
-import Generators.rotation_generator as generator
 import Path
+import Path.Base.Generator.rotation as generator
 import PathTests.PathTestUtils as PathTestUtils
 import numpy as np
 

@@ -24,9 +24,9 @@ from __future__ import print_function
 
 import FreeCAD
 import Path
+import Path.Base.Generator.threadmilling as threadmilling
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import Generators.threadmilling_generator as threadmilling
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 

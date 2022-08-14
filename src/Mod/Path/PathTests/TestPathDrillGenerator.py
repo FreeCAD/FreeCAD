@@ -21,9 +21,9 @@
 # ***************************************************************************
 
 import FreeCAD
-import Generators.drill_generator as generator
 import Part
 import Path
+import Path.Base.Generator.drill as generator
 import PathTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
