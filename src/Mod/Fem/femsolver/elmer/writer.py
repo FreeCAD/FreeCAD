@@ -1492,6 +1492,14 @@ class Writer(object):
                     if obj.NormalToBoundary:
                         self._boundary(name, "Normal-Tangential Velocity", True)
                 self._handled(obj)
+        for obj in self._getMember("Fem::ConstraintPressure"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    pressure = self._getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
+                    if obj.Reversed:
+                        pressure *= -1
+                    self._boundary(name, "External Pressure", pressure)
+                self._handled(obj)
 
     def _handleFlowEquation(self, bodies, equation):
         for b in bodies:
