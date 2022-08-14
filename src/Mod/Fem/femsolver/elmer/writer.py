@@ -1302,6 +1302,7 @@ class Writer(object):
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
+            self._handleFlowInitialPressure(activeIn)
             self._handleFlowInitialVelocity(activeIn)
             # self._handleFlowInitial(activeIn)
             # self._handleFlowBodyForces(activeIn)
@@ -1435,6 +1436,32 @@ class Writer(object):
                     self._material(
                         name, "Compressibility Model",
                         m["CompressibilityModel"])
+
+    def _outputInitialPressure(self, obj, name):
+        # initial pressure only makes sense for fluid material
+        if self._isBodyMaterialFluid(name):
+            pressure = float(obj.Pressure.getValueAs("Pa"))
+            self._initial(name, "Pressure", pressure)
+
+    def _handleFlowInitialPressure(self, bodies):
+        initialPressures = self._getMember("Fem::ConstraintInitialPressure")
+        for obj in initialPressures:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputInitialPressure(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one initial velocity without a reference
+                # add it to all fluid bodies
+                if len(initialPressures) == 1:
+                    for name in bodies:
+                        self._outputInitialPressure(obj, name)
+                else:
+                    raise WriteError(
+                        "Several initial pressures found without reference to a body.\n"
+                        "Please set a body for each initial pressure."
+                    )
+            self._handled(obj)
 
     def _outputInitialVelocity(self, obj, name):
         # flow only makes sense for fluid material
