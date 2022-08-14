@@ -35,7 +35,6 @@ import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
 import PathScripts
-import PathScripts.PathPreferences as PathPreferences
 from collections import Counter
 from datetime import datetime
 import os
@@ -55,10 +54,10 @@ class CommandPathSanity:
     def resolveOutputPath(self, job):
         if job.PostProcessorOutputFile != "":
             filepath = job.PostProcessorOutputFile
-        elif PathPreferences.defaultOutputFile() != "":
-            filepath = PathPreferences.defaultOutputFile()
+        elif Path.Preferences.defaultOutputFile() != "":
+            filepath = Path.Preferences.defaultOutputFile()
         else:
-            filepath = PathPreferences.macroFilePath()
+            filepath = Path.Preferences.macroFilePath()
 
         if "%D" in filepath:
             D = FreeCAD.ActiveDocument.FileName

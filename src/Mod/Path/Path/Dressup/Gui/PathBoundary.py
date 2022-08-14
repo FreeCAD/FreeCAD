@@ -26,7 +26,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.PathBoundary as PathDressupPathBoundary
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
+import PathGui
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

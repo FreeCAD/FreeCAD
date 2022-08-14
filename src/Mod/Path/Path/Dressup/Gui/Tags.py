@@ -26,10 +26,9 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGetPoint as PathGetPoint
-import PathScripts.PathPreferences as PathPreferences
+import PathGui
 import PathScripts.PathUtils as PathUtils
 
 
@@ -394,7 +393,7 @@ class PathDressupTagViewProvider:
             v = [((val >> n) & 0xFF) / 255.0 for n in [24, 16, 8, 0]]
             return coin.SbColor(v[0], v[1], v[2])
 
-        pref = PathPreferences.preferences()
+        pref = Path.Preferences.preferences()
         #                                                      R         G          B          A
         npc = pref.GetUnsigned(
             "DefaultPathMarkerColor", ((85 * 256 + 255) * 256 + 0) * 256 + 255

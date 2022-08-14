@@ -22,10 +22,10 @@
 
 import FreeCAD
 import FreeCADGui
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Profile as PathProfile
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
@@ -76,7 +76,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Side = str(self.form.cutSide.currentData())
         if obj.Direction != str(self.form.direction.currentData()):
             obj.Direction = str(self.form.direction.currentData())
-        PathGui.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()

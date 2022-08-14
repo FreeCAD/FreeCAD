@@ -23,7 +23,7 @@
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
-import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
+import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Setup Sheet for a Job."

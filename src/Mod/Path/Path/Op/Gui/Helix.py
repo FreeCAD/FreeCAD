@@ -23,11 +23,11 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.Helix as PathHelix
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
@@ -68,7 +68,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.StartSide = str(self.form.startSide.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        PathGui.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)

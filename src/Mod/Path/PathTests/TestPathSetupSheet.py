@@ -21,13 +21,12 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathSetupSheet as PathSetupSheet
-import PathScripts.PathLog as PathLog
+import Path
+import Path.Base.SetupSheet as PathSetupSheet
 import json
 import sys
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+#Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -37,7 +36,7 @@ def refstring(string):
 
 class SomeOp (object):
     def __init__(self, obj):
-        PathLog.track(obj, type(obj))
+        Path.Log.track(obj, type(obj))
         obj.addProperty('App::PropertyPercent', 'StepOver', 'Base', 'Some help you are')
 
     @classmethod
@@ -46,7 +45,7 @@ class SomeOp (object):
 
     @classmethod
     def Create(cls, name, obj=None, parentJob=None):
-        PathLog.track(name, obj)
+        Path.Log.track(name, obj)
         if obj is None:
             obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
         obj.Proxy = SomeOp(obj)

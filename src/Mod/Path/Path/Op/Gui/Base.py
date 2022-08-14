@@ -23,15 +23,14 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.GetPoint as PathGetPoint
+import Path.Base.Gui.Util as PathGuiUtil
+import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
 import Path.Op.Base as PathOp
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGetPoint as PathGetPoint
-import PathScripts.PathGui as PathGui
+import PathGui
 import PathScripts.PathJob as PathJob
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSelection as PathSelection
-import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -375,8 +374,8 @@ class TaskPanelPage(object):
         return
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGui.populateCombobox()"""
-        PathGui.populateCombobox(form, enumTups, comboBoxesPropertyMap)
+        """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGuiUtil.populateCombobox()"""
+        PathGuiUtil.populateCombobox(form, enumTups, comboBoxesPropertyMap)
 
     def resetToolController(self, job, tc):
         if self.obj is not None:
@@ -823,10 +822,10 @@ class TaskPanelHeightsPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
 
     def initPage(self, obj):
-        self.safeHeight = PathGui.QuantitySpinBox(
+        self.safeHeight = PathGuiUtil.QuantitySpinBox(
             self.form.safeHeight, obj, "SafeHeight"
         )
-        self.clearanceHeight = PathGui.QuantitySpinBox(
+        self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
             self.form.clearanceHeight, obj, "ClearanceHeight"
         )
 
@@ -891,7 +890,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
     def initPage(self, obj):
 
         if self.haveStartDepth():
-            self.startDepth = PathGui.QuantitySpinBox(
+            self.startDepth = PathGuiUtil.QuantitySpinBox(
                 self.form.startDepth, obj, "StartDepth"
             )
         else:
@@ -900,7 +899,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.startDepthSet.hide()
 
         if self.haveFinalDepth():
-            self.finalDepth = PathGui.QuantitySpinBox(
+            self.finalDepth = PathGuiUtil.QuantitySpinBox(
                 self.form.finalDepth, obj, "FinalDepth"
             )
         else:
@@ -918,13 +917,13 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.hide()
 
         if self.haveStepDown():
-            self.stepDown = PathGui.QuantitySpinBox(self.form.stepDown, obj, "StepDown")
+            self.stepDown = PathGuiUtil.QuantitySpinBox(self.form.stepDown, obj, "StepDown")
         else:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
 
         if self.haveFinishDepth():
-            self.finishDepth = PathGui.QuantitySpinBox(
+            self.finishDepth = PathGuiUtil.QuantitySpinBox(
                 self.form.finishDepth, obj, "FinishDepth"
             )
         else:
@@ -1029,10 +1028,10 @@ class TaskPanelDiametersPage(TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDiametersEdit.ui")
 
     def initPage(self, obj):
-        self.minDiameter = PathGui.QuantitySpinBox(
+        self.minDiameter = PathGuiUtil.QuantitySpinBox(
             self.form.minDiameter, obj, "MinDiameter"
         )
-        self.maxDiameter = PathGui.QuantitySpinBox(
+        self.maxDiameter = PathGuiUtil.QuantitySpinBox(
             self.form.maxDiameter, obj, "MaxDiameter"
         )
 
@@ -1132,7 +1131,7 @@ class TaskPanel(object):
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
 
-        taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
+        taskPanelLayout = Path.Preferences.defaultTaskPanelLayout()
 
         if taskPanelLayout < 2:
             opTitle = opPage.getTitle(obj)

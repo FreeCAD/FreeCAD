@@ -26,7 +26,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Tool.Bit as PathToolBit
-import PathScripts.PathPreferences as PathPreferences
 from Generators import toolchange_generator as toolchange_generator
 from Generators.toolchange_generator import SpindleDirection
 

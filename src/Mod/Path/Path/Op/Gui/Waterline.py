@@ -26,9 +26,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Waterline as PathWaterline
-import PathScripts.PathGui as PathGui
 
 __title__ = "Path Waterline Operation UI"
 __author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
@@ -61,7 +61,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("cutPattern", "CutPattern"),
         ]
         enumTups = PathWaterline.ObjectWaterline.propertyEnumerations(dataType="raw")
-        PathGui.populateCombobox(form, enumTups, comboToPropertyMap)
+        PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
 
     def getFields(self, obj):
@@ -81,14 +81,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.CutPattern != str(self.form.cutPattern.currentData()):
             obj.CutPattern = str(self.form.cutPattern.currentData())
 
-        PathGui.updateInputField(
+        PathGuiUtil.updateInputField(
             obj, "BoundaryAdjustment", self.form.boundaryAdjustment
         )
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
-        PathGui.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
+        PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()

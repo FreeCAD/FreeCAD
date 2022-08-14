@@ -23,10 +23,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Pocket as PathPocket
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -112,7 +112,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.zigZagAngle.setEnabled(True)
 
         if setModel:
-            PathGui.updateInputField(obj, "ZigZagAngle", self.form.zigZagAngle)
+            PathGuiUtil.updateInputField(obj, "ZigZagAngle", self.form.zigZagAngle)
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
@@ -123,7 +123,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OffsetPattern != str(self.form.offsetPattern.currentData()):
             obj.OffsetPattern = str(self.form.offsetPattern.currentData())
 
-        PathGui.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
         self.updateZigZagAngle(obj)

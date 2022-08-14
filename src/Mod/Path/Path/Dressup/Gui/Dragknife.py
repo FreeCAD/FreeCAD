@@ -23,10 +23,10 @@
 from __future__ import print_function
 import FreeCAD
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 from PySide import QtCore
 import math
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathGui as PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
@@ -498,13 +498,13 @@ class TaskPanel:
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DragKnifeEdit.ui")
-        self.filterAngle = PathGui.QuantitySpinBox(
+        self.filterAngle = PathGuiUtil.QuantitySpinBox(
             self.form.filterAngle, obj, "filterAngle"
         )
-        self.offsetDistance = PathGui.QuantitySpinBox(
+        self.offsetDistance = PathGuiUtil.QuantitySpinBox(
             self.form.offsetDistance, obj, "offset"
         )
-        self.pivotHeight = PathGui.QuantitySpinBox(
+        self.pivotHeight = PathGuiUtil.QuantitySpinBox(
             self.form.pivotHeight, obj, "pivotheight"
         )
 

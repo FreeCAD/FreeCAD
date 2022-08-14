@@ -22,10 +22,10 @@
 
 import FreeCAD
 import FreeCADGui
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Slot as PathSlot
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 
 from PySide import QtCore
 
@@ -62,10 +62,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setTitle("Slot - " + obj.Label)
         # retrieve property enumerations
         # Requirements due to Gui::QuantitySpinBox class use in UI panel
-        self.geo1Extension = PathGui.QuantitySpinBox(
+        self.geo1Extension = PathGuiUtil.QuantitySpinBox(
             self.form.geo1Extension, obj, "ExtendPathStart"
         )
-        self.geo2Extension = PathGui.QuantitySpinBox(
+        self.geo2Extension = PathGuiUtil.QuantitySpinBox(
             self.form.geo2Extension, obj, "ExtendPathEnd"
         )
 

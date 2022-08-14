@@ -28,15 +28,14 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.SetupSheetGui as PathSetupSheetGui
 import Path.Base.Util as PathUtil
+import Path.GuiInit as PathGuiInit
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
-import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
-import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtils as PathUtils
 import json
@@ -635,7 +634,7 @@ class TaskPanel:
         self.form.toolControllerList.resizeColumnsToContents()
 
         currentPostProcessor = self.obj.PostProcessor
-        postProcessors = PathPreferences.allEnabledPostProcessors(
+        postProcessors = Path.Preferences.allEnabledPostProcessors(
             ["", currentPostProcessor]
         )
         for post in postProcessors:
@@ -999,7 +998,7 @@ class TaskPanel:
 
         tools = PathToolBitGui.LoadTools()
 
-        curLib = PathPreferences.lastFileToolLibrary()
+        curLib = Path.Preferences.lastFileToolLibrary()
 
         library = None
         if curLib is not None:

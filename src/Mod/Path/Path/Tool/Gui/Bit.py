@@ -25,10 +25,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
-import PathScripts.PathIconViewProvider as PathIconViewProvider
-import PathScripts.PathPreferences as PathPreferences
 import os
 
 __title__ = "Tool Bit UI"
@@ -191,7 +190,7 @@ def GetNewToolFile(parent=None):
         parent = QtGui.QApplication.activeWindow()
 
     foo = QtGui.QFileDialog.getSaveFileName(
-        parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb"
+        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
     )
     if foo and foo[0]:
         if not isValidFileName(foo[0]):
@@ -200,7 +199,7 @@ def GetNewToolFile(parent=None):
             msgBox.setText(msg)
             msgBox.exec_()
         else:
-            PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
+            Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
             return foo[0]
     return None
 
@@ -209,10 +208,10 @@ def GetToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
     foo = QtGui.QFileDialog.getOpenFileName(
-        parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb"
+        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
     )
     if foo and foo[0]:
-        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
+        Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0]))
         return foo[0]
     return None
 
@@ -221,10 +220,10 @@ def GetToolFiles(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
     foo = QtGui.QFileDialog.getOpenFileNames(
-        parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb"
+        parent, "Tool", Path.Preferences.lastPathToolBit(), "*.fctb"
     )
     if foo and foo[0]:
-        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0][0]))
+        Path.Preferences.setLastPathToolBit(os.path.dirname(foo[0][0]))
         return foo[0]
     return []
 
@@ -233,11 +232,11 @@ def GetToolShapeFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    location = PathPreferences.lastPathToolShape()
+    location = Path.Preferences.lastPathToolShape()
     if os.path.isfile(location):
         location = os.path.split(location)[0]
     elif not os.path.isdir(location):
-        location = PathPreferences.filePath()
+        location = Path.Preferences.filePath()
 
     fname = QtGui.QFileDialog.getOpenFileName(
         parent, "Select Tool Shape", location, "*.fcstd"
@@ -245,7 +244,7 @@ def GetToolShapeFile(parent=None):
     if fname and fname[0]:
         if fname != location:
             newloc = os.path.dirname(fname[0])
-            PathPreferences.setLastPathToolShape(newloc)
+            Path.Preferences.setLastPathToolShape(newloc)
         return fname[0]
     else:
         return None

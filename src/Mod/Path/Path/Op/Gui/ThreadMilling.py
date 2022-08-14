@@ -23,11 +23,11 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.ThreadMilling as PathThreadMilling
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 import csv
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -72,13 +72,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the thread milling operation's page"""
 
     def initPage(self, obj):
-        self.majorDia = PathGui.QuantitySpinBox(
+        self.majorDia = PathGuiUtil.QuantitySpinBox(
             self.form.threadMajor, obj, "MajorDiameter"
         )
-        self.minorDia = PathGui.QuantitySpinBox(
+        self.minorDia = PathGuiUtil.QuantitySpinBox(
             self.form.threadMinor, obj, "MinorDiameter"
         )
-        self.pitch = PathGui.QuantitySpinBox(self.form.threadPitch, obj, "Pitch")
+        self.pitch = PathGuiUtil.QuantitySpinBox(self.form.threadPitch, obj, "Pitch")
 
     def getForm(self):
         """getForm() ... return UI"""

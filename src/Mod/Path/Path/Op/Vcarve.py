@@ -26,7 +26,6 @@ import Path
 import Path.Op.Base as PathOp
 import Path.Op.EngraveBase as PathEngraveBase
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathPreferences as PathPreferences
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -244,7 +243,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         )
         obj.Colinear = 10.0
         obj.Discretize = 0.01
-        obj.Tolerance = PathPreferences.defaultGeometryTolerance()
+        obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):

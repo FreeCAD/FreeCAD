@@ -23,7 +23,6 @@
 import FreeCAD
 import Path
 import Path.Post.Processor as PostProcessor
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import json
 
@@ -52,7 +51,7 @@ class JobPreferencesPage:
         jobTemplate = self.form.leDefaultJobTemplate.text()
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
-        PathPreferences.setJobDefaults(
+        Path.Preferences.setJobDefaults(
             filePath, jobTemplate, geometryTolerance, curveAccuracy
         )
 
@@ -66,11 +65,11 @@ class JobPreferencesPage:
             item = self.form.postProcessorList.item(i)
             if item.checkState() == QtCore.Qt.CheckState.Unchecked:
                 blacklist.append(item.text())
-        PathPreferences.setPostProcessorDefaults(processor, args, blacklist)
+        Path.Preferences.setPostProcessorDefaults(processor, args, blacklist)
 
         path = str(self.form.leOutputFile.text())
         policy = str(self.form.cboOutputPolicy.currentText())
-        PathPreferences.setOutputFileDefaults(path, policy)
+        Path.Preferences.setOutputFileDefaults(path, policy)
         self.saveStockSettings()
         self.saveToolsSettings()
 
@@ -141,12 +140,12 @@ class JobPreferencesPage:
                 attrs["posZ"] = FreeCAD.Units.Quantity(
                     self.form.stockPositionZ.text()
                 ).Value
-            PathPreferences.setDefaultStockTemplate(json.dumps(attrs))
+            Path.Preferences.setDefaultStockTemplate(json.dumps(attrs))
         else:
-            PathPreferences.setDefaultStockTemplate("")
+            Path.Preferences.setDefaultStockTemplate("")
 
     def saveToolsSettings(self):
-        PathPreferences.setToolsSettings(
+        Path.Preferences.setToolsSettings(
             self.form.toolsAbsolutePaths.isChecked()
         )
 
@@ -181,11 +180,11 @@ class JobPreferencesPage:
         )
 
     def loadSettings(self):
-        self.form.leDefaultFilePath.setText(PathPreferences.defaultFilePath())
-        self.form.leDefaultJobTemplate.setText(PathPreferences.defaultJobTemplate())
+        self.form.leDefaultFilePath.setText(Path.Preferences.defaultFilePath())
+        self.form.leDefaultJobTemplate.setText(Path.Preferences.defaultJobTemplate())
 
-        blacklist = PathPreferences.postProcessorBlacklist()
-        for processor in PathPreferences.allAvailablePostProcessors():
+        blacklist = Path.Preferences.postProcessorBlacklist()
+        for processor in Path.Preferences.allAvailablePostProcessors():
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -198,26 +197,26 @@ class JobPreferencesPage:
             )
             self.form.postProcessorList.addItem(item)
         self.verifyAndUpdateDefaultPostProcessorWith(
-            PathPreferences.defaultPostProcessor()
+            Path.Preferences.defaultPostProcessor()
         )
 
         self.form.defaultPostProcessorArgs.setText(
-            PathPreferences.defaultPostProcessorArgs()
+            Path.Preferences.defaultPostProcessorArgs()
         )
 
         geomTol = Units.Quantity(
-            PathPreferences.defaultGeometryTolerance(), Units.Length
+            Path.Preferences.defaultGeometryTolerance(), Units.Length
         )
         self.form.geometryTolerance.setText(geomTol.UserString)
         self.form.curveAccuracy.setText(
             Units.Quantity(
-                PathPreferences.defaultLibAreaCurveAccuracy(), Units.Length
+                Path.Preferences.defaultLibAreaCurveAccuracy(), Units.Length
             ).UserString
         )
 
-        self.form.leOutputFile.setText(PathPreferences.defaultOutputFile())
+        self.form.leOutputFile.setText(Path.Preferences.defaultOutputFile())
         self.selectComboEntry(
-            self.form.cboOutputPolicy, PathPreferences.defaultOutputPolicy()
+            self.form.cboOutputPolicy, Path.Preferences.defaultOutputPolicy()
         )
 
         self.form.tbDefaultFilePath.clicked.connect(self.browseDefaultFilePath)
@@ -235,7 +234,7 @@ class JobPreferencesPage:
         self.loadToolSettings()
 
     def loadStockSettings(self):
-        stock = PathPreferences.defaultStockTemplate()
+        stock = Path.Preferences.defaultStockTemplate()
         index = -1
         if stock:
             attrs = json.loads(stock)
@@ -328,7 +327,7 @@ class JobPreferencesPage:
 
     def loadToolSettings(self):
         self.form.toolsAbsolutePaths.setChecked(
-            PathPreferences.toolsStoreAbsolutePaths()
+            Path.Preferences.toolsStoreAbsolutePaths()
         )
 
     def getPostProcessor(self, name):
@@ -370,7 +369,7 @@ class JobPreferencesPage:
     def bestGuessForFilePath(self):
         path = self.form.leDefaultFilePath.text()
         if not path:
-            path = PathPreferences.filePath()
+            path = Path.Preferences.filePath()
         return path
 
     def browseDefaultJobTemplate(self):

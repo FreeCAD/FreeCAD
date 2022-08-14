@@ -69,9 +69,6 @@ class PathWorkbench(Workbench):
             PathPreferencesPathDressup.DressupPreferencesPage, "Path"
         )
 
-        # Check enablement of experimental features
-        from PathScripts import PathPreferences
-
         # load the builtin modules
         import Path
         import PathScripts
@@ -80,7 +77,7 @@ class PathWorkbench(Workbench):
 
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
-        from PathScripts import PathGuiInit
+        import Path.GuiInit
         from PathScripts import PathJobCmd
 
         from Path.Tool.Gui import BitCmd as PathToolBitCmd
@@ -92,7 +89,7 @@ class PathWorkbench(Workbench):
         import subprocess
         from packaging.version import Version, parse
 
-        PathGuiInit.Startup()
+        Path.GuiInit.Startup()
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
@@ -148,14 +145,14 @@ class PathWorkbench(Workbench):
         )
 
         threedcmdgroup = threedopcmdlist
-        if PathPreferences.experimentalFeaturesEnabled():
+        if Path.Preferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append("Path_ThreadMilling")
             twodopcmdlist.append("Path_Slot")
 
-        if PathPreferences.advancedOCLFeaturesEnabled():
+        if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
                 r = subprocess.run(
                     ["camotics", "--version"], capture_output=True, text=True
@@ -182,7 +179,7 @@ class PathWorkbench(Workbench):
                     ),
                 )
             except ImportError:
-                if not PathPreferences.suppressOpenCamLibWarning():
+                if not Path.Preferences.suppressOpenCamLibWarning():
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
@@ -255,13 +252,13 @@ class PathWorkbench(Workbench):
 
         self.dressupcmds = dressupcmdlist
 
-        curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
+        curveAccuracy = Path.Preferences.defaultLibAreaCurveAccuracy()
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
         # keep this one the last entry in the preferences
-        import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
-        from PathScripts.PathPreferences import preferences
+        import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
+        from Path.Preferences import preferences
 
         FreeCADGui.addPreferencePage(
             PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
@@ -269,7 +266,7 @@ class PathWorkbench(Workbench):
         Log("Loading Path workbench... done\n")
 
         # Warn user if current schema doesn't use minute for time in velocity
-        if not PathPreferences.suppressVelocity():
+        if not Path.Preferences.suppressVelocity():
             velString = FreeCAD.Units.Quantity(
                 1, FreeCAD.Units.Velocity
             ).getUserPreferred()[2][3:]

@@ -25,11 +25,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.Util as PathUtil
 import Path.Tool.Controller as PathToolController
 import Path.Tool.Gui.Bit as PathToolBitGui
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -188,11 +188,11 @@ class ToolControllerEditor(object):
             dataType="raw"
         )
 
-        PathGui.populateCombobox(self.form, enumTups, comboToPropertyMap)
-        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
-        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
-        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
-        self.horizRapid = PathGui.QuantitySpinBox(
+        PathGuiUtil.populateCombobox(self.form, enumTups, comboToPropertyMap)
+        self.vertFeed = PathGuiUtil.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
+        self.horizFeed = PathGuiUtil.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
+        self.vertRapid = PathGuiUtil.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
+        self.horizRapid = PathGuiUtil.QuantitySpinBox(
             self.form.horizRapid, obj, "HorizRapid"
         )
 

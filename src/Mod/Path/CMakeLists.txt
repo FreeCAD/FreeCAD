@@ -27,6 +27,8 @@ SET(PathPython_SRCS
     Path/__init__.py
     Path/Log.py
     Path/Geom.py
+    Path/GuiInit.py
+    Path/Preferences.py
 )
 
 SET(PathPythonBase_SRCS
@@ -35,7 +37,21 @@ SET(PathPythonBase_SRCS
     Path/Base/FeedRate.py
     Path/Base/Property.py
     Path/Base/PropertyBag.py
+    Path/Base/SetupSheet.py
+    Path/Base/SetupSheetOpPrototype.py
     Path/Base/Util.py
+)
+
+SET(PathPythonBaseGui_SRCS
+    Path/Base/Gui/__init__.py
+    Path/Base/Gui/GetPoint.py
+    Path/Base/Gui/IconViewProvider.py
+    Path/Base/Gui/PreferencesAdvanced.py
+    Path/Base/Gui/PropertyBag.py
+    Path/Base/Gui/PropertyEditor.py
+    Path/Base/Gui/SetupSheet.py
+    Path/Base/Gui/SetupSheetOpPrototype.py
+    Path/Base/Gui/Util.py
 )
 
 SET(PathPythonDressup_SRCS
@@ -177,27 +193,15 @@ SET(PathScripts_SRCS
     PathScripts/PathFeatureExtensions.py
     PathScripts/PathFeatureExtensionsGui.py
     PathScripts/PathFixture.py
-    PathScripts/PathGetPoint.py
-    PathScripts/PathGui.py
-    PathScripts/PathGuiInit.py
     PathScripts/PathHop.py
-    PathScripts/PathIconViewProvider.py
     PathScripts/PathInspect.py
     PathScripts/PathJob.py
     PathScripts/PathJobCmd.py
     PathScripts/PathJobDlg.py
     PathScripts/PathJobGui.py
-    PathScripts/PathPreferences.py
-    PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathPropertyBagGui.py
-    PathScripts/PathPropertyEditor.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
-    PathScripts/PathSetupSheet.py
-    PathScripts/PathSetupSheetGui.py
-    PathScripts/PathSetupSheetOpPrototype.py
-    PathScripts/PathSetupSheetOpPrototypeGui.py
     PathScripts/PathSimpleCopy.py
     PathScripts/PathSimulatorGui.py
     PathScripts/PathStock.py

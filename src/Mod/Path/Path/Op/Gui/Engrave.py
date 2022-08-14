@@ -25,7 +25,7 @@ import FreeCADGui
 import Path
 import Path.Op.Engrave as PathEngrave
 import Path.Op.Gui.Base as PathOpGui
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
+import PathGui
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui

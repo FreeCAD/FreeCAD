@@ -25,7 +25,6 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import Path.Base.Util as PathUtil
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 import math
 import time
@@ -844,7 +843,7 @@ class ObjectOp(object):
 
         if (
             hFeedrate == 0 or vFeedrate == 0
-        ) and not PathPreferences.suppressAllSpeedsWarning():
+        ) and not Path.Preferences.suppressAllSpeedsWarning():
             Path.Log.warning(
                 translate(
                     "Path",
@@ -855,7 +854,7 @@ class ObjectOp(object):
 
         if (
             hRapidrate == 0 or vRapidrate == 0
-        ) and not PathPreferences.suppressRapidSpeedsWarning():
+        ) and not Path.Preferences.suppressRapidSpeedsWarning():
             Path.Log.warning(
                 translate(
                     "Path",

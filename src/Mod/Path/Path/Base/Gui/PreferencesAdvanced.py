@@ -22,7 +22,6 @@
 
 import FreeCADGui
 import Path
-import PathScripts.PathPreferences as PathPreferences
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -38,7 +37,7 @@ class AdvancedPreferencesPage:
         self.form.EnableAdvancedOCLFeatures.stateChanged.connect(self.updateSelection)
 
     def saveSettings(self):
-        PathPreferences.setPreferencesAdvanced(
+        Path.Preferences.setPreferencesAdvanced(
             self.form.EnableAdvancedOCLFeatures.isChecked(),
             self.form.WarningSuppressAllSpeeds.isChecked(),
             self.form.WarningSuppressRapidSpeeds.isChecked(),
@@ -50,21 +49,21 @@ class AdvancedPreferencesPage:
     def loadSettings(self):
         Path.Log.track()
         self.form.WarningSuppressAllSpeeds.setChecked(
-            PathPreferences.suppressAllSpeedsWarning()
+            Path.Preferences.suppressAllSpeedsWarning()
         )
         self.form.WarningSuppressRapidSpeeds.setChecked(
-            PathPreferences.suppressRapidSpeedsWarning(False)
+            Path.Preferences.suppressRapidSpeedsWarning(False)
         )
         self.form.WarningSuppressSelectionMode.setChecked(
-            PathPreferences.suppressSelectionModeWarning()
+            Path.Preferences.suppressSelectionModeWarning()
         )
         self.form.EnableAdvancedOCLFeatures.setChecked(
-            PathPreferences.advancedOCLFeaturesEnabled()
+            Path.Preferences.advancedOCLFeaturesEnabled()
         )
         self.form.WarningSuppressOpenCamLib.setChecked(
-            PathPreferences.suppressOpenCamLibWarning()
+            Path.Preferences.suppressOpenCamLibWarning()
         )
-        self.form.WarningSuppressVelocity.setChecked(PathPreferences.suppressVelocity())
+        self.form.WarningSuppressVelocity.setChecked(Path.Preferences.suppressVelocity())
         self.updateSelection()
 
     def updateSelection(self, state=None):

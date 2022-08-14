@@ -24,7 +24,6 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Base.PropertyBag as PathPropertyBag
-import PathScripts.PathPreferences as PathPreferences
 import json
 import os
 import zipfile
@@ -62,7 +61,7 @@ def _findToolFile(name, containerFile, typ):
         paths = [os.path.join(rootPath, typ)]
     else:
         paths = []
-    paths.extend(PathPreferences.searchPathsTool(typ))
+    paths.extend(Path.Preferences.searchPathsTool(typ))
 
     def _findFile(path, name):
         Path.Log.track(path, name)
@@ -109,7 +108,7 @@ def findToolLibrary(name, path=None):
 def _findRelativePath(path, typ):
     Path.Log.track(path, typ)
     relative = path
-    for p in PathPreferences.searchPathsTool(typ):
+    for p in Path.Preferences.searchPathsTool(typ):
         if path.startswith(p):
             p = path[len(p) :]
             if os.path.sep == p[0]:
@@ -447,7 +446,7 @@ class ToolBit(object):
         attrs = {}
         attrs["version"] = 2
         attrs["name"] = obj.Label
-        if PathPreferences.toolsStoreAbsolutePaths():
+        if Path.Preferences.toolsStoreAbsolutePaths():
             attrs["shape"] = obj.BitShape
         else:
             # attrs['shape'] = findRelativePathShape(obj.BitShape)

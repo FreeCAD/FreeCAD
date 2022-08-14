@@ -871,15 +871,13 @@ class ObjectWaterline(PathOp.ObjectOp):
                 useDGT = True
         except AttributeError as ee:
             Path.Log.warning(
-                "{}\nPlease set Job.GeometryTolerance to an acceptable value. Using PathPreferences.defaultGeometryTolerance().".format(
+                "{}\nPlease set Job.GeometryTolerance to an acceptable value. Using Path.Preferences.defaultGeometryTolerance().".format(
                     ee
                 )
             )
             useDGT = True
         if useDGT:
-            import PathScripts.PathPreferences as PathPreferences
-
-            self.geoTlrnc = PathPreferences.defaultGeometryTolerance()
+            self.geoTlrnc = Path.Preferences.defaultGeometryTolerance()
 
         # Calculate default depthparams for operation
         self.depthParams = PathUtils.depth_params(

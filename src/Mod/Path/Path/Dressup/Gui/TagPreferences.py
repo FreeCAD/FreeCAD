@@ -23,7 +23,6 @@
 import FreeCAD
 import Path
 import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
-import PathScripts.PathPreferences as PathPreferences
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -43,7 +42,7 @@ class HoldingTagPreferences:
 
     @classmethod
     def defaultWidth(cls, ifNotSet):
-        value = PathPreferences.preferences().GetFloat(
+        value = Path.Preferences.preferences().GetFloat(
             cls.DefaultHoldingTagWidth, ifNotSet
         )
         if value == 0.0:
@@ -52,7 +51,7 @@ class HoldingTagPreferences:
 
     @classmethod
     def defaultHeight(cls, ifNotSet):
-        value = PathPreferences.preferences().GetFloat(
+        value = Path.Preferences.preferences().GetFloat(
             cls.DefaultHoldingTagHeight, ifNotSet
         )
         if value == 0.0:
@@ -61,7 +60,7 @@ class HoldingTagPreferences:
 
     @classmethod
     def defaultAngle(cls, ifNotSet=45.0):
-        value = PathPreferences.preferences().GetFloat(
+        value = Path.Preferences.preferences().GetFloat(
             cls.DefaultHoldingTagAngle, ifNotSet
         )
         if value < 10.0:
@@ -70,7 +69,7 @@ class HoldingTagPreferences:
 
     @classmethod
     def defaultCount(cls, ifNotSet=4):
-        value = PathPreferences.preferences().GetUnsigned(
+        value = Path.Preferences.preferences().GetUnsigned(
             cls.DefaultHoldingTagCount, ifNotSet
         )
         if value < 2:
@@ -79,7 +78,7 @@ class HoldingTagPreferences:
 
     @classmethod
     def defaultRadius(cls, ifNotSet=0.0):
-        return PathPreferences.preferences().GetFloat(
+        return Path.Preferences.preferences().GetFloat(
             cls.DefaultHoldingTagRadius, ifNotSet
         )
 
@@ -112,7 +111,7 @@ class HoldingTagPreferences:
         self.form.sbCount.setValue(self.defaultCount())
 
     def saveSettings(self):
-        pref = PathPreferences.preferences()
+        pref = Path.Preferences.preferences()
         pref.SetFloat(
             self.DefaultHoldingTagWidth,
             FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value,

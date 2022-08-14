@@ -24,7 +24,7 @@ import FreeCADGui
 import FreeCAD
 import Path
 import Path.Tool.Controller as PathToolController
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
+import PathGui
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui

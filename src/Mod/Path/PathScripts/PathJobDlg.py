@@ -27,7 +27,6 @@ import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
 import PathScripts.PathJob as PathJob
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import glob
 import os
@@ -223,7 +222,7 @@ class JobCreate:
 
     def setupTemplate(self):
         templateFiles = []
-        for path in PathPreferences.searchPaths():
+        for path in Path.Preferences.searchPaths():
             cleanPaths = [
                 f.replace("\\", "/") for f in self.templateFilesIn(path)
             ]  # Standardize slashes used across os platforms
@@ -240,7 +239,7 @@ class JobCreate:
                     name = basename + " (%s)" % i
             Path.Log.track(name, tFile)
             template[name] = tFile
-        selectTemplate = PathPreferences.defaultJobTemplate()
+        selectTemplate = Path.Preferences.defaultJobTemplate()
         index = 0
         self.dialog.jobTemplate.addItem("<none>", "")
         for name in sorted(template.keys()):

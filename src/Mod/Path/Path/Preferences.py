@@ -24,7 +24,6 @@ import FreeCAD
 import Path
 import glob
 import os
-from PySide.QtGui import QMessageBox
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())

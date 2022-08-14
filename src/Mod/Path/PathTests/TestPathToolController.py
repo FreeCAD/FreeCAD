@@ -24,7 +24,6 @@ import FreeCAD
 import Path
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Controller as PathToolController
-import PathScripts.PathPreferences as PathPreferences
 
 from PathTests.PathTestUtils import PathTestBase
 

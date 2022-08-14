@@ -24,11 +24,10 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
 from Path.Post.Processor import PostProcessor
 import Path.Tool.Controller as PathToolController
-import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
 import json
 import time
@@ -83,9 +82,9 @@ def createResourceClone(obj, orig, name, icon):
     clone.addProperty("App::PropertyString", "PathResource")
     clone.PathResource = name
     if clone.ViewObject:
-        import PathScripts.PathIconViewProvider
+        import Path.Base.Gui.IconViewProvider
 
-        PathScripts.PathIconViewProvider.Attach(clone.ViewObject, icon)
+        Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
         clone.ViewObject.Transparency = 80
     obj.Document.recompute()  # necessary to create the clone shape
@@ -223,16 +222,16 @@ class ObjectJob:
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
-        obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
-        obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
-        defaultPostProcessor = PathPreferences.defaultPostProcessor()
+        obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
+        obj.PostProcessor = postProcessors = Path.Preferences.allEnabledPostProcessors()
+        defaultPostProcessor = Path.Preferences.defaultPostProcessor()
         # Check to see if default post processor hasn't been 'lost' (This can happen when Macro dir has changed)
         if defaultPostProcessor in postProcessors:
             obj.PostProcessor = defaultPostProcessor
         else:
             obj.PostProcessor = postProcessors[0]
-        obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
-        obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
+        obj.PostProcessorArgs = Path.Preferences.defaultPostProcessorArgs()
+        obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
         self.setupOperations(obj)
         self.setupSetupSheet(obj)
@@ -307,9 +306,9 @@ class ObjectJob:
                 )
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
-                import PathScripts.PathIconViewProvider
+                import Path.Base.Gui.IconViewProvider
 
-                PathScripts.PathIconViewProvider.Attach(
+                Path.Base.Gui.IconViewProvider.Attach(
                     obj.SetupSheet.ViewObject, "SetupSheet"
                 )
             obj.SetupSheet.Label = "SetupSheet"
@@ -383,7 +382,7 @@ class ObjectJob:
     def setupStock(self, obj):
         """setupStock(obj)... setup the Stock for the Job object."""
         if not obj.Stock:
-            stockTemplate = PathPreferences.defaultStockTemplate()
+            stockTemplate = Path.Preferences.defaultStockTemplate()
             if stockTemplate:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:

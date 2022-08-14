@@ -25,9 +25,9 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import PathScripts.PathFeatureExtensions as FeatureExtensions
-import PathScripts.PathGui as PathGui
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -197,7 +197,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.extensions = list()
 
-        self.defaultLength = PathGui.QuantitySpinBox(
+        self.defaultLength = PathGuiUtil.QuantitySpinBox(
             self.form.defaultLength, obj, "ExtensionLengthDefault"
         )
 

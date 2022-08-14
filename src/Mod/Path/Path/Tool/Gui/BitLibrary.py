@@ -29,8 +29,7 @@ import Path.Tool.Bit as PathToolBit
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import Path.Tool.Gui.Controller as PathToolControllerGui
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathPreferences as PathPreferences
+import PathGui
 import PathScripts.PathUtilsGui as PathUtilsGui
 import PySide
 import glob
@@ -61,8 +60,8 @@ def checkWorkingDir():
     # working directory should be writable
     Path.Log.track()
 
-    workingdir = os.path.dirname(PathPreferences.lastPathToolLibrary())
-    defaultdir = os.path.dirname(PathPreferences.pathDefaultToolsPath())
+    workingdir = os.path.dirname(Path.Preferences.lastPathToolLibrary())
+    defaultdir = os.path.dirname(Path.Preferences.pathDefaultToolsPath())
 
     Path.Log.debug("workingdir: {} defaultdir: {}".format(workingdir, defaultdir))
 
@@ -85,16 +84,16 @@ def checkWorkingDir():
     msg = translate("Path_ToolBit", "Choose a writable location for your toolbits")
     while not dirOK():
         workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(
-            None, msg, PathPreferences.filePath()
+            None, msg, Path.Preferences.filePath()
         )
 
     if workingdir[-8:] == os.path.sep + "Library":
         workingdir = workingdir[:-8]  # trim off trailing /Library if user chose it
 
-    PathPreferences.setLastPathToolLibrary(
+    Path.Preferences.setLastPathToolLibrary(
         "{}{}Library".format(workingdir, os.path.sep)
     )
-    PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
+    Path.Preferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
     Path.Log.debug("setting workingdir to: {}".format(workingdir))
 
     # Copy only files of default Path/Tool folder to working directory (targeting the README.md help file)
@@ -154,14 +153,14 @@ def checkWorkingDir():
                                 shutil.copy(full_file_name, subdir)
 
     # if no library is set, choose the first one in the Library directory
-    if PathPreferences.lastFileToolLibrary() is None:
+    if Path.Preferences.lastFileToolLibrary() is None:
         libFiles = [
             f
             for f in glob.glob(
-                PathPreferences.lastPathToolLibrary() + os.path.sep + "*.fctl"
+                Path.Preferences.lastPathToolLibrary() + os.path.sep + "*.fctl"
             )
         ]
-        PathPreferences.setLastFileToolLibrary(libFiles[0])
+        Path.Preferences.setLastFileToolLibrary(libFiles[0])
 
     return True
 
@@ -251,7 +250,7 @@ class ModelFactory(object):
 
     def __libraryLoad(self, path, datamodel):
         Path.Log.track(path)
-        PathPreferences.setLastFileToolLibrary(path)
+        Path.Preferences.setLastFileToolLibrary(path)
         # self.currenLib = path
 
         with open(path) as fp:
@@ -321,7 +320,7 @@ class ModelFactory(object):
         Returns a QStandardItemModel
         """
         Path.Log.track()
-        path = PathPreferences.lastPathToolLibrary()
+        path = Path.Preferences.lastPathToolLibrary()
 
         if os.path.isdir(path):  # opening all tables in a directory
             libFiles = [f for f in glob.glob(path + os.path.sep + "*.fctl")]
@@ -346,7 +345,7 @@ class ModelFactory(object):
         Path.Log.track(lib)
 
         if lib == "":
-            lib = PathPreferences.lastFileToolLibrary()
+            lib = Path.Preferences.lastFileToolLibrary()
 
         if lib == "" or lib is None:
             return model
@@ -373,7 +372,7 @@ class ToolBitSelector(object):
         return ["#", "Tool"]
 
     def currentLibrary(self, shortNameOnly):
-        libfile = PathPreferences.lastFileToolLibrary()
+        libfile = Path.Preferences.lastFileToolLibrary()
         if libfile is None or libfile == "":
             return ""
         elif shortNameOnly:
@@ -578,12 +577,12 @@ class ToolBitLibrary(object):
     def libraryPath(self):
         Path.Log.track()
         path = PySide.QtGui.QFileDialog.getExistingDirectory(
-            self.form, "Tool Library Path", PathPreferences.lastPathToolLibrary()
+            self.form, "Tool Library Path", Path.Preferences.lastPathToolLibrary()
         )
         if len(path) == 0:
             return
 
-        PathPreferences.setLastPathToolLibrary(path)
+        Path.Preferences.setLastPathToolLibrary(path)
         self.loadData()
 
     def cleanupDocument(self):
@@ -669,7 +668,7 @@ class ToolBitLibrary(object):
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("Path_ToolBit", "Save toolbit library"),
-            PathPreferences.lastPathToolLibrary(),
+            Path.Preferences.lastPathToolLibrary(),
             "{}".format(TooltableTypeJSON),
         )
 
@@ -700,7 +699,7 @@ class ToolBitLibrary(object):
                 self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole
             )
             toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
-            if PathPreferences.toolsStoreAbsolutePaths():
+            if Path.Preferences.toolsStoreAbsolutePaths():
                 bitPath = toolPath
             else:
                 # bitPath = PathToolBit.findRelativePathTool(toolPath)
@@ -720,8 +719,8 @@ class ToolBitLibrary(object):
         self.form.close()
 
     def libPaths(self):
-        lib = PathPreferences.lastFileToolLibrary()
-        loc = PathPreferences.lastPathToolLibrary()
+        lib = Path.Preferences.lastFileToolLibrary()
+        loc = Path.Preferences.lastPathToolLibrary()
 
         Path.Log.track("lib: {} loc: {}".format(lib, loc))
         return lib, loc
@@ -747,7 +746,7 @@ class ToolBitLibrary(object):
             self.factory.libraryOpen(self.toolModel, lib=path)
 
         self.path = path
-        self.form.setWindowTitle("{}".format(PathPreferences.lastPathToolLibrary()))
+        self.form.setWindowTitle("{}".format(Path.Preferences.lastPathToolLibrary()))
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
         self.listModel.setHorizontalHeaderLabels(["Library"])
 
@@ -799,7 +798,7 @@ class ToolBitLibrary(object):
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("Path_ToolBit", "Save toolbit library"),
-            PathPreferences.lastPathToolLibrary(),
+            Path.Preferences.lastPathToolLibrary(),
             "{};;{};;{}".format(
                 TooltableTypeJSON, TooltableTypeLinuxCNC, TooltableTypeCamotics
             ),

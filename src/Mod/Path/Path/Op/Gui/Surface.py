@@ -24,10 +24,10 @@ from PySide import QtCore
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Surface as PathSurface
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 
 
 __title__ = "Path Surface Operation UI"
@@ -66,7 +66,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             ("dropCutterDirSelect", "DropCutterDir"),
         ]
         enumTups = PathSurface.ObjectSurface.propertyEnumerations(dataType="raw")
-        PathGui.populateCombobox(form, enumTups, comboToPropertyMap)
+        PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
 
         return form
 
@@ -120,12 +120,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.DropCutterDir != str(self.form.dropCutterDirSelect.currentData()):
             obj.DropCutterDir = str(self.form.dropCutterDirSelect.currentData())
 
-        PathGui.updateInputField(obj, "DepthOffset", self.form.depthOffset)
+        PathGuiUtil.updateInputField(obj, "DepthOffset", self.form.depthOffset)
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
-        PathGui.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
+        PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()

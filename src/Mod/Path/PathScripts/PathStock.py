@@ -338,9 +338,9 @@ def SetupStockObject(obj, stockType):
         obj.StockType = stockType
         obj.setEditorMode("StockType", 2)  # hide
 
-        import PathScripts.PathIconViewProvider
+        import Path.Base.Gui.IconViewProvider
 
-        PathScripts.PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
+        Path.Base.Gui.IconViewProvider.ViewProvider(obj.ViewObject, "Stock")
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = "Wireframe"
 

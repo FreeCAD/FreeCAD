@@ -23,10 +23,9 @@
 from PySide import QtCore, QtGui
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
+import Path.Base.PropertyEditor as PathPropertyEditor
 import Path.Base.Util as PathUtil
-import PathScripts.PathGui as PathGui
-import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathPropertyEditor as PathPropertyEditor
 import os
 import re
 
@@ -128,7 +127,7 @@ class ToolBitEditor(object):
                 qsb.show()
             else:
                 qsb = ui.createWidget("Gui::QuantitySpinBox")
-                editor = PathGui.QuantitySpinBox(qsb, tool, name)
+                editor = PathGuiUtil.QuantitySpinBox(qsb, tool, name)
                 label = QtGui.QLabel(labelText(name))
                 self.widgets.append((label, qsb, editor))
                 Path.Log.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
@@ -262,12 +261,12 @@ class ToolBitEditor(object):
         Path.Log.track()
         path = self.tool.BitShape
         if not path:
-            path = PathPreferences.lastPathToolShape()
+            path = Path.Preferences.lastPathToolShape()
         foo = QtGui.QFileDialog.getOpenFileName(
             self.form, "Path - Tool Shape", path, "*.fcstd"
         )
         if foo and foo[0]:
-            PathPreferences.setLastPathToolShape(os.path.dirname(foo[0]))
+            Path.Preferences.setLastPathToolShape(os.path.dirname(foo[0]))
             self.form.shapePath.setText(foo[0])
             self.updateShape()
 

@@ -26,7 +26,6 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.drillableLib as drillableLib
 import math
 
@@ -255,61 +254,61 @@ class ALLGate(PathBaseGate):
 
 def contourselect():
     FreeCADGui.Selection.addSelectionGate(CONTOURGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Contour Select Mode\n")
 
 
 def eselect():
     FreeCADGui.Selection.addSelectionGate(EGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Edge Select Mode\n")
 
 
 def drillselect():
     FreeCADGui.Selection.addSelectionGate(DRILLGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
 
 
 def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Engraving Select Mode\n")
 
 
 def fselect():
     FreeCADGui.Selection.addSelectionGate(FACEGate())  # Was PROFILEGate()
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Profiling Select Mode\n")
 
 
 def chamferselect():
     FreeCADGui.Selection.addSelectionGate(CHAMFERGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Deburr Select Mode\n")
 
 
 def profileselect():
     FreeCADGui.Selection.addSelectionGate(PROFILEGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Profiling Select Mode\n")
 
 
 def pocketselect():
     FreeCADGui.Selection.addSelectionGate(POCKETGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Pocketing Select Mode\n")
 
 
 def adaptiveselect():
     FreeCADGui.Selection.addSelectionGate(ADAPTIVEGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Adaptive Select Mode\n")
 
 
 def slotselect():
     FreeCADGui.Selection.addSelectionGate(ALLGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Slot Cutter Select Mode\n")
 
 
@@ -318,30 +317,30 @@ def surfaceselect():
     if MESHGate() or FACEGate():
         gate = True
     FreeCADGui.Selection.addSelectionGate(gate)
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
 
 def vcarveselect():
     FreeCADGui.Selection.addSelectionGate(VCARVEGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Vcarve Select Mode\n")
 
 
 def probeselect():
     FreeCADGui.Selection.addSelectionGate(PROBEGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Probe Select Mode\n")
 
 
 def customselect():
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Custom Select Mode\n")
 
 
 def turnselect():
     FreeCADGui.Selection.addSelectionGate(TURNGate())
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Turning Select Mode\n")
 
 
@@ -377,5 +376,5 @@ def select(op):
 
 def clear():
     FreeCADGui.Selection.removeSelectionGate()
-    if not PathPreferences.suppressSelectionModeWarning():
+    if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Free Select\n")

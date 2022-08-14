@@ -23,11 +23,11 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Drilling as PathDrilling
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 
 from PySide import QtCore
 
@@ -48,13 +48,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the drilling operation's page"""
 
     def initPage(self, obj):
-        self.peckDepthSpinBox = PathGui.QuantitySpinBox(
+        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.peckDepth, obj, "PeckDepth"
         )
-        self.peckRetractSpinBox = PathGui.QuantitySpinBox(
+        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.peckRetractHeight, obj, "RetractHeight"
         )
-        self.dwellTimeSpinBox = PathGui.QuantitySpinBox(
+        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.dwellTime, obj, "DwellTime"
         )
         self.form.chipBreakEnabled.setEnabled(False)

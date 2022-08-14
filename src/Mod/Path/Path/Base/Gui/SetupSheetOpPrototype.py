@@ -22,7 +22,7 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
+import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
 
 from PySide import QtCore, QtGui
 

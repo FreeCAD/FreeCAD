@@ -21,7 +21,6 @@
 # ***************************************************************************
 
 import Path
-import PathScripts.PathPreferences as PathPreferences
 import sys
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
@@ -30,13 +29,13 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 class PostProcessor:
     @classmethod
     def exists(cls, processor):
-        return processor in PathPreferences.allAvailablePostProcessors()
+        return processor in Path.Preferences.allAvailablePostProcessors()
 
     @classmethod
     def load(cls, processor):
         Path.Log.track(processor)
         syspath = sys.path
-        paths = PathPreferences.searchPathsPost()
+        paths = Path.Preferences.searchPathsPost()
         paths.extend(sys.path)
         sys.path = paths
 

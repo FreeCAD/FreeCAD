@@ -23,10 +23,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Probe as PathProbe
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
+import PathGui
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore, QtGui
@@ -56,8 +56,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
-        PathGui.updateInputField(obj, "Xoffset", self.form.Xoffset)
-        PathGui.updateInputField(obj, "Yoffset", self.form.Yoffset)
+        PathGuiUtil.updateInputField(obj, "Xoffset", self.form.Xoffset)
+        PathGuiUtil.updateInputField(obj, "Yoffset", self.form.Yoffset)
         obj.PointCountX = self.form.PointCountX.value()
         obj.PointCountY = self.form.PointCountY.value()
         obj.OutputFileName = str(self.form.OutputFileName.text())

@@ -23,9 +23,9 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Deburr as PathDeburr
 import Path.Op.Gui.Base as PathOpGui
-import PathScripts.PathGui as PathGui
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -83,8 +83,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.joinRound.setIcon(iconRound)
 
     def getFields(self, obj):
-        PathGui.updateInputField(obj, "Width", self.form.value_W)
-        PathGui.updateInputField(obj, "ExtraDepth", self.form.value_h)
+        PathGuiUtil.updateInputField(obj, "Width", self.form.value_W)
+        PathGuiUtil.updateInputField(obj, "ExtraDepth", self.form.value_h)
         if self.form.joinRound.isChecked():
             obj.Join = "Round"
         elif self.form.joinMiter.isChecked():
@@ -113,10 +113,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Direction, self.form.direction)
 
     def updateWidth(self):
-        PathGui.updateInputField(self.obj, "Width", self.form.value_W)
+        PathGuiUtil.updateInputField(self.obj, "Width", self.form.value_W)
 
     def updateExtraDepth(self):
-        PathGui.updateInputField(self.obj, "ExtraDepth", self.form.value_h)
+        PathGuiUtil.updateInputField(self.obj, "ExtraDepth", self.form.value_h)
 
     def getSignalsForUpdate(self, obj):
         signals = []

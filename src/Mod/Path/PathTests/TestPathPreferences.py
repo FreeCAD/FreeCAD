@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathPreferences as PathPreferences
+import Path
 import PathTests.PathTestUtils as PathTestUtils
 
 
@@ -28,22 +28,22 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
     def test00(self):
         """There is at least one search path."""
 
-        paths = PathPreferences.searchPaths()
+        paths = Path.Preferences.searchPaths()
         self.assertGreater(len(paths), 0)
 
     def test01(self):
         """Path/Post is part of the posts search path."""
-        paths = PathPreferences.searchPathsPost()
+        paths = Path.Preferences.searchPathsPost()
         self.assertEqual(len([p for p in paths if p.endswith("/Path/Post/")]), 1)
 
     def test02(self):
         """Path/Post/scripts is part of the posts search path."""
-        paths = PathPreferences.searchPathsPost()
+        paths = Path.Preferences.searchPathsPost()
         self.assertEqual(len([p for p in paths if p.endswith("/Path/Post/scripts/")]), 1)
 
     def test03(self):
         """Available post processors include linuxcnc, grbl and opensbp."""
-        posts = PathPreferences.allAvailablePostProcessors()
+        posts = Path.Preferences.allAvailablePostProcessors()
         self.assertTrue("linuxcnc" in posts)
         self.assertTrue("grbl" in posts)
         self.assertTrue("opensbp" in posts)
@@ -51,17 +51,17 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
     def test10(self):
         """Default paths for tools are resolved correctly"""
 
-        self.assertTrue(PathPreferences.pathDefaultToolsPath().endswith("/Path/Tools/"))
+        self.assertTrue(Path.Preferences.pathDefaultToolsPath().endswith("/Path/Tools/"))
         self.assertTrue(
-            PathPreferences.pathDefaultToolsPath("Bit").endswith("/Path/Tools/Bit")
+            Path.Preferences.pathDefaultToolsPath("Bit").endswith("/Path/Tools/Bit")
         )
         self.assertTrue(
-            PathPreferences.pathDefaultToolsPath("Library").endswith(
+            Path.Preferences.pathDefaultToolsPath("Library").endswith(
                 "/Path/Tools/Library"
             )
         )
         self.assertTrue(
-            PathPreferences.pathDefaultToolsPath("Template").endswith(
+            Path.Preferences.pathDefaultToolsPath("Template").endswith(
                 "/Path/Tools/Template"
             )
         )

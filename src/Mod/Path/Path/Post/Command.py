@@ -29,7 +29,6 @@ import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
 import PathScripts.PathJob as PathJob
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 import os
 import re
@@ -160,7 +159,7 @@ def resolveFileName(job, subpartname, sequencenumber):
     validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
 
     # Look for preference default
-    outputpath, filename = os.path.split(PathPreferences.defaultOutputFile())
+    outputpath, filename = os.path.split(Path.Preferences.defaultOutputFile())
     filename, ext = os.path.splitext(filename)
 
     # Override with document default if it exists
@@ -209,7 +208,7 @@ def resolveFileName(job, subpartname, sequencenumber):
     )
 
     # This section determines whether user interaction is necessary
-    policy = PathPreferences.defaultOutputPolicy()
+    policy = Path.Preferences.defaultOutputPolicy()
 
     openDialog = policy == "Open File Dialog"
     # if os.path.isdir(filename) or not os.path.isdir(os.path.dirname(filename)):
@@ -427,7 +426,7 @@ class DlgSelectPostProcessor:
     def __init__(self, parent=None):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgSelectPostProcessor.ui")
         firstItem = None
-        for post in PathPreferences.allEnabledPostProcessors():
+        for post in Path.Preferences.allEnabledPostProcessors():
             item = QtGui.QListWidgetItem(post)
             item.setFlags(
                 QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
@@ -465,7 +464,7 @@ class CommandPathPost:
 
     def resolvePostProcessor(self, job):
         if hasattr(job, "PostProcessor"):
-            post = PathPreferences.defaultPostProcessor()
+            post = Path.Preferences.defaultPostProcessor()
             if job.PostProcessor:
                 post = job.PostProcessor
             if post and PostProcessor.exists(post):
@@ -502,7 +501,7 @@ class CommandPathPost:
         # slist = objs[1]
         Path.Log.track(objs, partname)
 
-        postArgs = PathPreferences.defaultPostProcessorArgs()
+        postArgs = Path.Preferences.defaultPostProcessorArgs()
         if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
             postArgs = job.PostProcessorArgs
         elif hasattr(job, "PostProcessor") and job.PostProcessor:

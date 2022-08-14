@@ -24,7 +24,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Op.Gui.Base as PathOpGui
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
+import PathGui
 
 from PySide import QtCore, QtGui
 

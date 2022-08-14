@@ -23,12 +23,12 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.IconViewProvider as PathIconViewProvider
+import Path.Base.Gui.SetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
+import Path.Base.Gui.Util as PathGuiUtil
+import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGui as PathGui
-import PathScripts.PathIconViewProvider as PathIconViewProvider
-import PathScripts.PathSetupSheet as PathSetupSheet
-import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
+import PathGui
 
 from PySide import QtCore, QtGui
 
@@ -347,16 +347,16 @@ class GlobalEditor(object):
         self.updateUI()
 
     def setupUi(self):
-        self.clearanceHeightOffs = PathGui.QuantitySpinBox(
+        self.clearanceHeightOffs = PathGuiUtil.QuantitySpinBox(
             self.form.setupClearanceHeightOffs, self.obj, "ClearanceHeightOffset"
         )
-        self.safeHeightOffs = PathGui.QuantitySpinBox(
+        self.safeHeightOffs = PathGuiUtil.QuantitySpinBox(
             self.form.setupSafeHeightOffs, self.obj, "SafeHeightOffset"
         )
-        self.rapidHorizontal = PathGui.QuantitySpinBox(
+        self.rapidHorizontal = PathGuiUtil.QuantitySpinBox(
             self.form.setupRapidHorizontal, self.obj, "HorizRapid"
         )
-        self.rapidVertical = PathGui.QuantitySpinBox(
+        self.rapidVertical = PathGuiUtil.QuantitySpinBox(
             self.form.setupRapidVertical, self.obj, "VertRapid"
         )
         self.form.setupCoolantMode.addItems(self.obj.CoolantModes)

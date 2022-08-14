@@ -23,8 +23,8 @@
 import FreeCAD
 import Path
 import math
+import Path.Base.Gui.Util as PathGuiUtil
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathGui as PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if False:
@@ -168,7 +168,7 @@ class TaskPanel:
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
-        self.radius = PathGui.QuantitySpinBox(self.form.radius, obj, "Radius")
+        self.radius = PathGuiUtil.QuantitySpinBox(self.form.radius, obj, "Radius")
         FreeCAD.ActiveDocument.openTransaction("Edit Dragknife Dress-up")
 
     def reject(self):

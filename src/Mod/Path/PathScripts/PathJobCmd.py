@@ -28,7 +28,6 @@ import Path
 import Path.Base.Util as PathUtil
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobDlg as PathJobDlg
-import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import json
 import os
@@ -136,7 +135,7 @@ class CommandJobTemplateExport:
         foo = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             "Path - Job Template",
-            PathPreferences.filePath(),
+            Path.Preferences.filePath(),
             "job_*.json",
         )[0]
         if foo:
