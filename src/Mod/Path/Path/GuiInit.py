@@ -39,7 +39,7 @@ def Startup():
     if not Processed:
         Path.Log.debug("Initializing PathGui")
         from Path.Base.Gui import PropertyBag
-        from Path.Base.Gui import PathSetupSheetGui
+        from Path.Base.Gui import SetupSheet
         from Path.Dressup.Gui import AxisMap
         from Path.Dressup.Gui import Dogbone
         from Path.Dressup.Gui import Dragknife

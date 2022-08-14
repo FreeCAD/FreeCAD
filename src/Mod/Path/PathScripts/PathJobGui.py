@@ -28,7 +28,7 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Gui.SetupSheetGui as PathSetupSheetGui
+import Path.Base.Gui.SetupSheet as PathSetupSheetGui
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
 import Path.Tool.Gui.Bit as PathToolBitGui

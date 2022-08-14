@@ -325,7 +325,6 @@ class StockCreateCylinder(Stock):
         if prop in ["Radius", "Height"] and not "Restore" in obj.State:
             self.execute(obj)
 
-
 def SetupStockObject(obj, stockType):
     Path.Log.track(obj.Label, stockType)
     if FreeCAD.GuiUp and obj.ViewObject:
@@ -338,9 +337,15 @@ def SetupStockObject(obj, stockType):
         obj.StockType = stockType
         obj.setEditorMode("StockType", 2)  # hide
 
-        import Path.Base.Gui.IconViewProvider
+        # If I don't rename the module then usage as Path.Base.Gui.IconViewProvider below
+        # 'causes above Path.Log.track(...) to fail with - claiming that Path is accessed
+        # before it's assigned.
+        # Alternative _another_ `import Path` statement in front of `Path.Log.track(...)`
+        # also prevents the issue from happening.
+        # Go figure.
+        import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 
-        Path.Base.Gui.IconViewProvider.ViewProvider(obj.ViewObject, "Stock")
+        PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = "Wireframe"
 

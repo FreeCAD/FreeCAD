@@ -24,10 +24,10 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Gui.IconViewProvider as PathIconViewProvider
+import Path.Base.Gui.PropertyEditor as PathPropertyEditor
 import Path.Base.PropertyBag as PathPropertyBag
 import Path.Base.Util as PathUtil
-import PathScripts.PathIconViewProvider as PathIconViewProvider
-import PathScripts.PathPropertyEditor as PathPropertyEditor
 import re
 
 

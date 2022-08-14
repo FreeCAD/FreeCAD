@@ -23,8 +23,8 @@
 from PySide import QtCore, QtGui
 import FreeCADGui
 import Path
+import Path.Base.Gui.PropertyEditor as PathPropertyEditor
 import Path.Base.Gui.Util as PathGuiUtil
-import Path.Base.PropertyEditor as PathPropertyEditor
 import Path.Base.Util as PathUtil
 import os
 import re

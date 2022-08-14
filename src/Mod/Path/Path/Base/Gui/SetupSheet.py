@@ -24,7 +24,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.IconViewProvider as PathIconViewProvider
-import Path.Base.Gui.SetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
+import Path.Base.Gui.SetupSheetOpPrototype as PathSetupSheetOpPrototypeGui
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil

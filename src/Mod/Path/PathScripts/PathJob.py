@@ -31,7 +31,6 @@ import Path.Tool.Controller as PathToolController
 import PathScripts.PathStock as PathStock
 import json
 import time
-import Path
 
 
 # lazily loaded modules
