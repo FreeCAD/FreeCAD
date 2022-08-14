@@ -123,6 +123,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     fluid->setCommand("Fluid Constraints");
     *fluid
         << "FEM_ConstraintInitialFlowVelocity"
+        << "FEM_ConstraintInitialPressure"
         << "Separator"
         << "FEM_ConstraintFlowVelocity";
 
@@ -144,7 +145,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
-        << "FEM_ConstraintInitialPressure"
         << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
@@ -252,6 +252,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     fluid->setCommand("&Fluid Constraints");
     *fluid
         << "FEM_ConstraintInitialFlowVelocity"
+        << "FEM_ConstraintInitialPressure"
         << "Separator"
         << "FEM_ConstraintFlowVelocity";
 
@@ -273,7 +274,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
-        << "FEM_ConstraintInitialPressure"
         << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
