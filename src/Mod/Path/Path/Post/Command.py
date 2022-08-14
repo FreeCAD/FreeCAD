@@ -27,9 +27,9 @@ from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathJob as PathJob
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import os
 import re

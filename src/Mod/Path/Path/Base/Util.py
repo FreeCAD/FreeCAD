@@ -22,7 +22,7 @@
 
 """
 The purpose of this file is to collect some handy functions. The reason they
-are not in PathUtils (and there is this confusing naming going on) is that
+are not in Path.Base.Utils (and there is this confusing naming going on) is that
 PathUtils depends on PathJob. Which makes it impossible to use the functions
 and classes defined there in PathJob.
 

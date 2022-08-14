@@ -31,8 +31,6 @@ import PathScripts.PathUtils as PathUtils
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-PathGeom = LazyLoader("PathScripts.PathGeom", globals(), "PathScripts.PathGeom")
-
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "https://www.freecadweb.org"
@@ -254,7 +252,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 removalSolids = [
                     s
                     for s in rawRemovalShape.Solids
-                    if PathGeom.isRoughly(
+                    if Path.Geom.isRoughly(
                         s.BoundBox.ZMax, rawRemovalShape.BoundBox.ZMax
                     )
                 ]
@@ -893,7 +891,7 @@ def _extrudeBaseDown(base):
     Extrudes and fuses all non-vertical faces downward to a level 1.0 mm below base ZMin."""
     allExtrusions = list()
     zMin = base.Shape.BoundBox.ZMin
-    bbFace = PathGeom.makeBoundBoxFace(base.Shape.BoundBox, offset=5.0)
+    bbFace = Path.Geom.makeBoundBoxFace(base.Shape.BoundBox, offset=5.0)
     bbFace.translate(
         FreeCAD.Vector(0.0, 0.0, float(int(base.Shape.BoundBox.ZMin - 5.0)))
     )
@@ -902,7 +900,7 @@ def _extrudeBaseDown(base):
     # Make projections of each non-vertical face and extrude it
     for f in base.Shape.Faces:
         fbb = f.BoundBox
-        if not PathGeom.isRoughly(f.normalAt(0, 0).z, 0.0):
+        if not Path.Geom.isRoughly(f.normalAt(0, 0).z, 0.0):
             pp = bbFace.makeParallelProjection(f.Wires[0], direction)
             face = Part.Face(Part.Wire(pp.Edges))
             face.translate(FreeCAD.Vector(0.0, 0.0, fbb.ZMin))

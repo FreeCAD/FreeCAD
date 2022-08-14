@@ -25,7 +25,6 @@ import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.PocketBase as PathPocketBase
-import PathScripts.PathGeom as PathGeom
 
 
 # lazily loaded modules
@@ -123,16 +122,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # Check if selected vertical faces form a loop
             if len(self.vert) > 0:
-                self.vertical = PathGeom.combineConnectedShapes(self.vert)
+                self.vertical = Path.Geom.combineConnectedShapes(self.vert)
                 self.vWires = [
                     TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
                     for shape in self.vertical
                 ]
                 for wire in self.vWires:
-                    w = PathGeom.removeDuplicateEdges(wire)
+                    w = Path.Geom.removeDuplicateEdges(wire)
                     face = Part.Face(w)
                     # face.tessellate(0.1)
-                    if PathGeom.isRoughly(face.Area, 0):
+                    if Path.Geom.isRoughly(face.Area, 0):
                         Path.Log.error("Vertical faces do not form a loop - ignoring")
                     else:
                         self.horiz.append(face)
@@ -149,7 +148,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             self.exts.append(f)
 
             # check all faces and see if they are touching/overlapping and combine and simplify
-            self.horizontal = PathGeom.combineHorizontalFaces(self.horiz)
+            self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz)
 
             # Move all faces to final depth less buffer before extrusion
             # Small negative buffer is applied to compensate for internal significant digits/rounding issue
@@ -202,11 +201,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     # Support methods
     def isVerticalExtrusionFace(self, face):
         fBB = face.BoundBox
-        if PathGeom.isRoughly(fBB.ZLength, 0.0):
+        if Path.Geom.isRoughly(fBB.ZLength, 0.0):
             return False
         extr = face.extrude(FreeCAD.Vector(0.0, 0.0, fBB.ZLength))
         if hasattr(extr, "Volume"):
-            if PathGeom.isRoughly(extr.Volume, 0.0):
+            if Path.Geom.isRoughly(extr.Volume, 0.0):
                 return True
         return False
 
@@ -219,13 +218,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         if type(face.Surface) == Part.Plane:
             Path.Log.debug("type() == Part.Plane")
-            if PathGeom.isVertical(face.Surface.Axis):
+            if Path.Geom.isVertical(face.Surface.Axis):
                 Path.Log.debug("  -isVertical()")
                 # it's a flat horizontal face
                 self.horiz.append(face)
                 return True
 
-            elif PathGeom.isHorizontal(face.Surface.Axis):
+            elif Path.Geom.isHorizontal(face.Surface.Axis):
                 Path.Log.debug("  -isHorizontal()")
                 self.vert.append(face)
                 return True
@@ -233,7 +232,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             else:
                 return False
 
-        elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(
+        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(
             face.Surface.Axis
         ):
             Path.Log.debug("type() == Part.Cylinder")

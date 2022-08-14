@@ -26,12 +26,10 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
-from PathScripts.PathGeom import CmdMoveCW, CmdMoveStraight, CmdMoveArc, CmdMoveRapid
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -50,7 +48,7 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-movecommands = CmdMoveStraight + CmdMoveRapid + CmdMoveArc
+movecommands = Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid + Path.Geom.CmdMoveArc
 
 
 def debugMarker(vector, label, color=None, radius=0.5):
@@ -118,9 +116,9 @@ def edgesForCommands(cmds, startPt):
     for cmd in cmds:
         if cmd.Name in movecommands:
             pt = pointFromCommand(cmd, lastPt)
-            if cmd.Name in CmdMoveStraight:
+            if cmd.Name in Path.Geom.CmdMoveStraight:
                 edges.append(Part.Edge(Part.LineSegment(lastPt, pt)))
-            elif cmd.Name in CmdMoveArc:
+            elif cmd.Name in Path.Geom.CmdMoveArc:
                 center = lastPt + pointFromCommand(
                     cmd, FreeCAD.Vector(0, 0, 0), "I", "J", "K"
                 )
@@ -131,7 +129,7 @@ def edgesForCommands(cmds, startPt):
                 if d == 0:
                     # we're dealing with half a circle here
                     angle = getAngle(A) + math.pi / 2
-                    if cmd.Name in CmdMoveCW:
+                    if cmd.Name in Path.Geom.CmdMoveCW:
                         angle -= math.pi
                 else:
                     C = A + B
@@ -250,7 +248,7 @@ class Chord(object):
         A = self.asDirection()
         # if the 2 vectors are identical, they head in the same direction
         Path.Log.debug("   {}.getDirectionOfVector({})".format(A, B))
-        if PathGeom.pointsCoincide(A, B):
+        if Path.Geom.pointsCoincide(A, B):
             return "Straight"
         d = -A.x * B.y + A.y * B.x
         if d < 0:
@@ -306,15 +304,15 @@ class Chord(object):
         return self.arcCommand("G3", center, f)
 
     def isAPlungeMove(self):
-        return not PathGeom.isRoughly(self.End.z, self.Start.z)
+        return not Path.Geom.isRoughly(self.End.z, self.Start.z)
 
     def isANoopMove(self):
         Path.Log.debug(
             "{}.isANoopMove(): {}".format(
-                self, PathGeom.pointsCoincide(self.Start, self.End)
+                self, Path.Geom.pointsCoincide(self.Start, self.End)
             )
         )
-        return PathGeom.pointsCoincide(self.Start, self.End)
+        return Path.Geom.pointsCoincide(self.Start, self.End)
 
     def foldsBackOrTurns(self, chord, side):
         direction = chord.getDirectionOf(self)
@@ -322,7 +320,7 @@ class Chord(object):
         return direction == "Back" or direction == side
 
     def connectsTo(self, chord):
-        return PathGeom.pointsCoincide(self.End, chord.Start)
+        return Path.Geom.pointsCoincide(self.End, chord.Start)
 
 
 class Bone(object):
@@ -397,7 +395,7 @@ class Bone(object):
             return 0
         gamma = math.asin(D)
         alpha = math.pi - beta - gamma
-        if PathGeom.isRoughly(0.0, math.sin(beta)):
+        if Path.Geom.isRoughly(0.0, math.sin(beta)):
             # it is not a good idea to divide by 0
             length = 0.0
         else:
@@ -495,7 +493,7 @@ class ObjectDressup(object):
     # Answer true if a dogbone could be on either end of the chord, given its command
     def canAttachDogbone(self, cmd, chord):
         return (
-            cmd.Name in CmdMoveStraight
+            cmd.Name in Path.Geom.CmdMoveStraight
             and not chord.isAPlungeMove()
             and not chord.isANoopMove()
         )
@@ -590,7 +588,7 @@ class ObjectDressup(object):
                     % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius)
                 )
             for pt in DraftGeomUtils.findIntersection(edge, e, True, findAll=True):
-                if not PathGeom.pointsCoincide(pt, corner) and self.pointIsOnEdge(
+                if not Path.Geom.pointsCoincide(pt, corner) and self.pointIsOnEdge(
                     pt, e
                 ):
                     # debugMarker(pt, "candidate-%d-%s" % (self.boneId, d), color, 0.05)
@@ -616,7 +614,7 @@ class ObjectDressup(object):
             )
 
             commands = []
-            if not PathGeom.pointsCoincide(t1, inChord.Start):
+            if not Path.Geom.pointsCoincide(t1, inChord.Start):
                 Path.Log.debug("  add lead in")
                 commands.append(Chord(inChord.Start, t1).g1Command(bone.F))
             if bone.obj.Side == Side.Left:
@@ -628,7 +626,7 @@ class ObjectDressup(object):
                     % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y)
                 )
                 commands.append(Chord(t1, t2).g2Command(pivot, bone.F))
-            if not PathGeom.pointsCoincide(t2, outChord.End):
+            if not Path.Geom.pointsCoincide(t2, outChord.End):
                 Path.Log.debug("  add lead out")
                 commands.append(Chord(t2, outChord.End).g1Command(bone.F))
 
@@ -745,7 +743,7 @@ class ObjectDressup(object):
     def tboneVertical(self, bone):
         angle = bone.angle()
         boneAngle = math.pi / 2
-        if PathGeom.isRoughly(angle, math.pi) or angle < 0:
+        if Path.Geom.isRoughly(angle, math.pi) or angle < 0:
             boneAngle = -boneAngle
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
@@ -853,9 +851,9 @@ class ObjectDressup(object):
                     for pt in cutoff:
                         # debugCircle(e1.Curve.Center, e1.Curve.Radius, "bone.%d-1" % (self.boneId), (1.,0.,0.))
                         # debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
-                        if PathGeom.pointsCoincide(
+                        if Path.Geom.pointsCoincide(
                             pt, e1.valueAt(e1.LastParameter)
-                        ) or PathGeom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
+                        ) or Path.Geom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
                             continue
                         # debugMarker(pt, "it", (0.0, 1.0, 1.0))
                         # 1. remove all redundant commands
@@ -868,7 +866,7 @@ class ObjectDressup(object):
                         commands.append(c1)
                         # 3. change where c2 starts, this depends on the command itself
                         c2 = bone2.inCommands[j]
-                        if c2.Name in CmdMoveArc:
+                        if c2.Name in Path.Geom.CmdMoveArc:
                             center = e2.Curve.Center
                             offset = center - pt
                             c2Params = c2.Parameters
@@ -1073,7 +1071,7 @@ class ObjectDressup(object):
 
 class Marker(object):
     def __init__(self, pt, r, h):
-        if PathGeom.isRoughly(h, 0):
+        if Path.Geom.isRoughly(h, 0):
             h = 0.1
         self.pt = pt
         self.r = r

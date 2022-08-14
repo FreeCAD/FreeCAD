@@ -22,10 +22,8 @@
 
 import FreeCAD
 import Path
-import PathMachineState
-import PathScripts.PathGeom as PathGeom
+import Path.Base.MachineState as PathMachineState
 import Part
-from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll
 
 __title__ = "Feed Rate Helper Utility"
 __author__ = "sliptonic (Brad Collette)"
@@ -69,24 +67,24 @@ def setFeedRate(commandlist, ToolController):
         endpoint = FreeCAD.Vector(x, y, z)
         if PathGeom.pointsCoincide(currentposition, endpoint):
             return True
-        return PathGeom.isVertical(Part.makeLine(currentposition, endpoint))
+        return Path.Geom.isVertical(Part.makeLine(currentposition, endpoint))
 
     machine = PathMachineState.MachineState()
 
     for command in commandlist:
-        if command.Name not in CmdMoveAll:
+        if command.Name not in Path.Geom.CmdMoveAll:
             continue
 
         if _isVertical(machine.getPosition(), command):
             rate = (
                 ToolController.VertRapid.Value
-                if command.Name in CmdMoveRapid
+                if command.Name in Path.Geom.CmdMoveRapid
                 else ToolController.VertFeed.Value
             )
         else:
             rate = (
                 ToolController.HorizRapid.Value
-                if command.Name in CmdMoveRapid
+                if command.Name in Path.Geom.CmdMoveRapid
                 else ToolController.HorizFeed.Value
             )
 

@@ -25,10 +25,10 @@ from collections import Counter
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathJob as PathJob
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
-import PathScripts.PathUtil as PathUtil
 import glob
 import os
 

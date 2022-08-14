@@ -32,7 +32,6 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Draft = LazyLoader("Draft", globals(), "Draft")
 Part = LazyLoader("Part", globals(), "Part")
-PathGeom = LazyLoader("PathScripts.PathGeom", globals(), "PathScripts.PathGeom")
 
 
 __title__ = "Base class for PathArea based operations."
@@ -315,9 +314,9 @@ class ObjectOp(PathOp.ObjectOp):
                     x = verts[idx].X
                     y = verts[idx].Y
                     # Zero start value adjustments for Path.fromShapes() bug
-                    if PathGeom.isRoughly(x, 0.0):
+                    if Path.Geom.isRoughly(x, 0.0):
                         x = 0.00001
-                    if PathGeom.isRoughly(y, 0.0):
+                    if Path.Geom.isRoughly(y, 0.0):
                         y = 0.00001
                     pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
                 else:

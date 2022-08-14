@@ -27,7 +27,6 @@ import FreeCADGui
 import Path
 import Path.Op.Gui.Base as PathOpGui
 import PathScripts.PathFeatureExtensions as FeatureExtensions
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 
 # lazily loaded modules
@@ -361,13 +360,13 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if extendCorners:
 
             def edgesMatchShape(e0, e1):
-                flipped = PathGeom.flipEdge(e1)
+                flipped = Path.Geom.flipEdge(e1)
                 if flipped:
-                    return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(
+                    return Path.Geom.edgesMatch(e0, e1) or Path.Geom.edgesMatch(
                         e0, flipped
                     )
                 else:
-                    return PathGeom.edgesMatch(e0, e1)
+                    return Path.Geom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges
             Path.Log.debug("extensionEdges.values(): {}".format(extensionEdges.values()))

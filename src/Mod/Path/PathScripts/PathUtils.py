@@ -25,7 +25,6 @@ import FreeCAD
 from FreeCAD import Vector
 from PySide import QtCore
 import Path
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathJob as PathJob
 import math
 from numpy import linspace
@@ -122,8 +121,8 @@ def horizontalEdgeLoop(obj, edge):
     loops = [
         w
         for w in wires
-        if all(PathGeom.isHorizontal(e) for e in w.Edges)
-        and PathGeom.isHorizontal(Part.Face(w))
+        if all(Path.Geom.isHorizontal(e) for e in w.Edges)
+        and Path.Geom.isHorizontal(Part.Face(w))
     ]
     if len(loops) == 1:
         return loops[0]
@@ -146,7 +145,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         faces = [
             "Face%d" % (i + 1)
             for i, f in enumerate(obj.Shape.Faces)
-            if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)
+            if any(e.hashCode() in hashes for e in f.Edges) and Path.Geom.isVertical(f)
         ]
 
         if faceList and not all(f in faces for f in faceList):
@@ -161,7 +160,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         # trace-backs single edge spikes don't contribute to the bound box
         uniqueEdges = []
         for edge in outline.Edges:
-            if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
+            if any(Path.Geom.edgesMatch(edge, e) for e in uniqueEdges):
                 continue
             uniqueEdges.append(edge)
         w = Part.Wire(uniqueEdges)
@@ -172,10 +171,10 @@ def horizontalFaceLoop(obj, face, faceList=None):
         bb2 = w.BoundBox
         if (
             w.isClosed()
-            and PathGeom.isRoughly(bb1.XMin, bb2.XMin)
-            and PathGeom.isRoughly(bb1.XMax, bb2.XMax)
-            and PathGeom.isRoughly(bb1.YMin, bb2.YMin)
-            and PathGeom.isRoughly(bb1.YMax, bb2.YMax)
+            and Path.Geom.isRoughly(bb1.XMin, bb2.XMin)
+            and Path.Geom.isRoughly(bb1.XMax, bb2.XMax)
+            and Path.Geom.isRoughly(bb1.YMin, bb2.YMin)
+            and Path.Geom.isRoughly(bb1.YMax, bb2.YMax)
         ):
             return faces
     return None
@@ -721,7 +720,7 @@ class depth_params(object):
 
     def __filter_roughly_equal_depths(self, depths):
         """Depths arrive sorted from largest to smallest, positive to negative.
-        Return unique list of depths, using PathGeom.isRoughly() method to determine
+        Return unique list of depths, using Path.Geom.isRoughly() method to determine
         if the two values are equal.  Only one of two consecutive equals are removed.
 
         The assumption is that there are not enough consecutively roughly-equal depths
@@ -731,7 +730,7 @@ class depth_params(object):
         depthcopy = sorted(depths)  # make a copy and sort low to high
         keep = [depthcopy[0]]
         for depth in depthcopy[1:]:
-            if not PathGeom.isRoughly(depth, keep[-1]):
+            if not Path.Geom.isRoughly(depth, keep[-1]):
                 keep.append(depth)
         keep.reverse()  # reverse results back high to low
         return keep

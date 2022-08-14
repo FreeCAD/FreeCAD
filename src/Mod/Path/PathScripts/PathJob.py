@@ -24,12 +24,12 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 from Path.Post.Processor import PostProcessor
 import Path.Tool.Controller as PathToolController
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathStock as PathStock
-import PathScripts.PathUtil as PathUtil
 import json
 import time
 import Path

@@ -10,8 +10,6 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestPathApp.py
-    PathMachineState.py
-    PathFeedRate.py
 )
 
 if(BUILD_GUI)
@@ -28,6 +26,16 @@ INSTALL(
 SET(PathPython_SRCS
     Path/__init__.py
     Path/Log.py
+    Path/Geom.py
+)
+
+SET(PathPythonBase_SRCS
+    Path/Base/__init__.py
+    Path/Base/MachineState.py
+    Path/Base/FeedRate.py
+    Path/Base/Property.py
+    Path/Base/PropertyBag.py
+    Path/Base/Util.py
 )
 
 SET(PathPythonDressup_SRCS
@@ -169,7 +177,6 @@ SET(PathScripts_SRCS
     PathScripts/PathFeatureExtensions.py
     PathScripts/PathFeatureExtensionsGui.py
     PathScripts/PathFixture.py
-    PathScripts/PathGeom.py
     PathScripts/PathGetPoint.py
     PathScripts/PathGui.py
     PathScripts/PathGuiInit.py
@@ -183,8 +190,6 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathProperty.py
-    PathScripts/PathPropertyBag.py
     PathScripts/PathPropertyBagGui.py
     PathScripts/PathPropertyEditor.py
     PathScripts/PathSanity.py
@@ -197,7 +202,6 @@ SET(PathScripts_SRCS
     PathScripts/PathSimulatorGui.py
     PathScripts/PathStock.py
     PathScripts/PathStop.py
-    PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
     PathScripts/__init__.py

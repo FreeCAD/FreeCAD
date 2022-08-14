@@ -34,8 +34,7 @@ import FreeCAD
 import Path
 import Part
 
-from PathMachineState import MachineState
-from PathScripts.PathGeom import CmdMoveArc, edgeForCmd, cmdsForEdge
+from Path.Base.MachineState import MachineState
 
 translate = FreeCAD.Qt.translate
 FreeCADGui = None
@@ -216,16 +215,16 @@ def splitArcs(path):
     machine = MachineState()
     for command in path.Commands:
 
-        if command.Name not in CmdMoveArc:
+        if command.Name not in Path.Geom.CmdMoveArc:
             machine.addCommand(command)
             results.append(command)
             continue
 
-        edge = edgeForCmd(command, machine.getPosition())
+        edge = Path.Geom.edgeForCmd(command, machine.getPosition())
         pts = edge.discretize(Deflection=deflection)
         edges = [Part.makeLine(v1, v2) for v1, v2 in zip(pts, pts[1:])]
         for edge in edges:
-            results.extend(cmdsForEdge(edge))
+            results.extend(Path.Geom.cmdsForEdge(edge))
 
         machine.addCommand(command)
 

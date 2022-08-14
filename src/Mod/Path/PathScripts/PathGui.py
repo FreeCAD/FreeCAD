@@ -23,8 +23,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathUtil as PathUtil
+import Path.Base.Util as PathUtil
 from PySide import QtGui, QtCore
 
 from PySide import QtCore, QtGui
@@ -75,7 +74,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     attrValue = attr.Value if hasattr(attr, "Value") else attr
 
     isDiff = False
-    if not PathGeom.isRoughly(attrValue, value):
+    if not Path.Geom.isRoughly(attrValue, value):
         isDiff = True
     else:
         if hasattr(obj, "ExpressionEngine"):
@@ -85,7 +84,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
                     exprSet = True
                     Path.Log.debug('prop = "expression": {} = "{}"'.format(prp, expr))
                     value = FreeCAD.Units.Quantity(obj.evalExpression(expr)).Value
-                    if not PathGeom.isRoughly(attrValue, value):
+                    if not Path.Geom.isRoughly(attrValue, value):
                         isDiff = True
                     break
             if exprSet:

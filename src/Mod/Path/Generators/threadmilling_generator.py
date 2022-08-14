@@ -24,7 +24,6 @@ from __future__ import print_function
 
 import FreeCAD
 import Path
-import PathScripts.PathGeom as PathGeom
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -152,7 +151,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
     z = thread.zStart
     r = -radius
     i = 0
-    while not PathGeom.isRoughly(z, thread.zFinal):
+    while not Path.Geom.isRoughly(z, thread.zFinal):
         if thread.overshoots(z):
             break
         if 0 == (i & 0x01):
@@ -164,7 +163,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
         i = i + 1
         z = z + thread.hPitch
 
-    if PathGeom.isRoughly(z, thread.zFinal):
+    if Path.Geom.isRoughly(z, thread.zFinal):
         x = center.x
         y = yMin if (i & 0x01) else yMax
     else:

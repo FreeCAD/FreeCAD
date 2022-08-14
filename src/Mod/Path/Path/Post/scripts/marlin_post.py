@@ -32,7 +32,8 @@ import argparse
 import shlex
 import FreeCAD
 from FreeCAD import Units
-import PathScripts.PathUtil as PathUtil
+import Path
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 
 Revised = "2020-11-03"  # Revision date for this file.

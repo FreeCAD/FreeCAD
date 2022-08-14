@@ -25,11 +25,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import Path.Tool.Controller as PathToolController
 import Path.Tool.Gui.Bit as PathToolBitGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
-import PathScripts.PathUtil as PathUtil
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

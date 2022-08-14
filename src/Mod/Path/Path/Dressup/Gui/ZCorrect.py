@@ -26,12 +26,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PathScripts.PathGeom import CmdMoveArc, CmdMoveStraight
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -176,16 +174,16 @@ class ObjectDressup:
                             Path.Log.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
                             zval = newparams.get("Z", currLocation["Z"])
-                            if c.Name in CmdMoveStraight + CmdMoveArc:
+                            if c.Name in Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveArc:
                                 curVec = FreeCAD.Vector(
                                     currLocation["X"],
                                     currLocation["Y"],
                                     currLocation["Z"],
                                 )
-                                arcwire = PathGeom.edgeForCmd(c, curVec)
+                                arcwire = Path.Geom.edgeForCmd(c, curVec)
                                 if arcwire is None:
                                     continue
-                                if c.Name in CmdMoveArc:
+                                if c.Name in Path.Geom.CmdMoveArc:
                                     pointlist = arcwire.discretize(Deflection=curveD)
                                 else:
                                     disc_number = int(arcwire.Length / sampleD)

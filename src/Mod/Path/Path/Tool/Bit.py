@@ -22,9 +22,9 @@
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
+import Path.Base.PropertyBag as PathPropertyBag
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathPropertyBag as PathPropertyBag
-import PathScripts.PathUtil as PathUtil
 import json
 import os
 import zipfile

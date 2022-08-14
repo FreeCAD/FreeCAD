@@ -23,16 +23,15 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import Path.Op.Base as PathOp
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSelection as PathSelection
 import PathScripts.PathSetupSheet as PathSetupSheet
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -1000,7 +999,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             sub = sel[0].SubObjects[0]
             if "Vertex" == sub.ShapeType:
                 return sub.Z
-            if PathGeom.isHorizontal(sub):
+            if Path.Geom.isHorizontal(sub):
                 if "Edge" == sub.ShapeType:
                     return sub.Vertexes[0].Z
                 if "Face" == sub.ShapeType:

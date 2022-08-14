@@ -25,11 +25,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
-import PathScripts.PathUtil as PathUtil
 import json
 import os
 

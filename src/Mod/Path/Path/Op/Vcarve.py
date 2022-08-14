@@ -26,7 +26,6 @@ import Path
 import Path.Op.Base as PathOp
 import Path.Op.EngraveBase as PathEngraveBase
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathPreferences as PathPreferences
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -285,7 +284,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed))
             )
             for e in edges:
-                path.extend(PathGeom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
+                path.extend(Path.Geom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
 
             return path
 

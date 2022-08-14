@@ -26,7 +26,6 @@ import Path
 import Path.Op.Base as PathOp
 import Path.Op.EngraveBase as PathEngraveBase
 import Path.Op.Util as PathOpUtil
-import PathScripts.PathGeom as PathGeom
 import math
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -61,7 +60,7 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
     suppressInfo = False
     if hasattr(tool, "CuttingEdgeAngle"):
         angle = float(tool.CuttingEdgeAngle)
-        if PathGeom.isRoughly(angle, 180) or PathGeom.isRoughly(angle, 0):
+        if Path.Geom.isRoughly(angle, 180) or Path.Geom.isRoughly(angle, 0):
             angle = 180
             toolOffset = float(tool.Diameter) / 2
         else:
@@ -95,7 +94,7 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
 
     tan = math.tan(math.radians(angle / 2))
 
-    toolDepth = 0 if PathGeom.isRoughly(tan, 0) else width / tan
+    toolDepth = 0 if Path.Geom.isRoughly(tan, 0) else width / tan
     depth = toolDepth + extraDepth
     extraOffset = -width if angle == 180 else (extraDepth / tan)
     offset = toolOffset + extraOffset

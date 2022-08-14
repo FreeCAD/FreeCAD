@@ -28,9 +28,9 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
@@ -38,7 +38,6 @@ import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import json
 import math
@@ -1087,7 +1086,7 @@ class TaskPanel:
             if flip:
                 v = axis.negative()
 
-            if PathGeom.pointsCoincide(abs(v), abs(normal)):
+            if Path.Geom.pointsCoincide(abs(v), abs(normal)):
                 # Selection is already aligned with the axis of rotation leading
                 # to a (0,0,0) cross product for rotation.
                 # --> Need to flip the object around one of the "other" axis.
@@ -1128,9 +1127,9 @@ class TaskPanel:
                                 % (normal.x, normal.y, normal.z, sub.Orientation)
                             )
 
-                        if PathGeom.pointsCoincide(axis, normal):
+                        if Path.Geom.pointsCoincide(axis, normal):
                             alignSel(sel, normal, True)
-                        elif PathGeom.pointsCoincide(axis, FreeCAD.Vector() - normal):
+                        elif Path.Geom.pointsCoincide(axis, FreeCAD.Vector() - normal):
                             alignSel(sel, FreeCAD.Vector() - normal, True)
                         else:
                             alignSel(sel, normal)
@@ -1139,9 +1138,9 @@ class TaskPanel:
                         normal = (
                             sub.Vertexes[1].Point - sub.Vertexes[0].Point
                         ).normalize()
-                        if PathGeom.pointsCoincide(
+                        if Path.Geom.pointsCoincide(
                             axis, normal
-                        ) or PathGeom.pointsCoincide(axis, FreeCAD.Vector() - normal):
+                        ) or Path.Geom.pointsCoincide(axis, FreeCAD.Vector() - normal):
                             # Don't really know the orientation of an edge, so let's just flip the object
                             # and if the user doesn't like it they can flip again
                             alignSel(sel, normal, True)

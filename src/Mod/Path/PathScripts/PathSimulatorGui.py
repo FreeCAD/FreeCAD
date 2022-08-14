@@ -22,10 +22,9 @@
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathJob as PathJob
 import PathSimulator
 import math
@@ -399,14 +398,14 @@ class PathSimulation:
             self.PerformCutBoolean()
 
     def RapidMove(self, cmd, curpos):
-        path = PathGeom.edgeForCmd(cmd, curpos)  # hack to overcome occ bug
+        path = Path.Geom.edgeForCmd(cmd, curpos)  # hack to overcome occ bug
         if path is None:
             return curpos
         return path.valueAt(path.LastParameter)
 
     # get a solid representation of a tool going along path
     def GetPathSolid(self, tool, cmd, pos):
-        toolPath = PathGeom.edgeForCmd(cmd, pos)
+        toolPath = Path.Geom.edgeForCmd(cmd, pos)
         startDir = toolPath.tangentAt(0)
         startDir[2] = 0.0
         endPos = toolPath.valueAt(toolPath.LastParameter)

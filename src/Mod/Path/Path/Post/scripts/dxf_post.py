@@ -24,7 +24,6 @@ from __future__ import print_function
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathGeom as PathGeom
 import datetime
 import importDXF
 
@@ -93,8 +92,8 @@ def dxfWrite(objlist, filename):
 def parse(pathobj):
     """accepts a Path object.  Returns a list of wires"""
 
-    feedcommands = PathGeom.CmdMove
-    rapidcommands = PathGeom.CmdMoveRapid
+    feedcommands = Path.Geom.CmdMove
+    rapidcommands = Path.Geom.CmdMoveRapid
 
     edges = []
     objlist = []
@@ -126,7 +125,7 @@ def parse(pathobj):
 
         # feeding move.  Build an edge
         if flatcommand.Name in feedcommands:
-            edges.append(PathGeom.edgeForCmd(flatcommand, curPoint))
+            edges.append(Path.Geom.edgeForCmd(flatcommand, curPoint))
             Path.Log.debug("feeding move")
 
         # update the curpoint

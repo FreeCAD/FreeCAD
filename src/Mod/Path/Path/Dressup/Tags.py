@@ -25,9 +25,8 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
@@ -164,7 +163,7 @@ class Tag:
         self.r2 = r1
         height = self.height * 1.01
         radius = 0
-        if PathGeom.isRoughly(90, self.angle) and height > 0:
+        if Path.Geom.isRoughly(90, self.angle) and height > 0:
             # cylinder
             self.isSquare = True
             self.solid = Part.makeCylinder(r1, height)
@@ -192,10 +191,10 @@ class Tag:
             # degenerated case - no tag
             Path.Log.debug("Part.makeSphere(%f / 10000)" % (r1))
             self.solid = Part.makeSphere(r1 / 10000)
-        if not PathGeom.isRoughly(
+        if not Path.Geom.isRoughly(
             0, R
         ):  # testing is easier if the solid is not rotated
-            angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
+            angle = -Path.Geom.getAngle(self.originAt(0)) * 180 / math.pi
             Path.Log.debug("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), angle)
         orig = self.originAt(z - 0.01 * self.actualHeight)
@@ -203,7 +202,7 @@ class Tag:
         self.solid.translate(orig)
         radius = min(self.radius, radius)
         self.realRadius = radius
-        if not PathGeom.isRoughly(0, radius):
+        if not Path.Geom.isRoughly(0, radius):
             Path.Log.debug("makeFillet(%.4f)" % radius)
             self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
@@ -226,7 +225,7 @@ class Tag:
                         pt
                         for pt in pts
                         if (pt - c.Center).Length <= c.Radius
-                        or PathGeom.isRoughly((pt - c.Center).Length, c.Radius)
+                        or Path.Geom.isRoughly((pt - c.Center).Length, c.Radius)
                     ]
                 )
         Path.Log.error("==== we got a %s" % face.Surface)
@@ -237,7 +236,7 @@ class Tag:
             return True
         if edge.LastParameter <= param <= edge.FirstParameter:
             return True
-        if PathGeom.isRoughly(edge.FirstParameter, param) or PathGeom.isRoughly(
+        if Path.Geom.isRoughly(edge.FirstParameter, param) or Path.Geom.isRoughly(
             edge.LastParameter, param
         ):
             return True
@@ -265,7 +264,7 @@ class Tag:
     def intersects(self, edge, param):
         def isDefinitelySmaller(z, zRef):
             # Eliminate false positives of edges that just brush along the top of the tag
-            return z < zRef and not PathGeom.isRoughly(z, zRef, 0.01)
+            return z < zRef and not Path.Geom.isRoughly(z, zRef, 0.01)
 
         if self.enabled:
             zFirst = edge.valueAt(edge.FirstParameter).z
@@ -297,20 +296,20 @@ class MapWireToTag:
         self.maxZ = maxZ
         self.hSpeed = hSpeed
         self.vSpeed = vSpeed
-        if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
+        if Path.Geom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
             debugEdge(tail, ".........=")
-        elif PathGeom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
+        elif Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, "++++++++ .")
-            self.commands = PathGeom.cmdsForEdge(
+            self.commands = Path.Geom.cmdsForEdge(
                 edge, segm=segm, hSpeed=self.hSpeed, vSpeed=self.vSpeed
             )
             tail = None
         else:
-            e, tail = PathGeom.splitEdgeAt(edge, i)
+            e, tail = Path.Geom.splitEdgeAt(edge, i)
             debugEdge(e, "++++++++ .")
-            self.commands = PathGeom.cmdsForEdge(
+            self.commands = Path.Geom.cmdsForEdge(
                 e, segm=segm, hSpeed=self.hSpeed, vSpeed=self.vSpeed
             )
             debugEdge(tail, ".........-")
@@ -344,20 +343,20 @@ class MapWireToTag:
         self.edges.append(edge)
 
     def needToFlipEdge(self, edge, p):
-        if PathGeom.pointsCoincide(edge.valueAt(edge.LastParameter), p):
+        if Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), p):
             return True, edge.valueAt(edge.FirstParameter)
         return False, edge.valueAt(edge.LastParameter)
 
     def isEntryOrExitStrut(self, e):
         p1 = e.valueAt(e.FirstParameter)
         p2 = e.valueAt(e.LastParameter)
-        if PathGeom.pointsCoincide(p1, self.entry) and p2.z >= self.entry.z:
+        if Path.Geom.pointsCoincide(p1, self.entry) and p2.z >= self.entry.z:
             return 1
-        if PathGeom.pointsCoincide(p2, self.entry) and p1.z >= self.entry.z:
+        if Path.Geom.pointsCoincide(p2, self.entry) and p1.z >= self.entry.z:
             return 1
-        if PathGeom.pointsCoincide(p1, self.exit) and p2.z >= self.exit.z:
+        if Path.Geom.pointsCoincide(p1, self.exit) and p2.z >= self.exit.z:
             return 2
-        if PathGeom.pointsCoincide(p2, self.exit) and p1.z >= self.exit.z:
+        if Path.Geom.pointsCoincide(p2, self.exit) and p1.z >= self.exit.z:
             return 2
         return 0
 
@@ -383,16 +382,16 @@ class MapWireToTag:
             self.edgePoints.append(p1)
             self.edgePoints.append(p2)
             if self.tag.solid.isInside(
-                p1, PathGeom.Tolerance, False
-            ) or self.tag.solid.isInside(p2, PathGeom.Tolerance, False):
+                p1, Path.Geom.Tolerance, False
+            ) or self.tag.solid.isInside(p2, Path.Geom.Tolerance, False):
                 edges.remove(e)
                 debugEdge(e, "......... X0", False)
             else:
-                if PathGeom.pointsCoincide(p1, self.entry) or PathGeom.pointsCoincide(
+                if Path.Geom.pointsCoincide(p1, self.entry) or Path.Geom.pointsCoincide(
                     p2, self.entry
                 ):
                     self.entryEdges.append(e)
-                if PathGeom.pointsCoincide(p1, self.exit) or PathGeom.pointsCoincide(
+                if Path.Geom.pointsCoincide(p1, self.exit) or Path.Geom.pointsCoincide(
                     p2, self.exit
                 ):
                     self.exitEdges.append(e)
@@ -406,7 +405,7 @@ class MapWireToTag:
                 self.edgePoints, key=lambda p: (p - self.entry).Length
             )[0]
             self.entryEdges = list(
-                [e for e in edges if PathGeom.edgeConnectsTo(e, self.realEntry)]
+                [e for e in edges if Path.Geom.edgeConnectsTo(e, self.realEntry)]
             )
             edges.append(Part.Edge(Part.LineSegment(self.entry, self.realEntry)))
         else:
@@ -417,7 +416,7 @@ class MapWireToTag:
                 self.edgePoints, key=lambda p: (p - self.exit).Length
             )[0]
             self.exitEdges = list(
-                [e for e in edges if PathGeom.edgeConnectsTo(e, self.realExit)]
+                [e for e in edges if Path.Geom.edgeConnectsTo(e, self.realExit)]
             )
             edges.append(Part.Edge(Part.LineSegment(self.realExit, self.exit)))
         else:
@@ -471,15 +470,15 @@ class MapWireToTag:
             for e in copy.copy(edges):
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
-                if PathGeom.pointsCoincide(p1, p0):
+                if Path.Geom.pointsCoincide(p1, p0):
                     outputEdges.append((e, False))
                     edges.remove(e)
                     lastP = None
                     p0 = p2
                     debugEdge(e, ">>>>> no flip")
                     break
-                elif PathGeom.pointsCoincide(p2, p0):
-                    flipped = PathGeom.flipEdge(e)
+                elif Path.Geom.pointsCoincide(p2, p0):
+                    flipped = Path.Geom.flipEdge(e)
                     if not flipped is None:
                         outputEdges.append((flipped, True))
                     else:
@@ -526,21 +525,21 @@ class MapWireToTag:
         return outputEdges
 
     def isStrut(self, edge):
-        p1 = PathGeom.xy(edge.valueAt(edge.FirstParameter))
-        p2 = PathGeom.xy(edge.valueAt(edge.LastParameter))
-        return PathGeom.pointsCoincide(p1, p2)
+        p1 = Path.Geom.xy(edge.valueAt(edge.FirstParameter))
+        p2 = Path.Geom.xy(edge.valueAt(edge.LastParameter))
+        return Path.Geom.pointsCoincide(p1, p2)
 
     def shell(self):
         if len(self.edges) > 1:
             wire = Part.Wire(self.initialEdge)
         else:
             edge = self.edges[0]
-            if PathGeom.pointsCoincide(
+            if Path.Geom.pointsCoincide(
                 edge.valueAt(edge.FirstParameter),
                 self.finalEdge.valueAt(self.finalEdge.FirstParameter),
             ):
                 wire = Part.Wire(self.finalEdge)
-            elif hasattr(self, "initialEdge") and PathGeom.pointsCoincide(
+            elif hasattr(self, "initialEdge") and Path.Geom.pointsCoincide(
                 edge.valueAt(edge.FirstParameter),
                 self.initialEdge.valueAt(self.initialEdge.FirstParameter),
             ):
@@ -549,7 +548,7 @@ class MapWireToTag:
                 wire = Part.Wire(edge)
 
         for edge in self.edges[1:]:
-            if PathGeom.pointsCoincide(
+            if Path.Geom.pointsCoincide(
                 edge.valueAt(edge.FirstParameter),
                 self.finalEdge.valueAt(self.finalEdge.FirstParameter),
             ):
@@ -558,7 +557,7 @@ class MapWireToTag:
                 wire.add(edge)
 
         shell = wire.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
-        nullFaces = list([f for f in shell.Faces if PathGeom.isRoughly(f.Area, 0)])
+        nullFaces = list([f for f in shell.Faces if Path.Geom.isRoughly(f.Area, 0)])
         if nullFaces:
             return shell.removeShape(nullFaces)
         return shell
@@ -575,8 +574,8 @@ class MapWireToTag:
                     p2 = e.valueAt(e.LastParameter)
                     if (
                         self.tag.isSquare
-                        and (PathGeom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ)
-                        and (PathGeom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ)
+                        and (Path.Geom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ)
+                        and (Path.Geom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ)
                     ):
                         rapid = p1 if flip else p2
                     else:
@@ -588,7 +587,7 @@ class MapWireToTag:
                             )
                             rapid = None
                         commands.extend(
-                            PathGeom.cmdsForEdge(
+                            Path.Geom.cmdsForEdge(
                                 e,
                                 False,
                                 False,
@@ -612,7 +611,7 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(
-                        PathGeom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+                        Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
                     )
                 return commands
         return []
@@ -621,7 +620,7 @@ class MapWireToTag:
         self.tail = None
         self.finalEdge = edge
         if self.tag.solid.isInside(
-            edge.valueAt(edge.LastParameter), PathGeom.Tolerance, True
+            edge.valueAt(edge.LastParameter), Path.Geom.Tolerance, True
         ):
             Path.Log.track("solid.isInside")
             self.addEdge(edge)
@@ -633,12 +632,12 @@ class MapWireToTag:
                 o = self.tag.originAt(self.tag.z)
                 Path.Log.debug("originAt: (%.2f, %.2f, %.2f)" % (o.x, o.y, o.z))
                 i = edge.valueAt(edge.FirstParameter)
-            if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
+            if Path.Geom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
                 Path.Log.track("tail")
                 self.tail = edge
             else:
                 Path.Log.track("split")
-                e, tail = PathGeom.splitEdgeAt(edge, i)
+                e, tail = Path.Geom.splitEdgeAt(edge, i)
                 self.addEdge(e)
                 self.tail = tail
             self.exit = i
@@ -661,12 +660,12 @@ class _RapidEdges:
                 r0 = r.Vertexes[0]
                 r1 = r.Vertexes[1]
                 if (
-                    PathGeom.isRoughly(r0.X, v0.X)
-                    and PathGeom.isRoughly(r0.Y, v0.Y)
-                    and PathGeom.isRoughly(r0.Z, v0.Z)
-                    and PathGeom.isRoughly(r1.X, v1.X)
-                    and PathGeom.isRoughly(r1.Y, v1.Y)
-                    and PathGeom.isRoughly(r1.Z, v1.Z)
+                    Path.Geom.isRoughly(r0.X, v0.X)
+                    and Path.Geom.isRoughly(r0.Y, v0.Y)
+                    and Path.Geom.isRoughly(r0.Z, v0.Z)
+                    and Path.Geom.isRoughly(r1.X, v1.X)
+                    and Path.Geom.isRoughly(r1.Y, v1.Y)
+                    and Path.Geom.isRoughly(r1.Z, v1.Z)
                 ):
                     return True
         return False
@@ -676,7 +675,7 @@ class PathData:
     def __init__(self, obj):
         Path.Log.track(obj.Base.Name)
         self.obj = obj
-        self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
+        self.wire, rapid = Path.Geom.wireForPath(obj.Base.Path)
         self.rapid = _RapidEdges(rapid)
         if self.wire:
             self.edges = self.wire.Edges
@@ -691,8 +690,8 @@ class PathData:
         bottom = [
             e
             for e in edges
-            if PathGeom.isRoughly(e.Vertexes[0].Point.z, minZ)
-            and PathGeom.isRoughly(e.Vertexes[1].Point.z, minZ)
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.z, minZ)
+            and Path.Geom.isRoughly(e.Vertexes[1].Point.z, minZ)
         ]
         self.bottomEdges = bottom
         try:
@@ -746,7 +745,7 @@ class PathData:
         for i in range(0, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
             Path.Log.debug("  %d: %.2f" % (i, edge.Length))
-            if PathGeom.isRoughly(edge.Length, longestEdge.Length):
+            if Path.Geom.isRoughly(edge.Length, longestEdge.Length):
                 startIndex = i
                 break
 
@@ -898,7 +897,7 @@ class PathData:
             ts = [
                 t
                 for t in tags
-                if PathGeom.isRoughly(
+                if Path.Geom.isRoughly(
                     0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 0.1
                 )
             ]
@@ -926,7 +925,7 @@ class PathData:
         for e in self.bottomEdges:
             indent = "{} ".format(e.distToShape(v)[0])
             debugEdge(e, indent, True)
-            if PathGeom.isRoughly(0.0, v.distToShape(e)[0], 0.1):
+            if Path.Geom.isRoughly(0.0, v.distToShape(e)[0], 0.1):
                 return True
         return False
 
@@ -1059,11 +1058,11 @@ class ObjectTagDressup:
         return False
 
     def isValidTagStartIntersection(self, edge, i):
-        if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
+        if Path.Geom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
             return False
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = edge.valueAt(edge.LastParameter)
-        if PathGeom.pointsCoincide(PathGeom.xy(p1), PathGeom.xy(p2)):
+        if Path.Geom.pointsCoincide(Path.Geom.xy(p1), Path.Geom.xy(p2)):
             # if this vertical goes up, it can't be the start of a tag intersection
             if p1.z < p2.z:
                 return False
@@ -1141,9 +1140,9 @@ class ObjectTagDressup:
                         v = edge.Vertexes[1]
                         if (
                             not commands
-                            and PathGeom.isRoughly(0, v.X)
-                            and PathGeom.isRoughly(0, v.Y)
-                            and not PathGeom.isRoughly(0, v.Z)
+                            and Path.Geom.isRoughly(0, v.X)
+                            and Path.Geom.isRoughly(0, v.Y)
+                            and not Path.Geom.isRoughly(0, v.Z)
                         ):
                             # The very first move is just to move to ClearanceHeight
                             commands.append(
@@ -1157,7 +1156,7 @@ class ObjectTagDressup:
                             )
                     else:
                         commands.extend(
-                            PathGeom.cmdsForEdge(
+                            Path.Geom.cmdsForEdge(
                                 edge, segm=segm, hSpeed=horizFeed, vSpeed=vertFeed
                             )
                         )
@@ -1203,8 +1202,8 @@ class ObjectTagDressup:
                     p0 = e.valueAt(e.FirstParameter)
                     p1 = e.valueAt(e.LastParameter)
                     if tag.solid.isInside(
-                        p0, PathGeom.Tolerance, True
-                    ) or tag.solid.isInside(p1, PathGeom.Tolerance, True):
+                        p0, Path.Geom.Tolerance, True
+                    ) or tag.solid.isInside(p1, Path.Geom.Tolerance, True):
                         Path.Log.info(
                             "Tag #%d intersects with starting point - disabling\n" % i
                         )
@@ -1290,7 +1289,7 @@ class ObjectTagDressup:
                         "x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ)
                     )
                     # debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                    # if not PathGeom.isRoughly(90, tag.angle):
+                    # if not Path.Geom.isRoughly(90, tag.angle):
                     #    debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
                     # else:
                     #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)

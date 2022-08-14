@@ -23,11 +23,10 @@
 import FreeCAD
 import Part
 import Path
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.MachineState as PathMachineState
 import Path.Tool.Bit as PathToolBit
 import Path.Tool.Controller as PathToolController
-import PathFeedRate
-import PathMachineState
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 
 from PathTests.PathTestUtils import PathTestBase
@@ -134,7 +133,7 @@ class TestPathHelpers(PathTestBase):
         self.assertTrue(len(results) == 2)
         e1 = results[0]
         self.assertTrue(isinstance(e1.Curve, Part.Circle))
-        self.assertTrue(PathGeom.pointsCoincide(edge.Curve.Location, e1.Curve.Location))
+        self.assertTrue(Path.Geom.pointsCoincide(edge.Curve.Location, e1.Curve.Location))
         self.assertTrue(edge.Curve.Radius == e1.Curve.Radius)
 
         # filter a 180 degree arc

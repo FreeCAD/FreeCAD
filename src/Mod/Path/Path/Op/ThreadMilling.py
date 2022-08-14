@@ -26,7 +26,6 @@ import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathScripts.PathGeom as PathGeom
 import Generators.threadmilling_generator as threadmilling
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP

@@ -23,10 +23,9 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathStock as PathStock
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
 if False:
@@ -127,7 +126,7 @@ class PathBoundary:
 
     def boundaryCommands(self, begin, end, verticalFeed):
         Path.Log.track(_vstr(begin), _vstr(end))
-        if end and PathGeom.pointsCoincide(begin, end):
+        if end and Path.Geom.pointsCoincide(begin, end):
             return []
         cmds = []
         if begin.z < self.safeHeight:
@@ -172,12 +171,12 @@ class PathBoundary:
         commands = [cmd]
         lastExit = None
         for cmd in self.baseOp.Path.Commands[1:]:
-            if cmd.Name in PathGeom.CmdMoveAll:
+            if cmd.Name in Path.Geom.CmdMoveAll:
                 if bogusX:
                     bogusX = "X" not in cmd.Parameters
                 if bogusY:
                     bogusY = "Y" not in cmd.Parameters
-                edge = PathGeom.edgeForCmd(cmd, pos)
+                edge = Path.Geom.edgeForCmd(cmd, pos)
                 if edge:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
@@ -201,25 +200,25 @@ class PathBoundary:
                                 )
                             lastExit = None
                         commands.append(cmd)
-                        pos = PathGeom.commandEndPoint(cmd, pos)
+                        pos = Path.Geom.commandEndPoint(cmd, pos)
                     elif 0 == len(inside) and 1 == len(outside):
                         Path.Log.track(_vstr(pos), _vstr(lastExit), " - ", cmd)
                         # cmd fully excluded by boundary
                         if not lastExit:
                             lastExit = pos
-                        pos = PathGeom.commandEndPoint(cmd, pos)
+                        pos = Path.Geom.commandEndPoint(cmd, pos)
                     else:
                         Path.Log.track(
                             _vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd
                         )
                         # cmd pierces boundary
                         while inside or outside:
-                            ie = [e for e in inside if PathGeom.edgeConnectsTo(e, pos)]
+                            ie = [e for e in inside if Path.Geom.edgeConnectsTo(e, pos)]
                             Path.Log.track(ie)
                             if ie:
                                 e = ie[0]
                                 LastPt = e.valueAt(e.LastParameter)
-                                flip = PathGeom.pointsCoincide(pos, LastPt)
+                                flip = Path.Geom.pointsCoincide(pos, LastPt)
                                 newPos = e.valueAt(e.FirstParameter) if flip else LastPt
                                 # inside edges are taken at this point (see swap of inside/outside
                                 # above - so we can just connect the dots ...
@@ -236,7 +235,7 @@ class PathBoundary:
                                     bogusX or bogusY
                                 ):  # don't insert false paths based on bogus m/c position
                                     commands.extend(
-                                        PathGeom.cmdsForEdge(
+                                        Path.Geom.cmdsForEdge(
                                             e,
                                             flip,
                                             False,
@@ -252,13 +251,13 @@ class PathBoundary:
                                 oe = [
                                     e
                                     for e in outside
-                                    if PathGeom.edgeConnectsTo(e, pos)
+                                    if Path.Geom.edgeConnectsTo(e, pos)
                                 ]
                                 Path.Log.track(oe)
                                 if oe:
                                     e = oe[0]
                                     ptL = e.valueAt(e.LastParameter)
-                                    flip = PathGeom.pointsCoincide(pos, ptL)
+                                    flip = Path.Geom.pointsCoincide(pos, ptL)
                                     newPos = (
                                         e.valueAt(e.FirstParameter) if flip else ptL
                                     )
@@ -280,7 +279,7 @@ class PathBoundary:
                             # Eif
                         # Ewhile
                     # Eif
-                    # pos = PathGeom.commandEndPoint(cmd, pos)
+                    # pos = Path.Geom.commandEndPoint(cmd, pos)
                 # Eif
             else:
                 Path.Log.track("no-move", cmd)

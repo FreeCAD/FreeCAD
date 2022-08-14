@@ -24,7 +24,6 @@ import FreeCAD
 import Part
 import Path
 import Path.Op.Util as PathOpUtil
-import PathScripts.PathGeom as PathGeom
 import PathTests.PathTestUtils as PathTestUtils
 import math
 
@@ -208,14 +207,14 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             w
             for w in obj.Shape.Wires
             if 1 == len(w.Edges)
-            and PathGeom.isRoughly(0, w.Edges[0].Vertexes[0].Point.z)
+            and Path.Geom.isRoughly(0, w.Edges[0].Vertexes[0].Point.z)
         ]
         self.assertEqual(2, len(wires))
         w = wires[1] if wires[0].BoundBox.isInside(wires[1].BoundBox) else wires[0]
 
         self.assertRoughly(10, w.Edges[0].Curve.Radius)
         # make sure there is a placement and I didn't mess up the model
-        self.assertFalse(PathGeom.pointsCoincide(Vector(), w.Edges[0].Placement.Base))
+        self.assertFalse(Path.Geom.pointsCoincide(Vector(), w.Edges[0].Placement.Base))
 
         wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
         self.assertIsNotNone(wire)
@@ -232,14 +231,14 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             w
             for w in obj.Shape.Wires
             if 1 == len(w.Edges)
-            and PathGeom.isRoughly(0, w.Edges[0].Vertexes[0].Point.z)
+            and Path.Geom.isRoughly(0, w.Edges[0].Vertexes[0].Point.z)
         ]
         self.assertEqual(2, len(wires))
         w = wires[0] if wires[0].BoundBox.isInside(wires[1].BoundBox) else wires[1]
 
         self.assertRoughly(20, w.Edges[0].Curve.Radius)
         # make sure there is a placement and I didn't mess up the model
-        self.assertFalse(PathGeom.pointsCoincide(Vector(), w.Edges[0].Placement.Base))
+        self.assertFalse(Path.Geom.pointsCoincide(Vector(), w.Edges[0].Placement.Base))
 
         wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
         self.assertIsNotNone(wire)
@@ -335,16 +334,16 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 begin = e.Vertexes[0].Point
                 end = e.Vertexes[1].Point
                 v = end - begin
-                angle = PathGeom.getAngle(v)
-                if PathGeom.isRoughly(0, angle) or PathGeom.isRoughly(
+                angle = Path.Geom.getAngle(v)
+                if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(
                     math.pi, math.fabs(angle)
                 ):
                     if lastAngle:
                         self.assertRoughly(-refAngle, lastAngle)
-                elif PathGeom.isRoughly(+refAngle, angle):
+                elif Path.Geom.isRoughly(+refAngle, angle):
                     if lastAngle:
                         self.assertRoughly(math.pi, math.fabs(lastAngle))
-                elif PathGeom.isRoughly(-refAngle, angle):
+                elif Path.Geom.isRoughly(-refAngle, angle):
                     if lastAngle:
                         self.assertRoughly(+refAngle, lastAngle)
                 else:
@@ -385,9 +384,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         )
         for e in wire.Edges:
             if Part.Line == type(e.Curve):
-                if PathGeom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
+                if Path.Geom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
                     self.assertEqual(40, e.Length)
-                if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
+                if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
                     self.assertEqual(60, e.Length)
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(3, e.Curve.Radius)
@@ -405,9 +404,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         )
         for e in wire.Edges:
             if Part.Line == type(e.Curve):
-                if PathGeom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
+                if Path.Geom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
                     self.assertEqual(40, e.Length)
-                if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
+                if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
                     self.assertEqual(60, e.Length)
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(3, e.Curve.Radius)
@@ -512,9 +511,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(4, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         for e in wire.Edges:
-            if PathGeom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
                 self.assertRoughly(34, e.Length)
-            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
                 self.assertRoughly(54, e.Length)
         self.assertFalse(PathOpUtil.isWireClockwise(wire))
 
@@ -525,9 +524,9 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(4, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         for e in wire.Edges:
-            if PathGeom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.x, e.Vertexes[1].Point.x):
                 self.assertRoughly(34, e.Length)
-            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
                 self.assertRoughly(54, e.Length)
         self.assertTrue(PathOpUtil.isWireClockwise(wire))
 
@@ -601,7 +600,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         hEdges = [
             e
             for e in w.Edges
-            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
 
         x = length / 2
@@ -620,7 +619,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
 
         # make sure we get the same result even if the edge is oriented the other way
-        edge = PathGeom.flipEdge(edge)
+        edge = Path.Geom.flipEdge(edge)
         wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, True)
         self.assertEqual(1, len(wire.Edges))
 
@@ -640,7 +639,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         hEdges = [
             e
             for e in w.Edges
-            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
 
         x = length / 2
@@ -658,7 +657,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
 
         # make sure we get the same result on a reversed edge
-        edge = PathGeom.flipEdge(edge)
+        edge = Path.Geom.flipEdge(edge)
         wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, False)
         self.assertEqual(1, len(wire.Edges))
 
@@ -678,7 +677,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         lEdges = [
             e
             for e in w.Edges
-            if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if not Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
         self.assertEqual(2, len(lEdges))
 
@@ -721,11 +720,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         lEdges = [
             e
             for e in w.Edges
-            if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if not Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
         self.assertEqual(2, len(lEdges))
 
-        w = PathGeom.flipWire(Part.Wire(lEdges))
+        w = Path.Geom.flipWire(Part.Wire(lEdges))
         wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
 
         x = length / 2 + 2 * math.cos(math.pi / 6)
@@ -765,7 +764,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         hEdges = [
             e
             for e in w.Edges
-            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
 
         x = length / 2
@@ -784,7 +783,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
 
         # make sure we get the same result even if the edge is oriented the other way
-        edge = PathGeom.flipEdge(edge)
+        edge = Path.Geom.flipEdge(edge)
         wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, True)
         self.assertEqual(1, len(wire.Edges))
 
@@ -804,7 +803,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         hEdges = [
             e
             for e in w.Edges
-            if PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
 
         x = length / 2
@@ -823,7 +822,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
 
         # make sure we get the same result even if the edge is oriented the other way
-        edge = PathGeom.flipEdge(edge)
+        edge = Path.Geom.flipEdge(edge)
         wire = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 2, False)
         self.assertEqual(1, len(wire.Edges))
 
@@ -841,7 +840,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         lEdges = [
             e
             for e in w.Edges
-            if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if not Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
         self.assertEqual(2, len(lEdges))
 
@@ -878,11 +877,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         lEdges = [
             e
             for e in w.Edges
-            if not PathGeom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
+            if not Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y)
         ]
         self.assertEqual(2, len(lEdges))
 
-        w = PathGeom.flipWire(Part.Wire(lEdges))
+        w = Path.Geom.flipWire(Part.Wire(lEdges))
         wire = PathOpUtil.offsetWire(w, obj.Shape, 2, True)
 
         x = length / 2 - 2 * math.cos(math.pi / 6)

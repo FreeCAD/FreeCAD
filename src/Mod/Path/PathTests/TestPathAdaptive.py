@@ -26,7 +26,6 @@ import FreeCAD
 import Part
 import Path.Op.Adaptive as PathAdaptive
 import PathScripts.PathJob as PathJob
-import PathScripts.PathGeom as PathGeom
 from PathTests.PathTestUtils import PathTestBase
 
 if FreeCAD.GuiUp:

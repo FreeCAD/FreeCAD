@@ -23,7 +23,6 @@
 import FreeCAD
 import Path.Op.Vcarve as PathVcarve
 import Path.Tool.Bit as PathToolBit
-import PathScripts.PathGeom as PathGeom
 import math
 
 from PathTests.PathTestUtils import PathTestBase

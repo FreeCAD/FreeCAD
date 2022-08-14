@@ -27,7 +27,6 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 import math
 import copy
@@ -190,7 +189,7 @@ class ObjectDressup:
                 + "\n"
             )
             obj.Length = 0.1
-        self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
+        self.wire, self.rapids = Path.Geom.wireForPath(obj.Base.Path)
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def getDirectionOfPath(self, obj):

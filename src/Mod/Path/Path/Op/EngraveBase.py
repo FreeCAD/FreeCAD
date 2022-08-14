@@ -23,7 +23,6 @@
 from lazy_loader.lazy_loader import LazyLoader
 import Path
 import Path.Op.Base as PathOp
-import PathScripts.PathGeom as PathGeom
 import Path.Op.Util as PathOpUtil
 import copy
 
@@ -138,13 +137,13 @@ class ObjectOp(PathOp.ObjectOp):
                         )
                     first = False
 
-                    if PathGeom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
-                        # if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
-                        for cmd in PathGeom.cmdsForEdge(edge):
+                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
+                        # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
+                        for cmd in Path.Geom.cmdsForEdge(edge):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
                     else:
-                        for cmd in PathGeom.cmdsForEdge(edge, True):
+                        for cmd in Path.Geom.cmdsForEdge(edge, True):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
             self.commandlist.append(

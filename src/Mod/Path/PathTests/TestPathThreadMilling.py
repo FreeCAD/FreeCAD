@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathGeom as PathGeom
+import Path
 import Path.Op.ThreadMilling as PathThreadMilling
 import math
 

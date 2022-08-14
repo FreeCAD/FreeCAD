@@ -28,10 +28,10 @@ from Generators import drill_generator as generator
 import FreeCAD
 import Part
 import Path
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathFeedRate
-import PathMachineState
 import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 

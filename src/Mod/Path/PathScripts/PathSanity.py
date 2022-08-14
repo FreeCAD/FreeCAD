@@ -33,8 +33,8 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathPreferences as PathPreferences
 from collections import Counter
 from datetime import datetime

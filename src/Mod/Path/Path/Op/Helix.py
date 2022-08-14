@@ -27,9 +27,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Part
 import Path
+import Path.Base.FeedRate as PathFeedRate
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathFeedRate
 
 
 __title__ = "Path Helix Drill Operation"

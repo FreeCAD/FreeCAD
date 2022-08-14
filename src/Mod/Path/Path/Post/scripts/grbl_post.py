@@ -26,11 +26,12 @@
 
 import FreeCAD
 from FreeCAD import Units
+import Path
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import argparse
 import datetime
 import shlex
-import PathScripts.PathUtil as PathUtil
 import re
 
 

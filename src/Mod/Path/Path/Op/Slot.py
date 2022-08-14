@@ -41,7 +41,6 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 Arcs = LazyLoader("draftgeoutils.arcs", globals(), "draftgeoutils.arcs")
-PathGeom = LazyLoader("PathScripts.PathGeom", globals(), "PathScripts.PathGeom")
 if FreeCAD.GuiUp:
     FreeCADGui = LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
@@ -947,7 +946,7 @@ class ObjectSlot(PathOp.ObjectOp):
             norm = shape_1.normalAt(0.0, 0.0)
             Path.Log.debug("{}.normalAt(): {}".format(sub1, norm))
 
-            if PathGeom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
+            if Path.Geom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
                 # Horizontal face
                 if norm.z == 1 or norm.z == -1:
                     pnts = self._processSingleHorizFace(obj, shape_1)

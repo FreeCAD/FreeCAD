@@ -49,7 +49,8 @@ Many other OpenSBP commands not handled
 """
 from __future__ import print_function
 import FreeCAD
-import PathScripts.PathUtil as PathUtil
+import Path
+import Path.Base.Util as PathUtil
 import os
 import Path
 

@@ -24,9 +24,8 @@ import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
-import PathScripts.PathGeom as PathGeom
+import Path.Base.Util as PathUtil
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
 import time
@@ -703,12 +702,12 @@ class ObjectOp(object):
 
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
-            if not PathGeom.isRoughly(obj.OpFinalDepth.Value, zmin):
+            if not Path.Geom.isRoughly(obj.OpFinalDepth.Value, zmin):
                 obj.OpFinalDepth = zmin
             zmin = obj.OpFinalDepth.Value
 
             def minZmax(z):
-                if hasattr(obj, "StepDown") and not PathGeom.isRoughly(
+                if hasattr(obj, "StepDown") and not Path.Geom.isRoughly(
                     obj.StepDown.Value, 0
                 ):
                     return z + obj.StepDown.Value
@@ -720,7 +719,7 @@ class ObjectOp(object):
                 zmax = minZmax(zmin)
 
             # update start depth if requested and required
-            if not PathGeom.isRoughly(obj.OpStartDepth.Value, zmax):
+            if not Path.Geom.isRoughly(obj.OpStartDepth.Value, zmax):
                 obj.OpStartDepth = zmax
         else:
             # every obj has a StartDepth

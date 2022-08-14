@@ -33,7 +33,7 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-__title__ = "PathGeom - geometry utilities for Path"
+__title__ = "Geom - geometry utilities for Path"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
@@ -709,7 +709,7 @@ def combineHorizontalFaces(faces):
     The Adaptive op is not concerned with which hole edges belong to which face.
 
     Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
-    PathGeom.combineConnectedShapes(), so this algorithm was created.
+    Path.Geom.combineConnectedShapes(), so this algorithm was created.
     """
     horizontal = list()
     offset = 10.0

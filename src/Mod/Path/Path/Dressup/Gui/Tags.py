@@ -28,7 +28,6 @@ import FreeCADGui
 import Path
 import Path.Dressup.Tags as PathDressupTag
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
@@ -527,7 +526,7 @@ class PathDressupTagViewProvider:
             z = self.tags[0].point.z
         p = FreeCAD.Vector(x, y, z)
         for i, tag in enumerate(self.tags):
-            if PathGeom.pointsCoincide(
+            if Path.Geom.pointsCoincide(
                 p, tag.point, tag.sphere.radius.getValue() * 1.3
             ):
                 return i

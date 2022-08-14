@@ -24,7 +24,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathGeom as PathGeom
 import math
 
 # lazily loaded modules
@@ -56,7 +55,7 @@ def endPoints(edgeOrWire):
         pts.extend([e.valueAt(e.LastParameter) for e in edgeOrWire.Edges])
         unique = []
         for p in pts:
-            cnt = len([p2 for p2 in pts if PathGeom.pointsCoincide(p, p2)])
+            cnt = len([p2 for p2 in pts if Path.Geom.pointsCoincide(p, p2)])
             if 1 == cnt:
                 unique.append(p)
 
@@ -64,7 +63,7 @@ def endPoints(edgeOrWire):
 
     pfirst = edgeOrWire.valueAt(edgeOrWire.FirstParameter)
     plast = edgeOrWire.valueAt(edgeOrWire.LastParameter)
-    if PathGeom.pointsCoincide(pfirst, plast):
+    if Path.Geom.pointsCoincide(pfirst, plast):
         return None
 
     return [pfirst, plast]
@@ -73,7 +72,7 @@ def endPoints(edgeOrWire):
 def includesPoint(p, pts):
     """includesPoint(p, pts) ... answer True if the collection of pts includes the point p"""
     for pt in pts:
-        if PathGeom.pointsCoincide(p, pt):
+        if Path.Geom.pointsCoincide(p, pt):
             return True
 
     return False
@@ -246,7 +245,7 @@ class Extension(object):
             e2 = e0.copy()
             off = self.length.Value * direction
             e2.translate(off)
-            e2 = PathGeom.flipEdge(e2)
+            e2 = Path.Geom.flipEdge(e2)
             e1 = Part.Edge(
                 Part.LineSegment(
                     e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)
@@ -295,7 +294,7 @@ class Extension(object):
         tangent = e0.tangentAt(midparam)
         Path.Log.track("tangent", tangent, self.feature, self.sub)
         normal = tangent.cross(FreeCAD.Vector(0, 0, 1))
-        if PathGeom.pointsCoincide(normal, FreeCAD.Vector(0, 0, 0)):
+        if Path.Geom.pointsCoincide(normal, FreeCAD.Vector(0, 0, 0)):
             return None
 
         return self._getDirectedNormal(e0.valueAt(midparam), normal.normalize())
@@ -326,7 +325,7 @@ class Extension(object):
         Path.Log.track()
 
         length = self.length.Value
-        if PathGeom.isRoughly(0, length) or not self.sub:
+        if Path.Geom.isRoughly(0, length) or not self.sub:
             Path.Log.debug("no extension, length=%.2f, sub=%s" % (length, self.sub))
             return None
 
@@ -347,7 +346,7 @@ class Extension(object):
                 if direction is None:
                     return None
 
-                if PathGeom.pointsCoincide(normal, direction):
+                if Path.Geom.pointsCoincide(normal, direction):
                     r = circle.Radius - length
                 else:
                     r = circle.Radius + length
@@ -365,7 +364,7 @@ class Extension(object):
 
                     # Determine if rotational alignment is necessary for new arc
                     rotationAdjustment = arcAdjustmentAngle(edge, e3)
-                    if not PathGeom.isRoughly(rotationAdjustment, 0.0):
+                    if not Path.Geom.isRoughly(rotationAdjustment, 0.0):
                         e3.rotate(
                             edge.Curve.Center,
                             FreeCAD.Vector(0.0, 0.0, 1.0),
@@ -424,7 +423,7 @@ class Extension(object):
             subFace = Part.Face(sub)
             featFace = Part.Face(feature.Wires[0])
             isOutside = True
-            if not PathGeom.isRoughly(featFace.Area, subFace.Area):
+            if not Path.Geom.isRoughly(featFace.Area, subFace.Area):
                 length = -1.0 * length
                 isOutside = False
 
@@ -560,9 +559,9 @@ def getExtendOutlineFace(
         bbx = f.BoundBox
         zNorm = abs(f.normalAt(0.0, 0.0).z)
         if (
-            PathGeom.isRoughly(zNorm, 1.0)
-            and PathGeom.isRoughly(bbx.ZMax - bbx.ZMin, 0.0)
-            and PathGeom.isRoughly(bbx.ZMin, face.BoundBox.ZMin)
+            Path.Geom.isRoughly(zNorm, 1.0)
+            and Path.Geom.isRoughly(bbx.ZMax - bbx.ZMin, 0.0)
+            and Path.Geom.isRoughly(bbx.ZMin, face.BoundBox.ZMin)
         ):
             if bbx.ZMin < zmin:
                 bottom_faces.append(f)
@@ -610,7 +609,7 @@ def getWaterlineFace(base_shape, face):
     # Get top face(s) of envelope at face height
     rawList = list()
     for f in env.Faces:
-        if PathGeom.isRoughly(f.BoundBox.ZMin, faceHeight):
+        if Path.Geom.isRoughly(f.BoundBox.ZMin, faceHeight):
             rawList.append(f)
     # make compound and extrude downward
     rawComp = Part.makeCompound(rawList)

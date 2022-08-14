@@ -28,7 +28,7 @@ __contributors__ = ""
 
 import Path
 import FreeCAD
-from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll, CmdMoveDrill
+import Path
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -92,7 +92,7 @@ class MachineState:
             self.WCS = command.Name
             return not oldstate == self.getState()
 
-        if command.Name in CmdMoveDrill:
+        if command.Name in Path.Geom.CmdMoveDrill:
             oldZ = self.Z
             for p in command.Parameters:
                 self.__setattr__(p, command.Parameters[p])

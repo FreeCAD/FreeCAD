@@ -23,10 +23,10 @@
 from PySide import QtCore, QtGui
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathGui as PathGui
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyEditor as PathPropertyEditor
-import PathScripts.PathUtil as PathUtil
 import os
 import re
 

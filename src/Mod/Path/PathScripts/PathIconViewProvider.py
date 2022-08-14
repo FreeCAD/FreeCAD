@@ -22,8 +22,8 @@
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import PathGui
-import PathScripts.PathUtil as PathUtil
 import importlib
 
 __title__ = "Path Icon ViewProvider"

@@ -22,9 +22,8 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathGeom as PathGeom
+import Path.Base.Util as PathUtil
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
-import PathScripts.PathUtil as PathUtil
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Setup Sheet for a Job."
@@ -234,7 +233,7 @@ class SetupSheet:
         return None
 
     def hasDefaultToolRapids(self):
-        return PathGeom.isRoughly(self.obj.VertRapid.Value, 0) and PathGeom.isRoughly(
+        return Path.Geom.isRoughly(self.obj.VertRapid.Value, 0) and Path.Geom.isRoughly(
             self.obj.HorizRapid.Value, 0
         )
 

@@ -23,12 +23,12 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
-import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 

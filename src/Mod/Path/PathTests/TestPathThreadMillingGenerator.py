@@ -21,7 +21,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathGeom as PathGeom
 import Generators.threadmilling_generator as threadmilling
 import math
 

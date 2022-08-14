@@ -24,7 +24,6 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import PathScripts.PathGeom as PathGeom
 import math
 
 # lazily loaded modules
@@ -116,19 +115,19 @@ def _orientEdges(inEdges):
     if 1 < len(inEdges):
         last = e0.valueAt(e0.LastParameter)
         e1 = inEdges[1]
-        if not PathGeom.pointsCoincide(
+        if not Path.Geom.pointsCoincide(
             last, e1.valueAt(e1.FirstParameter)
-        ) and not PathGeom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
+        ) and not Path.Geom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
             debugEdge("#  _orientEdges - flip first", e0)
-            e0 = PathGeom.flipEdge(e0)
+            e0 = Path.Geom.flipEdge(e0)
 
     edges = [e0]
     last = e0.valueAt(e0.LastParameter)
     for e in inEdges[1:]:
         edge = (
             e
-            if PathGeom.pointsCoincide(last, e.valueAt(e.FirstParameter))
-            else PathGeom.flipEdge(e)
+            if Path.Geom.pointsCoincide(last, e.valueAt(e.FirstParameter))
+            else Path.Geom.flipEdge(e)
         )
         edges.append(edge)
         last = edge.valueAt(edge.LastParameter)
@@ -172,7 +171,7 @@ def orientWire(w, forward=True):
     if forward is not None:
         if forward != _isWireClockwise(wire):
             Path.Log.track("orientWire - needs flipping")
-            return PathGeom.flipWire(wire)
+            return Path.Geom.flipWire(wire)
         Path.Log.track("orientWire - ok")
     return wire
 
@@ -196,7 +195,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
                 curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z)
             )
             if base.isInside(new_edge.Vertexes[0].Point, offset / 2, True):
-                if offset > curve.Radius or PathGeom.isRoughly(offset, curve.Radius):
+                if offset > curve.Radius or Path.Geom.isRoughly(offset, curve.Radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
                 if Side:
@@ -285,9 +284,9 @@ def offsetWire(wire, base, offset, forward, Side=None):
             # flip the edge if it's not on the right side of the original edge
             if forward is not None:
                 v1 = edge.Vertexes[1].Point - p0
-                left = PathGeom.Side.Left == PathGeom.Side.of(v0, v1)
+                left = Path.Geom.Side.Left == Path.Geom.Side.of(v0, v1)
                 if left != forward:
-                    edge = PathGeom.flipEdge(edge)
+                    edge = Path.Geom.flipEdge(edge)
             return Part.Wire([edge])
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
@@ -342,7 +341,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
         p0 = edge.firstVertex().Point
         p1 = edge.lastVertex().Point
         for p in insideEndpoints:
-            if PathGeom.pointsCoincide(p, p0, 0.01) or PathGeom.pointsCoincide(
+            if Path.Geom.pointsCoincide(p, p0, 0.01) or Path.Geom.pointsCoincide(
                 p, p1, 0.01
             ):
                 return True
@@ -361,7 +360,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     def isCircleAt(edge, center):
         """isCircleAt(edge, center) ... helper function returns True if edge is a circle at the given center."""
         if Part.Circle == type(edge.Curve) or Part.ArcOfCircle == type(edge.Curve):
-            return PathGeom.pointsCoincide(edge.Curve.Center, center)
+            return Path.Geom.pointsCoincide(edge.Curve.Center, center)
         return False
 
     # split offset wire into edges to the left side and edges to the right side
@@ -376,7 +375,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # next side, we're done
     for e in owire.Edges + owire.Edges:
         if isCircleAt(e, start):
-            if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
+            if Path.Geom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
                 if not collectLeft and leftSideEdges:
                     break
                 collectLeft = True
@@ -387,7 +386,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
                 collectLeft = False
                 collectRight = True
         elif isCircleAt(e, end):
-            if PathGeom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
+            if Path.Geom.pointsCoincide(e.Curve.Axis, FreeCAD.Vector(0, 0, 1)):
                 if not collectRight and rightSideEdges:
                     break
                 collectLeft = False
@@ -410,7 +409,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
     edges = leftSideEdges
     for e in longestWire.Edges:
         for e0 in rightSideEdges:
-            if PathGeom.edgesMatch(e, e0):
+            if Path.Geom.edgesMatch(e, e0):
                 edges = rightSideEdges
                 Path.Log.debug("#use right side edges")
                 if not forward:

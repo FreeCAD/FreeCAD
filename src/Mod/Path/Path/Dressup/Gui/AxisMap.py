@@ -23,11 +23,9 @@
 import FreeCAD
 import Path
 import math
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGui as PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PathScripts.PathGeom import CmdMoveArc
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -88,11 +86,11 @@ class ObjectDressup:
         currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
         for p in path:
-            if p.Name in CmdMoveArc:
+            if p.Name in Path.Geom.CmdMoveArc:
                 curVec = FreeCAD.Vector(
                     currLocation["X"], currLocation["Y"], currLocation["Z"]
                 )
-                arcwire = PathGeom.edgeForCmd(p, curVec)
+                arcwire = Path.Geom.edgeForCmd(p, curVec)
                 pointlist = arcwire.discretize(Deflection=d)
                 for point in pointlist:
                     newcommand = Path.Command(
@@ -117,7 +115,7 @@ class ObjectDressup:
                 if obj.Base.Path:
                     if obj.Base.Path.Commands:
                         pp = obj.Base.Path.Commands
-                        if len([i for i in pp if i.Name in CmdMoveArc]) == 0:
+                        if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
                             pathlist = pp
                         else:
                             pathlist = self._stripArcs(pp, d)

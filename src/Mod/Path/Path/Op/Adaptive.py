@@ -25,7 +25,6 @@
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathGeom as PathGeom
 import FreeCAD
 import time
 import json
@@ -869,7 +868,7 @@ def _get_working_edges(op, obj):
                     all_regions.append(f)
 
     # Second face-combining method attempted
-    horizontal = PathGeom.combineHorizontalFaces(all_regions)
+    horizontal = Path.Geom.combineHorizontalFaces(all_regions)
     if horizontal:
         obj.removalshape = Part.makeCompound(horizontal)
         for f in horizontal:

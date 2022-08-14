@@ -25,7 +25,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathGeom as PathGeom
 import math
 
 
@@ -223,7 +222,7 @@ class ObjectDressup:
 
         self.angle = obj.Angle
         self.method = obj.Method
-        self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
+        self.wire, self.rapids = Path.Geom.wireForPath(obj.Base.Path)
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:
@@ -236,7 +235,7 @@ class ObjectDressup:
         for edge in edges:
             israpid = False
             for redge in self.rapids:
-                if PathGeom.edgesMatch(edge, redge):
+                if Path.Geom.edgesMatch(edge, redge):
                     israpid = True
             if not israpid:
                 bb = edge.BoundBox
@@ -361,7 +360,7 @@ class ObjectDressup:
             edge = edges[i]
             israpid = False
             for redge in self.rapids:
-                if PathGeom.edgesMatch(edge, redge):
+                if Path.Geom.edgesMatch(edge, redge):
                     israpid = True
             if not israpid:
                 bb = edge.BoundBox
@@ -395,7 +394,7 @@ class ObjectDressup:
                         candidate = edges[j]
                         cp0 = candidate.Vertexes[0].Point
                         cp1 = candidate.Vertexes[1].Point
-                        if PathGeom.pointsCoincide(p1, cp1):
+                        if Path.Geom.pointsCoincide(p1, cp1):
                             # found closed loop
                             loopFound = True
                             rampedges.append(candidate)
@@ -413,7 +412,7 @@ class ObjectDressup:
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, p0, p1))
-                        if not PathGeom.isRoughly(p1.z, minZ):
+                        if not Path.Geom.isRoughly(p1.z, minZ):
                             # the edges covered by the helix not handled again,
                             # unless reached the bottom height
                             i = j
@@ -431,11 +430,11 @@ class ObjectDressup:
             p1 = edge.Vertexes[1].Point
             if p0.z > self.ignoreAbove and (
                 p1.z > self.ignoreAbove
-                or PathGeom.isRoughly(p1.z, self.ignoreAbove.Value)
+                or Path.Geom.isRoughly(p1.z, self.ignoreAbove.Value)
             ):
                 Path.Log.debug("Whole plunge move above 'ignoreAbove', ignoring")
                 return (edge, True)
-            elif p0.z > self.ignoreAbove and not PathGeom.isRoughly(
+            elif p0.z > self.ignoreAbove and not Path.Geom.isRoughly(
                 p0.z, self.ignoreAbove.Value
             ):
                 Path.Log.debug(
@@ -543,7 +542,7 @@ class ObjectDressup:
                 if redge.Length >= rampremaining:
                     # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
-                    splitEdge = PathGeom.splitEdgeAt(redge, p1)
+                    splitEdge = Path.Geom.splitEdgeAt(redge, p1)
                     Path.Log.debug("Ramp remaining: {}".format(rampremaining))
                     Path.Log.debug(
                         "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
@@ -626,7 +625,7 @@ class ObjectDressup:
                 if redge.Length >= rampremaining:
                     # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
-                    splitEdge = PathGeom.splitEdgeAt(redge, p1)
+                    splitEdge = Path.Geom.splitEdgeAt(redge, p1)
                     Path.Log.debug(
                         "Got split edge (index: {}) with lengths: {}, {}".format(
                             i, splitEdge[0].Length, splitEdge[1].Length
@@ -702,9 +701,9 @@ class ObjectDressup:
         outedges = []
         rampremaining = projectionlen
         curPoint = p0  # start from the upper point of plunge
-        if PathGeom.pointsCoincide(
-            PathGeom.xy(p0),
-            PathGeom.xy(rampedges[-1].valueAt(rampedges[-1].LastParameter)),
+        if Path.Geom.pointsCoincide(
+            Path.Geom.xy(p0),
+            Path.Geom.xy(rampedges[-1].valueAt(rampedges[-1].LastParameter)),
         ):
             Path.Log.debug(
                 "The ramp forms a closed wire, needless to move on original Z height"
@@ -714,7 +713,7 @@ class ObjectDressup:
                 if redge.Length >= rampremaining:
                     # this edge needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
-                    splitEdge = PathGeom.splitEdgeAt(redge, p1)
+                    splitEdge = Path.Geom.splitEdgeAt(redge, p1)
                     Path.Log.debug(
                         "Got split edges with lengths: {}, {}".format(
                             splitEdge[0].Length, splitEdge[1].Length
@@ -785,13 +784,13 @@ class ObjectDressup:
         for edge in edges:
             israpid = False
             for redge in self.rapids:
-                if PathGeom.edgesMatch(edge, redge):
+                if Path.Geom.edgesMatch(edge, redge):
                     israpid = True
             if israpid:
                 v = edge.valueAt(edge.LastParameter)
                 commands.append(Path.Command("G0", {"X": v.x, "Y": v.y, "Z": v.z}))
             else:
-                commands.extend(PathGeom.cmdsForEdge(edge))
+                commands.extend(Path.Geom.cmdsForEdge(edge))
 
         lastCmd = Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 0.0})
 
@@ -830,7 +829,7 @@ class ObjectDressup:
 
             if cmd.Name in ["G1", "G2", "G3", "G01", "G02", "G03"]:
                 if zVal is not None and zVal2 != zVal:
-                    if PathGeom.isRoughly(xVal, xVal2) and PathGeom.isRoughly(
+                    if Path.Geom.isRoughly(xVal, xVal2) and Path.Geom.isRoughly(
                         yVal, yVal2
                     ):
                         # this is a straight plunge
