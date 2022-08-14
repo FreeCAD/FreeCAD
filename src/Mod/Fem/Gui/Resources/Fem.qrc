@@ -22,6 +22,7 @@
         <file>icons/FEM_ConstraintGear.svg</file>
         <file>icons/FEM_ConstraintHeatflux.svg</file>
         <file>icons/FEM_ConstraintInitialFlowVelocity.svg</file>
+        <file>icons/FEM_ConstraintInitialPressure.svg</file>
         <file>icons/FEM_ConstraintInitialTemperature.svg</file>
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
@@ -161,6 +162,7 @@
         <file>ui/ElementRotation1D.ui</file>
         <file>ui/FlowVelocity.ui</file>
         <file>ui/InitialFlowVelocity.ui</file>
+        <file>ui/InitialPressure.ui</file>
         <file>ui/Material.ui</file>
         <file>ui/MaterialReinforcement.ui</file>
         <file>ui/MeshBoundaryLayer.ui</file>

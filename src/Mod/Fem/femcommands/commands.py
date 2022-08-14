@@ -258,6 +258,23 @@ class _ConstraintInitialFlowVelocity(CommandManager):
         self.do_activated = "add_obj_on_gui_set_edit"
 
 
+class _ConstraintInitialPressure(CommandManager):
+    "The FEM_ConstraintInitialPressure command definition"
+
+    def __init__(self):
+        super(_ConstraintInitialPressure, self).__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintInitialPressure",
+            "Constraint initial pressure"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintInitialPressure",
+            "Creates a FEM constraint initial pressure"
+        )
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
 class _ConstraintSectionPrint(CommandManager):
     "The FEM_ConstraintSectionPrint command definition"
 
@@ -1103,6 +1120,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintInitialFlowVelocity",
     _ConstraintInitialFlowVelocity()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintInitialPressure",
+    _ConstraintInitialPressure()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintSectionPrint",

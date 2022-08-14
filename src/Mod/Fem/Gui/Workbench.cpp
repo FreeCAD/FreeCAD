@@ -144,6 +144,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintInitialPressure"
         << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
@@ -272,6 +273,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "Separator"
         << "FEM_ConstraintForce"
         << "FEM_ConstraintPressure"
+        << "FEM_ConstraintInitialPressure"
         << "FEM_ConstraintCentrif"
         << "FEM_ConstraintSelfWeight";
 
