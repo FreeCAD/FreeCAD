@@ -103,6 +103,8 @@ class _TaskPanel(object):
     def _initParamWidget(self):
         self._paramWidget.potentialQSB.setProperty(
             'value', self._obj.Potential)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.potentialQSB).bind(self._obj, "Potential")
         self._paramWidget.potentialBox.setChecked(
             not self._obj.PotentialEnabled)
         self._paramWidget.potentialConstantBox.setChecked(
