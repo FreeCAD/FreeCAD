@@ -435,6 +435,12 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e6;
         }
     }
+    else if (unit == Unit::VacuumPermittivity) {
+        unitString = QString::fromLatin1("F/m");
+        // FIXME: this should be 1e-9 because unit has L^-3
+        // see also https://github.com/FreeCAD/FreeCAD/commit/9db5dff7#r81159352
+        factor = 1;
+    }
     else if (unit == Unit::Frequency) {
         if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("Hz");
