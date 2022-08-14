@@ -25,16 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#include <Qt>
-#include <QGraphicsItem>
-#include <QSvgRenderer>
 #include <QByteArray>
-#include <QBrush>
 #include <QPixmap>
-#include <QImage>
-#endif
 
 #include <App/Material.h>
 #include <Mod/TechDraw/App/HatchLine.h>
