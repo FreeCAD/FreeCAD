@@ -1473,8 +1473,8 @@ class Writer(object):
                 velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
                 self._initial(name, "Velocity 2", velocity)
             if obj.VelocityZEnabled:
-               velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
-               self._initial(name, "Velocity 3", velocity)
+                velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
+                self._initial(name, "Velocity 3", velocity)
 
     def _handleFlowInitialVelocity(self, bodies):
         initialVelocities = self._getMember("Fem::ConstraintInitialFlowVelocity")
