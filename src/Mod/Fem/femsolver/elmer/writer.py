@@ -198,10 +198,6 @@ class Writer(object):
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
 
-    def _getConstant(self, name, unit_dimension):
-        # TODO without method directly use self.constsdef[name]
-        return self._convert(self.constsdef[name], unit_dimension)
-
     def _setConstant(self, name, quantityStr):
         # TODO without method directly use self.constsdef[name]
         if name == "PermittivityOfVacuum":
@@ -417,7 +413,8 @@ class Writer(object):
     def _handleHeatConstants(self):
         self._constant(
             "Stefan Boltzmann",
-            self._getConstant("StefanBoltzmann", "M/(O^4*T^3)"))
+            self._convert(self.constsdef["StefanBoltzmann"], "M/(O^4*T^3)")
+        )
 
     def _handleHeatEquation(self, bodies, equation):
         for b in bodies:
@@ -623,9 +620,8 @@ class Writer(object):
     def _handleElectrostaticConstants(self):
         self._constant(
             "Permittivity Of Vacuum",
-            self._getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
+            self._convert(self.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
         )
-        # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
 
     def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
@@ -1158,7 +1154,7 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
-                gravity = self._getConstant("Gravity", "L/T^2")
+                gravity = self._convert(self.constsdef["Gravity"], "L/T^2")
                 m = self._getBodyMaterial(name).Material
 
                 densityQuantity = Units.Quantity(m["Density"])
@@ -1320,7 +1316,7 @@ class Writer(object):
         return s
 
     def _handleFlowConstants(self):
-        gravity = self._getConstant("Gravity", "L/T^2")
+        gravity = self._convert(self.constsdef["Gravity"], "L/T^2")
         self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
 
     def _updateFlowSolver(self, equation):
