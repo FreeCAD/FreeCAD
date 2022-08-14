@@ -48,4 +48,5 @@ class ConstantVacuumPermittivity(base_fempythonobject.BaseFemPythonObject):
             "Overwrites default permittivity of vacuum"
         )
         # we must set an expression so that the small value can actually be entered
-        obj.setExpression("VacuumPermittivity", "8.85419e-12")
+        permittivity = Units.Quantity(constants.vacuum_permittivity()).getValueAs("F/m")
+        obj.setExpression("VacuumPermittivity", str(permittivity))
