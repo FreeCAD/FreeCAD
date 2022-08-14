@@ -39,24 +39,24 @@ from . import equation
 LINEAR_SOLVER = ["Direct", "Iterative"]
 LINEAR_DIRECT = ["Banded", "MUMPS", "Umfpack"]
 LINEAR_ITERATIVE = [
-    "CG",
-    "CGS",
     "BiCGStab",
     "BiCGStabl",
-    "TFQMR",
-    "GMRES",
+    "CG",
     "GCR",
-    "Idrs"
+    "CGS",
+    "GMRES",
+    "Idrs",
+    "TFQMR"
 ]
 LINEAR_PRECONDITIONING = [
     "None",
     "Diagonal",
-    "ILUT",
     "ILU0",
     "ILU1",
     "ILU2",
     "ILU3",
-    "ILU4"
+    "ILU4",
+    "ILUT"
 ]
 
 
