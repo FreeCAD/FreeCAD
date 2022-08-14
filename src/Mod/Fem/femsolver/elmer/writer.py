@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer writer"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -1427,19 +1428,37 @@ class Writer(object):
                         name, "Compressibility Model",
                         m["CompressibilityModel"])
 
+    def _outputInitialVelocity(self, obj, name):
+        # flow only makes sense for fluid material
+        if self._isBodyMaterialFluid(name):
+            if obj.VelocityXEnabled:
+                velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
+                self._initial(name, "Velocity 1", velocity)
+            if obj.VelocityYEnabled:
+                velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
+                self._initial(name, "Velocity 2", velocity)
+            if obj.VelocityZEnabled:
+               velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
+               self._initial(name, "Velocity 3", velocity)
+
     def _handleFlowInitialVelocity(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintInitialFlowVelocity")
-        if obj is not None:
-            for name in bodies:
-                if obj.VelocityXEnabled:
-                    velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
-                    self._initial(name, "Velocity 1", velocity)
-                if obj.VelocityYEnabled:
-                    velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
-                    self._initial(name, "Velocity 2", velocity)
-                if obj.VelocityZEnabled:
-                    velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
-                    self._initial(name, "Velocity 3", velocity)
+        initialVelocities = self._getMember("Fem::ConstraintInitialFlowVelocity")
+        for obj in initialVelocities:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputInitialVelocity(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one initial velocity without a reference
+                # add it to all fluid bodies
+                if len(initialVelocities) == 1:
+                    for name in bodies:
+                        self._outputInitialVelocity(obj, name)
+                else:
+                    raise WriteError(
+                        "Several initial velocities found without reference to a body.\n"
+                        "Please set a body for each initial velocity."
+                    )
             self._handled(obj)
 
     def _handleFlowBndConditions(self):
