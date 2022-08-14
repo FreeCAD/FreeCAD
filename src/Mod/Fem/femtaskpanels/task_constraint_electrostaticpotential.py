@@ -126,8 +126,6 @@ class _TaskPanel(object):
         self._obj.PotentialEnabled = \
             not self._paramWidget.potentialBox.isChecked()
         if self._obj.PotentialEnabled:
-            # if the input widget shows not a green hook, but the user presses ok
-            # we could run into a syntax error on getting the quantity
             potential = None
             try:
                 potential = self._paramWidget.potentialQSB.property('value')
