@@ -57,7 +57,7 @@ class GuiExport TextEdit : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    TextEdit(QWidget *parent = nullptr);
+    explicit TextEdit(QWidget *parent = nullptr);
     ~TextEdit() override;
 
 private Q_SLOTS:
@@ -86,7 +86,7 @@ class GuiExport TextEditor : public TextEdit, public WindowParameter
     Q_OBJECT
 
 public:
-    TextEditor(QWidget *parent = nullptr);
+    explicit TextEditor(QWidget *parent = nullptr);
     ~TextEditor() override;
     void setSyntaxHighlighter(SyntaxHighlighter*);
 
@@ -122,7 +122,7 @@ class LineMarker : public QWidget
     Q_OBJECT
 
 public:
-    LineMarker(TextEditor* editor);
+    explicit LineMarker(TextEditor* editor);
     ~LineMarker() override;
 
     QSize sizeHint() const override;
@@ -145,7 +145,7 @@ class CompletionList : public QListWidget
 
 public:
     /// Construction
-    CompletionList(QPlainTextEdit* parent);
+    explicit CompletionList(QPlainTextEdit* parent);
     /// Destruction
     ~CompletionList() override;
 

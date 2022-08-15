@@ -59,7 +59,7 @@ public:
     static DownloadManager* getInstance();
 
 private:
-    DownloadManager(QWidget *parent = nullptr);
+    explicit DownloadManager(QWidget *parent = nullptr);
     ~DownloadManager() override;
 
 public:
@@ -107,7 +107,7 @@ class DownloadModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    DownloadModel(DownloadManager *downloadManager, QObject *parent = nullptr);
+    explicit DownloadModel(DownloadManager *downloadManager, QObject *parent = nullptr);
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;

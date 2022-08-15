@@ -41,7 +41,7 @@ class SplashScreen : public QSplashScreen
     Q_OBJECT
 
 public:
-    SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
+    explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
     ~SplashScreen() override;
 
 protected:
@@ -74,7 +74,7 @@ class GuiExport LicenseView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    LicenseView(QWidget* parent=nullptr);
+    explicit LicenseView(QWidget* parent=nullptr);
     ~LicenseView() override;
 
     void setSource(const QUrl & url);
@@ -95,7 +95,7 @@ class GuiExport AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    AboutDialog(bool showLic, QWidget* parent = nullptr);
+    explicit AboutDialog(bool showLic, QWidget* parent = nullptr);
     ~AboutDialog() override;
 
 protected:

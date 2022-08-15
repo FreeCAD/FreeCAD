@@ -38,7 +38,7 @@ class TaskBoxPosition : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskBoxPosition(QWidget *parent = nullptr);
+    explicit TaskBoxPosition(QWidget *parent = nullptr);
     ~TaskBoxPosition() override;
 
 
@@ -56,7 +56,7 @@ class TaskBoxAngle : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskBoxAngle(QWidget *parent = nullptr);
+    explicit TaskBoxAngle(QWidget *parent = nullptr);
     ~TaskBoxAngle() override;
 
 

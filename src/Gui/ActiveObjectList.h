@@ -51,7 +51,7 @@ namespace Gui
     class GuiExport ActiveObjectList
     {
     public:
-        ActiveObjectList(Document *doc)
+        explicit ActiveObjectList(Document *doc)
             :_Doc(doc)
         {}
 

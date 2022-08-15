@@ -47,7 +47,7 @@ private:
 public:
     static void init_type();    // announce properties and methods
 
-    PythonStdout(PythonConsole *pc);
+    explicit PythonStdout(PythonConsole *pc);
     ~PythonStdout() override;
 
     Py::Object getattr(const char *name) override;
@@ -73,7 +73,7 @@ private:
 public:
     static void init_type();    // announce properties and methods
 
-    PythonStderr(PythonConsole *pc);
+    explicit PythonStderr(PythonConsole *pc);
     ~PythonStderr() override;
 
     Py::Object getattr(const char *name) override;
@@ -141,7 +141,7 @@ private:
 public:
     static void init_type();    // announce properties and methods
 
-    PythonStdin(PythonConsole *pc);
+    explicit PythonStdin(PythonConsole *pc);
     ~PythonStdin() override;
 
     Py::Object repr() override;

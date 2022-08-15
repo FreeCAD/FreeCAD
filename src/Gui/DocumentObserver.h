@@ -46,9 +46,9 @@ public:
     /*! Constructor */
     DocumentT();
     /*! Constructor */
-    DocumentT(Document*);
+    explicit DocumentT(Document*);
     /*! Constructor */
-    DocumentT(const std::string&);
+    explicit DocumentT(const std::string&);
     /*! Constructor */
     DocumentT(const DocumentT&);
     /*! Destructor */
@@ -90,7 +90,7 @@ public:
     /*! Constructor */
     ViewProviderT(ViewProviderT &&);
     /*! Constructor */
-    ViewProviderT(const ViewProviderDocumentObject*);
+    explicit ViewProviderT(const ViewProviderDocumentObject*);
     /*! Destructor */
     ~ViewProviderT();
     /*! Assignment operator */
@@ -134,7 +134,7 @@ private:
 class GuiExport DocumentWeakPtrT
 {
 public:
-    DocumentWeakPtrT(Gui::Document*) noexcept;
+    explicit DocumentWeakPtrT(Gui::Document*) noexcept;
     ~DocumentWeakPtrT();
 
     /*!
@@ -173,7 +173,7 @@ private:
 class GuiExport ViewProviderWeakPtrT
 {
 public:
-    ViewProviderWeakPtrT(ViewProviderDocumentObject*);
+    explicit ViewProviderWeakPtrT(ViewProviderDocumentObject*);
     ~ViewProviderWeakPtrT();
 
     /*!
@@ -236,7 +236,7 @@ template <class T>
 class WeakPtrT
 {
 public:
-    WeakPtrT(T* t) : ptr(t) {
+    explicit WeakPtrT(T* t) : ptr(t) {
     }
     ~WeakPtrT() {
     }
@@ -319,7 +319,7 @@ class GuiExport DocumentObserver
 public:
     /// Constructor
     DocumentObserver();
-    DocumentObserver(Document*);
+    explicit DocumentObserver(Document*);
     virtual ~DocumentObserver();
 
     /** Attaches to another document, the old document

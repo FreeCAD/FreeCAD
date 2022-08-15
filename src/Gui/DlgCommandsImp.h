@@ -46,7 +46,7 @@ class DlgCustomCommandsImp : public CustomizeActionPage
   Q_OBJECT
 
 public:
-    DlgCustomCommandsImp(QWidget* parent = nullptr);
+    explicit DlgCustomCommandsImp(QWidget* parent = nullptr);
     ~DlgCustomCommandsImp() override;
 
 protected Q_SLOTS:

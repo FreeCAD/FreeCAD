@@ -48,7 +48,7 @@ public:
     SelectionObject();
     /*! Constructs a SelectionObject from the SelectionChanges structure.
      */
-    SelectionObject(const SelectionChanges& msg);
+    explicit SelectionObject(const SelectionChanges& msg);
     explicit SelectionObject(App::DocumentObject*);
     ~SelectionObject() override;
     /**

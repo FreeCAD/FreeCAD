@@ -146,7 +146,7 @@ class SearchBar : public QWidget
     Q_OBJECT
 
 public:
-    SearchBar(QWidget* parent = nullptr);
+    explicit SearchBar(QWidget* parent = nullptr);
 
     void setEditor(QPlainTextEdit *textEdit);
 

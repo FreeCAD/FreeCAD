@@ -37,7 +37,7 @@ class UndoDialog : public QMenu
     Q_OBJECT
 
 public:
-  UndoDialog( QWidget* parent = nullptr );
+  explicit UndoDialog( QWidget* parent = nullptr );
   ~UndoDialog() override;
 
 protected Q_SLOTS:
@@ -53,7 +53,7 @@ class RedoDialog : public QMenu
     Q_OBJECT
 
 public:
-  RedoDialog( QWidget* parent = nullptr );
+  explicit RedoDialog( QWidget* parent = nullptr );
   ~RedoDialog() override;
 
 protected Q_SLOTS:

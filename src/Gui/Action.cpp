@@ -384,7 +384,7 @@ namespace Gui {
 class WorkbenchActionEvent : public QEvent
 {
 public:
-    WorkbenchActionEvent(QAction* a)
+    explicit WorkbenchActionEvent(QAction* a)
       : QEvent(QEvent::User), act(a)
     { }
     ~WorkbenchActionEvent() override

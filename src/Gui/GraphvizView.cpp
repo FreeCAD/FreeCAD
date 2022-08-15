@@ -64,7 +64,7 @@ namespace Gui {
 class GraphvizWorker : public QThread {
     Q_OBJECT
 public:
-    GraphvizWorker(QObject * parent = nullptr)
+    explicit GraphvizWorker(QObject * parent = nullptr)
         : QThread(parent)
     {
     }

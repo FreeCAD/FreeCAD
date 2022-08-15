@@ -36,7 +36,7 @@ class PropertyItemDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    PropertyItemDelegate(QObject* parent);
+    explicit PropertyItemDelegate(QObject* parent);
     ~PropertyItemDelegate() override;
 
     void paint(QPainter *painter, const QStyleOptionViewItem &opt, const QModelIndex &index) const override;

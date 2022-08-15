@@ -232,7 +232,7 @@ void CreateLinkCommands();
 class GuiExport CommandBase
 {
 protected:
-    CommandBase(const char* sMenu, const char* sToolTip=nullptr, const char* sWhat=nullptr,
+    explicit CommandBase(const char* sMenu, const char* sToolTip=nullptr, const char* sWhat=nullptr,
                 const char* sStatus=nullptr, const char* sPixmap=nullptr, const char* sAccel=nullptr);
     virtual ~CommandBase();
 
@@ -313,7 +313,7 @@ protected:
 class GuiExport Command : public CommandBase
 {
 protected:
-    Command(const char* name);
+    explicit Command(const char* name);
     ~Command() override;
 
 protected:
@@ -627,7 +627,7 @@ private:
 class GuiExport GroupCommand : public Command {
 public:
     /// Constructor
-    GroupCommand(const char *name);
+    explicit GroupCommand(const char *name);
 
     /** Add child command
      * @param cmd: child command. Pass null pointer to add a separator.
@@ -770,7 +770,7 @@ protected:
 class MacroCommand: public Command
 {
 public:
-    MacroCommand(const char* name, bool system = false);
+    explicit MacroCommand(const char* name, bool system = false);
     ~MacroCommand() override;
 
 protected:

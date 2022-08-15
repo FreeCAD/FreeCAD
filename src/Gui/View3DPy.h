@@ -59,7 +59,7 @@ public:
     using BaseType = Py::PythonExtension<View3DInventorPy>;
     static void init_type();    // announce properties and methods
 
-    View3DInventorPy(View3DInventor *vi);
+    explicit View3DInventorPy(View3DInventor *vi);
     ~View3DInventorPy() override;
 
     View3DInventor* getView3DIventorPtr();

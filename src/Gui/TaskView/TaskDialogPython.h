@@ -59,7 +59,7 @@ private:
 class GuiExport TaskWatcherPython : public TaskWatcher
 {
 public:
-    TaskWatcherPython(const Py::Object&);
+    explicit TaskWatcherPython(const Py::Object&);
     ~TaskWatcherPython() override;
     bool shouldShow() override;
 
@@ -70,7 +70,7 @@ private:
 class GuiExport TaskDialogPython : public TaskDialog
 {
 public:
-    TaskDialogPython(const Py::Object&);
+    explicit TaskDialogPython(const Py::Object&);
     ~TaskDialogPython() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override;

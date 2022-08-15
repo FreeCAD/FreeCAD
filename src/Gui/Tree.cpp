@@ -203,7 +203,7 @@ struct TimingInfo {
     bool timed = false;
     FC_TIME_POINT t;
     FC_DURATION& d;
-    TimingInfo(FC_DURATION& d)
+    explicit TimingInfo(FC_DURATION& d)
         :d(d)
     {
         _FC_TIME_INIT(t);

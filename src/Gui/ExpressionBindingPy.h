@@ -33,7 +33,7 @@ class ExpressionBindingPy : public Py::PythonExtension<ExpressionBindingPy>
 public:
     static void init_type();    // announce properties and methods
 
-    ExpressionBindingPy(ExpressionBinding*);
+    explicit ExpressionBindingPy(ExpressionBinding*);
     ~ExpressionBindingPy() override;
 
     Py::Object repr() override;

@@ -39,7 +39,7 @@ class Document;
 class GuiExport MergeDocuments : public Base::Persistence
 {
 public:
-    MergeDocuments(App::Document* doc);
+    explicit MergeDocuments(App::Document* doc);
     ~MergeDocuments() override;
     unsigned int getMemSize () const override;
     std::vector<App::DocumentObject*> importObjects(std::istream&);

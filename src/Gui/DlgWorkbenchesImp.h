@@ -40,7 +40,7 @@ class DlgWorkbenchesImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgWorkbenchesImp(QWidget* parent = nullptr);
+    explicit DlgWorkbenchesImp(QWidget* parent = nullptr);
     ~DlgWorkbenchesImp() override;
     static QStringList load_enabled_workbenches();
     static QStringList load_disabled_workbenches();

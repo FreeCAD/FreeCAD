@@ -44,7 +44,7 @@ class ViewProviderPointMarker;
 class PointMarker : public QObject
 {
 public:
-    PointMarker(View3DInventorViewer* view);
+    explicit PointMarker(View3DInventorViewer* view);
     ~PointMarker() override;
 
     void addPoint(const SbVec3f&);

@@ -45,7 +45,7 @@ class GuiExport GLOverlayWidget : public QWidget
     Q_OBJECT
 
 public:
-    GLOverlayWidget(QWidget* parent=nullptr) : QWidget(parent)
+    explicit GLOverlayWidget(QWidget* parent=nullptr) : QWidget(parent)
     {}
     ~GLOverlayWidget() override
     {}

@@ -100,7 +100,7 @@ public:
 
     operator T *() const {
         return this->get();
-    }
+    }//explicit bombs
 };
 
 /** Helper function to deal with bug in SoNode::removeAllChildren()

@@ -564,7 +564,7 @@ CmdTestProgress5::CmdTestProgress5()
 class BarThread : public QThread
 {
 public:
-    BarThread(unsigned long s) : steps(s)
+    explicit BarThread(unsigned long s) : steps(s)
     {
     }
     ~BarThread() override

@@ -52,7 +52,7 @@ namespace Gui {
 class InputValidator : public QValidator
 {
 public:
-    InputValidator(InputField* parent);
+    explicit InputValidator(InputField* parent);
     ~InputValidator() override;
 
     void fixup(QString& input) const override;

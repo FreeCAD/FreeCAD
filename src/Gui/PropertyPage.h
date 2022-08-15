@@ -38,7 +38,7 @@ class GuiExport PropertyPage : public QWidget
     Q_OBJECT
 
 public:
-    PropertyPage(QWidget* parent = nullptr);
+    explicit PropertyPage(QWidget* parent = nullptr);
     ~PropertyPage() override;
 
     bool isModified();
@@ -68,7 +68,7 @@ class GuiExport PreferencePage : public QWidget
     Q_OBJECT
 
 public:
-    PreferencePage(QWidget* parent = nullptr);
+    explicit PreferencePage(QWidget* parent = nullptr);
     ~PreferencePage() override;
 
 public Q_SLOTS:
@@ -87,7 +87,7 @@ class GuiExport PreferenceUiForm : public PreferencePage
     Q_OBJECT
 
 public:
-    PreferenceUiForm(const QString& fn, QWidget* parent = nullptr);
+    explicit PreferenceUiForm(const QString& fn, QWidget* parent = nullptr);
     ~PreferenceUiForm() override;
 
     void loadSettings() override;
@@ -114,7 +114,7 @@ class GuiExport CustomizeActionPage : public QWidget
     Q_OBJECT
 
 public:
-    CustomizeActionPage(QWidget* parent = nullptr);
+    explicit CustomizeActionPage(QWidget* parent = nullptr);
     ~CustomizeActionPage() override;
 
 protected:

@@ -37,7 +37,7 @@ namespace Gui
     class RectItem : public QGraphicsRectItem
     {
     public:
-      RectItem(QGraphicsItem* parent = nullptr);
+      explicit RectItem(QGraphicsItem* parent = nullptr);
       void setBackgroundBrush(const QBrush &brushIn){backgroundBrush = brushIn;}
       void setEditingBrush(const QBrush &brushIn){editBrush = brushIn;}
       void preHighlightOn(){preSelected = true;}

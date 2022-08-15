@@ -167,7 +167,7 @@ class GuiExport SoFCSeparator : public SoSeparator {
 public:
     static void initClass();
     static void finish();
-    SoFCSeparator(bool trackCacheMode=true);
+    explicit SoFCSeparator(bool trackCacheMode=true);
 
     void GLRenderBelowPath(SoGLRenderAction * action) override;
 
@@ -191,7 +191,7 @@ class GuiExport SoFCSelectionRoot : public SoFCSeparator {
 public:
     static void initClass();
     static void finish();
-    SoFCSelectionRoot(bool trackCacheMode=false);
+    explicit SoFCSelectionRoot(bool trackCacheMode=false);
 
     void GLRenderBelowPath(SoGLRenderAction * action) override;
     void GLRenderInPath(SoGLRenderAction * action) override;
@@ -418,7 +418,7 @@ class GuiExport SoSelectionElementAction : public SoAction
 public:
     enum Type {None, Append, Remove, All, Color, Hide, Show};
 
-    SoSelectionElementAction (Type=None, bool secondary = false);
+    explicit SoSelectionElementAction (Type=None, bool secondary = false);
     ~SoSelectionElementAction() override;
 
     Type getType() const;

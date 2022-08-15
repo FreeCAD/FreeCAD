@@ -56,7 +56,7 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
     Q_OBJECT
 
 public:
-    TreeWidget(const char *name, QWidget* parent=nullptr);
+    explicit TreeWidget(const char *name, QWidget* parent=nullptr);
     ~TreeWidget() override;
 
     static void scrollItemToTop();
@@ -446,7 +446,7 @@ class TreePanel : public QWidget
     Q_OBJECT
 
 public:
-    TreePanel(const char *name, QWidget* parent=nullptr);
+    explicit TreePanel(const char *name, QWidget* parent=nullptr);
     ~TreePanel() override;
 
     bool eventFilter(QObject *obj, QEvent *ev) override;
@@ -471,7 +471,7 @@ class TreeDockWidget : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
+    explicit TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
     ~TreeDockWidget() override;
 };
 
@@ -482,7 +482,7 @@ public:
 class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
-    TreeWidgetEditDelegate(QObject* parent=nullptr);
+    explicit TreeWidgetEditDelegate(QObject* parent=nullptr);
     QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const override;
 };

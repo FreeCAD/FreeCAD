@@ -131,7 +131,7 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     ~View3DInventorViewer() override;
 

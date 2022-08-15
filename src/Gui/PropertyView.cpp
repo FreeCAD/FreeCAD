@@ -311,7 +311,7 @@ struct PropertyView::PropInfo
 
 struct PropertyView::PropFind {
     const PropInfo& item;
-    PropFind(const PropInfo& item) : item(item) {}
+    explicit PropFind(const PropInfo& item) : item(item) {}
     bool operator () (const PropInfo& elem) const
     {
         return (elem.propId == item.propId) &&

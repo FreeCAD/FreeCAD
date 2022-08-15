@@ -43,7 +43,7 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Placement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Placement() override;
     void accept() override;
     void reject() override;
@@ -114,7 +114,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DockablePlacement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DockablePlacement() override;
 
     void accept() override;

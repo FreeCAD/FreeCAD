@@ -43,7 +43,7 @@ class DlgSettings3DViewImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettings3DViewImp(QWidget* parent = nullptr);
+    explicit DlgSettings3DViewImp(QWidget* parent = nullptr);
     ~DlgSettings3DViewImp() override;
 
     void saveSettings() override;

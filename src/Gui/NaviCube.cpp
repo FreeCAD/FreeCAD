@@ -112,7 +112,7 @@ public:
 
 class NaviCubeImplementation : public ParameterGrp::ObserverType {
 public:
-	NaviCubeImplementation(Gui::View3DInventorViewer*);
+	explicit NaviCubeImplementation(Gui::View3DInventorViewer*);
 	~NaviCubeImplementation() override;
 	void drawNaviCube();
 	void createContextMenu(const std::vector<std::string>& cmd);

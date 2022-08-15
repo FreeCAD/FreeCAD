@@ -105,7 +105,7 @@ public:
         Special    = 3
     };
 
-    PythonConsole(QWidget *parent = nullptr);
+    explicit PythonConsole(QWidget *parent = nullptr);
     ~PythonConsole() override;
 
     void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
@@ -174,7 +174,7 @@ private:
 class GuiExport PythonConsoleHighlighter : public PythonSyntaxHighlighter
 {
 public:
-    PythonConsoleHighlighter(QObject* parent);
+    explicit PythonConsoleHighlighter(QObject* parent);
     ~PythonConsoleHighlighter() override;
 
     void highlightBlock (const QString & text);
