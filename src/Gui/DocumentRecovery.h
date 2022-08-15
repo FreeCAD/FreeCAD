@@ -43,7 +43,7 @@ class DocumentRecovery : public QDialog
     Q_OBJECT
 
 public:
-    DocumentRecovery(const QList<QFileInfo>&, QWidget* parent = nullptr);
+    explicit DocumentRecovery(const QList<QFileInfo>&, QWidget* parent = nullptr);
     ~DocumentRecovery() override;
 
     void accept() override;

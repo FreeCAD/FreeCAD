@@ -53,7 +53,7 @@ namespace Gui { namespace Dialog {
 class find_placement
 {
 public:
-    find_placement(const std::string& name) : propertyname(name)
+    explicit find_placement(const std::string& name) : propertyname(name)
     {
     }
     bool operator () (const std::pair<std::string, App::Property*>& elem) const

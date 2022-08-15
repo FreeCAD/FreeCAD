@@ -134,7 +134,7 @@ namespace Gui
     template <class GraphEW>
     class Edge_writer {
     public:
-      Edge_writer(const GraphEW &graphEWIn) : graphEW(graphEWIn) {}
+      explicit Edge_writer(const GraphEW &graphEWIn) : graphEW(graphEWIn) {}
       template <class EdgeW>
       void operator()(std::ostream& out, const EdgeW& /*edgeW*/) const
       {
@@ -149,7 +149,7 @@ namespace Gui
     template <class GraphVW>
     class Vertex_writer {
     public:
-      Vertex_writer(const GraphVW &graphVWIn) : graphVW(graphVWIn) {}
+      explicit Vertex_writer(const GraphVW &graphVWIn) : graphVW(graphVWIn) {}
       template <class VertexW>
       void operator()(std::ostream& out, const VertexW& vertexW) const
       {
@@ -176,7 +176,7 @@ namespace Gui
       typedef boost::graph_traits<Graph>::vertex_descriptor GraphInVertex;
       typedef std::vector<GraphInVertex> GraphInVertices;
     public:
-      RakeLeaves(const GraphIn &graphIn) : graph(graphIn) {}
+      explicit RakeLeaves(const GraphIn &graphIn) : graph(graphIn) {}
       GraphInVertices operator()() const
       {
         GraphInVertices out;
@@ -198,7 +198,7 @@ namespace Gui
       typedef boost::graph_traits<Graph>::vertex_descriptor GraphInVertex;
       typedef std::vector<GraphInVertex> GraphInVertices;
     public:
-      DigRoots(const GraphIn &graphIn) : graph(graphIn) {}
+      explicit DigRoots(const GraphIn &graphIn) : graph(graphIn) {}
       GraphInVertices operator()() const
       {
         GraphInVertices out;
@@ -218,7 +218,7 @@ namespace Gui
     class ConnectionVisitor : public boost::default_bfs_visitor
     {
     public:
-      ConnectionVisitor(std::vector<Vertex> &verticesIn) : vertices(verticesIn){}
+      explicit ConnectionVisitor(std::vector<Vertex> &verticesIn) : vertices(verticesIn){}
       
       template<typename TVertex, typename TGraph>
       void discover_vertex(TVertex vertex, TGraph &graph)

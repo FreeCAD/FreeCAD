@@ -44,7 +44,7 @@ class View3DInventorViewerPy : public Py::PythonExtension<View3DInventorViewerPy
 public:
     static void init_type();    // announce properties and methods
 
-    View3DInventorViewerPy(View3DInventorViewer *vi);
+    explicit View3DInventorViewerPy(View3DInventorViewer *vi);
     ~View3DInventorViewerPy() override;
 
     Py::Object repr() override;

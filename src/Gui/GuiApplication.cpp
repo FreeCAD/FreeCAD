@@ -165,7 +165,7 @@ bool GUIApplication::event(QEvent * ev)
 
 class GUISingleApplication::Private {
 public:
-    Private(GUISingleApplication *q_ptr)
+    explicit Private(GUISingleApplication *q_ptr)
       : q_ptr(q_ptr)
       , timer(new QTimer(q_ptr))
       , server(nullptr)

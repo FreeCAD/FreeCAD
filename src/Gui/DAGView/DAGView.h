@@ -43,7 +43,7 @@ namespace Gui
     {
       Q_OBJECT
     public:
-      View(QWidget *parentIn = nullptr);
+      explicit View(QWidget *parentIn = nullptr);
       ~View() override;
       
     public Q_SLOTS:
@@ -66,7 +66,7 @@ namespace Gui
     {
         Q_OBJECT
     public:
-        DockWindow(Gui::Document* gDocumentIn = nullptr, QWidget *parent = nullptr);
+        explicit DockWindow(Gui::Document* gDocumentIn = nullptr, QWidget *parent = nullptr);
         ~DockWindow() override{}
 
     private:

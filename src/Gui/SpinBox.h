@@ -39,7 +39,7 @@ namespace Gui {
 class GuiExport ExpressionSpinBox : public ExpressionBinding
 {
 public:
-    ExpressionSpinBox(QAbstractSpinBox*);
+    explicit ExpressionSpinBox(QAbstractSpinBox*);
     ~ExpressionSpinBox() override;
 
     void bind(const App::ObjectIdentifier &_path) override;
@@ -83,7 +83,7 @@ class GuiExport UnsignedValidator : public QValidator
     Q_PROPERTY( uint top READ top WRITE setTop ) // clazy:exclude=qproperty-without-notify
 
 public:
-    UnsignedValidator( QObject * parent );
+    explicit UnsignedValidator( QObject * parent );
     UnsignedValidator( uint bottom, uint top, QObject * parent );
     ~UnsignedValidator() override;
 
@@ -115,7 +115,7 @@ class GuiExport UIntSpinBox : public QSpinBox, public ExpressionSpinBox
     Q_OVERRIDE( uint value READ value WRITE setValue )
 
 public:
-    UIntSpinBox ( QWidget* parent=nullptr );
+    explicit UIntSpinBox ( QWidget* parent=nullptr );
     ~UIntSpinBox() override;
 
     void setRange( uint minVal, uint maxVal );
@@ -162,7 +162,7 @@ class GuiExport IntSpinBox : public QSpinBox, public ExpressionSpinBox
     Q_OBJECT
 
 public:
-    IntSpinBox ( QWidget* parent=nullptr );
+    explicit IntSpinBox ( QWidget* parent=nullptr );
     ~IntSpinBox() override;
 
     bool apply(const std::string &propName) override;
@@ -184,7 +184,7 @@ class GuiExport DoubleSpinBox : public QDoubleSpinBox, public ExpressionSpinBox
     Q_OBJECT
 
 public:
-    DoubleSpinBox ( QWidget* parent=nullptr );
+    explicit DoubleSpinBox ( QWidget* parent=nullptr );
     ~DoubleSpinBox() override;
 
     bool apply(const std::string &propName) override;

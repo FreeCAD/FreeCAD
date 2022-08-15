@@ -118,7 +118,7 @@ public:
     static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
-    DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPreferencesImp() override;
 
     void accept() override;

@@ -105,7 +105,7 @@ class GuiExport Rubberband : public Gui::GLGraphicsItem
     bool working, stipple;
 
 public:
-    Rubberband(View3DInventorViewer* v);
+    explicit Rubberband(View3DInventorViewer* v);
     Rubberband();
     ~Rubberband() override;
     void setWorking(bool on);
@@ -127,7 +127,7 @@ class GuiExport Polyline : public Gui::GLGraphicsItem
     GLPainter p;
 
 public:
-    Polyline(View3DInventorViewer* v);
+    explicit Polyline(View3DInventorViewer* v);
     Polyline();
     ~Polyline() override;
     void setWorking(bool on);

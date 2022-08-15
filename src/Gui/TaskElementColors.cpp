@@ -72,7 +72,7 @@ public:
     std::string editSub;
     std::string editElement;
 
-    Private(ViewProviderDocumentObject* vp, const char *element="")
+    explicit Private(ViewProviderDocumentObject* vp, const char *element="")
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
         vpDoc = vp->getDocument();

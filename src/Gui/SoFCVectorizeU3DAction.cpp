@@ -176,7 +176,7 @@ namespace Gui {
 class SoFCVectorizeU3DActionP
 {
 public:
-    SoFCVectorizeU3DActionP(SoFCVectorizeU3DAction * p) {
+    explicit SoFCVectorizeU3DActionP(SoFCVectorizeU3DAction * p) {
         this->publ = p;
     }
 

@@ -41,7 +41,7 @@ class DlgSettingsViewColor : public PreferencePage
   Q_OBJECT
 
 public:
-  DlgSettingsViewColor(QWidget* parent = nullptr);
+  explicit DlgSettingsViewColor(QWidget* parent = nullptr);
   ~DlgSettingsViewColor() override;
 
   void saveSettings() override;

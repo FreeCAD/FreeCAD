@@ -41,7 +41,7 @@ class DlgSettingsMacroImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsMacroImp( QWidget* parent = nullptr );
+    explicit DlgSettingsMacroImp( QWidget* parent = nullptr );
     ~DlgSettingsMacroImp() override;
 
     void saveSettings() override;

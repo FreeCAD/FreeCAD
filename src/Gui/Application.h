@@ -55,7 +55,7 @@ class GuiExport Application
 {
 public:
     /// construction
-    Application(bool GUIenabled);
+    explicit Application(bool GUIenabled);
     /// destruction
     ~Application();
 

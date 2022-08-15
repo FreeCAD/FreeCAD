@@ -137,7 +137,7 @@ namespace Gui {
 
     public:
         const Gui::Document& d;
-        DocumentIndex(const Gui::Document& d) : d(d)
+        explicit DocumentIndex(const Gui::Document& d) : d(d)
         {
             if (!documentIcon)
                 documentIcon = new QIcon(Gui::BitmapFactory().pixmap("Document"));

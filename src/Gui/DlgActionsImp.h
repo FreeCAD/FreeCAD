@@ -53,7 +53,7 @@ class DlgCustomActionsImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgCustomActionsImp( QWidget* parent = nullptr );
+    explicit DlgCustomActionsImp( QWidget* parent = nullptr );
     ~DlgCustomActionsImp() override;
 
 Q_SIGNALS:
@@ -96,7 +96,7 @@ class IconDialog : public QDialog
     Q_OBJECT
 
 public:
-    IconDialog(QWidget* parent);
+    explicit IconDialog(QWidget* parent);
     ~IconDialog() override;
     void resizeEvent(QResizeEvent*) override;
     QListWidgetItem* currentItem() const;

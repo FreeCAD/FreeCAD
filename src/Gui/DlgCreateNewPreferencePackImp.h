@@ -51,7 +51,7 @@ class GuiExport DlgCreateNewPreferencePackImp : public QDialog
 
 public:
 
-    DlgCreateNewPreferencePackImp(QWidget* parent = nullptr);
+    explicit DlgCreateNewPreferencePackImp(QWidget* parent = nullptr);
     ~DlgCreateNewPreferencePackImp() override;
 
     void setPreferencePackTemplates(const std::vector<PreferencePackManager::TemplateFile> &availableTemplates);

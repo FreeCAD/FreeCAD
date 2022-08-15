@@ -55,7 +55,7 @@ class GuiExport UrlHandler : public QObject
     Q_OBJECT
 
 public:
-    UrlHandler(QObject* parent = nullptr)
+    explicit UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
     ~UrlHandler() override {
@@ -85,7 +85,7 @@ public:
      * Constructs an empty main window. For default \a parent is 0, as there usually is
      * no toplevel window there.
      */
-    MainWindow(QWidget * parent = nullptr, Qt::WindowFlags f = Qt::Window);
+    explicit MainWindow(QWidget * parent = nullptr, Qt::WindowFlags f = Qt::Window);
     /** Destroys the object and frees any allocated resources. */
     ~MainWindow() override;
     /**
@@ -375,7 +375,7 @@ public:
     static int EventType;
     enum Style {Restore, Clear};
 
-    ActionStyleEvent(Style type);
+    explicit ActionStyleEvent(Style type);
     Style getType() const;
 
 private:

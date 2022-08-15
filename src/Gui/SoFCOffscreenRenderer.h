@@ -153,7 +153,7 @@ class SoQtOffscreenRendererPy : public Py::PythonExtension<SoQtOffscreenRenderer
 public:
     static void init_type();
 
-    SoQtOffscreenRendererPy(const SbViewportRegion&);
+    explicit SoQtOffscreenRendererPy(const SbViewportRegion&);
     ~SoQtOffscreenRendererPy() override;
 
     Py::Object repr() override;

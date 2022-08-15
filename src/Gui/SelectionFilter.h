@@ -52,8 +52,8 @@ class GuiExport SelectionFilter
 
 public:
     /** Constructs a SelectionFilter object. */
-    SelectionFilter(const char* filter);
-    SelectionFilter(const std::string& filter);
+    explicit SelectionFilter(const char* filter);
+    explicit SelectionFilter(const std::string& filter);
     virtual ~SelectionFilter();
 
     /// Set a new filter string
@@ -103,8 +103,8 @@ class GuiExport SelectionFilterGate: public SelectionGate
 {
 public:
     /// construct with the filter string
-    SelectionFilterGate(const char* filter);
-    SelectionFilterGate(SelectionFilter* filter);
+    explicit SelectionFilterGate(const char* filter);
+    explicit SelectionFilterGate(SelectionFilter* filter);
     ~SelectionFilterGate() override;
     bool allow(App::Document*,App::DocumentObject*, const char*) override;
 
@@ -130,7 +130,7 @@ class SelectionGatePython : public SelectionGate
 {
 public:
     /// Constructor
-    SelectionGatePython(const Py::Object& obj);
+    explicit SelectionGatePython(const Py::Object& obj);
     ~SelectionGatePython() override;
 
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
@@ -156,7 +156,7 @@ public:
 public:
     static void init_type();    // announce properties and methods
 
-    SelectionFilterPy(const std::string&);
+    explicit SelectionFilterPy(const std::string&);
     ~SelectionFilterPy() override;
 
     Py::Object repr() override;
@@ -189,7 +189,7 @@ class SelectionFilterGatePython : public SelectionGate
 {
 public:
     /// Constructor
-    SelectionFilterGatePython(SelectionFilterPy* obj);
+    explicit SelectionFilterGatePython(SelectionFilterPy* obj);
     ~SelectionFilterGatePython() override;
 
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
@@ -202,7 +202,7 @@ private:
 
 struct Node_Slice
 {
-    Node_Slice(int min=1,int max=INT_MAX):Min(min),Max(max){}
+    explicit Node_Slice(int min=1,int max=INT_MAX):Min(min),Max(max){}
     int Min,Max;
 
 };
@@ -229,7 +229,7 @@ typedef std::shared_ptr<Node_Object> Node_ObjectPtr;
 
 struct Node_Block
 {
-    Node_Block(Node_Object* obj){
+    explicit Node_Block(Node_Object* obj){
         Objects.emplace_back(obj);
     }
     std::vector<Node_ObjectPtr> Objects;

@@ -107,7 +107,7 @@ private:
 class UiLoader : public QUiLoader
 {
 public:
-    UiLoader(QObject* parent=nullptr);
+    explicit UiLoader(QObject* parent=nullptr);
     ~UiLoader() override;
 
     /**

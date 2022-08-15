@@ -165,7 +165,7 @@ struct MainWindowP
 class MDITabbar : public QTabBar
 {
 public:
-    MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
+    explicit MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
     {
         menu = new QMenu(this);
         setDrawBase(false);

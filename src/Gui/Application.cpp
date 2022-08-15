@@ -160,7 +160,7 @@ public:
 // Pimpl class
 struct ApplicationP
 {
-    ApplicationP(bool GUIenabled) :
+    explicit ApplicationP(bool GUIenabled) :
     activeDocument(nullptr),
     editDocument(nullptr),
     isClosing(false),

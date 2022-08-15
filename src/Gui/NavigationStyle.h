@@ -60,7 +60,7 @@ class AbstractMouseSelection;
 class GuiExport NavigationStyleEvent : public QEvent
 {
 public:
-    NavigationStyleEvent(const Base::Type& s);
+    explicit NavigationStyleEvent(const Base::Type& s);
     ~NavigationStyleEvent() override;
     const Base::Type& style() const;
 private:

@@ -41,7 +41,7 @@ class DlgSettingsPythonConsole : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsPythonConsole(QWidget* parent = nullptr);
+    explicit DlgSettingsPythonConsole(QWidget* parent = nullptr);
     ~DlgSettingsPythonConsole() override;
 
     void saveSettings() override;
