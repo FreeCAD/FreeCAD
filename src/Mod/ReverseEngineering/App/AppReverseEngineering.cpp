@@ -79,9 +79,24 @@ public:
     Module() : Py::ExtensionModule<Module>("ReverseEngineering")
     {
         add_keyword_method("approxSurface",&Module::approxSurface,
-            "approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True,\n"
-            "Weight=0.1,Grad=1.0,Bend=0.0,\n"
-            "Iterations=5,Correction=True,PatchFactor=1.0)"
+            "approxSurface(Points, UDegree=3, VDegree=3, NbUPoles=6, NbVPoles=6,\n"
+            "Smooth=True, Weight=0.1, Grad=1.0, Bend=0.0, Curv=0.0\n"
+            "Iterations=5, Correction=True, PatchFactor=1.0, UVDirs=((ux, uy, uz), (vx, vy, vz)))\n\n"
+            "Points: the input data (e.g. a point cloud or mesh)\n"
+            "UDegree: the degree in u parametric direction\n"
+            "VDegree: the degree in v parametric direction\n"
+            "NbUPoles: the number of control points in u parametric direction\n"
+            "NbVPoles: the number of control points in v parametric direction\n"
+            "Smooth: use energy terms to create a smooth surface\n"
+            "Weight: weight of the energy terms altogether\n"
+            "Grad: weight of the gradient term\n"
+            "Bend: weight of the bending energy term\n"
+            "Curv: weight of the deviation of curvature term\n"
+            "Iterations: number of iterations\n"
+            "Correction: perform a parameter correction of each iteration step\n"
+            "PatchFactor: create an extended surface\n"
+            "UVDirs: set the u,v parameter directions as tuple of two vectors\n"
+            "        If not set then they will be determined by computing a best-fit plane\n"
         );
 #if defined(HAVE_PCL_SURFACE)
         add_keyword_method("triangulate",&Module::triangulate,
