@@ -44,7 +44,7 @@ namespace MeshCore {
 class MeshExport MeshEvaluation
 {
 public:
-  MeshEvaluation (const MeshKernel &rclB) : _rclMesh(rclB) {}
+  explicit MeshEvaluation (const MeshKernel &rclB) : _rclMesh(rclB) {}
   virtual ~MeshEvaluation () {}
 
   /**
@@ -70,7 +70,7 @@ protected:
 class MeshExport MeshValidation
 {
 public:
-  MeshValidation (MeshKernel &rclB) : _rclMesh(rclB) {}
+  explicit MeshValidation (MeshKernel &rclB) : _rclMesh(rclB) {}
   virtual ~MeshValidation () {}
 
   /**
@@ -127,7 +127,7 @@ private:
 class MeshExport MeshSameOrientationCollector : public MeshOrientationVisitor
 {
 public:
-    MeshSameOrientationCollector(std::vector<FacetIndex>& aulIndices);
+    explicit MeshSameOrientationCollector(std::vector<FacetIndex>& aulIndices);
     /** Returns always true and collects the indices with wrong orientation. */
     bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long) override;
 
@@ -142,7 +142,7 @@ private:
 class MeshExport MeshEvalOrientation : public MeshEvaluation
 {
 public:
-    MeshEvalOrientation (const MeshKernel& rclM);
+    explicit MeshEvalOrientation (const MeshKernel& rclM);
     ~MeshEvalOrientation() override;
     bool Evaluate () override;
     std::vector<FacetIndex> GetIndices() const;
@@ -158,7 +158,7 @@ private:
 class MeshExport MeshFixOrientation : public MeshValidation
 {
 public:
-    MeshFixOrientation (MeshKernel& rclM);
+    explicit MeshFixOrientation (MeshKernel& rclM);
     ~MeshFixOrientation() override;
     bool Fixup() override;
 };
@@ -172,7 +172,7 @@ public:
 class MeshExport MeshEvalSolid : public MeshEvaluation
 {
 public:
-  MeshEvalSolid (const MeshKernel& rclM);
+  explicit MeshEvalSolid (const MeshKernel& rclM);
   ~MeshEvalSolid() override;
   bool Evaluate () override;
 };
@@ -188,7 +188,7 @@ public:
 class MeshExport MeshEvalTopology : public MeshEvaluation
 {
 public:
-    MeshEvalTopology (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    explicit MeshEvalTopology (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
     ~MeshEvalTopology () override {}
     bool Evaluate () override;
 
@@ -232,7 +232,7 @@ protected:
 class MeshExport MeshEvalPointManifolds : public MeshEvaluation
 {
 public:
-    MeshEvalPointManifolds (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    explicit MeshEvalPointManifolds (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
     ~MeshEvalPointManifolds () override {}
     bool Evaluate () override;
 
@@ -258,7 +258,7 @@ protected:
 class MeshExport MeshEvalSingleFacet : public MeshEvalTopology
 {
 public:
-  MeshEvalSingleFacet (const MeshKernel &rclB) : MeshEvalTopology(rclB) {}
+  explicit MeshEvalSingleFacet (const MeshKernel &rclB) : MeshEvalTopology(rclB) {}
   ~MeshEvalSingleFacet () override {}
   bool Evaluate () override;
 };
@@ -288,7 +288,7 @@ protected:
 class MeshExport MeshEvalSelfIntersection : public MeshEvaluation
 {
 public:
-    MeshEvalSelfIntersection (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    explicit MeshEvalSelfIntersection (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
     ~MeshEvalSelfIntersection () override {}
     /// Evaluate the mesh and return if true if there are self intersections
     bool Evaluate () override;
@@ -326,7 +326,7 @@ private:
 class MeshExport MeshEvalNeighbourhood : public MeshEvaluation
 {
 public:
-  MeshEvalNeighbourhood (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+  explicit MeshEvalNeighbourhood (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
   ~MeshEvalNeighbourhood () override {}
   bool Evaluate () override;
   std::vector<FacetIndex> GetIndices() const;
@@ -339,7 +339,7 @@ public:
 class MeshExport MeshFixNeighbourhood : public MeshValidation
 {
 public:
-  MeshFixNeighbourhood (MeshKernel &rclB) : MeshValidation(rclB) {}
+  explicit MeshFixNeighbourhood (MeshKernel &rclB) : MeshValidation(rclB) {}
   ~MeshFixNeighbourhood () override {}
   bool Fixup() override;
 };
@@ -357,7 +357,7 @@ public:
 class MeshExport MeshEigensystem : public MeshEvaluation
 {
 public:
-  MeshEigensystem (const MeshKernel &rclB);
+  explicit MeshEigensystem (const MeshKernel &rclB);
   ~MeshEigensystem () override {}
 
   /** Returns the transformation matrix. */

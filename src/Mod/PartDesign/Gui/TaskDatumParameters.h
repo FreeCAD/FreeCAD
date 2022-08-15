@@ -50,7 +50,7 @@ class TaskDatumParameters : public PartGui::TaskAttacher
     Q_OBJECT
 
 public:
-    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = nullptr);
+    explicit TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = nullptr);
     ~TaskDatumParameters() override;
 };
 
@@ -60,7 +60,7 @@ class TaskDlgDatumParameters : public PartGui::TaskDlgAttacher
     Q_OBJECT
 
 public:
-    TaskDlgDatumParameters(ViewProviderDatum *DatumView);
+    explicit TaskDlgDatumParameters(ViewProviderDatum *DatumView);
     ~TaskDlgDatumParameters() override;
     
     bool accept() override;

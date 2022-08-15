@@ -56,7 +56,7 @@ class WebGuiExport WebView : public QWebView
     Q_OBJECT
 
 public:
-    WebView(QWidget *parent = nullptr);
+    explicit WebView(QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -84,7 +84,7 @@ class WebGuiExport BrowserView : public Gui::MDIView,
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    BrowserView(QWidget* parent);
+    explicit BrowserView(QWidget* parent);
     ~BrowserView() override;
 
     void load(const char* URL);

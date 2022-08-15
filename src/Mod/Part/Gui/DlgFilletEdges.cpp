@@ -170,7 +170,7 @@ namespace PartGui {
         bool allowEdge;
         App::DocumentObject*& object;
     public:
-        EdgeFaceSelection(App::DocumentObject*& obj)
+        explicit EdgeFaceSelection(App::DocumentObject*& obj)
             : Gui::SelectionFilterGate(nullPointer()), allowEdge(true), object(obj)
         {
         }
@@ -214,7 +214,7 @@ namespace PartGui {
         {
         public:
             App::DocumentObject* obj;
-            SelectionObjectCompare(App::DocumentObject* obj) : obj(obj)
+            explicit SelectionObjectCompare(App::DocumentObject* obj) : obj(obj)
             {
             }
             bool operator()(const Gui::SelectionObject& sel) const

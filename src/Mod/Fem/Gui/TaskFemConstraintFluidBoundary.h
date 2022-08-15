@@ -49,7 +49,7 @@ class TaskFemConstraintFluidBoundary : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintFluidBoundary() override;
 
     const Fem::FemSolverObject* getFemSolver() const;
@@ -112,7 +112,7 @@ class TaskDlgFemConstraintFluidBoundary : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView);
+    explicit TaskDlgFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     void open() override;

@@ -307,7 +307,7 @@ class TechDrawExport GeomFormat: public Base::Persistence
 
 public:
     GeomFormat();
-    GeomFormat(TechDraw::GeomFormat* gf);
+    explicit GeomFormat(TechDraw::GeomFormat* gf);
     GeomFormat(int idx,
                LineFormat fmt);
     ~GeomFormat() override;

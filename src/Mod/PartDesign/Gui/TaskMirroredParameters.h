@@ -47,7 +47,7 @@ class TaskMirroredParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
 
@@ -85,7 +85,7 @@ class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
     Q_OBJECT
 
 public:
-    TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
+    explicit TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
     ~TaskDlgMirroredParameters() override {}
 
 public:

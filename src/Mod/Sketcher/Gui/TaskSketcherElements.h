@@ -95,7 +95,7 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
     class MultIcon {
 
     public:
-        MultIcon(const char*);
+        explicit MultIcon(const char*);
 
         QIcon Normal;
         QIcon Construction;
@@ -105,7 +105,7 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
     };
 
 public:
-    TaskSketcherElements(ViewProviderSketch *sketchView);
+    explicit TaskSketcherElements(ViewProviderSketch *sketchView);
     ~TaskSketcherElements() override;
 
     /// Observer message from the Selection

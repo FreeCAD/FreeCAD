@@ -37,7 +37,7 @@ class TaskDraftParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskDraftParameters() override;
 
     double getAngle() const;
@@ -69,7 +69,7 @@ class TaskDlgDraftParameters : public TaskDlgDressUpParameters
     Q_OBJECT
 
 public:
-    TaskDlgDraftParameters(ViewProviderDraft *DraftView);
+    explicit TaskDlgDraftParameters(ViewProviderDraft *DraftView);
     ~TaskDlgDraftParameters() override;
 
 public:

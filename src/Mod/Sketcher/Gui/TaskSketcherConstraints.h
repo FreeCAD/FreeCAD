@@ -83,7 +83,7 @@ class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::Selec
     };
 
 public:
-    TaskSketcherConstraints(ViewProviderSketch *sketchView);
+    explicit TaskSketcherConstraints(ViewProviderSketch *sketchView);
     ~TaskSketcherConstraints() override;
 
     /// Observer message from the Selection

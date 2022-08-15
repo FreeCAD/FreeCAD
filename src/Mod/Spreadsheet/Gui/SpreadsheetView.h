@@ -133,7 +133,7 @@ public:
     using BaseType = Py::PythonExtension<SheetViewPy>;
     static void init_type();
 
-    SheetViewPy(SheetView *mdi);
+    explicit SheetViewPy(SheetView *mdi);
     ~SheetViewPy() override;
 
     Py::Object repr() override;

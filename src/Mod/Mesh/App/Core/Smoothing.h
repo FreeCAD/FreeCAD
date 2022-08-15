@@ -50,7 +50,7 @@ public:
         C2 
     };
 
-    AbstractSmoothing(MeshKernel&);
+    explicit AbstractSmoothing(MeshKernel&);
     virtual ~AbstractSmoothing();
     void initialize(Component comp, Continuity cont);
 
@@ -68,7 +68,7 @@ protected:
 class MeshExport PlaneFitSmoothing : public AbstractSmoothing
 {
 public:
-    PlaneFitSmoothing(MeshKernel&);
+    explicit PlaneFitSmoothing(MeshKernel&);
     ~PlaneFitSmoothing() override;
     void SetMaximum(float max) {
         maximum = max;
@@ -83,7 +83,7 @@ private:
 class MeshExport LaplaceSmoothing : public AbstractSmoothing
 {
 public:
-    LaplaceSmoothing(MeshKernel&);
+    explicit LaplaceSmoothing(MeshKernel&);
     ~LaplaceSmoothing() override;
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
@@ -103,7 +103,7 @@ protected:
 class MeshExport TaubinSmoothing : public LaplaceSmoothing
 {
 public:
-    TaubinSmoothing(MeshKernel&);
+    explicit TaubinSmoothing(MeshKernel&);
     ~TaubinSmoothing() override;
     void Smooth(unsigned int) override;
     void SmoothPoints(unsigned int, const std::vector<PointIndex>&) override;
@@ -121,7 +121,7 @@ protected:
 class MeshExport MedianFilterSmoothing : public AbstractSmoothing
 {
 public:
-    MedianFilterSmoothing(MeshKernel&);
+    explicit MedianFilterSmoothing(MeshKernel&);
     ~MedianFilterSmoothing() override;
     void SetWeight(int w) {
         weights = w;

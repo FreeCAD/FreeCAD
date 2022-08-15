@@ -40,7 +40,7 @@ class TaskFemConstraintHeatflux : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintHeatflux() override;
     double getAmbientTemp() const;
     /*double getFaceTemp(void) const;*/
@@ -74,7 +74,7 @@ class TaskDlgFemConstraintHeatflux : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView);
+    explicit TaskDlgFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

@@ -58,7 +58,7 @@ class TaskRichAnno : public QWidget
 public:
     TaskRichAnno(TechDraw::DrawView* baseFeat,
                  TechDraw::DrawPage* page);
-    TaskRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP);
+    explicit TaskRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP);
     ~TaskRichAnno() override;
 
 public Q_SLOTS:
@@ -134,7 +134,7 @@ class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
 public:
     TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
                     TechDraw::DrawPage* page);
-    TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP);
+    explicit TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP);
     ~TaskDlgRichAnno() override;
 
 public:

@@ -1032,7 +1032,7 @@ public:
         Clone,
         Move
     };
-    SketcherCopy(const char* name);
+    explicit SketcherCopy(const char* name);
     void activate(SketcherCopy::Op op);
     virtual void activate() = 0;
 };

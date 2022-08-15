@@ -49,7 +49,7 @@ class TaskFemConstraintDisplacement : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = nullptr);
+    explicit TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = nullptr);
     ~TaskFemConstraintDisplacement() override;
     const std::string getReferences() const override;
     double get_spinxDisplacement()const;
@@ -111,7 +111,7 @@ class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView);
+    explicit TaskDlgFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

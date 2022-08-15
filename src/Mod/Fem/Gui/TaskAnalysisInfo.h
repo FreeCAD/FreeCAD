@@ -56,7 +56,7 @@ class TaskAnalysisInfo : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
+    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
     ~TaskAnalysisInfo() override;
 
 private Q_SLOTS:

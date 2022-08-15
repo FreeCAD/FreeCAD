@@ -38,7 +38,7 @@ class TaskFemConstraintFixed : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintFixed() override;
     const std::string getReferences() const override;
 
@@ -63,7 +63,7 @@ class TaskDlgFemConstraintFixed : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView);
+    explicit TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

@@ -36,7 +36,7 @@ class DlgSettingsGeneral : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsGeneral(QWidget* parent = nullptr);
+    explicit DlgSettingsGeneral(QWidget* parent = nullptr);
     ~DlgSettingsGeneral() override;
 
 protected:
@@ -54,7 +54,7 @@ class DlgImportExportIges : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgImportExportIges(QWidget* parent = nullptr);
+    explicit DlgImportExportIges(QWidget* parent = nullptr);
     ~DlgImportExportIges() override;
 
 protected:
@@ -73,7 +73,7 @@ class DlgImportExportStep : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgImportExportStep(QWidget* parent = nullptr);
+    explicit DlgImportExportStep(QWidget* parent = nullptr);
     ~DlgImportExportStep() override;
 
 protected:

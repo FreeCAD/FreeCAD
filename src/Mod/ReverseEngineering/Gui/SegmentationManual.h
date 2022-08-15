@@ -43,7 +43,7 @@ class SegmentationManual : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationManual(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit SegmentationManual(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SegmentationManual() override;
     void reject();
     void createSegment();

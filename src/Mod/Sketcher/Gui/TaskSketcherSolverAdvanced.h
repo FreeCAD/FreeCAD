@@ -42,7 +42,7 @@ class TaskSketcherSolverAdvanced : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
+    explicit TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
     ~TaskSketcherSolverAdvanced() override;
 
 private Q_SLOTS:

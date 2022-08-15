@@ -114,7 +114,7 @@ private:
     void RemoveUnreferencedPoints();
 
 public:
-    MeshBuilder(MeshKernel &rclM);
+    explicit MeshBuilder(MeshKernel &rclM);
     ~MeshBuilder();
 
     /**
@@ -190,7 +190,7 @@ private:
 
 public:
     typedef int size_type;
-    MeshFastBuilder(MeshKernel &rclM);
+    explicit MeshFastBuilder(MeshKernel &rclM);
     ~MeshFastBuilder();
 
     /** Initializes the class. Must be done before adding facets 

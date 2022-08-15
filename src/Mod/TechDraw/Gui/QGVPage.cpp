@@ -189,7 +189,7 @@ public:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
     QGVPage* page;
-    Private(QGVPage* page) : page(page) {
+    explicit Private(QGVPage* page) : page(page) {
         // attach parameter Observer
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
         hGrp->Attach(this);

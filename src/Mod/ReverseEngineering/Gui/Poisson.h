@@ -35,7 +35,7 @@ class PoissonWidget : public QWidget
     Q_OBJECT
 
 public:
-    PoissonWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
+    explicit PoissonWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
     ~PoissonWidget() override;
 
     bool accept();
@@ -53,7 +53,7 @@ class TaskPoisson : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskPoisson(const App::DocumentObjectT&);
+    explicit TaskPoisson(const App::DocumentObjectT&);
     ~TaskPoisson() override;
 
 public:

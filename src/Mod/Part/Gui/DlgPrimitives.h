@@ -67,7 +67,7 @@ class DlgPrimitives : public QWidget
     Q_OBJECT
 
 public:
-    DlgPrimitives(QWidget* parent = nullptr, Part::Primitive* feature = nullptr);
+    explicit DlgPrimitives(QWidget* parent = nullptr, Part::Primitive* feature = nullptr);
     ~DlgPrimitives() override;
     void createPrimitive(const QString&);
     void accept(const QString&);
@@ -142,7 +142,7 @@ class Location : public QWidget
     Q_OBJECT
 
 public:
-    Location(QWidget* parent = nullptr, Part::Feature* feature = nullptr);
+    explicit Location(QWidget* parent = nullptr, Part::Feature* feature = nullptr);
     ~Location() override;
     QString toPlacement() const;
 
@@ -182,7 +182,7 @@ class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskPrimitivesEdit(Part::Primitive* feature);
+    explicit TaskPrimitivesEdit(Part::Primitive* feature);
     ~TaskPrimitivesEdit() override;
     
 public:

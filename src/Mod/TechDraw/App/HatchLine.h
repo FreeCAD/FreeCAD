@@ -52,7 +52,7 @@ class TechDrawExport DashSpec
 {
 public:
       DashSpec() {}
-      DashSpec(std::vector<double> p) { m_parms = p; }
+      explicit DashSpec(std::vector<double> p) { m_parms = p; }
       ~DashSpec() {}
 
       double              get(int i)  {return m_parms.at(i); }
@@ -72,7 +72,7 @@ class TechDrawExport PATLineSpec
 {
 public:
     PATLineSpec();
-    PATLineSpec(std::string& lineSpec);
+    explicit PATLineSpec(std::string& lineSpec);
     ~PATLineSpec();
 
     void load(std::string& lineSpec);

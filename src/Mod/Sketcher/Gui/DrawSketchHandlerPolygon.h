@@ -36,7 +36,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerRegularPolygon( size_t nof_corners ):
+    explicit DrawSketchHandlerRegularPolygon( size_t nof_corners ):
         Corners( nof_corners ),
         AngleOfSeparation( 2.0*M_PI/static_cast<double>(Corners) ),
         cos_v( cos( AngleOfSeparation ) ),

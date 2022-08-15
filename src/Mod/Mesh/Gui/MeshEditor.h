@@ -79,7 +79,7 @@ class MeshGuiExport MeshFaceAddition : public QObject
     Q_OBJECT
 
 public:
-    MeshFaceAddition(Gui::View3DInventor* parent);
+    explicit MeshFaceAddition(Gui::View3DInventor* parent);
     ~MeshFaceAddition() override;
 
     void startEditing(ViewProviderMesh*);

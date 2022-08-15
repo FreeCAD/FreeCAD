@@ -105,7 +105,7 @@ class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
     Q_OBJECT
 
 public:
-    TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
+    explicit TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
     ~TaskDlgDressUpParameters() override;
 
     ViewProviderDressUp* getDressUpView() const

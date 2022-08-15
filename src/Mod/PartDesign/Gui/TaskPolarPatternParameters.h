@@ -48,7 +48,7 @@ class TaskPolarPatternParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     ~TaskPolarPatternParameters() override;
@@ -97,7 +97,7 @@ class TaskDlgPolarPatternParameters : public TaskDlgTransformedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
+    explicit TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
     ~TaskDlgPolarPatternParameters() override {}
 };
 

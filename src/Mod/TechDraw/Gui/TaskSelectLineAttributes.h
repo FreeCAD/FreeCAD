@@ -93,7 +93,7 @@ class TaskSelectLineAttributes : public QWidget
     Q_OBJECT
 
 public:
-    TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    explicit TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskSelectLineAttributes() override;
 
 public Q_SLOTS:
@@ -120,7 +120,7 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    explicit TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskDlgSelectLineAttributes() override;
 
 public:

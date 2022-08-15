@@ -122,7 +122,7 @@ namespace ImportGui {
 class OCAFBrowser
 {
 public:
-    OCAFBrowser(Handle(TDocStd_Document) h)
+    explicit OCAFBrowser(Handle(TDocStd_Document) h)
         : pDoc(h)
     {
         myGroupIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);

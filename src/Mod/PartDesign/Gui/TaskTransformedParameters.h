@@ -64,7 +64,7 @@ public:
      * remove items from the combo directly, otherwise internal tracking list
      * will go out of sync, and crashes may result.
      */
-    ComboLinks(QComboBox &combo);
+    explicit ComboLinks(QComboBox &combo);
     ComboLinks() {_combo = nullptr; doc = nullptr;}
     void setCombo(QComboBox &combo) {assert(!_combo); this->_combo = &combo; _combo->clear();}
 
@@ -123,9 +123,9 @@ class TaskTransformedParameters : public Gui::TaskView::TaskBox,
 
 public:
     /// Constructor for task with ViewProvider
-    TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
-    TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
+    explicit TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
     ~TaskTransformedParameters() override;
 
     /// Returns the originals property of associated top feeature object
@@ -240,7 +240,7 @@ class TaskDlgTransformedParameters : public PartDesignGui::TaskDlgFeatureParamet
     Q_OBJECT
 
 public:
-    TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
+    explicit TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
     ~TaskDlgTransformedParameters() override {}
 
     ViewProviderTransformed* getTransformedView() const

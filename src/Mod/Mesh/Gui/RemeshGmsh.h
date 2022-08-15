@@ -52,7 +52,7 @@ class MeshGuiExport GmshWidget : public QWidget
     Q_OBJECT
 
 public:
-    GmshWidget(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit GmshWidget(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~GmshWidget() override;
     void accept();
     void reject();
@@ -90,7 +90,7 @@ class MeshGuiExport RemeshGmsh : public GmshWidget
     Q_OBJECT
 
 public:
-    RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemeshGmsh() override;
 
 protected:
@@ -110,7 +110,7 @@ class TaskRemeshGmsh : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskRemeshGmsh(Mesh::Feature* mesh);
+    explicit TaskRemeshGmsh(Mesh::Feature* mesh);
     ~TaskRemeshGmsh() override;
 
 public:

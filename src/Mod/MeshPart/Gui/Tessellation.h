@@ -47,7 +47,7 @@ class Mesh2ShapeGmsh : public MeshGui::GmshWidget
     Q_OBJECT
 
 public:
-    Mesh2ShapeGmsh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Mesh2ShapeGmsh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Mesh2ShapeGmsh() override;
 
     void process(App::Document* doc, const std::list<App::SubObjectT>&);
@@ -77,7 +77,7 @@ class Tessellation : public QWidget
     };
 
 public:
-    Tessellation(QWidget* parent = nullptr);
+    explicit Tessellation(QWidget* parent = nullptr);
     ~Tessellation() override;
     bool accept();
 

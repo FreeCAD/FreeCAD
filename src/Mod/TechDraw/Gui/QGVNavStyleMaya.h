@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleMaya : public QGVNavStyle
 {
 public:
-    QGVNavStyleMaya(QGVPage* qgvp);
+    explicit QGVNavStyleMaya(QGVPage* qgvp);
     ~QGVNavStyleMaya() override;
 
     void handleKeyReleaseEvent(QKeyEvent *event) override;

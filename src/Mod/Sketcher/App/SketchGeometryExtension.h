@@ -83,7 +83,7 @@ class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceE
 public:
 
     SketchGeometryExtension();
-    SketchGeometryExtension(long cid);
+    explicit SketchGeometryExtension(long cid);
     ~SketchGeometryExtension() override = default;
 
     std::unique_ptr<Part::GeometryExtension> copy() const override;

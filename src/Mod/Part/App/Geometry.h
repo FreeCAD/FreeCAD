@@ -1080,7 +1080,7 @@ class PartExport GeomSurfaceOfExtrusion : public GeomSurface
 public:
     GeomSurfaceOfExtrusion();
     GeomSurfaceOfExtrusion(const Handle(Geom_Curve)&, const gp_Dir&);
-    GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinearExtrusion)&);
+    explicit GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinearExtrusion)&);
     ~GeomSurfaceOfExtrusion() override;
     Geometry *copy() const override;
 

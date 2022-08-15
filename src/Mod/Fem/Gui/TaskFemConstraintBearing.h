@@ -47,7 +47,7 @@ class TaskFemConstraintBearing : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr,
+    explicit TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr,
                              const char* pixmapname = "FEM_ConstraintBearing");
     ~TaskFemConstraintBearing() override;
 
@@ -80,7 +80,7 @@ class TaskDlgFemConstraintBearing : public TaskDlgFemConstraint
 
 public:
     TaskDlgFemConstraintBearing() {}
-    TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing *ConstraintView);
+    explicit TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;

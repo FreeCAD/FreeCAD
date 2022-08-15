@@ -38,7 +38,7 @@ class TaskFemConstraintSpring : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintSpring() override;
     const std::string getReferences() const override;
     double get_normalStiffness()const;
@@ -65,7 +65,7 @@ class TaskDlgFemConstraintSpring : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView);
+    explicit TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

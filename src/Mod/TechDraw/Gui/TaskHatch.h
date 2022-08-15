@@ -51,7 +51,7 @@ class TaskHatch : public QWidget
 
 public:
     TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
-    TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
+    explicit TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskHatch() override;
 
 public:
@@ -100,7 +100,7 @@ class TaskDlgHatch : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
-    TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
+    explicit TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskDlgHatch() override;
 
 public:

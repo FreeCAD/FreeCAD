@@ -92,7 +92,7 @@ struct MeshExport Group
 class MeshExport MeshInput
 {
 public:
-    MeshInput (MeshKernel &rclM)
+    explicit MeshInput (MeshKernel &rclM)
         : _rclMesh(rclM), _material(nullptr){}
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
@@ -151,7 +151,7 @@ protected:
 class MeshExport MeshOutput
 {
 public:
-    MeshOutput (const MeshKernel &rclM)
+    explicit MeshOutput (const MeshKernel &rclM)
         : _rclMesh(rclM), _material(nullptr), apply_transform(false){}
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}

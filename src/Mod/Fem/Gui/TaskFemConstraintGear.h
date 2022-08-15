@@ -34,7 +34,7 @@ class TaskFemConstraintGear : public TaskFemConstraintBearing
     Q_OBJECT
 
 public:
-    TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,
+    explicit TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,
                           const char* pixmapname = "FEM_ConstraintGear");
 
     double getDiameter() const;
@@ -63,7 +63,7 @@ class TaskDlgFemConstraintGear : public TaskDlgFemConstraintBearing
 
 public:
     TaskDlgFemConstraintGear() {}
-    TaskDlgFemConstraintGear(ViewProviderFemConstraintGear *ConstraintView);
+    explicit TaskDlgFemConstraintGear(ViewProviderFemConstraintGear *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;

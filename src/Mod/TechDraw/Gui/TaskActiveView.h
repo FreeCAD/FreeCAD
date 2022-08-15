@@ -91,7 +91,7 @@ class TaskDlgActiveView : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgActiveView(TechDraw::DrawPage* pageFeat);
+    explicit TaskDlgActiveView(TechDraw::DrawPage* pageFeat);
     ~TaskDlgActiveView() override;
 
 public:

@@ -56,7 +56,7 @@ public:
     PointKernel()
     {
     }
-    PointKernel(size_type size)
+    explicit PointKernel(size_type size)
     {
         resize(size);
     }

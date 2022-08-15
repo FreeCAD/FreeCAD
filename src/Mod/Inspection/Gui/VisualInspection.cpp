@@ -44,12 +44,12 @@ namespace InspectionGui {
 class SingleSelectionItem : public QTreeWidgetItem
 {
 public:
-    SingleSelectionItem (QTreeWidget* parent)
+    explicit SingleSelectionItem (QTreeWidget* parent)
         : QTreeWidgetItem(parent), _compItem(nullptr)
     {
     }
 
-    SingleSelectionItem (QTreeWidgetItem* parent)
+    explicit SingleSelectionItem (QTreeWidgetItem* parent)
         : QTreeWidgetItem (parent), _compItem(nullptr)
     {
     }

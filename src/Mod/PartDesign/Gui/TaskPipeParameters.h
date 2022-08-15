@@ -79,7 +79,7 @@ class TaskPipeParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeParameters(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
+    explicit TaskPipeParameters(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
     ~TaskPipeParameters() override;
 
     bool accept();
@@ -120,7 +120,7 @@ class TaskPipeOrientation : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeOrientation(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
+    explicit TaskPipeOrientation(ViewProviderPipe *PipeView, bool newObj=false, QWidget *parent = nullptr);
     ~TaskPipeOrientation() override;
 
 
@@ -154,7 +154,7 @@ class TaskPipeScaling : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = nullptr);
+    explicit TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = nullptr);
     ~TaskPipeScaling() override;
 
 private Q_SLOTS:
@@ -185,7 +185,7 @@ class TaskDlgPipeParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool newObj=false);
+    explicit TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool newObj=false);
     ~TaskDlgPipeParameters() override;
 
 public:

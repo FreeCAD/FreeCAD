@@ -161,7 +161,7 @@ class TechDrawExport Circle: public BaseGeom
 {
     public:
         Circle();
-        Circle(const TopoDS_Edge &e);
+        explicit Circle(const TopoDS_Edge &e);
         Circle(Base::Vector3d center, double radius);
         ~Circle() override = default;
 
@@ -177,7 +177,7 @@ class TechDrawExport Circle: public BaseGeom
 class TechDrawExport Ellipse: public BaseGeom
 {
     public:
-    Ellipse(const TopoDS_Edge &e);
+    explicit Ellipse(const TopoDS_Edge &e);
     Ellipse(Base::Vector3d c, double mnr,  double mjr);
     ~Ellipse() override = default;
 
@@ -193,7 +193,7 @@ class TechDrawExport Ellipse: public BaseGeom
 class TechDrawExport AOE: public Ellipse
 {
     public:
-        AOE(const TopoDS_Edge &e);
+        explicit AOE(const TopoDS_Edge &e);
         ~AOE() override = default;
 
     public:
@@ -215,7 +215,7 @@ class TechDrawExport AOE: public Ellipse
 class TechDrawExport AOC: public Circle
 {
     public:
-        AOC(const TopoDS_Edge &e);
+        explicit AOC(const TopoDS_Edge &e);
         AOC(Base::Vector3d c, double r, double s, double e);
         AOC();
         ~AOC() override = default;
@@ -247,7 +247,7 @@ class TechDrawExport AOC: public Circle
 class TechDrawExport BezierSegment: public BaseGeom
 {
 public:
-    BezierSegment(const TopoDS_Edge &e);
+    explicit BezierSegment(const TopoDS_Edge &e);
     BezierSegment() { poles = degree = 0; }
     ~BezierSegment() override = default;
 
@@ -260,7 +260,7 @@ public:
 class TechDrawExport BSpline: public BaseGeom
 {
     public:
-        BSpline(const TopoDS_Edge &e);
+        explicit BSpline(const TopoDS_Edge &e);
         ~BSpline() override = default;
 
     public:
@@ -284,7 +284,7 @@ class TechDrawExport BSpline: public BaseGeom
 class TechDrawExport Generic: public BaseGeom
 {
     public:
-        Generic(const TopoDS_Edge &e);
+        explicit Generic(const TopoDS_Edge &e);
         Generic();
         ~Generic() override = default;
 
@@ -303,7 +303,7 @@ class TechDrawExport Wire
 {
     public:
         Wire();
-        Wire(const TopoDS_Wire &w);
+        explicit Wire(const TopoDS_Wire &w);
         ~Wire();
 
         TopoDS_Wire toOccWire() const;
@@ -326,9 +326,9 @@ class TechDrawExport Vertex
 {
     public:
         Vertex();
-        Vertex(const Vertex* v);
+        explicit Vertex(const Vertex* v);
         Vertex(double x, double y);
-        Vertex(Base::Vector3d v);
+        explicit Vertex(Base::Vector3d v);
         virtual ~Vertex() {}
 
         virtual void Save(Base::Writer &/*writer*/) const;

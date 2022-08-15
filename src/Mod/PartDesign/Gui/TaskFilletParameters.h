@@ -36,7 +36,7 @@ class TaskFilletParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskFilletParameters() override;
 
     void apply() override;
@@ -64,7 +64,7 @@ class TaskDlgFilletParameters : public TaskDlgDressUpParameters
     Q_OBJECT
 
 public:
-    TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
+    explicit TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
     ~TaskDlgFilletParameters() override;
 
 public:

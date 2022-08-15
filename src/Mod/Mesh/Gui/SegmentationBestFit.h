@@ -82,7 +82,7 @@ class MeshGuiExport SegmentationBestFit : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SegmentationBestFit() override;
     void accept();
 
@@ -109,7 +109,7 @@ private:
 class TaskSegmentationBestFit : public Gui::TaskView::TaskDialog
 {
 public:
-    TaskSegmentationBestFit(Mesh::Feature* mesh);
+    explicit TaskSegmentationBestFit(Mesh::Feature* mesh);
     ~TaskSegmentationBestFit() override;
 
 public:

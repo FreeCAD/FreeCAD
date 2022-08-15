@@ -70,7 +70,7 @@ class TaskDlgFeatureParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
+    explicit TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp);
     ~TaskDlgFeatureParameters() override;
 
 public:

@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleOCC : public QGVNavStyle
 {
 public:
-    QGVNavStyleOCC(QGVPage* qgvp);
+    explicit QGVNavStyleOCC(QGVPage* qgvp);
     ~QGVNavStyleOCC() override;
 
     void handleKeyReleaseEvent(QKeyEvent *event) override;

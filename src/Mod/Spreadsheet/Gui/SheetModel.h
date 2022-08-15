@@ -40,7 +40,7 @@ public:
     explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = nullptr);
     ~SheetModel() override;
     
-    SheetModel(QObject *parent);
+    explicit SheetModel(QObject *parent);
     int rowCount(const QModelIndex &parent = QModelIndex()) const override ;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

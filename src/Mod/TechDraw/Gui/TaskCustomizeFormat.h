@@ -62,7 +62,7 @@ class TaskCustomizeFormat : public QWidget
     Q_OBJECT
 
 public:
-    TaskCustomizeFormat(App::DocumentObject * object);
+    explicit TaskCustomizeFormat(App::DocumentObject * object);
     ~TaskCustomizeFormat() override;
 
 public Q_SLOTS:
@@ -95,7 +95,7 @@ class TaskDlgCustomizeFormat : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCustomizeFormat(App::DocumentObject * object);
+    explicit TaskDlgCustomizeFormat(App::DocumentObject * object);
     ~TaskDlgCustomizeFormat() override;
 
 public:
