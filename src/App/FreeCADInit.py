@@ -909,6 +909,13 @@ class Scheme(IntEnum):
 
 App.Units.Scheme = Scheme
 
+class NumberFormat(IntEnum):
+    Default = 0
+    Fixed = 1
+    Scientific = 2
+
+App.Units.NumberFormat = NumberFormat
+
 class ScaleType(IntEnum):
     Other = -1
     NoScaling = 0
