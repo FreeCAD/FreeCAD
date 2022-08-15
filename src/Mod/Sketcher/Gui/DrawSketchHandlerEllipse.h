@@ -75,7 +75,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerEllipse(int constructionMethod)
+    explicit DrawSketchHandlerEllipse(int constructionMethod)
       : mode(STATUS_Close)
       , method(CENTER_PERIAPSIS_B)
       , constrMethod(constructionMethod)

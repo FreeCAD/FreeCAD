@@ -54,8 +54,8 @@ class PartExport NullShapeException : public Base::ValueError
 public:
    /// Construction
    NullShapeException();
-   NullShapeException(const char * sMessage);
-   NullShapeException(const std::string& sMessage);
+   explicit NullShapeException(const char * sMessage);
+   explicit NullShapeException(const std::string& sMessage);
    /// Destruction
    ~NullShapeException() throw() override {}
 };
@@ -67,8 +67,8 @@ class PartExport BooleanException : public Base::CADKernelError
 public:
    /// Construction
    BooleanException();
-   BooleanException(const char * sMessage);
-   BooleanException(const std::string& sMessage);
+   explicit BooleanException(const char * sMessage);
+   explicit BooleanException(const std::string& sMessage);
    /// Destruction
    ~BooleanException() throw() override {}
 };
@@ -95,7 +95,7 @@ class PartExport TopoShape : public Data::ComplexGeoData
 
 public:
     TopoShape();
-    TopoShape(const TopoDS_Shape&);
+    TopoShape(const TopoDS_Shape&);//explicit bombs
     TopoShape(const TopoShape&);
     ~TopoShape() override;
 

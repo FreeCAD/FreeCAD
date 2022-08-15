@@ -465,7 +465,7 @@ class ExceptionCancel : public Base::Exception
 {
 public:
     ExceptionCancel(){}
-    ExceptionCancel(char* msg){this->setMessage(msg);}
+    explicit ExceptionCancel(char* msg){this->setMessage(msg);}
     ~ExceptionCancel() throw() override {}
 };
 

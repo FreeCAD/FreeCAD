@@ -40,7 +40,7 @@ class TaskFemConstraintContact : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintContact() override;
     const std::string getReferences() const override;
     double get_Slope()const;
@@ -69,7 +69,7 @@ class TaskDlgFemConstraintContact : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView);
+    explicit TaskDlgFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

@@ -61,7 +61,7 @@ typedef std::vector<std::vector<TopoDS_Edge> > tEdgeClusterVector;
 class PartExport Edgecluster
 {
 public:
-    Edgecluster(const std::vector<TopoDS_Edge>& usorted_edges);
+    explicit Edgecluster(const std::vector<TopoDS_Edge>& usorted_edges);
     virtual ~Edgecluster();
 
     tEdgeClusterVector GetClusters();

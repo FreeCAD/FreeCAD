@@ -71,7 +71,7 @@ using namespace MeshGui;
 class SoOutputStreambuf : public std::streambuf
 {
 public:
-    SoOutputStreambuf(SoOutput* o) : out(o)
+    explicit SoOutputStreambuf(SoOutput* o) : out(o)
     {
     }
 protected:
@@ -96,7 +96,7 @@ private:
 class SoOutputStream : public std::ostream
 {
 public:
-    SoOutputStream(SoOutput* o) : std::ostream(nullptr), buf(o)
+    explicit SoOutputStream(SoOutput* o) : std::ostream(nullptr), buf(o)
     {
         this->rdbuf(&buf);
     }
@@ -107,7 +107,7 @@ private:
 class SoInputStreambuf : public std::streambuf
 {
 public:
-    SoInputStreambuf(SoInput* o) : inp(o)
+    explicit SoInputStreambuf(SoInput* o) : inp(o)
     {
         setg (buffer+pbSize,
               buffer+pbSize,
@@ -160,7 +160,7 @@ private:
 class SoInputStream : public std::istream
 {
 public:
-    SoInputStream(SoInput* o) : std::istream(nullptr), buf(o)
+    explicit SoInputStream(SoInput* o) : std::istream(nullptr), buf(o)
     {
         this->rdbuf(&buf);
     }

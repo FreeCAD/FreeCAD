@@ -35,7 +35,7 @@ class DlgSettingsPathColor : public Gui::Dialog::PreferencePage
   Q_OBJECT
 
 public:
-  DlgSettingsPathColor(QWidget* parent = nullptr);
+  explicit DlgSettingsPathColor(QWidget* parent = nullptr);
   ~DlgSettingsPathColor() override;
 
   void saveSettings() override;

@@ -110,7 +110,7 @@ public:
   //@{
   MeshPoint () : _ucFlag(0), _ulProp(0) { }
   inline MeshPoint (float x, float y, float z);
-  inline MeshPoint (const Base::Vector3f &rclPt);
+  inline MeshPoint (const Base::Vector3f &rclPt);//explicit bombs
   inline MeshPoint (const MeshPoint &rclPt);
   ~MeshPoint () { }
   //@}
@@ -583,7 +583,7 @@ public:
   // constructor
   MeshPointArray () { }
   // constructor
-  MeshPointArray (PointIndex ulSize) : TMeshPointArray(ulSize) { }
+  explicit MeshPointArray (PointIndex ulSize) : TMeshPointArray(ulSize) { }
   /// copy-constructor
   MeshPointArray (const MeshPointArray&);
   // Destructor
@@ -637,7 +637,7 @@ public:
     /// constructor
     MeshFacetArray () { }
     /// constructor
-    MeshFacetArray (FacetIndex ulSize) : TMeshFacetArray(ulSize) { }
+    explicit MeshFacetArray (FacetIndex ulSize) : TMeshFacetArray(ulSize) { }
     /// copy-constructor
     MeshFacetArray (const MeshFacetArray&);
     /// destructor
@@ -684,7 +684,7 @@ public:
 class MeshExport MeshPointModifier
 {
 public:
-    MeshPointModifier(MeshPointArray& points)
+    explicit MeshPointModifier(MeshPointArray& points)
         : rPoints(points)
     {
     }
@@ -705,7 +705,7 @@ private:
 class MeshExport MeshFacetModifier
 {
 public:
-    MeshFacetModifier(MeshFacetArray& facets)
+    explicit MeshFacetModifier(MeshFacetArray& facets)
         : rFacets(facets)
     {
     }

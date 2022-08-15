@@ -173,8 +173,8 @@ class TaskDlgWeldingSymbol : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
-    TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
     ~TaskDlgWeldingSymbol() override;
 
 public:

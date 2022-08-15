@@ -45,7 +45,7 @@ class SketcherGuiExport TaskDlgEditSketch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgEditSketch(ViewProviderSketch *sketchView);
+    explicit TaskDlgEditSketch(ViewProviderSketch *sketchView);
     ~TaskDlgEditSketch() override;
     ViewProviderSketch* getSketchView() const
     { return sketchView; }

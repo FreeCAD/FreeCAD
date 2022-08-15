@@ -34,7 +34,7 @@ class TaskFemConstraintPulley : public TaskFemConstraintGear
     Q_OBJECT
 
 public:
-    TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = nullptr);
 
     double getOtherDiameter() const;
     double getCenterDistance() const;
@@ -58,7 +58,7 @@ class TaskDlgFemConstraintPulley : public TaskDlgFemConstraintGear
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
+    explicit TaskDlgFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;

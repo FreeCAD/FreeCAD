@@ -50,7 +50,7 @@ using namespace MeshGui;
 
 class GmshWidget::Private {
 public:
-    Private(QWidget* parent)
+    explicit Private(QWidget* parent)
       : gmsh(parent)
     {
         /* coverity[uninit_ctor] Members of ui are set in setupUI() */
@@ -270,7 +270,7 @@ void GmshWidget::reject()
 
 class RemeshGmsh::Private {
 public:
-    Private(Mesh::Feature* mesh)
+    explicit Private(Mesh::Feature* mesh)
       : mesh(mesh)
     {
     }

@@ -37,7 +37,7 @@ class DlgSettingsFemZ88Imp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemZ88Imp( QWidget* parent = nullptr );
+    explicit DlgSettingsFemZ88Imp( QWidget* parent = nullptr );
     ~DlgSettingsFemZ88Imp() override;
 
 protected Q_SLOTS:

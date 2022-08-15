@@ -40,7 +40,7 @@ public:
         CenterAndCorner
     };
 
-    DrawSketchHandlerBox(ConstructionMethod constrMethod = Diagonal):   Mode(STATUS_SEEK_First),
+    explicit DrawSketchHandlerBox(ConstructionMethod constrMethod = Diagonal):   Mode(STATUS_SEEK_First),
                                                                         EditCurve(5),
                                                                         constructionMethod(constrMethod){}
     virtual ~DrawSketchHandlerBox(){}

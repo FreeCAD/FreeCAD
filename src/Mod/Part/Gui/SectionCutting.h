@@ -36,7 +36,7 @@ class SectionCut : public QDialog
 
 public:
     static SectionCut* makeDockWidget(QWidget* parent = nullptr);
-    SectionCut(QWidget* parent = nullptr);
+    explicit SectionCut(QWidget* parent = nullptr);
     ~SectionCut() override;
 
 protected Q_SLOTS:

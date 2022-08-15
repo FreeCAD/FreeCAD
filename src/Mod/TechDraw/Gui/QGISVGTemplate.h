@@ -46,7 +46,7 @@ class TechDrawGuiExport QGISVGTemplate : public QGITemplate
     Q_OBJECT
 
 public:
-    QGISVGTemplate(QGSPage* scene);
+    explicit QGISVGTemplate(QGSPage* scene);
     virtual ~QGISVGTemplate();
 
     enum {Type = QGraphicsItem::UserType + 153};

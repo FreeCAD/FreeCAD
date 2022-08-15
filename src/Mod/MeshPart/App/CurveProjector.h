@@ -177,7 +177,7 @@ public:
     };
 
     /// Construction
-    MeshProjection(const MeshKernel& rMesh);
+    explicit MeshProjection(const MeshKernel& rMesh);
     /// Destruction
     ~MeshProjection();
 

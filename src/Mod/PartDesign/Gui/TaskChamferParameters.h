@@ -39,7 +39,7 @@ class TaskChamferParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskChamferParameters() override;
 
     void apply() override;
@@ -78,7 +78,7 @@ class TaskDlgChamferParameters : public TaskDlgDressUpParameters
     Q_OBJECT
 
 public:
-    TaskDlgChamferParameters(ViewProviderChamfer *DressUpView);
+    explicit TaskDlgChamferParameters(ViewProviderChamfer *DressUpView);
     ~TaskDlgChamferParameters() override;
 
 public:

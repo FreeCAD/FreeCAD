@@ -55,14 +55,14 @@ public:
      * Constructor
      * @param iSize Length of Knots vector
      */
-    SplineBasisfunction(int iSize);
+    explicit SplineBasisfunction(int iSize);
 
     /**
      * Constructor
      * @param vKnots Knot vector
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrder=1);
+    explicit SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
      * Constructor
@@ -144,14 +144,14 @@ public:
      * Constructor
      * @param iSize Length of the knot vector
      */
-    BSplineBasis(int iSize);
+    explicit BSplineBasis(int iSize);
 
     /**
      * Constructor
      * @param vKnots Knot vector
      * @param iOrder Order (degree + 1) of the basic polynomial
      */
-    BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder=1);
+    explicit BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
      * Constructor
@@ -255,7 +255,7 @@ class ReenExport ParameterCorrection
 
 public:
     // Constructor
-    ParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
+    explicit ParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
                         unsigned usVOrder=4,               //Order in v-direction
                         unsigned usUCtrlpoints=6,          //Qty. of the control points in the u-direction
                         unsigned usVCtrlpoints=6);         //Qty. of the control points in the v-direction
@@ -370,7 +370,7 @@ class ReenExport BSplineParameterCorrection : public ParameterCorrection
 {
 public:
     // Constructor
-    BSplineParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
+    explicit BSplineParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
                                unsigned usVOrder=4,               //Order in the v-direction
                                unsigned usUCtrlpoints=6,          //Qty. of the control points in u-direction
                                unsigned usVCtrlpoints=6);         //Qty. of the control points in v-direction

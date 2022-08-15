@@ -49,7 +49,7 @@ public:
         MedianFilter
     };
 
-    DlgSmoothing(QWidget* parent = nullptr);
+    explicit DlgSmoothing(QWidget* parent = nullptr);
     ~DlgSmoothing() override;
     int iterations() const;
     double lambdaStep() const;
@@ -77,7 +77,7 @@ class MeshGuiExport SmoothingDialog : public QDialog
     Q_OBJECT
 
 public:
-    SmoothingDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit SmoothingDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SmoothingDialog() override;
 
     int iterations() const

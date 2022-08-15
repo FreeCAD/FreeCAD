@@ -85,7 +85,7 @@ enum WebAction {
 class WebEngineUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
 public:
-    WebEngineUrlRequestInterceptor(BrowserView *parent) :
+    explicit WebEngineUrlRequestInterceptor(BrowserView *parent) :
         QWebEngineUrlRequestInterceptor(parent),
         m_parent(parent)
     {
@@ -156,7 +156,7 @@ public:
     using BaseType = Py::PythonExtension<BrowserViewPy>;
     static void init_type();    // announce properties and methods
 
-    BrowserViewPy(BrowserView* view);
+    explicit BrowserViewPy(BrowserView* view);
     ~BrowserViewPy() override;
 
     Py::Object repr() override;

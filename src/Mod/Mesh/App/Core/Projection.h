@@ -46,7 +46,7 @@ class MeshGeomFacet;
 class MeshExport MeshProjection
 {
 public:
-    MeshProjection(const MeshKernel&);
+    explicit MeshProjection(const MeshKernel&);
     ~MeshProjection();
 
     bool projectLineOnMesh(const MeshFacetGrid& grid, const Base::Vector3f& p1, FacetIndex f1,

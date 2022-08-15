@@ -95,7 +95,7 @@ struct PathExport CAreaConfig {
      * arc unfiting and fitting is lossy. And repeatedly perform these operation
      * may cause shape deformation. So it is best to delay arc fitting until the
      * final step*/
-    CAreaConfig(const CAreaParams& p, bool noFitArcs = true);
+    explicit CAreaConfig(const CAreaParams& p, bool noFitArcs = true);
 
     /** The destructor restores the setting, and thus exception safe.  */
     ~CAreaConfig();
@@ -171,7 +171,7 @@ public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
-    Area(const AreaParams* params = nullptr);
+    explicit Area(const AreaParams* params = nullptr);
     Area(const Area& other, bool deep_copy = true);
     ~Area() override;
 

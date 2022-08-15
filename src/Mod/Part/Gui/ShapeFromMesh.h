@@ -34,7 +34,7 @@ class ShapeFromMesh : public QDialog
     Q_OBJECT
 
 public:
-    ShapeFromMesh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit ShapeFromMesh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~ShapeFromMesh() override;
 
     void accept() override;

@@ -49,7 +49,7 @@ private:
 class NormalEstimation
 {
 public:
-    NormalEstimation(const Points::PointKernel&);
+    explicit NormalEstimation(const Points::PointKernel&);
     /** \brief Set the number of k nearest neighbors to use for the feature estimation.
       * \param[in] k the number of k-nearest neighbors
       */

@@ -65,7 +65,7 @@ class TaskLeaderLine : public QWidget
 public:
     TaskLeaderLine(TechDraw::DrawView* baseFeat,
                    TechDraw::DrawPage* page);
-    TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
+    explicit TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
     ~TaskLeaderLine() override;
 
 public Q_SLOTS:
@@ -170,7 +170,7 @@ class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog
 public:
     TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
                       TechDraw::DrawPage* page);
-    TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
+    explicit TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
     ~TaskDlgLeaderLine() override;
 
 public:

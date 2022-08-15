@@ -75,7 +75,7 @@ class TaskSurfaceFinishSymbols : public QWidget
     Q_OBJECT
 
 public:
-    TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
+    explicit TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
     ~TaskSurfaceFinishSymbols() override;
 
 public Q_SLOTS:
@@ -118,7 +118,7 @@ class TaskDlgSurfaceFinishSymbols : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
+    explicit TaskDlgSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
     ~TaskDlgSurfaceFinishSymbols() override;
 
 public:

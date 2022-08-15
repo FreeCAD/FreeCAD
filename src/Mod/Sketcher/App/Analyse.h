@@ -44,7 +44,7 @@ struct Constraint_Equal
     typedef ConstraintIds argument_type;
     typedef bool result_type;
     struct Sketcher::ConstraintIds c;
-    Constraint_Equal(const ConstraintIds& c) : c(c)
+    explicit Constraint_Equal(const ConstraintIds& c) : c(c)
     {
     }
     bool operator()(const ConstraintIds& x) const

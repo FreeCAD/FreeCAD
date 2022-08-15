@@ -62,7 +62,7 @@ private:
 class TechDrawGuiExport QGVNavStyle : public Base::BaseClass
 {
 public:
-    QGVNavStyle(QGVPage* qgvp);
+    explicit QGVNavStyle(QGVPage* qgvp);
     ~QGVNavStyle() override;
 
     void setViewer(QGVPage* qgvp) { m_viewer = qgvp;} ;

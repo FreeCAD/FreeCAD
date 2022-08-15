@@ -913,7 +913,7 @@ struct WireJoiner {
             size_t iStart;
             size_t iEnd;
             size_t iCurrent;
-            StackInfo(size_t idx) :iStart(idx), iEnd(idx), iCurrent(idx) {}
+            explicit StackInfo(size_t idx) :iStart(idx), iEnd(idx), iCurrent(idx) {}
         };
         std::vector<StackInfo> stack;
         std::vector<VertexInfo> vertexStack;

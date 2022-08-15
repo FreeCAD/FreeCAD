@@ -128,7 +128,7 @@ private:
 private:
     class ImportLegacy : public ImportOCAF {
     public:
-        ImportLegacy(ImportOCAF2 &parent)
+        explicit ImportLegacy(ImportOCAF2 &parent)
             :ImportOCAF(parent.pDoc, parent.pDocument, parent.default_name),myParent(parent)
         {}
             
@@ -172,7 +172,7 @@ class ImportExport ExportOCAF2
 public:
     typedef std::function<std::map<std::string,App::Color>(
             App::DocumentObject*, const char*)> GetShapeColorsFunc;
-    ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func=GetShapeColorsFunc());
+    explicit ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func=GetShapeColorsFunc());
 
     void setExportHiddenObject(bool enable) {exportHidden=enable;}
     void setKeepPlacement(bool enable) {keepPlacement=enable;}

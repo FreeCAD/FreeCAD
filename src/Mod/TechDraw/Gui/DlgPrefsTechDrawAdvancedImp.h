@@ -36,7 +36,7 @@ class DlgPrefsTechDrawAdvancedImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawAdvancedImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawAdvancedImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawAdvancedImp() override;
 
 protected:

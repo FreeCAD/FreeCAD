@@ -60,8 +60,8 @@ class TaskDetail : public QWidget
     Q_OBJECT
 
 public:
-    TaskDetail(TechDraw::DrawViewPart* baseFeat);
-    TaskDetail(TechDraw::DrawViewDetail* detailFeat);
+    explicit TaskDetail(TechDraw::DrawViewPart* baseFeat);
+    explicit TaskDetail(TechDraw::DrawViewDetail* detailFeat);
     ~TaskDetail() override;
 
 public Q_SLOTS:
@@ -142,8 +142,8 @@ class TaskDlgDetail : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgDetail(TechDraw::DrawViewPart* baseFeat);
-    TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat);
+    explicit TaskDlgDetail(TechDraw::DrawViewPart* baseFeat);
+    explicit TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat);
     ~TaskDlgDetail() override;
 
 public:

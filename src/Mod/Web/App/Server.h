@@ -50,7 +50,7 @@ private:
 class FirewallPython : public Firewall
 {
 public:
-    FirewallPython(const Py::Object&);
+    explicit FirewallPython(const Py::Object&);
     ~FirewallPython() override;
     bool filter(const QByteArray&) const override;
 
@@ -80,7 +80,7 @@ class AppServer : public QTcpServer
     Q_OBJECT
 
 public:
-    AppServer(bool direct = false, QObject* parent = nullptr);
+    explicit AppServer(bool direct = false, QObject* parent = nullptr);
 
 protected:
     void incomingConnection(qintptr socket) override;

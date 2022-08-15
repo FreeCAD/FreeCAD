@@ -45,7 +45,7 @@ class TaskHelixParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskHelixParameters(ViewProviderHelix* HelixView, QWidget* parent = nullptr);
+    explicit TaskHelixParameters(ViewProviderHelix* HelixView, QWidget* parent = nullptr);
     ~TaskHelixParameters() override;
 
     void apply() override;
@@ -133,7 +133,7 @@ class TaskDlgHelixParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgHelixParameters(ViewProviderHelix* HelixView);
+    explicit TaskDlgHelixParameters(ViewProviderHelix* HelixView);
 
     ViewProviderHelix* getHelixView() const
     { return static_cast<ViewProviderHelix*>(vp); }

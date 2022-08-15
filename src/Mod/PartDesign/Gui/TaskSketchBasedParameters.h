@@ -79,7 +79,7 @@ class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParamet
     Q_OBJECT
 
 public:
-    TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp);
+    explicit TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp);
     ~TaskDlgSketchBasedParameters() override;
 
 public:

@@ -184,7 +184,7 @@ public:
     using BaseType = Py::PythonExtension<MDIViewPagePy>;
     static void init_type();
 
-    MDIViewPagePy(MDIViewPage *mdi);
+    explicit MDIViewPagePy(MDIViewPage *mdi);
     ~MDIViewPagePy() override;
 
     Py::Object repr() override;

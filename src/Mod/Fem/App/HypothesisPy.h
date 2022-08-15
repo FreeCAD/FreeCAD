@@ -36,7 +36,7 @@ class HypothesisPy : public Py::PythonExtension<HypothesisPy>
 {
 public:
     typedef Py::PythonExtension<HypothesisPy> HypothesisPyBase;
-    HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
+    explicit HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
     ~HypothesisPy() override;
     std::shared_ptr<SMESH_Hypothesis> getHypothesis() const
     { return hyp; }
@@ -54,7 +54,7 @@ public:
     typedef SMESH_HypothesisPy<T> SMESH_HypothesisPyBase;
     static void init_type(PyObject*);    // announce properties and methods
 
-    SMESH_HypothesisPy(SMESH_Hypothesis*);
+    explicit SMESH_HypothesisPy(SMESH_Hypothesis*);
     ~SMESH_HypothesisPy() override;
 
     Py::Object getattr(const char *name) override;

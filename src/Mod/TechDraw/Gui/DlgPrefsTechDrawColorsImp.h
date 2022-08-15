@@ -36,7 +36,7 @@ class DlgPrefsTechDrawColorsImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawColorsImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawColorsImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawColorsImp() override;
 
 protected:

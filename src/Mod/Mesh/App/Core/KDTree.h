@@ -33,8 +33,8 @@ class MeshExport MeshKDTree
 {
 public:
     MeshKDTree();
-    MeshKDTree(const std::vector<Base::Vector3f>& points);
-    MeshKDTree(const MeshPointArray& points);
+    explicit MeshKDTree(const std::vector<Base::Vector3f>& points);
+    explicit MeshKDTree(const MeshPointArray& points);
     ~MeshKDTree();
 
     void AddPoint(Base::Vector3f& point);

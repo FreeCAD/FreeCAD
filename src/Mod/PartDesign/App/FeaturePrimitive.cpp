@@ -159,7 +159,7 @@ void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const 
 # pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
+PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)//explicit bombs
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
 
 #if defined(__clang__)

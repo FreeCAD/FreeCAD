@@ -222,7 +222,7 @@ protected:
 class MeshExport ConstraintDelaunayTriangulator : public AbstractPolygonTriangulator
 {
 public:
-    ConstraintDelaunayTriangulator(float area);
+    explicit ConstraintDelaunayTriangulator(float area);
     ~ConstraintDelaunayTriangulator() override;
 
 protected:

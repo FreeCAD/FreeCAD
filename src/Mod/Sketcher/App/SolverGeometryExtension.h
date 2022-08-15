@@ -51,7 +51,7 @@ public:
 
     class PointParameterStatus {
     public:
-        PointParameterStatus(ParameterStatus status) {setStatus(status);}
+        explicit PointParameterStatus(ParameterStatus status) {setStatus(status);}
         PointParameterStatus(ParameterStatus statusx, ParameterStatus statusy) {setStatus(statusx, statusy);}
 
         PointParameterStatus(const PointParameterStatus &) = default;

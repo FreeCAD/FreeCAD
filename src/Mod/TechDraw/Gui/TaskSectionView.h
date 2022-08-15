@@ -42,8 +42,8 @@ class TaskSectionView : public QWidget
     Q_OBJECT
 
 public:
-    TaskSectionView(TechDraw::DrawViewPart* base);
-    TaskSectionView(TechDraw::DrawViewSection* section);
+    explicit TaskSectionView(TechDraw::DrawViewPart* base);
+    explicit TaskSectionView(TechDraw::DrawViewSection* section);
     ~TaskSectionView() override;
 
 public:
@@ -122,8 +122,8 @@ class TaskDlgSectionView : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSectionView(TechDraw::DrawViewPart* base);
-    TaskDlgSectionView(TechDraw::DrawViewSection* section);
+    explicit TaskDlgSectionView(TechDraw::DrawViewPart* base);
+    explicit TaskDlgSectionView(TechDraw::DrawViewSection* section);
     ~TaskDlgSectionView() override;
 
 public:

@@ -43,7 +43,7 @@ class TaskDlgCreateNodeSet : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCreateNodeSet(Fem::FemSetNodesObject *);
+    explicit TaskDlgCreateNodeSet(Fem::FemSetNodesObject *);
     ~TaskDlgCreateNodeSet() override;
 
 public:

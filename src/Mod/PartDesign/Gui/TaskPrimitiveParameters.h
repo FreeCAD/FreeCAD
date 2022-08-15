@@ -48,7 +48,7 @@ class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
     Q_OBJECT
 
 public:
-    TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = nullptr);
+    explicit TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = nullptr);
     ~TaskBoxPrimitives() override;
 
     bool setPrimitive(App::DocumentObject *);
@@ -112,7 +112,7 @@ class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
+    explicit TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
     ~TaskPrimitiveParameters() override;
 
 protected:

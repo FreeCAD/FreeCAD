@@ -600,7 +600,7 @@ namespace SketcherGui {
     {
         App::DocumentObject* object;
     public:
-        GenericConstraintSelection(App::DocumentObject* obj)
+        explicit GenericConstraintSelection(App::DocumentObject* obj)
             : Gui::SelectionFilterGate(nullPointer())
             , object(obj), allowedSelTypes(0)
         {}
@@ -641,7 +641,7 @@ class CmdSketcherConstraint : public Gui::Command
 {
     friend class DrawSketchHandlerGenConstraint;
 public:
-    CmdSketcherConstraint(const char* name)
+    explicit CmdSketcherConstraint(const char* name)
             : Command(name) {}
 
     ~CmdSketcherConstraint() override{}
@@ -675,7 +675,7 @@ protected:
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
+    explicit DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
         : cmd(_cmd), seqIndex(0) {}
     ~DrawSketchHandlerGenConstraint() override
     {

@@ -154,7 +154,7 @@ private:
     class ParameterObserver : public ParameterGrp::ObserverType
     {
     public:
-        ParameterObserver(ViewProviderSketch & client);
+        explicit ParameterObserver(ViewProviderSketch & client);
         ~ParameterObserver();
 
         void initParameters();

@@ -49,7 +49,7 @@ class MeshExport MeshPoint : public Vector3d
 
 public:
     /// simple constructor
-    MeshPoint(const Vector3d& vec = Vector3d(), const MeshObject* obj = nullptr, unsigned int index = UINT_MAX)
+    explicit MeshPoint(const Vector3d& vec = Vector3d(), const MeshObject* obj = nullptr, unsigned int index = UINT_MAX)
         :Vector3d(vec),Index(index),Mesh(obj)
     {}
 

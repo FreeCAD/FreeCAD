@@ -35,7 +35,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerBSpline(int constructionMethod)
+    explicit DrawSketchHandlerBSpline(int constructionMethod)
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
       , MousePressMode(MOUSE_NOT_PRESSED)
       , ConstrMethod(constructionMethod)

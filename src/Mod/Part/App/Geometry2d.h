@@ -551,7 +551,7 @@ class PartExport Geom2dTrimmedCurve : public Geom2dCurve
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dTrimmedCurve();
-    Geom2dTrimmedCurve(const Handle(Geom2d_TrimmedCurve)&);
+    explicit Geom2dTrimmedCurve(const Handle(Geom2d_TrimmedCurve)&);
     ~Geom2dTrimmedCurve() override;
     Geometry2d *clone() const override;
 

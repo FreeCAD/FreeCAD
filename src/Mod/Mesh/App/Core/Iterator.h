@@ -51,7 +51,7 @@ public:
   /** @name Construction */
   //@{
   /// construction
-  inline MeshFacetIterator (const MeshKernel &rclM);
+  inline explicit MeshFacetIterator (const MeshKernel &rclM);
   /// construction
   inline MeshFacetIterator (const MeshKernel &rclM, FacetIndex ulPos);
   /// construction
@@ -175,7 +175,7 @@ class MeshExport MeshPointIterator
 public:
   /** @name Construction */
   //@{
-  inline MeshPointIterator (const MeshKernel &rclM);
+  inline explicit MeshPointIterator (const MeshKernel &rclM);
   inline MeshPointIterator (const MeshKernel &rclM, PointIndex ulPos);
   inline MeshPointIterator (const MeshPointIterator &rclI);
   //@}
@@ -271,7 +271,7 @@ protected:
 class MeshFastFacetIterator
 {
 public:
-  inline MeshFastFacetIterator (const MeshKernel &rclM);
+  inline explicit MeshFastFacetIterator (const MeshKernel &rclM);
   virtual ~MeshFastFacetIterator () {}
 
   void Init () { _clIter = _rclFAry.begin(); }

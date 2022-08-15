@@ -36,7 +36,7 @@ class TaskThicknessParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskThicknessParameters() override;
 
     double getValue(void) const;
@@ -69,7 +69,7 @@ class TaskDlgThicknessParameters : public TaskDlgDressUpParameters
     Q_OBJECT
 
 public:
-    TaskDlgThicknessParameters(ViewProviderThickness *ThicknessView);
+    explicit TaskDlgThicknessParameters(ViewProviderThickness *ThicknessView);
     ~TaskDlgThicknessParameters() override;
 
 public:

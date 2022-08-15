@@ -35,7 +35,7 @@ class OffsetWidget : public QWidget
     Q_OBJECT
 
 public:
-    OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
+    explicit OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
     ~OffsetWidget() override;
 
     bool accept();
@@ -64,7 +64,7 @@ class TaskOffset : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskOffset(Part::Offset*);
+    explicit TaskOffset(Part::Offset*);
     ~TaskOffset() override;
 
 public:

@@ -43,7 +43,7 @@ class TechDrawGuiExport  QGIDrawingTemplate : public QGITemplate
     Q_OBJECT
 
 public:
-    QGIDrawingTemplate(QGSPage *);
+    explicit QGIDrawingTemplate(QGSPage *);
     ~QGIDrawingTemplate();
 
     enum {Type = QGraphicsItem::UserType + 151};

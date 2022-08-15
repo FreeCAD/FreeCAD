@@ -35,7 +35,7 @@ class ThicknessWidget : public QWidget
     Q_OBJECT
 
 public:
-    ThicknessWidget(Part::Thickness*, QWidget* parent = nullptr);
+    explicit ThicknessWidget(Part::Thickness*, QWidget* parent = nullptr);
     ~ThicknessWidget() override;
 
     bool accept();
@@ -64,7 +64,7 @@ class TaskThickness : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskThickness(Part::Thickness*);
+    explicit TaskThickness(Part::Thickness*);
     ~TaskThickness() override;
 
 public:

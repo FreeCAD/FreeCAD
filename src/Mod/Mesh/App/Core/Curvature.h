@@ -55,7 +55,7 @@ private:
 class MeshExport MeshCurvature
 {
 public:
-    MeshCurvature(const MeshKernel& kernel);
+    explicit MeshCurvature(const MeshKernel& kernel);
     MeshCurvature(const MeshKernel& kernel, const std::vector<FacetIndex>& segm);
     float GetRadius() const { return myRadius; }
     void SetRadius(float r) { myRadius = r; }

@@ -36,7 +36,7 @@ class ShapeBuilderWidget : public QWidget,
     Q_OBJECT
 
 public:
-    ShapeBuilderWidget(QWidget* parent = nullptr);
+    explicit ShapeBuilderWidget(QWidget* parent = nullptr);
     ~ShapeBuilderWidget() override;
 
     bool accept();

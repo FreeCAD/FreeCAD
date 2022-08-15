@@ -35,7 +35,7 @@ namespace MeshCore {
 class MeshExport MeshTrimByPlane
 {
 public:
-    MeshTrimByPlane(MeshKernel& mesh);
+    explicit MeshTrimByPlane(MeshKernel& mesh);
     ~MeshTrimByPlane();
 
 public:

@@ -50,7 +50,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalInvalids (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalInvalids (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -76,7 +76,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixInvalids (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixInvalids (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -101,7 +101,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalDuplicatePoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalDuplicatePoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -127,7 +127,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixDuplicatePoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixDuplicatePoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -149,7 +149,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalNaNPoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalNaNPoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -175,7 +175,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixNaNPoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixNaNPoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -199,7 +199,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalDuplicateFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalDuplicateFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -225,7 +225,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixDuplicateFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixDuplicateFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -246,7 +246,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalInternalFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalInternalFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -345,7 +345,7 @@ public:
      * It defines the amount of perimeter of a triangle for which the shortest
      * edge is considered for removal.
      */
-  MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
+  explicit MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
       : MeshValidation(rclM), fMinEdgeLength(std::min(fMinEdgeLen, 0.25f)) {}
   /**
    * Destruction.
@@ -377,7 +377,7 @@ public:
   /**
    * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
    */
-  MeshFixCaps (MeshKernel &rclM, float fMaxAng = 2.61f, float fFactor = 0.25f) // ~150 degree
+  explicit MeshFixCaps (MeshKernel &rclM, float fMaxAng = 2.61f, float fFactor = 0.25f) // ~150 degree
       : MeshValidation(rclM), fMaxAngle(fMaxAng), fSplitFactor(fFactor) { }
   /**
    * Destruction.
@@ -470,7 +470,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixMergeFacets (MeshKernel &rclM)
+  explicit MeshFixMergeFacets (MeshKernel &rclM)
       : MeshValidation(rclM) { }
   /**
    * Destruction.
@@ -489,7 +489,7 @@ public:
 class MeshExport MeshEvalDentsOnSurface : public MeshEvaluation
 {
 public:
-    MeshEvalDentsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalDentsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
     ~MeshEvalDentsOnSurface() override {}
 
     bool Evaluate() override;
@@ -502,7 +502,7 @@ private:
 class MeshExport MeshFixDentsOnSurface : public MeshValidation
 {
 public:
-    MeshFixDentsOnSurface (MeshKernel &rclM) : MeshValidation( rclM ) { }
+    explicit MeshFixDentsOnSurface (MeshKernel &rclM) : MeshValidation( rclM ) { }
     ~MeshFixDentsOnSurface() override {}
 
     bool Fixup() override;
@@ -516,7 +516,7 @@ public:
 class MeshExport MeshEvalFoldsOnSurface : public MeshEvaluation
 {
 public:
-    MeshEvalFoldsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalFoldsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
     ~MeshEvalFoldsOnSurface() override {}
 
     bool Evaluate() override;
@@ -535,7 +535,7 @@ private:
 class MeshExport MeshEvalFoldsOnBoundary : public MeshEvaluation
 {
 public:
-    MeshEvalFoldsOnBoundary (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalFoldsOnBoundary (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
     ~MeshEvalFoldsOnBoundary() override {}
 
     bool Evaluate() override;
@@ -548,7 +548,7 @@ private:
 class MeshExport MeshFixFoldsOnBoundary : public MeshValidation
 {
 public:
-    MeshFixFoldsOnBoundary (MeshKernel &rclM) : MeshValidation( rclM ) { }
+    explicit MeshFixFoldsOnBoundary (MeshKernel &rclM) : MeshValidation( rclM ) { }
     ~MeshFixFoldsOnBoundary() override {}
 
     bool Fixup() override;
@@ -561,7 +561,7 @@ public:
 class MeshExport MeshEvalFoldOversOnSurface : public MeshEvaluation
 {
 public:
-    MeshEvalFoldOversOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalFoldOversOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
     ~MeshEvalFoldOversOnSurface() override {}
 
     bool Evaluate() override;
@@ -606,7 +606,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalRangeFacet (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalRangeFacet (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -632,7 +632,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixRangeFacet (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixRangeFacet (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -654,7 +654,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalRangePoint (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalRangePoint (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -680,7 +680,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixRangePoint (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixRangePoint (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -703,7 +703,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalCorruptedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalCorruptedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -730,7 +730,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixCorruptedFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  explicit MeshFixCorruptedFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
   /**
    * Destruction.
    */
@@ -752,7 +752,7 @@ public:
   /**
    * Construction.
    */
-  MeshEvalPointOnEdge (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  explicit MeshEvalPointOnEdge (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
   /**
    * Destruction.
    */
@@ -786,7 +786,7 @@ public:
   /**
    * Construction.
    */
-  MeshFixPointOnEdge (MeshKernel &rclM, bool fill = false) : MeshValidation( rclM ), fillBoundary(fill) { }
+  explicit MeshFixPointOnEdge (MeshKernel &rclM, bool fill = false) : MeshValidation( rclM ), fillBoundary(fill) { }
   /**
    * Destruction.
    */

@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleOpenSCAD : public QGVNavStyle
 {
 public:
-    QGVNavStyleOpenSCAD(QGVPage* qgvp);
+    explicit QGVNavStyleOpenSCAD(QGVPage* qgvp);
     ~QGVNavStyleOpenSCAD() override;
 
     void handleKeyReleaseEvent(QKeyEvent *event) override;

@@ -34,7 +34,7 @@ class DlgRegularSolidImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgRegularSolidImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgRegularSolidImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgRegularSolidImp() override;
 
 public Q_SLOTS:

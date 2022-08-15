@@ -3378,7 +3378,7 @@ struct MeshVertex
         : x(X),y(Y),z(Z),i(0)
     {
     }
-    MeshVertex(const Base::Vector3d& p)
+    explicit MeshVertex(const Base::Vector3d& p)
         : x(p.x),y(p.y),z(p.z),i(0)
     {
     }

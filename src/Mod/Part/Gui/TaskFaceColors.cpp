@@ -70,7 +70,7 @@ namespace PartGui {
     {
         const App::DocumentObject* object;
     public:
-        FaceSelection(const App::DocumentObject* obj)
+        explicit FaceSelection(const App::DocumentObject* obj)
             : Gui::SelectionFilterGate(), object(obj)
         {
         }
@@ -102,7 +102,7 @@ public:
     Connection connectDelObj;
     Connection connectUndoDoc;
 
-    Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
+    explicit Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
     {
         obj = vp->getObject();
         doc = Gui::Application::Instance->getDocument(obj->getDocument());

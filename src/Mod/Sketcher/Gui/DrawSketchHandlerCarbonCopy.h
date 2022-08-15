@@ -36,7 +36,7 @@ class CarbonCopySelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    CarbonCopySelection(App::DocumentObject* obj)
+    explicit CarbonCopySelection(App::DocumentObject* obj)
     : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 

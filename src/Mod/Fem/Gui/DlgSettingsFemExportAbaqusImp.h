@@ -36,7 +36,7 @@ class DlgSettingsFemExportAbaqusImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemExportAbaqusImp( QWidget* parent = nullptr );
+    explicit DlgSettingsFemExportAbaqusImp( QWidget* parent = nullptr );
     ~DlgSettingsFemExportAbaqusImp() override;
 
 protected:

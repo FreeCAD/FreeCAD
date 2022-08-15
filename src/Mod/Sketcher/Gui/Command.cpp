@@ -71,7 +71,7 @@ namespace SketcherGui {
         }
 
         //Pass untranslated strings, enclosed in QT_TR_NOOP()
-        ExceptionWrongInput(const char* ErrMsg){
+        explicit ExceptionWrongInput(const char* ErrMsg){
             this->ErrMsg = QObject::tr( ErrMsg );
             this->setMessage(ErrMsg);
         }

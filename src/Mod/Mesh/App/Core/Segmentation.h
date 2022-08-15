@@ -40,7 +40,7 @@ typedef std::vector<FacetIndex> MeshSegment;
 class MeshExport MeshSurfaceSegment
 {
 public:
-    MeshSurfaceSegment(unsigned long minFacets)
+    explicit MeshSurfaceSegment(unsigned long minFacets)
         : minFacets(minFacets) {}
     virtual ~MeshSurfaceSegment() {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
@@ -269,7 +269,7 @@ protected:
 class MeshExport MeshSegmentAlgorithm
 {
 public:
-    MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
+    explicit MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
     void FindSegments(std::vector<MeshSurfaceSegmentPtr>&);
 
 private:

@@ -46,7 +46,7 @@ class SketcherGeneralWidget : public QWidget
     Q_OBJECT
 
 public:
-    SketcherGeneralWidget(QWidget *parent=nullptr);
+    explicit SketcherGeneralWidget(QWidget *parent=nullptr);
     ~SketcherGeneralWidget() override;
     
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -84,7 +84,7 @@ class TaskSketcherGeneral : public Gui::TaskView::TaskBox,
     Q_OBJECT
 
 public:
-    TaskSketcherGeneral(ViewProviderSketch *sketchView);
+    explicit TaskSketcherGeneral(ViewProviderSketch *sketchView);
     ~TaskSketcherGeneral() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
