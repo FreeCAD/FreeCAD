@@ -103,6 +103,8 @@ class _TaskPanel(object):
     def _initParamWidget(self):
         self._paramWidget.pressureQSB.setProperty(
             'value', self._obj.Pressure)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.pressureQSB).bind(self._obj, "Pressure")
 
     def _applyWidgetChanges(self):
         pressure = None
