@@ -7,6 +7,7 @@ SET(AddonManager_SRCS
     Addon.py
     AddonManager.py
     AddonManager.ui
+    addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py
     addonmanager_workers_startup.py
@@ -46,6 +47,7 @@ SET(AddonManagerTests_SRCS
 SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
     AddonManagerTest/app/test_addon.py
+    AddonManagerTest/app/test_git.py
     AddonManagerTest/app/test_macro.py
     AddonManagerTest/app/test_utilities.py
 )
@@ -70,6 +72,7 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/macro_template.FCStd
     AddonManagerTest/data/missing_macro_metadata.FCStd
     AddonManagerTest/data/prefpack_only.xml
+    AddonManagerTest/data/test_repo.zip
     AddonManagerTest/data/test_version_detection.xml
     AddonManagerTest/data/workbench_only.xml
 )
