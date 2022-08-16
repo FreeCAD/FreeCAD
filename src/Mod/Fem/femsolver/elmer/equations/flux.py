@@ -34,6 +34,8 @@ from femtools import femutils
 from ... import equationbase
 from . import linear
 
+COEFFICIENTS = ["Heat Conductivity", "None"]
+VARIABLES = ["Potential", "Temperature"]
 
 def create(doc, name="Flux"):
     return femutils.createObject(
@@ -111,23 +113,28 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
             )
         )
         obj.addProperty(
-            "App::PropertyString",
+            "App::PropertyEnumeration",
             "FluxCoefficient",
             "Flux",
-            "Name of proportionality coefficient\nto compute the flux"
+            "Proportionality coefficient\nto compute the flux"
         )
         obj.addProperty(
-            "App::PropertyString",
+            "App::PropertyEnumeration",
             "FluxVariable",
             "Flux",
             "Variable name for flux calculation"
         )
 
-        obj.Priority = 5
         obj.CalculateFlux = True
         # set defaults according to the Elmer manual
-        obj.FluxCoefficient = "Temperature"
-        obj.FluxVariable = "Heat Conductivity"
+        obj.FluxCoefficient = COEFFICIENTS
+        obj.FluxCoefficient = "Heat Conductivity"
+        obj.FluxVariable = VARIABLES
+        obj.FluxVariable = "Temperature"
+        # Electrostatic has priority 10, Heat has 20 and Flux needs
+        # to be solved before these equations
+        # therefore set priority to 25
+        obj.Priority = 25
 
 
 class ViewProxy(linear.ViewProxy, equationbase.FluxViewProxy):

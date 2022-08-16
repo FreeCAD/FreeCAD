@@ -52,6 +52,7 @@ from femtools import membertools
 from .equations import elasticity
 from .equations import electricforce
 from .equations import flow
+from .equations import flux
 from .equations import heat
 
 
@@ -682,7 +683,7 @@ class Writer(object):
         # check if we need to update the equation
         self._updateFluxSolver(equation)
         # output the equation parameters
-        s["Equation"] = "Flux Solver"  # equation.Name
+        s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
         if equation.AverageWithinMaterials is True:
             s["Average Within Materials"] = equation.AverageWithinMaterials
@@ -768,13 +769,41 @@ class Writer(object):
                     "are a posteriori set to zero."
                 )
             )
+        tempFluxCoefficient = ""
+        if hasattr(equation, "FluxCoefficient"):
+            if equation.FluxCoefficient not in flux.COEFFICIENTS:
+                # was an App::PropertyString and changed to
+                # App::PropertyEnumeration
+                tempFluxCoefficient = equation.FluxCoefficient
+                equation.removeProperty("FluxCoefficient")
         if not hasattr(equation, "FluxCoefficient"):
             equation.addProperty(
-                "App::PropertyString",
+                "App::PropertyEnumeration",
                 "FluxCoefficient",
                 "Flux",
                 "Name of proportionality coefficient\nto compute the flux"
             )
+            equation.FluxCoefficient = flux.COEFFICIENTS
+            if tempFluxCoefficient:
+                equation.FluxCoefficient = tempFluxCoefficient
+            else:
+                equation.FluxCoefficient = "None"
+        tempFluxVariable = ""
+        if hasattr(equation, "FluxVariable"):
+            if equation.FluxVariable not in flux.VARIABLES:
+                # was an App::PropertyString and changed to
+                # App::PropertyEnumeration
+                tempFluxVariable = equation.FluxVariable
+                equation.removeProperty("FluxVariable")
+                equation.addProperty(
+                    "App::PropertyEnumeration",
+                    "FluxVariable",
+                    "Flux",
+                    "Variable name for flux calculation"
+                )
+                equation.FluxVariable = flux.VARIABLES
+                equation.FluxVariable = tempFluxVariable
+
 
     def _handleElectricforce(self):
         activeIn = []
