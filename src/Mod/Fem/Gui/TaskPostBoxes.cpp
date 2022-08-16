@@ -1122,8 +1122,11 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
     }
-    else if (FieldName == "Temperature"
-             || (FieldName.find("temperature", 0) == 0) // Elmer name
+    else if (
+        // CalculiX name
+        FieldName == "Temperature" ||
+        // Elmer name
+        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))
         ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
     }
@@ -1142,9 +1145,15 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     else if (FieldName == "electric flux") {
         static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
     }
+    else if (FieldName == "potential flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
+    }
     // potential loads are in Coulomb: https://www.elmerfem.org/forum/viewtopic.php?t=7780
     else if (FieldName == "potential loads") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("C");
+    }
+    else if (FieldName == "temperature flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
     }
     else {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
