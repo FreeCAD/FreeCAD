@@ -76,16 +76,3 @@ QRectF QGIDimLines::boundingRect() const
 {
     return shape().controlPointRect().adjusted(-3, -3, 3, 3);
 }
-
-void QGIDimLines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->drawRect(boundingRect());   //good for debugging
-//    painter->drawPath(shape());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
-}
-
-
