@@ -359,11 +359,3 @@ double QGIArrow::getOverlapAdjust(int style, double size)
     }
     return result;
 }
-
-void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    QGIPrimPath::paint (painter, &myOption, widget);
-}

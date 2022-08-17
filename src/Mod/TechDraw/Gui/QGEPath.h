@@ -48,7 +48,6 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 302};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
@@ -63,11 +62,7 @@ Q_SIGNALS:
     void endEdit(void);
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
     bool m_dragging;
@@ -87,7 +82,6 @@ public:
     int type() const override { return Type;}
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     void inEdit(bool b) { m_inEdit = b; }
     bool inEdit(void)   { return m_inEdit; }

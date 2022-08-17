@@ -50,7 +50,6 @@ public:
     //double getLineWidth() { return m_lineWidth; }
     //void setLineWidth(double w);
     //QPainterPath shape() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
 protected:
     //QVariant itemChange(GraphicsItemChange change, const QVariant &value);

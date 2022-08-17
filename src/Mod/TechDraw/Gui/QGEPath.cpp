@@ -59,24 +59,6 @@ QGMarker::QGMarker(int idx) : QGIVertex(idx),
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
-QVariant QGMarker::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-//    Base::Console().Message("QGMarker::itemChange(%d)\n",change);
-    return QGIVertex::itemChange(change, value);
-}
-
-void QGMarker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-//    Base::Console().Message("QGMarker::hoverEnterEvent(%d)\n",getProjIndex());
-    QGIVertex::hoverEnterEvent(event);
-}
-
-void QGMarker::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-//    Base::Console().Message("QGMarker::hoverLeaveEvent(%d)\n",getProjIndex());
-    QGIVertex::hoverLeaveEvent(event);
-}
-
 void QGMarker::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGMarker::mousePressEvent() - focustype: %d\n",
@@ -92,12 +74,6 @@ void QGMarker::mousePressEvent(QGraphicsSceneMouseEvent * event)
         Q_EMIT dragging(pos(), getProjIndex());      //pass center of marker[i] to epath
     }
     QGIVertex::mousePressEvent(event);
-}
-
-void QGMarker::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-//    Base::Console().Message("QGMarker::mouseMoveEvent(%d)\n", getProjIndex());
-    QGIVertex::mouseMoveEvent(event);
 }
 
 void QGMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -146,16 +122,6 @@ void QGMarker::setRadius(float r)
     QPainterPath p;
     p.addRect(-r/2.0, -r/2.0, r, r);
     setPath(p);
-}
-
-void QGMarker::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    //~ painter->drawRect(boundingRect());          //good for debugging
-
-    QGIVertex::paint (painter, &myOption, widget);
 }
 
 //******************************************************************************
@@ -424,15 +390,6 @@ QPainterPath QGEPath::shape() const
  double QGEPath::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
-}
-
-void QGEPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//     painter->drawRect(boundingRect());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
 }
 
 void QGEPath::dumpGhostPoints(const char* text)
