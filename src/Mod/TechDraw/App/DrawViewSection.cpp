@@ -149,6 +149,11 @@ DrawViewSection::DrawViewSection()  :
 
 DrawViewSection::~DrawViewSection()
 {
+    //don't destroy this object while it has dependent threads running
+    if (m_cutFuture.isRunning()) {
+        Base::Console().Message("%s is waiting for tasks to complete\n", getNameInDocument());
+        m_cutFuture.waitForFinished();
+    }
 }
 
 short DrawViewSection::mustExecute() const
