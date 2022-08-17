@@ -50,7 +50,9 @@
 
 #include <utilities.h>
 
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_B3d.hxx>
 #include <NCollection_Map.hxx>
@@ -66,6 +68,7 @@
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Solid.hxx>
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4067)
@@ -3027,7 +3030,7 @@ bool NETGENPlugin_Mesher::Compute()
         }
       }
     }
-    if (!err && mparams.secondorder > 0)
+    if (!err && mparams.secondorder)
     {
       try
       {
@@ -3302,7 +3305,7 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
   // calculate total nb of segments and length of edges
   double fullLen = 0.0;
   int fullNbSeg = 0;
-  int entity = mparams.secondorder > 0 ? SMDSEntity_Quad_Edge : SMDSEntity_Edge;
+  int entity = mparams.secondorder ? SMDSEntity_Quad_Edge : SMDSEntity_Edge;
   TopTools_DataMapOfShapeInteger Edge2NbSeg;
   for (TopExp_Explorer exp(_shape, TopAbs_EDGE); exp.More(); exp.Next())
   {
@@ -3340,7 +3343,7 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
   {
     vector<int>& aVec = aResMap[_mesh->GetSubMesh(Edge2NbSegIt.Key())];
     if ( aVec[ entity ] > 1 && aVec[ SMDSEntity_Node ] == 0 )
-      aVec[SMDSEntity_Node] = mparams.secondorder > 0  ? 2*aVec[ entity ]-1 : aVec[ entity ]-1;
+      aVec[SMDSEntity_Node] = mparams.secondorder ? 2*aVec[ entity ]-1 : aVec[ entity ]-1;
 
     fullNbSeg += aVec[ entity ];
     Edge2NbSeg( Edge2NbSegIt.Key() ) = aVec[ entity ];
@@ -3386,7 +3389,7 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
     int nbNodes = tooManyElems ? hugeNb : (( nbFaces*3 - (nb1d-1)*2 ) / 6 + 1 );
 
     vector<int> aVec(SMDSEntity_Last, 0);
-    if( mparams.secondorder > 0 ) {
+    if (mparams.secondorder) {
       int nb1d_in = (nbFaces*3 - nb1d) / 2;
       aVec[SMDSEntity_Node] = nbNodes + nb1d_in;
       aVec[SMDSEntity_Quad_Triangle] = nbFaces;
@@ -3428,11 +3431,11 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
     if ( tooManyElems ) // avoid FPE
     {
       aVec[SMDSEntity_Node] = hugeNb;
-      aVec[ mparams.secondorder > 0 ? SMDSEntity_Quad_Tetra : SMDSEntity_Tetra] = hugeNb;
+      aVec[ mparams.secondorder ? SMDSEntity_Quad_Tetra : SMDSEntity_Tetra] = hugeNb;
     }
     else
     {
-      if( mparams.secondorder > 0 ) {
+      if (mparams.secondorder) {
         aVec[SMDSEntity_Node] = nb1d_in/3 + 1 + nb1d_in;
         aVec[SMDSEntity_Quad_Tetra] = nbVols;
       }
