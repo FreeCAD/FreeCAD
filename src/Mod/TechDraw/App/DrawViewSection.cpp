@@ -176,11 +176,17 @@ short DrawViewSection::mustExecute() const
 void DrawViewSection::onChanged(const App::Property* prop)
 {
     if (isRestoring()) {
-        DrawView::onChanged(prop);
+        DrawViewPart::onChanged(prop);
         return;
     }
 
     App::Document* doc = getDocument();
+    if (!doc) {
+        //tarfu
+        DrawViewPart::onChanged(prop);
+        return;
+    }
+
     if (prop == &SectionSymbol) {
         std::string lblText = "Section " +
                               std::string(SectionSymbol.getValue()) +
@@ -191,14 +197,14 @@ void DrawViewSection::onChanged(const App::Property* prop)
         if (CutSurfaceDisplay.isValue("PatHatch")) {
             makeLineSets();
         }
-    } else if ((prop == &FileHatchPattern) && doc) {
+    } else if (prop == &FileHatchPattern) {
         if (!FileHatchPattern.isEmpty()) {
             Base::FileInfo fi(FileHatchPattern.getValue());
             if (fi.isReadable()) {
                 replaceSvgIncluded(FileHatchPattern.getValue());
             }
         }
-    } else if ((prop == &FileGeomPattern) && doc) {
+    } else if (prop == &FileGeomPattern) {
         if (!FileGeomPattern.isEmpty()) {
             Base::FileInfo fi(FileGeomPattern.getValue());
             if (fi.isReadable()) {
@@ -852,21 +858,24 @@ void DrawViewSection::setupObject()
 void DrawViewSection::makeLineSets(void)
 {
 //    Base::Console().Message("DVS::makeLineSets()\n");
-    if (!PatIncluded.isEmpty())  {
-        std::string fileSpec = PatIncluded.getValue();
-        Base::FileInfo fi(fileSpec);
-        std::string ext = fi.extension();
-        if (!fi.isReadable()) {
-            Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
-        } else {
-            if ( (ext == "pat") ||
-                 (ext == "PAT") ) {
-                if ((!fileSpec.empty())  &&
-                    (!NameGeomPattern.isEmpty())) {
-                    m_lineSets.clear();
-                    m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());
-                }
-            }
+    if (PatIncluded.isEmpty()) {
+        return;
+    }
+
+    std::string fileSpec = PatIncluded.getValue();
+    Base::FileInfo fi(fileSpec);
+    std::string ext = fi.extension();
+    if (!fi.isReadable()) {
+        Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
+        return;
+    }
+
+    if ( (ext == "pat") ||
+         (ext == "PAT") ) {
+        if ((!fileSpec.empty())  &&
+            (!NameGeomPattern.isEmpty())) {
+            m_lineSets.clear();
+            m_lineSets = DrawGeomHatch::makeLineSets(fileSpec, NameGeomPattern.getValue());
         }
     }
 }
@@ -958,8 +967,7 @@ bool DrawViewSection::debugSection(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
 
-    bool result = hGrp->GetBool("debugSection",false);
-    return result;
+    return hGrp->GetBool("debugSection",false);
 }
 
 int DrawViewSection::prefCutSurface(void) const
@@ -968,8 +976,7 @@ int DrawViewSection::prefCutSurface(void) const
     Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
 
-    int result = hGrp->GetInt("CutSurfaceDisplay", 2);   //default to SvgHatch
-    return result;
+    return hGrp->GetInt("CutSurfaceDisplay", 2);   //default to SvgHatch
 }
 
 bool DrawViewSection::showSectionEdges(void)
