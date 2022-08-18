@@ -131,13 +131,14 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         return;
     }
 
-    if ( (prop == &Source) ||
-         (prop == &XSource) ) {
+    if ( prop == &Source ||
+         prop == &XSource ) {
         updateChildrenSource();
         return;
     }
 
-    if ((prop == &spacingX) || (prop == &spacingY)) {
+    if ( prop == &spacingX ||
+         prop == &spacingY ) {
         updateChildrenEnforce();
         return;
     }
@@ -148,20 +149,20 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     }
 
     if (prop == &ScaleType) {
-        if (ScaleType.isValue("Automatic")) {
-            //Nothing in particular
-        } else if (ScaleType.isValue("Page")) {
+        if (ScaleType.isValue("Page")) {
             double newScale = page->Scale.getValue();
             if(std::abs(getScale() - newScale) > FLT_EPSILON) {
                 Scale.setValue(newScale);
                 updateChildrenScale();
             }
-        } else {
-            //ScaleType = Custom
         }
-        //DrawView will sort out Scale hidden/readonly/etc
-        TechDraw::DrawViewCollection::onChanged(prop);
     }
+
+//        if ( ScaleType.isValue("Automatic") ||
+//             ScaleType.isValue("Custom") ){
+//            //just documenting that nothing is required here
+//            //DrawView::onChanged will sort out Scale hidden/readonly/etc
+//        }
 
     if (prop == &Rotation) {
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
@@ -284,8 +285,8 @@ bool DrawProjGroup::checkFit(DrawPage* page) const
     }
 
     QRectF bigBox = getRect(false);
-    if ( (bigBox.width() <= page->getPageWidth()) &&
-         (bigBox.height() <= page->getPageHeight()) ) {
+    if ( bigBox.width() <= page->getPageWidth() &&
+         bigBox.height() <= page->getPageHeight() ) {
         return true;
     }
     return false;

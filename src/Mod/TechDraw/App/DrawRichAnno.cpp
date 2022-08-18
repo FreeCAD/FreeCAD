@@ -111,15 +111,16 @@ DrawView* DrawRichAnno::getBaseView() const
 DrawPage* DrawRichAnno::findParentPage() const
 {
 //    Base::Console().Message("DRA::findParentPage()\n");
-    DrawPage *page = nullptr;
-    if (AnnoParent.getValue() != nullptr) {
-        DrawView* parent = dynamic_cast<DrawView*>(AnnoParent.getValue());
-        page = parent->findParentPage();
-    } else {
-        page = DrawView::findParentPage();
+    if (!AnnoParent.getValue()) {
+        return DrawView::findParentPage();
     }
 
-    return page;
+    DrawView* parent = dynamic_cast<DrawView*>(AnnoParent.getValue());
+    if (parent) {
+        return parent->findParentPage();
+    }
+
+    return nullptr;
 }
 
 PyObject *DrawRichAnno::getPyObject()

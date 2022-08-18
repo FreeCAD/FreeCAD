@@ -344,16 +344,23 @@ double DrawProjGroupItem::getScale(void) const
 
 void DrawProjGroupItem::unsetupObject()
 {
-    if (getPGroup()) {
-        if (getPGroup()->hasProjection(Type.getValueAsString()) ) {
-            if ((getPGroup()->getAnchor() == this) &&
-                 !getPGroup()->isUnsetting() )         {
-                   Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
-                                           getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
-                   getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
-             }
-        }
+    if (!getPGroup()) {
+        DrawViewPart::unsetupObject();
+        return;
     }
+
+    if (!getPGroup()->hasProjection(Type.getValueAsString()) ) {
+        DrawViewPart::unsetupObject();
+        return;
+    }
+
+    if ( getPGroup()->getAnchor() == this &&
+         !getPGroup()->isUnsetting() )         {
+           Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
+                                   getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
+           getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+    }
+
     DrawViewPart::unsetupObject();
 }
 
