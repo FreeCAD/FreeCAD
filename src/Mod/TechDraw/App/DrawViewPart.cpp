@@ -677,22 +677,19 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
     std::vector<TechDraw::FacePtr> result;
-    if (waitingForFaces()) {
-        return result;
+    if ( waitingForFaces() ||
+        !geometryObject ) {
+        return std::vector<TechDraw::FacePtr>();
     }
-    if (geometryObject != nullptr) {
-        result = geometryObject->getFaceGeometry();
-    }
-    return result;
+    return geometryObject->getFaceGeometry();
 }
 
 const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
 {
-    BaseGeomPtrVector result;
     if (geometryObject) {
-        result = geometryObject->getEdgeGeometry();
+        return geometryObject->getEdgeGeometry();
     }
-    return result;
+    return BaseGeomPtrVector();
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
