@@ -341,7 +341,7 @@ public:
             // we draw the lines with 36 segments, 8 for each arc and 4 lines
             // draw the arcs
             for (int i = 0; i < 8; i++) {
-                // calculate the x,y positions forming the the arc
+                // calculate the x,y positions forming the arc
                 double angle = i * M_PI / 16.0;
                 double x_i = -radius * sin(angle);
                 double y_i = -radius * cos(angle);
