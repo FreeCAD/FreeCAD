@@ -144,46 +144,17 @@ void DrawViewDetail::onChanged(const App::Property* prop)
                               std::string(Reference.getValue());
         Label.setValue(lblText);
     }
-    if ((prop == &Reference) ||
-        (prop == &Radius) ||
-        (prop == &BaseView)) {
+    if (prop == &Reference ||
+        prop == &Radius ||
+        prop == &BaseView) {
         requestPaint();
     }
     if (prop == &AnchorPoint)  {
         // to see AnchorPoint changes repainting is not enough, we must recompute
         recomputeFeature(true);
     }
-    if (prop == &ScaleType) {
-        auto page = findParentPage();
-        // if ScaleType is "Page", the user cannot change it
-        if (ScaleType.isValue("Page")) {
-            Scale.setStatus(App::Property::ReadOnly, true);
-            // apply the page-wide Scale
-            if (page) {
-                if (std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
-                    Scale.setValue(page->Scale.getValue());
-                    Scale.purgeTouched();
-                }
-            }
-        }
-        else if (ScaleType.isValue("Custom")) {
-            // allow Scale changes
-            Scale.setStatus(App::Property::ReadOnly, false);
-        }
-        else if (ScaleType.isValue("Automatic")) {
-            Scale.setStatus(App::Property::ReadOnly, true);
-            // apply an automatic Scale
-            if (!checkFit(page)) {
-                double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                if (std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                    Scale.setValue(newScale);
-                    Scale.purgeTouched();
-                }
-            }
-        }
-    }
 
-    DrawView::onChanged(prop);
+    DrawViewPart::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawViewDetail::execute()
@@ -242,7 +213,6 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape,
 {
     if (waitingForHlr() ||
         waitingForDetail()) {
-//        Base::Console().Message("DVD::detailExec - waiting for result\n");
         return;
     }
 
@@ -354,7 +324,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
             //Did we get at least 1 solid?
             TopExp_Explorer xp;
             xp.Init(mkCommon.Shape(),TopAbs_SOLID);
-            if ((xp.More() != Standard_True)) {
+            if (xp.More() != Standard_True) {
                 continue;
             }
             builder.Add(pieces, mkCommon.Shape());
@@ -377,7 +347,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
             //Did we get at least 1 shell?
             TopExp_Explorer xp;
             xp.Init(mkCommon.Shape(),TopAbs_SHELL);
-            if ((xp.More() != Standard_True)) {
+            if (xp.More() != Standard_True) {
                 continue;
             }
             builder.Add(pieces, mkCommon.Shape());
