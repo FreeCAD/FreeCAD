@@ -161,7 +161,7 @@ DrawViewPart::~DrawViewPart()
         m_hlrFuture.waitForFinished();
     }
     if (m_faceFuture.isRunning()) {
-        Base::Console().Message("%S is waiting for face finding to finish\n", getNameInDocument());
+        Base::Console().Message("%s is waiting for face finding to finish\n", getNameInDocument());
         m_faceFuture.waitForFinished();
     }
     removeAllReferencesFromGeom();
