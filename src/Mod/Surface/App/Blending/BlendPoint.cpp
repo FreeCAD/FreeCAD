@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
+ *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
+ *                                                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,69 +22,80 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include "FeatureFilling.h"
-#include "FeatureSewing.h"
-#include "FeatureCut.h"
-#include "FeatureGeomFillSurface.h"
-#include "FeatureExtend.h"
-#include "FeatureSections.h"
+#ifndef _PreComp_
+#include <Base/Persistence.h>
+#include <Base/Vector3D.h>
+#include <Precision.hxx>
+#include <Standard_Version.hxx>
+#include <TopoDS.hxx>
+#include <gp_Pnt.hxx>
+#endif
+#include "Blending/BlendPoint.h"
 #include "Blending/BlendPointPy.h"
-#include "Blending/BlendCurvePy.h"
-#include "Blending/FeatureBlendCurve.h"
-
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
 
 
-namespace Surface {
-class Module : public Py::ExtensionModule<Module>
+using namespace Surface;
+
+BlendPoint::BlendPoint(std::vector<Base::Vector3d> vectorList)
 {
-public:
-    Module() : Py::ExtensionModule<Module>("Surface")
-    {
-        initialize("This module is the Surface module."); // register with Python
-    }
-
-    ~Module() override {}
-
-private:
-};
-
-PyObject* initModule()
-{
-    return Base::Interpreter().addModule(new Module);
+    for (size_t i = 0; i < vectorList.size(); i++) {
+        vectors.emplace_back(vectorList[i]);
+    } 
 }
 
-} // namespace Surface
-
-
-/* Python entry */
-PyMOD_INIT_FUNC(Surface)
+BlendPoint::BlendPoint()
 {
-    try {
-        Base::Interpreter().runString("import Part");
+    vectors.emplace_back(Base::Vector3d(0, 0, 0));   
+}
+
+BlendPoint::~BlendPoint()
+{
+}
+
+void BlendPoint::multiply(double f)
+{
+    for (int i = 0; i < nbVectors(); i++) {
+        vectors[i] *= Pow(f, i);
     }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
+}
+
+void BlendPoint::setSize(double f)
+{
+    if (nbVectors() > 1) {
+        double il = vectors[1].Length();
+        if (il > Precision::Confusion()) {
+            multiply(f / il);
+        }
     }
+}
 
-    PyObject* mod = Surface::initModule();
-    Base::Console().Log("Loading Surface module... done\n");
+int BlendPoint::getContinuity()
+{
+    return vectors.size() - 1;
+}
 
-    // Add types to module
-    Surface::Filling         ::init();
-    Surface::Sewing          ::init();
-    Surface::Cut             ::init();
-    Surface::GeomFillSurface ::init();
-    Surface::Extend          ::init();
-    Surface::Sections        ::init();
-    Surface::BlendPoint      ::init();
-    Surface::BlendCurve      ::init();
-    Surface::FeatureBlendCurve ::init();
+int BlendPoint::nbVectors()
+{
+    return vectors.size();
+}
 
-    PyMOD_Return(mod);
+PyObject *BlendPoint::getPyObject(void)
+{
+    return new BlendPointPy(new BlendPoint(vectors));
+}
+
+void BlendPoint::Save(Base::Writer & /*writer*/) const
+{
+    throw Base::NotImplementedError("BlendPoint::Save");
+}
+
+void BlendPoint::Restore(Base::XMLReader & /*reader*/)
+{
+    throw Base::NotImplementedError("BlendPoint::Restore");
+}
+
+unsigned int BlendPoint::getMemSize(void) const
+{
+    // do we need to loop on the vectors list ?
+    return sizeof(vectors) * sizeof(vectors.front());
 }
