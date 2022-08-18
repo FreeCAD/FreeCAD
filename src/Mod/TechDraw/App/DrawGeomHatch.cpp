@@ -186,8 +186,8 @@ void DrawGeomHatch::makeLineSets()
 std::vector<LineSet> DrawGeomHatch::makeLineSets(std::string fileSpec, std::string myPattern)
 {
     std::vector<LineSet> lineSets;
-    if ((!fileSpec.empty())  &&
-        (!myPattern.empty())) {
+    if (!fileSpec.empty()  &&
+        !myPattern.empty()) {
         std::vector<PATLineSpec> specs =
                    DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
                                                           myPattern);
