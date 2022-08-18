@@ -74,7 +74,8 @@ PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
 DrawView::DrawView():
     autoPos(true),
-    mouseMove(false)
+    mouseMove(false),
+    m_overrideKeepUpdated(false)
 {
     static const char *group = "Base";
     ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output), "X position");
@@ -380,6 +381,7 @@ double DrawView::autoScale(double pw, double ph) const
 
 bool DrawView::checkFit() const
 {
+//    Base::Console().Message("DV::checkFit() - %s\n", getNameInDocument());
     auto page = findParentPage();
     return checkFit(page);
 }
@@ -387,6 +389,7 @@ bool DrawView::checkFit() const
 //!check if View is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
+//    Base::Console().Message("DV::checkFit(page) - %s\n", getNameInDocument());
     bool result = true;
     double fudge = 1.1;
 
@@ -534,13 +537,14 @@ void DrawView::handleChangedPropertyType(
 bool DrawView::keepUpdated()
 {
 //    Base::Console().Message("DV::keepUpdated() - %s\n", getNameInDocument());
-    bool result = false;
-
+    if (overrideKeepUpdated()) {
+        return true;
+    }
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        result = page->canUpdate() || page->forceRedraw();
+        return (page->canUpdate() || page->forceRedraw());
     }
-    return result;
+    return false;
 }
 
 void DrawView::setScaleAttribute()
@@ -581,7 +585,14 @@ void DrawView::requestPaint()
     signalGuiPaint(this);
 }
 
-PyObject *DrawView::getPyObject()
+void DrawView::showProgressMessage(std::string featureName, std::string text)
+{
+    if (Preferences::reportProgress()) {
+        signalProgressMessage(this, featureName, text);
+    }
+}
+
+PyObject *DrawView::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -589,6 +600,8 @@ PyObject *DrawView::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
+
+#include <Mod/TechDraw/App/moc_DrawView.cpp>
 
 // Python Drawing feature ---------------------------------------------------------
 

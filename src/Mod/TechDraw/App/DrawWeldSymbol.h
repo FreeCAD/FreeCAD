@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawWeldSymbol_h_
 #define _TechDraw_DrawWeldSymbol_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 
@@ -37,6 +39,7 @@ class DrawTileWeld;
 class TechDrawExport DrawWeldSymbol : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawWeldSymbol);
+    Q_OBJECT
 
 public:
     DrawWeldSymbol();

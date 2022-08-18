@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
 #define DRAWINGGUI_VIEWPROVIDERBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 

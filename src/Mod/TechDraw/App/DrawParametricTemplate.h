@@ -23,6 +23,8 @@
 #ifndef _TECHDRAW_DrawParametricTemplate_h_
 #define _TECHDRAW_DrawParametricTemplate_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 

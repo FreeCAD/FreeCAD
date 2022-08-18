@@ -39,6 +39,7 @@ class DrawView;
 namespace TechDrawGui {
 class QGIView;
 class MDIViewPage;
+class ViewProviderPage;
 
 class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
@@ -66,6 +67,7 @@ public:
     QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
+    ViewProviderPage* getViewProviderPage() const;
 
     /** @name Restoring view provider from document load */
     //@{
@@ -74,14 +76,20 @@ public:
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;
+    void showProgressMessage(const std::string featureName, const std::string text) const;
     
-    void onGuiRepaint(const TechDraw::DrawView* dv); 
+    void onGuiRepaint(const TechDraw::DrawView* dv);
+    void onProgressMessage(const TechDraw::DrawView* dv,
+                         const std::string featureName,
+                         const std::string text);
     typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
-    
+    Connection connectProgressMessage;
 
 private:
-    bool m_docReady;                                                   //sb MDI + QGraphicsScene ready
+    void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
+    void singleParentPaint(const TechDraw::DrawView* dv);
+
 
 };
 

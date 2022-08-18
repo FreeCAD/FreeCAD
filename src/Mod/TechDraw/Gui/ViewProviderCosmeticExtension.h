@@ -23,6 +23,8 @@
 #ifndef GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 #define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderExtensionPython.h>
 
 namespace TechDrawGui

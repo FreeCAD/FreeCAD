@@ -736,7 +736,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute()
         m_hasGeometry = true;
     }
 
-    //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 

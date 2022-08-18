@@ -79,8 +79,11 @@ void DrawRichAnno::onChanged(const App::Property* prop)
 //NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawRichAnno::mustExecute() const
 {
-    if (!isRestoring() && AnnoText.isTouched()) {
-        return 1;
+    if (!isRestoring()) {
+        if (AnnoText.isTouched() ||
+            AnnoParent.isTouched()) {
+            return 1;
+        }
     }
 
     return DrawView::mustExecute();
@@ -92,6 +95,7 @@ App::DocumentObjectExecReturn *DrawRichAnno::execute()
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
@@ -101,6 +105,23 @@ DrawView* DrawRichAnno::getBaseView() const
     return dynamic_cast<DrawView*>(AnnoParent.getValue());
 }
 
+//finds the first DrawPage in this Document that claims to own this DrawRichAnno
+//note that it is possible to manipulate the Views property of DrawPage so that
+//more than 1 DrawPage claims a DrawRichAnno.
+DrawPage* DrawRichAnno::findParentPage() const
+{
+//    Base::Console().Message("DRA::findParentPage()\n");
+    if (!AnnoParent.getValue()) {
+        return DrawView::findParentPage();
+    }
+
+    DrawView* parent = dynamic_cast<DrawView*>(AnnoParent.getValue());
+    if (parent) {
+        return parent->findParentPage();
+    }
+
+    return nullptr;
+}
 
 PyObject *DrawRichAnno::getPyObject()
 {

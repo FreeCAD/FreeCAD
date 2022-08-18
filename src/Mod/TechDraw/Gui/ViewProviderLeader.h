@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERLEADER_H
 #define DRAWINGGUI_VIEWPROVIDERLEADER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 
 #include <Mod/TechDraw/App/DrawLeaderLine.h>

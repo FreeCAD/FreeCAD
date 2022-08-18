@@ -72,11 +72,11 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
     if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
         if (prop == &(t->Template)) {
-            MDIViewPage* mdi = getMDIViewPage();
-            if (mdi) {
-                mdi->attachTemplate(t);
-                mdi->viewAll();
-                mdi->getViewProviderPage()->setGrid();
+            auto page = t->getParentPage();
+            Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
+            TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+            if (vpp) {
+                vpp->getQGSPage()->attachTemplate(t);
             }
        }
     }
@@ -131,9 +131,11 @@ QGITemplate* ViewProviderTemplate::getQTemplate()
 {
     TechDraw::DrawTemplate* dt = getTemplate();
     if (dt) {
-        MDIViewPage* mdi = getMDIViewPage();
-        if (mdi) {
-            return mdi->getQGSPage()->getTemplate();
+        auto page = dt->getParentPage();
+        Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(dt->getDocument())->getViewProvider(page);
+        TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+        if (vpp != nullptr) {
+            return vpp->getQGSPage()->getTemplate();
         }
     }
     return nullptr;

@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawLeaderLine_h_
 #define _TechDraw_DrawLeaderLine_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
@@ -36,6 +38,7 @@ namespace TechDraw
 class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawLeaderLine);
+    Q_OBJECT
 
 public:
     DrawLeaderLine();

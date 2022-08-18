@@ -18,11 +18,22 @@ include_directories(
     ${QT_QTCORE_INCLUDE_DIR}
 )
 
+set(TechDrawLIBS
+    Measure
+    Part
+    Spreadsheet
+    Import
+)
+
 if(BUILD_QT5)
     include_directories(
         ${Qt5XmlPatterns_INCLUDE_DIRS}
+        ${Qt5Concurrent_INCLUDE_DIRS}
     )
     set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
+    list(APPEND TechDrawLIBS
+        ${Qt5Concurrent_LIBRARIES}
+    )
 else(BUILD_QT5)
     include_directories(
         ${QT_QTXMLPATTERNS_INCLUDE_DIR}
@@ -31,13 +42,6 @@ else(BUILD_QT5)
 endif(BUILD_QT5)
 
 link_directories(${OCC_LIBRARY_DIR})
-
-set(TechDrawLIBS
-    Measure
-    Part
-    Spreadsheet
-    Import
-)
 
 generate_from_xml(DrawPagePy)
 generate_from_xml(DrawViewPy)

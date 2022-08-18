@@ -90,6 +90,7 @@
 
 #include "Rez.h"
 #include "PreferencesGui.h"
+#include "DrawGuiUtil.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -242,7 +243,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     m_vpPage = vp;
     const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
-    m_vpPage->setGraphicsView(this);
 
     setScene(s);
     setMouseTracking(true);
@@ -251,11 +251,10 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
     m_parentMDI = static_cast<MDIViewPage*>(parent);
     m_saveContextEvent = nullptr;
 
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate); //this prevents crash when deleting dims.
-                                                          //scene(view?) indices of dirty regions gets
-                                                          //out of sync.  missing prepareGeometryChange
-                                                          //somewhere???? QTBUG-18021????
     setCacheMode(QGraphicsView::CacheBackground);
+    setRenderer(Native);
+//    setRenderer(OpenGL);  //gives rotten quality, don't use this
+    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     d->init();
     if (m_atCursor) {
@@ -270,15 +269,12 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
 //    setDragMode(ScrollHandDrag);
     setDragMode(QGraphicsView::NoDrag);
     resetCursor();
-    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
     balloonCursor->setPixmap(prepareCursorPixmap("TechDraw_Balloon.svg", balloonHotspot = QPoint(8, 59)));
     balloonCursor->hide();
-
-    resetCachedContent();
 
     initNavigationStyle();
 
@@ -289,6 +285,11 @@ QGVPage::~QGVPage()
 {
     delete bkgBrush;
     delete m_navStyle;
+}
+
+void QGVPage::centerOnPage(void)
+{
+    centerOn(m_vpPage->getQGSPage()->getTemplateCenter());
 }
 
 void QGVPage::initNavigationStyle()
@@ -368,13 +369,12 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     }
 
     if (!m_vpPage->getDrawPage()) {
-        //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
+//        Base::Console().Message("QGVP::drawBackground - no Page Feature!\n");
         return;
     }
 
     p->save();
     p->resetTransform();
-
 
     p->setBrush(*bkgBrush);
     p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
@@ -401,17 +401,19 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->restore();
 }
 
-
 void QGVPage::setRenderer(RendererType type)
 {
     m_renderer = type;
 
     if (m_renderer == OpenGL) {
 #ifndef QT_NO_OPENGL
-        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+//        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers))); //QGLWidget is obsolete
+        setViewport(new QOpenGLWidget);
+        setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 #endif
     } else {
         setViewport(new QWidget);
+        setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     }
 }
 

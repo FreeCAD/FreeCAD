@@ -29,6 +29,7 @@
 #include <vector>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Compound.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 
@@ -121,6 +122,7 @@ public:
     TopoDS_Shape projectFace(const TopoDS_Shape &face,
                              const gp_Ax2 &CS);
 
+    void makeTDGeometry();
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(FacePtr f);
     void clearFaceGeom();
@@ -168,7 +170,6 @@ public:
 
     int addCenterLine(TechDraw::BaseGeomPtr bg,
                       std::string tag);
-/*                       int s = 0, int si = -1);*/
 
 protected:
     //HLR output

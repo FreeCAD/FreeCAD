@@ -242,7 +242,7 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-       <item row="4" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_5">
           <property name="minimumSize">
            <size>
@@ -499,7 +499,23 @@ when hatching a face with a PAT pattern</string>
           </property>
          </widget>
         </item>
-        </layout>
+        <item row="3" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbReportProgress">
+          <property name="toolTip">
+           <string>Issue progress messages while building View geometry</string>
+          </property>
+          <property name="text">
+           <string>Report Progress</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ReportProgress</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -513,7 +529,7 @@ when hatching a face with a PAT pattern</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
