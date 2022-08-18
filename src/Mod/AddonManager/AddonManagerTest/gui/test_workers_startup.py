@@ -26,6 +26,13 @@ import json
 import unittest
 import os
 import tempfile
+
+have_git = True
+try:
+    import git
+except ImportError:
+    have_git = False
+
 import FreeCAD
 
 from PySide2 import QtCore
@@ -36,6 +43,11 @@ from addonmanager_workers_startup import (
     CreateAddonListWorker,
     LoadPackagesFromCacheWorker,
     LoadMacrosFromCacheWorker,
+    CheckSingleUpdateWorker,
+    )
+
+from addonmanager_workers_installation import (
+    InstallWorkbenchWorker,
     )
 
 class TestWorkersStartup(unittest.TestCase):
@@ -159,8 +171,49 @@ class TestWorkersStartup(unittest.TestCase):
     def test_update_checker(self):
         """ Test the code that checks a single addon for available updates. """
 
-        # First, install a specific Addon of each kind
+        if not have_git:
+            return
+
+        # Populate the test's Addon List:
+        self.test_create_addon_list_worker()
+
+        # First, install a specific Addon of each kind into a temp location
+        location = os.path.join(tempfile.gettempdir(),"FreeCADTesting")
+
+        self._test_workbench_update_checker(location)
+
+
+
+        # Preference Pack
+        # Macro
 
         # Arrange for those addons to be out-of-date
 
         # Check for updates
+
+    def _test_workbench_update_checker(self, location):
+        
+        # Workbench: use the FreeCAD-Help workbench for testing purposes
+        help_addon = None
+        for addon in self.addon_list:
+            if addon.name == "Help":
+                help_addon = addon
+                break
+        if not help_addon:
+            print("Unable to locate the FreeCAD-Help addon to test with")
+            return
+
+        addon_location = os.path.join(location, help_addon.name)
+        worker = InstallWorkbenchWorker(addon, addon_location)
+        worker.run() # Synchronous call, blocks until complete
+        gitrepo = git.Git(addon_location)
+        gitrepo.reset("--hard", "HEAD^")
+        print (addon_location)
+
+        # At this point the addon should be "out of date", checked out to one revision behind
+        # the most recent.
+
+        worker = CheckSingleUpdateWorker(help_addon)
+        worker.do_work() # Synchronous call
+
+        self.assertEqual(help_addon.status(), Addon.Status.UPDATE_AVAILABLE)

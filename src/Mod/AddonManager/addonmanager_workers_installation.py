@@ -49,22 +49,17 @@ import addonmanager_utilities as utils
 from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
+from addonmanager_git import GitManager, GitFailed, NoGitFound
 
-have_git = False
-try:
-    import git
 
-    # Some types of Python installation will fall back to finding a directory called "git"
-    # in certain locations instead of a Python package called git: that directory is unlikely
-    # to have the "Repo" attribute unless it is a real installation, however, so this check
-    # should catch that. (Bug #4072)
-    have_git = hasattr(git, "Repo")
-    if not have_git:
-        FreeCAD.Console.PrintMessage(
-            "Unable to locate a viable GitPython installation: falling back to ZIP installation."
-        )
-except ImportError:
-    pass
+git_manager = None
+pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+disable_git = pref.GetBool("disableGit", False)
+if not disable_git:
+    try:
+        git_manager = GitManager()
+    except NoGitFound:
+        pass  # A log messsage was already printed by the startup code
 
 translate = FreeCAD.Qt.translate
 
@@ -72,8 +67,6 @@ translate = FreeCAD.Qt.translate
 #  \ingroup ADDONMANAGER
 #  \brief Multithread workers for the addon manager
 #  @{
-
-NOGIT = False  # for debugging purposes, set this to True to always use http downloads
 
 
 class InstallWorkbenchWorker(QtCore.QThread):
@@ -84,7 +77,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
     success = QtCore.Signal(Addon, str)
     failure = QtCore.Signal(Addon, str)
 
-    def __init__(self, repo: Addon):
+    def __init__(self, repo: Addon, location=None):
 
         QtCore.QThread.__init__(self)
         self.repo = repo
@@ -93,13 +86,22 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.update_timer.timeout.connect(self.update_status)
         self.update_timer.start()
 
+        if location:
+            self.clone_directory = location
+        else:
+            basedir = FreeCAD.getUserAppDataDir()
+            self.clone_directory = os.path.join(basedir, "Mod", repo.name)
+
+        if not os.path.exists(self.clone_directory):
+            os.makedirs(self.clone_directory)
+
     def run(self):
         "installs or updates the selected addon"
 
         if not self.repo:
             return
 
-        if not have_git or NOGIT:
+        if not git_manager:
             FreeCAD.Console.PrintLog(
                 translate(
                     "AddonsInstaller",
@@ -117,13 +119,9 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 )
                 return
 
-        basedir = FreeCAD.getUserAppDataDir()
-        moddir = basedir + os.sep + "Mod"
-        if not os.path.exists(moddir):
-            os.makedirs(moddir)
-        target_dir = moddir + os.sep + self.repo.name
+        target_dir = self.clone_directory
 
-        if have_git and not NOGIT:
+        if git_manager:
             # Do the git process...
             self.run_git(target_dir)
         else:
@@ -144,7 +142,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
     def run_git(self, clonedir: str) -> None:
 
-        if NOGIT or not have_git:
+        if not git_manager:
             FreeCAD.Console.PrintLog(
                 translate(
                     "AddonsInstaller",
@@ -165,10 +163,9 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.status_message.emit("Updating module...")
         with self.repo.git_lock:
             if not os.path.exists(clonedir + os.sep + ".git"):
-                utils.repair_git_repo(self.repo.url, clonedir)
-            repo = git.Git(clonedir)
+                git_manager.repair(self.repo.url, clonedir)
             try:
-                repo.pull("--ff-only")  # Refuses to take a progress object?
+                git_manager.update(clonedir)
                 if self.repo.contains_workbench():
                     answer = translate(
                         "AddonsInstaller",
@@ -179,7 +176,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                         "AddonsInstaller",
                         "Workbench successfully updated.",
                     )
-            except Exception as e:
+            except GitFailed as e:
                 answer = (
                     translate("AddonsInstaller", "Error updating module")
                     + " "
@@ -190,14 +187,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 )
                 answer += str(e)
                 self.failure.emit(self.repo, answer)
-            else:
-                # Update the submodules for this repository
-                repo_sms = git.Repo(clonedir)
-                self.status_message.emit("Updating submodules...")
-                for submodule in repo_sms.submodules:
-                    submodule.update(init=True, recursive=True)
-                self.update_metadata()
-                self.success.emit(self.repo, answer)
+            self.update_metadata()
+            self.success.emit(self.repo, answer)
 
     def run_git_clone(self, clonedir: str) -> None:
         self.status_message.emit("Cloning module...")
@@ -216,26 +207,13 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
         with self.repo.git_lock:
             FreeCAD.Console.PrintMessage("Lock acquired...\n")
-            # NOTE: There is no way to interrupt this process in GitPython: someday we should
-            # support pygit2/libgit2 so we can actually interrupt this properly.
-            repo = git.Repo.clone_from(
-                self.repo.url, clonedir, progress=self.git_progress
-            )
+            git_manager.clone(self.repo.url, clonedir)
             FreeCAD.Console.PrintMessage("Initial clone complete...\n")
             if current_thread.isInterruptionRequested():
                 return
 
-            # Make sure to clone all the submodules as well
-            if repo.submodules:
-                FreeCAD.Console.PrintMessage("Updating submodules...\n")
-                repo.submodule_update(recursive=True)
-
             if current_thread.isInterruptionRequested():
                 return
-
-            if self.repo.branch in repo.heads:
-                FreeCAD.Console.PrintMessage("Checking out HEAD...\n")
-                repo.heads[self.repo.branch].checkout()
 
             FreeCAD.Console.PrintMessage("Clone complete\n")
 
@@ -728,13 +706,12 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
             repo.cached_icon_filename = cache_file
 
 
-if have_git and not NOGIT:
+if git_manager:
 
-    class GitProgressMonitor(git.RemoteProgress):
+    class GitProgressMonitor:
         """An object that receives git progress updates and stores them for later display"""
 
         def __init__(self):
-            super().__init__()
             self.current = 0
             self.total = 100
             self.message = ""

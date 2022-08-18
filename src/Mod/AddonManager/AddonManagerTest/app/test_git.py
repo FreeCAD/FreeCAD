@@ -26,6 +26,7 @@ import os
 import shutil
 import stat
 import tempfile
+import time
 from zipfile import ZipFile
 import FreeCAD
 
@@ -40,6 +41,7 @@ class TestGit(unittest.TestCase):
 
     def setUp(self):
         """Set up the test case: called by the unit test system"""
+        self.cwd = os.getcwd()
         test_data_dir = os.path.join(
             FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
         )
@@ -49,7 +51,9 @@ class TestGit(unittest.TestCase):
         )
         os.makedirs(self.test_dir, exist_ok=True)
         self.test_repo_remote = os.path.join(self.test_dir, "TEST_REPO_REMOTE")
-        self._rmdir(self.test_repo_remote)
+        if os.path.exists(self.test_repo_remote):
+            # Make sure any old copy that got left around is deleted
+            self._rmdir(self.test_repo_remote)
 
         if not os.path.exists(git_repo_zip):
             self.skipTest("Can't find test repo")
@@ -66,13 +70,16 @@ class TestGit(unittest.TestCase):
 
     def tearDown(self):
         """Clean up after the test"""
-        # self._rmdir(self.test_dir)
+        os.chdir(self.cwd)
+        #self._rmdir(self.test_dir)
+        os.rename(self.test_dir, self.test_dir + ".old." + str(time.time()))
 
     def test_clone(self):
         """Test git clone"""
         checkout_dir = self._clone_test_repo()
         self.assertTrue(os.path.exists(checkout_dir))
         self.assertTrue(os.path.exists(os.path.join(checkout_dir, ".git")))
+        self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
 
     def test_checkout(self):
         """Test git checkout"""
@@ -82,6 +89,7 @@ class TestGit(unittest.TestCase):
         status = self.git.status(checkout_dir).strip()
         expected_status = "## HEAD (no branch)"
         self.assertEqual(status, expected_status)
+        self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
 
     def test_update(self):
         """Test using git to update the local repo"""
@@ -91,6 +99,7 @@ class TestGit(unittest.TestCase):
         self.assertTrue(self.git.update_available(checkout_dir))
         self.git.update(checkout_dir)
         self.assertFalse(self.git.update_available(checkout_dir))
+        self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
 
     def test_tag_and_branch(self):
         """Test checking the currently checked-out tag"""
@@ -108,11 +117,39 @@ class TestGit(unittest.TestCase):
         self.assertEqual(found_branch, expected_branch)
         self.assertFalse(self.git.update_available(checkout_dir))
 
-        expected_branch = "master"
+        expected_branch = "main"
         self.git.checkout(checkout_dir, expected_branch)
         found_branch = self.git.current_branch(checkout_dir)
         self.assertEqual(found_branch, expected_branch)
         self.assertFalse(self.git.update_available(checkout_dir))
+
+        self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
+
+    def test_get_remote(self):
+        """ Test getting the remote location """
+        checkout_dir = self._clone_test_repo()
+        expected_remote = self.test_repo_remote
+        returned_remote = self.git.get_remote(checkout_dir)
+        self.assertEqual(expected_remote, returned_remote)
+        self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
+
+    def test_repair(self):
+        """ Test the repair feature (and some exception throwing) """
+        checkout_dir = self._clone_test_repo()
+        remote = self.git.get_remote(checkout_dir)
+        git_dir = os.path.join(checkout_dir,".git")
+        self.assertTrue(os.path.exists(git_dir))
+        self._rmdir(git_dir)
+
+        # Make sure that we've truly broken the install
+        with self.assertRaises(GitFailed):
+            self.git.status(checkout_dir)
+
+        self.git.repair(remote, checkout_dir)
+        status = self.git.status(checkout_dir)
+        self.assertEqual(status,"## main...origin/main\n")
+        self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
+
 
     def _rmdir(self, path):
         try:

@@ -29,7 +29,10 @@ import platform
 import shutil
 import subprocess
 from typing import List
+import time
 import FreeCAD
+
+translate = FreeCAD.Qt.translate
 
 
 class NoGitFound(RuntimeError):
@@ -80,15 +83,47 @@ class GitManager:
         old_dir = os.getcwd()
         os.chdir(local_path)
         self._synchronous_call_git(["fetch"])
-        self._synchronous_call_git(["pull"])
-        self._synchronous_call_git(["submodule", "update", "--init", "--recursive"])
+        try:
+            self._synchronous_call_git(["pull"])
+            self._synchronous_call_git(["submodule", "update", "--init", "--recursive"])
+        except GitFailed as e:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Basic git update failed with the following message:",
+                )
+                + str(e)
+                + "\n"
+            )
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Backing up the original directory and re-cloning",
+                )
+                + "...\n"
+            )
+            remote = self.get_remote(local_path)
+            with open(os.path.join(local_path, "ADDON_DISABLED"), "w") as f:
+                f.write(
+                    "This is a backup of an addon that failed to update cleanly so was re-cloned. "
+                    + "It was disabled by the Addon Manager's git update facility and can be safely "
+                    + "deleted if the addon is working properly."
+                )
+            os.chdir("..")
+            os.rename(local_path, local_path + ".backup" + str(time.time()))
+            self.clone(remote, local_path)
         os.chdir(old_dir)
 
     def status(self, local_path) -> str:
         """Gets the v1 porcelain status"""
         old_dir = os.getcwd()
         os.chdir(local_path)
-        status = self._synchronous_call_git(["status", "-sb", "--porcelain"])
+        try:
+            status = self._synchronous_call_git(["status", "-sb", "--porcelain"])
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+
         os.chdir(old_dir)
         return status
 
@@ -99,7 +134,11 @@ class GitManager:
         final_args = ["reset"]
         if args:
             final_args.extend(args)
-        self._synchronous_call_git(final_args)
+        try:
+            self._synchronous_call_git(final_args)
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
         os.chdir(old_dir)
 
     def async_fetch_and_update(self, local_path, progress_monitor, args=None):
@@ -109,8 +148,12 @@ class GitManager:
         """Returns True if an update is available from the remote, or false if not"""
         old_dir = os.getcwd()
         os.chdir(local_path)
-        self._synchronous_call_git(["fetch"])
-        status = self._synchronous_call_git(["status", "-sb", "--porcelain"])
+        try:
+            self._synchronous_call_git(["fetch"])
+            status = self._synchronous_call_git(["status", "-sb", "--porcelain"])
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
         os.chdir(old_dir)
         return "behind" in status
 
@@ -118,7 +161,11 @@ class GitManager:
         """Get the name of the currently checked-out tag if HEAD is detached"""
         old_dir = os.getcwd()
         os.chdir(local_path)
-        tag = self._synchronous_call_git(["describe", "--tags"]).strip()
+        try:
+            tag = self._synchronous_call_git(["describe", "--tags"]).strip()
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
         os.chdir(old_dir)
         return tag
 
@@ -126,7 +173,11 @@ class GitManager:
         """Get the name of the current branch"""
         old_dir = os.getcwd()
         os.chdir(local_path)
-        branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
+        try:
+            branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
         os.chdir(old_dir)
         return branch
 
@@ -135,14 +186,55 @@ class GitManager:
         ensures that it is. Note that any local changes in local_path will be destroyed. This
         is achieved by archiving the old path, cloning an entirely new copy, and then deleting
         the old directory."""
-        old_path = local_path + ".bak"
-        os.rename(local_path, old_path)
+
+        original_cwd = os.getcwd()
+
+        # Make sure we are not currently in that directory, otherwise on Windows the rename
+        # will fail. To guarantee we aren't in it, change to it, then shift up one.
+        os.chdir(local_path)
+        os.chdir("..")
+        backup_path = local_path + ".backup" + str(time.time())
+        os.rename(local_path, backup_path)
         try:
             self.clone(remote, local_path)
         except GitFailed as e:
-            shutil.rmtree(local_path)
-            os.rename(old_path, local_path)
+            FreeCAD.Console.PrintError(
+                translate(
+                    "AddonsInstaller", "Failed to clone {} into {} using git"
+                ).format(remote, local_path)
+            )
+            os.chdir(original_cwd)
             raise e
+        os.chdir(original_cwd)
+
+    def get_remote(self, local_path) -> str:
+        """Get the repository that this local path is set to fetch from"""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            response = self._synchronous_call_git(["remote", "-v", "show"])
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+        lines = response.split("\n")
+        result = "(unknown remote)"
+        for line in lines:
+            if line.endswith("(fetch)"):
+
+                # The line looks like:
+                # origin  https://some/sort/of/path (fetch)
+
+                segments = line.split()
+                if len(segments) == 3:
+                    result = segments[1]
+                    break
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Error parsing the results from git remote -v show:\n"
+                    )
+                    FreeCAD.Console.PrintWarning(line + "\n")
+        os.chdir(old_dir)
+        return result
 
     def _find_git(self):
         # Find git. In preference order
