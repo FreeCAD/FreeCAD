@@ -215,15 +215,14 @@ void QGSPage::updateTemplate(bool forceUpdate)
 
 QPointF QGSPage::getTemplateCenter()
 {
-    QPointF result(0.0, 0.0);
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate != nullptr ) {
         double cx  =  Rez::guiX(pageTemplate->Width.getValue())/2.0;
         double cy =  -Rez::guiX(pageTemplate->Height.getValue())/2.0;
-        result = QPointF(cx,cy);
+        return QPointF(cx,cy);
     }
-    return result;
+    return QPointF(0.0, 0.0);
 }
 
 void QGSPage::matchSceneRectToTemplate(void)
@@ -708,14 +707,13 @@ QGIView * QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
 void QGSPage::setDimensionGroups(void)
 {
     const std::vector<QGIView *> &allItems = getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
     int dimItemType = QGraphicsItem::UserType + 106;
 
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == dimItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = findParent((*itInspect));
+    for (auto& item : allItems) {
+        if (item->type() == dimItemType && !item->group()) {
+            QGIView* parent = findParent(item);
             if (parent) {
-                QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>((*itInspect));
+                QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(item);
                 addDimToParent(dim,parent);
             }
         }
@@ -725,14 +723,13 @@ void QGSPage::setDimensionGroups(void)
 void QGSPage::setBalloonGroups(void)
 {
     const std::vector<QGIView *> &allItems = getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
     int balloonItemType = QGraphicsItem::UserType + 140;
 
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == balloonItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = findParent((*itInspect));
+    for (auto& item : allItems) {
+        if (item->type() == balloonItemType && !item->group()) {
+            QGIView* parent = findParent(item);
             if (parent) {
-                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>((*itInspect));
+                QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(item);
                 addBalloonToParent(balloon,parent);
             }
         }
@@ -743,16 +740,15 @@ void QGSPage::setLeaderGroups(void)
 {
 //    Base::Console().Message("QGSP::setLeaderGroups()\n");
     const std::vector<QGIView *> &allItems = getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
     int leadItemType = QGraphicsItem::UserType + 232;
 
     //make sure that qgileader belongs to correct parent.
     //quite possibly redundant
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == leadItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = findParent((*itInspect));
+    for (auto& item : allItems) {
+        if (item->type() == leadItemType && !item->group()) {
+            QGIView* parent = findParent(item);
             if (parent) {
-                QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>((*itInspect));
+                QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>(item);
                 addLeaderToParent(lead,parent);
             }
         }
@@ -763,15 +759,14 @@ void QGSPage::setRichAnnoGroups(void)
 {
 //    Base::Console().Message("QGSP::setRichAnnoGroups()\n");
     const std::vector<QGIView *> &allItems = getViews();
-    std::vector<QGIView *>::const_iterator itInspect;
     int annoItemType = QGraphicsItem::UserType + 233;
 
     //make sure that qgirichanno belongs to correct parent.
-    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
-        if (((*itInspect)->type() == annoItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = findParent((*itInspect));
+    for (auto& item : allItems) {
+        if (item->type() == annoItemType && !item->group()) {
+            QGIView* parent = findParent(item);
             if (parent) {
-                QGIRichAnno* anno = dynamic_cast<QGIRichAnno*>((*itInspect));
+                QGIRichAnno* anno = dynamic_cast<QGIRichAnno*>(item);
                 addAnnoToParent(anno,parent);
             }
         }
@@ -966,12 +961,6 @@ void QGSPage::findMissingViews(const std::vector<App::DocumentObject*> &list, st
 void QGSPage::fixOrphans(bool force)
 {
     Q_UNUSED(force)
-//    Base::Console().Message("QGSP::fixOrphans()\n");
-//    if(!force) {
-//        m_timer->start(100);
-//        return;
-//    }
-//    m_timer->stop();
 
     // get all the DrawViews for this page, including the second level ones
     // if we ever have collections of collections, we'll need to revisit this
@@ -1003,8 +992,9 @@ void QGSPage::fixOrphans(bool force)
     for (auto& qv: qvs) {
         if (!qv)
             continue; // already deleted?
+
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
-        if (obj == nullptr) {
+        if (!obj) {
             //no DrawView anywhere in Document
             removeQView(qv);
         } else {
@@ -1016,8 +1006,8 @@ void QGSPage::fixOrphans(bool force)
                 removeQView(qv);
             } else if (numParentPages == 1) {
                 //Does DrawView belong to this DrawPage?
-                TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
-                if (thisPage != pp) {
+                TechDraw::DrawPage* parentPage = qv->getViewObject()->findParentPage();
+                if (thisPage != parentPage) {
                     //DrawView does not belong to this DrawPage
                     //remove QGItem from QGScene
                     removeQView(qv);
@@ -1026,9 +1016,9 @@ void QGSPage::fixOrphans(bool force)
                 //DrawView belongs to multiple DrawPages
                 //check if this MDIViewPage corresponds to any parent DrawPage
                 //if not, delete the QGItem
-                std::vector<TechDraw::DrawPage*> pPages = qv->getViewObject()->findAllParentPages();
+                std::vector<TechDraw::DrawPage*> potentialParentPages = qv->getViewObject()->findAllParentPages();
                 bool found = false;
-                for (auto p: pPages) {
+                for (auto p: potentialParentPages) {
                     if (thisPage == p) {
                         found = true;
                         break;

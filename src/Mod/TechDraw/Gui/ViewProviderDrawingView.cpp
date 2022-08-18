@@ -150,20 +150,26 @@ void ViewProviderDrawingView::hide()
 
 QGIView* ViewProviderDrawingView::getQView()
 {
-    QGIView *qView = nullptr;
     TechDraw::DrawView* dv = getViewObject();
-    if (dv) {
-        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-        if (guiDoc) {
-            ViewProviderPage* vpp = getViewProviderPage();
-            if (vpp) {
-                if (vpp->getQGSPage()) {
-                    qView = dynamic_cast<QGIView *>(vpp->getQGSPage()->findQViewForDocObj(getViewObject()));
-                }
-            }
-        }
+    if (!dv) {
+        return nullptr;
     }
-    return qView;
+
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(dv->getDocument());
+    if (!guiDoc) {
+        return nullptr;
+    }
+
+    ViewProviderPage* vpp = getViewProviderPage();
+    if (!vpp) {
+        return nullptr;
+    }
+
+    if (vpp->getQGSPage()) {
+        return dynamic_cast<QGIView *>(vpp->getQGSPage()->findQViewForDocObj(getViewObject()));
+    }
+
+    return nullptr;
 }
 
 bool ViewProviderDrawingView::isShow() const
@@ -234,37 +240,50 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 
     std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
     if (pages.size() > 1) {
-        for (auto& p : pages) {
-            std::vector<App::DocumentObject*> views = p->Views.getValues();
-            for (auto& v: views) {
-                if (v == getViewObject()) {
-                    //view v belongs to this page p
-                    ViewProviderPage* vpPage = getViewProviderPage();
-                    if (vpPage) {
-                        if (vpPage->getQGSPage()) {
-                            QGIView* qView = dynamic_cast<QGIView *>(vpPage->getQGSPage()->findQViewForDocObj(v));
-                            if (qView != nullptr) {
-                                qView->updateView(true);
-                            }
-                        }
-                    }
+        multiParentPaint(pages);
+    } else if (dv == getViewObject()) {
+        singleParentPaint(dv);
+    }
+}
+
+void ViewProviderDrawingView::multiParentPaint(std::vector<TechDraw::DrawPage*>& pages)
+{
+    for (auto& p : pages) {
+        std::vector<App::DocumentObject*> views = p->Views.getValues();
+        for (auto& v: views) {
+            if (v != getViewObject()) {  //should this be dv from onGuiRepaint?
+                continue;
+            }
+            //view v belongs to this page p
+            ViewProviderPage* vpPage = getViewProviderPage();
+            if (!vpPage) {
+                continue;
+            }
+            if (vpPage->getQGSPage()) {
+                QGIView* qView = dynamic_cast<QGIView *>(vpPage->getQGSPage()->findQViewForDocObj(v));
+                if (qView) {
+                    qView->updateView(true);
                 }
             }
         }
-    } else if (dv == getViewObject()) {
-        //original logic for 1 view on 1 page
-        if (!dv->isRemoving() &&
-            !dv->isRestoring()) {
-            QGIView* qgiv = getQView();
-            if (qgiv) {
-                qgiv->updateView(true);
-            } else {       //we are not part of the Gui page yet. ask page to add us.
-                ViewProviderPage* vpPage = getViewProviderPage();
-                if (vpPage) {
-                    if (vpPage->getQGSPage()) {
-                        vpPage->getQGSPage()->addView(dv);
-                    }
-                }
+    }
+}
+
+void ViewProviderDrawingView::singleParentPaint(const TechDraw::DrawView* dv)
+{
+    //original logic for 1 view on 1 page
+    if (dv->isRemoving() ||
+        dv->isRestoring()) {
+        return;
+    }
+    QGIView* qgiv = getQView();
+    if (qgiv) {
+        qgiv->updateView(true);
+    } else {       //we are not part of the Gui page yet. ask page to add us.
+        ViewProviderPage* vpPage = getViewProviderPage();
+        if (vpPage) {
+            if (vpPage->getQGSPage()) {
+                vpPage->getQGSPage()->addView(dv);
             }
         }
     }
