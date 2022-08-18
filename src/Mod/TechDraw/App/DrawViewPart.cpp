@@ -181,20 +181,20 @@ TopoDS_Shape DrawViewPart::getSourceShape() const
 {
 //    Base::Console().Message("DVP::getSourceShape()\n");
     const std::vector<App::DocumentObject*>& links = getAllSources();
-    if (!links.empty())  {
-        return ShapeExtractor::getShapes(links);
+    if (links.empty())  {
+        return TopoDS_Shape();
     }
-    return TopoDS_Shape();
+    return ShapeExtractor::getShapes(links);
 }
 
 TopoDS_Shape DrawViewPart::getSourceShapeFused() const
 {
 //    Base::Console().Message("DVP::getSourceShapeFused()\n");
     const std::vector<App::DocumentObject*>& links = getAllSources();
-    if (!links.empty())  {
-        return ShapeExtractor::getShapesFused(links);
+    if (links.empty())  {
+        return TopoDS_Shape();
     }
-    return TopoDS_Shape();
+    return ShapeExtractor::getShapesFused(links);
 }
 
 std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
@@ -447,13 +447,12 @@ void DrawViewPart::postHlrTasks(void)
     }
 
     //second pass if required
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            partExec(m_saveShape);
-        }
+    if (ScaleType.isValue("Automatic") &&
+        !checkFit()) {
+        double newScale = autoScale();
+        Scale.setValue(newScale);
+        Scale.purgeTouched();
+        partExec(m_saveShape);
     }
 
     overrideKeepUpdated(false);
@@ -609,8 +608,8 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child: children) {
-        if ( (child->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) &&
-            (!child->isRemoving()) ) {
+        if ( child->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()) &&
+            !child->isRemoving() ) {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
             result.push_back(hatch);
         }
@@ -624,8 +623,8 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child: children) {
-        if ( (child->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())) &&
-             (!child->isRemoving()) ) {
+        if ( child->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId()) &&
+             !child->isRemoving() ) {
             TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
             result.push_back(geom);
         }
