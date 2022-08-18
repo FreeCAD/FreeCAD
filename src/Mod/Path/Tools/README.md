@@ -10,7 +10,7 @@ practically impossible for `*.fcstd` files.
 
 When a tool is instantiated in a job the PDN body is created from the shape and the attributes and constraints are set
 according to the values from the JSON file. All additional parameters are created as properties on the object. This
-provides the the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced
+provides the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced
 algorithms (and potentially simulation).
 
 # Tool Libraries

@@ -188,7 +188,7 @@
         <!-- project mark end -->
         </g>
 
-	<g id="bunding hole">
+	<g id="binding hole">
         <g stroke="black" stroke-width="0.5" fill="#BBBBBB" stroke="#666666" >
         <circle cx="10" cy="150.5" r="3" />
         <circle cx="10" cy="188.5" r="3" />

@@ -612,7 +612,7 @@ public:
         );
         add_keyword_method("getShape",&Module::getShape,
             "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
-            "Obtain the the TopoShape of a given object with SubName reference\n\n"
+            "Obtain the TopoShape of a given object with SubName reference\n\n"
             "* obj: the input object\n"
             "* subname: dot separated sub-object reference\n"
             "* mat: the current transformation matrix\n"

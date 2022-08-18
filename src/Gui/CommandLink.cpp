@@ -423,7 +423,7 @@ static void linkConvert(bool unlink) {
                 replaceObj = link;
             }
 
-            // adjust subname for the the new object
+            // adjust subname for the new object
             auto pos = info.subname.rfind('.');
             if(pos==std::string::npos && pos)
                 info.subname.clear();

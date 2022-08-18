@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstdlib>
-# include <iterator> 
+# include <iterator>
 #endif
 
 #include "SphereFit.h"
@@ -130,8 +130,8 @@ void SphereFit::ProjectToSphere()
 		Base::Vector3f& cPnt = *it;
 
 		// Compute unit vector from sphere centre to point.
-		// Because this vector is orthogonal to the sphere's surface at the 
-		// intersection point we can easily compute the projection point on the 
+		// Because this vector is orthogonal to the sphere's surface at the
+		// intersection point we can easily compute the projection point on the
 		// closest surface point using the radius of the sphere
 		Base::Vector3d diff((double)cPnt.x - _vCenter.x, (double)cPnt.y - _vCenter.y, (double)cPnt.z - _vCenter.z);
 		double length = diff.Length();
@@ -210,7 +210,7 @@ float SphereFit::Fit()
 
 		// Set up the quasi parameteric normal equations
 		setupNormalEquationMatrices(residuals, atpa, atpl);
-		
+
 		// Solve the equations for the unknown corrections
 		Eigen::LLT< Matrix4x4 > llt(atpa);
 		if (llt.info() != Eigen::Success)
@@ -256,8 +256,8 @@ void SphereFit::setupNormalEquationMatrices(const std::vector< Base::Vector3d > 
 	atpa.setZero();
 	atpl.setZero();
 
-	// For each point, setup the observation equation coefficients and add their 
-	// contribution into the the normal equation matrices
+	// For each point, setup the observation equation coefficients and add their
+	// contribution into the normal equation matrices
 	double a[4], b[3];
 	double f0, qw;
 	std::vector< Base::Vector3d >::const_iterator vIt = residuals.begin();
@@ -272,7 +272,7 @@ void SphereFit::setupNormalEquationMatrices(const std::vector< Base::Vector3d > 
 	setLowerPart(atpa);
 }
 
-// Sets up contributions of given observation to the quasi parameteric 
+// Sets up contributions of given observation to the quasi parameteric
 // normal equation matrices. Assumes uncorrelated coordinates.
 // point ... point
 // residual ... residual for this point computed from previous iteration (zero for first iteration)
@@ -282,7 +282,7 @@ void SphereFit::setupNormalEquationMatrices(const std::vector< Base::Vector3d > 
 // b[3] ... observation partials
 void SphereFit::setupObservation(const Base::Vector3f &point, const Base::Vector3d &residual, double a[4], double &f0, double &qw, double b[3]) const
 {
-	// This adjustment requires an update of the observation approximations 
+	// This adjustment requires an update of the observation approximations
 	// because the residuals do not have a linear relationship.
 	// New estimates for the observations:
 	double xEstimate = (double)point.x + residual.x;
@@ -393,7 +393,7 @@ bool SphereFit::computeResiduals(const Eigen::VectorXd &x, std::vector< Base::Ve
 
 		//sigma0 += v.x * w[0] * v.x + v.y * w[1] * v.y + v.z * w[2] * v.z;
 		sigma0 += v.x * v.x + v.y * v.y + v.z * v.z;
-			
+
 		if ((dVx > vConvLimit) || (dVy > vConvLimit) || (dVz > vConvLimit))
 			vConverged = false;
 
