@@ -490,11 +490,7 @@ int Delaunay3<Real>::GetContainingTetrahedron (const Vector3<Real>& rkP)
             }
             continue;
         }
-
-        m_iLastFaceV0 = -1;
-        m_iLastFaceV1 = -1;
-        m_iLastFaceV2 = -1;
-        m_iLastFaceOppositeIndex = -1;
+        
         return iIndex;
     }
 
