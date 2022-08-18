@@ -87,6 +87,9 @@ public:
     Connection connectProgressMessage;
 
 private:
+    void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
+    void singleParentPaint(const TechDraw::DrawView* dv);
+
 
 };
 

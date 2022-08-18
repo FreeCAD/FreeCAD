@@ -334,8 +334,7 @@ void ViewProviderPage::removeMDIView(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
         QList<QWidget*> wList= Gui::getMainWindow()->windows();
-        bool found = wList.contains(m_mdiView);
-        if (found) {
+        if (wList.contains(m_mdiView)) {
             Gui::getMainWindow()->removeWindow(m_mdiView);
             m_mdiView = nullptr;            //m_mdiView will eventually be deleted and
             m_graphicsView = nullptr;       //will take m_graphicsView with it
