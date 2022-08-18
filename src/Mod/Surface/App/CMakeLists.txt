@@ -16,6 +16,23 @@ set(Surface_LIBS
     Part
 )
 
+SET(BlendingPy_SRCS
+  Blending/BlendPointPy.xml
+  Blending/BlendPointPyImp.cpp
+  Blending/BlendCurvePy.xml
+  Blending/BlendCurvePyImp.cpp
+)
+SOURCE_GROUP("Blending" FILES ${BlendingPy_SRCS})
+
+SET(Blending_SRCS
+  Blending/FeatureBlendCurve.cpp
+  Blending/FeatureBlendCurve.h
+  Blending/BlendPoint.cpp
+  Blending/BlendPoint.h
+  Blending/BlendCurve.cpp
+  Blending/BlendCurve.h
+)
+
 SET(Surface_SRCS
     AppSurface.cpp
     PreCompiled.cpp
