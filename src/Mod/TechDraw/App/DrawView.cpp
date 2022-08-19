@@ -75,8 +75,8 @@ DrawView::DrawView():
     m_overrideKeepUpdated(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output), "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_Output), "Y position");
+    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_None), "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_None), "Y position");
     ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
@@ -163,6 +163,8 @@ void DrawView::onChanged(const App::Property* prop)
     } else if ( prop == &X ||
                 prop == &Y ) {
         //X,Y changes are only interesting to DPGI and Gui side
+        X.purgeTouched();
+        Y.purgeTouched();
     }
 
     App::DocumentObject::onChanged(prop);
