@@ -110,7 +110,6 @@ public:
     App::PropertyInteger  IsoCount;
 
     short mustExecute() const override;
-    void onDocumentRestored() override;
     App::DocumentObjectExecReturn *execute() override;
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
