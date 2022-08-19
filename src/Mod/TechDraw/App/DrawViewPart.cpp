@@ -243,7 +243,6 @@ void DrawViewPart::addShapes2d(void)
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
 //    Base::Console().Message("DVP::execute() - %s\n", getNameInDocument());
-
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -1419,16 +1418,6 @@ void DrawViewPart::dumpCosEdges(std::string text)
     for (auto& ce: cEdges) {
         ce->dump("a CE");
     }
-}
-
-
-
-void DrawViewPart::onDocumentRestored()
-{
-//    requestPaint();
-    //if execute has not run yet, there will be no GO, and paint will not do anything.
-    recomputeFeature();
-    DrawView::onDocumentRestored();
 }
 
 PyObject *DrawViewPart::getPyObject()

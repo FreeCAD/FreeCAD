@@ -160,9 +160,9 @@ void DrawView::onChanged(const App::Property* prop)
     } else if ((prop == &Caption) ||
         (prop == &Label)) {
         requestPaint();
-    } else if ((prop == &X) ||
-        (prop == &Y)) {
-        //X, Y changes are only interesting to DPGI and Gui side
+    } else if ( prop == &X ||
+                prop == &Y ) {
+        //X,Y changes are only interesting to DPGI and Gui side
     }
 
     App::DocumentObject::onChanged(prop);
@@ -227,7 +227,6 @@ void DrawView::onDocumentRestored()
     handleXYLock();
     setScaleAttribute();
     validateScale();
-    DrawView::execute();
 }
 
 //in versions before 0.20 Scale and ScaleType were mishandled.
@@ -247,7 +246,6 @@ void DrawView::validateScale()
             double myScale = Scale.getValue();
             if (!DrawUtil::fpCompare(pageScale, myScale)) {
                 ScaleType.setValue("Custom");
-                ScaleType.purgeTouched();
             }
         }
     }

@@ -38,6 +38,7 @@ namespace TechDrawGui
 class QGIPrimPath;
 class QGIVertex;
 class QGIView;
+class QGILeaderLine;
 
 class TechDrawGuiExport QGMarker : public QObject, public QGIVertex
 {
