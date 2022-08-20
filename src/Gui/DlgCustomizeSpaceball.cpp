@@ -282,7 +282,7 @@ QString ButtonModel::getLabel(const int &number) const
                                               GetGroup(numberString.toLatin1())->
                                               GetASCII("Description",""));
         if (desc.length())
-            desc = tr(" \"") + desc + tr("\"");
+            desc = QString::fromUtf8(" \"") + desc + QString::fromUtf8("\"");
         return tr("Button %1").arg(number + 1) + desc;
     } else
         return tr("Out Of Range");
