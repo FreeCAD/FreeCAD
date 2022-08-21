@@ -157,11 +157,11 @@ DrawViewPart::~DrawViewPart()
 {
     //don't delete this object while it still has dependent threads running
     if (m_hlrFuture.isRunning()) {
-        Base::Console().Message("%s is waiting for HLR to finish\n", getNameInDocument());
+        Base::Console().Message("%s is waiting for HLR to finish\n", Label.getValue());
         m_hlrFuture.waitForFinished();
     }
     if (m_faceFuture.isRunning()) {
-        Base::Console().Message("%s is waiting for face finding to finish\n", getNameInDocument());
+        Base::Console().Message("%s is waiting for face finding to finish\n", Label.getValue());
         m_faceFuture.waitForFinished();
     }
     removeAllReferencesFromGeom();
