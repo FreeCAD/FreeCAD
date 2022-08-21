@@ -35,6 +35,23 @@ import FreeCAD
 translate = FreeCAD.Qt.translate
 
 
+def initialize_git() -> object:
+    """If git is enabled, locate the git executable if necessary and return a new
+    GitManager object. The executable location is saved in user preferences for reuse,
+    and git can be disabled by setting the disableGit parameter in the Addons
+    preference group. Returns None if for any of those reasons we aren't using git."""
+
+    git_manager = None
+    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    disable_git = pref.GetBool("disableGit", False)
+    if not disable_git:
+        try:
+            git_manager = GitManager()
+        except NoGitFound:
+            pass
+    return git_manager
+
+
 class NoGitFound(RuntimeError):
     """Could not locate the git executable on this system."""
 

@@ -702,7 +702,9 @@ class CommandAddonManager:
             if not self.update_cache:
                 self.update_cache = True  # Make sure to trigger the other cache updates, if the json file was missing
                 self.create_addon_list_worker = CreateAddonListWorker()
-                self.create_addon_list_worker.status_message.connect(self.show_information)
+                self.create_addon_list_worker.status_message.connect(
+                    self.show_information
+                )
                 self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
                 self.update_progress_bar(10, 100)
                 self.create_addon_list_worker.finished.connect(

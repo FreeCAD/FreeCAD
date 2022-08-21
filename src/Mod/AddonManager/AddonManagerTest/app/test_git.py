@@ -30,8 +30,6 @@ import time
 from zipfile import ZipFile
 import FreeCAD
 
-from typing import Dict
-
 from addonmanager_git import GitManager, NoGitFound, GitFailed
 
 
@@ -89,6 +87,7 @@ class TestGit(unittest.TestCase):
         status = self.git.status(checkout_dir).strip()
         expected_status = "## HEAD (no branch)"
         self.assertEqual(status, expected_status)
+
         self.assertEqual(os.getcwd(),self.cwd, "We should be left in the same CWD we started")
 
     def test_update(self):

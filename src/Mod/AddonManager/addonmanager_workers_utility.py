@@ -27,6 +27,7 @@ import FreeCAD
 from PySide2 import QtCore
 import NetworkManager
 
+
 class ConnectionChecker(QtCore.QThread):
     """A worker thread for checking the connection to GitHub as a proxy for overall
     network connectivity. It has two signals: success() and failure(str). The failure
@@ -59,8 +60,8 @@ class ConnectionChecker(QtCore.QThread):
         self.success.emit()
 
     def check_network_connection(self) -> Optional[str]:
-        """ The main work of this object: returns the decoded result of the connection request, or
-        None if the request failed """
+        """The main work of this object: returns the decoded result of the connection request, or
+        None if the request failed"""
         url = "https://api.github.com/zen"
         result = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
         if result:

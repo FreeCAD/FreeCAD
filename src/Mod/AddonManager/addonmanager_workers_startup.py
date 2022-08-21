@@ -40,20 +40,9 @@ import addonmanager_utilities as utils
 from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
-from addonmanager_git import GitManager, GitFailed, NoGitFound
+from addonmanager_git import initialize_git
 
 translate = FreeCAD.Qt.translate
-
-git_manager = None
-pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-disable_git = pref.GetBool("disableGit", False)
-if not disable_git:
-    try:
-        git_manager = GitManager()
-    except NoGitFound:
-        FreeCAD.Console.PrintWarning(
-            translate("AddonsInstaller", "Could not locate a suitable git executable")
-        )
 
 # Workers only have one public method by design
 # pylint: disable=too-few-public-methods
@@ -82,6 +71,8 @@ class CreateAddonListWorker(QtCore.QThread):
         self.package_names = []
         self.moddir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
         self.current_thread = None
+
+        self.git_manager = initialize_git()
 
     def run(self):
         "populates the list of addons"
@@ -262,12 +253,12 @@ class CreateAddonListWorker(QtCore.QThread):
 
         macro_cache_location = utils.get_cache_file_name("Macros")
 
-        if not git_manager:
+        if not self.git_manager:
             message = translate(
                 "AddonsInstaller",
-                "Failed to execute git command: check installation of git",
+                "Git is disabled, skipping git macros",
             )
-            self.status_message_signal.emit(message)
+            self.status_message.emit(message)
             FreeCAD.Console.PrintWarning(message + "\n")
             return
 
@@ -290,6 +281,12 @@ class CreateAddonListWorker(QtCore.QThread):
                     return
                 if filename.lower().endswith(".fcmacro"):
                     macro = Macro(filename[:-8])  # Remove ".FCMacro".
+                    if macro.name in self.package_names:
+                        FreeCAD.Console.PrintLog(
+                            f"Ignoring second macro named {macro.name} (found on git)\n"
+                        )
+                        continue  # We already have a macro with this name
+                    self.package_names.append(macro.name)
                     macro.on_git = True
                     macro.src_filename = os.path.join(dirpath, filename)
                     macro.fill_details_from_file(macro.src_filename)
@@ -310,13 +307,13 @@ class CreateAddonListWorker(QtCore.QThread):
                             "Attempting to change non-git Macro setup to use git\n",
                         )
                     )
-                    git_manager.repair(
+                    self.git_manager.repair(
                         "https://github.com/FreeCAD/FreeCAD-macros.git",
                         macro_cache_location,
                     )
-                git_manager.update(macro_cache_location)
+                self.git_manager.update(macro_cache_location)
             else:
-                git_manager.clone(
+                self.git_manager.clone(
                     "https://github.com/FreeCAD/FreeCAD-macros.git",
                     macro_cache_location,
                 )
@@ -335,7 +332,7 @@ class CreateAddonListWorker(QtCore.QThread):
             )
             try:
                 shutil.rmtree(macro_cache_location, onerror=self._remove_readonly)
-                git_manager.clone(
+                self.git_manager.clone(
                     "https://github.com/FreeCAD/FreeCAD-macros.git",
                     macro_cache_location,
                 )
@@ -394,6 +391,12 @@ class CreateAddonListWorker(QtCore.QThread):
             ):
                 macro_names.append(macname)
                 macro = Macro(macname)
+                if macro.name in self.package_names:
+                    FreeCAD.Console.PrintLog(
+                        f"Ignoring second macro named {macro.name} (found on wiki)\n"
+                    )
+                    continue  # We already have a macro with this name
+                self.package_names.append(macro.name)
                 macro.on_wiki = True
                 macro.parsed = False
                 repo = Addon.from_macro(macro)
@@ -548,6 +551,7 @@ class UpdateChecker:
     def __init__(self):
         self.basedir = FreeCAD.getUserAppDataDir()
         self.moddir = os.path.join(self.basedir, "Mod")
+        self.git_manager = initialize_git()
 
     def override_mod_directory(self, moddir):
         """Primarily for use when testing, sets an alternate directory to use for mods"""
@@ -556,7 +560,7 @@ class UpdateChecker:
     def check_workbench(self, wb):
         """Given a workbench Addon wb, check it for updates using git. If git is not
         available, does nothing."""
-        if not git_manager:
+        if not self.git_manager:
             wb.set_status(Addon.Status.CANNOT_CHECK)
             return
         clonedir = os.path.join(self.moddir, wb.name)
@@ -564,15 +568,15 @@ class UpdateChecker:
             # mark as already installed AND already checked for updates
             if not os.path.exists(os.path.join(clonedir, ".git")):
                 with wb.git_lock:
-                    git_manager.repair(wb.url, clonedir)
+                    self.git_manager.repair(wb.url, clonedir)
             with wb.git_lock:
                 try:
-                    status = git_manager.status(clonedir)
-                    if "(no branch)" in git_manager.status(clonedir):
+                    status = self.git_manager.status(clonedir)
+                    if "(no branch)" in self.git_manager.status(clonedir):
                         # By definition, in a detached-head state we cannot
                         # update, so don't even bother checking.
                         wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
-                        wb.branch = git_manager.current_branch(clonedir)
+                        wb.branch = self.git_manager.current_branch(clonedir)
                         return
                 except GitFailed as e:
                     FreeCAD.Console.PrintWarning(
@@ -587,7 +591,7 @@ class UpdateChecker:
                     wb.set_status(Addon.Status.CANNOT_CHECK)
                 else:
                     try:
-                        if git_manager.update_available(clonedir):
+                        if self.git_manager.update_available(clonedir):
                             wb.set_status(Addon.Status.UPDATE_AVAILABLE)
                         else:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
@@ -609,7 +613,7 @@ class UpdateChecker:
         if os.path.exists(clonedir):
 
             # First, try to just do a git-based update, which will give the most accurate results:
-            if git_manager:
+            if self.git_manager:
                 self.check_workbench(package)
                 if package.status() != Addon.Status.CANNOT_CHECK:
                     # It worked, just exit now

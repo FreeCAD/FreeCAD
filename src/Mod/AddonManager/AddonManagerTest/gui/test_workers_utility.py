@@ -30,12 +30,15 @@ from PySide2 import QtCore
 
 import NetworkManager
 
+
 class TestWorkersUtility(unittest.TestCase):
 
     MODULE = "test_workers_utility"  # file name without extension
 
     def setUp(self):
-        self.test_dir = os.path.join(FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data")
+        self.test_dir = os.path.join(
+            FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
+        )
         self.last_result = None
 
         url = "https://api.github.com/zen"
@@ -45,7 +48,7 @@ class TestWorkersUtility(unittest.TestCase):
             self.skipTest("No active internet connection detected")
 
     def test_connection_checker_basic(self):
-        """ Tests the connection checking worker's basic operation: does not exit until worker thread completes """
+        """Tests the connection checking worker's basic operation: does not exit until worker thread completes"""
         worker = ConnectionChecker()
         worker.success.connect(self.connection_succeeded)
         worker.failure.connect(self.connection_failed)
@@ -54,8 +57,8 @@ class TestWorkersUtility(unittest.TestCase):
         while worker.isRunning():
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-        self.assertEqual(self.last_result,"SUCCESS")
-        
+        self.assertEqual(self.last_result, "SUCCESS")
+
     def test_connection_checker_thread_interrupt(self):
         worker = ConnectionChecker()
         worker.success.connect(self.connection_succeeded)
@@ -66,8 +69,10 @@ class TestWorkersUtility(unittest.TestCase):
         while worker.isRunning():
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-        self.assertIsNone(self.last_result, "Requesting interruption of thread failed to interrupt")
-        
+        self.assertIsNone(
+            self.last_result, "Requesting interruption of thread failed to interrupt"
+        )
+
     def connection_succeeded(self):
         self.last_result = "SUCCESS"
 
