@@ -317,7 +317,8 @@ void PovTools::writeShapeCSV(const char *FileName,
     BRepMesh_IncrementalMesh MESH(Shape,fMeshDeviation);
 
     // open the file and write
-    std::ofstream fout(FileName);
+    Base::FileInfo fi(FileName);
+    Base::ofstream fout(fi);
 
     // counting faces and start sequencer
     int l = 1;
