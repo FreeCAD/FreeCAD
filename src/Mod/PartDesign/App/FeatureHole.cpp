@@ -48,6 +48,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
@@ -2295,7 +2296,7 @@ void Hole::readCutDefinitions()
         for (const auto& f : files) {
             if (f.extension() == "json") {
                 try {
-                    std::ifstream input(f.filePath());
+                    Base::ifstream input(f);
                     nlohmann::json j;
                     input >> j;
                     CutDimensionSet screwtype = j.get<CutDimensionSet>();
