@@ -51,7 +51,6 @@ class DrawProjGroupItem;
 class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawProjGroup);
-    Q_OBJECT
     
 public:
     /// Constructor

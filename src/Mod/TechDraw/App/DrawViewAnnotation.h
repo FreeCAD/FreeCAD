@@ -40,7 +40,6 @@ namespace TechDraw
 class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewAnnotation);
-    Q_OBJECT
 
 public:
     /// Constructor

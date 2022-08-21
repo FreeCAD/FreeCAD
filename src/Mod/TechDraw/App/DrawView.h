@@ -46,7 +46,7 @@ class DrawLeaderLine;
 
 /** Base class of all View Features in the drawing module
  */
-class TechDrawExport DrawView : public App::DocumentObject, public QObject
+class TechDrawExport DrawView : public App::DocumentObject
 {
     Q_DECLARE_TR_FUNCTIONS(TechDraw::DrawView)
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawView);

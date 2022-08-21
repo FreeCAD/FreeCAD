@@ -285,7 +285,9 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
     }
 
     try {
-        QObject::connect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
+        connectCutWatcher = QObject::connect(&m_cutWatcher, &QFutureWatcherBase::finished, [this] {
+            this->onSectionCutFinished();
+        });
         m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
         m_cutWatcher.setFuture(m_cutFuture);
         waitingForCut(true);
@@ -419,7 +421,7 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 void DrawViewSection::onSectionCutFinished()
 {
 //    Base::Console().Message("DVS::onSectionCutFinished() - %s\n", getNameInDocument());
-    QObject::disconnect(&m_cutWatcher, SIGNAL(finished()), this, SLOT(onSectionCutFinished()));
+    QObject::disconnect(connectCutWatcher);
 
     showProgressMessage(getNameInDocument(), "has finished making section cut");
 
@@ -985,8 +987,6 @@ bool DrawViewSection::showSectionEdges(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     return (hGrp->GetBool("ShowSectionEdges", true));
 }
-
-#include <Mod/TechDraw/App/moc_DrawViewSection.cpp>
 
 // Python Drawing feature ---------------------------------------------------------
 

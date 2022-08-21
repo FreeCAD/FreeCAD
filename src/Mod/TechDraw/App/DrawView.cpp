@@ -601,8 +601,6 @@ PyObject *DrawView::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-#include <Mod/TechDraw/App/moc_DrawView.cpp>
-
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {

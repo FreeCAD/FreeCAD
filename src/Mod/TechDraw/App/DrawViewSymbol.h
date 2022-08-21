@@ -43,7 +43,6 @@ class DrawPage;
 class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSymbol);
-    Q_OBJECT
 
 public:
     /// Constructor

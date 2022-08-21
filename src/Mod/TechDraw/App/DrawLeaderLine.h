@@ -38,7 +38,6 @@ namespace TechDraw
 class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawLeaderLine);
-    Q_OBJECT
 
 public:
     DrawLeaderLine();

@@ -52,7 +52,6 @@ namespace TechDraw
 class TechDrawExport DrawViewDetail : public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewDetail);
-    Q_OBJECT
 
 public:
     /// Constructor
@@ -102,6 +101,7 @@ protected:
     TopoDS_Shape m_scaledShape;
     gp_Ax2 m_viewAxis;
 
+    QMetaObject::Connection connectDetailWatcher;
     QFutureWatcher<void> m_detailWatcher;
     QFuture<void> m_detailFuture;
     bool m_waitingForDetail;

@@ -38,7 +38,6 @@ namespace TechDraw
 class TechDrawExport DrawViewSpreadsheet : public TechDraw::DrawViewSymbol
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSpreadsheet);
-    Q_OBJECT
 
 public:
     DrawViewSpreadsheet();
