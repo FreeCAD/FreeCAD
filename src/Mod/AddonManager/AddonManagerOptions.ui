@@ -22,7 +22,7 @@ installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</string>
      </property>
      <property name="text">
-      <string>Automatically check for updates at start (requires GitPython)</string>
+      <string>Automatically check for updates at start (requires git)</string>
      </property>
      <property name="autoExclusive">
       <bool>false</bool>
@@ -249,16 +249,16 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="fclabel">
        <property name="text">
         <string>Python executable (optional):</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+     <item row="0" column="1">
+      <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -282,6 +282,38 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>git executable (optional):</string>
+       </property>
+      </widget>
+     </item>
+	 <item row="1" column="1">
+      <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>The path to the git executable. Autodetected if needed and not specified.</string>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>GitExecutable</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Addons</cstring>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -299,13 +331,20 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
       <item>
        <widget class="Gui::PrefCheckBox" name="guiprefcheckboxShowBranchSwitcher">
         <property name="text">
-         <string>Show option to change branches (Requires GitPython)</string>
+         <string>Show option to change branches (requires git)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowBranchSwitcher</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>Disable git (fall back to ZIP downloads only)</string>
         </property>
        </widget>
       </item>
