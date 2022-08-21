@@ -386,7 +386,9 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
                                         viewAxis);
     } else {
         //projectShape (the HLR process) runs in a separate thread since it can take a long time
-        QObject::connect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
+        connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished, [this] {
+            this->onHlrFinished();}
+        );
         m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
@@ -402,7 +404,7 @@ void DrawViewPart::onHlrFinished(void)
     bbox = geometryObject->calcBoundingBox();
 
     waitingForHlr(false);
-    QObject::disconnect(&m_hlrWatcher, SIGNAL(finished()), this, SLOT(onHlrFinished()));
+    QObject::disconnect(connectHlrWatcher);
     showProgressMessage(getNameInDocument(), "has finished finding hidden lines");
 
     postHlrTasks();         //application level tasks that depend on HLR/GO being complete
@@ -411,7 +413,9 @@ void DrawViewPart::onHlrFinished(void)
     //HLR method
     if (handleFaces() && !CoarseView.getValue() && !waitingForFaces()) {
         try {
-            QObject::connect(&m_faceWatcher, SIGNAL(finished()), this, SLOT(onFacesFinished()));
+            connectFaceWatcher = QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, [this] {
+                this->onFacesFinished();
+            });
             m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
             m_faceWatcher.setFuture(m_faceFuture);
             waitingForFaces(true);
@@ -597,7 +601,7 @@ void DrawViewPart::onFacesFinished(void)
 {
 //    Base::Console().Message("DVP::onFacesFinished()\n");
     waitingForFaces(false);
-    QObject::disconnect(&m_faceWatcher, SIGNAL(finished()), this, SLOT(onFacesFinished()));
+    QObject::disconnect(connectFaceWatcher);
     showProgressMessage(getNameInDocument(), "has finished extracting faces");
     requestPaint();
 }
@@ -1501,8 +1505,6 @@ int DrawViewPart::prefIsoCount()
     int result = hGrp->GetBool("IsoCount", 0); 
     return result;
 }
-
-#include <Mod/TechDraw/App/moc_DrawViewPart.cpp>
 
 // Python Drawing feature ---------------------------------------------------------
 

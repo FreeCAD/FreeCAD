@@ -39,7 +39,6 @@ namespace TechDraw
 class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDraft);
-    Q_OBJECT
 
 public:
     /// Constructor

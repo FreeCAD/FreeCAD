@@ -65,7 +65,6 @@ class DashSet;
 class TechDrawExport DrawViewSection : public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
-    Q_OBJECT
 
 public:
     DrawViewSection();
@@ -160,6 +159,7 @@ protected:
     gp_Ax2 m_viewAxis;
     TopoDS_Shape m_scaledShape;
 
+    QMetaObject::Connection connectCutWatcher;
     QFutureWatcher<void> m_cutWatcher;
     QFuture<void> m_cutFuture;
     bool m_waitingForCut;

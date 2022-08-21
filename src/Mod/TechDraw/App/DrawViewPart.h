@@ -84,7 +84,6 @@ class DrawViewSection;
 class TechDrawExport DrawViewPart : public DrawView, public CosmeticExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(TechDraw::DrawViewPart);
-    Q_OBJECT
 
 public:
     DrawViewPart();
@@ -260,8 +259,10 @@ private:
     bool m_waitingForFaces;
     bool m_waitingForHlr;
 
+    QMetaObject::Connection connectHlrWatcher;
     QFutureWatcher<void> m_hlrWatcher;
     QFuture<void> m_hlrFuture;
+    QMetaObject::Connection connectFaceWatcher;
     QFutureWatcher<void> m_faceWatcher;
     QFuture<void> m_faceFuture;
 

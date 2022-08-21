@@ -216,7 +216,9 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape,
         return;
     }
 
-    QObject::connect(&m_detailWatcher, SIGNAL(finished()), this, SLOT(onMakeDetailFinished()));
+    connectDetailWatcher = QObject::connect(&m_detailWatcher, &QFutureWatcherBase::finished, [this] {
+        this->onMakeDetailFinished();
+    });
     m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
     m_detailWatcher.setFuture(m_detailFuture);
     waitingForDetail(true);
@@ -436,7 +438,7 @@ void DrawViewDetail::postHlrTasks(void)
 void DrawViewDetail::onMakeDetailFinished(void)
 {
     waitingForDetail(false);
-    QObject::disconnect(&m_detailWatcher, SIGNAL(finished()), this, SLOT(onMakeDetailFinished()));
+    QObject::disconnect(connectDetailWatcher);
 
     //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
     geometryObject =  buildGeometryObject(m_scaledShape, m_viewAxis);
