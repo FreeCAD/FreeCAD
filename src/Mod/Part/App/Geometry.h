@@ -317,6 +317,7 @@ public:
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
 
     void Trim(double u, double v);
+    void setBounds(double u0, double u1);
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;

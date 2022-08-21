@@ -1392,6 +1392,29 @@ PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)
     }
 }
 
+PyObject* BSplineCurvePy::setBounds(PyObject *args)
+{
+    double u0=0.0;
+    double u1=1.0;
+    if (!PyArg_ParseTuple(args, "|dd", &u0, &u1))
+        return nullptr;
+    try {
+        if (u0 >= u1) {
+            Standard_Failure::Raise("Bad parameter range");
+            return nullptr;;
+        }
+        GeomBSplineCurve* curve = getGeomBSplineCurvePtr();
+        curve->setBounds(u0, u1);
+        Py_Return;
+    }
+    catch (Standard_Failure& e) {
+        std::string err = e.GetMessageString();
+        if (err.empty()) err = e.DynamicType()->Name();
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
+        return nullptr;
+    }
+}
+
 PyObject* BSplineCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
