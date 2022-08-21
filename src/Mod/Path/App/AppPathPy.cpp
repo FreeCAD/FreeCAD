@@ -29,6 +29,7 @@
 #include <Base/VectorPy.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <Base/Stream.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Application.h>
@@ -163,7 +164,7 @@ namespace Path {
               if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Path::Feature"))) {
                   const Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
                   std::string gcode = path.toGCode();
-                  std::ofstream ofile(EncodedName.c_str());
+                  Base::ofstream ofile(file);
                   ofile << gcode;
                   ofile.close();
               }
@@ -199,7 +200,7 @@ namespace Path {
 
           try {
               // read the gcode file
-              std::ifstream filestr(file.filePath().c_str());
+              Base::ifstream filestr(file);
               std::stringstream buffer;
               buffer << filestr.rdbuf();
               std::string gcode = buffer.str();

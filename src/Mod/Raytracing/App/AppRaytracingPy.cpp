@@ -26,7 +26,9 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <Base/Stream.h>
 #include "PovTools.h"
 #include "LuxTools.h"
 // automatically generated.....
@@ -72,15 +74,13 @@ public:
 private:
     Py::Object writeProjectFile(const Py::Tuple& args)
     {
-        char *fromPython;
-        if (! PyArg_ParseTuple(args.ptr(), "(s)", &fromPython))
+        const char *fromPython = "FreeCAD.pov";
+        if (! PyArg_ParseTuple(args.ptr(), "|(s)", &fromPython))
             throw Py::Exception();
 
-        std::ofstream fout;
-        if (fromPython)
-            fout.open(fromPython);
-        else
-          fout.open("FreeCAD.pov");
+        Base::ofstream fout;
+        Base::FileInfo fi(fromPython);
+        fout.open(fi);
 
         fout << FreeCAD ;
         fout.close();

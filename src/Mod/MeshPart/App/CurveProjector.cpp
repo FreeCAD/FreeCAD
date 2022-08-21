@@ -59,7 +59,9 @@
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
+#include <Base/Stream.h>
 
 
 using namespace MeshPart;
@@ -78,7 +80,8 @@ CurveProjector::CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMe
 void CurveProjector::writeIntersectionPointsToFile(const char *name)
 {
   // export points
-  std::ofstream str(name, std::ios::out | std::ios::binary);
+  Base::FileInfo fi(name);
+  Base::ofstream str(fi, std::ios::out | std::ios::binary);
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
   for (result_type::const_iterator it1 = mvEdgeSplitPoints.begin();it1!=mvEdgeSplitPoints.end();++it1) {
@@ -319,7 +322,8 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   MeshFacetIterator It(_Mesh);
 
   Base::SequencerLauncher seq("Building up projection map...", ulNbOfPoints+1);
-  std::ofstream str("projected.asc", std::ios::out | std::ios::binary);
+  Base::FileInfo fi("projected.asc");
+  Base::ofstream str(fi, std::ios::out | std::ios::binary);
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
 
@@ -711,7 +715,8 @@ void MeshProjection::splitMeshByShape ( const TopoDS_Shape &aShape, float fMaxDi
     std::vector<PolyLine> rPolyLines;
     projectToMesh( aShape, fMaxDist, rPolyLines );
 
-    std::ofstream str("output.asc", std::ios::out | std::ios::binary);
+    Base::FileInfo fi("output.asc");
+    Base::ofstream str(fi, std::ios::out | std::ios::binary);
     str.precision(4);
     str.setf(std::ios::fixed | std::ios::showpoint);
     for (std::vector<PolyLine>::const_iterator it = rPolyLines.begin();it!=rPolyLines.end();++it) {

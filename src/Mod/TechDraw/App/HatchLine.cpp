@@ -36,6 +36,7 @@
 #include <TopExp.hxx>
 
 #include <Base/Console.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
@@ -305,8 +306,9 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 {
     std::vector<PATLineSpec> result;
     std::vector<std::string> lineSpecs;
-    std::ifstream inFile;
-    inFile.open (parmFile, std::ifstream::in);
+    Base::FileInfo fi(parmFile);
+    Base::ifstream inFile;
+    inFile.open (fi, std::ifstream::in);
     if(!inFile.is_open()) {
         Base::Console().Message( "Cannot open input file.\n");
         return result;
@@ -385,8 +387,9 @@ std::vector<std::string> PATLineSpec::loadPatternDef(std::ifstream& inFile)
 std::vector<std::string> PATLineSpec::getPatternList(std::string& parmFile)
 {
     std::vector<std::string> result;
-    std::ifstream inFile;
-    inFile.open (parmFile, std::ifstream::in);
+    Base::FileInfo fi(parmFile);
+    Base::ifstream inFile;
+    inFile.open (fi, std::ifstream::in);
     if(!inFile.is_open()) {
         Base::Console().Message( "Cannot open input file.\n");
         return result;

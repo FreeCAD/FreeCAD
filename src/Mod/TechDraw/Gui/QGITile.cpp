@@ -32,7 +32,9 @@
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -234,7 +236,8 @@ void QGITile::makeText(void)
 //read whole text file into std::string
 std::string QGITile::getStringFromFile(std::string inSpec)
 {
-    std::ifstream f(inSpec);
+    Base::FileInfo fi(inSpec);
+    Base::ifstream f(fi);
     std::stringstream ss;
     ss << f.rdbuf();
     return ss.str();

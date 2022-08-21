@@ -1545,8 +1545,9 @@ void FemMesh::readNastran(const std::string &Filename)
 
     _Mtrx = Base::Matrix4D();
 
-    std::ifstream inputfile;
-    inputfile.open(Filename.c_str());
+    Base::FileInfo fi(Filename);
+    Base::ifstream inputfile;
+    inputfile.open(fi);
     inputfile.seekg(std::ifstream::beg);
     std::string line1,line2;
     std::vector<NastranElementPtr> mesh_elements;
@@ -1636,8 +1637,9 @@ void FemMesh::readNastran95(const std::string &Filename)
 
     _Mtrx = Base::Matrix4D();
 
-    std::ifstream inputfile;
-    inputfile.open(Filename.c_str());
+    Base::FileInfo fi(Filename);
+    Base::ifstream inputfile;
+    inputfile.open(fi);
     inputfile.seekg(std::ifstream::beg);
     std::string line1,line2,tcard;
 

@@ -266,10 +266,11 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
 
 bool Sheet::exportToFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar) const
 {
-    std::ofstream file;
+    Base::ofstream file;
     int prevRow = -1, prevCol = -1;
 
-    file.open(filename.c_str(), std::ios::out | std::ios::ate | std::ios::binary);
+    Base::FileInfo fi(filename);
+    file.open(fi, std::ios::out | std::ios::ate | std::ios::binary);
 
     if (!file.is_open())
         return false;
