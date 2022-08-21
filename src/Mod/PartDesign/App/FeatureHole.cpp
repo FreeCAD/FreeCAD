@@ -2297,8 +2297,7 @@ void Hole::readCutDefinitions()
         for (const auto& f : files) {
             if (f.extension() == "json") {
                 try {
-                    Base::FileInfo fi(f.filePath());
-                    Base::ifstream input(fi);
+                    Base::ifstream input(f);
                     nlohmann::json j;
                     input >> j;
                     CutDimensionSet screwtype = j.get<CutDimensionSet>();
