@@ -120,11 +120,11 @@ class GitManager:
                 + "...\n"
             )
             remote = self.get_remote(local_path)
-            with open(os.path.join(local_path, "ADDON_DISABLED"), "w") as f:
+            with open(os.path.join(local_path, "ADDON_DISABLED"), "w", encoding="utf-8") as f:
                 f.write(
                     "This is a backup of an addon that failed to update cleanly so was re-cloned. "
-                    + "It was disabled by the Addon Manager's git update facility and can be safely "
-                    + "deleted if the addon is working properly."
+                    + "It was disabled by the Addon Manager's git update facility and can be "
+                    + "safely deleted if the addon is working properly."
                 )
             os.chdir("..")
             os.rename(local_path, local_path + ".backup" + str(time.time()))
@@ -245,11 +245,10 @@ class GitManager:
                 if len(segments) == 3:
                     result = segments[1]
                     break
-                else:
-                    FreeCAD.Console.PrintWarning(
-                        "Error parsing the results from git remote -v show:\n"
-                    )
-                    FreeCAD.Console.PrintWarning(line + "\n")
+                FreeCAD.Console.PrintWarning(
+                    "Error parsing the results from git remote -v show:\n"
+                )
+                FreeCAD.Console.PrintWarning(line + "\n")
         os.chdir(old_dir)
         return result
 
