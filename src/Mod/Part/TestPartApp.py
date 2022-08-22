@@ -167,7 +167,7 @@ class PartTestBSplineCurve(unittest.TestCase):
             box.getElement("InvalidName")
         with self.assertRaises(ValueError):
             box.getElement("Face6_abc")
-        with self.assertRaises(Part.OCCError):
+        with self.assertRaises(IndexError):
             box.getElement("Face7")
 
     def tearDown(self):
