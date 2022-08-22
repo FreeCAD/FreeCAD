@@ -53,13 +53,15 @@ void ExpressionBindingPy::init_type()
 
 PyObject *ExpressionBindingPy::PyMake(struct _typeobject *, PyObject * args, PyObject *)
 {
-    Py::Tuple tuple(args);
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args,"O", &pyObj))
+        return nullptr;
 
     ExpressionBinding* expr = nullptr;
     PythonWrapper wrap;
     wrap.loadWidgetsModule();
 
-    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(tuple.getItem(0)));
+    QWidget* obj = dynamic_cast<QWidget*>(wrap.toQObject(Py::Object(pyObj)));
     if (obj) {
         do {
             QuantitySpinBox* sb = qobject_cast<QuantitySpinBox*>(obj);
