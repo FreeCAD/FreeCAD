@@ -1099,7 +1099,11 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         return;
     }
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
-    if ((FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
+    
+    // Set the unit for the different known result types.
+
+    //  CCX names
+    if ( (FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
         || (FieldName == "Major Principal Stress")
         || (FieldName == "Intermediate Principal Stress")
         || (FieldName == "Minor Principal Stress")
