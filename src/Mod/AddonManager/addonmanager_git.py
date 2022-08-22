@@ -24,6 +24,7 @@
 
 # pylint: disable=too-few-public-methods
 
+import multiprocessing
 import os
 import platform
 import shutil
@@ -279,13 +280,21 @@ class GitManager:
         final_args = [self.git_exe]
         final_args.extend(args)
         try:
-            proc = subprocess.run(
-                final_args,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                shell=True,
-                check=True,
-            )
+            if os.name == "nt":
+                proc = subprocess.run(
+                    final_args,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=True,
+                    shell=True # On Windows this will prevent all the pop-up consoles
+                )
+            else:
+                proc = subprocess.run(
+                    final_args,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=True,
+                )
         except subprocess.CalledProcessError as e:
             raise GitFailed(str(e)) from e
 
@@ -297,3 +306,4 @@ class GitManager:
             )
 
         return proc.stdout.decode()
+

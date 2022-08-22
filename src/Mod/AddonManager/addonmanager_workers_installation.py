@@ -22,6 +22,8 @@
 
 """ Worker thread classes for Addon Manager installation and removal """
 
+# pylint: disable=c-extension-no-member
+
 import hashlib
 import io
 import itertools
@@ -88,7 +90,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.git_manager = initialize_git()
 
     def run(self):
-        "installs or updates the selected addon"
+        """ Normally not called directly: instead, create an instance of this worker class and
+        call start() on it to launch in a new thread. Installs or updates the selected addon"""
 
         if not self.repo:
             return
@@ -121,11 +124,13 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.repo.set_status(Addon.Status.PENDING_RESTART)
 
     def update_status(self) -> None:
+        """ Periodically emit the progress of the git download, for asynchronous operations """
         if hasattr(self, "git_progress") and self.isRunning():
             self.progress_made.emit(self.git_progress.current, self.git_progress.total)
             self.status_message.emit(self.git_progress.message)
 
     def run_git(self, clonedir: str) -> None:
+        """ Clone or update the addon using git. Exits if git is disabled. """
 
         if not self.git_manager:
             FreeCAD.Console.PrintLog(
@@ -143,6 +148,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.run_git_clone(clonedir)
 
     def run_git_update(self, clonedir: str) -> None:
+        """ Runs git update operation: normally a fetch and pull, but if something goew wrong it 
+        will revert to a clean clone. """
         self.status_message.emit("Updating module...")
         with self.repo.git_lock:
             if not os.path.exists(clonedir + os.sep + ".git"):
@@ -174,6 +181,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.success.emit(self.repo, answer)
 
     def run_git_clone(self, clonedir: str) -> None:
+        """ Clones a repo using git """
         self.status_message.emit("Cloning module...")
         current_thread = QtCore.QThread.currentThread()
 
@@ -240,7 +248,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.success.emit(self.repo, answer)
 
     def launch_zip(self, zipdir: str) -> None:
-        "downloads and unzip a zip version from a git repo"
+        """ Downloads and unzip a zip version from a git repo """
 
         bakdir = None
         if os.path.exists(zipdir):
@@ -269,6 +277,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
         )
 
     def update_zip_status(self, index: int, bytes_read: int, data_size: int):
+        """ Called periodically when downloading a zip file, emits a signal to display the
+        download progress. """
         if index == self.zip_download_index:
             locale = QtCore.QLocale()
             if data_size > 10 * 1024 * 1024:  # To avoid overflows, show MB instead
@@ -314,6 +324,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 )
 
     def finish_zip(self, index: int, response_code: int, filename: os.PathLike):
+        """ Once the zip download is finished, unzip it into the correct location. """
         self.zip_complete = True
         if response_code != 200:
             self.failure.emit(
@@ -350,6 +361,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         )
 
     def update_metadata(self):
+        """ Loads the package metadata from the Addon's downloaded package.xml file. """
         basedir = FreeCAD.getUserAppDataDir()
         package_xml = os.path.join(basedir, "Mod", self.repo.name, "package.xml")
         if os.path.isfile(package_xml):
@@ -373,6 +385,8 @@ class DependencyInstallationWorker(QtCore.QThread):
         self.python_optional = python_optional
 
     def run(self):
+        """ Normally not called directly: create the object and call start() to launch it
+        in its own thread. Installs dependencies for the Addon."""
 
         for repo in self.addons:
             if QtCore.QThread.currentThread().isInterruptionRequested():
@@ -474,6 +488,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     package_updated = QtCore.Signal(Addon)
 
     class RequestType(Enum):
+        """ The type of item being downloaded. """
         PACKAGE_XML = auto()
         METADATA_TXT = auto()
         REQUIREMENTS_TXT = auto()
