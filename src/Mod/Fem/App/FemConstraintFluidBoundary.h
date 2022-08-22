@@ -37,11 +37,11 @@ namespace Fem
 
 class FemExport ConstraintFluidBoundary: public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintFluidBoundary);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintFluidBoundary);
 
 public:
     /// Constructor
-    ConstraintFluidBoundary(void);
+    ConstraintFluidBoundary();
     //
     App::PropertyEnumeration BoundaryType;
     App::PropertyEnumeration Subtype;
@@ -64,15 +64,15 @@ public:
     App::PropertyVector DirectionVector;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemConstraintFluidBoundary";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
     Base::Vector3d naturalDirectionVector;

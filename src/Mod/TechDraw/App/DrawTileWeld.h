@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawTileWeld_h_
 #define _TechDraw_DrawTileWeld_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -36,11 +38,11 @@ namespace TechDraw
 
 class TechDrawExport DrawTileWeld : public TechDraw::DrawTile
 {
-    PROPERTY_HEADER(TechDraw::DrawTileWeld);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTileWeld);
 
 public:
     DrawTileWeld();
-    virtual ~DrawTileWeld();
+    ~DrawTileWeld() override;
 
     App::PropertyString       LeftText;
     App::PropertyString       RightText;
@@ -48,25 +50,25 @@ public:
     App::PropertyFile         SymbolFile;
     App::PropertyFileIncluded SymbolIncluded;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onDocumentRestored();
-    virtual void setupObject();
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onDocumentRestored() override;
+    void setupObject() override;
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderTile";
     }
-    virtual PyObject *getPyObject(void);
+    PyObject *getPyObject() override;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
     void replaceSymbolIncluded(std::string newSymbolFile);
-    void setupSymbolIncluded(void);
+    void setupSymbolIncluded();
 //    void replaceSymbol(std::string newSymbolFile);
 
-    std::string prefSymbol(void);
+    std::string prefSymbol();
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
 };

@@ -60,10 +60,10 @@ public:
   // operators
   inline Vector2d& operator=  (const Vector2d &v);
   inline bool      operator== (const Vector2d &v) const;
-  inline Vector2d  operator+  (void) const;
+  inline Vector2d  operator+  () const;
   inline Vector2d  operator+  (const Vector2d &v) const;
   inline Vector2d& operator+= (const Vector2d &v);
-  inline Vector2d  operator-  (void) const;
+  inline Vector2d  operator-  () const;
   inline Vector2d  operator-  (const Vector2d &v) const;
   inline Vector2d& operator-= (const Vector2d &v);
   inline Vector2d  operator*  (double c) const;
@@ -139,7 +139,7 @@ class BaseExport Line2d
 public:
   Vector2d clV1, clV2;
 
-  Line2d () {}
+  Line2d () = default;
   inline Line2d (const Line2d &rclLine);
   inline Line2d (const Vector2d &rclV1, const Vector2d &rclV2);
 
@@ -167,9 +167,9 @@ public:
 class BaseExport Polygon2d
 {
 public:
-  Polygon2d () {}
+  Polygon2d () = default;
   inline Polygon2d (const Polygon2d &rclPoly);
-  virtual ~Polygon2d () {}
+  virtual ~Polygon2d () = default;
 
   inline Polygon2d& operator = (const Polygon2d &rclP);
 

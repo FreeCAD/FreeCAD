@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="PrecisionPy"
+      PythonName="Base.Precision"
+      Twin="Precision"
+      TwinPointer="Precision"
+      Include="Base/Precision.h"
+      Namespace="Base"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <DeveloperDocu>This is the Precision class</DeveloperDocu>
+      <UserDocu>This is the Precision class</UserDocu>
+    </Documentation>
+    <Methode Name="angular" Static="true">
+      <Documentation>
+        <UserDocu>Returns the recommended precision value when checking the equality of two angles (given in radians)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="confusion" Static="true">
+      <Documentation>
+        <UserDocu>Returns the recommended precision value when checking coincidence of two points in real space</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="squareConfusion" Static="true">
+      <Documentation>
+        <UserDocu>Returns square of confusion</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="intersection" Static="true">
+      <Documentation>
+        <UserDocu>Returns the precision value in real space, frequently used by intersection algorithms</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="approximation" Static="true">
+      <Documentation>
+        <UserDocu>Returns the precision value in real space, frequently used by approximation algorithms</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="parametric" Static="true">
+      <Documentation>
+        <UserDocu>Convert a real space precision to a parametric space precision</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isInfinite" Static="true">
+      <Documentation>
+        <UserDocu>Returns True if R may be considered as an infinite number</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPositiveInfinite" Static="true">
+      <Documentation>
+        <UserDocu>Returns True if R may  be considered as a positive infinite number</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isNegativeInfinite" Static="true">
+      <Documentation>
+        <UserDocu>Returns True if R may  be considered as a negative infinite number</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="infinite" Static="true">
+      <Documentation>
+        <UserDocu>Returns a  big number that  can  be  considered as infinite</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

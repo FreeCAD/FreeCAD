@@ -50,7 +50,7 @@ namespace Gui
       void editingFinished(){editing = false;}
       bool isEditing(){return editing;}
     protected:
-      virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
+      void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
     private:
       QBrush backgroundBrush; //!< brush used for background. not used yet.
       QBrush editBrush; //!< brush used when object is in edit mode.

@@ -54,7 +54,7 @@ BaseView::~BaseView()
     onClose();
 }
 
-void BaseView::onClose(void)
+void BaseView::onClose()
 {
     if (bIsDetached)
         return;

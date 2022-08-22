@@ -25,7 +25,6 @@
 
 #include <Base/VectorPy.h>
 #include <Base/Handle.h>
-#include <Base/Builder3D.h>
 #include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
@@ -311,32 +310,9 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
     if (!PyArg_ParseTuple(args, "|f",&creaseangle))
         return nullptr;
 
-    MeshObject* mesh = getMeshObjectPtr();
-    const MeshCore::MeshFacetArray& faces = mesh->getKernel().GetFacets();
-    std::vector<int> indices;
-    std::vector<Base::Vector3f> coords;
-    coords.reserve(mesh->countPoints());
-    for (MeshObject::const_point_iterator it = mesh->points_begin(); it != mesh->points_end(); ++it)
-        coords.emplace_back((float)it->x,(float)it->y,(float)it->z);
-    indices.reserve(4*faces.size());
-    for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
-        indices.push_back(it->_aulPoints[0]);
-        indices.push_back(it->_aulPoints[1]);
-        indices.push_back(it->_aulPoints[2]);
-        indices.push_back(-1);
-    }
-
     std::stringstream result;
-    Base::InventorBuilder builder(result);
-    builder.beginSeparator();
-    builder.addShapeHints(creaseangle);
-    builder.beginPoints();
-    builder.addPoints(coords);
-    builder.endPoints();
-    builder.addIndexedFaceSet(indices);
-    builder.endSeparator();
-    builder.close();
-
+    MeshObject* mesh = getMeshObjectPtr();
+    mesh->writeInventor(result, creaseangle);
     return Py::new_reference_to(Py::String(result.str()));
 }
 
@@ -1067,19 +1043,19 @@ PyObject*  MeshPy::getSelfIntersections(PyObject *args)
         return nullptr;
 
     std::vector<std::pair<FacetIndex, FacetIndex> > selfIndices;
-    std::vector<std::pair<Base::Vector3f, Base::Vector3f> > selfPoints;
-    MeshCore::MeshEvalSelfIntersection eval(getMeshObjectPtr()->getKernel());
-    eval.GetIntersections(selfIndices);
-    eval.GetIntersections(selfIndices, selfPoints);
+    std::vector<Base::Line3d> selfLines;
+
+    selfIndices = getMeshObjectPtr()->getSelfIntersections();
+    selfLines = getMeshObjectPtr()->getSelfIntersections(selfIndices);
 
     Py::Tuple tuple(selfIndices.size());
-    if (selfIndices.size() == selfPoints.size()) {
+    if (selfIndices.size() == selfLines.size()) {
         for (std::size_t i=0; i<selfIndices.size(); i++) {
             Py::Tuple item(4);
             item.setItem(0, Py::Long(selfIndices[i].first));
             item.setItem(1, Py::Long(selfIndices[i].second));
-            item.setItem(2, Py::Vector(selfPoints[i].first));
-            item.setItem(3, Py::Vector(selfPoints[i].second));
+            item.setItem(2, Py::Vector(selfLines[i].p1));
+            item.setItem(3, Py::Vector(selfLines[i].p2));
             tuple.setItem(i, item);
         }
     }
@@ -1659,7 +1635,7 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPy::foraminate(PyObject *args)
+PyObject* MeshPy::foraminate(PyObject *args)
 {
     PyObject* pnt_p;
     PyObject* dir_p;
@@ -1668,28 +1644,20 @@ PyObject*  MeshPy::foraminate(PyObject *args)
         return nullptr;
 
     try {
-        Py::Tuple pnt_t(pnt_p);
-        Py::Tuple dir_t(dir_p);
-        Base::Vector3f pnt((float)Py::Float(pnt_t.getItem(0)),
-                           (float)Py::Float(pnt_t.getItem(1)),
-                           (float)Py::Float(pnt_t.getItem(2)));
-        Base::Vector3f dir((float)Py::Float(dir_t.getItem(0)),
-                           (float)Py::Float(dir_t.getItem(1)),
-                           (float)Py::Float(dir_t.getItem(2)));
+        Py::Vector pnt_t(pnt_p, false);
+        Py::Vector dir_t(dir_p, false);
 
-        Base::Vector3f res;
-        MeshCore::MeshFacetIterator f_it(getMeshObjectPtr()->getKernel());
-        int index = 0;
+        MeshObject::TRay ray = std::make_pair(pnt_t.toVector(),
+                                              dir_t.toVector());
+        auto output = getMeshObjectPtr()->foraminate(ray, maxAngle);
 
         Py::Dict dict;
-        for (f_it.Begin(); f_it.More(); f_it.Next(), index++) {
-            if (f_it->Foraminate(pnt, dir, res, static_cast<float>(maxAngle))) {
-                Py::Tuple tuple(3);
-                tuple.setItem(0, Py::Float(res.x));
-                tuple.setItem(1, Py::Float(res.y));
-                tuple.setItem(2, Py::Float(res.z));
-                dict.setItem(Py::Long(index), tuple);
-            }
+        for (const auto& it : output) {
+            Py::Tuple tuple(3);
+            tuple.setItem(0, Py::Float(it.second.x));
+            tuple.setItem(1, Py::Float(it.second.y));
+            tuple.setItem(2, Py::Float(it.second.z));
+            dict.setItem(Py::Long(it.first), tuple);
         }
 
         return Py::new_reference_to(dict);
@@ -1783,15 +1751,17 @@ PyObject*  MeshPy::trimByPlane(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
+PyObject* MeshPy::smooth(PyObject *args, PyObject *kwds)
 {
     char* method = "Laplace";
     int iter=1;
     double lambda = 0;
     double micro = 0;
-    static char* keywords_smooth[] = {"Method","Iteration","Lambda","Micro",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sidd",keywords_smooth,
-                                     &method, &iter, &lambda, &micro))
+    double maximum = 1000;
+    int weight = 1;
+    static char* keywords_smooth[] = {"Method", "Iteration", "Lambda", "Micro", "Maximum", "Weight", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sidddi",keywords_smooth,
+                                     &method, &iter, &lambda, &micro, &maximum, &weight))
         return nullptr;
 
     PY_TRY {
@@ -1813,6 +1783,12 @@ PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
         }
         else if (strcmp(method, "PlaneFit") == 0) {
             MeshCore::PlaneFitSmoothing smooth(kernel);
+            smooth.SetMaximum(maximum);
+            smooth.Smooth(iter);
+        }
+        else if (strcmp(method, "MedianFilter") == 0) {
+            MeshCore::MedianFilterSmoothing smooth(kernel);
+            smooth.SetWeight(weight);
             smooth.Smooth(iter);
         }
         else {
@@ -1857,53 +1833,20 @@ PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
         return nullptr;
 
     try {
-        Py::Tuple pnt_t(pnt_p);
-        Py::Tuple dir_t(dir_p);
+        Py::Vector pnt_t(pnt_p, false);
+        Py::Vector dir_t(dir_p, false);
         Py::Dict dict;
-        Base::Vector3f pnt((float)Py::Float(pnt_t.getItem(0)),
-                           (float)Py::Float(pnt_t.getItem(1)),
-                           (float)Py::Float(pnt_t.getItem(2)));
-        Base::Vector3f dir((float)Py::Float(dir_t.getItem(0)),
-                           (float)Py::Float(dir_t.getItem(1)),
-                           (float)Py::Float(dir_t.getItem(2)));
 
-        FacetIndex index = 0;
-        Base::Vector3f res;
-        MeshCore::MeshAlgorithm alg(getMeshObjectPtr()->getKernel());
-
-#if 0 // for testing only
-        MeshCore::MeshFacetGrid grid(getMeshObjectPtr()->getKernel(),10);
-        // With grids we might search in the opposite direction, too
-        if (alg.NearestFacetOnRay(pnt,  dir, grid, res, index) ||
-            alg.NearestFacetOnRay(pnt, -dir, grid, res, index)) {
-#else
-        if (alg.NearestFacetOnRay(pnt, dir, static_cast<float>(maxAngle), res, index)) {
-#endif
+        MeshObject::TRay ray = std::make_pair(pnt_t.toVector(),
+                                              dir_t.toVector());
+        MeshObject::TFaceSection output;
+        if (getMeshObjectPtr()->nearestFacetOnRay(ray, maxAngle, output)) {
             Py::Tuple tuple(3);
-            tuple.setItem(0, Py::Float(res.x));
-            tuple.setItem(1, Py::Float(res.y));
-            tuple.setItem(2, Py::Float(res.z));
-            dict.setItem(Py::Long((int)index), tuple);
+            tuple.setItem(0, Py::Float(output.second.x));
+            tuple.setItem(1, Py::Float(output.second.y));
+            tuple.setItem(2, Py::Float(output.second.z));
+            dict.setItem(Py::Long(static_cast<int>(output.first)), tuple);
         }
-
-#if 0 // for testing only
-        char szBuf[200];
-        std::ofstream str("grid_test.iv");
-        Base::InventorBuilder builder(str);
-        MeshCore::MeshGridIterator g_it(grid);
-        for (g_it.Init(); g_it.More(); g_it.Next()) {
-            Base::BoundBox3f box = g_it.GetBoundBox();
-            unsigned long uX,uY,uZ;
-            g_it.GetGridPos(uX,uY,uZ);
-            builder.addBoundingBox(Base::Vector3f(box.MinX,box.MinY, box.MinZ),
-                                   Base::Vector3f(box.MaxX,box.MaxY, box.MaxZ));
-            sprintf(szBuf, "(%lu,%lu,%lu)", uX, uY, uZ);
-            builder.addText(box.GetCenter(), szBuf);
-        }
-        builder.addSingleArrow(pnt-20.0f*dir, pnt+10.0f*dir);
-        builder.close();
-        str.close();
-#endif
 
         return Py::new_reference_to(dict);
     }
@@ -2022,26 +1965,25 @@ PyObject* MeshPy::getCurvaturePerVertex(PyObject* args)
         return nullptr;
 
     const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
-    MeshCore::MeshSegmentAlgorithm finder(kernel);
     MeshCore::MeshCurvature meshCurv(kernel);
     meshCurv.ComputePerVertex();
 
     const std::vector<MeshCore::CurvatureInfo>& curv = meshCurv.GetCurvature();
+    Base::Placement plm = getMeshObjectPtr()->getPlacement();
+    plm.setPosition(Base::Vector3d());
+
     Py::List list;
     for (const auto& it : curv) {
+        Base::Vector3d maxCurve = Base::convertTo<Base::Vector3d>(it.cMaxCurvDir);
+        Base::Vector3d minCurve = Base::convertTo<Base::Vector3d>(it.cMinCurvDir);
+        plm.multVec(maxCurve, maxCurve);
+        plm.multVec(minCurve, minCurve);
+
         Py::Tuple tuple(4);
         tuple.setItem(0, Py::Float(it.fMaxCurvature));
         tuple.setItem(1, Py::Float(it.fMinCurvature));
-        Py::Tuple maxDir(3);
-        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
-        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
-        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
-        tuple.setItem(2, maxDir);
-        Py::Tuple minDir(3);
-        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
-        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
-        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
-        tuple.setItem(3, minDir);
+        tuple.setItem(2, Py::Vector(maxCurve));
+        tuple.setItem(3, Py::Vector(minCurve));
         list.append(tuple);
     }
 

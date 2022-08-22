@@ -21,7 +21,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawPagePy::representation(void) const
+std::string DrawPagePy::representation() const
 {
     return std::string("<DrawPage object>");
 }

@@ -77,12 +77,12 @@ void ViewProviderInventorObject::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderInventorObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderInventorObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("File+Buffer");
-    StrList.push_back("Buffer");
-    StrList.push_back("File");
+    StrList.emplace_back("File+Buffer");
+    StrList.emplace_back("Buffer");
+    StrList.emplace_back("File");
     return StrList;
 }
 

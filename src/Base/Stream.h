@@ -67,7 +67,7 @@ class BaseExport OutputStream : public Stream
 {
 public:
     OutputStream(std::ostream &rout);
-    ~OutputStream();
+    ~OutputStream() override;
 
     OutputStream& operator << (bool b);
     OutputStream& operator << (int8_t ch);
@@ -97,7 +97,7 @@ class BaseExport InputStream : public Stream
 {
 public:
     InputStream(std::istream &rin);
-    ~InputStream();
+    ~InputStream() override;
 
     InputStream& operator >> (bool& b);
     InputStream& operator >> (int8_t& ch);
@@ -136,18 +136,18 @@ class BaseExport ByteArrayOStreambuf : public std::streambuf
 {
 public:
     explicit ByteArrayOStreambuf(QByteArray& ba);
-    ~ByteArrayOStreambuf();
+    ~ByteArrayOStreambuf() override;
 
 protected:
-    virtual int_type overflow(std::streambuf::int_type v);
-    virtual std::streamsize xsputn (const char* s, std::streamsize num);
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    int_type overflow(std::streambuf::int_type v) override;
+    std::streamsize xsputn (const char* s, std::streamsize num) override;
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type sp,
+            std::ios::in | std::ios::out) override;
+    pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
+            std::ios::in | std::ios::out) override;
 
 private:
     ByteArrayOStreambuf(const ByteArrayOStreambuf&);
@@ -166,20 +166,20 @@ class BaseExport ByteArrayIStreambuf : public std::streambuf
 {
 public:
     explicit ByteArrayIStreambuf(const QByteArray& buf);
-    ~ByteArrayIStreambuf();
+    ~ByteArrayIStreambuf() override;
 
 protected:
-    virtual int_type uflow();
-    virtual int_type underflow();
-    virtual int_type pbackfail(int_type ch);
-    virtual std::streamsize showmanyc();
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    int_type uflow() override;
+    int_type underflow() override;
+    int_type pbackfail(int_type ch) override;
+    std::streamsize showmanyc() override;
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type pos,
+            std::ios::in | std::ios::out) override;
+    pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
+            std::ios::in | std::ios::out) override;
 private:
     ByteArrayIStreambuf(const ByteArrayIStreambuf&);
     ByteArrayIStreambuf& operator=(const ByteArrayIStreambuf&);
@@ -198,18 +198,18 @@ class BaseExport IODeviceOStreambuf : public std::streambuf
 {
 public:
     IODeviceOStreambuf(QIODevice* dev);
-    ~IODeviceOStreambuf();
+    ~IODeviceOStreambuf() override;
 
 protected:
-    virtual int_type overflow(std::streambuf::int_type v);
-    virtual std::streamsize xsputn (const char* s, std::streamsize num);
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    int_type overflow(std::streambuf::int_type v) override;
+    std::streamsize xsputn (const char* s, std::streamsize num) override;
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type sp,
+            std::ios::in | std::ios::out) override;
+    pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
+            std::ios::in | std::ios::out) override;
 private:
     IODeviceOStreambuf(const IODeviceOStreambuf&);
     IODeviceOStreambuf& operator=(const IODeviceOStreambuf&);
@@ -227,17 +227,17 @@ class BaseExport IODeviceIStreambuf : public std::streambuf
 {
 public:
     IODeviceIStreambuf(QIODevice* dev);
-    ~IODeviceIStreambuf();
+    ~IODeviceIStreambuf() override;
 
 protected:
-    virtual int_type underflow();
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    int_type underflow() override;
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type sp,
+            std::ios::in | std::ios::out) override;
+    pos_type seekpos(std::streambuf::pos_type sp,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
+            std::ios::in | std::ios::out) override;
 private:
     IODeviceIStreambuf(const IODeviceIStreambuf&);
     IODeviceIStreambuf& operator=(const IODeviceIStreambuf&);
@@ -269,18 +269,18 @@ public:
     };
 
     PyStreambuf(PyObject* o, std::size_t buf_size = 256, std::size_t put_back = 8);
-    virtual ~PyStreambuf();
+    ~PyStreambuf() override;
     void setType(Type t) {
         type = t;
     }
 
 protected:
-    int_type underflow();
-    int_type overflow(int_type c = EOF);
-    std::streamsize xsputn (const char* s, std::streamsize num);
-    int sync();
-    pos_type seekoff(off_type offset, seekdir dir, openmode);
-    pos_type seekpos(pos_type offset, openmode mode);
+    int_type underflow() override;
+    int_type overflow(int_type c = EOF) override;
+    std::streamsize xsputn (const char* s, std::streamsize num) override;
+    int sync() override;
+    pos_type seekoff(off_type offset, seekdir dir, openmode) override;
+    pos_type seekpos(pos_type offset, openmode mode) override;
 
 private:
     bool flushBuffer();
@@ -301,20 +301,20 @@ class BaseExport Streambuf : public std::streambuf
 {
 public:
     explicit Streambuf(const std::string& data);
-    ~Streambuf();
+    ~Streambuf() override;
 
 protected:
-    virtual int_type uflow();
-    virtual int_type underflow();
-    virtual int_type pbackfail(int_type ch);
-    virtual std::streamsize showmanyc();
-    virtual pos_type seekoff(std::streambuf::off_type off,
+    int_type uflow() override;
+    int_type underflow() override;
+    int_type pbackfail(int_type ch) override;
+    std::streamsize showmanyc() override;
+    pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
-    virtual pos_type seekpos(std::streambuf::pos_type pos,
+            std::ios::in | std::ios::out) override;
+    pos_type seekpos(std::streambuf::pos_type pos,
         std::ios_base::openmode which =
-            std::ios::in | std::ios::out);
+            std::ios::in | std::ios::out) override;
 
 private:
     Streambuf(const Streambuf&);
@@ -339,17 +339,22 @@ class FileInfo;
 class ofstream : public std::ofstream
 {
 public:
+    ofstream() = default;
     ofstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::out | std::ios::trunc)
 #ifdef _MSC_VER
-    : std::ofstream(fi.toStdWString().c_str(), mode)
+    : std::ofstream(fi.toStdWString().c_str(), mode) {}
 #else
-    : std::ofstream(fi.filePath().c_str(), mode)
+    : std::ofstream(fi.filePath().c_str(), mode) {}
 #endif
-    {
-    }
-    virtual ~ofstream()
-    {
+    ~ofstream() override = default;
+    void open(const FileInfo& fi, ios_base::openmode mode =
+                                  std::ios::out | std::ios::trunc) {
+#ifdef _MSC_VER
+        std::ofstream::open(fi.toStdWString().c_str(), mode);
+#else
+        std::ofstream::open(fi.filePath().c_str(), mode);
+#endif
     }
 };
 
@@ -362,17 +367,22 @@ public:
 class ifstream : public std::ifstream
 {
 public:
+    ifstream() = default;
     ifstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::in)
 #ifdef _MSC_VER
-    : std::ifstream(fi.toStdWString().c_str(), mode)
+    : std::ifstream(fi.toStdWString().c_str(), mode) {}
 #else
-    : std::ifstream(fi.filePath().c_str(), mode)
+    : std::ifstream(fi.filePath().c_str(), mode) {}
 #endif
-    {
-    }
-    virtual ~ifstream()
-    {
+    ~ifstream() override = default;
+    void open(const FileInfo& fi, ios_base::openmode mode =
+                                  std::ios::in) {
+#ifdef _MSC_VER
+        std::ifstream::open(fi.toStdWString().c_str(), mode);
+#else
+        std::ifstream::open(fi.filePath().c_str(), mode);
+#endif
     }
 };
 

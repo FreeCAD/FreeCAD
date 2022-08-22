@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
 #define TECHDRAWGUI_QGIHIGHLIGHT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsEllipseItem>

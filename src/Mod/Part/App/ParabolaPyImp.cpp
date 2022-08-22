@@ -39,7 +39,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ParabolaPy::representation(void) const
+std::string ParabolaPy::representation() const
 {
     return "<Parabola object>";
 }
@@ -157,7 +157,7 @@ PyObject* ParabolaPy::compute(PyObject *args)
     Py_Return;
 }
 
-Py::Float ParabolaPy::getFocal(void) const
+Py::Float ParabolaPy::getFocal() const
 {
     Handle(Geom_Parabola) curve = Handle(Geom_Parabola)::DownCast(getGeometryPtr()->handle());
     return Py::Float(curve->Focal()); 
@@ -169,7 +169,7 @@ void ParabolaPy::setFocal(Py::Float arg)
     curve->SetFocal((double)arg); 
 }
 
-Py::Object ParabolaPy::getFocus(void) const
+Py::Object ParabolaPy::getFocus() const
 {
     Handle(Geom_Parabola) c = Handle(Geom_Parabola)::DownCast
         (getGeometryPtr()->handle());
@@ -177,7 +177,7 @@ Py::Object ParabolaPy::getFocus(void) const
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Float ParabolaPy::getParameter(void) const
+Py::Float ParabolaPy::getParameter() const
 {
     Handle(Geom_Parabola) curve = Handle(Geom_Parabola)::DownCast(getGeometryPtr()->handle());
     return Py::Float(curve->Parameter()); 

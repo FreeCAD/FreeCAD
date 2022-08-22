@@ -42,11 +42,11 @@ class Segmentation : public QWidget
 
 public:
     Segmentation(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Segmentation();
+    ~Segmentation() override;
     void accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_Segmentation> ui;
@@ -60,12 +60,12 @@ class TaskSegmentation : public Gui::TaskView::TaskDialog
 {
 public:
     TaskSegmentation(Mesh::Feature* mesh);
-    ~TaskSegmentation();
+    ~TaskSegmentation() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

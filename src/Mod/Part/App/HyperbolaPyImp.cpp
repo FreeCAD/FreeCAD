@@ -39,7 +39,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string HyperbolaPy::representation(void) const
+std::string HyperbolaPy::representation() const
 {
     return "<Hyperbola object>";
 }
@@ -125,7 +125,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float HyperbolaPy::getMajorRadius(void) const
+Py::Float HyperbolaPy::getMajorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     return Py::Float(hyperbola->MajorRadius()); 
@@ -137,7 +137,7 @@ void HyperbolaPy::setMajorRadius(Py::Float arg)
     hyperbola->SetMajorRadius((double)arg);
 }
 
-Py::Float HyperbolaPy::getMinorRadius(void) const
+Py::Float HyperbolaPy::getMinorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     return Py::Float(hyperbola->MinorRadius()); 
@@ -149,20 +149,20 @@ void HyperbolaPy::setMinorRadius(Py::Float arg)
     hyperbola->SetMinorRadius((double)arg);
 }
 
-Py::Float HyperbolaPy::getFocal(void) const
+Py::Float HyperbolaPy::getFocal() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     return Py::Float(hyperbola->Focal()); 
 }
 
-Py::Object HyperbolaPy::getFocus1(void) const
+Py::Object HyperbolaPy::getFocus1() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus1();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Object HyperbolaPy::getFocus2(void) const
+Py::Object HyperbolaPy::getFocus2() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus2();

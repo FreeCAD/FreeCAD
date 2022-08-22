@@ -133,10 +133,8 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
-    if (v0 == nullptr ||
-        v1 != nullptr) {
+    if (!v0 || !v1)
         return DrawViewDimension::execute();
-    }
 
     double length00 = (v0->pnt - refMin).Length();
     double length11 = (v1->pnt - refMax).Length();
@@ -158,6 +156,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
         cvTemp->permaPoint = refMax / scale;
     }
 
+    overrideKeepUpdated(false);
     return DrawViewDimension::execute();
 }
 
@@ -166,7 +165,7 @@ std::vector<std::string> DrawViewDimExtent::getSubNames(void)
 {
     std::vector<std::string> edgeNames = Source.getSubValues();
     if (edgeNames.empty() ||
-        edgeNames[0].size() != 0) {
+        !edgeNames[0].empty()) {
         return std::vector<std::string>(); //garbage first entry - nop
     }
     return edgeNames;
@@ -186,15 +185,14 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() < 1) {
+    if (cTags.empty()) {
         return errorValue;
     }
     
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
-    if (v0 == nullptr || v1 == nullptr ) {
+    if (!v0 || !v1)
         return errorValue;
-    }
 
     return pointPair(v0->pnt, v1->pnt);
 }
@@ -209,15 +207,14 @@ bool DrawViewDimExtent::checkReferences2D() const
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.size() < 1) {
+    if (cTags.empty()) {
         return false;
     }
     
     CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
     CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
-    if (cv0 == nullptr || cv1 == nullptr) {
+    if (!cv0 || !cv1)
         return false;
-    }
 
     return true;
 }

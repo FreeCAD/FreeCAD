@@ -25,6 +25,8 @@
 #ifndef _DrawViewMulti_h_
 #define _DrawViewMulti_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
@@ -54,21 +56,21 @@ class TechDrawExport DrawViewMulti : public DrawViewPart
 
 public:
     /// Constructor
-    DrawViewMulti(void);
-    virtual ~DrawViewMulti();
+    DrawViewMulti();
+    ~DrawViewMulti() override;
   
     App::PropertyLinkList    Sources;
 
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onChanged(const App::Property* prop) override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onChanged(const App::Property* prop) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
 

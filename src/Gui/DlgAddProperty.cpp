@@ -56,7 +56,7 @@ DlgAddProperty::DlgAddProperty(QWidget* parent,
 
     std::vector<Base::Type> types;
     Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"),types);
-    for(auto type : types) {
+    for(const auto& type : types) {
         ui->comboType->addItem(QString::fromLatin1(type.getName()));
         if(type == defType)
             ui->comboType->setCurrentIndex(ui->comboType->count()-1);

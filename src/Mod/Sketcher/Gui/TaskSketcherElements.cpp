@@ -115,7 +115,7 @@ public:
     {
 
     }
-    ~ElementItem()
+    ~ElementItem() override
     {
     }
 
@@ -240,7 +240,7 @@ void ElementView::keyPressEvent(QKeyEvent * event)
     {
       case Qt::Key_Z:
         // signal
-        onFilterShortcutPressed();
+        Q_EMIT onFilterShortcutPressed();
         break;
       default:
         QListWidget::keyPressEvent( event );
@@ -276,7 +276,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     QString zKey = QString::fromLatin1("Z");
     ui->Explanation->setText(tr("<html><head/><body><p>&quot;%1&quot;: multiple selection</p>"
                                 "<p>&quot;%2&quot;: switch to next valid type</p></body></html>")
-                             .arg(cmdKey).arg(zKey));
+                             .arg(cmdKey, zKey));
     ui->listWidgetElements->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
     ui->listWidgetElements->setMouseTracking(true);
@@ -1128,7 +1128,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
 {
     int hue, sat, val, alp;
     Normal = Gui::BitmapFactory().iconFromTheme(name);
-    QImage imgConstr(Normal.pixmap(Normal.availableSizes()[0]).toImage());
+    QImage imgConstr(Normal.pixmap(qAsConst(Normal).availableSizes()[0]).toImage());
     QImage imgExt(imgConstr);
 
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {

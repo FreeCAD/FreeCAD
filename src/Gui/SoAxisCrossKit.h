@@ -47,8 +47,8 @@ class GuiExport SoShapeScale : public SoBaseKit {
     SO_KIT_CATALOG_ENTRY_HEADER(shape);
 
 public:
-    SoShapeScale(void);
-    static void initClass(void);
+    SoShapeScale();
+    static void initClass();
 
     SoSFFloat active;
     SoSFFloat scaleFactor;

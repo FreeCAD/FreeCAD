@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_QGIVBALLOON_H
 #define TECHDRAWGUI_QGIVBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
@@ -59,14 +61,14 @@ Q_OBJECT
 
 public:
     QGIBalloonLabel();
-    virtual ~QGIBalloonLabel() = default;
+    ~QGIBalloonLabel() override = default;
 
     enum {Type = QGraphicsItem::UserType + 141};
     int type() const override { return Type;}
 
-    virtual QRectF boundingRect() const override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void paint( QPainter *painter,
+    QRectF boundingRect() const override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
@@ -75,18 +77,18 @@ public:
     double Y() const { return posY; }              //minus posY?
     
     void setFont(QFont f);
-    QFont getFont(void) { return m_labelText->font(); }
+    QFont getFont() { return m_labelText->font(); }
     void setDimString(QString t);
     void setDimString(QString t, qreal maxWidth);
-    void setPrettySel(void);
-    void setPrettyPre(void);
-    void setPrettyNormal(void);
+    void setPrettySel();
+    void setPrettyPre();
+    void setPrettyNormal();
     void setColor(QColor c);
 
     bool verticalSep;
     std::vector<int> seps;
 
-    QGCustomText* getDimText(void) { return m_labelText; }
+    QGCustomText* getDimText() { return m_labelText; }
     void setDimText(QGCustomText* newText) { m_labelText = newText; }
 
     bool hasHover;
@@ -100,13 +102,11 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     QGCustomText* m_labelText;
     QColor m_colNormal;
@@ -129,51 +129,47 @@ public:
     enum {Type = QGraphicsItem::UserType + 140};
 
     explicit QGIViewBalloon();
-    virtual ~QGIViewBalloon() = default;
+    ~QGIViewBalloon() override = default;
 
     void setViewPartFeature(TechDraw::DrawViewBalloon *obj);
     int type() const override { return Type;}
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
-    virtual void paint( QPainter * painter,
+    void drawBorder() override;
+    void updateView(bool update = false) override;
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
-    QString getLabelText(void);
+    QString getLabelText();
     void placeBalloon(QPointF pos);
     TechDraw::DrawViewBalloon *dvBalloon;
-    void setPrettyPre(void);
-    void setPrettySel(void);
-    void setPrettyNormal(void);
+    void setPrettyPre();
+    void setPrettySel();
+    void setPrettyNormal();
 
-    virtual void setGroupSelection(bool b) override;
-    virtual QGIBalloonLabel* getBalloonLabel(void) { return balloonLabel; }
+    void setGroupSelection(bool b) override;
+    virtual QGIBalloonLabel* getBalloonLabel() { return balloonLabel; }
 
-    virtual QColor getNormalColor(void) override;
+    QColor getNormalColor() override;
     int prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
 
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
-    void balloonLabelDragFinished(void);
+    void balloonLabelDragFinished();
     void select(bool state);
     void hover(bool state);
     void updateBalloon(bool obtuse = false);
 
 protected:
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
-
     void draw() override;
     void drawBalloon(bool dragged = false);
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    virtual void setSvgPens(void);
-    virtual void setPens(void);
-    QString getPrecision(void);
+    virtual void setSvgPens();
+    virtual void setPens();
+    QString getPrecision();
 
 protected:
     bool hasHover;

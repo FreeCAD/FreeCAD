@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemResultObject.h"
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
+
+#include "FemResultObject.h"
+
 
 using namespace Fem;
 using namespace App;
@@ -38,10 +36,10 @@ PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
 
 FemResultObject::FemResultObject()
 {
-    ADD_PROPERTY_TYPE(Mesh,(nullptr), "General",Prop_None,"Link to the corresponding mesh");
-    ADD_PROPERTY_TYPE(NodeNumbers,(0), "NodeData",Prop_None,"Numbers of the result nodes");
-    ADD_PROPERTY_TYPE(Stats,(0), "Data",Prop_None,"Statistics of the results");
-    ADD_PROPERTY_TYPE(Time,(0), "Data",Prop_None,"Time of analysis increment");
+    ADD_PROPERTY_TYPE(Mesh, (nullptr), "General", Prop_None, "Link to the corresponding mesh");
+    ADD_PROPERTY_TYPE(NodeNumbers, (0), "NodeData", Prop_None, "Numbers of the result nodes");
+    ADD_PROPERTY_TYPE(Stats, (0), "Data", Prop_None, "Statistics of the results");
+    ADD_PROPERTY_TYPE(Time, (0), "Data", Prop_None, "Time of analysis increment");
 
     // make read-only for property editor
     NodeNumbers.setStatus(App::Property::ReadOnly, true);
@@ -53,7 +51,7 @@ FemResultObject::~FemResultObject()
 {
 }
 
-short FemResultObject::mustExecute(void) const
+short FemResultObject::mustExecute() const
 {
     return 0;
 }
@@ -72,12 +70,12 @@ PyObject *FemResultObject::getPyObject()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemResultObjectPython, Fem::FemResultObject)
-template<> const char* Fem::FemResultObjectPython::getViewProviderName(void) const {
+template<> const char* Fem::FemResultObjectPython::getViewProviderName() const {
     return "FemGui::ViewProviderResultPython";
 }
 /// @endcond
 
-template<> PyObject* Fem::FemResultObjectPython::getPyObject(void) {
+template<> PyObject* Fem::FemResultObjectPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);

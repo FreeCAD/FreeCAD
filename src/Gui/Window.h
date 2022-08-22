@@ -36,15 +36,15 @@ class GuiExport WindowParameter : public ParameterGrp::ObserverType
 {
 public:
   WindowParameter(const char *name);
-  virtual ~WindowParameter();
+  ~WindowParameter() override;
 
   bool setGroupName( const char* name );
-  void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+  void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
   /// get the parameters
-  static ParameterGrp::handle getDefaultParameter(void);
+  static ParameterGrp::handle getDefaultParameter();
   /// return the parameter group of this window
-  ParameterGrp::handle getWindowParameter(void);
+  ParameterGrp::handle getWindowParameter();
 
 private:
   ParameterGrp::handle _handle;

@@ -42,16 +42,16 @@ class TaskFemConstraintTransform : public TaskFemConstraint
 
 public:
     TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = nullptr);
-    ~TaskFemConstraintTransform();
-    const std::string getReferences() const;
+    ~TaskFemConstraintTransform() override;
+    const std::string getReferences() const override;
     double get_X_rot()const;
     double get_Y_rot()const;
     double get_Z_rot()const;
-    std::string get_transform_type(void) const;
+    std::string get_transform_type() const;
     static std::string getSurfaceReferences(const std::string showConstr);
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void Rect();
     void Cyl();
     void addToSelection();
@@ -61,8 +61,8 @@ private Q_SLOTS:
     void z_Changed(int z);
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
     const QString makeText(const App::DocumentObject* obj) const;
 
 private:
@@ -76,9 +76,9 @@ class TaskDlgFemConstraintTransform : public TaskDlgFemConstraint
 
 public:
     TaskDlgFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

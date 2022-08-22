@@ -133,9 +133,7 @@ Vector2dPy::Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict 
     v.y = y;
 }
 
-Vector2dPy::~Vector2dPy()
-{
-}
+Vector2dPy::~Vector2dPy() = default;
 
 Py::Object Vector2dPy::repr()
 {
@@ -223,11 +221,6 @@ Py::Object Vector2dPy::number_int()
 }
 
 Py::Object Vector2dPy::number_float()
-{
-    throw Py::TypeError("Not defined");
-}
-
-Py::Object Vector2dPy::number_long()
 {
     throw Py::TypeError("Not defined");
 }
@@ -392,7 +385,7 @@ Py::Object Vector2dPy::projectToLine(const Py::Tuple& args)
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, projectToLine)
 
-void Vector2dPy::init_type(void)
+void Vector2dPy::init_type()
 {
     behaviors().name( "Vector2d" );
     behaviors().doc( "Vector2d class" );

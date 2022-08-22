@@ -41,7 +41,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string PointPy::representation(void) const
+std::string PointPy::representation() const
 {
     std::stringstream str;
     Base::Vector3d coords = getGeomPointPtr()->getPoint();
@@ -122,7 +122,7 @@ PyObject* PointPy::toShape(PyObject *args)
     return nullptr;
 }
 
-Py::Float PointPy::getX(void) const
+Py::Float PointPy::getX() const
 {
     Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
@@ -142,7 +142,7 @@ void PointPy::setX(Py::Float X)
     }
 }
 
-Py::Float PointPy::getY(void) const
+Py::Float PointPy::getY() const
 {
     Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());
@@ -162,7 +162,7 @@ void PointPy::setY(Py::Float Y)
     }
 }
 
-Py::Float PointPy::getZ(void) const
+Py::Float PointPy::getZ() const
 {
     Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());

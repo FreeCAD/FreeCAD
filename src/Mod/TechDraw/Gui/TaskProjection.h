@@ -19,14 +19,17 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-//this file originally part of TechDraw workbench
+//this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
 #ifndef TECHDRAWGUI_TASKDIALOG
 #define TECHDRAWGUI_TASKDIALOG
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -45,13 +48,13 @@ class TaskProjection : public QWidget
 
 public:
     TaskProjection();
-    ~TaskProjection();
+    ~TaskProjection() override;
 
 public:
     bool accept();
     bool reject();
 
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return true; }
 
 private:
@@ -66,19 +69,19 @@ class TaskDlgProjection : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgProjection();
-    ~TaskDlgProjection();
+    ~TaskDlgProjection() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if a button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
+    void helpRequested() override { return;}
 
     void update();
 

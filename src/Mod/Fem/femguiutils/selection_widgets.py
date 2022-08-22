@@ -30,8 +30,6 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM FemSelectWidget
 
-import sys
-
 from PySide import QtGui
 from PySide import QtCore
 
@@ -210,10 +208,7 @@ class SolidSelector(_Selector):
                     foundSolids.add("Solid" + str(solidId + 1))
         if len(foundSolids) == 1:
             it = iter(foundSolids)
-            if sys.version_info.major >= 3:
-                return next(it)
-            else:
-                return it.next()
+            return next(it)
         return None
 
     def _findSub(self, sub, subList):
@@ -484,12 +479,12 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        FreeCAD.Console.PrintMessage("Selection: {}  {}  {}\n".format(
-            selection[0].Shape.ShapeType,
-            selection[0].Name,
-            selection[1]
-        ))
         if hasattr(selection[0], "Shape") and selection[1]:
+            FreeCAD.Console.PrintMessage("Selection: {}  {}  {}\n".format(
+                selection[0].Shape.ShapeType,
+                selection[0].Name,
+                selection[1]
+            ))
             sobj = selection[0]
             elt = sobj.Shape.getElement(selection[1])
             ele_ShapeType = elt.ShapeType

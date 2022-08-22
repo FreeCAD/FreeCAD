@@ -60,7 +60,7 @@ class PointMarker : public QObject
 
 public:
     PointMarker(Gui::View3DInventorViewer* view, std::string ObjName);
-    ~PointMarker();
+    ~PointMarker() override;
 
     void addPoint(const SbVec3f&);
     int countPoints() const;
@@ -69,7 +69,7 @@ Q_SIGNALS:
     void PointsChanged(double x1, double y1, double z1, double x2, double y2, double z2);
 
 protected:
-    void customEvent(QEvent* e);
+    void customEvent(QEvent* e) override;
 
 private:
     Gui::View3DInventorViewer *view;
@@ -81,11 +81,11 @@ private:
 
 class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderPointMarker);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderPointMarker);
 
 public:
     ViewProviderPointMarker();
-    virtual ~ViewProviderPointMarker();
+    ~ViewProviderPointMarker() override;
 
 protected:
     SoCoordinate3    * pCoords;
@@ -100,7 +100,7 @@ class DataMarker : public QObject
 
 public:
     DataMarker(Gui::View3DInventorViewer* view, std::string ObjName);
-    ~DataMarker();
+    ~DataMarker() override;
 
     void addPoint(const SbVec3f&);
     int countPoints() const;
@@ -109,7 +109,7 @@ Q_SIGNALS:
     void PointsChanged(double x, double y, double z);
 
 protected:
-    void customEvent(QEvent* e);
+    void customEvent(QEvent* e) override;
 
 private:
     Gui::View3DInventorViewer *view;
@@ -121,11 +121,11 @@ private:
 
 class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderDataMarker);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderDataMarker);
 
 public:
     ViewProviderDataMarker();
-    virtual ~ViewProviderDataMarker();
+    ~ViewProviderDataMarker() override;
 
 protected:
     SoCoordinate3    * pCoords;
@@ -139,7 +139,7 @@ class TaskPostBox : public Gui::TaskView::TaskBox {
 
 public:
     TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget *parent = nullptr);
-    ~TaskPostBox();
+    ~TaskPostBox() override;
 
     virtual void applyPythonCode() = 0;
     virtual bool isGuiTaskOnly() {return false;} //return true if only gui properties are manipulated
@@ -180,7 +180,7 @@ class TaskDlgPost : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgPost(Gui::ViewProviderDocumentObject *view);
-    ~TaskDlgPost();
+    ~TaskDlgPost() override;
     void connectSlots();
 
     void appendBox(TaskPostBox* box);
@@ -190,20 +190,20 @@ public:
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return false; }
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    void modifyStandardButtons(QDialogButtonBox*) override;
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 protected:
     void recompute();
@@ -220,10 +220,10 @@ class TaskPostDisplay : public TaskPostBox
 
 public:
     TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = nullptr);
-    ~TaskPostDisplay();
+    ~TaskPostDisplay() override;
 
-    virtual void applyPythonCode();
-    virtual bool isGuiTaskOnly() {return true;}
+    void applyPythonCode() override;
+    bool isGuiTaskOnly() override {return true;}
 
 private Q_SLOTS:
     void on_Representation_activated(int i);
@@ -244,9 +244,9 @@ class TaskPostFunction : public TaskPostBox {
 
 public:
     TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
-    virtual ~TaskPostFunction();
+    ~TaskPostFunction() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
 };
 
 
@@ -256,9 +256,9 @@ class TaskPostClip : public TaskPostBox {
 
 public:
     TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
-    virtual ~TaskPostClip();
+    ~TaskPostClip() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
 
 private Q_SLOTS:
     void on_CreateButton_triggered(QAction*);
@@ -285,9 +285,9 @@ class TaskPostDataAlongLine: public TaskPostBox {
 
 public:
     TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
-    virtual ~TaskPostDataAlongLine();
+    ~TaskPostDataAlongLine() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
     static void pointCallback(void * ud, SoEventCallback * n);
 
 private Q_SLOTS:
@@ -316,9 +316,9 @@ class TaskPostDataAtPoint: public TaskPostBox {
 
 public:
     TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
-    virtual ~TaskPostDataAtPoint();
+    ~TaskPostDataAtPoint() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
     static void pointCallback(void * ud, SoEventCallback * n);
 
 private Q_SLOTS:
@@ -345,9 +345,9 @@ class TaskPostScalarClip : public TaskPostBox {
 
 public:
     TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
-    virtual ~TaskPostScalarClip();
+    ~TaskPostScalarClip() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
 
 private Q_SLOTS:
     void on_Slider_valueChanged(int v);
@@ -367,9 +367,9 @@ class TaskPostWarpVector : public TaskPostBox {
 
 public:
     TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
-    virtual ~TaskPostWarpVector();
+    ~TaskPostWarpVector() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
 
 private Q_SLOTS:
     void on_Slider_valueChanged(int v);
@@ -390,9 +390,9 @@ class TaskPostCut : public TaskPostBox {
 
 public:
     TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
-    virtual ~TaskPostCut();
+    ~TaskPostCut() override;
 
-    virtual void applyPythonCode();
+    void applyPythonCode() override;
 
 private Q_SLOTS:
     void on_CreateButton_triggered(QAction*);

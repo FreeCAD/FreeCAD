@@ -92,7 +92,7 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* 
 
 }
 
-void TaskCreateNodeSet::Poly(void)
+void TaskCreateNodeSet::Poly()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::MDIView* view = doc->getActiveView();
@@ -104,7 +104,7 @@ void TaskCreateNodeSet::Poly(void)
     }
 }
 
-void TaskCreateNodeSet::Pick(void)
+void TaskCreateNodeSet::Pick()
 {
     if (selectionMode == none) {
         selectionMode = PickElement;

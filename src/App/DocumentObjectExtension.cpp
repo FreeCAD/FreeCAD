@@ -37,17 +37,14 @@ DocumentObjectExtension::DocumentObjectExtension()
     initExtensionType(App::DocumentObjectExtension::getExtensionClassTypeId());
 }
 
-DocumentObjectExtension::~DocumentObjectExtension()
-{
+DocumentObjectExtension::~DocumentObjectExtension() = default;
 
-}
-
-short int DocumentObjectExtension::extensionMustExecute(void) {
+short int DocumentObjectExtension::extensionMustExecute() {
 
     return 0;
 }
 
-App::DocumentObjectExecReturn* DocumentObjectExtension::extensionExecute(void) {
+App::DocumentObjectExecReturn* DocumentObjectExtension::extensionExecute() {
 
     return App::DocumentObject::StdReturn;
 }
@@ -68,7 +65,7 @@ void DocumentObjectExtension::onExtendedUnsetupObject() {
 
 }
 
-PyObject* DocumentObjectExtension::getExtensionPyObject(void) {
+PyObject* DocumentObjectExtension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1

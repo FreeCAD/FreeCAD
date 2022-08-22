@@ -65,7 +65,7 @@ short Sewing::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Sewing::execute(void)
+App::DocumentObjectExecReturn *Sewing::execute()
 {
     //Assign Variables
     double atol = Tolerance.getValue();
@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *Sewing::execute(void)
                 Part::TopoShape ts = static_cast<Part::Feature*>(it->first)->Shape.getShape();
 
                 //we want only the subshape which is linked
-                for (auto jt: it->second) {
+                for (const auto& jt: it->second) {
                     TopoDS_Shape sub = ts.getSubShape(jt.c_str());
                     builder.Add(sub);
                 }

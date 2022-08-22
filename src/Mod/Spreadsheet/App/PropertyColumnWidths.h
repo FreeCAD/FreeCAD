@@ -32,7 +32,7 @@ namespace Spreadsheet {
 
 class SpreadsheetExport PropertyColumnWidths : public App::Property, std::map<int, int>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertyColumnWidths();
 
@@ -51,21 +51,21 @@ public:
         return i != end() ? i->second : defaultWidth;
     }
 
-    virtual Property *Copy(void) const;
+    Property *Copy() const override;
 
-    virtual void Paste(const Property &from);
+    void Paste(const Property &from) override;
 
-    virtual void Save (Base::Writer & writer) const;
+    void Save (Base::Writer & writer) const override;
 
-    virtual void Restore(Base::XMLReader & reader);
+    void Restore(Base::XMLReader & reader) override;
 
-    bool isDirty() const { return dirty.size() > 0; }
+    bool isDirty() const { return !dirty.empty(); }
 
     void clearDirty() { dirty.clear(); }
 
     const std::set<int> & getDirty() const { return dirty; }
 
-    PyObject *getPyObject(void);
+    PyObject *getPyObject() override;
 
     void clear();
 

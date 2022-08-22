@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
 #define TECHDRAWGUI_TASKCOSVERTEX_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -46,14 +48,13 @@ class DrawCosVertex;
 namespace TechDrawGui
 {
 class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGICosVertex;
+class ViewProviderPage;
 class ViewProviderLeader;
 class Ui_TaskCosVertex;
 
@@ -64,11 +65,11 @@ class TaskCosVertex : public QWidget
 public:
     TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                   TechDraw::DrawPage* page);
-    ~TaskCosVertex();
+    ~TaskCosVertex() override;
 
 public Q_SLOTS:
     void onTrackerClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 public:
     virtual bool accept();
@@ -79,16 +80,16 @@ public:
     void enableTaskButtons(bool b);
 
 protected:
-    void changeEvent(QEvent *e);
-    void startTracker(void);
-    void removeTracker(void);
-    void abandonEditSession(void);
+    void changeEvent(QEvent *e) override;
+    void startTracker();
+    void removeTracker();
+    void abandonEditSession();
 
     void addCosVertex(QPointF qPos);
 
     void blockButtons(bool b);
-    void setUiPrimary(void);
-    void updateUi(void);
+    void setUiPrimary();
+    void updateUi();
     void setEditCursor(QCursor c);
 
    QGIView* findParentQGIV();
@@ -99,9 +100,6 @@ private:
 
     QGTracker* m_tracker;
     
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
     QGIView* m_qgParent;
@@ -117,6 +115,8 @@ private:
     int m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;
+
+    ViewProviderPage* m_vpp;
 };
 
 class TaskDlgCosVertex : public Gui::TaskView::TaskDialog
@@ -126,24 +126,24 @@ class TaskDlgCosVertex : public Gui::TaskView::TaskDialog
 public:
     TaskDlgCosVertex(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page);
-    ~TaskDlgCosVertex();
+    ~TaskDlgCosVertex() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 protected:
 

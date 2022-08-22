@@ -110,7 +110,7 @@ namespace TechDrawGui {
             return;
         const std::vector<std::string> SubNames = selection[0].getSubNames();
         std::vector<TechDraw::CirclePtr> Circles;
-        for (std::string Name : SubNames) {
+        for (const std::string& Name : SubNames) {
             int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
             std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
             TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
@@ -138,7 +138,7 @@ namespace TechDrawGui {
         std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
         TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
         _setLineAttributes(ceCircle);
-        for (TechDraw::CirclePtr oneCircle : Circles) {
+        for (const TechDraw::CirclePtr& oneCircle : Circles) {
             Base::Vector3d oneCircleCenter = oneCircle->center;
             float oneRadius = oneCircle->radius;
             Base::Vector3d delta = (oneCircle->center - bigCenter).Normalize() * (oneRadius + 2);
@@ -181,7 +181,7 @@ void CmdTechDrawExtensionHoleCircle::activated(int iMsg)
     //Base::Console().Message("HoleCircle started\n");
 }
 
-bool CmdTechDrawExtensionHoleCircle::isActive(void)
+bool CmdTechDrawExtensionHoleCircle::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -201,7 +201,7 @@ void execCircleCenterLines(Gui::Command* cmd) {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
     double scale = objFeat->getScale();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (std::string Name : SubNames) {
+    for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
@@ -254,7 +254,7 @@ void CmdTechDrawExtensionCircleCenterLines::activated(int iMsg)
     execCircleCenterLines(this);
 }
 
-bool CmdTechDrawExtensionCircleCenterLines::isActive(void)
+bool CmdTechDrawExtensionCircleCenterLines::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -303,7 +303,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg) {
     };
 }
 
-Gui::Action* CmdTechDrawExtensionCircleCenterLinesGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionCircleCenterLinesGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -355,7 +355,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
     arc2->setStatusTip(arc2->text());
 }
 
-bool CmdTechDrawExtensionCircleCenterLinesGroup::isActive(void)
+bool CmdTechDrawExtensionCircleCenterLinesGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -406,7 +406,7 @@ void CmdTechDrawExtensionThreadHoleSide::activated(int iMsg)
     execThreadHoleSide(this);
 }
 
-bool CmdTechDrawExtensionThreadHoleSide::isActive(void)
+bool CmdTechDrawExtensionThreadHoleSide::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -457,7 +457,7 @@ void CmdTechDrawExtensionThreadBoltSide::activated(int iMsg)
     execThreadBoltSide(this);
 }
 
-bool CmdTechDrawExtensionThreadBoltSide::isActive(void)
+bool CmdTechDrawExtensionThreadBoltSide::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -476,7 +476,7 @@ void execThreadHoleBottom(Gui::Command* cmd) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (std::string Name : SubNames) {
+    for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, 1.177f);
     }
     cmd->getSelection().clearSelection();
@@ -508,7 +508,7 @@ void CmdTechDrawExtensionThreadHoleBottom::activated(int iMsg)
     execThreadHoleBottom(this);
 }
 
-bool CmdTechDrawExtensionThreadHoleBottom::isActive(void)
+bool CmdTechDrawExtensionThreadHoleBottom::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -527,7 +527,7 @@ void execThreadBoltBottom(Gui::Command* cmd) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    for (std::string Name : SubNames) {
+    for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, 0.85f);
     }
     cmd->getSelection().clearSelection();
@@ -559,7 +559,7 @@ void CmdTechDrawExtensionThreadBoltBottom::activated(int iMsg)
     execThreadBoltBottom(this);
 }
 
-bool CmdTechDrawExtensionThreadBoltBottom::isActive(void)
+bool CmdTechDrawExtensionThreadBoltBottom::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -616,7 +616,7 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionThreadsGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionThreadsGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -692,7 +692,7 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
     arc4->setStatusTip(arc4->text());
 }
 
-bool CmdTechDrawExtensionThreadsGroup::isActive(void)
+bool CmdTechDrawExtensionThreadsGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -726,7 +726,7 @@ void CmdTechDrawExtensionSelectLineAttributes::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgSelectLineAttributes(&_getActiveLineAttributes()));
 }
 
-bool CmdTechDrawExtensionSelectLineAttributes::isActive(void)
+bool CmdTechDrawExtensionSelectLineAttributes::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -763,7 +763,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change Line Attributes"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
-    for (std::string name : subNames) {
+    for (const std::string& name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
         BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo) {
@@ -785,7 +785,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg) {
     Gui::Command::commitCommand();
 }
 
-bool CmdTechDrawExtensionChangeLineAttributes::isActive(void)
+bool CmdTechDrawExtensionChangeLineAttributes::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -849,7 +849,7 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     Gui::Command::commitCommand();
 }
 
-bool CmdTechDrawExtensionVertexAtIntersection::isActive(void)
+bool CmdTechDrawExtensionVertexAtIntersection::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -912,7 +912,7 @@ void CmdTechDrawExtensionDrawCosmArc::activated(int iMsg)
     execDrawCosmArc(this);
 }
 
-bool CmdTechDrawExtensionDrawCosmArc::isActive(void)
+bool CmdTechDrawExtensionDrawCosmArc::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -972,7 +972,7 @@ void CmdTechDrawExtensionDrawCosmCircle::activated(int iMsg)
     execDrawCosmCircle(this);
 }
 
-bool CmdTechDrawExtensionDrawCosmCircle::isActive(void)
+bool CmdTechDrawExtensionDrawCosmCircle::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1036,7 +1036,7 @@ void CmdTechDrawExtensionDrawCosmCircle3Points::activated(int iMsg)
     execDrawCosmCircle3Points(this);
 }
 
-bool CmdTechDrawExtensionDrawCosmCircle3Points::isActive(void)
+bool CmdTechDrawExtensionDrawCosmCircle3Points::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1091,7 +1091,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionDrawCirclesGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionDrawCirclesGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1158,7 +1158,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
     arc3->setStatusTip(arc3->text());
 }
 
-bool CmdTechDrawExtensionDrawCirclesGroup::isActive(void)
+bool CmdTechDrawExtensionDrawCirclesGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1234,7 +1234,7 @@ void CmdTechDrawExtensionLineParallel::activated(int iMsg)
     execLineParallelPerpendicular(this, true);
 }
 
-bool CmdTechDrawExtensionLineParallel::isActive(void)
+bool CmdTechDrawExtensionLineParallel::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1268,7 +1268,7 @@ void CmdTechDrawExtensionLinePerpendicular::activated(int iMsg)
     execLineParallelPerpendicular(this, false);
 }
 
-bool CmdTechDrawExtensionLinePerpendicular::isActive(void)
+bool CmdTechDrawExtensionLinePerpendicular::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1319,7 +1319,7 @@ void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionLinePPGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionLinePPGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1371,7 +1371,7 @@ void CmdTechDrawExtensionLinePPGroup::languageChange()
     arc2->setStatusTip(arc2->text());
 }
 
-bool CmdTechDrawExtensionLinePPGroup::isActive(void)
+bool CmdTechDrawExtensionLinePPGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1414,7 +1414,7 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg) {
     Gui::Command::commitCommand();
 }
 
-bool CmdTechDrawExtensionLockUnlockView::isActive(void)
+bool CmdTechDrawExtensionLockUnlockView::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1481,7 +1481,7 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg) {
     }
 }
 
-bool CmdTechDrawExtensionPositionSectionView::isActive(void)
+bool CmdTechDrawExtensionPositionSectionView::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1587,7 +1587,7 @@ void CmdTechDrawExtensionExtendLine::activated(int iMsg)
     ///Base::Console().Message("ExtendLine started\n");
 }
 
-bool CmdTechDrawExtensionExtendLine::isActive(void)
+bool CmdTechDrawExtensionExtendLine::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1622,7 +1622,7 @@ void CmdTechDrawExtensionShortenLine::activated(int iMsg)
     ///Base::Console().Message("ShortenLine started\n");
 }
 
-bool CmdTechDrawExtensionShortenLine::isActive(void)
+bool CmdTechDrawExtensionShortenLine::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1673,7 +1673,7 @@ void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtendShortenLineGroup::createAction(void)
+Gui::Action* CmdTechDrawExtendShortenLineGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1725,7 +1725,7 @@ void CmdTechDrawExtendShortenLineGroup::languageChange()
     arc2->setStatusTip(arc2->text());
 }
 
-bool CmdTechDrawExtendShortenLineGroup::isActive(void)
+bool CmdTechDrawExtendShortenLineGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1767,7 +1767,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
             int idx = TechDraw::DrawUtil::getIndexFromName(name);
             std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
             // We filter arcs, circles etc. which are not allowed.
-            for (TechDraw::BaseGeomPtr geoPtr : faceEdges)
+            for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
                 if (geoPtr->geomType != TechDraw::GENERIC)
                     throw Base::TypeError("CmdTechDrawAreaAnnotation - forbidden border element found\n");
             // We create a list of all points along the boundary of the face.
@@ -1858,7 +1858,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     Gui::Command::updateActive();
 }
 
-bool CmdTechDrawExtensionAreaAnnotation::isActive(void)
+bool CmdTechDrawExtensionAreaAnnotation::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1885,7 +1885,7 @@ namespace TechDrawGui {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
         ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
         if (pageVP) {
-            QGSPage* scenePage = pageVP->getGraphicsScene();
+            QGSPage* scenePage = pageVP->getQGSPage();
             featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
             std::string pageName = scenePage->getDrawPage()->getNameInDocument();
             cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
@@ -1923,7 +1923,7 @@ namespace TechDrawGui {
     std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat) {
         // get vertex points as Vector3d
         std::vector<Base::Vector3d> vertexPoints;
-        for (std::string Name : SubNames) {
+        for (const std::string& Name : SubNames) {
             std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
             if (GeoType == "Vertex") {
                 int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
@@ -2051,7 +2051,7 @@ namespace TechDrawGui {
 }
 
 //------------------------------------------------------------------------------
-void CreateTechDrawCommandsExtensions(void)
+void CreateTechDrawCommandsExtensions()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 

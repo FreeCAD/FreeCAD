@@ -118,11 +118,11 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     ui->cells->setPalette(palette);
 
     QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
-    if (bgList.size() > 0)
+    if (!bgList.empty())
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
 
     QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
-    if (fgList.size() > 0)
+    if (!fgList.empty())
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
 
     // Set document object to create auto completer
@@ -133,7 +133,9 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 SheetView::~SheetView()
 {
     Gui::Application::Instance->detachView(this);
-    //delete delegate;
+    delete ui;
+    delete model;
+    delete delegate;
 }
 
 bool SheetView::onMsg(const char *pMsg, const char **)
@@ -310,7 +312,7 @@ void SheetView::updateAliasLine()
 
 void SheetView::columnResizeFinished()
 {
-    if (newColumnSizes.size() == 0)
+    if (newColumnSizes.empty())
         return;
 
     blockSignals(true);
@@ -322,7 +324,7 @@ void SheetView::columnResizeFinished()
 
 void SheetView::rowResizeFinished()
 {
-    if (newRowSizes.size() == 0)
+    if (newRowSizes.empty())
         return;
 
     blockSignals(true);
@@ -581,7 +583,7 @@ Py::Object SheetViewPy::getattr(const char * attr)
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;

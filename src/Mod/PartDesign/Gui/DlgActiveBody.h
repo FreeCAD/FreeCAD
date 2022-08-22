@@ -46,7 +46,7 @@ class PartDesignGuiExport DlgActiveBody : public QDialog
 public:
     DlgActiveBody(QWidget* parent, App::Document*& doc,
                   const QString& infoText=QString());
-    ~DlgActiveBody();
+    ~DlgActiveBody() override;
 
     void accept() override;
     PartDesign::Body* getActiveBody() const { return activeBody; }

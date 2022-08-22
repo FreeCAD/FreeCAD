@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QGraphicsView>
 # include <iostream>
 # include <string>
 # include <sstream>
@@ -30,7 +31,6 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
 
 #include <Base/Tools.h>
 #include <App/Document.h>
@@ -167,7 +167,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     getDocument()->recompute();
 }
 
-bool CmdTechDrawHatch::isActive(void)
+bool CmdTechDrawHatch::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -236,7 +236,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     getDocument()->recompute();
 }
 
-bool CmdTechDrawGeometricHatch::isActive(void)
+bool CmdTechDrawGeometricHatch::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -290,7 +290,7 @@ void CmdTechDrawImage::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawImage::isActive(void)
+bool CmdTechDrawImage::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -334,7 +334,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
     vpp->toggleFrameState();
 }
 
-bool CmdTechDrawToggleFrame::isActive(void)
+bool CmdTechDrawToggleFrame::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this,false);
@@ -342,7 +342,7 @@ bool CmdTechDrawToggleFrame::isActive(void)
 }
 
 
-void CreateTechDrawCommandsDecorate(void)
+void CreateTechDrawCommandsDecorate()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
@@ -360,7 +360,7 @@ void CreateTechDrawCommandsDecorate(void)
 
 bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select a Face first"));
         return false;

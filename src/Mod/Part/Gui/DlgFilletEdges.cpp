@@ -131,7 +131,7 @@ FilletRadiusModel::FilletRadiusModel(QObject * parent) : QStandardItemModel(pare
 void FilletRadiusModel::updateCheckStates()
 {
     // See http://www.qtcentre.org/threads/18856-Checkboxes-in-Treeview-do-not-get-refreshed?s=b0fea2bfc66da1098413ae9f2a651a68&p=93201#post93201
-    /*emit*/ layoutChanged();
+    Q_EMIT layoutChanged();
 }
 
 Qt::ItemFlags FilletRadiusModel::flags (const QModelIndex & index) const
@@ -146,7 +146,7 @@ bool FilletRadiusModel::setData (const QModelIndex & index, const QVariant & val
 {
     bool ok = QStandardItemModel::setData(index, value, role);
     if (role == Qt::CheckStateRole) {
-        toggleCheckState(index);
+        Q_EMIT toggleCheckState(index);
     }
     return ok;
 }
@@ -182,7 +182,7 @@ namespace PartGui {
         {
             allowEdge = false;
         }
-        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
         {
             if (pObj != this->object)
                 return false;
@@ -431,7 +431,7 @@ void DlgFilletEdges::onSelectEdge(const QString& subelement, int type)
 void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
 {
     bool ok;
-    int index = subelement.mid(4).toInt(&ok);
+    int index = subelement.midRef(4).toInt(&ok);
     if (ok) {
         try {
             const TopoDS_Shape& face = d->all_faces.FindKey(index);
@@ -914,7 +914,7 @@ bool DlgFilletEdges::accept()
         code = QString::fromLatin1(
         "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
         "FreeCAD.ActiveDocument.%2.Base = FreeCAD.ActiveDocument.%3\n")
-        .arg(type).arg(name).arg(shape);
+        .arg(type, name, shape);
     }
     code += QString::fromLatin1("__fillets__ = []\n");
     for (int i=0; i<model->rowCount(); ++i) {
@@ -950,7 +950,7 @@ bool DlgFilletEdges::accept()
         "FreeCAD.ActiveDocument.%1.Edges = __fillets__\n"
         "del __fillets__\n"
         "FreeCADGui.ActiveDocument.%2.Visibility = False\n")
-        .arg(name).arg(shape);
+        .arg(name, shape);
     Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
     activeDoc->commitTransaction();
     activeDoc->recompute();

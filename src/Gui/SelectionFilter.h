@@ -66,7 +66,7 @@ public:
      *  against the filter and returns true if the
      *  described object(s) are selected.
      */
-    bool match(void);
+    bool match();
     /** Test objects
      *  This method tests if a given object is described in the
      *  filter. If SubName is not NULL the Subelement gets also
@@ -81,12 +81,12 @@ public:
     std::vector<std::vector<SelectionObject> > Result;
 
     /// true if a valid filter is set
-    bool isValid(void) const {return Ast ? true : false;}
+    bool isValid() const {return Ast ? true : false;}
 
 protected:
     std::string Filter;
     std::string Errors;
-    bool parse(void);
+    bool parse();
 
     std::shared_ptr<Node_Block> Ast;
 };
@@ -105,8 +105,8 @@ public:
     /// construct with the filter string
     SelectionFilterGate(const char* filter);
     SelectionFilterGate(SelectionFilter* filter);
-    ~SelectionFilterGate();
-    virtual bool allow(App::Document*,App::DocumentObject*, const char*);
+    ~SelectionFilterGate() override;
+    bool allow(App::Document*,App::DocumentObject*, const char*) override;
 
 protected:
     static SelectionFilter* nullPointer() {
@@ -131,9 +131,9 @@ class SelectionGatePython : public SelectionGate
 public:
     /// Constructor
     SelectionGatePython(const Py::Object& obj);
-    virtual ~SelectionGatePython();
+    ~SelectionGatePython() override;
 
-    bool allow(App::Document*, App::DocumentObject*, const char*);
+    bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 private:
     Py::Object gate;
@@ -154,12 +154,12 @@ public:
     SelectionFilter filter;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     SelectionFilterPy(const std::string&);
-    ~SelectionFilterPy();
+    ~SelectionFilterPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object match(const Py::Tuple&);
     Py::Object result(const Py::Tuple&);
     Py::Object test(const Py::Tuple&);
@@ -190,9 +190,9 @@ class SelectionFilterGatePython : public SelectionGate
 public:
     /// Constructor
     SelectionFilterGatePython(SelectionFilterPy* obj);
-    virtual ~SelectionFilterGatePython();
+    ~SelectionFilterGatePython() override;
 
-    bool allow(App::Document*, App::DocumentObject*, const char*);
+    bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 private:
     SelectionFilterPy* filter;

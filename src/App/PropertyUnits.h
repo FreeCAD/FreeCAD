@@ -42,29 +42,29 @@ namespace App
  */
 class AppExport PropertyQuantity : public PropertyFloat
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyQuantity(void){}
-    virtual ~PropertyQuantity(){}
+    PropertyQuantity() = default;
+    ~PropertyQuantity() override = default;
 
-    Base::Quantity getQuantityValue(void) const;
+    Base::Quantity getQuantityValue() const;
 
-    virtual const char* getEditorName(void) const;
+    const char* getEditorName() const override;
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
     void setUnit(const Base::Unit &u) {_Unit = u;}
-    const Base::Unit &getUnit(void) const {return _Unit;}
+    const Base::Unit &getUnit() const {return _Unit;}
 
     void setValue(double lValue) { PropertyFloat::setValue(lValue); }
-    double getValue(void) const { return PropertyFloat::getValue(); }
+    double getValue() const { return PropertyFloat::getValue(); }
 
-    virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value) override;
+    const boost::any getPathValue(const App::ObjectIdentifier &path) const override;
 
-    virtual bool isSame(const Property &other) const {
+    bool isSame(const Property &other) const override {
         if (&other == this)
             return true;
         return getTypeId() == other.getTypeId()
@@ -82,11 +82,11 @@ protected:
  */
 class AppExport PropertyQuantityConstraint : public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyQuantityConstraint(void):_ConstStruct(nullptr){}
-    virtual ~PropertyQuantityConstraint(){}
+    PropertyQuantityConstraint():_ConstStruct(nullptr){}
+    ~PropertyQuantityConstraint() override = default;
 
     /// Constraint methods
     //@{
@@ -104,104 +104,19 @@ public:
      */
     void setConstraints(const Constraints* sConstrain);
     /// get the constraint struct
-    const Constraints*  getConstraints(void) const;
+    const Constraints*  getConstraints() const;
     //@}
 
     double getMinimum() const;
     double getMaximum() const;
     double getStepSize() const;
 
-    virtual const char* getEditorName(void) const;
-    virtual void setPyObject(PyObject *);
+    const char* getEditorName() const override;
+    void setPyObject(PyObject *) override;
 
 
 protected:
     const Constraints* _ConstStruct;
-};
-
-/** Distance property
- * This is a property for representing distances. It is basically a float
- * property. On the Gui it has a quantity like m or mm.
- */
-class AppExport PropertyDistance: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertyDistance(void);
-    virtual ~PropertyDistance(){}
-};
-
-/** Length property
- * This is a property for representing lengths. It is basically a float
- * property which must not be negative. On the Gui it has a quantity like m or mm.
- */
-class AppExport PropertyLength : public PropertyQuantityConstraint
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertyLength(void);
-    virtual ~PropertyLength(){}
-};
-
-/** Area property
- * This is a property for representing areas. It is basically a float
- * property which must not be negative. On the Gui it has a quantity like m^2 or mm^2.
- */
-class AppExport PropertyArea : public PropertyQuantityConstraint
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertyArea(void);
-    virtual ~PropertyArea(){}
-};
-
-/** Volume property
- * This is a property for representing volumes. It is basically a float
- * property which must not be negative. On the Gui it has a quantity like m^3 or mm^3.
- */
-class AppExport PropertyVolume : public PropertyQuantityConstraint
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertyVolume(void);
-    virtual ~PropertyVolume(){}
-};
-
-/** Angle property
- * This is a property for representing angles. It basically a float
- * property. On the Gui it has a quantity like RAD.
- */
-class AppExport PropertyAngle: public PropertyQuantityConstraint
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertyAngle(void);
-    virtual ~PropertyAngle(){}
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyAngleItem"; }
-};
-
-/** Frequency property
- * This is a property for representing frequency. It is basically a float
- * property. On the Gui it has a quantity like 1/s or Hz.
- */
-class AppExport PropertyFrequency: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertyFrequency(void);
-    virtual ~PropertyFrequency(){}
-};
-
-/** Speed property
- * This is a property for representing speed. It is basically a float
- * property. On the Gui it has a quantity like m/s or km/h.
- */
-class AppExport PropertySpeed: public PropertyQuantity
-{
-    TYPESYSTEM_HEADER();
-public:
-    PropertySpeed(void);
-    virtual ~PropertySpeed(){}
 };
 
 /** Acceleration property
@@ -210,34 +125,77 @@ public:
  */
 class AppExport PropertyAcceleration: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    PropertyAcceleration(void);
-    virtual ~PropertyAcceleration(){}
+    PropertyAcceleration();
+    ~PropertyAcceleration() override = default;
 };
 
-/** Pressure property
- * This is a property for representing acceleration. It is basically a float
- * property. On the Gui it has a quantity like m/s^2.
+/** Angle property
+ * This is a property for representing angles. It basically a float
+ * property. On the Gui it has a quantity like RAD.
  */
-class AppExport PropertyPressure: public PropertyQuantity
+class AppExport PropertyAngle: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    PropertyPressure(void);
-    virtual ~PropertyPressure(){}
+    PropertyAngle();
+    ~PropertyAngle() override = default;
+    const char *getEditorName() const override { return "Gui::PropertyEditor::PropertyAngleItem"; }
 };
 
-/** Stiffness property
- * This is a property for representing stiffness. It is basically a float
- * property. On the Gui it has a quantity like m/s^2.
+/** Area property
+ * This is a property for representing areas. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^2 or mm^2.
  */
-class AppExport PropertyStiffness: public PropertyQuantity
+class AppExport PropertyArea: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    PropertyStiffness(void);
-    virtual ~PropertyStiffness(){}
+    PropertyArea();
+    ~PropertyArea() override = default;
+};
+
+/** Distance property
+ * This is a property for representing distances. It is basically a float
+ * property. On the Gui it has a quantity like m or mm.
+ */
+class AppExport PropertyDistance: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyDistance();
+    ~PropertyDistance() override = default;
+};
+
+/** ElectricPotential property
+ * This is a property for electric potentials. It is basically a float
+ * property. On the Gui it has a quantity of Volt.
+ */
+class AppExport PropertyElectricPotential: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyElectricPotential();
+    ~PropertyElectricPotential() override = default;
+};
+
+/** Frequency property
+ * This is a property for representing frequency. It is basically a float
+ * property. On the Gui it has a quantity like 1/s or Hz.
+ */
+class AppExport PropertyFrequency: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyFrequency();
+    ~PropertyFrequency() override = default;
 };
 
 /** Force property
@@ -246,22 +204,63 @@ public:
  */
 class AppExport PropertyForce: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    PropertyForce(void);
-    virtual ~PropertyForce(){}
+    PropertyForce();
+    ~PropertyForce() override = default;
 };
 
-/** ElectricPotential property
- * This is a property for electric potentials. It is basically a float
- * property. On the Gui it has a quantity of Volt.
+/** Length property
+ * This is a property for representing lengths. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m or mm.
  */
-class AppExport PropertyElectricPotential : public PropertyQuantity
+class AppExport PropertyLength: public PropertyQuantityConstraint
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    PropertyElectricPotential(void);
-    virtual ~PropertyElectricPotential() {}
+    PropertyLength();
+    ~PropertyLength() override = default;
+};
+
+/** Pressure property
+ * This is a property for representing acceleration. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyPressure: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyPressure();
+    ~PropertyPressure() override = default;
+};
+
+/** Speed property
+ * This is a property for representing speed. It is basically a float
+ * property. On the Gui it has a quantity like m/s or km/h.
+ */
+class AppExport PropertySpeed: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertySpeed();
+    ~PropertySpeed() override = default;
+};
+
+/** Stiffness property
+ * This is a property for representing stiffness. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyStiffness: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyStiffness();
+    ~PropertyStiffness() override = default;
 };
 
 /** VacuumPermittivity property
@@ -270,12 +269,26 @@ public:
  */
 class AppExport PropertyVacuumPermittivity: public PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
-    PropertyVacuumPermittivity(void);
-    virtual ~PropertyVacuumPermittivity(){}
+    PropertyVacuumPermittivity();
+    ~PropertyVacuumPermittivity() override = default;
 };
 
-} // namespace App
+/** Volume property
+ * This is a property for representing volumes. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^3 or mm^3.
+ */
+class AppExport PropertyVolume: public PropertyQuantityConstraint
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-#endif // APP_PROPERTYUNITS_H
+public:
+    PropertyVolume();
+    ~PropertyVolume() override = default;
+};
+
+}// namespace App
+
+#endif// APP_PROPERTYUNITS_H

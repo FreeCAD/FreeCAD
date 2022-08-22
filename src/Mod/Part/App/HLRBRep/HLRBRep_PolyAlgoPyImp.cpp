@@ -72,7 +72,7 @@ int HLRBRep_PolyAlgoPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string HLRBRep_PolyAlgoPy::representation(void) const
+std::string HLRBRep_PolyAlgoPy::representation() const
 {
     return std::string("<HLRBRep_PolyAlgo object>");
 }

@@ -54,7 +54,7 @@ public:
 
 public:
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode==STATUS_SEEK_First) {
@@ -101,7 +101,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             if(constructionMethod == Diagonal) {
@@ -135,7 +135,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -232,13 +232,13 @@ public:
 
             if(constructionMethod == Diagonal) {
                 // add auto constraints at the start of the first side
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
@@ -246,13 +246,13 @@ public:
             }
             else if (constructionMethod == CenterAndCorner) {
                 // add auto constraints at the start of the first side
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 3, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
@@ -285,7 +285,7 @@ public:
 
 private:
 
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_Box");
     }
@@ -314,7 +314,7 @@ public:
         STATUS_End
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -388,7 +388,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -401,7 +401,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -525,13 +525,13 @@ public:
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the StartPos auxiliary point
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the EndPos auxiliary point
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr2.clear();
                 }
@@ -567,7 +567,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Oblong");
     }

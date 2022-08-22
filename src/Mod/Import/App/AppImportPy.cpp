@@ -93,7 +93,7 @@ public:
     std::map<Part::Feature*, std::vector<App::Color> > partColors;
 
 private:
-    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         partColors[part] = colors;
     }
 };
@@ -127,7 +127,7 @@ public:
        initialize("This module is the Import module."); // register with Python       
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object importer(const Py::Tuple& args, const Py::Dict &kwds)

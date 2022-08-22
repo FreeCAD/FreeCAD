@@ -59,16 +59,10 @@ TYPESYSTEM_SOURCE(App::PropertyVector , App::Property)
 // Construction/Destruction
 
 
-PropertyVector::PropertyVector()
-{
-
-}
+PropertyVector::PropertyVector() = default;
 
 
-PropertyVector::~PropertyVector()
-{
-
-}
+PropertyVector::~PropertyVector() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -88,12 +82,12 @@ void PropertyVector::setValue(double x, double y, double z)
     hasSetValue();
 }
 
-const Base::Vector3d & PropertyVector::getValue(void)const
+const Base::Vector3d & PropertyVector::getValue()const
 {
     return _cVec;
 }
 
-PyObject *PropertyVector::getPyObject(void)
+PyObject *PropertyVector::getPyObject()
 {
     return new Base::VectorPy(_cVec);
 }
@@ -159,7 +153,7 @@ void PropertyVector::Restore(Base::XMLReader &reader)
 }
 
 
-Property *PropertyVector::Copy(void) const
+Property *PropertyVector::Copy() const
 {
     PropertyVector *p= new PropertyVector();
     p->_cVec = _cVec;
@@ -225,15 +219,9 @@ TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector)
 // Construction/Destruction
 
 
-PropertyVectorDistance::PropertyVectorDistance()
-{
+PropertyVectorDistance::PropertyVectorDistance() = default;
 
-}
-
-PropertyVectorDistance::~PropertyVectorDistance()
-{
-
-}
+PropertyVectorDistance::~PropertyVectorDistance() = default;
 
 //**************************************************************************
 // PropertyPosition
@@ -245,15 +233,9 @@ TYPESYSTEM_SOURCE(App::PropertyPosition , App::PropertyVector)
 // Construction/Destruction
 
 
-PropertyPosition::PropertyPosition()
-{
+PropertyPosition::PropertyPosition() = default;
 
-}
-
-PropertyPosition::~PropertyPosition()
-{
-
-}
+PropertyPosition::~PropertyPosition() = default;
 
 //**************************************************************************
 // PropertyPosition
@@ -265,15 +247,9 @@ TYPESYSTEM_SOURCE(App::PropertyDirection , App::PropertyVector)
 // Construction/Destruction
 
 
-PropertyDirection::PropertyDirection()
-{
+PropertyDirection::PropertyDirection() = default;
 
-}
-
-PropertyDirection::~PropertyDirection()
-{
-
-}
+PropertyDirection::~PropertyDirection() = default;
 
 //**************************************************************************
 // PropertyVectorList
@@ -284,15 +260,9 @@ TYPESYSTEM_SOURCE(App::PropertyVectorList , App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyVectorList::PropertyVectorList()
-{
+PropertyVectorList::PropertyVectorList() = default;
 
-}
-
-PropertyVectorList::~PropertyVectorList()
-{
-
-}
+PropertyVectorList::~PropertyVectorList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -302,12 +272,12 @@ void PropertyVectorList::setValue(double x, double y, double z)
     setValue(Base::Vector3d(x,y,z));
 }
 
-PyObject *PropertyVectorList::getPyObject(void)
+PyObject *PropertyVectorList::getPyObject()
 {
-    PyObject* list = PyList_New(	getSize() );
+    PyObject* list = PyList_New(getSize());
 
-    for (int i = 0;i<getSize(); i++)
-        PyList_SetItem( list, i, new VectorPy(	_lValueList[i]));
+    for (int i = 0;i < getSize(); i++)
+        PyList_SetItem(list, i, new VectorPy(_lValueList[i]));
 
     return list;
 }
@@ -377,7 +347,7 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-Property *PropertyVectorList::Copy(void) const
+Property *PropertyVectorList::Copy() const
 {
     PropertyVectorList *p= new PropertyVectorList();
     p->_lValueList = _lValueList;
@@ -389,7 +359,7 @@ void PropertyVectorList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyVectorList&>(from)._lValueList);
 }
 
-unsigned int PropertyVectorList::getMemSize (void) const
+unsigned int PropertyVectorList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
 }
@@ -405,16 +375,10 @@ TYPESYSTEM_SOURCE(App::PropertyMatrix , App::Property)
 // Construction/Destruction
 
 
-PropertyMatrix::PropertyMatrix()
-{
-
-}
+PropertyMatrix::PropertyMatrix() = default;
 
 
-PropertyMatrix::~PropertyMatrix()
-{
-
-}
+PropertyMatrix::~PropertyMatrix() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -428,12 +392,12 @@ void PropertyMatrix::setValue(const Base::Matrix4D &mat)
 }
 
 
-const Base::Matrix4D & PropertyMatrix::getValue(void)const
+const Base::Matrix4D & PropertyMatrix::getValue()const
 {
     return _cMat;
 }
 
-PyObject *PropertyMatrix::getPyObject(void)
+PyObject *PropertyMatrix::getPyObject()
 {
     return new Base::MatrixPy(_cMat);
 }
@@ -508,7 +472,7 @@ void PropertyMatrix::Restore(Base::XMLReader &reader)
 }
 
 
-Property *PropertyMatrix::Copy(void) const
+Property *PropertyMatrix::Copy() const
 {
     PropertyMatrix *p= new PropertyMatrix();
     p->_cMat = _cMat;
@@ -533,16 +497,10 @@ TYPESYSTEM_SOURCE(App::PropertyPlacement , App::Property)
 // Construction/Destruction
 
 
-PropertyPlacement::PropertyPlacement()
-{
-
-}
+PropertyPlacement::PropertyPlacement() = default;
 
 
-PropertyPlacement::~PropertyPlacement()
-{
-
-}
+PropertyPlacement::~PropertyPlacement() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -567,7 +525,7 @@ bool PropertyPlacement::setValueIfChanged(const Base::Placement &pos,double tol,
 }
 
 
-const Base::Placement & PropertyPlacement::getValue(void)const
+const Base::Placement & PropertyPlacement::getValue()const
 {
     return _cPos;
 }
@@ -664,7 +622,7 @@ bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object 
     return true;
 }
 
-PyObject *PropertyPlacement::getPyObject(void)
+PyObject *PropertyPlacement::getPyObject()
 {
     return new Base::PlacementPy(new Base::Placement(_cPos));
 }
@@ -739,7 +697,7 @@ void PropertyPlacement::Restore(Base::XMLReader &reader)
 }
 
 
-Property *PropertyPlacement::Copy(void) const
+Property *PropertyPlacement::Copy() const
 {
     PropertyPlacement *p= new PropertyPlacement();
     p->_cPos = _cPos;
@@ -763,20 +721,14 @@ TYPESYSTEM_SOURCE(App::PropertyPlacementList , App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyPlacementList::PropertyPlacementList()
-{
+PropertyPlacementList::PropertyPlacementList() = default;
 
-}
-
-PropertyPlacementList::~PropertyPlacementList()
-{
-
-}
+PropertyPlacementList::~PropertyPlacementList() = default;
 
 //**************************************************************************
 // Base class implementer
 
-PyObject *PropertyPlacementList::getPyObject(void)
+PyObject *PropertyPlacementList::getPyObject()
 {
     PyObject* list = PyList_New( getSize() );
 
@@ -864,7 +816,7 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-Property *PropertyPlacementList::Copy(void) const
+Property *PropertyPlacementList::Copy() const
 {
     PropertyPlacementList *p= new PropertyPlacementList();
     p->_lValueList = _lValueList;
@@ -876,7 +828,7 @@ void PropertyPlacementList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyPlacementList&>(from)._lValueList);
 }
 
-unsigned int PropertyPlacementList::getMemSize (void) const
+unsigned int PropertyPlacementList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
 }
@@ -895,18 +847,12 @@ TYPESYSTEM_SOURCE(App::PropertyPlacementLink , App::PropertyLink)
 // Construction/Destruction
 
 
-PropertyPlacementLink::PropertyPlacementLink()
-{
-
-}
+PropertyPlacementLink::PropertyPlacementLink() = default;
 
 
-PropertyPlacementLink::~PropertyPlacementLink()
-{
+PropertyPlacementLink::~PropertyPlacementLink() = default;
 
-}
-
-App::Placement * PropertyPlacementLink::getPlacementObject(void) const
+App::Placement * PropertyPlacementLink::getPlacementObject() const
 {
     if (_pcLink->getTypeId().isDerivedFrom(App::Placement::getClassTypeId()))
         return dynamic_cast<App::Placement*>(_pcLink);
@@ -918,7 +864,7 @@ App::Placement * PropertyPlacementLink::getPlacementObject(void) const
 //**************************************************************************
 // Base class implementer
 
-Property *PropertyPlacementLink::Copy(void) const
+Property *PropertyPlacementLink::Copy() const
 {
     PropertyPlacementLink *p= new PropertyPlacementLink();
     p->_pcLink = _pcLink;
@@ -939,16 +885,10 @@ void PropertyPlacementLink::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE(App::PropertyRotation , App::Property)
 
-PropertyRotation::PropertyRotation()
-{
-
-}
+PropertyRotation::PropertyRotation() = default;
 
 
-PropertyRotation::~PropertyRotation()
-{
-
-}
+PropertyRotation::~PropertyRotation() = default;
 
 void PropertyRotation::setValue(const Base::Rotation &rot)
 {
@@ -1113,26 +1053,14 @@ void PropertyRotation::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyGeometry , App::Property)
 
-PropertyGeometry::PropertyGeometry()
-{
+PropertyGeometry::PropertyGeometry() = default;
 
-}
-
-PropertyGeometry::~PropertyGeometry()
-{
-
-}
+PropertyGeometry::~PropertyGeometry() = default;
 
 // ------------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 
-PropertyComplexGeoData::PropertyComplexGeoData()
-{
+PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
-}
-
-PropertyComplexGeoData::~PropertyComplexGeoData()
-{
-
-}
+PropertyComplexGeoData::~PropertyComplexGeoData() = default;

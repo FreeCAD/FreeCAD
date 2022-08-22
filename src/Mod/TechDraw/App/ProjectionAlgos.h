@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-//this file originally part of TechDraw workbench
+//this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
@@ -46,7 +46,7 @@ public:
     ProjectionAlgos(const TopoDS_Shape &Input,const Base::Vector3d &Dir);
     virtual ~ProjectionAlgos();
 
-    void execute(void);
+    void execute();
 
     enum ExtractionType {
         Plain = 0,

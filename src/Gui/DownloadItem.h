@@ -43,7 +43,7 @@ class EditTableView : public QTableView
 
 public:
     EditTableView(QWidget *parent = nullptr);
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
 
 public Q_SLOTS:
     void removeOne();
@@ -58,7 +58,7 @@ public:
     SqueezeLabel(QWidget *parent = nullptr);
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
 
 };
 
@@ -73,14 +73,14 @@ Q_OBJECT
 
 public:
     AutoSaver(QObject *parent);
-    ~AutoSaver();
+    ~AutoSaver() override;
     void saveIfNecessary();
 
 public Q_SLOTS:
     void changeOccurred();
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     QBasicTimer m_timer;
@@ -137,7 +137,7 @@ private Q_SLOTS:
     void finished();
 
 private:
-    void contextMenuEvent(QContextMenuEvent *);
+    void contextMenuEvent(QContextMenuEvent *) override;
     void getFileName();
     void init();
     void updateInfoLabel();

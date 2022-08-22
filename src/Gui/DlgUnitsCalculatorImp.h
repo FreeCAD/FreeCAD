@@ -43,11 +43,11 @@ class DlgUnitsCalculator : public QDialog
 
 public:
     DlgUnitsCalculator(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgUnitsCalculator();
+    ~DlgUnitsCalculator() override;
 
 protected:
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 protected Q_SLOTS:
     void textChanged(const QString);
@@ -56,8 +56,8 @@ protected Q_SLOTS:
     void on_comboBoxScheme_activated(int);
     void on_spinBoxDecimals_valueChanged(int);
 
-    void copy(void);
-    void returnPressed(void);
+    void copy();
+    void returnPressed();
 
     void parseError(const QString& errorText);
 

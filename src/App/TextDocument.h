@@ -32,7 +32,7 @@ namespace App
 {
 
 class AppExport TextDocument : public App::DocumentObject {
-    PROPERTY_HEADER(App::TextDocument);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::TextDocument);
 public:
     using TextSignal = boost::signals2::signal<void ()>;
     using TextSlot = TextSignal::slot_type;
@@ -40,10 +40,10 @@ public:
     PropertyString Text;
 
     TextDocument();
-    ~TextDocument() {}
+    ~TextDocument() override = default;
 
-    void onChanged(const Property* prop);
-    const char* getViewProviderName() const;
+    void onChanged(const Property* prop) override;
+    const char* getViewProviderName() const override;
 
     boost::signals2::connection connectText(const TextSlot &sub);
     boost::signals2::connection connectLabel(const TextSlot &sub);

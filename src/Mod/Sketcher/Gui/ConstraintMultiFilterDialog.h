@@ -37,8 +37,8 @@ class ConstraintMultiFilterDialog : public QDialog
     Q_OBJECT
 
 public:
-    ConstraintMultiFilterDialog(void);
-    ~ConstraintMultiFilterDialog();
+    ConstraintMultiFilterDialog();
+    ~ConstraintMultiFilterDialog() override;
 
     void setMultiFilter(const FilterValueBitset & bitset);
     FilterValueBitset getMultiFilter();

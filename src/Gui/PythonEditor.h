@@ -42,7 +42,7 @@ class GuiExport PythonEditor : public TextEditor
 
 public:
     PythonEditor(QWidget *parent = nullptr);
-    ~PythonEditor();
+    ~PythonEditor() override;
 
     void toggleBreakpoint();
     void showDebugMarker(int line);
@@ -64,8 +64,8 @@ public Q_SLOTS:
 
 protected:
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e );
-    void drawMarker(int line, int x, int y, QPainter*);
+    void contextMenuEvent ( QContextMenuEvent* e ) override;
+    void drawMarker(int line, int x, int y, QPainter*) override;
 
 private:
     //PythonSyntaxHighlighter* pythonSyntax;

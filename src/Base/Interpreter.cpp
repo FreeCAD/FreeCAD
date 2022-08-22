@@ -93,9 +93,7 @@ PyException::PyException()
     PyErr_Clear(); // must be called to keep Python interpreter in a valid state (Werner)
 }
 
-PyException::~PyException() throw()
-{
-}
+PyException::~PyException() throw() = default;
 
 void PyException::ThrowException()
 {
@@ -203,12 +201,8 @@ public:
         add_varargs_method("flush",&PythonStdOutput::flush,"flush()");
     }
 
-    PythonStdOutput()
-    {
-    }
-    ~PythonStdOutput()
-    {
-    }
+    PythonStdOutput() = default;
+    ~PythonStdOutput() override = default;
 
     Py::Object write(const Py::Tuple&)
     {
@@ -227,10 +221,7 @@ InterpreterSingleton::InterpreterSingleton()
     this->_global = nullptr;
 }
 
-InterpreterSingleton::~InterpreterSingleton()
-{
-
-}
+InterpreterSingleton::~InterpreterSingleton() = default;
 
 
 std::string InterpreterSingleton::runString(const char *sCmd)
@@ -695,11 +686,11 @@ int InterpreterSingleton::runCommandLine(const char *prompt)
 void InterpreterSingleton::runMethodVoid(PyObject *pobject, const char *method)
 {
     PyGILStateLocker locker;
-    if (PP_Run_Method(pobject ,    // object
-                      method,  // run method
-                      nullptr,			   // no return type
-                      nullptr,		       // so no return object
-                      "()")		   // no arguments
+    if (PP_Run_Method(pobject ,     // object
+                      method,       // run method
+                      nullptr,      // no return type
+                      nullptr,      // so no return object
+                      "()")         // no arguments
             != 0)
         throw PyException(/*"Error running InterpreterSingleton::RunMethodVoid()"*/);
 
@@ -710,11 +701,11 @@ PyObject* InterpreterSingleton::runMethodObject(PyObject *pobject, const char *m
     PyObject *pcO;
 
     PyGILStateLocker locker;
-    if (PP_Run_Method(pobject ,    // object
-                      method,  // run method
-                      "O",		   // return type
-                      &pcO,		   // return object
-                      "()")		   // no arguments
+    if (PP_Run_Method(pobject ,     // object
+                      method,       // run method
+                      "O",          // return type
+                      &pcO,         // return object
+                      "()")         // no arguments
             != 0)
         throw PyException();
 

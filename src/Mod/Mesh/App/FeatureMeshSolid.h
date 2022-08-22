@@ -37,7 +37,7 @@ namespace Mesh
  */
 class Sphere : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Sphere);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Sphere);
 
 public:
   Sphere();
@@ -48,9 +48,9 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
   //@}
 };
 
@@ -58,7 +58,7 @@ public:
 
 class Ellipsoid : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Ellipsoid);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Ellipsoid);
 
 public:
   Ellipsoid();
@@ -70,9 +70,9 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
   //@}
 };
 
@@ -80,7 +80,7 @@ public:
 
 class Cylinder : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Cylinder);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cylinder);
 
 public:
   Cylinder();
@@ -94,9 +94,9 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
   //@}
 };
 
@@ -104,7 +104,7 @@ public:
 
 class Cone : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Cone);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cone);
 
 public:
   Cone();
@@ -119,9 +119,9 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
   //@}
 };
 
@@ -129,7 +129,7 @@ public:
 
 class Torus : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Torus);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Torus);
 
 public:
   Torus();
@@ -141,9 +141,9 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
   //@}
 };
 
@@ -151,7 +151,7 @@ public:
 
 class Cube : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::Cube);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cube);
 
 public:
   Cube();
@@ -163,9 +163,9 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
+  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
   //@}
 };
 

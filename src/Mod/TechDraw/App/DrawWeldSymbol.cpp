@@ -49,7 +49,7 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawWeldSymbol, TechDraw::DrawView)
 
-DrawWeldSymbol::DrawWeldSymbol(void)
+DrawWeldSymbol::DrawWeldSymbol()
 {
     static const char *group = "Weld Symbol";
 
@@ -108,9 +108,6 @@ void DrawWeldSymbol::onSettingDocument()
 
 void DrawWeldSymbol::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        //nothing in particular
-    }
     DrawView::onChanged(prop);
 }
 
@@ -119,29 +116,32 @@ short DrawWeldSymbol::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
+App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 {
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
     }
 
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
-std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
+std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles() const
 {
 //    Base::Console().Message("DWS::getTiles()\n");
     std::vector<DrawTileWeld*> result;
 
     std::vector<App::DocumentObject*> tiles = getInList();
-    if (!tiles.empty()) {
-        for(std::vector<App::DocumentObject *>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-            if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawTileWeld::getClassTypeId())) {
-                App::DocumentObject* doTemp = (*it);
-                DrawTileWeld* temp = static_cast<DrawTileWeld*>(doTemp);
-                result.push_back(temp);
-            }
+    if (tiles.empty()) {
+        return result;
+    }
+
+    for(std::vector<App::DocumentObject *>::iterator it = tiles.begin(); it != tiles.end(); it++) {
+        if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawTileWeld::getClassTypeId())) {
+            App::DocumentObject* doTemp = (*it);
+            DrawTileWeld* temp = static_cast<DrawTileWeld*>(doTemp);
+            result.push_back(temp);
         }
     }
     return result;
@@ -149,21 +149,20 @@ std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
 
 bool DrawWeldSymbol::isTailRightSide()
 {
-    bool result = true;
     App::DocumentObject* obj = Leader.getValue();
     TechDraw::DrawLeaderLine* realLeader = dynamic_cast<TechDraw::DrawLeaderLine*>(obj);
     if (realLeader) {
         Base::Vector3d tail = realLeader->getTailPoint();
         Base::Vector3d kink = realLeader->getKinkPoint();
         if (tail.x < kink.x)  {   //tail is to left
-            result = false;
+            return false;
         }
     }
-    return result;
+    return true;
 }
 
 
-PyObject *DrawWeldSymbol::getPyObject(void)
+PyObject *DrawWeldSymbol::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -177,7 +176,7 @@ PyObject *DrawWeldSymbol::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawWeldSymbolPython, TechDraw::DrawWeldSymbol)
-template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawWeldSymbolPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderWeld";
 }
 /// @endcond

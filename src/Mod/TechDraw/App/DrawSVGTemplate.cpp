@@ -85,7 +85,7 @@ DrawSVGTemplate::~DrawSVGTemplate()
 {
 }
 
-PyObject *DrawSVGTemplate::getPyObject(void)
+PyObject *DrawSVGTemplate::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -94,7 +94,7 @@ PyObject *DrawSVGTemplate::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-unsigned int DrawSVGTemplate::getMemSize(void) const
+unsigned int DrawSVGTemplate::getMemSize() const
 {
     return 0;
 }
@@ -132,7 +132,7 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
     TechDraw::DrawTemplate::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
+App::DocumentObjectExecReturn * DrawSVGTemplate::execute()
 {
 	std::string templateFilename = Template.getValue();
 	if (templateFilename.empty())
@@ -330,7 +330,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawSVGTemplatePython, TechDraw::DrawSVGTemplate)
-template<> const char* TechDraw::DrawSVGTemplatePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawSVGTemplatePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderPython";
 }
 /// @endcond

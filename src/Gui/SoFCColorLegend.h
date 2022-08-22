@@ -51,30 +51,30 @@ public:
    * Sets the range of the colorbar from the maximum \a fMax to the minimum \a fMin.
    * \a prec indicates the post decimal positions, \a prec should be in between 0 and 6.
    */
-  void setRange( float fMin, float fMax, int prec=3 );
+  void setRange( float fMin, float fMax, int prec=3 ) override;
   /**
    * Updates the node with the given color legend.
    */
   void setColorLegend (const App::ColorLegend& legend);
 
   unsigned short getColorIndex (float fVal) const { return _currentLegend.getColorIndex(fVal);  }
-  App::Color getColor (float fVal) const { return _currentLegend.getColor(fVal); }
-  void setOutsideGrayed (bool bVal) { _currentLegend.setOutsideGrayed(bVal); }
-  bool isVisible (float) const { return false; }
-  float getMinValue () const { return _currentLegend.getMinValue(); }
-  float getMaxValue () const { return _currentLegend.getMaxValue(); }
+  App::Color getColor (float fVal) const override { return _currentLegend.getColor(fVal); }
+  void setOutsideGrayed (bool bVal) override { _currentLegend.setOutsideGrayed(bVal); }
+  bool isVisible (float) const override { return false; }
+  float getMinValue () const override { return _currentLegend.getMinValue(); }
+  float getMaxValue () const override { return _currentLegend.getMaxValue(); }
   std::size_t countColors () const { return _currentLegend.hasNumberOfFields(); }
 
-  void customize(SoFCColorBarBase*) { }
-  const char* getColorBarName() const { return "Color Legend"; }
+  void customize(SoFCColorBarBase*) override { }
+  const char* getColorBarName() const override { return "Color Legend"; }
 
 //  virtual void handleEvent(SoHandleEventAction * action);
 //  virtual void GLRenderBelowPath(SoGLRenderAction * action);
 //  virtual void GLRenderInPath(SoGLRenderAction * action);
 
 protected:
-  void setViewportSize( const SbVec2s& size );
-  virtual ~SoFCColorLegend();
+  void setViewportSize( const SbVec2s& size ) override;
+  ~SoFCColorLegend() override;
 //  virtual void redrawHighlighted(SoAction * act, SbBool  flag);
 private:
   void setMarkerLabel(const SoMFString& label);

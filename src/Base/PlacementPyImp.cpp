@@ -39,14 +39,14 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string PlacementPy::representation() const
 {
-    double A,B,C;
+    double yaw{}, pitch{}, roll{};
     PlacementPy::PointerType ptr = getPlacementPtr();
     std::stringstream str;
-    ptr->getRotation().getYawPitchRoll(A,B,C);
+    ptr->getRotation().getYawPitchRoll(yaw, pitch, roll);
 
     str << "Placement [Pos=(";
     str << ptr->getPosition().x << ","<< ptr->getPosition().y << "," << ptr->getPosition().z;
-    str << "), Yaw-Pitch-Roll=(" << A << "," << B << "," << C << ")]";
+    str << "), Yaw-Pitch-Roll=(" << yaw << "," << pitch << "," << roll << ")]";
 
     return str.str();
 }
@@ -163,22 +163,33 @@ PyObject* PlacementPy::translate(PyObject * args)
     return move(args);
 }
 
-PyObject* PlacementPy::rotate(PyObject *args) {
-    PyObject *obj1, *obj2;
+PyObject* PlacementPy::rotate(PyObject *args, PyObject *kwds)
+{
     double angle;
-    if (!PyArg_ParseTuple(args, "OOd", &obj1, &obj2, &angle))
+    char *keywords[] =  { "center", "axis", "angle", "comp", nullptr };
+    Vector3d center;
+    Vector3d axis;
+    PyObject* pyComp = Py_False;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "(ddd)(ddd)d|O!", keywords, &center.x, &center.y, &center.z,
+                                     &axis.x, &axis.y, &axis.z, &angle, &PyBool_Type, &pyComp))
         return nullptr;
 
     try {
-        Py::Sequence p1(obj1), p2(obj2);
-        Vector3d center((double)Py::Float(p1[0]),
-                        (double)Py::Float(p1[1]),
-                        (double)Py::Float(p1[2]));
-        Vector3d axis((double)Py::Float(p2[0]),
-                      (double)Py::Float(p2[1]),
-                      (double)Py::Float(p2[2]));
-        (*getPlacementPtr()) *= Placement(
-                Vector3d(),Rotation(axis,toRadians<double>(angle)),center);
+        /*
+         * if comp is False, we retain the original behaviour that - contrary to the (old) documentation - generates
+         * Placements different from TopoShape.rotate() to ensure compatibility for existing code
+         */
+        bool comp = Base::asBoolean(pyComp);
+
+        if (!comp) {
+            getPlacementPtr()->multRight(Placement(Vector3d(), Rotation(axis, toRadians<double>(angle)), center));
+        }
+        else {
+            // multiply new Placement the same way TopoShape.rotate() does
+            getPlacementPtr()->multLeft(Placement(Vector3d(), Rotation(axis, toRadians<double>(angle)), center));
+        }
+
         Py_Return;
     }
     catch (const Py::Exception&) {
@@ -268,6 +279,19 @@ PyObject* PlacementPy::isIdentity(PyObject *args)
         return nullptr;
     bool none = getPlacementPtr()->isIdentity();
     return Py_BuildValue("O", (none ? Py_True : Py_False));
+}
+
+PyObject* PlacementPy::isSame(PyObject *args)
+{
+    PyObject* plm;
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "O!|d", &PlacementPy::Type, &plm, &tol))
+        return nullptr;
+
+    Base::Placement plm1 = * getPlacementPtr();
+    Base::Placement plm2 = * static_cast<PlacementPy*>(plm)->getPlacementPtr();
+    bool same = tol > 0.0 ? plm1.isSame(plm2, tol) : plm1.isSame(plm2);
+    return Py_BuildValue("O", (same ? Py_True : Py_False));
 }
 
 Py::Object PlacementPy::getBase() const

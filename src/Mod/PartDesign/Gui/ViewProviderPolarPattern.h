@@ -31,7 +31,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderPolarPattern)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPolarPattern);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern() {
         featureName = std::string("PolarPattern");
@@ -41,7 +41,7 @@ public:
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 };
 

@@ -35,13 +35,13 @@ class LineEdit : public Gui::ExpressionLineEdit
 public:
     explicit LineEdit(QWidget *parent = nullptr);
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
 Q_SIGNALS:
     void finishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 
 private:
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
 
 
 private:

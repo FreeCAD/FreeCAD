@@ -52,12 +52,12 @@ public:
     SoBrepPointSet();
 
 protected:
-    virtual ~SoBrepPointSet() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void doAction(SoAction* action); 
+    ~SoBrepPointSet() override {};
+    void GLRender(SoGLRenderAction *action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void doAction(SoAction* action) override;
 
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
     typedef Gui::SoFCSelectionContext SelContext;

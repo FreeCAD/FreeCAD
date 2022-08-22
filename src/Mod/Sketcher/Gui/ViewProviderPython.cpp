@@ -56,7 +56,7 @@ void ViewProviderCustom::onChanged(const App::Property* prop)
             }
         }
     }
-    PartGui::ViewProviderPart::onChanged(prop);
+    ViewProviderSketch::onChanged(prop);
 }
 
 void ViewProviderCustom::updateData(const App::Property* prop)

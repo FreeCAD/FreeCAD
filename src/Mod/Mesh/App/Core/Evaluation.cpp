@@ -572,7 +572,7 @@ bool MeshEvalSingleFacet::Evaluate ()
       _aclManifoldList.push_back(aulManifolds);
   }
 */
-  return (nonManifoldList.size() == 0);
+  return (nonManifoldList.empty());
 }
 
 bool MeshFixSingleFacet::Fixup ()
@@ -619,7 +619,7 @@ bool MeshEvalSelfIntersection::Evaluate ()
         clGridIter.GetElements(aulGridElements);
 
         seq.next();
-        if (aulGridElements.size()==0)
+        if (aulGridElements.empty())
             continue;
 
         MeshGeomFacet facet1, facet2;
@@ -716,7 +716,7 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<FacetIndex
         clGridIter.GetElements(aulGridElements);
 
         seq.next(true);
-        if (aulGridElements.size()==0)
+        if (aulGridElements.empty())
             continue;
 
         MeshGeomFacet facet1, facet2;

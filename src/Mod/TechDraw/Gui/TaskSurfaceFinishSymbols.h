@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
 #define TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -66,7 +68,7 @@ public:
     void addLine(int x1, int y1, int x2, int y2);
     void addCircle(int xCenter, int yCenter, int radius);
     void addText(int xText, int yText, std::string text);
-    std::string finish(void);
+    std::string finish();
 
 }; // SvgString
 
@@ -76,7 +78,7 @@ class TaskSurfaceFinishSymbols : public QWidget
 
 public:
     TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
-    ~TaskSurfaceFinishSymbols();
+    ~TaskSurfaceFinishSymbols() override;
 
 public Q_SLOTS:
 
@@ -93,9 +95,9 @@ private Q_SLOTS:
 protected Q_SLOTS:
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
     enum symbolType {anyMethod=0, removeProhibit, removeRequired,
@@ -119,20 +121,20 @@ class TaskDlgSurfaceFinishSymbols : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
-    ~TaskDlgSurfaceFinishSymbols();
+    ~TaskDlgSurfaceFinishSymbols() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 

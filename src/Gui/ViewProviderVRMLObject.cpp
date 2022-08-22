@@ -86,10 +86,10 @@ void ViewProviderVRMLObject::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderVRMLObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderVRMLObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("VRML");
+    StrList.emplace_back("VRML");
     return StrList;
 }
 
@@ -165,7 +165,7 @@ void ViewProviderVRMLObject::addResource(const SbString& url, std::list<std::str
     if (fi.exists()) {
         // add the resource file if not yet listed
         if (std::find(resources.begin(), resources.end(), found.getString()) == resources.end()) {
-            resources.push_back(found.getString());
+            resources.emplace_back(found.getString());
         }
     }
 }
@@ -187,7 +187,7 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
         if (url.getLength() > 0) {
             // add the resource file if not yet listed
             if (std::find(resources.begin(), resources.end(), url.getString()) == resources.end()) {
-                resources.push_back(url.getString());
+                resources.emplace_back(url.getString());
             }
 
             // if the resource file could be loaded check if it references further resources

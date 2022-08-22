@@ -42,24 +42,24 @@ namespace PartDesignGui {
  */
 class PartDesignGuiExport Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Workbench();
-    virtual ~Workbench();
+    ~Workbench() override;
 
       /** Run some actions when the workbench gets activated. */
-    virtual void activated();
+    void activated() override;
     /** Run some actions when the workbench gets deactivated. */
-    virtual void deactivated();
+    void deactivated() override;
 
     /// Add custom entries to the context menu
-    virtual void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
+    void setupContextMenu(const char* recipient, Gui::MenuItem*) const override;
 
 protected:
-  Gui::MenuItem* setupMenuBar() const;
-  Gui::ToolBarItem* setupToolBars() const;
-  Gui::ToolBarItem* setupCommandBars() const;
+  Gui::MenuItem* setupMenuBar() const override;
+  Gui::ToolBarItem* setupToolBars() const override;
+  Gui::ToolBarItem* setupCommandBars() const override;
 
 private:
    /// Refresh the Body's highlighting when a document becomes active

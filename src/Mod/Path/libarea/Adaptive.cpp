@@ -68,7 +68,7 @@ inline bool HasAnyPath(const Paths &paths)
 {
 	for (Paths::size_type i = 0; i < paths.size(); i++)
 	{
-		if (paths[i].size() > 0)
+		if (!paths[i].empty())
 			return true;
 	}
 	return false;
@@ -251,7 +251,7 @@ int getPathNestingLevel(const Path &path, const Paths &paths)
 	int nesting = 0;
 	for (const auto &other : paths)
 	{
-		if (path.size() > 0 && PointInPolygon(path.front(), other) != 0)
+		if (!path.empty() && PointInPolygon(path.front(), other) != 0)
 			nesting++;
 	}
 	return nesting;
@@ -262,7 +262,7 @@ void appendDirectChildPaths(Paths &outPaths, const Path &path, const Paths &path
 	int nesting = getPathNestingLevel(path, paths);
 	for (const auto &other : paths)
 	{
-		if (path.size() > 0 && other.size() > 0 && PointInPolygon(other.front(), path) != 0)
+		if (!path.empty() && !other.empty() && PointInPolygon(other.front(), path) != 0)
 		{
 			if (getPathNestingLevel(other, paths) == nesting + 1)
 				outPaths.push_back(other);
@@ -480,7 +480,7 @@ bool Line2CircleIntersect(const IntPoint &c, double radius, const IntPoint &p1, 
 		result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
 		result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
 	}
-	return result.size() > 0;
+	return !result.empty();
 }
 
 // calculate center point of polygon
@@ -703,7 +703,7 @@ bool PopPathWithClosestPoint(Paths &paths /*closest path is removed from collect
 							 IntPoint p1, Path &result)
 {
 
-	if (paths.size() == 0)
+	if (paths.empty())
 		return false;
 
 	double minDistSqrd = __DBL_MAX__;
@@ -773,7 +773,7 @@ void DeduplicatePaths(const Paths &inputs, Paths &outputs)
 			}
 		}
 
-		if (!duplicate && new_pth.size() > 0)
+		if (!duplicate && !new_pth.empty())
 		{
 			outputs.push_back(new_pth);
 		}
@@ -785,11 +785,11 @@ void ConnectPaths(Paths input, Paths &output)
 	output.clear();
 	bool newPath = true;
 	Path joined;
-	while (input.size() > 0)
+	while (!input.empty())
 	{
 		if (newPath)
 		{
-			if (joined.size() > 0)
+			if (!joined.empty())
 				output.push_back(joined);
 			joined.clear();
 			for (auto pt : input.front())
@@ -841,7 +841,7 @@ void ConnectPaths(Paths input, Paths &output)
 		if (!anyMatch)
 			newPath = true;
 	}
-	if (joined.size() > 0)
+	if (!joined.empty())
 		output.push_back(joined);
 }
 
@@ -1200,7 +1200,7 @@ class EngagePoint
 		while (PopPathWithClosestPoint(toChain, current, result))
 		{
 			toolBoundPaths.push_back(result);
-			if (result.size() > 0)
+			if (!result.empty())
 				current = result.back();
 		}
 
@@ -1794,7 +1794,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		if (opType == OperationType::otClearingOutside)
 		{
 			// add stock paths, with overshooting
-			for (auto p : stockOvershoot)
+			for (const auto& p : stockOvershoot)
 				inputPaths.push_back(p);
 		}
 		else if (opType == OperationType::otClearingInside)
@@ -1916,16 +1916,16 @@ bool Adaptive2d::FindEntryPoint(TPaths &progressPaths, const Paths &toolBoundPat
 		double step = RESOLUTION_FACTOR;
 		double currentDelta = -1;
 		clipof.Execute(incOffset, currentDelta);
-		while (incOffset.size() > 0)
+		while (!incOffset.empty())
 		{
 			clipof.Execute(incOffset, currentDelta);
-			if (incOffset.size() > 0)
+			if (!incOffset.empty())
 				lastValidOffset = incOffset;
 			currentDelta -= step;
 		}
 		for (size_t i = 0; i < lastValidOffset.size(); i++)
 		{
-			if (lastValidOffset[i].size() > 0)
+			if (!lastValidOffset[i].empty())
 			{
 				entryPoint = Compute2DPolygonCentroid(lastValidOffset[i]);
 				found = true;
@@ -1960,7 +1960,7 @@ bool Adaptive2d::FindEntryPoint(TPaths &progressPaths, const Paths &toolBoundPat
 			clip.AddPaths(boundPaths, PolyType::ptClip, true);
 			Paths crossing;
 			clip.Execute(ClipType::ctDifference, crossing);
-			if (crossing.size() > 0)
+			if (!crossing.empty())
 			{
 				// helix does not fit to the cutting area
 				found = false;
@@ -2345,7 +2345,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 
 	IntPoint endPoint(passToolPath[0]);
 	// if there is a previous path - need to resolve linking move to new path
-	if (output.AdaptivePaths.size() > 0 && output.AdaptivePaths.back().second.size() > 1)
+	if (!output.AdaptivePaths.empty() && output.AdaptivePaths.back().second.size() > 1)
 	{
 		auto &lastTPath = output.AdaptivePaths.back();
 
@@ -2544,7 +2544,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 		cutPath.second.push_back(nextT);
 	}
 
-	if (cutPath.second.size() > 0)
+	if (!cutPath.second.empty())
 		output.AdaptivePaths.push_back(cutPath);
 	Perf_AppendToolPath.Stop();
 }
@@ -2554,20 +2554,20 @@ void Adaptive2d::CheckReportProgress(TPaths &progressPaths, bool force)
 	if (!force && (clock() - lastProgressTime < PROGRESS_TICKS))
 		return; // not yet
 	lastProgressTime = clock();
-	if (progressPaths.size() == 0)
+	if (progressPaths.empty())
 		return;
 	if (progressCallback)
 		if ((*progressCallback)(progressPaths))
 			stopProcessing = true; // call python function, if returns true signal stop processing
 	// clean the paths - keep the last point
-	if (progressPaths.back().second.size() == 0)
+	if (progressPaths.back().second.empty())
 		return;
 	TPath *lastPath = &progressPaths.back();
 	DPoint *lastPoint = &lastPath->second.back();
 	DPoint next(lastPoint->first, lastPoint->second);
 	while (progressPaths.size() > 1)
 		progressPaths.pop_back();
-	while (progressPaths.front().second.size() > 0)
+	while (!progressPaths.front().second.empty())
 		progressPaths.front().second.pop_back();
 	progressPaths.front().first = MotionType::mtCutting;
 	progressPaths.front().second.push_back(next);
@@ -2577,7 +2577,7 @@ void Adaptive2d::AddPathsToProgress(TPaths &progressPaths, Paths paths, MotionTy
 {
 	for (const auto &pth : paths)
 	{
-		if (pth.size() > 0)
+		if (!pth.empty())
 		{
 			progressPaths.push_back(TPath());
 			progressPaths.back().first = mt;
@@ -2590,7 +2590,7 @@ void Adaptive2d::AddPathsToProgress(TPaths &progressPaths, Paths paths, MotionTy
 
 void Adaptive2d::AddPathToProgress(TPaths &progressPaths, const Path pth, MotionType mt)
 {
-	if (pth.size() > 0)
+	if (!pth.empty())
 	{
 		progressPaths.push_back(TPath());
 		progressPaths.back().first = mt;
@@ -2639,7 +2639,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		clipof.Execute(outsideEngage, toolRadiusScaled - stepOverFactor * toolRadiusScaled);
 		CleanPolygons(outsideEngage);
 		ReversePaths(outsideEngage);
-		for (auto p : outsideEngage)
+		for (const auto& p : outsideEngage)
 			engageBounds.push_back(p);
 		outsideEntry = true;
 	}
@@ -2719,14 +2719,14 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		angleHistory.clear();
 
 		// append a new path to progress info paths
-		if (progressPaths.size() == 0)
+		if (progressPaths.empty())
 		{
 			progressPaths.push_back(TPath());
 		}
 		else
 		{
 			// append new path if previous not empty
-			if (progressPaths.back().second.size() > 0)
+			if (!progressPaths.back().second.empty())
 				progressPaths.push_back(TPath());
 		}
 
@@ -2896,18 +2896,18 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR)
 			{ // cut is ok - record it
 				noCutDistance=0;
-				if (toClearPath.size() == 0)
+				if (toClearPath.empty())
 					toClearPath.push_back(toolPos);
 				toClearPath.push_back(newToolPos);
 
 				cumulativeCutArea += area;
 
 				// append to toolpaths
-				if (passToolPath.size() == 0)
+				if (passToolPath.empty())
 				{
 					// in outside entry first successful cut defines the "helix center" and start point
 					// in this case helix diameter is 0 (straight line downwards)
-					if (output.AdaptivePaths.size() == 0 && outsideEntry)
+					if (output.AdaptivePaths.empty() && outsideEntry)
 					{
 						entryPoint = toolPos;
 						output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
@@ -2922,7 +2922,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 				toolPos = newToolPos;
 
 				// append to progress info paths
-				if (progressPaths.size() == 0)
+				if (progressPaths.empty())
 					progressPaths.push_back(TPath());
 				progressPaths.back().second.emplace_back(double(newToolPos.X) / scaleFactor, double(newToolPos.Y) / scaleFactor);
 
@@ -2945,7 +2945,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			}
 		} /* end of points loop*/
 
-		if (toClearPath.size() > 0)
+		if (!toClearPath.empty())
 		{
 			cleared.ExpandCleared(toClearPath);
 			toClearPath.clear();

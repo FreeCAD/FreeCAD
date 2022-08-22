@@ -35,8 +35,8 @@ namespace Gui {
 class GuiExport ViewParams: public ParameterGrp::ObserverType {
 public:
     ViewParams();
-    virtual ~ViewParams();
-    void OnChange(Base::Subject<const char*> &, const char* sReason);
+    ~ViewParams() override;
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override;
     static ViewParams *instance();
 
     ParameterGrp::handle getHandle() {

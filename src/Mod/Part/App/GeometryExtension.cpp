@@ -62,7 +62,7 @@ void GeometryPersistenceExtension::saveAttributes(Base::Writer &writer) const
 {
     const std::string name = getName();
 
-    if(name.size() > 0)
+    if(!name.empty())
         writer.Stream() << "\" name=\"" << name;
 
 }

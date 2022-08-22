@@ -106,7 +106,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
                 refnames[r] = refs[r]->getNameInDocument();
         } else {
             refstrings.push_back(QObject::tr("No reference selected"));
-            refnames.push_back("");
+            refnames.emplace_back("");
         }
     }
 }
@@ -289,7 +289,7 @@ void TaskAttacher::updateReferencesUI()
     pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
 
     if (this->lastSuggestResult.message != SuggestResult::srOK) {
-        if(this->lastSuggestResult.nextRefTypeHint.size() > 0){
+        if(!this->lastSuggestResult.nextRefTypeHint.empty()){
             //message = "Need more references";
         }
     } else {
@@ -429,7 +429,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (autoNext) {
             if (iActiveRef == -1){
                 //nothing to do
-            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
+            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.empty()){
                 iActiveRef = -1;
             } else {
                 iActiveRef++;
@@ -661,7 +661,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames[idx] = subElement.c_str();
     } else {
         refs.push_back(obj);
-        refnames.push_back(subElement.c_str());
+        refnames.emplace_back(subElement.c_str());
     }
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();
@@ -692,7 +692,7 @@ void TaskAttacher::updateRefButton(int idx)
     bool enable = true;
     if (idx > numrefs)
         enable = false;
-    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.size() == 0)
+    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.empty())
         enable = false;
     b->setEnabled(enable);
 
@@ -806,7 +806,7 @@ void TaskAttacher::updateListOfModes()
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
     QListWidgetItem* iSelect = nullptr;
-    if (modesInList.size()>0) {
+    if (!modesInList.empty()) {
         for (size_t i = 0  ;  i < modesInList.size()  ;  ++i){
             eMapMode mmode = modesInList[i];
             std::vector<QString> mstr = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),mmode);
@@ -999,7 +999,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
-        if(sels.size() && sels[0].pResolvedObject 
+        if(!sels.empty() && sels[0].pResolvedObject
                        && sels[0].pResolvedObject->getLinkedObject()==editObj) 
         {
             editObj = sels[0].pObject;

@@ -81,11 +81,11 @@ public:
     }
 
     // Auto generated code. See class document of LinkParams.
-    ~LinkParamsP() {
+    ~LinkParamsP() override {
     }
 
     // Auto generated code. See class document of LinkParams.
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+    void OnChange(Base::Subject<const char*> &, const char* sReason) override {
         if(!sReason)
             return;
         auto it = funcs.find(sReason);
@@ -148,7 +148,7 @@ void LinkParams::removeCopyOnChangeApplyToAll() {
 
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
-LinkBaseExtension::LinkBaseExtension(void)
+LinkBaseExtension::LinkBaseExtension()
     :enableLabelCache(false),hasOldSubElement(false),hasCopyOnChange(true)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
@@ -166,7 +166,7 @@ LinkBaseExtension::~LinkBaseExtension()
 {
 }
 
-PyObject* LinkBaseExtension::getExtensionPyObject(void) {
+PyObject* LinkBaseExtension::getExtensionPyObject() {
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         ExtensionPythonObject = Py::Object(new LinkBaseExtensionPy(this),true);
@@ -293,7 +293,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
 
 static const char _GroupPrefix[] = "Configuration (";
 
-App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
+App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute() {
     // The actual value of LinkTouched is not important, just to notify view
     // provider that the link (in fact, its dependents, i.e. linked ones) have
     // recomputed.
@@ -328,7 +328,7 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
         PropertyPythonObject *proxy = nullptr;
         if(getLinkExecuteProperty()
                 && !boost::iequals(getLinkExecuteValue(), "none")
-                && (!_LinkOwner.getValue() 
+                && (!_LinkOwner.getValue()
                     || !container->getDocument()->getObjectByID(_LinkOwner.getValue())))
         {
             // Check if this is an element link. Do not invoke appLinkExecute()
@@ -398,7 +398,7 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
     return inherited::extensionExecute();
 }
 
-short LinkBaseExtension::extensionMustExecute(void) {
+short LinkBaseExtension::extensionMustExecute() {
     auto link = getLink();
     if(!link)
         return 0;
@@ -502,7 +502,7 @@ void LinkBaseExtension::syncCopyOnChange()
     auto parent = getContainer();
 
     auto linked = linkProp->getValue();
-    
+
     std::vector<App::DocumentObjectT> oldObjs;
     std::vector<App::DocumentObject*> objs;
 
@@ -540,7 +540,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // Obtain the original linked object and its dependency in depending order.
     // The last being the original linked object.
     auto srcObjs = getOnChangeCopyObjects();
-    // Refresh signal connection to monitor changes 
+    // Refresh signal connection to monitor changes
     monitorOnChangeCopyObjects(srcObjs);
 
     // Copy the objects. Document::export/importObjects() (called by
@@ -656,7 +656,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // Finally, remove all old copies. oldObjs stores type of DocumentObjectT
     // which stores the object name. Before removing, we need to make sure the
     // object exists, and it is not some new object with the same name, by
-    // checking objs which stores DocumentObject pointer. 
+    // checking objs which stores DocumentObject pointer.
     for (const auto &objT : oldObjs) {
         auto obj = objT.getObject();
         if (obj && std::binary_search(objs.begin(), objs.end(), obj))
@@ -811,8 +811,7 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
     return res;
 }
 
-void LinkBaseExtension::checkCopyOnChange(
-        App::DocumentObject *parent, const App::Property &prop) 
+void LinkBaseExtension::checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop)
 {
     if(!parent || !parent->getDocument()
                || parent->getDocument()->isPerformingTransaction())
@@ -906,7 +905,7 @@ void LinkBaseExtension::monitorOnChangeCopyObjects(
         return;
     for(auto obj : objs) {
         obj->setStatus(App::ObjectStatus::TouchOnColorChange, true);
-        copyOnChangeSrcConns.push_back(obj->signalChanged.connect(
+        copyOnChangeSrcConns.emplace_back(obj->signalChanged.connect(
             [this](const DocumentObject &, const Property &) {
                 if (auto prop = this->getLinkCopyOnChangeTouchedProperty()) {
                     if (this->getLinkCopyOnChangeValue() != CopyOnChangeDisabled)
@@ -917,7 +916,7 @@ void LinkBaseExtension::monitorOnChangeCopyObjects(
 }
 
 App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
-    if(mySubElements.size() && mySubElements[0].size())
+    if(!mySubElements.empty() && !mySubElements[0].empty())
         return nullptr;
     auto linked = getTrueLinkedObject(false);
     if(!linked)
@@ -970,7 +969,7 @@ int LinkBaseExtension::_getElementCountValue() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(_getElementListValue().size()
+    if(!_getElementListValue().empty()
             || (_getElementCountValue() && _getShowElementValue()))
         return true;
     if (getLinkClaimChildValue())
@@ -1247,7 +1246,7 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, in
                 char index[30];
                 for(int i=0,count=_getElementCountValue();i<count;++i) {
                     snprintf(index,sizeof(index),"%d.",i);
-                    ret.push_back(index);
+                    ret.emplace_back(index);
                 }
             }
         }
@@ -1309,7 +1308,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     int idx = getElementIndex(subname,&subname);
     if(idx>=0) {
         const auto &elements = _getElementListValue();
-        if(elements.size()) {
+        if(!elements.empty()) {
             if(idx>=(int)elements.size() || !elements[idx] || !elements[idx]->getNameInDocument())
                 return true;
             ret = elements[idx]->getSubObject(subname,pyObj,mat,true,depth+1);
@@ -1402,7 +1401,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
                 *mat = matNext;
         }
     }
-    checkGeoElementMap(obj,linked,pyObj,postfix.size()?postfix.c_str():nullptr);
+    checkGeoElementMap(obj,linked,pyObj,!postfix.empty()?postfix.c_str():nullptr);
     return true;
 }
 
@@ -1496,13 +1495,13 @@ void LinkBaseExtension::parseSubName() const {
             mySubElements.emplace_back("");
         return;
     }
-    mySubElements.push_back(element);
+    mySubElements.emplace_back(element);
     mySubName = std::string(subname,element-subname);
     for(std::size_t i=1;i<subs.size();++i) {
         auto &sub = subs[i];
         element = Data::ComplexGeoData::findElementName(sub.c_str());
         if(element && element[0] && boost::starts_with(sub,mySubName))
-            mySubElements.push_back(element);
+            mySubElements.emplace_back(element);
     }
 }
 
@@ -1531,7 +1530,7 @@ void LinkBaseExtension::updateGroup() {
         }
     }
     std::vector<App::DocumentObject*> children;
-    if(groups.size()) {
+    if(!groups.empty()) {
         children = getElementListValue();
         std::set<DocumentObject*> childSet(children.begin(),children.end());
         for(auto ext : groups) {
@@ -1829,8 +1828,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     if (src != &obj || getLinkCopyOnChangeValue()==CopyOnChangeDisabled)
                         return;
                     if (App::Document::isAnyRestoring()
-                            || obj.testStatus(ObjectStatus::NoTouch) 
-                            || (prop.getType() & Prop_Output) 
+                            || obj.testStatus(ObjectStatus::NoTouch)
+                            || (prop.getType() & Prop_Output)
                             || prop.testStatus(Property::Output))
                         return;
                     if (auto propTouch = getLinkCopyOnChangeTouchedProperty())
@@ -1909,7 +1908,7 @@ void LinkBaseExtension::syncElementList() {
             }
         }
         else if (element->LinkedObject.getValue() != link->getValue()
-                 || element->LinkedObject.getSubValues().size()) {
+                 || !element->LinkedObject.getSubValues().empty()) {
             element->setLink(-1, link->getValue());
         }
     }
@@ -2036,7 +2035,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
             int idx = -1;
             if(getLinkModeValue()>=LinkModeAutoLink ||
                (subname && subname[0]) ||
-               subElements.size() ||
+               !subElements.empty() ||
                obj->getDocument()!=parent->getDocument() ||
                (getElementListProperty()->find(obj->getNameInDocument(),&idx) && idx!=index))
             {
@@ -2087,14 +2086,14 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
     }
 
     if(!xlink) {
-        if(subElements.size() || (subname && subname[0]))
+        if(!subElements.empty() || (subname && subname[0]))
             LINK_THROW(Base::RuntimeError,"SubName/SubElement link requires PropertyXLink");
         linkProp->setValue(obj);
         return;
     }
 
     std::vector<std::string> subs;
-    if(subElements.size()) {
+    if(!subElements.empty()) {
         subs.reserve(subElements.size());
         for(const auto &s : subElements) {
             subs.emplace_back(subname?subname:"");
@@ -2109,7 +2108,7 @@ void LinkBaseExtension::detachElements()
 {
     std::vector<App::DocumentObjectT> objs;
     for (auto obj : getElementListValue())
-        objs.push_back(obj);
+        objs.emplace_back(obj);
     getElementListProperty()->setValue();
     for(const auto &objT : objs)
         detachElement(objT.getObject());
@@ -2225,7 +2224,7 @@ template class AppExport ExtensionPythonT<LinkBaseExtension>;
 
 EXTENSION_PROPERTY_SOURCE(App::LinkExtension, App::LinkBaseExtension)
 
-LinkExtension::LinkExtension(void)
+LinkExtension::LinkExtension()
 {
     initExtensionType(LinkExtension::getExtensionClassTypeId());
 
@@ -2265,7 +2264,7 @@ bool Link::canLinkProperties() const {
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::LinkPython, App::Link)
-template<> const char* App::LinkPython::getViewProviderName(void) const {
+template<> const char* App::LinkPython::getViewProviderName() const {
     return "Gui::ViewProviderLinkPython";
 }
 template class AppExport FeaturePythonT<App::Link>;
@@ -2292,7 +2291,7 @@ bool LinkElement::canDelete() const {
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::LinkElementPython, App::LinkElement)
-template<> const char* App::LinkElementPython::getViewProviderName(void) const {
+template<> const char* App::LinkElementPython::getViewProviderName() const {
     return "Gui::ViewProviderLinkPython";
 }
 template class AppExport FeaturePythonT<App::LinkElement>;
@@ -2311,7 +2310,7 @@ LinkGroup::LinkGroup() {
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::LinkGroupPython, App::LinkGroup)
-template<> const char* App::LinkGroupPython::getViewProviderName(void) const {
+template<> const char* App::LinkGroupPython::getViewProviderName() const {
     return "Gui::ViewProviderLinkPython";
 }
 template class AppExport FeaturePythonT<App::LinkGroup>;

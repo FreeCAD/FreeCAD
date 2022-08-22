@@ -111,7 +111,7 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
     return nullptr;
 }
 
-App::DocumentObjectExecReturn *RuledSurface::execute(void)
+App::DocumentObjectExecReturn *RuledSurface::execute()
 {
     try {
         App::DocumentObjectExecReturn* ret;
@@ -278,7 +278,7 @@ void Loft::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *Loft::execute(void)
+App::DocumentObjectExecReturn *Loft::execute()
 {
     if (Sections.getSize() == 0)
         return new App::DocumentObjectExecReturn("No sections linked.");
@@ -394,7 +394,7 @@ void Sweep::onChanged(const App::Property* prop)
     Part::Feature::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *Sweep::execute(void)
+App::DocumentObjectExecReturn *Sweep::execute()
 {
     if (Sections.getSize() == 0)
         return new App::DocumentObjectExecReturn("No sections linked.");
@@ -615,7 +615,7 @@ void Thickness::handleChangedPropertyType(Base::XMLReader &reader, const char *T
     }
 }
 
-App::DocumentObjectExecReturn *Thickness::execute(void)
+App::DocumentObjectExecReturn *Thickness::execute()
 {
     App::DocumentObject* source = Faces.getValue();
     if (!source)
@@ -663,7 +663,7 @@ Refine::Refine()
     ADD_PROPERTY_TYPE(Source,(nullptr),"Refine",App::Prop_None,"Source shape");
 }
 
-App::DocumentObjectExecReturn *Refine::execute(void)
+App::DocumentObjectExecReturn *Refine::execute()
 {
     Part::Feature* source = Source.getValue<Part::Feature*>();
     if (!source)
@@ -688,7 +688,7 @@ Reverse::Reverse()
     ADD_PROPERTY_TYPE(Source, (nullptr), "Reverse", App::Prop_None, "Source shape");
 }
 
-App::DocumentObjectExecReturn* Reverse::execute(void)
+App::DocumentObjectExecReturn* Reverse::execute()
 {
     App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
     Part::TopoShape topoShape = Part::Feature::getShape(source);

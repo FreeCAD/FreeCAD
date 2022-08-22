@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-//this file originally part of TechDraw workbench
+//this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
@@ -68,7 +68,7 @@ FeatureProjection::~FeatureProjection()
 {
 }
 
-App::DocumentObjectExecReturn *FeatureProjection::execute(void)
+App::DocumentObjectExecReturn *FeatureProjection::execute()
 {
     App::DocumentObject* link = Source.getValue();
     if (!link)

@@ -154,7 +154,7 @@ bool TaskLinkDim::dimReferencesSelection(const TechDraw::DrawViewDimension* dim)
         return false;
     }
 
-    if(refParts.size() == 0) {
+    if(refParts.empty()) {
         //shouldn't happen!
     } else if (refParts.size() == 1) {
         if ((refParts[0] == m_parts[0]) &&

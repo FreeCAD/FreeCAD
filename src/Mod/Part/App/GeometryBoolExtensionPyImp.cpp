@@ -29,13 +29,13 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryBoolExtensionPy::representation(void) const
+std::string GeometryBoolExtensionPy::representation() const
 {
     std::stringstream str;
     bool val = getGeometryBoolExtensionPtr()->getValue();
     str << "<GeometryBoolExtension (" ;
 
-    if(getGeometryBoolExtensionPtr()->getName().size()>0)
+    if(!getGeometryBoolExtensionPtr()->getName().empty())
         str << "\'" << getGeometryBoolExtensionPtr()->getName() << "\', ";
 
     str << (val?"True":"False") << ") >";
@@ -81,7 +81,7 @@ int GeometryBoolExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Boolean GeometryBoolExtensionPy::getValue(void) const
+Py::Boolean GeometryBoolExtensionPy::getValue() const
 {
     return Py::Boolean(this->getGeometryBoolExtensionPtr()->getValue());
 }

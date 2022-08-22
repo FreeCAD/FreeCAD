@@ -90,7 +90,7 @@ public:
         STATUS_SEEK_Second,
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_Second) {
@@ -203,13 +203,13 @@ public:
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_First) {
@@ -253,7 +253,7 @@ public:
                     Gui::Command::updateActive();
 
                 // constrain chosen point
-                if (SugConstr.size() > 0) {
+                if (!SugConstr.empty()) {
                     createAutoConstraints(SugConstr, BaseGeoId, (ExtendFromStart) ? Sketcher::PointPos::start : Sketcher::PointPos::end);
                     SugConstr.clear();
                 }
@@ -288,7 +288,7 @@ public:
     }
 
 private:
-    virtual void activated() override
+    void activated() override
     {
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
@@ -296,7 +296,7 @@ private:
         Gui::Selection().addSelectionGate(filterGate);
     }
 
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Extension");
     }
 

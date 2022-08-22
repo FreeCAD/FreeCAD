@@ -106,11 +106,6 @@ QGTracker::~QGTracker()
 {
 }
 
-QVariant QGTracker::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGIPrimPath::itemChange(change, value);
-}
-
 void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 { 
     QPointF myScenePos = event->scenePos();
@@ -157,16 +152,6 @@ void QGTracker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
     QGIPrimPath::mouseDoubleClickEvent(event);
 }
 
-void QGTracker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    QGIPrimPath::hoverEnterEvent(event);
-}
-
-void QGTracker::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    QGIPrimPath::hoverLeaveEvent(event);
-}
-
 void QGTracker::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 {
     if (!m_sleep) {
@@ -201,7 +186,7 @@ void QGTracker::sleep(bool b)
 QPointF QGTracker::snapToAngle(QPointF dumbPt)
 {
     // If no point selected yet, snapping has no sense
-    if (m_points.size() < 1)
+    if (m_points.empty())
         return dumbPt;
 
     QPointF result(dumbPt);
@@ -340,7 +325,7 @@ QRectF QGTracker::boundingRect() const
     return scene()->sceneRect();
 }
 
-QPainterPath QGTracker::shape(void) const
+QPainterPath QGTracker::shape() const
 {
     QPainterPath result;
     result.addRect(boundingRect());
@@ -465,7 +450,7 @@ void QGTracker::setPoint(std::vector<QPointF> pts)
     setPrettyNormal();
 }
 
-std::vector<Base::Vector3d> QGTracker::convertPoints(void)
+std::vector<Base::Vector3d> QGTracker::convertPoints()
 {
     std::vector<Base::Vector3d> result;
     for (auto& p: m_points) {
@@ -475,7 +460,7 @@ std::vector<Base::Vector3d> QGTracker::convertPoints(void)
     return result;
 }
 
-void QGTracker::terminateDrawing(void)
+void QGTracker::terminateDrawing()
 {
 //    Base::Console().Message("QGTracker::terminateDrawing()\n");
     m_track->hide();

@@ -68,7 +68,7 @@ short Loft::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Loft::execute(void)
+App::DocumentObjectExecReturn *Loft::execute()
 {
     auto getSectionShape =
         [](App::DocumentObject* feature, const std::vector<std::string> &subs) -> TopoDS_Shape {

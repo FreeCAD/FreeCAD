@@ -30,20 +30,20 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemMeshShapeNetgen : public ViewProviderFemMeshShape
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemMeshShapeNetgen);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMeshShapeNetgen);
 
 public:
     /// constructor.
     ViewProviderFemMeshShapeNetgen();
 
     /// destructor.
-    virtual ~ViewProviderFemMeshShapeNetgen();
+    ~ViewProviderFemMeshShapeNetgen() override;
 
-     virtual void updateData(const App::Property*);
+     void updateData(const App::Property*) override;
 
 protected:
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
-    virtual bool setEdit(int ModNum);
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool setEdit(int ModNum) override;
 };
 
 } //namespace FemGui

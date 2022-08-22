@@ -74,7 +74,7 @@ FC_LOG_LEVEL_INIT("Part",true,true)
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 
 
-Feature::Feature(void)
+Feature::Feature()
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
 }
@@ -83,12 +83,12 @@ Feature::~Feature()
 {
 }
 
-short Feature::mustExecute(void) const
+short Feature::mustExecute() const
 {
     return GeoFeature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Feature::recompute(void)
+App::DocumentObjectExecReturn *Feature::recompute()
 {
     try {
         return App::GeoFeature::recompute();
@@ -101,13 +101,13 @@ App::DocumentObjectExecReturn *Feature::recompute(void)
     }
 }
 
-App::DocumentObjectExecReturn *Feature::execute(void)
+App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Shape.touch();
     return GeoFeature::execute();
 }
 
-PyObject *Feature::getPyObject(void)
+PyObject *Feature::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -423,7 +423,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 subObj = owner->resolve(sub.c_str(), &parent, &childName,nullptr,nullptr,&mat,false);
                 if(!parent || !subObj)
                     continue;
-                if(linkStack.size() 
+                if(!linkStack.empty()
                     && parent->getExtensionByType<App::GroupExtension>(true,false))
                 {
                     visible = linkStack.back()->isElementVisible(childName.c_str());
@@ -450,7 +450,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             shapes.push_back(shape);
         }
 
-        if(linkStack.size() && linkStack.back()==owner)
+        if(!linkStack.empty() && linkStack.back()==owner)
             linkStack.pop_back();
 
         if(shapes.empty()) 
@@ -645,7 +645,7 @@ ShapeHistory Feature::joinHistory(const ShapeHistory& oldH, const ShapeHistory& 
 }
 
     /// returns the type name of the ViewProvider
-const char* Feature::getViewProviderName(void) const {
+const char* Feature::getViewProviderName() const {
     return "PartGui::ViewProviderPart";
 }
 
@@ -681,10 +681,10 @@ PROPERTY_SOURCE(Part::FeatureExt, Part::Feature)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Part::FeaturePython, Part::Feature)
-template<> const char* Part::FeaturePython::getViewProviderName(void) const {
+template<> const char* Part::FeaturePython::getViewProviderName() const {
     return "PartGui::ViewProviderPython";
 }
-template<> PyObject* Part::FeaturePython::getPyObject(void) {
+template<> PyObject* Part::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<Part::PartFeaturePy>(this),true);

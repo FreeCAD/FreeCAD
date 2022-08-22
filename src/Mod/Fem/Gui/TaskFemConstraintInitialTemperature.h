@@ -41,11 +41,11 @@ class TaskFemConstraintInitialTemperature : public TaskFemConstraint
 
 public:
     TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent = nullptr);
-    ~TaskFemConstraintInitialTemperature();
+    ~TaskFemConstraintInitialTemperature() override;
     double get_temperature()const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
@@ -60,9 +60,9 @@ class TaskDlgFemConstraintInitialTemperature : public TaskDlgFemConstraint
 
 public:
     TaskDlgFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

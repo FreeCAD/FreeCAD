@@ -67,7 +67,7 @@ PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
                                   std::string *subname=nullptr);
 
 /// Display error when there are existing Body objects, but none are active
-void needActiveBodyError(void);
+void needActiveBodyError();
 
 /// Create a Body object in doc, set it active, and return pointer to it
 PartDesign::Body * makeBody(App::Document *doc);

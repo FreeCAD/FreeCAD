@@ -96,7 +96,7 @@ ViewProviderTrajectory::~ViewProviderTrajectory()
 
 void ViewProviderTrajectory::attach(App::DocumentObject *pcObj)
 {
-    ViewProviderDocumentObject::attach(pcObj);
+    ViewProviderGeometryObject::attach(pcObj);
 
     // Draw trajectory lines
     SoSeparator* linesep = new SoSeparator;
@@ -130,10 +130,10 @@ void ViewProviderTrajectory::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderTrajectory::getDisplayModes(void) const
+std::vector<std::string> ViewProviderTrajectory::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Waypoints");
+    StrList.emplace_back("Waypoints");
     return StrList;
 }
 

@@ -37,7 +37,7 @@ class TaskThicknessParameters : public TaskDressUpParameters
 
 public:
     TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
-    ~TaskThicknessParameters();
+    ~TaskThicknessParameters() override;
 
     double getValue(void) const;
     bool getReversed(void) const;
@@ -51,13 +51,13 @@ private Q_SLOTS:
     void onJoinTypeChanged(int join);
     void onReversedChanged(bool reversed);
     void onIntersectionChanged(bool intersection);
-    void onRefDeleted(void);
+    void onRefDeleted(void) override;
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void clearButtons(const selectionModes notThis) override;
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;
@@ -70,11 +70,11 @@ class TaskDlgThicknessParameters : public TaskDlgDressUpParameters
 
 public:
     TaskDlgThicknessParameters(ViewProviderThickness *ThicknessView);
-    ~TaskDlgThicknessParameters();
+    ~TaskDlgThicknessParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
 } //namespace PartDesignGui

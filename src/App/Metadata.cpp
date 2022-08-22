@@ -59,13 +59,13 @@ XERCES_CPP_NAMESPACE_USE
 
 namespace MetadataInternal {
     class XMLErrorHandler : public HandlerBase {
-        void warning(const SAXParseException& toCatch)
+        void warning(const SAXParseException& toCatch) override
         {
             // Don't deal with warnings at all
             boost::ignore_unused(toCatch);
         }
 
-        void error(const SAXParseException& toCatch)
+        void error(const SAXParseException& toCatch) override
         {
             std::stringstream message;
             message << "Error at file \"" << StrX(toCatch.getSystemId())
@@ -75,7 +75,7 @@ namespace MetadataInternal {
             throw Base::XMLBaseException(message.str());
         }
 
-        void fatalError(const SAXParseException& toCatch)
+        void fatalError(const SAXParseException& toCatch) override
         {
             std::stringstream message;
             message << "Fatal error at file \"" << StrX(toCatch.getSystemId())
@@ -99,7 +99,11 @@ Metadata::Metadata(const fs::path& metadataFile)
     auto errHandler = std::make_unique<MetadataInternal::XMLErrorHandler>();
     _parser->setErrorHandler(errHandler.get());
 
+#if defined (FC_OS_WIN32)
+    _parser->parse(reinterpret_cast<const XMLCh*>(metadataFile.wstring().c_str()));
+#else
     _parser->parse(metadataFile.string().c_str());
+#endif
 
     auto doc = _parser->getDocument();
     _dom = doc->getDocumentElement();
@@ -136,9 +140,7 @@ Metadata::Metadata(const DOMNode* domNode, int format) : _dom(nullptr)
     }
 }
 
-Metadata::~Metadata()
-{
-}
+Metadata::~Metadata() = default;
 
 std::string Metadata::name() const
 {

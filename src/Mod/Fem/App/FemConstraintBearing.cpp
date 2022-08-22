@@ -57,7 +57,7 @@ ConstraintBearing::ConstraintBearing()
                       "Axis of bearing seat");
 }
 
-App::DocumentObjectExecReturn *ConstraintBearing::execute(void)
+App::DocumentObjectExecReturn *ConstraintBearing::execute()
 {
     return Constraint::execute();
 }
@@ -88,7 +88,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
     } else if ((prop == &Location) || (prop == &Dist)) {
         App::DocumentObject* obj = Location.getValue();
         std::vector<std::string> names = Location.getSubValues();
-        if (names.size() == 0) {
+        if (names.empty()) {
             return;
         }
         std::string subName = names.front();

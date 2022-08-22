@@ -85,7 +85,7 @@ void edgeVisitor::end_face()
     graphWires.push_back(wireEdges);
 }
 
-TechDraw::ewWireList edgeVisitor::getResult(void)
+TechDraw::ewWireList edgeVisitor::getResult()
 {
     return graphWires;
 }
@@ -283,7 +283,7 @@ TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol
     ShapeFix_ShapeTolerance sTol;
     Handle(ShapeExtend_WireData) wireData = new ShapeExtend_WireData();
 
-    for (auto e:edges) {
+    for (const auto& e:edges) {
         wireData->Add(e);
     }
 
@@ -315,7 +315,7 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
         TopoDS_Vertex v2 = TopExp::LastVertex(e);
         bool addv1 = true;
         bool addv2 = true;
-        for (auto v:uniqueVert) {
+        for (const auto& v:uniqueVert) {
             if (DrawUtil::isSamePoint(v,v1,EWTOLERANCE))
                 addv1 = false;
             if (DrawUtil::isSamePoint(v,v2,EWTOLERANCE))
@@ -336,7 +336,7 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
 //    Base::Console().Message("TRACE - EW::makeWalkerEdges()\n");
     m_saveInEdges = edges;
     std::vector<WalkerEdge> walkerEdges;
-    for (auto e:edges) {
+    for (const auto& e:edges) {
         TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
         TopoDS_Vertex ev2 = TopExp::LastVertex(e);
         int v1dx = findUniqueVert(ev1, verts);
@@ -376,7 +376,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
         }
     }
     std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(closedWires,false);           //biggest 1st
-    if (!sortedWires.size()) {
+    if (sortedWires.empty()) {
         Base::Console().Log("INFO - EW::sortStrip - no sorted Wires!\n");
         return sortedWires;                                     // might happen in the middle of changes?
     }
@@ -488,7 +488,7 @@ bool WalkerEdge::isEqual(WalkerEdge w)
     return (i.idx < j.idx);
 }
 
-std::string WalkerEdge::dump(void)
+std::string WalkerEdge::dump()
 {
     std::string result;
     std::stringstream builder;
@@ -523,7 +523,7 @@ void ewWire::push_back(WalkerEdge w)
     wedges.push_back(w);
 }
 
-int ewWire::size(void)
+int ewWire::size()
 {
     return wedges.size();
 }
@@ -560,7 +560,7 @@ void ewWireList::push_back(ewWire w)
     wires.push_back(w);
 }
 
-int ewWireList::size(void)
+int ewWireList::size()
 {
     return wires.size();
 }
@@ -569,7 +569,7 @@ int ewWireList::size(void)
 //* embedItem Methods
 //*************************************
 
-std::string embedItem::dump(void)
+std::string embedItem::dump()
 {
     std::string result;
     std::stringstream builder;

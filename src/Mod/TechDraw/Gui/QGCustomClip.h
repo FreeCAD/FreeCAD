@@ -42,14 +42,14 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomClip : public QGraphicsItemGroup
 {
 public:
-    explicit QGCustomClip(void);
-    ~QGCustomClip() {}
+    explicit QGCustomClip();
+    ~QGCustomClip() override {}
 
     enum {Type = QGraphicsItem::UserType + 132};
-    int type() const { return Type;}
-    virtual QRectF boundingRect() const;
+    int type() const override { return Type;}
+    QRectF boundingRect() const override;
 
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual void setRect(QRectF r);

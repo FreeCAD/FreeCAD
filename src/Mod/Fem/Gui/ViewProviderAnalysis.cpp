@@ -28,6 +28,7 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QTextStream>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/MaterialObject.h>
@@ -55,6 +56,33 @@
 
 using namespace FemGui;
 
+ViewProviderFemHighlighter::ViewProviderFemHighlighter()
+{
+    annotate = new SoSeparator();
+    annotate->ref();
+}
+
+ViewProviderFemHighlighter::~ViewProviderFemHighlighter()
+{
+    annotate->unref();
+}
+
+void ViewProviderFemHighlighter::attach(ViewProviderFemAnalysis *view)
+{
+    SoGroup *root = view->getRoot();
+    root->addChild(annotate);
+}
+
+void ViewProviderFemHighlighter::highlightView(Gui::ViewProviderDocumentObject *view)
+{
+    annotate->removeAllChildren();
+
+    if (view) {
+        annotate->addChild(view->getRoot());
+    }
+}
+
+// ----------------------------------------------------------------------------
 
 /* TRANSLATOR FemGui::ViewProviderFemAnalysis */
 
@@ -68,25 +96,37 @@ ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 
 ViewProviderFemAnalysis::~ViewProviderFemAnalysis()
 {
+}
 
+void ViewProviderFemAnalysis::attach(App::DocumentObject *obj)
+{
+    Gui::ViewProviderDocumentObjectGroup::attach(obj);
+    extension.attach(this);
+}
+
+void ViewProviderFemAnalysis::highlightView(Gui::ViewProviderDocumentObject *view)
+{
+    extension.highlightView(view);
 }
 
 bool ViewProviderFemAnalysis::doubleClicked(void)
 {
     Gui::Command::assureWorkbench("FemWorkbench");
-    Gui::Command::addModule(Gui::Command::Gui,"FemGui");
-    Gui::Command::doCommand(Gui::Command::Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+    Gui::Command::addModule(Gui::Command::Gui, "FemGui");
+    Gui::Command::doCommand(Gui::Command::Gui,
+                            "FemGui.setActiveAnalysis(App.activeDocument().%s)",
+                            this->getObject()->getNameInDocument());
     return true;
 }
 
-std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)const
+std::vector<App::DocumentObject *> ViewProviderFemAnalysis::claimChildren(void) const
 {
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
 }
 
 std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
 {
-    return { "Analysis" };
+    return {"Analysis"};
 }
 
 void ViewProviderFemAnalysis::hide(void)
@@ -99,10 +139,10 @@ void ViewProviderFemAnalysis::show(void)
     Gui::ViewProviderDocumentObjectGroup::show();
 }
 
-void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const char* )
+void ViewProviderFemAnalysis::setupContextMenu(QMenu *menu, QObject *, const char *)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Activate analysis"));
+    Gui::ActionFunction *func = new Gui::ActionFunction(menu);
+    QAction *act = menu->addAction(tr("Activate analysis"));
     func->trigger(act, std::bind(&ViewProviderFemAnalysis::doubleClicked, this));
 }
 
@@ -160,7 +200,7 @@ bool ViewProviderFemAnalysis::canDragObjects() const
     return true;
 }
 
-bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
+bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject *obj) const
 {
     if (!obj)
         return false;
@@ -188,7 +228,7 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
         return false;
 }
 
-void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)
+void ViewProviderFemAnalysis::dragObject(App::DocumentObject *obj)
 {
     ViewProviderDocumentObjectGroup::dragObject(obj);
 }
@@ -198,23 +238,22 @@ bool ViewProviderFemAnalysis::canDropObjects() const
     return true;
 }
 
-bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject* obj) const
+bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject *obj) const
 {
     return canDragObject(obj);
 }
 
-void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
+void ViewProviderFemAnalysis::dropObject(App::DocumentObject *obj)
 {
     ViewProviderDocumentObjectGroup::dropObject(obj);
 }
 
-bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string>&)
+bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
 {
     // warn the user if the object has childs
 
     auto objs = claimChildren();
-    if (!objs.empty())
-    {
+    if (!objs.empty()) {
         // generate dialog
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
@@ -238,22 +277,23 @@ bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string>&)
     }
 }
 
-bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
+bool ViewProviderFemAnalysis::canDelete(App::DocumentObject *obj) const
 {
     // deletions of objects from a FemAnalysis don't necessarily destroy anything
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)
-        return true;
+    return true;
 }
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemAnalysisPython, FemGui::ViewProviderFemAnalysis)
 /// @endcond
 
 // explicit template instantiation
 template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemAnalysis>;
-}
+} // namespace Gui

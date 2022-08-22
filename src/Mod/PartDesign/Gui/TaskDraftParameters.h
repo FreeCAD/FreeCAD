@@ -38,11 +38,11 @@ class TaskDraftParameters : public TaskDressUpParameters
 
 public:
     TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
-    ~TaskDraftParameters();
+    ~TaskDraftParameters() override;
 
-    double getAngle(void) const;
-    bool getReversed(void) const;
-    const std::vector<std::string> getFaces(void) const;
+    double getAngle() const;
+    bool getReversed() const;
+    const std::vector<std::string> getFaces() const;
     void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
@@ -51,13 +51,13 @@ private Q_SLOTS:
     void onReversedChanged(bool reversed);
     void onButtonPlane(const bool checked);
     void onButtonLine(const bool checked);
-    void onRefDeleted(void);
+    void onRefDeleted() override;
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void clearButtons(const selectionModes notThis) override;
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     std::unique_ptr<Ui_TaskDraftParameters> ui;
@@ -70,11 +70,11 @@ class TaskDlgDraftParameters : public TaskDlgDressUpParameters
 
 public:
     TaskDlgDraftParameters(ViewProviderDraft *DraftView);
-    ~TaskDlgDraftParameters();
+    ~TaskDlgDraftParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
 } //namespace PartDesignGui

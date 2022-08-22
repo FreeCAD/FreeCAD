@@ -23,6 +23,8 @@
 #ifndef _TechDraw_LandmarkDimension_h_
 #define _TechDraw_LandmarkDimension_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/PropertyStandard.h>
 
@@ -46,30 +48,30 @@ class TechDrawExport LandmarkDimension : public TechDraw::DrawViewDimension
 public:
     /// Constructor
     LandmarkDimension();
-    virtual ~LandmarkDimension();
+    ~LandmarkDimension() override;
 
     App::PropertyStringList  ReferenceTags;     //tags of 2d vertices in DVP
     
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    virtual void unsetupObject() override;
+    void unsetupObject() override;
 
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDimension"; }
 /*    virtual PyObject *getPyObject(void) override;*/
 
-    virtual bool checkReferences2D() const override;
-    virtual bool has2DReferences(void) const override;
-    virtual pointPair getPointsTwoVerts() override;
-    std::vector<Base::Vector3d> get2DPoints(void) const;
-    virtual DrawViewPart* getViewPart() const override;
-    virtual int getRefType() const override;
+    bool checkReferences2D() const override;
+    bool has2DReferences() const override;
+    pointPair getPointsTwoVerts() override;
+    std::vector<Base::Vector3d> get2DPoints() const;
+    DrawViewPart* getViewPart() const override;
+    int getRefType() const override;
 
-    gp_Ax2 getProjAxis(void) const;
+    gp_Ax2 getProjAxis() const;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
 
     Base::Vector3d projectPoint(const Base::Vector3d& pt, DrawViewPart* dvp) const;
 

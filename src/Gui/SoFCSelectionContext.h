@@ -56,7 +56,7 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     SbColor highlightColor;
     std::shared_ptr<int> counter;
 
-    virtual ~SoFCSelectionContext();
+    ~SoFCSelectionContext() override;
 
     bool isSelected() const {
         return !selectionIndex.empty();
@@ -68,7 +68,7 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     }
 
     bool isSelectAll() const{
-        return selectionIndex.size() && *selectionIndex.begin()<0;
+        return !selectionIndex.empty() && *selectionIndex.begin()<0;
     }
 
     bool isHighlighted() const {
@@ -110,7 +110,7 @@ struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
     bool applyColor(int idx, std::vector<uint32_t> &packedColors, bool &hasTransparency);
     bool isSingleColor(uint32_t &color, bool &hasTransparency);
 
-    virtual SoFCSelectionContextBasePtr copy() {
+    SoFCSelectionContextBasePtr copy() override {
         return std::make_shared<SoFCSelectionContextEx>(*this);
     }
 

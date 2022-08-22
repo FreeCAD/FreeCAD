@@ -38,7 +38,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string OffsetCurvePy::representation(void) const
+std::string OffsetCurvePy::representation() const
 {
     return "<OffsetCurve object>";
 }
@@ -82,7 +82,7 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Float OffsetCurvePy::getOffsetValue(void) const
+Py::Float OffsetCurvePy::getOffsetValue() const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     return Py::Float(curve->Offset());
@@ -94,7 +94,7 @@ void OffsetCurvePy::setOffsetValue(Py::Float arg)
     curve->SetOffsetValue((double)arg);
 }
 
-Py::Object OffsetCurvePy::getOffsetDirection(void) const
+Py::Object OffsetCurvePy::getOffsetDirection() const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     const gp_Dir& dir = curve->Direction();
@@ -121,7 +121,7 @@ void OffsetCurvePy::setOffsetDirection(Py::Object arg)
     }
 }
 
-Py::Object OffsetCurvePy::getBasisCurve(void) const
+Py::Object OffsetCurvePy::getBasisCurve() const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     Handle(Geom_Curve) basis = curve->BasisCurve();

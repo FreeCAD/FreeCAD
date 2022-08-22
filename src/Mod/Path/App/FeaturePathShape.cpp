@@ -64,7 +64,7 @@ FeatureShape::~FeatureShape()
 {
 }
 
-App::DocumentObjectExecReturn *FeatureShape::execute(void)
+App::DocumentObjectExecReturn *FeatureShape::execute()
 {
     Toolpath path;
     std::vector<App::DocumentObject*> links = Sources.getValues();
@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn *FeatureShape::execute(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureShapePython, Path::FeatureShape)
-template<> const char* Path::FeatureShapePython::getViewProviderName(void) const {
+template<> const char* Path::FeatureShapePython::getViewProviderName() const {
     return "PathGui::ViewProviderPathShape";
 }
 /// @endcond

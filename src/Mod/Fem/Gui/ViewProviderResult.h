@@ -33,17 +33,17 @@ namespace FemGui
 
 class FemGuiExport ViewProviderResult : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderResult);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderResult);
 
 public:
     /// constructor
     ViewProviderResult();
 
     /// destructor
-    virtual ~ViewProviderResult();
+    ~ViewProviderResult() override;
 
     // shows solid in the tree
-    virtual bool isShow(void) const
+    bool isShow() const override
     { return true; }
 };
 

@@ -25,5 +25,19 @@
 # Unit test for the Addon Manager module GUI
 from AddonManagerTest.gui.test_gui import TestGui as AddonManagerTestGui
 
+from AddonManagerTest.gui.test_workers_utility import (
+    TestWorkersUtility as AddonManagerTestWorkersUtility,
+)
+from AddonManagerTest.gui.test_workers_startup import (
+    TestWorkersStartup as AddonManagerTestWorkersStartup,
+)
+from AddonManagerTest.gui.test_workers_installation import (
+    TestWorkersInstallation as AddonManagerTestWorkersInstallation,
+)
+
+
 # dummy usage to get flake8 and lgtm quiet
 False if AddonManagerTestGui.__name__ else True
+False if AddonManagerTestWorkersUtility.__name__ else True
+False if AddonManagerTestWorkersStartup.__name__ else True
+False if AddonManagerTestWorkersInstallation.__name__ else True

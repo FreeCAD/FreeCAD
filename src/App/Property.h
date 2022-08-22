@@ -101,7 +101,7 @@ public:
     };
 
     Property();
-    virtual ~Property();
+    ~Property() override;
 
     /// For safe deleting of a dynamic property
     static void destroy(Property *p);
@@ -112,7 +112,7 @@ public:
      * This method is defined in Base::Persistence
      * @see Base::Persistence
      */
-    virtual unsigned int getMemSize (void) const override {
+    unsigned int getMemSize () const override {
         // you have to implement this method in all property classes!
         return sizeof(father) + sizeof(StatusBits);
     }
@@ -121,7 +121,7 @@ public:
      * With \ref hasName() it can be checked beforehand if a valid name is set.
      * @note If no name is set this function returns an empty string, i.e. "".
      */
-    const char* getName(void) const;
+    const char* getName() const;
     /** Check if the property has a name set.
      * If no name is set then \ref getName() will return an empty string
      */
@@ -135,22 +135,22 @@ public:
     std::string getFullName() const;
 
     /// Get the class name of the associated property editor item
-    virtual const char* getEditorName(void) const { return ""; }
+    virtual const char* getEditorName() const { return ""; }
 
     /// Get the type of the property in the container
-    short getType(void) const;
+    short getType() const;
 
     /// Get the group of this property
-    const char* getGroup(void) const;
+    const char* getGroup() const;
 
     /// Get the documentation of this property
-    const char* getDocumentation(void) const;
+    const char* getDocumentation() const;
 
     /// Is called by the framework to set the father (container)
     void setContainer(PropertyContainer *Father);
 
     /// Get a pointer to the PropertyContainer derived class the property belongs to
-    PropertyContainer *getContainer(void) const {return father;}
+    PropertyContainer *getContainer() const {return father;}
 
     /// Set value of property
     virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
@@ -206,11 +206,11 @@ public:
     /// Set the property touched
     void touch();
     /// Test if this property is touched
-    inline bool isTouched(void) const {
+    inline bool isTouched() const {
         return StatusBits.test(Touched);
     }
     /// Reset this property touched
-    inline void purgeTouched(void) {
+    inline void purgeTouched() {
         StatusBits.reset(Touched);
     }
     /// return the status bits
@@ -239,7 +239,7 @@ public:
     //@}
 
     /// Returns a new copy of the property (mainly for Undo/Redo and transactions)
-    virtual Property *Copy(void) const = 0;
+    virtual Property *Copy() const = 0;
     /// Paste the value from the property (mainly for Undo/Redo and transactions)
     virtual void Paste(const Property &from) = 0;
 
@@ -279,9 +279,9 @@ protected:
 
 protected:
     /// Gets called by all setValue() methods after the value has changed
-    virtual void hasSetValue(void);
+    virtual void hasSetValue();
     /// Gets called by all setValue() methods before the value has changed
-    virtual void aboutToSetValue(void);
+    virtual void aboutToSetValue();
 
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
@@ -423,7 +423,7 @@ class AppExport PropertyListsBase
 {
 public:
     virtual void setSize(int newSize)=0;   
-    virtual int getSize(void) const =0;   
+    virtual int getSize() const =0;
 
     const std::set<int> &getTouchList() const {
         return _touchList;
@@ -456,7 +456,7 @@ class AppExport PropertyLists : public Property, public PropertyListsBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual void setPyObject(PyObject *obj) override {
+    void setPyObject(PyObject *obj) override {
         _setPyObject(obj);
     }
 
@@ -486,11 +486,11 @@ public:
         _lValueList.resize(newSize,def);
     }
 
-    virtual void setSize(int newSize) override {
+    void setSize(int newSize) override {
         _lValueList.resize(newSize);
     }
 
-    virtual int getSize(void) const override {
+    int getSize() const override {
         return static_cast<int>(_lValueList.size());
     }
 
@@ -511,21 +511,21 @@ public:
         setValues(newValues);
     }
 
-    const ListT &getValues(void) const{return _lValueList;}
+    const ListT &getValues() const{return _lValueList;}
 
     // alias to getValues
-    const ListT &getValue(void) const{return getValues();}
+    const ListT &getValue() const{return getValues();}
 
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
 
-    virtual bool isSame(const Property &other) const override {
+    bool isSame(const Property &other) const override {
         if (&other == this)
             return true;
         return this->getTypeId() == other.getTypeId()
             && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
-    virtual void setPyObject(PyObject *value) override {
+    void setPyObject(PyObject *value) override {
         try {
             setValue(getPyValue(value));
             return;

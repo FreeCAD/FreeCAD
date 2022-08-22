@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport LinearPattern : public PartDesign::Transformed
 {
-    PROPERTY_HEADER(PartDesign::LinearPattern);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::LinearPattern);
 
 public:
     LinearPattern();
@@ -44,10 +44,10 @@ public:
 
    /** @name methods override feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderLinearPattern";
     }
     //@}
@@ -61,10 +61,10 @@ public:
       *   transformation direction will be parallel to the given edge, which must be linear
       * If Reversed is true, the direction of transformation will be opposite
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> );
+    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> ) override;
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop) override;
     static const App::PropertyIntegerConstraint::Constraints intOccurrences;
 };
 

@@ -31,7 +31,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderMultiTransform)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderMultiTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform() {
         featureName = std::string("MultiTransform");
@@ -39,14 +39,14 @@ public:
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 
-    std::vector<App::DocumentObject*> claimChildren(void) const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    bool onDelete(const std::vector<std::string> &) override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 };
 
 

@@ -41,7 +41,7 @@ class MathParser:
             'e' : math.e
             }
         for var in vars.keys():
-            if self.vars.get(var) != None:
+            if self.vars.get(var) is not None:
                 raise RuntimeError("Cannot redefine the value of " + var)
             self.vars[var] = vars[var]
 

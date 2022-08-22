@@ -42,7 +42,7 @@ namespace Mesh
  */
 class SegmentByMesh : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::SegmentByMesh);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::SegmentByMesh);
 
 public:
   SegmentByMesh();
@@ -56,8 +56,8 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
   //@}
 };
 

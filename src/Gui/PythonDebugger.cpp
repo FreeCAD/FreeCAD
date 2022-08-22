@@ -98,7 +98,7 @@ int Breakpoint::lineIndex(int ind)const
 
 // -----------------------------------------------------
 
-void PythonDebugModule::init_module(void)
+void PythonDebugModule::init_module()
 {
     PythonDebugStdout::init_type();
     PythonDebugStderr::init_type();
@@ -321,7 +321,7 @@ class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
     PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
-    ~PythonDebuggerPy() {}
+    ~PythonDebuggerPy() override {}
     PythonDebugger* dbg;
     int depth;
 };

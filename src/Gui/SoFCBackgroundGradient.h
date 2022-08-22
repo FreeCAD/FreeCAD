@@ -39,9 +39,9 @@ class GuiExport SoFCBackgroundGradient : public SoNode {
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCBackgroundGradient(void);
+    static void initClass();
+    static void finish();
+    SoFCBackgroundGradient();
 
     void GLRender (SoGLRenderAction *action);
     void setColorGradient(const SbColor& fromColor, const SbColor& toColor);

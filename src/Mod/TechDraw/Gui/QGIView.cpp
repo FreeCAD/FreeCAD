@@ -152,7 +152,7 @@ void QGIView::isVisible(bool state)
     }
 }
 
-bool QGIView::isVisible(void)
+bool QGIView::isVisible()
 {
     bool result = false;
     auto feat = getViewObject();
@@ -321,7 +321,7 @@ double QGIView::getYInClip(double y)
     return -y;
 }
 
-QGIViewClip* QGIView::getClipGroup(void)
+QGIViewClip* QGIView::getClipGroup()
 {
     if (!getViewObject()->isInClip()) {
         Base::Console().Log( "Logic Error - getClipGroup called for child "
@@ -340,16 +340,20 @@ QGIViewClip* QGIView::getClipGroup(void)
     return result;
 }
 
-void QGIView::updateView(bool update)
+void QGIView::updateView(bool forceUpdate)
 {
 //    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
-    (void) update;
 
     //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
         setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
+
+    if (getViewObject() && forceUpdate) {
+        setPosition(Rez::guiX(getViewObject()->X.getValue()),
+                    Rez::guiX(getViewObject()->Y.getValue()));
     }
 
     double appRotation = getViewObject()->Rotation.getValue();
@@ -362,7 +366,7 @@ void QGIView::updateView(bool update)
 }
 
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.
-void QGIView::rotateView(void)
+void QGIView::rotateView()
 {
 //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
 //Scale is handled in GeometryObject for DVP & descendents
@@ -606,46 +610,59 @@ QGIView* QGIView::getQGIVByName(std::string name)
 /* static */
 Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 {
-    Gui::ViewProvider* result = nullptr;
     if (obj) {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
-        result = guiDoc->getViewProvider(obj);
+        return guiDoc->getViewProvider(obj);
     }
-    return result;
+    return nullptr;
 }
 
-QGVPage* QGIView::getGraphicsView(TechDraw::DrawView* dv)
+QGVPage* QGIView::getQGVPage(TechDraw::DrawView* dv)
 {
-    QGVPage* graphicsView = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dv);
-    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv) {
-        MDIViewPage* mdi = vpdv->getMDIViewPage();
-        if (mdi) {
-            graphicsView = mdi->getQGVPage();
-        }
+    ViewProviderPage* vpp = getViewProviderPage(dv);
+    if (!vpp) {
+        return vpp->getQGVPage();
     }
-    return graphicsView;
+    return nullptr;
 }
 
-QGSPage* QGIView::getGraphicsScene(TechDraw::DrawView* dv)
+QGSPage* QGIView::getQGSPage(TechDraw::DrawView* dv)
 {
-    QGSPage* graphicsScene = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dv);
-    ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(vp);
-    if (vpdv) {
-        MDIViewPage* mdi = vpdv->getMDIViewPage();
-        if (mdi) {
-            graphicsScene = mdi->getQGSPage();
-        }
+    ViewProviderPage* vpp = getViewProviderPage(dv);
+    if (vpp) {
+        return vpp->getQGSPage();
     }
-    return graphicsScene;
+    return nullptr;
 }
 
-MDIViewPage* QGIView::getMDIViewPage(void) const
+MDIViewPage* QGIView::getMDIViewPage() const
 {
-    QGSPage* qgsp = static_cast<QGSPage*>(scene());
-    return MDIViewPage::getFromScene(qgsp);
+    if (!getViewObject()) {
+        return nullptr;
+    }
+    ViewProviderPage* vpp = getViewProviderPage(getViewObject());
+    if (vpp) {
+        return vpp->getMDIViewPage();
+    }
+    return nullptr;
+}
+
+ViewProviderPage* QGIView::getViewProviderPage(TechDraw::DrawView* dv)
+{
+    if (!dv)  {
+        return nullptr;
+    }
+    TechDraw::DrawPage* page = dv->findParentPage();
+    if (!page) {
+        return nullptr;
+    }
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    if (!activeGui) {
+        return nullptr;
+    }
+
+    return dynamic_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
 }
 
 //remove a child of this from scene while keeping scene indexes valid
@@ -657,7 +674,7 @@ void QGIView::removeChild(QGIView* child)
     }
 }
 
-bool QGIView::getFrameState(void)
+bool QGIView::getFrameState()
 {
 //    Base::Console().Message("QGIV::getFrameState() - %s\n",getViewName());
     bool result = true;

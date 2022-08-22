@@ -52,8 +52,8 @@ public:
         BottomRight /**< Place to the bottom right corner */
     };
 
-    static BitmapFactoryInst& instance(void);
-    static void destruct (void);
+    static BitmapFactoryInst& instance();
+    static void destruct ();
 
     /// Adds a path where pixmaps can be found
     void addPath(const QString& path);
@@ -143,13 +143,13 @@ private:
 
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();
-    ~BitmapFactoryInst();
+    ~BitmapFactoryInst() override;
 
     BitmapFactoryInstP* d;
 };
 
 /// Get the global instance
-inline BitmapFactoryInst& BitmapFactory(void)
+inline BitmapFactoryInst& BitmapFactory()
 {
     return BitmapFactoryInst::instance();
 }

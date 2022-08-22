@@ -76,25 +76,6 @@ ViewProviderViewSection::~ViewProviderViewSection()
 {
 }
 
-void ViewProviderViewSection::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderViewPart::attach(pcFeat);
-}
-
-void ViewProviderViewSection::setDisplayMode(const char* ModeName)
-{
-    ViewProviderViewPart::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewSection::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderViewPart::getDisplayModes();
-
-    return StrList;
-}
-
 //for VP properties
 void ViewProviderViewSection::onChanged(const App::Property* prop)
 {
@@ -123,12 +104,7 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
     ViewProviderViewPart::updateData(prop);
 }
 
-std::vector<App::DocumentObject*> ViewProviderViewSection::claimChildren(void) const
-{
-    return ViewProviderViewPart::claimChildren();
-}
-
-void ViewProviderViewSection::updateGraphic(void)
+void ViewProviderViewSection::updateGraphic()
 {
     // redraw QGIVP
     QGIView* qgiv = getQView();
@@ -151,25 +127,14 @@ bool ViewProviderViewSection::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderViewSection::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderViewSection::doubleClicked(void)
+bool ViewProviderViewSection::doubleClicked()
 {
     setEdit(ViewProvider::Default);
     return true;
 }
 
 
-void ViewProviderViewSection::getParameters(void)
+void ViewProviderViewSection::getParameters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");

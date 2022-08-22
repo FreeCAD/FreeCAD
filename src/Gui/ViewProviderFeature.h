@@ -34,21 +34,21 @@ class View3DInventorViewer;
 
 class GuiExport ViewProviderFeature:public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderFeature);
 
 public:
     /// constructor.
     ViewProviderFeature();
 
     /// destructor.
-    virtual ~ViewProviderFeature();
+    ~ViewProviderFeature() override;
 
     App::PropertyColorList    ColourList;
 
     /**
      * Attaches the document object to this view provider.
      */
-    virtual void attach(App::DocumentObject *pcObj);
+    void attach(App::DocumentObject *pcObj) override;
 };
 
 } // namespace Gui

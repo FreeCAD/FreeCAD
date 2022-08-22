@@ -43,7 +43,7 @@ class TaskTransformedMessages : public Gui::TaskView::TaskBox
 
 public:
     TaskTransformedMessages(ViewProviderTransformed *transformedView);
-    ~TaskTransformedMessages();
+    ~TaskTransformedMessages() override;
 
     void slotDiagnosis(QString msg);
 

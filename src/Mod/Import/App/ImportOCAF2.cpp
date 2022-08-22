@@ -245,7 +245,7 @@ void ImportOCAF2::setObjectName(Info &info, TDF_Label label) {
     if(!info.obj)
         return;
     info.baseName = getLabelName(label);
-    if(info.baseName.size())
+    if(!info.baseName.empty())
         info.obj->Label.setValue(info.baseName.c_str());
     else{
         auto linked = info.obj->getLinkedObject(false);
@@ -400,7 +400,7 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                 if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
                     edgeColor = convertColor(aColor);
                     foundEdgeColor = true;
-                    if(j==0 && foundFaceColor && faceColors.size() && edgeColor==faceColor) {
+                    if(j==0 && foundFaceColor && !faceColors.empty() && edgeColor==faceColor) {
                         // Do not set edge the same color as face
                         foundEdgeColor = false;
                     }
@@ -659,7 +659,7 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
                     ss.str("");
                     break;
                 }
-                if(it->second.size())
+                if(!it->second.empty())
                     ss << it->second << '.';
             }
             if(!shuo->NbChildren())
@@ -721,7 +721,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         auto name = getLabelName(label);
         if(info.faceColor!=it->second.faceColor ||
            info.edgeColor!=it->second.edgeColor ||
-           (name.size() && info.baseName.size() && name!=info.baseName)) 
+           (!name.empty() && !info.baseName.empty() && name!=info.baseName))
         {
             auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
             compound->Links.setValue(info.obj);
@@ -749,7 +749,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         applyLinkColor(link,-1,info.faceColor);
 
     myNames.emplace(label,link->getNameInDocument());
-    if(shuoColors.size())
+    if(!shuoColors.empty())
         applyElementColors(link,shuoColors);
     return link;
 }
@@ -872,7 +872,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
 
     if(!createGroup(doc,info,shape,children,visibilities,shuoColors.empty()))
         return false;
-    if(shuoColors.size())
+    if(!shuoColors.empty())
         applyElementColors(info.obj,shuoColors);
     return true;
 }
@@ -1042,7 +1042,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
 
     for(auto &v : colors) {
         TDF_Label nodeLabel = label;
-        if(v.first.size()) {
+        if(!v.first.empty()) {
             TDF_LabelSequence labels;
             if(aShapeTool->IsComponent(label))
                 labels.Append(label);
@@ -1286,7 +1286,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
         int vis = -1;
         if(parentGrp) {
-            if(groupLinks.size() 
+            if(!groupLinks.empty()
                 && parentGrp->getExtensionByType<App::GroupExtension>(true,false))
             {
                 vis = groupLinks.back()->isElementVisible(childName.c_str());
@@ -1331,7 +1331,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
     }
 
-    if (groupLinks.size() && groupLinks.back()==obj)
+    if (!groupLinks.empty() && groupLinks.back()==obj)
         groupLinks.pop_back();
 
     // Finished adding components. Now retrieve the computed non-located shape
@@ -1342,7 +1342,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     for(auto link : links)
         myObjects.emplace(link, label);
 
-    if(!parent.IsNull() && links.size())
+    if(!parent.IsNull() && !links.empty())
         linked = links.back();
     else
         linked = obj;

@@ -52,7 +52,7 @@ class GuiExport DlgExpressionInput : public QDialog
 
 public:
     explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = nullptr);
-    ~DlgExpressionInput();
+    ~DlgExpressionInput() override;
 
     std::shared_ptr<App::Expression> getExpression() const { return expression; }
 
@@ -61,15 +61,15 @@ public:
     QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
 
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 public Q_SLOTS:
     void show();
 
 protected:
-    void showEvent(QShowEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mousePressEvent(QMouseEvent*);
+    void showEvent(QShowEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
+    void mousePressEvent(QMouseEvent*) override;
 
 private Q_SLOTS:
     void textChanged(const QString & text);

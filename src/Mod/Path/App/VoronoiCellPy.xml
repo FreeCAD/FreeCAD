@@ -3,6 +3,7 @@
     <PythonExport 
         Father="BaseClassPy" 
         Name="VoronoiCellPy" 
+        PythonName="Path.Voronoi.Cell"
         Twin="VoronoiCell" 
         TwinPointer="VoronoiCell" 
         Include="Mod/Path/App/VoronoiCell.h" 
@@ -36,9 +37,15 @@
         </Attribute>
         <Attribute Name="SourceCategory" ReadOnly="true">
             <Documentation>
-                <UserDocu>Returns the index of the cell's source</UserDocu>
+                <UserDocu>Returns the cell's category as an integer</UserDocu>
             </Documentation>
             <Parameter Name="SourceCategory" Type="Int"/>
+        </Attribute>
+        <Attribute Name="SourceCategoryName" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Returns the cell's category as a string</UserDocu>
+            </Documentation>
+            <Parameter Name="SourceCategory" Type="String"/>
         </Attribute>
         <Attribute Name="IncidentEdge" ReadOnly="true">
             <Documentation>

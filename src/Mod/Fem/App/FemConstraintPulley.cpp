@@ -56,15 +56,15 @@ ConstraintPulley::ConstraintPulley()
                       "First belt force");
     ADD_PROPERTY_TYPE(BeltForce2,(0.0),"ConstraintPulley",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Second belt force");
-    ForceAngle.setValue(00.0);
+    ForceAngle.setValue(0.0);
     Diameter.setValue(300.0);
     // calculate initial values of read-only properties
     onChanged(&Force);
 }
 
-App::DocumentObjectExecReturn *ConstraintPulley::execute(void)
+App::DocumentObjectExecReturn *ConstraintPulley::execute()
 {
-    return ConstraintBearing::execute();
+    return ConstraintGear::execute();
 }
 
 void ConstraintPulley::onChanged(const App::Property* prop)

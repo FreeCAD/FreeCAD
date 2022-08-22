@@ -47,22 +47,22 @@ class TrajectorySimulate : public QDialog
 
 public:
     TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = nullptr);
-    ~TrajectorySimulate();
+    ~TrajectorySimulate() override;
 
 private Q_SLOTS:
-    void start(void);
-    void stop(void);
-    void run(void);
-    void back(void);
-    void forward(void);
-    void end(void);
+    void start();
+    void stop();
+    void run();
+    void back();
+    void forward();
+    void end();
 
-    void timerDone(void);
+    void timerDone();
     void valueChanged ( int value );
     void valueChanged ( double d );
 
 protected:
-    void setTo(void);
+    void setTo();
 
     QTimer *timer;
 

@@ -68,7 +68,7 @@ extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Curve2dPy::representation(void) const
+std::string Curve2dPy::representation() const
 {
     return "<Curve2d object>";
 }
@@ -719,7 +719,7 @@ PyObject* Curve2dPy::approximateBSpline(PyObject *args)
     }
 }
 
-Py::String Curve2dPy::getContinuity(void) const
+Py::String Curve2dPy::getContinuity() const
 {
     GeomAbs_Shape c = Handle(Geom2d_Curve)::DownCast
         (getGeometry2dPtr()->handle())->Continuity();
@@ -753,25 +753,25 @@ Py::String Curve2dPy::getContinuity(void) const
     return Py::String(str);
 }
 
-Py::Boolean Curve2dPy::getClosed(void) const
+Py::Boolean Curve2dPy::getClosed() const
 {
     return Py::Boolean(Handle(Geom2d_Curve)::DownCast
         (getGeometry2dPtr()->handle())->IsClosed() ? true : false);
 }
 
-Py::Boolean Curve2dPy::getPeriodic(void) const
+Py::Boolean Curve2dPy::getPeriodic() const
 {
     return Py::Boolean(Handle(Geom2d_Curve)::DownCast
         (getGeometry2dPtr()->handle())->IsPeriodic() ? true : false);
 }
 
-Py::Float Curve2dPy::getFirstParameter(void) const
+Py::Float Curve2dPy::getFirstParameter() const
 {
     return Py::Float(Handle(Geom2d_Curve)::DownCast
         (getGeometry2dPtr()->handle())->FirstParameter());
 }
 
-Py::Float Curve2dPy::getLastParameter(void) const
+Py::Float Curve2dPy::getLastParameter() const
 {
     return Py::Float(Handle(Geom2d_Curve)::DownCast
         (getGeometry2dPtr()->handle())->LastParameter());

@@ -106,14 +106,14 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
         bool cosmetic;
-        int source(void) { return m_source; }
+        int source() { return m_source; }
         void source(int s) { m_source = s; }
-        int sourceIndex(void) { return m_sourceIndex; }
+        int sourceIndex() { return m_sourceIndex; }
         void sourceIndex(int si) { m_sourceIndex = si; }
-        std::string getCosmeticTag(void) { return cosmeticTag; }
+        std::string getCosmeticTag() { return cosmeticTag; }
         void setCosmeticTag(std::string t) { cosmeticTag = t; }
 
-        virtual std::string toString(void) const;
+        virtual std::string toString() const;
         virtual void Save(Base::Writer& w) const;
         virtual void Restore(Base::XMLReader& r);
         std::vector<Base::Vector3d> findEndPoints();
@@ -126,14 +126,14 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         Base::Vector3d nearPoint(const BaseGeomPtr p);
         static BaseGeomPtr baseFactory(TopoDS_Edge edge);
         static bool validateEdge(TopoDS_Edge edge);
-        bool closed(void);
+        bool closed();
         BaseGeomPtr copy();
         std::string dump();
         std::vector<Base::Vector3d> intersection(TechDraw::BaseGeomPtr geom2);
 
         //Uniqueness
         boost::uuids::uuid getTag() const;
-        virtual std::string getTagAsString(void) const;
+        virtual std::string getTagAsString() const;
 
 private:
         void intersectionLL(TechDraw::BaseGeomPtr geom1,
@@ -160,15 +160,15 @@ using BaseGeomPtrVector = std::vector<BaseGeomPtr>;    //new style
 class TechDrawExport Circle: public BaseGeom
 {
     public:
-        Circle(void);
+        Circle();
         Circle(const TopoDS_Edge &e);
         Circle(Base::Vector3d center, double radius);
-        virtual ~Circle() = default;
+        ~Circle() override = default;
 
     public:
-        virtual std::string toString(void) const override;
-        virtual void Save(Base::Writer& w) const override;
-        virtual void Restore(Base::XMLReader& r) override;
+        std::string toString() const override;
+        void Save(Base::Writer& w) const override;
+        void Restore(Base::XMLReader& r) override;
 
         Base::Vector3d center;
         double radius;
@@ -179,7 +179,7 @@ class TechDrawExport Ellipse: public BaseGeom
     public:
     Ellipse(const TopoDS_Edge &e);
     Ellipse(Base::Vector3d c, double mnr,  double mjr);
-    virtual ~Ellipse() = default;
+    ~Ellipse() override = default;
 
     public:
         Base::Vector3d center;
@@ -194,7 +194,7 @@ class TechDrawExport AOE: public Ellipse
 {
     public:
         AOE(const TopoDS_Edge &e);
-        ~AOE() = default;
+        ~AOE() override = default;
 
     public:
         Base::Vector3d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
@@ -217,13 +217,13 @@ class TechDrawExport AOC: public Circle
     public:
         AOC(const TopoDS_Edge &e);
         AOC(Base::Vector3d c, double r, double s, double e);
-        AOC(void);
-        ~AOC() = default;
+        AOC();
+        ~AOC() override = default;
 
     public:
-        virtual std::string toString(void) const override;
-        virtual void Save(Base::Writer& w) const override;
-        virtual void Restore(Base::XMLReader& r) override;
+        std::string toString() const override;
+        void Save(Base::Writer& w) const override;
+        void Restore(Base::XMLReader& r) override;
 
         Base::Vector3d startPnt;
         Base::Vector3d endPnt;
@@ -249,7 +249,7 @@ class TechDrawExport BezierSegment: public BaseGeom
 public:
     BezierSegment(const TopoDS_Edge &e);
     BezierSegment() { poles = degree = 0; }
-    ~BezierSegment() = default;
+    ~BezierSegment() override = default;
 
     int poles;
     int degree;
@@ -261,7 +261,7 @@ class TechDrawExport BSpline: public BaseGeom
 {
     public:
         BSpline(const TopoDS_Edge &e);
-        ~BSpline() = default;
+        ~BSpline() override = default;
 
     public:
         Base::Vector3d startPnt;
@@ -273,8 +273,8 @@ class TechDrawExport BSpline: public BaseGeom
         bool cw;
         bool isArc;
 
-        bool isLine(void);
-        bool isCircle(void);
+        bool isLine();
+        bool isCircle();
         TopoDS_Edge asCircle(bool& isArc);
         void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
         bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
@@ -286,13 +286,13 @@ class TechDrawExport Generic: public BaseGeom
     public:
         Generic(const TopoDS_Edge &e);
         Generic();
-        ~Generic() = default;
+        ~Generic() override = default;
 
-        virtual std::string toString(void) const override;
-        virtual void Save(Base::Writer& w) const override;
-        virtual void Restore(Base::XMLReader& r) override;
-        Base::Vector3d asVector(void);
-        double slope(void);
+        std::string toString() const override;
+        void Save(Base::Writer& w) const override;
+        void Restore(Base::XMLReader& r) override;
+        Base::Vector3d asVector();
+        double slope();
         Base::Vector3d apparentInter(GenericPtr g);
         std::vector<Base::Vector3d> points;
 };
@@ -306,7 +306,7 @@ class TechDrawExport Wire
         Wire(const TopoDS_Wire &w);
         ~Wire();
 
-        TopoDS_Wire toOccWire(void) const;
+        TopoDS_Wire toOccWire() const;
         void dump(std::string s);
         BaseGeomPtrVector geoms;
 };
@@ -317,7 +317,7 @@ class TechDrawExport Face
     public:
         Face() = default;
         ~Face();
-        TopoDS_Face toOccFace(void) const;
+        TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 };
 using FacePtr = std::shared_ptr<Face>;
@@ -342,7 +342,7 @@ class TechDrawExport Vertex
         bool isCenter;
         TopoDS_Vertex occVertex;
         bool isEqual(const Vertex& v, double tol);
-        Base::Vector3d point(void) const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
+        Base::Vector3d point() const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
         bool cosmetic;
         int cosmeticLink;                 //deprec. use cosmeticTag
@@ -353,7 +353,7 @@ class TechDrawExport Vertex
         double y() {return pnt.y;}
 
         boost::uuids::uuid getTag() const;
-        virtual std::string getTagAsString(void) const;
+        virtual std::string getTagAsString() const;
 
     protected:
         //Uniqueness

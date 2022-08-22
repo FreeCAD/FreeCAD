@@ -36,7 +36,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfConic2dPy::representation(void) const
+std::string ArcOfConic2dPy::representation() const
 {
     return "<Arc of conic2d object>";
 }
@@ -55,7 +55,7 @@ int ArcOfConic2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
     return -1;
 }
 
-Py::Object ArcOfConic2dPy::getLocation(void) const
+Py::Object ArcOfConic2dPy::getLocation() const
 {
     Base::Vector2d loc = getGeom2dArcOfConicPtr()->getLocation();
     return Base::Vector2dPy::create(loc);
@@ -67,14 +67,14 @@ void  ArcOfConic2dPy::setLocation(Py::Object arg)
     getGeom2dArcOfConicPtr()->setLocation(loc);
 }
 
-Py::Float ArcOfConic2dPy::getEccentricity(void) const
+Py::Float ArcOfConic2dPy::getEccentricity() const
 {
     Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
     return Py::Float(conic->Eccentricity());
 }
 
-Py::Object ArcOfConic2dPy::getXAxis(void) const
+Py::Object ArcOfConic2dPy::getXAxis() const
 {
     Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());
@@ -92,7 +92,7 @@ void  ArcOfConic2dPy::setXAxis(Py::Object arg)
     conic->SetXAxis(xaxis);
 }
 
-Py::Object ArcOfConic2dPy::getYAxis(void) const
+Py::Object ArcOfConic2dPy::getYAxis() const
 {
     Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Conic) conic = Handle(Geom2d_Conic)::DownCast(curve->BasisCurve());

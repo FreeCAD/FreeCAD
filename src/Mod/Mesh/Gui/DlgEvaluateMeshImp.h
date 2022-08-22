@@ -71,19 +71,19 @@ class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
 
 public:
     DlgEvaluateMeshImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgEvaluateMeshImp();
+    ~DlgEvaluateMeshImp() override;
 
     void setMesh(Mesh::Feature*);
 
 private:
     /** Checks if the given document is about to be closed */
-    void slotDeletedDocument(const App::Document& Doc);
+    void slotDeletedDocument(const App::Document& Doc) override;
     /** Checks if a new object was added. */
-    void slotCreatedObject(const App::DocumentObject& Obj);
+    void slotCreatedObject(const App::DocumentObject& Obj) override;
     /** Checks if the given object is about to be removed. */
-    void slotDeletedObject(const App::DocumentObject& Obj);
+    void slotDeletedObject(const App::DocumentObject& Obj) override;
     /** The property of an observed object has changed */
-    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
 protected Q_SLOTS:
     void on_checkOrientationButton_clicked();
@@ -132,7 +132,7 @@ protected:
     void addViewProvider(const char* vp, const std::vector<Mesh::ElementIndex>& indices);
     void removeViewProvider(const char* vp);
     void removeViewProviders();
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -149,15 +149,15 @@ class DockEvaluateMeshImp : public DlgEvaluateMeshImp
 
 protected:
     DockEvaluateMeshImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-    ~DockEvaluateMeshImp();
-    void closeEvent(QCloseEvent* e);
+    ~DockEvaluateMeshImp() override;
+    void closeEvent(QCloseEvent* e) override;
 
 public:
     static DockEvaluateMeshImp* instance();
     static void destruct();
     static bool hasInstance();
   
-    QSize sizeHint () const;
+    QSize sizeHint () const override;
 
 private:
     QScrollArea* scrollArea;

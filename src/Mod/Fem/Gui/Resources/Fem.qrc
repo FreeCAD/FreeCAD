@@ -10,6 +10,7 @@
 
         <!-- gui command icons: constraints -->
         <file>icons/FEM_ConstraintBearing.svg</file>
+        <file>icons/FEM_ConstraintBodyHeatSource.svg</file>
         <file>icons/FEM_ConstraintCentrif.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>
@@ -21,16 +22,17 @@
         <file>icons/FEM_ConstraintGear.svg</file>
         <file>icons/FEM_ConstraintHeatflux.svg</file>
         <file>icons/FEM_ConstraintInitialFlowVelocity.svg</file>
+        <file>icons/FEM_ConstraintInitialPressure.svg</file>
         <file>icons/FEM_ConstraintInitialTemperature.svg</file>
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
         <file>icons/FEM_ConstraintPulley.svg</file>
         <file>icons/FEM_ConstraintSectionPrint.svg</file>
         <file>icons/FEM_ConstraintSelfWeight.svg</file>
+        <file>icons/FEM_ConstraintSpring.svg</file>
         <file>icons/FEM_ConstraintTemperature.svg</file>
         <file>icons/FEM_ConstraintTie.svg</file>
         <file>icons/FEM_ConstraintTransform.svg</file>
-        <file>icons/FEM_ConstraintSpring.svg</file>
 
         <!-- gui command icons: element geometries -->
         <file>icons/FEM_ElementFluid1D.svg</file>
@@ -62,7 +64,6 @@
         <file>icons/FEM_MaterialSolid.svg</file>
 
         <!-- gui command icons: post processing -->
-        <file>icons/FEM_PostPipelineFromResult.svg</file>
         <file>icons/FEM_PostFilterClipRegion.svg</file>
         <file>icons/FEM_PostFilterClipScalar.svg</file>
         <file>icons/FEM_PostFilterCutFunction.svg</file>
@@ -70,6 +71,7 @@
         <file>icons/FEM_PostFilterDataAtPoint.svg</file>
         <file>icons/FEM_PostFilterLinearizedStresses.svg</file>
         <file>icons/FEM_PostFilterWarp.svg</file>
+        <file>icons/FEM_PostPipelineFromResult.svg</file>
         <file>icons/FEM_ResultShow.svg</file>
         <file>icons/FEM_ResultsPurge.svg</file>
 
@@ -110,10 +112,12 @@
         <!-- translations -->
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_ar.qm</file>
+        <file>translations/Fem_bg.qm</file>
         <file>translations/Fem_ca.qm</file>
         <file>translations/Fem_cs.qm</file>
         <file>translations/Fem_de.qm</file>
         <file>translations/Fem_el.qm</file>
+        <file>translations/Fem_es-AR.qm</file>
         <file>translations/Fem_es-ES.qm</file>
         <file>translations/Fem_eu.qm</file>
         <file>translations/Fem_fi.qm</file>
@@ -125,6 +129,7 @@
         <file>translations/Fem_id.qm</file>
         <file>translations/Fem_it.qm</file>
         <file>translations/Fem_ja.qm</file>
+        <file>translations/Fem_ka.qm</file>
         <file>translations/Fem_kab.qm</file>
         <file>translations/Fem_ko.qm</file>
         <file>translations/Fem_lt.qm</file>
@@ -145,11 +150,9 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
-        <file>translations/Fem_es-AR.qm</file>
-        <file>translations/Fem_bg.qm</file>
-        <file>translations/Fem_ka.qm</file>
 
         <!-- task panels -->
+        <file>ui/BodyHeatSource.ui</file>
         <file>ui/ConstraintCentrif.ui</file>
         <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
@@ -160,6 +163,7 @@
         <file>ui/ElementRotation1D.ui</file>
         <file>ui/FlowVelocity.ui</file>
         <file>ui/InitialFlowVelocity.ui</file>
+        <file>ui/InitialPressure.ui</file>
         <file>ui/Material.ui</file>
         <file>ui/MaterialReinforcement.ui</file>
         <file>ui/MeshBoundaryLayer.ui</file>

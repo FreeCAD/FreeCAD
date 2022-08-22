@@ -42,13 +42,13 @@ class GuiExport TaskWatcher : public QObject, public Gui::SelectionFilter
 
 public:
     TaskWatcher(const char* Filter);
-    virtual ~TaskWatcher();
+    ~TaskWatcher() override;
 
-    std::vector<QWidget*> &getWatcherContent(void);
+    std::vector<QWidget*> &getWatcherContent();
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    virtual bool shouldShow();
 
 protected:
     /// List of TaskBoxes of that dialog
@@ -68,7 +68,7 @@ public:
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 };
 
@@ -84,7 +84,7 @@ public:
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 };
 
@@ -97,11 +97,11 @@ class GuiExport TaskWatcherCommandsEmptySelection : public TaskWatcherCommands
 
 public:
     TaskWatcherCommandsEmptySelection(const char* commands[], const char* name, const char* pixmap);
-    ~TaskWatcherCommandsEmptySelection();
+    ~TaskWatcherCommandsEmptySelection() override;
 
 public:
     /// is called wenn the document or the Selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 };
 

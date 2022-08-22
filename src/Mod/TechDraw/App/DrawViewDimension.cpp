@@ -103,7 +103,7 @@ static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = 
 // constraint to force positive values
 static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = { 0.0, DBL_MAX, 0.1 };
 
-DrawViewDimension::DrawViewDimension(void)
+DrawViewDimension::DrawViewDimension()
 {
     ADD_PROPERTY_TYPE(References2D, (nullptr,nullptr), "", (App::Prop_None), "Projected Geometry References");
     References2D.setScope(App::LinkScope::Global);
@@ -166,20 +166,20 @@ DrawViewDimension::~DrawViewDimension()
     measurement = nullptr;
 }
 
-void DrawViewDimension::resetLinear(void)
+void DrawViewDimension::resetLinear()
 {
     m_linearPoints.first  = Base::Vector3d(0,0,0);
     m_linearPoints.second = Base::Vector3d(0,0,0);
 }
 
-void DrawViewDimension::resetAngular(void)
+void DrawViewDimension::resetAngular()
 {
     m_anglePoints.ends.first = Base::Vector3d(0,0,0);
     m_anglePoints.ends.second = Base::Vector3d(0,0,0);
     m_anglePoints.vertex = Base::Vector3d(0,0,0);
 }
 
-void DrawViewDimension::resetArc(void)
+void DrawViewDimension::resetArc()
 {
     m_arcPoints.isArc = false;
     m_arcPoints.center = Base::Vector3d(0,0,0);
@@ -381,7 +381,7 @@ short DrawViewDimension::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
+App::DocumentObjectExecReturn *DrawViewDimension::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -736,11 +736,11 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     }
 
-    //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
-bool DrawViewDimension::isMultiValueSchema(void) const
+bool DrawViewDimension::isMultiValueSchema() const
 {
     bool angularMeasure = (Type.isValue("Angle") || Type.isValue("Angle3Pt"));
 
@@ -984,7 +984,7 @@ std::string DrawViewDimension::formatValue(qreal value,
     return formattedValueString;
 }
 
-bool DrawViewDimension::haveTolerance(void)
+bool DrawViewDimension::haveTolerance()
 {
     //if a numeric tolerance is specified AND
     //tolerances are NOT arbitrary
@@ -1494,12 +1494,12 @@ void DrawViewDimension::saveArrowPositions(const Base::Vector2d positions[])
 
 //return position within parent view of dimension arrow heads/dimline endpoints
 //note positions are in apparent coord (inverted y).
-pointPair DrawViewDimension::getArrowPositions(void)
+pointPair DrawViewDimension::getArrowPositions()
 {
     return m_arrowPositions;
 }
 
-bool DrawViewDimension::has2DReferences(void) const
+bool DrawViewDimension::has2DReferences() const
 {
 //    Base::Console().Message("DVD::has2DReferences() - %s\n",getNameInDocument());
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
@@ -1517,13 +1517,13 @@ bool DrawViewDimension::has2DReferences(void) const
     return true;
 }
 
-bool DrawViewDimension::has3DReferences(void) const
+bool DrawViewDimension::has3DReferences() const
 {
     return (References3D.getSize() > 0);
 }
 
 //has arbitrary or nonzero tolerance
-bool DrawViewDimension::hasOverUnderTolerance(void) const
+bool DrawViewDimension::hasOverUnderTolerance() const
 {
     if (ArbitraryTolerances.getValue() ||
             !DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) ||
@@ -1618,7 +1618,7 @@ std::string DrawViewDimension::getDefaultFormatSpec(bool isToleranceFormat) cons
 //    return result;
 //}
 
-PyObject *DrawViewDimension::getPyObject(void)
+PyObject *DrawViewDimension::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

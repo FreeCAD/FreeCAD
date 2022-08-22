@@ -75,7 +75,7 @@ App::DocumentObjectExecReturn *Part2DObject::execute(void)
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
 {
-    if (Support.getValues().size() > 0) {
+    if (!Support.getValues().empty()) {
         //part->transformPlacement(transform);
         positionBySupport();
     } else {

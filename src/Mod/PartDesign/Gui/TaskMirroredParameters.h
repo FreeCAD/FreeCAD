@@ -51,23 +51,23 @@ public:
     /// Constructor for task with parent task (MultiTransform mode)
     TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
 
-    virtual ~TaskMirroredParameters();
+    ~TaskMirroredParameters() override;
 
     void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
-    virtual void apply();
+    void apply() override;
 
 private Q_SLOTS:
     void onPlaneChanged(int num);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    void onFeatureDeleted() override;
 
 protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
+    void addObject(App::DocumentObject*) override;
+    void removeObject(App::DocumentObject*) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void clearButtons() override;
 
 private:
     void setupUI();
@@ -86,11 +86,11 @@ class TaskDlgMirroredParameters : public TaskDlgTransformedParameters
 
 public:
     TaskDlgMirroredParameters(ViewProviderMirrored *MirroredView);
-    virtual ~TaskDlgMirroredParameters() {}
+    ~TaskDlgMirroredParameters() override {}
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
 } //namespace PartDesignGui

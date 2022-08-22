@@ -31,7 +31,7 @@ namespace Part
 
 class CurveNet :public Part::Feature
 {
-    PROPERTY_HEADER(Part::FeaturePartCurveNet);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeaturePartCurveNet);
 
 public:
     CurveNet();
@@ -41,10 +41,10 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderCurveNet";
     }
     //@}

@@ -23,6 +23,7 @@
 #ifndef _Grabber3d_h_
 #define _Grabber3d_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 class SoSeparator;
 class SoCamera;

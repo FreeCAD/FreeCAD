@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QByteArray>
 
 #include "QGIView.h"
@@ -42,22 +44,21 @@ class TechDrawGuiExport QGIViewSymbol : public QGIView
 {
 public:
     QGIViewSymbol();
-    ~QGIViewSymbol();
+    ~QGIViewSymbol() override;
 
     enum {Type = QGraphicsItem::UserType + 121};
     int type() const override { return Type;}
 
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
     void setViewSymbolFeature(TechDraw::DrawViewSymbol *obj);
 
-    virtual void draw() override;
-    virtual void rotateView(void) override;
+    void draw() override;
+    void rotateView() override;
 
 
 protected:
     virtual void drawSvg();
     void symbolToSvg(QByteArray qba);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGDisplayArea* m_displayArea;
     QGCustomSvg *m_svgItem;

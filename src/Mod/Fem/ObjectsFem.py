@@ -228,6 +228,21 @@ def makeConstraintInitialFlowVelocity(
     return obj
 
 
+def makeConstraintInitialPressure(
+    doc,
+    name="ConstraintInitialPressure"
+):
+    """makeConstraintInitialPressure(document, [name]):
+    makes a Fem ConstraintInitialPressure object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_initialpressure
+    constraint_initialpressure.ConstraintInitialPressure(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_initialpressure
+        view_constraint_initialpressure.VPConstraintInitialPressure(obj.ViewObject)
+    return obj
+
+
 def makeConstraintInitialTemperature(
     doc,
     name="ConstraintInitialTemperature"

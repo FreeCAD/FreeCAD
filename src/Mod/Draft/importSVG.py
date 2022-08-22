@@ -718,7 +718,7 @@ class svgHandler(xml.sax.ContentHandler):
                 inks_doc_name = attrs.getValue('sodipodi:docname')
                 inks_full_ver = attrs.getValue('inkscape:version')
                 inks_ver_pars = re.search("\d+\.\d+", inks_full_ver)
-                if inks_ver_pars != None:
+                if inks_ver_pars is not None:
                     inks_ver_f = float(inks_ver_pars.group(0))
                 else:
                     inks_ver_f = 99.99

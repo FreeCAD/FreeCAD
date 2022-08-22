@@ -24,6 +24,7 @@
 #define PART_FACEMAKER_H
 
 #include <BRepBuilderAPI_MakeShape.hxx>
+#include <Standard_Version.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
@@ -46,11 +47,11 @@ namespace Part
  */
 class PartExport FaceMaker: public BRepBuilderAPI_MakeShape, public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     FaceMaker() {}
-    virtual ~FaceMaker() {}
+    ~FaceMaker() override {}
 
     virtual void addWire(const TopoDS_Wire& w);
     /**
@@ -75,7 +76,11 @@ public:
      */
     virtual const TopoDS_Face& Face();
 
-    virtual void Build();
+#if OCC_VERSION_HEX >= 0x070600
+    void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
+#else
+    void Build() override;
+#endif
 
     //fails to compile, huh!
     //virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override {throwNotImplemented();}
@@ -110,7 +115,7 @@ protected:
  */
 class PartExport FaceMakerPublic : public FaceMaker
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual std::string getUserFriendlyName() const = 0;
     virtual std::string getBriefExplanation() const = 0;
@@ -136,10 +141,10 @@ class PartExport FaceMakerSimple : public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual std::string getUserFriendlyName() const override;
-    virtual std::string getBriefExplanation() const override;
+    std::string getUserFriendlyName() const override;
+    std::string getBriefExplanation() const override;
 protected:
-    virtual void Build_Essence() override;
+    void Build_Essence() override;
 };
 
 

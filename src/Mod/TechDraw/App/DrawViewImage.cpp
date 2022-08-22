@@ -50,7 +50,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewImage, TechDraw::DrawView)
 
 
-DrawViewImage::DrawViewImage(void)
+DrawViewImage::DrawViewImage()
 {
     static const char *vgroup = "Image";
 
@@ -98,7 +98,7 @@ short DrawViewImage::mustExecute() const
     return App::DocumentObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawViewImage::execute(void)
+App::DocumentObjectExecReturn *DrawViewImage::execute()
 {
     requestPaint();
     return DrawView::execute();
@@ -111,7 +111,7 @@ QRectF DrawViewImage::getRect() const
 
 void DrawViewImage::replaceImageIncluded(std::string newFileName)
 {
-    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
+//    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
     if (ImageIncluded.isEmpty()) {
         setupImageIncluded();
     } else {
@@ -121,9 +121,9 @@ void DrawViewImage::replaceImageIncluded(std::string newFileName)
     }
 }
 
-void DrawViewImage::setupImageIncluded(void)
+void DrawViewImage::setupImageIncluded()
 {
-    Base::Console().Message("DVI::setupImageIncluded()\n");
+//    Base::Console().Message("DVI::setupImageIncluded()\n");
     App::Document* doc = getDocument();
     std::string dir = doc->TransientDir.getValue();
     std::string special = getNameInDocument();
@@ -154,7 +154,7 @@ void DrawViewImage::setupImageIncluded(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewImagePython, TechDraw::DrawViewImage)
-template<> const char* TechDraw::DrawViewImagePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewImagePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderImage";
 }
 /// @endcond

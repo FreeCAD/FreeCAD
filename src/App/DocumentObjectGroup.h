@@ -39,14 +39,14 @@ class AppExport DocumentObjectGroup : public DocumentObject, public GroupExtensi
 public:
     /// Constructor
     DocumentObjectGroup();
-    virtual ~DocumentObjectGroup();
+    ~DocumentObjectGroup() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderDocumentObjectGroup";
     }
 
-    virtual PyObject *getPyObject() override;
+    PyObject *getPyObject() override;
 };
 
 typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;

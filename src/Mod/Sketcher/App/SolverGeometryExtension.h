@@ -234,13 +234,13 @@ public:
 
 
     SolverGeometryExtension();
-    virtual ~SolverGeometryExtension() override = default;
+    ~SolverGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    virtual void notifyAttachment(Part::Geometry * geo) override;
+    void notifyAttachment(Part::Geometry * geo) override;
 
     SolverStatus getGeometry() const  {return ( Edge.getStatus() == Independent &&
                                                 Start.getStatus() == Independent &&
@@ -290,7 +290,7 @@ public:
     }
 
 protected:
-    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    void copyAttributes(Part::GeometryExtension * cpy) const override;
 
 private:
     SolverGeometryExtension(const SolverGeometryExtension&) = default;

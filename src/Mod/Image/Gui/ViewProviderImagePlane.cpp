@@ -111,7 +111,7 @@ void ViewProviderImagePlane::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderImagePlane::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("ImagePlane");
+    StrList.emplace_back("ImagePlane");
     return StrList;
 }
 

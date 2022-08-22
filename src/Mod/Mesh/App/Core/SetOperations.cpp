@@ -192,7 +192,7 @@ void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<Face
           std::vector<FacetIndex> vecFacets2;
           grid2.Inside(grid1.GetBoundBox(gx1, gy1, gz1), vecFacets2);
       
-          if (vecFacets2.size() > 0)
+          if (!vecFacets2.empty())
           {
             std::set<FacetIndex> vecFacets1;
             grid1.GetElements(gx1, gy1, gz1, vecFacets1);

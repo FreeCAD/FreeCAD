@@ -23,17 +23,22 @@
 #ifndef _DrawViewSymbol_h_
 #define _DrawViewSymbol_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QDomDocument>
+#include <QXmlResultItems>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <Base/BoundBox.h>
 
 #include "DrawView.h"
 
-
 namespace TechDraw
 {
 class DrawPage;
-
 
 class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 {
@@ -41,8 +46,8 @@ class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
 
 public:
     /// Constructor
-    DrawViewSymbol(void);
-    virtual ~DrawViewSymbol();
+    DrawViewSymbol();
+    ~DrawViewSymbol() override;
 
     App::PropertyString       Symbol;
     App::PropertyStringList   EditableTexts;
@@ -50,25 +55,26 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderSymbol";
     }
-    virtual QRectF getRect() const override;
-    virtual bool checkFit(TechDraw::DrawPage* p) const override;
+    QRectF getRect() const override;
+    bool checkFit(TechDraw::DrawPage* p) const override;
 
     //return PyObject as DrawViewSymbolPy
-    virtual PyObject *getPyObject(void) override;
-
-    virtual short mustExecute() const override;
-
+    PyObject *getPyObject() override;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
+
+    std::vector<std::string> getEditableFields();
+    void updateFieldsInSymbol();
+    bool loadQDomDocument(QDomDocument& symbolDocument);
 };
 
 typedef App::FeaturePythonT<DrawViewSymbol> DrawViewSymbolPython;

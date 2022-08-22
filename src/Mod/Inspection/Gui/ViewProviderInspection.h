@@ -49,36 +49,36 @@ class ViewProviderInspection : public Gui::ViewProviderDocumentObject,
                                public Base::Observer<int>{
     typedef ViewProviderDocumentObject inherited;
 
-    PROPERTY_HEADER(InspectionGui::ViewProviderInspection);
+    PROPERTY_HEADER_WITH_OVERRIDE(InspectionGui::ViewProviderInspection);
 
 public:
     ViewProviderInspection();
-    virtual ~ViewProviderInspection();
+    ~ViewProviderInspection() override;
 
     App::PropertyBool OutsideGrayed;
     App::PropertyFloatConstraint PointSize;
 
-    void attach(App::DocumentObject *pcFeat);
+    void attach(App::DocumentObject *pcFeat) override;
     /// Sets the viewing mode
-    void setDisplayMode(const char* ModeName);
+    void setDisplayMode(const char* ModeName) override;
     /// Returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
     /// Update colorbar after recomputation of distances.
-    void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
     /// Once the color bar settings has been changed this method gets called to update the feature's representation
-    void OnChange(Base::Subject<int> &rCaller,int rcReason);
-    QIcon getIcon() const;
+    void OnChange(Base::Subject<int> &rCaller,int rcReason) override;
+    QIcon getIcon() const override;
     /// Returns a color bar
-    SoSeparator* getFrontRoot(void) const;
+    SoSeparator* getFrontRoot() const override;
     /// Hide the object in the view
-    virtual void hide(void);
+    void hide() override;
     /// Show the object in the view
-    virtual void show(void);
+    void show() override;
 
     static void inspectCallback(void * ud, SoEventCallback * n);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     void setDistances();
     QString inspectDistance(const SoPickedPoint* pp) const;
 
@@ -100,14 +100,14 @@ private:
 
 class ViewProviderInspectionGroup : public Gui::ViewProviderDocumentObjectGroup
 {
-    PROPERTY_HEADER(InspectionGui::ViewProviderInspectionGroup);
+    PROPERTY_HEADER_WITH_OVERRIDE(InspectionGui::ViewProviderInspectionGroup);
 
 public:
     /// constructor
     ViewProviderInspectionGroup();
     /// destructor
-    virtual ~ViewProviderInspectionGroup();
-    QIcon getIcon() const;
+    ~ViewProviderInspectionGroup() override;
+    QIcon getIcon() const override;
 };
 
 } // namespace InspectionGui

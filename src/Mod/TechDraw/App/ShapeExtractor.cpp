@@ -429,7 +429,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
     return result;
 }
 
-bool ShapeExtractor::prefAdd2d(void)
+bool ShapeExtractor::prefAdd2d()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");

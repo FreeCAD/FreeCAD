@@ -125,7 +125,7 @@ public:
     };
     /// open the file and read the first element
     XMLReader(const char* FileName, std::istream&);
-    ~XMLReader();
+    ~XMLReader() override;
 
     bool isValid() const { return _valid; }
     bool isVerbose() const { return _verbose; }
@@ -223,28 +223,28 @@ protected:
     // -----------------------------------------------------------------------
     /** @name Content handler */
     //@{
-    virtual void startDocument();
-    virtual void endDocument();
-    virtual void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs);
-    virtual void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname);
+    void startDocument() override;
+    void endDocument() override;
+    void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs) override;
+    void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname) override;
 #if (XERCES_VERSION_MAJOR == 2)
     virtual void characters         (const XMLCh* const chars, const unsigned int length);
     virtual void ignorableWhitespace(const XMLCh* const chars, const unsigned int length);
 #else
-    virtual void characters         (const XMLCh* const chars, const XMLSize_t length);
-    virtual void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length);
+    void characters         (const XMLCh* const chars, const XMLSize_t length) override;
+    void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length) override;
 #endif
     //@}
 
     /** @name Lexical handler */
     //@{
-    virtual void startCDATA  ();
-    virtual void endCDATA    ();
+    void startCDATA  () override;
+    void endCDATA    () override;
     //@}
 
     /** @name Document handler */
     //@{
-    virtual void resetDocument();
+    void resetDocument() override;
     //@}
 
 
@@ -253,10 +253,10 @@ protected:
     // -----------------------------------------------------------------------
     /** @name Error handler */
     //@{
-    void warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc);
-    void error(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc);
-    void fatalError(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc);
-    void resetErrors();
+    void warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
+    void error(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
+    void fatalError(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
+    void resetErrors() override;
     //@}
 
 

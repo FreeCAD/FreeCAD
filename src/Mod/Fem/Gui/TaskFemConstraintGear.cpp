@@ -206,17 +206,17 @@ void TaskFemConstraintGear::onCheckReversed(const bool pressed)
     pcConstraint->Reversed.setValue(pressed);
 }
 
-double TaskFemConstraintGear::getForce(void) const
+double TaskFemConstraintGear::getForce() const
 {
     return ui->spinForce->value();
 }
 
-double TaskFemConstraintGear::getForceAngle(void) const
+double TaskFemConstraintGear::getForceAngle() const
 {
     return ui->spinForceAngle->value();
 }
 
-const std::string TaskFemConstraintGear::getDirectionName(void) const
+const std::string TaskFemConstraintGear::getDirectionName() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())
@@ -226,7 +226,7 @@ const std::string TaskFemConstraintGear::getDirectionName(void) const
     return dir.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintGear::getDirectionObject(void) const
+const std::string TaskFemConstraintGear::getDirectionObject() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())
@@ -241,7 +241,7 @@ bool TaskFemConstraintGear::getReverse() const
     return ui->checkReversed->isChecked();
 }
 
-double TaskFemConstraintGear::getDiameter(void) const
+double TaskFemConstraintGear::getDiameter() const
 {
     return ui->spinDiameter->value();
 }

@@ -42,20 +42,20 @@ class TaskDlgAnalysis : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgAnalysis(Fem::FemAnalysis *);
-    ~TaskDlgAnalysis();
+    ~TaskDlgAnalysis() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user press the help button
-    virtual void helpRequested();
+    void helpRequested() override;
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply; }
 
 protected:

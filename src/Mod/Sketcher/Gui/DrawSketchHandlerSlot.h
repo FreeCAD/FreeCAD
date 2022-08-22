@@ -62,7 +62,7 @@ public:
         SNAP_DIR_Vert
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -132,7 +132,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -144,7 +144,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -241,13 +241,13 @@ public:
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the center of the first arc
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the center of the second arc
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::mid);
                     sugConstr2.clear();
                 }
@@ -283,7 +283,7 @@ public:
         return true;
     }
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Slot");
     }

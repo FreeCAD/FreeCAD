@@ -31,13 +31,13 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryDoubleExtensionPy::representation(void) const
+std::string GeometryDoubleExtensionPy::representation() const
 {
     std::stringstream str;
     double val = getGeometryDoubleExtensionPtr()->getValue();
     str << "<GeometryDoubleExtension (" ;
 
-    if(getGeometryDoubleExtensionPtr()->getName().size()>0)
+    if(!getGeometryDoubleExtensionPtr()->getName().empty())
         str << "\'" << getGeometryDoubleExtensionPtr()->getName() << "\', ";
 
     str << val << ") >";
@@ -83,7 +83,7 @@ int GeometryDoubleExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Float GeometryDoubleExtensionPy::getValue(void) const
+Py::Float GeometryDoubleExtensionPy::getValue() const
 {
     return Py::Float(this->getGeometryDoubleExtensionPtr()->getValue());
 }

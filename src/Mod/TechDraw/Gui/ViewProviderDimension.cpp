@@ -102,20 +102,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
     }
 }
 
-void ViewProviderDimension::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderDimension::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-bool ViewProviderDimension::doubleClicked(void)
+bool ViewProviderDimension::doubleClicked()
 {
     startDefaultEditMode();
     return true;
@@ -146,16 +133,6 @@ bool ViewProviderDimension::setEdit(int ModNum)
         Gui::Control().showDialog(new TaskDlgDimension(qgivDimension, this));
     }
     return true;
-}
-
-void ViewProviderDimension::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
 }
 
 void ViewProviderDimension::updateData(const App::Property* p)
@@ -240,11 +217,7 @@ double ViewProviderDimension::prefFontSize() const
 
 double ViewProviderDimension::prefWeight() const
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return weight;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
 int ViewProviderDimension::prefStandardAndStyle() const

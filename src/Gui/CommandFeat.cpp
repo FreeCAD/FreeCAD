@@ -110,7 +110,7 @@ void StdCmdRandomColor::activated(int iMsg)
     }
 }
 
-bool StdCmdRandomColor::isActive(void)
+bool StdCmdRandomColor::isActive()
 {
     return (Gui::Selection().size() != 0);
 }
@@ -135,7 +135,7 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
     sAccel        = "Ctrl+Shift+P";
 }
 
-bool StdCmdSendToPythonConsole::isActive(void)
+bool StdCmdSendToPythonConsole::isActive()
 {
     //active only if either 1 object is selected or multiple subobjects from the same object
     return Gui::Selection().getSelectionEx().size() == 1;
@@ -211,7 +211,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
 
 namespace Gui {
 
-void CreateFeatCommands(void)
+void CreateFeatCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

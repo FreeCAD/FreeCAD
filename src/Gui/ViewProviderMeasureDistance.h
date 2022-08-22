@@ -45,13 +45,13 @@ class PointMarker : public QObject
 {
 public:
     PointMarker(View3DInventorViewer* view);
-    ~PointMarker();
+    ~PointMarker() override;
 
     void addPoint(const SbVec3f&);
     int countPoints() const;
 
 protected:
-    void customEvent(QEvent* e);
+    void customEvent(QEvent* e) override;
 
 private:
     View3DInventorViewer *view;
@@ -61,11 +61,11 @@ private:
 
 class GuiExport ViewProviderPointMarker : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderPointMarker);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPointMarker);
 
 public:
     ViewProviderPointMarker();
-    virtual ~ViewProviderPointMarker();
+    ~ViewProviderPointMarker() override;
 
 protected:
     SoCoordinate3    * pCoords;
@@ -75,12 +75,12 @@ protected:
 
 class GuiExport ViewProviderMeasureDistance : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderMeasureDistance);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderMeasureDistance);
 
 public:
     /// Constructor
-    ViewProviderMeasureDistance(void);
-    virtual ~ViewProviderMeasureDistance();
+    ViewProviderMeasureDistance();
+    ~ViewProviderMeasureDistance() override;
 
     // Display properties
     App::PropertyColor          TextColor;
@@ -89,16 +89,16 @@ public:
     App::PropertyFloat          DistFactor;
     App::PropertyBool           Mirror;
 
-    void attach(App::DocumentObject *);
-    void updateData(const App::Property*);
-    bool useNewSelectionModel(void) const {return true;}
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property*) override;
+    bool useNewSelectionModel() const override {return true;}
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char* ModeName) override;
 
     static void measureDistanceCallback(void * ud, SoEventCallback * n);
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
     SoFontStyle      * pFont;

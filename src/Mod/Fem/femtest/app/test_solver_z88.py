@@ -26,7 +26,6 @@ __title__ = "Solver z88 FEM unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-import sys
 import unittest
 from os import listdir
 from os.path import join
@@ -115,13 +114,6 @@ class TestSolverZ88(unittest.TestCase):
         self,
         base_name
     ):
-        if sys.version_info.major < 3:
-            # TODO does not pass on Python 2
-            # https://travis-ci.org/github/FreeCAD/FreeCAD/builds/707780320
-            # https://api.travis-ci.org/v3/job/707780323/log.txt
-            fcc_print("Python 2: test aborted.")
-            return
-
         self.document.recompute()
 
         # start

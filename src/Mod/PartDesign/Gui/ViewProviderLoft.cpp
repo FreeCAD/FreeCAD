@@ -47,7 +47,7 @@ ViewProviderLoft::~ViewProviderLoft()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -118,7 +118,7 @@ void ViewProviderLoft::highlightSection(bool on)
 {
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
     auto sections = pcLoft->Sections.getSubListValues();
-    for (auto it : sections) {
+    for (auto& it : sections) {
         // only take the entire shape when we have a sketch selected, but
         // not a point of the sketch
         auto subName = it.second.empty() ? "" : it.second.front();
@@ -173,7 +173,7 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderLoft::getIcon(void) const {
+QIcon ViewProviderLoft::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

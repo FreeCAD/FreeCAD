@@ -42,8 +42,8 @@ class AppExport GroupExtension : public DocumentObjectExtension
 
 public:
     /// Constructor
-    GroupExtension(void);
-    virtual ~GroupExtension();
+    GroupExtension();
+    ~GroupExtension() override;
 
     /** @name Object handling  */
     //@{
@@ -107,16 +107,16 @@ public:
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     //@}
     
-    virtual PyObject* getExtensionPyObject(void) override;
+    PyObject* getExtensionPyObject() override;
 
-    virtual void extensionOnChanged(const Property* p) override;
+    void extensionOnChanged(const Property* p) override;
 
-    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
+    bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
+    bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
-    virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
@@ -142,11 +142,11 @@ class GroupExtensionPythonT : public ExtensionT {
          
 public:
     
-    GroupExtensionPythonT() {}
-    virtual ~GroupExtensionPythonT() {}
+    GroupExtensionPythonT() = default;
+    virtual ~GroupExtensionPythonT() = default;
  
     //override the documentobjectextension functions to make them available in python 
-    virtual bool allowObject(DocumentObject* obj)  override {
+    bool allowObject(DocumentObject* obj)  override {
         Py::Object pyobj = Py::asObject(obj->getPyObject());
         EXTENSION_PROXY_ONEARG(allowObject, pyobj);
                 

@@ -51,7 +51,7 @@ class TaskRobotControl : public Gui::TaskView::TaskBox
 
 public:
     TaskRobotControl(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
-    ~TaskRobotControl();
+    ~TaskRobotControl() override;
 
     void setRobot(Robot::RobotObject *pcRobotObject);
 

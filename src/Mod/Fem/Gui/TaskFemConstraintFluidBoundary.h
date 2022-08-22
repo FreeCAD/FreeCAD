@@ -50,45 +50,45 @@ class TaskFemConstraintFluidBoundary : public TaskFemConstraintOnBoundary
 
 public:
     TaskFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView,QWidget *parent = nullptr);
-    virtual ~TaskFemConstraintFluidBoundary();
+    ~TaskFemConstraintFluidBoundary() override;
 
-    const Fem::FemSolverObject* getFemSolver(void) const;
+    const Fem::FemSolverObject* getFemSolver() const;
 
-    std::string getBoundaryType(void) const;
-    std::string getSubtype(void) const;
-    double getBoundaryValue(void) const;
+    std::string getBoundaryType() const;
+    std::string getSubtype() const;
+    double getBoundaryValue() const;
 
-    std::string getTurbulenceModel(void) const;
-    std::string getTurbulenceSpecification(void) const;
-    double getTurbulentIntensityValue(void) const;
-    double getTurbulentLengthValue(void) const;
+    std::string getTurbulenceModel() const;
+    std::string getTurbulenceSpecification() const;
+    double getTurbulentIntensityValue() const;
+    double getTurbulentLengthValue() const;
 
-    bool getHeatTransferring(void) const;
-    std::string getThermalBoundaryType(void) const;
-    double getTemperatureValue(void) const;
-    double getHeatFluxValue(void) const;
-    double getHTCoeffValue(void) const;
+    bool getHeatTransferring() const;
+    std::string getThermalBoundaryType() const;
+    double getTemperatureValue() const;
+    double getHeatFluxValue() const;
+    double getHTCoeffValue() const;
 
-    const std::string getReferences() const;
-    const std::string getDirectionName(void) const;
-    const std::string getDirectionObject(void) const;
-    bool getReverse(void) const;
+    const std::string getReferences() const override;
+    const std::string getDirectionName() const;
+    const std::string getDirectionObject() const;
+    bool getReverse() const;
 
 private Q_SLOTS:
-    void onBoundaryTypeChanged(void);
-    void onSubtypeChanged(void);
+    void onBoundaryTypeChanged();
+    void onSubtypeChanged();
     void onBoundaryValueChanged(double);
-    void onTurbulenceSpecificationChanged(void);
-    void onThermalBoundaryTypeChanged(void);
-    void onReferenceDeleted(void);
+    void onTurbulenceSpecificationChanged();
+    void onThermalBoundaryTypeChanged();
+    void onReferenceDeleted();
     void onButtonDirection(const bool pressed = true);
     void onCheckReverse(bool); // consider removing this slot as the UI is hidden
-    void addToSelection();
-    void removeFromSelection();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    virtual void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -115,9 +115,9 @@ public:
     TaskDlgFemConstraintFluidBoundary(ViewProviderFemConstraintFluidBoundary *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual void open();
-    virtual bool accept();
-    virtual bool reject();
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 
 };
 

@@ -53,7 +53,7 @@
 
 
 namespace Path {
-extern PyObject* initModule();
+  extern PyObject* initModule();
 }
 
 /* Python entry */
@@ -71,16 +71,20 @@ PyMOD_INIT_FUNC(Path)
     PyObject* pathModule = Path::initModule();
     Base::Console().Log("Loading Path module... done\n");
 
+    Py::Object module(pathModule);
+
     // Add Types to module
     Base::Interpreter().addType(&Path::CommandPy        ::Type, pathModule, "Command");
     Base::Interpreter().addType(&Path::PathPy           ::Type, pathModule, "Path");
     Base::Interpreter().addType(&Path::ToolPy           ::Type, pathModule, "Tool");
     Base::Interpreter().addType(&Path::TooltablePy      ::Type, pathModule, "Tooltable");
     Base::Interpreter().addType(&Path::AreaPy           ::Type, pathModule, "Area");
-    Base::Interpreter().addType(&Path::VoronoiPy        ::Type, pathModule, "Voronoi");
-    Base::Interpreter().addType(&Path::VoronoiCellPy    ::Type, pathModule, "VoronoiCell");
-    Base::Interpreter().addType(&Path::VoronoiEdgePy    ::Type, pathModule, "VoronoiEdge");
-    Base::Interpreter().addType(&Path::VoronoiVertexPy  ::Type, pathModule, "VoronoiVertex");
+
+    PyObject* voronoiModule(module.getAttr("Voronoi").ptr());
+    Base::Interpreter().addType(&Path::VoronoiPy        ::Type, voronoiModule, "Diagram");
+    Base::Interpreter().addType(&Path::VoronoiCellPy    ::Type, voronoiModule, "Cell");
+    Base::Interpreter().addType(&Path::VoronoiEdgePy    ::Type, voronoiModule, "Edge");
+    Base::Interpreter().addType(&Path::VoronoiVertexPy  ::Type, voronoiModule, "Vertex");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.

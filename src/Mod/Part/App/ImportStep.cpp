@@ -25,6 +25,7 @@
 # include <fcntl.h>
 # include <sstream>
 # include <BRep_Builder.hxx>
+# include <Interface_Static.hxx>
 # include <Quantity_Color.hxx>
 # include <STEPControl_Reader.hxx>
 # include <StepData_StepModel.hxx>
@@ -56,6 +57,94 @@
 using namespace Part;
 
 
+void ImportExportSettings::initialize()
+{
+    // set the user-defined settings
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+    initGeneral(hGrp);
+    initSTEP(hGrp);
+    initIGES(hGrp);
+}
+
+void ImportExportSettings::initGeneral(Base::Reference<ParameterGrp> hGrp)
+{
+    // General
+    Base::Reference<ParameterGrp> hGenGrp = hGrp->GetGroup("General");
+    // http://www.opencascade.org/org/forum/thread_20801/
+    // read.surfacecurve.mode:
+    // A preference for the computation of curves in an entity which has both 2D and 3D representation.
+    // Each TopoDS_Edge in TopoDS_Face must have a 3D and 2D curve that references the surface.
+    // If both 2D and 3D representation of the entity are present, the computation of these curves depends on
+    // the following values of parameter:
+    // 0: "Default" - no preference, both curves are taken
+    // 3: "3DUse_Preferred" - 3D curves are used to rebuild 2D ones
+    // Additional modes for IGES
+    //  2: "2DUse_Preferred" - the 2D is used to rebuild the 3D in case of their inconsistency
+    // -2: "2DUse_Forced" - the 2D is always used to rebuild the 3D (even if 2D is present in the file)
+    // -3: "3DUse_Forced" - the 3D is always used to rebuild the 2D (even if 2D is present in the file)
+    int readsurfacecurve = hGenGrp->GetInt("ReadSurfaceCurveMode", 0);
+    Interface_Static::SetIVal("read.surfacecurve.mode", readsurfacecurve);
+
+    // write.surfacecurve.mode (STEP-only):
+    // This parameter indicates whether parametric curves (curves in parametric space of surface) should be
+    // written into the STEP file. This parameter can be set to Off in order to minimize the size of the resulting
+    // STEP file.
+    // Off (0) : writes STEP files without pcurves. This mode decreases the size of the resulting file.
+    // On (1) : (default) writes pcurves to STEP file
+    int writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", 0);
+    Interface_Static::SetIVal("write.surfacecurve.mode", writesurfacecurve);
+}
+
+void ImportExportSettings::initIGES(Base::Reference<ParameterGrp> hGrp)
+{
+    //IGES handling
+    Base::Reference<ParameterGrp> hIgesGrp = hGrp->GetGroup("IGES");
+    int value = Interface_Static::IVal("write.iges.brep.mode");
+    bool brep = hIgesGrp->GetBool("BrepMode", value > 0);
+    Interface_Static::SetIVal("write.iges.brep.mode",brep ? 1 : 0);
+    Interface_Static::SetCVal("write.iges.header.company", hIgesGrp->GetASCII("Company").c_str());
+    Interface_Static::SetCVal("write.iges.header.author", hIgesGrp->GetASCII("Author").c_str());
+    Interface_Static::SetCVal("write.iges.header.product", hIgesGrp->GetASCII("Product",
+       Interface_Static::CVal("write.iges.header.product")).c_str());
+
+    int unitIges = hIgesGrp->GetInt("Unit", 0);
+    switch (unitIges) {
+        case 1:
+            Interface_Static::SetCVal("write.iges.unit","M");
+            break;
+        case 2:
+            Interface_Static::SetCVal("write.iges.unit","INCH");
+            break;
+        default:
+            Interface_Static::SetCVal("write.iges.unit","MM");
+            break;
+    }
+}
+
+void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)
+{
+    //STEP handling
+    Base::Reference<ParameterGrp> hStepGrp = hGrp->GetGroup("STEP");
+    int unitStep = hStepGrp->GetInt("Unit", 0);
+    switch (unitStep) {
+        case 1:
+            Interface_Static::SetCVal("write.step.unit","M");
+            break;
+        case 2:
+            Interface_Static::SetCVal("write.step.unit","INCH");
+            break;
+        default:
+            Interface_Static::SetCVal("write.step.unit","MM");
+            break;
+    }
+
+    std::string ap = hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+    Interface_Static::SetCVal("write.step.schema", ap.c_str());
+    Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
+       Interface_Static::CVal("write.step.product.name")).c_str());
+}
+
 ImportExportSettings::ImportExportSettings()
 {
     pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
@@ -80,7 +169,7 @@ void ImportExportSettings::setExportHiddenObject(bool on)
 
 bool ImportExportSettings::getExportHiddenObject() const
 {
-    return pGroup->GetBool("ExportHiddenObject", false);
+    return pGroup->GetBool("ExportHiddenObject", true);
 }
 
 void ImportExportSettings::setImportHiddenObject(bool on)

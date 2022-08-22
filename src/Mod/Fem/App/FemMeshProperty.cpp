@@ -67,7 +67,7 @@ void PropertyFemMesh::setValue(const FemMesh& sh)
     hasSetValue();
 }
 
-const FemMesh &PropertyFemMesh::getValue(void)const
+const FemMesh &PropertyFemMesh::getValue()const
 {
     return *_FemMesh;
 }
@@ -99,7 +99,7 @@ void PropertyFemMesh::transformGeometry(const Base::Matrix4D &rclMat)
     hasSetValue();
 }
 
-PyObject *PropertyFemMesh::getPyObject(void)
+PyObject *PropertyFemMesh::getPyObject()
 {
     FemMeshPy* mesh = new FemMeshPy(&*_FemMesh);
     mesh->setConst();
@@ -123,7 +123,7 @@ void PropertyFemMesh::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyFemMesh::Copy(void) const
+App::Property *PropertyFemMesh::Copy() const
 {
     PropertyFemMesh *prop = new PropertyFemMesh();
     prop->_FemMesh = this->_FemMesh;
@@ -137,7 +137,7 @@ void PropertyFemMesh::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyFemMesh::getMemSize (void) const
+unsigned int PropertyFemMesh::getMemSize () const
 {
     return _FemMesh->getMemSize();
 }

@@ -37,7 +37,7 @@
 using namespace PathSimulator;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PathSimPy::representation(void) const
+std::string PathSimPy::representation() const
 {
     return std::string("<PathSim object>");
 }
@@ -122,7 +122,7 @@ PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 	return newposPy;
 }
 
-Py::Object PathSimPy::getTool(void) const
+Py::Object PathSimPy::getTool() const
 {
     //return Py::Object();
     throw Py::AttributeError("Not yet implemented");

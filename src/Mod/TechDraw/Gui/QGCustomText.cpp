@@ -25,10 +25,12 @@
 #include <cassert>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QPaintDevice>
 #include <QPainter>
 #include <QPrinter>
+#include <QRectF>
 #include <QSvgGenerator>
 #include <QStyleOptionGraphicsItem>
 #endif
@@ -38,14 +40,13 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
-#include <QRectF>
-#include "Rez.h"
-#include "ZVALUE.h"
 #include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "QGICMark.h"
 #include "QGIView.h"
-#include "PreferencesGui.h"
+#include "Rez.h"
+#include "ZVALUE.h"
+
 #include "QGCustomText.h"
 
 using namespace TechDrawGui;
@@ -112,12 +113,12 @@ void QGCustomText::justifyRightAt(double cX, double cY, bool vCenter)
     setPos(newX,newY);
 }
 
-double QGCustomText::getHeight(void)
+double QGCustomText::getHeight()
 {
     return boundingRect().height();
 }
 
-double QGCustomText::getWidth(void)
+double QGCustomText::getWidth()
 {
     return boundingRect().width();
 }

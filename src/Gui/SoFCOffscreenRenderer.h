@@ -109,16 +109,16 @@ public:
     ~SoQtOffscreenRenderer();
 
     void setViewportRegion(const SbViewportRegion & region);
-    const SbViewportRegion & getViewportRegion(void) const;
+    const SbViewportRegion & getViewportRegion() const;
 
     void setBackgroundColor(const SbColor4f & color);
-    const SbColor4f & getBackgroundColor(void) const;
+    const SbColor4f & getBackgroundColor() const;
 
     void setGLRenderAction(SoGLRenderAction * action);
-    SoGLRenderAction * getGLRenderAction(void) const;
+    SoGLRenderAction * getGLRenderAction() const;
 
     void setNumPasses(const int num);
-    int getNumPasses(void) const;
+    int getNumPasses() const;
 
     void setInternalTextureFormat(GLenum internalTextureFormat);
     GLenum internalTextureFormat() const;
@@ -154,9 +154,9 @@ public:
     static void init_type();
 
     SoQtOffscreenRendererPy(const SbViewportRegion&);
-    ~SoQtOffscreenRendererPy();
+    ~SoQtOffscreenRendererPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object setViewportRegion(const Py::Tuple&);
     Py::Object getViewportRegion(const Py::Tuple&);

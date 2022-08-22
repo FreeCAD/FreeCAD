@@ -243,7 +243,7 @@ std::string findUnusedName(const std::string &basename, ParameterGrp::handle par
 
 bool PreferencePackManager::isVisible(const std::string& addonName, const std::string& preferencePackName) const
 {
-    if (addonName == "" || preferencePackName == "")
+    if (addonName.empty() || preferencePackName.empty())
         return true;
 
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General/HiddenPreferencePacks");
@@ -259,7 +259,7 @@ bool PreferencePackManager::isVisible(const std::string& addonName, const std::s
 
 void PreferencePackManager::toggleVisibility(const std::string& addonName, const std::string& preferencePackName)
 {
-    if (preferencePackName == "")
+    if (preferencePackName.empty())
         return;
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General/HiddenPreferencePacks");
     auto hiddenPacks = pref->GetGroups();
@@ -282,7 +282,7 @@ void PreferencePackManager::toggleVisibility(const std::string& addonName, const
 
 void Gui::PreferencePackManager::deleteUserPack(const std::string& name)
 {
-    if (name == "")
+    if (name.empty())
         return;
     auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
     auto savedPath = savedPreferencePacksDirectory / name;

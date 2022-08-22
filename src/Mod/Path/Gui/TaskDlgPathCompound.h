@@ -42,12 +42,12 @@ class TaskWidgetPathCompound : public Gui::TaskView::TaskBox
 
 public:
     TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=nullptr);
-    ~TaskWidgetPathCompound();
+    ~TaskWidgetPathCompound() override;
 
-    std::vector<std::string> getList(void) const;
+    std::vector<std::string> getList() const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     QWidget* proxy;

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport
-		Father="PyObjectBase"
-		Name="MatrixPy"
-		Twin="Matrix"
-		TwinPointer="Matrix4D"
-		Include="Base/Matrix.h"
-		FatherInclude="Base/PyObjectBase.h"
-		Namespace="Base"
-		Constructor="true"
-		Delete="true"
-		NumberProtocol="true"
- 		RichCompare="true"
-		FatherNamespace="Base">
+        Father="PyObjectBase"
+        Name="MatrixPy"
+        Twin="Matrix"
+        TwinPointer="Matrix4D"
+        Include="Base/Matrix.h"
+        FatherInclude="Base/PyObjectBase.h"
+        Namespace="Base"
+        Constructor="true"
+        Delete="true"
+        NumberProtocol="true"
+        RichCompare="true"
+        FatherNamespace="Base">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <DeveloperDocu>This is the Matrix export class</DeveloperDocu>

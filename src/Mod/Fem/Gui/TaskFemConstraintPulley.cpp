@@ -123,12 +123,12 @@ void TaskFemConstraintPulley::onCheckIsDriven(const bool pressed)
     pcConstraint->IsDriven.setValue(pressed);
 }
 
-double TaskFemConstraintPulley::getTorque(void) const
+double TaskFemConstraintPulley::getTorque() const
 {
     return ui->spinForce->value();
 }
 
-double TaskFemConstraintPulley::getTensionForce(void) const
+double TaskFemConstraintPulley::getTensionForce() const
 {
     return ui->spinTensionForce->value();
 }
@@ -138,12 +138,12 @@ bool TaskFemConstraintPulley::getIsDriven() const
     return ui->checkIsDriven->isChecked();
 }
 
-double TaskFemConstraintPulley::getOtherDiameter(void) const
+double TaskFemConstraintPulley::getOtherDiameter() const
 {
     return ui->spinOtherDiameter->value();
 }
 
-double TaskFemConstraintPulley::getCenterDistance(void) const
+double TaskFemConstraintPulley::getCenterDistance() const
 {
     return ui->spinCenterDistance->value();
 }

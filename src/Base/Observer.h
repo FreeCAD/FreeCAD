@@ -54,13 +54,13 @@ public:
    * A constructor.
    * No special function so far.
    */
-  Observer(){}
+  Observer() = default;
 
   /**
    * A destructor.
    * No special function so far.
    */
-  virtual ~Observer(){}
+  virtual ~Observer() = default;
 
   /**
    * This method need to be reimplemented from the concrete Observer
@@ -108,7 +108,7 @@ public:
    * A constructor.
    * No special function so far.
    */
-  Subject(){}
+  Subject() = default;
 
   /**
    * A destructor.

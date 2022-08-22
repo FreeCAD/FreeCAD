@@ -46,7 +46,7 @@ class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
 
 public:
     TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
-    virtual ~TaskDressUpParameters();
+    ~TaskDressUpParameters() override;
 
     const std::vector<std::string> getReferences(void) const;
     Part::Feature *getBase(void) const;
@@ -106,15 +106,15 @@ class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
 
 public:
     TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
-    virtual ~TaskDlgDressUpParameters();
+    ~TaskDlgDressUpParameters() override;
 
     ViewProviderDressUp* getDressUpView() const
     { return static_cast<ViewProviderDressUp*>(vp); }
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    virtual bool reject();
+    bool accept() override;
+    bool reject() override;
 
 protected:
     TaskDressUpParameters  *parameter;

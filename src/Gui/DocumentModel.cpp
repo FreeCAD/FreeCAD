@@ -48,10 +48,10 @@ namespace Gui {
     // Base class
     class DocumentModelIndex : public Base::BaseClass
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
-        virtual ~DocumentModelIndex()
+        ~DocumentModelIndex() override
         { qDeleteAll(childItems); }
 
         void setParent(DocumentModelIndex* parent)
@@ -113,13 +113,13 @@ namespace Gui {
     // Root node
     class ApplicationIndex : public DocumentModelIndex
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
         ApplicationIndex(){}
         int findChild(const Gui::Document& d) const;
-        Qt::ItemFlags flags() const;
-        QVariant data(int role) const;
+        Qt::ItemFlags flags() const override;
+        QVariant data(int role) const override;
     };
 
     // ------------------------------------------------------------------------
@@ -128,7 +128,7 @@ namespace Gui {
     class DocumentIndex : public DocumentModelIndex
     {
         friend class ViewProviderIndex;
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
         static QIcon* documentIcon;
         typedef boost::unordered_set<ViewProviderIndex*> IndexSet;
         std::map<const ViewProviderDocumentObject*, IndexSet> vp_nodes;
@@ -142,14 +142,14 @@ namespace Gui {
             if (!documentIcon)
                 documentIcon = new QIcon(Gui::BitmapFactory().pixmap("Document"));
         }
-        ~DocumentIndex()
+        ~DocumentIndex() override
         {
             qDeleteAll(childItems); childItems.clear();
         }
         ViewProviderIndex* cloneViewProvider(const ViewProviderDocumentObject&) const;
         int rowOfViewProvider(const ViewProviderDocumentObject&) const;
         void findViewProviders(const ViewProviderDocumentObject&, QList<ViewProviderIndex*>&) const;
-        QVariant data(int role) const;
+        QVariant data(int role) const override;
     };
 
     // ------------------------------------------------------------------------
@@ -157,15 +157,15 @@ namespace Gui {
     // Object nodes
     class ViewProviderIndex : public DocumentModelIndex
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
         const Gui::ViewProviderDocumentObject& v;
         ViewProviderIndex(const Gui::ViewProviderDocumentObject& v, DocumentIndex* d);
-        ~ViewProviderIndex();
+        ~ViewProviderIndex() override;
         ViewProviderIndex* clone() const;
         void findViewProviders(const ViewProviderDocumentObject&, QList<ViewProviderIndex*>&) const;
-        QVariant data(int role) const;
+        QVariant data(int role) const override;
 
     private:
         DocumentIndex* d;

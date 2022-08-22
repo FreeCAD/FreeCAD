@@ -24,12 +24,12 @@
 
 #ifndef _PreComp_
 #include <cmath>
-#endif // #ifndef _PreComp_
-
 #include <QApplication>
 #include <QStatusBar>
 #include <QGraphicsScene>
 #include <QMessageBox>
+#endif // #ifndef _PreComp_
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -76,7 +76,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_base(base),
     m_section(nullptr),
     m_saveScale(1.0),
-    m_dirName(""),
     m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
@@ -351,7 +350,7 @@ void TaskSectionView::enableAll(bool b)
 }
 
 //******************************************************************************
-bool TaskSectionView::apply(void)
+bool TaskSectionView::apply()
 {
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
     if (m_dirName.empty()) {
@@ -390,7 +389,7 @@ void TaskSectionView::applyQuick(std::string dir)
         m_base->requestPaint();
 }
 
-void TaskSectionView::applyAligned(void) 
+void TaskSectionView::applyAligned()
 {
     Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
 //    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
@@ -401,7 +400,7 @@ void TaskSectionView::applyAligned(void)
 //*********************************************************************
 
 //pointer to created view is not returned, but stored in m_section
-void TaskSectionView::createSectionView(void)
+void TaskSectionView::createSectionView()
 {
 //    Base::Console().Message("TSV::createSectionView()\n");
     if (!isBaseValid()) {
@@ -448,7 +447,7 @@ void TaskSectionView::createSectionView(void)
     return;
 }
 
-void TaskSectionView::updateSectionView(void)
+void TaskSectionView::updateSectionView()
 {
 //    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
@@ -498,7 +497,7 @@ void TaskSectionView::failNoObject(std::string objectName)
     m_abort = true;
 }
 
-bool TaskSectionView::isBaseValid(void)
+bool TaskSectionView::isBaseValid()
 {
     if (!m_base)
         return false;
@@ -510,7 +509,7 @@ bool TaskSectionView::isBaseValid(void)
     return true;
 }
 
-bool TaskSectionView::isSectionValid(void)
+bool TaskSectionView::isSectionValid()
 {
     if (!m_section)
         return false;

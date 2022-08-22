@@ -45,7 +45,7 @@ class TaskSketcherMessages : public Gui::TaskView::TaskBox
 
 public:
     TaskSketcherMessages(ViewProviderSketch *sketchView);
-    ~TaskSketcherMessages();
+    ~TaskSketcherMessages() override;
 
     void slotSetUp(const QString &state, const QString &msg, const QString& link, const QString& linkText);
 

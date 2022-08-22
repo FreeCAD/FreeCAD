@@ -33,11 +33,11 @@ namespace Points
  */
 class PointsExport PropertyPointKernel : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPointKernel();
-    ~PropertyPointKernel();
+    ~PropertyPointKernel() override;
 
     /** @name Getter/setter */
     //@{
@@ -45,38 +45,38 @@ public:
     void setValue( const PointKernel& m);
     /// get the points (only const possible!)
     const PointKernel &getValue() const;
-    const Data::ComplexGeoData* getComplexData() const;
-    void setTransform(const Base::Matrix4D& rclTrf);
-    Base::Matrix4D getTransform() const;
+    const Data::ComplexGeoData* getComplexData() const override;
+    void setTransform(const Base::Matrix4D& rclTrf) override;
+    Base::Matrix4D getTransform() const override;
     //@}
 
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const;
+    Base::BoundBox3d getBoundingBox() const override;
     //@}
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject();
-    void setPyObject(PyObject *value);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Undo/Redo */
     //@{
     /// returns a new copy of the property (mainly for Undo/Redo and transactions)
-    App::Property *Copy() const;
+    App::Property *Copy() const override;
     /// paste the value from the property (mainly for Undo/Redo and transactions)
-    void Paste(const App::Property &from);
-    unsigned int getMemSize () const;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
     //@}
 
     /** @name Modification */
@@ -84,7 +84,7 @@ public:
     PointKernel* startEditing();
     void finishEditing();
     /// Transform the real 3d point kernel
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
     void removeIndices( const std::vector<unsigned long>& );
     //@}
 

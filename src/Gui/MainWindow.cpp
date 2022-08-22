@@ -126,7 +126,7 @@ public:
     CustomMessageEvent(int t, const QString& s, int timeout=0)
       : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
-    ~CustomMessageEvent()
+    ~CustomMessageEvent() override
     { }
     int type() const
     { return _type; }
@@ -172,13 +172,13 @@ public:
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     }
 
-    ~MDITabbar()
+    ~MDITabbar() override
     {
         delete menu;
     }
 
 protected:
-    void contextMenuEvent ( QContextMenuEvent * e )
+    void contextMenuEvent ( QContextMenuEvent * e ) override
     {
         menu->clear();
         CommandManager& cMgr = Application::Instance->commandManager();
@@ -876,10 +876,8 @@ void MainWindow::addWindow(MDIView* view)
         d->mdiArea->addSubWindow(child);
     }
 
-    connect(view, SIGNAL(message(const QString&, int)),
-            this, SLOT(showMessage(const QString&, int)));
-    connect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    connect(view, &MDIView::message, this, &MainWindow::showMessage);
+    connect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
 
     // listen to the incoming events of the view
     view->installEventFilter(this);
@@ -900,10 +898,9 @@ void MainWindow::addWindow(MDIView* view)
 void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 {
     // free all connections
-    disconnect(view, SIGNAL(message(const QString&, int)),
-            this, SLOT(showMessage(const QString&, int )));
-    disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    disconnect(view, &MDIView::message, this, &MainWindow::showMessage);
+    disconnect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
+
     view->removeEventFilter(this);
 
     // check if the focus widget is a child of the view
@@ -1110,7 +1107,7 @@ QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
     return mdis;
 }
 
-MDIView* MainWindow::activeWindow(void) const
+MDIView* MainWindow::activeWindow() const
 {
     // each activated window notifies this main window when it is activated
     return d->activeView;
@@ -1191,7 +1188,7 @@ void MainWindow::processMessages(const QList<QByteArray> & msg)
         QByteArray action("OpenFile:");
         for (QList<QByteArray>::const_iterator it = msg.begin(); it != msg.end(); ++it) {
             if (it->startsWith(action))
-                files.push_back(std::string(it->mid(action.size()).constData()));
+                files.emplace_back(it->mid(action.size()).constData());
         }
         files = App::Application::processFiles(files);
         for (std::list<std::string>::iterator it = files.begin(); it != files.end(); ++it) {
@@ -1242,7 +1239,7 @@ void MainWindow::delayedStartup()
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
-        if (App::GetApplication().getDocuments().size()==0){
+        if (App::GetApplication().getDocuments().empty()){
             App::GetApplication().newDocument();
             Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.activeDocument().activeView().viewDefaultOrientation()");
@@ -1417,7 +1414,7 @@ void MainWindow::saveWindowSettings()
     ToolBarManager::getInstance()->saveState();
 }
 
-void MainWindow::startSplasher(void)
+void MainWindow::startSplasher()
 {
     // startup splasher
     // when running in verbose mode no splasher
@@ -1435,7 +1432,7 @@ void MainWindow::startSplasher(void)
     }
 }
 
-void MainWindow::stopSplasher(void)
+void MainWindow::stopSplasher()
 {
     if (d->splashscreen) {
         d->splashscreen->finish(this);
@@ -1626,7 +1623,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
 
     std::vector<App::Document*> unsaved;
     bool hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
-    if(unsaved.size()) {
+    if(!unsaved.empty()) {
         QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
             tr("The exported object contains external link. Please save the document"
                 "at least once before exporting."));

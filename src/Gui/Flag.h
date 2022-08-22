@@ -42,24 +42,24 @@ class GuiExport Flag : public QtGLWidget
 
 public:
     Flag(QWidget* parent=nullptr);
-    ~Flag();
+    ~Flag() override;
 
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
     void setOrigin(const SbVec3f&);
     const SbVec3f& getOrigin() const;
     void drawLine(Gui::View3DInventorViewer*, int tox, int toy);
     void setText(const QString&);
 
 protected:
-    void initializeGL();
-    void resizeGL(int width, int height);
-    void paintGL();
+    void initializeGL() override;
+    void resizeGL(int width, int height) override;
+    void paintGL() override;
 
-    void paintEvent(QPaintEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void resizeEvent(QResizeEvent *);
-    void contextMenuEvent(QContextMenuEvent *);
+    void paintEvent(QPaintEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mousePressEvent(QMouseEvent *) override;
+    void resizeEvent(QResizeEvent *) override;
+    void contextMenuEvent(QContextMenuEvent *) override;
 
 private:
     QString text;
@@ -77,18 +77,18 @@ public:
 
     FlagLayout(QWidget *parent, int margin = 0, int spacing = -1);
     FlagLayout(int spacing = -1);
-    ~FlagLayout();
+    ~FlagLayout() override;
 
-    void addItem(QLayoutItem *item);
+    void addItem(QLayoutItem *item) override;
     void addWidget(QWidget *widget, Position position);
-    Qt::Orientations expandingDirections() const;
-    bool hasHeightForWidth() const;
-    int count() const;
-    QLayoutItem *itemAt(int index) const;
-    QSize minimumSize() const;
-    void setGeometry(const QRect &rect);
-    QSize sizeHint() const;
-    QLayoutItem *takeAt(int index);
+    Qt::Orientations expandingDirections() const override;
+    bool hasHeightForWidth() const override;
+    int count() const override;
+    QLayoutItem *itemAt(int index) const override;
+    QSize minimumSize() const override;
+    void setGeometry(const QRect &rect) override;
+    QSize sizeHint() const override;
+    QLayoutItem *takeAt(int index) override;
 
     void add(QLayoutItem *item, Position position);
 
@@ -112,18 +112,18 @@ private:
 
 class GuiExport GLFlagWindow : public Gui::GLGraphicsItem
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GLFlagWindow(View3DInventorViewer*);
-    virtual ~GLFlagWindow();
+    ~GLFlagWindow() override;
     void addFlag(Flag* item, FlagLayout::Position pos);
     void removeFlag(Flag* item);
     void deleteFlags();
     Flag* getFlag(int) const;
     int countFlags() const;
 
-    void paintGL();
+    void paintGL() override;
 
 private:
     View3DInventorViewer* _viewer;

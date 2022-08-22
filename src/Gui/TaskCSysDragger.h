@@ -38,11 +38,11 @@ namespace Gui
       Q_OBJECT
     public:
       TaskCSysDragger(ViewProviderDocumentObject *vpObjectIn, SoFCCSysDragger *draggerIn);
-      virtual ~TaskCSysDragger() override;
-      virtual QDialogButtonBox::StandardButtons getStandardButtons() const override
+      ~TaskCSysDragger() override;
+      QDialogButtonBox::StandardButtons getStandardButtons() const override
         { return QDialogButtonBox::Ok;}
-      virtual void open() override;
-      virtual bool accept() override;
+      void open() override;
+      bool accept() override;
     private Q_SLOTS:
       void onTIncrementSlot(double freshValue);
       void onRIncrementSlot(double freshValue);

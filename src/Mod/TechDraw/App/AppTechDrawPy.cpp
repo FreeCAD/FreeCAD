@@ -119,7 +119,7 @@ void copy(Py::Dict sourceRange, OutputIt targetIt)
   string key;
   string value;
 
-  for (auto keyPy : sourceRange.keys()) {
+  for (const auto& keyPy : sourceRange.keys()) {
     key = Py::String(keyPy);
     value = Py::String(sourceRange[keyPy]);
     *targetIt = {key, value};
@@ -191,10 +191,10 @@ public:
         );
         initialize("This is a module for making drawings"); // register with Python
     }
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -392,7 +392,7 @@ private:
             if(ew.perform()) {
                 std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
                 std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
-                if(sortedWires.size()) {
+                if(!sortedWires.empty()) {
                     outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
                     success = true;
                 }
@@ -1212,7 +1212,7 @@ private:
             throw Py::Exception();
 
         std::string svg(svgcode);
-        std::string empty = "";
+        std::string empty;
         std::string endline = "--endOfLine--";
         std::string linebreak = "\\n";
         // removing linebreaks for regex to work

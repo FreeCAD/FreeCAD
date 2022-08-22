@@ -61,14 +61,14 @@ Q_OBJECT
 
 public:
     QGIDatumLabel();
-    virtual ~QGIDatumLabel() = default;
+    ~QGIDatumLabel() override = default;
 
     enum {Type = QGraphicsItem::UserType + 107};
     int type() const override { return Type;}
 
-    virtual QRectF boundingRect() const override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void paint( QPainter *painter,
+    QRectF boundingRect() const override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void paint( QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
@@ -77,34 +77,34 @@ public:
     double Y() const { return posY; }              //minus posY?
     
     void setFont(QFont f);
-    QFont getFont(void) { return m_dimText->font(); }
+    QFont getFont() { return m_dimText->font(); }
     void setDimString(QString t);
     void setDimString(QString t, qreal maxWidth);
     void setUnitString(QString t);
     void setToleranceString();
-    void setPrettySel(void);
-    void setPrettyPre(void);
-    void setPrettyNormal(void);
+    void setPrettySel();
+    void setPrettyPre();
+    void setPrettyNormal();
     void setColor(QColor c);
 
     bool verticalSep;
     std::vector<int> seps;
 
-    QGCustomText* getDimText(void) { return m_dimText; }
+    QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
-    QGCustomText* getTolTextOver(void) { return m_tolTextOver; }
+    QGCustomText* getTolTextOver() { return m_tolTextOver; }
     void setTolTextOver(QGCustomText* newTol) { m_tolTextOver = newTol; }
-    QGCustomText* getTolTextUnder(void) { return m_tolTextUnder; }
+    QGCustomText* getTolTextUnder() { return m_tolTextUnder; }
     void setTolTextUnder(QGCustomText* newTol) { m_tolTextOver = newTol; }
 
-    double getTolAdjust(void);
+    double getTolAdjust();
 /*    bool hasHover;*/
     QGIViewDimension* parent;
 
-    bool isFramed(void) { return m_isFramed; }
+    bool isFramed() { return m_isFramed; }
     void setFramed(bool framed) { m_isFramed = framed; }
 
-    double getLineWidth(void) { return m_lineWidth; }
+    double getLineWidth() { return m_lineWidth; }
     void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
 
 Q_SIGNALS:
@@ -115,19 +115,17 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
     QGCustomText* m_dimText;
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
-    int getPrecision(void);
+    int getPrecision();
     QColor m_colNormal;
     bool m_ctrl;
 
@@ -136,6 +134,8 @@ protected:
 
     bool m_isFramed;
     double m_lineWidth;
+
+    int m_dragState;
     
 private:
 };
@@ -150,42 +150,42 @@ public:
     enum {Type = QGraphicsItem::UserType + 106};
 
     explicit QGIViewDimension();
-    ~QGIViewDimension() = default;
+    ~QGIViewDimension() override = default;
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual void paint( QPainter * painter,
+    QRectF boundingRect() const override;
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
     TechDraw::DrawViewDimension *dvDimension;
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
-    virtual QColor prefNormalColor(void);
-    QString getLabelText(void);
-    void setPrettyPre(void);
-    void setPrettySel(void);
-    void setPrettyNormal(void);
+    void drawBorder() override;
+    void updateView(bool update = false) override;
+    virtual QColor prefNormalColor();
+    QString getLabelText();
+    void setPrettyPre();
+    void setPrettySel();
+    void setPrettyNormal();
 
-    virtual void setGroupSelection(bool b) override;
-    virtual QGIDatumLabel* getDatumLabel(void) { return datumLabel; }
+    void setGroupSelection(bool b) override;
+    virtual QGIDatumLabel* getDatumLabel() { return datumLabel; }
 
-    void setNormalColorAll(void);
+    void setNormalColorAll();
 
 public Q_SLOTS:
     void onPrettyChanged(int state);
     void datumLabelDragged(bool ctrl);
-    void datumLabelDragFinished(void);
+    void datumLabelDragFinished();
     void select(bool state);
     void hover(bool state);
     void updateDim();
 
 protected:
 
-    virtual void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+    void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
+    void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     static double getAnglePlacementFactor(double testAngle, double endAngle, double startRotation);
     static int compareAngleStraightness(double straightAngle, double leftAngle, double rightAngle,
@@ -222,7 +222,7 @@ protected:
 
     void draw() override;
 
-    void resetArrows(void) const;
+    void resetArrows() const;
     void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped) const;
 
     void drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
@@ -257,13 +257,13 @@ protected:
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    virtual void setSvgPens(void);
-    virtual void setPens(void);
+    virtual void setSvgPens();
+    virtual void setPens();
     Base::Vector3d findIsoDir(Base::Vector3d ortho) const;
     Base::Vector3d findIsoExt(Base::Vector3d isoDir) const;
-    QString getPrecision(void);
+    QString getPrecision();
 
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text

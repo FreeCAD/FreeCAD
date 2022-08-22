@@ -49,7 +49,7 @@ class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
 
 public:
     TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = nullptr);
-    ~TaskBoxPrimitives();
+    ~TaskBoxPrimitives() override;
 
     bool setPrimitive(App::DocumentObject *);
 
@@ -99,7 +99,7 @@ public Q_SLOTS:
 
 private:
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 private:
     QWidget* proxy;
@@ -113,13 +113,13 @@ class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
 
 public:
     TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
-    ~TaskPrimitiveParameters();
+    ~TaskPrimitiveParameters() override;
 
 protected:
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
-    virtual bool accept();
-    virtual bool reject();
+    bool accept() override;
+    bool reject() override;
 
 private:
     TaskBoxPrimitives*     primitive;

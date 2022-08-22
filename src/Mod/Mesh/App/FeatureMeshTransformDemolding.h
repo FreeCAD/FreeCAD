@@ -39,7 +39,7 @@ namespace Mesh
  */
 class TransformDemolding : public Transform
 {
-    PROPERTY_HEADER(Mesh::TransformDemolding);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::TransformDemolding);
 
 public:
     TransformDemolding();
@@ -51,9 +51,9 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "MeshGui::ViewProviderMeshTransformDemolding";
     }
     //@}

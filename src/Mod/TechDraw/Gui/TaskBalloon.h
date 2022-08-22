@@ -24,6 +24,8 @@
 #ifndef GUI_TASKVIEW_TASKBALLOON_H
 #define GUI_TASKVIEW_TASKBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -39,7 +41,7 @@ class TaskBalloon : public QWidget
 
 public:
     TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP);
-    ~TaskBalloon();
+    ~TaskBalloon() override;
 
 public:
     virtual bool accept();
@@ -70,20 +72,20 @@ class TaskDlgBalloon : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP);
-    ~TaskDlgBalloon();
+    ~TaskDlgBalloon() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     void update();

@@ -67,7 +67,7 @@ using namespace TechDraw;
 //TODO: errors to PyErrors
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawViewPartPy::representation(void) const
+std::string DrawViewPartPy::representation() const
 {
     return std::string("<DrawViewPart object>");
 }
@@ -273,14 +273,6 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
         throw Py::TypeError("expected (CosmeticVertex or [CosmeticVertex])");
     }
     return Py_None;
-}
-
-PyObject* DrawViewPartPy::replaceCosmeticVertex(PyObject *args)
-{
-    (void) args;
-    Base::Console().Message("DVPP::replaceCosmeticVertex() - deprecated. do not use.\n");
-    return PyBool_FromLong(0l);
-
 }
 
 
@@ -493,29 +485,6 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
     return result;
 }
 
-PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
-{
-    (void) args;
-    Base::Console().Message("DVPP::replaceCosmeticEdge() - deprecated. do not use.\n");
-    return PyBool_FromLong(0l);
-
-//    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
-//    bool result = false;
-//    PyObject* pNewCE;
-//    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CosmeticEdgePy::Type), &pNewCE)) {
-//        throw Py::TypeError("expected (CosmeticEdge)");
-//    }
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    TechDraw::CosmeticEdgePy* cePy = static_cast<TechDraw::CosmeticEdgePy*>(pNewCE);
-//    TechDraw::CosmeticEdge* ce = cePy->getCosmeticEdgePtr();
-//    if (ce) {
-//        result = dvp->replaceCosmeticEdge(ce);                 //<<<
-//        dvp->refreshCEGeoms();
-//        dvp->requestPaint();
-//    }
-//    return PyBool_FromLong((long) result);
-}
-
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
 //    Base::Console().Message("DVPPI::removeCosmeticEdge()\n");
@@ -610,26 +579,6 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
         Base::Console().Error("DVPPI::getCenterLinebySelection - centerLine for tag %s not found\n", tag);
     }
     return result;
-}
-
-PyObject* DrawViewPartPy::replaceCenterLine(PyObject *args)
-{
-    (void) args;
-    Base::Console().Message("DVPP::replaceCenterLine() - deprecated. do not use.\n");
-    return PyBool_FromLong(0l);
-
-//    Base::Console().Message("DVPPI::replace CenterLine()\n");
-//    PyObject* pNewCL;
-//    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CenterLinePy::Type), &pNewCL)) {
-//        throw Py::TypeError("expected (CenterLine)");
-//    }
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    TechDraw::CenterLinePy* clPy = static_cast<TechDraw::CenterLinePy*>(pNewCL);
-//    TechDraw::CenterLine* cl = clPy->getCenterLinePtr();
-//    bool result = dvp->replaceCenterLine(cl);
-//    dvp->refreshCLGeoms();
-//    dvp->requestPaint();
-//    return PyBool_FromLong((long) result);
 }
 
 PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)

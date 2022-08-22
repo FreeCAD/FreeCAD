@@ -26,58 +26,36 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-
 #include <Bnd_Box.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
+#include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRep_Builder.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
-#include <BRepLib.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepLProp_CurveTool.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <Geom_Curve.hxx>
-#include <GeomLib_Tool.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
-#include <GProp_GProps.hxx>
-#include <gp_XYZ.hxx>
 #include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopExp_Explorer.hxx>
 #include <TopExp.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
-#include <BRepAlgo_NormalProjection.hxx>
-
-#include <TopTools_IndexedMapOfShape.hxx>
-
 #endif
 
 #include <limits>
 #include <algorithm>
 #include <cmath>
+#include <sstream>
+
+#include <QtConcurrentRun>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -88,11 +66,11 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
 
-#include "Preferences.h"
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include "Cosmetic.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
@@ -102,15 +80,16 @@
 #include "DrawViewBalloon.h"
 #include "DrawViewDetail.h"
 #include "DrawViewDimension.h"
-#include "LandmarkDimension.h"
-#include "DrawViewPart.h"
 #include "DrawViewSection.h"
 #include "EdgeWalker.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "LandmarkDimension.h"
 #include "LineGroup.h"
+#include "Preferences.h"
 #include "ShapeExtractor.h"
 
+#include "DrawViewPart.h"
 #include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
 using namespace TechDraw;
@@ -127,7 +106,9 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart,
                                 TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) :
-    geometryObject(nullptr)
+    geometryObject(nullptr),
+    m_waitingForFaces(false),
+    m_waitingForHlr(false)
 {
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
@@ -156,10 +137,9 @@ DrawViewPart::DrawViewPart(void) :
                       "Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
-    //properties that control HLR algoaffect Appearance
+    //properties that control HLR algo
     bool coarseView = hGrp->GetBool("CoarseView", false);
     ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
-    //add property for visible outline?
     ADD_PROPERTY_TYPE(SmoothVisible ,(prefSmoothViz()),sgroup,App::Prop_None,"Show Visible Smooth lines");
     ADD_PROPERTY_TYPE(SeamVisible ,(prefSeamViz()),sgroup,App::Prop_None,"Show Visible Seam lines");
     ADD_PROPERTY_TYPE(IsoVisible ,(prefIsoViz()),sgroup,App::Prop_None,"Show Visible Iso u,v lines");
@@ -169,18 +149,26 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoHidden ,(prefIsoHid()),sgroup,App::Prop_None,"Show Hidden Iso u,v lines");
     ADD_PROPERTY_TYPE(IsoCount ,(prefIsoCount()),sgroup,App::Prop_None,"Number of iso parameters lines");
 
-    geometryObject = nullptr;
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
 }
 
 DrawViewPart::~DrawViewPart()
 {
+    //don't delete this object while it still has dependent threads running
+    if (m_hlrFuture.isRunning()) {
+        Base::Console().Message("%s is waiting for HLR to finish\n", Label.getValue());
+        m_hlrFuture.waitForFinished();
+    }
+    if (m_faceFuture.isRunning()) {
+        Base::Console().Message("%s is waiting for face finding to finish\n", Label.getValue());
+        m_faceFuture.waitForFinished();
+    }
     removeAllReferencesFromGeom();
     delete geometryObject;
 }
 
-std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d(void) const
+std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d() const
 {
 //    Base::Console().Message("DVP::getSourceShape2d()\n");
     std::vector<TopoDS_Shape> result;
@@ -189,55 +177,31 @@ std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d(void) const
     return result;
 }
 
-
-TopoDS_Shape DrawViewPart::getSourceShape(void) const
+TopoDS_Shape DrawViewPart::getSourceShape() const
 {
 //    Base::Console().Message("DVP::getSourceShape()\n");
-    TopoDS_Shape result;
     const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty())  {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVP::getSourceShape - No Sources (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVP::getSourceShape - No Source(s) linked. - %s\n",
-                                  getNameInDocument());
-        }
-    } else {
-        result = ShapeExtractor::getShapes(links);
+        return TopoDS_Shape();
     }
-    return result;
+    return ShapeExtractor::getShapes(links);
 }
 
-TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
+TopoDS_Shape DrawViewPart::getSourceShapeFused() const
 {
 //    Base::Console().Message("DVP::getSourceShapeFused()\n");
-    TopoDS_Shape result;
-//    const std::vector<App::DocumentObject*>& links = Source.getValues();
     const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty())  {
-        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-        if (isRestoring) {
-            Base::Console().Warning("DVP::getSourceShape - No Sources (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVP::getSourceShape - No Source(s) linked. - %s\n",
-                                  getNameInDocument());
-        }
-    } else {
-        result = ShapeExtractor::getShapesFused(links);
+        return TopoDS_Shape();
     }
-    return result;
+    return ShapeExtractor::getShapesFused(links);
 }
 
-std::vector<App::DocumentObject*> DrawViewPart::getAllSources(void) const
+std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
 {
 //    Base::Console().Message("DVP::getAllSources()\n");
-    const std::vector<App::DocumentObject*> links = Source.getValues();
+    std::vector<App::DocumentObject*> links = Source.getValues();
     std::vector<DocumentObject*> xLinks = XSource.getValues();
-//    std::vector<DocumentObject*> xLinks;
-//    XSource.getLinks(xLinks);
 
     std::vector<App::DocumentObject*> result = links;
     if (!xLinks.empty()) {
@@ -246,139 +210,8 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources(void) const
     return result;
 }
 
-App::DocumentObjectExecReturn *DrawViewPart::execute(void)
-{
-    if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
-    }
-    
-    App::Document* doc = getDocument();
-    bool isRestoring = doc->testStatus(App::Document::Status::Restoring);
-    const std::vector<App::DocumentObject*>& links = getAllSources();
-    if (links.empty())  {
-        if (isRestoring) {
-            Base::Console().Warning("DVP::execute - No Sources (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVP::execute - No Source(s) linked. - %s\n",
-                                  getNameInDocument());
-        }
-        return App::DocumentObject::StdReturn;
-    }
-
-    TopoDS_Shape shape = getSourceShape();
-    if (shape.IsNull()) {
-        if (isRestoring) {
-            Base::Console().Warning("DVP::execute - source shape is invalid - (but document is restoring) - %s\n",
-                                getNameInDocument());
-        } else {
-            Base::Console().Error("Error: DVP::execute - Source shape is Null. - %s\n",
-                                  getNameInDocument());
-        }
-        return App::DocumentObject::StdReturn;
-    }
-
-
-    bool haveX = checkXDirection();
-    if (!haveX) {
-        //block touch/onChanged stuff
-        Base::Vector3d newX = getXDirection();
-        XDirection.setValue(newX);
-        XDirection.purgeTouched();  //don't trigger updates!
-        //unblock
-    }
-
-    m_saveShape = shape;
-    partExec(shape);
-    addShapes2d();
-
-    //second pass if required
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            partExec(shape);
-        }
-    }
-
-//#endif //#if MOD_TECHDRAW_HANDLE_FACES
-    return DrawView::execute();
-}
-
-short DrawViewPart::mustExecute() const
-{
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Direction.isTouched()  ||
-                    Source.isTouched()  ||
-                    XSource.isTouched()  ||
-                    Perspective.isTouched() ||
-                    Focus.isTouched() ||
-                    Rotation.isTouched() ||
-                    SmoothVisible.isTouched() ||
-                    SeamVisible.isTouched() ||
-                    IsoVisible.isTouched() ||
-                    HardHidden.isTouched() ||
-                    SmoothHidden.isTouched() ||
-                    SeamHidden.isTouched() ||
-                    IsoHidden.isTouched() ||
-                    IsoCount.isTouched() ||
-                    CoarseView.isTouched() ||
-                    CosmeticVertexes.isTouched() ||
-                    CosmeticEdges.isTouched() ||
-                    CenterLines.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
-    return TechDraw::DrawView::mustExecute();
-}
-
-void DrawViewPart::onChanged(const App::Property* prop)
-{
-    // If the user has set PropertyVector Direction to zero, set it along the default value instead (Front View).
-    // Otherwise bad things will happen because there'll be a normalization for direction calculations later.
-    Base::Vector3d dir = Direction.getValue();
-    if (DrawUtil::fpCompare(dir.Length(), 0.0)) {
-        Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
-    }
-
-    DrawView::onChanged(prop);
-
-//TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
-}
-
-void DrawViewPart::partExec(TopoDS_Shape shape)
-{
-//    Base::Console().Message("DVP::partExec()\n");
-    if (geometryObject) {
-        delete geometryObject;
-        geometryObject = nullptr;
-    }
-    geometryObject = makeGeometryForShape(shape);
-    if (!geometryObject)
-        return;
-
-#if MOD_TECHDRAW_HANDLE_FACES
-    if (handleFaces() && !geometryObject->usePolygonHLR()) {
-        try {
-            extractFaces();
-        }
-        catch (Standard_Failure& e4) {
-            Base::Console().Log("LOG - DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
-        }
-    }
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
-//    std::vector<TechDraw::Vertex*> verts = getVertexGeometry();
-    addCosmeticVertexesToGeom();
-    addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
-
-    addReferencesToGeom();
-}
-
+//pick supported 2d shapes out of the Source properties and
+//add them directly to the geometry without going through HLR
 void DrawViewPart::addShapes2d(void)
 {
     std::vector<TopoDS_Shape> shapes = getSourceShape2d();
@@ -393,7 +226,7 @@ void DrawViewPart::addShapes2d(void)
             TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
             geometryObject->addVertex(v1);
         } else if (s.ShapeType() == TopAbs_EDGE) {
-              //not supporting edges yet. 
+              //not supporting edges yet.
 //            Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
 //            TopoDS_Shape sTrans = TechDraw::moveShape(s,
 //                                                      m_saveCentroid * -1.0);
@@ -409,18 +242,109 @@ void DrawViewPart::addShapes2d(void)
     }
 }
 
-GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
+App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+//    Base::Console().Message("DVP::execute() - %s\n", getNameInDocument());
+
+    if (!keepUpdated()) {
+        return DrawView::execute();
+    }
+
+    if (waitingForHlr()) {
+        return DrawView::execute();
+    }
+    
+    TopoDS_Shape shape = getSourceShape();
+    if (shape.IsNull()) {
+        Base::Console().Log("DVP::execute - %s - Source shape is Null.\n",
+                            getNameInDocument());
+        return DrawView::execute();
+    }
+
+    //make sure the XDirection property is valid. Mostly for older models.
+    if (!checkXDirection()) {
+        Base::Vector3d newX = getXDirection();
+        XDirection.setValue(newX);
+        XDirection.purgeTouched();  //don't trigger updates!
+    }
+
+    m_saveShape = shape;
+    partExec(shape);
+
+    return DrawView::execute();
+}
+
+short DrawViewPart::mustExecute() const
+{
+    if (isRestoring()) {
+        return TechDraw::DrawView::mustExecute();
+    }
+
+    if (Direction.isTouched()  ||
+        Source.isTouched()  ||
+        XSource.isTouched()  ||
+        Perspective.isTouched() ||
+        Focus.isTouched() ||
+        Rotation.isTouched() ||
+        SmoothVisible.isTouched() ||
+        SeamVisible.isTouched() ||
+        IsoVisible.isTouched() ||
+        HardHidden.isTouched() ||
+        SmoothHidden.isTouched() ||
+        SeamHidden.isTouched() ||
+        IsoHidden.isTouched() ||
+        IsoCount.isTouched() ||
+        CoarseView.isTouched() ||
+        CosmeticVertexes.isTouched() ||
+        CosmeticEdges.isTouched() ||
+        CenterLines.isTouched()) {
+        return 1;
+    }
+
+    return TechDraw::DrawView::mustExecute();
+}
+
+void DrawViewPart::onChanged(const App::Property* prop)
+{
+    // If the user has set PropertyVector Direction to zero, set it along the default value instead (Front View).
+    // Otherwise bad things will happen because there'll be a normalization for direction calculations later.
+    Base::Vector3d dir = Direction.getValue();
+    if (DrawUtil::fpCompare(dir.Length(), 0.0)) {
+        Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
+    }
+
+    DrawView::onChanged(prop);
+}
+
+void DrawViewPart::partExec(TopoDS_Shape& shape)
+{
+//    Base::Console().Message("DVP::partExec()\n");
+    if (waitingForHlr()) {
+        //finish what we are already doing before starting a new cycle
+        return;
+    }
+
+    if (geometryObject) {
+        delete geometryObject;
+        geometryObject = nullptr;
+    }
+
+    geometryObject = makeGeometryForShape(shape);
+    if (CoarseView.getValue()){
+        onHlrFinished();    //poly algo does not run in separate thread, so we need to invoke
+                            //the post hlr processing manually
+    }
+}
+
+//prepare the shape for HLR processing by centering, scaling and rotating it
+GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
+{
+//    Base::Console().Message("DVP::makeGeometryForShape()\n");
     gp_Pnt inputCenter;
     Base::Vector3d stdOrg(0.0,0.0,0.0);
-
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
-
-//    BRepTools::Write(shape, "DVPShape.brep");            //debug
-
     inputCenter = TechDraw::findCentroid(shape,
                                          viewAxis);
-
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
@@ -443,91 +367,131 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
     return go;
 }
 
-//note: slightly different than routine with same name in DrawProjectSplit
-TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
+//create a geometry object and trigger the HLR process in another thread
+TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis)
 {
+//    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
+    showProgressMessage(getNameInDocument(), "is finding hidden lines");
+
     TechDraw::GeometryObject* go = new TechDraw::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
     go->usePolygonHLR(CoarseView.getValue());
 
-    if (go->usePolygonHLR()){
+    if (CoarseView.getValue()){
+        //the polygon approximation HLR process runs quickly, so doesn't need to be in a
+        //separate thread
         go->projectShapeWithPolygonAlgo(shape,
-            viewAxis);
+                                        viewAxis);
+    } else {
+        //projectShape (the HLR process) runs in a separate thread since it can take a long time
+        connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished, [this] {
+            this->onHlrFinished();}
+        );
+        m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
+        m_hlrWatcher.setFuture(m_hlrFuture);
+        waitingForHlr(true);
     }
-    else{
-        go->projectShape(shape,
-            viewAxis);
-    }
-
-    go->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
-                        true);
-    go->extractGeometry(TechDraw::ecOUTLINE,
-                        true);
-    if (SmoothVisible.getValue()) {
-        go->extractGeometry(TechDraw::ecSMOOTH,
-                            true);
-    }
-    if (SeamVisible.getValue()) {
-        go->extractGeometry(TechDraw::ecSEAM,
-                            true);
-    }
-    if ((IsoVisible.getValue()) && (IsoCount.getValue() > 0)) {
-        go->extractGeometry(TechDraw::ecUVISO,
-                            true);
-    }
-    if (HardHidden.getValue()) {
-        go->extractGeometry(TechDraw::ecHARD,
-                            false);
-        go->extractGeometry(TechDraw::ecOUTLINE,
-                            false);
-    }
-    if (SmoothHidden.getValue()) {
-        go->extractGeometry(TechDraw::ecSMOOTH,
-                            false);
-    }
-    if (SeamHidden.getValue()) {
-        go->extractGeometry(TechDraw::ecSEAM,
-                            false);
-    }
-    if (IsoHidden.getValue() && (IsoCount.getValue() > 0)) {
-        go->extractGeometry(TechDraw::ecUVISO,
-                            false);
-    }
-
-    const BaseGeomPtrVector& edges = go->getEdgeGeometry();
-    if (edges.empty())
-        Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
-    bbox = go->calcBoundingBox();
     return go;
 }
 
-//! make faces from the existing edge geometry
+//continue processing after hlr thread completes
+void DrawViewPart::onHlrFinished(void)
+{
+//    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
+    //the last hlr related task is to make a bbox of the results
+    bbox = geometryObject->calcBoundingBox();
+
+    waitingForHlr(false);
+    QObject::disconnect(connectHlrWatcher);
+    showProgressMessage(getNameInDocument(), "has finished finding hidden lines");
+
+    postHlrTasks();         //application level tasks that depend on HLR/GO being complete
+
+    //start face finding in a separate thread.  We don't find faces when using the polygon
+    //HLR method
+    if (handleFaces() && !CoarseView.getValue() && !waitingForFaces()) {
+        try {
+            connectFaceWatcher = QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, [this] {
+                this->onFacesFinished();
+            });
+            m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
+            m_faceWatcher.setFuture(m_faceFuture);
+            waitingForFaces(true);
+        }
+        catch (Standard_Failure& e) {
+            waitingForFaces(false);
+            Base::Console().Error("DVP::partExec - %s - extractFaces failed - %s **\n",getNameInDocument(), e.GetMessageString());
+            throw Base::RuntimeError("DVP::onHlrFinished - error extracting faces");
+        }
+    }
+}
+
+//run any tasks that need to been done after geometry is available
+void DrawViewPart::postHlrTasks(void)
+{
+//    Base::Console().Message("DVP::postHlrTasks() - %s\n", getNameInDocument());
+    //add geometry that doesn't come from HLR
+    addCosmeticVertexesToGeom();
+    addCosmeticEdgesToGeom();
+    addCenterLinesToGeom();
+    addReferencesToGeom();
+    addShapes2d();
+
+    //dimensions and balloons need to be recomputed here because their
+    //references will be invalid until the geometry exists
+    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
+    for (auto& d : dims) {
+        d->recomputeFeature();
+    }
+    std::vector<TechDraw::DrawViewBalloon*> bals = getBalloons();
+    for (auto& b : bals) {
+        b->recomputeFeature();
+    }
+
+    //second pass if required
+    if (ScaleType.isValue("Automatic") &&
+        !checkFit()) {
+        double newScale = autoScale();
+        Scale.setValue(newScale);
+        Scale.purgeTouched();
+        partExec(m_saveShape);
+    }
+
+    overrideKeepUpdated(false);
+
+    requestPaint();
+}
+
+//! make faces from the edge geometry
 void DrawViewPart::extractFaces()
 {
-    if (!geometryObject)
+//    Base::Console().Message("DVP::extractFaces()\n");
+    if (!geometryObject ||
+        !this->hasGeometry()) {
+        //no geometry yet so don't bother
         return;
+    }
+
+    showProgressMessage(getNameInDocument(), "is extracting faces");
+
     geometryObject->clearFaceGeom();
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
-    std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
 
     //make a copy of the input edges so the loose tolerances of face finding are
     //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
     std::vector<TopoDS_Edge> copyEdges;
-    for (;itEdge != goEdges.end(); itEdge++) {
-        BRepBuilderAPI_Copy copier((*itEdge)->occEdge, true, true);
+    for (auto& tdEdge: goEdges) {
+        BRepBuilderAPI_Copy copier(tdEdge->occEdge, true, true);  //copy occEdge with its geometry (TShape) and mesh info
         copyEdges.push_back(TopoDS::Edge(copier.Shape()));
     }
 
-    std::vector<TopoDS_Edge> faceEdges;
     std::vector<TopoDS_Edge> nonZero;
     for (auto& e:copyEdges) {                            //drop any zero edges (shouldn't be any by now!!!)
         if (!DrawUtil::isZeroEdge(e)) {
             nonZero.push_back(e);
-        } else {
-            Base::Console().Log("INFO - DVP::extractFaces for %s found ZeroEdge!\n",getNameInDocument());
         }
     }
 
@@ -536,18 +500,16 @@ void DrawViewPart::extractFaces()
     std::vector<splitPoint> splits;
     std::vector<TopoDS_Edge>::iterator itOuter = nonZero.begin();
     int iOuter = 0;
-    for (; itOuter != nonZero.end(); ++itOuter, iOuter++) {    //*** itOuter != nonZero.end() - 1
+    for (; itOuter != nonZero.end(); ++itOuter, iOuter++) {
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
         BRepBndLib::AddOptimal(*itOuter, sOuter);
         sOuter.SetGap(0.1);
         if (sOuter.IsVoid()) {
-            Base::Console().Log("DVP::Extract Faces - outer Bnd_Box is void for %s\n",getNameInDocument());
             continue;
         }
         if (DrawUtil::isZeroEdge(*itOuter)) {
-            Base::Console().Log("DVP::extractFaces - outerEdge: %d is ZeroEdge\n",iOuter);   //this is not finding ZeroEdges
             continue;  //skip zero length edges. shouldn't happen ;)
         }
         int iInner = 0;
@@ -564,14 +526,13 @@ void DrawViewPart::extractFaces()
             BRepBndLib::AddOptimal(*itInner, sInner);
             sInner.SetGap(0.1);
             if (sInner.IsVoid()) {
-                Base::Console().Log("INFO - DVP::Extract Faces - inner Bnd_Box is void for %s\n",getNameInDocument());
                 continue;
             }
             if (sOuter.IsOut(sInner)) {      //bboxes of edges don't intersect, don't bother
                 continue;
             }
 
-            double param = -1;
+            double param = -1;      //parametric point on edge where the vertex touches
             if (DrawProjectSplit::isOnEdge((*itInner),v1,param,false)) {
                 gp_Pnt pnt1 = BRep_Tool::Pnt(v1);
                 splitPoint s1;
@@ -591,70 +552,84 @@ void DrawViewPart::extractFaces()
         } //inner loop
     }   //outer loop
 
+    //if edge A was touched at the same point by multiple edges B, we only want to split A once
     std::vector<splitPoint> sorted = DrawProjectSplit::sortSplits(splits,true);
     auto last = std::unique(sorted.begin(), sorted.end(), DrawProjectSplit::splitEqual);  //duplicates to back
-    sorted.erase(last, sorted.end());                         //remove dupl splits
+    sorted.erase(last, sorted.end());                         //remove duplicate splits
+
     std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(nonZero,sorted);
 
     if (newEdges.empty()) {
-        Base::Console().Log("DVP::extractFaces - no newEdges\n");
+        Base::Console().Log("DVP::extractFaces - no edges return by splitting process\n");
+        waitingForFaces(false);
         return;
     }
 
-    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);        //<<< here
+    //try to remove any duplicated edges since they will confuse the edgeWalker
+    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
 
 //find all the wires in the pile of faceEdges
     EdgeWalker ew;
     ew.loadEdges(newEdges);
     bool success = ew.perform();
     if (!success) {
-        Base::Console().Warning("DVP::extractFaces - %s -Can't make faces from projected edges\n", getNameInDocument());
+        Base::Console().Warning("DVP::extractFaces - %s - Can't make faces from projected edges\n", getNameInDocument());
+        waitingForFaces(false);
         return;
     }
     std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
 
     std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,true);
 
-//    int idb = 0;
     std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
     for (; itWire != sortedWires.end(); itWire++) {
         //version 1: 1 wire/face - no voids in face
-//debug
-//        std::stringstream ss;
-//        ss << "DVPSWire" << idb << ".brep";
-//        std::string wireName = ss.str();
-//        BRepTools::Write((*itWire), wireName.c_str());            //debug
-//debug        idb++;
         TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
         const TopoDS_Wire& wire = (*itWire);
         TechDraw::Wire* w = new TechDraw::Wire(wire);
         f->wires.push_back(w);
-        geometryObject->addFaceGeom(f);
+        if (geometryObject) {
+            //it can happen that a new hlr cycle deletes geometryObject while we are
+            //extracting faces. if it does happen, a new cycle should fix it.
+            geometryObject->addFaceGeom(f);
+        }
     }
 }
 
+//continue processing after extractFaces thread completes
+void DrawViewPart::onFacesFinished(void)
+{
+//    Base::Console().Message("DVP::onFacesFinished()\n");
+    waitingForFaces(false);
+    QObject::disconnect(connectFaceWatcher);
+    showProgressMessage(getNameInDocument(), "has finished extracting faces");
+    requestPaint();
+}
+
+//retrieve all the face hatches associated with this dvp
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ( ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) &&
-            (!(*it)->isRemoving()) ) {
-            TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
+    for (auto& child: children) {
+        if ( child->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()) &&
+            !child->isRemoving() ) {
+            TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
             result.push_back(hatch);
         }
     }
     return result;
 }
 
+//retrieve all the geometric hatches associated with this dvp
 std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
 {
     std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ( ((*it)->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())) &&
-             (!(*it)->isRemoving()) ) {
-            TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(*it);
+    for (auto& child: children) {
+        if ( child->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId()) &&
+             !child->isRemoving() ) {
+            TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
             result.push_back(geom);
         }
     }
@@ -662,6 +637,8 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
 }
 
 //return *unique* list of Dimensions which reference this DVP
+//if the dimension has two references to this dvp, it will appear twice in
+//the inlist
 std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
 {
     std::vector<TechDraw::DrawViewDimension*> result;
@@ -704,19 +681,19 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
     std::vector<TechDraw::FacePtr> result;
-    if (geometryObject) {
-        result = geometryObject->getFaceGeometry();
+    if ( waitingForFaces() ||
+        !geometryObject ) {
+        return std::vector<TechDraw::FacePtr>();
     }
-    return result;
+    return geometryObject->getFaceGeometry();
 }
 
 const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
 {
-    BaseGeomPtrVector result;
     if (geometryObject) {
-        result = geometryObject->getEdgeGeometry();
+        return geometryObject->getEdgeGeometry();
     }
-    return result;
+    return BaseGeomPtrVector();
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
@@ -724,11 +701,11 @@ TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
 {
     const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
-        Base::Console().Log("INFO - getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
+        Base::Console().Log("DVP::getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Log("INFO - getGeomByIndex(%d) - invalid index\n",idx);
+        Base::Console().Error("DVP::getGeomByIndex(%d) - invalid index - size: %d\n", idx, geoms.size());
         return nullptr;
     }
     return geoms.at(idx);
@@ -739,11 +716,11 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 {
     const std::vector<TechDraw::VertexPtr> &geoms = getVertexGeometry();
     if (geoms.empty()) {
-        Base::Console().Log("INFO - getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
+        Base::Console().Log("DVP::getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
-        Base::Console().Log("INFO - getProjVertexByIndex(%d) - invalid index\n",idx);
+        Base::Console().Error("DVP::getProjVertexByIndex(%d) - invalid index\n",idx);
         return nullptr;
     }
     return geoms.at(idx);
@@ -814,13 +791,13 @@ Base::BoundBox3d DrawViewPart::getBoundingBox() const
     return bbox;
 }
 
-double DrawViewPart::getBoxX(void) const
+double DrawViewPart::getBoxX() const
 {
     Base::BoundBox3d bbx = getBoundingBox();   //bbox is already scaled & centered!
     return (bbx.MaxX - bbx.MinX);
 }
 
-double DrawViewPart::getBoxY(void) const
+double DrawViewPart::getBoxY() const
 {
     Base::BoundBox3d bbx = getBoundingBox();
     return (bbx.MaxY - bbx.MinY);
@@ -871,20 +848,33 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
     return result;
 }
 
+bool DrawViewPart::waitingForResult() const
+{
+    if (waitingForHlr() ||
+        waitingForFaces()) {
+        return true;
+    }
+    return false;
+}
+
 bool DrawViewPart::hasGeometry(void) const
 {
-    bool result = false;
-    if (!geometryObject)
-        return result;
+    if (!geometryObject) {
+        return false;
+    }
+
+    if (waitingForHlr()) {
+        return false;
+    }
     const std::vector<TechDraw::VertexPtr> &verts = getVertexGeometry();
     const std::vector<TechDraw::BaseGeomPtr> &edges = getEdgeGeometry();
     if (verts.empty() &&
         edges.empty() ) {
-        result = false;
+        return false;
     } else {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
@@ -926,12 +916,12 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
 
 //TODO: make saveShape a property
 
-Base::Vector3d DrawViewPart::getOriginalCentroid(void) const
+Base::Vector3d DrawViewPart::getOriginalCentroid() const
 {
     return m_saveCentroid;
 }
 
-Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
+Base::Vector3d DrawViewPart::getCurrentCentroid() const
 {
     TopoDS_Shape shape = getSourceShape();
     gp_Ax2 cs = getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0));
@@ -939,7 +929,7 @@ Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
     return center;
 }
 
-std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
+std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
 {
     std::vector<DrawViewSection*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
@@ -951,7 +941,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
     return result;
 }
 
-std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs(void) const
+std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
 {
     std::vector<DrawViewDetail*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
@@ -970,7 +960,7 @@ const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
 
-bool DrawViewPart::handleFaces(void)
+bool DrawViewPart::handleFaces()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
@@ -1037,7 +1027,7 @@ void DrawViewPart::unsetupObject()
 }
 
 //! is this an Isometric projection?
-bool DrawViewPart::isIso(void) const
+bool DrawViewPart::isIso() const
 {
     bool result = false;
     Base::Vector3d dir = Direction.getValue();
@@ -1048,7 +1038,7 @@ bool DrawViewPart::isIso(void) const
     return result;
 }
 
-bool DrawViewPart::checkXDirection(void) const
+bool DrawViewPart::checkXDirection() const
 {
 //    Base::Console().Message("DVP::checkXDirection()\n");
     Base::Vector3d xDir = XDirection.getValue();
@@ -1066,7 +1056,7 @@ bool DrawViewPart::checkXDirection(void) const
 }
 
 //
-Base::Vector3d DrawViewPart::getXDirection(void) const
+Base::Vector3d DrawViewPart::getXDirection() const
 {
 //    Base::Console().Message("DVP::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
@@ -1114,7 +1104,7 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
     }
 }
 
-void DrawViewPart::addReferencesToGeom(void)
+void DrawViewPart::addReferencesToGeom()
 {
 //    Base::Console().Message("DVP::addReferencesToGeom() - %s\n", getNameInDocument());
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
@@ -1179,14 +1169,14 @@ void DrawViewPart::resetReferenceVerts()
 //* Cosmetics
 //********
 
-void DrawViewPart::clearCosmeticVertexes(void)
+void DrawViewPart::clearCosmeticVertexes()
 {
     std::vector<CosmeticVertex*> noVerts;
     CosmeticVertexes.setValues(noVerts);
 }
 
 //add the cosmetic verts to geometry vertex list
-void DrawViewPart::addCosmeticVertexesToGeom(void)
+void DrawViewPart::addCosmeticVertexesToGeom()
 {
 //    Base::Console().Message("DVP::addCosmeticVertexesToGeom()\n");
     const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
@@ -1212,7 +1202,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
 }
 
 //update Vertex geometry with current CV's 
-void DrawViewPart::refreshCVGeoms(void)
+void DrawViewPart::refreshCVGeoms()
 {
 //    Base::Console().Message("DVP::refreshCVGeoms()\n");
 
@@ -1266,14 +1256,14 @@ int DrawViewPart::getCVIndex(std::string tag)
 //CosmeticEdges -------------------------------------------------------------------
 
 //for completeness.  not actually used anywhere?
-void DrawViewPart::clearCosmeticEdges(void)
+void DrawViewPart::clearCosmeticEdges()
 {
     std::vector<CosmeticEdge*> noEdges;
     CosmeticEdges.setValues(noEdges);
 }
 
 //add the cosmetic edges to geometry edge list
-void DrawViewPart::addCosmeticEdgesToGeom(void)
+void DrawViewPart::addCosmeticEdgesToGeom()
 {
 //    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
@@ -1303,7 +1293,7 @@ int DrawViewPart::add1CEToGE(std::string tag)
 }
 
 //update Edge geometry with current CE's 
-void DrawViewPart::refreshCEGeoms(void)
+void DrawViewPart::refreshCEGeoms()
 {
 //    Base::Console().Message("DVP::refreshCEGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
@@ -1319,7 +1309,7 @@ void DrawViewPart::refreshCEGeoms(void)
 
 
 // CenterLines -----------------------------------------------------------------
-void DrawViewPart::clearCenterLines(void)
+void DrawViewPart::clearCenterLines()
 {
     std::vector<CenterLine*> noLines;
     CenterLines.setValues(noLines);
@@ -1341,7 +1331,7 @@ int DrawViewPart::add1CLToGE(std::string tag)
 }
 
 //update Edge geometry with current CL's 
-void DrawViewPart::refreshCLGeoms(void)
+void DrawViewPart::refreshCLGeoms()
 {
 //    Base::Console().Message("DVP::refreshCLGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
@@ -1356,7 +1346,7 @@ void DrawViewPart::refreshCLGeoms(void)
 }
 
 //add the center lines to geometry Edges list
-void DrawViewPart::addCenterLinesToGeom(void)
+void DrawViewPart::addCenterLinesToGeom()
 {
 //   Base::Console().Message("DVP::addCenterLinesToGeom()\n");
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
@@ -1373,7 +1363,7 @@ void DrawViewPart::addCenterLinesToGeom(void)
 
 // GeomFormats -----------------------------------------------------------------
 
-void DrawViewPart::clearGeomFormats(void)
+void DrawViewPart::clearGeomFormats()
 {
     std::vector<GeomFormat*> noFormats;
     std::vector<GeomFormat*> fmts = GeomFormats.getValues();
@@ -1429,7 +1419,7 @@ void DrawViewPart::onDocumentRestored()
     DrawView::onDocumentRestored();
 }
 
-PyObject *DrawViewPart::getPyObject(void)
+PyObject *DrawViewPart::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -1444,7 +1434,7 @@ void DrawViewPart::handleChangedPropertyName(Base::XMLReader &reader, const char
     DrawView::handleChangedPropertyName(reader, TypeName, PropName);
 }
 
-bool DrawViewPart::prefHardViz(void)
+bool DrawViewPart::prefHardViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1452,7 +1442,7 @@ bool DrawViewPart::prefHardViz(void)
     return result;
 }
 
-bool DrawViewPart::prefSeamViz(void)
+bool DrawViewPart::prefSeamViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1460,7 +1450,7 @@ bool DrawViewPart::prefSeamViz(void)
     return result;
 }
 
-bool DrawViewPart::prefSmoothViz(void)
+bool DrawViewPart::prefSmoothViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1468,7 +1458,7 @@ bool DrawViewPart::prefSmoothViz(void)
     return result;
 }
 
-bool DrawViewPart::prefIsoViz(void)
+bool DrawViewPart::prefIsoViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1476,7 +1466,7 @@ bool DrawViewPart::prefIsoViz(void)
     return result;
 }
 
-bool DrawViewPart::prefHardHid(void)
+bool DrawViewPart::prefHardHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1484,7 +1474,7 @@ bool DrawViewPart::prefHardHid(void)
     return result;
 }
 
-bool DrawViewPart::prefSeamHid(void)
+bool DrawViewPart::prefSeamHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1492,7 +1482,7 @@ bool DrawViewPart::prefSeamHid(void)
     return result;
 }
 
-bool DrawViewPart::prefSmoothHid(void)
+bool DrawViewPart::prefSmoothHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1500,7 +1490,7 @@ bool DrawViewPart::prefSmoothHid(void)
     return result;
 }
 
-bool DrawViewPart::prefIsoHid(void)
+bool DrawViewPart::prefIsoHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1508,7 +1498,7 @@ bool DrawViewPart::prefIsoHid(void)
     return result;
 }
 
-int DrawViewPart::prefIsoCount(void)
+int DrawViewPart::prefIsoCount()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
@@ -1516,13 +1506,12 @@ int DrawViewPart::prefIsoCount(void)
     return result;
 }
 
-
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewPartPython, TechDraw::DrawViewPart)
-template<> const char* TechDraw::DrawViewPartPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewPartPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewPart";
 }
 /// @endcond

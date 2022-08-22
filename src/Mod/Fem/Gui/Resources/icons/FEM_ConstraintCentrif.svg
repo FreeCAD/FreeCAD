@@ -1,78 +1,78 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="64px" height="64px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
- <defs>
-  <linearGradient id="linearGradient3367" x1="-11" x2="-18" y1="26" y2="14" gradientTransform="translate(-20 -6)" gradientUnits="userSpaceOnUse" spreadMethod="reflect">
-   <stop stop-color="#c4a000" offset="0"/>
-   <stop stop-color="#fce94f" offset="1"/>
-  </linearGradient>
-  <linearGradient id="linearGradient3369" x1="32.558" x2="26.302" y1="32.918" y2="12.207" gradientTransform="translate(10.413 -18.142)" gradientUnits="userSpaceOnUse">
-   <stop stop-color="#edd400" offset="0"/>
-   <stop stop-color="#fce94f" offset="1"/>
-  </linearGradient>
- </defs>
- <metadata>
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:creator>
-     <cc:Agent>
-      <dc:title>[Przemo Firszt]</dc:title>
-     </cc:Agent>
-    </dc:creator>
-    <dc:date>2015-07-28</dc:date>
-    <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
-    <dc:publisher>
-     <cc:Agent>
-      <dc:title>FreeCAD</dc:title>
-     </cc:Agent>
-    </dc:publisher>
-    <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
-    <dc:rights>
-     <cc:Agent>
-      <dc:title>FreeCAD LGPL2+</dc:title>
-     </cc:Agent>
-    </dc:rights>
-    <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
-    <dc:contributor>
-     <cc:Agent>
-      <dc:title>[agryson] Alexander Gryson</dc:title>
-     </cc:Agent>
-    </dc:contributor>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
- <g transform="translate(87.958,2.1036)">
-  <g stroke-width="2">
-   <path d="m-69.198 25.198 16.221-10.644c11.343-4.6433 24.729 13.209 12.401 22.256l-15.696 9.8408z" color="#000000" fill="#edd400" stroke="#302b00" stroke-linejoin="round"/>
-   <path d="m-70.279 28.105 15.947-10.448c10.365-7.6968 23.946 10.626 12.01 17.872l-15.696 9.8408z" color="#000000" fill="url(#linearGradient3367)" stroke="#fce94f" stroke-linejoin="round"/>
-   <g fill="none" stroke="#302b00">
-    <path d="m-59.9 18.9c12-1 18.571 11 14.571 21" color="#000000"/>
-    <path d="m-60.7 25.9 17-11" color="#000000"/>
-    <path d="m-52.7 34.9 17-11" color="#000000"/>
-   </g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="64px" height="64px" version="1.1" id="svg1739" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs id="defs1685">
+    <linearGradient id="linearGradient3367" x1="-11" x2="-18" y1="26" y2="14" gradientTransform="translate(-20 -6)" gradientUnits="userSpaceOnUse" spreadMethod="reflect">
+      <stop stop-color="#c4a000" offset="0" id="stop1675" />
+      <stop stop-color="#fce94f" offset="1" id="stop1677" />
+    </linearGradient>
+    <linearGradient id="linearGradient3369" x1="32.558" x2="26.302" y1="32.918" y2="12.207" gradientTransform="translate(10.413 -18.142)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#edd400" offset="0" id="stop1680" />
+      <stop stop-color="#fce94f" offset="1" id="stop1682" />
+    </linearGradient>
+  </defs>
+  <metadata id="metadata1687">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Przemo Firszt]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2015-07-28</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g transform="translate(87.958,2.1036)" id="g1737">
+    <g stroke-width="2" id="g1701">
+      <path d="m-69.198 25.198 16.221-10.644c11.343-4.6433 24.729 13.209 12.401 22.256l-15.696 9.8408z" color="#000000" fill="#edd400" stroke="#302b00" stroke-linejoin="round" id="path1689" />
+      <path d="m-70.279 28.105 15.947-10.448c10.365-7.6968 23.946 10.626 12.01 17.872l-15.696 9.8408z" color="#000000" fill="url(#linearGradient3367)" stroke="#fce94f" stroke-linejoin="round" id="path1691" />
+      <g fill="none" stroke="#302b00" id="g1699">
+        <path d="m-59.9 18.9c12-1 18.571 11 14.571 21" color="#000000" id="path1693" />
+        <path d="m-60.7 25.9 17-11" color="#000000" id="path1695" />
+        <path d="m-52.7 34.9 17-11" color="#000000" id="path1697" />
+      </g>
+    </g>
+    <g transform="matrix(.92148 .21648 -.046568 .97753 -75.828 17.995)" color="#000000" stroke-linecap="round" stroke-linejoin="round" id="g1707">
+      <path transform="translate(-17,-7)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" fill="#ef2929" stroke="#000" stroke-width="2.0956" id="path1703" />
+      <path transform="matrix(.83333 0 0 .83333 -11.667 -3.3333)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" fill="url(#linearGradient3369)" stroke="#fae94f" stroke-width="2.5147" id="path1705" />
+    </g>
+    <g fill="none" id="g1735">
+      <g transform="matrix(.92148 .21648 -.046568 .97753 -75.896 17.973)" color="#000000" id="g1713">
+        <path transform="translate(-17,-7)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" stroke-width=".9996" id="path1709" />
+        <path transform="matrix(.83333 0 0 .83333 -11.667 -3.3333)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" stroke-width="1.1995" id="path1711" />
+      </g>
+      <g stroke="#000" stroke-width="2" id="g1723">
+        <path d="m-59.7 24.9v23" color="#000000" id="path1715" />
+        <path d="m-66.7 24.9v21" color="#000000" id="path1717" />
+        <path d="m-72.7 28.9 21 7" color="#000000" id="path1719" />
+        <path d="m-73.7 35.9 21 7" color="#000000" id="path1721" />
+      </g>
+      <g fill="none" stroke-linecap="round" id="g1733">
+        <path transform="matrix(.95301 -.17255 .047914 .55781 -76.601 7.3128)" d="m13.709 3.3757 10.341 5.7409-10.142 6.0855-0.09947-5.9132z" stroke="#000" stroke-width="9.5266" id="path1725" />
+        <path transform="matrix(.95301 -.17255 .047914 .55781 -76.601 7.3128)" d="m13.709 3.3757 10.341 5.7409-10.142 6.0855-0.09947-5.9132z" fill="#f00" stroke="#fe0000" stroke-width="5.4423" id="path1727" />
+        <path d="m-46.738 53.734s-6.79 5.0646-13.023 4.9716c-10.517-0.157-20.194-8.7834-23.485-18.773-2.5664-7.7898 0.33383-18.519 6.7154-23.671 4.9087-3.9629 9.4238-4.8603 9.4238-4.8603" fill="none" stroke="#000" stroke-linecap="round" stroke-width="6.9997" id="path1729" />
+        <path d="m-46.738 53.734s-6.79 5.0646-13.023 4.9716c-10.517-0.157-20.194-8.7834-23.485-18.773-2.5664-7.7898 0.33383-18.519 6.7154-23.671 4.9087-3.9629 9.4238-4.8603 9.4238-4.8603" fill="none" stroke="#f00" stroke-linecap="round" stroke-width="3.9987" id="path1731" />
+      </g>
+    </g>
   </g>
-  <g transform="matrix(.92148 .21648 -.046568 .97753 -75.828 17.995)" color="#000000" stroke-linecap="round" stroke-linejoin="round">
-   <path transform="translate(-17,-7)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" fill="#ef2929" stroke="#000" stroke-width="2.0956"/>
-   <path transform="matrix(.83333 0 0 .83333 -11.667 -3.3333)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" fill="url(#linearGradient3369)" stroke="#fae94f" stroke-width="2.5147"/>
-  </g>
-  <g fill="none">
-   <g transform="matrix(.92148 .21648 -.046568 .97753 -75.896 17.973)" color="#000000">
-    <path transform="translate(-17,-7)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" stroke-width=".9996"/>
-    <path transform="matrix(.83333 0 0 .83333 -11.667 -3.3333)" d="m44 22c0 6.6274-5.3726 12-12 12s-12-5.3726-12-12 5.3726-12 12-12 12 5.3726 12 12z" stroke-width="1.1995"/>
-   </g>
-   <g stroke="#000" stroke-width="2">
-    <path d="m-59.7 24.9v23" color="#000000"/>
-    <path d="m-66.7 24.9v21" color="#000000"/>
-    <path d="m-72.7 28.9 21 7" color="#000000"/>
-    <path d="m-73.7 35.9 21 7" color="#000000"/>
-   </g>
-   <g fill="none" stroke-linecap="round">
-    <path transform="matrix(.95301 -.17255 .047914 .55781 -76.601 7.3128)" d="m13.709 3.3757 10.341 5.7409-10.142 6.0855-0.09947-5.9132z" stroke="#000" stroke-width="9.5266"/>
-    <path transform="matrix(.95301 -.17255 .047914 .55781 -76.601 7.3128)" d="m13.709 3.3757 10.341 5.7409-10.142 6.0855-0.09947-5.9132z" fill="#f00" stroke="#fe0000" stroke-width="5.4423"/>
-    <path d="m-46.738 53.734s-6.79 5.0646-13.023 4.9716c-10.517-0.157-20.194-8.7834-23.485-18.773-2.5664-7.7898 0.33383-18.519 6.7154-23.671 4.9087-3.9629 9.4238-4.8603 9.4238-4.8603" fill="none" stroke="#000" stroke-linecap="round" stroke-width="6.9997"/>
-    <path d="m-46.738 53.734s-6.79 5.0646-13.023 4.9716c-10.517-0.157-20.194-8.7834-23.485-18.773-2.5664-7.7898 0.33383-18.519 6.7154-23.671 4.9087-3.9629 9.4238-4.8603 9.4238-4.8603" fill="none" stroke="#f00" stroke-linecap="round" stroke-width="3.9987"/>
-   </g>
-  </g>
- </g>
 </svg>

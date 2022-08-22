@@ -42,23 +42,23 @@ class SceneModel : public QStandardItemModel
 
 public:
     SceneModel(QObject* parent);
-    virtual ~SceneModel();
+    ~SceneModel() override;
 
     /// Tree structure: column count is 1.
-    int columnCount (const QModelIndex & parent = QModelIndex()) const;
+    int columnCount (const QModelIndex & parent = QModelIndex()) const override;
     /** returns empty QVariant, unless orientation == Qt::Horizontal,
      *  role == Qt::DisplayRole and section == 0 where it returns
      *  "Inventor Tree"
      */
-    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     /// header data not used: returns false
-    bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
+    bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole) override;
     /// insert the first node in tree
     void setNode(SoNode* node);
     /// set names per node
     void setNodeNames(const QHash<SoNode*, QString>& names);
     /// returns standard parent's flags
-    Qt::ItemFlags flags (const QModelIndex & index) const;
+    Qt::ItemFlags flags (const QModelIndex & index) const override;
 
 private:
     void setNode(QModelIndex, SoNode*);
@@ -72,7 +72,7 @@ class DlgInspector : public QDialog
 
 public:
     DlgInspector(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgInspector();
+    ~DlgInspector() override;
 
     void setDocument(Gui::Document* doc);
 
@@ -80,7 +80,7 @@ private Q_SLOTS:
     void on_refreshButton_clicked();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void setNode(SoNode* node);
     void setNodeNames(Gui::Document*);
 

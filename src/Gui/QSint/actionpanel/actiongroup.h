@@ -36,9 +36,9 @@ class QSINT_EXPORT ActionGroup : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable)
-    Q_PROPERTY(bool header READ hasHeader WRITE setHeader)
-    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText)
+    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool header READ hasHeader WRITE setHeader) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText) // clazy:exclude=qproperty-without-notify
 
 public:
     /** Constructor. Creates ActionGroup without header.

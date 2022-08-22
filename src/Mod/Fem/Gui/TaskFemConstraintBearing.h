@@ -49,24 +49,24 @@ class TaskFemConstraintBearing : public TaskFemConstraint
 public:
     TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr,
                              const char* pixmapname = "FEM_ConstraintBearing");
-    virtual ~TaskFemConstraintBearing();
+    ~TaskFemConstraintBearing() override;
 
-    double getDistance(void) const;
-    virtual const std::string getReferences() const;
-    const std::string getLocationName(void) const;
-    const std::string getLocationObject(void) const;
-    bool getAxial(void) const;
+    double getDistance() const;
+    const std::string getReferences() const override;
+    const std::string getLocationName() const;
+    const std::string getLocationObject() const;
+    bool getAxial() const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
+    void onReferenceDeleted();
     void onDistanceChanged(double l);
     void onButtonLocation(const bool pressed = true);
     void onCheckAxial(bool);
 
 protected:
-    bool event(QEvent *e);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 protected:
     Ui_TaskFemConstraintBearing* ui;
@@ -83,7 +83,7 @@ public:
     TaskDlgFemConstraintBearing(ViewProviderFemConstraintBearing *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 
 };
 

@@ -52,7 +52,7 @@ public:
         initialize("This module is the ReverseEngineeringGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

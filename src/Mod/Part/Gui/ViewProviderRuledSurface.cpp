@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "ViewProviderRuledSurface.h"
+#include <Gui/Application.h>
 #include <Mod/Part/App/PartFeatures.h>
 
-#include <Gui/Application.h>
-#include <Base/Parameter.h>
+#include "ViewProviderRuledSurface.h"
 
 
 using namespace PartGui;
 using namespace std;
-
 
 //**************************************************************************
 // Construction/Destruction
@@ -102,16 +96,16 @@ bool ViewProviderRuledSurface::onDelete(const std::vector<std::string> &)
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderRuledSurface::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRuledSurface::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;
 
   // add your own modes
-  StrList.push_back("Flat Lines");
-  StrList.push_back("Shaded");
-  StrList.push_back("Wireframe");
-  StrList.push_back("Points");
+  StrList.emplace_back("Flat Lines");
+  StrList.emplace_back("Shaded");
+  StrList.emplace_back("Wireframe");
+  StrList.emplace_back("Points");
 
   return StrList;
 }

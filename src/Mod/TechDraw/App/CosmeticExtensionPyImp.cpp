@@ -36,7 +36,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string CosmeticExtensionPy::representation(void) const
+std::string CosmeticExtensionPy::representation() const
 {
     return std::string("<TechDraw::CosmeticObject>");
 }

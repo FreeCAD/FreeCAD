@@ -23,14 +23,12 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
-#include <Qt>
-#include <QGraphicsItem>
-#include <QSvgRenderer>
-#include <QByteArray>
-#include <QBrush>
-#include <QPixmap>
-#include <QImage>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <QByteArray>
+#include <QPixmap>
+
+#include <App/Material.h>
 #include <Mod/TechDraw/App/HatchLine.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
@@ -51,13 +49,12 @@ class QGIFace : public QGIPrimPath
 {
 public:
     explicit QGIFace(int index = -1);
-    ~QGIFace();
+    ~QGIFace() override;
 
     enum {Type = QGraphicsItem::UserType + 104};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
 public:
     enum fillMode {
@@ -73,15 +70,15 @@ public:
     int getProjIndex() const { return projIndex; }
 
     void draw();
-    virtual void setPrettyNormal() override;
-    virtual void setPrettyPre() override;
-    virtual void setPrettySel() override;
+    void setPrettyNormal() override;
+    void setPrettyPre() override;
+    void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
  
     //shared fill parms
     void isHatched(bool s) {m_isHatched = s; }
-    bool isHatched(void) {return m_isHatched;}
+    bool isHatched() {return m_isHatched;}
     void setFillMode(fillMode m);
 
     //general hatch parms & methods
@@ -91,9 +88,9 @@ public:
     //svg fill parms & methods
     void setHatchFile(std::string fileSpec);
     void loadSvgHatch(std::string fileSpec);
-    void buildSvgHatch(void);
+    void buildSvgHatch();
     void hideSvg(bool b);
-    void clearSvg(void);
+    void clearSvg();
 
     //tiled pixmap fill from svg
     void buildPixHatch();
@@ -102,9 +99,9 @@ public:
     void setGeomHatchWeight(double w) { m_geomWeight = w; }
     void setLineWeight(double w);
 
-    void clearLineSets(void);
+    void clearLineSets();
     void addLineSet(TechDraw::LineSet& ls);
-    void clearFillItems(void);
+    void clearFillItems();
 
     void lineSetToFillItems(TechDraw::LineSet& ls);
     QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
@@ -118,8 +115,8 @@ public:
 
 protected:
     void makeMark(double x, double y);
-    double getXForm(void);
-    void getParameters(void);
+    double getXForm();
+    void getParameters();
 
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
@@ -138,7 +135,7 @@ protected:
     bool m_isHatched;
     QGIFace::fillMode m_mode;
 
-    QPen setGeomPen(void);
+    QPen setGeomPen();
     std::vector<double> decodeDashSpec(TechDraw::DashSpec d);
     std::vector<QGraphicsPathItem*> m_fillItems;
     std::vector<TechDraw::LineSet> m_lineSets;

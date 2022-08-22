@@ -62,9 +62,9 @@ class PartExport Edgecluster
 {
 public:
     Edgecluster(const std::vector<TopoDS_Edge>& usorted_edges);
-    virtual ~Edgecluster(void);
+    virtual ~Edgecluster();
 
-    tEdgeClusterVector GetClusters(void);
+    tEdgeClusterVector GetClusters();
 
 private:
     void Perform();

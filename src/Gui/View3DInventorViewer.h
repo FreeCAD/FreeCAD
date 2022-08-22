@@ -80,6 +80,7 @@ class ViewerEventFilter;
 class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
     typedef Quarter::SoQTQuarterAdaptor inherited;
+    Q_OBJECT
 
 public:
     /// Pick modes for picking points in the scene
@@ -132,36 +133,36 @@ public:
 
     View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
-    virtual ~View3DInventorViewer();
+    ~View3DInventorViewer() override;
 
     void init();
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges &Reason);
+    void onSelectionChanged(const SelectionChanges &Reason) override;
     void checkGroupOnTop(const SelectionChanges &Reason);
     void clearGroupOnTop();
 
-    SoDirectionalLight* getBacklight(void) const;
+    SoDirectionalLight* getBacklight() const;
     void setBacklight(SbBool on);
-    SbBool isBacklight(void) const;
-    void setSceneGraph (SoNode *root);
+    SbBool isBacklight() const;
+    void setSceneGraph (SoNode *root) override;
     SbBool searchNode(SoNode*) const;
 
     void setAnimationEnabled(const SbBool enable);
-    SbBool isAnimationEnabled(void) const;
+    SbBool isAnimationEnabled() const;
 
     void setPopupMenuEnabled(const SbBool on);
-    SbBool isPopupMenuEnabled(void) const;
+    SbBool isPopupMenuEnabled() const;
 
     void startAnimating(const SbVec3f& axis, float velocity);
-    void stopAnimating(void);
-    SbBool isAnimating(void) const;
+    void stopAnimating();
+    SbBool isAnimating() const;
 
     void setFeedbackVisibility(const SbBool enable);
-    SbBool isFeedbackVisible(void) const;
+    SbBool isFeedbackVisible() const;
 
     void setFeedbackSize(const int size);
-    int getFeedbackSize(void) const;
+    int getFeedbackSize() const;
 
     /// Get the preferred samples from the user settings
     static int getNumSamples();
@@ -172,7 +173,7 @@ public:
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
 
-    virtual void setViewing(SbBool enable);
+    void setViewing(SbBool enable) override;
     virtual void setCursorEnabled(SbBool enable);
 
     void addGraphicsItem(GLGraphicsItem*);
@@ -245,7 +246,7 @@ public:
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
     void setSelectionEnabled(const SbBool enable);
-    SbBool isSelectionEnabled(void) const;
+    SbBool isSelectionEnabled() const;
     //@}
 
     /// Returns the screen coordinates of the origin of the path's tail object
@@ -261,7 +262,7 @@ public:
     void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
     SbBool isRedirectedToSceneGraph() const { return this->redirected; }
     void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
-    SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
+    SbBool isRedirectToSceneGraphEnabled() const { return this->allowredir; }
     //@}
 
     /** @name Pick actions */
@@ -342,7 +343,7 @@ public:
      * set.
      */
     void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
-    void setCameraType(SoType t);
+    void setCameraType(SoType t) override;
     void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
     /**
      * Zooms the viewport to the size of the bounding box.
@@ -351,11 +352,11 @@ public:
     /**
      * Reposition the current camera so we can see the complete scene.
      */
-    void viewAll();
+    void viewAll() override;
     void viewAll(float factor);
 
     /// Breaks out a VR window for a Rift
-    void viewVR(void);
+    void viewVR();
 
     /**
      * Returns the bounding box of the scene graph.
@@ -379,11 +380,11 @@ public:
     void setNavigationType(Base::Type);
 
     void setAxisCross(bool b);
-    bool hasAxisCross(void);
+    bool hasAxisCross();
 
     void setEnabledFPSCounter(bool b);
     void setEnabledNaviCube(bool b);
-    bool isEnabledNaviCube(void) const;
+    bool isEnabledNaviCube() const;
     void setNaviCubeCorner(int);
     NaviCube* getNavigationCube() const;
     void setEnabledVBO(bool b);
@@ -395,7 +396,7 @@ public:
     void setDocument(Gui::Document *pcDocument);
     Gui::Document* getDocument();
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
 
 protected:
     GLenum getInternalTextureFormat() const;
@@ -403,14 +404,14 @@ protected:
     void renderFramebuffer();
     void renderGLImage();
     void animatedViewAll(int steps, int ms);
-    virtual void actualRedraw(void);
-    virtual void setSeekMode(SbBool enable);
-    virtual void afterRealizeHook(void);
-    virtual bool processSoEvent(const SoEvent * ev);
-    void dropEvent (QDropEvent * e);
-    void dragEnterEvent (QDragEnterEvent * e);
-    void dragMoveEvent(QDragMoveEvent *e);
-    void dragLeaveEvent(QDragLeaveEvent *e);
+    void actualRedraw() override;
+    void setSeekMode(SbBool enable) override;
+    void afterRealizeHook() override;
+    bool processSoEvent(const SoEvent * ev) override;
+    void dropEvent (QDropEvent * e) override;
+    void dragEnterEvent (QDragEnterEvent * e) override;
+    void dragMoveEvent(QDragMoveEvent *e) override;
+    void dragLeaveEvent(QDragLeaveEvent *e) override;
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
@@ -429,10 +430,10 @@ private:
     static void deselectCB(void * closure, SoPath * p);
     static SoPath * pickFilterCB(void * data, const SoPickedPoint * pick);
     void initialize();
-    void drawAxisCross(void);
-    static void drawArrow(void);
+    void drawAxisCross();
+    static void drawArrow();
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext();
+    void aboutToDestroyGLContext() override;
     void createStandardCursors(double);
 
 private:

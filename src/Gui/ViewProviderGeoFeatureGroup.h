@@ -41,7 +41,7 @@ public:
     /// constructor.
     ViewProviderGeoFeatureGroup();
     /// destructor.
-    virtual ~ViewProviderGeoFeatureGroup();
+    ~ViewProviderGeoFeatureGroup() override;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoFeatureGroupPython;

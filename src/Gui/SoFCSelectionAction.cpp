@@ -1063,7 +1063,7 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
         this->cube->height  = y;
         this->cube->depth = z;
 
-        SbMatrix transform = box.getTransform();
+        SbMatrix transform = box.getTransform(); // clazy:exclude=rule-of-two-soft
 
         // get center (in the local bbox coordinate system)
         SbVec3f center = box.SbBox3f::getCenter();
@@ -1086,12 +1086,12 @@ SO_ACTION_SOURCE(SoBoxSelectionRenderAction)
 
 // Overridden from parent class.
 void
-SoBoxSelectionRenderAction::initClass(void)
+SoBoxSelectionRenderAction::initClass()
 {
     SO_ACTION_INIT_CLASS(SoBoxSelectionRenderAction, SoGLRenderAction);
 }
 
-SoBoxSelectionRenderAction::SoBoxSelectionRenderAction(void)
+SoBoxSelectionRenderAction::SoBoxSelectionRenderAction()
   : inherited(SbViewportRegion())
 {
     this->constructorCommon();
@@ -1107,7 +1107,7 @@ SoBoxSelectionRenderAction::SoBoxSelectionRenderAction(const SbViewportRegion & 
 // private. called by both constructors
 //
 void
-SoBoxSelectionRenderAction::constructorCommon(void)
+SoBoxSelectionRenderAction::constructorCommon()
 {
     SO_ACTION_CONSTRUCTOR(SoBoxSelectionRenderAction);
 
@@ -1116,7 +1116,6 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     // Initialize local variables
     PRIVATE(this)->initBoxGraph();
 
-    // this->hlVisible = true;
     this->hlVisible = false;
 
     PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
@@ -1133,7 +1132,7 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     PRIVATE(this)->highlightPath = nullptr;
 }
 
-SoBoxSelectionRenderAction::~SoBoxSelectionRenderAction(void)
+SoBoxSelectionRenderAction::~SoBoxSelectionRenderAction()
 {
     // clear highlighting node
     if (PRIVATE(this)->highlightPath) {
@@ -1154,7 +1153,7 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
 {
     SoGLRenderAction::apply(node);
     if (this->hlVisible) {
-        if (PRIVATE(this)->searchaction == nullptr) {
+        if (!PRIVATE(this)->searchaction) {
             PRIVATE(this)->searchaction = new SoSearchAction;
         }
         PRIVATE(this)->searchaction->setType(SoFCSelection::getClassTypeId());
@@ -1169,7 +1168,7 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                 assert(selection->getTypeId().isDerivedFrom(SoFCSelection::getClassTypeId()));
                 if (selection->selected.getValue() && selection->style.getValue() == SoFCSelection::BOX) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
-                    if (PRIVATE(this)->selectsearch == nullptr) {
+                    if (!PRIVATE(this)->selectsearch) {
                         PRIVATE(this)->selectsearch = new SoSearchAction;
                     }
                     PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
@@ -1188,8 +1187,8 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                          selection->style.getValue() == SoFCSelection::BOX) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
-                    if (PRIVATE(this)->selectsearch == nullptr) {
-                      PRIVATE(this)->selectsearch = new SoSearchAction;
+                    if (!PRIVATE(this)->selectsearch) {
+                        PRIVATE(this)->selectsearch = new SoSearchAction;
                     }
                     PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
                     PRIVATE(this)->selectsearch->setInterest(SoSearchAction::FIRST);
@@ -1236,8 +1235,8 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
                  selection->style.getValue() == SoFCSelection::BOX) {
             PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
-            if (PRIVATE(this)->selectsearch == nullptr) {
-              PRIVATE(this)->selectsearch = new SoSearchAction;
+            if (!PRIVATE(this)->selectsearch) {
+                PRIVATE(this)->selectsearch = new SoSearchAction;
             }
             PRIVATE(this)->selectsearch->setType(SoShape::getClassTypeId());
             PRIVATE(this)->selectsearch->setInterest(SoSearchAction::FIRST);
@@ -1273,7 +1272,7 @@ SoBoxSelectionRenderAction::setColor(const SbColor & color)
 }
 
 const SbColor &
-SoBoxSelectionRenderAction::getColor(void)
+SoBoxSelectionRenderAction::getColor()
 {
     return PRIVATE(this)->basecolor->rgb[0];
 }
@@ -1285,7 +1284,7 @@ SoBoxSelectionRenderAction::setLinePattern(unsigned short pattern)
 }
 
 unsigned short
-SoBoxSelectionRenderAction::getLinePattern(void) const
+SoBoxSelectionRenderAction::getLinePattern() const
 {
     return PRIVATE(this)->drawstyle->linePattern.getValue();
 }
@@ -1297,7 +1296,7 @@ SoBoxSelectionRenderAction::setLineWidth(const float width)
 }
 
 float
-SoBoxSelectionRenderAction::getLineWidth(void) const
+SoBoxSelectionRenderAction::getLineWidth() const
 {
     return PRIVATE(this)->drawstyle->lineWidth.getValue();
 }

@@ -50,6 +50,7 @@
 # include <Geom_Circle.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomFill_AppSurf.hxx>
+# include <GeomFill_Generator.hxx>
 # include <GeomFill_Line.hxx>
 # include <GeomFill_SectionGenerator.hxx>
 # include <Interface_Static.hxx>
@@ -246,7 +247,7 @@ public:
         initialize("This is a module working with the BRepFeat package."); // register with Python
     }
 
-    virtual ~BRepFeatModule() {}
+    ~BRepFeatModule() override {}
 };
 
 class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
@@ -257,7 +258,7 @@ public:
         initialize("This is a module working with the BRepOffsetAPI package."); // register with Python
     }
 
-    virtual ~BRepOffsetAPIModule() {}
+    ~BRepOffsetAPIModule() override {}
 };
 
 class Geom2dModule : public Py::ExtensionModule<Geom2dModule>
@@ -268,7 +269,7 @@ public:
         initialize("This is a module working with 2d geometries."); // register with Python
     }
 
-    virtual ~Geom2dModule() {}
+    ~Geom2dModule() override {}
 };
 
 class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
@@ -279,7 +280,7 @@ public:
         initialize("This is a module working with the GeomPlate framework."); // register with Python
     }
 
-    virtual ~GeomPlateModule() {}
+    ~GeomPlateModule() override {}
 };
 
 class HLRBRepModule : public Py::ExtensionModule<HLRBRepModule>
@@ -290,7 +291,7 @@ public:
         initialize("This is a module working with the HLRBRep framework."); // register with Python
     }
 
-    virtual ~HLRBRepModule() {}
+    ~HLRBRepModule() override {}
 };
 
 class ShapeFixModule : public Py::ExtensionModule<ShapeFixModule>
@@ -319,7 +320,7 @@ public:
         initialize("This is a module working with the ShapeFix framework."); // register with Python
     }
 
-    virtual ~ShapeFixModule() {}
+    ~ShapeFixModule() override {}
 
 private:
     Py::Object sameParameter(const Py::Tuple& args)
@@ -389,7 +390,7 @@ public:
         initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
     }
 
-    virtual ~ShapeUpgradeModule() {}
+    ~ShapeUpgradeModule() override {}
 };
 
 class ChFi2dModule : public Py::ExtensionModule<ChFi2dModule>
@@ -400,7 +401,7 @@ public:
         initialize("This is a module working with the ChFi2d framework."); // register with Python
     }
 
-    virtual ~ChFi2dModule() {}
+    ~ChFi2dModule() override {}
 };
 
 class Module : public Py::ExtensionModule<Module>
@@ -443,6 +444,9 @@ public:
         add_varargs_method("makeFace",&Module::makeFace,
             "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.\n"
             "maker_class_name is a string like 'Part::FaceMakerSimple'."
+        );
+        add_varargs_method("makeFilledSurface",&Module::makeFilledSurface,
+            "makeFilledSurface(list of curves, tolerance) -- Create a surface out of a list of curves."
         );
         add_varargs_method("makeFilledFace",&Module::makeFilledFace,
             "makeFilledFace(list) -- Create a face out of a list of edges."
@@ -643,10 +647,10 @@ public:
         PyModule_AddObject(m_module, "ChFi2d", chFi2d.module().ptr());
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_keyword( void *method_def, 
+    Py::Object invoke_method_keyword( void *method_def,
             const Py::Tuple &args, const Py::Dict &keywords ) override
     {
         try {
@@ -680,7 +684,7 @@ private:
         }
     }
 
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -1010,6 +1014,38 @@ private:
         } catch (Base::Exception &e){
             e.setPyException();
             throw Py::Exception();
+        }
+    }
+    Py::Object makeFilledSurface(const Py::Tuple &args)
+    {
+        PyObject *obj;
+        double tolerance;
+        if (!PyArg_ParseTuple(args.ptr(), "Od", &obj, &tolerance))
+            throw Py::Exception();
+
+        try {
+            GeomFill_Generator generator;
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryCurvePy::Type))) {
+                    Handle(Geom_Curve) hCurve = Handle(Geom_Curve)::DownCast(static_cast<Part::GeometryCurvePy*>((*it).ptr())->getGeomCurvePtr()->handle());
+                    if (!hCurve.IsNull()) {
+                        generator.AddCurve(hCurve);
+                    }
+                }
+            }
+
+            generator.Perform(tolerance);
+            Handle(Geom_Surface) hSurface = generator.Surface();
+            if (!hSurface.IsNull()) {
+                return Py::asObject(makeFromSurface(hSurface)->getPyObject());
+            }
+            else {
+                throw Py::Exception(PartExceptionOCCError, "Failed to created surface by filling curves");
+            }
+        }
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeFilledFace(const Py::Tuple& args)
@@ -2214,7 +2250,7 @@ private:
         }
 
         Py::List root_list;
-        while(edges.size()) {
+        while(!edges.empty()) {
             std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
             Py::List sorted_list;
             for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
@@ -2338,7 +2374,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "sss",&sub,&mapped,&element))
             throw Py::Exception();
         std::string subname(sub);
-        if (subname.size() && subname[subname.size()-1]!='.')
+        if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
         if (mapped && mapped[0]) {
             if (!Data::ComplexGeoData::isMappedElement(mapped))
@@ -2346,7 +2382,7 @@ private:
             subname += mapped;
         }
         if (element && element[0]) {
-            if (subname.size() && subname[subname.size()-1]!='.')
+            if (!subname.empty() && subname[subname.size()-1]!='.')
                 subname += '.';
             subname += element;
         }

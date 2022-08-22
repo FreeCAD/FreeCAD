@@ -34,17 +34,17 @@ namespace PartDesign
 
 class PartDesignExport Line : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::Line);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Line);
 
 public:
     Line();
-    virtual ~Line();
+    ~Line() override;
 
     App::PropertyEnumeration ResizeMode;
     App::PropertyLength Length;
-    virtual void onChanged(const App::Property *prop);
+    void onChanged(const App::Property *prop) override;
     
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumLine";
     }
 

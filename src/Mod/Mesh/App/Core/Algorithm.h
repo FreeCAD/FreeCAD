@@ -354,8 +354,8 @@ class MeshExport PointCollector : public MeshCollector
 {
 public:
     PointCollector(std::vector<PointIndex>& ind) : indices(ind){}
-    virtual ~PointCollector(){}
-    virtual void Append(const MeshCore::MeshKernel& kernel, FacetIndex index)
+    ~PointCollector() override{}
+    void Append(const MeshCore::MeshKernel& kernel, FacetIndex index) override
     {
         PointIndex ulP1, ulP2, ulP3;
         kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);
@@ -372,8 +372,8 @@ class MeshExport FacetCollector : public MeshCollector
 {
 public:
     FacetCollector(std::vector<FacetIndex>& ind) : indices(ind){}
-    virtual ~FacetCollector(){}
-    void Append(const MeshCore::MeshKernel&, FacetIndex index)
+    ~FacetCollector() override{}
+    void Append(const MeshCore::MeshKernel&, FacetIndex index) override
     {
         indices.push_back(index);
     }
@@ -537,6 +537,9 @@ public:
     /// Rebuilds up data structure
     void Rebuild ();
     const Base::Vector3f& operator[] (PointIndex) const;
+    const std::vector<Base::Vector3f>& GetValues() const {
+        return _norm;
+    }
 
 protected:
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */

@@ -24,8 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <string>
+#include <sstream>
 #include <QDialogButtonBox>
 #include <QGraphicsScene>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsItem>
@@ -36,18 +39,14 @@
 #include <QString>
 #include <QTextOption>
 #include <QVBoxLayout>
-#include <sstream>
-#endif
-
-#include <string>
-#include <regex>
-
-#include <qmath.h>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextBlockFormat>
 #include <QTextFrame>
 #include <QSizeF>
+#endif
+
+#include <regex>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -79,12 +78,6 @@ QGIViewAnnotation::QGIViewAnnotation()
     addToGroup(m_textItem);
     m_textItem->setPos(0.,0.);
 
-}
-
-
-QVariant QGIViewAnnotation::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGIView::itemChange(change, value);
 }
 
 void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj)
@@ -156,7 +149,7 @@ void QGIViewAnnotation::drawAnnotation()
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
     App::Color c = viewAnno->TextColor.getValue();
-    ss << "color:" << c.asCSSString() << "; ";
+    ss << "color:" << c.asHexString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
     for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
         if (it != annoText.begin()) {
@@ -176,7 +169,7 @@ void QGIViewAnnotation::drawAnnotation()
     m_textItem->centerAt(0.,0.);
 }
 
-void QGIViewAnnotation::rotateView(void)
+void QGIViewAnnotation::rotateView()
 {
     QRectF r = m_textItem->boundingRect();
     m_textItem->setTransformOriginPoint(r.center());
@@ -195,7 +188,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
     const std::vector<std::string> &values = annotation->Text.getValues();
     QString text;
-    if (values.size() > 0) {
+    if (!values.empty()) {
         text = QString::fromUtf8(values[0].c_str());
 
         for (unsigned int i = 1; i < values.size(); ++i) {

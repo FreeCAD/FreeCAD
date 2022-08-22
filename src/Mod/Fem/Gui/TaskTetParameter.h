@@ -56,9 +56,9 @@ class TaskTetParameter : public Gui::TaskView::TaskBox
 
 public:
     TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = nullptr);
-    ~TaskTetParameter();
+    ~TaskTetParameter() override;
 
-    void setInfo(void);
+    void setInfo();
     bool touched;
 
 private Q_SLOTS:

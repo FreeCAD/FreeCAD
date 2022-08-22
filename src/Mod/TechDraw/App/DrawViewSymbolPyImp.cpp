@@ -37,7 +37,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawViewSymbolPy::representation(void) const
+std::string DrawViewSymbolPy::representation() const
 {
     return std::string("<DrawViewSymbol object>");
 }
@@ -55,8 +55,8 @@ PyObject* DrawViewSymbolPy::dumpSymbol(PyObject *args)
     }
 
     Base::FileInfo fi(fileSpec);
-    std::ofstream outfile;
-    outfile.open(fi.filePath());
+    Base::ofstream outfile;
+    outfile.open(fi);
     outfile.write (symbolRepr.c_str(),symbolRepr.size());
     outfile.close();
     if (outfile.good()) {

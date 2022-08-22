@@ -41,10 +41,10 @@ class Selection : public QWidget
 
 public:
     Selection(QWidget* parent = nullptr);
-    ~Selection();
+    ~Selection() override;
     void setObjects(const std::vector<Gui::SelectionObject>&);
     std::vector<App::DocumentObject*> getObjects() const;
-    bool eventFilter(QObject*, QEvent*);
+    bool eventFilter(QObject*, QEvent*) override;
 
 private Q_SLOTS:
     void on_addSelection_clicked();

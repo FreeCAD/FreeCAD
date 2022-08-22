@@ -106,6 +106,7 @@ def get_binary(name):
         )
         return None
 
+
 def get_cores(name):
     """ Read number of CPU cores for solver *name* honoring user settings.
 
@@ -115,10 +116,6 @@ def get_cores(name):
     """
     if name in _SOLVER_PARAM:
         cores = _SOLVER_PARAM[name].get_cores()
-        FreeCAD.Console.PrintMessage(
-            "Number of CPU cores to be used for the solver run: {}\n"
-            .format(cores)
-        )
         return cores
     else:
         FreeCAD.Console.PrintError(
@@ -243,7 +240,7 @@ class _SolverDlg(object):
         return the_found_binary
 
     def get_cores(self):
-        cores = str(self.param_group.GetInt("UseNumberOfCores"))
+        cores = self.param_group.GetInt("UseNumberOfCores")
         return cores
 
     def get_write_comments(self):

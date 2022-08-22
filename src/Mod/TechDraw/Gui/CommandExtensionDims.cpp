@@ -140,7 +140,7 @@ void CmdTechDrawExtensionInsertDiameter::activated(int iMsg)
     execInsertPrefixChar(this, "⌀");
 }
 
-bool CmdTechDrawExtensionInsertDiameter::isActive(void)
+bool CmdTechDrawExtensionInsertDiameter::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -173,7 +173,7 @@ void CmdTechDrawExtensionInsertSquare::activated(int iMsg)
     execInsertPrefixChar(this, "□");    //□ white square U+25A1
 }
 
-bool CmdTechDrawExtensionInsertSquare::isActive(void)
+bool CmdTechDrawExtensionInsertSquare::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -231,7 +231,7 @@ void CmdTechDrawExtensionRemovePrefixChar::activated(int iMsg)
     execRemovePrefixChar(this);
 }
 
-bool CmdTechDrawExtensionRemovePrefixChar::isActive(void)
+bool CmdTechDrawExtensionRemovePrefixChar::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -284,7 +284,7 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionInsertPrefixGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionInsertPrefixGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -345,7 +345,7 @@ void CmdTechDrawExtensionInsertPrefixGroup::languageChange()
     arc3->setStatusTip(arc3->text());
 }
 
-bool CmdTechDrawExtensionInsertPrefixGroup::isActive(void)
+bool CmdTechDrawExtensionInsertPrefixGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -407,7 +407,7 @@ void CmdTechDrawExtensionIncreaseDecimal::activated(int iMsg)
     execIncreaseDecreaseDecimal(this, 1);
 }
 
-bool CmdTechDrawExtensionIncreaseDecimal::isActive(void)
+bool CmdTechDrawExtensionIncreaseDecimal::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -440,7 +440,7 @@ void CmdTechDrawExtensionDecreaseDecimal::activated(int iMsg)
     execIncreaseDecreaseDecimal(this, -1);
 }
 
-bool CmdTechDrawExtensionDecreaseDecimal::isActive(void)
+bool CmdTechDrawExtensionDecreaseDecimal::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -490,7 +490,7 @@ void CmdTechDrawExtensionIncreaseDecreaseGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionIncreaseDecreaseGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionIncreaseDecreaseGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -540,7 +540,7 @@ void CmdTechDrawExtensionIncreaseDecreaseGroup::languageChange()
     arc2->setStatusTip(arc2->text());
 }
 
-bool CmdTechDrawExtensionIncreaseDecreaseGroup::isActive(void)
+bool CmdTechDrawExtensionIncreaseDecreaseGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -601,7 +601,7 @@ void CmdTechDrawExtensionPosHorizChainDimension::activated(int iMsg)
     execPosHorizChainDimension(this);
 }
 
-bool CmdTechDrawExtensionPosHorizChainDimension::isActive(void)
+bool CmdTechDrawExtensionPosHorizChainDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -663,7 +663,7 @@ void CmdTechDrawExtensionPosVertChainDimension::activated(int iMsg)
     execPosVertChainDimension(this);
 }
 
-bool CmdTechDrawExtensionPosVertChainDimension::isActive(void)
+bool CmdTechDrawExtensionPosVertChainDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -731,7 +731,7 @@ void CmdTechDrawExtensionPosObliqueChainDimension::activated(int iMsg)
     ///Base::Console().Message("TechDraw_ExtensionPosObliqueChainDimension started\n");
 }
 
-bool CmdTechDrawExtensionPosObliqueChainDimension::isActive(void)
+bool CmdTechDrawExtensionPosObliqueChainDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -785,7 +785,7 @@ void CmdTechDrawExtensionPosChainDimensionGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionPosChainDimensionGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionPosChainDimensionGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -849,7 +849,7 @@ void CmdTechDrawExtensionPosChainDimensionGroup::languageChange()
     arc3->setStatusTip(arc3->text());
 }
 
-bool CmdTechDrawExtensionPosChainDimensionGroup::isActive(void)
+bool CmdTechDrawExtensionPosChainDimensionGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -915,7 +915,7 @@ void CmdTechDrawExtensionCascadeHorizDimension::activated(int iMsg)
     execCascadeHorizDimension(this);
 }
 
-bool CmdTechDrawExtensionCascadeHorizDimension::isActive(void)
+bool CmdTechDrawExtensionCascadeHorizDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -982,7 +982,7 @@ void CmdTechDrawExtensionCascadeVertDimension::activated(int iMsg)
     execCascadeVertDimension(this);
 }
 
-bool CmdTechDrawExtensionCascadeVertDimension::isActive(void)
+bool CmdTechDrawExtensionCascadeVertDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1058,7 +1058,7 @@ void CmdTechDrawExtensionCascadeObliqueDimension::activated(int iMsg)
     ///Base::Console().Message("TechDraw_ExtensionPosObliqueChainDimension started\n");
 }
 
-bool CmdTechDrawExtensionCascadeObliqueDimension::isActive(void)
+bool CmdTechDrawExtensionCascadeObliqueDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1113,7 +1113,7 @@ void CmdTechDrawExtensionCascadeDimensionGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionCascadeDimensionGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionCascadeDimensionGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1180,7 +1180,7 @@ void CmdTechDrawExtensionCascadeDimensionGroup::languageChange()
     arc3->setStatusTip(arc3->text());
 }
 
-bool CmdTechDrawExtensionCascadeDimensionGroup::isActive(void)
+bool CmdTechDrawExtensionCascadeDimensionGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1244,7 +1244,7 @@ void CmdTechDrawExtensionCreateHorizChainDimension::activated(int iMsg)
     //execSortieren(this);
 }
 
-bool CmdTechDrawExtensionCreateHorizChainDimension::isActive(void)
+bool CmdTechDrawExtensionCreateHorizChainDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1308,7 +1308,7 @@ void CmdTechDrawExtensionCreateVertChainDimension::activated(int iMsg)
     execCreateVertChainDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateVertChainDimension::isActive(void)
+bool CmdTechDrawExtensionCreateVertChainDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1399,7 +1399,7 @@ void CmdTechDrawExtensionCreateObliqueChainDimension::activated(int iMsg)
     execCreateObliqueChainDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateObliqueChainDimension::isActive(void)
+bool CmdTechDrawExtensionCreateObliqueChainDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1452,7 +1452,7 @@ void CmdTechDrawExtensionCreateChainDimensionGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionCreateChainDimensionGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionCreateChainDimensionGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1514,7 +1514,7 @@ void CmdTechDrawExtensionCreateChainDimensionGroup::languageChange()
     arc3->setStatusTip(arc3->text());
 }
 
-bool CmdTechDrawExtensionCreateChainDimensionGroup::isActive(void)
+bool CmdTechDrawExtensionCreateChainDimensionGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1585,7 +1585,7 @@ void CmdTechDrawExtensionCreateHorizCoordDimension::activated(int iMsg)
     execCreateHorizCoordDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateHorizCoordDimension::isActive(void)
+bool CmdTechDrawExtensionCreateHorizCoordDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1657,7 +1657,7 @@ void CmdTechDrawExtensionCreateVertCoordDimension::activated(int iMsg)
     execCreateVertCoordDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateVertCoordDimension::isActive(void)
+bool CmdTechDrawExtensionCreateVertCoordDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1755,7 +1755,7 @@ void CmdTechDrawExtensionCreateObliqueCoordDimension::activated(int iMsg)
     execCreateObliqueCoordDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateObliqueCoordDimension::isActive(void)
+bool CmdTechDrawExtensionCreateObliqueCoordDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1810,7 +1810,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionCreateCoordDimensionGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionCreateCoordDimensionGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1878,7 +1878,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::languageChange()
     arc3->setStatusTip(arc3->text());
 }
 
-bool CmdTechDrawExtensionCreateCoordDimensionGroup::isActive(void)
+bool CmdTechDrawExtensionCreateCoordDimensionGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1945,7 +1945,7 @@ void CmdTechDrawExtensionCreateHorizChamferDimension::activated(int iMsg)
     execCreateHorizChamferDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateHorizChamferDimension::isActive(void)
+bool CmdTechDrawExtensionCreateHorizChamferDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -2012,7 +2012,7 @@ void CmdTechDrawExtensionCreateVertChamferDimension::activated(int iMsg)
     execCreateVertChamferDimension(this);
 }
 
-bool CmdTechDrawExtensionCreateVertChamferDimension::isActive(void)
+bool CmdTechDrawExtensionCreateVertChamferDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -2062,7 +2062,7 @@ void CmdTechDrawExtensionChamferDimensionGroup::activated(int iMsg)
     };
 }
 
-Gui::Action* CmdTechDrawExtensionChamferDimensionGroup::createAction(void)
+Gui::Action* CmdTechDrawExtensionChamferDimensionGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -2112,7 +2112,7 @@ void CmdTechDrawExtensionChamferDimensionGroup::languageChange()
     arc2->setStatusTip(arc2->text());
 }
 
-bool CmdTechDrawExtensionChamferDimensionGroup::isActive(void)
+bool CmdTechDrawExtensionChamferDimensionGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -2188,7 +2188,7 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
     Gui::Command::commitCommand();
 }
 
-bool CmdTechDrawExtensionCreateLengthArc::isActive(void)
+bool CmdTechDrawExtensionCreateLengthArc::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -2227,7 +2227,7 @@ void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
         Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
 }
 
-bool CmdTechDrawExtensionCustomizeFormat::isActive(void)
+bool CmdTechDrawExtensionCustomizeFormat::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -2306,7 +2306,7 @@ namespace TechDrawGui {
         // get subNames and coordinates of all selected vertexes
         std::vector<dimVertex> vertexes;
         dimVertex nextVertex;
-        for (std::string name : subNames) {
+        for (const std::string& name : subNames) {
             std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
             if (geoType == "Vertex") {
                 int geoId = TechDraw::DrawUtil::getIndexFromName(name);
@@ -2352,7 +2352,7 @@ namespace TechDrawGui {
 }
 
 //------------------------------------------------------------------------------
-void CreateTechDrawCommandsExtensionDims(void)
+void CreateTechDrawCommandsExtensionDims()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 

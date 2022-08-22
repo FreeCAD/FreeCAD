@@ -98,6 +98,10 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     hGrp->Attach(this);
 
+    hGrpNavi =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+    hGrpNavi->Attach(this);
+
     //anti-aliasing settings
     bool smoothing = false;
     bool glformat = false;
@@ -145,7 +149,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
     OnChange(*hGrp,"ShowNaviCube");
-    OnChange(*hGrp,"CornerNaviCube");
+    OnChange(*hGrpNavi, "CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
@@ -178,6 +182,7 @@ View3DInventor::~View3DInventor()
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);
+    hGrpNavi->Detach(this);
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
@@ -212,7 +217,7 @@ void View3DInventor::deleteSelf()
     MDIView::deleteSelf();
 }
 
-PyObject *View3DInventor::getPyObject(void)
+PyObject *View3DInventor::getPyObject()
 {
     if (!_viewerPy)
         _viewerPy = new View3DInventorPy(this);
@@ -369,8 +374,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
         _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube",true));
     }
-    else if (strcmp(Reason,"CornerNaviCube") == 0) {
-        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube",1));
+    else if (strcmp(Reason, "CornerNaviCube") == 0) {
+        _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube", 1));
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
@@ -418,10 +423,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else {
-        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor", 3940932863UL);
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2", 2526456575UL); // default color (blue/grey)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3", 3570714879UL); // default color (light yellow/bluey)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4", 1869583359UL); // default color (blue/grey)
         float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
@@ -443,7 +448,7 @@ void View3DInventor::onRename(Gui::Document *pDoc)
     cAct.apply(_viewer->getSceneGraph());
 }
 
-void View3DInventor::onUpdate(void)
+void View3DInventor::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
     Base::Console().Log("Acti: Gui::View3DInventor::onUpdate()");
@@ -457,7 +462,7 @@ void View3DInventor::viewAll()
     _viewer->viewAll();
 }
 
-const char *View3DInventor::getName(void) const
+const char *View3DInventor::getName() const
 {
     return "View3DInventor";
 }

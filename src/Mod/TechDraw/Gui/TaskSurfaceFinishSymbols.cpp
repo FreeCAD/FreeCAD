@@ -21,17 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QLineEdit>
+#include <QGraphicsProxyWidget>
+#include <QComboBox>
+#endif
+
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/Gui/ui_TaskSurfaceFinishSymbols.h>
+
 #include "TaskSurfaceFinishSymbols.h"
-#include <QGraphicsScene>
-#include <QLineEdit>
-#include <QGraphicsProxyWidget>
-#include <QComboBox>
 
 using namespace Gui;
 using namespace TechDraw;
@@ -64,7 +68,7 @@ void SvgString::addText(int xText, int yText, std::string text)
     svgStream << "' style='font-size:18px'>" << text << "</text>\n";
 }
 
-std::string SvgString::finish(void)
+std::string SvgString::finish()
 {
     svgStream << "</svg>\n";
     return svgStream.str();
@@ -112,7 +116,7 @@ QPixmap TaskSurfaceFinishSymbols::baseSymbol(symbolType type)
     return QPixmap::fromImage(img);
 }
 
-std::string TaskSurfaceFinishSymbols::completeSymbol(void)
+std::string TaskSurfaceFinishSymbols::completeSymbol()
 // return string showing the complete symbol
 {
     SvgString symbol(150,64);
@@ -209,7 +213,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing RA values
     cbRA = new(QComboBox);
     cbRA->resize(90,20);
-    for (std::string nextValue : raValues)
+    for (const std::string& nextValue : raValues)
         cbRA->addItem(QString::fromStdString(nextValue));
     cbRA->setToolTip(QObject::tr("Average roughness"));
     proxyRA = symbolScene->addWidget(cbRA);
@@ -224,7 +228,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing lay symbol
     cbLay = new(QComboBox);
     cbLay->resize(40,20);
-    for (std::string nextLay : laySymbols)
+    for (const std::string& nextLay : laySymbols)
         cbLay->addItem(QString::fromStdString(nextLay));
     cbLay->setToolTip(QObject::tr("Lay symbol"));
     QGraphicsProxyWidget* proxyLay = symbolScene->addWidget(cbLay);
@@ -232,7 +236,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing minimal roughness grade
     cbMinRought = new(QComboBox);
     cbMinRought->resize(55,20);
-    for (std::string nextGrade : roughGrades)
+    for (const std::string& nextGrade : roughGrades)
         cbMinRought->addItem(QString::fromStdString(nextGrade));
     cbMinRought->setToolTip(QObject::tr("Minimum roughness grade number"));
     proxyMinRough = symbolScene->addWidget(cbMinRought);
@@ -242,7 +246,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     // QComboBox showing maximal roughness grade
     cbMaxRought = new(QComboBox);
     cbMaxRought->resize(55,20);
-    for (std::string nextGrade : roughGrades)
+    for (const std::string& nextGrade : roughGrades)
         cbMaxRought->addItem(QString::fromStdString(nextGrade));
     cbMaxRought->setToolTip(QObject::tr("Maximum roughness grade number"));
     proxyMaxRough = symbolScene->addWidget(cbMaxRought);

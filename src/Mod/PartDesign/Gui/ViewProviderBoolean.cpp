@@ -103,7 +103,7 @@ bool ViewProviderBoolean::setEdit(int ModNum)
         return true;
     }
     else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
+        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
     }
 }
 

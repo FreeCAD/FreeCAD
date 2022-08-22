@@ -832,7 +832,7 @@ def p_linear_extrude_with_transform(p):
         newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
         newobj = process_linear_extrude(obj,h)
-    if p[3]['center']=='true' :
+    if p[3].get('center','false')=='true' :
        center(newobj,0,0,h)
     p[0] = [newobj]
     if gui:
@@ -851,7 +851,7 @@ def p_surface_action(p):
     if printverbose: print("Surface")
     obj = doc.addObject("Part::Feature",'surface')
     obj.Shape,xoff,yoff=makeSurfaceVolume(p[3]['file'])
-    if p[3]['center']=='true' :
+    if p[3].get('center','false')=='true' :
         center(obj,xoff,yoff,0.0)
     p[0] = [obj]
     if printverbose: print("End surface")
@@ -1075,7 +1075,7 @@ def myPolygon(n,r1):
 def p_cylinder_action(p):
     'cylinder_action : cylinder LPAREN keywordargument_list RPAREN SEMICOL'
     if printverbose: print("Cylinder")
-    tocenter = p[3]['center']
+    tocenter = p[3].get('center','false')
     h = float(p[3]['h'])
     r1 = float(p[3]['r1'])
     r2 = float(p[3]['r2'])
@@ -1178,7 +1178,7 @@ def p_cube_action(p):
         FreeCAD.Console.PrintWarning('cube with radius zero\n')
         mycube=doc.addObject("Part::Feature","emptycube")
         mycube.Shape = Part.Compound([])
-    if p[3]['center']=='true' :
+    if p[3].get('center','false')=='true' :
        center(mycube,l,w,h);
     p[0] = [mycube]
     if printverbose: print("End Cube")
@@ -1227,7 +1227,7 @@ def p_square_action(p) :
     mysquare = doc.addObject('Part::Plane',p[1])
     mysquare.Length=x
     mysquare.Width=y
-    if p[3]['center']=='true' :
+    if p[3].get('center','false')=='true' :
        center(mysquare,x,y,0)
     p[0] = [mysquare]
 

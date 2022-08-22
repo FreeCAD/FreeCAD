@@ -25,6 +25,12 @@
 #ifndef _DrawViewPart_h_
 #define _DrawViewPart_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QObject>
+
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 
@@ -80,8 +86,8 @@ class TechDrawExport DrawViewPart : public DrawView, public CosmeticExtension
     PROPERTY_HEADER_WITH_EXTENSIONS(TechDraw::DrawViewPart);
 
 public:
-    DrawViewPart(void);
-    virtual ~DrawViewPart();
+    DrawViewPart();
+    ~DrawViewPart() override;
 
     App::PropertyLinkList     Source;
     App::PropertyXLinkList    XSource;
@@ -103,16 +109,16 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-    virtual short mustExecute() const override;
-    virtual void onDocumentRestored() override;
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual const char* getViewProviderName(void) const override {
+    short mustExecute() const override;
+    void onDocumentRestored() override;
+    App::DocumentObjectExecReturn *execute() override;
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    std::vector<TechDraw::DrawHatch*> getHatches(void) const;
-    std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
+    std::vector<TechDraw::DrawHatch*> getHatches() const;
+    std::vector<TechDraw::DrawGeomHatch*> getGeomHatches() const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
@@ -121,8 +127,8 @@ public:
     const BaseGeomPtrVector getVisibleFaceEdges() const;
     const std::vector<TechDraw::FacePtr> getFaceGeometry() const;
 
-    bool hasGeometry(void) const;
-    TechDraw::GeometryObject* getGeometryObject(void) const { return geometryObject; }
+    bool hasGeometry() const;
+    TechDraw::GeometryObject* getGeometryObject() const { return geometryObject; }
 
     TechDraw::BaseGeomPtr getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDraw::VertexPtr getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
@@ -130,9 +136,9 @@ public:
     std::vector<TechDraw::BaseGeomPtr> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
 
     virtual Base::BoundBox3d getBoundingBox() const;
-    double getBoxX(void) const;
-    double getBoxY(void) const;
-    virtual QRectF getRect() const override;
+    double getBoxX() const;
+    double getBoxY() const;
+    QRectF getRect() const override;
     virtual std::vector<DrawViewSection*> getSectionRefs() const;       //are there ViewSections based on this ViewPart?
     virtual std::vector<DrawViewDetail*> getDetailRefs() const;
 
@@ -145,77 +151,89 @@ public:
                                const Base::Vector3d& direction,
                                const bool flip=true) const;
     virtual gp_Ax2 getProjectionCS(Base::Vector3d pt) const;
-    virtual Base::Vector3d getXDirection(void) const;       //don't use XDirection.getValue()
-    virtual Base::Vector3d getOriginalCentroid(void) const;
-    virtual Base::Vector3d getCurrentCentroid(void) const;
+    virtual Base::Vector3d getXDirection() const;       //don't use XDirection.getValue()
+    virtual Base::Vector3d getOriginalCentroid() const;
+    virtual Base::Vector3d getCurrentCentroid() const;
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
                                       const Base::Vector3d& axis,
                                       const bool flip = true)  const;
 
 
-    bool handleFaces(void);
+    bool handleFaces();
 
-    bool isUnsetting(void) { return nowUnsetting; }
+    bool isUnsetting() { return nowUnsetting; }
     
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
 
-    virtual TopoDS_Shape getSourceShape(void) const; 
-    virtual TopoDS_Shape getSourceShapeFused(void) const; 
-    virtual std::vector<TopoDS_Shape> getSourceShape2d(void) const;
+    virtual TopoDS_Shape getSourceShape() const;
+    virtual TopoDS_Shape getSourceShapeFused() const;
+    virtual std::vector<TopoDS_Shape> getSourceShape2d() const;
 
+    virtual void postHlrTasks(void);
 
-    bool isIso(void) const;
+    bool isIso() const;
 
-    void clearCosmeticVertexes(void); 
-    void refreshCVGeoms(void);
-    void addCosmeticVertexesToGeom(void);
+    void clearCosmeticVertexes();
+    void refreshCVGeoms();
+    void addCosmeticVertexesToGeom();
     int add1CVToGV(std::string tag);
     int getCVIndex(std::string tag);
 
-    void clearCosmeticEdges(void); 
-    void refreshCEGeoms(void);
-    void addCosmeticEdgesToGeom(void);
+    void clearCosmeticEdges();
+    void refreshCEGeoms();
+    void addCosmeticEdgesToGeom();
     int add1CEToGE(std::string tag);
 
-    void clearCenterLines(void); 
-    void refreshCLGeoms(void);
-    void addCenterLinesToGeom(void);
+    void clearCenterLines();
+    void refreshCLGeoms();
+    void addCenterLinesToGeom();
     int add1CLToGE(std::string tag);
 
-    void clearGeomFormats(void);
+    void clearGeomFormats();
 
     void dumpVerts(const std::string text);
     void dumpCosVerts(const std::string text);
     void dumpCosEdges(const std::string text);
 
     std::string addReferenceVertex(Base::Vector3d v);
-    void addReferencesToGeom(void);
+    void addReferencesToGeom();
     void removeReferenceVertex(std::string tag);
     void updateReferenceVert(std::string tag, Base::Vector3d loc2d);
     void removeAllReferencesFromGeom();
     void resetReferenceVerts();
 
-    std::vector<App::DocumentObject*> getAllSources(void) const;
+    std::vector<App::DocumentObject*> getAllSources() const;
 
+    bool waitingForFaces() const { return m_waitingForFaces; }
+    void waitingForFaces(bool s) { m_waitingForFaces = s;}
+    bool waitingForHlr() const { return m_waitingForHlr; }
+    void waitingForHlr(bool s) { m_waitingForHlr = s; }
+    virtual bool waitingForResult() const;
+
+    void progressValueChanged(int v);
+
+public Q_SLOTS:
+    void onHlrFinished(void);
+    void onFacesFinished(void);
 
 protected:
-    bool checkXDirection(void) const;
+    bool checkXDirection() const;
 
     TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void unsetupObject() override;
+    void onChanged(const App::Property* prop) override;
+    void unsetupObject() override;
 
-    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
-    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??
-    void partExec(TopoDS_Shape shape);
+    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis);
+    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape& shape);   //const??
+    void partExec(TopoDS_Shape& shape);
     virtual void addShapes2d(void);
 
     void extractFaces();
 
     Base::Vector3d shapeCentroid;
-    void getRunControl(void);
+    void getRunControl();
 
     bool m_handleFaces;
 
@@ -224,20 +242,29 @@ protected:
 
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
 
-    bool prefHardViz(void);
-    bool prefSeamViz(void);
-    bool prefSmoothViz(void);
-    bool prefIsoViz(void);
-    bool prefHardHid(void);
-    bool prefSeamHid(void);
-    bool prefSmoothHid(void);
-    bool prefIsoHid(void);
-    int  prefIsoCount(void);
+    bool prefHardViz();
+    bool prefSeamViz();
+    bool prefSmoothViz();
+    bool prefIsoViz();
+    bool prefHardHid();
+    bool prefSeamHid();
+    bool prefSmoothHid();
+    bool prefIsoHid();
+    int  prefIsoCount();
 
     std::vector<TechDraw::VertexPtr> m_referenceVerts;
 
 private:
     bool nowUnsetting;
+    bool m_waitingForFaces;
+    bool m_waitingForHlr;
+
+    QMetaObject::Connection connectHlrWatcher;
+    QFutureWatcher<void> m_hlrWatcher;
+    QFuture<void> m_hlrFuture;
+    QMetaObject::Connection connectFaceWatcher;
+    QFutureWatcher<void> m_faceWatcher;
+    QFuture<void> m_faceFuture;
 
 };
 

@@ -83,7 +83,7 @@ using namespace Gui::PropertyEditor;
 static SbBool init_done = false;
 static SoGroup *storage = nullptr;
 
-SbBool Gui::SoFCDB::isInitialized(void)
+SbBool Gui::SoFCDB::isInitialized()
 {
     return init_done;
 }

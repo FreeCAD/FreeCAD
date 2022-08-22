@@ -198,9 +198,7 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
     str = XMLTools::toXMLString(fromTranscode);
 }
 
-inline XUTF8Str::~XUTF8Str()
-{
-}
+inline XUTF8Str::~XUTF8Str() = default;
 
 
 // -----------------------------------------------------------------------

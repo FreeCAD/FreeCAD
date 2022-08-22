@@ -41,7 +41,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string ConePy::representation(void) const
+std::string ConePy::representation() const
 {
     return "<Cone object>";
 }
@@ -143,7 +143,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Object ConePy::getApex(void) const
+Py::Object ConePy::getApex() const
 {
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
         (getGeomConePtr()->handle());
@@ -151,7 +151,7 @@ Py::Object ConePy::getApex(void) const
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
-Py::Float ConePy::getRadius(void) const
+Py::Float ConePy::getRadius() const
 {
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
         (getGeomConePtr()->handle());
@@ -165,7 +165,7 @@ void ConePy::setRadius(Py::Float arg)
     s->SetRadius((double)arg);
 }
 
-Py::Float ConePy::getSemiAngle(void) const
+Py::Float ConePy::getSemiAngle() const
 {
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
         (getGeomConePtr()->handle());
@@ -179,7 +179,7 @@ void ConePy::setSemiAngle(Py::Float arg)
     s->SetSemiAngle((double)arg);
 }
 
-Py::Object ConePy::getCenter(void) const
+Py::Object ConePy::getCenter() const
 {
     Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeomConePtr()->handle());
@@ -209,7 +209,7 @@ void ConePy::setCenter(Py::Object arg)
     }
 }
 
-Py::Object ConePy::getAxis(void) const
+Py::Object ConePy::getAxis() const
 {
     Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());

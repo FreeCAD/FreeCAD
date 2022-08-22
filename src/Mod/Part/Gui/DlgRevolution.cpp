@@ -72,7 +72,7 @@ public:
     {
         canSelect = false;
     }
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
     {
         this->canSelect = false;
 
@@ -181,7 +181,7 @@ void DlgRevolution::getAxisLink(App::PropertyLinkSub &lnk) const
             return;
         } else if (parts.size() == 2) {
             std::vector<std::string> subs;
-            subs.push_back(std::string(parts[1].toLatin1().constData()));
+            subs.emplace_back(parts[1].toLatin1().constData());
             lnk.setValue(obj,subs);
         }
     }
@@ -378,8 +378,8 @@ void DlgRevolution::accept()
         QString strAxisLink;
         if (axisLink.getValue()){
             strAxisLink = QString::fromLatin1("(App.ActiveDocument.%1, %2)")
-                    .arg(QString::fromLatin1(axisLink.getValue()->getNameInDocument()))
-                    .arg(axisLink.getSubValues().size() ==  1 ?
+                    .arg(QString::fromLatin1(axisLink.getValue()->getNameInDocument()),
+                         axisLink.getSubValues().size() ==  1 ?
                              QString::fromLatin1("\"%1\"").arg(QString::fromLatin1(axisLink.getSubValues()[0].c_str()))
                              : QString() );
         } else {
@@ -410,7 +410,7 @@ void DlgRevolution::accept()
                 "FreeCAD.ActiveDocument.%2.AxisLink = %12\n"
                 "FreeCAD.ActiveDocument.%2.Symmetric = %13\n"
                 "FreeCADGui.ActiveDocument.%3.Visibility = False\n")
-                .arg(type).arg(name).arg(shape) //%1, 2, 3
+                .arg(type, name, shape) //%1, 2, 3
                 .arg(axis.x,0,'f',15) //%4
                 .arg(axis.y,0,'f',15) //%5
                 .arg(axis.z,0,'f',15) //%6
@@ -418,9 +418,9 @@ void DlgRevolution::accept()
                 .arg(pos.y, 0,'f',15) //%8
                 .arg(pos.z, 0,'f',15) //%9
                 .arg(getAngle(),0,'f',15) //%10
-                .arg(solid) //%11
-                .arg(strAxisLink) //%12
-                .arg(symmetric) //13
+                .arg(solid, //%11
+                     strAxisLink, //%12
+                     symmetric) //%13
                 ;
             Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
             QByteArray to = name.toLatin1();
@@ -522,7 +522,7 @@ void DlgRevolution::onSelectionChanged(const Gui::SelectionChanges& msg)
 App::DocumentObject&DlgRevolution::getShapeToRevolve() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToRevolve();
-    if (objs.size() == 0)
+    if (objs.empty())
         throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }

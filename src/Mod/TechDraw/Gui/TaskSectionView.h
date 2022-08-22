@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
 #define GUI_TASKVIEW_TASKSECTIONVIEW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -44,7 +46,7 @@ class TaskSectionView : public QWidget
 public:
     TaskSectionView(TechDraw::DrawViewPart* base);
     TaskSectionView(TechDraw::DrawViewSection* section);
-    ~TaskSectionView();
+    ~TaskSectionView() override;
 
 public:
     virtual bool accept();
@@ -64,16 +66,16 @@ protected Q_SLOTS:
 
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void saveSectionState();
     void restoreSectionState();
 
-    bool apply(void);
+    bool apply();
     void applyQuick(std::string dir);
-    void applyAligned(void);
+    void applyAligned();
 
-    void createSectionView(void);
-    void updateSectionView(void);
+    void createSectionView();
+    void updateSectionView();
 
     void setUiPrimary();
     void setUiEdit();
@@ -82,8 +84,8 @@ protected:
     void enableAll(bool b);
 
     void failNoObject(std::string objName);
-    bool isBaseValid(void);
-    bool isSectionValid(void);
+    bool isBaseValid();
+    bool isSectionValid();
 
 private:
     std::unique_ptr<Ui_TaskSectionView> ui;
@@ -124,29 +126,29 @@ class TaskDlgSectionView : public Gui::TaskView::TaskDialog
 public:
     TaskDlgSectionView(TechDraw::DrawViewPart* base);
     TaskDlgSectionView(TechDraw::DrawViewSection* section);
-    ~TaskDlgSectionView();
+    ~TaskDlgSectionView() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
 /*    virtual void clicked(int);*/
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
+    void helpRequested() override { return;}
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 /*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
 
     void update();
 
-    virtual bool isAllowedAlterSelection(void) const
+    bool isAllowedAlterSelection() const override
     { return false; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return false; }
 
 protected:

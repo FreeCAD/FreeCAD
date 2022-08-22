@@ -475,7 +475,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
     Position(rclPt, ulX, ulY, ulZ);
     //int nX = ulX, nY = ulY, nZ = ulZ;
     unsigned long ulLevel = 0;
-    while (raclInd.size() == 0)
+    while (raclInd.empty())
       GetHull(ulX, ulY, ulZ, ulLevel++, raclInd);
     GetHull(ulX, ulY, ulZ, ulLevel, raclInd);
   }
@@ -487,7 +487,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
       case Base::BoundBox3d::RIGHT:
       {
         int nX = 0;
-        while (raclInd.size() == 0)
+        while (raclInd.empty())
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -501,7 +501,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
       case Base::BoundBox3d::LEFT:
       {
         int nX = _ulCtGridsX - 1;
-        while (raclInd.size() == 0)
+        while (raclInd.empty())
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -515,7 +515,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
       case Base::BoundBox3d::TOP:
       {
         int nY = 0;
-        while (raclInd.size() == 0)
+        while (raclInd.empty())
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -529,7 +529,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
       case Base::BoundBox3d::BOTTOM:
       {
         int nY = _ulCtGridsY - 1;
-        while (raclInd.size() == 0)
+        while (raclInd.empty())
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -543,7 +543,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
       case Base::BoundBox3d::BACK:
       {
         int nZ = 0;
-        while (raclInd.size() == 0)
+        while (raclInd.empty())
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -557,7 +557,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
       case Base::BoundBox3d::FRONT:
       {
         int nZ = _ulCtGridsZ - 1;
-        while (raclInd.size() == 0)
+        while (raclInd.empty())
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -629,7 +629,7 @@ unsigned long PointsGrid::GetElements (unsigned long ulX, unsigned long ulY, uns
                                      std::set<unsigned long> &raclInd) const
 {
   const std::set<unsigned long> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  if (rclSet.size() > 0)
+  if (!rclSet.empty())
   {
     raclInd.insert(rclSet.begin(), rclSet.end());
     return rclSet.size();

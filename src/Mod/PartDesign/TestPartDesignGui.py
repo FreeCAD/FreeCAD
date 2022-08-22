@@ -40,7 +40,7 @@ class CallableCheckWorkflow:
     def __call__(self):
         diag = QApplication.activeModalWidget()
         self.test.assertIsNotNone(diag, "Dialog box could not be found")
-        if (diag != None):
+        if (diag is not None):
             cbuttons = diag.findChildren(QtGui.QPushButton)
             cbutton = cbuttons[1]
             dialogcheck = CallableCheckDialog(self.test)
@@ -60,7 +60,7 @@ class CallableCheckWarning:
     def __call__(self):
         diag = QApplication.activeModalWidget()
         self.test.assertIsNotNone(diag, "Input dialog box could not be found")
-        if (diag != None):
+        if (diag is not None):
             QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
 
 class CallableComboBox:
@@ -69,10 +69,10 @@ class CallableComboBox:
     def __call__(self):
         diag = QApplication.activeModalWidget()
         self.test.assertIsNotNone(diag, "Warning dialog box could not be found")
-        if (diag != None):
+        if (diag is not None):
             cbox = diag.findChild(QtGui.QComboBox)
             self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
-            if (cbox != None):
+            if (cbox is not None):
                 QtCore.QTimer.singleShot(0, diag, QtCore.SLOT('accept()'))
 
 App = FreeCAD
@@ -155,7 +155,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BodySource.addObject(self.Sketch)
         self.Sketch.Support = (self.BodySource.Origin.OriginFeatures[3], [''])
         self.Sketch.MapMode = 'FlatFace'
-        
+
 
         geoList = []
         geoList.append(Part.LineSegment(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
@@ -195,8 +195,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
         #assert depenedencies of the Sketch
-        self.Doc.recompute()      
-        
+        self.Doc.recompute()
+
         self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
         self.assertTrue(self.Sketch.Support[0][0] in self.BodyTarget.Origin.OriginFeatures)
         self.assertEqual(len(self.BodySource.Group), 0, "Source body feature count is wrong")
@@ -219,7 +219,7 @@ class PartDesignTransformed(unittest.TestCase):
         self.TempDoc = os.path.join(tempDir, 'PartDesignTransformed.FCStd')
         App.ActiveDocument.saveAs(self.TempDoc)
         App.closeDocument("PartDesignTransformed")
-  
+
     def testMultiTransformCase(self):
         App.Console.PrintMessage('Testing applying MultiTransform to the Box outside the body\n')
         App.open(self.TempDoc)
@@ -231,10 +231,10 @@ class PartDesignTransformed(unittest.TestCase):
         Gui.runCommand("PartDesign_MultiTransform")
 
         App.closeDocument("PartDesignTransformed")
-        
+
     def tearDown(self):
         #closing doc
-        if (App.ActiveDocument != None and App.ActiveDocument.Name == PartDesignTransformed):
+        if (App.ActiveDocument is not None and App.ActiveDocument.Name == PartDesignTransformed):
             App.closeDocument("PartDesignTransformed")
         #print ("omit closing document for debugging")
 
@@ -248,7 +248,7 @@ class PartDesignTransformed(unittest.TestCase):
 #       self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
 #       self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
 #       self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
-#       
+#
 #   def tearDown(self):
 #       #closing doc
 #       FreeCAD.closeDocument("SketchGuiTest")

@@ -66,41 +66,44 @@ class TaskDlgPost;
 class FemGuiExport ViewProviderFemPostObject : public Gui::ViewProviderDocumentObject,
                                                public Base::Observer<int>
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostObject);
 
 public:
     /// constructor.
     ViewProviderFemPostObject();
 
     /// destructor.
-    ~ViewProviderFemPostObject();
+    ~ViewProviderFemPostObject() override;
 
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
     App::PropertyPercent                Transparency;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
-    void onChanged(const App::Property* prop);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* prop) override;
 
     //edit handling
-    virtual bool doubleClicked(void);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool doubleClicked() override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
-    virtual void hide(void);
-    virtual void show(void);
+    void hide() override;
+    void show() override;
 
-    virtual SoSeparator* getFrontRoot(void) const;
+    SoSeparator* getFrontRoot() const override;
 
-    //observer for the color bar
-    virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
+    // observer for the color bar
+    void OnChange(Base::Subject< int >& rCaller, int rcReason) override;
+    // update color bar
+    void updateMaterial();
 
     // handling when object is deleted
-    virtual bool onDelete(const std::vector<std::string>&);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool onDelete(const std::vector<std::string>&) override;
+    bool canDelete(App::DocumentObject* obj) const override;
+    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -145,10 +148,6 @@ protected:
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe, m_wireframeSurface;
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
-
-    void selectionChanged(const Gui::SelectionChanges &);
-    typedef boost::signals2::scoped_connection Connection;
-    Connection connectSelection;
 
 private:
     void updateProperties();

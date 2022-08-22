@@ -44,15 +44,13 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 // Feature
 //===========================================================================
 
-GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
+GeoFeatureGroupExtension::GeoFeatureGroupExtension()
 {
     initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
     Group.setScope(LinkScope::Child);
 }
 
-GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
-{
-}
+GeoFeatureGroupExtension::~GeoFeatureGroupExtension() = default;
 
 void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
     

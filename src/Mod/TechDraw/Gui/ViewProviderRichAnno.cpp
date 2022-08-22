@@ -21,11 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
@@ -37,6 +33,8 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
@@ -72,37 +70,7 @@ ViewProviderRichAnno::~ViewProviderRichAnno()
 {
 }
 
-void ViewProviderRichAnno::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-bool ViewProviderRichAnno::setEdit(int ModNum)
-{
-//    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
-    if (ModNum != ViewProvider::Default ) {
-        return ViewProviderDrawingView::setEdit(ModNum);
-    }
-    if (Gui::Control().activeDialog()) { //TaskPanel already open!
-        return false;
-    }
-    Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskDlgRichAnno(this));
-    return true;
-}
-
-void ViewProviderRichAnno::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderRichAnno::doubleClicked(void)
+bool ViewProviderRichAnno::doubleClicked()
 {
 //    Base::Console().Message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
@@ -124,6 +92,15 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
             LineColor.setStatus(App::Property::ReadOnly, true);
         }
     }
+
+    if (p == &(getViewObject()->AnnoParent)) {
+//        Base::Console().Message("VPRA::updateData(AnnoParent) - vpp: %X\n", getViewProviderPage());
+        if (getViewProviderPage() &&
+            getViewProviderPage()->getQGSPage()) {
+            getViewProviderPage()->getQGSPage()->setRichAnnoGroups();
+        }
+    }
+
     ViewProviderDrawingView::updateData(p);
 }
 
@@ -151,12 +128,12 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
     return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-App::Color ViewProviderRichAnno::getDefLineColor(void)
+App::Color ViewProviderRichAnno::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }
 
-std::string ViewProviderRichAnno::getDefFont(void)
+std::string ViewProviderRichAnno::getDefFont()
 {
     return Preferences::labelFont();
 }
@@ -166,13 +143,9 @@ double ViewProviderRichAnno::getDefFontSize()
     return Preferences::dimFontSizeMM();
 }
 
-double ViewProviderRichAnno::getDefLineWeight(void)
+double ViewProviderRichAnno::getDefLineWeight()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double result = lg->getWeight("Graphics");
-    delete lg;
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Graphics");
 }
 
 void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)

@@ -45,7 +45,11 @@ class Proxy(equationbase.BaseProxy):
             "App::PropertyInteger",
             "Priority",
             "Base",
-            ""
+            (
+                "Number of your choice\n"
+                "The equation with lowest number\n"
+                "will be solved first."
+            )
         )
 
 

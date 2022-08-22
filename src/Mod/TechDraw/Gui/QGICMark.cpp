@@ -46,7 +46,7 @@ QGICMark::QGICMark(int index) : QGIVertex(index)
     m_width = 0.75;
     draw();
 }
-void QGICMark::draw(void)
+void QGICMark::draw()
 {
     QPainterPath cmPath;
     cmPath.moveTo(0.0,m_size);
@@ -103,7 +103,7 @@ QPainterPath QGICMark::shape() const
     return outline;
 }
 
- double QGICMark::getMarkFuzz(void) const
+ double QGICMark::getMarkFuzz() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");

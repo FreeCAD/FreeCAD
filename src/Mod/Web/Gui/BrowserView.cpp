@@ -91,7 +91,7 @@ public:
     {
     }
 
-    void interceptRequest(QWebEngineUrlRequestInfo &info)
+    void interceptRequest(QWebEngineUrlRequestInfo &info) override
     {
         // do something with this resource, click or get img for example
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
@@ -157,10 +157,10 @@ public:
     static void init_type();    // announce properties and methods
 
     BrowserViewPy(BrowserView* view);
-    ~BrowserViewPy();
+    ~BrowserViewPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
     Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object setHtml(const Py::Tuple&);
@@ -231,7 +231,7 @@ Py::Object BrowserViewPy::getattr(const char * attr)
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;
@@ -405,10 +405,10 @@ void WebView::triggerContextMenuAction(int id)
 
     switch (id) {
     case WebAction::OpenLink:
-        openLinkInExternalBrowser(url);
+        Q_EMIT openLinkInExternalBrowser(url);
         break;
     case WebAction::OpenLinkInNewWindow:
-        openLinkInNewWindow(url);
+        Q_EMIT openLinkInNewWindow(url);
         break;
     case WebAction::ViewSource:
         Q_EMIT viewSource(url);
@@ -533,8 +533,7 @@ void BrowserView::urlFilter(const QUrl & url)
     //QString username = url.userName();
 
     // path handling
-    QString path     = url.path();
-    QFileInfo fi(path);
+    QString path = url.path();
     QUrl exturl(url);
 
     // query
@@ -735,7 +734,7 @@ void BrowserView::setHtml(const QString& HtmlCode,const QUrl & BaseUrl)
 #endif
 }
 
-void BrowserView::stop(void)
+void BrowserView::stop()
 {
     view->stop();
 }
@@ -868,12 +867,12 @@ bool BrowserView::onHasMsg(const char* pMsg) const
 }
 
 /** Checking on close state. */
-bool BrowserView::canClose(void)
+bool BrowserView::canClose()
 {
     return true;
 }
 
-PyObject* BrowserView::getPyObject(void)
+PyObject* BrowserView::getPyObject()
 {
     static bool init = false;
     if (!init) {

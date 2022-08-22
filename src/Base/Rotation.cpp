@@ -28,6 +28,7 @@
 
 #include "Rotation.h"
 #include "Matrix.h"
+#include "Precision.h"
 
 
 using namespace Base;
@@ -350,7 +351,31 @@ Rotation Rotation::inverse() const
     return rot;
 }
 
+/*!
+  Let this rotation be right-multiplied by \a q. Returns reference to
+  self.
+
+  \sa multRight()
+*/
 Rotation & Rotation::operator*=(const Rotation & q)
+{
+    return multRight(q);
+}
+
+Rotation Rotation::operator*(const Rotation & q) const
+{
+    Rotation quat(*this);
+    quat *= q;
+    return quat;
+}
+
+/*!
+  Let this rotation be right-multiplied by \a q. Returns reference to
+  self.
+
+  \sa multLeft()
+*/
+Rotation& Rotation::multRight(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     double x0, y0, z0, w0;
@@ -365,11 +390,25 @@ Rotation & Rotation::operator*=(const Rotation & q)
     return *this;
 }
 
-Rotation Rotation::operator*(const Rotation & q) const
+/*!
+  Let this rotation be left-multiplied by \a q. Returns reference to
+  self.
+
+  \sa multRight()
+*/
+Rotation& Rotation::multLeft(const Base::Rotation& q)
 {
-    Rotation quat(*this);
-    quat *= q;
-    return quat;
+    // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
+    double x0, y0, z0, w0;
+    q.getValue(x0, y0, z0, w0);
+    double x1, y1, z1, w1;
+    this->getValue(x1, y1, z1, w1);
+
+    this->setValue(w0*x1 + x0*w1 + y0*z1 - z0*y1,
+                   w0*y1 - x0*z1 + y0*w1 + z0*x1,
+                   w0*z1 + x0*y1 - y0*x1 + z0*w1,
+                   w0*w1 - x0*x1 - y0*y1 - z0*z1);
+    return *this;
 }
 
 bool Rotation::operator==(const Rotation & q) const
@@ -444,6 +483,20 @@ void Rotation::multVec(const Vector3d & src, Vector3d & dst) const
     dst.z = dz;
 }
 
+void Rotation::multVec(const Vector3f & src, Vector3f & dst) const
+{
+    Base::Vector3d srcd = Base::toVector<double>(src);
+    multVec(srcd, srcd);
+    dst = Base::toVector<float>(srcd);
+}
+
+Vector3f Rotation::multVec(const Vector3f & src) const
+{
+    Vector3f dst;
+    multVec(src,dst);
+    return dst;
+}
+
 void Rotation::scaleAngle(const double scaleFactor)
 {
     Vector3d axis;
@@ -496,7 +549,7 @@ Rotation Rotation::identity()
 
 Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
 {
-    const double tol = 1e-7; //equal to OCC Precision::Confusion
+    const double tol = Precision::Confusion();
     enum dirIndex {
         X,
         Y,

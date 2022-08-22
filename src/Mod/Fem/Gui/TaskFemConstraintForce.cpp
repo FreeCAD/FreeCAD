@@ -95,7 +95,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
-    if (Objects.size() > 0)
+    if (!Objects.empty())
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineDirection->setText(dir.isEmpty() ? QString() : dir);
     ui->checkReverse->setChecked(reversed);
@@ -124,7 +124,7 @@ void TaskFemConstraintForce::updateUI()
 void TaskFemConstraintForce::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -182,7 +182,7 @@ void TaskFemConstraintForce::addToSelection()
 void TaskFemConstraintForce::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -210,7 +210,7 @@ void TaskFemConstraintForce::removeFromSelection()
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0) {
+    while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
@@ -322,7 +322,7 @@ void TaskFemConstraintForce::onCheckReverse(const bool pressed)
     pcConstraint->Reversed.setValue(pressed);
 }
 
-double TaskFemConstraintForce::getForce(void) const
+double TaskFemConstraintForce::getForce() const
 {
     return ui->spinForce->value().getValue();
 }
@@ -337,7 +337,7 @@ const std::string TaskFemConstraintForce::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-const std::string TaskFemConstraintForce::getDirectionName(void) const
+const std::string TaskFemConstraintForce::getDirectionName() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())
@@ -347,7 +347,7 @@ const std::string TaskFemConstraintForce::getDirectionName(void) const
     return dir.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintForce::getDirectionObject(void) const
+const std::string TaskFemConstraintForce::getDirectionObject() const
 {
     std::string dir = ui->lineDirection->text().toStdString();
     if (dir.empty())

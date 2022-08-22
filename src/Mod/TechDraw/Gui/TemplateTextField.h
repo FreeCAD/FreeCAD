@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
 #define DRAWINGGUI_TEMPLATETEXTFIELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsRectItem>
 
 namespace TechDraw {

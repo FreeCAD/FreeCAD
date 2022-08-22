@@ -76,7 +76,7 @@ bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, 
     if (role == Qt::EditRole && r < vectors.size()) {
         if (value.canConvert<Base::Vector3d>()) {
             vectors[r] = value.value<Base::Vector3d>();
-            dataChanged(index, index.sibling(index.row(), 2));
+            Q_EMIT dataChanged(index, index.sibling(index.row(), 2));
             return true;
         }
         else if (c < 3) {
@@ -87,7 +87,7 @@ bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, 
                 vectors[r].y = d;
             else if (c == 2)
                 vectors[r].z = d;
-            dataChanged(index, index);
+            Q_EMIT dataChanged(index, index);
             return true;
         }
     }

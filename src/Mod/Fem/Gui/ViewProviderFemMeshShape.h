@@ -31,14 +31,14 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemMeshShape : public ViewProviderFemMesh
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemMeshShape);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMeshShape);
 
 public:
     /// constructor.
     ViewProviderFemMeshShape();
 
     /// destructor.
-    virtual ~ViewProviderFemMeshShape();
+    ~ViewProviderFemMeshShape() override;
 };
 
 } //namespace FemGui

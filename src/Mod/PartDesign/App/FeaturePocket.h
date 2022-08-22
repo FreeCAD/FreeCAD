@@ -31,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport Pocket : public FeatureExtrude
 {
-    PROPERTY_HEADER(PartDesign::Pocket);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Pocket);
 
 public:
     Pocket();
@@ -48,9 +48,9 @@ public:
       * If Midplane is true, then the extrusion will extend for half of the length on both sides of the sketch plane
       * The created material will be cut out of the sketch support
       */
-    App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPocket";
     }
     //@}

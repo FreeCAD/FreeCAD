@@ -55,7 +55,7 @@ DlgEditFileIncludePropertyExternal::~DlgEditFileIncludePropertyExternal()
 }
 
 
-int DlgEditFileIncludePropertyExternal::Do(void)
+int DlgEditFileIncludePropertyExternal::Do()
 {
     QFileInfo file = QString::fromUtf8(Prop.getValue());
     assert(file.exists());

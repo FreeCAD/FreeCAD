@@ -42,13 +42,13 @@ class GUIApplication : public GUIApplicationNativeEventAware
 
 public:
     explicit GUIApplication(int & argc, char ** argv);
-    virtual ~GUIApplication();
+    ~GUIApplication() override;
 
     /**
      * Make forwarding events exception-safe and get more detailed information
      * where an unhandled exception comes from.
      */
-    bool notify (QObject * receiver, QEvent * event);
+    bool notify (QObject * receiver, QEvent * event) override;
 
     /// Pointer to exceptions caught in Qt event handler
     std::shared_ptr<Base::SystemExitException> caughtException;
@@ -57,7 +57,7 @@ public Q_SLOTS:
     void commitData(QSessionManager &manager);
 
 protected:
-    bool event(QEvent * event);
+    bool event(QEvent * event) override;
 };
 
 class GUISingleApplication : public GUIApplication
@@ -66,7 +66,7 @@ class GUISingleApplication : public GUIApplication
 
 public:
     explicit GUISingleApplication(int & argc, char ** argv);
-    virtual ~GUISingleApplication();
+    ~GUISingleApplication() override;
 
     bool isRunning() const;
     bool sendMessage(const QByteArray &message, int timeout = 5000);
@@ -89,7 +89,7 @@ class WheelEventFilter : public QObject
 
 public:
     WheelEventFilter(QObject* parent);
-    bool eventFilter(QObject* obj, QEvent* ev);
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 };
 
 class KeyboardFilter : public QObject
@@ -98,7 +98,7 @@ class KeyboardFilter : public QObject
 
 public:
     KeyboardFilter(QObject* parent);
-    bool eventFilter(QObject* obj, QEvent* ev);
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 };
 
 }

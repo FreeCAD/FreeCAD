@@ -45,11 +45,9 @@ class FeatureCustomT : public FeatureT
     PROPERTY_HEADER(App::FeatureCustomT<FeatureT>);
 
 public:
-    FeatureCustomT() {
-    }
+    FeatureCustomT() = default;
 
-    virtual ~FeatureCustomT() {
-    }
+    virtual ~FeatureCustomT() = default;
 
     /** @name methods override DocumentObject */
     //@{
@@ -57,15 +55,15 @@ public:
         return FeatureT::mustExecute();
     }
     /// recalculate the Feature
-    virtual DocumentObjectExecReturn *execute(void) {
+    virtual DocumentObjectExecReturn *execute() {
         return FeatureT::execute();
     }
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return FeatureT::getViewProviderName();
     }
 
-    PyObject *getPyObject(void) {
+    PyObject *getPyObject() {
         return FeatureT::getPyObject();
     }
     void setPyObject(PyObject *obj) {

@@ -55,7 +55,7 @@ typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectI
 
 class AppExport ExpressionVisitor {
 public:
-    virtual ~ExpressionVisitor() {}
+    virtual ~ExpressionVisitor() = default;
     virtual void visit(Expression &e) = 0;
     virtual void aboutToChange() {}
     virtual int changed() const { return 0;}
@@ -63,12 +63,12 @@ public:
     virtual App::PropertyLinkBase* getPropertyLink() {return nullptr;}
 
 protected:
-    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &); 
+    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &);
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
     bool relabeledDocument(Expression &e, const std::string &oldName, const std::string &newName);
     bool renameObjectIdentifier(Expression &e,
             const std::map<ObjectIdentifier,ObjectIdentifier> &, const ObjectIdentifier &);
-    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &,
             const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
     void importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap);
@@ -87,18 +87,18 @@ public:
         , _changed(0) 
     {}
 
-    virtual ~ExpressionModifier() { }
+    ~ExpressionModifier() override = default;
 
-    virtual void aboutToChange() override{
+    void aboutToChange() override{
         ++_changed;
         signaller.aboutToChange();
     }
 
-    virtual int changed() const override { return _changed; }
+    int changed() const override { return _changed; }
 
-    virtual void reset() override {_changed = 0;}
+    void reset() override {_changed = 0;}
 
-    virtual App::PropertyLinkBase* getPropertyLink() override {return propLink;}
+    App::PropertyLinkBase* getPropertyLink() override {return propLink;}
 
 protected:
     P & prop;
@@ -113,13 +113,13 @@ protected:
   */
 
 class AppExport Expression : public Base::BaseClass {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
     Expression(const App::DocumentObject * _owner);
 
-    virtual ~Expression();
+    ~Expression() override;
 
     virtual bool isTouched() const { return false; }
 

@@ -225,7 +225,7 @@ public:
 -
     //@}
 
-+ if(self.export.CustomAttributes != None):
++ if(self.export.CustomAttributes is not None):
     /// getter method for special attributes (e.g. dynamic ones)
     PyObject *getCustomAttributes(const char* attr) const;
     /// setter for special attributes (e.g. dynamic ones)
@@ -720,7 +720,7 @@ PyObject *@self.export.Name@::_repr()
     return Py_BuildValue("s", representation().c_str());
 }
 
-+ if(self.export.CustomAttributes != None):
++ if(self.export.CustomAttributes is not None):
 //--------------------------------------------------------------------------
 // @self.export.Name@ Attributes
 //--------------------------------------------------------------------------
@@ -1119,7 +1119,7 @@ void  @self.export.Name@::set@i.Name@(Py::@i.Parameter.Type@ arg)
 }
 -
 -
-+ if(self.export.CustomAttributes != None):
++ if(self.export.CustomAttributes is not None):
 
 PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 {
@@ -1446,7 +1446,7 @@ void @self.export.Name@::set@i.Name@(Py::@i.Parameter.Type@ /*arg*/)
 }
 -
 -
-+ if(self.export.CustomAttributes != None):
++ if(self.export.CustomAttributes is not None):
 
 PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 {

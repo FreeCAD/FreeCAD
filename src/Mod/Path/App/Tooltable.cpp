@@ -79,7 +79,7 @@ void Tooltable::deleteTool(int pos)
     }
 }
 
-unsigned int Tooltable::getMemSize (void) const
+unsigned int Tooltable::getMemSize () const
 {
     return 0;
 }

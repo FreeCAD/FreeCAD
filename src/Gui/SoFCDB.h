@@ -41,7 +41,7 @@ namespace Gui {
 class GuiExport SoFCDB
 {
 public:
-    static SbBool isInitialized(void);
+    static SbBool isInitialized();
     static void init();
     static void finish();
     static SoNode* replaceSwitches(SoNode* node);

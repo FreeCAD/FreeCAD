@@ -45,7 +45,7 @@ FemSetNodesObject::~FemSetNodesObject()
 {
 }
 
-short FemSetNodesObject::mustExecute(void) const
+short FemSetNodesObject::mustExecute() const
 {
     return 0;
 }

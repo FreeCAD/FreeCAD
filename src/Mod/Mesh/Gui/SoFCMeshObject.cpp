@@ -75,7 +75,7 @@ public:
     {
     }
 protected:
-    int overflow(int c = EOF)
+    int overflow(int c = EOF) override
     {
         if (c != EOF) {
             char z = static_cast<char>(c);
@@ -83,7 +83,7 @@ protected:
         }
         return c;
     }
-    std::streamsize xsputn (const char* s, std::streamsize num)
+    std::streamsize xsputn (const char* s, std::streamsize num) override
     {
         out->write(s);
         return num;
@@ -114,7 +114,7 @@ public:
               buffer+pbSize);
     }
 protected:
-    int underflow()
+    int underflow() override
     {
         if (gptr() < egptr()) {
             return *gptr();
@@ -164,7 +164,7 @@ public:
     {
         this->rdbuf(&buf);
     }
-    ~SoInputStream()
+    ~SoInputStream() override
     {
     }
 
@@ -1132,7 +1132,7 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (rPoints.size() < 3)
         return;
-    if (rFacets.size() < 1)
+    if (rFacets.empty())
         return;
 
     // get material binding
@@ -1544,7 +1544,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (rPoints.size() < 3)
         return;
-    if (rFacets.size() < 1)
+    if (rFacets.empty())
         return;
     if (mesh->countSegments() <= this->index.getValue())
         return;
@@ -1788,7 +1788,7 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction *action, SbBox3f &box, SbVec3f
     if (!mesh)
         return;
     const MeshCore::MeshPointArray & rPoints = mesh->getKernel().GetPoints();
-    if (rPoints.size() > 0) {
+    if (!rPoints.empty()) {
         Base::BoundBox3f cBox;
         for (MeshCore::MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it)
             cBox.Add(*it);

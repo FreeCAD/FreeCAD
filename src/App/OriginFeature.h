@@ -35,31 +35,31 @@ class Origin;
  */
 class AppExport OriginFeature: public App::GeoFeature
 {
-    PROPERTY_HEADER(App::OriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
 public:
     /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
     PropertyString Role;
 
     /// Constructor
-    OriginFeature(void);
-    virtual ~OriginFeature();
+    OriginFeature();
+    ~OriginFeature() override;
 
     /// Finds the origin object this plane belongs to
     App::Origin *getOrigin ();
 };
 
 class AppExport Plane: public App::OriginFeature {
-    PROPERTY_HEADER(App::OriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
 public:
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderPlane";
     }
 };
 
 class AppExport Line: public App::OriginFeature {
-    PROPERTY_HEADER(App::OriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
 public:
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderLine";
     }
 };

@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include "ShapeFromMesh.h"
-#include "ui_ShapeFromMesh.h"
 #include <Base/UnitsApi.h>
-#include <App/DocumentObserver.h>
 #include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
+
+#include "ShapeFromMesh.h"
+#include "ui_ShapeFromMesh.h"
+
 
 using namespace PartGui;
 

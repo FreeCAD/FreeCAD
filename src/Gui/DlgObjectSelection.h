@@ -71,7 +71,7 @@ public:
             QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
 
     /// Destructor
-    ~DlgObjectSelection();
+    ~DlgObjectSelection() override;
 
     /// Options for getSelections()
     enum class SelectionOptions {
@@ -91,8 +91,8 @@ public:
     /// Override the prompt message
     void setMessage(const QString &);
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 
 private Q_SLOTS:
     void onDepItemChanged(QTreeWidgetItem * item, int);

@@ -53,10 +53,10 @@ class InputValidator : public QValidator
 {
 public:
     InputValidator(InputField* parent);
-    ~InputValidator();
+    ~InputValidator() override;
 
-    void fixup(QString& input) const;
-    State validate(QString& input, int& pos) const;
+    void fixup(QString& input) const override;
+    State validate(QString& input, int& pos) const override;
 
 private:
     InputField* dptr;
@@ -323,14 +323,14 @@ void InputField::pushToHistory(const QString &valueq)
             snprintf(hist1,20,"Hist%i",i+1);
             snprintf(hist0,20,"Hist%i",i);
             std::string tHist = _handle->GetASCII(hist0,"");
-            if(tHist != "")
+            if(!tHist.empty())
                 _handle->SetASCII(hist1,tHist.c_str());
         }
         _handle->SetASCII("Hist0",value.c_str());
     }
 }
 
-std::vector<QString> InputField::getHistory(void)
+std::vector<QString> InputField::getHistory()
 {
     std::vector<QString> res;
 
@@ -340,7 +340,7 @@ std::vector<QString> InputField::getHistory(void)
         for(int i = 0 ; i< HistorySize ;i++){
             snprintf(hist,20,"Hist%i",i);
             tmp = _handle->GetASCII(hist,"");
-            if( tmp != "")
+            if( !tmp.empty())
                 res.push_back(QString::fromUtf8(tmp.c_str()));
             else
                 break; // end of history reached
@@ -349,7 +349,7 @@ std::vector<QString> InputField::getHistory(void)
     return res;
 }
 
-void InputField::setToLastUsedValue(void)
+void InputField::setToLastUsedValue()
 {
     std::vector<QString> hist = getHistory();
     if(!hist.empty())
@@ -371,14 +371,14 @@ void InputField::pushToSavedValues(const QString &valueq)
             snprintf(hist1,20,"Save%i",i+1);
             snprintf(hist0,20,"Save%i",i);
             std::string tHist = _handle->GetASCII(hist0,"");
-            if(tHist != "")
+            if(!tHist.empty())
                 _handle->SetASCII(hist1,tHist.c_str());
         }
         _handle->SetASCII("Save0",value.c_str());
     }
 }
 
-std::vector<QString> InputField::getSavedValues(void)
+std::vector<QString> InputField::getSavedValues()
 {
     std::vector<QString> res;
 
@@ -388,7 +388,7 @@ std::vector<QString> InputField::getSavedValues(void)
         for(int i = 0 ; i< SaveSize ;i++){
             snprintf(hist,20,"Save%i",i);
             tmp = _handle->GetASCII(hist,"");
-            if( tmp != "")
+            if( !tmp.empty())
                 res.push_back(QString::fromUtf8(tmp.c_str()));
             else
                 break; // end of history reached
@@ -451,7 +451,7 @@ const Base::Unit& InputField::getUnit() const
 }
 
 /// get stored, valid quantity as a string
-QString InputField::getQuantityString(void) const
+QString InputField::getQuantityString() const
 {
     return actQuantity.getUserString();
 }
@@ -465,7 +465,7 @@ void InputField::setQuantityString(const QString& text)
 }
 
 /// return the quantity in C locale, i.e. decimal separator is a dot.
-QString InputField::rawText(void) const
+QString InputField::rawText() const
 {
     double  factor;
     QString unit;
@@ -484,7 +484,7 @@ void InputField::setRawText(const QString& text)
 }
 
 /// get the value of the singleStep property
-double InputField::singleStep(void)const
+double InputField::singleStep()const
 {
     return StepSize;
 }
@@ -496,7 +496,7 @@ void InputField::setSingleStep(double s)
 }
 
 /// get the value of the maximum property
-double InputField::maximum(void)const
+double InputField::maximum()const
 {
     return Maximum;
 }
@@ -512,7 +512,7 @@ void InputField::setMaximum(double m)
 }
 
 /// get the value of the minimum property
-double InputField::minimum(void)const
+double InputField::minimum()const
 {
     return Minimum;
 }
@@ -538,7 +538,7 @@ void InputField::setUnitText(const QString& str)
     }
 }
 
-QString InputField::getUnitText(void)
+QString InputField::getUnitText()
 {
     double dFactor;
     QString unitStr;
@@ -576,7 +576,7 @@ void InputField::setFormat(const QString& format)
 }
 
 // get the value of the minimum property
-int InputField::historySize(void)const
+int InputField::historySize()const
 {
     return HistorySize;
 }
@@ -590,7 +590,7 @@ void InputField::setHistorySize(int i)
     HistorySize = i;
 }
 
-void InputField::selectNumber(void)
+void InputField::selectNumber()
 {
     QString str = text();
     unsigned int i = 0;
@@ -642,6 +642,19 @@ void InputField::focusInEvent(QFocusEvent *event)
 
 void InputField::focusOutEvent(QFocusEvent *event)
 {
+    try {
+        if (Quantity::parse(this->text()).getUnit().isEmpty()) {
+            // if user didn't enter a unit, we virtually compensate
+            // the multiplication factor induced by user unit system
+            double factor;
+            QString unitStr;
+            actQuantity.getUserString(factor, unitStr);
+            actQuantity = actQuantity * factor;
+        }
+    }
+    catch (const Base::ParserError&) {
+        // do nothing, let apply the last known good value
+    }
     this->setText(actQuantity.getUserString());
     QLineEdit::focusOutEvent(event);
 }

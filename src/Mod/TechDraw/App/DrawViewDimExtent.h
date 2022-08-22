@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawViewDimExtent_h_
 #define _TechDraw_DrawViewDimExtent_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <tuple>
 
 #include <App/DocumentObject.h>
@@ -35,12 +37,12 @@ namespace TechDraw {
 
 class TechDrawExport DrawViewDimExtent : public TechDraw::DrawViewDimension
 {
-    PROPERTY_HEADER(TechDraw::DrawViewDimExtent);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimExtent);
 
 public:
     /// Constructor
     DrawViewDimExtent();
-    virtual ~DrawViewDimExtent();
+    ~DrawViewDimExtent() override;
 
     App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
                                                                  //Cosmetic End points are stored in DVD::References2d
@@ -48,19 +50,19 @@ public:
     App::PropertyInteger           DirExtent;                    //Horizontal, Vertical, TBD
     App::PropertyStringList        CosmeticTags;                 //id of cosmetic end points.
 
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute() const;
-    virtual void unsetupObject();
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    void unsetupObject() override;
 
-    virtual bool checkReferences2D(void) const;
+    bool checkReferences2D() const override;
 
     //return PyObject as DrawViewDimExtentPy
-    virtual PyObject *getPyObject(void);
+    PyObject *getPyObject() override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    std::vector<std::string> getSubNames(void);
-    virtual pointPair getPointsTwoVerts();
+    void onChanged(const App::Property* prop) override;
+    std::vector<std::string> getSubNames();
+    pointPair getPointsTwoVerts() override;
 
 private:
 };

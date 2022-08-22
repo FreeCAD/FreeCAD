@@ -3,6 +3,7 @@
     <PythonExport 
         Father="BaseClassPy" 
         Name="VoronoiVertexPy" 
+        PythonName="Path.Voronoi.Vertex"
         Twin="VoronoiVertex" 
         TwinPointer="VoronoiVertex" 
         Include="Mod/Path/App/VoronoiVertex.h" 

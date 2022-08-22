@@ -182,7 +182,7 @@ void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
     if (result == QMessageBox::Yes) {
         Application::Instance->prefPackManager()->deleteUserPack(name);
         showEvent(nullptr);
-        packVisibilityChanged();
+        Q_EMIT packVisibilityChanged();
     }
 }
 
@@ -190,14 +190,14 @@ void DlgPreferencePackManagementImp::hideBuiltInPack(const std::string& prefPack
 {
     Application::Instance->prefPackManager()->toggleVisibility("##BUILT_IN##", prefPackName);
     showEvent(nullptr);
-    packVisibilityChanged();
+    Q_EMIT packVisibilityChanged();
 }
 
 void DlgPreferencePackManagementImp::hideInstalledPack(const std::string& addonName, const std::string& prefPackName)
 {
     Application::Instance->prefPackManager()->toggleVisibility(addonName, prefPackName);
     showEvent(nullptr);
-    packVisibilityChanged();
+    Q_EMIT packVisibilityChanged();
 }
 
 void DlgPreferencePackManagementImp::showAddonManager()

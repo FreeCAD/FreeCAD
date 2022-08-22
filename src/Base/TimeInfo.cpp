@@ -50,9 +50,7 @@ TimeInfo::TimeInfo()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-TimeInfo::~TimeInfo()
-{
-}
+TimeInfo::~TimeInfo() = default;
 
 
 //**************************************************************************

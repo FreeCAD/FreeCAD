@@ -212,7 +212,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
     visited = {}
 
     for root, dirs, files in os.walk(bundle_path):
-        if dirs_filter != None:
+        if dirs_filter is not None:
             dirs[:] = [d for d in dirs if should_visit(bundle_path, dirs_filter,
                                                        os.path.join(root, d))]
 

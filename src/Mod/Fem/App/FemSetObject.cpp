@@ -45,7 +45,7 @@ FemSetObject::~FemSetObject()
 {
 }
 
-short FemSetObject::mustExecute(void) const
+short FemSetObject::mustExecute() const
 {
     return 0;
 }

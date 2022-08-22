@@ -37,7 +37,7 @@
 
 using namespace SketcherGui;
 
-SketchOrientationDialog::SketchOrientationDialog(void)
+SketchOrientationDialog::SketchOrientationDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_SketchOrientationDialog)
 {
     DirType = 0;

@@ -36,7 +36,7 @@ class Thumbnail : public Base::Persistence
 {
 public:
     Thumbnail(int s = 128);
-    ~Thumbnail();
+    ~Thumbnail() override;
 
     void setViewer(View3DInventorViewer*);
     void setSize(int);
@@ -44,15 +44,15 @@ public:
 
     /** @name I/O of the document */
     //@{
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const override;
     /// This method is used to save properties or very small amounts of data to an XML document.
-    void Save (Base::Writer &writer) const;
+    void Save (Base::Writer &writer) const override;
     /// This method is used to restore properties from an XML document.
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
     /// This method is used to save large amounts of data to a binary file.
-    void SaveDocFile (Base::Writer &writer) const;
+    void SaveDocFile (Base::Writer &writer) const override;
     /// This method is used to restore large amounts of data from a binary file.
-    void RestoreDocFile(Base::Reader &reader);
+    void RestoreDocFile(Base::Reader &reader) override;
     //@}
 
 private:

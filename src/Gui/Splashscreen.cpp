@@ -97,7 +97,7 @@ public:
                 textColor = col;
         }
     }
-    virtual ~SplashObserver()
+    ~SplashObserver() override
     {
         Base::Console().DetachObserver(this);
     }
@@ -686,9 +686,9 @@ void AboutDialog::on_copyButton_clicked()
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
 
-    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),QStringLiteral(""));
-    QString deskSess = QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),QStringLiteral(""));
-    QString deskInfo = QStringLiteral("");
+    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"), QString());
+    QString deskSess = QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"), QString());
+    QString deskInfo;
 
     if ( !(deskEnv.isEmpty() && deskSess.isEmpty()) ) {
         if ( deskEnv.isEmpty() || deskSess.isEmpty() )

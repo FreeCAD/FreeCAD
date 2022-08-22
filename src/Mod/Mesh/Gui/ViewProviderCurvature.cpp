@@ -417,11 +417,11 @@ std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes() const
     std::vector<std::string> StrList = inherited::getDisplayModes();
 
     // add modes
-    StrList.push_back("Absolute curvature");
-    StrList.push_back("Mean curvature");
-    StrList.push_back("Gaussian curvature");
-    StrList.push_back("Maximum curvature");
-    StrList.push_back("Minimum curvature");
+    StrList.emplace_back("Absolute curvature");
+    StrList.emplace_back("Mean curvature");
+    StrList.emplace_back("Gaussian curvature");
+    StrList.emplace_back("Maximum curvature");
+    StrList.emplace_back("Minimum curvature");
 
     return StrList;
 }
@@ -477,7 +477,7 @@ public:
         QStringList lines = s.split(QLatin1String("\n"));
         std::vector<std::string> text;
         for (QStringList::Iterator it = lines.begin(); it != lines.end(); ++it)
-            text.push_back((const char*)it->toLatin1());
+            text.emplace_back((const char*)it->toLatin1());
         anno->LabelText.setValues(text);
         std::stringstream str;
         str << "Curvature info (" << group->Group.getSize() << ")";

@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
@@ -61,51 +63,51 @@ public:
     enum {Type = QGraphicsItem::UserType + 340};
 
     explicit QGIWeldSymbol(QGILeaderLine* myParent = nullptr);
-    ~QGIWeldSymbol() = default;
+    ~QGIWeldSymbol() override = default;
 
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
-    double getEdgeFuzz(void) const;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
+    double getEdgeFuzz() const;
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
 
-    virtual TechDraw::DrawWeldSymbol* getFeature(void);
+    virtual TechDraw::DrawWeldSymbol* getFeature();
     virtual void setFeature(TechDraw::DrawWeldSymbol* feat);
 
-    QPointF getTileOrigin(void);
-    QPointF getKinkPoint(void);
-    QPointF getTailPoint(void);
+    QPointF getTileOrigin();
+    QPointF getKinkPoint();
+    QPointF getTailPoint();
 
     virtual void setPrettyNormal();
     virtual void setPrettySel();
     virtual void setPrettyPre();
 
-    void getTileFeats(void);
+    void getTileFeats();
 
 protected:
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
-    virtual void draw() override;
+    void draw() override;
     void drawTile(TechDraw::DrawTileWeld* tileFeat);
-    void drawAllAround(void);
-    void drawTailText(void);
+    void drawAllAround();
+    void drawTailText();
     void drawFieldFlag();
 
 protected:
-    void removeQGITiles(void);
-    std::vector<QGITile*> getQGITiles(void) const;
+    void removeQGITiles();
+    std::vector<QGITile*> getQGITiles() const;
 
     virtual QColor prefNormalColor();
     double prefArrowSize();
-    double prefFontSize(void) const;
+    double prefFontSize() const;
 
     TechDraw::DrawWeldSymbol* m_weldFeat;
     TechDraw::DrawLeaderLine* m_leadFeat;

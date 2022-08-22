@@ -63,6 +63,7 @@ class Macro(object):
         self.comment = ""
         self.code = ""
         self.url = ""
+        self.raw_code_url = ""
         self.wiki = ""
         self.version = ""
         self.date = ""
@@ -252,16 +253,16 @@ class Macro(object):
         # check if the macro page has its code hosted elsewhere, download if
         # needed
         if "rawcodeurl" in p:
-            rawcodeurl = re.findall('rawcodeurl.*?href="(http.*?)">', p)
-            if rawcodeurl:
-                rawcodeurl = rawcodeurl[0]
-                u2 = NetworkManager.AM_NETWORK_MANAGER.blocking_get(rawcodeurl)
+            self.raw_code_url = re.findall('rawcodeurl.*?href="(http.*?)">', p)
+            if self.raw_code_url:
+                self.raw_code_url = self.raw_code_url[0]
+                u2 = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.raw_code_url)
                 if not u2:
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
                             "Unable to open macro code URL {rawcodeurl}",
-                        ).format(rawcodeurl)
+                        ).format(self.raw_code_url)
                         + "\n"
                     )
                     return
@@ -417,12 +418,29 @@ class Macro(object):
                 src_file = os.path.normpath(os.path.join(base_dir, other_file))
                 dst_file = os.path.normpath(os.path.join(macro_dir, other_file))
             if not os.path.isfile(src_file):
-                warnings.append(
-                    translate(
-                        "AddonsInstaller",
-                        "Could not locate macro-specified file {} (should have been at {})",
-                    ).format(other_file, src_file)
-                )
+                # If the file does not exist, see if we have a raw code URL to fetch from
+                if self.raw_code_url:
+                    fetch_url = self.raw_code_url.rsplit("/", 1)[0] + "/" + other_file
+                    FreeCAD.Console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
+                    p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(fetch_url)
+                    if p:
+                        with open(dst_file, "wb") as f:
+                            f.write(p)
+                    else:
+                        FreeCAD.Console.PrintWarning(
+                            translate(
+                                "AddonsInstaller",
+                                "Unable to fetch macro-specified file {} from {}",
+                            ).format(other_file, fetch_url)
+                            + "\n"
+                        )
+                else:
+                    warnings.append(
+                        translate(
+                            "AddonsInstaller",
+                            "Could not locate macro-specified file {} (should have been at {})",
+                        ).format(other_file, src_file)
+                    )
                 continue
             try:
                 shutil.copy(src_file, dst_file)

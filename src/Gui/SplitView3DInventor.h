@@ -41,28 +41,28 @@ class GuiExport AbstractSplitView : public MDIView, public ParameterGrp::Observe
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
-    ~AbstractSplitView();
+    ~AbstractSplitView() override;
 
-    virtual const char *getName(void) const;
+    const char *getName() const override;
 
     /// Message handler
-    virtual bool onMsg(const char* pMsg, const char** ppReturn);
-    virtual bool onHasMsg(const char* pMsg) const;
-    virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
-    virtual void onUpdate(void);
-    virtual void deleteSelf();
-    virtual void viewAll();
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
+    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+    void onUpdate() override;
+    void deleteSelf() override;
+    void viewAll() override;
 
     View3DInventorViewer *getViewer(unsigned int) const;
-    void setOverrideCursor(const QCursor&);
-    virtual bool containsViewProvider(const ViewProvider*) const;
+    void setOverrideCursor(const QCursor&) override;
+    bool containsViewProvider(const ViewProvider*) const override;
 
-    PyObject *getPyObject(void);
-    void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
     int getSize();
 
 protected:
@@ -82,11 +82,11 @@ public:
     static void init_type();    // announce properties and methods
 
     AbstractSplitViewPy(AbstractSplitView *vi);
-    ~AbstractSplitViewPy();
+    ~AbstractSplitViewPy() override;
     AbstractSplitView* getSplitViewPtr();
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
     Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object fitAll(const Py::Tuple&);
@@ -98,9 +98,9 @@ public:
     Py::Object viewTop(const Py::Tuple&);
     Py::Object viewIsometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
-    Py::Object sequence_item(Py_ssize_t);
+    Py::Object sequence_item(Py_ssize_t) override;
     Py::Object close(const Py::Tuple&);
-    int sequence_length();
+    PyCxx_ssize_t sequence_length() override;
 
 private:
     Gui::MDIViewPy base;
@@ -111,11 +111,11 @@ private:
  */
 class GuiExport SplitView3DInventor : public AbstractSplitView
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
-    ~SplitView3DInventor();
+    ~SplitView3DInventor() override;
 };
 
 } // namespace Gui

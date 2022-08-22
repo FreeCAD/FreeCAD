@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer equation object _NonLinear"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -40,26 +41,15 @@ class Proxy(linear.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
         obj.addProperty(
-            "App::PropertyFloat",
-            "NonlinearTolerance",
-            "Nonlinear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "NonlinearIterations",
             "Nonlinear System",
-            ""
+            "Maximum number of iterations"
         )
         obj.addProperty(
-            "App::PropertyFloat",
-            "RelaxationFactor",
-            "Nonlinear System",
-            ""
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
+            "App::PropertyIntegerConstraint",
             "NonlinearNewtonAfterIterations",
             "Nonlinear System",
             ""
@@ -70,11 +60,31 @@ class Proxy(linear.Proxy):
             "Nonlinear System",
             ""
         )
-        obj.NonlinearTolerance = 1e-8
-        obj.NonlinearIterations = 500
-        obj.RelaxationFactor = 1
-        obj.NonlinearNewtonAfterIterations = 3
-        obj.NonlinearNewtonAfterTolerance = 1e-3
+        obj.addProperty(
+            "App::PropertyFloat",
+            "NonlinearTolerance",
+            "Nonlinear System",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyFloatConstraint",
+            "RelaxationFactor",
+            "Nonlinear System",
+            (
+                "Value below 1.0 might be necessary to achieve convergence\n"
+                "Typical values are in the range [0.3, 1.0]"
+            )
+        )
+
+        obj.NonlinearIterations = (500, 1, int(1e6), 50)
+        obj.NonlinearNewtonAfterIterations = (3, 1, 100, 1)
+        # for small numbers we must set an expression because we don't have a UI,
+        # the user has to view and edit the tolerance via the property editor and
+        # this does not yet allow to view and edit small numbers in scientific notation
+        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
+        obj.setExpression("NonlinearTolerance", "1e-7")
+        obj.setExpression("NonlinearNewtonAfterTolerance", "1e-3")
+        obj.RelaxationFactor = (1.0, 0.0001, 2.0, 0.1)
 
 
 class ViewProxy(linear.ViewProxy):

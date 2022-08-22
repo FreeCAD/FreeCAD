@@ -44,7 +44,7 @@ Fillet::Fillet()
 {
 }
 
-App::DocumentObjectExecReturn *Fillet::execute(void)
+App::DocumentObjectExecReturn *Fillet::execute()
 {
     App::DocumentObject* link = Base.getValue();
     if (!link)

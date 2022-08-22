@@ -38,15 +38,15 @@ class DlgSettingsFemMystranImp : public Gui::Dialog::PreferencePage
 
 public:
     DlgSettingsFemMystranImp( QWidget* parent = nullptr );
-    ~DlgSettingsFemMystranImp();
+    ~DlgSettingsFemMystranImp() override;
 
 protected Q_SLOTS:
     void onfileNameChanged(QString FileName);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemMystranImp> ui;

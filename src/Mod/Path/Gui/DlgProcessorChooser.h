@@ -37,12 +37,12 @@ class DlgProcessorChooser : public QDialog
 
 public:
     DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
-    ~DlgProcessorChooser();
+    ~DlgProcessorChooser() override;
 
     std::string getProcessor();
     std::string getArguments();
 
-    void accept();
+    void accept() override;
 
 protected Q_SLOTS:
 

@@ -39,7 +39,7 @@ namespace PartDesign
  */
 class PartDesignExport Transformed : public PartDesign::Feature
 {
-    PROPERTY_HEADER(PartDesign::Transformed);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Transformed);
 
 public:
     Transformed();
@@ -58,7 +58,7 @@ public:
      *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
-    virtual Part::Feature* getBaseObject(bool silent=false) const;
+    Part::Feature* getBaseObject(bool silent=false) const override;
 
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
@@ -78,8 +78,8 @@ public:
       * If Originals is empty, execute() returns immediately without doing anything as
       * the actual processing will happen in the MultiTransform feature
       */
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 
     /** returns the compound of the shapes that were rejected during the last execute
@@ -88,9 +88,9 @@ public:
     TopoDS_Shape rejected;
 
 protected:
-    void Restore(Base::XMLReader &reader);
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-    virtual void positionBySupport(void);
+    void Restore(Base::XMLReader &reader) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    virtual void positionBySupport();
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
                      TopoDS_Compound &compoundOut) const;

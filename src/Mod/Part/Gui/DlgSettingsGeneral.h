@@ -37,12 +37,12 @@ class DlgSettingsGeneral : public Gui::Dialog::PreferencePage
 
 public:
     DlgSettingsGeneral(QWidget* parent = nullptr);
-    ~DlgSettingsGeneral();
+    ~DlgSettingsGeneral() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsGeneral> ui;
@@ -55,12 +55,12 @@ class DlgImportExportIges : public Gui::Dialog::PreferencePage
 
 public:
     DlgImportExportIges(QWidget* parent = nullptr);
-    ~DlgImportExportIges();
+    ~DlgImportExportIges() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgImportExportIges> ui;
@@ -74,12 +74,12 @@ class DlgImportExportStep : public Gui::Dialog::PreferencePage
 
 public:
     DlgImportExportStep(QWidget* parent = nullptr);
-    ~DlgImportExportStep();
+    ~DlgImportExportStep() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgImportExportStep> ui;

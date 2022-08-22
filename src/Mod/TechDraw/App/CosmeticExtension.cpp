@@ -152,14 +152,6 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
     }
 }
 
-bool CosmeticExtension::replaceCosmeticVertex(CosmeticVertex* newCV)
-{
-    (void) newCV;
-    Base::Console().Message("CX::replaceCosmeticVertex() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
-}
-
 //********** Cosmetic Edge *****************************************************
 
 //returns unique CE id
@@ -256,15 +248,6 @@ void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
     for (auto& t: delTags) {
         removeCosmeticEdge(t);
     }
-}
-
-
-bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
-{
-    (void) newCE;
-    Base::Console().Message("CX::replaceCosmeticEdge() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
 }
 
 //********** Center Line *******************************************************
@@ -373,14 +356,6 @@ void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
     }
 }
 
-bool CosmeticExtension::replaceCenterLine(CenterLine* newCL)
-{
-    (void) newCL;
-    Base::Console().Message("CX::replaceCenterLine() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
-}
-
 
 //********** Geometry Formats **************************************************
 //returns unique GF id
@@ -442,14 +417,6 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
     ss << "Edge" << i;
     std::string eName = ss.str();
     return getGeomFormatBySelection(eName);
-}
-
-bool CosmeticExtension::replaceGeomFormat(GeomFormat* newGF)
-{
-    (void) newGF;
-    Base::Console().Message("CX::replaceGeomFormat() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
 }
 
 void CosmeticExtension::removeGeomFormat(std::string delTag)

@@ -95,7 +95,14 @@ enum SnapMode{
         HorizontalSnap
     };
 
-QGIDatumLabel::QGIDatumLabel()
+enum DragState {
+    NoDrag,
+    DragStarted,
+    Dragging };
+
+
+QGIDatumLabel::QGIDatumLabel() :
+    m_dragState(NoDrag)
 {
     verticalSep = false;
     posX = 0;
@@ -136,10 +143,16 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
             setPrettySel();
         } else {
             setPrettyNormal();
+            if (m_dragState == Dragging) {
+                //stop the drag if we are no longer selected.
+                m_dragState = NoDrag;
+                Q_EMIT dragFinished();
+            }
         }
-        update();
+
     } else if(change == ItemPositionHasChanged && scene()) {
         setLabelCenter();
+        m_dragState = Dragging;
         Q_EMIT dragging(m_ctrl);
     }
 
@@ -155,20 +168,13 @@ void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mousePressEvent(event);
 }
 
-void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
 void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
-    if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton))
-        .length() > 0) {
-        if (scene() && this == scene()->mouseGrabberItem()) {
-            Q_EMIT dragFinished();
-        }
+    if (m_dragState == Dragging) {
+        m_dragState = NoDrag;
+        Q_EMIT dragFinished();
     }
 
     QGraphicsItem::mouseReleaseEvent(event);
@@ -396,7 +402,7 @@ void QGIDatumLabel::setUnitString(QString t)
 } 
 
 
-int QGIDatumLabel::getPrecision(void)
+int QGIDatumLabel::getPrecision()
 {
     int precision;
     bool global = false;
@@ -412,7 +418,7 @@ int QGIDatumLabel::getPrecision(void)
     return precision;
 }
 
-double QGIDatumLabel::getTolAdjust(void)
+double QGIDatumLabel::getTolAdjust()
 {
     double adjust;
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -422,7 +428,7 @@ double QGIDatumLabel::getTolAdjust(void)
 }
 
 
-void QGIDatumLabel::setPrettySel(void)
+void QGIDatumLabel::setPrettySel()
 {
 //    Base::Console().Message("QGIDL::setPrettySel()\n");
     m_dimText->setPrettySel();
@@ -432,7 +438,7 @@ void QGIDatumLabel::setPrettySel(void)
     Q_EMIT setPretty(SEL);
 }
 
-void QGIDatumLabel::setPrettyPre(void)
+void QGIDatumLabel::setPrettyPre()
 {
 //    Base::Console().Message("QGIDL::setPrettyPre()\n");
     m_dimText->setPrettyPre();
@@ -442,7 +448,7 @@ void QGIDatumLabel::setPrettyPre(void)
     Q_EMIT setPretty(PRE);
 }
 
-void QGIDatumLabel::setPrettyNormal(void)
+void QGIDatumLabel::setPrettyNormal()
 {
 //    Base::Console().Message("QGIDL::setPrettyNormal()\n");
     m_dimText->setPrettyNormal();
@@ -691,7 +697,7 @@ void QGIViewDimension::datumLabelDragFinished()
 }
 
 //this is for formatting and finding centers, not display
-QString QGIViewDimension::getLabelText(void)
+QString QGIViewDimension::getLabelText()
 {
     QString result;
     QString first = datumLabel->getDimText()->toPlainText();
@@ -974,7 +980,7 @@ double QGIViewDimension::computeArcStrikeFactor(const Base::BoundBox2d &labelRec
                              const Base::Vector2d &arcCenter, double arcRadius,
                              const std::vector<std::pair<double, bool>> &drawMarking)
 {
-    if (drawMarking.size() < 1) {
+    if (drawMarking.empty()) {
         return 0.0;
     }
 
@@ -1201,7 +1207,7 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     return flipArrows;
 }
 
-void QGIViewDimension::resetArrows(void) const
+void QGIViewDimension::resetArrows() const
 {
     aHead1->setDirMode(true);
     aHead1->setRotation(0.0);
@@ -1312,7 +1318,7 @@ void QGIViewDimension::drawSingleArc(QPainterPath &painterPath, const Base::Vect
 void QGIViewDimension::drawMultiArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
                                     const std::vector<std::pair<double, bool>> &drawMarking) const
 {
-    if (drawMarking.size() < 1) {
+    if (drawMarking.empty()) {
         return;
     }
 
@@ -2452,28 +2458,28 @@ void QGIViewDimension::onPrettyChanged(int state)
     }
 }
 
-void QGIViewDimension::setPrettyPre(void)
+void QGIViewDimension::setPrettyPre()
 {
     aHead1->setPrettyPre();
     aHead2->setPrettyPre();
     dimLines->setPrettyPre();
 }
 
-void QGIViewDimension::setPrettySel(void)
+void QGIViewDimension::setPrettySel()
 {
     aHead1->setPrettySel();
     aHead2->setPrettySel();
     dimLines->setPrettySel();
 }
 
-void QGIViewDimension::setPrettyNormal(void)
+void QGIViewDimension::setPrettyNormal()
 {
     aHead1->setPrettyNormal();
     aHead2->setPrettyNormal();
     dimLines->setPrettyNormal();
 }
 
-void QGIViewDimension::drawBorder(void)
+void QGIViewDimension::drawBorder()
 {
 //Dimensions have no border!
 //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
@@ -2546,7 +2552,7 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     setPens();
 }
 
-void QGIViewDimension::setSvgPens(void)
+void QGIViewDimension::setSvgPens()
 {
     double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
     dimLines->setWidth(m_lineWidth/svgLineFactor);
@@ -2554,7 +2560,7 @@ void QGIViewDimension::setSvgPens(void)
     aHead2->setWidth(aHead2->getWidth()/svgLineFactor);
 }
 
-void QGIViewDimension::setPens(void)
+void QGIViewDimension::setPens()
 {
     dimLines->setWidth(m_lineWidth);
     aHead1->setWidth(m_lineWidth);

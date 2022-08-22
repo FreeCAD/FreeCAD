@@ -1,83 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64"
-   height="64"
-   id="svg2"
-   version="1.1"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="fem-warp.svg"
-   inkscape:export-filename="/home/alex/Pictures/fem-warp.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
-  <defs
-     id="defs4">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient3802">
-      <stop
-         style="stop-color:#4e9a06;stop-opacity:1"
-         offset="0"
-         id="stop3804" />
-      <stop
-         style="stop-color:#73d216;stop-opacity:1"
-         offset="1"
-         id="stop3806" />
+<svg width="64" height="64" id="svg2" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs id="defs4">
+    <linearGradient id="linearGradient3802">
+      <stop style="stop-color:#4e9a06;stop-opacity:1" offset="0" id="stop3804" />
+      <stop style="stop-color:#73d216;stop-opacity:1" offset="1" id="stop3806" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3802"
-       id="linearGradient3808"
-       x1="49"
-       y1="58"
-       x2="47"
-       y2="42"
-       gradientUnits="userSpaceOnUse" />
+    <linearGradient xlink:href="#linearGradient3802" id="linearGradient3808" x1="49" y1="58" x2="47" y2="42" gradientUnits="userSpaceOnUse" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="6.7727571"
-     inkscape:cx="22.594041"
-     inkscape:cy="27.715703"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:window-width="799"
-     inkscape:window-height="837"
-     inkscape:window-x="800"
-     inkscape:window-y="27"
-     inkscape:window-maximized="0">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2985"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-  </sodipodi:namedview>
-  <metadata
-     id="metadata7">
+  <metadata id="metadata7">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:creator>
           <cc:Agent>
             <dc:title>[Alexander Gryson]</dc:title>
@@ -106,34 +42,9 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-988.36218)">
-    <rect
-       style="fill:url(#linearGradient3808);stroke:#172a04;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.59999999999999964;fill-opacity:1"
-       id="rect2987"
-       width="58"
-       height="22"
-       x="3"
-       y="39"
-       transform="translate(0,988.36218)" />
-    <rect
-       style="fill:none;stroke:#73d216;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.59999999999999964"
-       id="rect2987-6"
-       width="54"
-       height="18"
-       x="5"
-       y="1029.3622" />
-    <path
-       style="fill:#8ae234;stroke:#172a04;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:9.6"
-       d="m 3,1027.3622 c 18,0 24,-20 30,-32.00002 l 20,10.00002 c -4,8 -18,44 -50,44 z"
-       id="rect2987-3"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc"
-       inkscape:export-filename="/home/alex/Pictures/fem-warp.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
+  <g id="layer1" transform="translate(0,-988.36218)">
+    <rect style="fill:url(#linearGradient3808);stroke:#172a04;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6;fill-opacity:1" id="rect2987" width="58" height="22" x="3" y="39" transform="translate(0,988.36218)" />
+    <rect style="fill:none;stroke:#73d216;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:9.6" id="rect2987-6" width="54" height="18" x="5" y="1029.3622" />
+    <path style="fill:#8ae234;stroke:#172a04;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:9.6" d="m 3,1027.3622 c 18,0 24,-20 30,-32.00002 l 20,10.00002 c -4,8 -18,44 -50,44 z" id="rect2987-3" />
   </g>
 </svg>

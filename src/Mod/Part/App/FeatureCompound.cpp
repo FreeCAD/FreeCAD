@@ -53,7 +53,7 @@ short Compound::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Compound::execute(void)
+App::DocumentObjectExecReturn *Compound::execute()
 {
     try {
         std::vector<ShapeHistory> history;

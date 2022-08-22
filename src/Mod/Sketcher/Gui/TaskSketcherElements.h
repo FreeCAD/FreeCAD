@@ -45,15 +45,15 @@ class ElementView : public QListWidget
 
 public:
     explicit ElementView(QWidget *parent = nullptr);
-    ~ElementView();
+    ~ElementView() override;
 
 
 Q_SIGNALS:
     void onFilterShortcutPressed();
 
 protected:
-    void contextMenuEvent (QContextMenuEvent* event);
-    void keyPressEvent(QKeyEvent * event);
+    void contextMenuEvent (QContextMenuEvent* event) override;
+    void keyPressEvent(QKeyEvent * event) override;
 
 protected Q_SLOTS:
     // Constraints
@@ -106,13 +106,13 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
 
 public:
     TaskSketcherElements(ViewProviderSketch *sketchView);
-    ~TaskSketcherElements();
+    ~TaskSketcherElements() override;
 
     /// Observer message from the Selection
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
-    void slotElementsChanged(void);
+    void slotElementsChanged();
     void updateIcons(int element);
     void updatePreselection();
     void updateVisibility(int filterindex);
@@ -120,7 +120,7 @@ private:
     void clearWidget();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void);
+    void on_listWidgetElements_itemSelectionChanged();
     void on_listWidgetElements_itemEntered(QListWidgetItem *item);
     void on_listWidgetElements_filterShortcutPressed();
     void on_listWidgetElements_currentFilterChanged ( int index );
@@ -129,8 +129,8 @@ public Q_SLOTS:
     void on_autoSwitchBox_stateChanged(int state);
 
 protected:
-    void changeEvent(QEvent *e);
-    void leaveEvent ( QEvent * event );
+    void changeEvent(QEvent *e) override;
+    void leaveEvent ( QEvent * event ) override;
     ViewProviderSketch *sketchView;
     typedef boost::signals2::connection Connection;
     Connection connectionElementsChanged;

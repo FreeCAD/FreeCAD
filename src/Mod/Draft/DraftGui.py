@@ -156,6 +156,11 @@ inCommandShortcuts = {
         translate("draft","Toggle near snap on/off"),
         None
         ],
+    "Undo": [
+        Draft.getParam("inCommandShortcutNearSnap", "/"),
+        translate("draft","Undo last segment"),
+        None
+        ],
 }
 
 from draftutils.todo import todo
@@ -785,7 +790,7 @@ class DraftToolBar:
         # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
 
-        self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
+        self.undoButton.setText(translate("draft", "&Undo")+" ("+inCommandShortcuts["Undo"][0]+")")
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line"))
@@ -819,7 +824,7 @@ class DraftToolBar:
         pb = []
         for i in range(self.layout.count()):
             w = self.layout.itemAt(i).widget()
-            if w != None and w.inherits('QPushButton'):
+            if w is not None and w.inherits('QPushButton'):
                 pb.append(w)
 
         for i in pb:
@@ -1631,6 +1636,7 @@ class DraftToolBar:
         #Length
         #Wipe
         #SetWP
+        #Undo
 
         spec = False
         if txt.upper().startswith(inCommandShortcuts["Relative"][0]):
@@ -1705,6 +1711,9 @@ class DraftToolBar:
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
             spec = True
+        elif txt.upper().startswith(inCommandShortcuts["Undo"][0]):
+            self.undoSegment()
+            spec = True
         elif txt.upper().startswith(inCommandShortcuts["SubelementMode"][0]):
             if self.isSubelementMode.isVisible():
                 self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
@@ -1770,7 +1779,7 @@ class DraftToolBar:
         dp = None
         if point:
             dp = point
-            if self.relativeMode: # and (last != None):
+            if self.relativeMode: # and (last is not None):
                 if self.globalMode:
                     dp = point - last
                 else:
@@ -2206,7 +2215,7 @@ class DraftToolBar:
                                  "Draft_ShapeString","Draft_BezCurve"]
                 self.title = "Create objects"
             def shouldShow(self):
-                return (FreeCAD.ActiveDocument != None) and (not FreeCADGui.Selection.getSelection())
+                return (FreeCAD.ActiveDocument is not None) and (not FreeCADGui.Selection.getSelection())
 
         class DraftModifyWatcher:
             def __init__(self):
@@ -2217,7 +2226,7 @@ class DraftToolBar:
                                  "Draft_Drawing"]
                 self.title = "Modify objects"
             def shouldShow(self):
-                return (FreeCAD.ActiveDocument != None) and (FreeCADGui.Selection.getSelection() != [])
+                return (FreeCAD.ActiveDocument is not None) and (FreeCADGui.Selection.getSelection() != [])
 
         # OBSOLETE
         #class DraftTrayWatcher:
@@ -2254,7 +2263,7 @@ class DraftToolBar:
             self.draftWidget.toggleViewAction().setVisible(True)
 
     def Deactivated(self):
-        if (FreeCAD.activeDraftCommand != None):
+        if (FreeCAD.activeDraftCommand is not None):
             self.continueMode = False
             FreeCAD.activeDraftCommand.finish()
         if self.taskmode:

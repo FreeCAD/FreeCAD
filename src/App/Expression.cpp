@@ -909,7 +909,7 @@ ExpressionDeps Expression::getDeps(int option)  const {
 }
 
 void Expression::getDepObjects(
-        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels)  const 
+        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels) const
 {
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
@@ -944,7 +944,7 @@ public:
         :deps(deps)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->getIdentifiers(e,deps);
     }
 
@@ -968,7 +968,7 @@ public:
         :inList(inList),res(false)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         if(this->adjustLinks(e,inList))
             res = true;
     }
@@ -989,7 +989,7 @@ public:
         :subNameMap(subNameMap)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->importSubNames(e,subNameMap);
     }
 
@@ -1014,7 +1014,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
                                obj,key.second.c_str(),owner->getDocument(), nameMap);
-                if(imported.size())
+                if(!imported.empty())
                     subNameMap.emplace(std::move(key),std::move(imported));
             }
         }
@@ -1033,7 +1033,7 @@ public:
         :obj(obj),ref(ref),newLabel(newLabel)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->updateLabelReference(e,obj,ref,newLabel);
     }
 
@@ -1070,7 +1070,7 @@ public:
     {
     }
 
-    void visit(Expression &e) {
+    void visit(Expression &e) override {
         if(collect)
             this->collectReplacement(e,paths,parent,oldObj,newObj);
         else
@@ -1112,7 +1112,7 @@ App::any Expression::getValueAsAny() const {
 Py::Object Expression::getPyValue() const {
     try {
         Py::Object pyobj = _getPyValue();
-        if(components.size()) {
+        if(!components.empty()) {
             for(auto &c : components)
                 pyobj = c->get(this,pyobj);
         }
@@ -1772,7 +1772,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MAX:
     case CREATE:
     case MSCALE:
-        if (args.size() == 0)
+        if (args.empty())
             EXPR_THROW("Invalid number of arguments: at least one required.");
         break;
     case LIST:
@@ -1821,7 +1821,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
-    virtual ~Collector() {}
+    virtual ~Collector() = default;
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
@@ -1838,7 +1838,7 @@ class SumCollector : public Collector {
 public:
     SumCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         q += value;
         first = false;
@@ -1850,14 +1850,14 @@ class AverageCollector : public Collector {
 public:
     AverageCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         q += value;
         ++n;
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return q/(double)n; }
+    Quantity getQuantity() const override { return q/(double)n; }
 
 private:
     unsigned int n;
@@ -1867,7 +1867,7 @@ class StdDevCollector : public Collector {
 public:
     StdDevCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first) {
             M2 = Quantity(0, value.getUnit() * value.getUnit());
@@ -1882,7 +1882,7 @@ public:
         first = false;
     }
 
-    virtual Quantity getQuantity() const {
+    Quantity getQuantity() const override {
         if (n < 2)
             throw ExpressionError("Invalid number of entries: at least two required.");
         else
@@ -1899,13 +1899,13 @@ class CountCollector : public Collector {
 public:
     CountCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         ++n;
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return Quantity(n); }
+    Quantity getQuantity() const override { return Quantity(n); }
 
 private:
     unsigned int n;
@@ -1915,7 +1915,7 @@ class MinCollector : public Collector {
 public:
     MinCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first || value < q)
             q = value;
@@ -1927,7 +1927,7 @@ class MaxCollector : public Collector {
 public:
     MaxCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first || value > q)
             q = value;
@@ -2493,9 +2493,7 @@ VariableExpression::VariableExpression(const DocumentObject *_owner, const Objec
 {
 }
 
-VariableExpression::~VariableExpression()
-{
-}
+VariableExpression::~VariableExpression() = default;
 
 /**
   * Determine if the expression is touched or not, i.e whether the Property object it
@@ -2533,7 +2531,7 @@ const Property * VariableExpression::getProperty() const
 
 void VariableExpression::addComponent(Component *c) {
     do {
-        if(components.size())
+        if(!components.empty())
             break;
         if(!c->e1 && !c->e2) {
             var << c->comp;
@@ -3193,7 +3191,7 @@ static int column;
 
 // show the parser the lexer method
 #define yylex ExpressionParserlex
-int ExpressionParserlex(void);
+int ExpressionParserlex();
 
 // Parser, defined in ExpressionParser.y
 # define YYTOKENTYPE
@@ -3286,7 +3284,7 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
     column = 0;
     try {
         while ( (token  = ExpressionParserlex()) != 0)
-            result.push_back(std::make_tuple(token, ExpressionParser::last_column, yytext));
+            result.emplace_back(token, ExpressionParser::last_column, yytext);
     }
     catch (...) {
         // Ignore all exceptions

@@ -76,7 +76,7 @@ namespace SketcherGui {
             this->setMessage(ErrMsg);
         }
 
-        virtual ~ExceptionWrongInput() throw() {}
+        ~ExceptionWrongInput() throw() override {}
 
         QString ErrMsg;
     };
@@ -250,7 +250,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
 }
 
-bool CmdSketcherNewSketch::isActive(void)
+bool CmdSketcherNewSketch::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -283,7 +283,7 @@ void CmdSketcherEditSketch::activated(int iMsg)
     }
 }
 
-bool CmdSketcherEditSketch::isActive(void)
+bool CmdSketcherEditSketch::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
@@ -320,7 +320,7 @@ void CmdSketcherLeaveSketch::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.recompute()");
 }
 
-bool CmdSketcherLeaveSketch::isActive(void)
+bool CmdSketcherLeaveSketch::isActive()
 {
     Gui::Document *doc = getActiveGuiDocument();
     if (doc) {
@@ -362,7 +362,7 @@ void CmdSketcherStopOperation::activated(int iMsg)
     }
 }
 
-bool CmdSketcherStopOperation::isActive(void)
+bool CmdSketcherStopOperation::isActive()
 {
     Gui::Document *doc = getActiveGuiDocument();
     if (doc) {
@@ -495,7 +495,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
 }
 
-bool CmdSketcherReorientSketch::isActive(void)
+bool CmdSketcherReorientSketch::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
@@ -664,7 +664,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
     }
 }
 
-bool CmdSketcherMapSketch::isActive(void)
+bool CmdSketcherMapSketch::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     Base::Type sketch_type = Base::Type::fromName("Sketcher::SketchObject");
@@ -703,7 +703,7 @@ void CmdSketcherViewSketch::activated(int iMsg)
     }
 }
 
-bool CmdSketcherViewSketch::isActive(void)
+bool CmdSketcherViewSketch::isActive()
 {
     Gui::Document *doc = getActiveGuiDocument();
     if (doc) {
@@ -746,7 +746,7 @@ void CmdSketcherValidateSketch::activated(int iMsg)
     Gui::Control().showDialog(new TaskSketcherValidation(Obj));
 }
 
-bool CmdSketcherValidateSketch::isActive(void)
+bool CmdSketcherValidateSketch::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
@@ -774,7 +774,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
-    if (selection.size() < 1) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
             qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches."));
@@ -855,7 +855,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     doCommand(Gui,"App.activeDocument().recompute()");
 }
 
-bool CmdSketcherMirrorSketch::isActive(void)
+bool CmdSketcherMirrorSketch::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0;
 }
@@ -936,7 +936,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     doCommand(Doc, "App.activeDocument().recompute()");
 }
 
-bool CmdSketcherMergeSketches::isActive(void)
+bool CmdSketcherMergeSketches::isActive()
 {
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 1;
 }
@@ -967,7 +967,7 @@ void CmdSketcherViewSection::activated(int iMsg)
     doCommand(Doc,"ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch)");
 }
 
-bool CmdSketcherViewSection::isActive(void)
+bool CmdSketcherViewSection::isActive()
 {
     Gui::Document *doc = getActiveGuiDocument();
     if (doc) {
@@ -979,7 +979,7 @@ bool CmdSketcherViewSection::isActive(void)
     return false;
 }
 
-void CreateSketcherCommands(void)
+void CreateSketcherCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

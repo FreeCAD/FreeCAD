@@ -45,7 +45,7 @@ protected:
 
 public:
     ShapeValidator();
-    void initValidator(void);
+    void initValidator();
     void checkEdge(const TopoDS_Shape& shape);
     void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = nullptr);
     void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = nullptr);
@@ -60,7 +60,7 @@ public:
 
 class GeomFillSurface : public Part::Spline
 {
-  PROPERTY_HEADER(Surface::GeomFillSurface);
+  PROPERTY_HEADER_WITH_OVERRIDE(Surface::GeomFillSurface);
 
 public:
     GeomFillSurface();
@@ -68,12 +68,12 @@ public:
     App::PropertyBoolList ReversedList;     // Booleans to handle orientation of the curves
     App::PropertyEnumeration FillType;      // Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
-    short mustExecute() const;
-    void onChanged(const App::Property*);
-    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const override;
+    void onChanged(const App::Property*) override;
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "SurfaceGui::ViewProviderGeomFillSurface";
     }
 

@@ -23,15 +23,21 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
-#include "QGIViewCollection.h"
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QObject>
 
+#include "QGIViewCollection.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 class QEvent;
 QT_END_NAMESPACE
+
+namespace TechDraw {
+    class DrawProjGroup;
+}
 
 namespace TechDrawGui
 {
@@ -42,30 +48,29 @@ public:
     QGIProjGroup();
 
     // TODO: if the QGIVO is deleted, should we clean up any remaining QGIVParts??
-    ~QGIProjGroup() = default;
+    ~QGIProjGroup() override = default;
 
     enum {Type = QGraphicsItem::UserType + 113};
     int type() const override { return Type;}
 
     void alignTo(QGIProjGroup *, const QString &alignment);
 
-    virtual void updateView(bool update = false) override;
-    virtual void rotateView(void) override;
+    void rotateView() override;
 
-    virtual void drawBorder(void) override;
+    void drawBorder() override;
 
 protected:
-    virtual bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event ) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent * event ) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
     QGIView * getAnchorQItem() const;
 
 private:
     /// Convenience function
-    TechDraw::DrawProjGroup * getDrawView(void) const;
+    TechDraw::DrawProjGroup* getDrawView() const;
 
     QGraphicsItem* m_origin;
     QPoint mousePos;

@@ -84,7 +84,7 @@ public:
         initialize("This module is the MeshGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object convertToSTL(const Py::Tuple& args)

@@ -37,7 +37,7 @@
 
 using namespace SketcherGui;
 
-SketchRectangularArrayDialog::SketchRectangularArrayDialog(void)
+SketchRectangularArrayDialog::SketchRectangularArrayDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_SketchRectangularArrayDialog)
 {
     ui->setupUi(this);
@@ -68,7 +68,7 @@ void SketchRectangularArrayDialog::accept()
     QDialog::accept();
 }
 
-void SketchRectangularArrayDialog::updateValues(void)
+void SketchRectangularArrayDialog::updateValues()
 {
     Rows = ui->RowsQuantitySpinBox->value();
     Cols = ui->ColsQuantitySpinBox->value();

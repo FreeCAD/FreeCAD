@@ -61,7 +61,7 @@ private:
     void updateCurvedEdgeCountSegmentsParameter();
 
     /** Observer for parameter group. */
-    virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
 private:
     int curvedEdgeCountSegments;
@@ -123,14 +123,14 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges&) { return false; }
     virtual void registerPressedKey(bool /*pressed*/, int /*key*/){}
 
-    virtual void quit(void);
+    virtual void quit();
 
     friend class ViewProviderSketch;
 
     // get the actual highest vertex index, the next use will be +1
-    int getHighestVertexIndex(void);
+    int getHighestVertexIndex();
     // get the actual highest edge index, the next use will be +1
-    int getHighestCurveIndex(void);
+    int getHighestCurveIndex();
 
     int seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
                            const Base::Vector2d &Pos, const Base::Vector2d &Dir,
@@ -142,7 +142,7 @@ public:
 
     void setPositionText(const Base::Vector2d &Pos, const SbString &text);
     void setPositionText(const Base::Vector2d &Pos);
-    void resetPositionText(void);
+    void resetPositionText();
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
 
 private: // NVI
@@ -172,10 +172,10 @@ protected:
     void updateCursor();
 
     /// restitutes the cursor that was in use at the moment of starting the DrawSketchHandler (i.e. oldCursor)
-    void unsetCursor(void);
+    void unsetCursor();
 
     /// restitutes the DSH cached cursor (e.g. without any tail due to autoconstraints, ...)
-    void applyCursor(void);
+    void applyCursor();
 
     /// returns the color to be used for the crosshair (configurable as a parameter)
     unsigned long getCrosshairColor();
@@ -196,9 +196,9 @@ protected:
     void drawPositionAtCursor(const Base::Vector2d & position);
     void drawDirectionAtCursor(const Base::Vector2d & position, const Base::Vector2d & origin);
 
-    int getPreselectPoint(void) const;
-    int getPreselectCurve(void) const;
-    int getPreselectCross(void) const;
+    int getPreselectPoint() const;
+    int getPreselectCurve() const;
+    int getPreselectCross() const;
 
     Sketcher::SketchObject * getSketchObject();
 

@@ -39,12 +39,12 @@ protected:
 
 public:
     /// Constructor
-    Path(void);
+    Path();
 	Path(const std::vector<Base::Persistence *> & PathVector);
 
     virtual ~Path();
 
-	const std::vector<Base::Persistence *> & getVector(void)const{return _PathVector;}
+	const std::vector<Base::Persistence *> & getVector()const{return _PathVector;}
 
 };
 

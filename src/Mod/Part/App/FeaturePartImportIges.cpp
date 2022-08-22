@@ -36,7 +36,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::ImportIges, Part::Feature)
 
 
-ImportIges::ImportIges(void)
+ImportIges::ImportIges()
 {
     ADD_PROPERTY(FileName,(""));
 }
@@ -48,7 +48,7 @@ short ImportIges::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *ImportIges::execute(void)
+App::DocumentObjectExecReturn *ImportIges::execute()
 {
     Base::FileInfo fi(FileName.getValue());
     if (!fi.isReadable()) {

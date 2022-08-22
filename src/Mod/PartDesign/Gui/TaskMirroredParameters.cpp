@@ -265,7 +265,7 @@ void TaskMirroredParameters::onUpdateView(bool on)
     }
 }
 
-void TaskMirroredParameters::onFeatureDeleted(void)
+void TaskMirroredParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();

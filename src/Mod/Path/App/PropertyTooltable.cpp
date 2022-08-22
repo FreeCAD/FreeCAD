@@ -58,12 +58,12 @@ void PropertyTooltable::setValue(const Tooltable& tt)
 }
 
 
-const Tooltable &PropertyTooltable::getValue(void)const
+const Tooltable &PropertyTooltable::getValue()const
 {
     return _Tooltable;
 }
 
-PyObject *PropertyTooltable::getPyObject(void)
+PyObject *PropertyTooltable::getPyObject()
 {
     return new TooltablePy(new Tooltable(_Tooltable));
 }
@@ -81,7 +81,7 @@ void PropertyTooltable::setPyObject(PyObject *value)
     }
 }
 
-App::Property *PropertyTooltable::Copy(void) const
+App::Property *PropertyTooltable::Copy() const
 {
     PropertyTooltable *prop = new PropertyTooltable();
     prop->_Tooltable = this->_Tooltable;
@@ -96,7 +96,7 @@ void PropertyTooltable::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyTooltable::getMemSize (void) const
+unsigned int PropertyTooltable::getMemSize () const
 {
     return _Tooltable.getMemSize();
 }

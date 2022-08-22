@@ -30,15 +30,15 @@ namespace InspectionGui {
 
 class Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Workbench();
-    virtual ~Workbench();
+    ~Workbench() override;
 
 protected:
-    Gui::MenuItem* setupMenuBar() const;
-    Gui::ToolBarItem* setupToolBars() const;
+    Gui::MenuItem* setupMenuBar() const override;
+    Gui::ToolBarItem* setupToolBars() const override;
 };
 
 } // namespace InspectionGui

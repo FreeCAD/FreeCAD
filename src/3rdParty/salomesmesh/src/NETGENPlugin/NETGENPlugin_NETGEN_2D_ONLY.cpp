@@ -39,6 +39,8 @@
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_QuadranglePreference.hxx>
 #include <StdMeshers_ViscousLayers2D.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
 
 #include <Precision.hxx>
 #include <Standard_ErrorHandler.hxx>

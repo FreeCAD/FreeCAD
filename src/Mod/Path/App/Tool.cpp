@@ -69,7 +69,7 @@ Tool::~Tool()
 }
 
 // Reimplemented from base class
-unsigned int Tool::getMemSize (void) const
+unsigned int Tool::getMemSize () const
 {
     return 0;
 }
@@ -108,7 +108,7 @@ void Tool::Restore(XMLReader &reader)
 
 }
 
-const std::vector<std::string> Tool::ToolTypes(void)
+const std::vector<std::string> Tool::ToolTypes()
 {
     std::vector<std::string> toolTypes(13);
     toolTypes[0] ="EndMill";
@@ -128,7 +128,7 @@ const std::vector<std::string> Tool::ToolTypes(void)
 
 }
 
-const std::vector<std::string> Tool::ToolMaterials(void)
+const std::vector<std::string> Tool::ToolMaterials()
 {
     std::vector<std::string> toolMat(7);
     toolMat[0] ="Carbide";

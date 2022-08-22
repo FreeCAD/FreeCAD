@@ -91,7 +91,7 @@ void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
                     << "\" geometryLayer=\""        << GeometryLayer;
 }
 
-std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
+std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy() const
 {
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
@@ -104,7 +104,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) con
 #endif
 }
 
-PyObject * SketchGeometryExtension::getPyObject(void)
+PyObject * SketchGeometryExtension::getPyObject()
 {
     return new SketchGeometryExtensionPy(new SketchGeometryExtension(*this));
 }

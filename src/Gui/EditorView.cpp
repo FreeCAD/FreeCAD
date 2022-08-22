@@ -311,7 +311,7 @@ bool EditorView::onHasMsg(const char* pMsg) const
 }
 
 /** Checking on close state. */
-bool EditorView::canClose(void)
+bool EditorView::canClose()
 {
     if ( !d->textEdit->document()->isModified() )
         return true;
@@ -341,7 +341,7 @@ void EditorView::setDisplayName(EditorView::DisplayName type)
 /**
  * Saves the content of the editor to a file specified by the appearing file dialog.
  */
-bool EditorView::saveAs(void)
+bool EditorView::saveAs()
 {
     QString fn = FileDialog::getSaveFileName(this, QObject::tr("Save Macro"),
         QString(), QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
@@ -382,7 +382,7 @@ bool EditorView::open(const QString& fileName)
  * Copies the selected text to the clipboard and deletes it from the text edit.
  * If there is no selected text nothing happens.
  */
-void EditorView::cut(void)
+void EditorView::cut()
 {
     d->textEdit->cut();
 }
@@ -390,7 +390,7 @@ void EditorView::cut(void)
 /**
  * Copies any selected text to the clipboard.
  */
-void EditorView::copy(void)
+void EditorView::copy()
 {
     d->textEdit->copy();
 }
@@ -399,7 +399,7 @@ void EditorView::copy(void)
  * Pastes the text from the clipboard into the text edit at the current cursor position.
  * If there is no text in the clipboard nothing happens.
  */
-void EditorView::paste(void)
+void EditorView::paste()
 {
     d->textEdit->paste();
 }
@@ -408,7 +408,7 @@ void EditorView::paste(void)
  * Undoes the last operation.
  * If there is no operation to undo, i.e. there is no undo step in the undo/redo history, nothing happens.
  */
-void EditorView::undo(void)
+void EditorView::undo()
 {
     d->lock = true;
     if (!d->undos.isEmpty()) {
@@ -423,7 +423,7 @@ void EditorView::undo(void)
  * Redoes the last operation.
  * If there is no operation to undo, i.e. there is no undo step in the undo/redo history, nothing happens.
  */
-void EditorView::redo(void)
+void EditorView::redo()
 {
     d->lock = true;
     if (!d->redos.isEmpty()) {

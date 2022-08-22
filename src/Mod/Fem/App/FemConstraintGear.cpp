@@ -56,7 +56,7 @@ ConstraintGear::ConstraintGear()
     naturalDirectionVector = Base::Vector3d(1,1,1).Normalize();
 }
 
-App::DocumentObjectExecReturn *ConstraintGear::execute(void)
+App::DocumentObjectExecReturn *ConstraintGear::execute()
 {
     return ConstraintBearing::execute();
 }

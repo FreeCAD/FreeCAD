@@ -44,10 +44,10 @@ class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = nullptr, Qt::WindowFlags fl =  Qt::WindowFlags() );
-    ~DlgMacroExecuteImp();
+    DlgMacroExecuteImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+    ~DlgMacroExecuteImp() override;
 
-    void accept();
+    void accept() override;
 
 public Q_SLOTS:
     void on_fileChooser_fileNameChanged(const QString&);
@@ -65,7 +65,7 @@ protected Q_SLOTS:
     void on_tabMacroWidget_currentChanged(int index);
 
 protected:
-    void fillUpList(void);
+    void fillUpList();
 
 protected:
     QString macroPath;

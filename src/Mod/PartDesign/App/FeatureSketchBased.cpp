@@ -91,7 +91,7 @@ void ProfileBased::setupObject()
     AllowMultiFace.setValue(true);
 }
 
-void ProfileBased::positionByPrevious(void)
+void ProfileBased::positionByPrevious()
 {
     Part::Feature* feat = getBaseObject(/* silent = */ true);
     if (feat) {
@@ -317,7 +317,7 @@ TopoDS_Face ProfileBased::getSupportFace(const Part::Part2DObject* sketch) const
             const std::vector<std::string>& sub = Support.getSubValues();
             assert(sub.size() == 1);
 
-            if (sub.at(0) == "") {
+            if (sub.at(0).empty()) {
                 // This seems to happen when sketch is on a datum plane
                 return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
             }
@@ -357,7 +357,7 @@ TopoDS_Face ProfileBased::getSupportFace(const App::PropertyLinkSub& link) const
     return face;
 }
 
-int ProfileBased::getSketchAxisCount(void) const
+int ProfileBased::getSketchAxisCount() const
 {
     Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(Profile.getValue());
     if (!sketch)
@@ -1150,7 +1150,7 @@ void ProfileBased::handleChangedPropertyName(Base::XMLReader & reader, const cha
         // get the value of my attribute
         std::string name = reader.getAttribute("value");
 
-        if (name != "") {
+        if (!name.empty()) {
             App::Document* document = getDocument();
             DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
             Profile.setValue(object, vec);

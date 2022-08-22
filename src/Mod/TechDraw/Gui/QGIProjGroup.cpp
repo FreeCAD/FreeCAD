@@ -58,7 +58,7 @@ QGIProjGroup::QGIProjGroup()
 //    setFrameState(false);
 }
 
-TechDraw::DrawProjGroup * QGIProjGroup::getDrawView(void) const
+TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
 {
     App::DocumentObject *obj = getViewObject();
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
@@ -196,13 +196,8 @@ QGIView * QGIProjGroup::getAnchorQItem() const
     return nullptr;
 }
 
-void QGIProjGroup::updateView(bool update)
-{
-    return QGIViewCollection::updateView(update);
-}
-
 //QGIPG does not rotate. Only individual views rotate
-void QGIProjGroup::rotateView(void)
+void QGIProjGroup::rotateView()
 {
     Base::Console().Warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
 }    

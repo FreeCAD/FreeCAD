@@ -41,7 +41,7 @@ class SweepWidget : public QWidget
 
 public:
     SweepWidget(QWidget* parent = nullptr);
-    ~SweepWidget();
+    ~SweepWidget() override;
 
     bool accept();
     bool reject();
@@ -51,7 +51,7 @@ private Q_SLOTS:
     void on_buttonPath_toggled(bool);
 
 private:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void findShapes();
     bool isPathValid(const Gui::SelectionObject& sel) const;
 
@@ -66,15 +66,15 @@ class TaskSweep : public Gui::TaskView::TaskDialog
 
 public:
     TaskSweep();
-    ~TaskSweep();
+    ~TaskSweep() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Help; }
 
 private:

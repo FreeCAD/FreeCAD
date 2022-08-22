@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 #define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -61,7 +63,7 @@ class TaskCustomizeFormat : public QWidget
 
 public:
     TaskCustomizeFormat(App::DocumentObject * object);
-    ~TaskCustomizeFormat();
+    ~TaskCustomizeFormat() override;
 
 public Q_SLOTS:
 
@@ -77,9 +79,9 @@ private Q_SLOTS:
 protected Q_SLOTS:
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
     App::DocumentObject* selectedObject;
@@ -94,20 +96,20 @@ class TaskDlgCustomizeFormat : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgCustomizeFormat(App::DocumentObject * object);
-    ~TaskDlgCustomizeFormat();
+    ~TaskDlgCustomizeFormat() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 

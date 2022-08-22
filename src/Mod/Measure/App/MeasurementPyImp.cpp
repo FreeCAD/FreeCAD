@@ -38,7 +38,7 @@
 using namespace Measure;
 
 // returns a string which represents the object e.g. when printed in python
-std::string MeasurementPy::representation(void) const
+std::string MeasurementPy::representation() const
 {
     return "<Measure::Measurement>";
 }

@@ -796,7 +796,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
     if (!sketchgui->Autoconstraints.getValue())
         return; // If Autoconstraints property is not set quit
 
-    if (autoConstrs.size() > 0) {
+    if (!autoConstrs.empty()) {
 
         if(createowncommand) {
             // Open the Command

@@ -118,7 +118,7 @@ short Helix::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn* Helix::execute(void)
+App::DocumentObjectExecReturn* Helix::execute()
 {
     // Validate and normalize parameters
     HelixMode mode = static_cast<HelixMode>(Mode.getValue());
@@ -379,7 +379,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
     }
 }
 
-void Helix::updateAxis(void)
+void Helix::updateAxis()
 {
     App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
     const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();

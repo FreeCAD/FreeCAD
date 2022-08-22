@@ -49,7 +49,7 @@ public:
    AttachEngineException(const char * sMessage);
    AttachEngineException(const std::string& sMessage);
    /// Destruction
-   virtual ~AttachEngineException() throw() {}
+   ~AttachEngineException() throw() override {}
 };
 
 /**
@@ -59,10 +59,10 @@ public:
  */
 class PartExport AttachExtension : public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::AttachableObject);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::AttachableObject);
 public:
     AttachExtension();
-    virtual ~AttachExtension();
+    ~AttachExtension() override;
 
     /**
      * @brief setAttacher sets the AttachEngine object. The class takes the
@@ -81,7 +81,7 @@ public:
      */
     bool changeAttacherType(const char* typeName);
 
-    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw AttachEngineException("AttachableObject: no attacher is set."); return *_attacher;}
+    Attacher::AttachEngine &attacher() const {if(!_attacher) throw AttachEngineException("AttachableObject: no attacher is set."); return *_attacher;}
 
 
     App::PropertyString         AttacherType;
@@ -101,7 +101,7 @@ public:
       * mode. Can throw FreeCAD and OCC exceptions. Returns true if attached,
       * false if not, throws if attachment failed.
       */
-    virtual bool positionBySupport(void);
+    virtual bool positionBySupport();
 
     /** Return whether this attacher is active
      */
@@ -110,13 +110,13 @@ public:
     virtual bool isTouched_Mapping()
     {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
 
-    virtual short int extensionMustExecute(void);
-    virtual App::DocumentObjectExecReturn *extensionExecute(void);
-    virtual PyObject* getExtensionPyObject(void);
-    virtual void onExtendedDocumentRestored();
+    short int extensionMustExecute() override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
+    PyObject* getExtensionPyObject() override;
+    void onExtendedDocumentRestored() override;
 
 protected:
-    virtual void extensionOnChanged(const App::Property* /*prop*/);
+    void extensionOnChanged(const App::Property* /*prop*/) override;
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
     
     App::PropertyPlacement& getPlacement() const;

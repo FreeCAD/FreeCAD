@@ -36,7 +36,7 @@
 
 
 // use a different name to CreateCommand()
-void CreateSurfaceCommands(void);
+void CreateSurfaceCommands();
 
 
 namespace SurfaceGui {
@@ -48,7 +48,7 @@ public:
         initialize("This module is the SurfaceGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

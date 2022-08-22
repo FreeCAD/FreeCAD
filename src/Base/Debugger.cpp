@@ -38,9 +38,7 @@ Debugger::Debugger(QObject* parent)
 {
 }
 
-Debugger::~Debugger()
-{
-}
+Debugger::~Debugger() = default;
 
 void Debugger::attach()
 {

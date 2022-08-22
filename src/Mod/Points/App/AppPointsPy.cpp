@@ -64,7 +64,7 @@ public:
         initialize("This module is the Points module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     std::tuple<bool, bool, float> readE57Settings() const

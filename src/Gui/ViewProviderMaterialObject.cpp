@@ -50,7 +50,7 @@ ViewProviderMaterialObject::~ViewProviderMaterialObject()
 {
 }
 
-bool ViewProviderMaterialObject::doubleClicked(void)
+bool ViewProviderMaterialObject::doubleClicked()
 {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;

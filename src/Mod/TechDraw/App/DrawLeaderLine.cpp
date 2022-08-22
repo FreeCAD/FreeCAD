@@ -68,7 +68,7 @@ PROPERTY_SOURCE(TechDraw::DrawLeaderLine, TechDraw::DrawView)
 //                               "NONE"
 //                               NULL};
 
-DrawLeaderLine::DrawLeaderLine(void)
+DrawLeaderLine::DrawLeaderLine()
 {
     static const char *group = "Leader";
 
@@ -136,17 +136,18 @@ short DrawLeaderLine::mustExecute() const
     return DrawView::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawLeaderLine::execute(void)
+App::DocumentObjectExecReturn *DrawLeaderLine::execute()
 {
 //    Base::Console().Message("DLL::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
     adjustLastSegment();
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
-DrawView* DrawLeaderLine::getBaseView(void) const
+DrawView* DrawLeaderLine::getBaseView() const
 {
     DrawView* result = nullptr;
     App::DocumentObject* baseObj = LeaderParent.getValue();
@@ -159,7 +160,7 @@ DrawView* DrawLeaderLine::getBaseView(void) const
     return result;
 }
 
-App::DocumentObject* DrawLeaderLine::getBaseObject(void) const
+App::DocumentObject* DrawLeaderLine::getBaseObject() const
 {
     App::DocumentObject* result = nullptr;
     DrawView* view = getBaseView();
@@ -169,7 +170,7 @@ App::DocumentObject* DrawLeaderLine::getBaseObject(void) const
     return result;
 }
 
-bool DrawLeaderLine::keepUpdated(void)
+bool DrawLeaderLine::keepUpdated()
 {
     bool result = false;
     DrawView* view = getBaseView();
@@ -181,7 +182,7 @@ bool DrawLeaderLine::keepUpdated(void)
 
 //need separate getParentScale()???
 
-double DrawLeaderLine::getBaseScale(void) const
+double DrawLeaderLine::getBaseScale() const
 {
 //    Base::Console().Message("DLL::getBaseScale()\n");
     double result = 1.0;
@@ -195,7 +196,7 @@ double DrawLeaderLine::getBaseScale(void) const
     return result;
 }
 
-double DrawLeaderLine::getScale(void) const
+double DrawLeaderLine::getScale() const
 {
 //    Base::Console().Message("DLL::getScale()\n");
     double result = 1.0;
@@ -211,7 +212,7 @@ double DrawLeaderLine::getScale(void) const
     return result;
 }
 
-Base::Vector3d DrawLeaderLine::getAttachPoint(void)
+Base::Vector3d DrawLeaderLine::getAttachPoint()
 {
     Base::Vector3d result(X.getValue(),
                           Y.getValue(),
@@ -219,7 +220,7 @@ Base::Vector3d DrawLeaderLine::getAttachPoint(void)
     return result;
 }
 
-void DrawLeaderLine::adjustLastSegment(void)
+void DrawLeaderLine::adjustLastSegment()
 {
 //    Base::Console().Message("DLL::adjustLastSegment()\n");
     bool adjust = AutoHorizontal.getValue();
@@ -238,7 +239,7 @@ void DrawLeaderLine::adjustLastSegment(void)
 }
 
 //middle of last line segment
-Base::Vector3d DrawLeaderLine::getTileOrigin(void) const
+Base::Vector3d DrawLeaderLine::getTileOrigin() const
 {
     Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
@@ -253,7 +254,7 @@ Base::Vector3d DrawLeaderLine::getTileOrigin(void) const
 }
 
 //start of last line segment
-Base::Vector3d DrawLeaderLine::getKinkPoint(void) const
+Base::Vector3d DrawLeaderLine::getKinkPoint() const
 {
     Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
@@ -268,7 +269,7 @@ Base::Vector3d DrawLeaderLine::getKinkPoint(void) const
 }
 
 //end of last line segment
-Base::Vector3d DrawLeaderLine::getTailPoint(void) const
+Base::Vector3d DrawLeaderLine::getTailPoint() const
 {
     Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
@@ -283,7 +284,7 @@ Base::Vector3d DrawLeaderLine::getTailPoint(void) const
 }
 
 
-bool DrawLeaderLine::getDefAuto(void) const
+bool DrawLeaderLine::getDefAuto() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
@@ -292,7 +293,7 @@ bool DrawLeaderLine::getDefAuto(void) const
 }
 
 
-PyObject *DrawLeaderLine::getPyObject(void)
+PyObject *DrawLeaderLine::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -306,7 +307,7 @@ PyObject *DrawLeaderLine::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawLeaderLinePython, TechDraw::DrawLeaderLine)
-template<> const char* TechDraw::DrawLeaderLinePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawLeaderLinePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderLeader";
 }
 /// @endcond

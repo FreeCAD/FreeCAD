@@ -35,7 +35,7 @@ using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetNodes, Gui::ViewProviderGeometryObject)
 
-bool ViewProviderSetNodes::doubleClicked(void)
+bool ViewProviderSetNodes::doubleClicked()
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(static_cast<Fem::FemSetNodesObject *>(getObject()));
     Gui::Control().showDialog(dlg);

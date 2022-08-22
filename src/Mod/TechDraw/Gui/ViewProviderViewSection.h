@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "ViewProviderViewPart.h"
@@ -33,13 +35,13 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderViewSection : public ViewProviderViewPart
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderViewSection);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderViewSection);
 
 public:
     /// constructor
     ViewProviderViewSection();
     /// destructor
-    virtual ~ViewProviderViewSection();
+    ~ViewProviderViewSection() override;
 
     App::PropertyBool   ShowCutSurface;        //obsolete - use CutSurfaceDisplay
     App::PropertyColor  CutSurfaceColor;
@@ -48,24 +50,16 @@ public:
     App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property *prop) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *prop);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    void updateGraphic();
+    void getParameters();
+    bool canDelete(App::DocumentObject* obj) const override;
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-
-    void updateGraphic(void);
-    void getParameters(void);
-    virtual bool canDelete(App::DocumentObject* obj) const;
-
-    virtual TechDraw::DrawViewSection* getViewObject() const;
+    TechDraw::DrawViewSection* getViewObject() const override;
 };
 
 } // namespace TechDrawGui

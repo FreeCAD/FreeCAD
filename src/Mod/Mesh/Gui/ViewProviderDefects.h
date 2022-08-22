@@ -38,23 +38,23 @@ namespace MeshGui {
  */
 class MeshGuiExport ViewProviderMeshDefects : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDefects);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDefects);
 
 public:
     ViewProviderMeshDefects();
-    virtual ~ViewProviderMeshDefects();
+    ~ViewProviderMeshDefects() override;
 
     // Display properties
     App::PropertyFloat LineWidth;
 
     // Build up the initial Inventor node
-    virtual void attach(App::DocumentObject* pcFeature) = 0;
+    void attach(App::DocumentObject* pcFeature) override = 0;
     /// Fill up the Inventor node with data
     virtual void showDefects(const std::vector<Mesh::ElementIndex>&) = 0;
 
 protected:
     /// get called by the container whenever a property has been changed
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     SoCoordinate3 * pcCoords;
     SoDrawStyle   * pcDrawStyle;
@@ -65,14 +65,14 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshOrientation : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshOrientation);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshOrientation);
 
 public:
     ViewProviderMeshOrientation();
-    virtual ~ViewProviderMeshOrientation();
+    ~ViewProviderMeshOrientation() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoFaceSet* pcFaces;
@@ -83,14 +83,14 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshNonManifolds : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshNonManifolds);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshNonManifolds);
 
 public:
     ViewProviderMeshNonManifolds();
-    virtual ~ViewProviderMeshNonManifolds();
+    ~ViewProviderMeshNonManifolds() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoLineSet* pcLines;
@@ -101,14 +101,14 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshNonManifoldPoints : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshNonManifoldPoints);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshNonManifoldPoints);
 
 public:
     ViewProviderMeshNonManifoldPoints();
-    virtual ~ViewProviderMeshNonManifoldPoints();
+    ~ViewProviderMeshNonManifoldPoints() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoPointSet* pcPoints;
@@ -119,14 +119,14 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshDuplicatedFaces : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDuplicatedFaces);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDuplicatedFaces);
 
 public:
     ViewProviderMeshDuplicatedFaces();
-    virtual ~ViewProviderMeshDuplicatedFaces();
+    ~ViewProviderMeshDuplicatedFaces() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoFaceSet* pcFaces;
@@ -137,14 +137,14 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshDegenerations : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDegenerations);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDegenerations);
 
 public:
     ViewProviderMeshDegenerations();
-    virtual ~ViewProviderMeshDegenerations();
+    ~ViewProviderMeshDegenerations() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoLineSet* pcLines;
@@ -152,14 +152,14 @@ protected:
 
 class MeshGuiExport ViewProviderMeshDuplicatedPoints : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDuplicatedPoints);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDuplicatedPoints);
 
 public:
     ViewProviderMeshDuplicatedPoints();
-    virtual ~ViewProviderMeshDuplicatedPoints();
+    ~ViewProviderMeshDuplicatedPoints() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoPointSet* pcPoints;
@@ -167,14 +167,14 @@ protected:
 
 class MeshGuiExport ViewProviderMeshIndices : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshIndices);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshIndices);
 
 public:
     ViewProviderMeshIndices();
-    virtual ~ViewProviderMeshIndices();
+    ~ViewProviderMeshIndices() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoFaceSet* pcFaces;
@@ -185,14 +185,14 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshSelfIntersections : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshSelfIntersections);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshSelfIntersections);
 
 public:
     ViewProviderMeshSelfIntersections();
-    virtual ~ViewProviderMeshSelfIntersections();
+    ~ViewProviderMeshSelfIntersections() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoLineSet* pcLines;
@@ -200,14 +200,14 @@ protected:
 
 class MeshGuiExport ViewProviderMeshFolds : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshFolds);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshFolds);
 
 public:
     ViewProviderMeshFolds();
-    virtual ~ViewProviderMeshFolds();
+    ~ViewProviderMeshFolds() override;
 
-    void attach(App::DocumentObject* pcFeature);
-    void showDefects(const std::vector<Mesh::ElementIndex>&);
+    void attach(App::DocumentObject* pcFeature) override;
+    void showDefects(const std::vector<Mesh::ElementIndex>&) override;
 
 protected:
     SoFaceSet* pcFaces;

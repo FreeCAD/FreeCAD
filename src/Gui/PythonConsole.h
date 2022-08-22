@@ -44,7 +44,7 @@ public:
 
     bool push(const char*);
     int compileCommand(const char*) const;
-    bool hasPendingInput( void ) const;
+    bool hasPendingInput( ) const;
     void setBuffer(const QStringList&);
     QStringList getBuffer() const;
     void clearBuffer();
@@ -78,8 +78,8 @@ public:
     void append(const QString &inputLine);
     const QStringList& values() const;
     void restart();
-    void markScratch( void );
-    void doScratch( void );
+    void markScratch( );
+    void doScratch( );
 
 private:
     QStringList                _history;
@@ -106,11 +106,11 @@ public:
     };
 
     PythonConsole(QWidget *parent = nullptr);
-    ~PythonConsole();
+    ~PythonConsole() override;
 
-    void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason );
+    void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason ) override;
     void printStatement( const QString& cmd );
-    QString readline( void );
+    QString readline( );
 
 public Q_SLOTS:
     void onSaveHistoryAs();
@@ -124,22 +124,22 @@ private Q_SLOTS:
     void visibilityChanged (bool visible);
 
 protected:
-    void keyPressEvent  ( QKeyEvent         * e );
-    void showEvent      ( QShowEvent        * e );
-    void dropEvent      ( QDropEvent        * e );
-    void dragEnterEvent ( QDragEnterEvent   * e );
-    void dragMoveEvent  ( QDragMoveEvent    * e );
-    void changeEvent    ( QEvent            * e );
-    void mouseReleaseEvent( QMouseEvent     * e );
+    void keyPressEvent  ( QKeyEvent         * e ) override;
+    void showEvent      ( QShowEvent        * e ) override;
+    void dropEvent      ( QDropEvent        * e ) override;
+    void dragEnterEvent ( QDragEnterEvent   * e ) override;
+    void dragMoveEvent  ( QDragMoveEvent    * e ) override;
+    void changeEvent    ( QEvent            * e ) override;
+    void mouseReleaseEvent( QMouseEvent     * e ) override;
 
     void overrideCursor(const QString& txt);
 
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e );
-    bool canInsertFromMimeData ( const QMimeData * source ) const;
-    QMimeData * createMimeDataFromSelection () const;
-    void insertFromMimeData ( const QMimeData * source );
-    QTextCursor inputBegin( void ) const;
+    void contextMenuEvent ( QContextMenuEvent* e ) override;
+    bool canInsertFromMimeData ( const QMimeData * source ) const override;
+    QMimeData * createMimeDataFromSelection () const override;
+    void insertFromMimeData ( const QMimeData * source ) override;
+    QTextCursor inputBegin( ) const;
 
 private:
     void runSource(const QString&);
@@ -153,7 +153,7 @@ private:
     void saveHistory() const;
 
 Q_SIGNALS:
-    void pendingSource( void );
+    void pendingSource( );
 
 private:
     struct PythonConsoleP* d;
@@ -175,12 +175,12 @@ class GuiExport PythonConsoleHighlighter : public PythonSyntaxHighlighter
 {
 public:
     PythonConsoleHighlighter(QObject* parent);
-    ~PythonConsoleHighlighter();
+    ~PythonConsoleHighlighter() override;
 
-    void highlightBlock (const QString & text);
+    void highlightBlock (const QString & text) override;
 
 protected:
-    void colorChanged(const QString& type, const QColor& col);
+    void colorChanged(const QString& type, const QColor& col) override;
 };
 
 } // namespace Gui

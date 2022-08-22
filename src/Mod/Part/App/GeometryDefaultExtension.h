@@ -36,19 +36,19 @@ namespace Part {
     public:
         inline GeometryDefaultExtension();
         GeometryDefaultExtension(const T& val, std::string name = std::string());
-        virtual ~GeometryDefaultExtension() override = default;
+        ~GeometryDefaultExtension() override = default;
 
         inline void setValue(const T& val) {value = val;};
         inline const T &getValue() const {return value;};
 
-        virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+        std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-        virtual PyObject *getPyObject(void) override;
+        PyObject *getPyObject() override;
 
     protected:
-        virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
-        virtual void restoreAttributes(Base::XMLReader &reader) override;
-        virtual void saveAttributes(Base::Writer &writer) const override;
+        void copyAttributes(Part::GeometryExtension * cpy) const override;
+        void restoreAttributes(Base::XMLReader &reader) override;
+        void saveAttributes(Base::Writer &writer) const override;
 
     private:
         GeometryDefaultExtension(const GeometryDefaultExtension<T>&) = default;

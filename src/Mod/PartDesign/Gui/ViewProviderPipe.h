@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPipe : public ViewProviderAddSub
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPipe);
 
 public:
     enum Reference {
@@ -43,22 +43,22 @@ public:
     /// constructor
     ViewProviderPipe();
     /// destructor
-    virtual ~ViewProviderPipe();
+    ~ViewProviderPipe() override;
 
     /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    std::vector<App::DocumentObject*> claimChildren()const override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    bool onDelete(const std::vector<std::string> &) override;
     void highlightReferences(Reference mode, bool on);
     
 protected:
-    virtual QIcon getIcon(void) const;
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    QIcon getIcon() const override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
     
     /// Returns a newly created TaskDlgPipeParameters
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 
 private:
     void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);

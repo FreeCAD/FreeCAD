@@ -60,14 +60,14 @@ class StdCmdLinkMakeGroup : public Gui::Command
 {
 public:
     StdCmdLinkMakeGroup();
-    const char* className() const
+    const char* className() const override
     { return "StdCmdLinkMakeGroup"; }
 
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Action * createAction(void);
-    virtual void languageChange();
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Action * createAction() override;
+    void languageChange() override;
 };
 
 StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
@@ -86,7 +86,7 @@ bool StdCmdLinkMakeGroup::isActive() {
     return !!App::GetApplication().getActiveDocument();
 }
 
-Action * StdCmdLinkMakeGroup::createAction(void)
+Action * StdCmdLinkMakeGroup::createAction()
 {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -356,7 +356,7 @@ static void linkConvert(bool unlink) {
     // PropertyLinkBase::CopyOnLinkReplace().
 
     std::map<std::pair<App::DocumentObject*,App::DocumentObject*>, Info> infos;
-    for(auto sel : TreeWidget::getSelection()) {
+    for(const auto& sel : TreeWidget::getSelection()) {
         auto obj = sel.vp->getObject();
         auto parent = sel.parentVp;
         if(!parent) {
@@ -450,7 +450,7 @@ static void linkConvert(bool unlink) {
             if(obj)
                 recomputes.push_back(obj);
         }
-        if(recomputes.size())
+        if(!recomputes.empty())
             recomputes.front()->getDocument()->recompute(recomputes);
 
         Command::commitCommand();
@@ -726,7 +726,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
 
         if(found) {
             linked = sels[0].pObject;
-            *subname = prefix.size()?prefix:prefix2 + *subname;
+            *subname = !prefix.empty()?prefix:prefix2 + *subname;
         }
     }
 
@@ -747,7 +747,7 @@ void StdCmdLinkSelectLinked::activated(int)
     }
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    if(subname.size()) {
+    if(!subname.empty()) {
         Selection().addSelection(linked->getDocument()->getName(),linked->getNameInDocument(),subname.c_str());
         auto doc = Application::Instance->getDocument(linked->getDocument());
         if(doc) {
@@ -755,7 +755,8 @@ void StdCmdLinkSelectLinked::activated(int)
             doc->setActiveView(vp);
         }
     } else {
-        for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+        const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+        for(auto tree : trees)
             tree->selectLinkedObject(linked);
     }
     Selection().selStackPush();
@@ -790,7 +791,8 @@ void StdCmdLinkSelectLinkedFinal::activated(int) {
     }
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+    const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+    for(auto tree : trees)
         tree->selectLinkedObject(linked);
     Selection().selStackPush();
 }
@@ -825,7 +827,8 @@ void StdCmdLinkSelectAllLinks::activated(int)
         return;
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
+    const auto trees = getMainWindow()->findChildren<TreeWidget*>();
+    for(auto tree : trees)
         tree->selectAllLinks(sels[0].pObject);
     Selection().selStackPush();
 }
@@ -854,7 +857,7 @@ public:
         addCommand(new StdCmdLinkSelectAllLinks());
     }
 
-    virtual const char* className() const {return "StdCmdLinkSelectActions";}
+    const char* className() const override {return "StdCmdLinkSelectActions";}
 };
 
 //======================================================================
@@ -882,7 +885,7 @@ public:
         addCommand(new StdCmdLinkImportAll());
     }
 
-    virtual const char* className() const {return "StdCmdLinkActions";}
+    const char* className() const override {return "StdCmdLinkActions";}
 };
 
 //===========================================================================
@@ -892,7 +895,7 @@ public:
 
 namespace Gui {
 
-void CreateLinkCommands(void)
+void CreateLinkCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     rcCmdMgr.addCommand(new StdCmdLinkMake());

@@ -64,14 +64,14 @@ class MeshGuiExport SoFCMeshObjectElement : public SoReplacedElement {
 public:
     static void initClass();
 
-    virtual void init(SoState * state);
+    void init(SoState * state) override;
     static void set(SoState * const state, SoNode * const node, const Mesh::MeshObject * const mesh);
     static const Mesh::MeshObject * get(SoState * const state);
     static const SoFCMeshObjectElement * getInstance(SoState * state);
-    virtual void print(FILE * file) const;
+    void print(FILE * file) const override;
 
 protected:
-    virtual ~SoFCMeshObjectElement();
+    ~SoFCMeshObjectElement() override;
     const Mesh::MeshObject *mesh;
 };
 
@@ -85,15 +85,15 @@ class MeshGuiExport SoFCMeshPickNode : public SoNode {
 public:
     static void initClass();
     SoFCMeshPickNode();
-    void notify(SoNotList *);
+    void notify(SoNotList *) override;
 
     SoSFMeshObject mesh;
 
-    virtual void rayPick(SoRayPickAction * action);
-    virtual void pick(SoPickAction * action);
+    void rayPick(SoRayPickAction * action) override;
+    void pick(SoPickAction * action) override;
 
 protected:
-    virtual ~SoFCMeshPickNode();
+    ~SoFCMeshPickNode() override;
 
 private:
     MeshCore::MeshFacetGrid* meshGrid;
@@ -109,14 +109,14 @@ class MeshGuiExport SoFCMeshGridNode : public SoNode {
 public:
     static void initClass();
     SoFCMeshGridNode();
-    void GLRender(SoGLRenderAction * action);
+    void GLRender(SoGLRenderAction * action) override;
 
     SoSFVec3f minGrid;
     SoSFVec3f maxGrid;
     SoSFVec3s lenGrid;
 
 protected:
-    virtual ~SoFCMeshGridNode();
+    ~SoFCMeshGridNode() override;
 };
 
 // -------------------------------------------------------
@@ -132,15 +132,15 @@ public:
 
     SoSFMeshObject mesh;
 
-    virtual void doAction(SoAction * action);
-    virtual void GLRender(SoGLRenderAction * action);
-    virtual void callback(SoCallbackAction * action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-    virtual void pick(SoPickAction * action);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+    void doAction(SoAction * action) override;
+    void GLRender(SoGLRenderAction * action) override;
+    void callback(SoCallbackAction * action) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
+    void pick(SoPickAction * action) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
-    virtual ~SoFCMeshObjectNode();
+    ~SoFCMeshObjectNode() override;
 };
 
 /**
@@ -175,17 +175,17 @@ public:
     unsigned int renderTriangleLimit;
 
 protected:
-    virtual void doAction(SoAction * action);
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    virtual void rayPick (SoRayPickAction *action);
-    virtual void generatePrimitives(SoAction *action);
-    virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
+    void doAction(SoAction * action) override;
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+    void rayPick (SoRayPickAction *action) override;
+    void generatePrimitives(SoAction *action) override;
+    SoDetail * createTriangleDetail(SoRayPickAction * action,
                                             const SoPrimitiveVertex * v1,
                                             const SoPrimitiveVertex * v2,
                                             const SoPrimitiveVertex * v3,
-                                            SoPickedPoint * pp);
+                                            SoPickedPoint * pp) override;
 
 private:
     enum Binding {
@@ -197,8 +197,8 @@ private:
 
 private:
     // Force using the reference count mechanism.
-    virtual ~SoFCMeshObjectShape();
-    virtual void notify(SoNotList * list);
+    ~SoFCMeshObjectShape() override;
+    void notify(SoNotList * list) override;
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
     void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
@@ -237,10 +237,10 @@ public:
     unsigned int renderTriangleLimit;
 
 protected:
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    virtual void generatePrimitives(SoAction *action);
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     enum Binding {
@@ -252,7 +252,7 @@ private:
 
 private:
     // Force using the reference count mechanism.
-    virtual ~SoFCMeshSegmentShape() {};
+    ~SoFCMeshSegmentShape() override {};
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
     void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
@@ -270,13 +270,13 @@ public:
     SoFCMeshObjectBoundary();
 
 protected:
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    virtual void generatePrimitives(SoAction *action);
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+    void generatePrimitives(SoAction *action) override;
 private:
     // Force using the reference count mechanism.
-    virtual ~SoFCMeshObjectBoundary() {};
+    ~SoFCMeshObjectBoundary() override {};
     void drawLines(const Mesh::MeshObject *) const ;
 };
 

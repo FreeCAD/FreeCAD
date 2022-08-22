@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDragMoveEvent>
-# include <QListWidget>
 # include <QString>
 #endif
 

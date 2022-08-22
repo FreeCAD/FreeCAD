@@ -42,8 +42,8 @@ class ViewProviderFEMMeshBuilder : public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderFEMMeshBuilder(){}
-    virtual ~ViewProviderFEMMeshBuilder(){}
-    virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
+    ~ViewProviderFEMMeshBuilder() override{}
+    void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createMesh(const App::Property*,
                     SoCoordinate3*,
                     SoIndexedFaceSet*,
@@ -58,14 +58,14 @@ public:
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemMesh);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMesh);
 
 public:
     /// constructor.
     ViewProviderFemMesh();
 
     /// destructor.
-    virtual ~ViewProviderFemMesh();
+    ~ViewProviderFemMesh() override;
 
     // Display properties
     App::PropertyColor PointColor;
@@ -75,10 +75,10 @@ public:
     App::PropertyBool     ShowInner;
     App::PropertyInteger  MaxFacesShowInner;
 
-    void attach(App::DocumentObject *pcObject);
-    void setDisplayMode(const char* ModeName);
-    std::vector<std::string> getDisplayModes() const;
-    void updateData(const App::Property*);
+    void attach(App::DocumentObject *pcObject) override;
+    void setDisplayMode(const char* ModeName) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override;
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -87,18 +87,18 @@ public:
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const {return true;}
+    bool useNewSelectionModel() const override {return true;}
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail*) const;
-    virtual SoDetail* getDetail(const char*) const;
+    std::string getElement(const SoDetail*) const override;
+    SoDetail* getDetail(const char*) const override;
     /// return the highlight lines for a given element or the whole shape
-    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
+    std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
     // interface methods
     void setHighlightNodes(const std::set<long>&);
     std::set<long> getHighlightNodes() const;
-    void resetHighlightNodes(void);
+    void resetHighlightNodes();
 
     /** @name Postprocessing
       * this interfaces apply post processing stuff to the View-
@@ -112,23 +112,23 @@ public:
     void setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color>  &NodeColors);
 
     /// reset the view of the node colors
-    void resetColorByNodeId(void);
+    void resetColorByNodeId();
     /// set the displacement for each node
     void setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap);
     void setDisplacementByNodeId(const std::vector<long> &NodeIds,const std::vector<Base::Vector3d> &NodeDisps);
     /// reset the view of the node displacement
-    void resetDisplacementByNodeId(void);
+    void resetDisplacementByNodeId();
     /// reaply the node displacement with a certain factor and do a redraw
     void applyDisplacementToNodes(double factor);
     /// set the color for each element
     void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
     /// reset the view of the element colors
-    void resetColorByElementId(void);
+    void resetColorByElementId();
     //@}
 
-    const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
+    const std::vector<unsigned long> &getVisibleElementFaces()const{return vFaceElementIdx;}
 
-    PyObject *getPyObject();
+    PyObject *getPyObject() override;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;
@@ -137,7 +137,7 @@ private:
 
 protected:
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     void setColorByNodeIdHelper(const std::vector<App::Color> &);
     void setDisplacementByNodeIdHelper(const std::vector<Base::Vector3d>& DispVector,long startId);

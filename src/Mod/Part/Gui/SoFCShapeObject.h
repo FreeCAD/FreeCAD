@@ -49,10 +49,10 @@ public:
     SoSFColor  lineColor;
 
 protected:
-    virtual ~SoFCControlPoints() {};
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void generatePrimitives(SoAction *action);
+    ~SoFCControlPoints() override {};
+    void GLRender(SoGLRenderAction *action) override;
+    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
+    void generatePrimitives(SoAction *action) override;
 
 private:
     void drawControlPoints(const SbVec3f *,int32_t) const;

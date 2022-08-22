@@ -50,7 +50,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-:oldWb(""), oldTip(nullptr), isSetTipIcon(false)
+: oldTip(nullptr), isSetTipIcon(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
@@ -59,7 +59,7 @@ ViewProvider::~ViewProvider()
 {
 }
 
-bool ViewProvider::doubleClicked(void)
+bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));

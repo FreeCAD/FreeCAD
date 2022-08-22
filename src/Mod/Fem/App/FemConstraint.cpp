@@ -81,9 +81,9 @@ PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
 {
-    ADD_PROPERTY_TYPE(References,(nullptr,nullptr),"Constraint",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(NormalDirection,(Base::Vector3d(0,0,1)),"Constraint",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),"Normal direction pointing outside of solid");
-    ADD_PROPERTY_TYPE(Scale,(1),"Base",App::PropertyType(App::Prop_Output),"Scale used for drawing constraints"); //OvG: Add scale parameter inherited by all derived constraints
+    ADD_PROPERTY_TYPE(References, (nullptr, nullptr), "Constraint", (App::PropertyType)(App::Prop_None), "Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(NormalDirection, (Base::Vector3d(0, 0, 1)), "Constraint", App::PropertyType(App::Prop_ReadOnly | App::Prop_Output), "Normal direction pointing outside of solid");
+    ADD_PROPERTY_TYPE(Scale, (1), "Base", App::PropertyType(App::Prop_Output), "Scale used for drawing constraints"); //OvG: Add scale parameter inherited by all derived constraints
 
     References.setScope(App::LinkScope::Global);
 }
@@ -92,7 +92,7 @@ Constraint::~Constraint()
 {
 }
 
-App::DocumentObjectExecReturn *Constraint::execute(void)
+App::DocumentObjectExecReturn *Constraint::execute()
 {
     try {
         References.touch();
@@ -146,9 +146,9 @@ void Constraint::onChanged(const App::Property* prop)
                     BRepGProp_Face props(face);
                     gp_Vec normal;
                     gp_Pnt center;
-                    double u1,u2,v1,v2;
-                    props.Bounds(u1,u2,v1,v2);
-                    props.Normal((u1+u2)/2.0,(v1+v2)/2.0,center,normal);
+                    double u1, u2, v1, v2;
+                    props.Bounds(u1, u2, v1, v2);
+                    props.Normal((u1+u2)/2.0, (v1+v2)/2.0, center, normal);
                     normal.Normalize();
                     NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
                     // One face is enough...
@@ -298,8 +298,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             int stepsv;
             if (lv >= 30) //OvG: Increase 10 units distance proportionately to lv for larger objects.
             {
-                *scale = this->calcDrawScaleFactor(lv,lu); //OvG: setup draw scale for constraint
-                stepsv = (int)round(lv / (10*( *scale)));
+                *scale = this->calcDrawScaleFactor(lv, lu); //OvG: setup draw scale for constraint
+                stepsv = (int)round(lv / (10 * (*scale)));
                 stepsv = stepsv<3?3:stepsv;
             }
             else if (lv >= 20.0)
@@ -391,7 +391,7 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
     // Get the point specified by Location and Distance
     App::DocumentObject* objLoc = location.getValue();
     std::vector<std::string> names = location.getSubValues();
-    if (names.size() == 0)
+    if (names.empty())
         return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* featLoc = static_cast<Part::Feature*>(objLoc);
@@ -458,7 +458,7 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     }
 
     std::vector<std::string> names = direction.getSubValues();
-    if (names.size() == 0)
+    if (names.empty())
         return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
@@ -483,11 +483,11 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::ConstraintPython, Fem::Constraint)
-template<> const char* Fem::ConstraintPython::getViewProviderName(void) const {
+template<> const char* Fem::ConstraintPython::getViewProviderName() const {
     return "FemGui::ViewProviderFemConstraintPython";
 }
 
-template<> PyObject* Fem::ConstraintPython::getPyObject(void) {
+template<> PyObject* Fem::ConstraintPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);

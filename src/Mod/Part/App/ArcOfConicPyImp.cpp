@@ -36,7 +36,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ArcOfConicPy::representation(void) const
+std::string ArcOfConicPy::representation() const
 {
     return "<ArcOfConic object>";
 }
@@ -55,12 +55,12 @@ int ArcOfConicPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
     return -1;
 }
 
-Py::Object ArcOfConicPy::getLocation(void) const
+Py::Object ArcOfConicPy::getLocation() const
 {
     return Py::Vector(getGeomArcOfConicPtr()->getLocation());
 }
 
-Py::Object ArcOfConicPy::getCenter(void) const
+Py::Object ArcOfConicPy::getCenter() const
 {
     return Py::Vector(getGeomArcOfConicPtr()->getCenter());
 }
@@ -101,7 +101,7 @@ void  ArcOfConicPy::setCenter(Py::Object arg)
     }
 }
 
-Py::Float ArcOfConicPy::getAngleXU(void) const
+Py::Float ArcOfConicPy::getAngleXU() const
 {
     return Py::Float(getGeomArcOfConicPtr()->getAngleXU());
 }
@@ -111,7 +111,7 @@ void ArcOfConicPy::setAngleXU(Py::Float arg)
     getGeomArcOfConicPtr()->setAngleXU((double)arg);
 }
 
-Py::Object ArcOfConicPy::getAxis(void) const
+Py::Object ArcOfConicPy::getAxis() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfConicPtr()->handle());
@@ -151,7 +151,7 @@ void  ArcOfConicPy::setAxis(Py::Object arg)
     }
 }
 
-Py::Object ArcOfConicPy::getXAxis(void) const
+Py::Object ArcOfConicPy::getXAxis() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfConicPtr()->handle());
@@ -191,7 +191,7 @@ void  ArcOfConicPy::setXAxis(Py::Object arg)
     }
 }
 
-Py::Object ArcOfConicPy::getYAxis(void) const
+Py::Object ArcOfConicPy::getYAxis() const
 {
     Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast
         (getGeomArcOfConicPtr()->handle());

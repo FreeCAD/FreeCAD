@@ -76,12 +76,6 @@ QGIViewImage::~QGIViewImage()
     // m_imageItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewImage::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)
 {
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
@@ -154,7 +148,7 @@ void QGIViewImage::drawImage()
     }
 }
 
-void QGIViewImage::rotateView(void)
+void QGIViewImage::rotateView()
 {
     QRectF r = m_cliparea->boundingRect();
     m_cliparea->setTransformOriginPoint(r.center());

@@ -43,23 +43,23 @@ class GuiExport GraphvizView : public MDIView
 
 public:
     GraphvizView(App::Document &_doc, QWidget* parent=nullptr);
-    ~GraphvizView();
+    ~GraphvizView() override;
 
     QByteArray exportGraph(const QString& filter);
 
     /// Message handler
-    virtual bool onMsg(const char* pMsg,const char** ppReturn);
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
     /// Message handler test
-    virtual bool onHasMsg(const char* pMsg) const;
+    bool onHasMsg(const char* pMsg) const override;
     /** @name Printing */
     //@{
-    virtual void print(QPrinter* printer);
+    void print(QPrinter* printer) override;
     /** Print content of view */
-    virtual void print();
+    void print() override;
     /** Print to PDF file */
-    virtual void printPdf();
+    void printPdf() override;
     /** Show a preview dialog */
-    virtual void printPreview();
+    void printPreview() override;
     //@}
 
 private Q_SLOTS:

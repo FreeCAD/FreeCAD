@@ -48,9 +48,8 @@ import FreeCAD
 from femtools.migrate_app import FemMigrateApp
 
 
-if sys.version_info.major >= 3:
-    # migrate old FEM App objects
-    sys.meta_path.append(FemMigrateApp())
+# migrate old FEM App objects
+sys.meta_path.append(FemMigrateApp())
 
 
 # add FEM App unit tests
@@ -63,8 +62,12 @@ FreeCAD.addExportType("FEM mesh Python (*.meshpy)", "feminout.importPyMesh")
 FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
 
 # see FemMesh::read() and FemMesh::write() methods in src/Mod/Fem/App/FemMesh.cpp
-FreeCAD.addImportType("FEM mesh formats (*.bdf *.dat *.inp *.med *.unv *.vtk *.vtu *.pvtu *.z88)", "Fem")
-FreeCAD.addExportType("FEM mesh formats (*.dat *.inp *.med *.stl *.unv *.vtk *.vtu *.z88)", "Fem")
+FreeCAD.addImportType(
+    "FEM mesh formats (*.bdf *.dat *.inp *.med *.unv *.vtk *.vtu *.pvtu *.z88)", "Fem"
+)
+FreeCAD.addExportType(
+    "FEM mesh formats (*.dat *.inp *.med *.stl *.unv *.vtk *.vtu *.z88)", "Fem"
+)
 
 FreeCAD.addExportType("FEM mesh Nastran (*.bdf)", "feminout.exportNastranMesh")
 

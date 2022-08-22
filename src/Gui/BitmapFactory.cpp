@@ -89,7 +89,7 @@ public:
 
 BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = nullptr;
 
-BitmapFactoryInst& BitmapFactoryInst::instance(void)
+BitmapFactoryInst& BitmapFactoryInst::instance()
 {
     if (!_pcSingleton)
     {
@@ -113,7 +113,7 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
     return *_pcSingleton;
 }
 
-void BitmapFactoryInst::destruct (void)
+void BitmapFactoryInst::destruct ()
 {
     if (_pcSingleton)
     delete _pcSingleton;
@@ -204,7 +204,7 @@ bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
 
 QIcon BitmapFactoryInst::iconFromTheme(const char* name, const QIcon& fallback)
 {
-    QString iconName = QString::fromLatin1(name);
+    QString iconName = QString::fromUtf8(name);
     QIcon icon = QIcon::fromTheme(iconName, fallback);
     if (icon.isNull()) {
         QPixmap px = pixmap(name);

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-		  Father="PyObjectBase"
-		  Name="RotationPy"
-		  Twin="Rotation"
-		  TwinPointer="Rotation"
-		  Include="Base/Rotation.h"
-		  FatherInclude="Base/PyObjectBase.h"
-		  Namespace="Base"
-		  Constructor="true"
-		  Delete="true"
-		  NumberProtocol="true"
+    <PythonExport
+          Father="PyObjectBase"
+          Name="RotationPy"
+          Twin="Rotation"
+          TwinPointer="Rotation"
+          Include="Base/Rotation.h"
+          FatherInclude="Base/PyObjectBase.h"
+          Namespace="Base"
+          Constructor="true"
+          Delete="true"
+          NumberProtocol="true"
           RichCompare="true"
-		  FatherNamespace="Base">
-		<Documentation>
-			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-			<DeveloperDocu>This is the Rotation export class</DeveloperDocu>
-			<UserDocu>Base.Rotation class.\n
+          FatherNamespace="Base">
+        <Documentation>
+            <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+            <DeveloperDocu>This is the Rotation export class</DeveloperDocu>
+            <UserDocu>Base.Rotation class.\n
 A Rotation using a quaternion.\n
 The following constructors are supported:\n
 Rotation()
@@ -68,13 +68,13 @@ Rotation(*coef)
 Define from 16 or 9 elements which represent the rotation in the 4D matrix
 representation or in the 3D matrix representation, respectively.
 coef : sequence of float</UserDocu>
-		</Documentation>
-		<Methode Name="invert">
-			<Documentation>
-				<UserDocu>invert() -> None\n
+        </Documentation>
+        <Methode Name="invert">
+            <Documentation>
+                <UserDocu>invert() -> None\n
 Sets the rotation to its inverse.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="inverted">
             <Documentation>
                 <UserDocu>inverted() -> Base.Rotation\n
@@ -91,26 +91,26 @@ tol : float\n    Tolerance used to compare both rotations.
             </Documentation>
         </Methode>
         <Methode Name="multiply" Const="true">
-			<Documentation>
-				<UserDocu>multiply(rotation) -> Base.Rotation\n
+            <Documentation>
+                <UserDocu>multiply(rotation) -> Base.Rotation\n
 Right multiply this rotation with another rotation.\n
 rotation : Base.Rotation\n    Rotation by which to multiply this rotation.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
                 <Methode Name="multVec" Const="true">
-			<Documentation>
-				<UserDocu>multVec(vector) -> Base.Vector\n
+            <Documentation>
+                <UserDocu>multVec(vector) -> Base.Vector\n
 Compute the transformed vector using the rotation.\n
 vector : Base.Vector\n    Vector to be transformed.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="slerp" Const="true">
-			<Documentation>
-				<UserDocu>slerp(rotation2, t) -> Base.Rotation\n
+            <Documentation>
+                <UserDocu>slerp(rotation2, t) -> Base.Rotation\n
 Spherical Linear Interpolation (SLERP) of this rotation and `rotation2`.\n
 t : float\n    Parameter of the path. t=0 returns this rotation, t=1 returns `rotation2`.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="setYawPitchRoll">
             <Documentation>
                 <UserDocu>setYawPitchRoll(angle1, angle2, angle3) -> None\n
@@ -121,12 +121,12 @@ angle3 : float\n    Angle around roll axis in degrees.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getYawPitchRoll" Const="true">
-			<Documentation>
-				<UserDocu>getYawPitchRoll() -> tuple\n
+            <Documentation>
+                <UserDocu>getYawPitchRoll() -> tuple\n
 Get the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
 The angles are given in degrees.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="setEulerAngles">
             <Documentation>
                 <UserDocu>setEulerAngles(seq, angle1, angle2, angle3) -> None\n
@@ -139,25 +139,25 @@ angle3 : float </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toEulerAngles" Const="true">
-			<Documentation>
-				<UserDocu>toEulerAngles(seq) -> list\n
+            <Documentation>
+                <UserDocu>toEulerAngles(seq) -> list\n
 Get the Euler angles in a given sequence for this rotation.\n
 seq : str\n    Euler sequence name. If not given, the function returns
     all possible values of `seq`. Optional.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="toMatrix" Const="true">
-			<Documentation>
-				<UserDocu>toMatrix() -> Base.Matrix\n
+            <Documentation>
+                <UserDocu>toMatrix() -> Base.Matrix\n
 Convert the rotation to a 4D matrix representation.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="isNull" Const="true">
-			<Documentation>
-				<UserDocu>isNull() -> bool\n
+            <Documentation>
+                <UserDocu>isNull() -> bool\n
 Returns True if all values in the quaternion representation are zero.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
         <Methode Name="isIdentity" Const="true">
             <Documentation>
                 <UserDocu>isIdentity() -> bool\n
@@ -165,35 +165,35 @@ Returns True if the rotation equals the 4D identity matrix.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Q" ReadOnly="false">
-			<Documentation>
-				<UserDocu>The rotation elements (as quaternion).</UserDocu>
-			</Documentation>
-			<Parameter Name="Q" Type="Tuple" />
-		</Attribute>
-		<Attribute Name="Axis" ReadOnly="false">
-			<Documentation>
-				<UserDocu>The rotation axis of the quaternion.</UserDocu>
-			</Documentation>
-			<Parameter Name="Axis" Type="Object" />
-		</Attribute>
-		<Attribute Name="RawAxis" ReadOnly="true">
-			<Documentation>
-				<UserDocu>The rotation axis without normalization.</UserDocu>
-			</Documentation>
-			<Parameter Name="RawAxis" Type="Object" />
-		</Attribute>
-		<Attribute Name="Angle" ReadOnly="false">
-			<Documentation>
-				<UserDocu>The rotation angle of the quaternion.</UserDocu>
-			</Documentation>
-			<Parameter Name="Angle" Type="Float" />
-		</Attribute>
-		<ClassDeclarations>
-			public:
-			RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)
-			:PyObjectBase(new Rotation(mat),T){}
-			Rotation value() const
-			{ return *(getRotationPtr()); }
-		</ClassDeclarations>
-	</PythonExport>
+            <Documentation>
+                <UserDocu>The rotation elements (as quaternion).</UserDocu>
+            </Documentation>
+            <Parameter Name="Q" Type="Tuple" />
+        </Attribute>
+        <Attribute Name="Axis" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The rotation axis of the quaternion.</UserDocu>
+            </Documentation>
+            <Parameter Name="Axis" Type="Object" />
+        </Attribute>
+        <Attribute Name="RawAxis" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The rotation axis without normalization.</UserDocu>
+            </Documentation>
+            <Parameter Name="RawAxis" Type="Object" />
+        </Attribute>
+        <Attribute Name="Angle" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The rotation angle of the quaternion.</UserDocu>
+            </Documentation>
+            <Parameter Name="Angle" Type="Float" />
+        </Attribute>
+        <ClassDeclarations>
+            public:
+            RotationPy(const Rotation &amp; mat, PyTypeObject *T = &amp;Type)
+            :PyObjectBase(new Rotation(mat),T){}
+            Rotation value() const
+            { return *(getRotationPtr()); }
+        </ClassDeclarations>
+    </PythonExport>
 </GenerateModel>

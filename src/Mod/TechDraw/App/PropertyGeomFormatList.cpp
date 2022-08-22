@@ -74,7 +74,7 @@ void PropertyGeomFormatList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyGeomFormatList::getSize(void) const
+int PropertyGeomFormatList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -105,7 +105,7 @@ void PropertyGeomFormatList::setValues(const std::vector<GeomFormat*>& lValue)
     hasSetValue();
 }
 
-PyObject *PropertyGeomFormatList::getPyObject(void)
+PyObject *PropertyGeomFormatList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0; i < getSize(); i++)
@@ -204,7 +204,7 @@ void PropertyGeomFormatList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-App::Property *PropertyGeomFormatList::Copy(void) const
+App::Property *PropertyGeomFormatList::Copy() const
 {
     PropertyGeomFormatList *p = new PropertyGeomFormatList();
     p->setValues(_lValueList);
@@ -217,7 +217,7 @@ void PropertyGeomFormatList::Paste(const Property &from)
     setValues(FromList._lValueList);
 }
 
-unsigned int PropertyGeomFormatList::getMemSize(void) const
+unsigned int PropertyGeomFormatList::getMemSize() const
 {
     int size = sizeof(PropertyGeomFormatList);
     for (int i = 0; i < getSize(); i++)

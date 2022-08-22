@@ -45,22 +45,22 @@ class RobotGuiExport TaskDlgTrajectoryDressUp : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObject *);
-    ~TaskDlgTrajectoryDressUp();
+    ~TaskDlgTrajectoryDressUp() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or rject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user press the help button 
-    virtual void helpRequested();
+    void helpRequested() override;
 
     /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Apply|QDialogButtonBox::Cancel; }
 
 protected:

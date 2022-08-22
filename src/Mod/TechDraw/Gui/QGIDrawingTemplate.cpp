@@ -66,12 +66,6 @@ QGIDrawingTemplate::~QGIDrawingTemplate()
     pathItem = nullptr;
 }
 
-QVariant QGIDrawingTemplate::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGraphicsItemGroup::itemChange(change, value);
-}
-
-
 void QGIDrawingTemplate::clearContents()
 {
 

@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "ViewProviderRegularPolygon.h"
 
+
 using namespace PartGui;
 using namespace std;
-
 
 //**************************************************************************
 // Construction/Destruction
@@ -52,14 +48,14 @@ ViewProviderRegularPolygon::~ViewProviderRegularPolygon()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderRegularPolygon::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRegularPolygon::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList;
 
     // add your own modes
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }

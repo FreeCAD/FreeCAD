@@ -20,35 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
 # include <BRep_Tool.hxx>
-# include <BRepGProp.hxx>
-# include <GProp_GProps.hxx>
 # include <gp_Pnt.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <QFontMetrics>
-# include <QMessageBox>
-# include <QSet>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "BoxSelection.h"
-#include "ViewProviderExt.h"
-
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -57,9 +45,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeature.h>
+#include "BoxSelection.h"
+#include "ViewProviderExt.h"
 
 
 using namespace PartGui;
@@ -71,10 +58,10 @@ public:
         : Gui::SelectionFilterGate()
     {
     }
-    ~FaceSelectionGate()
+    ~FaceSelectionGate() override
     {
     }
-    bool allow(App::Document*, App::DocumentObject*, const char*sSubName)
+    bool allow(App::Document*, App::DocumentObject*, const char*sSubName) override
     {
         if (!sSubName || sSubName[0] == '\0')
             return false;

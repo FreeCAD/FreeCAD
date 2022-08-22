@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 #define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QGraphicsItem>
 #include <QObject>
@@ -57,34 +59,32 @@ public:
     enum {Type = QGraphicsItem::UserType + 232};
 
     explicit QGILeaderLine();
-    ~QGILeaderLine() = default;
+    ~QGILeaderLine() override = default;
 
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
+    void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape(void) const override;
+    QRectF boundingRect() const override;
 
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    void drawBorder() override;
+    void updateView(bool update = false) override;
 
-    virtual TechDraw::DrawLeaderLine* getFeature(void);
+    virtual TechDraw::DrawLeaderLine* getFeature();
 
-    void startPathEdit(void);
+    void startPathEdit();
     void setArrows(std::vector<QPointF> pathPoints);
 
-    void abandonEdit(void);
-    void closeEdit(void);
+    void abandonEdit();
+    void closeEdit();
     
-    double getLineWidth(void);
-    double getEdgeFuzz(void) const;
+    double getLineWidth();
+    double getEdgeFuzz() const;
 
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
     void setPrettyNormal();
     void setPrettyPre();
@@ -94,23 +94,23 @@ public:
 
 public Q_SLOTS:
     void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
-    virtual void onSourceChange(TechDraw::DrawView* newParent) override;
+    void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
-    void editComplete(void);  //tell caller that edit session is finished
+    void editComplete();  //tell caller that edit session is finished
 
 protected:
-    virtual void draw() override;
+    void draw() override;
     QPainterPath makeLeaderPath(std::vector<QPointF> qPoints);
-    std::vector<QPointF> getWayPointsFromFeature(void);
-    QPointF getAttachFromFeature(void);
+    std::vector<QPointF> getWayPointsFromFeature();
+    QPointF getAttachFromFeature();
 
-    virtual QVariant itemChange( GraphicsItemChange change,
+    QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     std::vector<QPointF> m_pathPoints;
     
-    void saveState(void);
-    void restoreState(void);
+    void saveState();
+    void restoreState();
 
 protected:
     QColor getNormalColor() override;

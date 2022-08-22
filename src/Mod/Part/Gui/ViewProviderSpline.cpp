@@ -20,38 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
+
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <GeomAbs_CurveType.hxx>
-# include <GeomAbs_SurfaceType.hxx>
 # include <Geom_BezierCurve.hxx>
-# include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierSurface.hxx>
+# include <Geom_BSplineCurve.hxx>
 # include <Geom_BSplineSurface.hxx>
 # include <gp_Pnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <TopoDS_Wire.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Shell.hxx>
+# include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
+
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <QAction>
-# include <QMenu>
 #endif
 
-#include <App/PropertyStandard.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
-#include "SoFCShapeObject.h"
+
 #include "ViewProviderSpline.h"
+#include "SoFCShapeObject.h"
 
 
 using namespace PartGui;

@@ -63,7 +63,7 @@ ShapeValidator::ShapeValidator()
    initValidator();
 }
 
-void ShapeValidator::initValidator(void)
+void ShapeValidator::initValidator()
 {
     willBezier = true;
     edgeCount = 0;
@@ -162,7 +162,7 @@ void GeomFillSurface::onChanged(const App::Property* prop)
     Part::Spline::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
+App::DocumentObjectExecReturn *GeomFillSurface::execute()
 {
     try {
         TopoDS_Wire aWire;
@@ -218,7 +218,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
         App::PropertyLinkSubList::SubSet set = boundary[i];
 
         if (set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            for (auto jt: set.second) {
+            for (const auto& jt: set.second) {
                 const Part::TopoShape &ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
                 validator.checkAndAdd(ts, jt.c_str(), &aWD);
             }

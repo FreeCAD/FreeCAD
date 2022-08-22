@@ -95,7 +95,7 @@ void CmdRobotExportKukaCompact::activated(int)
     doCommand(Doc,"ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
 }
 
-bool CmdRobotExportKukaCompact::isActive(void)
+bool CmdRobotExportKukaCompact::isActive()
 {
     return hasActiveDocument();
 }
@@ -157,7 +157,7 @@ void CmdRobotExportKukaFull::activated(int)
     doCommand(Doc,"ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
 }
 
-bool CmdRobotExportKukaFull::isActive(void)
+bool CmdRobotExportKukaFull::isActive()
 {
     return hasActiveDocument();
 }
@@ -166,7 +166,7 @@ bool CmdRobotExportKukaFull::isActive(void)
 
 
 
-void CreateRobotCommandsExport(void)
+void CreateRobotCommandsExport()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

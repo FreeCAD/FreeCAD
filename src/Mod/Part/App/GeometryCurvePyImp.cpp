@@ -80,7 +80,7 @@ extern const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryCurvePy::representation(void) const
+std::string GeometryCurvePy::representation() const
 {
     return "<Curve object>";
 }
@@ -975,7 +975,7 @@ PyObject* GeometryCurvePy::continuityWith(PyObject *args)
     return nullptr;
 }
 
-Py::String GeometryCurvePy::getContinuity(void) const
+Py::String GeometryCurvePy::getContinuity() const
 {
     GeomAbs_Shape c = Handle(Geom_Curve)::DownCast
         (getGeometryPtr()->handle())->Continuity();
@@ -1009,13 +1009,13 @@ Py::String GeometryCurvePy::getContinuity(void) const
     return Py::String(str);
 }
 
-Py::Float GeometryCurvePy::getFirstParameter(void) const
+Py::Float GeometryCurvePy::getFirstParameter() const
 {
     return Py::Float(Handle(Geom_Curve)::DownCast
         (getGeometryPtr()->handle())->FirstParameter());
 }
 
-Py::Float GeometryCurvePy::getLastParameter(void) const
+Py::Float GeometryCurvePy::getLastParameter() const
 {
     return Py::Float(Handle(Geom_Curve)::DownCast
         (getGeometryPtr()->handle())->LastParameter());
@@ -1135,7 +1135,7 @@ PyObject* GeometryCurvePy::intersect(PyObject *args)
     return nullptr;
 }
 
-Py::Object GeometryCurvePy::getRotation(void) const
+Py::Object GeometryCurvePy::getRotation() const
 {
     Handle(Geom_Conic) s = Handle(Geom_Conic)::DownCast(getGeometryPtr()->handle());
     if(!s)

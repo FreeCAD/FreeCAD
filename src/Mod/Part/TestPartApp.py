@@ -174,6 +174,24 @@ class PartTestBSplineCurve(unittest.TestCase):
         #closing doc
         FreeCAD.closeDocument("PartTest")
 
+class PartTestBSplineSurface(unittest.TestCase):
+    def testTorusToSpline(self):
+        to = Part.Toroid()
+        bs = to.toBSpline()
+        bs.setUPeriodic()
+        bs.setVPeriodic()
+        self.assertGreater(len(bs.UKnotSequence), 0)
+        self.assertGreater(len(bs.VKnotSequence), 0)
+
+    def testBounds(self):
+        to = Part.Toroid()
+        bs = to.toBSpline()
+        self.assertAlmostEqual(bs.bounds()[1], 2 * math.pi)
+        self.assertAlmostEqual(bs.bounds()[3], 2 * math.pi)
+        bs.setBounds(0.0, 1.0, 0.0, 1.0)
+        self.assertAlmostEqual(bs.bounds()[1], 1.0)
+        self.assertAlmostEqual(bs.bounds()[3], 1.0)
+
 class PartTestNormals(unittest.TestCase):
     def setUp(self):
         self.face = Part.makePlane(1, 1)
@@ -197,6 +215,29 @@ class PartTestNormals(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+class PartTestShapeRotate(unittest.TestCase):
+    def testPlacement(self):
+        box = Part.makeBox(1, 1, 1)
+        box.Placement.Base = Base.Vector(10, 10, 10)
+        box.rotate((0, 0, 0), (0, 0, 1), 90)
+
+        p1 = Base.Placement()
+        p1.Base = Base.Vector(10, 10, 10)
+
+        p2 = Base.Placement()
+        p2.Rotation.Angle = math.radians(90)
+        self.assertTrue(box.Placement.isSame(p2 * p1))
+
+        p5 = p1.copy()
+        p5.rotate((0, 0, 0), (0, 0, 1), 90)
+        self.assertTrue(p5.isSame(p1 * p2))
+        self.assertFalse(box.Placement.isSame(p5))
+
+        p5 = p1.copy()
+        p5.rotate((0, 0, 0), (0, 0, 1), 90, True)
+        self.assertTrue(p5.isSame(p2 * p1))
+        self.assertTrue(box.Placement.isSame(p5))
 
 class PartTestCircle2D(unittest.TestCase):
     def testValidCircle(self):

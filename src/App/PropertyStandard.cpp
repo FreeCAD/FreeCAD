@@ -67,10 +67,7 @@ PropertyInteger::PropertyInteger()
 }
 
 
-PropertyInteger::~PropertyInteger()
-{
-
-}
+PropertyInteger::~PropertyInteger() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -163,15 +160,9 @@ TYPESYSTEM_SOURCE(App::PropertyPath , App::Property)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyPath::PropertyPath()
-{
+PropertyPath::PropertyPath() = default;
 
-}
-
-PropertyPath::~PropertyPath()
-{
-
-}
+PropertyPath::~PropertyPath() = default;
 
 
 //**************************************************************************
@@ -201,7 +192,7 @@ void PropertyPath::setValue(const char * Path)
     hasSetValue();
 }
 
-const boost::filesystem::path &PropertyPath::getValue(void) const
+const boost::filesystem::path &PropertyPath::getValue() const
 {
     return _cValue;
 }
@@ -291,10 +282,7 @@ PropertyEnumeration::PropertyEnumeration(const App::Enumeration &e)
     _enum = e;
 }
 
-PropertyEnumeration::~PropertyEnumeration()
-{
-
-}
+PropertyEnumeration::~PropertyEnumeration() = default;
 
 void PropertyEnumeration::setEnums(const char **plEnums)
 {
@@ -729,9 +717,7 @@ PropertyPercent::PropertyPercent()
     _ConstStruct = &percent;
 }
 
-PropertyPercent::~PropertyPercent()
-{
-}
+PropertyPercent::~PropertyPercent() = default;
 
 //**************************************************************************
 //**************************************************************************
@@ -744,15 +730,9 @@ TYPESYSTEM_SOURCE(App::PropertyIntegerList , App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyIntegerList::PropertyIntegerList()
-{
+PropertyIntegerList::PropertyIntegerList() = default;
 
-}
-
-PropertyIntegerList::~PropertyIntegerList()
-{
-
-}
+PropertyIntegerList::~PropertyIntegerList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -833,15 +813,9 @@ TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::Property)
 // Construction/Destruction
 
 
-PropertyIntegerSet::PropertyIntegerSet()
-{
+PropertyIntegerSet::PropertyIntegerSet() = default;
 
-}
-
-PropertyIntegerSet::~PropertyIntegerSet()
-{
-
-}
+PropertyIntegerSet::~PropertyIntegerSet() = default;
 
 
 //**************************************************************************
@@ -965,10 +939,7 @@ PropertyFloat::PropertyFloat()
     _dValue = 0.0;
 }
 
-PropertyFloat::~PropertyFloat()
-{
-
-}
+PropertyFloat::~PropertyFloat() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -1204,10 +1175,7 @@ PropertyPrecision::PropertyPrecision()
     setConstraints(&PrecisionStandard);
 }
 
-PropertyPrecision::~PropertyPrecision()
-{
-
-}
+PropertyPrecision::~PropertyPrecision() = default;
 
 
 //**************************************************************************
@@ -1220,15 +1188,9 @@ TYPESYSTEM_SOURCE(App::PropertyFloatList , App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyFloatList::PropertyFloatList()
-{
+PropertyFloatList::PropertyFloatList() = default;
 
-}
-
-PropertyFloatList::~PropertyFloatList()
-{
-
-}
+PropertyFloatList::~PropertyFloatList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -1343,15 +1305,9 @@ unsigned int PropertyFloatList::getMemSize () const
 
 TYPESYSTEM_SOURCE(App::PropertyString , App::Property)
 
-PropertyString::PropertyString()
-{
+PropertyString::PropertyString() = default;
 
-}
-
-PropertyString::~PropertyString()
-{
-
-}
+PropertyString::~PropertyString() = default;
 
 void PropertyString::setValue(const char* newLabel)
 {
@@ -1451,7 +1407,7 @@ void PropertyString::setValue(const char* newLabel)
             propChanges = PropertyLinkBase::updateLabelReferences(obj,newLabel);
         }
 
-        if(propChanges.size() && !GetApplication().getActiveTransaction()) {
+        if(!propChanges.empty() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
@@ -1599,15 +1555,9 @@ const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) cons
 
 TYPESYSTEM_SOURCE(App::PropertyUUID , App::Property)
 
-PropertyUUID::PropertyUUID()
-{
+PropertyUUID::PropertyUUID() = default;
 
-}
-
-PropertyUUID::~PropertyUUID()
-{
-
-}
+PropertyUUID::~PropertyUUID() = default;
 
 void PropertyUUID::setValue(const Base::Uuid &id)
 {
@@ -1709,15 +1659,9 @@ unsigned int PropertyUUID::getMemSize () const
 
 TYPESYSTEM_SOURCE(App::PropertyFont , App::PropertyString)
 
-PropertyFont::PropertyFont()
-{
+PropertyFont::PropertyFont() = default;
 
-}
-
-PropertyFont::~PropertyFont()
-{
-
-}
+PropertyFont::~PropertyFont() = default;
 
 //**************************************************************************
 // PropertyStringList
@@ -1725,15 +1669,9 @@ PropertyFont::~PropertyFont()
 
 TYPESYSTEM_SOURCE(App::PropertyStringList , App::PropertyLists)
 
-PropertyStringList::PropertyStringList()
-{
+PropertyStringList::PropertyStringList() = default;
 
-}
-
-PropertyStringList::~PropertyStringList()
-{
-
-}
+PropertyStringList::~PropertyStringList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -1836,15 +1774,9 @@ void PropertyStringList::Paste(const Property &from)
 
 TYPESYSTEM_SOURCE(App::PropertyMap , App::Property)
 
-PropertyMap::PropertyMap()
-{
+PropertyMap::PropertyMap() = default;
 
-}
-
-PropertyMap::~PropertyMap()
-{
-
-}
+PropertyMap::~PropertyMap() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -2019,10 +1951,7 @@ PropertyBool::PropertyBool()
     _lValue = false;
 }
 
-PropertyBool::~PropertyBool()
-{
-
-}
+PropertyBool::~PropertyBool() = default;
 
 //**************************************************************************
 // Setter/getter for the property
@@ -2128,15 +2057,9 @@ TYPESYSTEM_SOURCE(App::PropertyBoolList , App::PropertyLists)
 // Construction/Destruction
 
 
-PropertyBoolList::PropertyBoolList()
-{
+PropertyBoolList::PropertyBoolList() = default;
 
-}
-
-PropertyBoolList::~PropertyBoolList()
-{
-
-}
+PropertyBoolList::~PropertyBoolList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -2226,15 +2149,9 @@ TYPESYSTEM_SOURCE(App::PropertyColor , App::Property)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyColor::PropertyColor()
-{
+PropertyColor::PropertyColor() = default;
 
-}
-
-PropertyColor::~PropertyColor()
-{
-
-}
+PropertyColor::~PropertyColor() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -2375,15 +2292,9 @@ TYPESYSTEM_SOURCE(App::PropertyColorList , App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyColorList::PropertyColorList()
-{
+PropertyColorList::PropertyColorList() = default;
 
-}
-
-PropertyColorList::~PropertyColorList()
-{
-
-}
+PropertyColorList::~PropertyColorList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -2485,15 +2396,9 @@ unsigned int PropertyColorList::getMemSize () const
 
 TYPESYSTEM_SOURCE(App::PropertyMaterial , App::Property)
 
-PropertyMaterial::PropertyMaterial()
-{
+PropertyMaterial::PropertyMaterial() = default;
 
-}
-
-PropertyMaterial::~PropertyMaterial()
-{
-
-}
+PropertyMaterial::~PropertyMaterial() = default;
 
 void PropertyMaterial::setValue(const Material &mat)
 {
@@ -2623,15 +2528,9 @@ TYPESYSTEM_SOURCE(App::PropertyMaterialList, App::PropertyLists)
 //**************************************************************************
 // Construction/Destruction
 
-PropertyMaterialList::PropertyMaterialList()
-{
+PropertyMaterialList::PropertyMaterialList() = default;
 
-}
-
-PropertyMaterialList::~PropertyMaterialList()
-{
-
-}
+PropertyMaterialList::~PropertyMaterialList() = default;
 
 //**************************************************************************
 // Base class implementer
@@ -2748,7 +2647,7 @@ unsigned int PropertyMaterialList::getMemSize() const
 
 TYPESYSTEM_SOURCE(App::PropertyPersistentObject , App::PropertyString)
 
-PyObject *PropertyPersistentObject::getPyObject(void){
+PyObject *PropertyPersistentObject::getPyObject(){
     if(_pObject)
         return _pObject->getPyObject();
     return inherited::getPyObject();
@@ -2774,7 +2673,7 @@ void PropertyPersistentObject::Restore(Base::XMLReader &reader){
     reader.readEndElement(ELEMENT_PERSISTENT_OBJ);
 }
 
-Property *PropertyPersistentObject::Copy(void) const{
+Property *PropertyPersistentObject::Copy() const{
     auto *p= new PropertyPersistentObject();
     p->_cValue = _cValue;
     p->_pObject = _pObject;

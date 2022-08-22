@@ -208,7 +208,7 @@ void TaskChamferParameters::clearButtons(const selectionModes notThis)
     DressUpView->highlightReferences(false);
 }
 
-void TaskChamferParameters::onRefDeleted(void)
+void TaskChamferParameters::onRefDeleted()
 {
     // assure we we are not in selection mode
     exitSelectionMode();
@@ -260,7 +260,7 @@ void TaskChamferParameters::onRefDeleted(void)
     }
 }
 
-void TaskChamferParameters::onAddAllEdges(void)
+void TaskChamferParameters::onAddAllEdges()
 {
     TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
     ui->buttonRefRemove->setEnabled(true);
@@ -317,27 +317,27 @@ void TaskChamferParameters::onFlipDirection(bool flip)
     hideOnError();
 }
 
-int TaskChamferParameters::getType(void) const
+int TaskChamferParameters::getType() const
 {
     return ui->chamferType->currentIndex();
 }
 
-double TaskChamferParameters::getSize(void) const
+double TaskChamferParameters::getSize() const
 {
     return ui->chamferSize->value().getValue();
 }
 
-double TaskChamferParameters::getSize2(void) const
+double TaskChamferParameters::getSize2() const
 {
     return ui->chamferSize2->value().getValue();
 }
 
-double TaskChamferParameters::getAngle(void) const
+double TaskChamferParameters::getAngle() const
 {
     return ui->chamferAngle->value().getValue();
 }
 
-bool TaskChamferParameters::getFlipDirection(void) const
+bool TaskChamferParameters::getFlipDirection() const
 {
     return ui->flipDirection->isChecked();
 }

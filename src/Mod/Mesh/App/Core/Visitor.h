@@ -80,9 +80,9 @@ class MeshExport MeshSearchNeighbourFacetsVisitor : public MeshFacetVisitor
 {
 public:
     MeshSearchNeighbourFacetsVisitor (const MeshKernel &rclMesh, float fRadius, FacetIndex ulStartFacetIdx);
-    virtual ~MeshSearchNeighbourFacetsVisitor () {}
+    ~MeshSearchNeighbourFacetsVisitor () override {}
     /** Checks the facet if it lies inside the search radius. */
-    inline bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel);
+    inline bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel) override;
     /** Resets the VISIT flag of already visited facets. */
     inline std::vector<FacetIndex> GetAndReset ();
 
@@ -124,10 +124,10 @@ class MeshExport MeshTopFacetVisitor : public MeshFacetVisitor
 {
 public:
     MeshTopFacetVisitor (std::vector<FacetIndex> &raulNB) : _raulNeighbours(raulNB) {}
-    virtual ~MeshTopFacetVisitor () {}
+    ~MeshTopFacetVisitor () override {}
     /** Collects the facet indices. */
     virtual bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
-                        FacetIndex ulFInd, unsigned long)
+                        FacetIndex ulFInd, unsigned long) override
     {
         (void)rclFacet;
         (void)rclFrom;
@@ -152,11 +152,11 @@ public:
                       FacetIndex index,
                       float deviation,
                       std::vector<FacetIndex> &indices);
-    virtual ~MeshPlaneVisitor ();
+    ~MeshPlaneVisitor () override;
     bool AllowVisit (const MeshFacet& face, const MeshFacet&, 
-                     FacetIndex, unsigned long, unsigned short neighbourIndex);
+                     FacetIndex, unsigned long, unsigned short neighbourIndex) override;
     bool Visit (const MeshFacet & face, const MeshFacet &,
-                FacetIndex ulFInd, unsigned long);
+                FacetIndex ulFInd, unsigned long) override;
 
 protected:
     const MeshKernel& mesh;

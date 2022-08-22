@@ -67,7 +67,9 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -522,12 +524,7 @@ double DrawUtil::sensibleScale(double working_scale)
 
 double DrawUtil::getDefaultLineWeight(std::string lineType)
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = LineGroup::lineGroupFactory(lgNumber);
-
-    double weight = lg->getWeight(lineType);
-    delete lg;                                    //Coverity CID 174671
-    return weight;
+    return TechDraw::LineGroup::getDefaultWidth(lineType);
 }
 
 bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2)
@@ -756,7 +753,7 @@ TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
     for (auto& v : vecIn) {
         builder.Add(compOut, v);
     }
-    return compOut;
+    return TopoDS_Compound(std::move(compOut));
 }
 //get 3d position of a face's center
 Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
@@ -853,7 +850,7 @@ unsigned int DrawUtil::intervalMerge(std::vector<std::pair<double, bool>> &marki
     unsigned int i = 0;
     bool last = false;
 
-    if (wraps && marking.size() > 0) {
+    if (wraps && !marking.empty()) {
         last = marking.back().second;
     }
 
@@ -1159,7 +1156,9 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
 {
 //    Base::Console().Message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
     if (inSpec.empty()) {
-        std::ofstream output(outSpec);
+        // create an empty file
+        Base::FileInfo fi(outSpec);
+        Base::ofstream output(fi);
         return;
     }
     Base::FileInfo fi(inSpec);

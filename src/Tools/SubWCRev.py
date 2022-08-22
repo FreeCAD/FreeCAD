@@ -97,7 +97,7 @@ class DebianChangelog(VersionControl):
         c = f.readline()
         f.close()
         r=re.search("bzr(\\d+)",c)
-        if r != None:
+        if r is not None:
             self.rev = r.groups()[0] + " (Launchpad)"
 
         t = time.localtime()
@@ -116,11 +116,11 @@ class BazaarControl(VersionControl):
         lines=info.split("\n")
         for i in lines:
             r = re.match("^revno: (\\d+)$", i)
-            if r != None:
+            if r is not None:
                 self.rev = r.groups()[0]
                 continue
             r=re.match("^timestamp: (\\w+ \\d+-\\d+-\\d+ \\d+:\\d+:\\d+)",i)
-            if r != None:
+            if r is not None:
                 self.date = r.groups()[0]
                 continue
         return True
@@ -325,7 +325,7 @@ class GitControl(VersionControl):
         self.date = time.strftime("%Y/%m/%d %H:%M:%S",time.gmtime(\
                 float(info.strip().split(' ',1)[0])))
         for self.branch in os.popen("git branch --no-color").read().split('\n'):
-            if re.match( "\*", self.branch ) != None:
+            if re.match( "\*", self.branch ) is not None:
                 break
         self.branch=self.branch[2:]
         self.getremotes() #setup self.remotes and branchlst
@@ -356,7 +356,7 @@ class GitControl(VersionControl):
         if self.url == "Unknown":
             for i in info:
                 r = re.match("origin\\W+(\\S+)",i)
-                if r != None:
+                if r is not None:
                     self.url = r.groups()[0]
                     break
         return True
@@ -421,12 +421,12 @@ class Subversion(VersionControl):
 
         # if version string ends with an 'M'
         r=re.search("M$",Ver)
-        if r != None:
+        if r is not None:
             self.mods = 'Src modified'
 
         # if version string contains a range
         r=re.match("^\\d+\\:\\d+",Ver)
-        if r != None:
+        if r is not None:
             self.mixed = 'Src mixed'
             self.range = Ver[:r.end()]
         return True

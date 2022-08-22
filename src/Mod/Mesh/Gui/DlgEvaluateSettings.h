@@ -39,7 +39,7 @@ class DlgEvaluateSettings : public QDialog
 
 public:
     DlgEvaluateSettings(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgEvaluateSettings();
+    ~DlgEvaluateSettings() override;
 
     void setNonmanifoldPointsChecked(bool);
     bool isNonmanifoldPointsChecked() const;

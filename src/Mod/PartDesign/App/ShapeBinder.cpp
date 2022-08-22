@@ -73,7 +73,7 @@ void ShapeBinder::onChanged(const App::Property* prop)
     Feature::onChanged(prop);
 }
 
-short int ShapeBinder::mustExecute(void) const {
+short int ShapeBinder::mustExecute() const {
 
     if (Support.isTouched())
         return 1;
@@ -117,7 +117,7 @@ bool ShapeBinder::hasPlacementChanged() const
     return this->Placement.getValue() != placement;
 }
 
-App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
+App::DocumentObjectExecReturn* ShapeBinder::execute() {
 
     if (!this->isRestoring()) {
         Part::TopoShape shape(updatedShape());
@@ -204,7 +204,7 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences(App::GeoFeature* obj, std:
             return part->Shape.getValue();
 
         std::vector<TopoDS_Shape> shapes;
-        for (std::string sub : subs) {
+        for (const std::string& sub : subs) {
             shapes.push_back(part->Shape.getShape().getSubShape(sub.c_str()));
         }
 
@@ -444,12 +444,12 @@ void SubShapeBinder::setupCopyOnChange() {
     hasCopyOnChange = App::LinkBaseExtension::setupCopyOnChange(this, linked,
         BindCopyOnChange.getValue() == 1 ? &copyOnChangeConns : nullptr, hasCopyOnChange);
     if (hasCopyOnChange) {
-        copyOnChangeConns.push_back(linked->signalChanged.connect(
+        copyOnChangeConns.emplace_back(linked->signalChanged.connect(
             [this](const App::DocumentObject&, const App::Property& prop) {
             if (!prop.testStatus(App::Property::Output)
                 && !prop.testStatus(App::Property::PropOutput))
             {
-                if (this->_CopiedObjs.size()) {
+                if (!this->_CopiedObjs.empty()) {
                     FC_LOG("Clear binder " << getFullName() << " cache on change of "
                         << prop.getFullName());
                     this->clearCopiedObjects();
@@ -560,7 +560,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         App::DocumentObject* copied = nullptr;
 
         if (BindCopyOnChange.getValue() == 2 && Support.getSubListValues().size() == 1) {
-            if (_CopiedObjs.size())
+            if (!_CopiedObjs.empty())
                 copied = _CopiedObjs.front().getObject();
 
             bool recomputeCopy = false;
@@ -618,7 +618,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
         const auto& subvals = copied ? _CopiedLink.getSubValues() : l.getSubValues();
         std::set<std::string> subs(subvals.begin(), subvals.end());
-        static std::string none("");
+        static std::string none;
         if (subs.empty())
             subs.insert(none);
         else if (subs.size() > 1)
@@ -805,7 +805,7 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     }
 }
 
-App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
+App::DocumentObjectExecReturn* SubShapeBinder::execute() {
 
     setupCopyOnChange();
 
@@ -907,7 +907,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject*, std::vector<std::st
             FC_THROWM(Base::ValueError, "Cyclic reference to " << v.first->getFullName());
 
         if (v.second.empty()) {
-            v.second.push_back("");
+            v.second.emplace_back("");
             continue;
         }
 
@@ -988,7 +988,7 @@ void SubShapeBinder::handleChangedPropertyType(
 
 namespace App {
     PROPERTY_SOURCE_TEMPLATE(PartDesign::SubShapeBinderPython, PartDesign::SubShapeBinder)
-        template<> const char* PartDesign::SubShapeBinderPython::getViewProviderName(void) const {
+        template<> const char* PartDesign::SubShapeBinderPython::getViewProviderName() const {
         return "PartDesignGui::ViewProviderSubShapeBinderPython";
     }
     template class PartDesignExport FeaturePythonT<PartDesign::SubShapeBinder>;

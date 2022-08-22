@@ -47,7 +47,7 @@ class DocumentBasicCases(unittest.TestCase):
   def testCreateDestroy(self):
     #FIXME: Causes somehow a ref count error but it's _not_ FreeCAD.getDocument()!!!
     #If we remove the whole method no error appears.
-    self.failUnless(FreeCAD.getDocument("CreateTest")!= None,"Creating Document failed")
+    self.failUnless(FreeCAD.getDocument("CreateTest") is not None,"Creating Document failed")
 
   def testAddition(self):
     # Cannot write a real test case for that but when debugging the
@@ -1092,7 +1092,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first group and then the object
     self.Doc.openTransaction("Remove")
@@ -1100,7 +1100,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Label_2")
     self.Doc.commitTransaction()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first object and then the group in two transactions
     self.Doc.openTransaction("Remove")
@@ -1112,7 +1112,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Remove first object and then the group in one transaction
     self.Doc.openTransaction("Remove")
@@ -1122,7 +1122,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.commitTransaction()
     self.Doc.undo()
     # FIXME: See bug #1820554
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     # Add a second object to the group
     L3 = self.Doc.addObject("App::FeatureTest","Label_3")
@@ -1135,8 +1135,8 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.removeObject("Group")
     self.Doc.commitTransaction()
     self.Doc.undo()
-    self.failUnless(G1.getObject("Label_3") != None)
-    self.failUnless(G1.getObject("Label_2") != None)
+    self.failUnless(G1.getObject("Label_3") is not None)
+    self.failUnless(G1.getObject("Label_2") is not None)
 
     self.Doc.UndoMode = 0
 
@@ -2182,3 +2182,156 @@ class DocumentObserverCases(unittest.TestCase):
     #closing doc
     FreeCAD.removeDocumentObserver(self.Obs)
     self.Obs = None
+
+class FeatureTestColumn(unittest.TestCase):
+    def setUp(self):
+        doc = FreeCAD.newDocument("TestColumn")
+        self.obj = doc.addObject("App::FeatureTestColumn", "Column")
+
+    def testEmpty(self):
+        value = self.obj.Value
+        self.obj.Column = ""
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def testA(self):
+        self.obj.Column = "A"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 0)
+
+    def testZ(self):
+        self.obj.Column = "Z"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 25)
+
+    def testAA(self):
+        self.obj.Column = "AA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 26)
+
+    def testAB(self):
+        self.obj.Column = "AB"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 27)
+
+    def testAZ(self):
+        self.obj.Column = "AZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 51)
+
+    def testBA(self):
+        self.obj.Column = "BA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 52)
+
+    def testCB(self):
+        self.obj.Column = "CB"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 79)
+
+    def testZA(self):
+        self.obj.Column = "ZA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 676)
+
+    def testZZ(self):
+        self.obj.Column = "ZZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 701)
+
+    def testAAA(self):
+        self.obj.Column = "AAA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 702)
+
+    def testAAZ(self):
+        self.obj.Column = "AAZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 727)
+
+    def testCBA(self):
+        self.obj.Column = "CBA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 2080)
+
+    def testAZA(self):
+        self.obj.Column = "AZA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 1352)
+
+    def testZZA(self):
+        self.obj.Column = "ZZA"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 18252)
+
+    def testZZZ(self):
+        self.obj.Column = "ZZZ"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 18277)
+
+    def testALL(self):
+        self.obj.Column = "ALL"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 999)
+
+    def testAb(self):
+        value = self.obj.Value
+        self.obj.Column = "Ab"
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def testABCD(self):
+        value = self.obj.Value
+        self.obj.Column = "ABCD"
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def testEmptySilent(self):
+        self.obj.Column = ""
+        self.obj.Silent = True
+        self.assertTrue(self.obj.recompute())
+        self.assertEqual(self.obj.Value, -1)
+
+    def testAbSilent(self):
+        self.obj.Column = "Ab"
+        self.obj.Silent = True
+        self.assertTrue(self.obj.recompute())
+        self.assertEqual(self.obj.Value, -1)
+
+    def testABCDSilent(self):
+        self.obj.Column = "ABCD"
+        self.obj.Silent = True
+        self.assertTrue(self.obj.recompute())
+        self.assertEqual(self.obj.Value, -1)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestColumn")
+
+
+class FeatureTestAttribute(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestAttribute")
+        self.doc.UndoMode = 0
+
+    def testValidAttribute(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        obj.Attribute = "Name"
+        self.doc.recompute()
+        self.assertIn("Up-to-date", obj.State)
+
+    def testInvalidAttribute(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        obj.Attribute = "Name123"
+        self.doc.recompute()
+        self.assertIn("Invalid", obj.State)
+        self.assertIn("Touched", obj.State)
+
+    def testRemoval(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        self.assertEqual(self.doc.removeObject("Attribute"), None)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestAttribute")

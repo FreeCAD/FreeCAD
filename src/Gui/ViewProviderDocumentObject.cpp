@@ -224,7 +224,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     ViewProvider::onChanged(prop);
 }
 
-void ViewProviderDocumentObject::hide(void)
+void ViewProviderDocumentObject::hide()
 {
     ViewProvider::hide();
     // use this bit to check whether 'Visibility' must be adjusted
@@ -280,7 +280,7 @@ void ViewProviderDocumentObject::setModeSwitch() {
         ViewProvider::setModeSwitch();
 }
 
-void ViewProviderDocumentObject::show(void)
+void ViewProviderDocumentObject::show()
 {
     if(TreeWidget::isObjectShowable(getObject()))
         ViewProvider::show();
@@ -339,7 +339,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     aDisplayModesArray = this->getDisplayModes();
 
     if (aDisplayModesArray.empty())
-        aDisplayModesArray.push_back("");
+        aDisplayModesArray.emplace_back("");
 
     // We must collect the const char* of the strings and give it to PropertyEnumeration,
     // but we are still responsible for them, i.e. the property class must not delete the literals.

@@ -144,10 +144,10 @@ public:
         initialize("This module is the MeshPart module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -272,7 +272,7 @@ private:
             proj.projectToMesh(shape, maxDist, polylines);
 
             Py::List list;
-            for (auto it : polylines) {
+            for (const auto& it : polylines) {
                 Py::List poly;
                 for (auto jt : it.points) {
                     Py::Vector v(jt);
@@ -304,7 +304,7 @@ private:
             std::vector<MeshProjection::PolyLine> polylines;
             proj.projectParallelToMesh(shape, dir, polylines);
             Py::List list;
-            for (auto it : polylines) {
+            for (const auto& it : polylines) {
                 Py::List poly;
                 for (auto jt : it.points) {
                     Py::Vector v(jt);
@@ -354,7 +354,7 @@ private:
             proj.projectParallelToMesh(polylinesIn, dir, polylines);
 
             Py::List list;
-            for (auto it : polylines) {
+            for (const auto& it : polylines) {
                 Py::List poly;
                 for (auto jt : it.points) {
                     Py::Vector v(jt);

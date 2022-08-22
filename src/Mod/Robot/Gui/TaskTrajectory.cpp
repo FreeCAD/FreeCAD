@@ -129,7 +129,7 @@ void TaskTrajectory::viewTool(const Base::Placement& pos)
     ui->label_Pos->setText(result);
 }
 
-void TaskTrajectory::setTo(void)
+void TaskTrajectory::setTo()
 {
     sim.Tool = pcRobot->Tool.getValue();
 
@@ -139,11 +139,11 @@ void TaskTrajectory::setTo(void)
         sim.setToTime(timePos);
     }
     ViewProv->setAxisTo(sim.Axis[0],sim.Axis[1],sim.Axis[2],sim.Axis[3],sim.Axis[4],sim.Axis[5],sim.Rob.getTcp());
-    axisChanged(sim.Axis[0],sim.Axis[1],sim.Axis[2],sim.Axis[3],sim.Axis[4],sim.Axis[5],sim.Rob.getTcp());
+    Q_EMIT axisChanged(sim.Axis[0],sim.Axis[1],sim.Axis[2],sim.Axis[3],sim.Axis[4],sim.Axis[5],sim.Rob.getTcp());
     viewTool(sim.Rob.getTcp());
 }
 
-void TaskTrajectory::start(void)
+void TaskTrajectory::start()
 {
     timePos = 0.0f;
     ui->timeSpinBox->setValue(timePos);
@@ -151,23 +151,23 @@ void TaskTrajectory::start(void)
     setTo();
 
 }
-void TaskTrajectory::stop(void)
+void TaskTrajectory::stop()
 {
     timer->stop();
     Run = false;
 }
-void TaskTrajectory::run(void)
+void TaskTrajectory::run()
 {
     timer->start();
     Run = true;
 }
-void TaskTrajectory::back(void)
+void TaskTrajectory::back()
 {
 }
-void TaskTrajectory::forward(void)
+void TaskTrajectory::forward()
 {
 }
-void TaskTrajectory::end(void)
+void TaskTrajectory::end()
 {
     timePos = duration;
     ui->timeSpinBox->setValue(timePos);
@@ -175,7 +175,7 @@ void TaskTrajectory::end(void)
     setTo();
 }
 
-void TaskTrajectory::timerDone(void)
+void TaskTrajectory::timerDone()
 {
     if(timePos < duration){
         timePos += .1f;

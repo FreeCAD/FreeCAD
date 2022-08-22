@@ -35,7 +35,7 @@ class DlgPartImportStepImp : public QDialog
 
 public:
   DlgPartImportStepImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
-  ~DlgPartImportStepImp();
+  ~DlgPartImportStepImp() override;
 
 public Q_SLOTS:
   virtual void OnApply();

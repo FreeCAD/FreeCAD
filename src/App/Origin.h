@@ -36,15 +36,15 @@ namespace App
  */
 class AppExport Origin : public App::DocumentObject
 {
-    PROPERTY_HEADER(App::Origin);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Origin);
 
 public:
     /// Constructor
-    Origin(void);
-    virtual ~Origin();
+    Origin();
+    ~Origin() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "Gui::ViewProviderOrigin";
     }
 
@@ -112,7 +112,7 @@ public:
     static Base::BoundBox3d defaultBoundBox();
 
     /// Returns true on changing OriginFeature set
-    virtual short mustExecute(void) const;
+    short mustExecute() const override;
 
     /// Axis types
     static const char* AxisRoles[3];
@@ -124,11 +124,11 @@ public:
 
 protected:
     /// Checks integrity of the Origin
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
     /// Creates all corresponding Axes and Planes objects for the origin if they aren't linked yet
-    virtual void setupObject ();
+    void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject ();
+    void unsetupObject () override;
 
 private:
     struct SetupData;
@@ -138,9 +138,9 @@ private:
         Origin* obj;
     public:
         OriginExtension(Origin* obj);
-        void initExtension(ExtensionContainer* obj);
+        void initExtension(ExtensionContainer* obj) override;
         bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                PyObject **, Base::Matrix4D *, bool, int) const;
+                PyObject **, Base::Matrix4D *, bool, int) const override;
     };
     OriginExtension extension;
 };

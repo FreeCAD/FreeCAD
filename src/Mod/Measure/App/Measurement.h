@@ -47,14 +47,14 @@ namespace Measure
     };
 
 class MeasureExport Measurement : public Base::BaseClass {
-      TYPESYSTEM_HEADER();
+      TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     App::PropertyLinkSubList References3D;
 
 public:
     Measurement();
-    ~Measurement();
+    ~Measurement() override;
 
     void clear();
     bool has3DReferences();
@@ -66,8 +66,8 @@ public:
     MeasureType getType();
 
      // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
+    PyObject *getPyObject() override;
+    virtual unsigned int getMemSize() const;
 
 public:
   // Methods for distances (edge length, two points, edge and a point

@@ -58,10 +58,10 @@ public:
         initialize("This module is the FemGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void* method_def, const Py::Tuple& args)
+    Py::Object invoke_method_varargs(void* method_def, const Py::Tuple& args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -125,11 +125,14 @@ private:
             }
         }
 
-        if (ext == QLatin1String("inp")) {
+        if ( (ext == QLatin1String("inp"))
+            || (ext == QLatin1String("sif"))
+            || (ext == QLatin1String("txt")) ) {
             Gui::TextEditor* editor = new Gui::TextEditor();
             editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/fem-solver-inp-editor.svg"));
             Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
-            editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
+            if (ext == QLatin1String("inp"))
+                editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
             edit->setDisplayName(Gui::EditorView::FileName);
             edit->open(fileName);
             edit->resize(400, 300);

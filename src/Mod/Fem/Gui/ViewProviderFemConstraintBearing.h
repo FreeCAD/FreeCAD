@@ -32,17 +32,17 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemConstraintBearing : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintBearing);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintBearing);
 
 public:
     /// Constructor
     ViewProviderFemConstraintBearing();
-    virtual ~ViewProviderFemConstraintBearing();
+    ~ViewProviderFemConstraintBearing() override;
 
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 } //namespace FemGui

@@ -36,7 +36,7 @@
 
 
 // use a different name to CreateCommand()
-void CreatePathCommands(void);
+void CreatePathCommands();
 
 void loadPathResource()
 {

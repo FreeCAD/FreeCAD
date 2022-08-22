@@ -46,10 +46,10 @@ using ExpressionPtr = std::unique_ptr<Expression>;
 
 class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertyExpressionContainer();
-    virtual ~PropertyExpressionContainer();
+    ~PropertyExpressionContainer() override;
 
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) = 0;
@@ -67,14 +67,14 @@ class AppExport PropertyExpressionEngine : public App::PropertyExpressionContain
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
-    virtual void updateElementReference(
+    void updateElementReference(
             App::DocumentObject *feature, bool reverse=false, bool notify=false) override;
-    virtual bool referenceChanged() const override;
-    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
-    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
-    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+    bool referenceChanged() const override;
+    bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+    Property *CopyOnLabelChange(App::DocumentObject *obj,
                         const std::string &ref, const char *newLabel) const override;
-    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+    Property *CopyOnLinkReplace(const App::DocumentObject *parent,
                         App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     typedef std::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
@@ -105,17 +105,17 @@ public:
     };
 
     PropertyExpressionEngine();
-    ~PropertyExpressionEngine();
+    ~PropertyExpressionEngine() override;
 
-    unsigned int getMemSize (void) const override;
+    unsigned int getMemSize () const override;
 
-    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
-    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
-    virtual void onRelabeledDocument(const App::Document &doc) override;
+    std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
+    void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+    void onRelabeledDocument(const App::Document &doc) override;
 
     void setValue() { } // Dummy
 
-    Property *Copy(void) const override;
+    Property *Copy() const override;
 
     void Paste(const Property &from) override;
 
@@ -164,15 +164,15 @@ public:
     ///signal called when an expression was changed 
     boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
-    virtual void afterRestore() override;
-    virtual void onContainerRestored() override;
+    void afterRestore() override;
+    void onContainerRestored() override;
 
     /* Python interface */
-    PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;
 
 protected:
-    virtual void hasSetValue() override;
+    void hasSetValue() override;
 
 private:
 

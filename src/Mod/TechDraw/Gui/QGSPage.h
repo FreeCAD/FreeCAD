@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QGraphicsScene>
+#include <QPageLayout>
 
 class QTemporaryFile;
 class QLabel;
@@ -70,8 +71,10 @@ class TechDrawGuiExport QGSPage : public QGraphicsScene
 
 public:
     QGSPage(ViewProviderPage *vp, QWidget *parent = nullptr);
-    virtual ~QGSPage();
+    ~QGSPage() override;
 
+    bool addView(const App::DocumentObject *obj);
+    bool attachView(App::DocumentObject *obj);
     QGIView * addViewDimension(TechDraw::DrawViewDimension *dim);
     QGIView * addViewBalloon(TechDraw::DrawViewBalloon *balloon);
     QGIView * addProjectionGroup(TechDraw::DrawProjGroup *view);
@@ -88,15 +91,24 @@ public:
     QGIView * addRichAnno(TechDraw::DrawRichAnno* anno);
     QGIView * addWeldSymbol(TechDraw::DrawWeldSymbol* weld);
 
+    void addChildrenToPage(void);
+    void fixOrphans(bool force = false);
+
+    void redrawAllViews(void);
+    void redraw1View(TechDraw::DrawView* dv);
+
     QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
     QGIView* getQGIVByName(std::string name);
     QGIView* findParent(QGIView *) const;
+    void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
+    bool hasQView(App::DocumentObject *obj);
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
     void createBalloon(QPointF origin, TechDraw::DrawViewPart *parent);
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
+    void addAnnoToParent(QGIRichAnno* anno, QGIView* parent);
 
     std::vector<QGIView *> getViews() const;
 
@@ -106,18 +118,26 @@ public:
     void removeQViewFromScene(QGIView *view);
 
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
-
     QGITemplate * getTemplate() const;
     void removeTemplate();
+    void matchSceneRectToTemplate(void);
+    void attachTemplate(TechDraw::DrawTemplate *obj);
+    void updateTemplate(bool force = false);
+    QPointF getTemplateCenter();
 
     TechDraw::DrawPage * getDrawPage();
 
     void setExporting(bool enable);
-    virtual void refreshViews(void);
+    virtual void refreshViews();
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
+
+    void setDimensionGroups(void);
+    void setBalloonGroups(void);
+    void setLeaderGroups(void);
+    void setRichAnnoGroups(void);
 
 public Q_SLOTS:
 
@@ -129,8 +149,14 @@ protected:
 
     QGITemplate *pageTemplate;
 
+    bool orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list);
+
 private:
     ViewProviderPage *m_vpPage;
+
+    QPageLayout::Orientation m_orientation;
+    QPageSize::PageSizeId m_paperSize;
+    qreal pagewidth, pageheight;
 
 };
 

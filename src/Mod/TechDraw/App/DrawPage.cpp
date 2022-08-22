@@ -335,46 +335,34 @@ void DrawPage::redrawCommand()
     updateAllViews();
     forceRedraw(false);
 }
-//should really be called "updateMostViews".  can still be problems to due execution order.
+
 void DrawPage::updateAllViews()
 {
 //    Base::Console().Message("DP::updateAllViews()\n");
-    std::vector<App::DocumentObject*> featViews = getAllViews();
-    std::vector<App::DocumentObject*>::iterator it = featViews.begin();
+    std::vector<App::DocumentObject*> featViews = getAllViews();  //unordered list of views within page
+
     //first, make sure all the Parts have been executed so GeometryObjects exist
-    for(; it != featViews.end(); ++it) {
-        TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
-        TechDraw::DrawViewCollection *collect = dynamic_cast<TechDraw::DrawViewCollection*>(*it);
+    for(auto& v: featViews) {
+        TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(v);
         if (part) {
+            //view, section, detail, dpgi
             part->recomputeFeature();
-        } else if (collect) {
-            collect->recomputeFeature();
         }
     }
-    //second, make sure all the Dimensions have been executed so Measurements have References
-    for(it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-        if (dim) {
-            dim->recomputeFeature();
+    //second, do the rest of the views that may depend on a part view
+    //TODO: check if we have 2 layers of dependency (ex. leader > weld > tile?)
+    for(auto& v: featViews) {
+        TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(v);
+        if (part) {
+            continue;
         }
-    }
 
-    //third, try to execute all leader lines. may not work if parent DVP isn't ready.
-    for(it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawLeaderLine *line = dynamic_cast<TechDraw::DrawLeaderLine *>(*it);
-        if (line) {
-            line->recomputeFeature();
+        TechDraw::DrawView* view = dynamic_cast<TechDraw::DrawView*>(v);
+        if (view) {
+            view->overrideKeepUpdated(true);
+            view->recomputeFeature();
         }
     }
-
-    //fourth, try to execute all spreadsheets.
-    for (it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawViewSpreadsheet *sheet = dynamic_cast<TechDraw::DrawViewSpreadsheet *>(*it);
-        if (sheet) {
-            sheet->recomputeFeature();
-        }
-    }
-
 }
 
 std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 

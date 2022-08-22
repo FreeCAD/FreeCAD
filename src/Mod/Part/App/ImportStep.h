@@ -44,6 +44,8 @@ public:
         ObjectPerDocument = 3,
         ObjectPerDirectory = 4,
     };
+
+    static void initialize();
     ImportExportSettings();
     void setReadShapeCompoundMode(bool);
     bool getReadShapeCompoundMode() const;
@@ -67,6 +69,11 @@ public:
     bool getShowProgress() const;
     void setImportMode(ImportMode);
     ImportMode getImportMode() const;
+
+private:
+    static void initGeneral(Base::Reference<ParameterGrp> hGrp);
+    static void initSTEP(Base::Reference<ParameterGrp> hGrp);
+    static void initIGES(Base::Reference<ParameterGrp> hGrp);
 
 private:
     ParameterGrp::handle pGroup;

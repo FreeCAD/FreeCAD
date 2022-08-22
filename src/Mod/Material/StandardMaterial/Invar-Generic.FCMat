@@ -1,0 +1,25 @@
+; Invar Generic
+; Uwe Stöhr
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD 0.21.30044 (Git)
+
+[General]
+Name = Invar Generic
+Father = Metal
+KindOfMaterial = Nickel Iron Alloy
+
+[Mechanical]
+Density = 8150 kg/m^3
+PoissonRatio = 0.29
+ShearModulus = 56.0 GPa
+UltimateTensileStrength = 600 MPa
+YoungsModulus = 140.0 GPa
+
+[Thermal]
+SpecificHeat = 515.0 J/kg/K
+ThermalConductivity = 13.5 W/m/K
+ThermalExpansionCoefficient = 1.25 µm/m/K
+
+[Electrical]
+ElectricalConductivity = 1250000 S/m

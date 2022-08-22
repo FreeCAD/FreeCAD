@@ -78,21 +78,18 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *hgroup = "Highlight";
 
     //default line weights
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
-    double weight = lg->getWeight("Thick");
+    double weight = TechDraw::LineGroup::getDefaultWidth("Thick");
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
 
-    weight = lg->getWeight("Thin");
+    weight = TechDraw::LineGroup::getDefaultWidth("Thin");
     ADD_PROPERTY_TYPE(HiddenWidth,(weight),group,App::Prop_None,"The thickness of hidden lines, if enabled (line groups xx.1)");
 
-    weight = lg->getWeight("Graphic");
+    weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
     ADD_PROPERTY_TYPE(IsoWidth,(weight),group,App::Prop_None,"The thickness of isoparameter lines, if enabled");
 
-    weight = lg->getWeight("Extra");
+    weight = TechDraw::LineGroup::getDefaultWidth("Extra");
     ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
-    delete lg;                            //Coverity CID 174664
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
@@ -128,11 +125,6 @@ ViewProviderViewPart::ViewProviderViewPart()
 ViewProviderViewPart::~ViewProviderViewPart()
 {
 
-}
-
-void ViewProviderViewPart::updateData(const App::Property* prop)
-{
-    ViewProviderDrawingView::updateData(prop);
 }
 
 void ViewProviderViewPart::onChanged(const App::Property* prop)
@@ -175,21 +167,7 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
     ViewProviderDrawingView::attach(pcFeat);
 }
 
-void ViewProviderViewPart::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderViewPart::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-
-std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a ViewPart are:
@@ -268,18 +246,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderViewPart::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderViewPart::doubleClicked(void)
+bool ViewProviderViewPart::doubleClicked()
 {
     setEdit(ViewProvider::Default);
     return true;
@@ -377,12 +344,12 @@ bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
     return true;
 }
 
-App::Color ViewProviderViewPart::prefSectionColor(void)
+App::Color ViewProviderViewPart::prefSectionColor()
 {
     return PreferencesGui::sectionLineColor();
 }
 
-App::Color ViewProviderViewPart::prefHighlightColor(void)
+App::Color ViewProviderViewPart::prefHighlightColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
@@ -391,7 +358,7 @@ App::Color ViewProviderViewPart::prefHighlightColor(void)
     return fcColor;
 }
 
-int ViewProviderViewPart::prefHighlightStyle(void)
+int ViewProviderViewPart::prefHighlightStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

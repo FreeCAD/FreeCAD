@@ -32,13 +32,9 @@ using namespace App;
 
 PROPERTY_SOURCE_ABSTRACT(App::TransactionalObject, App::ExtensionContainer)
 
-TransactionalObject::TransactionalObject(void)
-{
-}
+TransactionalObject::TransactionalObject() = default;
 
-TransactionalObject::~TransactionalObject(void)
-{
-}
+TransactionalObject::~TransactionalObject() = default;
 
 bool TransactionalObject::isAttachedToDocument() const
 {

@@ -22,23 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QRegExp>
-#endif
-
-#include <QStringBuilder>
-
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 #include <QGraphicsView>
+#include <QMessageBox>
 #include <QPainter>
-#include <QSvgRenderer>
+#include <QRegExp>
+#include <QStringBuilder>
 #include <QSvgGenerator>
-
+#include <QSvgRenderer>
+#include <sstream>
 #include <vector>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -166,7 +163,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawPageDefault::isActive(void)
+bool CmdTechDrawPageDefault::isActive()
 {
     return hasActiveDocument();
 }
@@ -246,7 +243,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawPageTemplate::isActive(void)
+bool CmdTechDrawPageTemplate::isActive()
 {
     return hasActiveDocument();
 }
@@ -281,7 +278,7 @@ void CmdTechDrawRedrawPage::activated(int iMsg)
     page->redrawCommand();
 }
 
-bool CmdTechDrawRedrawPage::isActive(void)
+bool CmdTechDrawRedrawPage::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -399,7 +396,7 @@ void CmdTechDrawView::activated(int iMsg)
     }
     dvp->Source.setValues(shapes);
     dvp->XSource.setValues(xShapes);
-    if (faceName.size()) {
+    if (!faceName.empty()) {
         std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj, faceName);
         projDir = dirs.first;
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
@@ -427,7 +424,7 @@ void CmdTechDrawView::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawView::isActive(void)
+bool CmdTechDrawView::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -461,7 +458,7 @@ void CmdTechDrawActiveView::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgActiveView(page));
 }
 
-bool CmdTechDrawActiveView::isActive(void)
+bool CmdTechDrawActiveView::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -505,7 +502,7 @@ void CmdTechDrawSectionView::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawSectionView::isActive(void)
+bool CmdTechDrawSectionView::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -554,7 +551,7 @@ void CmdTechDrawDetailView::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgDetail(dvp));
 }
 
-bool CmdTechDrawDetailView::isActive(void)
+bool CmdTechDrawDetailView::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -677,7 +674,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     multiView->XSource.setValues(xShapes);
     doCommand(Doc, "App.activeDocument().%s.addProjection('Front')", multiViewName.c_str());
 
-    if (faceName.size()) {
+    if (!faceName.empty()) {
         std::pair<Base::Vector3d, Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj, faceName);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc, "App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
@@ -708,7 +705,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView, true));
 }
 
-bool CmdTechDrawProjectionGroup::isActive(void)
+bool CmdTechDrawProjectionGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool taskInProgress = false;
@@ -779,7 +776,7 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 //non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
 bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select an object first"));
         return false;
@@ -890,8 +887,8 @@ void CmdTechDrawBalloon::activated(int iMsg)
     ViewProviderViewPart* partVP = dynamic_cast<ViewProviderViewPart*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && partVP) {
-        QGVPage* viewPage = pageVP->getGraphicsView();
-        QGSPage* scenePage = pageVP->getGraphicsScene();
+        QGVPage* viewPage = pageVP->getQGVPage();
+        QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
             viewPage->startBalloonPlacing();
 
@@ -904,7 +901,7 @@ void CmdTechDrawBalloon::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawBalloon::isActive(void)
+bool CmdTechDrawBalloon::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -946,7 +943,7 @@ void CmdTechDrawClipGroup::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawClipGroup::isActive(void)
+bool CmdTechDrawClipGroup::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1021,7 +1018,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawClipGroupAdd::isActive(void)
+bool CmdTechDrawClipGroupAdd::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveClip = false;
@@ -1094,7 +1091,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawClipGroupRemove::isActive(void)
+bool CmdTechDrawClipGroupRemove::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveClip = false;
@@ -1140,8 +1137,8 @@ void CmdTechDrawSymbol::activated(int iMsg)
     QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QObject::tr("Choose an SVG file to open"), QString(),
         QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)").
-        arg(QObject::tr("Scalable Vector Graphic")).
-        arg(QObject::tr("All Files")));
+        arg(QObject::tr("Scalable Vector Graphic"),
+            QObject::tr("All Files")));
 
     if (!filename.isEmpty())
     {
@@ -1159,7 +1156,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawSymbol::isActive(void)
+bool CmdTechDrawSymbol::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1217,7 +1214,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawDraftView::isActive(void)
+bool CmdTechDrawDraftView::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1282,7 +1279,7 @@ void CmdTechDrawArchView::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawArchView::isActive(void)
+bool CmdTechDrawArchView::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1331,7 +1328,7 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawSpreadsheetView::isActive(void)
+bool CmdTechDrawSpreadsheetView::isActive()
 {
     //need a Page and a SpreadSheet::Sheet
     bool havePage = DrawGuiUtil::needPage(this);
@@ -1387,7 +1384,7 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawExportPageSVG::isActive(void)
+bool CmdTechDrawExportPageSVG::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1453,7 +1450,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
 }
 
 
-bool CmdTechDrawExportPageDXF::isActive(void)
+bool CmdTechDrawExportPageDXF::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1485,12 +1482,12 @@ void CmdTechDrawProjectShape::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawProjectShape::isActive(void)
+bool CmdTechDrawProjectShape::isActive()
 {
     return true;
 }
 
-void CreateTechDrawCommands(void)
+void CreateTechDrawCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 

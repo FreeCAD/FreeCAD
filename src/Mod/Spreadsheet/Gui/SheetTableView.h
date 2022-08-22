@@ -42,8 +42,8 @@ public:
 Q_SIGNALS:
     void resizeFinished();
 protected:
-    void mouseReleaseEvent(QMouseEvent * event);
-    bool viewportEvent(QEvent *e);
+    void mouseReleaseEvent(QMouseEvent * event) override;
+    bool viewportEvent(QEvent *e) override;
 private:
     QTableView *owner;
 };
@@ -53,7 +53,7 @@ class SheetTableView : public QTableView
     Q_OBJECT
 public:
     explicit SheetTableView(QWidget *parent = nullptr);
-    ~SheetTableView();
+    ~SheetTableView() override;
     
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
@@ -72,7 +72,7 @@ public Q_SLOTS:
     void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
-    void commitData(QWidget *editor);
+    void commitData(QWidget *editor) override;
     void updateCellSpan(App::CellAddress address);
     void insertRows();
     void insertRowsAfter();
@@ -86,13 +86,13 @@ protected Q_SLOTS:
     void onConfSetup();
 
 protected:
-    bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
-    bool event(QEvent *event);
-    void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
-    void mousePressEvent(QMouseEvent* event);
-    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event) override;
+    bool event(QEvent *event) override;
+    void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
-    void contextMenuEvent (QContextMenuEvent * e);
+    void contextMenuEvent (QContextMenuEvent * e) override;
 
     void _copySelection(const std::vector<App::Range> &ranges, bool copy);
 

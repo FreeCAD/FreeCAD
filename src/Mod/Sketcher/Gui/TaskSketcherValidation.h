@@ -43,10 +43,10 @@ class SketcherValidation : public QWidget
 
 public:
     SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent = nullptr);
-    ~SketcherValidation();
+    ~SketcherValidation() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private Q_SLOTS:
     void on_findButton_clicked();
@@ -79,8 +79,8 @@ class TaskSketcherValidation : public Gui::TaskView::TaskDialog
 
 public:
     TaskSketcherValidation(Sketcher::SketchObject* Obj);
-    ~TaskSketcherValidation();
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    ~TaskSketcherValidation() override;
+    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
     { return QDialogButtonBox::Close; }
 };
 

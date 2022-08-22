@@ -44,20 +44,20 @@ class GuiExport Placement : public Gui::LocationDialog
 
 public:
     Placement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Placement();
-    void accept();
-    void reject();
+    ~Placement() override;
+    void accept() override;
+    void reject() override;
 
     void bindObject();
-    Base::Vector3d getDirection() const;
+    Base::Vector3d getDirection() const override;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
     void showDefaultButtons(bool);
 
 protected:
-    void open();
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent*);
+    void open() override;
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent*) override;
 
 private Q_SLOTS:
     void openTransaction();
@@ -75,7 +75,7 @@ private:
     Base::Placement getPlacementData() const;
     Base::Vector3d getCenterData() const;
     QString getPlacementString() const;
-    void directionActivated(int);
+    void directionActivated(int) override;
     void applyPlacement(const Base::Placement& p, bool incremental);
     void applyPlacement(const QString& p, bool incremental);
     void revertTransformation();
@@ -115,10 +115,10 @@ class GuiExport DockablePlacement : public Placement
 
 public:
     DockablePlacement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DockablePlacement();
+    ~DockablePlacement() override;
 
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
 };
 
 class TaskPlacement : public Gui::TaskView::TaskDialog
@@ -127,24 +127,24 @@ class TaskPlacement : public Gui::TaskView::TaskDialog
 
 public:
     TaskPlacement();
-    ~TaskPlacement();
+    ~TaskPlacement() override;
 
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
     void bindObject();
-    bool accept();
-    bool reject();
-    void clicked(int id);
+    bool accept() override;
+    bool reject() override;
+    void clicked(int id) override;
 
-    void open();
-    bool isAllowedAlterDocument(void) const
+    void open() override;
+    bool isAllowedAlterDocument() const override
     { return true; }
-    bool isAllowedAlterView(void) const
+    bool isAllowedAlterView() const override
     { return true; }
-    bool isAllowedAlterSelection(void) const
+    bool isAllowedAlterSelection() const override
     { return true; }
-    QDialogButtonBox::StandardButtons getStandardButtons() const;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
 
 public Q_SLOTS:
     void slotPlacementChanged(const QVariant &, bool, bool);

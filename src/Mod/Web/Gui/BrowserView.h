@@ -59,9 +59,9 @@ public:
     WebView(QWidget *parent = nullptr);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 private Q_SLOTS:
     void triggerContextMenuAction(int);
@@ -81,27 +81,27 @@ class WebGuiExport BrowserView : public Gui::MDIView,
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     BrowserView(QWidget* parent);
-    ~BrowserView();
+    ~BrowserView() override;
 
     void load(const char* URL);
     void load(const QUrl & url);
     void setHtml(const QString& HtmlCode,const QUrl & BaseUrl);
-    void stop(void);
+    void stop();
     QUrl url() const;
 
-    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
+    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
 
-    const char *getName(void) const {return "BrowserView";}
-    virtual PyObject *getPyObject(void);
+    const char *getName() const override {return "BrowserView";}
+    PyObject *getPyObject() override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
-    bool canClose (void);
+    bool canClose () override;
 
 #ifdef QTWEBENGINE
 public Q_SLOTS:
@@ -145,10 +145,10 @@ class UrlWidget : public QLineEdit
     BrowserView *m_view;
 public:
     explicit UrlWidget(BrowserView *view);
-    ~UrlWidget();
+    ~UrlWidget() override;
     void display();
 protected:
-    void keyPressEvent(QKeyEvent *keyEvt);
+    void keyPressEvent(QKeyEvent *keyEvt) override;
 };
 
 } // namespace WebGui

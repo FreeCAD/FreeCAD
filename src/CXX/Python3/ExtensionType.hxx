@@ -52,7 +52,7 @@
             Py::Object r( (self->NAME)() ); \
             return Py::new_reference_to( r.ptr() ); \
         } \
-        catch( Py::Exception & ) \
+        catch( Py::BaseException & ) \
         { \
             return 0; \
         } \
@@ -68,7 +68,7 @@
             Py::Object r( (self->NAME)( a ) ); \
             return Py::new_reference_to( r.ptr() ); \
         } \
-        catch( Py::Exception & ) \
+        catch( Py::BaseException & ) \
         { \
             return 0; \
         } \
@@ -87,7 +87,7 @@
             Py::Object r( (self->NAME)( a, k ) ); \
             return Py::new_reference_to( r.ptr() ); \
         } \
-        catch( Py::Exception & ) \
+        catch( Py::BaseException & ) \
         { \
             return 0; \
         } \
@@ -111,7 +111,6 @@ namespace Py
         PythonExtensionBase *m_pycxx_object;
     };
 
-
     class PYCXX_EXPORT ExtensionClassMethodsTable
     {
     public:
@@ -120,6 +119,13 @@ namespace Py
         , m_methods_used( 0 )
         , m_methods_size( METHOD_TABLE_SIZE_INCREMENT )
         {
+            // add the sentinel marking the table end
+            PyMethodDef *p = &m_methods_table[ 0 ];
+
+            p->ml_name = NULL;
+            p->ml_meth = NULL;
+            p->ml_flags = 0;
+            p->ml_doc = NULL;
         }
 
         ~ExtensionClassMethodsTable()
@@ -194,7 +200,7 @@ namespace Py
         }
 
         virtual ~PythonClass()
-        {} 
+        {}
 
         static ExtensionClassMethodsTable &methodTable()
         {
@@ -212,7 +218,7 @@ namespace Py
         static PythonType &behaviors()
         {
             static PythonType *p;
-            if( p == NULL ) 
+            if( p == NULL )
             {
 #if defined( _CPPRTTI ) || defined( __GNUG__ )
                 const char *default_name = (typeid( T )).name();
@@ -240,15 +246,20 @@ namespace Py
 #ifdef PYCXX_DEBUG
             std::cout << "extension_object_new()" << std::endl;
 #endif
-            PythonClassInstance *o = reinterpret_cast<PythonClassInstance *>( subtype->tp_alloc( subtype, 0 ) );
-            if( o == NULL )
+#if defined( Py_LIMITED_API )
+            PyObject *object = reinterpret_cast<allocfunc>( PyType_GetSlot( subtype, Py_tp_alloc ) )( subtype, 0 );
+#else
+            PyObject *object = subtype->tp_alloc( subtype, 0 );
+#endif
+            if( object == NULL )
                 return NULL;
 
+            PythonClassInstance *o = reinterpret_cast<PythonClassInstance *>( object );
             o->m_pycxx_object = NULL;
 
             PyObject *self = reinterpret_cast<PyObject *>( o );
 #ifdef PYCXX_DEBUG
-            std::cout << "extension_object_new() => self=0x" << std::hex << reinterpret_cast< unsigned int >( self ) << std::dec << std::endl;
+            std::cout << "extension_object_new() => self=0x" << std::hex << reinterpret_cast< unsigned long >( self ) << std::dec << std::endl;
 #endif
             return self;
         }
@@ -264,26 +275,26 @@ namespace Py
 
                 PythonClassInstance *self = reinterpret_cast<PythonClassInstance *>( _self );
 #ifdef PYCXX_DEBUG
-                std::cout << "extension_object_init( self=0x" << std::hex << reinterpret_cast< unsigned int >( self ) << std::dec << " )" << std::endl;
-                std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
+                std::cout << "extension_object_init( self=0x" << std::hex << reinterpret_cast< unsigned long >( self ) << std::dec << " )" << std::endl;
+                std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned long >( self->m_pycxx_object ) << std::dec << std::endl;
 #endif
 
                 if( self->m_pycxx_object == NULL )
                 {
                     self->m_pycxx_object = new T( self, args, kwds );
 #ifdef PYCXX_DEBUG
-                    std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
+                    std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned long >( self->m_pycxx_object ) << std::dec << std::endl;
 #endif
                 }
                 else
                 {
 #ifdef PYCXX_DEBUG
-                    std::cout << "    reinit - self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
+                    std::cout << "    reinit - self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned long >( self->m_pycxx_object ) << std::dec << std::endl;
 #endif
                     self->m_pycxx_object->reinit( args, kwds );
                 }
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return -1;
             }
@@ -294,11 +305,16 @@ namespace Py
         {
             PythonClassInstance *self = reinterpret_cast< PythonClassInstance * >( _self );
 #ifdef PYCXX_DEBUG
-            std::cout << "extension_object_deallocator( self=0x" << std::hex << reinterpret_cast< unsigned int >( self ) << std::dec << " )" << std::endl;
-            std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( self->m_pycxx_object ) << std::dec << std::endl;
+            std::cout << "extension_object_deallocator( self=0x" << std::hex << reinterpret_cast< unsigned long >( self ) << std::dec << " )" << std::endl;
+            std::cout << "    self->m_pycxx_object=0x" << std::hex << reinterpret_cast< unsigned long >( self->m_pycxx_object ) << std::dec << std::endl;
 #endif
             delete self->m_pycxx_object;
+#ifdef Py_LIMITED_API
+            freefunc fn = reinterpret_cast<freefunc>( PyType_GetSlot( _self->ob_type, Py_tp_free ) );
+            fn( _self );
+#else
             _self->ob_type->tp_free( _self );
+#endif
         }
 
     public:
@@ -314,8 +330,17 @@ namespace Py
 
         static bool check( PyObject *p )
         {
-            // is p like me?
-            return p->ob_type == type_object();
+            // is p a me or a derived me
+            switch( PyObject_IsInstance( p, reinterpret_cast<PyObject *>( type_object() ) ) )
+            {
+                default:
+                case -1:
+                    throw Exception();
+                case 0:
+                    return false;
+                case 1:
+                    return true;
+            }
         }
 
         static bool check( const Object &ob )

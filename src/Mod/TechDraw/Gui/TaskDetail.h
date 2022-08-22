@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKDETAIL_H
 #define TECHDRAWGUI_TASKDETAIL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -45,14 +47,12 @@ class DrawViewPart;
 namespace TechDrawGui
 {
 class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGEPath;
 class QGIDetail;
 class QGIGhostHighlight;
-class ViewProviderLeader;
+class ViewProviderPage;
 class Ui_TaskDetail;
 
 class TaskDetail : public QWidget
@@ -62,7 +62,7 @@ class TaskDetail : public QWidget
 public:
     TaskDetail(TechDraw::DrawViewPart* baseFeat);
     TaskDetail(TechDraw::DrawViewDetail* detailFeat);
-    ~TaskDetail();
+    ~TaskDetail() override;
 
 public Q_SLOTS:
     void onDraggerClicked(bool b);
@@ -83,8 +83,8 @@ public:
     void enableTaskButtons(bool b);
     
 protected:
-    void changeEvent(QEvent *e);
-    void startDragger(void);
+    void changeEvent(QEvent *e) override;
+    void startDragger();
 
     void createDetail();
     void updateDetail();
@@ -92,7 +92,7 @@ protected:
     void editByHighlight();
 
     void blockButtons(bool b);
-    void setUiFromFeat(void);
+    void setUiFromFeat();
     void updateUi(QPointF p);
     void enableInputFields(bool b);
 
@@ -109,9 +109,7 @@ private:
 
     QGIGhostHighlight* m_ghost;
 
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+    ViewProviderPage* m_vpp;
     TechDraw::DrawViewDetail* m_detailFeat;
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
@@ -144,24 +142,24 @@ class TaskDlgDetail : public Gui::TaskView::TaskDialog
 public:
     TaskDlgDetail(TechDraw::DrawViewPart* baseFeat);
     TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat);
-    ~TaskDlgDetail();
+    ~TaskDlgDetail() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 protected:
 

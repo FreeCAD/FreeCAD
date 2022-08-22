@@ -60,14 +60,14 @@ public:
         , editedObject(editedObject)
     {
     }
-    ~VertexSelection()
+    ~VertexSelection() override
     {
         mode = FillingVertexPanel::None;
     }
     /**
       * Allow the user to pick only edges.
       */
-    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
     {
         // don't allow references to itself
         if (pObj == editedObject)
@@ -96,9 +96,9 @@ private:
             return false;
 
         auto links = editedObject->Points.getSubListValues();
-        for (auto it : links) {
+        for (const auto& it : links) {
             if (it.first == pObj) {
-                for (auto jt : it.second) {
+                for (const auto& jt : it.second) {
                     if (jt == sSubName)
                         return !appendVertex;
                 }
@@ -160,8 +160,8 @@ void FillingVertexPanel::setEditedObject(Surface::Filling* obj)
         ui->listFreeVertex->addItem(item);
 
         QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8((*it)->Label.getValue()))
-                .arg(QString::fromStdString(*jt));
+                .arg(QString::fromUtf8((*it)->Label.getValue()),
+                     QString::fromStdString(*jt));
         item->setText(text);
 
         QList<QVariant> data;
@@ -259,8 +259,8 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             Gui::SelectionObject sel(msg);
             QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()))
-                    .arg(QString::fromLatin1(msg.pSubName));
+                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                         QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;
@@ -272,7 +272,7 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto objects = editedObject->Points.getValues();
             objects.push_back(sel.getObject());
             auto element = editedObject->Points.getSubValues();
-            element.push_back(msg.pSubName);
+            element.emplace_back(msg.pSubName);
             editedObject->Points.setValues(objects, element);
             this->vp->highlightReferences(ViewProviderFilling::Vertex,
                 editedObject->Points.getSubListValues(), true);

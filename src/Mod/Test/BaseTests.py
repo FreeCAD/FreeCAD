@@ -22,6 +22,7 @@
 #***************************************************************************/
 
 import FreeCAD, os, unittest, tempfile, math
+from FreeCAD import Base
 
 class ConsoleTestCase(unittest.TestCase):
     def setUp(self):
@@ -380,6 +381,27 @@ class AlgebraTestCase(unittest.TestCase):
         self.assertTrue(b.intersect(b),"Bbox doesn't intersect with itself")
         self.assertFalse(b.intersected(FreeCAD.BoundBox(4,4,4,6,6,6)).isValid(),"Bbox should not intersect with Bbox outside")
         self.assertEqual(b.intersected(FreeCAD.BoundBox(-2,-2,-2,2,2,2)).Center, b.Center,"Bbox is not a full subset")
+
+    def testMultLeftOrRight(self):
+        doc = FreeCAD.newDocument()
+        obj = doc.addObject("App::FeatureTestPlacement")
+
+        p1 = Base.Placement()
+        p1.Base = Base.Vector(10, 10, 10)
+
+        p2 = Base.Placement()
+        p2.Rotation.Angle = math.radians(90)
+
+        obj.Input1 = p1
+        obj.Input2 = p2
+        doc.recompute()
+
+        self.assertTrue(obj.MultRight.isSame(p1 * p2))
+        self.assertFalse(obj.MultRight.isSame(p2 * p1))
+        self.assertTrue(obj.MultLeft.isSame(p2 * p1))
+        self.assertFalse(obj.MultLeft.isSame(p1 * p2))
+
+        FreeCAD.closeDocument(doc.Name)
 
 class MatrixTestCase(unittest.TestCase):
     def setUp(self):

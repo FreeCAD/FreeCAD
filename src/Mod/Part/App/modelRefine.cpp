@@ -622,7 +622,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
     static TopoDS_Face dummy;
     std::vector<EdgeVectorType> boundaries;
     boundarySplit(faces, boundaries);
-    if (boundaries.size() < 1)
+    if (boundaries.empty())
         return dummy;
 
     //make wires
@@ -638,7 +638,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
             return dummy;
         allWires.push_back(wireMaker.Wire());
     }
-    if (allWires.size() < 1)
+    if (allWires.empty())
         return dummy;
 
     // Sort wires by size, that is, the innermost wire comes last
@@ -1089,7 +1089,7 @@ bool FaceUniter::process()
             }
         }
     }
-    if (facesToSew.size() > 0)
+    if (!facesToSew.empty())
     {
         modifiedSignal = true;
         workShell = ModelRefine::removeFaces(workShell, facesToRemove);
@@ -1217,7 +1217,11 @@ Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape&
     Build();
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void Part::BRepBuilderAPI_RefineModel::Build(const Message_ProgressRange&)
+#else
 void Part::BRepBuilderAPI_RefineModel::Build()
+#endif
 {
     if (myShape.IsNull())
         Standard_Failure::Raise("Cannot remove splitter from empty shape");

@@ -210,7 +210,7 @@ Area::Area(const Area& other, bool deep_copy)
     myShape = other.myShape;
     myShapeDone = other.myShapeDone;
     mySections.reserve(other.mySections.size());
-    for (shared_ptr<Area> area : other.mySections)
+    for (const shared_ptr<Area>& area : other.mySections)
         mySections.push_back(make_shared<Area>(*area, true));
 }
 
@@ -545,7 +545,7 @@ void Area::addToBuild(CArea& area, const TopoDS_Shape& shape) {
         }
     }
 
-    if (areaOpen.m_curves.size()) {
+    if (!areaOpen.m_curves.empty()) {
         if (&area == myArea.get() || myParams.OpenMode == OpenModeNone)
             myAreaOpen->m_curves.splice(myAreaOpen->m_curves.end(), areaOpen.m_curves);
         else
@@ -706,7 +706,7 @@ struct WireJoiner {
     //
     void join(double tol) {
         tol = tol * tol;
-        while (edges.size()) {
+        while (!edges.empty()) {
             auto it = edges.begin();
             BRepBuilderAPI_MakeWire mkWire;
             mkWire.Add(it->edge);
@@ -715,7 +715,7 @@ struct WireJoiner {
 
             bool done = false;
             for (int idx = 0; !done && idx < 2; ++idx) {
-                while (edges.size()) {
+                while (!edges.empty()) {
                     std::vector<VertexInfo> ret;
                     ret.reserve(1);
                     const gp_Pnt& pt = idx == 0 ? pstart : pend;
@@ -918,7 +918,7 @@ struct WireJoiner {
         std::vector<StackInfo> stack;
         std::vector<VertexInfo> vertexStack;
 
-        for (int iteration = 1; edgesToVisit.size(); ++iteration) {
+        for (int iteration = 1; !edgesToVisit.empty(); ++iteration) {
             EdgeInfo* currentInfo = *edgesToVisit.begin();
             int currentIdx = 1; // used to tell whether search connection from the start(0) or end(1)
             TopoDS_Edge& e = currentInfo->edge;
@@ -1566,7 +1566,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                     }
                 }
             }
-            if (area->myShapes.size()) {
+            if (!area->myShapes.empty()) {
                 sections.push_back(area);
                 FC_TIME_LOG(t1, "makeSection " << z);
                 showShape(area->getShape(), nullptr, "section_%u_final", i);
@@ -1606,7 +1606,7 @@ TopoDS_Shape Area::getPlane(gp_Trsf* trsf) {
 }
 
 bool Area::isBuilt() const {
-    return (myArea || mySections.size());
+    return (myArea || !mySections.empty());
 }
 
 std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf& trsf, bool inverse) const
@@ -1675,7 +1675,7 @@ void Area::build() {
                 if (myParams.OpenMode != OpenModeNone)
                     myArea->m_curves.splice(myArea->m_curves.end(), myAreaOpen->m_curves);
                 pending = false;
-                if (areaClip.m_curves.size()) {
+                if (!areaClip.m_curves.empty()) {
                     if (op == OperationCompound)
                         myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
                     else {
@@ -3121,7 +3121,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape>& shapes,
     auto current_it = shape_list.end();
     double current_height = (pstart.*getter)();
     double max_dist = sort_mode == SortModeGreedy ? threshold * threshold : 0;
-    while (shape_list.size()) {
+    while (!shape_list.empty()) {
         AREA_TRACE("sorting " << shape_list.size() << ' ' << AREA_XYZ(pstart));
         double best_d = DBL_MAX;
         auto best_it = shape_list.begin();
@@ -3314,7 +3314,7 @@ void Area::toPath(Toolpath& path, const std::list<TopoDS_Shape>& shapes,
         PARAM_REF(PARAM_FARG, AREA_PARAMS_ARC_PLANE),
         PARAM_FIELDS(PARAM_FARG, AREA_PARAMS_SORT));
 
-    if (wires.size() == 0)
+    if (wires.empty())
         return;
 
     short currentArcPlane = arc_plane;

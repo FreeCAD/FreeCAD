@@ -44,9 +44,7 @@ Stream::Stream() : _swap(false)
 {
 }
 
-Stream::~Stream()
-{
-}
+Stream::~Stream() = default;
 
 Stream::ByteOrder Stream::byteOrder() const
 {
@@ -62,9 +60,7 @@ OutputStream::OutputStream(std::ostream &rout) : _out(rout)
 {
 }
 
-OutputStream::~OutputStream()
-{
-}
+OutputStream::~OutputStream() = default;
 
 OutputStream& OutputStream::operator << (bool b)
 {
@@ -144,9 +140,7 @@ InputStream::InputStream(std::istream &rin) : _in(rin)
 {
 }
 
-InputStream::~InputStream()
-{
-}
+InputStream::~InputStream() = default;
 
 InputStream& InputStream::operator >> (bool& b)
 {
@@ -297,9 +291,7 @@ ByteArrayIStreambuf::ByteArrayIStreambuf(const QByteArray& data) : _buffer(data)
     _cur = 0;
 }
 
-ByteArrayIStreambuf::~ByteArrayIStreambuf()
-{
-}
+ByteArrayIStreambuf::~ByteArrayIStreambuf() = default;
 
 ByteArrayIStreambuf::int_type ByteArrayIStreambuf::underflow()
 {
@@ -367,9 +359,7 @@ IODeviceOStreambuf::IODeviceOStreambuf(QIODevice* dev) : device(dev)
 {
 }
 
-IODeviceOStreambuf::~IODeviceOStreambuf()
-{
-}
+IODeviceOStreambuf::~IODeviceOStreambuf() = default;
 
 std::streambuf::int_type
 IODeviceOStreambuf::overflow(std::streambuf::int_type c)
@@ -433,9 +423,7 @@ IODeviceIStreambuf::IODeviceIStreambuf(QIODevice* dev) : device(dev), buffer{}
           buffer+pbSize);    // end position
 }
 
-IODeviceIStreambuf::~IODeviceIStreambuf()
-{
-}
+IODeviceIStreambuf::~IODeviceIStreambuf() = default;
 
 std::streambuf::int_type
 IODeviceIStreambuf::underflow()
@@ -746,9 +734,7 @@ Streambuf::Streambuf(const std::string& data)
     _cur = _beg;
 }
 
-Streambuf::~Streambuf()
-{
-}
+Streambuf::~Streambuf() = default;
 
 Streambuf::int_type Streambuf::underflow()
 {

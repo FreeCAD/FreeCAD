@@ -51,7 +51,7 @@ public:
     //@}
 
     /// Destruction
-    ~Placement () {}
+    ~Placement () = default;
 
     Matrix4D toMatrix() const;
     void fromMatrix(const Matrix4D& m);
@@ -66,6 +66,9 @@ public:
     Placement inverse() const;
     void move(const Vector3d& MovVec);
 
+    bool isSame(const Placement&) const;
+    bool isSame(const Placement&, double tol) const;
+
     /** Operators. */
     //@{
     Placement & operator*=(const Placement & p);
@@ -75,7 +78,11 @@ public:
     Placement& operator = (const Placement&);
     Placement pow(double t, bool shorten = true) const;
 
+    Placement& multRight(const Base::Placement& p);
+    Placement& multLeft(const Base::Placement& p);
+
     void multVec(const Vector3d & src, Vector3d & dst) const;
+    void multVec(const Vector3f & src, Vector3f & dst) const;
     //@}
 
     static Placement slerp(const Placement & p0, const Placement & p1, double t);

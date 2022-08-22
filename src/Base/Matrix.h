@@ -72,7 +72,7 @@ public:
   Matrix4D (const Vector3f& rclBase, const Vector3f& rclDir, float fAngle);
   Matrix4D (const Vector3d& rclBase, const Vector3d& rclDir, double fAngle);
   /// Destruction
-  ~Matrix4D () {}
+  ~Matrix4D () = default;
 
   /** @name Operators */
   //@{
@@ -287,13 +287,15 @@ inline Matrix4D Matrix4D::operator * (const Matrix4D& rclMtrx) const
   Matrix4D  clMat;
   unsigned short ie, iz, is;
 
-  for (iz = 0; iz < 4; iz++)
+  for (iz = 0; iz < 4; iz++) {
     for (is = 0; is < 4; is++) {
       clMat.dMtrx4D[iz][is] = 0;
-      for (ie = 0; ie < 4; ie++)
-       	clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] *
+      for (ie = 0; ie < 4; ie++) {
+        clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] *
                           rclMtrx.dMtrx4D[ie][is];
+      }
     }
+  }
 
   return clMat;
 }

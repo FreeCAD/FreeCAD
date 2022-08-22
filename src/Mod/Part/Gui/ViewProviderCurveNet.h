@@ -43,27 +43,27 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderCurveNet:public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPart);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPart);
 
 public:
     /// constructor
     ViewProviderCurveNet();
     /// destructor
-    virtual ~ViewProviderCurveNet();
+    ~ViewProviderCurveNet() override;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
     /// Update the Part representation
-    virtual void updateData(const App::Property*);
+    void updateData(const App::Property*) override;
 
     virtual bool handleEvent(const SoEvent * const ev,Gui::View3DInventorViewer &Viewer);
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     struct Node {
         Gui::SoFCSelection  *pcHighlight;

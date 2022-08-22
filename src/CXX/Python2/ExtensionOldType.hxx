@@ -180,7 +180,7 @@ namespace Py
             self[0] = Object( this );
             self[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ), true );
 
-            PyObject *func = PyCFunction_New( &method_def->ext_meth_def, self.ptr() );
+            PyObject *func = PyCFunction_NewEx( &method_def->ext_meth_def, self.ptr(), NULL );
 
             return Object(func, true);
         }
@@ -256,7 +256,7 @@ namespace Py
 
                 return new_reference_to( result.ptr() );
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return 0;
             }
@@ -293,7 +293,7 @@ namespace Py
 
                 return new_reference_to( result.ptr() );
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return 0;
             }
@@ -322,7 +322,7 @@ namespace Py
 
                 return new_reference_to( result.ptr() );
             }
-            catch( Exception & )
+            catch( BaseException & )
             {
                 return 0;
             }

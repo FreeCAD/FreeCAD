@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 #define DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 
 #include "ViewProviderDrawingView.h"
@@ -33,45 +35,40 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderSymbol : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderSymbol);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderSymbol);
 
 public:
     /// constructor
     ViewProviderSymbol();
     /// destructor
-    virtual ~ViewProviderSymbol();
+    ~ViewProviderSymbol() override;
 
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-
-    virtual TechDraw::DrawViewSymbol* getViewObject() const;
+    TechDraw::DrawViewSymbol* getViewObject() const override;
 };
 
 class TechDrawGuiExport ViewProviderDraft : public ViewProviderSymbol
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderDraft);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDraft);
 
 public:
     /// constructor
     ViewProviderDraft();
     /// destructor
-    virtual ~ViewProviderDraft();
+    ~ViewProviderDraft() override;
 };
 
 class TechDrawGuiExport ViewProviderArch : public ViewProviderSymbol
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderArch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderArch);
 
 public:
     /// constructor
     ViewProviderArch();
     /// destructor
-    virtual ~ViewProviderArch();
+    ~ViewProviderArch() override;
 };
 
 } // namespace TechDrawGui

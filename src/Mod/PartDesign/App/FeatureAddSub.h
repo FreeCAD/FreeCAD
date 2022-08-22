@@ -44,7 +44,7 @@ public:
 
     Type getAddSubType();
 
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 
@@ -61,20 +61,20 @@ typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;
 
 class FeatureAdditivePython : public FeatureAddSubPython
 {
-    PROPERTY_HEADER(PartDesign::FeatureAdditivePython);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAdditivePython);
 
 public:
     FeatureAdditivePython();
-    ~FeatureAdditivePython();
+    ~FeatureAdditivePython() override;
 };
 
 class FeatureSubtractivePython : public FeatureAddSubPython
 {
-    PROPERTY_HEADER(PartDesign::FeatureSubtractivePython);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureSubtractivePython);
 
 public:
     FeatureSubtractivePython();
-    ~FeatureSubtractivePython();
+    ~FeatureSubtractivePython() override;
 };
 
 } //namespace PartDesign

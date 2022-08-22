@@ -82,7 +82,7 @@ struct AppExport PropertyData
             if(pt<base || pt>base+SHRT_MAX)
                 return -1;
             return (short) (pt-base);
-      };
+      }
       char* getOffset() const {return (char*) m_container;}
 
   private:
@@ -141,7 +141,7 @@ struct AppExport PropertyData
 class AppExport PropertyContainer: public Base::Persistence
 {
 
-  TYPESYSTEM_HEADER();
+  TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
   /**
@@ -154,9 +154,9 @@ public:
    * A destructor.
    * A more elaborate description of the destructor.
    */
-  virtual ~PropertyContainer();
+  ~PropertyContainer() override;
 
-  virtual unsigned int getMemSize (void) const;
+  unsigned int getMemSize () const override;
 
   virtual std::string getFullName() const {return std::string();}
 
@@ -218,8 +218,8 @@ public:
 
   virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus);
 
-  virtual void Save (Base::Writer &writer) const;
-  virtual void Restore(Base::XMLReader &reader);
+  void Save (Base::Writer &writer) const override;
+  void Restore(Base::XMLReader &reader) override;
 
   virtual void editProperty(const char * /*propName*/) {}
 
@@ -242,8 +242,8 @@ protected:
   virtual void onBeforeChange(const Property* /*prop*/){}
 
   //void hasChanged(Property* prop);
-  static const  PropertyData * getPropertyDataPtr(void);
-  virtual const PropertyData& getPropertyData(void) const;
+  static const  PropertyData * getPropertyDataPtr();
+  virtual const PropertyData& getPropertyData() const;
 
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);

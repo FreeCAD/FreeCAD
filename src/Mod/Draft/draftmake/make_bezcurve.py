@@ -42,9 +42,9 @@ def make_bezcurve(pointslist,
                   closed=False, placement=None, face=None, support=None,
                   degree=None):
     """make_bezcurve(pointslist, [closed], [placement])
-    
+
     Creates a Bezier Curve object from the given list of vectors.
-    
+
     Parameters
     ----------
     pointlist : [Base.Vector]
@@ -53,19 +53,19 @@ def make_bezcurve(pointslist,
         TODO: Change the name so!
 
     closed : bool
-        If closed is True or first and last points are identical, 
+        If closed is True or first and last points are identical,
         the created BSpline will be closed.
 
     placement : Base.Placement
         If a placement is given, it is used.
-    
-    face : Bool
-        If face is False, the rectangle is shown as a wireframe, 
-        otherwise as a face.   
 
-    support : 
+    face : Bool
+        If face is False, the rectangle is shown as a wireframe,
+        otherwise as a face.
+
+    support :
         TODO: Describe
-    
+
     degree : int
         Degree of the BezCurve
     """
@@ -92,7 +92,7 @@ def make_bezcurve(pointslist,
                          Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
     obj.Proxy.resetcontinuity(obj)
     if placement: obj.Placement = placement

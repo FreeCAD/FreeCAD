@@ -30,8 +30,9 @@ def get_analysis_types():
     return ["thermomech"]
 
 
+# name must substitute underscores for whitespace (#7360)
 def get_sets_name():
-    return "constraints temperature node sets"
+    return "constraints_temperature_node_sets"
 
 
 def get_constraint_title():

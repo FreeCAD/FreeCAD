@@ -56,7 +56,6 @@ known issues:
 import zipfile
 import xml.dom.minidom
 import FreeCAD as App
-import sys
 
 try: import FreeCADGui
 except ValueError: gui = False
@@ -322,10 +321,7 @@ def getText(nodelist):
   for node in nodelist:
     if node.nodeType == node.TEXT_NODE:
       rc.append(node.data)
-    if sys.version_info.major >= 3:
-      return ''.join(rc)
-    else:
-      return ''.join(rc).encode('utf8')
+    return ''.join(rc)
 
 
 def handleWorkSheet(theDom, actSheet, strList):

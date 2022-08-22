@@ -34,7 +34,7 @@
 #include "Workbench.h"
 
 // use a different name to CreateCommand()
-void CreateMeshPartCommands(void);
+void CreateMeshPartCommands();
 
 void loadMeshPartResource()
 {
@@ -52,7 +52,7 @@ public:
         initialize("This module is the MeshPartGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

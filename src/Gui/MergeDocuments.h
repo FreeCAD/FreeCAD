@@ -40,15 +40,15 @@ class GuiExport MergeDocuments : public Base::Persistence
 {
 public:
     MergeDocuments(App::Document* doc);
-    ~MergeDocuments();
-    unsigned int getMemSize (void) const;
+    ~MergeDocuments() override;
+    unsigned int getMemSize () const override;
     std::vector<App::DocumentObject*> importObjects(std::istream&);
     void importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r);
     void exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w);
-    void Save (Base::Writer & w) const;
-    void Restore(Base::XMLReader &r);
-    void SaveDocFile (Base::Writer & w) const;
-    void RestoreDocFile(Base::Reader & r);
+    void Save (Base::Writer & w) const override;
+    void Restore(Base::XMLReader &r) override;
+    void SaveDocFile (Base::Writer & w) const override;
+    void RestoreDocFile(Base::Reader & r) override;
 
 private:
     zipios::ZipInputStream* stream;

@@ -38,15 +38,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderBox : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderBox);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderBox);
 
 public:
     /// constructor
     ViewProviderBox();
     /// destructor
-    virtual ~ViewProviderBox();
+    ~ViewProviderBox() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 

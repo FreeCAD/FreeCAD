@@ -28,6 +28,11 @@
                 <UserDocu>Load a result object</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="recomputeChildren">
+            <Documentation>
+                <UserDocu>Recomputes all children of the pipeline</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getLastPostObject">
             <Documentation>
                 <UserDocu>Get the last post-processing object</UserDocu>

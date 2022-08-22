@@ -71,7 +71,7 @@ PyObject* SheetPy::set(PyObject *args)
         std::string cellAddress = sheet->getAddressFromAlias(address).c_str();
 
         /* Check to see if address is really an alias first */
-        if (cellAddress.size() > 0)
+        if (!cellAddress.empty())
             sheet->setCell(cellAddress.c_str(), contents);
         else {
             Range rangeIter(address);
@@ -544,7 +544,7 @@ PyObject* SheetPy::getCellFromAlias(PyObject *args)
     try {
         std::string address = getSheetPtr()->getAddressFromAlias(alias);
 
-        if (address.size() > 0)
+        if (!address.empty())
             return Py::new_reference_to( Py::String( address ) );
         else {
             Py_INCREF(Py_None);
@@ -622,7 +622,7 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
-            if(i->size())
+            if(!i->empty())
                 alignment = Cell::decodeAlignment(*i, alignment);
         }
     }

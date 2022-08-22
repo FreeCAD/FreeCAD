@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
 #define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include "QGIPrimPath.h"
 
 namespace TechDrawGui

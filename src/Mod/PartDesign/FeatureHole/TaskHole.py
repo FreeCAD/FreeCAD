@@ -46,37 +46,37 @@ class TaskHole:
         return True
 
     def reject(self):
-        if (self.feature != None):
+        if (self.feature is not None):
             self.hideFeature() # Show the support again
             document = self.feature.Document
             body = FreeCADGui.activeView().getActiveObject("pdbody");
             groove = self.feature.HoleGroove
             sketch = groove.Sketch
             plane = sketch.Support[0]
-            axis = plane.References[0][0]     
+            axis = plane.References[0][0]
             body.removeObject(self.feature)
-            document.removeObject(self.feature.Name)                      
+            document.removeObject(self.feature.Name)
             body.removeObject(groove)
             document.removeObject(groove.Name)
             body.removeObject(sketch)
             try:
-                document.removeObject(sketch.Name)      
+                document.removeObject(sketch.Name)
             except Exception:
                 pass # This always throws an exception: "Sketch support has been deleted" from SketchObject::execute()
             body.removeObject(plane)
             document.removeObject(plane.Name)
             body.removeObject(axis)
-            document.removeObject(axis.Name)            
+            document.removeObject(axis.Name)
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog(self)
         return True
-        
+
     def isAllowedAlterDocument(self):
         return False
-        
+
     def isAllowedAlterView(self):
         return False
-        
+
     def isAllowedAlterSelection(self):
         return True
 
@@ -100,9 +100,9 @@ class TaskHole:
         # Type
         form.tabType = form.tabWidget.findChild(QtGui.QWidget, "tab_type")
         form.buttonThru = form.tabType.findChild(QtGui.QRadioButton, "buttonThru")
-        form.buttonDepth = form.tabType.findChild(QtGui.QRadioButton, "buttonDepth")        
-        form.checkThreaded = form.tabType.findChild(QtGui.QCheckBox, "checkThreaded")        
-        form.checkCounterbore = form.tabType.findChild(QtGui.QCheckBox, "checkCounterbore")        
+        form.buttonDepth = form.tabType.findChild(QtGui.QRadioButton, "buttonDepth")
+        form.checkThreaded = form.tabType.findChild(QtGui.QCheckBox, "checkThreaded")
+        form.checkCounterbore = form.tabType.findChild(QtGui.QCheckBox, "checkCounterbore")
         form.checkCountersink = form.tabType.findChild(QtGui.QCheckBox, "checkCountersink")
         # Norm
         form.tabNorm = form.tabWidget.findChild(QtGui.QWidget, "tab_norm")
@@ -114,7 +114,7 @@ class TaskHole:
         for tol in Standards.standards_tolerance:
             form.comboTolerance.addItem(tol)
         form.comboNormDia = form.tabNorm.findChild(QtGui.QComboBox, "comboNormDia")
-        form.comboNormBoltWasher = form.tabNorm.findChild(QtGui.QComboBox,  "comboNormBoltWasher")        
+        form.comboNormBoltWasher = form.tabNorm.findChild(QtGui.QComboBox,  "comboNormBoltWasher")
         # Thread
         form.tabThread = form.tabWidget.findChild(QtGui.QWidget,  "tab_thread")
         form.comboThreadNorm = form.tabThread.findChild(QtGui.QComboBox,  "comboThreadNorm")
@@ -127,8 +127,8 @@ class TaskHole:
             form.comboFinishNorm.addItem(std)
         # Data
         form.tabData = form.tabWidget.findChild(QtGui.QWidget, "tab_data")
-        form.spinDiameter = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinDiameter")        
-        form.spinDepth = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinDepth")        
+        form.spinDiameter = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinDiameter")
+        form.spinDepth = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinDepth")
         form.spinCounterboreDiameter = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinCounterboreDiameter")
         form.spinCounterboreDepth = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinCounterboreDepth")
         form.spinCountersinkAngle = form.tabData.findChild(QtGui.QDoubleSpinBox, "spinCountersinkAngle")
@@ -186,7 +186,7 @@ class TaskHole:
         # Update the UI
         self.updateUI()
         return True
-        
+
     def getRefText(self,  ref):
         (obj,  element) = ref
         if isinstance(element,  basestring):
@@ -226,7 +226,7 @@ class TaskHole:
                 self.form.comboNormBoltWasher.setEnabled(True)
             else:
                 self.form.comboNormBoltWasher.setEnabled(False)
-            # comboNorm            
+            # comboNorm
             standards = Standards.getStandards(holetype)
             self.form.comboNorm.blockSignals(True)
             self.form.comboNorm.clear()
@@ -266,7 +266,7 @@ class TaskHole:
             elif holetype == "counterbore":
                 throughStandard = Standards.getThroughHoleStandard(self.feature.Norm)
                 self.feature.Diameter = Standards.getThroughHoleDia(throughStandard,  self.feature.NormDiameter,  self.feature.NormTolerance)
-                self.feature.CounterboreDiameter = Standards.getCounterboreDia(self.feature.Norm,  self.feature.NormDiameter,  self.feature.ExtraNorm)                
+                self.feature.CounterboreDiameter = Standards.getCounterboreDia(self.feature.Norm,  self.feature.NormDiameter,  self.feature.ExtraNorm)
                 # TODO: Calculate counter bore depth from standard for bolt and washer(s)
                 # Requires accessing all the norms for bolts
                 # self.feature.CounterboreDepth = calcCounterboreDepth(...)
@@ -282,7 +282,7 @@ class TaskHole:
             else:
                 self.form.tabNorm.setEnabled(True)
             self.form.comboTolerance.setEnabled(False)
-            self.form.tabThread.setEnabled(True) 
+            self.form.tabThread.setEnabled(True)
             self.form.comboThreadNorm.blockSignals(True)
             standards = Standards.getStandards("thread")
             if not self.feature.NormThread in standards:
@@ -341,7 +341,7 @@ class TaskHole:
         elif self.feature.Countersink == True:
             self.form.spinCounterboreDiameter.setEnabled(True)
             self.form.spinCounterboreDiameter.setValue(self.feature.CounterboreDiameter)
-            self.form.spinCounterboreDepth.setEnabled(False)       
+            self.form.spinCounterboreDepth.setEnabled(False)
             self.form.spinCountersinkAngle.setEnabled(True)
             self.form.spinCountersinkAngle.setValue(self.feature.CountersinkAngle)
         else:
@@ -362,7 +362,7 @@ class TaskHole:
                 self.form.spinCountersinkAngle.setEnabled(False)
         if self.feature.Threaded == True:
             self.form.spinDiameter.setEnabled(False)
-        if self.feature.NormThreadFinish != "Custom":            
+        if self.feature.NormThreadFinish != "Custom":
             self.form.spinThreadLength.setEnabled(False)
         self.form.spinThreadLength.setValue(self.feature.ThreadLength)
         # Position
@@ -373,7 +373,7 @@ class TaskHole:
             self.feature.Support = (selection[0].Object, selection[0].SubElementNames)
         self.form.lineSupport.setText(self.getRefText(self.feature.Support))
         if self.feature.PositionType == self.types[0]:
-            # Linear            
+            # Linear
             self.form.buttonRef1.setText("Line/Plane")
             self.form.buttonRef1.setEnabled(True)
             self.form.buttonRef2.setText("Line/Plane")
@@ -383,7 +383,7 @@ class TaskHole:
             self.form.labelRef1.setEnabled(True)
             self.form.labelRef1.setText("Distance")
             axis = self.feature.HoleGroove.Sketch.Support[0].References[0][0]
-            if len(axis.References) > 0 and axis.References[0] != None:
+            if len(axis.References) > 0 and axis.References[0] is not None:
                 if (len(axis.References) == 3):
                     self.form.lineRef1.setText(self.getRefText(axis.References[1]))
                 else:
@@ -392,7 +392,7 @@ class TaskHole:
             self.form.spinRef1.setValue(axis.Offset)
             self.form.labelRef2.setEnabled(True)
             self.form.labelRef2.setText("Distance")
-            if len(axis.References) > 1 and axis.References[1] != None:
+            if len(axis.References) > 1 and axis.References[1] is not None:
                 if (len(axis.References) == 3):
                     self.form.lineRef2.setText(self.getRefText(axis.References[2]))
                 else:
@@ -406,7 +406,7 @@ class TaskHole:
             self.form.buttonRef2.setEnabled(False)
             self.form.lineRef1.setEnabled(True)
             axis = self.feature.HoleGroove.Sketch.Support[0].References[0][0]
-            if len(axis.References) > 0 and axis.References[0] != None:
+            if len(axis.References) > 0 and axis.References[0] is not None:
                 self.form.lineRef1.setText(self.getRefText(axis.References[0]))
             self.form.lineRef2.setEnabled(False)
             self.form.labelRef1.setEnabled(False)
@@ -470,23 +470,23 @@ class TaskHole:
     def comboNormBoltWasher(self,  index):
         self.feature.ExtraNorm = str(self.form.comboNormBoltWasher.itemText(index))
         self.updateUI()
-        
+
     def comboThreadNorm(self,  index):
-        self.feature.NormThread = str(self.form.comboThreadNorm.itemText(index))        
+        self.feature.NormThread = str(self.form.comboThreadNorm.itemText(index))
         self.updateUI()
-        
+
     def comboThreadDia(self,  index):
         diameter = str(self.form.comboThreadDia.itemText(index))
         self.feature.NormDiameter = float(diameter[1:])
         self.updateUI()
-    
+
     def checkCustomThreadLength(self, checked):
         if checked == True:
             self.feature.NormThreadFinish = "Custom"
         else:
             self.feature.NormThreadFinish = str(self.form.comboFinishNorm.currentText())
         self.updateUI()
-        
+
     def comboFinishNorm(self,  index):
         self.feature.NormThreadFinish = str(self.form.comboFinishNorm.itemText(index))
         self.updateUI()
@@ -515,7 +515,7 @@ class TaskHole:
     def spinThreadLength(self,  val):
         if (val > 0.0):
             self.feature.ThreadLength = val
-            
+
     def comboType(self, index):
         self.feature.PositionType = self.types[index]
         self.updateUI()
@@ -532,12 +532,12 @@ class TaskHole:
                 if shape.Surface.__class__ != Part.Plane:
                     FreeCAD.Console.PrintMessage("Selected face must be planar\n")
                     return
-                if self.feature.PositionType == self.types[0]:     
+                if self.feature.PositionType == self.types[0]:
                     # The Hole support is also the first reference of the sketch axis in Linear mode with edges selected
                     if len(refs) == 3:
                         refs[0] = (feature, element)
                         axis.References = refs
-                self.feature.Support = (feature, [element])       
+                self.feature.Support = (feature, [element])
             elif self.selectionMode == "LinearReference":
                 if shape.ShapeType == "Edge":
                     if shape.Curve.__class__ != Part.LineSegment:
@@ -560,7 +560,7 @@ class TaskHole:
                         refs = [(feature, element)]
                 else:
                     FreeCAD.Console.PrintMessage("Wrong shape type selected\n")
-                    return                
+                    return
                 axis.References = refs
                 axis.Document.recompute()
             elif self.selectionMode == "LinearReference2":
@@ -584,7 +584,7 @@ class TaskHole:
                         refs.append((feature, element))
                 else:
                     FreeCAD.Console.PrintMessage("Wrong shape type selected\n")
-                    return                
+                    return
                 axis.References = refs
                 axis.Document.recompute()
             elif self.selectionMode == "CircularReference":
@@ -598,7 +598,7 @@ class TaskHole:
                         return
                 else:
                     FreeCAD.Console.PrintMessage("Wrong shape type selected\n")
-                    return                
+                    return
                 refs = [(feature, element)]
                 axis.References = refs
                 axis.Document.recompute()
@@ -616,13 +616,13 @@ class TaskHole:
 
     def hideFeature(self):
         # Make sure selection takes place on support, not on hole feature
-        if self.feature.Support != None:
+        if self.feature.Support is not None:
             FreeCADGui.ActiveDocument.hide(self.feature.Name)
             (support, elements) = self.feature.Support
             FreeCADGui.ActiveDocument.show(support.Name)
 
     def showFeature(self):
-        if self.feature.Support != None:
+        if self.feature.Support is not None:
             FreeCADGui.ActiveDocument.show(self.feature.Name)
             (support, elements) = self.feature.Support
             FreeCADGui.ActiveDocument.hide(support.Name)

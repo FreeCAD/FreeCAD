@@ -32,9 +32,7 @@ FutureWatcherProgress::FutureWatcherProgress(const char* text, unsigned int step
 {
 }
 
-FutureWatcherProgress::~FutureWatcherProgress()
-{
-}
+FutureWatcherProgress::~FutureWatcherProgress() = default;
 
 void FutureWatcherProgress::progressValueChanged(int v)
 {

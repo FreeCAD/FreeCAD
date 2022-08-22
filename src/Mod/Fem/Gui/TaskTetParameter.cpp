@@ -147,7 +147,7 @@ void TaskTetParameter::setOptimize(int v)
 }
 
 
-void TaskTetParameter::setInfo(void)
+void TaskTetParameter::setInfo()
 {
     Fem::FemMesh::FemMeshInfo info = pcObject->FemMesh.getValue().getInfo();
     //Base::BoundBox3d bndBox = pcObject->FemMesh.getValue().getBoundBox();

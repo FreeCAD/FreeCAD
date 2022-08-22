@@ -34,15 +34,15 @@ class SketcherRegularPolygonDialog : public QDialog
     Q_OBJECT
 
 public:
-    SketcherRegularPolygonDialog(void);
-    ~SketcherRegularPolygonDialog();
+    SketcherRegularPolygonDialog();
+    ~SketcherRegularPolygonDialog() override;
 
-    void accept();
+    void accept() override;
 
     int sides;
 
 protected:
-    void updateValues(void);
+    void updateValues();
 private:
     std::unique_ptr<Ui_SketcherRegularPolygonDialog> ui;
 };

@@ -38,15 +38,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderCircleParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderCircleParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderCircleParametric);
 
 public:
     /// constructor
     ViewProviderCircleParametric();
     /// destructor
-    virtual ~ViewProviderCircleParametric();
+    ~ViewProviderCircleParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes(void) const override;
 
 protected:
 

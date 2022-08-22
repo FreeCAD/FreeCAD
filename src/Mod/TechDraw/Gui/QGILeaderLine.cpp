@@ -164,11 +164,6 @@ void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mousePressEvent(event);
 }
 
-//void QGILeaderLine::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-//{
-//    QGraphicsItem::mouseMoveEvent(event);
-//}
-
 //QGILL isn't draggable so skip QGIV::mouseRelease
 void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
@@ -243,7 +238,7 @@ void QGILeaderLine::setPrettySel() {
 }
 
 
-void QGILeaderLine::closeEdit(void)
+void QGILeaderLine::closeEdit()
 {
 //    Base::Console().Message("QGIL::closeEdit()\n");
     if (m_editPath) {
@@ -293,7 +288,7 @@ void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF>
     draw();
 }
 
-void QGILeaderLine::startPathEdit(void)
+void QGILeaderLine::startPathEdit()
 {
     saveState();
     auto featLeader( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
@@ -307,7 +302,7 @@ void QGILeaderLine::startPathEdit(void)
     m_editPath->startPathEdit(getWayPointsFromFeature());
 }
 
-void QGILeaderLine::saveState(void)
+void QGILeaderLine::saveState()
 {
 //    Base::Console().Message("QGILL::saveState()\n");
     auto featLeader = getFeature();
@@ -318,7 +313,7 @@ void QGILeaderLine::saveState(void)
     }
 }
 
-void QGILeaderLine::restoreState(void)
+void QGILeaderLine::restoreState()
 {
 //    Base::Console().Message("QGILL::restoreState()\n");
     auto featLeader = getFeature();
@@ -458,7 +453,7 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
    return result;
 }
 
-QPointF QGILeaderLine::getAttachFromFeature(void)
+QPointF QGILeaderLine::getAttachFromFeature()
 {
 //    Base::Console().Message("QGILL::getAttachFromFeature()\n");
     QPointF result;
@@ -473,7 +468,7 @@ QPointF QGILeaderLine::getAttachFromFeature(void)
     return result;
 }
 
-std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature(void)
+std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
 {
     std::vector<QPointF> qPoints;
 
@@ -554,7 +549,7 @@ void QGILeaderLine::drawBorder()
 //******************************************************************************
 
 
-void QGILeaderLine::abandonEdit(void)
+void QGILeaderLine::abandonEdit()
 {
 //    Base::Console().Message("QGIL::abandonEdit()\n");
     m_editPath->clearMarkers();
@@ -562,7 +557,7 @@ void QGILeaderLine::abandonEdit(void)
     restoreState();
 }
 
-double QGILeaderLine::getLineWidth(void)
+double QGILeaderLine::getLineWidth()
 {
     auto vp = static_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (!vp)
@@ -570,14 +565,14 @@ double QGILeaderLine::getLineWidth(void)
     return Rez::guiX(vp->LineWidth.getValue());
 }
 
-TechDraw::DrawLeaderLine* QGILeaderLine::getFeature(void)
+TechDraw::DrawLeaderLine* QGILeaderLine::getFeature()
 {
     TechDraw::DrawLeaderLine* result = 
          static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
     return result;
 }
 
-double QGILeaderLine::getEdgeFuzz(void) const
+double QGILeaderLine::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
 }
@@ -604,11 +599,6 @@ QColor QGILeaderLine::getNormalColor()
 QRectF QGILeaderLine::boundingRect() const
 {
     return childrenBoundingRect();
-}
-
-QPainterPath QGILeaderLine::shape() const
-{
-    return QGraphicsItemGroup::shape();
 }
 
 void QGILeaderLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

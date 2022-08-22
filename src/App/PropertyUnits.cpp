@@ -49,17 +49,17 @@ const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 
 TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
-Base::Quantity PropertyQuantity::getQuantityValue(void) const
+Base::Quantity PropertyQuantity::getQuantityValue() const
 {
     return Quantity(_dValue,_Unit);
 }
 
-const char* PropertyQuantity::getEditorName(void) const
+const char* PropertyQuantity::getEditorName() const
 {
     return "Gui::PropertyEditor::PropertyUnitItem";
 }
 
-PyObject *PropertyQuantity::getPyObject(void)
+PyObject *PropertyQuantity::getPyObject()
 {
     return new QuantityPy (new Quantity(_dValue,_Unit));
 }
@@ -146,13 +146,13 @@ void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
     _ConstStruct = sConstrain;
 }
 
-const char* PropertyQuantityConstraint::getEditorName(void) const
+const char* PropertyQuantityConstraint::getEditorName() const
 {
     return "Gui::PropertyEditor::PropertyUnitConstraintItem";
 }
 
 
-const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints(void) const
+const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints() const
 {
     return _ConstStruct;
 }
@@ -205,42 +205,6 @@ void PropertyQuantityConstraint::setPyObject(PyObject *value)
 
 //**************************************************************************
 //**************************************************************************
-// PropertyDistance
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity)
-
-PropertyDistance::PropertyDistance()
-{
-    setUnit(Base::Unit::Length);
-}
-
-//**************************************************************************
-//**************************************************************************
-// PropertyFrequency
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertyFrequency, App::PropertyQuantity)
-
-PropertyFrequency::PropertyFrequency()
-{
-    setUnit(Base::Unit::Frequency);
-}
-
-//**************************************************************************
-//**************************************************************************
-// PropertySpeed
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity)
-
-PropertySpeed::PropertySpeed()
-{
-    setUnit(Base::Unit::Velocity);
-}
-
-//**************************************************************************
-//**************************************************************************
 // PropertyAcceleration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -249,45 +213,6 @@ TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyQuantity)
 PropertyAcceleration::PropertyAcceleration()
 {
     setUnit(Base::Unit::Acceleration);
-}
-
-//**************************************************************************
-//**************************************************************************
-// PropertyLength
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint)
-
-PropertyLength::PropertyLength()
-{
-    setUnit(Base::Unit::Length);
-    setConstraints(&LengthStandard);
-}
-
-//**************************************************************************
-//**************************************************************************
-// PropertyArea
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint)
-
-PropertyArea::PropertyArea()
-{
-    setUnit(Base::Unit::Area);
-    setConstraints(&LengthStandard);
-}
-
-//**************************************************************************
-//**************************************************************************
-// PropertyVolume
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint)
-
-PropertyVolume::PropertyVolume()
-{
-    setUnit(Base::Unit::Volume);
-    setConstraints(&LengthStandard);
 }
 
 //**************************************************************************
@@ -305,38 +230,27 @@ PropertyAngle::PropertyAngle()
 
 //**************************************************************************
 //**************************************************************************
-// PropertyPressure
+// PropertyArea
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity)
+TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint)
 
-PropertyPressure::PropertyPressure()
+PropertyArea::PropertyArea()
 {
-    setUnit(Base::Unit::Pressure);
+    setUnit(Base::Unit::Area);
+    setConstraints(&LengthStandard);
 }
 
 //**************************************************************************
 //**************************************************************************
-// PropertyStiffness
+// PropertyDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyStiffness, App::PropertyQuantity)
+TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity)
 
-PropertyStiffness::PropertyStiffness()
+PropertyDistance::PropertyDistance()
 {
-    setUnit(Base::Unit::Stiffness);
-}
-
-//**************************************************************************
-//**************************************************************************
-// PropertyForce
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity)
-
-PropertyForce::PropertyForce()
-{
-    setUnit(Base::Unit::Force);
+    setUnit(Base::Unit::Length);
 }
 
 //**************************************************************************
@@ -353,6 +267,80 @@ PropertyElectricPotential::PropertyElectricPotential()
 
 //**************************************************************************
 //**************************************************************************
+// PropertyFrequency
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyFrequency, App::PropertyQuantity)
+
+PropertyFrequency::PropertyFrequency()
+{
+    setUnit(Base::Unit::Frequency);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyForce
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity)
+
+PropertyForce::PropertyForce()
+{
+    setUnit(Base::Unit::Force);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyLength
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint)
+
+PropertyLength::PropertyLength()
+{
+    setUnit(Base::Unit::Length);
+    setConstraints(&LengthStandard);
+}
+
+
+//**************************************************************************
+//**************************************************************************
+// PropertyPressure
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity)
+
+PropertyPressure::PropertyPressure()
+{
+    setUnit(Base::Unit::Pressure);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertySpeed
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity)
+
+PropertySpeed::PropertySpeed()
+{
+    setUnit(Base::Unit::Velocity);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyStiffness
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyStiffness, App::PropertyQuantity)
+
+PropertyStiffness::PropertyStiffness()
+{
+    setUnit(Base::Unit::Stiffness);
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertyVacuumPermittivity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -361,4 +349,17 @@ TYPESYSTEM_SOURCE(App::PropertyVacuumPermittivity, App::PropertyQuantity)
 PropertyVacuumPermittivity::PropertyVacuumPermittivity()
 {
     setUnit(Base::Unit::VacuumPermittivity);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyVolume
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint)
+
+PropertyVolume::PropertyVolume()
+{
+    setUnit(Base::Unit::Volume);
+    setConstraints(&LengthStandard);
 }

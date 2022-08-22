@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
 #define DRAWINGGUI_VIEWPROVIDERCLIP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
 #include "ViewProviderDrawingView.h"
@@ -33,32 +35,26 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderViewClip : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderViewClip);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderViewClip);
 
 public:
     /// constructor
     ViewProviderViewClip();
     /// destructor
-    virtual ~ViewProviderViewClip();
+    ~ViewProviderViewClip() override;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    bool useNewSelectionModel() const override {return false;}
 
-    virtual TechDraw::DrawViewClip* getViewObject() const;
+    TechDraw::DrawViewClip* getViewObject() const override;
     TechDraw::DrawViewClip* getObject() const;
-    virtual void updateData(const App::Property* prop);
 
     /// Hide the object in the view
-    virtual void hide(void);
+    void hide() override;
     /// Show the object in the view
-    virtual void show(void);
-    virtual bool isShow(void) const;
-    std::vector<App::DocumentObject*> claimChildren(void) const;
+    void show() override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool canDelete(App::DocumentObject* obj) const override;
 
 };
 } // namespace TechDrawGui

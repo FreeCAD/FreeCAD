@@ -60,10 +60,7 @@ ViewProviderBalloon::ViewProviderBalloon()
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()), group, App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
                                 group, (App::PropertyType)(App::Prop_None), "Balloon text size in units");
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
+    double weight = TechDraw::LineGroup::getDefaultWidth("Thin");
     ADD_PROPERTY_TYPE(LineWidth, (weight), group, (App::PropertyType)(App::Prop_None), "Leader line width");
     ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
     ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
@@ -73,26 +70,7 @@ ViewProviderBalloon::~ViewProviderBalloon()
 {
 }
 
-void ViewProviderBalloon::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
-void ViewProviderBalloon::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDrawingView::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderBalloon::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
-
-    return StrList;
-}
-
-bool ViewProviderBalloon::doubleClicked(void)
+bool ViewProviderBalloon::doubleClicked()
 {
     startDefaultEditMode();
     return true;
@@ -123,16 +101,6 @@ bool ViewProviderBalloon::setEdit(int ModNum)
         Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
     }
     return true;
-}
-
-void ViewProviderBalloon::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
 }
 
 void ViewProviderBalloon::updateData(const App::Property* p)

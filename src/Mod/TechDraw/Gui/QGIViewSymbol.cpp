@@ -76,12 +76,6 @@ QGIViewSymbol::~QGIViewSymbol()
     // m_svgItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewSymbol::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
 {
     // called from QGVPage. (once)
@@ -155,7 +149,7 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
     m_svgItem->centerAt(0.,0.);
 }
 
-void QGIViewSymbol::rotateView(void)
+void QGIViewSymbol::rotateView()
 {
     QRectF r = m_displayArea->boundingRect();
     m_displayArea->setTransformOriginPoint(r.center());

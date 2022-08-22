@@ -52,7 +52,7 @@ class TaskRobot6Axis : public Gui::TaskView::TaskBox
 
 public:
     TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
-    ~TaskRobot6Axis();
+    ~TaskRobot6Axis() override;
 
     void setRobot(Robot::RobotObject *pcRobotObject);
 
@@ -64,7 +64,7 @@ private Q_SLOTS:
     void changeSliderA4(int value);
     void changeSliderA5(int value);
     void changeSliderA6(int value);
-    void createPlacementDlg(void);
+    void createPlacementDlg();
 
 protected:
     Robot::RobotObject *pcRobot;

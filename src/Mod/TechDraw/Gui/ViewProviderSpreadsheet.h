@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 #define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 
 #include "ViewProviderSymbol.h"
@@ -33,23 +35,17 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderSpreadsheet : public ViewProviderSymbol
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderSpreadsheet);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderSpreadsheet);
 
 public:
     /// constructor
     ViewProviderSpreadsheet();
     /// destructor
-    virtual ~ViewProviderSpreadsheet();
+    ~ViewProviderSpreadsheet() override;
 
+    bool useNewSelectionModel() const override {return false;}
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-
-    virtual TechDraw::DrawViewSpreadsheet* getViewObject() const;
+    TechDraw::DrawViewSpreadsheet* getViewObject() const override;
 };
 
 } // namespace TechDrawGui

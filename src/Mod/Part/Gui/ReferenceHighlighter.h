@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_REFERENCEHIGHLIGHTER_H
 #define PARTGUI_REFERENCEHIGHLIGHTER_H
 
+#include <vector>
+
 #include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <vector>
+
 #include <App/Material.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 namespace PartGui {
 

@@ -46,8 +46,7 @@ public:
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ExtensionPythonT::getExtensionClassTypeId());
     }
-    virtual ~ExtensionPythonT() {
-    }
+    virtual ~ExtensionPythonT() = default;
 
     ExtensionPythonT(const ExtensionPythonT&) = delete;
     ExtensionPythonT(ExtensionPythonT&&) = delete;

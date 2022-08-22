@@ -429,14 +429,14 @@ public:
         static_cast<SoGroup*>(getViewer(1)->getSoRenderManager()->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Fixed object")));
     }
-    ~AlignmentView()
+    ~AlignmentView() override
     {
     }
-    PyObject* getPyObject()
+    PyObject* getPyObject() override
     {
         Py_Return;
     }
-    bool canClose()
+    bool canClose() override
     {
         return false;
     }

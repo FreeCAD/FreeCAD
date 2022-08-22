@@ -40,7 +40,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string DocumentObjectPy::representation(void) const
+std::string DocumentObjectPy::representation() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     std::stringstream str;
@@ -48,7 +48,7 @@ std::string DocumentObjectPy::representation(void) const
     return str.str();
 }
 
-Py::String DocumentObjectPy::getName(void) const
+Py::String DocumentObjectPy::getName() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     const char* internal = object->getNameInDocument();
@@ -58,12 +58,12 @@ Py::String DocumentObjectPy::getName(void) const
     return Py::String(std::string(internal));
 }
 
-Py::String DocumentObjectPy::getFullName(void) const
+Py::String DocumentObjectPy::getFullName() const
 {
     return Py::String(getDocumentObjectPtr()->getFullName());
 }
 
-Py::Object DocumentObjectPy::getDocument(void) const
+Py::Object DocumentObjectPy::getDocument() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Document* doc = object->getDocument();
@@ -161,7 +161,7 @@ PyObject*  DocumentObjectPy::enforceRecompute(PyObject * args)
     Py_Return;
 }
 
-Py::List DocumentObjectPy::getState(void) const
+Py::List DocumentObjectPy::getState() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Py::List list;
@@ -200,7 +200,7 @@ Py::List DocumentObjectPy::getState(void) const
     return list;
 }
 
-Py::Object DocumentObjectPy::getViewObject(void) const
+Py::Object DocumentObjectPy::getViewObject() const
 {
     try {
         PyObject *dict = PySys_GetObject("modules");
@@ -248,7 +248,7 @@ Py::Object DocumentObjectPy::getViewObject(void) const
     }
 }
 
-Py::List DocumentObjectPy::getInList(void) const
+Py::List DocumentObjectPy::getInList() const
 {
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInList();
@@ -259,7 +259,7 @@ Py::List DocumentObjectPy::getInList(void) const
     return ret;
 }
 
-Py::List DocumentObjectPy::getInListRecursive(void) const
+Py::List DocumentObjectPy::getInListRecursive() const
 {
     Py::List ret;
     try {
@@ -275,7 +275,7 @@ Py::List DocumentObjectPy::getInListRecursive(void) const
     return ret;    
 }
 
-Py::List DocumentObjectPy::getOutList(void) const
+Py::List DocumentObjectPy::getOutList() const
 {
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutList();
@@ -286,7 +286,7 @@ Py::List DocumentObjectPy::getOutList(void) const
     return ret;
 }
 
-Py::List DocumentObjectPy::getOutListRecursive(void) const
+Py::List DocumentObjectPy::getOutListRecursive() const
 {
     Py::List ret;
     try {
@@ -448,7 +448,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     bool single = true;
 
     if (PyUnicode_Check(obj)) {
-        subs.push_back(PyUnicode_AsUTF8(obj));
+        subs.emplace_back(PyUnicode_AsUTF8(obj));
     }
     else if (PySequence_Check(obj)) {
         single = false;
@@ -456,7 +456,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyUnicode_Check(item)) {
-                subs.push_back(PyUnicode_AsUTF8(item));
+                subs.emplace_back(PyUnicode_AsUTF8(item));
             }
             else {
                 PyErr_SetString(PyExc_TypeError, "non-string object in sequence");
@@ -696,7 +696,7 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
                 (o)->getDocumentObjectPtr();
         auto array = getDocumentObjectPtr()->getPathsByOutList(target);
         Py::List list;
-        for (auto it : array) {
+        for (const auto& it : array) {
             Py::List path;
             for (auto jt : it) {
                 path.append(Py::asObject(jt->getPyObject()));

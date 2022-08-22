@@ -80,7 +80,7 @@ public:
         SNAP_MODE_45Degree
     };
 
-    virtual void registerPressedKey(bool pressed, int key) override
+    void registerPressedKey(bool pressed, int key) override
     {
         if (Mode != STATUS_SEEK_Second)
             return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
@@ -159,7 +159,7 @@ public:
         }
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         suppressTransition = false;
         if (Mode==STATUS_SEEK_First) {
@@ -285,7 +285,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -381,7 +381,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
             bool addedGeometry = true;
@@ -478,7 +478,7 @@ public:
                     }
                 }
 
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
                     for (unsigned int i=0; i < sugConstr2.size(); i++) {
@@ -528,7 +528,7 @@ public:
                 Gui::Command::commitCommand();
 
                 // Add auto constraints
-                if (sugConstr1.size() > 0) { // this is relevant only to the very first point
+                if (!sugConstr1.empty()) { // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
@@ -545,7 +545,7 @@ public:
 
                 virtualsugConstr1 = sugConstr2; // these are the initial constraints for the next iteration.
 
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(),
                                           (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
                                             Sketcher::PointPos::start : Sketcher::PointPos::end);
@@ -583,7 +583,7 @@ public:
         return true;
     }
 
-    virtual void quit(void) override {
+    void quit() override {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
@@ -621,7 +621,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_Lineset");
     }
 

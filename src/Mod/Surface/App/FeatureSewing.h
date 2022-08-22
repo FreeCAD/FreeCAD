@@ -34,7 +34,7 @@ namespace Surface
 
 class SurfaceExport Sewing :  public Part::Feature
 {
-    PROPERTY_HEADER(Surface::Sewing);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Sewing);
 
 public:
     Sewing();
@@ -48,8 +48,8 @@ public:
     App::PropertyBool Nonmanifold;     //Option for non-manifold processing
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
 };
 
 }//Namespace Surface

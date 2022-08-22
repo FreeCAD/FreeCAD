@@ -67,7 +67,7 @@ RobotObject::~RobotObject()
 {
 }
 
-short RobotObject::mustExecute(void) const
+short RobotObject::mustExecute() const
 {
     return 0;
 }

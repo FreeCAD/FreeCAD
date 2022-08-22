@@ -33,13 +33,13 @@
 class ILoggerBlockerTest : public Base::ILogger
 {
 public:
-    virtual ~ILoggerBlockerTest() {Base::Console().DetachObserver(this);}
+    ~ILoggerBlockerTest() override {Base::Console().DetachObserver(this);}
 
-    virtual const char *Name() {return "ILoggerBlockerTest";}
+    const char *Name() override {return "ILoggerBlockerTest";}
 
     void flush() {buffer.str("");buffer.clear();}
 
-    void SendLog(const std::string& msg, Base::LogStyle level){
+    void SendLog(const std::string& msg, Base::LogStyle level) override{
         (void) msg;
         switch(level){
             case Base::LogStyle::Warning:
@@ -124,7 +124,7 @@ public:
         initialize("This module is the QtUnitGui module"); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object new_UnitTest(const Py::Tuple& args)

@@ -1030,7 +1030,7 @@ void MeshGeomFacet::SubSample (float fStep, std::vector<Base::Vector3f> &rclPoin
   }
 
   // if couldn't subsample the facet take gravity center
-  if (clPoints.size() == 0)
+  if (clPoints.empty())
       clPoints.push_back(this->GetGravityPoint());
 
   rclPoints.insert(rclPoints.end(), clPoints.begin(), clPoints.end());

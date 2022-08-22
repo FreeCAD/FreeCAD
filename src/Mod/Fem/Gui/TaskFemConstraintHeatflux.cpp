@@ -112,7 +112,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
     }
-    if (Objects.size() > 0) {
+    if (!Objects.empty()) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
@@ -197,7 +197,7 @@ void TaskFemConstraintHeatflux::Flux()
 void TaskFemConstraintHeatflux::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -213,7 +213,7 @@ void TaskFemConstraintHeatflux::addToSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        if (subNames.size() > 0) {
+        if (!subNames.empty()) {
             for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {
                 if (subNames[subIt].substr(0, 4) != "Face") {
                     QMessageBox::warning(this, tr("Selection error"), tr("Selection must only consist of faces!"));
@@ -250,7 +250,7 @@ void TaskFemConstraintHeatflux::addToSelection()
 void TaskFemConstraintHeatflux::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -267,7 +267,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        if (subNames.size() > 0) {
+        if (!subNames.empty()) {
             for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {
                 if (subNames[subIt].substr(0, 4) != "Face") {
                     QMessageBox::warning(this, tr("Selection error"), tr("Selection must only consist of faces!"));
@@ -290,7 +290,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0) {
+    while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
@@ -321,21 +321,21 @@ const std::string TaskFemConstraintHeatflux::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintHeatflux::getAmbientTemp(void) const
+double TaskFemConstraintHeatflux::getAmbientTemp() const
 {
     Base::Quantity temperature = ui->if_ambienttemp->getQuantity();
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
     return temperature_in_kelvin;
 }
 
-double TaskFemConstraintHeatflux::getFilmCoef(void) const
+double TaskFemConstraintHeatflux::getFilmCoef() const
 {
     Base::Quantity filmcoef = ui->if_filmcoef->getQuantity();
     double filmcoef_in_units = filmcoef.getValueAs(Base::Quantity(1.0, Base::Unit::ThermalTransferCoefficient));
     return filmcoef_in_units;
 }
 
-std::string TaskFemConstraintHeatflux::get_constraint_type(void) const {
+std::string TaskFemConstraintHeatflux::get_constraint_type() const {
     std::string type;
     if (ui->rb_convection->isChecked()) {
         type = "\"Convection\"";

@@ -334,7 +334,7 @@ RotTransDragger::valueChangedCB(void *, SoDragger *inDragger)
    RotTransDragger *myself = (RotTransDragger *) inDragger;
 
    // Factor the motionMatrix into its parts
-   SbMatrix motMat = myself->getMotionMatrix();
+   SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
    SbVec3f   trans, scale;
    SbRotation rot, scaleOrient;
    motMat.getTransform(trans, rot, scale, scaleOrient);
@@ -357,7 +357,7 @@ RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 {
    RotTransDragger *myself = (RotTransDragger *) inDragger;
 
-   SbMatrix motMat = myself->getMotionMatrix();
+   SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
    myself->workFieldsIntoTransform(motMat);
 
    myself->setMotionMatrix(motMat);

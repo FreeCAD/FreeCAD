@@ -55,7 +55,6 @@
 #include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
 #include "QGSPage.h"
-#include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
 #include "QGIGhostHighlight.h"
@@ -78,9 +77,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     ui(new Ui_TaskDetail),
     blockUpdate(false),
     m_ghost(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_detailFeat(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(nullptr),
@@ -115,10 +111,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_doc);
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->getQGSPage();
-    m_view = m_mdi->getQGVPage();
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     createDetail();
     setUiFromFeat();
@@ -143,7 +136,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
-    m_scene->addItem(m_ghost);
+    m_vpp->getQGSPage()->addItem(m_ghost);
     m_ghost->hide();
     connect(m_ghost, SIGNAL(positionChange(QPointF)),
             this, SLOT(onHighlightMoved(QPointF)));
@@ -154,9 +147,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     ui(new Ui_TaskDetail),
     blockUpdate(false),
     m_ghost(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_detailFeat(detailFeat),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
@@ -201,10 +191,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->getQGSPage();
-    m_view = m_mdi->getQGVPage();
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     saveDetailState();
     setUiFromFeat();
@@ -229,7 +216,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
-    m_scene->addItem(m_ghost);
+    m_vpp->getQGSPage()->addItem(m_ghost);
     m_ghost->hide();
     connect(m_ghost, SIGNAL(positionChange(QPointF)),
             this, SLOT(onHighlightMoved(QPointF)));
@@ -408,7 +395,7 @@ void TaskDetail::editByHighlight()
     }
 
     double scale = getBaseFeat()->getScale();
-    m_scene->clearSelection();
+    m_vpp->getQGSPage()->clearSelection();
     m_ghost->setSelected(true);
     m_ghost->setRadius(ui->qsbRadius->rawValue() * scale);
     m_ghost->setPos(getAnchorScene());
