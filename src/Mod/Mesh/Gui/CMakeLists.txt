@@ -5,6 +5,7 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}/Inventor/annex
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 if(MSVC)
