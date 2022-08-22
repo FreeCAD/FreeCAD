@@ -29,6 +29,7 @@
 #include <QString>
 
 #include "UnitsSchemaMKS.h"
+#include <cmath>
 
 
 using namespace Base;
