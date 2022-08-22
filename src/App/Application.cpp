@@ -1996,6 +1996,7 @@ void Application::initTypes()
     App::FeatureTestException      ::init();
     App::FeatureTestColumn         ::init();
     App::FeatureTestPlacement      ::init();
+    App::FeatureTestAttribute      ::init();
 
     // Feature class
     App::FeaturePython             ::init();

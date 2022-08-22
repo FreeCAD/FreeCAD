@@ -2306,3 +2306,32 @@ class FeatureTestColumn(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument("TestColumn")
+
+
+class FeatureTestAttribute(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestAttribute")
+        self.doc.UndoMode = 0
+
+    def testValidAttribute(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        obj.Attribute = "Name"
+        self.doc.recompute()
+        self.assertIn("Up-to-date", obj.State)
+
+    def testInvalidAttribute(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        obj.Attribute = "Name123"
+        self.doc.recompute()
+        self.assertIn("Invalid", obj.State)
+        self.assertIn("Touched", obj.State)
+
+    def testRemoval(self):
+        obj = self.doc.addObject("App::FeatureTestAttribute", "Attribute")
+        obj.Object = obj
+        self.assertEqual(self.doc.removeObject("Attribute"), None)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestAttribute")
