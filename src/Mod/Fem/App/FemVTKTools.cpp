@@ -689,9 +689,9 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     // the following three are filled only if there is a reinforced mat object
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
-    resFCVecProp["PS1Vector"] = "Major Principal Stress";
-    resFCVecProp["PS2Vector"] = "Intermediate Principal Stress";
-    resFCVecProp["PS3Vector"] = "Minor Principal Stress";
+    resFCVecProp["PS1Vector"] = "Major Principal Stress Vector";
+    resFCVecProp["PS2Vector"] = "Intermediate Principal Stress Vector";
+    resFCVecProp["PS3Vector"] = "Minor Principal Stress Vector";
 
     return resFCVecProp;
 }

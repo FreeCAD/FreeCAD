@@ -1104,8 +1104,12 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
 
     //  CCX names
     if ( (FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
-        || (FieldName == "Major Principal Stress") || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Major Principal Stress")
         || (FieldName == "Intermediate Principal Stress")
+        || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Major Principal Stress Vector")
+        || (FieldName == "Intermediate Principal Stress Vector")
+        || (FieldName == "Minor Principal Stress Vector")
         || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
         || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
         || (FieldName == "Stress yz component") || (FieldName == "Stress zz component") ) {
