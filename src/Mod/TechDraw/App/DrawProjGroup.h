@@ -51,7 +51,7 @@ class DrawProjGroupItem;
 class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawProjGroup);
-    
+
 public:
     /// Constructor
     DrawProjGroup();
@@ -121,14 +121,14 @@ public:
     void setAnchorDirection(Base::Vector3d dir);
     Base::Vector3d getAnchorDirection();
     TechDraw::DrawProjGroupItem* getAnchor();
-    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
-    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(std::string viewType);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
 
     void updateSecondaryDirs();
 
     void rotate(const std::string &rotationdirection);
     void spin(const std::string &spindirection);
-    
+
     void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 

@@ -47,7 +47,7 @@ enum ProjItemType{ Front,
           FrontTopRight,
           FrontBottomLeft,
           FrontBottomRight };
-          
+
 class DrawProjGroup;
 
 class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
