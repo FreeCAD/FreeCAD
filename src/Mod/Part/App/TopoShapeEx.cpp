@@ -1306,7 +1306,7 @@ TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
     auto res = shapeTypeAndIndex(mapped.index);
     if(res.second<=0) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"Invalid shape name " << (Type?Type:""));
+            FC_THROWM(Base::ValueError,"Invalid shape name " << (Type?Type:""));
         return TopoShape();
     }
     return getSubTopoShape(res.first,res.second,silent);
@@ -1332,7 +1332,7 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     auto &info = _Cache->getInfo(type);
     if(idx > info.count()) {
         if(!silent)
-            FC_THROWM(Base::ValueError,"Shape index " << idx << " out of bound "  << info.count());
+            FC_THROWM(Base::IndexError,"Shape index " << idx << " out of bound "  << info.count());
         return TopoShape();
     }
 
