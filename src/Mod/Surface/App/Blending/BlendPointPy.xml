@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport
-		Father="PersistencePy"
-		FatherInclude="Base/PersistencePy.h"
+		Father="BaseClassPy"
+		FatherInclude="Base/BaseClassPy.h"
 		FatherNamespace="Base"
 		Name="BlendPointPy"
 		PythonName="Surface.BlendPoint"

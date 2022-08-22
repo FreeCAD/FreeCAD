@@ -68,12 +68,12 @@ Handle(Geom_BezierCurve) BlendCurve::compute()
     try {
         // Uniform Parametrization
         TColStd_Array1OfReal params(1, nb_pts);
-        for (int i = 0; i < nb_pts; ++i) {
+        for (size_t i = 0; i < nb_pts; ++i) {
             params(i + 1) = (double)i / ((double)nb_pts - 1);
         }
 
         int num_poles = 0;
-        for (int i = 0; i < nb_pts; ++i) {
+        for (size_t i = 0; i < nb_pts; ++i) {
             num_poles += blendPoints[i].nbVectors();
         }
 
@@ -93,7 +93,7 @@ Handle(Geom_BezierCurve) BlendCurve::compute()
         math_Vector res_z(1, num_poles, 0.0);
         int row_idx = 1;
         int cons_idx = 1;
-        for (int i = 0; i < nb_pts; ++i) {
+        for (size_t i = 0; i < nb_pts; ++i) {
             math_Matrix bezier_eval(1, blendPoints[i].nbVectors(), 1, num_poles, 0.0);
             Standard_Integer first_non_zero;
             BSplCLib::EvalBsplineBasis(blendPoints[i].nbVectors() - 1, num_poles, knots, params(cons_idx), first_non_zero, bezier_eval, Standard_False);
@@ -148,24 +148,4 @@ void BlendCurve::setSize(int i, double f, bool relative)
     catch (Standard_Failure &e) {
         PyErr_SetString(PyExc_Exception, e.GetMessageString());
     }
-}
-
-unsigned int BlendCurve::getMemSize(void) const
-{
-    return 1;
-}
-
-PyObject *BlendCurve::getPyObject(void)
-{
-    return new BlendCurvePy(new BlendCurve(blendPoints));
-}
-
-void BlendCurve::Save(Base::Writer & /*writer*/) const
-{
-    throw Base::NotImplementedError("BlendCurve::Save");
-}
-
-void BlendCurve::Restore(Base::XMLReader & /*reader*/)
-{
-    throw Base::NotImplementedError("BlendCurve::Restore");
 }

@@ -83,19 +83,3 @@ PyObject *BlendPoint::getPyObject(void)
 {
     return new BlendPointPy(new BlendPoint(vectors));
 }
-
-void BlendPoint::Save(Base::Writer & /*writer*/) const
-{
-    throw Base::NotImplementedError("BlendPoint::Save");
-}
-
-void BlendPoint::Restore(Base::XMLReader & /*reader*/)
-{
-    throw Base::NotImplementedError("BlendPoint::Restore");
-}
-
-unsigned int BlendPoint::getMemSize(void) const
-{
-    // do we need to loop on the vectors list ?
-    return sizeof(vectors) * sizeof(vectors.front());
-}

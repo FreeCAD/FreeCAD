@@ -23,14 +23,11 @@
 #ifndef BLEND_POINT_H
 #define BLEND_POINT_H
 
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <Base/Persistence.h>
 
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Surface/SurfaceGlobal.h>
-#include <Mod/Part/App/FeaturePartSpline.h>
+#include <Base/BaseClass.h>
+#include <Base/Vector3D.h>
+
 
 namespace Surface
 {
@@ -39,10 +36,11 @@ namespace Surface
 *   Create a list of vectors formed by a point and some derivatives 
 *   obtained from a curve or surface
 */ 
-class SurfaceExport BlendPoint: public Base::Persistence
+class SurfaceExport BlendPoint: public Base::BaseClass
 {
 public:
     std::vector<Base::Vector3d> vectors;
+
     BlendPoint();
     /*!
     *  Constructor
@@ -70,11 +68,6 @@ public:
     */
     int nbVectors();
     virtual PyObject *getPyObject(void);
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer & /*writer*/) const;
-    virtual void Restore(Base::XMLReader & /*reader*/);
-
 private:
 };
 }// namespace Surface
