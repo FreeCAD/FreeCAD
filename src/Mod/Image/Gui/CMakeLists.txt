@@ -11,6 +11,7 @@ include_directories(
     ${OPENCV2_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 if(MSVC)
