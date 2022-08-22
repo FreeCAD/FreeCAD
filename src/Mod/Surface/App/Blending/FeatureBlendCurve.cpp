@@ -149,6 +149,10 @@ App::DocumentObjectExecReturn *FeatureBlendCurve::execute(void)
     return StdReturn;
 }
 
+PyObject* Surface::BlendCurve::getPyObject(){
+  return nullptr;
+}
+
 double FeatureBlendCurve::RelativeToRealParameters(double relativeValue, double fp, double lp)
 {
     return fp + relativeValue * (lp - fp);

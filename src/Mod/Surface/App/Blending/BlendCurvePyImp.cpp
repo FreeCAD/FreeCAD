@@ -27,8 +27,6 @@
 #endif
 #include "Blending/BlendCurvePy.h"
 #include "Blending/BlendPointPy.h"
-// #include "Mod/Part/App/Geometry.h"
-// #include <Base/GeometryPyCXX.h>
 #include "Blending/BlendCurvePy.cpp"
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/BezierCurvePy.h>

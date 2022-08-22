@@ -22,14 +22,10 @@
 
 #ifndef BLEND_CURVE_H
 #define BLEND_CURVE_H
+
 #include <Geom_BezierCurve.hxx>
-// #include <Mod/Part/App/Geometry.h>
-// #include <App/PropertyLinks.h>
-// #include <App/PropertyStandard.h>
-// #include <App/PropertyUnits.h>
-// #include <Base/Persistence.h>
-// #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Surface/SurfaceGlobal.h>
+#include <Base/BaseClass.h>
 #include <Mod/Surface/App/Blending/BlendPoint.h>
 
 namespace Surface
@@ -37,10 +33,9 @@ namespace Surface
 /*!
 * Create a BezierCurve interpolating a list of BlendPoints
 */
-class SurfaceExport BlendCurve: public Base::Persistence
+class SurfaceExport BlendCurve: public Base::BaseClass
 {
 public:
-
     std::vector<BlendPoint> blendPoints;
 
     BlendCurve();
@@ -64,11 +59,6 @@ public:
     void setSize(int, double, bool);
 
     virtual PyObject *getPyObject(void);
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer & /*writer*/) const;
-    virtual void Restore(Base::XMLReader & /*reader*/);
-
 };
 }// namespace Surface
 
