@@ -1392,7 +1392,7 @@ PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)
     }
 }
 
-PyObject* BSplineCurvePy::setBounds(PyObject *args)
+PyObject* BSplineCurvePy::scaleKnotsToBounds(PyObject *args)
 {
     double u0=0.0;
     double u1=1.0;
@@ -1404,7 +1404,7 @@ PyObject* BSplineCurvePy::setBounds(PyObject *args)
             return nullptr;;
         }
         GeomBSplineCurve* curve = getGeomBSplineCurvePtr();
-        curve->setBounds(u0, u1);
+        curve->scaleKnotsToBounds(u0, u1);
         Py_Return;
     }
     catch (Standard_Failure& e) {
