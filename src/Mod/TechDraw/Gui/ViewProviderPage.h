@@ -28,10 +28,10 @@
 
 #include <boost_signals2.hpp>
 #include <QPointer>
+#include <QObject>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
-
 
 namespace TechDraw{
     class DrawPage;
@@ -77,11 +77,10 @@ public:
     bool onDelete(const std::vector<std::string> &) override;
     void onChanged(const App::Property *prop) override;
     void updateData(const App::Property* prop) override;
-    void startRestoring() override;
-    void finishRestoring() override;
-    bool isRestoring() {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
+
+    //slots & connections
     void onGuiRepaint(const TechDraw::DrawPage* dp); 
     typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
@@ -97,19 +96,20 @@ public:
     void setFrameState(bool state);
     void toggleFrameState();
     void setTemplateMarkers(bool state);
-    QGVPage *getGraphicsView() { return m_graphicsView; }
-    QGSPage* getGraphicsScene() { return m_graphicsScene; }
-    void setGraphicsView(QGVPage* gv);
-    void setGraphicsScene(QGSPage* gs);
+
     bool canDelete(App::DocumentObject* obj) const override;
+
     void  setGrid();
+
+    QGSPage* getQGSPage(void) {return m_graphicsScene;}
+    QGVPage* getQGVPage(void) {return m_graphicsView;}
 
 protected:
     bool setEdit(int ModNum) override;
+    void createMDIViewPage();
 
 private:
     QPointer<MDIViewPage> m_mdiView;
-    bool m_docReady;
     std::string m_pageName;
     QGVPage* m_graphicsView;
     QGSPage* m_graphicsScene;

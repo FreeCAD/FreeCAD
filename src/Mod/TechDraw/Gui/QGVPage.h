@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <memory>
+
 #include <QGraphicsView>
 #include <QLabel>
 #include <QPainterPath>
@@ -111,6 +112,8 @@ public:
     void setZoomCursor();
 
     void pseudoContextEvent();
+
+    void centerOnPage(void);
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);

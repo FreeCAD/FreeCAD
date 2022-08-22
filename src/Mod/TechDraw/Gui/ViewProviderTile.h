@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERTILE_H
 #define DRAWINGGUI_VIEWPROVIDERTILE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 

@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TASKDIMENSION_H
 #define GUI_TASKVIEW_TASKDIMENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 

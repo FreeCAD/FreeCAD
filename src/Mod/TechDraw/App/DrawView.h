@@ -23,15 +23,17 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost_signals2.hpp>
 
 #include <QCoreApplication>
+#include <QObject>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw
@@ -92,17 +94,26 @@ public:
     virtual bool checkFit() const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
-    virtual bool keepUpdated();
-    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
-    virtual double getScale() const;
-    void checkScale();
-    void requestPaint();
-    virtual void handleXYLock();
-    virtual bool isLocked() const;
-    virtual bool showLock() const;
+    virtual bool keepUpdated(void);
 
-    std::vector<TechDraw::DrawLeaderLine*> getLeaders() const;
+    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
+    boost::signals2::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
+    void requestPaint(void);
+    void showProgressMessage(std::string featureName, std::string text);
+
+    virtual double getScale(void) const;
+    void checkScale(void);
+
+    virtual void handleXYLock(void);
+    virtual bool isLocked(void) const;
+    virtual bool showLock(void) const;
+
+    std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
+
     void setScaleAttribute();
+
+    void overrideKeepUpdated(bool s) { m_overrideKeepUpdated = s; }
+    bool overrideKeepUpdated(void) { return m_overrideKeepUpdated; }
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -117,6 +128,8 @@ protected:
 private:
     static const char* ScaleTypeEnums[];
     static App::PropertyFloatConstraint::Constraints scaleRange;
+
+    bool m_overrideKeepUpdated;
 };
 
 typedef App::FeaturePythonT<DrawView> DrawViewPython;

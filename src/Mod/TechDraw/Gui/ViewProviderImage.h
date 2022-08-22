@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
 #define DRAWINGGUI_VIEWPROVIDERIMAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
 #include "ViewProviderDrawingView.h"

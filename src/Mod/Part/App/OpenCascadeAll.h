@@ -380,6 +380,7 @@
 #include <GeomFill_AppSurf.hxx>
 #include <GeomFill_Line.hxx>
 #include <GeomFill_SectionGenerator.hxx>
+#include <GeomFill_Generator.hxx>
 #include <GeomFill_ApproxStyle.hxx>
 #include <GeomFill_CorrectedFrenet.hxx>
 #include <GeomFill_CurveAndTrihedron.hxx>

@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIViewSymbol.h"
 
 namespace TechDraw {

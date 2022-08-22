@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKTEXTLEADER_H
 #define TECHDRAWGUI_TASKTEXTLEADER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -46,15 +48,13 @@ class DrawLeaderLine;
 
 namespace TechDrawGui
 {
-class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGILeaderLine;
+class ViewProviderPage;
 class ViewProviderLeader;
 class Ui_TaskLeaderLine;
 
@@ -128,9 +128,7 @@ private:
 
     QGTracker* m_tracker;
     
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+    ViewProviderPage* m_vpp;
     ViewProviderLeader* m_lineVP;
     TechDraw::DrawView* m_baseFeat;
     TechDraw::DrawPage* m_basePage;

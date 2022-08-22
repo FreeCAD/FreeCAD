@@ -110,9 +110,7 @@ class UnitBasicCases(unittest.TestCase):
             self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1 (delta: {2})".format(schemes[i], v.Value, self.delta), delta=self.delta)
 
         vacuum_permittivity = FreeCAD.Units.parseQuantity("1F/m")
-        format = vacuum_permittivity.Format
-        format["NumberFormat"] = "e" # scientific notation
-        vacuum_permittivity.Format = format
+        vacuum_permittivity.Format = {"NumberFormat" : FreeCAD.Units.NumberFormat.Scientific}
         for i in range(num):
             t = FreeCAD.Units.schemaTranslate(vacuum_permittivity, i)
             v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("F/m")

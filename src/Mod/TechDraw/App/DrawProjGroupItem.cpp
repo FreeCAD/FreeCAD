@@ -81,18 +81,7 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 short DrawProjGroupItem::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Direction.isTouched()  ||
-                    XDirection.isTouched() ||
-                    Source.isTouched()  ||
-                    XSource.isTouched()  ||
-                    Scale.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
+    //there is nothing unique about dpgi vs dvp
     return TechDraw::DrawViewPart::mustExecute();
 }
 
@@ -135,9 +124,13 @@ bool DrawProjGroupItem::showLock(void) const
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
-//    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
+//    Base::Console().Message("DPGI::execute() - %s / %s\n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
+    }
+
+    if (waitingForHlr()) {
+        return DrawView::execute();
     }
 
     bool haveX = checkXDirection();
@@ -154,9 +147,19 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
         return new App::DocumentObjectExecReturn("DPGI: Direction and XDirection are parallel");
     }
 
-    App::DocumentObjectExecReturn* ret = DrawViewPart::execute();
+    return DrawViewPart::execute();
+}
+
+void DrawProjGroupItem::postHlrTasks(void)
+{
+//    Base::Console().Message("DPGI::postHlrTasks() - %s\n", getNameInDocument());
+    DrawViewPart::postHlrTasks();
+
+    //DPGI has no geometry until HLR has finished, and the DPG can not properly
+    //AutoDistibute until all its items have geometry.
     autoPosition();
-    return ret;
+
+    getPGroup()->reportReady();     //tell the parent DPG we are ready
 }
 
 void DrawProjGroupItem::autoPosition()
@@ -165,16 +168,14 @@ void DrawProjGroupItem::autoPosition()
     if (LockPosition.getValue()) {
         return;
     }
-    auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if (pgroup) {
-        if (pgroup->AutoDistribute.getValue()) {
-            newPos = pgroup->getXYPosition(Type.getValueAsString());
-            X.setValue(newPos.x);
-            Y.setValue(newPos.y);
-            requestPaint();
-            purgeTouched();               //prevents "still touched after recompute" message
-        }
+    if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
+        newPos = getPGroup()->getXYPosition(Type.getValueAsString());
+        X.setValue(newPos.x);
+        Y.setValue(newPos.y);
+        requestPaint();
+        purgeTouched();               //prevents "still touched after recompute" message
+        getPGroup()->purgeTouched();  //changing dpgi x,y marks parent dpg as touched
     }
 }
 
@@ -203,15 +204,10 @@ DrawProjGroup* DrawProjGroupItem::getPGroup() const
 
 bool DrawProjGroupItem::isAnchor(void) const
 {
-    bool result = false;
-    auto group = getPGroup();
-    if (group) {
-        DrawProjGroupItem* anchor = group->getAnchor();
-        if (anchor == this) {
-            result = true;
-        }
+    if (getPGroup() && (getPGroup()->getAnchor() == this) ) {
+        return true;
     }
-    return result;
+    return false;
 }
 
 /// get a coord system aligned with Direction and Rotation Vector
@@ -348,16 +344,23 @@ double DrawProjGroupItem::getScale(void) const
 
 void DrawProjGroupItem::unsetupObject()
 {
-    if (getPGroup()) {
-        if (getPGroup()->hasProjection(Type.getValueAsString()) ) {
-            if ((getPGroup()->getAnchor() == this) &&
-                 !getPGroup()->isUnsetting() )         {
-                   Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
-                                           getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
-                   getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
-             }
-        }
+    if (!getPGroup()) {
+        DrawViewPart::unsetupObject();
+        return;
     }
+
+    if (!getPGroup()->hasProjection(Type.getValueAsString()) ) {
+        DrawViewPart::unsetupObject();
+        return;
+    }
+
+    if ( getPGroup()->getAnchor() == this &&
+         !getPGroup()->isUnsetting() )         {
+           Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
+                                   getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
+           getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+    }
+
     DrawViewPart::unsetupObject();
 }
 

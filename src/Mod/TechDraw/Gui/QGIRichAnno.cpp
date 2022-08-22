@@ -76,7 +76,6 @@
 #include "QGIPrimPath.h"
 #include "QGEPath.h"
 #include "QGMText.h"
-#include "QGIView.h"
 #include "QGCustomText.h"
 #include "QGCustomRect.h"
 
@@ -88,8 +87,7 @@ using namespace TechDrawGui;
 
 
 //**************************************************************
-QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
-                         TechDraw::DrawRichAnno* anno) :
+QGIRichAnno::QGIRichAnno() :
     m_isExporting(false), m_hasHover(false)
 {
     setHandlesChildEvents(false);
@@ -98,12 +96,6 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-
-    if (myParent) {
-        setParentItem(myParent);
-    }
-
-    setViewFeature(anno);
 
     m_text = new QGCustomText();
     m_text->setTextInteractionFlags(Qt::NoTextInteraction);
@@ -176,15 +168,14 @@ void QGIRichAnno::draw()
         return;
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getFeature()));
-    if (!vp)
+    if (!vp) {
 //        Base::Console().Message("QGIRA::draw - no viewprovider\n");
         return;
-//    double appX = Rez::guiX(annoFeat->X.getValue());
-//    double appY = Rez::guiX(annoFeat->Y.getValue());
-
-    QGIView::draw();
+    }
 
     setTextItem();
+
+    QGIView::draw();
 }
 
 void QGIRichAnno::setTextItem()

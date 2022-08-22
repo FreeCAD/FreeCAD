@@ -67,7 +67,9 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -1154,7 +1156,9 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
 {
 //    Base::Console().Message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
     if (inSpec.empty()) {
-        std::ofstream output(outSpec);
+        // create an empty file
+        Base::FileInfo fi(outSpec);
+        Base::ofstream output(fi);
         return;
     }
     Base::FileInfo fi(inSpec);

@@ -25,6 +25,8 @@
 #ifndef _DrawViewMulti_h_
 #define _DrawViewMulti_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>

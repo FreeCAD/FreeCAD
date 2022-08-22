@@ -32,7 +32,9 @@
 #include "Builder3D.h"
 #include "Console.h"
 #include "Exception.h"
+#include "FileInfo.h"
 #include "Matrix.h"
+#include "Stream.h"
 #include "Tools.h"
 
 
@@ -318,7 +320,8 @@ void Builder3D::saveToLog()
 void Builder3D::saveToFile(const char* FileName)
 {
   result <<   "} ";
-  std::ofstream  file(FileName);
+  Base::FileInfo fi(FileName);
+  Base::ofstream  file(fi);
   if(!file)
     throw FileException("Builder3D::saveToFile(): Can not open file...");
 

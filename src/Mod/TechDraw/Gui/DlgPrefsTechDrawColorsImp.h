@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 

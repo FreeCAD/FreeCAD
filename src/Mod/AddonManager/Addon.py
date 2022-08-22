@@ -462,9 +462,7 @@ class Addon:
         )  # Required path separator in the metadata.xml file to local separator
 
         _, file_extension = os.path.splitext(real_icon)
-        store = os.path.join(
-            self.cache_directory, "PackageMetadata"
-        )
+        store = os.path.join(self.cache_directory, "PackageMetadata")
         self.cached_icon_filename = os.path.join(
             store, self.name, "cached_icon" + file_extension
         )
@@ -517,17 +515,13 @@ class Addon:
     def is_disabled(self):
         """Check to see if the disabling stopfile exists"""
 
-        stopfile = os.path.join(
-            self.mod_directory, self.name, "ADDON_DISABLED"
-        )
+        stopfile = os.path.join(self.mod_directory, self.name, "ADDON_DISABLED")
         return os.path.exists(stopfile)
 
     def disable(self):
         """Disable this addon from loading when FreeCAD starts up by creating a stopfile"""
 
-        stopfile = os.path.join(
-            mod_directory, self.name, "ADDON_DISABLED"
-        )
+        stopfile = os.path.join(mod_directory, self.name, "ADDON_DISABLED")
         with open(stopfile, "w", encoding="utf-8") as f:
             f.write(
                 "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
@@ -536,9 +530,7 @@ class Addon:
     def enable(self):
         """Re-enable loading this addon by deleting the stopfile"""
 
-        stopfile = os.path.join(
-            self.mod_directory, self.name, "ADDON_DISABLED"
-        )
+        stopfile = os.path.join(self.mod_directory, self.name, "ADDON_DISABLED")
         try:
             os.unlink(stopfile)
         except FileNotFoundError:

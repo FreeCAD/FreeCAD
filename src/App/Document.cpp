@@ -4215,6 +4215,10 @@ void Document::removeObject(const char* sName)
         }
     }
 
+    // In case the object gets deleted the pointer must be nullified
+    if (tobedestroyed) {
+        tobedestroyed->pcNameInDocument = nullptr;
+    }
     d->objectMap.erase(pos);
 }
 

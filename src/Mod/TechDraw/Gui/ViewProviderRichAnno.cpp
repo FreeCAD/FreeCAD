@@ -33,6 +33,8 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
@@ -68,20 +70,6 @@ ViewProviderRichAnno::~ViewProviderRichAnno()
 {
 }
 
-bool ViewProviderRichAnno::setEdit(int ModNum)
-{
-//    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
-    if (ModNum != ViewProvider::Default ) {
-        return ViewProviderDrawingView::setEdit(ModNum);
-    }
-    if (Gui::Control().activeDialog()) { //TaskPanel already open!
-        return false;
-    }
-    Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskDlgRichAnno(this));
-    return true;
-}
-
 bool ViewProviderRichAnno::doubleClicked()
 {
 //    Base::Console().Message("VPRA::doubleClicked()\n");
@@ -104,6 +92,15 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
             LineColor.setStatus(App::Property::ReadOnly, true);
         }
     }
+
+    if (p == &(getViewObject()->AnnoParent)) {
+//        Base::Console().Message("VPRA::updateData(AnnoParent) - vpp: %X\n", getViewProviderPage());
+        if (getViewProviderPage() &&
+            getViewProviderPage()->getQGSPage()) {
+            getViewProviderPage()->getQGSPage()->setRichAnnoGroups();
+        }
+    }
+
     ViewProviderDrawingView::updateData(p);
 }
 

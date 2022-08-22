@@ -133,7 +133,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
-    if (!v0 || v1)
+    if (!v0 || !v1)
         return DrawViewDimension::execute();
 
     double length00 = (v0->pnt - refMin).Length();
@@ -156,6 +156,7 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
         cvTemp->permaPoint = refMax / scale;
     }
 
+    overrideKeepUpdated(false);
     return DrawViewDimension::execute();
 }
 

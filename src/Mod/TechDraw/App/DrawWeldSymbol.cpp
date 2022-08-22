@@ -120,9 +120,10 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 {
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
     }
 
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 

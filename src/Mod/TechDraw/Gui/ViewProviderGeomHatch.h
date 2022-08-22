@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyStandard.h>
 #include <Gui/ViewProviderDocumentObject.h>
 

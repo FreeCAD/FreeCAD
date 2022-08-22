@@ -111,7 +111,7 @@ QRectF DrawViewImage::getRect() const
 
 void DrawViewImage::replaceImageIncluded(std::string newFileName)
 {
-    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
+//    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
     if (ImageIncluded.isEmpty()) {
         setupImageIncluded();
     } else {
@@ -123,7 +123,7 @@ void DrawViewImage::replaceImageIncluded(std::string newFileName)
 
 void DrawViewImage::setupImageIncluded()
 {
-    Base::Console().Message("DVI::setupImageIncluded()\n");
+//    Base::Console().Message("DVI::setupImageIncluded()\n");
     App::Document* doc = getDocument();
     std::string dir = doc->TransientDir.getValue();
     std::string special = getNameInDocument();

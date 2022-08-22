@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "ViewProviderViewPart.h"

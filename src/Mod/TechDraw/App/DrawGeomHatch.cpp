@@ -176,15 +176,29 @@ void DrawGeomHatch::makeLineSets()
 //    Base::Console().Message("DGH::makeLineSets()\n");
     if ((!PatIncluded.isEmpty())  &&
         (!NamePattern.isEmpty())) {
-        std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
         m_lineSets.clear();
+        m_lineSets = makeLineSets(PatIncluded.getValue(),
+                                  NamePattern.getValue());
+    }
+}
+
+/*static*/
+std::vector<LineSet> DrawGeomHatch::makeLineSets(std::string fileSpec, std::string myPattern)
+{
+    std::vector<LineSet> lineSets;
+    if (!fileSpec.empty()  &&
+        !myPattern.empty()) {
+        std::vector<PATLineSpec> specs =
+                   DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
+                                                          myPattern);
         for (auto& hl: specs) {
-            //hl.dump("hl from file");
+            //hl.dump("hl from section");
             LineSet ls;
             ls.setPATLineSpec(hl);
-            m_lineSets.push_back(ls);
+            lineSets.push_back(ls);
         }
     }
+    return lineSets;
 }
 
 DrawViewPart* DrawGeomHatch::getSourceView() const

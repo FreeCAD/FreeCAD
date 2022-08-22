@@ -50,7 +50,9 @@
 
 #include <utilities.h>
 
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <BRep_Tool.hxx>
 #include <Bnd_B3d.hxx>
 #include <NCollection_Map.hxx>
@@ -66,6 +68,7 @@
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Solid.hxx>
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4067)
@@ -180,7 +183,7 @@ NETGENPlugin_Mesher::NETGENPlugin_Mesher (SMESH_Mesh*         mesh,
 
 //================================================================================
 /*!
- * Destuctor
+ * Destructor
  */
 //================================================================================
 
@@ -1326,7 +1329,7 @@ namespace
   struct TIntVData
   {
     gp_XY uv;        //!< UV in face parametric space
-    int   ngId;      //!< ng id of corrsponding node
+    int   ngId;      //!< ng id of corresponding node
     gp_XY uvClose;   //!< UV of closest boundary node
     int   ngIdClose; //!< ng id of closest boundary node
   };
@@ -1982,7 +1985,7 @@ NETGENPlugin_Mesher::AddSegmentsToMesh(netgen::Mesh&                    ngMesh,
         netgen::Segment& prevSeg = ngMesh.LineSegment( i-1 );
         if ( seg[0] == prevSeg[1] && seg[1] == prevSeg[0] )
         {
-          cout << "Segment: " << seg.edgenr << std::endl << "\tis REVRESE of the previous one" << std::endl;
+          cout << "Segment: " << seg.edgenr << std::endl << "\tis REVERSE of the previous one" << std::endl;
           continue;
         }
       }
@@ -2043,7 +2046,7 @@ int NETGENPlugin_Mesher::FillSMesh(const netgen::OCCGeometry&          occgeo,
 
   // quadHelper is used for either
   // 1) making quadratic elements when a lower dimension mesh is loaded
-  //    to SMESH before convertion to quadratic by NETGEN
+  //    to SMESH before conversion to quadratic by NETGEN
   // 2) sewing of quadratic elements with quadratic elements of sub-meshes
   if ( quadHelper && !quadHelper->GetIsQuadratic() && quadHelper->GetTLinkNodeMap().empty() )
     quadHelper = 0;
@@ -2508,7 +2511,7 @@ bool NETGENPlugin_Mesher::Compute()
     {
       // not to RestrictLocalH() according to curvature during MESHCONST_ANALYSE
       mparams.uselocalh = false;
-      mparams.grading = 0.8; // not limitited size growth
+      mparams.grading = 0.8; // not limited size growth
 
       if ( _simpleHyp->GetNumberOfSegments() )
         // nb of segments
@@ -2974,18 +2977,18 @@ bool NETGENPlugin_Mesher::Compute()
         if(netgen::multithread.terminate)
           return false;
 
-        if ( comment.empty() ) // do not overwrite a previos error
+        if ( comment.empty() ) // do not overwrite a previous error
           comment << text(err);
       }
       catch (Standard_Failure& ex)
       {
-        if ( comment.empty() ) // do not overwrite a previos error
+        if ( comment.empty() ) // do not overwrite a previous error
           comment << text(ex);
         err = 1;
       }
       catch (netgen::NgException exc)
       {
-        if ( comment.empty() ) // do not overwrite a previos error
+        if ( comment.empty() ) // do not overwrite a previous error
           comment << text(exc);
         err = 1;
       }
@@ -3012,22 +3015,22 @@ bool NETGENPlugin_Mesher::Compute()
           if(netgen::multithread.terminate)
             return false;
 
-          if ( comment.empty() ) // do not overwrite a previos error
+          if ( comment.empty() ) // do not overwrite a previous error
             comment << text(err);
         }
         catch (Standard_Failure& ex)
         {
-          if ( comment.empty() ) // do not overwrite a previos error
+          if ( comment.empty() ) // do not overwrite a previous error
             comment << text(ex);
         }
         catch (netgen::NgException exc)
         {
-          if ( comment.empty() ) // do not overwrite a previos error
+          if ( comment.empty() ) // do not overwrite a previous error
             comment << text(exc);
         }
       }
     }
-    if (!err && mparams.secondorder > 0)
+    if (!err && mparams.secondorder)
     {
       try
       {
@@ -3055,12 +3058,12 @@ bool NETGENPlugin_Mesher::Compute()
       }
       catch (Standard_Failure& ex)
       {
-        if ( comment.empty() ) // do not overwrite a previos error
+        if ( comment.empty() ) // do not overwrite a previous error
           comment << "Exception in netgen at passing to 2nd order ";
       }
       catch (netgen::NgException exc)
       {
-        if ( comment.empty() ) // do not overwrite a previos error
+        if ( comment.empty() ) // do not overwrite a previous error
           comment << exc.What();
       }
     }
@@ -3199,7 +3202,7 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
   {
     // not to RestrictLocalH() according to curvature during MESHCONST_ANALYSE
     mparams.uselocalh = false;
-    mparams.grading = 0.8; // not limitited size growth
+    mparams.grading = 0.8; // not limited size growth
 
     if ( _simpleHyp->GetNumberOfSegments() )
       // nb of segments
@@ -3302,7 +3305,7 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
   // calculate total nb of segments and length of edges
   double fullLen = 0.0;
   int fullNbSeg = 0;
-  int entity = mparams.secondorder > 0 ? SMDSEntity_Quad_Edge : SMDSEntity_Edge;
+  int entity = mparams.secondorder ? SMDSEntity_Quad_Edge : SMDSEntity_Edge;
   TopTools_DataMapOfShapeInteger Edge2NbSeg;
   for (TopExp_Explorer exp(_shape, TopAbs_EDGE); exp.More(); exp.Next())
   {
@@ -3340,7 +3343,7 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
   {
     vector<int>& aVec = aResMap[_mesh->GetSubMesh(Edge2NbSegIt.Key())];
     if ( aVec[ entity ] > 1 && aVec[ SMDSEntity_Node ] == 0 )
-      aVec[SMDSEntity_Node] = mparams.secondorder > 0  ? 2*aVec[ entity ]-1 : aVec[ entity ]-1;
+      aVec[SMDSEntity_Node] = mparams.secondorder ? 2*aVec[ entity ]-1 : aVec[ entity ]-1;
 
     fullNbSeg += aVec[ entity ];
     Edge2NbSeg( Edge2NbSegIt.Key() ) = aVec[ entity ];
@@ -3377,16 +3380,16 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
     int nb1d = 0;
     if ( !tooManyElems )
     {
-      TopTools_MapOfShape egdes;
+      TopTools_MapOfShape edges;
       for (TopExp_Explorer exp1(F,TopAbs_EDGE); exp1.More(); exp1.Next())
-        if ( egdes.Add( exp1.Current() ))
+          if (edges.Add(exp1.Current()))
           nb1d += Edge2NbSeg.Find(exp1.Current());
     }
     int nbFaces = tooManyElems ? hugeNb : int( 4*anArea / (mparams.maxh*mparams.maxh*sqrt(3.)));
     int nbNodes = tooManyElems ? hugeNb : (( nbFaces*3 - (nb1d-1)*2 ) / 6 + 1 );
 
     vector<int> aVec(SMDSEntity_Last, 0);
-    if( mparams.secondorder > 0 ) {
+    if (mparams.secondorder) {
       int nb1d_in = (nbFaces*3 - nb1d) / 2;
       aVec[SMDSEntity_Node] = nbNodes + nb1d_in;
       aVec[SMDSEntity_Quad_Triangle] = nbFaces;
@@ -3428,11 +3431,11 @@ bool NETGENPlugin_Mesher::Evaluate(MapShapeNbElems& aResMap)
     if ( tooManyElems ) // avoid FPE
     {
       aVec[SMDSEntity_Node] = hugeNb;
-      aVec[ mparams.secondorder > 0 ? SMDSEntity_Quad_Tetra : SMDSEntity_Tetra] = hugeNb;
+      aVec[ mparams.secondorder ? SMDSEntity_Quad_Tetra : SMDSEntity_Tetra] = hugeNb;
     }
     else
     {
-      if( mparams.secondorder > 0 ) {
+      if (mparams.secondorder) {
         aVec[SMDSEntity_Node] = nb1d_in/3 + 1 + nb1d_in;
         aVec[SMDSEntity_Quad_Tetra] = nbVols;
       }
@@ -3787,7 +3790,7 @@ NETGENPlugin_Internals::NETGENPlugin_Internals( SMESH_Mesh&         mesh,
       {
         _intShapes.insert( meshDS->ShapeToIndex( f.Current() ));
 
-        // egdes
+        // edges
         list< TopoDS_Shape > edges;
         for ( e.Init( f.Current(), TopAbs_EDGE ); e.More(); e.Next())
           if ( SMESH_MesherHelper::NbAncestors( e.Current(), mesh, TopAbs_FACE ) > 1 )
