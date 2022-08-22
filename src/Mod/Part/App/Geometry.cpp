@@ -1616,7 +1616,7 @@ void GeomBSplineCurve::Trim(double u, double v)
     }
 }
 
-void GeomBSplineCurve::setBounds(double u0, double u1)
+void GeomBSplineCurve::scaleKnotsToBounds(double u0, double u1)
 {
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(myCurve->Copy());
@@ -4478,7 +4478,7 @@ Geometry *GeomBSplineSurface::copy() const
     return newSurf;
 }
 
-void GeomBSplineSurface::setBounds(double u0, double u1, double v0, double v1)
+void GeomBSplineSurface::scaleKnotsToBounds(double u0, double u1, double v0, double v1)
 {
     try {
         Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast(mySurface->Copy());
