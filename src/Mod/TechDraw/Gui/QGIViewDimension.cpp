@@ -261,7 +261,7 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     if (!dim)
         return;
 
-    //set label's Qt position(top,left) given boundingRect center point
+    //set label's Qt position(top, left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
 
     QString uText = m_unitText->toPlainText();
@@ -306,7 +306,7 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
 
 void QGIDatumLabel::setLabelCenter()
 {
-    //save label's bRect center (posX,posY) given Qt position (top,left)
+    //save label's bRect center (posX, posY) given Qt position (top, left)
     posX = x() + m_dimText->boundingRect().width() / 2.;
     posY = y() + m_dimText->boundingRect().height() / 2.;
 }
@@ -544,7 +544,7 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
 //Set selection state for this and it's children
 void QGIViewDimension::setGroupSelection(bool b)
 {
-//    Base::Console().Message("QGIVD::setGroupSelection(%d)\n",b);
+//    Base::Console().Message("QGIVD::setGroupSelection(%d)\n", b);
     setSelected(b);
     datumLabel->setSelected(b);
     dimLines->setSelected(b);
@@ -602,7 +602,7 @@ void QGIViewDimension::setNormalColorAll()
 //and so mouse events need to be ignored.  Only the QGIDatumLabel mouse events are relevant.
 void QGIViewDimension::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIVD::mousePressEvent() - %s\n",getViewName());
+//    Base::Console().Message("QGIVD::mousePressEvent() - %s\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
@@ -613,7 +613,7 @@ void QGIViewDimension::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n",getViewName());
+//    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -633,7 +633,7 @@ void QGIViewDimension::updateView(bool update)
         dim->Y.isTouched()) {
         float x = Rez::guiX(dim->X.getValue());
         float y = Rez::guiX(dim->Y.getValue());
-        datumLabel->setPosFromCenter(x,-y);
+        datumLabel->setPosFromCenter(x, -y);
         updateDim();
     } else if(vp->Fontsize.isTouched() ||
         vp->Font.isTouched()) {
@@ -669,7 +669,7 @@ void QGIViewDimension::updateDim()
     prepareGeometryChange();
     datumLabel->setDimString(labelText);
     datumLabel->setToleranceString();
-    datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
+    datumLabel->setPosFromCenter(datumLabel->X(), datumLabel->Y());
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
     datumLabel->setLineWidth(m_lineWidth);
@@ -691,8 +691,8 @@ void QGIViewDimension::datumLabelDragFinished()
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
     Gui::Command::commitCommand();
 }
 
@@ -2396,12 +2396,12 @@ QColor QGIViewDimension::prefNormalColor()
 //! find the closest isometric axis given an ortho vector
 Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho) const
 {
-    std::vector<Base::Vector3d> isoDirs = { Base::Vector3d(0.866,0.5,0.0),     //iso X
-                                            Base::Vector3d(-0.866,-0.5,0.0),   //iso -X
-                                            Base::Vector3d(-0.866,0.5,0.0),    //iso -Y?
-                                            Base::Vector3d(0.866,-0.5,0.0),    //iso +Y?
-                                            Base::Vector3d(0.0,-1.0,0.0),      //iso -Z
-                                            Base::Vector3d(0.0,1.0,0.0) };     //iso Z
+    std::vector<Base::Vector3d> isoDirs = { Base::Vector3d(0.866, 0.5, 0.0),     //iso X
+                                            Base::Vector3d(-0.866, -0.5, 0.0),   //iso -X
+                                            Base::Vector3d(-0.866, 0.5, 0.0),    //iso -Y?
+                                            Base::Vector3d(0.866, -0.5, 0.0),    //iso +Y?
+                                            Base::Vector3d(0.0, -1.0, 0.0),      //iso -Z
+                                            Base::Vector3d(0.0, 1.0, 0.0) };     //iso Z
     std::vector<double> angles;
     for (auto& iso: isoDirs) {
         angles.push_back(ortho.GetAngle(iso));
@@ -2420,13 +2420,13 @@ Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho) const
 //! find the iso extension direction corresponding to an iso dist direction
 Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
 {
-    Base::Vector3d dirExt(1,0,0);
-    Base::Vector3d isoX(0.866,0.5,0.0);     //iso X
-    Base::Vector3d isoXr(-0.866,-0.5,0.0);  //iso -X
-    Base::Vector3d isoY(-0.866,0.5,0.0);    //iso -Y?
-    Base::Vector3d isoYr(0.866,-0.5,0.0);   //iso +Y?
-    Base::Vector3d isoZ(0.0,1.0,0.0);       //iso Z
-    Base::Vector3d isoZr(0.0,-1.0,0.0);     //iso -Z
+    Base::Vector3d dirExt(1, 0,0);
+    Base::Vector3d isoX(0.866, 0.5, 0.0);     //iso X
+    Base::Vector3d isoXr(-0.866, -0.5, 0.0);  //iso -X
+    Base::Vector3d isoY(-0.866, 0.5, 0.0);    //iso -Y?
+    Base::Vector3d isoYr(0.866, -0.5, 0.0);   //iso +Y?
+    Base::Vector3d isoZ(0.0, 1.0, 0.0);       //iso Z
+    Base::Vector3d isoZr(0.0, -1.0, 0.0);     //iso -Z
     if (dir.IsEqual(isoX, FLT_EPSILON)) {
         dirExt = isoY;
     } else if (dir.IsEqual(-isoX, FLT_EPSILON)) {
@@ -2586,7 +2586,7 @@ void QGIViewDimension::makeMarkC(double x, double y, QColor c) const
 {
     QGIVertex* vItem = new QGIVertex(-1);
     vItem->setParentItem(const_cast<QGIViewDimension*>(this));
-    vItem->setPos(x,y);
+    vItem->setPos(x, y);
     vItem->setWidth(2.0);
     vItem->setRadius(20.0);
     vItem->setNormalColor(c);

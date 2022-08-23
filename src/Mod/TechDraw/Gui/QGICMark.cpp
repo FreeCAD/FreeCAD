@@ -49,10 +49,10 @@ QGICMark::QGICMark(int index) : QGIVertex(index)
 void QGICMark::draw()
 {
     QPainterPath cmPath;
-    cmPath.moveTo(0.0,m_size);
-    cmPath.lineTo(0.0,-m_size);
-    cmPath.moveTo(m_size,0.0);
-    cmPath.lineTo(-m_size,0.0);
+    cmPath.moveTo(0.0, m_size);
+    cmPath.lineTo(0.0, -m_size);
+    cmPath.moveTo(m_size, 0.0);
+    cmPath.lineTo(-m_size, 0.0);
     setPath(cmPath);
 }
 
@@ -107,7 +107,7 @@ QPainterPath QGICMark::shape() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("MarkFuzz",5.0);
+    double result = hGrp->GetFloat("MarkFuzz", 5.0);
     return result;
 }
 

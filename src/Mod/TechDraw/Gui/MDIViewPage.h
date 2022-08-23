@@ -76,7 +76,7 @@ public:
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
     bool onHasMsg(const char* pMsg) const override;
 
     void print() override;
@@ -124,7 +124,7 @@ protected:
     typedef boost::signals2::connection Connection;
     Connection connectDeletedObject;
 
-    bool compareSelections(std::vector<Gui::SelectionObject> treeSel,QList<QGraphicsItem*> sceneSel);
+    bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
 

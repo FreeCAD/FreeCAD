@@ -204,7 +204,7 @@ void TaskCustomizeFormat::onFormatChanged()
         constexpr int size(80);
         char buffer[size];
         std::string formatString = formatPreview.toUtf8().constData();
-        auto usedSize = snprintf(buffer,size, formatString.c_str(),dimRawValue);
+        auto usedSize = snprintf(buffer, size, formatString.c_str(), dimRawValue);
         formatPreview = QString::fromUtf8(buffer, usedSize);
     }
     ui->lbShowPreview->setText(formatPreview);

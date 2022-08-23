@@ -268,7 +268,7 @@ bool TaskCosmeticLine::accept()
         Gui::Command::commitCommand();
     }
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -276,7 +276,7 @@ bool TaskCosmeticLine::accept()
 bool TaskCosmeticLine::reject()
 {
     //there's nothing to do.
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

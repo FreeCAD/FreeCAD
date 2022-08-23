@@ -96,7 +96,7 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     //Qt::PenStyle - NoPen, Solid, Dashed, ...
     //Preferences::General - Solid, Dashed                                     
-    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",0) + 1);
+    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine", 0) + 1);
     return hidStyle;
 }
 

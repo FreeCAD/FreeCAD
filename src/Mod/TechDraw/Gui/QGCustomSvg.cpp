@@ -61,7 +61,7 @@ void QGCustomSvg::centerAt(double cX, double cY)
     double height = box.height();
     double newX = (cX - width/2.) * scale();
     double newY = (cY - height/2.) * scale();
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 bool QGCustomSvg::load(QByteArray *svgBytes)

@@ -52,11 +52,11 @@ ViewProviderWeld::ViewProviderWeld()
     sPixmap = "actions/TechDraw_WeldSymbol";
     static const char *group = "Text";
 
-    ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()),group,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()), group, App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(FontSize, (prefFontSize()), group,
-                                (App::PropertyType)(App::Prop_None),"Tail text size");
+                                (App::PropertyType)(App::Prop_None), "Tail text size");
     ADD_PROPERTY_TYPE(TileFontSize, (prefFontSize() * prefTileTextAdjust()), group,
-                                (App::PropertyType)(App::Prop_None),"Text size on individual symbol tiles");
+                                (App::PropertyType)(App::Prop_None), "Text size on individual symbol tiles");
 }
 
 ViewProviderWeld::~ViewProviderWeld()
@@ -94,7 +94,7 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren() const
 
 bool ViewProviderWeld::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPW::setEdit(%d)\n",ModNum);
+//    Base::Console().Message("VPW::setEdit(%d)\n", ModNum);
     if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }

@@ -510,7 +510,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                      bool editMode)
     : TaskDialog()
 {
-    widget  = new TaskCenterLine(partFeat,page,subNames, editMode);
+    widget  = new TaskCenterLine(partFeat, page, subNames, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
@@ -524,7 +524,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                      bool editMode)
     : TaskDialog()
 {
-    widget  = new TaskCenterLine(partFeat,page, edgeName, editMode);
+    widget  = new TaskCenterLine(partFeat, page, edgeName, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

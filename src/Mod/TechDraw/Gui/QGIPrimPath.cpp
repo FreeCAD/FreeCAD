@@ -53,7 +53,7 @@ QGIPrimPath::QGIPrimPath():
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setAcceptHoverEvents(true);
 
     isHighlighted = false;
@@ -81,7 +81,7 @@ QGIPrimPath::QGIPrimPath():
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().Message("QGIPP::itemChange(%d) - type: %d\n", change,type() - QGraphicsItem::UserType);
+//    Base::Console().Message("QGIPP::itemChange(%d) - type: %d\n", change, type() - QGraphicsItem::UserType);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
@@ -94,7 +94,7 @@ QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGIPP::hoverEnter() - selected; %d\n",isSelected());
+//    Base::Console().Message("QGIPP::hoverEnter() - selected; %d\n", isSelected());
     if (!isSelected()) {
         setPrettyPre();
     }
@@ -103,7 +103,7 @@ void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGIPP::hoverLeave() - selected; %d\n",isSelected());
+//    Base::Console().Message("QGIPP::hoverLeave() - selected; %d\n", isSelected());
     if(!isSelected()) {
         setPrettyNormal();
     }

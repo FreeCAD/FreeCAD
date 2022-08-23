@@ -83,7 +83,7 @@ public:
      * x_axis_rotation is in radian
      */
     static void pathArcSegment(QPainterPath &path, double xc, double yc, double th0,
-                        double th1,double rx, double ry, double xAxisRotation);
+                        double th1, double rx, double ry, double xAxisRotation);
 
     /// Draws an arc using QPainterPath path
     /*!
@@ -103,9 +103,9 @@ protected:
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-    TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
-    TechDraw::DrawGeomHatch* faceIsGeomHatched(int i,std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
-    void dumpPath(const char* text,QPainterPath path);
+    TechDraw::DrawHatch* faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs) const;
+    TechDraw::DrawGeomHatch* faceIsGeomHatched(int i, std::vector<TechDraw::DrawGeomHatch*> geomObjs) const;
+    void dumpPath(const char* text, QPainterPath path);
     void removePrimitives();
     void removeDecorations();
     bool prefFaceEdges();

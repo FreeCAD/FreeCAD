@@ -84,16 +84,16 @@ void QGIMatting::draw()
     double radiusFudge = 1.2;       //keep slightly larger than fudge in App/DVDetail (1.1) to prevent bleed through
     m_width = m_radius * radiusFudge;
     m_height = m_radius * radiusFudge;
-    QRectF outline(-m_width,-m_height,2.0 * m_width,2.0 * m_height);
+    QRectF outline(-m_width, -m_height, 2.0 * m_width, 2.0 * m_height);
     QPainterPath ppOut;
     ppOut.addRect(outline);
     QPainterPath ppCut;
     if (getHoleStyle() == 0) {
-        QRectF roundCutout (-m_radius,-m_radius,2.0 * m_radius,2.0 * m_radius);
+        QRectF roundCutout (-m_radius, -m_radius, 2.0 * m_radius, 2.0 * m_radius);
         ppCut.addEllipse(roundCutout);
     } else {
         double squareSize = m_radius;
-        QRectF squareCutout (-squareSize,-squareSize,2.0 * squareSize,2.0 * squareSize);
+        QRectF squareCutout (-squareSize, -squareSize, 2.0 * squareSize, 2.0 * squareSize);
         ppCut.addRect(squareCutout);
     }
     ppOut.addPath(ppCut);
@@ -112,7 +112,7 @@ int QGIMatting::getHoleStyle()
 QRectF QGIMatting::boundingRect() const
 {
     QRectF result ;
-    result = childrenBoundingRect().adjusted(-1,-1,1,1);
+    result = childrenBoundingRect().adjusted(-1, -1, 1,1);
     return result;
 }
 
@@ -120,7 +120,7 @@ void QGIMatting::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //painter->drawRect(boundingRect().adjusted(-2.0,-2.0,2.0,2.0));
+    //painter->drawRect(boundingRect().adjusted(-2.0, -2.0, 2.0, 2.0));
 
     QGraphicsItemGroup::paint (painter, &myOption, widget);
 }

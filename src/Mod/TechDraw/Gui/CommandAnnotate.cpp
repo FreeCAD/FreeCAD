@@ -248,7 +248,7 @@ void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
             execQuadrants(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
+            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
     updateActive();
     Gui::Selection().clearSelection();
@@ -293,16 +293,16 @@ void CmdTechDrawCosmeticVertexGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup","Add Cosmetic Vertex"));
-    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Inserts a Cosmetic Vertex into a View"));
+    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup", "Add Cosmetic Vertex"));
+    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex", "Inserts a Cosmetic Vertex into a View"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdMidpoints","Add Midpoint Vertices"));
-    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints","Inserts Cosmetic Vertices at Midpoint of selected Edges"));
+    arc2->setText(QApplication::translate("CmdMidpoints", "Add Midpoint Vertices"));
+    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints", "Inserts Cosmetic Vertices at Midpoint of selected Edges"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdQuadrants","Add Quadrant Vertices"));
-    arc3->setToolTip(QApplication::translate("TechDraw_Quadrants","Inserts Cosmetic Vertices at Quadrant Points of selected Circles"));
+    arc3->setText(QApplication::translate("CmdQuadrants", "Add Quadrant Vertices"));
+    arc3->setToolTip(QApplication::translate("TechDraw_Quadrants", "Inserts Cosmetic Vertices at Quadrant Points of selected Circles"));
     arc3->setStatusTip(arc3->toolTip());
 }
 
@@ -560,8 +560,8 @@ void CmdTechDrawAnnotation::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Annotation");
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewAnnotation', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
 }
@@ -612,7 +612,7 @@ void CmdTechDrawCenterLineGroup::activated(int iMsg)
             exec2PointCenterLine(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
+            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -655,16 +655,16 @@ void CmdTechDrawCenterLineGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup","Add Centerline to Faces"));
-    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine","Adds a Centerline to Faces"));
+    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Add Centerline to Faces"));
+    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine", "Adds a Centerline to Faces"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine","Add Centerline between 2 Lines"));
-    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine","Adds a Centerline between 2 Lines"));
+    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Add Centerline between 2 Lines"));
+    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine", "Adds a Centerline between 2 Lines"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine","Add Centerline between 2 Points"));
-    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine","Adds a Centerline between 2 Points"));
+    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Add Centerline between 2 Points"));
+    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine", "Adds a Centerline between 2 Points"));
     arc3->setStatusTip(arc3->toolTip());
 }
 
@@ -1207,7 +1207,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                         cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
-                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n",idx,source);
+                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, source);
                     }
                 }
             } else if (geomType == "Vertex") {
@@ -1481,13 +1481,13 @@ void CmdTechDrawSurfaceFinishSymbols::activated(int iMsg)
     std::vector<Gui::SelectionObject> selection = this->getSelection().getSelectionEx();
     if (selection.empty())
     {
-        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("SurfaceFinishSymbols"),QObject::tr("Selection is empty"));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("SurfaceFinishSymbols"), QObject::tr("Selection is empty"));
         return;
     }
     TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*> (selection[0].getObject());
     if(!objFeat)
     {
-        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("SurfaceFinishSymbols"),QObject::tr("No object selected"));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("SurfaceFinishSymbols"), QObject::tr("No object selected"));
         return;
     }
     Gui::Control().showDialog(new TechDrawGui::TaskDlgSurfaceFinishSymbols(objFeat));

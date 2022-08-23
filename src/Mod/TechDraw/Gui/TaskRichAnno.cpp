@@ -255,7 +255,7 @@ void TaskRichAnno::setUiEdit()
 
 void TaskRichAnno::onEditorClicked(bool b)
 {
-//    Base::Console().Message("TL::onEditorClicked(%d)\n",b);
+//    Base::Console().Message("TL::onEditorClicked(%d)\n", b);
     Q_UNUSED(b);
     m_textDialog = new QDialog(nullptr);
     QString leadText = ui->teAnnoText->toHtml();
@@ -269,7 +269,7 @@ void TaskRichAnno::onEditorClicked(bool b)
     }
     //m_rte->setTextWidth(m_annoVP->MaxWidth);
     QGridLayout* gl = new QGridLayout(m_textDialog);
-    gl->addWidget(m_rte,0,0,1,1);
+    gl->addWidget(m_rte, 0,0, 1,1);
     m_textDialog->setWindowTitle(QObject::tr("Rich text editor"));
     m_textDialog->setMinimumWidth (400);
     m_textDialog->setMinimumHeight(400);
@@ -319,14 +319,14 @@ void TaskRichAnno::createAnnoFeature()
     std::string PageName = m_basePage->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       annoType.c_str(),annoName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       PageName.c_str(),annoName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
+                       annoType.c_str(), annoName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
+                       PageName.c_str(), annoName.c_str());
 
     if (m_baseFeat) {
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.AnnoParent = App.activeDocument().%s",
-                               annoName.c_str(),m_baseFeat->getNameInDocument());
+        Command::doCommand(Command::Doc, "App.activeDocument().%s.AnnoParent = App.activeDocument().%s",
+                               annoName.c_str(), m_baseFeat->getNameInDocument());
     }
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (!obj) {
@@ -392,7 +392,7 @@ void TaskRichAnno::updateAnnoFeature()
 void TaskRichAnno::commonFeatureUpdate()
 {
 //    Base::Console().Message("TRA::commonFeatureUpdate()\n");
-    m_annoFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
+    m_annoFeat->setPosition(Rez::appX(m_attachPoint.x), Rez::appX(- m_attachPoint.y), true);
     m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8());
     m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
     m_annoFeat->ShowFrame.setValue(ui->cbShowFrame->isChecked());
@@ -408,9 +408,9 @@ void TaskRichAnno::removeFeature()
         try {
             // this doesn't remove the QGMText item??
             std::string PageName = m_basePage->getNameInDocument();
-            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                    PageName.c_str(),m_annoFeat->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
+            Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                                    PageName.c_str(), m_annoFeat->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')",
                                         m_annoFeat->getNameInDocument());
         }
         catch (...) {
@@ -451,14 +451,14 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             points = dll->WayPoints.getValues();
         } else {
 //            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
-            return QPointF(0.0,0.0);
+            return QPointF(0.0, 0.0);
         }
     } else {
 //        Base::Console().Message("TRA::calcStartPos - no m_baseFeat\n");
         if (m_basePage) {
             double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
-            return QPointF(w,h);
+            return QPointF(w, h);
         } else {
             Base::Console().Message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
         }
@@ -516,7 +516,7 @@ bool TaskRichAnno::accept()
 
     m_annoFeat->requestPaint();
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -540,8 +540,8 @@ bool TaskRichAnno::reject()
     }
 
     //make sure any dangling objects are cleaned up
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }
@@ -551,7 +551,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
                                  TechDraw::DrawPage* page)
     : TaskDialog()
 {
-    widget  = new TaskRichAnno(baseFeat,page);
+    widget  = new TaskRichAnno(baseFeat, page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
                                               widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

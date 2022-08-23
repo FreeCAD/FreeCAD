@@ -45,8 +45,8 @@ using namespace TechDrawGui;
 //original range is far too broad for drawing.  causes massive loop counts.
 //App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {Precision::Confusion(),
 //                                                                  std::numeric_limits<double>::max(),
-//                                                                  pow(10,- Base::UnitsApi::getDecimals())};
-App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10,- Base::UnitsApi::getDecimals()),
+//                                                                  pow(10, - Base::UnitsApi::getDecimals())};
+App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10, - Base::UnitsApi::getDecimals()),
                                                                   1000.0,
                                                                   0.1};
 
@@ -61,9 +61,9 @@ ViewProviderHatch::ViewProviderHatch()
     sPixmap = "TechDraw_TreeHatch";
 
     static const char *vgroup = "Hatch";
-    ADD_PROPERTY_TYPE(HatchColor,(TechDraw::DrawHatch::prefSvgHatchColor()),
-                        vgroup,App::Prop_None,"The color of the hatch pattern");
-    ADD_PROPERTY_TYPE(HatchScale,(1.0),vgroup,App::Prop_None,"Hatch pattern size adjustment");
+    ADD_PROPERTY_TYPE(HatchColor, (TechDraw::DrawHatch::prefSvgHatchColor()),
+                        vgroup, App::Prop_None, "The color of the hatch pattern");
+    ADD_PROPERTY_TYPE(HatchScale, (1.0), vgroup, App::Prop_None, "Hatch pattern size adjustment");
     HatchScale.setConstraints(&scaleRange);
 }
 

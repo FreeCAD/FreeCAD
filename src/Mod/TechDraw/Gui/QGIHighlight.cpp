@@ -79,7 +79,7 @@ void QGIHighlight::draw()
 
 void QGIHighlight::makeHighlight()
 {
-    QRectF r(m_start,m_end);
+    QRectF r(m_start, m_end);
     m_circle->setRect(r);
     m_rect->setRect(r);
     if (getHoleStyle() == 0) {
@@ -102,7 +102,7 @@ void QGIHighlight::makeReference()
     m_reference->setPos(newPos);   
 
     double highRot = rotation();
-    if (!TechDraw::DrawUtil::fpCompare(highRot,0.0)) {
+    if (!TechDraw::DrawUtil::fpCompare(highRot, 0.0)) {
         QRectF refBR = m_reference->boundingRect();
         QPointF refCenter = refBR.center();
         m_reference->setTransformOriginPoint(refCenter);
@@ -119,10 +119,10 @@ void QGIHighlight::setInteractive(bool state)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, state);
 }
 
-void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
+void QGIHighlight::setBounds(double x1, double y1, double x2, double y2)
 {
-    m_start = QPointF(Rez::guiX(x1),Rez::guiX(-y1));
-    m_end = QPointF(Rez::guiX(x2),Rez::guiX(-y2));
+    m_start = QPointF(Rez::guiX(x1), Rez::guiX(-y1));
+    m_end = QPointF(Rez::guiX(x2), Rez::guiX(-y2));
 }
 
 void QGIHighlight::setReference(const char* ref)

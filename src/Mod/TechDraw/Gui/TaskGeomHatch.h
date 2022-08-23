@@ -50,7 +50,7 @@ class TaskGeomHatch : public QWidget
     Q_OBJECT
 
 public:
-    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
+    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
     ~TaskGeomHatch() override;
 
 public:
@@ -101,7 +101,7 @@ class TaskDlgGeomHatch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
+    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
     ~TaskDlgGeomHatch() override;
     const ViewProviderGeomHatch * getViewProvider() const { return viewProvider; }
 

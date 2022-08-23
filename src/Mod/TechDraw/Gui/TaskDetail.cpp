@@ -459,7 +459,7 @@ void TaskDetail::createDetail()
 
     m_detailName = m_doc->getUniqueObjectName("Detail");
 
-    Gui::Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawViewDetail','%s')",
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDetail', '%s')",
                             m_detailName.c_str());
     App::DocumentObject *docObj = m_doc->getObject(m_detailName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
@@ -470,15 +470,15 @@ void TaskDetail::createDetail()
 
     dvd->Source.setValues(getBaseFeat()->Source.getValues());
 
-    Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",
-                            m_detailName.c_str(),m_baseName.c_str());
-    Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",
-                            m_detailName.c_str(),m_baseName.c_str());
-    Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.XDirection = App.activeDocument().%s.XDirection",
-                            m_detailName.c_str(),m_baseName.c_str());
-    Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
-                            m_detailName.c_str(),m_baseName.c_str());
-    Gui::Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.BaseView = App.activeDocument().%s",
+                            m_detailName.c_str(), m_baseName.c_str());
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",
+                            m_detailName.c_str(), m_baseName.c_str());
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.XDirection = App.activeDocument().%s.XDirection",
+                            m_detailName.c_str(), m_baseName.c_str());
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                            m_detailName.c_str(), m_baseName.c_str());
+    Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                             m_pageName.c_str(), m_detailName.c_str());
 
     Gui::Command::updateActive();
@@ -610,7 +610,7 @@ bool TaskDetail::accept()
     m_ghost->hide();
     getDetailFeat()->requestPaint();
     getBaseFeat()->requestPaint();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -625,7 +625,7 @@ bool TaskDetail::reject()
     m_ghost->hide();
     if (m_mode == CREATEMODE) {
         if (m_created) {
-            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
+            Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')",
                                     m_detailName.c_str());
         }
     } else {
@@ -634,8 +634,8 @@ bool TaskDetail::reject()
         getBaseFeat()->requestPaint();
     }
 
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }

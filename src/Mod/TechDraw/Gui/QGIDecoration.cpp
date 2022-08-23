@@ -55,7 +55,7 @@ QGIDecoration::QGIDecoration() :
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setWidth(1.0);
 }
@@ -116,7 +116,7 @@ void QGIDecoration::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
     cmItem->setParentItem(this);
-    cmItem->setPos(x,y);
+    cmItem->setPos(x, y);
     cmItem->setThick(2.0);
     cmItem->setSize(40.0);
     cmItem->setZValue(ZVALUE::VERTEX);
@@ -124,7 +124,7 @@ void QGIDecoration::makeMark(double x, double y)
 
 void QGIDecoration::makeMark(Base::Vector3d v)
 {
-    makeMark(v.x,v.y);
+    makeMark(v.x, v.y);
 }
 
 

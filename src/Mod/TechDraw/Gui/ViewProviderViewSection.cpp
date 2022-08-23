@@ -56,17 +56,17 @@ ViewProviderViewSection::ViewProviderViewSection()
     static const char *hgroup = "Surface Hatch";
     sPixmap = "TechDraw_TreeSection";
     //ShowCutSurface is obsolete - use CutSurfaceDisplay
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_Hidden,"Show/hide the cut surface");
-    ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),sgroup,App::Prop_None,"The color to shade the cut surface");
+    ADD_PROPERTY_TYPE(ShowCutSurface ,(true), sgroup, App::Prop_Hidden, "Show/hide the cut surface");
+    ADD_PROPERTY_TYPE(CutSurfaceColor, (0.0, 0.0, 0.0), sgroup, App::Prop_None, "The color to shade the cut surface");
     //HatchCutSurface is obsolete - use CutSurfaceDisplay
-    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),hgroup,App::Prop_Hidden,"Hatch the cut surface");
+    ADD_PROPERTY_TYPE(HatchCutSurface ,(false), hgroup, App::Prop_Hidden, "Hatch the cut surface");
 
-    ADD_PROPERTY_TYPE(HatchColor,(TechDraw::DrawHatch::prefSvgHatchColor()),
-                        hgroup,App::Prop_None,"The color of the Svg hatch pattern");
-    ADD_PROPERTY_TYPE(GeomHatchColor,(TechDraw::DrawGeomHatch::prefGeomHatchColor()),
-                        hgroup,App::Prop_None,"The color of the Geometric hatch pattern");
+    ADD_PROPERTY_TYPE(HatchColor, (TechDraw::DrawHatch::prefSvgHatchColor()),
+                        hgroup, App::Prop_None, "The color of the Svg hatch pattern");
+    ADD_PROPERTY_TYPE(GeomHatchColor, (TechDraw::DrawGeomHatch::prefGeomHatchColor()),
+                        hgroup, App::Prop_None, "The color of the Geometric hatch pattern");
 
-    ADD_PROPERTY_TYPE(WeightPattern,(0.1),hgroup,App::Prop_None,"GeomHatch pattern line thickness");
+    ADD_PROPERTY_TYPE(WeightPattern, (0.1), hgroup, App::Prop_None, "GeomHatch pattern line thickness");
 
     getParameters();
 
@@ -146,7 +146,7 @@ void ViewProviderViewSection::getParameters()
   
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT"); 
-    double lineWeight = hGrp->GetFloat("GeomWeight",0.1);
+    double lineWeight = hGrp->GetFloat("GeomWeight", 0.1);
     WeightPattern.setValue(lineWeight);
 }
 

@@ -222,21 +222,21 @@ bool MDIViewPage::onMsg(const char *pMsg, const char **)
 
 bool MDIViewPage::onHasMsg(const char* pMsg) const
 {
-    if (strcmp("ViewFit",pMsg) == 0)
+    if (strcmp("ViewFit", pMsg) == 0)
         return true;
     else if(strcmp("Redo", pMsg) == 0 && getAppDocument()->getAvailableRedos() > 0)
         return true;
     else if(strcmp("Undo", pMsg) == 0 && getAppDocument()->getAvailableUndos() > 0)
         return true;
-    else if (strcmp("Print",pMsg) == 0)
+    else if (strcmp("Print", pMsg) == 0)
         return true;
-    else if (strcmp("Save",pMsg) == 0)
+    else if (strcmp("Save", pMsg) == 0)
         return true;
-    else if (strcmp("SaveAs",pMsg) == 0)
+    else if (strcmp("SaveAs", pMsg) == 0)
         return true;
-    else if (strcmp("PrintPreview",pMsg) == 0)
+    else if (strcmp("PrintPreview", pMsg) == 0)
         return true;
-    else if (strcmp("PrintPdf",pMsg) == 0)
+    else if (strcmp("PrintPdf", pMsg) == 0)
         return true;
     return false;
 }
@@ -293,7 +293,7 @@ void MDIViewPage::printPdf(std::string file)
     }
     getPaperAttributes();
 
-    QString filename = QString::fromUtf8(file.data(),file.size());
+    QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
@@ -428,9 +428,9 @@ void MDIViewPage::print(QPrinter* printer)
       width  =  Rez::guiX(pageTemplate->Width.getValue());
       height =  Rez::guiX(pageTemplate->Height.getValue());
     }
-    QRectF sourceRect(0.0,-height,width,height);
+    QRectF sourceRect(0.0, -height, width, height);
 
-    m_scene->render(&p, targetRect,sourceRect);
+    m_scene->render(&p, targetRect, sourceRect);
 
     // Reset
     m_vpPage->setFrameState(saveState);
@@ -498,7 +498,7 @@ void MDIViewPage::saveSVG(std::string file)
         Base::Console().Warning("MDIViewPage - no file specified\n");
         return;
     }
-    QString filename = QString::fromUtf8(file.data(),file.size());
+    QString filename = QString::fromUtf8(file.data(), file.size());
     m_scene->saveSvg(filename);
 }
 
@@ -523,9 +523,9 @@ void MDIViewPage::saveDXF(std::string fileName)
     std::string PageName = page->getNameInDocument();
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
-    Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
-    Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
-                            PageName.c_str(),(const char*)fileName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
+    Gui::Command::doCommand(Gui::Command::Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",
+                            PageName.c_str(), (const char*)fileName.c_str());
     Gui::Command::commitCommand();
 }
 
@@ -746,7 +746,7 @@ void MDIViewPage::sceneSelectionChanged()
     QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
 
     //check if really need to change selection
-    bool sameSel = compareSelections(treeSel,sceneSel);
+    bool sameSel = compareSelections(treeSel, sceneSel);
     if (sameSel) {
         return;
     }
@@ -858,7 +858,7 @@ void MDIViewPage::setTreeToSceneSelect()
                 }
 
                 //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(),dimObj->getNameInDocument()));
+                static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(), dimObj->getNameInDocument()));
             }
             
             QGMText *mText = dynamic_cast<QGMText*>(*it);
@@ -884,7 +884,7 @@ void MDIViewPage::setTreeToSceneSelect()
                 }
 
                 //bool accepted =
-                static_cast<void> (Gui::Selection().addSelection(parentFeat->getDocument()->getName(),parentFeat->getNameInDocument()));
+                static_cast<void> (Gui::Selection().addSelection(parentFeat->getDocument()->getName(), parentFeat->getNameInDocument()));
             }
 
         } else {
@@ -933,7 +933,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
             treeNames.push_back(s);
         }
     }
-    std::sort(treeNames.begin(),treeNames.end());
+    std::sort(treeNames.begin(), treeNames.end());
     treeCount = treeNames.size();
 
     for (auto sn : sceneSel) {
@@ -961,7 +961,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
             sceneNames.push_back(s);
         }
     }
-    std::sort(sceneNames.begin(),sceneNames.end());
+    std::sort(sceneNames.begin(), sceneNames.end());
     sceneCount = sceneNames.size();
 
     //different # of DrawView* vs QGIV*
@@ -998,7 +998,7 @@ void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) 
                  QString::fromUtf8(s2),
                  QString::fromUtf8(s3));
     if (Gui::getMainWindow()) {
-        Gui::getMainWindow()->showMessage(msg,3000);
+        Gui::getMainWindow()->showMessage(msg, 3000);
     }
 }
 

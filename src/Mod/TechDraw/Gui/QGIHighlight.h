@@ -53,7 +53,7 @@ public:
                        const QStyleOptionGraphicsItem * option, 
                        QWidget * widget = nullptr ) override;
 
-    void setBounds(double x1,double y1,double x2,double y2);
+    void setBounds(double x1, double y1, double x2, double y2);
     void setReference(const char* sym);
     void setFont(QFont f, double fsize);
     virtual void draw() override;

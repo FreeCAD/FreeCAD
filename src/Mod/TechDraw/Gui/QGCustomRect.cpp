@@ -61,7 +61,7 @@ void QGCustomRect::centerAt(double cX, double cY)
     double height = box.height();
     double newX = cX - width/2.;
     double newY = cY - height/2.;
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 

@@ -63,16 +63,16 @@ void QGVNavStyle::initialize()
     this->shiftdown = false;
     this->altdown = false;
     this->invertZoom = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetBool("InvertZoom",true);
+        ("User parameter:BaseApp/Preferences/View")->GetBool("InvertZoom", true);
     this->zoomAtCursor = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor",true);
+        ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor", true);
     this->zoomStep = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.2f);
+        ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep", 0.2f);
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    m_reversePan = hGrp->GetInt("KbPan",1);
-    m_reverseScroll = hGrp->GetInt("KbScroll",1);
+    m_reversePan = hGrp->GetInt("KbPan", 1);
+    m_reverseScroll = hGrp->GetInt("KbScroll", 1);
 
     panningActive = false;
     zoomingActive = false;

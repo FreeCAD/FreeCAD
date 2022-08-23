@@ -53,7 +53,7 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp,bool mode) :
+TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode) :
     ui(new Ui_TaskGeomHatch),
     m_hatch(inHatch),
     m_Vp(inVp),
@@ -79,7 +79,7 @@ void TaskGeomHatch::initUi()
     QStringList qsNames = listToQ(names);
 
     ui->cbName->addItems(qsNames);
-    int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(),m_name.size()));
+    int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(), m_name.size()));
     if (nameIndex > -1) {
         ui->cbName->setCurrentIndex(nameIndex);
     } else {
@@ -142,7 +142,7 @@ bool TaskGeomHatch::accept()
 {
 //    Base::Console().Message("TGH::accept()\n");
     updateValues();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     m_hatch->recomputeFeature();                     //create the hatch lines
     TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(m_source);
     dv->requestPaint();
@@ -153,8 +153,8 @@ bool TaskGeomHatch::reject()
 {
     if (getCreateMode()) {
         std::string HatchName = m_hatch->getNameInDocument();
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",HatchName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", HatchName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         m_source->touch();
         m_source->getDocument()->recompute();
     } else {
@@ -222,7 +222,7 @@ TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui
     TaskDialog(),
     viewProvider(nullptr)
 {
-    widget  = new TaskGeomHatch(inHatch,inVp, mode);
+    widget  = new TaskGeomHatch(inHatch, inVp, mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_TreeView"),
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

@@ -246,7 +246,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
         x += Rez::guiX(dpg->X.getValue());
         y += Rez::guiX(dpg->Y.getValue());
     }
-    //x,y are scene pos of dvp/dpgi
+    //x, y are scene pos of dvp/dpgi
 
     QPointF basePosScene(x, -y);                 //base position in scene coords
     QPointF displace = dragEnd - basePosScene;
