@@ -216,9 +216,11 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape,
         return;
     }
 
-    connectDetailWatcher = QObject::connect(&m_detailWatcher, &QFutureWatcherBase::finished, [this] {
-        this->onMakeDetailFinished();
-    });
+    //note that &m_detailWatcher in the third parameter is not strictly required, but using the
+    //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
+    //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
+    connectDetailWatcher = QObject::connect(&m_detailWatcher, &QFutureWatcherBase::finished,
+                                            &m_detailWatcher, [this] { this->onMakeDetailFinished(); });
     m_detailFuture = QtConcurrent::run(this, &DrawViewDetail::makeDetailShape, shape, dvp, dvs);
     m_detailWatcher.setFuture(m_detailFuture);
     waitingForDetail(true);
