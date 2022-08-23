@@ -54,7 +54,7 @@ public:
 private:
 };
 
-PyObject *initModule(){
+PyObject *initModule() {
     return Base::Interpreter().addModule(new Module);
 }
 
@@ -76,10 +76,10 @@ PyMOD_INIT_FUNC(SurfaceGui)
 
     SurfaceGui::Workbench::init();
     SurfaceGui::ViewProviderGeomFillSurface ::init();
-    SurfaceGui::ViewProviderFilling ::init();
-    SurfaceGui::ViewProviderSections ::init();
-    SurfaceGui::ViewProviderExtend ::init();
-    SurfaceGui::ViewProviderBlendCurve ::init();
+    SurfaceGui::ViewProviderFilling         ::init();
+    SurfaceGui::ViewProviderSections        ::init();
+    SurfaceGui::ViewProviderExtend          ::init();
+    SurfaceGui::ViewProviderBlendCurve      ::init();
     // SurfaceGui::ViewProviderCut::init();
 
     PyObject *mod = SurfaceGui::initModule();

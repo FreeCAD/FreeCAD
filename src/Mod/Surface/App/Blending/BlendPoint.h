@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BLEND_POINT_H
-#define BLEND_POINT_H
+#ifndef SURFACE_BLEND_POINT_H
+#define SURFACE_BLEND_POINT_H
 
 
 #include <Mod/Surface/SurfaceGlobal.h>
-#include <Base/BaseClass.h>
 #include <Base/Vector3D.h>
+#include <vector>
 
 
 namespace Surface
@@ -36,7 +36,7 @@ namespace Surface
 *   Create a list of vectors formed by a point and some derivatives 
 *   obtained from a curve or surface
 */ 
-class SurfaceExport BlendPoint: public Base::BaseClass
+class SurfaceExport BlendPoint
 {
 public:
     std::vector<Base::Vector3d> vectors;
@@ -46,8 +46,8 @@ public:
     *  Constructor
     *\param std::vector<Base::Vector3d>
     */
-    BlendPoint(std::vector<Base::Vector3d> vectorList);
-    virtual ~BlendPoint();
+    BlendPoint(const std::vector<Base::Vector3d>& vectorList);
+    ~BlendPoint() = default;
     /*!
     *  Scale the blendpoint vectors
     *\param double scaling factor
@@ -67,7 +67,7 @@ public:
     *\return Number of vectors of this BlendPoint
     */
     int nbVectors();
-    virtual PyObject *getPyObject(void);
+
 private:
 };
 }// namespace Surface

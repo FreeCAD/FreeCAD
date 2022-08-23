@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 Eliud Cabrera Castillo <matteogrellier@gmail.com>  *
+ *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "../PreCompiled.h"
+#include "PreCompiled.h"
 
 #include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
-
 #include "ViewProviderBlendCurve.h"
-
-using namespace SurfaceGui;
 
 PROPERTY_SOURCE(SurfaceGui::ViewProviderBlendCurve, PartGui::ViewProviderSpline)
 
 namespace SurfaceGui
 {
 
-QIcon ViewProviderBlendCurve::getIcon(void) const
+QIcon ViewProviderBlendCurve::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("BlendCurve");
 }

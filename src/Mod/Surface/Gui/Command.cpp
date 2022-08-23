@@ -236,7 +236,7 @@ bool CmdSurfaceCurveOnMesh::isActive()
 DEF_STD_CMD_A(CmdBlendSurface)
 
 CmdBlendSurface::CmdBlendSurface()
-    : Command("BlendSurface")
+    : Command("Surface_BlendSurface")
 {
     sAppModule = "Surface";
     sGroup = QT_TR_NOOP("Surface");
@@ -249,10 +249,10 @@ CmdBlendSurface::CmdBlendSurface()
 
 void CmdBlendSurface::activated(int)
 {
-    
+
 }
 
-bool CmdBlendSurface::isActive(void)
+bool CmdBlendSurface::isActive()
 {
     return true;
 }
@@ -267,7 +267,7 @@ bool CmdBlendSurface::isActive(void)
 DEF_STD_CMD_A(CmdBlendCurve)
 
 CmdBlendCurve::CmdBlendCurve()
-    : Command("BlendCurve")
+    : Command("Surface_BlendCurve")
 {
     sAppModule = "Surface";
     sGroup = QT_TR_NOOP("Surface");
@@ -332,7 +332,7 @@ void CmdBlendCurve::activated(int)
     commitCommand();
 }
 
-bool CmdBlendCurve::isActive(void)
+bool CmdBlendCurve::isActive()
 {
     Gui::SelectionFilter edgeFilter("SELECT Part::Feature SUBELEMENT Edge COUNT 2");
     return edgeFilter.match();

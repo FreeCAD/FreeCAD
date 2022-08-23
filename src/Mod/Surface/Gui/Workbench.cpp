@@ -57,7 +57,7 @@ Gui::MenuItem *Workbench::setupMenuBar() const
              << "Surface_Sections"
              << "Surface_ExtendFace"
              << "Surface_CurveOnMesh"
-             << "BlendCurve";
+             << "Surface_BlendCurve";
     /*
     *surface << "Surface_Cut";
     */
@@ -76,7 +76,7 @@ Gui::ToolBarItem *Workbench::setupToolBars() const
              << "Surface_Sections"
              << "Surface_ExtendFace"
              << "Surface_CurveOnMesh"
-             << "BlendCurve";
+             << "Surface_BlendCurve";
     /*
     *surface << "Surface_Cut";
     */

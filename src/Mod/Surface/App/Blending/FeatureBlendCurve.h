@@ -53,9 +53,9 @@ public:
 
     Standard_Integer maxDegree;
 
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
-    const char *getViewProviderName(void) const override
+    const char *getViewProviderName() const override
     {
         return "SurfaceGui::ViewProviderBlendCurve";
     }
@@ -66,7 +66,7 @@ private:
     bool lockOnChangeMutex;
 
 protected:
-    virtual void onChanged(const App::Property *prop) override;
+    void onChanged(const App::Property *prop) override;
 };
 
 }//Namespace Surface

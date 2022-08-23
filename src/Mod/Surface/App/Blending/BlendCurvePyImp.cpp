@@ -21,19 +21,16 @@
 // ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#include <TColStd_Array1OfReal.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#endif
+
 #include "Blending/BlendCurvePy.h"
-#include "Blending/BlendPointPy.h"
 #include "Blending/BlendCurvePy.cpp"
+#include "Blending/BlendPointPy.h"
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/BezierCurvePy.h>
 
 using namespace Surface;
 
-std::string BlendCurvePy::representation(void) const
+std::string BlendCurvePy::representation() const
 {
     return "BlendCurve";
 }
@@ -48,25 +45,28 @@ int BlendCurvePy::PyInit(PyObject *args, PyObject * /*kwds*/)
 {
     PyObject *b1;
     PyObject *b2;
-    std::vector<BlendPoint> bpList;
 
-    if (PyArg_ParseTuple(args, "O!O!", &(Surface::BlendPointPy::Type), &b1, &(Surface::BlendPointPy::Type), &b2)) {
-        BlendPoint *geom1 = static_cast<BlendPointPy *>(b1)->getBlendPointPtr();
-        BlendPoint *geom2 = static_cast<BlendPointPy *>(b2)->getBlendPointPtr();
-        bpList.emplace_back(*geom1);
-        bpList.emplace_back(*geom2);
-        this->getBlendCurvePtr()->blendPoints = bpList;
-        return 0;
-    }
-    return -1;
+    if (!PyArg_ParseTuple(args, "O!O!", &(Surface::BlendPointPy::Type), &b1, &(Surface::BlendPointPy::Type), &b2))
+        return -1;
+
+    std::vector<BlendPoint> bpList;
+    BlendPoint *geom1 = static_cast<BlendPointPy *>(b1)->getBlendPointPtr();
+    BlendPoint *geom2 = static_cast<BlendPointPy *>(b2)->getBlendPointPtr();
+    bpList.emplace_back(*geom1);
+    bpList.emplace_back(*geom2);
+    this->getBlendCurvePtr()->blendPoints = bpList;
+    return 0;
 }
-PyObject *BlendCurvePy::compute(PyObject * /*args*/)
+
+PyObject *BlendCurvePy::compute(PyObject * args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
     BlendCurve *bc = getBlendCurvePtr();
     Handle(Geom_BezierCurve) gc = bc->compute();
     return new Part::BezierCurvePy(new Part::GeomBezierCurve(gc));
 }
-
 
 PyObject *BlendCurvePy::setSize(PyObject *args)
 {
@@ -78,12 +78,12 @@ PyObject *BlendCurvePy::setSize(PyObject *args)
     }
     try {
         getBlendCurvePtr()->setSize(i, size, Base::asBoolean(relative));
+        Py_Return;
     }
     catch (Standard_Failure &e) {
-        PyErr_SetString(PyExc_Exception, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return nullptr;
     }
-    Py_Return;
 }
 
 PyObject *BlendCurvePy::getCustomAttributes(const char * /*attr*/) const

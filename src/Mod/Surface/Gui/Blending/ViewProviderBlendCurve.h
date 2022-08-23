@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+ *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,6 @@
 #define SURFACEGUI_VIEWPROVIDERBLENDCURVE_H
 
 #include <Mod/Part/Gui/ViewProviderSpline.h>
-#include <Mod/Surface/App/Blending/FeatureBlendCurve.h>
 
 namespace SurfaceGui
 {
@@ -34,7 +33,7 @@ class ViewProviderBlendCurve: public PartGui::ViewProviderSpline
     PROPERTY_HEADER(SurfaceGui::ViewProviderBlendCurve);
 
 public:
-    QIcon getIcon(void) const;
+    QIcon getIcon() const;
 };
 
 }//namespace SurfaceGui

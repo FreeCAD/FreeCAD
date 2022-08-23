@@ -26,7 +26,6 @@
 #include <BSplCLib.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Precision.hxx>
-#include <Standard_Version.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <gp_Pnt.hxx>
@@ -40,26 +39,18 @@
 
 using namespace Surface;
 
-BlendCurve::BlendCurve()
-{
-}
-
-BlendCurve::BlendCurve(std::vector<BlendPoint> blendPointsList)
+BlendCurve::BlendCurve(const std::vector<BlendPoint>& blendPointsList)
 {
     // Retrieve number of blendPoints and push them into blendPoints.
     size_t nb_pts = blendPointsList.size();
 
     if (nb_pts > 2) {
-        throw Base::ValueError("Not implemented");
+        throw Base::NotImplementedError("Not implemented");
     }
     else if (nb_pts < 2) {
         throw Base::ValueError("Need two points for working");
     }
     blendPoints = blendPointsList;
-}
-
-BlendCurve::~BlendCurve()
-{
 }
 
 Handle(Geom_BezierCurve) BlendCurve::compute()
@@ -127,9 +118,8 @@ Handle(Geom_BezierCurve) BlendCurve::compute()
         Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(poles);
         return bezier;
     }
-
-    catch (Standard_Failure &e) {
-        PyErr_SetString(PyExc_Exception, "Failed to compute bezier curve");
+    catch (Standard_Failure &) {
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, "Failed to compute bezier curve");
     }
     return nullptr;
 }
@@ -146,6 +136,6 @@ void BlendCurve::setSize(int i, double f, bool relative)
         blendPoints[i].setSize(size);
     }
     catch (Standard_Failure &e) {
-        PyErr_SetString(PyExc_Exception, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
     }
 }

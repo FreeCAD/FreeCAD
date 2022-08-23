@@ -128,7 +128,6 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub &link, App::Pro
 
 App::DocumentObjectExecReturn *FeatureBlendCurve::execute(void)
 {
-
     BlendPoint bp1 = GetBlendPoint(StartEdge, StartParameter, StartContinuity);
     BlendPoint bp2 = GetBlendPoint(EndEdge, EndParameter, EndContinuity);
 
@@ -147,10 +146,6 @@ App::DocumentObjectExecReturn *FeatureBlendCurve::execute(void)
     Shape.setValue(mkEdge.Edge());
 
     return StdReturn;
-}
-
-PyObject* Surface::BlendCurve::getPyObject(){
-  return nullptr;
 }
 
 double FeatureBlendCurve::RelativeToRealParameters(double relativeValue, double fp, double lp)

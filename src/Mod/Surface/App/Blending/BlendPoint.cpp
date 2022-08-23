@@ -23,12 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Base/Persistence.h>
-#include <Base/Vector3D.h>
 #include <Precision.hxx>
-#include <Standard_Version.hxx>
-#include <TopoDS.hxx>
-#include <gp_Pnt.hxx>
+#include <Standard_Real.hxx>
 #endif
 #include "Blending/BlendPoint.h"
 #include "Blending/BlendPointPy.h"
@@ -36,20 +32,14 @@
 
 using namespace Surface;
 
-BlendPoint::BlendPoint(std::vector<Base::Vector3d> vectorList)
+BlendPoint::BlendPoint(const std::vector<Base::Vector3d>& vectorList)
+  : vectors{vectorList}
 {
-    for (size_t i = 0; i < vectorList.size(); i++) {
-        vectors.emplace_back(vectorList[i]);
-    } 
 }
 
 BlendPoint::BlendPoint()
 {
     vectors.emplace_back(Base::Vector3d(0, 0, 0));
-}
-
-BlendPoint::~BlendPoint()
-{
 }
 
 void BlendPoint::multiply(double f)
@@ -77,9 +67,4 @@ int BlendPoint::getContinuity()
 int BlendPoint::nbVectors()
 {
     return vectors.size();
-}
-
-PyObject *BlendPoint::getPyObject(void)
-{
-    return new BlendPointPy(new BlendPoint(vectors));
 }

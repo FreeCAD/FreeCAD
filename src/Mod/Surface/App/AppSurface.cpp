@@ -26,7 +26,6 @@
 #include <Base/PyObjectBase.h>
 
 #include "Blending/BlendCurvePy.h"
-#include "Blending/BlendPoint.h"
 #include "Blending/BlendPointPy.h"
 #include "Blending/FeatureBlendCurve.h"
 #include "FeatureCut.h"
@@ -65,8 +64,6 @@ PyObject *initModule()
 /* Python entry */
 PyMOD_INIT_FUNC(Surface)
 {
-
-
     try {
         Base::Interpreter().runString("import Part");
     }
@@ -79,6 +76,7 @@ PyMOD_INIT_FUNC(Surface)
     Base::Console().Log("Loading Surface module... done\n");
     Base::Interpreter().addType(&Surface::BlendPointPy::Type, mod, "BlendPoint");
     Base::Interpreter().addType(&Surface::BlendCurvePy::Type, mod, "BlendCurve");
+
     // Add types to module
     Surface::Filling           ::init();
     Surface::Sewing            ::init();
@@ -87,8 +85,6 @@ PyMOD_INIT_FUNC(Surface)
     Surface::Extend            ::init();
     Surface::FeatureBlendCurve ::init();
     Surface::Sections          ::init();
-    Surface::BlendPoint        ::init();
-    Surface::BlendCurve        ::init();
 
     PyMOD_Return(mod);
 }

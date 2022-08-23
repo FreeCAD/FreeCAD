@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BLEND_CURVE_H
-#define BLEND_CURVE_H
+#ifndef SURFACE_BLEND_CURVE_H
+#define SURFACE_BLEND_CURVE_H
 
 #include <Geom_BezierCurve.hxx>
 #include <Mod/Surface/SurfaceGlobal.h>
-#include <Base/BaseClass.h>
 #include <Mod/Surface/App/Blending/BlendPoint.h>
 
 namespace Surface
@@ -33,18 +32,18 @@ namespace Surface
 /*!
 * Create a BezierCurve interpolating a list of BlendPoints
 */
-class SurfaceExport BlendCurve: public Base::BaseClass
+class SurfaceExport BlendCurve
 {
 public:
     std::vector<BlendPoint> blendPoints;
 
-    BlendCurve();
+    BlendCurve() = default;
     /*!
     *  Constructor
     *\param std::vector<BlendPoint>
     */
-    BlendCurve(std::vector<BlendPoint> blendPointsList);
-    virtual ~BlendCurve();
+    BlendCurve(const std::vector<BlendPoint>& blendPointsList);
+    ~BlendCurve() = default;
     /*!
     *  Perform the interpolate algorithm
     *\return the BezierCurve
@@ -57,8 +56,6 @@ public:
     *\param bool interpret new size relative to chordlength
     */
     void setSize(int, double, bool);
-
-    virtual PyObject *getPyObject(void);
 };
 }// namespace Surface
 
