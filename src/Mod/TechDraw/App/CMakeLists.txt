@@ -15,6 +15,7 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
 )
 
