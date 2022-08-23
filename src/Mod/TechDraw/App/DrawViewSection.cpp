@@ -285,9 +285,11 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
     }
 
     try {
-        connectCutWatcher = QObject::connect(&m_cutWatcher, &QFutureWatcherBase::finished, [this] {
-            this->onSectionCutFinished();
-        });
+        //note that &m_cutWatcher in the third parameter is not strictly required, but using the
+        //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
+        //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
+        connectCutWatcher = QObject::connect(&m_cutWatcher, &QFutureWatcherBase::finished,
+                                             &m_cutWatcher, [this] { this->onSectionCutFinished(); });
         m_cutFuture = QtConcurrent::run(this, &DrawViewSection::makeSectionCut, baseShape);
         m_cutWatcher.setFuture(m_cutFuture);
         waitingForCut(true);

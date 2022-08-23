@@ -386,8 +386,11 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
                                         viewAxis);
     } else {
         //projectShape (the HLR process) runs in a separate thread since it can take a long time
-        connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished, [this] {
-            this->onHlrFinished();}
+        //note that &m_hlrWatcher in the third parameter is not strictly required, but using the
+        //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
+        //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
+        connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
+                                             &m_hlrWatcher, [this] { this->onHlrFinished(); }
         );
         m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
         m_hlrWatcher.setFuture(m_hlrFuture);
@@ -413,9 +416,11 @@ void DrawViewPart::onHlrFinished(void)
     //HLR method
     if (handleFaces() && !CoarseView.getValue() && !waitingForFaces()) {
         try {
-            connectFaceWatcher = QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, [this] {
-                this->onFacesFinished();
-            });
+            //note that &m_faceWatcher in the third parameter is not strictly required, but using the
+            //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
+            //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
+            connectFaceWatcher = QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished,
+                                                  &m_faceWatcher, [this] { this->onFacesFinished(); });
             m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
             m_faceWatcher.setFuture(m_faceFuture);
             waitingForFaces(true);
