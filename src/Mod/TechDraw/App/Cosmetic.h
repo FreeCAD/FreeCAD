@@ -28,6 +28,7 @@
 #include <boost/uuid/uuid.hpp>
 
 #include <App/FeaturePython.h>
+#include <App/Material.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 

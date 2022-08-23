@@ -128,7 +128,7 @@ QRectF DrawViewAnnotation::getRect() const
     }
     int w = chars * std::max(1, (int)tSize);
     int h = lines * std::max(1, (int)tSize);
-    return QRectF(0, 0,getScale() * w, getScale() * h);
+    return { 0, 0, getScale() * w, getScale() * h};
 }
 
 App::DocumentObjectExecReturn *DrawViewAnnotation::execute()
