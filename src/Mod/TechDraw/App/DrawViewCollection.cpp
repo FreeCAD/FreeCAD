@@ -198,5 +198,5 @@ QRectF DrawViewCollection::getRect() const
 
         result = result.united(view->getRect().translated(view->X.getValue(), view->Y.getValue()));
     }
-    return QRectF(0, 0,getScale() * result.width(), getScale() * result.height());
+    return { 0, 0, getScale() * result.width(), getScale() * result.height()};
 }

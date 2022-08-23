@@ -193,7 +193,7 @@ public:
     QStringList getPrefixSuffixSpec(QString fSpec);
 
     virtual DrawViewPart* getViewPart() const;
-    QRectF getRect() const override { return QRectF(0, 0,1, 1);}          //pretend dimensions always fit!
+    QRectF getRect() const override { return {0, 0, 1, 1}; }          //pretend dimensions always fit!
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
     static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
