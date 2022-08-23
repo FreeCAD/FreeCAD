@@ -211,7 +211,7 @@ void DrawHatch::replaceFileIncluded(std::string newSvgFile)
     }
 }
 
-void DrawHatch::onDocumentRestored() 
+void DrawHatch::onDocumentRestored()
 {
 //if this is a restore, we should be checking for SvgIncluded empty,
 // if it is, set it up from hatchPattern,

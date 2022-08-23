@@ -77,7 +77,7 @@ public:
 
     void abandonEdit();
     void closeEdit();
-    
+
     double getLineWidth();
     double getEdgeFuzz() const;
 
@@ -108,7 +108,7 @@ protected:
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     std::vector<QPointF> m_pathPoints;
-    
+
     void saveState();
     void restoreState();
 

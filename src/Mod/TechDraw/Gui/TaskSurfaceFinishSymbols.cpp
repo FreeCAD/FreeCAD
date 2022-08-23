@@ -290,7 +290,7 @@ void TaskSurfaceFinishSymbols::onIconChanged()
     if (ui->pbIcon04 == pressedButton) activeIcon = anyMethodAll;
     if (ui->pbIcon05 == pressedButton) activeIcon = removeProhibitAll;
     if (ui->pbIcon06 == pressedButton) activeIcon = removeRequiredAll;
-    
+
     QIcon symbolIcon = pressedButton->icon();
     QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
     pixmapItem->setPixmap(symbolIcon.pixmap(50, 64));
@@ -316,7 +316,7 @@ void TaskSurfaceFinishSymbols::onASME()
     proxySamLength->show();
     proxyMinRough->show();
     proxyMaxRough->show();
-    proxyRA->hide();    
+    proxyRA->hide();
 }
 
 bool TaskSurfaceFinishSymbols::accept()

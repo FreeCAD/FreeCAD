@@ -135,7 +135,7 @@ double Preferences::vertexScale()
 
 
 
-//lightgray #D3D3D3 
+//lightgray #D3D3D3
 
 bool Preferences::keepPagesUpToDate()
 {

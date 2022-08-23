@@ -268,7 +268,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 }
             }
             requestPaint();
-        } 
+        }
         else if (prop == &OverTolerance) {
             // if EqualTolerance set negated overtolerance for untertolerance
             if (EqualTolerance.getValue()) {
@@ -867,7 +867,7 @@ std::string DrawViewDimension::formatValue(qreal value,
         if (pos != -1) {
             qUserStringUnits = rxUnits.cap(0); // entire capture - non numerics at end of qUserString
         }
-        
+
         // get value in the base unit with default decimals
         // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
         // get the conversion factor for the unit
@@ -924,7 +924,7 @@ std::string DrawViewDimension::formatValue(qreal value,
         }
     }
 
-    
+
     std::string formattedValueString = formattedValue.toStdString();
 
     if (partial == 0) {   //full text for multi-value schemas
@@ -1356,7 +1356,7 @@ bool DrawViewDimension::checkReferences2D() const
         if (s.empty()) {
             return false;
         }
-        
+
         int idx = DrawUtil::getIndexFromName(s);
         if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
             TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(idx);

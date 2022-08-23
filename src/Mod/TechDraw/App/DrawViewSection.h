@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewSection_h_
-#define _DrawViewSection_h_
+#ifndef DrawViewSection_h_
+#define DrawViewSection_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

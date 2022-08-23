@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewImage_h_
-#define _DrawViewImage_h_
+#ifndef DrawViewImage_h_
+#define DrawViewImage_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

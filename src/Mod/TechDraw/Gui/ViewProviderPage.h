@@ -81,7 +81,7 @@ public:
     TechDraw::DrawPage* getDrawPage() const;
 
     //slots & connections
-    void onGuiRepaint(const TechDraw::DrawPage* dp); 
+    void onGuiRepaint(const TechDraw::DrawPage* dp);
     typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
 

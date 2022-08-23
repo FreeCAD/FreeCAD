@@ -242,7 +242,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
     if (FuseBeforeCut.getValue()) {
         baseShape = dvp->getSourceShapeFused();
     }
-    
+
     if (baseShape.IsNull()) {
         return DrawView::execute();
     }
@@ -666,7 +666,7 @@ Base::Vector3d DrawViewSection::getXDirection() const
     return result;
 }
 
-void DrawViewSection::setCSFromBase(const std::string sectionName) 
+void DrawViewSection::setCSFromBase(const std::string sectionName)
 {
 //    Base::Console().Message("DVS::setCSFromBase(%s)\n", sectionName.c_str());
     gp_Dir gDir = getCSFromBase(sectionName).Direction();
@@ -691,7 +691,7 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
     Base::Vector3d sectOrigin = SectionOrigin.getValue();
 
     gp_Ax2 dvpCS = getBaseDVP()->getProjectionCS(sectOrigin);
-    
+
     if (debugSection()) {
         DrawUtil::dumpCS("DVS::getCSFromBase - dvp CS", dvpCS);
     }
@@ -752,7 +752,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
     gp_Ax2 sectionCS(gOrigin,
                      gNormal);
     try {
-        sectionCS = gp_Ax2(gOrigin, 
+        sectionCS = gp_Ax2(gOrigin,
                            gNormal,
                            gXDir);
     }
@@ -820,7 +820,7 @@ void DrawViewSection::unsetupObject()
     DrawViewPart::unsetupObject();
 }
 
-void DrawViewSection::onDocumentRestored() 
+void DrawViewSection::onDocumentRestored()
 {
 //    Base::Console().Message("DVS::onDocumentRestored()\n");
     if (SvgIncluded.isEmpty()) {
@@ -892,7 +892,7 @@ void DrawViewSection::setupSvgIncluded(void)
     special += "SvgHatch.svg";
     std::string dir = doc->TransientDir.getValue();
     std::string svgName = dir + special;
-    
+
     //first time
     std::string svgInclude = SvgIncluded.getValue();
     if (svgInclude.empty()) {

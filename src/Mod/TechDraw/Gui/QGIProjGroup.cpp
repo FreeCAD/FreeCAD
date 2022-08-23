@@ -200,7 +200,7 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 void QGIProjGroup::rotateView()
 {
     Base::Console().Warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
-}    
+}
 
 void QGIProjGroup::drawBorder()
 {

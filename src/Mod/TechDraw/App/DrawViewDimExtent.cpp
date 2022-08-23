@@ -188,7 +188,7 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     if (cTags.empty()) {
         return errorValue;
     }
-    
+
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
     if (!v0 || !v1)
@@ -210,7 +210,7 @@ bool DrawViewDimExtent::checkReferences2D() const
     if (cTags.empty()) {
         return false;
     }
-    
+
     CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
     CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
     if (!cv0 || !cv1)

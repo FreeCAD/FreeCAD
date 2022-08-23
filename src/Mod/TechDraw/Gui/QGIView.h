@@ -131,7 +131,7 @@ public:
     virtual QColor getCurrentColor() { return m_colCurrent; }
     virtual QColor getSettingColor() { return m_colSetting; }
     virtual void   setSettingColor(QColor c) { m_colSetting = c; }
-    
+
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static ViewProviderPage* getViewProviderPage(TechDraw::DrawView* dv);
     static QGVPage* getQGVPage(TechDraw::DrawView* dv);

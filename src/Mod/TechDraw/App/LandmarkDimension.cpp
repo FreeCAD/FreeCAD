@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
             std::string tag = dvp->addReferenceVertex(loc2d);
             reprs.push_back(tag);
         }
-        ReferenceTags.setValues(reprs); 
+        ReferenceTags.setValues(reprs);
     } else {
         //update dvp referenceverts locations
         int index = 0;
@@ -146,9 +146,9 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
     }
     m_linearPoints.first = points.front();
     m_linearPoints.second = points.back();
- 
+
     //m_anglePoints.first =                  //not implemented yet
-    
+
     App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
 
 //    dvp->resetReferenceVerts();
@@ -252,7 +252,7 @@ void LandmarkDimension::onDocumentRestored()
         std::string tag = dvp->addReferenceVertex(loc2d);
         tags.push_back(tag);
     }
-    ReferenceTags.setValues(tags); 
+    ReferenceTags.setValues(tags);
 
     m_linearPoints.first = points.front();
     m_linearPoints.second = points.back();
@@ -262,7 +262,7 @@ void LandmarkDimension::onDocumentRestored()
 
 void LandmarkDimension::unsetupObject()
 {
-    
+
 //    bool isRemoving = testStatus(App::ObjectStatus::Remove);
 //    Base::Console().Message("LD::unsetupObject - isRemove: %d status: %X\n",
 //                            isRemoving, getStatus());

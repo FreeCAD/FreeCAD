@@ -88,7 +88,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
 {
     setFiltersChildEvents(true);    //qt5
     setFlag(QGraphicsItem::ItemIsMovable, false);
-    
+
     setCacheMode(QGraphicsItem::NoCache);
 
     setParentItem(m_qgLead);
@@ -240,7 +240,7 @@ void QGIWeldSymbol::drawAllAround()
     if (getFeature()->AllAround.getValue()) {
         m_allAround->show();
     } else {
-        
+
         m_allAround->hide();
         return;
     }
@@ -305,7 +305,7 @@ void QGIWeldSymbol::drawFieldFlag()
 {
 //    Base::Console().Message("QGIWS::drawFieldFlag()\n");
     QPointF fieldFlagPos = getKinkPoint();
-    m_fieldFlag->setPos(fieldFlagPos); 
+    m_fieldFlag->setPos(fieldFlagPos);
 
     if (getFeature()->FieldWeld.getValue()) {
         m_fieldFlag->show();
@@ -340,12 +340,12 @@ void QGIWeldSymbol::getTileFeats()
     std::vector<TechDraw::DrawTileWeld*> tiles = getFeature()->getTiles();
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
-    
+
     if (!tiles.empty()) {
         TechDraw::DrawTileWeld* tempTile = tiles.at(0);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -353,7 +353,7 @@ void QGIWeldSymbol::getTileFeats()
         TechDraw::DrawTileWeld* tempTile = tiles.at(1);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }

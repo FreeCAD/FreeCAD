@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawLeaderLine_h_
-#define _TechDraw_DrawLeaderLine_h_
+#ifndef TechDraw_DrawLeaderLine_h_
+#define TechDraw_DrawLeaderLine_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

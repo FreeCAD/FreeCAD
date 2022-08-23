@@ -118,7 +118,7 @@ protected:
     void closeEvent(QCloseEvent*) override;
 
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
-    
+
     void onDeleteObject(const App::DocumentObject& obj);
 
     typedef boost::signals2::connection Connection;

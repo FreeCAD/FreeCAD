@@ -139,7 +139,7 @@ void PropertyCenterLineList::Save(Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<CenterLineList count=\"" << getSize() <<"\">" << endl;
     writer.incInd();
-    for (int i = 0; i < getSize(); i++) { 
+    for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CenterLine  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;
         writer.incInd();

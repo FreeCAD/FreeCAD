@@ -75,7 +75,7 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
-    
+
     void setFont(QFont f);
     QFont getFont() { return m_dimText->font(); }
     void setDimString(QString t);
@@ -136,7 +136,7 @@ protected:
     double m_lineWidth;
 
     int m_dragState;
-    
+
 private:
 };
 
@@ -256,7 +256,7 @@ protected:
     void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
-    
+
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens();

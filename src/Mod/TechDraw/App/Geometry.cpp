@@ -215,7 +215,7 @@ BaseGeomPtr BaseGeom::copy()
         result->sourceIndex(m_sourceIndex);
         result->cosmeticTag = cosmeticTag;
     }
-   
+
     return result;
 }
 
@@ -1125,7 +1125,7 @@ std::string Generic::toString() const
 void Generic::Save(Base::Writer &writer) const
 {
     BaseGeom::Save(writer);
-    writer.Stream() << writer.ind() 
+    writer.Stream() << writer.ind()
                         << "<Points PointsCount =\"" << points.size() << "\">" << endl;
     writer.incInd();
     for (auto& p: points) {
@@ -1428,7 +1428,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
         gp_Pnt p2 = spline->Pole(nb_poles-1);
         gp_Pnt pm;
         if (nb_poles == 5) {
-            pm = spline->Pole(3);   //5 poles => 2.5 => 2 
+            pm = spline->Pole(3);   //5 poles => 2.5 => 2
         } else {
             pm = spline->Pole(nb_poles / 2);
         }
@@ -1462,7 +1462,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
         }
         gp_Circ circle1 = gce_circ1.Value();
         double radius1 = circle1.Radius();
-        gp_Pnt center1 = circle1.Location(); 
+        gp_Pnt center1 = circle1.Location();
         Base::Vector3d vc1 = DrawUtil::gpPnt2V3(center1);
 
         gce_MakeCirc gce_circ2 = gce_MakeCirc(pcm, pc2, e);
@@ -1485,7 +1485,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
                 Handle(Geom_TrimmedCurve) tCurve = makeArc.Value();
                 BRepBuilderAPI_MakeEdge newEdge(tCurve);
                 result = newEdge;
-            } else { 
+            } else {
                 radius = (radius1 + radius2) / 2.0;
                 center = (vc1 + vc2) / 2.0;
                 gp_Pnt gCenter(center.x, center.y, center.z);

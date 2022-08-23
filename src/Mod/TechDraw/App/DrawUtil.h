@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawUtil_h_
-#define _DrawUtil_h_
+#ifndef DrawUtil_h_
+#define DrawUtil_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

@@ -85,7 +85,7 @@ void ViewProviderViewSection::onChanged(const App::Property* prop)
         prop == &GeomHatchColor      ||
 //        prop == &ShowCutSurface  ||
         prop == &CutSurfaceColor ) {
-        updateGraphic();   
+        updateGraphic();
     }
 
     ViewProviderViewPart::onChanged(prop);
@@ -143,9 +143,9 @@ void ViewProviderViewSection::getParameters()
 
 //    App::Color hatchColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionHatchColor", 0x00000000));
 //    HatchColor.setValue(hatchColor);
-  
+
     hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT"); 
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
     double lineWeight = hGrp->GetFloat("GeomWeight", 0.1);
     WeightPattern.setValue(lineWeight);
 }

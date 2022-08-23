@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTileWeld_h_
-#define _TechDraw_DrawTileWeld_h_
+#ifndef TechDraw_DrawTileWeld_h_
+#define TechDraw_DrawTileWeld_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

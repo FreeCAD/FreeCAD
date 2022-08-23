@@ -270,7 +270,7 @@ void QGISectionLine::extensionEndsTrad()
         oblique = 1.25;
     }
 
-    //draw from section line endpoint 
+    //draw from section line endpoint
     QPointF offsetEnd = oblique * m_extLen * offsetDir;
     m_beginExt1 = m_start;
     m_endExt1   = m_start + offsetEnd;
@@ -291,7 +291,7 @@ void QGISectionLine::extensionEndsISO()
         oblique = 1.10;
     }
 
-    //draw from section line endpoint less arrow length 
+    //draw from section line endpoint less arrow length
     QPointF offsetStart =  offsetDir * Rez::guiX(QGIArrow::getPrefArrowSize());
     QPointF offsetEnd = oblique * m_extLen * offsetDir;
 
@@ -415,7 +415,7 @@ void QGISectionLine::setTools()
 //    m_arrow2->setPen(m_pen);
 //    m_arrow1->setBrush(m_brush);
 //    m_arrow2->setBrush(m_brush);
-    
+
     m_arrow1->setNormalColor(m_colCurrent);
     m_arrow1->setFillColor(m_colCurrent);
     m_arrow1->setPrettyNormal();

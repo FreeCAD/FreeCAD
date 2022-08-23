@@ -138,7 +138,7 @@ QPainterPath QGIArrow::makeFilledTriangle(Base::Vector3d dir, double length, dou
     Base::Vector3d perp(-negDir.y, negDir.x, 0.0);
     Base::Vector3d barb1 = negDir * length + perp * width;
     Base::Vector3d barb2 = negDir * length - perp * width;
-    
+
     QPainterPath path;
     path.moveTo(QPointF(0., 0.));
     path.lineTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
@@ -171,7 +171,7 @@ QPainterPath QGIArrow::makeOpenArrow(Base::Vector3d dir, double length, double w
     Base::Vector3d perp(-negDir.y, negDir.x, 0.0);
     Base::Vector3d barb1 = negDir * length + perp * width;
     Base::Vector3d barb2 = negDir * length - perp * width;
-    
+
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(0., 0.));
@@ -206,7 +206,7 @@ QPainterPath QGIArrow::makeHashMark(Base::Vector3d dir, double length, double wi
     Base::Vector3d perp(-negDir.y, negDir.x, 0.0);
     Base::Vector3d barb1 = negDir * length - perp * (adjWidth * width);
     Base::Vector3d barb2 = normDir * length + perp * (adjWidth * width);
-    
+
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(Rez::guiX(barb2.x), Rez::guiX(barb2.y)));
@@ -259,7 +259,7 @@ QPainterPath QGIArrow::makeForkArrow(Base::Vector3d dir, double length, double w
     Base::Vector3d perp(-normDir.y, normDir.x, 0.0);
     Base::Vector3d barb1 = normDir * length + perp * width;
     Base::Vector3d barb2 = normDir * length - perp * width;
-    
+
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(barb1.x), Rez::guiX(barb1.y)));
     path.lineTo(QPointF(0., 0.));

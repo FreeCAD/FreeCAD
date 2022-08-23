@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawViewDimension_h_
-#define _TechDraw_DrawViewDimension_h_
+#ifndef TechDraw_DrawViewDimension_h_
+#define TechDraw_DrawViewDimension_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -87,7 +87,7 @@ struct arcPoints
     Base::Vector3d midArc;
     bool arcCW;
 
-    arcPoints() 
+    arcPoints()
     {
          isArc = false;
          radius = 0.0;

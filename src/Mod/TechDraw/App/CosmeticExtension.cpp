@@ -43,7 +43,7 @@ using namespace std;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
-CosmeticExtension::CosmeticExtension() 
+CosmeticExtension::CosmeticExtension()
 {
     static const char *cgroup = "Cosmetics";
 
@@ -55,19 +55,19 @@ CosmeticExtension::CosmeticExtension()
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
 
-CosmeticExtension::~CosmeticExtension() 
+CosmeticExtension::~CosmeticExtension()
 {
 }
 
-//void CosmeticExtension::extHandleChangedPropertyName(Base::XMLReader &reader, 
-//                                                     const char* TypeName, 
+//void CosmeticExtension::extHandleChangedPropertyName(Base::XMLReader &reader,
+//                                                     const char* TypeName,
 //                                                     const char* PropName)
 //{
 //}
 
 //==============================================================================
 //CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
-//if you are creating a CV based on calculations of scaled geometry, you need to 
+//if you are creating a CV based on calculations of scaled geometry, you need to
 //unscale x, y before creation.
 //if you are creating a CV based on calculations of mirrored geometry, you need to
 //mirror again before creation.
@@ -122,7 +122,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCVBySelection(%d)\n", i);
@@ -214,13 +214,13 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
     TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
     if (!base)
         return result;
-    
+
     if (!base->getCosmeticTag().empty())
         result = getCosmeticEdge(base->getCosmeticTag());
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
@@ -326,7 +326,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
@@ -409,7 +409,7 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string na
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);

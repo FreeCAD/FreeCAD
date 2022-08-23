@@ -75,7 +75,7 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
 
     m_qgTextL = new QGCustomText();
     addToGroup(m_qgTextL);
-    
+
     m_qgTextR = new QGCustomText();
     addToGroup(m_qgTextR);
 
@@ -98,7 +98,7 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemStacksBehindParent, true);
-    
+
     m_colNormal = prefNormalColor();
     m_colCurrent = m_colNormal;
 }
@@ -128,7 +128,7 @@ void QGITile::draw()
         setPos(x, y);
     } else if (m_row == -1) {    //otherSide
         if (getAltWeld()) {
-            if (isTailRight()) { 
+            if (isTailRight()) {
                 double x = m_origin.x() + (0.5 * totalWidth); //move to right 1/2 tile width
                 double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
                 setPos(x, y);

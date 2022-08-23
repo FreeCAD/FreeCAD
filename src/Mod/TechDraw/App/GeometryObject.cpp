@@ -330,7 +330,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 {
     // Clear previous Geometry
     clear();
-    
+
     //work around for Mantis issue #3332
     //if 3332 gets fixed in OCC, this will produce shifted views and will need
     //to be reverted.
@@ -813,7 +813,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
              BRepBndLib::AddOptimal((*it)->occEdge, testBox);
         }
     }
-    
+
 
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
@@ -832,7 +832,7 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
     for (auto& v: oldVerts) {
         Base::Vector3d v3 = v->point();
         double length = (v3 - center).Length();
-        if (length < Precision::Confusion()) { 
+        if (length < Precision::Confusion()) {
             continue;
         } else if (length < radius) {
             newVerts.push_back(v);
@@ -878,13 +878,13 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
         cross.Normalize();
         cross = cross.Cross(stdZ);
     }
-    
+
     if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
         viewAxis = gp_Ax2(inputCenter,
                           gp_Dir(direction.x, direction.y, direction.z));
         return viewAxis;
     }
-    
+
     viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(direction.x, direction.y, direction.z),
                       gp_Dir(cross.x, cross.y, cross.z));
@@ -931,13 +931,13 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
         cross.Normalize();
         cross = cross.Cross(stdZ);
     }
-    
+
     if (cross.IsEqual(stdOrg, FLT_EPSILON)) {
         viewAxis = gp_Ax2(inputCenter,
                           gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
         return viewAxis;
     }
-    
+
     viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
                       gp_Dir(cross.x, cross.y, cross.z));

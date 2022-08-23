@@ -173,11 +173,11 @@ private:
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8", &name)) {
             throw Py::TypeError("expected (Page, path");
-        } 
-        
+        }
+
         std::string filePath = std::string(name);
         PyMem_Free(name);
-        
+
         try {
            App::DocumentObject* obj = nullptr;
            Gui::ViewProvider* vp = nullptr;
@@ -219,11 +219,11 @@ private:
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8", &name)) {
             throw Py::TypeError("expected (Page, path");
-        } 
-        
+        }
+
         std::string filePath = std::string(name);
         PyMem_Free(name);
-        
+
         try {
            App::DocumentObject* obj = nullptr;
            Gui::ViewProvider* vp = nullptr;
@@ -257,7 +257,7 @@ private:
 
         return Py::None();
     }
- 
+
 //!copyActiveViewToSvgFile(document, fileSpec)
     Py::Object copyActiveViewToSvgFile(const Py::Tuple& args)
     {
@@ -271,7 +271,7 @@ private:
         std::string fileSpec;
         double outWidth = 138.5;    //TODO: change to A4 for release
         double outHeight = 95.0;    //ISO A5 defaults
-        bool paintBackground = true; 
+        bool paintBackground = true;
         QColor bgColor = QColor(Qt::white);
         double lineWidth = 1.0;     //1 mm
         double border = 0.0;        //no border
@@ -284,7 +284,7 @@ private:
                                         &lineWidth, &border,
                                         &mode)) {
             throw Py::TypeError("expected (doc, file|, options)");
-        } 
+        }
 
         fileSpec = std::string(name);
         PyMem_Free(name);
@@ -295,7 +295,7 @@ private:
             paintBackground = false;
         }
 
-        
+
         try {
            if (PyObject_TypeCheck(docObj, &(App::DocumentPy::Type))) {
                appDoc = static_cast<App::DocumentPy*>(docObj)->getDocumentPtr();
@@ -303,7 +303,7 @@ private:
                    App::Color c = TechDraw::DrawUtil::pyTupleToColor(colorObj);
                    bgColor = c.asValue<QColor>();
                }
-               result = 
+               result =
                Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,
                                          outWidth, outHeight,
                                          paintBackground, bgColor,
@@ -327,7 +327,7 @@ private:
         PyObject *qgiPy = nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "O!O", &(TechDraw::DrawViewPy::Type), &viewPy, &qgiPy)) {
             throw Py::TypeError("expected (view, item)");
-        } 
+        }
 
         try {
            App::DocumentObject* obj = nullptr;

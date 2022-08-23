@@ -99,7 +99,7 @@ void QGIHighlight::makeReference()
     m_reference->setPlainText(m_refText);
     double fudge = Rez::guiX(1.0);
     QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
-    m_reference->setPos(newPos);   
+    m_reference->setPos(newPos);
 
     double highRot = rotation();
     if (!TechDraw::DrawUtil::fpCompare(highRot, 0.0)) {

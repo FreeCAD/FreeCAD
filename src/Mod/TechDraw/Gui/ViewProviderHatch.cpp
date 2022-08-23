@@ -79,7 +79,7 @@ bool ViewProviderHatch::setEdit(int ModNum)
     if (Gui::Control().activeDialog()) {
         return false; //TaskPanel already open!
     }
-    
+
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
     Gui::Control().showDialog(new TaskDlgHatch(this));

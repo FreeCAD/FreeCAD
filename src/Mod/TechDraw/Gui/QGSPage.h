@@ -145,7 +145,7 @@ protected:
     static QColor SelectColor;
     static QColor PreselectColor;
     QColor getBackgroundColor();
-    
+
 
     QGITemplate *pageTemplate;
 
@@ -160,6 +160,6 @@ private:
 
 };
 
-} // namespace 
+} // namespace
 
 #endif // TECHDRAWGUI_QGSCENE_H

@@ -182,7 +182,7 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
 
 /**
  * @brief Returns the default line width given a weight name and group number.
- * 
+ *
  * @param weightName can be "Thick", "Thin", "Graphic" or "Extra"
  * @param lineGroupNumber if -1 will then use groupNumber in preferences. Default value is -1.
  * @return the default line width.

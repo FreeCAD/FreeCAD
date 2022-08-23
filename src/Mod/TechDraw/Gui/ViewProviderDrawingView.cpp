@@ -230,7 +230,7 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
     return getMDIViewPage();
 }
 
-void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
+void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
 //    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());

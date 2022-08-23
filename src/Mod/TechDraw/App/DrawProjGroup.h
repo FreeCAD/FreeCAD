@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_FEATUREVIEWGROUP_H_
-#define _TECHDRAW_FEATUREVIEWGROUP_H_
+#ifndef TECHDRAW_FEATUREVIEWGROUP_H_
+#define TECHDRAW_FEATUREVIEWGROUP_H_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

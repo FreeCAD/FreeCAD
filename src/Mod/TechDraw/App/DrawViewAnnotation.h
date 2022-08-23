@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewAnnotation_h_
-#define _DrawViewAnnotation_h_
+#ifndef DrawViewAnnotation_h_
+#define DrawViewAnnotation_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

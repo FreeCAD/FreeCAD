@@ -161,10 +161,10 @@ std::string DrawViewSpreadsheet::getSheetImage()
     std::string scellstart = CellStart.getValue();
     std::string scellend = CellEnd.getValue();
 
-    //s/s columns are A, B,C, ... ZX, ZY, ZZ 
+    //s/s columns are A, B,C, ... ZX, ZY, ZZ
     //lower case characters are not valid
-    transform(scellstart.begin(), scellstart.end(), scellstart.begin(), ::toupper); 
-    transform(scellend.begin(), scellend.end(), scellend.begin(), ::toupper); 
+    transform(scellstart.begin(), scellstart.end(), scellstart.begin(), ::toupper);
+    transform(scellend.begin(), scellend.end(), scellend.begin(), ::toupper);
 
     std::string colPart;
     std::string rowPart;
@@ -242,7 +242,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     for (; iCol <= iAvailColEnd; iCol++) {
         validColNames.push_back(availcolumns.at(iCol));
     }
-    
+
     int iRow = iRowStart;
     for ( ; iRow <= iRowEnd ; iRow++) {
         validRowNumbers.push_back(iRow);

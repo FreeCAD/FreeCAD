@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawDimHelper_h_
-#define _DrawDimHelper_h_
+#ifndef DrawDimHelper_h_
+#define DrawDimHelper_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

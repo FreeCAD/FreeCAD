@@ -84,7 +84,7 @@
 #define SEL 2
 
 
-//TODO: hide the Qt coord system (+y down).  
+//TODO: hide the Qt coord system (+y down).
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -328,7 +328,7 @@ void QGIDatumLabel::setDimString(QString t)
 {
     prepareGeometryChange();
     m_dimText->setPlainText(t);
-} 
+}
 
 void QGIDatumLabel::setDimString(QString t, qreal maxWidth)
 {
@@ -388,7 +388,7 @@ void QGIDatumLabel::setToleranceString()
     }
 
     return;
-} 
+}
 
 void QGIDatumLabel::setUnitString(QString t)
 {
@@ -399,7 +399,7 @@ void QGIDatumLabel::setUnitString(QString t)
         m_unitText->setPlainText(t);
         m_unitText->show();
     }
-} 
+}
 
 
 int QGIDatumLabel::getPrecision()
@@ -590,7 +590,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 void QGIViewDimension::setNormalColorAll()
 {
     QColor qc = prefNormalColor();
-    datumLabel->setColor(qc); 
+    datumLabel->setColor(qc);
     dimLines->setNormalColor(qc);
     aHead1->setNormalColor(qc);
     aHead1->setFillColor(qc);
@@ -656,7 +656,7 @@ void QGIViewDimension::updateDim()
     auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
     if (!vp)
         return;
- 
+
     QString labelText= QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); // pre value [unit] post
     if (dim->isMultiValueSchema())
         labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
@@ -813,7 +813,7 @@ double QGIViewDimension::getAnglePlacementFactor(double testAngle, double endAng
     if (testAngle >= endAngle + startRotation) {
         return -1.0;
     }
-    
+
     return 0.0;
 }
 
@@ -952,7 +952,7 @@ double QGIViewDimension::computeLineStrikeFactor(const Base::BoundBox2d &labelRe
     if (drawMarking.size() < 2) {
         return 0.0;
     }
-    
+
     std::vector<Base::Vector2d> intersectionPoints;
     unsigned int startIndex = 0;
     unsigned int currentIndex = 1;
@@ -1112,7 +1112,7 @@ bool QGIViewDimension::constructDimensionLine(const Base::Vector2d &targetPoint,
 
 bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, double arcRadius, double endAngle,
                            double startRotation, double handednessFactor, double jointRotation,
-                           const Base::BoundBox2d &labelRectangle, int arrowCount, int standardStyle, bool flipArrows, 
+                           const Base::BoundBox2d &labelRectangle, int arrowCount, int standardStyle, bool flipArrows,
                            std::vector<std::pair<double, bool>> &outputMarking) const
 {
     // The start rotation > 0 is not expected, the caller must handle this
@@ -1140,7 +1140,7 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     }
     else if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
         std::vector<Base::Vector2d> intersectionPoints;
-        
+
         DrawUtil::findCircleRectangleIntersections(arcCenter, arcRadius, labelRectangle, intersectionPoints);
 
         // We do not want to handle other cases than 2 intersection points - if so, act as if there were none
@@ -1165,7 +1165,7 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     if (jointRotation + endDelta > 0.0) {
         // If label exceeds end angle ray, extend the dimension arc and flip arrows
         DrawUtil::intervalMarkCircular(outputMarking, endAngle, handednessFactor*(jointRotation + endDelta), true);
-        autoFlipArrows = true;        
+        autoFlipArrows = true;
     }
 
     if (jointRotation - startDelta < startRotation) {
@@ -1197,10 +1197,10 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     double tailDelta = arcRadius >= Precision::Confusion() ? getDefaultArrowTailLength()/arcRadius : M_PI_4;
     double placementFactor = flipArrows ? +1.0 : -1.0;
 
-    DrawUtil::intervalMarkCircular(outputMarking, endAngle, 
+    DrawUtil::intervalMarkCircular(outputMarking, endAngle,
                                    placementFactor*handednessFactor*tailDelta, true);
     if (arrowCount > 1) {
-        DrawUtil::intervalMarkCircular(outputMarking, endAngle + handednessFactor*startRotation, 
+        DrawUtil::intervalMarkCircular(outputMarking, endAngle + handednessFactor*startRotation,
                                        -placementFactor*handednessFactor*tailDelta, true);
     }
 
@@ -1280,7 +1280,7 @@ void QGIViewDimension::drawMultiLine(QPainterPath &painterPath, const Base::Vect
     if (drawMarking.size() < 2) {
         return;
     }
-    
+
     unsigned int startIndex = 0;
     unsigned int currentIndex = 1;
     while (currentIndex < drawMarking.size()) {
@@ -1859,7 +1859,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d &centerPoint, co
                                                                lineAngles[1], lineMarking);
                 }
 
-                if (compareAngleStraightness(0.0, 
+                if (compareAngleStraightness(0.0,
                         jointPositions[0] > 0.0 ? DrawUtil::angleComposition(lineAngles[0], M_PI) : lineAngles[0],
                         jointPositions[1] > 0.0 ? DrawUtil::angleComposition(lineAngles[1], M_PI) : lineAngles[1],
                         strikeFactors[0], strikeFactors[1]) > 0) {
@@ -1981,7 +1981,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d &centerPoint, co
 void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const
 {
     Base::BoundBox2d labelRectangle(fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
-    
+
     pointPair linePoints = dimension->getLinearPoints();
     const char *dimensionType = dimension->Type.getValueAsString();
 
@@ -2101,7 +2101,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension *dimension, View
             strikeFactors[1] = computeLineStrikeFactor(labelRectangle, targetPoints[1], lineAngles[1], lineMarking);
 
             int selected = 0;
-            if (compareAngleStraightness(0.0, 
+            if (compareAngleStraightness(0.0,
                 jointPositions[0] > 0.0 ? DrawUtil::angleComposition(lineAngles[0], M_PI) : lineAngles[0],
                 jointPositions[1] > 0.0 ? DrawUtil::angleComposition(lineAngles[1], M_PI) : lineAngles[1],
                 strikeFactors[0], strikeFactors[1]) > 0) {
@@ -2166,7 +2166,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension *dimension, View
             endPoint.y += curveRadius;
             lineAngle = M_PI_2;
          }
- 
+
 //        lineAngle = DrawUtil::angleComposition((labelCenter - curveCenter).Angle(), +M_PI_2);
 //        startPoint = curveCenter - Base::Vector2d::FromPolar(curveRadius, lineAngle);
 //        endPoint = curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle);
@@ -2201,7 +2201,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
 
     double endAngle = (endPoint - angleVertex).Angle();
     double startAngle = (startPoint - angleVertex).Angle();
-    double arcRadius;    
+    double arcRadius;
 
     int standardStyle = viewProvider->StandardAndStyle.getValue();
     int renderExtent = viewProvider->RenderingExtent.getValue();
@@ -2306,7 +2306,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
         if (arcRadius < 0.0) {
             arcRadius = labelDirection.Length();
         }
-        
+
         drawDimensionArc(anglePath, angleVertex, arcRadius, endAngle, startRotation, radiusAngle,
                          labelRectangle, arrowCount, standardStyle, flipArrows);
     }
@@ -2487,7 +2487,7 @@ void QGIViewDimension::drawBorder()
 
 double QGIViewDimension::getDefaultExtensionLineOverhang() const
 {
-    // 8x Line Width according to ISO 129-1 Standard section 5.4, not specified by ASME Y14.5M 
+    // 8x Line Width according to ISO 129-1 Standard section 5.4, not specified by ASME Y14.5M
     return Rez::appX(m_lineWidth*8.0);
 }
 
@@ -2567,19 +2567,19 @@ void QGIViewDimension::setPens()
     aHead2->setWidth(m_lineWidth);
 }
 
-double QGIViewDimension::toDeg(double a) 
+double QGIViewDimension::toDeg(double a)
 {
     return a*180/M_PI;
 }
 
-double QGIViewDimension::toQtRad(double a) 
+double QGIViewDimension::toQtRad(double a)
 {
-    return -a; 
+    return -a;
 }
 
-double QGIViewDimension::toQtDeg(double a) 
+double QGIViewDimension::toQtDeg(double a)
 {
-    return -a*180.0/M_PI; 
+    return -a*180.0/M_PI;
 }
 
 void QGIViewDimension::makeMarkC(double x, double y, QColor c) const

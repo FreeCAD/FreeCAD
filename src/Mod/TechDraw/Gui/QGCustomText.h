@@ -67,7 +67,7 @@ public:
 
     virtual double getHeight(void);
     virtual double getWidth(void);
-    
+
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);

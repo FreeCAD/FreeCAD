@@ -111,7 +111,7 @@ private:
     std::string m_qgParentName;
 
     Base::Vector3d m_attachPoint;
-    
+
     bool m_createMode;
     QGMText* m_text;
 
@@ -121,7 +121,7 @@ private:
     QGIRichAnno* m_qgAnno;
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    
+
     QDialog* m_textDialog;
     MRichTextEdit* m_rte;
     QString m_title;

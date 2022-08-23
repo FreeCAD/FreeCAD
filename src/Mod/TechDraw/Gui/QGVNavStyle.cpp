@@ -114,7 +114,7 @@ void QGVNavStyle::handleKeyPressEvent(QKeyEvent *event)
 {
     if(event->modifiers().testFlag(Qt::ControlModifier)) {
         switch(event->key()) {
-            case Qt::Key_Plus: { 
+            case Qt::Key_Plus: {
                 zoom(1.0 + zoomStep);
                 event->accept();
                 break;

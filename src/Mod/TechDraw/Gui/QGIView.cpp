@@ -696,7 +696,7 @@ bool QGIView::getFrameState()
 void QGIView::addArbitraryItem(QGraphicsItem* qgi)
 {
     if (qgi) {
-//        m_randomItems.push_back(qgi); 
+//        m_randomItems.push_back(qgi);
         addToGroup(qgi);
         qgi->show();
     }

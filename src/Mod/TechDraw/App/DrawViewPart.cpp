@@ -102,7 +102,7 @@ using namespace std;
 
 
 //PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
-PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, 
+PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart,
                                 TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) :
@@ -253,7 +253,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (waitingForHlr()) {
         return DrawView::execute();
     }
-    
+
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
         Base::Console().Log("DVP::execute - %s - Source shape is Null.\n",
@@ -739,7 +739,7 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
         Base::Console().Log("INFO - getProjVertexByCosTag(%s) - no Vertex Geometry.\n");
         return result;
     }
-    
+
     for (auto& gv: gVerts) {
         if (gv->cosmeticTag == cosTag) {
             result = gv;
@@ -1121,7 +1121,7 @@ void DrawViewPart::addReferencesToGeom()
 //ex. LandmarkDimension as a reference
 std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 {
-//    Base::Console().Message("DVP::addReferenceVertex(%s) - %s\n", 
+//    Base::Console().Message("DVP::addReferenceVertex(%s) - %s\n",
 //                            DrawUtil::formatVector(v).c_str(), getNameInDocument());
     std::string refTag;
 //    Base::Vector3d scaledV = v * getScale();
@@ -1145,7 +1145,7 @@ void DrawViewPart::removeReferenceVertex(std::string tag)
         }
     }
     m_referenceVerts = newRefVerts;
-    resetReferenceVerts();  
+    resetReferenceVerts();
 }
 
 void DrawViewPart::removeAllReferencesFromGeom()
@@ -1206,7 +1206,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
     return iGV;
 }
 
-//update Vertex geometry with current CV's 
+//update Vertex geometry with current CV's
 void DrawViewPart::refreshCVGeoms()
 {
 //    Base::Console().Message("DVP::refreshCVGeoms()\n");
@@ -1244,7 +1244,7 @@ int DrawViewPart::getCVIndex(std::string tag)
         int base = gVerts.size();
         int i = 0;
         for (auto& cv: cVerts) {
-//        Base::Console().Message("DVP::getCVIndex - cv tag: %s\n", 
+//        Base::Console().Message("DVP::getCVIndex - cv tag: %s\n",
 //                                cv->getTagAsString().c_str());
             if (cv->getTagAsString() == tag) {
                 result = base + i;
@@ -1276,7 +1276,7 @@ void DrawViewPart::addCosmeticEdgesToGeom()
         TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
         if (!scaledGeom)
             continue;
-//        int iGE = 
+//        int iGE =
         geometryObject->addCosmeticEdge(scaledGeom,
                                         ce->getTagAsString());
     }
@@ -1293,11 +1293,11 @@ int DrawViewPart::add1CEToGE(std::string tag)
     TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
     int iGE = geometryObject->addCosmeticEdge(scaledGeom,
                                               tag);
-                                                
+
     return iGE;
 }
 
-//update Edge geometry with current CE's 
+//update Edge geometry with current CE's
 void DrawViewPart::refreshCEGeoms()
 {
 //    Base::Console().Message("DVP::refreshCEGeoms()\n");
@@ -1331,11 +1331,11 @@ int DrawViewPart::add1CLToGE(std::string tag)
     TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(this);
     int iGE = geometryObject->addCenterLine(scaledGeom,
                                             tag);
-                                                
+
     return iGE;
 }
 
-//update Edge geometry with current CL's 
+//update Edge geometry with current CL's
 void DrawViewPart::refreshCLGeoms()
 {
 //    Base::Console().Message("DVP::refreshCLGeoms()\n");
@@ -1443,7 +1443,7 @@ bool DrawViewPart::prefHardViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("HardViz", true); 
+    bool result = hGrp->GetBool("HardViz", true);
     return result;
 }
 
@@ -1451,7 +1451,7 @@ bool DrawViewPart::prefSeamViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SeamViz", true); 
+    bool result = hGrp->GetBool("SeamViz", true);
     return result;
 }
 
@@ -1459,7 +1459,7 @@ bool DrawViewPart::prefSmoothViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SmoothViz", true); 
+    bool result = hGrp->GetBool("SmoothViz", true);
     return result;
 }
 
@@ -1467,7 +1467,7 @@ bool DrawViewPart::prefIsoViz()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoViz", false); 
+    bool result = hGrp->GetBool("IsoViz", false);
     return result;
 }
 
@@ -1475,7 +1475,7 @@ bool DrawViewPart::prefHardHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("HardHid",  false); 
+    bool result = hGrp->GetBool("HardHid",  false);
     return result;
 }
 
@@ -1483,7 +1483,7 @@ bool DrawViewPart::prefSeamHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SeamHid", false); 
+    bool result = hGrp->GetBool("SeamHid", false);
     return result;
 }
 
@@ -1491,7 +1491,7 @@ bool DrawViewPart::prefSmoothHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SmoothHid", false); 
+    bool result = hGrp->GetBool("SmoothHid", false);
     return result;
 }
 
@@ -1499,7 +1499,7 @@ bool DrawViewPart::prefIsoHid()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoHid", false); 
+    bool result = hGrp->GetBool("IsoHid", false);
     return result;
 }
 
@@ -1507,7 +1507,7 @@ int DrawViewPart::prefIsoCount()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    int result = hGrp->GetBool("IsoCount", 0); 
+    int result = hGrp->GetBool("IsoCount", 0);
     return result;
 }
 

@@ -223,7 +223,7 @@ void TaskProjGroup::rotateButtonClicked()
         else if (clicked == ui->butRightRotate) multiView->rotate("Right");
         else if (clicked == ui->butLeftRotate) multiView->rotate("Left");
         else if (clicked == ui->butCWRotate ) multiView->spin("CW");
-        else if (clicked == ui->butCCWRotate) multiView->spin("CCW"); 
+        else if (clicked == ui->butCCWRotate) multiView->spin("CCW");
 
         setUiPrimary();
     }

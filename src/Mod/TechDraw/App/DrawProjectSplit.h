@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjectSplit_h_
-#define _DrawProjectSplit_h_
+#ifndef DrawProjectSplit_h_
+#define DrawProjectSplit_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -101,4 +101,4 @@ typedef App::FeaturePythonT<DrawProjectSplit> DrawProjectSplitPython;
 
 } //namespace TechDraw
 
-#endif  // #ifndef _DrawProjectSplit_h_
+#endif  // #ifndef DrawProjectSplit_h_

@@ -135,12 +135,12 @@ void CosmeticVertexPy::setPoint(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
-        getCosmeticVertexPtr()->permaPoint = 
+        getCosmeticVertexPtr()->permaPoint =
                 DrawUtil::invertY(point);
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d point = Base::getVectorFromTuple<double>(p);
-        getCosmeticVertexPtr()->permaPoint = 
+        getCosmeticVertexPtr()->permaPoint =
                 DrawUtil::invertY(point);
     }
     else {

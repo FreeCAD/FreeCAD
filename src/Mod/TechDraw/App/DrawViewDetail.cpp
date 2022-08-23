@@ -173,7 +173,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute()
         //this can only happen via scripting?
         return DrawView::execute();
     }
-    
+
     DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
     DrawViewSection* dvs = nullptr;
     TopoDS_Shape shape;

@@ -588,7 +588,7 @@ DrawViewDetail* TaskDetail::getDetailFeat()
             return static_cast<DrawViewDetail*>(detailObj);
         }
     }
-    
+
     std::string msg = "TaskDetail - detail feature " +
                         m_detailName +
                         " not found \n";

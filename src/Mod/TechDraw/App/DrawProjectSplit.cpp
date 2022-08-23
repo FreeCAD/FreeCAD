@@ -138,7 +138,7 @@ TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape sha
         geometryObject->projectShape(shape,
             viewAxis);
     }
-        
+
     geometryObject->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                                     true);
     geometryObject->extractGeometry(TechDraw::ecOUTLINE,
@@ -496,7 +496,7 @@ std::string edgeSortItem::dump()
     } else if (!DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
         if (e1.endAngle < e2.endAngle) {
             result = true;
-        } 
+        }
     } else if (e1.idx < e2.idx) {
         result = true;
     }

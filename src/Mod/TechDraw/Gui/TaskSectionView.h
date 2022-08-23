@@ -95,7 +95,7 @@ private:
     Base::Vector3d m_normal;
     Base::Vector3d m_direction;
     Base::Vector3d m_origin;
-    
+
     std::string m_saveSymbol;
     std::string m_saveDirName;
     Base::Vector3d m_saveNormal;

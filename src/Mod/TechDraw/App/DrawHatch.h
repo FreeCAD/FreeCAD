@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawHatch_h_
-#define _TechDraw_DrawHatch_h_
+#ifndef TechDraw_DrawHatch_h_
+#define TechDraw_DrawHatch_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -69,7 +69,7 @@ public:
     static bool faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs);
     static std::string prefSvgHatch();
     static App::Color prefSvgHatchColor();
-    
+
     bool isSvgHatch() const;
     bool isBitmapHatch() const;
 

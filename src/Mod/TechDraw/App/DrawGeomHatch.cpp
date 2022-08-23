@@ -252,7 +252,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
     std::vector<LineSet> result;
     gp_Pln p;
     Base::Vector3d vfc = DrawUtil::getFaceCenter(f);
-    gp_Pnt fc(vfc.x, vfc.y, vfc.z); 
+    gp_Pnt fc(vfc.x, vfc.y, vfc.z);
     double dir = -1.0;
     if (fc.Z() < 0.0) {
         dir = -dir;
@@ -260,7 +260,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     Base::Vector3d offset = stdZ * p.Distance(fc) * dir;
 
-    //f may be above or below paper plane and must be moved so Common operation in 
+    //f may be above or below paper plane and must be moved so Common operation in
     //getTrimmedLines succeeds
     TopoDS_Shape moved = TechDraw::moveShape(f,
                                               offset);
@@ -570,7 +570,7 @@ void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
     }
 }
 
-void DrawGeomHatch::onDocumentRestored() 
+void DrawGeomHatch::onDocumentRestored()
 {
 //    Base::Console().Message("DGH::onDocumentRestored()\n");
     if (PatIncluded.isEmpty()) {
@@ -648,7 +648,7 @@ App::Color DrawGeomHatch::prefGeomHatchColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000));
     return fcColor;
 }
 
