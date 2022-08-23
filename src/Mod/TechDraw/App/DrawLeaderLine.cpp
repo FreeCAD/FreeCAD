@@ -106,10 +106,6 @@ DrawLeaderLine::DrawLeaderLine()
     LockPosition.setStatus(App::Property::Hidden, true);
 }
 
-DrawLeaderLine::~DrawLeaderLine()
-{
-}
-
 void DrawLeaderLine::onChanged(const App::Property* prop)
 {
     DrawView::onChanged(prop);

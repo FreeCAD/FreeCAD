@@ -65,10 +65,6 @@ DrawViewImage::DrawViewImage()
     ImageFile.setFilter(imgFilter);
 }
 
-DrawViewImage::~DrawViewImage()
-{
-}
-
 void DrawViewImage::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
@@ -106,7 +102,7 @@ App::DocumentObjectExecReturn *DrawViewImage::execute()
 
 QRectF DrawViewImage::getRect() const
 {
-    return QRectF(0.0, 0.0, Width.getValue(), Height.getValue());
+    return { 0.0, 0.0, Width.getValue(), Height.getValue()};
 }
 
 void DrawViewImage::replaceImageIncluded(std::string newFileName)

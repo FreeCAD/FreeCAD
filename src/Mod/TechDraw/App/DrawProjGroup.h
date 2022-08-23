@@ -55,7 +55,7 @@ class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 public:
     /// Constructor
     DrawProjGroup();
-    ~DrawProjGroup() override;
+    ~DrawProjGroup() = default;
 
     App::PropertyLinkList   Source;
     App::PropertyXLinkList  XSource;

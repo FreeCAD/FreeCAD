@@ -63,10 +63,6 @@ DrawViewDraft::DrawViewDraft()
     ScaleType.setValue("Custom");
 }
 
-DrawViewDraft::~DrawViewDraft()
-{
-}
-
 short DrawViewDraft::mustExecute() const
 {
     if (!isRestoring()) {

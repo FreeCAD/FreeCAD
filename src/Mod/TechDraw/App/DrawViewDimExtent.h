@@ -42,7 +42,7 @@ class TechDrawExport DrawViewDimExtent : public TechDraw::DrawViewDimension
 public:
     /// Constructor
     DrawViewDimExtent();
-    ~DrawViewDimExtent() override;
+    ~DrawViewDimExtent() = default;
 
     App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
                                                                  //Cosmetic End points are stored in DVD::References2d

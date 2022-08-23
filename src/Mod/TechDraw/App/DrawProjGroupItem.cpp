@@ -75,10 +75,6 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     ScaleType.setStatus(App::Property::Hidden, true);
 }
 
-DrawProjGroupItem::~DrawProjGroupItem()
-{
-}
-
 short DrawProjGroupItem::mustExecute() const
 {
     //there is nothing unique about dpgi vs dvp

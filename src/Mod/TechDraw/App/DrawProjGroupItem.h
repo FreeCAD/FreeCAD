@@ -57,7 +57,7 @@ class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 public:
     /// Constructor
     DrawProjGroupItem();
-    ~DrawProjGroupItem() override;
+    ~DrawProjGroupItem() = default;
 
     App::PropertyEnumeration Type;
     App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection

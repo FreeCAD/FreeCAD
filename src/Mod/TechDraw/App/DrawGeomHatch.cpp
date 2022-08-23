@@ -112,10 +112,6 @@ DrawGeomHatch::DrawGeomHatch()
 
 }
 
-DrawGeomHatch::~DrawGeomHatch()
-{
-}
-
 void DrawGeomHatch::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {

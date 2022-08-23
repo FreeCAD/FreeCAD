@@ -69,10 +69,6 @@ DrawHatch::DrawHatch(void)
     HatchPattern.setFilter(svgFilter);
 }
 
-DrawHatch::~DrawHatch()
-{
-}
-
 void DrawHatch::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {

@@ -58,10 +58,6 @@ DrawRichAnno::DrawRichAnno()
 
 }
 
-DrawRichAnno::~DrawRichAnno()
-{
-}
-
 void DrawRichAnno::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {

@@ -49,8 +49,6 @@
 #include "DrawViewPart.h"
 #include "DrawViewDimExtent.h"
 #include "DrawDimHelper.h"
-#include "DrawUtil.h"
-#include "LineGroup.h"
 
 #include <Mod/TechDraw/App/DrawViewDimExtentPy.h>  // generated from DrawViewDimExtentPy.xml
 
@@ -79,10 +77,6 @@ DrawViewDimExtent::DrawViewDimExtent(void)
     //hide the properties the user can't edit in the property editor
     Source3d.setStatus(App::Property::Hidden, true);   //TBI
 
-}
-
-DrawViewDimExtent::~DrawViewDimExtent()
-{
 }
 
 void DrawViewDimExtent::onChanged(const App::Property* prop)

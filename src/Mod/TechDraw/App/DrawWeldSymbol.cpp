@@ -65,10 +65,6 @@ DrawWeldSymbol::DrawWeldSymbol()
     Rotation.setStatus(App::Property::Hidden, true);
 }
 
-DrawWeldSymbol::~DrawWeldSymbol()
-{
-}
-
 //DWS always has exactly 2 child tiles - ArrowSide and OtherSide.
 //OtherSide tile may be hidden;
 //once DWS has been added to the document, add 2x DrawTileWeld
