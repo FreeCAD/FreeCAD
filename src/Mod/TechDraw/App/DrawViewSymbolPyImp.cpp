@@ -57,7 +57,7 @@ PyObject* DrawViewSymbolPy::dumpSymbol(PyObject *args)
     Base::FileInfo fi(fileSpec);
     Base::ofstream outfile;
     outfile.open(fi);
-    outfile.write (symbolRepr.c_str(),symbolRepr.size());
+    outfile.write (symbolRepr.c_str(), symbolRepr.size());
     outfile.close();
     if (outfile.good()) {
         outfile.close();

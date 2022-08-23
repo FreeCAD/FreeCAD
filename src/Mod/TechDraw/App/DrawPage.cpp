@@ -93,7 +93,7 @@ DrawPage::DrawPage(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/General");
-    double defScale = hGrp->GetFloat("DefaultScale",1.0);
+    double defScale = hGrp->GetFloat("DefaultScale", 1.0);
     ADD_PROPERTY_TYPE(Scale, (defScale), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
 
     ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
@@ -119,7 +119,7 @@ void DrawPage::onChanged(const App::Property* prop)
         if (!isRestoring() &&
             !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
-            Base::Console().Message("Rebuilding Views for: %s/%s\n",getNameInDocument(),Label.getValue());
+            Base::Console().Message("Rebuilding Views for: %s/%s\n", getNameInDocument(), Label.getValue());
             updateAllViews();
             purgeTouched();
         }
@@ -185,7 +185,7 @@ PyObject *DrawPage::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawPagePy(this),true);
+        PythonObject = Py::Object(new DrawPagePy(this), true);
     }
 
     return Py::new_reference_to(PythonObject);
@@ -271,7 +271,7 @@ int DrawPage::addView(App::DocumentObject *docObj)
 
     //check if View fits on Page
     if ( !view->checkFit(this) ) {
-        Base::Console().Warning("%s is larger than page. Will be scaled.\n",view->getNameInDocument());
+        Base::Console().Warning("%s is larger than page. Will be scaled.\n", view->getNameInDocument());
         view->ScaleType.setValue("Automatic");
     }
 
@@ -375,7 +375,7 @@ std::vector<App::DocumentObject*> DrawPage::getAllViews(void)
             TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
             if (dpg) {                                              //can't really happen!
               std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
-              allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
+              allViews.insert(allViews.end(), pgViews.begin(), pgViews.end());
             }
         }
     }
@@ -435,7 +435,7 @@ void DrawPage::handleChangedPropertyType(
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
-        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {                   //property in file is Float
             tmp.setContainer(this);
             tmp.Restore(reader);
             double tmpValue = tmp.getValue();

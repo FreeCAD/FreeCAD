@@ -95,12 +95,12 @@ void LineGroup::setWeight(std::string s, double weight)
 
 void LineGroup::dump(const char* title)
 {
-    Base::Console().Message( "DUMP: %s\n",title);
+    Base::Console().Message( "DUMP: %s\n", title);
     Base::Console().Message( "Name: %s\n", m_name.c_str());
     Base::Console().Message( "Thin: %.3f\n", m_thin);
-    Base::Console().Message( "Graphic: %.3f\n",m_graphic);
-    Base::Console().Message( "Thick: %.3f\n",m_thick);
-    Base::Console().Message( "Extra: %.3f\n",m_extra);
+    Base::Console().Message( "Graphic: %.3f\n", m_graphic);
+    Base::Console().Message( "Thick: %.3f\n", m_thick);
+    Base::Console().Message( "Extra: %.3f\n", m_extra);
 }
 
 //static support function: split comma separated string of values into vector of numbers
@@ -111,7 +111,7 @@ std::vector<double> LineGroup::split(std::string line)
     std::string           cell;
     bool nameCell = true;
 
-    while(std::getline(lineStream,cell, ','))
+    while(std::getline(lineStream, cell, ','))
     {
         if (nameCell) {
             nameCell = false;
@@ -121,7 +121,7 @@ std::vector<double> LineGroup::split(std::string line)
             result.push_back(std::stod(cell));
         }
         catch (const std::invalid_argument& ia) {
-            Base::Console().Warning("Invalid number in cell: %s (%s) \n",cell.c_str(),ia.what());
+            Base::Console().Warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
             result.push_back(0.0);
         }
     }
@@ -135,7 +135,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
     Base::FileInfo fi(parmFile);
     Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
+        Base::Console().Message( "Cannot open LineGroup file: %s\n", parmFile.c_str());
         return record;
     }
     // parse file to get the groupNumber'th line
@@ -172,10 +172,10 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
     if (values.size() < 4) {
         Base::Console().Error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
     } else {
-        lg->setWeight("Thin",values[0]);
-        lg->setWeight("Graphic",values[1]);
-        lg->setWeight("Thick",values[2]);
-        lg->setWeight("Extra",values[3]);
+        lg->setWeight("Thin", values[0]);
+        lg->setWeight("Graphic", values[1]);
+        lg->setWeight("Thick", values[2]);
+        lg->setWeight("Extra", values[3]);
     }
     return lg;
 }

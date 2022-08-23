@@ -63,7 +63,7 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(HatchPattern, (prefSvgHatch()), vgroup, App::Prop_None, "The hatch pattern file for this area");
-    ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup,App::Prop_None,
+    ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup, App::Prop_None,
                                             "Embedded SVG hatch file. System use only.");   // n/a to end users
     std::string svgFilter("SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)");
     HatchPattern.setFilter(svgFilter);
@@ -123,12 +123,12 @@ PyObject *DrawHatch::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawHatchPy(this),true);
+        PythonObject = Py::Object(new DrawHatchPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 
-bool DrawHatch::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs)
+bool DrawHatch::faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs)
 {
     bool result = false;
     bool found = false;
@@ -167,7 +167,7 @@ bool DrawHatch::affectsFace(int i)
 //remove a subElement(Face) from Source PropertyLinkSub
 bool DrawHatch::removeSub(std::string toRemove)
 {
-//    Base::Console().Message("DH::removeSub(%s)\n",toRemove.c_str());
+//    Base::Console().Message("DH::removeSub(%s)\n", toRemove.c_str());
     bool removed = false;
     const std::vector<std::string> &sourceNames = Source.getSubValues();
     std::vector<std::string> newList;
@@ -187,7 +187,7 @@ bool DrawHatch::removeSub(std::string toRemove)
 
 bool DrawHatch::removeSub(int i)
 {
-//    Base::Console().Message("DH::removeSub(%d)\n",i);
+//    Base::Console().Message("DH::removeSub(%d)\n", i);
     std::stringstream ss;
     ss << "Face" << i;
     return removeSub(ss.str());

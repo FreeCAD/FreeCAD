@@ -44,14 +44,14 @@ std::string DrawViewClipPy::representation() const
 PyObject* DrawViewClipPy::addView(PyObject* args)
 {
     //this implements iRC = pyClip.addView(pyView)  -or-
-    //doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
         Base::Console().Error("Error: DrawViewClipPy::addView - Bad Arg - not DocumentObject\n");
         return nullptr;
         //TODO: sb PyErr??
-        //PyErr_SetString(PyExc_TypeError,"addView expects a DrawView");
+        //PyErr_SetString(PyExc_TypeError, "addView expects a DrawView");
         //return -1;
     }
 
@@ -68,14 +68,14 @@ PyObject* DrawViewClipPy::addView(PyObject* args)
 PyObject* DrawViewClipPy::removeView(PyObject* args)
 {
     //this implements iRC = pyClip.removeView(pyView)  -or-
-    //doCommand(Doc,"App.activeDocument().%s.removeView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //doCommand(Doc, "App.activeDocument().%s.removeView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
         Base::Console().Error("Error: DrawViewClipPy::removeView - Bad Arg - not DocumentObject\n");
         return nullptr;
         //TODO: sb PyErr??
-        //PyErr_SetString(PyExc_TypeError,"removeView expects a DrawView");
+        //PyErr_SetString(PyExc_TypeError, "removeView expects a DrawView");
         //return -1;
     }
 

@@ -66,7 +66,7 @@ public:
     bool removeSub(std::string toRemove);
     bool removeSub(int i);
     bool empty();
-    static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
+    static bool faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs);
     static std::string prefSvgHatch();
     static App::Color prefSvgHatchColor();
     

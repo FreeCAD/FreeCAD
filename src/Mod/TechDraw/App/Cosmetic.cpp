@@ -87,16 +87,16 @@ LineFormat::LineFormat(int style,
 
 void LineFormat::dump(const char* title)
 {
-    Base::Console().Message("LF::dump - %s \n",title);
-    Base::Console().Message("LF::dump - %s \n",toString().c_str());
+    Base::Console().Message("LF::dump - %s \n", title);
+    Base::Console().Message("LF::dump - %s \n", toString().c_str());
 }
 
 std::string LineFormat::toString() const
 {
     std::stringstream ss;
-    ss << m_style << "," <<
-          m_weight << "," <<
-          m_color.asHexString() << "," <<
+    ss << m_style << ", " <<
+          m_weight << ", " <<
+          m_color.asHexString() << ", " <<
           m_visible;
     return ss.str();
 }
@@ -183,21 +183,21 @@ void CosmeticVertex::moveRelative(Base::Vector3d movement)
 std::string CosmeticVertex::toString() const
 {
     std::stringstream ss;
-    ss << permaPoint.x << "," <<
-          permaPoint.y << "," <<
-          permaPoint.z << "," <<
+    ss << permaPoint.x << ", " <<
+          permaPoint.y << ", " <<
+          permaPoint.z << ", " <<
           " / ";
-    ss << point().x << "," <<
-          point().y << "," <<
-          point().z << "," <<
+    ss << point().x << ", " <<
+          point().y << ", " <<
+          point().z << ", " <<
           " / " <<
-          linkGeom << "," <<
+          linkGeom << ", " <<
           " / " <<
-          color.asHexString() << ","  <<
+          color.asHexString() << ", "  <<
           " / " <<
-          size << "," <<
+          size << ", " <<
           " / " <<
-          style << ","  <<
+          style << ", "  <<
           " / " <<
           visible << " / " ;
     ss << getTagAsString();
@@ -311,7 +311,7 @@ PyObject* CosmeticVertex::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new CosmeticVertexPy(this),true);
+        PythonObject = Py::Object(new CosmeticVertexPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -319,13 +319,13 @@ PyObject* CosmeticVertex::getPyObject()
 
 void CosmeticVertex::dump(const char* title)
 {
-    Base::Console().Message("CV::dump - %s \n",title);
-    Base::Console().Message("CV::dump - %s \n",toString().c_str());
+    Base::Console().Message("CV::dump - %s \n", title);
+    Base::Console().Message("CV::dump - %s \n", toString().c_str());
 }
 
 //******************************************
 
-TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge,Base::Persistence)
+TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 
 //note this ctor has no occEdge or first/last point for geometry!
 CosmeticEdge::CosmeticEdge()
@@ -395,11 +395,11 @@ void CosmeticEdge::initialize()
 
 TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2)
 {
-    // Base::Console().Message("CE::CE(p1,p2)\n");
+    // Base::Console().Message("CE::CE(p1, p2)\n");
     Base::Vector3d p1 = DrawUtil::invertY(pt1);
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    gp_Pnt gp1(p1.x, p1.y, p1.z);
+    gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     return e;
 }
@@ -424,9 +424,9 @@ std::string CosmeticEdge::toString() const
     ss << getTagAsString() << ", $$$, ";
     if (m_geometry) {
         ss << m_geometry->geomType << 
-            ",$$$," <<
+            ", $$$, " <<
             m_geometry->toString() <<
-            ",$$$," <<
+            ", $$$, " <<
             m_format.toString();
     }
     return ss.str();
@@ -434,8 +434,8 @@ std::string CosmeticEdge::toString() const
 
 void CosmeticEdge::dump(const char* title)
 {
-    Base::Console().Message("CE::dump - %s \n",title);
-    Base::Console().Message("CE::dump - %s \n",toString().c_str());
+    Base::Console().Message("CE::dump - %s \n", title);
+    Base::Console().Message("CE::dump - %s \n", toString().c_str());
 }
 
 // Persistence implementers
@@ -568,7 +568,7 @@ PyObject* CosmeticEdge::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new CosmeticEdgePy(this),true);
+        PythonObject = Py::Object(new CosmeticEdgePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -576,7 +576,7 @@ PyObject* CosmeticEdge::getPyObject()
 
 //*********************************************************
 
-TYPESYSTEM_SOURCE(TechDraw::CenterLine,Base::Persistence)
+TYPESYSTEM_SOURCE(TechDraw::CenterLine, Base::Persistence)
 
 CenterLine::CenterLine()
 {
@@ -661,11 +661,11 @@ void CenterLine::initialize()
 
 TechDraw::BaseGeomPtr CenterLine::BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2)
 {
-    // Base::Console().Message("CE::CE(p1,p2)\n");
+    // Base::Console().Message("CE::CE(p1, p2)\n");
     Base::Vector3d p1 = DrawUtil::invertY(pt1);
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    gp_Pnt gp1(p1.x, p1.y, p1.z);
+    gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     TechDraw::BaseGeomPtr bg = TechDraw::BaseGeom::baseFactory(e);
     return bg;
@@ -739,12 +739,12 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
 //            Base::Console().Message("CL::scaledGeometry - no geometry to scale!\n");
             //CenterLine was created by points without a geometry reference,
             ends = calcEndPointsNoRef(m_start, m_end, scale, m_extendBy,
-                                      m_hShift,m_vShift, m_rotate);
+                                      m_hShift, m_vShift, m_rotate);
         } else if (m_type == CLTYPE::FACE) {
             ends = calcEndPoints(partFeat,
                                  m_faces,
                                  m_mode, m_extendBy,
-                                 m_hShift,m_vShift, m_rotate);
+                                 m_hShift, m_vShift, m_rotate);
         } else if (m_type == CLTYPE::EDGE) {
             ends = calcEndPoints2Lines(partFeat,
                                        m_edges,
@@ -773,8 +773,8 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
         return m_geometry;  
     }
 
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    gp_Pnt gp1(p1.x, p1.y, p1.z);
+    gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
@@ -791,37 +791,37 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
 std::string CenterLine::toString() const
 {
     std::stringstream ss;
-    ss << m_start.x << "," <<
-          m_start.y << "," <<
-          m_start.z << "," <<
-          m_end.x << "," <<
-          m_end.y << "," <<
-          m_end.z << "," <<
-          m_mode << "," <<
-          m_type << "," <<
-          m_hShift << "," <<
-          m_vShift << "," <<
-          m_rotate << "," <<
-          m_flip2Line << "," <<
-          m_extendBy << "," <<
+    ss << m_start.x << ", " <<
+          m_start.y << ", " <<
+          m_start.z << ", " <<
+          m_end.x << ", " <<
+          m_end.y << ", " <<
+          m_end.z << ", " <<
+          m_mode << ", " <<
+          m_type << ", " <<
+          m_hShift << ", " <<
+          m_vShift << ", " <<
+          m_rotate << ", " <<
+          m_flip2Line << ", " <<
+          m_extendBy << ", " <<
           m_faces.size();
     if (!m_faces.empty()) {
         for (auto& f: m_faces) {
             if (!f.empty()) {
-                ss << "," << f ;
+                ss << ", " << f ;
             }
         }
     }
 
     std::string clCSV = ss.str();
     std::string fmtCSV = m_format.toString();
-    return clCSV + ",$$$," + fmtCSV;
+    return clCSV + ", $$$, " + fmtCSV;
 }
 
 void CenterLine::dump(const char* title)
 {
-    Base::Console().Message("CL::dump - %s \n",title);
-    Base::Console().Message("CL::dump - %s \n",toString().c_str());
+    Base::Console().Message("CL::dump - %s \n", title);
+    Base::Console().Message("CL::dump - %s \n", toString().c_str());
 }
 
 std::tuple<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d mid, double rotate) {
@@ -926,8 +926,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         throw Base::IndexError("CenterLine wrong number of faces.");
     }
 
-    double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
-    faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
+    double Xmin, Ymin, Zmin, Xmax, Ymax, Zmax;
+    faceBox.Get(Xmin, Ymin, Zmin, Xmax, Ymax, Zmax);
 
     double Xspan = fabs(Xmax - Xmin);
     Xspan = (Xspan / 2.0);
@@ -943,7 +943,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
     } else if (mode == 1) {            //horizontal
         p1 = Base::Vector3d(Xmin, Ymid, 0.0);
-        p2 = Base::Vector3d(Xmax,Ymid, 0.0);
+        p2 = Base::Vector3d(Xmax, Ymid, 0.0);
     } else {      //vert == 2 //aligned, but aligned doesn't make sense for face(s) bbox
         Base::Console().Message("CL::calcEndPoints - aligned is not applicable to Face center lines\n");
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
@@ -1439,7 +1439,7 @@ PyObject* CenterLine::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new CenterLinePy(this),true);
+        PythonObject = Py::Object(new CenterLinePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -1492,7 +1492,7 @@ bool CenterLine::getFlip()
 }
 //------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(TechDraw::GeomFormat,Base::Persistence)
+TYPESYSTEM_SOURCE(TechDraw::GeomFormat, Base::Persistence)
 
 GeomFormat::GeomFormat() :
     m_geomIndex(-1)
@@ -1534,14 +1534,14 @@ GeomFormat::~GeomFormat()
 
 void GeomFormat::dump(const char* title) const
 {
-    Base::Console().Message("GF::dump - %s \n",title);
-    Base::Console().Message("GF::dump - %s \n",toString().c_str());
+    Base::Console().Message("GF::dump - %s \n", title);
+    Base::Console().Message("GF::dump - %s \n", toString().c_str());
 }
 
 std::string GeomFormat::toString() const
 {
     std::stringstream ss;
-    ss << m_geomIndex << ",$$$," <<
+    ss << m_geomIndex << ", $$$, " <<
           m_format.toString();
     return ss.str();
 }
@@ -1639,7 +1639,7 @@ PyObject* GeomFormat::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new GeomFormatPy(this),true);
+        PythonObject = Py::Object(new GeomFormatPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

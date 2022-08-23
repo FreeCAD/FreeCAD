@@ -119,7 +119,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
                 sourceShapes.push_back(shape);
             } else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
-                sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+                sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
             }
         }
     }
@@ -265,7 +265,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
         for (auto& d: objs) {
             shapes = getShapesFromObject(d);
             if (!shapes.empty()) {
-                result.insert(result.end(),shapes.begin(),shapes.end());
+                result.insert(result.end(), shapes.begin(), shapes.end());
             }
         }
     //the next 2 bits are mostly for Arch module objects
@@ -277,7 +277,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
             for (auto& d: objs) {
                 shapes = getShapesFromObject(d);
                 if (!shapes.empty()) {
-                    result.insert(result.end(),shapes.begin(),shapes.end());
+                    result.insert(result.end(), shapes.begin(), shapes.end());
                 }
             }
         } else {

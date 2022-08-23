@@ -43,7 +43,7 @@ class TechDrawExport ProjectionAlgos
 {
 public:
     /// Constructor
-    ProjectionAlgos(const TopoDS_Shape &Input,const Base::Vector3d &Dir);
+    ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir);
     virtual ~ProjectionAlgos();
 
     void execute();
@@ -53,7 +53,7 @@ public:
         WithHidden = 1,
         WithSmooth = 2
     };
-    typedef std::map<std::string,std::string> XmlAttributes;
+    typedef std::map<std::string, std::string> XmlAttributes;
 
     std::string getSVG(ExtractionType type, double tolerance=0.05,
                        XmlAttributes V_style=XmlAttributes(),

@@ -236,7 +236,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         Handle(Geom2d_Line) boundaryTop = new Geom2d_Line(topMid, xDir);
         gp_Pnt2d topPoint = findClosestPoint(hTCurve2dList,
                                              boundaryTop);
-        refMin = Base::Vector3d(bottomPoint.X(),bottomPoint.Y(), 0.0);
+        refMin = Base::Vector3d(bottomPoint.X(), bottomPoint.Y(), 0.0);
         refMax = Base::Vector3d(topPoint.X(), topPoint.Y(), 0.0);
     }
 
@@ -374,11 +374,11 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     if (extent) {
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent','%s')",
+        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')",
                                          dimName.c_str());
     } else {
 
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",
+        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')",
                                          dimName.c_str());
     }
 
@@ -386,7 +386,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
                                      dimName.c_str(), dimType.c_str());
 
     Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
-                                     pageName.c_str(),dimName.c_str());
+                                     pageName.c_str(), dimName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(doc->getObject(dimName.c_str()));
     if (!dim) {

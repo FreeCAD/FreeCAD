@@ -142,13 +142,13 @@ void CenterLinePy::setFormat(Py::Object arg)
     if (PyTuple_Check(pTuple)) {
         int tSize = (int) PyTuple_Size(pTuple);
         if (tSize > 3) {
-            PyObject* pStyle = PyTuple_GetItem(pTuple,0);
+            PyObject* pStyle = PyTuple_GetItem(pTuple, 0);
             style = (int) PyLong_AsLong(pStyle);
-            PyObject* pWeight = PyTuple_GetItem(pTuple,1);
+            PyObject* pWeight = PyTuple_GetItem(pTuple, 1);
             weight = PyFloat_AsDouble(pWeight);
-            PyObject* pColor = PyTuple_GetItem(pTuple,2);
+            PyObject* pColor = PyTuple_GetItem(pTuple, 2);
             c = DrawUtil::pyTupleToColor(pColor);
-            PyObject* pVisible = PyTuple_GetItem(pTuple,3);
+            PyObject* pVisible = PyTuple_GetItem(pTuple, 3);
             visible = (bool) PyLong_AsLong(pVisible);
             cl->m_format.m_style = style;
             cl->m_format.m_weight = weight;

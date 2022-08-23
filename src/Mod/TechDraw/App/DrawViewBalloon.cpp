@@ -71,7 +71,7 @@ App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { 
 // DrawViewBalloon
 //===========================================================================
 // Balloon coordinates are relative to the position of the SourceView
-// X,Y is the center of the balloon bubble
+// X, Y is the center of the balloon bubble
 // OriginX, OriginY is the tip of the arrow
 // these are in unscaled SourceView coordinates
 // Note that if the SourceView coordinate system changes
@@ -100,7 +100,7 @@ DrawViewBalloon::DrawViewBalloon()
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY_TYPE(EndType, (prefEnd()), "", (App::PropertyType)(App::Prop_None), "End symbol for the balloon line");
 
-    ADD_PROPERTY_TYPE(EndTypeScale, (1.0), "", (App::PropertyType)(App::Prop_None),"End symbol scale factor");
+    ADD_PROPERTY_TYPE(EndTypeScale, (1.0), "", (App::PropertyType)(App::Prop_None), "End symbol scale factor");
     EndTypeScale.setConstraints(&SymbolScaleRange);
 
     BubbleShape.setEnums(balloonTypeEnums);
@@ -115,8 +115,8 @@ DrawViewBalloon::DrawViewBalloon()
                                   "Distance from symbol to leader kink");
 
     SourceView.setScope(App::LinkScope::Global);
-    Rotation.setStatus(App::Property::Hidden,true);
-    Caption.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::Hidden, true);
+    Caption.setStatus(App::Property::Hidden, true);
 }
 
 DrawViewBalloon::~DrawViewBalloon()
@@ -298,7 +298,7 @@ PyObject *DrawViewBalloon::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewBalloonPy(this),true);
+        PythonObject = Py::Object(new DrawViewBalloonPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

@@ -48,7 +48,7 @@ struct DimRef {
     std::string   sub;
 };
 
-typedef std::pair<Base::Vector3d,Base::Vector3d> pointPair;
+typedef std::pair<Base::Vector3d, Base::Vector3d> pointPair;
 
 struct anglePoints
 {
@@ -57,9 +57,9 @@ struct anglePoints
 
     anglePoints()
     {
-        ends.first  = Base::Vector3d(0.0,0.0,0.0);
-        ends.second = Base::Vector3d(0.0,0.0,0.0);
-        vertex      = Base::Vector3d(0.0,0.0,0.0);
+        ends.first  = Base::Vector3d(0.0, 0.0, 0.0);
+        ends.second = Base::Vector3d(0.0, 0.0, 0.0);
+        vertex      = Base::Vector3d(0.0, 0.0, 0.0);
     }
 
     anglePoints(const anglePoints& ap)
@@ -91,12 +91,12 @@ struct arcPoints
     {
          isArc = false;
          radius = 0.0;
-         center         = Base::Vector3d(0.0,0.0,0.0);
-         onCurve.first  = Base::Vector3d(0.0,0.0,0.0);
-         onCurve.second = Base::Vector3d(0.0,0.0,0.0);
-         arcEnds.first  = Base::Vector3d(0.0,0.0,0.0);
-         arcEnds.second = Base::Vector3d(0.0,0.0,0.0);
-         midArc         = Base::Vector3d(0.0,0.0,0.0);
+         center         = Base::Vector3d(0.0, 0.0, 0.0);
+         onCurve.first  = Base::Vector3d(0.0, 0.0, 0.0);
+         onCurve.second = Base::Vector3d(0.0, 0.0, 0.0);
+         arcEnds.first  = Base::Vector3d(0.0, 0.0, 0.0);
+         arcEnds.second = Base::Vector3d(0.0, 0.0, 0.0);
+         midArc         = Base::Vector3d(0.0, 0.0, 0.0);
          arcCW = false;
     }
 
@@ -193,7 +193,7 @@ public:
     QStringList getPrefixSuffixSpec(QString fSpec);
 
     virtual DrawViewPart* getViewPart() const;
-    QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
+    QRectF getRect() const override { return QRectF(0, 0,1, 1);}          //pretend dimensions always fit!
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
     static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();

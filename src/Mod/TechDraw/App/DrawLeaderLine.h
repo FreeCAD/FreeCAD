@@ -61,7 +61,7 @@ public:
         return "TechDrawGui::ViewProviderLeader";
     }
     PyObject *getPyObject() override;
-    QRectF getRect() const override { return QRectF(0,0,1,1);}
+    QRectF getRect() const override { return QRectF(0, 0,1, 1);}
 
     Base::Vector3d getAttachPoint();
     DrawView* getBaseView() const;

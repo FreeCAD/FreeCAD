@@ -190,7 +190,7 @@ QString Preferences::defaultTemplate()
                                          GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
     std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
-    std::string prefFileName = hGrp->GetASCII("TemplateFile",defaultFileName.c_str());
+    std::string prefFileName = hGrp->GetASCII("TemplateFile", defaultFileName.c_str());
     if (prefFileName.empty()) {
         prefFileName = defaultFileName;
     }
@@ -229,7 +229,7 @@ std::string Preferences::lineGroupFile()
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
     std::string defaultFileName = defaultDir + "LineGroup.csv";
-    std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
+    std::string lgFileName = hGrp->GetASCII("LineGroupFile", defaultFileName.c_str());
     if (lgFileName.empty()) {
         lgFileName = defaultFileName;
     }
@@ -245,7 +245,7 @@ std::string Preferences::formatSpec()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    return hGrp->GetASCII("formatSpec","%.2w");
+    return hGrp->GetASCII("formatSpec", "%.2w");
 }
 
 int Preferences::altDecimals()
@@ -271,7 +271,7 @@ std::string Preferences::svgFile()
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    std::string prefHatchFile = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    std::string prefHatchFile = hGrp->GetASCII("FileHatch", defaultFileName.c_str());
     if (prefHatchFile.empty()) {
         prefHatchFile = defaultFileName;
     }
