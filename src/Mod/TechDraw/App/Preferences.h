@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Preferences_h_
-#define _Preferences_h_
+#ifndef Preferences_h_
+#define Preferences_h_
 
 #include <App/Material.h>
 

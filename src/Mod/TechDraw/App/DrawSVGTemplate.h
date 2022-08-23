@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_DrawSVGTemplate_h_
-#define _TECHDRAW_DrawSVGTemplate_h_
+#ifndef TECHDRAW_DrawSVGTemplate_h_
+#define TECHDRAW_DrawSVGTemplate_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

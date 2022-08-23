@@ -357,7 +357,7 @@ void CmdTechDrawView::activated(int iMsg)
             xShapes.push_back(obj);
             continue;
         }
-        //not a Link and not null.  assume to be drawable.  Undrawables will be 
+        //not a Link and not null.  assume to be drawable.  Undrawables will be
         // skipped later.
         shapes.push_back(obj);
         if (partObj) {
@@ -636,7 +636,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
             xShapes.push_back(obj);
             continue;
         }
-        //not a Link and not null.  assume to be drawable.  Undrawables will be 
+        //not a Link and not null.  assume to be drawable.  Undrawables will be
         // skipped later.
         shapes.push_back(obj);
         if (partObj) {

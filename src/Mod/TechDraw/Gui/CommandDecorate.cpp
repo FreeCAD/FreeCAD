@@ -126,7 +126,7 @@ void CmdTechDrawHatch::activated(int iMsg)
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
             }
-            
+
             removeOld = true;
             break;
         }
@@ -160,7 +160,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     // dialog to fill in hatch values
     Gui::Control().showDialog(new TaskDlgHatch(partFeat, subNames));
 
-    //Horrible hack to force Tree update  ??still required?? 
+    //Horrible hack to force Tree update  ??still required??
     //WF: yes. ViewProvider will not claim children without this!
     double x = partFeat->X.getValue();
     partFeat->X.setValue(x);

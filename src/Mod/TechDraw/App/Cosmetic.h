@@ -148,7 +148,7 @@ public:
     CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
-    Base::Vector3d permaEnd; 
+    Base::Vector3d permaEnd;
     double permaRadius;
 //    void unscaleEnds(double scale);
     TechDraw::BaseGeomPtr m_geometry;
@@ -191,13 +191,13 @@ public:
     CenterLine(CenterLine* cl);
     //set m_faces after using next 3 ctors
     CenterLine(TechDraw::BaseGeomPtr bg,
-               int m = CLMODE::VERTICAL, 
+               int m = CLMODE::VERTICAL,
                double h = 0.0,
                double v = 0.0,
                double r = 0.0,
                double x = 0.0);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2,
-               int m = CLMODE::VERTICAL, 
+               int m = CLMODE::VERTICAL,
                double h = 0.0,
                double v = 0.0,
                double r = 0.0,
@@ -288,7 +288,7 @@ public:
 
 protected:
     void initialize();
-    
+
     void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);
 

@@ -146,7 +146,7 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
             }
         }
         return temp;
-    } 
+    }
     catch (...) {
         std::vector<App::DocumentObject*> tmp;
         return tmp;
@@ -217,7 +217,7 @@ bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
     }
 
     QString bodyMessage;
-    QTextStream bodyMessageStream(&bodyMessage); 
+    QTextStream bodyMessageStream(&bodyMessage);
     bodyMessageStream << qApp->translate("Std_Delete",
         "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
     QMessageBox::warning(Gui::getMainWindow(),

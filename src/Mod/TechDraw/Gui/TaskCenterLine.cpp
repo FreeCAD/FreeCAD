@@ -207,7 +207,7 @@ void TaskCenterLine::setUiPrimary()
     qAngle.setUnit(Base::Unit::Angle);
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
-    ui->qsbRotate->setDecimals(precision); 
+    ui->qsbRotate->setDecimals(precision);
 }
 
 void TaskCenterLine::setUiEdit()
@@ -247,7 +247,7 @@ void TaskCenterLine::setUiEdit()
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
-    ui->qsbRotate->setValue(m_cl->m_rotate);  
+    ui->qsbRotate->setValue(m_cl->m_rotate);
 }
 
 void TaskCenterLine::onOrientationChanged()

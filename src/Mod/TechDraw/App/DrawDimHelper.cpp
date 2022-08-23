@@ -203,7 +203,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     }
 
     //can't use Bnd_Box2d here as BndLib_Add2dCurve::Add adds the poles of splines to the box.
-    //poles are not necessarily on the curve! 3d Bnd_Box does it properly. 
+    //poles are not necessarily on the curve! 3d Bnd_Box does it properly.
     //this has to be the bbx of the selected edges, not the dvp!!!
     double minX, minY, minZ, maxX, maxY, maxZ;
     edgeBbx.Get(minX, minY, minZ, maxX, maxY, maxZ);
@@ -352,7 +352,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
     std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
-    
+
     Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);

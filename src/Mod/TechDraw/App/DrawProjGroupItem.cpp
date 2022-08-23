@@ -115,9 +115,9 @@ bool DrawProjGroupItem::showLock(void) const
     }
 
     if (isAnchor() &&                         //don't show lock for Front if DPG is not locked
-        !parentLock) { 
+        !parentLock) {
         result = false;
-    }   
+    }
 
     return result;
 }
@@ -212,7 +212,7 @@ bool DrawProjGroupItem::isAnchor(void) const
 
 /// get a coord system aligned with Direction and Rotation Vector
 gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
-                                 const Base::Vector3d& axis, 
+                                 const Base::Vector3d& axis,
                                  const bool flip) const
 {
     Base::Console().Message("DPGI::getViewAxis - deprecated. use getProjectionCS\n");
@@ -266,7 +266,7 @@ Base::Vector3d DrawProjGroupItem::getXDirection(void) const
         prop = getPropertyByName("RotationVector");
         if (prop) {
             result = RotationVector.getValue();
-            
+
         } else {
             Base::Console().Message("DPGI::getXDirection - missing RotationVector and XDirection\n");
         }

@@ -235,7 +235,7 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 
     // a full circle
     if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-        out << "<circle cx =\"" << p.X() << "\" cy =\"" 
+        out << "<circle cx =\"" << p.X() << "\" cy =\""
             << p.Y() << "\" r =\"" << r << "\" />";
     }
     // arc of circle
@@ -275,7 +275,7 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     gp_Vec v2(m, e);
     gp_Vec v3(0, 0,1);
     double a = v3.DotCross(v1, v2);
-    
+
     // a full ellipse
     // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
     gp_Dir xaxis = ellp.XAxis().Direction();
@@ -283,7 +283,7 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     angle = Base::toDegrees<double>(angle);
     if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
         out << "<g transform = \"rotate(" << angle << ", " << p.X() << ", " << p.Y() << ")\">" << std::endl;
-        out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
+        out << "<ellipse cx =\"" << p.X() << "\" cy =\""
             << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>" << std::endl;
         out << "</g>" << std::endl;
     }
@@ -436,9 +436,9 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& bac, int id, std::ostream&
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt& nodes = polygon->Nodes();
         char c = 'M';
-        out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" "; 
+        out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" ";
         for (int i = nodes.Lower(); i <= nodes.Upper(); i++){
-            out << c << " " << nodes(i).X() << " " << nodes(i).Y()<< " " ; 
+            out << c << " " << nodes(i).X() << " " << nodes(i).Y()<< " " ;
             c = 'L';
         }
         out << "\" />" << endl;
@@ -450,10 +450,10 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& bac, int id, std::ostream&
         gp_Pnt s = bac.Value(f);
         gp_Pnt e = bac.Value(l);
         char c = 'M';
-        out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" "; 
-        out << c << " " << s.X() << " " << s.Y()<< " " ; 
+        out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" ";
+        out << c << " " << s.X() << " " << s.Y()<< " " ;
         c = 'L';
-        out << c << " " << e.X() << " " << e.Y()<< " " ; 
+        out << c << " " << e.X() << " " << e.Y()<< " " ;
         out << "\" />" << endl;
     }
 }
@@ -517,7 +517,7 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 
     // a full circle
     if (s.SquareDistance(e) < 0.001) {
-        //out << "<circle cx =\"" << p.X() << "\" cy =\"" 
+        //out << "<circle cx =\"" << p.X() << "\" cy =\""
             //<< p.Y() << "\" r =\"" << r << "\" />";
 	    out << 0			<< endl;
 	    out << "CIRCLE"		<< endl;
@@ -600,7 +600,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
 
     // a full ellipse
    /* if (s.SquareDistance(e) < 0.001) {
-        out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
+        out << "<ellipse cx =\"" << p.X() << "\" cy =\""
             << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>";
     }
     // arc of ellipse
@@ -663,7 +663,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
 	out << end_angle	<< endl;	// End angle
 }
 
-void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& out) //Not even close yet- DF 
+void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& out) //Not even close yet- DF
 {
     try {
         std::stringstream str;
@@ -680,7 +680,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             printGeneric(c, id, out);
             return;
         }
-		
+
         //GeomConvert_BSplineCurveToBezierCurve crt(spline);
 		//GeomConvert_BSplineCurveKnotSplitting crt(spline, 0);
         //Standard_Integer arcs = crt.NbArcs();
@@ -750,7 +750,7 @@ void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
     out << "0"			<< endl;
     out << "LINE"		<< endl;
     out << "8"			<< endl;	// Group code for layer name
-    out << "sheet_layer" << endl; // Layer name 
+    out << "sheet_layer" << endl; // Layer name
     out << "100"        << endl;
     out << "AcDbEntity" << endl;
     out << "100"        << endl;

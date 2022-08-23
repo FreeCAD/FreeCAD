@@ -104,8 +104,8 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
 
         std::stringstream paramStr;
         App::Color col = Color.getValue();
-        paramStr << ", scale=" << getScale() 
-                 << ", linewidth=" << LineWidth.getValue() 
+        paramStr << ", scale=" << getScale()
+                 << ", linewidth=" << LineWidth.getValue()
                  << ", fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here
                  << ", direction=FreeCAD.Vector(" << Direction.getValue().x << ", " << Direction.getValue().y << ", " << Direction.getValue().z << ")"

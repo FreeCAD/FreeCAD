@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawGeomHatch_h_
-#define _TechDraw_DrawGeomHatch_h_
+#ifndef TechDraw_DrawGeomHatch_h_
+#define TechDraw_DrawGeomHatch_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

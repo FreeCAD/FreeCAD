@@ -450,7 +450,7 @@ void TaskLeaderLine::removeFeature()
 //    Base::Console().Message("TTL::removeFeature()\n");
     if (!m_lineFeat)
         return;
-    
+
     if (m_createMode) {
         try {
             std::string PageName = m_basePage->getNameInDocument();
@@ -675,7 +675,7 @@ QGIView* TaskLeaderLine::findParentQGIV()
     ViewProviderDrawingView* vpdv = dynamic_cast<ViewProviderDrawingView*>(gvp);
     if (!vpdv)
         return nullptr;
-    
+
     return vpdv->getQView();;
 }
 

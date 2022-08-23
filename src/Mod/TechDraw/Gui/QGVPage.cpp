@@ -502,7 +502,7 @@ void QGVPage::focusOutEvent(QFocusEvent *event) {
     m_navStyle->handleFocusOutEvent(event);
 }
 
-void QGVPage::kbPanScroll(int xMove, int yMove) 
+void QGVPage::kbPanScroll(int xMove, int yMove)
 {
     if (xMove != 0) {
         QScrollBar* hsb = horizontalScrollBar();

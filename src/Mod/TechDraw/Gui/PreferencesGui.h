@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _PreferencesGui_h_
-#define _PreferencesGui_h_
+#ifndef PreferencesGui_h_
+#define PreferencesGui_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

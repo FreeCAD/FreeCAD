@@ -71,7 +71,7 @@ void DrawRichAnno::onChanged(const App::Property* prop)
             requestPaint();
         }
     }
-    
+
     DrawView::onChanged(prop);
 
 }
@@ -90,7 +90,7 @@ short DrawRichAnno::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawRichAnno::execute()
-{ 
+{
 //    Base::Console().Message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;

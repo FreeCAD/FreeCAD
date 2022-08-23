@@ -107,7 +107,7 @@ QGIRichAnno::QGIRichAnno() :
     addToGroup(m_rect);
     m_rect->setZValue(ZVALUE::DIMENSION - 1);
     m_rect->centerAt(0.0, 0.0);
-    
+
     setZValue(ZVALUE::DIMENSION);
 
 }
@@ -184,7 +184,7 @@ void QGIRichAnno::setTextItem()
     TechDraw::DrawRichAnno* annoFeat = getFeature();
     QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
 
-    //don't do this multiplication if exporting to SVG as other apps interpret 
+    //don't do this multiplication if exporting to SVG as other apps interpret
     //font sizes differently from QGraphicsTextItem (?)
     if (!getExporting()) {
         //convert point font sizes to (Rez, mm) font sizes
@@ -197,7 +197,7 @@ void QGIRichAnno::setTextItem()
         while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
             QString found = rxFontSize.cap(0);
             findList << found;
-            QString qsOldSize = rxFontSize.cap(1); 
+            QString qsOldSize = rxFontSize.cap(1);
 
             QString repl = found;
             double newSize = qsOldSize.toDouble();
@@ -273,7 +273,7 @@ void QGIRichAnno::setLineSpacing(int lineSpacing)
 
 TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 {
-    TechDraw::DrawRichAnno* result = 
+    TechDraw::DrawRichAnno* result =
          static_cast<TechDraw::DrawRichAnno*>(getViewObject());
     return result;
 }
@@ -306,7 +306,7 @@ QPen QGIRichAnno::rectPen() const
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
     Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
     App::Color temp = vp->LineColor.getValue();
-    QColor rectColor = temp.asValue<QColor>(); 
+    QColor rectColor = temp.asValue<QColor>();
 
     pen = QPen(rectStyle);
     pen.setWidthF(rectWeight);
@@ -326,7 +326,7 @@ double QGIRichAnno::prefPointSize()
     //this conversion is only approximate. the factor changes for different fonts.
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
-    
+
     double ptsSize = round(fontSize * mmToPts);
     return ptsSize;
 }

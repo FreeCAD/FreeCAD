@@ -1130,19 +1130,19 @@ private:
             ProjectionAlgos::XmlAttributes h0Style;
             PyObject* h1StylePy = nullptr;
             ProjectionAlgos::XmlAttributes h1Style;
-        
+
             // Get the arguments
 
             if (!PyArg_ParseTupleAndKeywords(
-                    args.ptr(), keys.ptr(), 
-                    "O!|O!sfOOOOOO", 
+                    args.ptr(), keys.ptr(),
+                    "O!|O!sfOOOOOO",
                     argNames,
                     &(TopoShapePy::Type), &pcObjShape,
-                    &(Base::VectorPy::Type), &pcObjDir, 
-                    &extractionTypePy, &tol, 
-                    &vStylePy, &v0StylePy, &v1StylePy, 
+                    &(Base::VectorPy::Type), &pcObjDir,
+                    &extractionTypePy, &tol,
+                    &vStylePy, &v0StylePy, &v1StylePy,
                     &hStylePy, &h0StylePy, &h1StylePy))
-          
+
                 throw Py::Exception();
 
             // Convert all arguments into the right format
@@ -1168,13 +1168,13 @@ private:
                 copy(Py::Dict(h0StylePy), inserter(h0Style, h0Style.begin()));
             if (h1StylePy)
                 copy(Py::Dict(h1StylePy), inserter(h1Style, h1Style.begin()));
-        
+
             // Execute the SVG generation
 
-            ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(), 
+            ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),
                                 directionVector);
-            Py::String result(Alg.getSVG(extractionType, tol, 
-                                         vStyle, v0Style, v1Style, 
+            Py::String result(Alg.getSVG(extractionType, tol,
+                                         vStyle, v0Style, v1Style,
                                          hStyle, h0Style, h1Style));
             return result;
         }

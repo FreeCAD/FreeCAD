@@ -731,7 +731,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
          (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
+    } else if (  _isValidVertexes(this) ||
                 (_isValidEdgeToEdge(this) == isVertical)   ||
                 (_isValidEdgeToEdge(this) == isHorizontal) ||
                 (_isValidEdgeToEdge(this) == isDiagonal) ||
@@ -834,7 +834,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
                                                    QObject::tr("Need two straight edges to make an Angle Dimension"));
         return;
     }
-    
+
     objs.push_back(objFeat);
     objs.push_back(objFeat);
     subs.push_back(SubNames[0]);
@@ -1381,7 +1381,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     }
     dim->References2D.setValues(refs2d, subs);
     dim->References3D.setValues(objects, subs);
-    
+
     commitCommand();
     dim->recomputeFeature();
 
@@ -1563,7 +1563,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     const std::vector<std::string> SubNames = selection[0].getSubNames();
 
     //there has to be 2
-    if(SubNames.size() != 2) {                                                   
+    if(SubNames.size() != 2) {
         return isInvalid;
     }
 
@@ -1611,7 +1611,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    
+
     //there has to be 2
     if(SubNames.size() != 2) {
         return false;

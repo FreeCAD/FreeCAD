@@ -279,7 +279,7 @@ bool DrawUtil::fpCompare(const double& d1, const double& d2, double tolerance)
 std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3d point,
                                                                    Base::Vector3d dirIn,
                                                                    double xRange,
-                                                                   double yRange) 
+                                                                   double yRange)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d p1, p2;
@@ -707,7 +707,7 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
         Base::Console().Log("DU::isCrazy - edge crazy short: %.7f\n", edgeLength);
         return true;
     }
-    if (edgeLength > 9999.9) { //edge is scaled. this is 10 m on paper.  can't be right? 
+    if (edgeLength > 9999.9) { //edge is scaled. this is 10 m on paper.  can't be right?
         Base::Console().Log("DU::isCrazy - edge crazy long: %.3f\n", edgeLength);
         return true;
     }
@@ -724,7 +724,7 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
         distance > 0.001 &&                  // not a closed loop
         ratio > 9999.9) {                    // 10, 000x
         return true;                         //this is crazy edge
-    } 
+    }
     else if (adapt.GetType() == GeomAbs_Ellipse) {
         gp_Elips ellp = adapt.Ellipse();
         double major = ellp.MajorRadius();
@@ -740,7 +740,7 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
 
 //    Base::Console().Message("DU::isCrazy - returns: %d ratio: %.3f\n", false, ratio);
     return false;
-} 
+}
 
 //construct a compound shape from a list of edges
 TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
@@ -769,7 +769,7 @@ Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
 }
 
 // test the circulation of the triangle A-B-C
-bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C) 
+bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
 {
     if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0)
         return true;

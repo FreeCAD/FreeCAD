@@ -79,7 +79,7 @@ QGIFace::QGIFace(int index) :
     setStyle(Qt::DashLine);
     m_geomColor = QColor(Qt::black);
     setLineWeight(0.5);                   //0 = cosmetic
-    
+
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
 
@@ -93,7 +93,7 @@ QGIFace::QGIFace(int index) :
     m_fillScale = 1.0;
 
     getParameters();
- 
+
     m_styleDef = Qt::SolidPattern;
     m_styleSelect = Qt::SolidPattern;
 
@@ -113,11 +113,11 @@ QGIFace::~QGIFace()
     //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
 }
 
-void QGIFace::draw() 
+void QGIFace::draw()
 {
     setPath(m_outline);                         //Face boundary
 
-    if (isHatched()) {   
+    if (isHatched()) {
         if (m_mode == GeomHatchFill) {
             //GeomHatch does not appear in pdf if clipping is set to true
             setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
@@ -203,7 +203,7 @@ void QGIFace::setHatchFile(std::string fileSpec)
 {
     m_fileSpec = fileSpec;
 }
- 
+
 void QGIFace::loadSvgHatch(std::string fileSpec)
 {
     QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
@@ -300,7 +300,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     fillItem->setPath(dashedPPath(decodeDashSpec(ds),
-                                  Rez::guiX(start), 
+                                  Rez::guiX(start),
                                   Rez::guiX(end)));
     return fillItem;
 }
@@ -315,7 +315,7 @@ QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeomPtr base, LineSet& ls)
                             base->getEndPoint().y,
                             0.0);
     fillItem->setPath(dashedPPath(decodeDashSpec(ls.getDashSpec()),
-                                  Rez::guiX(start), 
+                                  Rez::guiX(start),
                                   Rez::guiX(end)));
     return fillItem;
 }
@@ -332,10 +332,10 @@ QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeomPtr base, double
                        base->getEndPoint().y,
                        0.0);
     double origLen = (end - start).Length();
-                           
+
     double appRemain = Rez::appX(remain);
     Base::Vector3d newEnd = start + (ls.getUnitDir() * appRemain);
-    
+
     double newLen = (newEnd - start).Length();
 
     if (newLen > origLen) {
@@ -450,7 +450,7 @@ std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const doub
         }
         i++;
     }
-    
+
     double firstCell = accum - offset;
     if (dv.at(i) < 0.0) {                    //offset found in a space cell
         result.push_back(-1.0* firstCell);
@@ -461,7 +461,7 @@ std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const doub
     for ( ; iCell < dv.size() ; iCell++) {
         result.push_back(dv.at(iCell));
     }
-    
+
     return result;
 }
 

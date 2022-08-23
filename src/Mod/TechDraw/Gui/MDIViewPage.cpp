@@ -860,7 +860,7 @@ void MDIViewPage::setTreeToSceneSelect()
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(dimObj->getDocument()->getName(), dimObj->getNameInDocument()));
             }
-            
+
             QGMText *mText = dynamic_cast<QGMText*>(*it);
             if(mText) {
                 QGraphicsItem* textParent = mText->QGraphicsItem::parentItem();

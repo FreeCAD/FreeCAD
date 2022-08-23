@@ -107,7 +107,7 @@ QGTracker::~QGTracker()
 }
 
 void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{ 
+{
     QPointF myScenePos = event->scenePos();
     if (!m_sleep) {
         double someLimit = Rez::guiX(10.0);
@@ -224,7 +224,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
 }
 
 //mouse event reactions
-void QGTracker::onMousePress(QPointF pos) 
+void QGTracker::onMousePress(QPointF pos)
 {
 //    Base::Console().Message("QGT::onMousePress(%s)\n", TechDraw::DrawUtil::formatVector(pos).c_str());
     m_points.push_back(pos);
@@ -247,7 +247,7 @@ void QGTracker::onMousePress(QPointF pos)
 //                setPoint(m_points);
                 break;
         }
-    } else if (m_points.size() == 1) {   //first point selected  
+    } else if (m_points.size() == 1) {   //first point selected
         //just return pos to caller
         getPickedQGIV(pos);
         setCursor(Qt::CrossCursor);  //why cross??
@@ -265,9 +265,9 @@ void QGTracker::onMousePress(QPointF pos)
     }
 }
 
-void QGTracker::onMouseMove(QPointF pos) 
+void QGTracker::onMouseMove(QPointF pos)
 {
-    //check distance moved? 
+    //check distance moved?
     TrackerMode m = getTrackerMode();
     switch (m) {
         case TrackerMode::None:
@@ -287,7 +287,7 @@ void QGTracker::onMouseMove(QPointF pos)
     }
 }
 
-void QGTracker::onDoubleClick(QPointF pos) 
+void QGTracker::onDoubleClick(QPointF pos)
 {
 //    Base::Console().Message("QGTracker::onDoubleClick()\n");
     Q_UNUSED(pos);
@@ -298,7 +298,7 @@ void QGTracker::onDoubleClick(QPointF pos)
     terminateDrawing();
 }
 
-void QGTracker::getPickedQGIV(QPointF pos) 
+void QGTracker::getPickedQGIV(QPointF pos)
 {
     setVisible(false);
     m_qgParent = nullptr;
@@ -331,9 +331,9 @@ QPainterPath QGTracker::shape() const
     result.addRect(boundingRect());
     return result;
 }
- 
-//*************** 
-//actual art routines 
+
+//***************
+//actual art routines
 void QGTracker::drawTrackLine(QPointF pos)
 {
 //    Base::Console().Message("QGTracker::drawTrackLine()\n");

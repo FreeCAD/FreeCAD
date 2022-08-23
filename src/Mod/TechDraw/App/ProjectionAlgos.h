@@ -23,8 +23,8 @@
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
-#ifndef _TechDrawProjectionAlgos_h_
-#define _TechDrawProjectionAlgos_h_
+#ifndef TechDrawProjectionAlgos_h_
+#define TechDrawProjectionAlgos_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

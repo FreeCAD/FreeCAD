@@ -99,7 +99,7 @@ private:
     bool blockUpdate;
 
     QGTracker* m_tracker;
-    
+
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
     QGIView* m_qgParent;
@@ -111,7 +111,7 @@ private:
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    
+
     int m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;

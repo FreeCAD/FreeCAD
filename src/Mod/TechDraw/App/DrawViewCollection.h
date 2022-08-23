@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_FEATUREVIEWCOLLECTION_h_
-#define _TECHDRAW_FEATUREVIEWCOLLECTION_h_
+#ifndef TECHDRAW_FEATUREVIEWCOLLECTION_h_
+#define TECHDRAW_FEATUREVIEWCOLLECTION_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

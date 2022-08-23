@@ -366,8 +366,8 @@ QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
                                               it->poles);
                         path.lineTo(it->pnts[1].x, it->pnts[1].y);         //show something for debugging
                     }
-                } 
-            } 
+                }
+            }
             }
             break;
         case TechDraw::GENERIC: {
@@ -850,7 +850,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         //make the section line a little longer
         double fudge = Rez::guiX(2.0 * Preferences::dimFontSizeMM());
-        sectionLine->setEnds(l1 - lineDir * fudge, 
+        sectionLine->setEnds(l1 - lineDir * fudge,
                              l2 + lineDir * fudge);
 
         //set the general parameters
@@ -954,7 +954,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
         highlight->setTransformOriginPoint(rotCenter);
 
-        double rotation = viewPart->Rotation.getValue() + 
+        double rotation = viewPart->Rotation.getValue() +
                           vp->HighlightAdjust.getValue();
         highlight->setRotation(rotation);
         highlight->draw();

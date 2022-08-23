@@ -156,7 +156,7 @@ void DrawPage::onChanged(const App::Property* prop)
       // TODO: Also update Template graphic.
 
     }
-    App::DocumentObject::onChanged(prop); 
+    App::DocumentObject::onChanged(prop);
 }
 
 //Page is just a container. It doesn't "do" anything.
@@ -165,7 +165,7 @@ App::DocumentObjectExecReturn *DrawPage::execute(void)
     return App::DocumentObject::execute();
 }
 
-// this is now irrelevant, b/c DP::execute doesn't do anything. 
+// this is now irrelevant, b/c DP::execute doesn't do anything.
 short DrawPage::mustExecute() const
 {
     short result = 0;
@@ -365,7 +365,7 @@ void DrawPage::updateAllViews()
     }
 }
 
-std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 
+std::vector<App::DocumentObject*> DrawPage::getAllViews(void)
 {
     auto views = Views.getValues();   //list of docObjects
     std::vector<App::DocumentObject*> allViews;
@@ -407,7 +407,7 @@ void DrawPage::unsetupObject()
         }
         std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
         Views.setValues(emptyViews);
-        
+
    }
    catch (...) {
        Base::Console().Warning("DP::unsetupObject - %s - error while deleting children\n", getNameInDocument());
@@ -431,7 +431,7 @@ int DrawPage::getNextBalloonIndex(void)
 }
 
 void DrawPage::handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
@@ -445,7 +445,7 @@ void DrawPage::handleChangedPropertyType(
                 Scale.setValue(1.0);
             }
         } else {
-            // has Scale prop that isn't Float! 
+            // has Scale prop that isn't Float!
             Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
             // no idea
         }
@@ -471,7 +471,7 @@ bool DrawPage::GlobalUpdateDrawings(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("GlobalUpdateDrawings", true); 
+    bool result = hGrp->GetBool("GlobalUpdateDrawings", true);
     return result;
 }
 
@@ -480,7 +480,7 @@ bool DrawPage::AllowPageOverride(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("AllowPageOverride", true); 
+    bool result = hGrp->GetBool("AllowPageOverride", true);
     return result;
 }
 

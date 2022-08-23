@@ -140,7 +140,7 @@ void QGIBalloonLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             Q_EMIT dragFinished();
         }
     }
-    m_ctrl = false;  
+    m_ctrl = false;
     m_drag = false;
     QGraphicsItem::mouseReleaseEvent(event);
 }
@@ -228,7 +228,7 @@ void QGIBalloonLabel::setDimString(QString t)
 {
     prepareGeometryChange();
     m_labelText->setPlainText(t);
-} 
+}
 
 void QGIBalloonLabel::setDimString(QString t, qreal maxWidth)
 {
@@ -291,7 +291,7 @@ QGIViewBalloon::QGIViewBalloon() :
     balloonShape->setFill(Qt::white, Qt::SolidPattern);
     balloonShape->setFillOverride(true);
     balloonShape->setPrettyNormal();
-    
+
     arrow = new QGIArrow();
     addToGroup(arrow);
     arrow->setNormalColor(getNormalColor());
@@ -490,7 +490,7 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
         // redraw the balloon at the new position
         // note that we don't store the new position to the X/Y properties
         // since the dragging is not yet finished
-        drawBalloon(true); 
+        drawBalloon(true);
 }
 
 void QGIViewBalloon::balloonLabelDragFinished()
@@ -522,7 +522,7 @@ void QGIViewBalloon::balloonLabelDragFinished()
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.OriginY = %f",
                                 dvb->getNameInDocument(), newOrg.y);
     }
-    
+
     Gui::Command::commitCommand();
 
     m_dragInProgress = false;
@@ -543,12 +543,12 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
     if (!balloonParent) {
         return;
     }
-    
+
     auto featPage = balloonParent->findParentPage();
     if (!featPage) {
         return;
     }
-    
+
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if (!vp) {
         return;
@@ -574,7 +574,7 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
     int idx = featPage->getNextBalloonIndex();
     QString labelText = QString::number(idx);
     balloon->Text.setValue(std::to_string(idx).c_str());
- 
+
     QFont font = balloonLabel->getFont();
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -684,7 +684,7 @@ void QGIViewBalloon::drawBalloon(bool dragged)
     } else if (strcmp(balloonType, "Rectangle") == 0) {
         //Add some room
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
-        // we add some textWidth later because we first need to handle the text separators 
+        // we add some textWidth later because we first need to handle the text separators
         if (balloonLabel->verticalSep) {
             for (std::vector<int>::iterator it = balloonLabel->seps.begin() ; it != balloonLabel->seps.end(); ++it) {
                 balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y - (textHeight / 2.0));

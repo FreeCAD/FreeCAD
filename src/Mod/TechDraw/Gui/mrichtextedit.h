@@ -26,8 +26,8 @@
  ********************************/
 
 
-#ifndef _MRICHTEXTEDIT_H_
-#define _MRICHTEXTEDIT_H_
+#ifndef MRICHTEXTEDIT_H_
+#define MRICHTEXTEDIT_H_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -54,7 +54,7 @@ class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     QString getDefFontSize(void);
     int getDefFontSizeNum(void);
     QFont getDefFont(void);
-   
+
   public Q_SLOTS:
     void setText(const QString &text);
 

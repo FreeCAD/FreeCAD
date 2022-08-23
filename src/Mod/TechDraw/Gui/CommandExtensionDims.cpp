@@ -557,7 +557,7 @@ void execPosHorizChainDimension(Gui::Command* cmd) {
     if (!_checkSelection(cmd, selection, "TechDraw PosHorizChainDimension")) {
         return;
     }
-    
+
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Pos Horiz Chain Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "DistanceX");

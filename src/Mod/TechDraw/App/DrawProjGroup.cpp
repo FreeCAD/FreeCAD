@@ -349,7 +349,7 @@ void DrawProjGroup::getViewArea(DrawProjGroupItem *viewPtrs[10],
     Base::BoundBox3d bboxes[10];
     makeViewBbs(viewPtrs, bboxes, scaled);
 
-    //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
+    //TODO: note that TLF/TRF/BLF, BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
     double col0w = std::max(std::max(bboxes[0].LengthX(), bboxes[3].LengthX()), bboxes[7].LengthX()),
            col1w = std::max(std::max(bboxes[1].LengthX(), bboxes[4].LengthX()), bboxes[8].LengthX()),

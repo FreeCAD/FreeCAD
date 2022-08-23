@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawRichAnno_h_
-#define _TechDraw_DrawRichAnno_h_
+#ifndef TechDraw_DrawRichAnno_h_
+#define TechDraw_DrawRichAnno_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

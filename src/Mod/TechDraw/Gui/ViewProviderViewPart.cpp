@@ -96,7 +96,7 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     double defScale = hGrp->GetFloat("CenterMarkScale", 0.50);
     bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
-    
+
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false), dgroup, App::Prop_None, "Show a vertical centerline through view");
@@ -106,16 +106,16 @@ ViewProviderViewPart::ViewProviderViewPart()
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup, App::Prop_None, "Show/hide section line if applicable");
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None,
                         "Set section line style if applicable");
-    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None,
                         "Set section line color if applicable");
-    
+
     //properties that affect Detail Highlights
     HighlightLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None,
                         "Set highlight line style if applicable");
-    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None,
                         "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
@@ -222,7 +222,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     }
     TechDraw::DrawViewPart* dvp = getViewObject();
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
-    if (dvd) { 
+    if (dvd) {
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
@@ -240,7 +240,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
 //>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
 //>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
 //>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')            
+//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
     }
 
     return true;
@@ -306,7 +306,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
     auto viewLeader = getViewObject()->getLeaders();
-    
+
     if (!viewSection.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has a section view that would become broken.");

@@ -86,7 +86,7 @@ public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-    
+
 private Q_SLOTS:
     void onIconChanged();
     void onISO();

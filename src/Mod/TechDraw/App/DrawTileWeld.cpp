@@ -93,7 +93,7 @@ short DrawTileWeld::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawTileWeld::execute()
-{ 
+{
 //    Base::Console().Message("DTW::execute()\n");
     return DrawTile::execute();
 }
@@ -110,7 +110,7 @@ void DrawTileWeld::replaceSymbolIncluded(std::string newSymbolFile)
     }
 }
 
-void DrawTileWeld::onDocumentRestored() 
+void DrawTileWeld::onDocumentRestored()
 {
 //    Base::Console().Message("DTW::onDocumentRestored()\n");
     if (SymbolIncluded.isEmpty()) {

@@ -58,7 +58,7 @@ using namespace Gui;
 
     //notes for selection view
     //SoSeparator* newSG;
-    //for obj in objList: 
+    //for obj in objList:
     //    vProv = obj.ViewObject
     //    sg = vProv.getSG(obj);
     //    for child in sg:
@@ -66,7 +66,7 @@ using namespace Gui;
     //
 
 //creates Svg file and returns estimate of scale
-double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc, 
+double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
                                         std::string fileSpec,
                                         double outWidth, double outHeight,
                                         bool paintBackground, const QColor& bgColor,
@@ -115,7 +115,7 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     if (sourceCam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         oCam = static_cast<SoOrthographicCamera*>(sourceCam);
         sourceHeight = oCam->height.getValue();
-    } else if (sourceCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
+    } else if (sourceCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         pCam = static_cast<SoPerspectiveCamera*>(sourceCam);
         sourceAngle = pCam->heightAngle.getValue();
     }
@@ -144,7 +144,7 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
 
     if (sourceCam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         viewerSvg->setCameraType(SoOrthographicCamera::getClassTypeId());
-    } else if (sourceCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
+    } else if (sourceCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         viewerSvg->setCameraType(SoPerspectiveCamera::getClassTypeId());
     }
 
@@ -164,7 +164,7 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
         SoOrthographicCamera* oSvgCam = static_cast<SoOrthographicCamera*>(svgCam);
         double newHeight = sourceHeight * zoomFactor;
         oSvgCam->height.setValue(newHeight);
-    } else if (svgCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
+    } else if (svgCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         SoPerspectiveCamera* vSvgCam = static_cast<SoPerspectiveCamera*>(svgCam);
         vSvgCam->heightAngle.setValue(sourceAngle);
     }
@@ -241,7 +241,7 @@ SoSeparator* Grabber3d::copySceneGraph(SoNode* sgIn)
 //loosely based on View3DInventorViewer::saveGraphic
 void Grabber3d::execVectorizeAction(Gui::View3DInventorViewer* viewer,
                                SoVectorizeAction* va,
-                               double width, double height, 
+                               double width, double height,
                                bool paintBackground, const QColor& bgColor,
                                double lineWidth, double border)
 {
@@ -252,7 +252,7 @@ void Grabber3d::execVectorizeAction(Gui::View3DInventorViewer* viewer,
         vaFC->setLineWidth(lineWidth);
         vaFC->setUseMM(true);
     }
-    
+
     if (paintBackground && bgColor.isValid()) {
         va->setBackgroundColor(true, SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
     } else {
@@ -282,7 +282,7 @@ double Grabber3d::getViewerScale(Gui::View3DInventorViewer* viewer)
 //    double qtpxmm = 96;
 //    QScreen *screen = QGuiApplication::primaryScreen();
 //    double qtppi = screen->physicalDotsPerInch();  //~111 dpi
-//    qtpxmm       = qtppi / 25.4; 
+//    qtpxmm       = qtppi / 25.4;
 
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords
@@ -317,7 +317,7 @@ double Grabber3d::getPaperScale(Gui::View3DInventorViewer* viewer,
 //    double qtpxmm = 96;
 //    QScreen *screen = QGuiApplication::primaryScreen();
 //    double qtppi = screen->physicalDotsPerInch();  //~111 dpi
-//    qtpxmm       = qtppi / 25.4; 
+//    qtpxmm       = qtppi / 25.4;
 
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords

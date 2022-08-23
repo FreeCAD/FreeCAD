@@ -684,7 +684,7 @@ QGIView * QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
 //    Base::Console().Message("QGSP::addWeldSymbol()\n");
     QGIWeldSymbol* weldGroup = nullptr;
     TechDraw::DrawView*  parentDV = nullptr;
-    
+
     App::DocumentObject* parentObj = weld->Leader.getValue();
     if (parentObj) {
         parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
@@ -917,7 +917,7 @@ void QGSPage::refreshViews()
 //    Base::Console().Message("QGSP::refreshViews()\n");
     QList<QGraphicsItem*> list = items();
     QList<QGraphicsItem*> qgiv;
-    //find only QGIV's 
+    //find only QGIV's
     for (auto q: list) {
         QString viewFamily = QString::fromUtf8("QGIV");
         if (viewFamily == q->data(0).toString()) {

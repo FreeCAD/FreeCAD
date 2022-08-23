@@ -136,8 +136,8 @@ void CenterLinePy::setFormat(Py::Object arg)
     double weight = 0.50;
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     App::Color c(red, blue, green, alpha);
-    bool visible = 1; 
-    
+    bool visible = 1;
+
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
     if (PyTuple_Check(pTuple)) {
         int tSize = (int) PyTuple_Size(pTuple);
@@ -313,7 +313,7 @@ void CenterLinePy::setEdges(Py::Object arg)
 {
 //    Base::Console().Message("CLP::setEdges()\n");
     PyObject* pList = arg.ptr();
-    
+
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
     std::vector<std::string> temp;
     if (PyList_Check(pList)) {
@@ -352,7 +352,7 @@ void CenterLinePy::setFaces(Py::Object arg)
 {
 //    Base::Console().Message("CLP::setFaces()\n");
     PyObject* pList = arg.ptr();
-    
+
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
     std::vector<std::string> temp;
     if (PyList_Check(pList)) {
@@ -392,7 +392,7 @@ void CenterLinePy::setPoints(Py::Object arg)
 {
 //    Base::Console().Message("CLP::setPoints()\n");
     PyObject* pList = arg.ptr();
-    
+
     TechDraw::CenterLine* cl = this->getCenterLinePtr();
     std::vector<std::string> temp;
     if (PyList_Check(pList)) {

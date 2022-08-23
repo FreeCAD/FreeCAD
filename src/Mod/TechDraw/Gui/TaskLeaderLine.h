@@ -127,7 +127,7 @@ private:
     bool blockUpdate;
 
     QGTracker* m_tracker;
-    
+
     ViewProviderPage* m_vpp;
     ViewProviderLeader* m_lineVP;
     TechDraw::DrawView* m_baseFeat;
@@ -140,7 +140,7 @@ private:
 
     std::vector<Base::Vector3d> m_trackerPoints;
     Base::Vector3d m_attachPoint;
-    
+
     bool m_createMode;
     QGEPath* m_leadLine;
 
@@ -151,9 +151,9 @@ private:
     QGILeaderLine* m_qgLine;
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    
+
     int m_pbTrackerState;
-    
+
     std::vector<Base::Vector3d> m_savePoints;
     double m_saveX;
     double m_saveY;

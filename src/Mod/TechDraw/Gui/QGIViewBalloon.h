@@ -75,7 +75,7 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
-    
+
     void setFont(QFont f);
     QFont getFont() { return m_labelText->font(); }
     void setDimString(QString t);
@@ -115,7 +115,7 @@ protected:
     double posY;
     bool m_ctrl;
     bool m_drag;
-    
+
 private:
 };
 

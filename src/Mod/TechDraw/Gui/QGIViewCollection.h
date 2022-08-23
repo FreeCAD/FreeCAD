@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
-#define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#define DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

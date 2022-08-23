@@ -22,8 +22,8 @@
 
 //! HatchLine - Classes related to processing PAT files
 
-#ifndef _TechDraw_HATCHLINE_H_
-#define _TechDraw_HATCHLINE_H_
+#ifndef TechDraw_HATCHLINE_H_
+#define TechDraw_HATCHLINE_H_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

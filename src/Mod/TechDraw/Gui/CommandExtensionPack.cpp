@@ -1908,7 +1908,7 @@ namespace TechDrawGui {
                 QObject::tr("Selection is empty"));
             return false;
         }
-        
+
         objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
         if (!objFeat) {
             QMessageBox::warning(Gui::getMainWindow(),

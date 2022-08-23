@@ -98,7 +98,7 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
             hide();
         }
     }
-    
+
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -118,7 +118,7 @@ void ViewProviderTemplate::hide()
     if (qTemplate) {
         qTemplate->hide();
     }
-    
+
     ViewProviderDocumentObject::hide();
 }
 

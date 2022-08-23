@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawViewDimExtent_h_
-#define _TechDraw_DrawViewDimExtent_h_
+#ifndef TechDraw_DrawViewDimExtent_h_
+#define TechDraw_DrawViewDimExtent_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

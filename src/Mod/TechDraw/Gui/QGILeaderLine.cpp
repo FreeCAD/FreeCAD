@@ -91,7 +91,7 @@ QGILeaderLine::QGILeaderLine() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-    
+
     setCacheMode(QGraphicsItem::NoCache);
 
     m_line = new QGIPrimPath();
@@ -242,14 +242,14 @@ void QGILeaderLine::closeEdit()
 {
 //    Base::Console().Message("QGIL::closeEdit()\n");
     if (m_editPath) {
-        m_editPath->onEndEdit();   //tell QEPath that edit session ended 
+        m_editPath->onEndEdit();   //tell QEPath that edit session ended
     }
 }
 
 //signaled from QEPath
 void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> points)
 {
-//    Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n", 
+//    Base::Console().Message("QGILL::onLineEditFinished(%s, %d)\n",
 //                            TechDraw::DrawUtil::formatVector(tipDisplace).c_str(),
 //                            points.size());
     m_blockDraw = true;
@@ -518,7 +518,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     } else {
         m_arrow1->hide();
     }
-    
+
     if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
         m_arrow2->setStyle(featLeader->EndSymbol.getValue());
         m_arrow2->setWidth(getLineWidth());
@@ -567,7 +567,7 @@ double QGILeaderLine::getLineWidth()
 
 TechDraw::DrawLeaderLine* QGILeaderLine::getFeature()
 {
-    TechDraw::DrawLeaderLine* result = 
+    TechDraw::DrawLeaderLine* result =
          static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
     return result;
 }

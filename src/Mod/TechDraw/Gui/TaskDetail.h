@@ -81,14 +81,14 @@ public:
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
-    
+
 protected:
     void changeEvent(QEvent *e) override;
     void startDragger();
 
     void createDetail();
     void updateDetail();
-    
+
     void editByHighlight();
 
     void blockButtons(bool b);

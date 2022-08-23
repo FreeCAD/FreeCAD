@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewClip_h_
-#define _DrawViewClip_h_
+#ifndef DrawViewClip_h_
+#define DrawViewClip_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

@@ -132,8 +132,8 @@ void CosmeticEdgePy::setFormat(Py::Object arg)
     double weight = 0.50;
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     App::Color c(red, blue, green, alpha);
-    bool visible = 1; 
-    
+    bool visible = 1;
+
     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
     if (PyTuple_Check(pTuple)) {
         int tSize = (int) PyTuple_Size(pTuple);

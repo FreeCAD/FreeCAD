@@ -107,7 +107,7 @@ void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     if(!isSelected()) {
         setPrettyNormal();
     }
-    
+
     QGraphicsPathItem::hoverLeaveEvent(event);
 }
 
@@ -315,7 +315,7 @@ void QGIPrimPath::resetFill() {
 
 //set PlainFill
 void QGIPrimPath::setFillColor(QColor c)
-{ 
+{
     m_colNormalFill = c;
     m_fillColorCurrent = m_colNormalFill;
 //    m_colDefFill = c;

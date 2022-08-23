@@ -223,7 +223,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // images
     connect(f_image, SIGNAL(clicked()), this, SLOT(insertImage()));
-    
+
     //set initial font size when editing existing text
     if (!textIn.isEmpty()) {
         //insert existing text with cursor at beginning
@@ -253,7 +253,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
         f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
     }
-       
+
 }
 
 
@@ -539,8 +539,8 @@ void MRichTextEdit::slotCursorPositionChanged() {
 
     QTextList *l = f_textedit->textCursor().currentList();
 
-    if (m_lastBlockList && 
-        (l == m_lastBlockList || 
+    if (m_lastBlockList &&
+        (l == m_lastBlockList ||
         (l && m_lastBlockList && l->format().style() == m_lastBlockList->format().style()) ) ) {
         return;
     }
@@ -701,7 +701,7 @@ void MRichTextEdit::insertImage() {
                                     tr("JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)"));
     QImage image = QImageReader(file).read();
 
-    f_textedit->dropImage(image, 
+    f_textedit->dropImage(image,
                 QFileInfo(file).suffix().toUpper());
 }
 
@@ -758,8 +758,8 @@ bool MRichTextEdit::hasMultipleSizes(void)
             result = true;
         }
     }
-    return result;  
-} 
+    return result;
+}
 
 void MRichTextEdit::setDefFontSize(int fs)
 {
@@ -789,7 +789,7 @@ int MRichTextEdit::getDefFontSizeNum(void)
     //this conversion is only approximate. the factor changes for different fonts.
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
-    
+
     int ptsSize = round(fontSize * mmToPts);
     return ptsSize;
 }
@@ -818,7 +818,7 @@ QFont MRichTextEdit::getDefFont(void)
 
 // add a new fontSize to the list
 // this seems like massive overkill for integer point<->mm conversion factor
-// if the conversion factor is float, will generate non-standard sizes 
+// if the conversion factor is float, will generate non-standard sizes
 void MRichTextEdit::addFontSize(QString fs)
 {
 //    Base::Console().Message("MRTE::addFontSize(%s)\n", qPrintable(fs));
@@ -840,7 +840,7 @@ void MRichTextEdit::addFontSize(QString fs)
             added = true;
         } else {             //item > fs, add both
             newList << fs;
-            newList << item; 
+            newList << item;
             added = true;
         }
     }

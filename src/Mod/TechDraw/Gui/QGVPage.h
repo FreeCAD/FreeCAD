@@ -139,7 +139,7 @@ protected:
     QPixmap prepareCursorPixmap(const char *iconName, QPoint &hotspot);
 
     void drawForeground(QPainter *painter, const QRectF &rect) override;
-    
+
     std::string getNavStyleParameter();
     Base::Type getStyleType(std::string model);
 
@@ -155,7 +155,7 @@ private:
     QBrush* bkgBrush;
     QImage m_image;
     ViewProviderPage *m_vpPage;
-    
+
     bool m_atCursor;
     bool m_invertZoom;
     double m_zoomIncrement;
@@ -186,6 +186,6 @@ private:
     QContextMenuEvent* m_saveContextEvent;
 };
 
-} // namespace 
+} // namespace
 
 #endif // TECHDRAWGUI_QGVIEW_H

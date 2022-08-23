@@ -70,7 +70,7 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-//ctor for create 
+//ctor for create
 TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     ui(new Ui_TaskSectionView),
     m_base(base),
@@ -189,7 +189,7 @@ void TaskSectionView::setUiEdit()
     ui->leSymbol->setText(qTemp);
     ui->sbScale->setValue(m_section->getScale());
     ui->cmbScaleType->setCurrentIndex(m_section->ScaleType.getValue());
-    
+
     Base::Vector3d origin = m_section->SectionOrigin.getValue();
     ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
@@ -354,7 +354,7 @@ bool TaskSectionView::apply()
 {
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
     if (m_dirName.empty()) {
-        std::string msg = 
+        std::string msg =
             Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
         return false;
@@ -426,7 +426,7 @@ void TaskSectionView::createSectionView()
                            m_sectionName.c_str(), baseName.c_str());
         Command::doCommand(Command::Doc,
                            "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
-                           m_sectionName.c_str(), 
+                           m_sectionName.c_str(),
                            ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(),
                            ui->sbOrgZ->value().getValue());
@@ -461,7 +461,7 @@ void TaskSectionView::updateSectionView()
                            m_sectionName.c_str(), m_dirName.c_str());
         Command::doCommand(Command::Doc,
                            "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
-                           m_sectionName.c_str(), 
+                           m_sectionName.c_str(),
                            ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(),
                            ui->sbOrgZ->value().getValue());
@@ -471,7 +471,7 @@ void TaskSectionView::updateSectionView()
                            m_sectionName.c_str(),
                            temp.c_str());
         std::string lblText = "Section " +
-                              temp + 
+                              temp +
                               " - " +
                               temp;
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
@@ -488,7 +488,7 @@ void TaskSectionView::updateSectionView()
     Gui::Command::commitCommand();
 }
 
-void TaskSectionView::failNoObject(std::string objectName) 
+void TaskSectionView::failNoObject(std::string objectName)
 {
     QString qObjectName = Base::Tools::fromStdString(objectName);
     QString msg = tr("Can not continue. Object * %1 * not found.").arg(qObjectName);
@@ -517,7 +517,7 @@ bool TaskSectionView::isSectionValid()
     App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
     if (!sectionObj)
         return false;
-    
+
     return true;
 }
 
@@ -543,7 +543,7 @@ bool TaskSectionView::reject()
         return false;
     }
 
-    if (!isSectionValid()) {                    //section !exist. nothing to undo 
+    if (!isSectionValid()) {                    //section !exist. nothing to undo
         if (isBaseValid()) {
             m_base->requestPaint();
         }

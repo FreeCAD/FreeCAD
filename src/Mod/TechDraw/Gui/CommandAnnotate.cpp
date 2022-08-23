@@ -89,7 +89,7 @@ void execCenterLine(Gui::Command* cmd);
 void exec2LineCenterLine(Gui::Command* cmd);
 void exec2PointCenterLine(Gui::Command* cmd);
 void execLine2Points(Gui::Command* cmd);
-std::vector<std::string> getSelectedSubElements(Gui::Command* cmd, 
+std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
                                                 TechDraw::DrawViewPart* &dvp,
                                                 std::string subType = "Edge");
 
@@ -756,7 +756,7 @@ void execCenterLine(Gui::Command* cmd)
         }
     }
 
-    if ( (faceNames.empty()) && 
+    if ( (faceNames.empty()) &&
          (edgeNames.empty()) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("You must select Faces or an existing CenterLine."));
@@ -1048,7 +1048,7 @@ void execLine2Points(Gui::Command* cmd)
             //garbage
         }
     }
-    
+
     if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("You must select a base View for the line."));
@@ -1229,7 +1229,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
         if (!cv2Delete.empty()) {
             objFeat->removeCosmeticVertex(cv2Delete);
         }
-        
+
         if (!ce2Delete.empty()) {
             objFeat->removeCosmeticEdge(ce2Delete);
         }
@@ -1372,7 +1372,7 @@ void CmdTechDrawShowAll::activated(int iMsg)
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("No Part Views in this selection"));
         return;
-    } 
+    }
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
@@ -1424,7 +1424,7 @@ void CmdTechDrawWeldSymbol::activated(int iMsg)
     if (!page) {
         return;
     }
-    
+
     std::vector<App::DocumentObject*> leaders = getSelection().
                                          getObjectsOfType(TechDraw::DrawLeaderLine::getClassTypeId());
     std::vector<App::DocumentObject*> welds = getSelection().
@@ -1549,7 +1549,7 @@ std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
                            QObject::tr("No Part View in Selection"));
       return selectedSubs;
     }
-    
+
     for (auto& s: subNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(s) == subType) {
             selectedSubs.push_back(s);

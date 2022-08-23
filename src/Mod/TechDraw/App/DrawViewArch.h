@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewArch_h_
-#define _DrawViewArch_h_
+#ifndef DrawViewArch_h_
+#define DrawViewArch_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

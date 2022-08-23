@@ -190,7 +190,7 @@ QString PreferencesGui::weldingDirectory()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-                                    
+
     std::string symbolDir = hGrp->GetASCII("WeldingDir", defaultDir.c_str());
     if (symbolDir.empty()) {
         symbolDir = defaultDir;

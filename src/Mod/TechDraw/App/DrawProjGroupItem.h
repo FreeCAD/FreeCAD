@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjGroupItem_h_
-#define _DrawProjGroupItem_h_
+#ifndef DrawProjGroupItem_h_
+#define DrawProjGroupItem_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
