@@ -44,7 +44,7 @@ class TechDrawExport DrawViewClip: public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewClip();
-    ~DrawViewClip() override;
+    ~DrawViewClip() = default;
 
     App::PropertyLength Width;
     App::PropertyLength Height;
@@ -70,7 +70,7 @@ public:
 
     std::vector<std::string> getChildViewNames();
     bool isViewInClip(App::DocumentObject* view);
-    QRectF getRect() const override { return QRectF(0, 0,Width.getValue(), Height.getValue()); }
+    QRectF getRect() const override { return { 0, 0, Width.getValue(), Height.getValue() };  }
 
 
 protected:

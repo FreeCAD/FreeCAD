@@ -63,10 +63,6 @@ DrawViewClip::DrawViewClip()
     Scale.setStatus(App::Property::Hidden, true);
 }
 
-DrawViewClip::~DrawViewClip()
-{
-}
-
 void DrawViewClip::onChanged(const App::Property* prop)
 {
     if ((prop == &Height) ||

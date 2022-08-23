@@ -53,7 +53,7 @@ class TechDrawExport DashSpec
 public:
       DashSpec() {}
       explicit DashSpec(std::vector<double> p) { m_parms = p; }
-      ~DashSpec() {}
+      ~DashSpec() = default;
 
       double              get(int i)  {return m_parms.at(i); }
       std::vector<double> get()   {return m_parms;}
@@ -112,7 +112,7 @@ class TechDrawExport LineSet
 {
 public:
     LineSet() {}
-    ~LineSet() {}
+    ~LineSet() = default;
 
     void setPATLineSpec(const PATLineSpec& s) { m_hatchLine = s; }
     void setEdges(std::vector<TopoDS_Edge> e) {m_edges = e;}

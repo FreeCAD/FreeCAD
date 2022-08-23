@@ -71,10 +71,6 @@ DrawViewArch::DrawViewArch()
     ScaleType.setValue("Custom");
 }
 
-DrawViewArch::~DrawViewArch()
-{
-}
-
 //NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewArch::mustExecute() const
 {

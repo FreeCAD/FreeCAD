@@ -43,7 +43,7 @@ class TechDrawExport DrawViewImage : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewImage();
-    ~DrawViewImage() override;
+    ~DrawViewImage() = default;
 
     App::PropertyFile         ImageFile;
     App::PropertyFileIncluded ImageIncluded;

@@ -329,7 +329,7 @@ class TechDrawExport Vertex
         explicit Vertex(const Vertex* v);
         Vertex(double x, double y);
         explicit Vertex(Base::Vector3d v);
-        virtual ~Vertex() {}
+        virtual ~Vertex()  = default;
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);

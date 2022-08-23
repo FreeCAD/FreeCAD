@@ -43,7 +43,7 @@ class TechDrawExport hTrimCurve {
     hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
                double parm1,
                double parm2);
-    ~hTrimCurve() {}
+    ~hTrimCurve() = default;
 
     Handle(Geom2d_Curve) hCurve;
     double first;

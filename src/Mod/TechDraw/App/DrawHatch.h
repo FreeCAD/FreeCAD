@@ -44,7 +44,7 @@ class TechDrawExport DrawHatch : public App::DocumentObject
 
 public:
     DrawHatch();
-    ~DrawHatch() override;
+    ~DrawHatch() = default;
 
     App::PropertyLinkSub     Source;       // the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;

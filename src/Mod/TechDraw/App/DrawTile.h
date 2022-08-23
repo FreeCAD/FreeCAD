@@ -39,7 +39,7 @@ class TechDrawExport DrawTile : public App::DocumentObject
 
 public:
     DrawTile();
-    ~DrawTile() override;
+    ~DrawTile() = default;
 
     App::PropertyLink         TileParent;           //eg DrawWeldSymbol
     App::PropertyIntegerConstraint TileRow;

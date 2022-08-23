@@ -57,7 +57,7 @@ public:
         startAngle = endAngle = 0.0;
         idx = 0;
     }
-    ~edgeSortItem() {}
+    ~edgeSortItem()  = default;
 
     Base::Vector3d start;
     Base::Vector3d end;

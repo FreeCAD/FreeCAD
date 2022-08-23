@@ -91,10 +91,6 @@ DrawProjGroup::DrawProjGroup()
     Caption.setStatus(App::Property::Hidden, true);
 }
 
-DrawProjGroup::~DrawProjGroup()
-{
-}
-
 //TODO: this duplicates code in DVP
 std::vector<App::DocumentObject*> DrawProjGroup::getAllSources() const
 {
@@ -337,7 +333,7 @@ QRectF DrawProjGroup::getRect(bool scaled) const
     rectW *= fudge;
     rectH *= fudge;
 
-    return QRectF(0, 0,rectW, rectH);
+    return { 0, 0, rectW, rectH };
 }
 
 //find area consumed by Views only - scaled or unscaled

@@ -62,10 +62,6 @@ DrawTile::DrawTile()
     TileRow.setConstraints(&TileRowConstraints);
 }
 
-DrawTile::~DrawTile()
-{
-}
-
 void DrawTile::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
