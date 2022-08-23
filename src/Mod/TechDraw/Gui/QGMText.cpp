@@ -46,7 +46,7 @@ QGMText::QGMText() :
 
 QVariant QGMText::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    //QPointF newPos(0.0,0.0);
+    //QPointF newPos(0.0, 0.0);
     if(change == ItemPositionHasChanged && scene()) {
         Q_EMIT dragging();
     }
@@ -99,7 +99,7 @@ void QGMText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
 //    painter->drawRect(boundingRect());          //good for debugging
     //TODO: this should be changed to a rectItem in the parent
     if (showBox()) {
-        painter->drawRect(boundingRect().adjusted(1,1,-1,-1));
+        painter->drawRect(boundingRect().adjusted(1, 1,-1, -1));
     }
 
     QGCustomText::paint (painter, &myOption, widget);

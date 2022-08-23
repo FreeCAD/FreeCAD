@@ -55,15 +55,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskCosmeticLine.h>
 
-#include "PreferencesGui.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
-#include "Rez.h"
-
 #include "TaskCosmeticLine.h"
 
 using namespace Gui;
@@ -268,7 +259,7 @@ bool TaskCosmeticLine::accept()
         Gui::Command::commitCommand();
     }
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -276,7 +267,7 @@ bool TaskCosmeticLine::accept()
 bool TaskCosmeticLine::reject()
 {
     //there's nothing to do.
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
 }
 ////////////////////////////////////////////////////////////////////////////////

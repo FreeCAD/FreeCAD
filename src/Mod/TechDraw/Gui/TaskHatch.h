@@ -54,7 +54,6 @@ public:
     explicit TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskHatch() override;
 
-public:
     virtual bool accept();
     virtual bool reject();
 
@@ -103,7 +102,6 @@ public:
     explicit TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskDlgHatch() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -118,8 +116,6 @@ public:
     { return false; }
 
     void update();
-
-protected:
 
 private:
     TaskHatch * widget;

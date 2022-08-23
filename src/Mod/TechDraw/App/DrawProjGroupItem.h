@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjGroupItem_h_
-#define _DrawProjGroupItem_h_
+#ifndef DrawProjGroupItem_h_
+#define DrawProjGroupItem_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -57,7 +57,7 @@ class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 public:
     /// Constructor
     DrawProjGroupItem();
-    ~DrawProjGroupItem() override;
+    ~DrawProjGroupItem() = default;
 
     App::PropertyEnumeration Type;
     App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection
@@ -93,7 +93,8 @@ public:
 
     //DPGI always fits on page since DPG handles scaling
     bool checkFit() const override { return true; }
-    bool checkFit(DrawPage*) const override { return true; }
+    bool checkFit(DrawPage* page) const override { (void) page;         //avoid unused variable warning
+                                                   return true; }
 
     int countParentPages() const override;
     DrawPage* findParentPage() const override;

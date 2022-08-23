@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawLeaderLine_h_
-#define _TechDraw_DrawLeaderLine_h_
+#ifndef TechDraw_DrawLeaderLine_h_
+#define TechDraw_DrawLeaderLine_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -41,7 +41,7 @@ class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
 
 public:
     DrawLeaderLine();
-    ~DrawLeaderLine() override;
+    ~DrawLeaderLine() = default;
 
     App::PropertyLink         LeaderParent;
     App::PropertyVectorList   WayPoints;
@@ -61,7 +61,7 @@ public:
         return "TechDrawGui::ViewProviderLeader";
     }
     PyObject *getPyObject() override;
-    QRectF getRect() const override { return QRectF(0,0,1,1);}
+    QRectF getRect() const override { return { 0, 0,1, 1}; }
 
     Base::Vector3d getAttachPoint();
     DrawView* getBaseView() const;

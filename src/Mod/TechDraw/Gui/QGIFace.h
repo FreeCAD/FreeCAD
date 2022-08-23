@@ -75,7 +75,7 @@ public:
     void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
- 
+
     //shared fill parms
     void isHatched(bool s) {m_isHatched = s; }
     bool isHatched() {return m_isHatched;}
@@ -84,7 +84,7 @@ public:
     //general hatch parms & methods
     void setHatchColor(App::Color c);
     void setHatchScale(double s);
-    
+
     //svg fill parms & methods
     void setHatchFile(std::string fileSpec);
     void loadSvgHatch(std::string fileSpec);
@@ -121,7 +121,7 @@ protected:
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
-    double calcOffset(TechDraw::BaseGeomPtr g,TechDraw::LineSet ls);
+    double calcOffset(TechDraw::BaseGeomPtr g, TechDraw::LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
@@ -149,11 +149,11 @@ protected:
 
 private:
     QPixmap m_texture;                          //
- 
+
     QPainterPath m_outline;                     //
- 
+
     QPainterPath m_geomhatch;                  //crosshatch fill lines
- 
+
     QColor m_geomColor;                        //color for crosshatch lines
     double m_geomWeight;                       //lineweight for crosshatch lines
     bool m_defClearFace;

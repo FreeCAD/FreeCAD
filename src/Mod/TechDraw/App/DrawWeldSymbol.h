@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawWeldSymbol_h_
-#define _TechDraw_DrawWeldSymbol_h_
+#ifndef TechDraw_DrawWeldSymbol_h_
+#define TechDraw_DrawWeldSymbol_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -42,7 +42,7 @@ class TechDrawExport DrawWeldSymbol : public TechDraw::DrawView
 
 public:
     DrawWeldSymbol();
-    ~DrawWeldSymbol() override;
+    ~DrawWeldSymbol() = default;
 
     App::PropertyLink         Leader;
     App::PropertyBool         AllAround;
@@ -58,7 +58,7 @@ public:
         return "TechDrawGui::ViewProviderWeld";
     }
     PyObject *getPyObject() override;
-    QRectF getRect() const override { return QRectF(0,0,1,1);}
+    QRectF getRect() const override { return { 0, 0, 1, 1}; }
 
     bool isTailRightSide();
     std::vector<DrawTileWeld*> getTiles() const;

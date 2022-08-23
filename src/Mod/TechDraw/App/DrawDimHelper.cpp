@@ -203,7 +203,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     }
 
     //can't use Bnd_Box2d here as BndLib_Add2dCurve::Add adds the poles of splines to the box.
-    //poles are not necessarily on the curve! 3d Bnd_Box does it properly. 
+    //poles are not necessarily on the curve! 3d Bnd_Box does it properly.
     //this has to be the bbx of the selected edges, not the dvp!!!
     double minX, minY, minZ, maxX, maxY, maxZ;
     edgeBbx.Get(minX, minY, minZ, maxX, maxY, maxZ);
@@ -236,7 +236,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         Handle(Geom2d_Line) boundaryTop = new Geom2d_Line(topMid, xDir);
         gp_Pnt2d topPoint = findClosestPoint(hTCurve2dList,
                                              boundaryTop);
-        refMin = Base::Vector3d(bottomPoint.X(),bottomPoint.Y(), 0.0);
+        refMin = Base::Vector3d(bottomPoint.X(), bottomPoint.Y(), 0.0);
         refMax = Base::Vector3d(topPoint.X(), topPoint.Y(), 0.0);
     }
 
@@ -352,7 +352,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
     std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
-    
+
     Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
@@ -374,11 +374,11 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     if (extent) {
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent','%s')",
+        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')",
                                          dimName.c_str());
     } else {
 
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",
+        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')",
                                          dimName.c_str());
     }
 
@@ -386,7 +386,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
                                      dimName.c_str(), dimType.c_str());
 
     Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
-                                     pageName.c_str(),dimName.c_str());
+                                     pageName.c_str(), dimName.c_str());
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(doc->getObject(dimName.c_str()));
     if (!dim) {

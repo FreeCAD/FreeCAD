@@ -90,7 +90,7 @@ void QGIViewSection::drawSectionFace()
     std::vector<TechDraw::FacePtr>::iterator fit = sectionFaces.begin();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit,-1);
+        QGIFace* newFace = drawFace(*fit, -1);
         newFace->setZValue(ZVALUE::SECTIONFACE);
         if (section->showSectionEdges()) {
             newFace->setDrawEdges(true);
@@ -134,7 +134,7 @@ void QGIViewSection::drawSectionFace()
                 }
             }
         } else {
-            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n", 
+            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
                                     section->CutSurfaceDisplay.getValue());
         }
 

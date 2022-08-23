@@ -90,18 +90,18 @@ DrawViewDetail::DrawViewDetail() :
 {
     static const char *dgroup = "Detail";
 
-    ADD_PROPERTY_TYPE(BaseView ,(nullptr),dgroup,App::Prop_None,"2D View source for this Section");
+    ADD_PROPERTY_TYPE(BaseView ,(nullptr), dgroup, App::Prop_None, "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(AnchorPoint ,(0,0,0) ,dgroup,App::Prop_None,"Location of detail in BaseView");
-    ADD_PROPERTY_TYPE(Radius,(10.0),dgroup, App::Prop_None, "Size of detail area");
-    ADD_PROPERTY_TYPE(Reference ,("1"),dgroup,App::Prop_None,"An identifier for this detail");
+    ADD_PROPERTY_TYPE(AnchorPoint ,(0, 0,0) ,dgroup, App::Prop_None, "Location of detail in BaseView");
+    ADD_PROPERTY_TYPE(Radius, (10.0), dgroup, App::Prop_None, "Size of detail area");
+    ADD_PROPERTY_TYPE(Reference ,("1"), dgroup, App::Prop_None, "An identifier for this detail");
 
     getParameters();
     m_fudge = 1.01;
 
     //hide Properties not relevant to DVDetail
-    Direction.setStatus(App::Property::ReadOnly,true);   //Should be same as BaseView
-    Rotation.setStatus(App::Property::ReadOnly,true);    //same as BaseView
+    Direction.setStatus(App::Property::ReadOnly, true);   //Should be same as BaseView
+    Rotation.setStatus(App::Property::ReadOnly, true);    //same as BaseView
     ScaleType.setValue("Custom");                        //dvd uses scale from BaseView
 }
 
@@ -171,7 +171,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute()
         //this can only happen via scripting?
         return DrawView::execute();
     }
-    
+
     DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
     DrawViewSection* dvs = nullptr;
     TopoDS_Shape shape;
@@ -248,7 +248,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
 
     gp_Pnt gpCenter = TechDraw::findCentroid(copyShape,
                                              dirDetail);
-    Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
+    Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(), gpCenter.Y(), gpCenter.Z());
     m_saveCentroid = shapeCenter;              //centroid of original shape
 
     if (!dvs) {
@@ -272,8 +272,8 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
     Base::Vector3d toolPlaneOrigin = anchor + dirDetail * diag * -1.0;    //center tool about anchor
     double extrudeLength = 2.0 * toolPlaneOrigin.Length();
 
-    gp_Pnt gpnt(toolPlaneOrigin.x,toolPlaneOrigin.y,toolPlaneOrigin.z);
-    gp_Dir gdir(dirDetail.x,dirDetail.y,dirDetail.z);
+    gp_Pnt gpnt(toolPlaneOrigin.x, toolPlaneOrigin.y, toolPlaneOrigin.z);
+    gp_Dir gdir(dirDetail.x, dirDetail.y, dirDetail.z);
 
     TopoDS_Face extrusionFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
@@ -281,7 +281,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
     TopoDS_Shape tool;
     if (Preferences::mattingStyle()) {
         //square mat
-        gp_Pln gpln(gpnt,gdir);
+        gp_Pln gpln(gpnt, gdir);
         BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
         extrusionFace = mkFace.Face();
         if(extrusionFace.IsNull()) {
@@ -315,7 +315,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
         for (; expl.More(); expl.Next()) {
             const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
 
-            BRepAlgoAPI_Common mkCommon(s,tool);
+            BRepAlgoAPI_Common mkCommon(s, tool);
             if (!mkCommon.IsDone()) {
                 continue;
             }
@@ -325,7 +325,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
             //this might be overkill for piecewise algo
             //Did we get at least 1 solid?
             TopExp_Explorer xp;
-            xp.Init(mkCommon.Shape(),TopAbs_SOLID);
+            xp.Init(mkCommon.Shape(), TopAbs_SOLID);
             if (xp.More() != Standard_True) {
                 continue;
             }
@@ -338,7 +338,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
         for (; expl.More(); expl.Next()) {
             const TopoDS_Shell& s = TopoDS::Shell(expl.Current());
 
-            BRepAlgoAPI_Common mkCommon(s,tool);
+            BRepAlgoAPI_Common mkCommon(s, tool);
             if (!mkCommon.IsDone()) {
                 continue;
             }
@@ -348,7 +348,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
             //this might be overkill for piecewise algo
             //Did we get at least 1 shell?
             TopExp_Explorer xp;
-            xp.Init(mkCommon.Shape(),TopAbs_SHELL);
+            xp.Init(mkCommon.Shape(), TopAbs_SHELL);
             if (xp.More() != Standard_True) {
                 continue;
             }
@@ -395,10 +395,10 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
                                                  getScale());
         }
 
-        Base::Vector3d stdOrg(0.0,0.0,0.0);
+        Base::Vector3d stdOrg(0.0, 0.0, 0.0);
         m_viewAxis = dvp->getProjectionCS(stdOrg);
 
-        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+        if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             m_scaledShape = TechDraw::rotateShape(m_scaledShape,
                                                   m_viewAxis,
                                                   Rotation.getValue());
@@ -406,7 +406,7 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
     }  //end try block
 
     catch (Standard_Failure& e1) {
-        Base::Console().Message("DVD::makeDetailShape - failed to create detail %s - %s **\n",getNameInDocument(),e1.GetMessageString());
+        Base::Console().Message("DVD::makeDetailShape - failed to create detail %s - %s **\n", getNameInDocument(), e1.GetMessageString());
         return;
     }
 
@@ -491,7 +491,7 @@ bool DrawViewDetail::debugDetail() const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
 
-    return hGrp->GetBool("debugDetail",false);
+    return hGrp->GetBool("debugDetail", false);
 }
 
 void DrawViewDetail::unsetupObject()

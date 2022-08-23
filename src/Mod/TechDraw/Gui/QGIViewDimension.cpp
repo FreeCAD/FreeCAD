@@ -28,23 +28,22 @@
 #include <cmath>
 
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
 
-  # include <QApplication>
-  # include <QDebug>
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-
+#include <QApplication>
+#include <QDebug>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QPainterPath>
+#include <QPaintDevice>
+#include <QSvgGenerator>
 #endif
 
 #include <App/Application.h>
@@ -62,29 +61,22 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
-#include "Rez.h"
 #include "ZVALUE.h"
+
 #include "PreferencesGui.h"
-
-#include "QGCustomLabel.h"
-#include "QGCustomBorder.h"
-#include "QGCustomText.h"
-#include "QGICaption.h"
-#include "QGCustomImage.h"
-
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
-#include "QGIViewDimension.h"
-#include "ViewProviderDimension.h"
-#include "DrawGuiUtil.h"
 #include "QGIVertex.h"
+#include "ViewProviderDimension.h"
+
+#include "QGIViewDimension.h"
 
 #define NORMAL 0
 #define PRE 1
 #define SEL 2
 
 
-//TODO: hide the Qt coord system (+y down).  
+//TODO: hide the Qt coord system (+y down).
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -261,7 +253,7 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     if (!dim)
         return;
 
-    //set label's Qt position(top,left) given boundingRect center point
+    //set label's Qt position(top, left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
 
     QString uText = m_unitText->toPlainText();
@@ -306,34 +298,34 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
 
 void QGIDatumLabel::setLabelCenter()
 {
-    //save label's bRect center (posX,posY) given Qt position (top,left)
+    //save label's bRect center (posX, posY) given Qt position (top, left)
     posX = x() + m_dimText->boundingRect().width() / 2.;
     posY = y() + m_dimText->boundingRect().height() / 2.;
 }
 
-void QGIDatumLabel::setFont(QFont f)
+void QGIDatumLabel::setFont(QFont font)
 {
     prepareGeometryChange();
-    m_dimText->setFont(f);
-    m_unitText->setFont(f);
-    QFont tFont(f);
-    double fontSize = f.pixelSize();
+    m_dimText->setFont(font);
+    m_unitText->setFont(font);
+    QFont tFont(font);
+    double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
     tFont.setPixelSize((int) (fontSize * tolAdj));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
 }
 
-void QGIDatumLabel::setDimString(QString t)
+void QGIDatumLabel::setDimString(QString text)
 {
     prepareGeometryChange();
-    m_dimText->setPlainText(t);
-} 
+    m_dimText->setPlainText(text);
+}
 
-void QGIDatumLabel::setDimString(QString t, qreal maxWidth)
+void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
 {
     prepareGeometryChange();
-    m_dimText->setPlainText(t);
+    m_dimText->setPlainText(text);
     m_dimText->setTextWidth(maxWidth);
 }
 
@@ -388,18 +380,18 @@ void QGIDatumLabel::setToleranceString()
     }
 
     return;
-} 
+}
 
-void QGIDatumLabel::setUnitString(QString t)
+void QGIDatumLabel::setUnitString(QString text)
 {
     prepareGeometryChange();
-    if (t.isEmpty()) {
+    if (text.isEmpty()) {
         m_unitText->hide();
     } else {
-        m_unitText->setPlainText(t);
+        m_unitText->setPlainText(text);
         m_unitText->show();
     }
-} 
+}
 
 
 int QGIDatumLabel::getPrecision()
@@ -458,10 +450,10 @@ void QGIDatumLabel::setPrettyNormal()
     Q_EMIT setPretty(NORMAL);
 }
 
-void QGIDatumLabel::setColor(QColor c)
+void QGIDatumLabel::setColor(QColor color)
 {
 //    Base::Console().Message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
-    m_colNormal = c;
+    m_colNormal = color;
     m_dimText->setColor(m_colNormal);
     m_tolTextOver->setColor(m_colNormal);
     m_tolTextUnder->setColor(m_colNormal);
@@ -481,7 +473,7 @@ QGIViewDimension::QGIViewDimension() :
     setCacheMode(QGraphicsItem::NoCache);
 
     datumLabel = new QGIDatumLabel();
-//    datumLabel->m_parent = this;         //for dialog setup eventually
+    datumLabel->setQDim(this);
 
     addToGroup(datumLabel);
 
@@ -523,8 +515,7 @@ QGIViewDimension::QGIViewDimension() :
 
     setZValue(ZVALUE::DIMENSION);         //note: this won't paint dimensions over another View if it stacks
                                           //above this Dimension's parent view.   need Layers?
-    m_border->hide();
-    m_label->hide();
+    hideFrame();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -542,14 +533,14 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
 }
 
 //Set selection state for this and it's children
-void QGIViewDimension::setGroupSelection(bool b)
+void QGIViewDimension::setGroupSelection(bool isSelected)
 {
-//    Base::Console().Message("QGIVD::setGroupSelection(%d)\n",b);
-    setSelected(b);
-    datumLabel->setSelected(b);
-    dimLines->setSelected(b);
-    aHead1->setSelected(b);
-    aHead2->setSelected(b);
+//    Base::Console().Message("QGIVD::setGroupSelection(%d)\n", b);
+    setSelected(isSelected);
+    datumLabel->setSelected(isSelected);
+    dimLines->setSelected(isSelected);
+    aHead1->setSelected(isSelected);
+    aHead2->setSelected(isSelected);
 }
 
 void QGIViewDimension::select(bool state)
@@ -573,6 +564,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
         return;
 
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
+    dvDimension = obj;
 
     // Set the QGIGroup Properties based on the DrawView
     float x = Rez::guiX(obj->X.getValue());
@@ -590,7 +582,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 void QGIViewDimension::setNormalColorAll()
 {
     QColor qc = prefNormalColor();
-    datumLabel->setColor(qc); 
+    datumLabel->setColor(qc);
     dimLines->setNormalColor(qc);
     aHead1->setNormalColor(qc);
     aHead1->setFillColor(qc);
@@ -602,7 +594,7 @@ void QGIViewDimension::setNormalColorAll()
 //and so mouse events need to be ignored.  Only the QGIDatumLabel mouse events are relevant.
 void QGIViewDimension::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIVD::mousePressEvent() - %s\n",getViewName());
+//    Base::Console().Message("QGIVD::mousePressEvent() - %s\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
@@ -613,7 +605,7 @@ void QGIViewDimension::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n",getViewName());
+//    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -633,7 +625,7 @@ void QGIViewDimension::updateView(bool update)
         dim->Y.isTouched()) {
         float x = Rez::guiX(dim->X.getValue());
         float y = Rez::guiX(dim->Y.getValue());
-        datumLabel->setPosFromCenter(x,-y);
+        datumLabel->setPosFromCenter(x, -y);
         updateDim();
     } else if(vp->Fontsize.isTouched() ||
         vp->Font.isTouched()) {
@@ -656,7 +648,7 @@ void QGIViewDimension::updateDim()
     auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
     if (!vp)
         return;
- 
+
     QString labelText= QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); // pre value [unit] post
     if (dim->isMultiValueSchema())
         labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
@@ -669,7 +661,7 @@ void QGIViewDimension::updateDim()
     prepareGeometryChange();
     datumLabel->setDimString(labelText);
     datumLabel->setToleranceString();
-    datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
+    datumLabel->setPosFromCenter(datumLabel->X(), datumLabel->Y());
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
     datumLabel->setLineWidth(m_lineWidth);
@@ -691,8 +683,8 @@ void QGIViewDimension::datumLabelDragFinished()
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
     Gui::Command::commitCommand();
 }
 
@@ -813,7 +805,7 @@ double QGIViewDimension::getAnglePlacementFactor(double testAngle, double endAng
     if (testAngle >= endAngle + startRotation) {
         return -1.0;
     }
-    
+
     return 0.0;
 }
 
@@ -952,7 +944,7 @@ double QGIViewDimension::computeLineStrikeFactor(const Base::BoundBox2d &labelRe
     if (drawMarking.size() < 2) {
         return 0.0;
     }
-    
+
     std::vector<Base::Vector2d> intersectionPoints;
     unsigned int startIndex = 0;
     unsigned int currentIndex = 1;
@@ -1112,7 +1104,7 @@ bool QGIViewDimension::constructDimensionLine(const Base::Vector2d &targetPoint,
 
 bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, double arcRadius, double endAngle,
                            double startRotation, double handednessFactor, double jointRotation,
-                           const Base::BoundBox2d &labelRectangle, int arrowCount, int standardStyle, bool flipArrows, 
+                           const Base::BoundBox2d &labelRectangle, int arrowCount, int standardStyle, bool flipArrows,
                            std::vector<std::pair<double, bool>> &outputMarking) const
 {
     // The start rotation > 0 is not expected, the caller must handle this
@@ -1140,7 +1132,7 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     }
     else if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
         std::vector<Base::Vector2d> intersectionPoints;
-        
+
         DrawUtil::findCircleRectangleIntersections(arcCenter, arcRadius, labelRectangle, intersectionPoints);
 
         // We do not want to handle other cases than 2 intersection points - if so, act as if there were none
@@ -1165,7 +1157,7 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     if (jointRotation + endDelta > 0.0) {
         // If label exceeds end angle ray, extend the dimension arc and flip arrows
         DrawUtil::intervalMarkCircular(outputMarking, endAngle, handednessFactor*(jointRotation + endDelta), true);
-        autoFlipArrows = true;        
+        autoFlipArrows = true;
     }
 
     if (jointRotation - startDelta < startRotation) {
@@ -1197,10 +1189,10 @@ bool QGIViewDimension::constructDimensionArc(const Base::Vector2d &arcCenter, do
     double tailDelta = arcRadius >= Precision::Confusion() ? getDefaultArrowTailLength()/arcRadius : M_PI_4;
     double placementFactor = flipArrows ? +1.0 : -1.0;
 
-    DrawUtil::intervalMarkCircular(outputMarking, endAngle, 
+    DrawUtil::intervalMarkCircular(outputMarking, endAngle,
                                    placementFactor*handednessFactor*tailDelta, true);
     if (arrowCount > 1) {
-        DrawUtil::intervalMarkCircular(outputMarking, endAngle + handednessFactor*startRotation, 
+        DrawUtil::intervalMarkCircular(outputMarking, endAngle + handednessFactor*startRotation,
                                        -placementFactor*handednessFactor*tailDelta, true);
     }
 
@@ -1280,7 +1272,7 @@ void QGIViewDimension::drawMultiLine(QPainterPath &painterPath, const Base::Vect
     if (drawMarking.size() < 2) {
         return;
     }
-    
+
     unsigned int startIndex = 0;
     unsigned int currentIndex = 1;
     while (currentIndex < drawMarking.size()) {
@@ -1859,7 +1851,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d &centerPoint, co
                                                                lineAngles[1], lineMarking);
                 }
 
-                if (compareAngleStraightness(0.0, 
+                if (compareAngleStraightness(0.0,
                         jointPositions[0] > 0.0 ? DrawUtil::angleComposition(lineAngles[0], M_PI) : lineAngles[0],
                         jointPositions[1] > 0.0 ? DrawUtil::angleComposition(lineAngles[1], M_PI) : lineAngles[1],
                         strikeFactors[0], strikeFactors[1]) > 0) {
@@ -1981,7 +1973,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d &centerPoint, co
 void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const
 {
     Base::BoundBox2d labelRectangle(fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
-    
+
     pointPair linePoints = dimension->getLinearPoints();
     const char *dimensionType = dimension->Type.getValueAsString();
 
@@ -2101,7 +2093,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension *dimension, View
             strikeFactors[1] = computeLineStrikeFactor(labelRectangle, targetPoints[1], lineAngles[1], lineMarking);
 
             int selected = 0;
-            if (compareAngleStraightness(0.0, 
+            if (compareAngleStraightness(0.0,
                 jointPositions[0] > 0.0 ? DrawUtil::angleComposition(lineAngles[0], M_PI) : lineAngles[0],
                 jointPositions[1] > 0.0 ? DrawUtil::angleComposition(lineAngles[1], M_PI) : lineAngles[1],
                 strikeFactors[0], strikeFactors[1]) > 0) {
@@ -2166,7 +2158,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension *dimension, View
             endPoint.y += curveRadius;
             lineAngle = M_PI_2;
          }
- 
+
 //        lineAngle = DrawUtil::angleComposition((labelCenter - curveCenter).Angle(), +M_PI_2);
 //        startPoint = curveCenter - Base::Vector2d::FromPolar(curveRadius, lineAngle);
 //        endPoint = curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle);
@@ -2201,7 +2193,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
 
     double endAngle = (endPoint - angleVertex).Angle();
     double startAngle = (startPoint - angleVertex).Angle();
-    double arcRadius;    
+    double arcRadius;
 
     int standardStyle = viewProvider->StandardAndStyle.getValue();
     int renderExtent = viewProvider->RenderingExtent.getValue();
@@ -2306,7 +2298,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
         if (arcRadius < 0.0) {
             arcRadius = labelDirection.Length();
         }
-        
+
         drawDimensionArc(anglePath, angleVertex, arcRadius, endAngle, startRotation, radiusAngle,
                          labelRectangle, arrowCount, standardStyle, flipArrows);
     }
@@ -2365,43 +2357,29 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
 
 QColor QGIViewDimension::prefNormalColor()
 {
-    m_colNormal = PreferencesGui::dimQColor();
-
-//    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    TechDraw::DrawViewDimension* dim = nullptr;
-    TechDraw::DrawView* dv = getViewObject();
-    if (dv) {
-        dim = dynamic_cast<TechDraw::DrawViewDimension*>(dv);
-        if (!dim)
-            return m_colNormal;
-    } else {
-        return m_colNormal;
-    }
+    setNormalColor(PreferencesGui::dimQColor());
 
     ViewProviderDimension* vpDim = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dim);
+    Gui::ViewProvider* vp = getViewProvider(getDimFeat());
     if (vp) {
         vpDim = dynamic_cast<ViewProviderDimension*>(vp);
-        if (!vpDim)
-            return m_colNormal;
-    } else {
-        return m_colNormal;
+        if (vpDim) {
+            App::Color fcColor = vpDim->Color.getValue();
+            setNormalColor(fcColor.asValue<QColor>());
+        }
     }
-
-    App::Color fcColor = vpDim->Color.getValue();
-    m_colNormal = fcColor.asValue<QColor>();
-    return m_colNormal;
+    return getNormalColor();
 }
 
 //! find the closest isometric axis given an ortho vector
 Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho) const
 {
-    std::vector<Base::Vector3d> isoDirs = { Base::Vector3d(0.866,0.5,0.0),     //iso X
-                                            Base::Vector3d(-0.866,-0.5,0.0),   //iso -X
-                                            Base::Vector3d(-0.866,0.5,0.0),    //iso -Y?
-                                            Base::Vector3d(0.866,-0.5,0.0),    //iso +Y?
-                                            Base::Vector3d(0.0,-1.0,0.0),      //iso -Z
-                                            Base::Vector3d(0.0,1.0,0.0) };     //iso Z
+    std::vector<Base::Vector3d> isoDirs = { Base::Vector3d(0.866, 0.5, 0.0),     //iso X
+                                            Base::Vector3d(-0.866, -0.5, 0.0),   //iso -X
+                                            Base::Vector3d(-0.866, 0.5, 0.0),    //iso -Y?
+                                            Base::Vector3d(0.866, -0.5, 0.0),    //iso +Y?
+                                            Base::Vector3d(0.0, -1.0, 0.0),      //iso -Z
+                                            Base::Vector3d(0.0, 1.0, 0.0) };     //iso Z
     std::vector<double> angles;
     for (auto& iso: isoDirs) {
         angles.push_back(ortho.GetAngle(iso));
@@ -2420,13 +2398,13 @@ Base::Vector3d QGIViewDimension::findIsoDir(Base::Vector3d ortho) const
 //! find the iso extension direction corresponding to an iso dist direction
 Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir) const
 {
-    Base::Vector3d dirExt(1,0,0);
-    Base::Vector3d isoX(0.866,0.5,0.0);     //iso X
-    Base::Vector3d isoXr(-0.866,-0.5,0.0);  //iso -X
-    Base::Vector3d isoY(-0.866,0.5,0.0);    //iso -Y?
-    Base::Vector3d isoYr(0.866,-0.5,0.0);   //iso +Y?
-    Base::Vector3d isoZ(0.0,1.0,0.0);       //iso Z
-    Base::Vector3d isoZr(0.0,-1.0,0.0);     //iso -Z
+    Base::Vector3d dirExt(1, 0,0);
+    Base::Vector3d isoX(0.866, 0.5, 0.0);     //iso X
+    Base::Vector3d isoXr(-0.866, -0.5, 0.0);  //iso -X
+    Base::Vector3d isoY(-0.866, 0.5, 0.0);    //iso -Y?
+    Base::Vector3d isoYr(0.866, -0.5, 0.0);   //iso +Y?
+    Base::Vector3d isoZ(0.0, 1.0, 0.0);       //iso Z
+    Base::Vector3d isoZr(0.0, -1.0, 0.0);     //iso -Z
     if (dir.IsEqual(isoX, FLT_EPSILON)) {
         dirExt = isoY;
     } else if (dir.IsEqual(-isoX, FLT_EPSILON)) {
@@ -2487,7 +2465,7 @@ void QGIViewDimension::drawBorder()
 
 double QGIViewDimension::getDefaultExtensionLineOverhang() const
 {
-    // 8x Line Width according to ISO 129-1 Standard section 5.4, not specified by ASME Y14.5M 
+    // 8x Line Width according to ISO 129-1 Standard section 5.4, not specified by ASME Y14.5M
     return Rez::appX(m_lineWidth*8.0);
 }
 
@@ -2567,34 +2545,32 @@ void QGIViewDimension::setPens()
     aHead2->setWidth(m_lineWidth);
 }
 
-double QGIViewDimension::toDeg(double a) 
+double QGIViewDimension::toDeg(double angle)
 {
-    return a*180/M_PI;
+    return angle*180/M_PI;
 }
 
-double QGIViewDimension::toQtRad(double a) 
+double QGIViewDimension::toQtRad(double angle)
 {
-    return -a; 
+    return -angle;
 }
 
-double QGIViewDimension::toQtDeg(double a) 
+double QGIViewDimension::toQtDeg(double angle)
 {
-    return -a*180.0/M_PI; 
+    return -angle*180.0/M_PI;
 }
 
-void QGIViewDimension::makeMarkC(double x, double y, QColor c) const
+void QGIViewDimension::makeMarkC(double xPos, double yPos, QColor color) const
 {
     QGIVertex* vItem = new QGIVertex(-1);
     vItem->setParentItem(const_cast<QGIViewDimension*>(this));
-    vItem->setPos(x,y);
+    vItem->setPos(xPos, yPos);
     vItem->setWidth(2.0);
     vItem->setRadius(20.0);
-    vItem->setNormalColor(c);
-    vItem->setFillColor(c);
+    vItem->setNormalColor(color);
+    vItem->setFillColor(color);
     vItem->setPrettyNormal();
     vItem->setZValue(ZVALUE::VERTEX);
 }
-
-
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

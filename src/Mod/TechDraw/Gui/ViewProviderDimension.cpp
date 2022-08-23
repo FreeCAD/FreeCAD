@@ -66,13 +66,13 @@ ViewProviderDimension::ViewProviderDimension()
 
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()),
                                               group, App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()), 
+    ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
     								 group, (App::PropertyType)(App::Prop_None),
                                                                      "Dimension text size in units");
-    ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None), 
+    ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None),
                                                         "Dimension line width");
     ADD_PROPERTY_TYPE(Color, (prefColor()), group, App::Prop_None, "Color of the dimension");
-    ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None, 
+    ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None,
                                         "Standard and style according to which dimension is drawn");
     StandardAndStyle.setEnums(StandardAndStyleEnums);
 
@@ -153,7 +153,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
         }
     }
 
-    //Dimension handles X,Y updates differently that other QGIView
+    //Dimension handles X, Y updates differently that other QGIView
     //call QGIViewDimension::updateView
     if (p == &(getViewObject()->X)  ||
         p == &(getViewObject()->Y) ){
@@ -163,7 +163,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
         }
     }
 
-    //Skip QGIView X,Y processing - do not call ViewProviderDrawingView
+    //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
     Gui::ViewProviderDocumentObject::updateData(p);
 }
 

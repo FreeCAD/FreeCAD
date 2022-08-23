@@ -62,15 +62,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 #include "PreferencesGui.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "QGILeaderLine.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
 #include "SymbolChooser.h"
-#include "Rez.h"
 
 #include "TaskWeldingSymbol.h"
 #include "ui_TaskWeldingSymbol.h"
@@ -80,9 +72,9 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 //ctor for creation
-TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
+TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat) :
     ui(new Ui_TaskWeldingSymbol),
-    m_leadFeat(leader),
+    m_leadFeat(leadFeat),
     m_weldFeat(nullptr),
     m_arrowFeat(nullptr),
     m_otherFeat(nullptr),
@@ -91,7 +83,6 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     m_createMode(true),
     m_otherDirty(false)
 {
-//TODO: why does DWS need DLL as parent?
 
     //existence of leader is guaranteed by CmdTechDrawWeldSymbol (CommandAnnotate.cpp)
     ui->setupUi(this);
@@ -106,8 +97,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
             this, SLOT(onOtherEraseCreateClicked()));
     connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
             this, SLOT(onFlipSidesCreateClicked()));
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
-            this, SLOT(onDirectorySelected(const QString&)));
+    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(QString)),
+            this, SLOT(onDirectorySelected(QString)));
 }
 
 //ctor for edit
@@ -185,9 +176,9 @@ void TaskWeldingSymbol::updateTask()
 //    blockUpdate = false;
 }
 
-void TaskWeldingSymbol::changeEvent(QEvent *e)
+void TaskWeldingSymbol::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -412,7 +403,7 @@ void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
 //    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n",
 //                            qPrintable(symbolPath), qPrintable(source));
     QIcon targetIcon(symbolPath);
-    QSize iconSize(32,32);
+    QSize iconSize(32, 32);
     QString arrow = tr("arrow");
     QString other = tr("other");
     if (source == arrow) {
@@ -495,31 +486,31 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
     TechDraw::DrawPage* page = m_leadFeat->findParentPage();
     std::string pageName = page->getNameInDocument();
 
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       symbolType.c_str(),symbolName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
+                       symbolType.c_str(), symbolName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), symbolName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.Leader = App.activeDocument().%s",
-                           symbolName.c_str(),m_leadFeat->getNameInDocument());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.Leader = App.activeDocument().%s",
+                           symbolName.c_str(), m_leadFeat->getNameInDocument());
 
     bool allAround = ui->cbAllAround->isChecked();
     std::string allAroundText = allAround ? "True" : "False";
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.AllAround = %s",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.AllAround = %s",
                            symbolName.c_str(), allAroundText.c_str());
 
     bool fieldWeld = ui->cbFieldWeld->isChecked();
     std::string fieldWeldText = fieldWeld ? "True" : "False";
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.FieldWeld = %s",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.FieldWeld = %s",
                            symbolName.c_str(), fieldWeldText.c_str());
 
     bool altWeld = ui->cbAltWeld->isChecked();
     std::string altWeldText = altWeld ? "True" : "False";
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.AlternatingWeld = %s",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.AlternatingWeld = %s",
                            symbolName.c_str(), altWeldText.c_str());
 
     std::string tailText = ui->leTailText->text().toStdString();
     tailText = Base::Tools::escapeEncodeString(tailText);
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
 
     App::DocumentObject* newObj = m_leadFeat->getDocument()->getObject(symbolName.c_str());
@@ -537,22 +528,22 @@ void TaskWeldingSymbol::updateWeldingSymbol()
 
     bool allAround = ui->cbAllAround->isChecked();
     std::string allAroundText = allAround ? "True" : "False";
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.AllAround = %s",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.AllAround = %s",
                            symbolName.c_str(), allAroundText.c_str());
 
     bool fieldWeld = ui->cbFieldWeld->isChecked();
     std::string fieldWeldText = fieldWeld ? "True" : "False";
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.FieldWeld = %s",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.FieldWeld = %s",
                            symbolName.c_str(), fieldWeldText.c_str());
 
     bool altWeld = ui->cbAltWeld->isChecked();
     std::string altWeldText = altWeld ? "True" : "False";
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.AlternatingWeld = %s",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.AlternatingWeld = %s",
                            symbolName.c_str(), altWeldText.c_str());
 
     std::string tailText = ui->leTailText->text().toStdString();
     tailText = Base::Tools::escapeEncodeString(tailText);
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
 }
 
@@ -570,13 +561,13 @@ void TaskWeldingSymbol::updateTiles()
             std::string leftText = Base::Tools::escapeEncodeString(m_arrowOut.leftText);
             std::string rightText = Base::Tools::escapeEncodeString(m_arrowOut.rightText);
             std::string centerText = Base::Tools::escapeEncodeString(m_arrowOut.centerText);
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
+            Command::doCommand(Command::Doc, "App.activeDocument().%s.TileColumn = %d",
                            tileName.c_str(), m_arrowOut.col);
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
+            Command::doCommand(Command::Doc, "App.activeDocument().%s.LeftText = '%s'",
                            tileName.c_str(), leftText.c_str());
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
+            Command::doCommand(Command::Doc, "App.activeDocument().%s.RightText = '%s'",
                            tileName.c_str(), rightText.c_str());
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
+            Command::doCommand(Command::Doc, "App.activeDocument().%s.CenterText = '%s'",
                            tileName.c_str(), centerText.c_str());
             if (!m_arrowOut.symbolPath.empty()) {
 //                m_arrowFeat->replaceSymbol(m_arrowOut.symbolPath);
@@ -595,13 +586,13 @@ void TaskWeldingSymbol::updateTiles()
                 std::string leftText = Base::Tools::escapeEncodeString(m_otherOut.leftText);
                 std::string rightText = Base::Tools::escapeEncodeString(m_otherOut.rightText);
                 std::string centerText = Base::Tools::escapeEncodeString(m_otherOut.centerText);
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
+                Command::doCommand(Command::Doc, "App.activeDocument().%s.TileColumn = %d",
                                tileName.c_str(), m_otherOut.col);
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
+                Command::doCommand(Command::Doc, "App.activeDocument().%s.LeftText = '%s'",
                                tileName.c_str(), leftText.c_str());
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
+                Command::doCommand(Command::Doc, "App.activeDocument().%s.RightText = '%s'",
                                tileName.c_str(), rightText.c_str());
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
+                Command::doCommand(Command::Doc, "App.activeDocument().%s.CenterText = '%s'",
                                tileName.c_str(), centerText.c_str());
 //                m_otherFeat->replaceSymbol(m_otherOut.symbolPath);
                 m_otherFeat->SymbolFile.setValue(m_otherOut.symbolPath);
@@ -618,10 +609,10 @@ void TaskWeldingSymbol::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskWeldingSymbol::enableTaskButtons(bool b)
+void TaskWeldingSymbol::enableTaskButtons(bool enable)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(enable);
+    m_btnCancel->setEnabled(enable);
 }
 
 //******************************************************************************
@@ -652,7 +643,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     }
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -662,8 +653,8 @@ bool TaskWeldingSymbol::reject()
 //    Base::Console().Message("TWS::reject()\n");
       //nothing to remove.
 
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }

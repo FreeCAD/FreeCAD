@@ -232,8 +232,8 @@ QVector<QXmlName> QDomNodeModel::namespaceBindings(const QXmlNodeModelIndex & ni
     }
 
     // Per the XML standard:
-    // "The prefix xml is by definition bound to the namespace name http://www.w3.org/XML/1998/namespace. It MAY, but 
-    // need not, be declared, and MUST NOT be bound to any other namespace name. Other prefixes MUST NOT be bound to 
+    // "The prefix xml is by definition bound to the namespace name http://www.w3.org/XML/1998/namespace. It MAY, but
+    // need not, be declared, and MUST NOT be bound to any other namespace name. Other prefixes MUST NOT be bound to
     // this namespace name, and it MUST NOT be declared as the default namespace."
     //
     // If the document does not specifically include this namespace, add it now:

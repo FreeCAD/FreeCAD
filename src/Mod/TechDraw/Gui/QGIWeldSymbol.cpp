@@ -58,13 +58,9 @@
 #include <Mod/TechDraw/App/Geometry.h>
 //#include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
 #include "ZVALUE.h"
 #include "PreferencesGui.h"
 #include "ViewProviderWeld.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
 #include "QGIPrimPath.h"
 #include "QGITile.h"
 #include "QGILeaderLine.h"
@@ -88,7 +84,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
 {
     setFiltersChildEvents(true);    //qt5
     setFlag(QGraphicsItem::ItemIsMovable, false);
-    
+
     setCacheMode(QGraphicsItem::NoCache);
 
     setParentItem(m_qgLead);
@@ -109,7 +105,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_allAround->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_allAround->setFlag(QGraphicsItem::ItemIsMovable, false);
     m_allAround->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_allAround->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
     m_fieldFlag = new QGIPrimPath();
@@ -119,12 +115,13 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsMovable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_fieldFlag->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
     m_fieldFlag->setFill(prefNormalColor(), Qt::SolidPattern);
 
-    m_colCurrent = prefNormalColor();
-    m_colSetting = m_colCurrent;
+    setNormalColor(prefNormalColor());
+    setCurrentColor(getNormalColor());
+    setSettingColor(getNormalColor());
 
     setPrettyNormal();
 }
@@ -240,7 +237,7 @@ void QGIWeldSymbol::drawAllAround()
     if (getFeature()->AllAround.getValue()) {
         m_allAround->show();
     } else {
-        
+
         m_allAround->hide();
         return;
     }
@@ -259,7 +256,7 @@ void QGIWeldSymbol::drawTailText()
 {
 //    Base::Console().Message("QGIWS::drawTailText()\n");
     QPointF textPos = getTailPoint();
-    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0,0 !!!
+    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0, 0 !!!
     std::string tText = getFeature()->TailText.getValue();
     if (tText.empty()) {
         m_tailText->hide();
@@ -305,7 +302,7 @@ void QGIWeldSymbol::drawFieldFlag()
 {
 //    Base::Console().Message("QGIWS::drawFieldFlag()\n");
     QPointF fieldFlagPos = getKinkPoint();
-    m_fieldFlag->setPos(fieldFlagPos); 
+    m_fieldFlag->setPos(fieldFlagPos);
 
     if (getFeature()->FieldWeld.getValue()) {
         m_fieldFlag->show();
@@ -340,12 +337,12 @@ void QGIWeldSymbol::getTileFeats()
     std::vector<TechDraw::DrawTileWeld*> tiles = getFeature()->getTiles();
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
-    
+
     if (!tiles.empty()) {
         TechDraw::DrawTileWeld* tempTile = tiles.at(0);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -353,7 +350,7 @@ void QGIWeldSymbol::getTileFeats()
         TechDraw::DrawTileWeld* tempTile = tiles.at(1);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -392,10 +389,10 @@ void QGIWeldSymbol::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     if (isSelected()) {
-        m_colCurrent = getSelectColor();
+        setCurrentColor(getSelectColor());
         setPrettySel();
     } else {
-        m_colCurrent = getPreColor();
+        setCurrentColor(getPreColor());
         setPrettyPre();
     }
     QGIView::hoverEnterEvent(event);
@@ -405,10 +402,10 @@ void QGIWeldSymbol::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     if(isSelected()) {
-        m_colCurrent = getSelectColor();
+        setCurrentColor(getSelectColor());
         setPrettySel();
     } else {
-        m_colCurrent = m_colNormal;
+        setCurrentColor(getNormalColor());
         setPrettyNormal();
     }
     QGIView::hoverLeaveEvent(event);
@@ -424,15 +421,15 @@ void QGIWeldSymbol::setPrettyNormal()
 {
     std::vector<QGITile*> tiles = getQGITiles();
     for (auto t: tiles) {
-        t->setColor(m_colNormal);
+        t->setColor(getNormalColor());
         t->draw();
     }
-    m_colCurrent = m_colNormal;
-    m_fieldFlag->setNormalColor(m_colCurrent);
+    setCurrentColor(getNormalColor());
+    m_fieldFlag->setNormalColor(getNormalColor());
     m_fieldFlag->setPrettyNormal();
-    m_allAround->setNormalColor(m_colCurrent);
+    m_allAround->setNormalColor(getNormalColor());
     m_allAround->setPrettyNormal();
-    m_tailText->setColor(m_colCurrent);
+    m_tailText->setColor(getNormalColor());
     m_tailText->setPrettyNormal();
 }
 
@@ -444,7 +441,7 @@ void QGIWeldSymbol::setPrettyPre()
         t->draw();
     }
 
-    m_colCurrent = getPreColor();
+    setCurrentColor(getPreColor());
     m_fieldFlag->setNormalColor(getPreColor());
     m_fieldFlag->setPrettyPre();
     m_allAround->setNormalColor(getPreColor());
@@ -461,7 +458,7 @@ void QGIWeldSymbol::setPrettySel()
         t->draw();
     }
 
-    m_colCurrent = getSelectColor();
+    setCurrentColor(getSelectColor());
     m_fieldFlag->setNormalColor(getSelectColor());
     m_fieldFlag->setPrettySel();
     m_allAround->setNormalColor(getSelectColor());
@@ -506,8 +503,8 @@ TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature()
 //preference
 QColor QGIWeldSymbol::prefNormalColor()
 {
-    m_colNormal = PreferencesGui::leaderQColor();
-    return m_colNormal;
+    setNormalColor(PreferencesGui::leaderQColor());
+    return getNormalColor();
 }
 
 double QGIWeldSymbol::prefArrowSize()

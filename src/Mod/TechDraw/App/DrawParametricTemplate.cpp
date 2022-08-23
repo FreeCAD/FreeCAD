@@ -51,7 +51,7 @@ PROPERTY_SOURCE(TechDraw::DrawParametricTemplate, TechDraw::DrawTemplate)
 DrawParametricTemplate::DrawParametricTemplate()
 {
     static const char *group = "Page";
-    ADD_PROPERTY_TYPE(Template ,(""),group, (App::PropertyType) App::Prop_None,"Template script");
+    ADD_PROPERTY_TYPE(Template ,(""), group, (App::PropertyType) App::Prop_None, "Template script");
 }
 
 DrawParametricTemplate::~DrawParametricTemplate()
@@ -63,7 +63,7 @@ PyObject *DrawParametricTemplate::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawParametricTemplatePy(this),true);
+        PythonObject = Py::Object(new DrawParametricTemplatePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

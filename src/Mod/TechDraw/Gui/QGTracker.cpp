@@ -56,7 +56,7 @@ using namespace TechDrawGui;
 QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     m_sleep(false),
     m_qgParent(nullptr),
-    m_lastClick(QPointF(FLT_MAX,FLT_MAX))
+    m_lastClick(QPointF(FLT_MAX, FLT_MAX))
 {
     setTrackerMode(m);
     if (inScene) {
@@ -69,11 +69,11 @@ QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsFocusable, true);
     setAcceptHoverEvents(true);
     setZValue(ZVALUE::TRACKER);
-    setPos(0.0,0.0);
+    setPos(0.0, 0.0);
 
     QColor tColor = getTrackerColor();
     QColor tailColor(Qt::blue);
@@ -92,7 +92,7 @@ QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     m_track->setPen(m_trackPen);
     m_track->setBrush(QBrush(Qt::NoBrush));
     m_track->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    m_track->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_track->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_track->setFocusProxy(this);
 
     setHandlesChildEvents(true);
@@ -107,15 +107,15 @@ QGTracker::~QGTracker()
 }
 
 void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{ 
+{
     QPointF myScenePos = event->scenePos();
     if (!m_sleep) {
         double someLimit = Rez::guiX(10.0);
         QPointF manhat = myScenePos - m_lastClick;
-//        Base::Console().Message("QGT::mousePressEvent - scenePos: (%.3f, %.3f) lastClick:(%.3f,%.3f)\n",
-//                                myScenePos.x(), myScenePos.y(), m_lastClick.x(),m_lastClick.y());
+//        Base::Console().Message("QGT::mousePressEvent - scenePos: (%.3f, %.3f) lastClick:(%.3f, %.3f)\n",
+//                                myScenePos.x(), myScenePos.y(), m_lastClick.x(), m_lastClick.y());
 //        Base::Console().Message("QGT::mousePressEvent - manhat(%.3f, %.3f) mLength: %.3f\n",
-//                                manhat.x(),manhat.y(), manhat.manhattanLength());
+//                                manhat.x(), manhat.y(), manhat.manhattanLength());
         if (manhat.manhattanLength() < someLimit) {
 //            Base::Console().Message("QGT::mousePressEvent - too close to last click\n");
         } else {
@@ -193,7 +193,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
     double angleIncr = M_PI / 8.0;   //15*
     //mirror last clicked point and event point to get sensible coords
     QPointF last(m_points.back().x(), -m_points.back().y());
-    QPointF pt(dumbPt.x(),-dumbPt.y());
+    QPointF pt(dumbPt.x(), -dumbPt.y());
 
     //let's do math with sensible coord system.
     QPointF qVec = last - pt;    //vec from end of track to end of tail
@@ -215,7 +215,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
             actual = low;
         }
 
-        double vecLen = sqrt(pow(qVec.x(),2) + pow(qVec.y(),2));
+        double vecLen = sqrt(pow(qVec.x(), 2) + pow(qVec.y(), 2));
         double xPart = vecLen * cos(actual) * -1.0;   //actual is not in Qt coords
         double yPart = vecLen * sin(actual) * -1.0;
         result = QPointF(last.x() + xPart, (-last.y()) + yPart);    //back to silly qt coords!
@@ -224,7 +224,7 @@ QPointF QGTracker::snapToAngle(QPointF dumbPt)
 }
 
 //mouse event reactions
-void QGTracker::onMousePress(QPointF pos) 
+void QGTracker::onMousePress(QPointF pos)
 {
 //    Base::Console().Message("QGT::onMousePress(%s)\n", TechDraw::DrawUtil::formatVector(pos).c_str());
     m_points.push_back(pos);
@@ -247,7 +247,7 @@ void QGTracker::onMousePress(QPointF pos)
 //                setPoint(m_points);
                 break;
         }
-    } else if (m_points.size() == 1) {   //first point selected  
+    } else if (m_points.size() == 1) {   //first point selected
         //just return pos to caller
         getPickedQGIV(pos);
         setCursor(Qt::CrossCursor);  //why cross??
@@ -265,9 +265,9 @@ void QGTracker::onMousePress(QPointF pos)
     }
 }
 
-void QGTracker::onMouseMove(QPointF pos) 
+void QGTracker::onMouseMove(QPointF pos)
 {
-    //check distance moved? 
+    //check distance moved?
     TrackerMode m = getTrackerMode();
     switch (m) {
         case TrackerMode::None:
@@ -287,7 +287,7 @@ void QGTracker::onMouseMove(QPointF pos)
     }
 }
 
-void QGTracker::onDoubleClick(QPointF pos) 
+void QGTracker::onDoubleClick(QPointF pos)
 {
 //    Base::Console().Message("QGTracker::onDoubleClick()\n");
     Q_UNUSED(pos);
@@ -298,14 +298,14 @@ void QGTracker::onDoubleClick(QPointF pos)
     terminateDrawing();
 }
 
-void QGTracker::getPickedQGIV(QPointF pos) 
+void QGTracker::getPickedQGIV(QPointF pos)
 {
     setVisible(false);
     m_qgParent = nullptr;
     QList<QGraphicsView *> views = scene()->views();
     QGraphicsView* ourView = views.front();  //only 1 view / 1 scene / 1 mdipage
     QTransform viewXForm = ourView->transform();
-    QGraphicsItem* pickedItem = scene()->itemAt(pos,viewXForm);
+    QGraphicsItem* pickedItem = scene()->itemAt(pos, viewXForm);
     if (pickedItem) {
         QGraphicsItem* topItem = pickedItem->topLevelItem();
         if (topItem != pickedItem) {
@@ -331,9 +331,9 @@ QPainterPath QGTracker::shape() const
     result.addRect(boundingRect());
     return result;
 }
- 
-//*************** 
-//actual art routines 
+
+//***************
+//actual art routines
 void QGTracker::drawTrackLine(QPointF pos)
 {
 //    Base::Console().Message("QGTracker::drawTrackLine()\n");
@@ -355,7 +355,7 @@ void QGTracker::drawTrackSquare(QPointF pos)
     QPainterPath tail;
     if (!m_points.empty()) {
         m_segBegin = m_points.front();   //sb front? 1st point picked??
-        QRectF rect(m_segBegin,m_segEnd);
+        QRectF rect(m_segBegin, m_segEnd);
         tail.addRect(rect);
         m_track->setPath(tail);
         m_track->show();
@@ -368,9 +368,9 @@ void QGTracker::drawTrackCircle(QPointF pos)
     QPointF circum = pos;
     QPainterPath tail;
     if (!m_points.empty()) {
-        QPointF center = m_points.front();             //not nec (0,0);
+        QPointF center = m_points.front();             //not nec (0, 0);
         QPointF ray = circum - center;
-        double radius =  sqrt(pow(ray.x(),2.0) + pow(ray.y(),2.0));
+        double radius =  sqrt(pow(ray.x(), 2.0) + pow(ray.y(), 2.0));
         tail.addEllipse(center, radius, radius);
         m_track->setPath(tail);
     }
@@ -410,7 +410,7 @@ void QGTracker::setSquareFromPoints(std::vector<QPointF> pts)
     QPainterPath newPath;
     QPointF start = pts.front();
     QPointF end   = pts.back();
-    QRectF rect(start,end);
+    QRectF rect(start, end);
     newPath.addRect(rect);
     setPath(newPath);
     setPrettyNormal();
@@ -428,7 +428,7 @@ void QGTracker::setCircleFromPoints(std::vector<QPointF> pts)
     QPointF center = pts.front();
     QPointF circum   = pts.back();
     QPointF ray    = circum - center;
-    double radius =  sqrt(pow(ray.x(),2.0) + pow(ray.y(),2.0));
+    double radius =  sqrt(pow(ray.x(), 2.0) + pow(ray.y(), 2.0));
     newPath.addEllipse(center, radius, radius);
     setPath(newPath);
     setPrettyNormal();
@@ -454,7 +454,7 @@ std::vector<Base::Vector3d> QGTracker::convertPoints()
 {
     std::vector<Base::Vector3d> result;
     for (auto& p: m_points) {
-        Base::Vector3d v(p.x(),p.y(),0.0);
+        Base::Vector3d v(p.x(), p.y(), 0.0);
         result.push_back(v);
     }
     return result;

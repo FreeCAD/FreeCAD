@@ -47,7 +47,7 @@ DrawTile::DrawTile()
 {
     static const char *group = "Tile";
 
-    ADD_PROPERTY_TYPE(TileParent,(nullptr),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TileParent, (nullptr), group, (App::PropertyType)(App::Prop_None),
                       "Object to which this tile is attached");
     ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent object\n 0 for arrow side, -1 for other side");
     ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent object");
@@ -60,10 +60,6 @@ DrawTile::DrawTile()
     TileRowConstraints.UpperBound = 0;
     TileRowConstraints.StepSize = 1;
     TileRow.setConstraints(&TileRowConstraints);
-}
-
-DrawTile::~DrawTile()
-{
 }
 
 void DrawTile::onChanged(const App::Property* prop)
@@ -108,7 +104,7 @@ PyObject *DrawTile::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawTilePy(this),true);
+        PythonObject = Py::Object(new DrawTilePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

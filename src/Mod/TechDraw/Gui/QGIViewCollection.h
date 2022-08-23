@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
-#define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#define DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -47,4 +47,4 @@ public:
 
 } // namespace MDIViewPageGui
 
-#endif // _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
+#endif // DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H

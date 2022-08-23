@@ -75,7 +75,7 @@ TaskCustomizeFormat::TaskCustomizeFormat(App::DocumentObject * object) :
     selectedObject(object),
     isDimension(true),
     dimRawValue(0.0),
-    ui(new Ui_TaskCustomizeFormat) 
+    ui(new Ui_TaskCustomizeFormat)
 {
 
     ui->setupUi(this);
@@ -119,7 +119,7 @@ void TaskCustomizeFormat::setUiEdit()
         std::string balloonText = balloon->Text.getStrValue();
         ui->leFormat->setText(Base::Tools::fromStdString(balloonText));
     }
-    // GD&T 
+    // GD&T
     connect(ui->pbA01, SIGNAL(clicked()), this, SLOT(onSymbolClicked()));
     connect(ui->pbA02, SIGNAL(clicked()), this, SLOT(onSymbolClicked()));
     connect(ui->pbA03, SIGNAL(clicked()), this, SLOT(onSymbolClicked()));
@@ -204,7 +204,7 @@ void TaskCustomizeFormat::onFormatChanged()
         constexpr int size(80);
         char buffer[size];
         std::string formatString = formatPreview.toUtf8().constData();
-        auto usedSize = snprintf(buffer,size, formatString.c_str(),dimRawValue);
+        auto usedSize = snprintf(buffer, size, formatString.c_str(), dimRawValue);
         formatPreview = QString::fromUtf8(buffer, usedSize);
     }
     ui->lbShowPreview->setText(formatPreview);

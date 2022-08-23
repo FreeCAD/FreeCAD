@@ -80,46 +80,46 @@ ViewProviderViewPart::ViewProviderViewPart()
     //default line weights
 
     double weight = TechDraw::LineGroup::getDefaultWidth("Thick");
-    ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
+    ADD_PROPERTY_TYPE(LineWidth, (weight), group, App::Prop_None, "The thickness of visible lines (line groups xx.2");
 
     weight = TechDraw::LineGroup::getDefaultWidth("Thin");
-    ADD_PROPERTY_TYPE(HiddenWidth,(weight),group,App::Prop_None,"The thickness of hidden lines, if enabled (line groups xx.1)");
+    ADD_PROPERTY_TYPE(HiddenWidth, (weight), group, App::Prop_None, "The thickness of hidden lines, if enabled (line groups xx.1)");
 
     weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
-    ADD_PROPERTY_TYPE(IsoWidth,(weight),group,App::Prop_None,"The thickness of isoparameter lines, if enabled");
+    ADD_PROPERTY_TYPE(IsoWidth, (weight), group, App::Prop_None, "The thickness of isoparameter lines, if enabled");
 
     weight = TechDraw::LineGroup::getDefaultWidth("Extra");
-    ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
+    ADD_PROPERTY_TYPE(ExtraWidth, (weight), group, App::Prop_None, "The thickness of LineGroup Extra lines, if enabled");
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
 
-    double defScale = hGrp->GetFloat("CenterMarkScale",0.50);
+    double defScale = hGrp->GetFloat("CenterMarkScale", 0.50);
     bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
-    
+
     //decorations
-    ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
-    ADD_PROPERTY_TYPE(VertCenterLine ,(false),dgroup,App::Prop_None,"Show a vertical centerline through view");
-    ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters),dgroup,App::Prop_None,"Center marks on/off");
-    ADD_PROPERTY_TYPE(CenterScale,(defScale),dgroup,App::Prop_None,"Center mark size adjustment, if enabled");
+    ADD_PROPERTY_TYPE(HorizCenterLine ,(false), dgroup, App::Prop_None, "Show a horizontal centerline through view");
+    ADD_PROPERTY_TYPE(VertCenterLine ,(false), dgroup, App::Prop_None, "Show a vertical centerline through view");
+    ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters), dgroup, App::Prop_None, "Center marks on/off");
+    ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup, App::Prop_None, "Show/hide section line if applicable");
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None,
                         "Set section line style if applicable");
-    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None,
                         "Set section line color if applicable");
-    
+
     //properties that affect Detail Highlights
     HighlightLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None,
                         "Set highlight line style if applicable");
-    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None, 
+    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None,
                         "Set highlight line color if applicable");
-    ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
+    ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
-    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup,App::Prop_None,"Temporarily show invisible lines");
+    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup, App::Prop_None, "Temporarily show invisible lines");
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -222,7 +222,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     }
     TechDraw::DrawViewPart* dvp = getViewObject();
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
-    if (dvd) { 
+    if (dvd) {
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
@@ -235,12 +235,12 @@ bool ViewProviderViewPart::setEdit(int ModNum)
                                         dvd->getNameInDocument());
 
 //Gui.ActiveDocument.resetEdit()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
+//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
 //>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
+//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
+//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
 //>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')            
+//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
     }
 
     return true;
@@ -306,7 +306,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
     auto viewLeader = getViewObject()->getLeaders();
-    
+
     if (!viewSection.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has a section view that would become broken.");

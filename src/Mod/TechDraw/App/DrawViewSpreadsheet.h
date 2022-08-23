@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewSpreadsheet_h_
-#define _DrawViewSpreadsheet_h_
+#ifndef DrawViewSpreadsheet_h_
+#define DrawViewSpreadsheet_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

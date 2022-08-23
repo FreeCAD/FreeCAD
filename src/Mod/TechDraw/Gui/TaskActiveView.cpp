@@ -121,9 +121,9 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView()
 
     std::string pageName = m_pageFeat->getNameInDocument();
 
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       symbolType.c_str(),symbolName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
+                       symbolType.c_str(), symbolName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), symbolName.c_str());
 
     App::Document* appDoc = m_pageFeat->getDocument();
@@ -146,12 +146,12 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView()
                                         ui->qsbWeight->rawValue(),
                                         ui->qsbBorder->rawValue(),
                                         ui->cbMode->currentIndex());
-    Command::doCommand(Command::Doc,"f = open(\"%s\",'r')",(const char*)fileSpec.c_str());
-    Command::doCommand(Command::Doc,"svg = f.read()");
-//    Command::doCommand(Command::Doc,"print('length of svg: {}'.format(len(svg)))");
+    Command::doCommand(Command::Doc, "f = open(\"%s\", 'r')", (const char*)fileSpec.c_str());
+    Command::doCommand(Command::Doc, "svg = f.read()");
+//    Command::doCommand(Command::Doc, "print('length of svg: {}'.format(len(svg)))");
 
-    Command::doCommand(Command::Doc,"f.close()");
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.Symbol = svg",symbolName.c_str());
+    Command::doCommand(Command::Doc, "f.close()");
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.Symbol = svg", symbolName.c_str());
 
     App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(symbolName.c_str());
     TechDraw::DrawViewSymbol* newSym = dynamic_cast<TechDraw::DrawViewSymbol*>(newObj);
@@ -189,7 +189,7 @@ bool TaskActiveView::accept()
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -199,8 +199,8 @@ bool TaskActiveView::reject()
 //    Base::Console().Message("TAV::reject()\n");
       //nothing to remove.
 
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }

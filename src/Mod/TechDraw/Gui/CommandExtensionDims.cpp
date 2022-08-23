@@ -557,7 +557,7 @@ void execPosHorizChainDimension(Gui::Command* cmd) {
     if (!_checkSelection(cmd, selection, "TechDraw PosHorizChainDimension")) {
         return;
     }
-    
+
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Pos Horiz Chain Dim"));
     std::vector<TechDraw::DrawViewDimension*> validDimension;
     validDimension = _getDimensions(selection, "DistanceX");
@@ -2287,7 +2287,7 @@ namespace TechDrawGui {
         objs.push_back(objFeat);
         subs.push_back(startVertex);
         subs.push_back(endVertex);
-        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')", FeatName.c_str());
+        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
         cmd->doCommand(cmd->Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), dimType.c_str());
         dim = dynamic_cast<TechDraw::DrawViewDimension*>(cmd->getDocument()->getObject(FeatName.c_str()));
         if (!dim)

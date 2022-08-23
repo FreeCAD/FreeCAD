@@ -95,13 +95,13 @@ DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(Source,(nullptr),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
-    ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup,App::Prop_None,
+    ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()), vgroup, App::Prop_None, "The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup, App::Prop_None,
                                             "Embedded Pat hatch file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(NamePattern,(prefGeomHatchName()),vgroup,App::Prop_None,"The name of the pattern");
-    ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"GeomHatch pattern size adjustment");
+    ADD_PROPERTY_TYPE(NamePattern, (prefGeomHatchName()), vgroup, App::Prop_None, "The name of the pattern");
+    ADD_PROPERTY_TYPE(ScalePattern, (1.0), vgroup, App::Prop_None, "GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
 
     m_saveFile = "";
@@ -110,10 +110,6 @@ DrawGeomHatch::DrawGeomHatch()
     std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
     FilePattern.setFilter(patFilter);
 
-}
-
-DrawGeomHatch::~DrawGeomHatch()
-{
 }
 
 void DrawGeomHatch::onChanged(const App::Property* prop)
@@ -212,7 +208,7 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile()
 {
     std::string fileSpec = PatIncluded.getValue();
     std::string myPattern = NamePattern.getValue();
-    return getDecodedSpecsFromFile(fileSpec,myPattern);
+    return getDecodedSpecsFromFile(fileSpec, myPattern);
 }
 
 
@@ -223,10 +219,10 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
     std::vector<PATLineSpec> result;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n",fileSpec.c_str());
+        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
         return result;
     }
-    result = PATLineSpec::getSpecsForPattern(fileSpec,myPattern);
+    result = PATLineSpec::getSpecsForPattern(fileSpec, myPattern);
 
     return result;
 }
@@ -240,7 +236,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed 
         Base::Console().Log("DGH::getTrimmedLines - no source geometry\n");
         return result;
     }
-    return getTrimmedLines(source, m_lineSets,i, ScalePattern.getValue());
+    return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue());
 }
 
 /* static */
@@ -252,7 +248,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
     std::vector<LineSet> result;
     gp_Pln p;
     Base::Vector3d vfc = DrawUtil::getFaceCenter(f);
-    gp_Pnt fc(vfc.x, vfc.y, vfc.z); 
+    gp_Pnt fc(vfc.x, vfc.y, vfc.z);
     double dir = -1.0;
     if (fc.Z() < 0.0) {
         dir = -dir;
@@ -260,7 +256,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     Base::Vector3d offset = stdZ * p.Distance(fc) * dir;
 
-    //f may be above or below paper plane and must be moved so Common operation in 
+    //f may be above or below paper plane and must be moved so Common operation in
     //getTrimmedLines succeeds
     TopoDS_Shape moved = TechDraw::moveShape(f,
                                               offset);
@@ -275,7 +271,7 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
 //! get hatch lines trimmed to face outline
 std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::vector<LineSet> lineSets, int iface, double scale )
 {
-    TopoDS_Face face = extractFace(source,iface);
+    TopoDS_Face face = extractFace(source, iface);
     std::vector<LineSet> result = getTrimmedLines(source,
                                                lineSets,
                                                face,
@@ -314,7 +310,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
            builder.Add(grid, c);
         }
 
-        //Common(Compound,Face)
+        //Common(Compound, Face)
         BRepAlgoAPI_Common mkCommon(face, grid);
         if ((!mkCommon.IsDone())  ||
             (mkCommon.Shape().IsNull()) ) {
@@ -336,7 +332,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         for ( int i = 1 ; i <= mapOfEdges.Extent() ; i++ ) {           //remember, TopExp makes no promises about the order it finds edges
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges(i));
             if (edge.IsNull()) {
-                Base::Console().Log("INFO - DGH::getTrimmedLines - edge: %d is NULL\n",i);
+                Base::Console().Log("INFO - DGH::getTrimmedLines - edge: %d is NULL\n", i);
                 continue;
             }
             resultEdges.push_back(edge);
@@ -347,7 +343,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         for (auto& e: resultEdges) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
-                Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n",i);
+                Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n", i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -365,8 +361,8 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 {
     std::vector<TopoDS_Edge> result;
 
-    double minX,maxX,minY,maxY,minZ,maxZ;
-    b.Get(minX,minY,minZ,maxX,maxY,maxZ);
+    double minX, maxX, minY, maxY, minZ, maxZ;
+    b.Get(minX, minY, minZ, maxX, maxY, maxZ);
 
     Base::Vector3d start;
     Base::Vector3d end;
@@ -392,9 +388,9 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 
         // make repeats
         for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(minX,yStart + float(i)*interval,0);
-            Base::Vector3d newEnd(maxX,yStart + float(i)*interval,0);
-            TopoDS_Edge newLine = makeLine(newStart,newEnd);
+            Base::Vector3d newStart(minX, yStart + float(i)*interval, 0);
+            Base::Vector3d newEnd(maxX, yStart + float(i)*interval, 0);
+            TopoDS_Edge newLine = makeLine(newStart, newEnd);
             result.push_back(newLine);
         }
     } else if ((angle == 90.0)  ||
@@ -408,14 +404,14 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 
         // make repeats
         for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(xStart + float(i)*interval,minY,0);
-            Base::Vector3d newEnd(xStart + float(i)*interval,maxY,0);
-            TopoDS_Edge newLine = makeLine(newStart,newEnd);
+            Base::Vector3d newStart(xStart + float(i)*interval, minY, 0);
+            Base::Vector3d newEnd(xStart + float(i)*interval, maxY, 0);
+            TopoDS_Edge newLine = makeLine(newStart, newEnd);
             result.push_back(newLine);
         }
 //TODO: check if this makes 2-3 extra lines.  might be some "left" lines on "right" side of vv
     } else if (angle > 0) {      //oblique  (bottom left -> top right)
-        //ex: 60,0,0,0,4.0,25,-25
+        //ex: 60, 0,0, 0,4.0, 25, -25
 //        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle > 0\n");
         double xLeftAtom = origin.x + (minY - origin.y)/slope;                  //the "atom" is the fill line that passes through the
                                                                                 //pattern-origin (not necc. R2 origin)
@@ -429,13 +425,13 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 
         //make repeats
         for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(leftStartX + (float(i) *  interval),minY,0);
-            Base::Vector3d newEnd (leftEndX + (float(i) * interval),maxY,0);
-            TopoDS_Edge newLine = makeLine(newStart,newEnd);
+            Base::Vector3d newStart(leftStartX + (float(i) *  interval), minY, 0);
+            Base::Vector3d newEnd (leftEndX + (float(i) * interval), maxY, 0);
+            TopoDS_Edge newLine = makeLine(newStart, newEnd);
             result.push_back(newLine);
         }
     } else {    //oblique (bottom right -> top left)
-        // ex: -60,0,0,0,4.0,25.0,-12.5,12.5,-6
+        // ex: -60, 0,0, 0,4.0, 25.0, -12.5, 12.5, -6
 //        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle < 0\n");
         double xRightAtom = origin.x + ((minY - origin.y)/slope);         //x-coord of left end of Atom line
         double xLeftAtom = origin.x + ((maxY - origin.y)/slope);          //x-coord of right end of Atom line
@@ -447,9 +443,9 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 
         // make repeats
         for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(leftStartX + float(i)*interval,minY,0);
-            Base::Vector3d newEnd(leftEndX + float(i)*interval,maxY,0);
-            TopoDS_Edge newLine = makeLine(newStart,newEnd);
+            Base::Vector3d newStart(leftStartX + float(i)*interval, minY, 0);
+            Base::Vector3d newEnd(leftEndX + float(i)*interval, maxY, 0);
+            TopoDS_Edge newLine = makeLine(newStart, newEnd);
             result.push_back(newLine);
         }
     }
@@ -460,11 +456,11 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
 {
     TopoDS_Edge result;
-    gp_Pnt start(s.x,s.y,0.0);
-    gp_Pnt end(e.x,e.y,0.0);
+    gp_Pnt start(s.x, s.y, 0.0);
+    gp_Pnt end(e.x, e.y, 0.0);
     TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(start);
     TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(end);
-    BRepBuilderAPI_MakeEdge makeEdge1(v1,v2);
+    BRepBuilderAPI_MakeEdge makeEdge1(v1, v2);
     result = makeEdge1.Edge();
     return result;
 }
@@ -473,7 +469,7 @@ TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
 //! these will be clipped to shape on the gui side
 std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
 {
-//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n",fdx);
+//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n", fdx);
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||
@@ -482,7 +478,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         return result;
     }
 
-    TopoDS_Face face = extractFace(source,fdx);
+    TopoDS_Face face = extractFace(source, fdx);
 
     Bnd_Box bBox;
     BRepBndLib::AddOptimal(face, bBox);
@@ -496,7 +492,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
-                Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n",i);
+                Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n", i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -519,9 +515,9 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     std::vector<TopoDS_Wire> faceWires = source->getWireForFace(iface);
 
     //build face(s) from geometry
-    gp_Pnt gOrg(0.0,0.0,0.0);
-    gp_Dir gDir(0.0,0.0,1.0);
-    gp_Pln plane(gOrg,gDir);
+    gp_Pnt gOrg(0.0, 0.0, 0.0);
+    gp_Dir gDir(0.0, 0.0, 1.0);
+    gp_Pln plane(gOrg, gDir);
 
     BRepBuilderAPI_MakeFace mkFace(plane, faceWires.front(), true);
     std::vector<TopoDS_Wire>::iterator itWire = ++faceWires.begin();            //starting with second wire
@@ -538,7 +534,7 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     try {
         // mirror about the Y axis
         gp_Trsf mirrorTransform;
-        mirrorTransform.SetMirror( gp_Ax2(gp_Pnt(0.0,0.0,0.0), gp_Dir(0, 1, 0)) );
+        mirrorTransform.SetMirror( gp_Ax2(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0, 1, 0)) );
         BRepBuilderAPI_Transform mkTrf(face, mirrorTransform);
         temp = mkTrf.Shape();
     }
@@ -553,7 +549,7 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
 PyObject *DrawGeomHatch::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
-        PythonObject = Py::Object(new DrawGeomHatchPy(this),true);
+        PythonObject = Py::Object(new DrawGeomHatchPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -570,7 +566,7 @@ void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
     }
 }
 
-void DrawGeomHatch::onDocumentRestored() 
+void DrawGeomHatch::onDocumentRestored()
 {
 //    Base::Console().Message("DGH::onDocumentRestored()\n");
     if (PatIncluded.isEmpty()) {
@@ -636,7 +632,7 @@ std::string DrawGeomHatch::prefGeomHatchName()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
     std::string defaultNamePattern = "Diamond";
-    std::string result = hGrp->GetASCII("NamePattern",defaultNamePattern.c_str());
+    std::string result = hGrp->GetASCII("NamePattern", defaultNamePattern.c_str());
     if (result.empty()) {
         result = defaultNamePattern;
     }
@@ -648,7 +644,7 @@ App::Color DrawGeomHatch::prefGeomHatchColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000));
     return fcColor;
 }
 

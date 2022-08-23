@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_GEOMETRYOBJECT_H
-#define _TECHDRAW_GEOMETRYOBJECT_H
+#ifndef TECHDRAW_GEOMETRYOBJECT_H
+#define TECHDRAW_GEOMETRYOBJECT_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -62,7 +62,7 @@ TopoDS_Shape TechDrawExport mirrorShapeVec(const TopoDS_Shape &input,
                              double scale = 1.0);
 
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
-                        const gp_Pnt& inputCenter = gp_Pnt(0.0,0.0,0.0),
+                        const gp_Pnt& inputCenter = gp_Pnt(0.0, 0.0, 0.0),
                         double scale = 1.0);
 
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
@@ -111,7 +111,7 @@ public:
     const BaseGeomPtrVector & getEdgeGeometry() const { return edgeGeom; }
     const BaseGeomPtrVector getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<FacePtr>     & getFaceGeometry() const { return faceGeom; }
-    
+
     void setVertexGeometry(std::vector<VertexPtr> newVerts) {vertexGeom = newVerts; }
     void setEdgeGeometry(BaseGeomPtrVector newGeoms) {edgeGeom = newGeoms; }
 

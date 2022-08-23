@@ -54,13 +54,10 @@
 #include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
 
 #include "QGSPage.h"
-#include "QGVPage.h"
 #include "QGIView.h"
-#include "QGIPrimPath.h"
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "QGTracker.h"
-#include "QGEPath.h"
 #include "Rez.h"
 
 #include "TaskCosVertex.h"
@@ -101,10 +98,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_trackerMode = QGTracker::TrackerMode::Point;
 }
 
-TaskCosVertex::~TaskCosVertex()
-{
-}
-
 void TaskCosVertex::updateTask()
 {
     //    blockUpdate = true;
@@ -112,9 +105,9 @@ void TaskCosVertex::updateTask()
     //    blockUpdate = false;
 }
 
-void TaskCosVertex::changeEvent(QEvent* e)
+void TaskCosVertex::changeEvent(QEvent* event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -162,9 +155,9 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 
 
 //********** Tracker routines *******************************************************************
-void TaskCosVertex::onTrackerClicked(bool b)
+void TaskCosVertex::onTrackerClicked(bool clicked)
 {
-    Q_UNUSED(b);
+    Q_UNUSED(clicked);
 //    Base::Console().Message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
 
@@ -246,7 +239,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
         x += Rez::guiX(dpg->X.getValue());
         y += Rez::guiX(dpg->Y.getValue());
     }
-    //x,y are scene pos of dvp/dpgi
+    //x, y are scene pos of dvp/dpgi
 
     QPointF basePosScene(x, -y);                 //base position in scene coords
     QPointF displace = dragEnd - basePosScene;
@@ -276,11 +269,11 @@ void TaskCosVertex::removeTracker()
     }
 }
 
-void TaskCosVertex::setEditCursor(QCursor c)
+void TaskCosVertex::setEditCursor(QCursor cursor)
 {
     if (m_baseFeat) {
         QGIView* qgivBase = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
-        qgivBase->setCursor(c);
+        qgivBase->setCursor(cursor);
     }
 }
 
@@ -302,10 +295,10 @@ void TaskCosVertex::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskCosVertex::enableTaskButtons(bool b)
+void TaskCosVertex::enableTaskButtons(bool button)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(button);
+    m_btnCancel->setEnabled(button);
 }
 
 //******************************************************************************

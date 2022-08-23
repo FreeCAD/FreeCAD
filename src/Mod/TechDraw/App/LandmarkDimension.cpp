@@ -72,7 +72,7 @@ LandmarkDimension::LandmarkDimension()
 {
     static const char *group = "Landmark";
     //this leaves a blank entry in position 1.
-    ADD_PROPERTY_TYPE(ReferenceTags,("") , group, App::Prop_Output,"Tags of Dimension Endpoints");
+    ADD_PROPERTY_TYPE(ReferenceTags, ("") , group, App::Prop_Output, "Tags of Dimension Endpoints");
     std::vector<std::string> noTags;
     ReferenceTags.setValues(noTags);
 }
@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
             std::string tag = dvp->addReferenceVertex(loc2d);
             reprs.push_back(tag);
         }
-        ReferenceTags.setValues(reprs); 
+        ReferenceTags.setValues(reprs);
     } else {
         //update dvp referenceverts locations
         int index = 0;
@@ -146,9 +146,9 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
     }
     m_linearPoints.first = points.front();
     m_linearPoints.second = points.back();
- 
+
     //m_anglePoints.first =                  //not implemented yet
-    
+
     App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
 
 //    dvp->resetReferenceVerts();
@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
 
 Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawViewPart* dvp) const
 {
-    Base::Vector3d stdOrg(0.0,0.0,0.0);
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);
     Base::Vector3d alignedPt = pt - dvp->getOriginalCentroid();
     gp_Pnt gPt(alignedPt.x, alignedPt.y, alignedPt.z);
@@ -169,7 +169,7 @@ Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawVie
     HLRAlgo_Projector projector( viewAxis );
     gp_Pnt2d prjPnt;
     projector.Project(gPt, prjPnt);
-    Base::Vector3d result(prjPnt.X(),prjPnt.Y(), 0.0);
+    Base::Vector3d result(prjPnt.X(), prjPnt.Y(), 0.0);
     result = DrawUtil::invertY(result);
     return result;
 }
@@ -207,7 +207,7 @@ bool LandmarkDimension::checkReferences2D() const
 
 pointPair LandmarkDimension::getPointsTwoVerts()
 {
-//    Base::Console().Message("LD::getPointsTwoVerts() - %s\n",getNameInDocument());
+//    Base::Console().Message("LD::getPointsTwoVerts() - %s\n", getNameInDocument());
     pointPair result;
 
     TechDraw::DrawViewPart* dvp = getViewPart();
@@ -252,7 +252,7 @@ void LandmarkDimension::onDocumentRestored()
         std::string tag = dvp->addReferenceVertex(loc2d);
         tags.push_back(tag);
     }
-    ReferenceTags.setValues(tags); 
+    ReferenceTags.setValues(tags);
 
     m_linearPoints.first = points.front();
     m_linearPoints.second = points.back();
@@ -262,7 +262,7 @@ void LandmarkDimension::onDocumentRestored()
 
 void LandmarkDimension::unsetupObject()
 {
-    
+
 //    bool isRemoving = testStatus(App::ObjectStatus::Remove);
 //    Base::Console().Message("LD::unsetupObject - isRemove: %d status: %X\n",
 //                            isRemoving, getStatus());
@@ -282,7 +282,7 @@ void LandmarkDimension::unsetupObject()
 //{
 //    if (PythonObject.is(Py::_None())) {
 //        // ref counter is set to 1
-//        PythonObject = Py::Object(new LandmarkDimensionPy(this),true);
+//        PythonObject = Py::Object(new LandmarkDimensionPy(this), true);
 //    }
 //    return Py::new_reference_to(PythonObject);
 //}

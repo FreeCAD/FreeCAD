@@ -62,14 +62,14 @@ using namespace boost;
 template <typename Edge>
 void edgeVisitor::next_edge(Edge e)
 {
-    graph_traits<graph>::vertex_descriptor s = source(e,m_g);
-    graph_traits<graph>::vertex_descriptor t = target(e,m_g);
+    graph_traits<graph>::vertex_descriptor s = source(e, m_g);
+    graph_traits<graph>::vertex_descriptor t = target(e, m_g);
     WalkerEdge we;
     we.v1 = s;
     we.v2 = t;
     we.ed = e;
-    we.idx = get(edge_index,m_g,e);
-    //Base::Console().Message("TRACE - EV::next_Edge - visiting (%d,%d) idx: %d\n",s,t,we.idx);
+    we.idx = get(edge_index, m_g, e);
+    //Base::Console().Message("TRACE - EV::next_Edge - visiting (%d, %d) idx: %d\n", s,t, we.idx);
     wireEdges.push_back(we);
 }
 
@@ -118,8 +118,8 @@ bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge>& edges)
     //Base::Console().Message("TRACE -EW::loadEdges(we)\n");
     int idx = 0;
     for (auto& e: edges) {
-        std::pair<edge_t,bool> p;
-        p = add_edge(e.v1,e.v2,m_g);
+        std::pair<edge_t, bool> p;
+        p = add_edge(e.v1, e.v2, m_g);
         e.ed = p.first;
         e.idx = idx;
         idx++;
@@ -142,7 +142,7 @@ bool EdgeWalker::loadEdges(std::vector<TopoDS_Edge> edges)
     std::vector<WalkerEdge>  we  = makeWalkerEdges(edges, verts);
     loadEdges(we);
 
-    m_embedding = makeEmbedding(edges,verts);
+    m_embedding = makeEmbedding(edges, verts);
 
     return true;
 }
@@ -204,10 +204,10 @@ bool EdgeWalker::perform()
         ss << "EW::perform - obstructing edges: ";
         for(ki = kEdges.begin(); ki != ki_end; ++ki) {
             e1 = *ki;
-            ss << boost::get(edge_index,m_g,e1) << ",";
+            ss << boost::get(edge_index, m_g, e1) << ", ";
         }
         ss << std::endl;
-        Base::Console().Log("LOG - %s\n",ss.str().c_str());
+        Base::Console().Log("LOG - %s\n", ss.str().c_str());
         return false;
     }
 
@@ -316,9 +316,9 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
         bool addv1 = true;
         bool addv2 = true;
         for (const auto& v:uniqueVert) {
-            if (DrawUtil::isSamePoint(v,v1,EWTOLERANCE))
+            if (DrawUtil::isSamePoint(v, v1, EWTOLERANCE))
                 addv1 = false;
-            if (DrawUtil::isSamePoint(v,v2,EWTOLERANCE))
+            if (DrawUtil::isSamePoint(v, v2, EWTOLERANCE))
                 addv2 = false;
         }
         if (addv1)
@@ -348,7 +348,7 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
         walkerEdges.push_back(we);
     }
 
-    //Base::Console().Message("TRACE - EW::makeWalkerEdges - returns we: %d\n",walkerEdges.size());
+    //Base::Console().Message("TRACE - EW::makeWalkerEdges - returns we: %d\n", walkerEdges.size());
     return walkerEdges;
 }
 
@@ -358,7 +358,7 @@ int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uni
     int idx = 0;
     int result = 0;
     for(auto& v:uniqueVert) {                    //we're always going to find vx, right?
-        if (DrawUtil::isSamePoint(v,vx,EWTOLERANCE)) {
+        if (DrawUtil::isSamePoint(v, vx, EWTOLERANCE)) {
             result = idx;
             break;
         }
@@ -375,7 +375,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
             closedWires.push_back(w);
         }
     }
-    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(closedWires,false);           //biggest 1st
+    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(closedWires, false);           //biggest 1st
     if (sortedWires.empty()) {
         Base::Console().Log("INFO - EW::sortStrip - no sorted Wires!\n");
         return sortedWires;                                     // might happen in the middle of changes?
@@ -395,7 +395,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w
     std::vector<TopoDS_Wire> wires = w;
     std::sort(wires.begin(), wires.end(), EdgeWalker::wireCompare);
     if (ascend) {
-        std::reverse(wires.begin(),wires.end());
+        std::reverse(wires.begin(), wires.end());
     }
     return wires;
 }
@@ -412,7 +412,7 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
                                                  const std::vector<TopoDS_Vertex> uniqueVList)
 {
 //    Base::Console().Message("TRACE - EW::makeEmbedding(edges: %d, verts: %d)\n",
-//                            edges.size(),uniqueVList.size());
+//                            edges.size(), uniqueVList.size());
     std::vector<embedItem> result;
 
     int iv = 0;
@@ -421,12 +421,12 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
         std::vector<incidenceItem> iiList;
         for (auto& e: edges) {
             double angle = 0;
-            if (DrawUtil::isFirstVert(e,v,EWTOLERANCE)) {
-                angle = DrawUtil::angleWithX(e,v,EWTOLERANCE);
+            if (DrawUtil::isFirstVert(e, v,EWTOLERANCE)) {
+                angle = DrawUtil::angleWithX(e, v,EWTOLERANCE);
                 incidenceItem ii(ie, angle, m_saveWalkerEdges[ie].ed);
                 iiList.push_back(ii);
-            } else if (DrawUtil::isLastVert(e,v,EWTOLERANCE)) {
-                angle = DrawUtil::angleWithX(e,v,EWTOLERANCE);
+            } else if (DrawUtil::isLastVert(e, v,EWTOLERANCE)) {
+                angle = DrawUtil::angleWithX(e, v,EWTOLERANCE);
                 incidenceItem ii(ie, angle, m_saveWalkerEdges[ie].ed);
                 iiList.push_back(ii);
             } else {
@@ -446,7 +446,7 @@ std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> 
 //! get incidence row as edge indices for v'th vertex
 std::vector<int> EdgeWalker::getEmbeddingRowIx(int v)
 {
-//    //Base::Console().Message("TRACE - EW::getEmbeddingRowIx(%d)\n",v);
+//    //Base::Console().Message("TRACE - EW::getEmbeddingRowIx(%d)\n", v);
     std::vector<int> result;
     embedItem ei = m_embedding[v];
     for (auto& ii: ei.incidenceList) {
@@ -458,7 +458,7 @@ std::vector<int> EdgeWalker::getEmbeddingRowIx(int v)
 //! get incidence row as edgeDescriptors for v'th vertex
 std::vector<edge_t> EdgeWalker::getEmbeddingRow(int v)
 {
-//    //Base::Console().Message("TRACE - EW::getEmbeddingRow(%d)\n",v);
+//    //Base::Console().Message("TRACE - EW::getEmbeddingRow(%d)\n", v);
       std::vector<edge_t> result;
       embedItem ei = m_embedding[v];
       for (auto& ii: ei.incidenceList) {
@@ -506,8 +506,8 @@ bool ewWire::isEqual(ewWire w2)
     if (wedges.size() != w2.wedges.size()) {
         result = false;
     } else {
-        std::sort(wedges.begin(),wedges.end(),WalkerEdge::weCompare);
-        std::sort(w2.wedges.begin(),w2.wedges.end(),WalkerEdge::weCompare);
+        std::sort(wedges.begin(), wedges.end(), WalkerEdge::weCompare);
+        std::sort(w2.wedges.begin(), w2.wedges.end(), WalkerEdge::weCompare);
         for (unsigned int i = 0; i < w2.wedges.size(); i ++) {
             if (wedges.at(i).idx != w2.wedges.at(i).idx) {
                 result = false;
@@ -587,7 +587,7 @@ std::vector<incidenceItem> embedItem::sortIncidenceList (std::vector<incidenceIt
     std::vector< incidenceItem > tempList = list;
     std::sort(tempList.begin(), tempList.end(), incidenceItem::iiCompare);
     if (ascend) {
-        std::reverse(tempList.begin(),tempList.end());
+        std::reverse(tempList.begin(), tempList.end());
     }
     return tempList;
 }

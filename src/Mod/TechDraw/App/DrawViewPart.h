@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewPart_h_
-#define _DrawViewPart_h_
+#ifndef DrawViewPart_h_
+#define DrawViewPart_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -110,7 +110,6 @@ public:
     App::PropertyInteger  IsoCount;
 
     short mustExecute() const override;
-    void onDocumentRestored() override;
     App::DocumentObjectExecReturn *execute() override;
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewPart";
@@ -162,7 +161,7 @@ public:
     bool handleFaces();
 
     bool isUnsetting() { return nowUnsetting; }
-    
+
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
 
     virtual TopoDS_Shape getSourceShape() const;
@@ -273,4 +272,4 @@ using DrawViewPartPython = App::FeaturePythonT<DrawViewPart>;
 
 } //namespace TechDraw
 
-#endif  // #ifndef _DrawViewPart_h_
+#endif  // #ifndef DrawViewPart_h_

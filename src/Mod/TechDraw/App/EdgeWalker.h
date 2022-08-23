@@ -125,7 +125,7 @@ class TechDrawExport incidenceItem
 public:
     incidenceItem() {iEdge = 0; angle = 0.0;}
     incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
-    ~incidenceItem() {}
+    ~incidenceItem()  = default;
     static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);
     static bool iiEqual(const incidenceItem& i1, const incidenceItem& i2);
     int iEdge;
@@ -139,7 +139,7 @@ public:
     embedItem();
     embedItem(int i,
               std::vector<incidenceItem> list) { iVertex = i; incidenceList = list;}
-    ~embedItem() {}
+    ~embedItem()  = default;
 
     int iVertex;
     std::vector<incidenceItem> incidenceList;

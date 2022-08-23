@@ -61,7 +61,7 @@ Q_OBJECT
 
 public:
     QGIDatumLabel();
-    ~QGIDatumLabel() override = default;
+    ~QGIDatumLabel() = default;
 
     enum {Type = QGraphicsItem::UserType + 107};
     int type() const override { return Type;}
@@ -75,20 +75,17 @@ public:
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
-    
-    void setFont(QFont f);
-    QFont getFont() { return m_dimText->font(); }
-    void setDimString(QString t);
-    void setDimString(QString t, qreal maxWidth);
-    void setUnitString(QString t);
+
+    void setFont(QFont font);
+    QFont getFont() const { return m_dimText->font(); }
+    void setDimString(QString text);
+    void setDimString(QString text, qreal maxWidth);
+    void setUnitString(QString text);
     void setToleranceString();
     void setPrettySel();
     void setPrettyPre();
     void setPrettyNormal();
-    void setColor(QColor c);
-
-    bool verticalSep;
-    std::vector<int> seps;
+    void setColor(QColor color);
 
     QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -98,14 +95,13 @@ public:
     void setTolTextUnder(QGCustomText* newTol) { m_tolTextOver = newTol; }
 
     double getTolAdjust();
-/*    bool hasHover;*/
-    QGIViewDimension* parent;
 
-    bool isFramed() { return m_isFramed; }
+    bool isFramed() const { return m_isFramed; }
     void setFramed(bool framed) { m_isFramed = framed; }
 
-    double getLineWidth() { return m_lineWidth; }
+    double getLineWidth() const { return m_lineWidth; }
     void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
+    void setQDim(QGIViewDimension* qDim) { parent = qDim;}
 
 Q_SIGNALS:
     void setPretty(int state);
@@ -121,11 +117,23 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
+    int getPrecision();
+
+    bool getVerticalSep() const { return verticalSep; }
+    void setVerticalSep(bool sep) { verticalSep = sep; }
+    std::vector<int> getSeps() const { return seps; }
+    void setSeps(std::vector<int> newSeps) { seps = newSeps; }
+
+private:
+    bool verticalSep;
+    std::vector<int> seps;
+
+    QGIViewDimension* parent;
+
     QGCustomText* m_dimText;
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
-    int getPrecision();
     QColor m_colNormal;
     bool m_ctrl;
 
@@ -136,7 +144,7 @@ protected:
     double m_lineWidth;
 
     int m_dragState;
-    
+
 private:
 };
 
@@ -150,7 +158,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 106};
 
     explicit QGIViewDimension();
-    ~QGIViewDimension() override = default;
+    ~QGIViewDimension() = default;
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const override { return Type;}
@@ -159,19 +167,19 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
 
-    TechDraw::DrawViewDimension *dvDimension;
     void drawBorder() override;
     void updateView(bool update = false) override;
-    virtual QColor prefNormalColor();
+    QColor prefNormalColor();
     QString getLabelText();
     void setPrettyPre();
     void setPrettySel();
     void setPrettyNormal();
 
-    void setGroupSelection(bool b) override;
-    virtual QGIDatumLabel* getDatumLabel() { return datumLabel; }
+    void setGroupSelection(bool isSelected) override;
+    virtual QGIDatumLabel* getDatumLabel() const { return datumLabel; }
 
     void setNormalColorAll();
+    TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
 
 public Q_SLOTS:
     void onPrettyChanged(int state);
@@ -182,7 +190,6 @@ public Q_SLOTS:
     void updateDim();
 
 protected:
-
     void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
     void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
@@ -256,7 +263,7 @@ protected:
     void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
-    
+
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens();
@@ -265,32 +272,23 @@ protected:
     Base::Vector3d findIsoExt(Base::Vector3d isoDir) const;
     QString getPrecision();
 
-    bool hasHover;
-    QGIDatumLabel* datumLabel;                                         //dimension text
-    QGIDimLines* dimLines;                                       //dimension lines + extension lines
-    QGIArrow* aHead1;
-    QGIArrow* aHead2;
-    //QGICMark* centerMark
-    double m_lineWidth;
-
     void arrowPositionsToFeature(const Base::Vector2d positions[]) const;
-    void makeMarkC(double x, double y, QColor c = Qt::red) const;
-
+    void makeMarkC(double xPos, double yPos, QColor color = Qt::red) const;
 
 private:
-    static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
-    static inline Base::BoundBox2d fromQtGui(const QRectF &r)
-                                       { return Base::BoundBox2d(Rez::appX(r.left()), -Rez::appX(r.top()),
-                                                                 Rez::appX(r.right()), -Rez::appX(r.bottom())); }
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &vec3) { return {vec3.x, -vec3.y}; }
+    static inline Base::BoundBox2d fromQtGui(const QRectF &rect)
+                                       { return { Rez::appX(rect.left()), -Rez::appX(rect.top()),
+                                                  Rez::appX(rect.right()), -Rez::appX(rect.bottom()) }; }
 
-    static inline QPointF toQtGui(const Base::Vector2d &v) { return QPointF(Rez::guiX(v.x), -Rez::guiX(v.y)); }
-    static inline QRectF toQtGui(const Base::BoundBox2d &r)
-                             { return QRectF(Rez::guiX(r.MinX), -Rez::guiX(r.MaxY),
-                                             Rez::guiX(r.Width()), Rez::guiX(r.Height())); }
+    static inline QPointF toQtGui(const Base::Vector2d &vec2) { return {Rez::guiX(vec2.x), -Rez::guiX(vec2.y)}; }
+    static inline QRectF toQtGui(const Base::BoundBox2d &rect)
+                             { return {Rez::guiX(rect.MinX), -Rez::guiX(rect.MaxY),
+                                       Rez::guiX(rect.Width()), Rez::guiX(rect.Height())}; }
 
-    static double toDeg(double a);
-    static double toQtRad(double a);
-    static double toQtDeg(double a);
+    static double toDeg(double angle);
+    static double toQtRad(double angle);
+    static double toQtDeg(double angle);
 
     double getDefaultExtensionLineOverhang() const;
     double getDefaultArrowTailLength() const;
@@ -298,8 +296,13 @@ private:
     double getDefaultIsoReferenceLineOverhang() const;
     double getDefaultAsmeHorizontalLeaderLength() const;
 
-/*    QGIView* m_parent;      //for edit dialog set up eventually*/
-
+    TechDraw::DrawViewDimension *dvDimension;
+    bool hasHover;
+    QGIDatumLabel* datumLabel;                                         //dimension text
+    QGIDimLines* dimLines;                                       //dimension lines + extension lines
+    QGIArrow* aHead1;
+    QGIArrow* aHead2;
+    double m_lineWidth;
 };
 
 } // namespace MDIViewPageGui

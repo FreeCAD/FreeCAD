@@ -26,7 +26,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp> 
+#include <boost_signals2.hpp>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -77,7 +77,7 @@ public:
 
     virtual TechDraw::DrawView* getViewObject() const;
     void showProgressMessage(const std::string featureName, const std::string text) const;
-    
+
     void onGuiRepaint(const TechDraw::DrawView* dv);
     void onProgressMessage(const TechDraw::DrawView* dv,
                          const std::string featureName,
