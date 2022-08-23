@@ -80,18 +80,18 @@ bool TaskProjection::accept()
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdis.front())->getViewer();
     SbVec3f pnt, dir;
     viewer->getNearPlane(pnt, dir);
-    float x=0, y=1,z=1;
-    dir.getValue(x,y,z);
+    float x=0, y=1, z=1;
+    dir.getValue(x, y,z);
 
     std::vector<Part::Feature*> shapes = Gui::Selection().getObjectsOfType<Part::Feature>();
     Gui::Command::openCommand("Project shape");
-    Gui::Command::addModule(Gui::Command::Doc,"TechDraw");
+    Gui::Command::addModule(Gui::Command::Doc, "TechDraw");
     for (std::vector<Part::Feature*>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
         const char* object = (*it)->getNameInDocument();
         Gui::Command::doCommand(Gui::Command::Doc,
-            "FreeCAD.ActiveDocument.addObject('TechDraw::FeatureProjection','%s_proj')", object);
+            "FreeCAD.ActiveDocument.addObject('TechDraw::FeatureProjection', '%s_proj')", object);
         Gui::Command::doCommand(Gui::Command::Doc,
-            "FreeCAD.ActiveDocument.ActiveObject.Direction=FreeCAD.Vector(%f,%f,%f)", x,y,z);
+            "FreeCAD.ActiveDocument.ActiveObject.Direction=FreeCAD.Vector(%f, %f, %f)", x, y,z);
         Gui::Command::doCommand(Gui::Command::Doc,
             "FreeCAD.ActiveDocument.ActiveObject.Source=FreeCAD.ActiveDocument.%s", object);
         Gui::Command::doCommand(Gui::Command::Doc,

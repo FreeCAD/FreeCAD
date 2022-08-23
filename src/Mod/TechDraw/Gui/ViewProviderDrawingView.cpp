@@ -56,11 +56,11 @@ ViewProviderDrawingView::ViewProviderDrawingView()
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false),group,App::Prop_None,"Keep Label on Page even if toggled off");
+    ADD_PROPERTY_TYPE(KeepLabel ,(false), group, App::Prop_None, "Keep Label on Page even if toggled off");
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
-    DisplayMode.setStatus(App::Property::Hidden,true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
@@ -194,7 +194,7 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    //only move the view on X,Y change
+    //only move the view on X, Y change
     if (prop == &(getViewObject()->X)  ||
         prop == &(getViewObject()->Y) ){
         QGIView* qgiv = getQView();
@@ -230,7 +230,7 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
     return getMDIViewPage();
 }
 
-void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
+void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
 //    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());

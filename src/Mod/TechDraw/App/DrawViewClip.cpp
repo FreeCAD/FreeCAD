@@ -50,21 +50,17 @@ DrawViewClip::DrawViewClip()
     static const char *group = "Clip Group";
     //App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
 
-    ADD_PROPERTY_TYPE(Height     ,(100),group,App::Prop_None,"The height of the view area of this clip");
-    ADD_PROPERTY_TYPE(Width      ,(100),group,App::Prop_None,"The width of the view area of this clip");
-    ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
-    ADD_PROPERTY_TYPE(Views      ,(nullptr) ,group,App::Prop_None,"The Views in this Clip group");
+    ADD_PROPERTY_TYPE(Height     ,(100), group, App::Prop_None, "The height of the view area of this clip");
+    ADD_PROPERTY_TYPE(Width      ,(100), group, App::Prop_None, "The width of the view area of this clip");
+    ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group, App::Prop_None, "Specifies if the clip frame appears on the page or not");
+    ADD_PROPERTY_TYPE(Views      ,(nullptr) ,group, App::Prop_None, "The Views in this Clip group");
     Views.setScope(App::LinkScope::Global);
 
     // hide N/A properties
-    ScaleType.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
-}
-
-DrawViewClip::~DrawViewClip()
-{
+    ScaleType.setStatus(App::Property::ReadOnly, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::ReadOnly, true);
+    Scale.setStatus(App::Property::Hidden, true);
 }
 
 void DrawViewClip::onChanged(const App::Property* prop)
@@ -164,7 +160,7 @@ PyObject *DrawViewClip::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewClipPy(this),true);
+        PythonObject = Py::Object(new DrawViewClipPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

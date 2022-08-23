@@ -48,7 +48,6 @@ private Q_SLOTS:
 private:
     void fillList(std::vector<std::string> labels, std::vector<std::string> names);
 
-private:
     Ui_DlgPageChooser* ui;
 };
 

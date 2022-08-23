@@ -45,7 +45,7 @@ DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
 
 void DlgPrefsTechDrawAdvancedImp::saveSettings()
 {
-    ui->cbDetectFaces->onSave(); 
+    ui->cbDetectFaces->onSave();
     ui->cbShowSectionEdges->onSave();
     ui->cbDebugSection->onSave();
     ui->cbDebugDetail->onSave();

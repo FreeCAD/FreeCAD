@@ -75,7 +75,7 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
 
     m_qgTextL = new QGCustomText();
     addToGroup(m_qgTextL);
-    
+
     m_qgTextR = new QGCustomText();
     addToGroup(m_qgTextR);
 
@@ -96,9 +96,9 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemStacksBehindParent, true);
-    
+
     m_colNormal = prefNormalColor();
     m_colCurrent = m_colNormal;
 }
@@ -125,27 +125,27 @@ void QGITile::draw()
     if (m_row == 0) {     //arrowSide
         double x = m_origin.x();
         double y = m_origin.y() - (m_high * 0.5);    //inverted y!!
-        setPos(x,y);
+        setPos(x, y);
     } else if (m_row == -1) {    //otherSide
         if (getAltWeld()) {
-            if (isTailRight()) { 
+            if (isTailRight()) {
                 double x = m_origin.x() + (0.5 * totalWidth); //move to right 1/2 tile width
                 double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
-                setPos(x,y);
+                setPos(x, y);
             } else {
                 double x = m_origin.x() - (0.5 * totalWidth); //move to left 1/2 tile width
                 double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
-                setPos(x,y);
+                setPos(x, y);
             }
         } else {
             double x = m_origin.x();
             double y = m_origin.y() + (m_high * 0.5);    //inverted y!!
-            setPos(x,y);
+            setPos(x, y);
         }
     } else {
         double x = m_origin.x() + m_col * totalWidth;
         double y = m_origin.y() - (m_row * m_high) - (m_high * 0.5);    //inverted y!!
-        setPos(x,y);
+        setPos(x, y);
     }
 }
 
@@ -165,7 +165,7 @@ void QGITile::makeSymbol()
         return;
    }
    m_qgSvg->setScale(getSymbolFactor());
-   m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
+   m_qgSvg->centerAt(0.0, 0.0);   //(0, 0) is based on symbol size
 }
 
 void QGITile::makeText()
@@ -284,7 +284,7 @@ void QGITile::setFont(std::string fName, double fSizePx)
 
 void QGITile::setSymbolFile(std::string s)
 {
-//    Base::Console().Message("QGIT::setSymbolFile(%s)\n",s.c_str());
+//    Base::Console().Message("QGIT::setSymbolFile(%s)\n", s.c_str());
     if (!s.empty()) {
         m_svgPath = QString::fromUtf8(s.c_str());
     }
@@ -346,7 +346,7 @@ double QGITile::getSymbolWidth() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double w = hGrp->GetFloat("SymbolSize",64);
+    double w = hGrp->GetFloat("SymbolSize", 64);
 //     symbols are only nominally 64x64. they actually have a "border" of 4 - 0.5*stroke(0.5)
 //     so we'll say effectively 62x62? 60 x 60
 //    double w = 64.0;
@@ -360,7 +360,7 @@ double QGITile::getSymbolHeight() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double h = hGrp->GetFloat("SymbolSize",64);
+    double h = hGrp->GetFloat("SymbolSize", 64);
     double fudge = 4.0;
     h = h - fudge;
 //    double h = 60.0;
@@ -373,7 +373,7 @@ double QGITile::getSymbolFactor() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    double s = hGrp->GetFloat("SymbolFactor",1.25);
+    double s = hGrp->GetFloat("SymbolFactor", 1.25);
 //    double s = 1.25;
     return s;
 }

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjectSplit_h_
-#define _DrawProjectSplit_h_
+#ifndef DrawProjectSplit_h_
+#define DrawProjectSplit_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -57,7 +57,7 @@ public:
         startAngle = endAngle = 0.0;
         idx = 0;
     }
-    ~edgeSortItem() {}
+    ~edgeSortItem()  = default;
 
     Base::Vector3d start;
     Base::Vector3d end;
@@ -101,4 +101,4 @@ using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
 
 } //namespace TechDraw
 
-#endif  // #ifndef _DrawProjectSplit_h_
+#endif  // #ifndef DrawProjectSplit_h_

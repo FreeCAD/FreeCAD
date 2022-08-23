@@ -51,20 +51,16 @@ DrawViewDraft::DrawViewDraft()
 {
     static const char *group = "Draft view";
 
-    ADD_PROPERTY_TYPE(Source ,(nullptr),group,App::Prop_None,"Draft object for this view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr), group, App::Prop_None, "Draft object for this view");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view. If Override Style is false, this value multiplies the object line width");
-    ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
-    ADD_PROPERTY_TYPE(Direction ,(0,0,1.0),group,App::Prop_None,"Projection direction. The direction you are looking from.");
-    ADD_PROPERTY_TYPE(Color,(0.0f,0.0f,0.0f),group,App::Prop_None,"The default color of text and lines");
-    ADD_PROPERTY_TYPE(LineStyle,("Solid") ,group,App::Prop_None,"A line style to use for this view. Can be Solid, Dashed, Dashdot, Dot or a SVG pattern like 0.20,0.20");
-    ADD_PROPERTY_TYPE(LineSpacing,(1.0f),group,App::Prop_None,"The spacing between lines to use for multiline texts");
-    ADD_PROPERTY_TYPE(OverrideStyle,(false),group,App::Prop_None,"If True, line color, width and style of this view will override those of rendered objects");
+    ADD_PROPERTY_TYPE(LineWidth, (0.35), group, App::Prop_None, "Line width of this view. If Override Style is false, this value multiplies the object line width");
+    ADD_PROPERTY_TYPE(FontSize, (12.0), group, App::Prop_None, "Text size for this view");
+    ADD_PROPERTY_TYPE(Direction ,(0, 0,1.0), group, App::Prop_None, "Projection direction. The direction you are looking from.");
+    ADD_PROPERTY_TYPE(Color, (0.0f, 0.0f, 0.0f), group, App::Prop_None, "The default color of text and lines");
+    ADD_PROPERTY_TYPE(LineStyle, ("Solid") ,group, App::Prop_None, "A line style to use for this view. Can be Solid, Dashed, Dashdot, Dot or a SVG pattern like 0.20, 0.20");
+    ADD_PROPERTY_TYPE(LineSpacing, (1.0f), group, App::Prop_None, "The spacing between lines to use for multiline texts");
+    ADD_PROPERTY_TYPE(OverrideStyle, (false), group, App::Prop_None, "If True, line color, width and style of this view will override those of rendered objects");
     ScaleType.setValue("Custom");
-}
-
-DrawViewDraft::~DrawViewDraft()
-{
 }
 
 short DrawViewDraft::mustExecute() const
@@ -100,31 +96,31 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
         std::string svgTail = getSVGTail();
         std::string FeatName = getNameInDocument();
         std::string SourceName = sourceObj->getNameInDocument();
-        // Draft.get_svg(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False)
+        // Draft.get_svg(obj, scale=1, linewidth=0.35, fontsize=12, fillstyle="shape color", direction=None, linestyle=None, color=None, linespacing=None, techdraw=False)
 
         std::stringstream paramStr;
         App::Color col = Color.getValue();
-        paramStr << ",scale=" << getScale() 
-                 << ",linewidth=" << LineWidth.getValue() 
-                 << ",fontsize=" << FontSize.getValue()
+        paramStr << ", scale=" << getScale()
+                 << ", linewidth=" << LineWidth.getValue()
+                 << ", fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here
-                 << ",direction=FreeCAD.Vector(" << Direction.getValue().x << "," << Direction.getValue().y << "," << Direction.getValue().z << ")"
-                 << ",linestyle=\"" << LineStyle.getValue() << "\""
-                 << ",color=\"" << col.asHexString() << "\""
-                 << ",linespacing=" << LineSpacing.getValue()
+                 << ", direction=FreeCAD.Vector(" << Direction.getValue().x << ", " << Direction.getValue().y << ", " << Direction.getValue().z << ")"
+                 << ", linestyle=\"" << LineStyle.getValue() << "\""
+                 << ", color=\"" << col.asHexString() << "\""
+                 << ", linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
-                 << ",techdraw=True"
-                 << ",override=" << (OverrideStyle.getValue() ? "True" : "False");
+                 << ", techdraw=True"
+                 << ", override=" << (OverrideStyle.getValue() ? "True" : "False");
 
 // this is ok for a starting point, but should eventually make dedicated Draft functions that build the svg for all the special cases
 // (Arch section, etc)
 // like Draft.makeDrawingView, but we don't need to create the actual document objects in Draft, just the svg.
         Base::Interpreter().runString("import Draft");
         Base::Interpreter().runStringArg("svgBody = Draft.get_svg(App.activeDocument().%s %s)",
-                                         SourceName.c_str(),paramStr.str().c_str());
+                                         SourceName.c_str(), paramStr.str().c_str());
 //        Base::Interpreter().runString("print svgBody");
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
-                                          FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
+                                          FeatName.c_str(), svgHead.c_str(), svgTail.c_str());
         }
 
     overrideKeepUpdated(false);

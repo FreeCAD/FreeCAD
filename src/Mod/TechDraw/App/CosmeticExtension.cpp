@@ -43,32 +43,32 @@ using namespace std;
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 
-CosmeticExtension::CosmeticExtension() 
+CosmeticExtension::CosmeticExtension()
 {
     static const char *cgroup = "Cosmetics";
 
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (nullptr), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (nullptr), cgroup, App::Prop_Output, "CosmeticEdge Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr),cgroup,App::Prop_Output,"Geometry format Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr),cgroup,App::Prop_Output,"Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
 
-CosmeticExtension::~CosmeticExtension() 
+CosmeticExtension::~CosmeticExtension()
 {
 }
 
-//void CosmeticExtension::extHandleChangedPropertyName(Base::XMLReader &reader, 
-//                                                     const char* TypeName, 
+//void CosmeticExtension::extHandleChangedPropertyName(Base::XMLReader &reader,
+//                                                     const char* TypeName,
 //                                                     const char* PropName)
 //{
 //}
 
 //==============================================================================
-//CosmeticVertex x,y are stored as unscaled, but mirrored (inverted Y) values.
-//if you are creating a CV based on calculations of scaled geometry, you need to 
-//unscale x,y before creation.
+//CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
+//if you are creating a CV based on calculations of scaled geometry, you need to
+//unscale x, y before creation.
 //if you are creating a CV based on calculations of mirrored geometry, you need to
 //mirror again before creation.
 
@@ -107,7 +107,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(std::string tagSt
 // used when selecting
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCVBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCVBySelection(%s)\n", name.c_str());
     CosmeticVertex* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -122,7 +122,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCVBySelection(%d)\n", i);
@@ -159,7 +159,7 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
 std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
                                                Base::Vector3d end)
 {
-//    Base::Console().Message("CEx::addCosmeticEdge(s,e)\n");
+//    Base::Console().Message("CEx::addCosmeticEdge(s, e)\n");
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
     edges.push_back(ce);
@@ -204,7 +204,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tagString
 // used when selecting
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
     CosmeticEdge* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -214,13 +214,13 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
     TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
     if (!base)
         return result;
-    
+
     if (!base->getCosmeticTag().empty())
         result = getCosmeticEdge(base->getCosmeticTag());
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
@@ -311,7 +311,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLine(std::string tagString) co
 // used when selecting
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCLBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCLBySelection(%s)\n", name.c_str());
     CenterLine* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -326,7 +326,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCLBySelection(%d)\n", i);
@@ -392,7 +392,7 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tagString) co
 // used when selecting
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
     GeomFormat* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -409,7 +409,7 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string na
     return result;
 }
 
-//overload for index only 
+//overload for index only
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
 {
 //    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
@@ -436,7 +436,7 @@ void CosmeticExtension::removeGeomFormat(std::string delTag)
 PyObject* CosmeticExtension::getExtensionPyObject(void) {
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
-        ExtensionPythonObject = Py::Object(new CosmeticExtensionPy(this),true);
+        ExtensionPythonObject = Py::Object(new CosmeticExtensionPy(this), true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
 }

@@ -29,7 +29,6 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
-
 namespace TechDraw
 {
 class DrawPage;
@@ -55,21 +54,16 @@ class TaskCosmeticLine : public QWidget
     Q_OBJECT
 
 public:
-    TaskCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::vector<Base::Vector3d> points,
                         std::vector<bool> is3d);
-    TaskCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::string edgeName);
     ~TaskCosmeticLine() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-
-protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -86,7 +80,6 @@ private:
     TechDraw::DrawViewPart* m_partFeat;
 
     std::string m_edgeName;
-    //int m_edgeIndex;
     TechDraw::CosmeticEdge* m_ce;
     TechDraw::CosmeticEdge* m_saveCE;
     std::vector<Base::Vector3d> m_points;
@@ -100,10 +93,10 @@ class TaskDlgCosmeticLine : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::vector<Base::Vector3d> points,
                         std::vector<bool> is3d);
-    TaskDlgCosmeticLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCosmeticLine(TechDraw::DrawViewPart* partFeat,
                         std::string edgeName);
     ~TaskDlgCosmeticLine() override;
 

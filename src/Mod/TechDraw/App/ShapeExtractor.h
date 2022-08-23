@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _ShapeExtractor_h_
-#define _ShapeExtractor_h_
+#ifndef ShapeExtractor_h_
+#define ShapeExtractor_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -62,4 +62,4 @@ private:
 
 } //namespace TechDraw
 
-#endif  // #ifndef _ShapeExtractor_h_
+#endif  // #ifndef ShapeExtractor_h_

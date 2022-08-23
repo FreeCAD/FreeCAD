@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawViewDimension_h_
-#define _TechDraw_DrawViewDimension_h_
+#ifndef TechDraw_DrawViewDimension_h_
+#define TechDraw_DrawViewDimension_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -57,9 +57,9 @@ struct anglePoints
 
     anglePoints()
     {
-        ends.first  = Base::Vector3d(0.0,0.0,0.0);
-        ends.second = Base::Vector3d(0.0,0.0,0.0);
-        vertex      = Base::Vector3d(0.0,0.0,0.0);
+        ends.first  = Base::Vector3d(0.0, 0.0, 0.0);
+        ends.second = Base::Vector3d(0.0, 0.0, 0.0);
+        vertex      = Base::Vector3d(0.0, 0.0, 0.0);
     }
 
     anglePoints(const anglePoints& ap)
@@ -87,16 +87,16 @@ struct arcPoints
     Base::Vector3d midArc;
     bool arcCW;
 
-    arcPoints() 
+    arcPoints()
     {
          isArc = false;
          radius = 0.0;
-         center         = Base::Vector3d(0.0,0.0,0.0);
-         onCurve.first  = Base::Vector3d(0.0,0.0,0.0);
-         onCurve.second = Base::Vector3d(0.0,0.0,0.0);
-         arcEnds.first  = Base::Vector3d(0.0,0.0,0.0);
-         arcEnds.second = Base::Vector3d(0.0,0.0,0.0);
-         midArc         = Base::Vector3d(0.0,0.0,0.0);
+         center         = Base::Vector3d(0.0, 0.0, 0.0);
+         onCurve.first  = Base::Vector3d(0.0, 0.0, 0.0);
+         onCurve.second = Base::Vector3d(0.0, 0.0, 0.0);
+         arcEnds.first  = Base::Vector3d(0.0, 0.0, 0.0);
+         arcEnds.second = Base::Vector3d(0.0, 0.0, 0.0);
+         midArc         = Base::Vector3d(0.0, 0.0, 0.0);
          arcCW = false;
     }
 
@@ -193,7 +193,7 @@ public:
     QStringList getPrefixSuffixSpec(QString fSpec);
 
     virtual DrawViewPart* getViewPart() const;
-    QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
+    QRectF getRect() const override { return {0, 0, 1, 1}; }          //pretend dimensions always fit!
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
     static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();

@@ -59,7 +59,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 232};
 
     explicit QGILeaderLine();
-    ~QGILeaderLine() override = default;
+    ~QGILeaderLine() = default;
 
     int type() const override { return Type;}
     void paint( QPainter * painter,
@@ -77,7 +77,7 @@ public:
 
     void abandonEdit();
     void closeEdit();
-    
+
     double getLineWidth();
     double getEdgeFuzz() const;
 
@@ -93,7 +93,7 @@ public:
     void setLeaderFeature(TechDraw::DrawLeaderLine* feat);
 
 public Q_SLOTS:
-    void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
+    void onLineEditFinished(QPointF tipDisplace, std::vector<QPointF> points);    //QGEPath is finished editing points
     void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
@@ -107,15 +107,15 @@ protected:
 
     QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    std::vector<QPointF> m_pathPoints;
-    
+
     void saveState();
     void restoreState();
 
-protected:
-    QColor getNormalColor() override;
+    QColor prefNormalColor();
     void setNormalColorAll();
 
+private:
+    std::vector<QPointF> m_pathPoints;
     QGraphicsItem* m_parentItem;
     QGIPrimPath* m_line;               //actual leader line
     double m_lineWidth;

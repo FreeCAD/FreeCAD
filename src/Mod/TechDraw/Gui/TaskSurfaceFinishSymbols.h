@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2022 edi                                                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -29,6 +29,8 @@
 #include <Gui/TaskView/TaskView.h>
 
 class QComboBox;
+class QLineEdit;
+class QGraphicsScene;
 
 namespace App {
 class DocumentObject;
@@ -50,10 +52,9 @@ class Face;
 
 namespace TechDrawGui
 {
-class QGVPage;
+class QGSPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class ViewProviderViewPart;
 class Ui_TaskSurfaceFinishSymbols;
 
@@ -65,7 +66,7 @@ class SvgString
 public:
 
     SvgString(int width, int height);
-    void addLine(int x1, int y1, int x2, int y2);
+    void addLine(int xStart, int yStart, int xEnd, int yEnd);
     void addCircle(int xCenter, int yCenter, int radius);
     void addText(int xText, int yText, std::string text);
     std::string finish();
@@ -78,25 +79,14 @@ class TaskSurfaceFinishSymbols : public QWidget
 
 public:
     explicit TaskSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
-    ~TaskSurfaceFinishSymbols() override;
+    ~TaskSurfaceFinishSymbols() = default;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-    
-private Q_SLOTS:
-    void onIconChanged();
-    void onISO();
-    void onASME();
-
-protected Q_SLOTS:
 
 protected:
-    void changeEvent(QEvent *e) override;
-
+    void changeEvent(QEvent *event) override;
     void setUiEdit();
 
 private:
@@ -105,7 +95,8 @@ private:
     QPixmap baseSymbol(symbolType type);
     std::string completeSymbol();
     TechDraw::DrawViewPart* selectedView;
-    QGraphicsScene* symbolScene;
+    QGraphicsScene* symbolScene;     //note this is not QGSPage, but another scene only used to
+                                     //display symbols in this task's ui
     std::vector<std::string> raValues, laySymbols, roughGrades;
     QGraphicsProxyWidget *proxyRA, *proxySamLength, *proxyMinRough, *proxyMaxRough;
     QLineEdit *leMethod, *leSamLength, *leAddition;
@@ -113,6 +104,12 @@ private:
     symbolType activeIcon;
     bool isISO;
     std::unique_ptr<Ui_TaskSurfaceFinishSymbols> ui;
+
+private Q_SLOTS:
+    void onIconChanged();
+    void onISO();
+    void onASME();
+
 }; // class TaskSurfaceFinishSymbols
 
 class TaskDlgSurfaceFinishSymbols : public Gui::TaskView::TaskDialog
@@ -123,7 +120,6 @@ public:
     explicit TaskDlgSurfaceFinishSymbols(TechDraw::DrawViewPart* view);
     ~TaskDlgSurfaceFinishSymbols() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -133,12 +129,9 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
-
-protected:
 
 private:
     TaskSurfaceFinishSymbols* widget;

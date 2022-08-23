@@ -240,7 +240,7 @@ class TechDrawExport AOC: public Circle
         bool largeArc;
 
         bool isOnArc(Base::Vector3d v);
-        bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
+        bool intersectsArc(Base::Vector3d p1, Base::Vector3d p2);
         double distToArc(Base::Vector3d p);
 };
 
@@ -277,7 +277,7 @@ class TechDrawExport BSpline: public BaseGeom
         bool isCircle();
         TopoDS_Edge asCircle(bool& isArc);
         void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
-        bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
+        bool intersectsArc(Base::Vector3d p1, Base::Vector3d p2);
         std::vector<BezierSegment> segments;
 };
 
@@ -329,7 +329,7 @@ class TechDrawExport Vertex
         explicit Vertex(const Vertex* v);
         Vertex(double x, double y);
         explicit Vertex(Base::Vector3d v);
-        virtual ~Vertex() {}
+        virtual ~Vertex()  = default;
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
@@ -342,7 +342,7 @@ class TechDrawExport Vertex
         bool isCenter;
         TopoDS_Vertex occVertex;
         bool isEqual(const Vertex& v, double tol);
-        Base::Vector3d point() const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
+        Base::Vector3d point() const { return Base::Vector3d(pnt.x, pnt.y, 0.0); }
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
         bool cosmetic;
         int cosmeticLink;                 //deprec. use cosmeticTag
@@ -380,7 +380,7 @@ class TechDrawExport GeometryUtils
 
         /// Find an unused geom starts or ends at atPoint.
         /*!
-         * returns index[1:geoms.size()),reversed [true,false]
+         * returns index[1:geoms.size()), reversed [true, false]
          */
         static ReturnType nextGeom( Base::Vector3d atPoint,
                                     std::vector<TechDraw::BaseGeomPtr> geoms,

@@ -62,7 +62,7 @@ public:
     double prefTileTextAdjust();
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
-    
+
 };
 
 } // namespace TechDrawGui

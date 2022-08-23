@@ -111,13 +111,13 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape copyShape = BuilderCopy.Shape();
 
-    gp_Pnt inputCenter(0,0,0);
+    gp_Pnt inputCenter(0, 0,0);
     TopoDS_Shape scaledShape;
     scaledShape = TechDraw::scaleShape(copyShape,
                                                scale);
-//    gp_Ax2 viewAxis = TechDraw::getViewAxis(Base::Vector3d(0.0,0.0,0.0),direction);
-    gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(Base::Vector3d(0.0,0.0,0.0),direction);
-    TechDraw::GeometryObject* go = buildGeometryObject(scaledShape,viewAxis);
+//    gp_Ax2 viewAxis = TechDraw::getViewAxis(Base::Vector3d(0.0, 0.0, 0.0), direction);
+    gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(Base::Vector3d(0.0, 0.0, 0.0), direction);
+    TechDraw::GeometryObject* go = buildGeometryObject(scaledShape, viewAxis);
     result = getEdges(go);
 
     delete go;
@@ -128,7 +128,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
                                                                         const gp_Ax2& viewAxis)
 {
-    TechDraw::GeometryObject* geometryObject = new TechDraw::GeometryObject("DrawProjectSplit",nullptr);
+    TechDraw::GeometryObject* geometryObject = new TechDraw::GeometryObject("DrawProjectSplit", nullptr);
 
     if (geometryObject->usePolygonHLR()){
         geometryObject->projectShapeWithPolygonAlgo(shape,
@@ -138,7 +138,7 @@ TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape sha
         geometryObject->projectShape(shape,
             viewAxis);
     }
-        
+
     geometryObject->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                                     true);
     geometryObject->extractGeometry(TechDraw::ecOUTLINE,
@@ -149,7 +149,7 @@ TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape sha
 //! get the projected edges with all their new intersections.
 std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* geometryObject)
 {
-    const std::vector<TechDraw::BaseGeomPtr>& goEdges = geometryObject->getVisibleFaceEdges(true,true);
+    const std::vector<TechDraw::BaseGeomPtr>& goEdges = geometryObject->getVisibleFaceEdges(true, true);
     std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
@@ -184,12 +184,12 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* ge
             continue;
         }
         if (DrawUtil::isZeroEdge(*itOuter)) {
-            Base::Console().Message("DPS::extractFaces - outerEdge: %d is ZeroEdge\n",iOuter);   //this is not finding ZeroEdges
+            Base::Console().Message("DPS::extractFaces - outerEdge: %d is ZeroEdge\n", iOuter);   //this is not finding ZeroEdges
             continue;  //skip zero length edges. shouldn't happen ;)
         }
         int iInner = 0;
         std::vector<TopoDS_Edge>::iterator itInner = faceEdges.begin();
-        for (; itInner != faceEdges.end(); ++itInner,iInner++) {
+        for (; itInner != faceEdges.end(); ++itInner, iInner++) {
             if (iInner == iOuter) {
                 continue;
             }
@@ -209,29 +209,29 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* ge
             }
 
             double param = -1;
-            if (isOnEdge((*itInner),v1,param,false)) {
+            if (isOnEdge((*itInner), v1, param, false)) {
                 gp_Pnt pnt1 = BRep_Tool::Pnt(v1);
                 splitPoint s1;
                 s1.i = iInner;
-                s1.v = Base::Vector3d(pnt1.X(),pnt1.Y(),pnt1.Z());
+                s1.v = Base::Vector3d(pnt1.X(), pnt1.Y(), pnt1.Z());
                 s1.param = param;
                 splits.push_back(s1);
             }
-            if (isOnEdge((*itInner),v2,param,false)) {
+            if (isOnEdge((*itInner), v2, param, false)) {
                 gp_Pnt pnt2 = BRep_Tool::Pnt(v2);
                 splitPoint s2;
                 s2.i = iInner;
-                s2.v = Base::Vector3d(pnt2.X(),pnt2.Y(),pnt2.Z());
+                s2.v = Base::Vector3d(pnt2.X(), pnt2.Y(), pnt2.Z());
                 s2.param = param;
                 splits.push_back(s2);
             }
         } //inner loop
     }   //outer loop
 
-    std::vector<splitPoint> sorted = sortSplits(splits,true);
+    std::vector<splitPoint> sorted = sortSplits(splits, true);
     auto last = std::unique(sorted.begin(), sorted.end(), DrawProjectSplit::splitEqual);  //duplicates to back
     sorted.erase(last, sorted.end());                         //remove dupls
-    std::vector<TopoDS_Edge> newEdges = splitEdges(faceEdges,sorted);
+    std::vector<TopoDS_Edge> newEdges = splitEdges(faceEdges, sorted);
 
     if (newEdges.empty()) {
         Base::Console().Log("LOG - DPS::extractFaces - no newEdges\n");
@@ -262,9 +262,9 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
         }
     }
     if (!outOfBox) {
-            double dist = DrawUtil::simpleMinDist(v,e);
+            double dist = DrawUtil::simpleMinDist(v, e);
             if (dist < 0.0) {
-                Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n",dist);
+                Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n", dist);
                 result = false;
             } else if (dist < Precision::Confusion()) {
                 const gp_Pnt pt = BRep_Tool::Pnt(v);                         //have to duplicate method 3 to get param
@@ -272,13 +272,13 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
                 const Handle(Geom_Curve) c = adapt.Curve().Curve();
                 double maxDist = 0.000001;     //magic number.  less than this gives false positives.
                 //bool found =
-                (void) GeomLib_Tool::Parameter(c,pt,maxDist,param);  //already know point it on curve
+                (void) GeomLib_Tool::Parameter(c, pt, maxDist, param);  //already know point it on curve
                 result = true;
             }
             if (result) {
                 TopoDS_Vertex v1 = TopExp::FirstVertex(e);
                 TopoDS_Vertex v2 = TopExp::LastVertex(e);
-                if (DrawUtil::isSamePoint(v,v1) || DrawUtil::isSamePoint(v,v2)) {
+                if (DrawUtil::isSamePoint(v, v1) || DrawUtil::isSamePoint(v, v2)) {
                     if (!allowEnds) {
                         result = false;
                     }
@@ -312,7 +312,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::splitEdges(std::vector<TopoDS_Edge> e
             iSplit++;
         } else if (ii > iEdge) {
             if (!edgeSplits.empty()) {                          //save *iedge's splits
-                newEdges = split1Edge(edges[iEdge],edgeSplits);
+                newEdges = split1Edge(edges[iEdge], edgeSplits);
                 result.insert(result.end(), newEdges.begin(), newEdges.end());
                 edgeSplits.clear();
             } else {
@@ -325,7 +325,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::splitEdges(std::vector<TopoDS_Edge> e
     }
 
     if (!edgeSplits.empty()) {                                           //handle last batch
-        newEdges = split1Edge(edges[iEdge],edgeSplits);
+        newEdges = split1Edge(edges[iEdge], edgeSplits);
         result.insert(result.end(), newEdges.begin(), newEdges.end());
         edgeSplits.clear();
     }
@@ -361,7 +361,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::split1Edge(TopoDS_Edge e, std::vector
     auto parms2 = parms.begin() + 1;
     std::vector<double>::iterator psecond = parms2;
     std::vector<double>::iterator pstop = parms.end();
-    for (; psecond != pstop; ++pfirst,++psecond) {
+    for (; psecond != pstop; ++pfirst, ++psecond) {
         try {
             BRepBuilderAPI_MakeEdge mkEdge(c, *pfirst, *psecond);
             if (mkEdge.IsDone()) {
@@ -381,7 +381,7 @@ std::vector<splitPoint> DrawProjectSplit::sortSplits(std::vector<splitPoint>& s,
     std::vector<splitPoint> sorted = s;
     std::sort(sorted.begin(), sorted.end(), DrawProjectSplit::splitCompare);
     if (ascend) {
-        std::reverse(sorted.begin(),sorted.end());
+        std::reverse(sorted.begin(), sorted.end());
     }
     return sorted;
 }
@@ -425,10 +425,10 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
         TopoDS_Vertex v2 = TopExp::LastVertex(e);
         item.start = DrawUtil::vertex2Vector(v1);
         item.end   = DrawUtil::vertex2Vector(v2);
-        item.startAngle = DrawUtil::angleWithX(e,v1);
-        item.endAngle = DrawUtil::angleWithX(e,v2);
+        item.startAngle = DrawUtil::angleWithX(e, v1);
+        item.endAngle = DrawUtil::angleWithX(e, v2);
         //catch reverse-duplicates
-        if (DrawUtil::vectorLess(item.end,item.start)) {
+        if (DrawUtil::vectorLess(item.end, item.start)) {
              Base::Vector3d vTemp = item.start;
              item.start  = item.end;
              item.end    = vTemp;
@@ -441,7 +441,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
         idx++;
     }
 
-    std::vector<edgeSortItem> sorted = sortEdges(temp,true);
+    std::vector<edgeSortItem> sorted = sortEdges(temp, true);
     auto last = std::unique(sorted.begin(), sorted.end(), edgeSortItem::edgeEqual);  //duplicates to back
     sorted.erase(last, sorted.end());                         //remove dupls
 
@@ -450,7 +450,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
         if (e.idx < inEdges.size()) {
             result.push_back(inEdges.at(e.idx));                  //<<< ***here
         } else {
-            Base::Console().Message("ERROR - DPS::removeDuplicateEdges - access: %d inEdges: %d\n",e.idx,inEdges.size());
+            Base::Console().Message("ERROR - DPS::removeDuplicateEdges - access: %d inEdges: %d\n", e.idx, inEdges.size());
         }
     }
     return result;
@@ -461,7 +461,7 @@ std::vector<edgeSortItem> DrawProjectSplit::sortEdges(std::vector<edgeSortItem>&
     std::vector<edgeSortItem> sorted = e;
     std::sort(sorted.begin(), sorted.end(), edgeSortItem::edgeLess);
     if (ascend) {
-        std::reverse(sorted.begin(),sorted.end());
+        std::reverse(sorted.begin(), sorted.end());
     }
     return sorted;
 }
@@ -496,7 +496,7 @@ std::string edgeSortItem::dump()
     } else if (!DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
         if (e1.endAngle < e2.endAngle) {
             result = true;
-        } 
+        }
     } else if (e1.idx < e2.idx) {
         result = true;
     }
@@ -511,8 +511,8 @@ std::string edgeSortItem::dump()
     double endDif   = (e1.end   - e2.end).Length();
     if ( (startDif < Precision::Confusion()) &&
          (endDif   < Precision::Confusion()) &&
-         (DrawUtil::fpCompare(e1.startAngle,e2.startAngle)) &&
-         (DrawUtil::fpCompare(e1.endAngle,e2.endAngle)) ) {
+         (DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) &&
+         (DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) ) {
         result = true;
     }
     return result;

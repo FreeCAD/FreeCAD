@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Grabber3d_h_
-#define _Grabber3d_h_
+#ifndef Grabber3d_h_
+#define Grabber3d_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -54,11 +54,11 @@ namespace TechDrawGui
 /// Utility functions for obtaining 3d window image
 class TechDrawGuiExport Grabber3d {
     public:
-    static double copyActiveViewToSvgFile(App::Document* appDoc, 
+    static double copyActiveViewToSvgFile(App::Document* appDoc,
                                         std::string fileSpec,
                                         double outWidth = 138.5,    //TODO: change to A4 for release
                                         double outHeight = 95.0,    //ISO A5 defaults
-                                        bool paintBackground = true, 
+                                        bool paintBackground = true,
                                         const QColor& bgcolor = QColor(Qt::white),
                                         double lineWidth = 1.0,     //1 mm
                                         double border = 0.0,        //no border
@@ -68,7 +68,7 @@ class TechDrawGuiExport Grabber3d {
 
     static void execVectorizeAction(Gui::View3DInventorViewer* viewer,
                                    SoVectorizeAction* va,
-                                   double width, double height, 
+                                   double width, double height,
                                    bool paintBackground, const QColor& bgcolor,
                                    double lineWidth, double border);
 

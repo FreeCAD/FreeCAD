@@ -59,7 +59,7 @@ DlgPrefsTechDrawDimensionsImp::~DlgPrefsTechDrawDimensionsImp()
 
 void DlgPrefsTechDrawDimensionsImp::saveSettings()
 {
-    ui->pcbStandardAndStyle->onSave(); 
+    ui->pcbStandardAndStyle->onSave();
     ui->cbGlobalDecimals->onSave();
     ui->cbShowUnits->onSave();
     ui->sbAltDecimals->onSave();

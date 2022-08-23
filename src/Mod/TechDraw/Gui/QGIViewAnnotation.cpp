@@ -74,9 +74,9 @@ QGIViewAnnotation::QGIViewAnnotation()
     m_textItem->setTextInteractionFlags(Qt::NoTextInteraction);
     //To allow on screen editing of text:
     //m_textItem->setTextInteractionFlags(Qt::TextEditorInteraction);   //this works
-    //QObject::connect(QGraphicsTextItem::document(), SIGNAL(contentsChanged()),m_textItem, SLOT(updateText()));  //not tested
+    //QObject::connect(QGraphicsTextItem::document(), SIGNAL(contentsChanged()), m_textItem, SLOT(updateText()));  //not tested
     addToGroup(m_textItem);
-    m_textItem->setPos(0.,0.);
+    m_textItem->setPos(0., 0.);
 
 }
 
@@ -144,7 +144,7 @@ void QGIViewAnnotation::drawAnnotation()
     } else if (viewAnno->TextStyle.isValue("Bold-Italic")) {
         ss << "font-weight:bold; font-style:italic; ";
     } else {
-        Base::Console().Warning("%s has invalid TextStyle\n",viewAnno->getNameInDocument());
+        Base::Console().Warning("%s has invalid TextStyle\n", viewAnno->getNameInDocument());
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
@@ -166,7 +166,7 @@ void QGIViewAnnotation::drawAnnotation()
     m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));
     QString qs = QString::fromUtf8(ss.str().c_str());
     m_textItem->setHtml(qs);
-    m_textItem->centerAt(0.,0.);
+    m_textItem->centerAt(0., 0.);
 }
 
 void QGIViewAnnotation::rotateView()

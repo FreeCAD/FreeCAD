@@ -53,7 +53,7 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp,bool mode) :
+TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode) :
     ui(new Ui_TaskGeomHatch),
     m_hatch(inHatch),
     m_Vp(inVp),
@@ -67,11 +67,6 @@ TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewP
     initUi();
 }
 
-TaskGeomHatch::~TaskGeomHatch()
-{
-}
-
-
 void TaskGeomHatch::initUi()
 {
     ui->fcFile->setFileName(QString::fromUtf8(m_file.data(), m_file.size()));
@@ -79,7 +74,7 @@ void TaskGeomHatch::initUi()
     QStringList qsNames = listToQ(names);
 
     ui->cbName->addItems(qsNames);
-    int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(),m_name.size()));
+    int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(), m_name.size()));
     if (nameIndex > -1) {
         ui->cbName->setCurrentIndex(nameIndex);
     } else {
@@ -142,7 +137,7 @@ bool TaskGeomHatch::accept()
 {
 //    Base::Console().Message("TGH::accept()\n");
     updateValues();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     m_hatch->recomputeFeature();                     //create the hatch lines
     TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(m_source);
     dv->requestPaint();
@@ -153,8 +148,8 @@ bool TaskGeomHatch::reject()
 {
     if (getCreateMode()) {
         std::string HatchName = m_hatch->getNameInDocument();
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",HatchName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", HatchName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         m_source->touch();
         m_source->getDocument()->recompute();
     } else {
@@ -200,19 +195,19 @@ void TaskGeomHatch::updateValues()
     m_Vp->WeightPattern.setValue(m_weight);
 }
 
-QStringList TaskGeomHatch::listToQ(std::vector<std::string> in)
+QStringList TaskGeomHatch::listToQ(std::vector<std::string> inList)
 {
     QStringList result;
-    for (auto& s: in) {
+    for (auto& s: inList) {
         QString qs = QString::fromUtf8(s.data(), s.size());
         result.append(qs);
     }
     return result;
 }
 
-void TaskGeomHatch::changeEvent(QEvent *e)
+void TaskGeomHatch::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -222,7 +217,7 @@ TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui
     TaskDialog(),
     viewProvider(nullptr)
 {
-    widget  = new TaskGeomHatch(inHatch,inVp, mode);
+    widget  = new TaskGeomHatch(inHatch, inVp, mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_TreeView"),
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
@@ -233,9 +228,9 @@ TaskDlgGeomHatch::~TaskDlgGeomHatch()
 {
 }
 
-void TaskDlgGeomHatch::setCreateMode(bool b)
+void TaskDlgGeomHatch::setCreateMode(bool mode)
 {
-    widget->setCreateMode(b);
+    widget->setCreateMode(mode);
 }
 
 void TaskDlgGeomHatch::update()

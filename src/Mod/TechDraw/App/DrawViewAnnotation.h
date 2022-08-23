@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewAnnotation_h_
-#define _DrawViewAnnotation_h_
+#ifndef DrawViewAnnotation_h_
+#define DrawViewAnnotation_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -51,7 +51,7 @@ public:
     App::PropertyColor        TextColor;
     App::PropertyLength       TextSize;
     App::PropertyPercent      LineSpace;
-    App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
+    App::PropertyEnumeration  TextStyle; // Plain, Bold, Italic, Bold-Italic
     App::PropertyLength       MaxWidth;
 
     QRectF getRect() const override;

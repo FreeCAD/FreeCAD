@@ -38,13 +38,13 @@ namespace TechDrawGui
 {
 
 /*enum ArrowType {*/
-/*    FILLED_TRIANGLE = 0,*/
-/*    OPEN_ARROW,*/
-/*    HASH_MARK,*/
-/*    DOT,*/
-/*    OPEN_CIRCLE,*/
-/*    FORK,*/
-/*    PYRAMID,*/
+/*    FILLED_TRIANGLE = 0, */
+/*    OPEN_ARROW, */
+/*    HASH_MARK, */
+/*    DOT, */
+/*    OPEN_CIRCLE, */
+/*    FORK, */
+/*    PYRAMID, */
 /*    NONE*/
 /*};*/
 
@@ -80,10 +80,10 @@ protected:
     QPainterPath makeFilledTriangle(Base::Vector3d dir, double length, double width);
     QPainterPath makeOpenArrow(double length, double width, bool flipped);
     QPainterPath makeOpenArrow(Base::Vector3d dir, double length, double width);
-    QPainterPath makeHashMark(double length, double width, bool flipped); 
-    QPainterPath makeHashMark(Base::Vector3d dir, double length, double width); 
-    QPainterPath makeDot(double length, double width, bool flipped); 
-    QPainterPath makeOpenDot(double length, double width, bool flipped); 
+    QPainterPath makeHashMark(double length, double width, bool flipped);
+    QPainterPath makeHashMark(Base::Vector3d dir, double length, double width);
+    QPainterPath makeDot(double length, double width, bool flipped);
+    QPainterPath makeOpenDot(double length, double width, bool flipped);
     QPainterPath makeForkArrow(double length, double width, bool flipped);
     QPainterPath makeForkArrow(Base::Vector3d dir, double length, double width);
     QPainterPath makePyramid(double length, bool flipped);

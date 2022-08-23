@@ -65,10 +65,10 @@ void QGICenterLine::makeLine()
 }
 
 
-void QGICenterLine::setBounds(double x1,double y1,double x2,double y2)
+void QGICenterLine::setBounds(double x1, double y1, double x2, double y2)
 {
-    m_start = QPointF(x1,y1);
-    m_end = QPointF(x2,y2);
+    m_start = QPointF(x1, y1);
+    m_end = QPointF(x2, y2);
 }
 
 QColor QGICenterLine::getCenterColor()

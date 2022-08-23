@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawRichAnno_h_
-#define _TechDraw_DrawRichAnno_h_
+#ifndef TechDraw_DrawRichAnno_h_
+#define TechDraw_DrawRichAnno_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -39,7 +39,7 @@ class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 
 public:
     DrawRichAnno();
-    ~DrawRichAnno() override;
+    ~DrawRichAnno() = default;
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;
@@ -53,7 +53,7 @@ public:
         return "TechDrawGui::ViewProviderRichAnno";
     }
     PyObject *getPyObject() override;
-    QRectF getRect() const override { return QRectF(0,0,1,1);}
+    QRectF getRect() const override { return { 0, 0, 1, 1}; }
     DrawView* getBaseView() const;
 
     DrawPage* findParentPage() const override;

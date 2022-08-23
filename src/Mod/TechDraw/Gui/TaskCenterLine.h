@@ -28,6 +28,8 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
+#include <Mod/TechDraw/App/Cosmetic.h>
+
 
 //TODO: make this a proper enum
 #define TRACKERPICK 0
@@ -45,6 +47,7 @@ class DrawViewPart;
 class CosmeticEdge;
 class Face;
 class LineFormat;
+class CenterLine;
 }
 
 namespace TechDrawGui
@@ -62,32 +65,27 @@ class TaskCenterLine : public QWidget
     Q_OBJECT
 
 public:
-    TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCenterLine(TechDraw::DrawViewPart* partFeat,
                    TechDraw::DrawPage* page,
                    std::vector<std::string> subNames,
                    bool editMode);
-    TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskCenterLine(TechDraw::DrawViewPart* partFeat,
                    TechDraw::DrawPage* page,
                    std::string edgeName,
                    bool editMode);
     ~TaskCenterLine() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
-    virtual void setCreateMode(bool b) { m_createMode = b; }
-    virtual bool getCreateMode() { return m_createMode; }
+    virtual void setCreateMode(bool mode) { m_createMode = mode; }
+    virtual bool getCreateMode() const { return m_createMode; }
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
-
-protected Q_SLOTS:
+    void enableTaskButtons(bool isEnabled);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void setUiConnect();
     void setUiPrimary();
     void setUiEdit();
@@ -98,16 +96,6 @@ protected:
     QColor getCenterColor();
     Qt::PenStyle getCenterStyle();
     double getExtendBy();
-
-private Q_SLOTS:
-    void onOrientationChanged();
-    void onShiftHorizChanged();
-    void onShiftVertChanged();
-    void onRotationChanged();
-    void onExtendChanged();
-    void onColorChanged();
-    void onWeightChanged();
-    void onStyleChanged();
 
 private:
     std::unique_ptr<Ui_TaskCenterLine> ui;
@@ -127,6 +115,17 @@ private:
     int m_type;
     int m_mode;
     bool m_editMode;
+
+private Q_SLOTS:
+    void onOrientationChanged();
+    void onShiftHorizChanged();
+    void onShiftVertChanged();
+    void onRotationChanged();
+    void onExtendChanged();
+    void onColorChanged();
+    void onWeightChanged();
+    void onStyleChanged();
+
 };
 
 class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
@@ -134,11 +133,11 @@ class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                       TechDraw::DrawPage* page,
                       std::vector<std::string> subNames,
                       bool editMode);
-    TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
+    TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                       TechDraw::DrawPage* page,
                       std::string edgeName,
                       bool editMode);

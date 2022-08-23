@@ -22,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewMulti_h_
-#define _DrawViewMulti_h_
+#ifndef DrawViewMulti_h_
+#define DrawViewMulti_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -58,7 +58,7 @@ public:
     /// Constructor
     DrawViewMulti();
     ~DrawViewMulti() override;
-  
+
     App::PropertyLinkList    Sources;
 
     short mustExecute() const override;

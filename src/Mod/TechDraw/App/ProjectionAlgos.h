@@ -23,10 +23,12 @@
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 
-#ifndef _TechDrawProjectionAlgos_h_
-#define _TechDrawProjectionAlgos_h_
+#ifndef TechDrawProjectionAlgos_h_
+#define TechDrawProjectionAlgos_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <map>
 
 #include <TopoDS_Shape.hxx>
 #include <Base/Vector3D.h>
@@ -43,7 +45,7 @@ class TechDrawExport ProjectionAlgos
 {
 public:
     /// Constructor
-    ProjectionAlgos(const TopoDS_Shape &Input,const Base::Vector3d &Dir);
+    ProjectionAlgos(const TopoDS_Shape &Input, const Base::Vector3d &Dir);
     virtual ~ProjectionAlgos();
 
     void execute();
@@ -53,6 +55,7 @@ public:
         WithHidden = 1,
         WithSmooth = 2
     };
+
     using XmlAttributes = std::map<std::string,std::string>;
 
     std::string getSVG(ExtractionType type, double tolerance=0.05,

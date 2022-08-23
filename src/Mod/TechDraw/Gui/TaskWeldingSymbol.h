@@ -95,9 +95,16 @@ class TechDrawGuiExport TaskWeldingSymbol : public QWidget
     Q_OBJECT
 
 public:
-    TaskWeldingSymbol(TechDraw::DrawLeaderLine* baseFeat);
+    TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat);
     TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weldFeat);
     ~TaskWeldingSymbol();
+
+    virtual bool accept();
+    virtual bool reject();
+    void updateTask();
+    void saveButtons(QPushButton* btnOK,
+                     QPushButton* btnCancel);
+    void enableTaskButtons(bool enable);
 
 public Q_SLOTS:
     void symbolDialog(const char* source);
@@ -115,25 +122,14 @@ public Q_SLOTS:
     void onDirectorySelected(const QString& newDir);
     void onSymbolSelected(QString symbolPath, QString source);
 
-public:
-    virtual bool accept();
-    virtual bool reject();
-    void updateTask();
-    void saveButtons(QPushButton* btnOK,
-                     QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
-
-protected Q_SLOTS:
-
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *event);
     void setUiPrimary(void);
     void setUiEdit();
 
     TechDraw::DrawWeldSymbol* createWeldingSymbol(void);
     void updateWeldingSymbol(void);
 
-/*    std::vector<App::DocumentObject*> createTiles(void);*/
     void getTileFeats(void);
     void updateTiles(void);
 
@@ -149,8 +145,6 @@ private:
 
     TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawWeldSymbol* m_weldFeat;
-/*    TechDraw::DrawTileWeld*   m_arrowIn;    //save starting values*/
-/*    TechDraw::DrawTileWeld*   m_otherIn;*/
     TechDraw::DrawTileWeld*   m_arrowFeat;
     TechDraw::DrawTileWeld*   m_otherFeat;
 
@@ -179,7 +173,6 @@ public:
     explicit TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
     ~TaskDlgWeldingSymbol() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -189,14 +182,11 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
-
-protected:
 
 private:
     TaskWeldingSymbol* widget;

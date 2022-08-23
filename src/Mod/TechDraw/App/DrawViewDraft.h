@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewDraft_h_
-#define _DrawViewDraft_h_
+#ifndef DrawViewDraft_h_
+#define DrawViewDraft_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -43,7 +43,7 @@ class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewDraft();
-    ~DrawViewDraft() override;
+    ~DrawViewDraft() = default;
 
     App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;

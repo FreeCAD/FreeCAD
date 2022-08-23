@@ -36,6 +36,7 @@ class Document;
 
 namespace TechDraw {
 class DrawViewDimension;
+class DrawPage;
 }
 
 namespace TechDrawGui
@@ -47,22 +48,21 @@ class TaskLinkDim : public QWidget
     Q_OBJECT
 
 public:
-    TaskLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page);
+    TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<std::string>& subs, TechDraw::DrawPage* page);
     ~TaskLinkDim() override;
 
-public:
     bool accept();
     bool reject();
 
-protected Q_SLOTS:
-    void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
-
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void loadAvailDims();
     void updateDims();
-    void loadToTree(const TechDraw::DrawViewDimension* dim, const bool selected, Gui::Document* guiDoc);
+    void loadToTree(const TechDraw::DrawViewDimension* dim, bool selected, Gui::Document* guiDoc);
     bool dimReferencesSelection(const TechDraw::DrawViewDimension* dim) const;
+
+protected Q_SLOTS:
+    void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
     std::unique_ptr<Ui_TaskLinkDim> ui;
@@ -76,10 +76,9 @@ class TaskDlgLinkDim : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page);
+    TaskDlgLinkDim(std::vector<App::DocumentObject*> parts, std::vector<std::string>& subs, TechDraw::DrawPage* page);
     ~TaskDlgLinkDim() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -88,14 +87,10 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
     { return false; }
 
     void update();
-
-protected:
 
 private:
     TaskLinkDim * widget;

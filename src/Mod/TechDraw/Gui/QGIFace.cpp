@@ -73,13 +73,13 @@ QGIFace::QGIFace(int index) :
     m_segCount = 0;
 //    setFillMode(NoFill);
     isHatched(false);
-    setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
     m_geomColor = QColor(Qt::black);
     setLineWeight(0.5);                   //0 = cosmetic
-    
+
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
 
@@ -93,7 +93,7 @@ QGIFace::QGIFace(int index) :
     m_fillScale = 1.0;
 
     getParameters();
- 
+
     m_styleDef = Qt::SolidPattern;
     m_styleSelect = Qt::SolidPattern;
 
@@ -113,14 +113,14 @@ QGIFace::~QGIFace()
     //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
 }
 
-void QGIFace::draw() 
+void QGIFace::draw()
 {
     setPath(m_outline);                         //Face boundary
 
-    if (isHatched()) {   
+    if (isHatched()) {
         if (m_mode == GeomHatchFill) {
             //GeomHatch does not appear in pdf if clipping is set to true
-            setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
+            setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
                 m_fillStyleCurrent = m_styleDef;
@@ -138,13 +138,13 @@ void QGIFace::draw()
             loadSvgHatch(m_fileSpec);
             if (m_hideSvgTiles) {
                 //bitmap hatch doesn't need clipping
-                setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
+                setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
                 buildPixHatch();
                 m_rect->hide();
                 m_image->show();
             } else {
                 //SVG tiles need to be clipped
-                setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
+                setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
                 buildSvgHatch();
                 m_image->hide();
                 m_rect->show();
@@ -203,13 +203,13 @@ void QGIFace::setHatchFile(std::string fileSpec)
 {
     m_fileSpec = fileSpec;
 }
- 
+
 void QGIFace::loadSvgHatch(std::string fileSpec)
 {
-    QString qfs(QString::fromUtf8(fileSpec.data(),fileSpec.size()));
+    QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile f(qfs);
     if (!f.open(QFile::ReadOnly | QFile::Text))  {
-        Base::Console().Error("QGIFace could not read %s\n",fileSpec.c_str());
+        Base::Console().Error("QGIFace could not read %s\n", fileSpec.c_str());
         return;
     }
     m_svgXML = f.readAll();
@@ -260,7 +260,7 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
     for (auto& g: ls.getGeoms()) {
         if (ls.isDashed()) {
             double offset = 0.0;
-            Base::Vector3d pStart = ls.getPatternStartPoint(g, offset,m_fillScale);
+            Base::Vector3d pStart = ls.getPatternStartPoint(g, offset, m_fillScale);
             offset = Rez::guiX(offset);
             Base::Vector3d gStart(g->getStartPoint().x,
                                   g->getStartPoint().y,
@@ -268,17 +268,17 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
             Base::Vector3d gEnd(g->getEndPoint().x,
                                 g->getEndPoint().y,
                                 0.0);
-            if (DrawUtil::fpCompare(offset,0.0, 0.00001)) {                              //no offset
+            if (DrawUtil::fpCompare(offset, 0.0, 0.00001)) {                              //no offset
                 QGraphicsPathItem* item1 = lineFromPoints(pStart, gEnd, ls.getDashSpec());
                 item1->setPen(pen);
                 m_fillItems.push_back(item1);
-                if (!pStart.IsEqual(gStart,0.00001)) {
+                if (!pStart.IsEqual(gStart, 0.00001)) {
                     QGraphicsPathItem* item2 = lineFromPoints(pStart, gStart, ls.getDashSpec().reversed());
                     item2->setPen(pen);
                     m_fillItems.push_back(item2);
                 }
             } else {                                                                  //offset - pattern start not in g
-                double remain = dashRemain(decodeDashSpec(ls.getDashSpec()),offset);
+                double remain = dashRemain(decodeDashSpec(ls.getDashSpec()), offset);
                 QGraphicsPathItem* shortItem = geomToStubbyLine(g, remain, ls);
                 shortItem->setPen(pen);
                 m_fillItems.push_back(shortItem);
@@ -290,7 +290,7 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
         }
 
         if (m_segCount > m_maxSeg) {
-            Base::Console().Warning("PAT segment count exceeded: %ld\n",m_segCount);
+            Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
             break;
         }
     }
@@ -300,7 +300,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     fillItem->setPath(dashedPPath(decodeDashSpec(ds),
-                                  Rez::guiX(start), 
+                                  Rez::guiX(start),
                                   Rez::guiX(end)));
     return fillItem;
 }
@@ -315,7 +315,7 @@ QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeomPtr base, LineSet& ls)
                             base->getEndPoint().y,
                             0.0);
     fillItem->setPath(dashedPPath(decodeDashSpec(ls.getDashSpec()),
-                                  Rez::guiX(start), 
+                                  Rez::guiX(start),
                                   Rez::guiX(end)));
     return fillItem;
 }
@@ -332,10 +332,10 @@ QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeomPtr base, double
                        base->getEndPoint().y,
                        0.0);
     double origLen = (end - start).Length();
-                           
+
     double appRemain = Rez::appX(remain);
     Base::Vector3d newEnd = start + (ls.getUnitDir() * appRemain);
-    
+
     double newLen = (newEnd - start).Length();
 
     if (newLen > origLen) {
@@ -372,7 +372,7 @@ std::vector<double> QGIFace::decodeDashSpec(DashSpec patDash)
     std::vector<double> result;
     for (auto& d: patDash.get()) {
         double strokeLength;
-        if (DrawUtil::fpCompare(d,0.0)) {                       //pat dot
+        if (DrawUtil::fpCompare(d, 0.0)) {                       //pat dot
              strokeLength = penWidth;
         } else {                                                //pat mark/space
              strokeLength = Rez::guiX(d);
@@ -388,10 +388,10 @@ QPainterPath QGIFace::dashedPPath(const std::vector<double> dv, const Base::Vect
       QPainterPath result;
       Base::Vector3d dir = (end - start);
       dir.Normalize();
-      result.moveTo(start.x,-start.y);
+      result.moveTo(start.x, -start.y);
       Base::Vector3d currentPos = start;
       if (dv.empty()) {
-          result.lineTo(end.x,-end.y);
+          result.lineTo(end.x, -end.y);
           m_segCount++;
       } else {
          double lineLength = (end - start).Length();
@@ -400,7 +400,7 @@ QPainterPath QGIFace::dashedPPath(const std::vector<double> dv, const Base::Vect
          while (travel < lineLength) {
              bool stop = false;
             if (m_segCount > 10000) {
-                Base::Console().Warning("PAT segment count exceeded: %ld\n",m_segCount);
+                Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
                 break;
             }
 
@@ -412,9 +412,9 @@ QPainterPath QGIFace::dashedPPath(const std::vector<double> dv, const Base::Vect
                       stop = true;
                   }
                   if (d < 0.0) {
-                      result.moveTo(segmentEnd.x,-segmentEnd.y);                //space
+                      result.moveTo(segmentEnd.x, -segmentEnd.y);                //space
                   } else {
-                      result.lineTo(segmentEnd.x,-segmentEnd.y);                //mark
+                      result.lineTo(segmentEnd.x, -segmentEnd.y);                //mark
                   }
                   if (stop) {
                       break;
@@ -450,7 +450,7 @@ std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const doub
         }
         i++;
     }
-    
+
     double firstCell = accum - offset;
     if (dv.at(i) < 0.0) {                    //offset found in a space cell
         result.push_back(-1.0* firstCell);
@@ -461,7 +461,7 @@ std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const doub
     for ( ; iCell < dv.size() ; iCell++) {
         result.push_back(dv.at(iCell));
     }
-    
+
     return result;
 }
 
@@ -512,7 +512,7 @@ void QGIFace::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
     cmItem->setParentItem(this);
-    cmItem->setPos(x,y);
+    cmItem->setPos(x, y);
     cmItem->setThick(1.0);
     cmItem->setSize(40.0);
     cmItem->setZValue(ZVALUE::VERTEX);
@@ -530,13 +530,13 @@ void QGIFace::buildSvgHatch()
     double nh = ceil(h / hTile);
     w = nw * wTile;
     h = nh * hTile;
-    m_rect->setRect(0.,0.,w,-h);
+    m_rect->setRect(0., 0., w,-h);
     m_rect->centerAt(fCenter);
     r = m_rect->rect();
-    QByteArray before,after;
+    QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
-    QByteArray colorXML = m_svgXML.replace(before,after);
+    QByteArray colorXML = m_svgXML.replace(before, after);
     long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
@@ -544,11 +544,11 @@ void QGIFace::buildSvgHatch()
             tile->setScale(m_fillScale);
             if (tile->load(&colorXML)) {
                 tile->setParentItem(m_rect);
-                tile->setPos(iw*wTile,-h + ih*hTile);
+                tile->setPos(iw*wTile, -h + ih*hTile);
             }
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("SVG tile count exceeded: %ld\n",tileCount);
+                Base::Console().Warning("SVG tile count exceeded: %ld\n", tileCount);
                 break;
             }
         }
@@ -576,14 +576,14 @@ void QGIFace::buildPixHatch()
     w = nw * wTile;
     h = nh * hTile;
 
-    m_rect->setRect(0.,0.,w,-h);
+    m_rect->setRect(0., 0., w,-h);
     m_rect->centerAt(fCenter);
 
     r = m_rect->rect();
-    QByteArray before,after;
+    QByteArray before, after;
     before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
     after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
-    QByteArray colorXML = m_svgXML.replace(before,after);
+    QByteArray colorXML = m_svgXML.replace(before, after);
     QSvgRenderer renderer;
     bool success = renderer.load(colorXML);
     if (!success) {
@@ -629,7 +629,7 @@ void QGIFace::buildPixHatch()
                                QRectF(0, 0, wTile, hTile));  //source rect
             tileCount++;
             if (tileCount > m_maxTile) {
-                Base::Console().Warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                Base::Console().Warning("Pixmap tile count exceeded: %ld\n", tileCount);
                 break;
             }
         }
@@ -658,7 +658,7 @@ QPixmap QGIFace::textureFromSvg(std::string fileSpec)
         pixMap.fill(Qt::white);                                            //try  Qt::transparent?
         QPainter painter(&pixMap);
         renderer.render(&painter);                                         //svg texture -> bitmap
-        result = pixMap.scaled(m_fillScale,m_fillScale);
+        result = pixMap.scaled(m_fillScale, m_fillScale);
     }  //else return empty pixmap
     return result;
 }
@@ -684,10 +684,10 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
 {
     QPixmap pix;
 
-    QString qfs(QString::fromUtf8(fileSpec.data(),fileSpec.size()));
+    QString qfs(QString::fromUtf8(fileSpec.data(), fileSpec.size()));
     QFile f(qfs);
     if (!f.open(QFile::ReadOnly))  {
-        Base::Console().Error("QGIFace could not read %s\n",fileSpec.c_str());
+        Base::Console().Error("QGIFace could not read %s\n", fileSpec.c_str());
         return pix;
     }
     QByteArray bytes = f.readAll();
@@ -704,11 +704,11 @@ void QGIFace::getParameters()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
 
-    m_maxSeg = hGrp->GetInt("MaxSeg",10000l);
+    m_maxSeg = hGrp->GetInt("MaxSeg", 10000l);
 
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    m_maxTile = hGrp->GetInt("MaxSVGTile",10000l);
+    m_maxTile = hGrp->GetInt("MaxSVGTile", 10000l);
 
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
@@ -717,7 +717,7 @@ void QGIFace::getParameters()
 
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    m_defClearFace = hGrp->GetBool("ClearFace",false);
+    m_defClearFace = hGrp->GetBool("ClearFace", false);
 }
 
 QRectF QGIFace::boundingRect() const

@@ -54,19 +54,15 @@ DrawViewImage::DrawViewImage()
 {
     static const char *vgroup = "Image";
 
-    ADD_PROPERTY_TYPE(ImageFile,(""),vgroup,App::Prop_None,"The file containing this bitmap");
-    ADD_PROPERTY_TYPE(ImageIncluded, (""), vgroup,App::Prop_None,
+    ADD_PROPERTY_TYPE(ImageFile, (""), vgroup, App::Prop_None, "The file containing this bitmap");
+    ADD_PROPERTY_TYPE(ImageIncluded, (""), vgroup, App::Prop_None,
                                             "Embedded image file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(Width      ,(100),vgroup,App::Prop_None,"The width of cropped image");
-    ADD_PROPERTY_TYPE(Height     ,(100),vgroup,App::Prop_None,"The height of cropped image");
+    ADD_PROPERTY_TYPE(Width      ,(100), vgroup, App::Prop_None, "The width of cropped image");
+    ADD_PROPERTY_TYPE(Height     ,(100), vgroup, App::Prop_None, "The height of cropped image");
     ScaleType.setValue("Custom");
 
     std::string imgFilter("Image files (*.jpg *.jpeg *.png);;All files (*)");
     ImageFile.setFilter(imgFilter);
-}
-
-DrawViewImage::~DrawViewImage()
-{
 }
 
 void DrawViewImage::onChanged(const App::Property* prop)
@@ -106,7 +102,7 @@ App::DocumentObjectExecReturn *DrawViewImage::execute()
 
 QRectF DrawViewImage::getRect() const
 {
-    return QRectF(0.0,0.0,Width.getValue(), Height.getValue());
+    return { 0.0, 0.0, Width.getValue(), Height.getValue()};
 }
 
 void DrawViewImage::replaceImageIncluded(std::string newFileName)

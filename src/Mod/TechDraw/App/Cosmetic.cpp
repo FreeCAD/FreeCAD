@@ -87,16 +87,16 @@ LineFormat::LineFormat(int style,
 
 void LineFormat::dump(const char* title)
 {
-    Base::Console().Message("LF::dump - %s \n",title);
-    Base::Console().Message("LF::dump - %s \n",toString().c_str());
+    Base::Console().Message("LF::dump - %s \n", title);
+    Base::Console().Message("LF::dump - %s \n", toString().c_str());
 }
 
 std::string LineFormat::toString() const
 {
     std::stringstream ss;
-    ss << m_style << "," <<
-          m_weight << "," <<
-          m_color.asHexString() << "," <<
+    ss << m_style << ", " <<
+          m_weight << ", " <<
+          m_color.asHexString() << ", " <<
           m_visible;
     return ss.str();
 }
@@ -130,7 +130,7 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     permaPoint = Base::Vector3d(0.0, 0.0, 0.0);
     linkGeom = -1;
     color = Preferences::vertexColor();
-    size  = Preferences::vertexScale() * 
+    size  = Preferences::vertexScale() *
             LineGroup::getDefaultWidth("Thin");
     style = 1;
     visible = true;
@@ -159,7 +159,7 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
     permaPoint = loc;
     linkGeom = -1;
     color = Preferences::vertexColor();
-    size  = Preferences::vertexScale() * 
+    size  = Preferences::vertexScale() *
             LineGroup::getDefaultWidth("Thick");
     style = 1;        //TODO: implement styled vertexes
     visible = true;
@@ -183,21 +183,21 @@ void CosmeticVertex::moveRelative(Base::Vector3d movement)
 std::string CosmeticVertex::toString() const
 {
     std::stringstream ss;
-    ss << permaPoint.x << "," <<
-          permaPoint.y << "," <<
-          permaPoint.z << "," <<
+    ss << permaPoint.x << ", " <<
+          permaPoint.y << ", " <<
+          permaPoint.z << ", " <<
           " / ";
-    ss << point().x << "," <<
-          point().y << "," <<
-          point().z << "," <<
+    ss << point().x << ", " <<
+          point().y << ", " <<
+          point().z << ", " <<
           " / " <<
-          linkGeom << "," <<
+          linkGeom << ", " <<
           " / " <<
-          color.asHexString() << ","  <<
+          color.asHexString() << ", "  <<
           " / " <<
-          size << "," <<
+          size << ", " <<
           " / " <<
-          style << ","  <<
+          style << ", "  <<
           " / " <<
           visible << " / " ;
     ss << getTagAsString();
@@ -311,7 +311,7 @@ PyObject* CosmeticVertex::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new CosmeticVertexPy(this),true);
+        PythonObject = Py::Object(new CosmeticVertexPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -319,13 +319,13 @@ PyObject* CosmeticVertex::getPyObject()
 
 void CosmeticVertex::dump(const char* title)
 {
-    Base::Console().Message("CV::dump - %s \n",title);
-    Base::Console().Message("CV::dump - %s \n",toString().c_str());
+    Base::Console().Message("CV::dump - %s \n", title);
+    Base::Console().Message("CV::dump - %s \n", toString().c_str());
 }
 
 //******************************************
 
-TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge,Base::Persistence)
+TYPESYSTEM_SOURCE(TechDraw::CosmeticEdge, Base::Persistence)
 
 //note this ctor has no occEdge or first/last point for geometry!
 CosmeticEdge::CosmeticEdge()
@@ -343,7 +343,7 @@ CosmeticEdge::CosmeticEdge(CosmeticEdge* ce)
     //these endpoints are already YInverted
     permaStart = ce->permaStart;
     permaEnd   = ce->permaEnd;
-    permaRadius = ce->permaRadius; 
+    permaRadius = ce->permaRadius;
     m_geometry = newGeom;
     m_format   = ce->m_format;
     initialize();
@@ -373,7 +373,7 @@ CosmeticEdge::CosmeticEdge(TechDraw::BaseGeomPtr g)
        permaStart  = circ->center;
        permaEnd    = circ->center;
        permaRadius = circ->radius;
-    } 
+    }
     initialize();
 }
 
@@ -395,11 +395,11 @@ void CosmeticEdge::initialize()
 
 TopoDS_Edge CosmeticEdge::TopoDS_EdgeFromVectors(Base::Vector3d pt1, Base::Vector3d pt2)
 {
-    // Base::Console().Message("CE::CE(p1,p2)\n");
+    // Base::Console().Message("CE::CE(p1, p2)\n");
     Base::Vector3d p1 = DrawUtil::invertY(pt1);
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    gp_Pnt gp1(p1.x, p1.y, p1.z);
+    gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     return e;
 }
@@ -423,10 +423,10 @@ std::string CosmeticEdge::toString() const
     std::stringstream ss;
     ss << getTagAsString() << ", $$$, ";
     if (m_geometry) {
-        ss << m_geometry->geomType << 
-            ",$$$," <<
+        ss << m_geometry->geomType <<
+            ", $$$, " <<
             m_geometry->toString() <<
-            ",$$$," <<
+            ", $$$, " <<
             m_format.toString();
     }
     return ss.str();
@@ -434,8 +434,8 @@ std::string CosmeticEdge::toString() const
 
 void CosmeticEdge::dump(const char* title)
 {
-    Base::Console().Message("CE::dump - %s \n",title);
-    Base::Console().Message("CE::dump - %s \n",toString().c_str());
+    Base::Console().Message("CE::dump - %s \n", title);
+    Base::Console().Message("CE::dump - %s \n", toString().c_str());
 }
 
 // Persistence implementers
@@ -568,7 +568,7 @@ PyObject* CosmeticEdge::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new CosmeticEdgePy(this),true);
+        PythonObject = Py::Object(new CosmeticEdgePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -576,7 +576,7 @@ PyObject* CosmeticEdge::getPyObject()
 
 //*********************************************************
 
-TYPESYSTEM_SOURCE(TechDraw::CenterLine,Base::Persistence)
+TYPESYSTEM_SOURCE(TechDraw::CenterLine, Base::Persistence)
 
 CenterLine::CenterLine()
 {
@@ -613,7 +613,7 @@ CenterLine::CenterLine(TechDraw::CenterLine* cl)
 }
 
 CenterLine::CenterLine(TechDraw::BaseGeomPtr bg,
-                       int m, 
+                       int m,
                        double h,
                        double v,
                        double r,
@@ -661,18 +661,18 @@ void CenterLine::initialize()
 
 TechDraw::BaseGeomPtr CenterLine::BaseGeomPtrFromVectors(Base::Vector3d pt1, Base::Vector3d pt2)
 {
-    // Base::Console().Message("CE::CE(p1,p2)\n");
+    // Base::Console().Message("CE::CE(p1, p2)\n");
     Base::Vector3d p1 = DrawUtil::invertY(pt1);
     Base::Vector3d p2 = DrawUtil::invertY(pt2);
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    gp_Pnt gp1(p1.x, p1.y, p1.z);
+    gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     TechDraw::BaseGeomPtr bg = TechDraw::BaseGeom::baseFactory(e);
     return bg;
 }
 
-CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, 
-                                          std::vector<std::string> subNames, 
+CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
+                                          std::vector<std::string> subNames,
                                           int mode,
                                           bool flip)
 {
@@ -681,7 +681,7 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
     std::vector<std::string> faces;
     std::vector<std::string> edges;
     std::vector<std::string> verts;
-    
+
     std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(subNames.front());
     int type = CLTYPE::FACE;
     if (geomType == "Face") {
@@ -739,12 +739,12 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
 //            Base::Console().Message("CL::scaledGeometry - no geometry to scale!\n");
             //CenterLine was created by points without a geometry reference,
             ends = calcEndPointsNoRef(m_start, m_end, scale, m_extendBy,
-                                      m_hShift,m_vShift, m_rotate);
+                                      m_hShift, m_vShift, m_rotate);
         } else if (m_type == CLTYPE::FACE) {
             ends = calcEndPoints(partFeat,
                                  m_faces,
                                  m_mode, m_extendBy,
-                                 m_hShift,m_vShift, m_rotate);
+                                 m_hShift, m_vShift, m_rotate);
         } else if (m_type == CLTYPE::EDGE) {
             ends = calcEndPoints2Lines(partFeat,
                                        m_edges,
@@ -770,11 +770,11 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
     if (p1.IsEqual(p2, 0.00001)) {
         Base::Console().Warning("Centerline endpoints are equal. Could not draw.\n");
         //what to do here?  //return current geom?
-        return m_geometry;  
+        return m_geometry;
     }
 
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
+    gp_Pnt gp1(p1.x, p1.y, p1.z);
+    gp_Pnt gp2(p2.x, p2.y, p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     TopoDS_Shape s = TechDraw::scaleShape(e, scale);
     TopoDS_Edge newEdge = TopoDS::Edge(s);
@@ -784,48 +784,48 @@ TechDraw::BaseGeomPtr CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFea
     newGeom->cosmetic = true;
     newGeom->source(CENTERLINE);
     newGeom->setCosmeticTag(getTagAsString());
-    
+
     return newGeom;
 }
 
 std::string CenterLine::toString() const
 {
     std::stringstream ss;
-    ss << m_start.x << "," <<
-          m_start.y << "," <<
-          m_start.z << "," <<
-          m_end.x << "," <<
-          m_end.y << "," <<
-          m_end.z << "," <<
-          m_mode << "," <<
-          m_type << "," <<
-          m_hShift << "," <<
-          m_vShift << "," <<
-          m_rotate << "," <<
-          m_flip2Line << "," <<
-          m_extendBy << "," <<
+    ss << m_start.x << ", " <<
+          m_start.y << ", " <<
+          m_start.z << ", " <<
+          m_end.x << ", " <<
+          m_end.y << ", " <<
+          m_end.z << ", " <<
+          m_mode << ", " <<
+          m_type << ", " <<
+          m_hShift << ", " <<
+          m_vShift << ", " <<
+          m_rotate << ", " <<
+          m_flip2Line << ", " <<
+          m_extendBy << ", " <<
           m_faces.size();
     if (!m_faces.empty()) {
         for (auto& f: m_faces) {
             if (!f.empty()) {
-                ss << "," << f ;
+                ss << ", " << f ;
             }
         }
     }
 
     std::string clCSV = ss.str();
     std::string fmtCSV = m_format.toString();
-    return clCSV + ",$$$," + fmtCSV;
+    return clCSV + ", $$$, " + fmtCSV;
 }
 
 void CenterLine::dump(const char* title)
 {
-    Base::Console().Message("CL::dump - %s \n",title);
-    Base::Console().Message("CL::dump - %s \n",toString().c_str());
+    Base::Console().Message("CL::dump - %s \n", title);
+    Base::Console().Message("CL::dump - %s \n", toString().c_str());
 }
 
 std::tuple<Base::Vector3d, Base::Vector3d> CenterLine::rotatePointsAroundMid(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d mid, double rotate) {
-    //rotate p1, p2 about mid 
+    //rotate p1, p2 about mid
     double revRotate = -rotate;
     double cosTheta = cos(revRotate * M_PI / 180.0);
     double sinTheta = sin(revRotate * M_PI / 180.0);
@@ -888,7 +888,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPointsNoRef(
 
 //end points for face centerline
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
-                                                      std::vector<std::string> faceNames, 
+                                                      std::vector<std::string> faceNames,
                                                       int mode, double ext,
                                                       double hShift, double vShift,
                                                       double rotate)
@@ -909,7 +909,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(fn);
-        std::vector<TechDraw::BaseGeomPtr> faceEdges = 
+        std::vector<TechDraw::BaseGeomPtr> faceEdges =
                                                 partFeat->getFaceEdgesByIndex(idx);
         if (!faceEdges.empty()) {
             for (auto& fe: faceEdges) {
@@ -926,8 +926,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         throw Base::IndexError("CenterLine wrong number of faces.");
     }
 
-    double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
-    faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
+    double Xmin, Ymin, Zmin, Xmax, Ymax, Zmax;
+    faceBox.Get(Xmin, Ymin, Zmin, Xmax, Ymax, Zmax);
 
     double Xspan = fabs(Xmax - Xmin);
     Xspan = (Xspan / 2.0);
@@ -943,13 +943,13 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
     } else if (mode == 1) {            //horizontal
         p1 = Base::Vector3d(Xmin, Ymid, 0.0);
-        p2 = Base::Vector3d(Xmax,Ymid, 0.0);
+        p2 = Base::Vector3d(Xmax, Ymid, 0.0);
     } else {      //vert == 2 //aligned, but aligned doesn't make sense for face(s) bbox
         Base::Console().Message("CL::calcEndPoints - aligned is not applicable to Face center lines\n");
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
     }
-    
+
     Base::Vector3d mid = (p1 + p2) / 2.0;
 
     //extend
@@ -983,11 +983,11 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawViewPart* partFeat,
-                                                      std::vector<std::string> edgeNames, 
+                                                      std::vector<std::string> edgeNames,
                                                       int mode, double ext,
                                                       double hShift, double vShift,
                                                       double rotate, bool flip)
-                                                      
+
 {
     Q_UNUSED(flip)
 
@@ -1060,7 +1060,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
 
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
-        //rotate p1, p2 about mid 
+        //rotate p1, p2 about mid
         tie(p1, p2) = rotatePointsAroundMid(p1, p2, mid, rotate);
     }
 
@@ -1082,11 +1082,11 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawViewPart* partFeat,
-                                                      std::vector<std::string> vertNames, 
+                                                      std::vector<std::string> vertNames,
                                                       int mode, double ext,
                                                       double hShift, double vShift,
                                                       double rotate, bool flip)
-                                                      
+
 {
 //    Base::Console().Message("CL::calc2Points()\n");
     if (vertNames.empty()) {
@@ -1131,7 +1131,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
         p1 = p2;
         p2 = temp;
     }
-    
+
     if (mode == 0) {           //Vertical
             p1.x = mid.x;
             p2.x = mid.x;
@@ -1365,14 +1365,14 @@ void CenterLine::Restore(Base::XMLReader &reader)
         m_geometry = aoc;
     } else {
         Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", gType);
-    } 
+    }
 }
 
 CenterLine* CenterLine::copy() const
 {
     CenterLine* newCL = new CenterLine();
     newCL->m_start = m_start;
-    newCL->m_end = m_end; 
+    newCL->m_end = m_end;
     newCL->m_mode = m_mode;
     newCL->m_hShift = m_hShift;
     newCL->m_vShift = m_vShift;
@@ -1384,7 +1384,7 @@ CenterLine* CenterLine::copy() const
     newCL->m_faces = m_faces;
     newCL->m_edges = m_edges;
     newCL->m_verts = m_verts;
-    
+
     TechDraw::BaseGeomPtr newGeom = m_geometry->copy();
     newCL->m_geometry = newGeom;
 
@@ -1439,7 +1439,7 @@ PyObject* CenterLine::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new CenterLinePy(this),true);
+        PythonObject = Py::Object(new CenterLinePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -1492,7 +1492,7 @@ bool CenterLine::getFlip()
 }
 //------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(TechDraw::GeomFormat,Base::Persistence)
+TYPESYSTEM_SOURCE(TechDraw::GeomFormat, Base::Persistence)
 
 GeomFormat::GeomFormat() :
     m_geomIndex(-1)
@@ -1505,7 +1505,7 @@ GeomFormat::GeomFormat() :
     createNewTag();
 }
 
-GeomFormat::GeomFormat(GeomFormat* gf) 
+GeomFormat::GeomFormat(GeomFormat* gf)
 {
     m_geomIndex  = gf->m_geomIndex;
     m_format.m_style = gf->m_format.m_style;
@@ -1534,14 +1534,14 @@ GeomFormat::~GeomFormat()
 
 void GeomFormat::dump(const char* title) const
 {
-    Base::Console().Message("GF::dump - %s \n",title);
-    Base::Console().Message("GF::dump - %s \n",toString().c_str());
+    Base::Console().Message("GF::dump - %s \n", title);
+    Base::Console().Message("GF::dump - %s \n", toString().c_str());
 }
 
 std::string GeomFormat::toString() const
 {
     std::stringstream ss;
-    ss << m_geomIndex << ",$$$," <<
+    ss << m_geomIndex << ", $$$, " <<
           m_format.toString();
     return ss.str();
 }
@@ -1639,7 +1639,7 @@ PyObject* GeomFormat::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new GeomFormatPy(this),true);
+        PythonObject = Py::Object(new GeomFormatPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

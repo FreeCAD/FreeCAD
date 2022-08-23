@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawViewDimExtent_h_
-#define _TechDraw_DrawViewDimExtent_h_
+#ifndef TechDraw_DrawViewDimExtent_h_
+#define TechDraw_DrawViewDimExtent_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -42,7 +42,7 @@ class TechDrawExport DrawViewDimExtent : public TechDraw::DrawViewDimension
 public:
     /// Constructor
     DrawViewDimExtent();
-    ~DrawViewDimExtent() override;
+    ~DrawViewDimExtent() = default;
 
     App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
                                                                  //Cosmetic End points are stored in DVD::References2d

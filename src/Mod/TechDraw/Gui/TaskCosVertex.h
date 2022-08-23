@@ -30,13 +30,6 @@
 
 #include "QGTracker.h"
 
-
-//TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
-
 namespace TechDraw
 {
 class DrawPage;
@@ -65,32 +58,30 @@ class TaskCosVertex : public QWidget
 public:
     TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                   TechDraw::DrawPage* page);
-    ~TaskCosVertex() override;
+    ~TaskCosVertex() = default;
 
-public Q_SLOTS:
-    void onTrackerClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
+    void enableTaskButtons(bool button);
+
+public Q_SLOTS:
+    void onTrackerClicked(bool clicked);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void startTracker();
     void removeTracker();
     void abandonEditSession();
 
     void addCosVertex(QPointF qPos);
 
-    void blockButtons(bool b);
     void setUiPrimary();
     void updateUi();
-    void setEditCursor(QCursor c);
+    void setEditCursor(QCursor cursor);
 
    QGIView* findParentQGIV();
 
@@ -99,7 +90,7 @@ private:
     bool blockUpdate;
 
     QGTracker* m_tracker;
-    
+
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
     QGIView* m_qgParent;
@@ -111,7 +102,7 @@ private:
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    
+
     int m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;
@@ -138,7 +129,6 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
