@@ -226,21 +226,9 @@ bool ViewProviderViewPart::setEdit(int ModNum)
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
-//            Gui::Selection().clearSelection();
-// flush any lingering gui objects
-        Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                        dvd->getNameInDocument());
         Gui::Selection().clearSelection();
         Gui::Selection().addSelection(dvd->getDocument()->getName(),
                                         dvd->getNameInDocument());
-
-//Gui.ActiveDocument.resetEdit()
-//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
-//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121', 'Detail')
     }
 
     return true;

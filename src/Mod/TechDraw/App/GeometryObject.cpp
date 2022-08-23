@@ -818,7 +818,6 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
         }
     }
 
-
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
         Base::Console().Log("INFO - GO::calcBoundingBox - testBox is void\n");
