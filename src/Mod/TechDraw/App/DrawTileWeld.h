@@ -59,7 +59,7 @@ public:
         return "TechDrawGui::ViewProviderTile";
     }
     PyObject *getPyObject() override;
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}
+    virtual QRectF getRect() const { return QRectF(0, 0,1, 1);}
 
     void replaceSymbolIncluded(std::string newSymbolFile);
     void setupSymbolIncluded();

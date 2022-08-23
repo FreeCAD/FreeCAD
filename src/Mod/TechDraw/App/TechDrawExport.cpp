@@ -96,7 +96,7 @@ TopoDS_Edge TechDrawOutput::asCircle(const BRepAdaptor_Curve& c) const
 
     try {
         // approximate the circle center from three positions
-        BRepLProp_CLProps prop(c,c.FirstParameter(),2,Precision::Confusion());
+        BRepLProp_CLProps prop(c, c.FirstParameter(), 2,Precision::Confusion());
         curv += prop.Curvature();
         prop.CentreOfCurvature(pnt);
         center.ChangeCoord().Add(pnt.Coord());
@@ -166,7 +166,7 @@ TopoDS_Edge TechDrawOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree)
     Standard_Integer maxSegment = 50;
     Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
     // approximate the curve using a tolerance
-    Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+    Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
         // have the result
         Handle(Geom_BSplineCurve) spline = approx.Curve();
@@ -186,7 +186,7 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
     std::stringstream result;
 
     TopExp_Explorer edges(input, TopAbs_EDGE);
-    for (int i = 1 ; edges.More(); edges.Next(),i++) {
+    for (int i = 1 ; edges.More(); edges.Next(), i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
@@ -228,10 +228,10 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     gp_Pnt m = c.Value((l+f)/2.0);
     gp_Pnt e = c.Value(l);
 
-    gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
-    gp_Vec v3(0,0,1);
-    double a = v3.DotCross(v1,v2);
+    gp_Vec v1(m, s);
+    gp_Vec v2(m, e);
+    gp_Vec v3(0, 0,1);
+    double a = v3.DotCross(v1, v2);
 
     // a full circle
     if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
@@ -265,24 +265,24 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
 
     // If the minor radius is very small compared to the major radius
     // the geometry actually degenerates to a line
-    double ratio = std::min(r1,r2)/std::max(r1,r2);
+    double ratio = std::min(r1, r2)/std::max(r1, r2);
     if (ratio < 0.001) {
         printGeneric(c, id, out);
         return;
     }
 
-    gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
-    gp_Vec v3(0,0,1);
-    double a = v3.DotCross(v1,v2);
+    gp_Vec v1(m, s);
+    gp_Vec v2(m, e);
+    gp_Vec v3(0, 0,1);
+    double a = v3.DotCross(v1, v2);
     
     // a full ellipse
     // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
     gp_Dir xaxis = ellp.XAxis().Direction();
-    Standard_Real angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
+    Standard_Real angle = xaxis.AngleWithRef(gp_Dir(1, 0,0), gp_Dir(0, 0,-1));
     angle = Base::toDegrees<double>(angle);
     if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-        out << "<g transform = \"rotate(" << angle << "," << p.X() << "," << p.Y() << ")\">" << std::endl;
+        out << "<g transform = \"rotate(" << angle << ", " << p.X() << ", " << p.Y() << ")\">" << std::endl;
         out << "<ellipse cx =\"" << p.X() << "\" cy =\"" 
             << p.Y() << "\" rx =\"" << r1 << "\"  ry =\"" << r2 << "\"/>" << std::endl;
         out << "</g>" << std::endl;
@@ -323,7 +323,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
 
 
         gp_Pnt p1 = bezier->Pole(1);
-        str << p1.X() << "," << p1.Y();
+        str << p1.X() << ", " << p1.Y();
         if (bezier->Degree() == 3) {
             if (poles != 4)
                 Standard_Failure::Raise("do it the generic way");
@@ -331,9 +331,9 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
             gp_Pnt p3 = bezier->Pole(3);
             gp_Pnt p4 = bezier->Pole(4);
             str << " C"
-                << p2.X() << "," << p2.Y() << " "
-                << p3.X() << "," << p3.Y() << " "
-                << p4.X() << "," << p4.Y() << " ";
+                << p2.X() << ", " << p2.Y() << " "
+                << p3.X() << ", " << p3.Y() << " "
+                << p4.X() << ", " << p4.Y() << " ";
         }
         else if (bezier->Degree() == 2) {
             if (poles != 3)
@@ -341,14 +341,14 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
             gp_Pnt p2 = bezier->Pole(2);
             gp_Pnt p3 = bezier->Pole(3);
             str << " Q"
-                << p2.X() << "," << p2.Y() << " "
-                << p3.X() << "," << p3.Y() << " ";
+                << p2.X() << ", " << p2.Y() << " "
+                << p3.X() << ", " << p3.Y() << " ";
         }
         else if (bezier->Degree() == 1) {
             if (poles != 2)
                 Standard_Failure::Raise("do it the generic way");
             gp_Pnt p2 = bezier->Pole(2);
-            str << " L" << p2.X() << "," << p2.Y() << " ";
+            str << " L" << p2.X() << ", " << p2.Y() << " ";
         }
         else {
             Standard_Failure::Raise("do it the generic way");
@@ -371,7 +371,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Standard_Integer maxDegree = 3, maxSegment = 100;
         Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
         // approximate the curve using a tolerance
-        Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+        Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
         if (approx.IsDone() && approx.HasResult()) {
             // have the result
             spline = approx.Curve();
@@ -388,7 +388,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             Standard_Integer poles = bezier->NbPoles();
             if (i == 1) {
                 gp_Pnt p1 = bezier->Pole(1);
-                str << p1.X() << "," << p1.Y();
+                str << p1.X() << ", " << p1.Y();
             }
             if (bezier->Degree() == 3) {
                 if (poles != 4)
@@ -397,9 +397,9 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
                 gp_Pnt p3 = bezier->Pole(3);
                 gp_Pnt p4 = bezier->Pole(4);
                 str << " C"
-                    << p2.X() << "," << p2.Y() << " "
-                    << p3.X() << "," << p3.Y() << " "
-                    << p4.X() << "," << p4.Y() << " ";
+                    << p2.X() << ", " << p2.Y() << " "
+                    << p3.X() << ", " << p3.Y() << " "
+                    << p4.X() << ", " << p4.Y() << " ";
             }
             else if (bezier->Degree() == 2) {
                 if (poles != 3)
@@ -407,14 +407,14 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
                 gp_Pnt p2 = bezier->Pole(2);
                 gp_Pnt p3 = bezier->Pole(3);
                 str << " Q"
-                    << p2.X() << "," << p2.Y() << " "
-                    << p3.X() << "," << p3.Y() << " ";
+                    << p2.X() << ", " << p2.Y() << " "
+                    << p3.X() << ", " << p3.Y() << " ";
             }
             else if (bezier->Degree() == 1) {
                 if (poles != 2)
                     Standard_Failure::Raise("do it the generic way");
                 gp_Pnt p2 = bezier->Pole(2);
-                str << " L" << p2.X() << "," << p2.Y() << " ";
+                str << " L" << p2.X() << ", " << p2.Y() << " ";
             }
             else {
                 Standard_Failure::Raise("do it the generic way");
@@ -469,7 +469,7 @@ std::string DXFOutput::exportEdges(const TopoDS_Shape& input)
     std::stringstream result;
 
     TopExp_Explorer edges(input, TopAbs_EDGE);
-    for (int i = 1 ; edges.More(); edges.Next(),i++) {
+    for (int i = 1 ; edges.More(); edges.Next(), i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
@@ -510,10 +510,10 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     gp_Pnt m = c.Value((l+f)/2.0);
     gp_Pnt e = c.Value(l);
 
-    gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
-    gp_Vec v3(0,0,1);
-    double a = v3.DotCross(v1,v2);
+    gp_Vec v1(m, s);
+    gp_Vec v2(m, e);
+    gp_Vec v3(0, 0,1);
+    double a = v3.DotCross(v1, v2);
 
     // a full circle
     if (s.SquareDistance(e) < 0.001) {
@@ -596,7 +596,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
     const gp_Pnt& p= ellp.Location();
     double r1 = ellp.MajorRadius();
     double r2 = ellp.MinorRadius();
-    double dp = ellp.Axis().Direction().Dot(gp_Vec(0,0,1));
+    double dp = ellp.Axis().Direction().Dot(gp_Vec(0, 0,1));
 
     // a full ellipse
    /* if (s.SquareDistance(e) < 0.001) {
@@ -607,7 +607,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
     else {
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         gp_Dir xaxis = ellp.XAxis().Direction();
-        Standard_Real angle = xaxis.Angle(gp_Dir(1,0,0));
+        Standard_Real angle = xaxis.Angle(gp_Dir(1, 0,0));
         angle = Base::toDegrees<double>(angle);
         char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
@@ -617,7 +617,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostrea
             << e.X() << " " << e.Y() << "\" />";
     }*/
         gp_Dir xaxis = ellp.XAxis().Direction();
-        double angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
+        double angle = xaxis.AngleWithRef(gp_Dir(1, 0,0), gp_Dir(0, 0,-1));
         //double rotation = Base::toDegrees<double>(angle);
 
 	double start_angle = c.FirstParameter();
@@ -672,7 +672,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Standard_Integer maxDegree = 3, maxSegment = 50;
         Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
         // approximate the curve using a tolerance
-        Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+        Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
         if (approx.IsDone() && approx.HasResult()) {
             // have the result
             spline = approx.Curve();
@@ -682,7 +682,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         }
 		
         //GeomConvert_BSplineCurveToBezierCurve crt(spline);
-		//GeomConvert_BSplineCurveKnotSplitting crt(spline,0);
+		//GeomConvert_BSplineCurveKnotSplitting crt(spline, 0);
         //Standard_Integer arcs = crt.NbArcs();
 		//Standard_Integer arcs = crt.NbSplits()-1;
         Standard_Integer m = 0;
@@ -693,9 +693,9 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             for (int i=1; i<= spline->NbKnots(); i++)
                 m += spline->Multiplicity(i);
         }
-        TColStd_Array1OfReal knotsequence(1,m);
+        TColStd_Array1OfReal knotsequence(1, m);
         spline->KnotSequence(knotsequence);
-        TColgp_Array1OfPnt poles(1,spline->NbPoles());
+        TColgp_Array1OfPnt poles(1, spline->NbPoles());
         spline->Poles(poles);
 
 

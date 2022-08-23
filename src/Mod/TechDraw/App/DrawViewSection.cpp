@@ -112,29 +112,29 @@ DrawViewSection::DrawViewSection()  :
     static const char *sgroup = "Section";
     static const char *fgroup = "Cut Surface Format";
 
-    ADD_PROPERTY_TYPE(SectionSymbol ,(""),sgroup,App::Prop_None,"The identifier for this section");
-    ADD_PROPERTY_TYPE(BaseView ,(nullptr),sgroup,App::Prop_None,"2D View source for this Section");
+    ADD_PROPERTY_TYPE(SectionSymbol ,(""), sgroup, App::Prop_None, "The identifier for this section");
+    ADD_PROPERTY_TYPE(BaseView ,(nullptr), sgroup, App::Prop_None, "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionNormal ,(0, 0,1.0) ,sgroup, App::Prop_None,
                         "Section Plane normal direction");  //direction of extrusion of cutting prism
-    ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
+    ADD_PROPERTY_TYPE(SectionOrigin ,(0, 0,0) ,sgroup, App::Prop_None, "Section Plane Origin");
     SectionDirection.setEnums(SectionDirEnums);
-    ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
-    ADD_PROPERTY_TYPE(FuseBeforeCut ,(false),sgroup,App::Prop_None,"Merge Source(s) into a single shape before cutting");
+    ADD_PROPERTY_TYPE(SectionDirection, ((long)0), sgroup, App::Prop_None, "Direction in Base View for this Section");
+    ADD_PROPERTY_TYPE(FuseBeforeCut ,(false), sgroup, App::Prop_None, "Merge Source(s) into a single shape before cutting");
 
     CutSurfaceDisplay.setEnums(CutSurfaceEnums);
-    ADD_PROPERTY_TYPE(CutSurfaceDisplay,(prefCutSurface()),fgroup, App::Prop_None, "Appearance of Cut Surface");
+    ADD_PROPERTY_TYPE(CutSurfaceDisplay, (prefCutSurface()), fgroup, App::Prop_None, "Appearance of Cut Surface");
 
 //initialize these to defaults
-    ADD_PROPERTY_TYPE(FileHatchPattern ,(DrawHatch::prefSvgHatch()),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
-    ADD_PROPERTY_TYPE(FileGeomPattern ,(DrawGeomHatch::prefGeomHatchFile()),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
+    ADD_PROPERTY_TYPE(FileHatchPattern ,(DrawHatch::prefSvgHatch()), fgroup, App::Prop_None, "The hatch pattern file for the cut surface");
+    ADD_PROPERTY_TYPE(FileGeomPattern ,(DrawGeomHatch::prefGeomHatchFile()), fgroup, App::Prop_None, "The PAT pattern file for geometric hatching");
 
-    ADD_PROPERTY_TYPE(SvgIncluded ,(""),fgroup,App::Prop_None,
+    ADD_PROPERTY_TYPE(SvgIncluded ,(""), fgroup, App::Prop_None,
                                             "Embedded Svg hatch file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(PatIncluded ,(""),fgroup,App::Prop_None,
+    ADD_PROPERTY_TYPE(PatIncluded ,(""), fgroup, App::Prop_None,
                                             "Embedded Pat pattern file. System use only."); // n/a to end users
-    ADD_PROPERTY_TYPE(NameGeomPattern ,(DrawGeomHatch::prefGeomHatchName()),fgroup,App::Prop_None,"The pattern name for geometric hatching");
-    ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
+    ADD_PROPERTY_TYPE(NameGeomPattern ,(DrawGeomHatch::prefGeomHatchName()), fgroup, App::Prop_None, "The pattern name for geometric hatching");
+    ADD_PROPERTY_TYPE(HatchScale, (1.0), fgroup, App::Prop_None, "Hatch pattern size adjustment");
 
     getParameters();
 
@@ -143,8 +143,8 @@ DrawViewSection::DrawViewSection()  :
     hatchFilter = ("PAT files (*.pat *.PAT);;All files (*)");
     FileGeomPattern.setFilter(hatchFilter);
 
-    SvgIncluded.setStatus(App::Property::ReadOnly,true);
-    PatIncluded.setStatus(App::Property::ReadOnly,true);
+    SvgIncluded.setStatus(App::Property::ReadOnly, true);
+    PatIncluded.setStatus(App::Property::ReadOnly, true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -316,17 +316,17 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
     gp_Dir gpNormal = pln.Axis().Direction();
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
-    if(!isReallyInBox(gp_Pnt(orgPnt.x,orgPnt.y,orgPnt.z), centerBox)) {
-        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n",getNameInDocument());
+    if(!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
+        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n", getNameInDocument());
     }
 
     // make cutting tool
     // Make the extrusion face
     double dMax = sqrt(centerBox.SquareExtent());
-    BRepBuilderAPI_MakeFace mkFace(pln, -dMax,dMax,-dMax,dMax);
+    BRepBuilderAPI_MakeFace mkFace(pln, -dMax, dMax, -dMax, dMax);
     TopoDS_Face aProjFace = mkFace.Face();
     if(aProjFace.IsNull()) {
-        Base::Console().Warning("DVS: Section face is NULL in %s\n",getNameInDocument());
+        Base::Console().Warning("DVS: Section face is NULL in %s\n", getNameInDocument());
         return;
     }
     gp_Vec extrudeDir = dMax * gp_Vec(gpNormal);
@@ -349,7 +349,7 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
         BRepAlgoAPI_Cut mkCut(s, prism);
         if (!mkCut.IsDone()) {
-            Base::Console().Warning("DVS: Section cut has failed in %s\n",getNameInDocument());
+            Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
         }
         TopoDS_Shape cut = mkCut.Shape();
@@ -397,7 +397,7 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
         m_scaledShape   = TechDraw::scaleShape(centeredShape,
                                              getScale());
 
-        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+        if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             m_scaledShape = TechDraw::rotateShape(m_scaledShape,
                                                   m_viewAxis,
                                                   Rotation.getValue());
@@ -413,7 +413,7 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
     }
     catch (Standard_Failure& e1) {
         Base::Console().Warning("DVS::makeSectionCut - failed to build base shape %s - %s **\n",
-                                getNameInDocument(),e1.GetMessageString());
+                                getNameInDocument(), e1.GetMessageString());
         return;
     }
 
@@ -464,7 +464,7 @@ void DrawViewSection::postHlrTasks(void)
 
     TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShapeF,
                                                       getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection = TechDraw::rotateShape(scaledSection,
                                               m_viewAxis,
                                               Rotation.getValue());
@@ -717,7 +717,7 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
         dvsDir = dvpRight.Reversed();
         dvsXDir = dvpDir;
     } else {
-        Base::Console().Log("Error - DVS::getCSFromBase - bad sectionName: %s\n",sectionName.c_str());
+        Base::Console().Log("Error - DVS::getCSFromBase - bad sectionName: %s\n", sectionName.c_str());
         dvsDir = dvpRight;
         dvsXDir = dvpDir;
     }
@@ -766,7 +766,7 @@ std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
 //    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     std::vector<LineSet> result;
-    result = DrawGeomHatch::getTrimmedLinesSection(this,m_lineSets,
+    result = DrawGeomHatch::getTrimmedLinesSection(this, m_lineSets,
                                                    getSectionTopoDSFace(i),
                                                    HatchScale.getValue());
     return result;
@@ -971,7 +971,7 @@ bool DrawViewSection::debugSection(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
 
-    return hGrp->GetBool("debugSection",false);
+    return hGrp->GetBool("debugSection", false);
 }
 
 int DrawViewSection::prefCutSurface(void) const

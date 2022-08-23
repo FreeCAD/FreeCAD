@@ -27,7 +27,7 @@
 #   include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+/// Here the FreeCAD includes sorted by Base, App, Gui......
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -167,7 +167,7 @@ void PropertyCenterLineList::Restore(Base::XMLReader &reader)
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("CenterLine \"%s\" within a PropertyCenterLineList was subject to a partial restore.\n",reader.localName());
+            Base::Console().Error("CenterLine \"%s\" within a PropertyCenterLineList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CenterLine class
                 values.push_back(newG);

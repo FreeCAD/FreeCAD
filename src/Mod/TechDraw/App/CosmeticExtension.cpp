@@ -49,8 +49,8 @@ CosmeticExtension::CosmeticExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (nullptr), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
     EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (nullptr), cgroup, App::Prop_Output, "CosmeticEdge Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr),cgroup,App::Prop_Output,"Geometry format Save/Restore");
-    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr),cgroup,App::Prop_Output,"Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CenterLines ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(nullptr), cgroup, App::Prop_Output, "Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
@@ -66,9 +66,9 @@ CosmeticExtension::~CosmeticExtension()
 //}
 
 //==============================================================================
-//CosmeticVertex x,y are stored as unscaled, but mirrored (inverted Y) values.
+//CosmeticVertex x, y are stored as unscaled, but mirrored (inverted Y) values.
 //if you are creating a CV based on calculations of scaled geometry, you need to 
-//unscale x,y before creation.
+//unscale x, y before creation.
 //if you are creating a CV based on calculations of mirrored geometry, you need to
 //mirror again before creation.
 
@@ -107,7 +107,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertex(std::string tagSt
 // used when selecting
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCVBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCVBySelection(%s)\n", name.c_str());
     CosmeticVertex* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -159,7 +159,7 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
 std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
                                                Base::Vector3d end)
 {
-//    Base::Console().Message("CEx::addCosmeticEdge(s,e)\n");
+//    Base::Console().Message("CEx::addCosmeticEdge(s, e)\n");
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
     edges.push_back(ce);
@@ -204,7 +204,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tagString
 // used when selecting
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
     CosmeticEdge* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -311,7 +311,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLine(std::string tagString) co
 // used when selecting
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCLBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCLBySelection(%s)\n", name.c_str());
     CenterLine* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -392,7 +392,7 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tagString) co
 // used when selecting
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string name) const
 {
-//    Base::Console().Message("CEx::getCEBySelection(%s)\n",name.c_str());
+//    Base::Console().Message("CEx::getCEBySelection(%s)\n", name.c_str());
     GeomFormat* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
@@ -436,7 +436,7 @@ void CosmeticExtension::removeGeomFormat(std::string delTag)
 PyObject* CosmeticExtension::getExtensionPyObject(void) {
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
-        ExtensionPythonObject = Py::Object(new CosmeticExtensionPy(this),true);
+        ExtensionPythonObject = Py::Object(new CosmeticExtensionPy(this), true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
 }

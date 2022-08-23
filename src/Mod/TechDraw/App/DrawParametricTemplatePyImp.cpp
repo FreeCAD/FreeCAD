@@ -74,7 +74,7 @@ PyObject* DrawParametricTemplatePy::drawLine(PyObject *args)
     if (!PyArg_ParseTuple(args, "dddd", &x1, &y1, &x2, &y2))
         return nullptr;
 
-    getDrawParametricTemplatePtr()->drawLine(x1,y1,x2,y2);
+    getDrawParametricTemplatePtr()->drawLine(x1, y1, x2, y2);
 
     Py_Return;
 

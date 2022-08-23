@@ -291,7 +291,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
                                         &(Base::VectorPy::Type), &pPnt2,
                                         &style, &weight,
                                         &pColor)) {
-        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
+        throw Py::TypeError("expected (vector, vector, [style, weight, color])");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -308,7 +308,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
     } else {
         std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
-        Base::Console().Message("%s\n",msg.c_str());
+        Base::Console().Message("%s\n", msg.c_str());
         throw Py::RuntimeError(msg);
     }
     //int link =
@@ -330,7 +330,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
                                         &(Base::VectorPy::Type), &pPnt2,
                                         &style, &weight,
                                         &pColor)) {
-        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
+        throw Py::TypeError("expected (vector, vector, [style, weight, color])");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -355,7 +355,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
     } else {
         std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
-        Base::Console().Message("%s\n",msg.c_str());
+        Base::Console().Message("%s\n", msg.c_str());
         throw Py::RuntimeError(msg);
     }
     //int link =
@@ -376,7 +376,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
                                         &radius,
                                         &style, &weight,
                                         &pColor)) {
-        throw Py::TypeError("expected (vector, vector,[style,weight,color])");
+        throw Py::TypeError("expected (vector, vector, [style, weight, color])");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -394,7 +394,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
     } else {
         std::string msg = "DVPPI:makeCosmeticCircle - circle creation failed";
-        Base::Console().Message("%s\n",msg.c_str());
+        Base::Console().Message("%s\n", msg.c_str());
         throw Py::RuntimeError(msg);
     }
     //int link =
@@ -417,7 +417,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!ddd|idO", &(Base::VectorPy::Type), &pPnt1,
                                         &radius, &angle1, &angle2,
                                         &style, &weight, &pColor)) {
-        throw Py::TypeError("expected (vector, radius, start, end,[style, weight, color])");
+        throw Py::TypeError("expected (vector, radius, start, end, [style, weight, color])");
     }
 
     //from here on is almost duplicate of makeCosmeticCircle
@@ -436,7 +436,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
             ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
     } else {
         std::string msg = "DVPPI:makeCosmeticCircleArc - arc creation failed";
-        Base::Console().Message("%s\n",msg.c_str());
+        Base::Console().Message("%s\n", msg.c_str());
         throw Py::RuntimeError(msg);
     }
 
@@ -507,7 +507,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
     int mode = 0;
     std::vector<std::string> subs;
 
-    if (!PyArg_ParseTuple(args, "Oi",&pSubs, &mode)) {
+    if (!PyArg_ParseTuple(args, "Oi", &pSubs, &mode)) {
         throw Py::TypeError("expected (subNameList, mode)");
     }
 
@@ -528,12 +528,12 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
     if (!subs.empty()) {
         cl = CenterLine::CenterLineBuilder(dvp,
                                            subs,
-                                           mode);     //vert,horiz,align
+                                           mode);     //vert, horiz, align
         if (cl) {
             tag = dvp->addCenterLine(cl);
         } else {
             std::string msg = "DVPPI:makeCenterLine - line creation failed";
-            Base::Console().Message("%s\n",msg.c_str());
+            Base::Console().Message("%s\n", msg.c_str());
             throw Py::RuntimeError(msg);
         }
     }
@@ -606,7 +606,7 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
     int visible = 1;
     PyObject* pColor;
 
-    if (!PyArg_ParseTuple(args, "iidOi",&idx, &style, &weight, &pColor, &visible)) {
+    if (!PyArg_ParseTuple(args, "iidOi", &idx, &style, &weight, &pColor, &visible)) {
         throw Py::TypeError("expected (index, style, weight, color, visible)");
     }
 

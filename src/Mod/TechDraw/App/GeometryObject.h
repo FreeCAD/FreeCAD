@@ -62,7 +62,7 @@ TopoDS_Shape TechDrawExport mirrorShapeVec(const TopoDS_Shape &input,
                              double scale = 1.0);
 
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
-                        const gp_Pnt& inputCenter = gp_Pnt(0.0,0.0,0.0),
+                        const gp_Pnt& inputCenter = gp_Pnt(0.0, 0.0, 0.0),
                         double scale = 1.0);
 
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,

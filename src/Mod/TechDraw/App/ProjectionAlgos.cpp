@@ -113,7 +113,7 @@ void ProjectionAlgos::execute()
     Handle( HLRBRep_Algo ) brep_hlr = new HLRBRep_Algo;
     brep_hlr->Add(Input);
 
-    gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(Direction.x,Direction.y,Direction.z));
+    gp_Ax2 transform(gp_Pnt(0, 0,0), gp_Dir(Direction.x, Direction.y, Direction.z));
     HLRAlgo_Projector projector( transform );
     brep_hlr->Projector(projector);
     brep_hlr->Update();
@@ -151,10 +151,10 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         H_style.insert({"stroke-width", "0.15"});
         H_style.insert({"stroke-linecap", "butt"});
         H_style.insert({"stroke-linejoin", "miter"});
-        H_style.insert({"stroke-dasharray", "0.2,0.1)"});
+        H_style.insert({"stroke-dasharray", "0.2, 0.1)"});
         H_style.insert({"fill", "none"});
-        H_style.insert({"transform", "scale(1,-1)"});
-        BRepMesh_IncrementalMesh(H,tolerance);
+        H_style.insert({"transform", "scale(1, -1)"});
+        BRepMesh_IncrementalMesh(H, tolerance);
         result  << "<g";
         for (const auto& attribute : H_style)
             result << "   " << attribute.first << "=\""
@@ -168,10 +168,10 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         H0_style.insert({"stroke-width", "0.15"});
         H0_style.insert({"stroke-linecap", "butt"});
         H0_style.insert({"stroke-linejoin", "miter"});
-        H0_style.insert({"stroke-dasharray", "0.02,0.1)"});
+        H0_style.insert({"stroke-dasharray", "0.02, 0.1)"});
         H0_style.insert({"fill", "none"});
-        H0_style.insert({"transform", "scale(1,-1)"});
-        BRepMesh_IncrementalMesh(HO,tolerance);
+        H0_style.insert({"transform", "scale(1, -1)"});
+        BRepMesh_IncrementalMesh(HO, tolerance);
         result  << "<g";
         for (const auto& attribute : H0_style)
             result << "   " << attribute.first << "=\""
@@ -186,8 +186,8 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         V0_style.insert({"stroke-linecap", "butt"});
         V0_style.insert({"stroke-linejoin", "miter"});
         V0_style.insert({"fill", "none"});
-        V0_style.insert({"transform", "scale(1,-1)"});
-        BRepMesh_IncrementalMesh(VO,tolerance);
+        V0_style.insert({"transform", "scale(1, -1)"});
+        BRepMesh_IncrementalMesh(VO, tolerance);
         result  << "<g";
         for (const auto& attribute : V0_style)
             result << "   " << attribute.first << "=\""
@@ -202,8 +202,8 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         V_style.insert({"stroke-linecap", "butt"});
         V_style.insert({"stroke-linejoin", "miter"});
         V_style.insert({"fill", "none"});
-        V_style.insert({"transform", "scale(1,-1)"});
-        BRepMesh_IncrementalMesh(V,tolerance);
+        V_style.insert({"transform", "scale(1, -1)"});
+        BRepMesh_IncrementalMesh(V, tolerance);
         result  << "<g";
         for (const auto& attribute : V_style)
             result << "   " << attribute.first << "=\""
@@ -218,8 +218,8 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         V1_style.insert({"stroke-linecap", "butt"});
         V1_style.insert({"stroke-linejoin", "miter"});
         V1_style.insert({"fill", "none"});
-        V1_style.insert({"transform", "scale(1,-1)"});
-        BRepMesh_IncrementalMesh(V1,tolerance);
+        V1_style.insert({"transform", "scale(1, -1)"});
+        BRepMesh_IncrementalMesh(V1, tolerance);
         result  << "<g";
         for (const auto& attribute : V1_style)
             result << "   " << attribute.first << "=\""
@@ -233,10 +233,10 @@ string ProjectionAlgos::getSVG(ExtractionType type,
         H1_style.insert({"stroke-width", "0.15"});
         H1_style.insert({"stroke-linecap", "butt"});
         H1_style.insert({"stroke-linejoin", "miter"});
-        H1_style.insert({"stroke-dasharray", "0.09,0.05)"});
+        H1_style.insert({"stroke-dasharray", "0.09, 0.05)"});
         H1_style.insert({"fill", "none"});
-        H1_style.insert({"transform", "scale(1,-1)"});
-        BRepMesh_IncrementalMesh(H1,tolerance);
+        H1_style.insert({"transform", "scale(1, -1)"});
+        BRepMesh_IncrementalMesh(H1, tolerance);
         result  << "<g";
         for (const auto& attribute : H1_style)
             result << "   " << attribute.first << "=\""
@@ -257,32 +257,32 @@ string ProjectionAlgos::getDXF(ExtractionType type, double /*scale*/, double tol
 
     if (!H.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
-        BRepMesh_IncrementalMesh(H,tolerance);
+        BRepMesh_IncrementalMesh(H, tolerance);
         result  << output.exportEdges(H);
     }
     if (!HO.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
-        BRepMesh_IncrementalMesh(HO,tolerance);
+        BRepMesh_IncrementalMesh(HO, tolerance);
         result  << output.exportEdges(HO);
     }
     if (!VO.IsNull()) {
         //float width = 0.35f/scale;
-        BRepMesh_IncrementalMesh(VO,tolerance);
+        BRepMesh_IncrementalMesh(VO, tolerance);
         result  << output.exportEdges(VO);
     }
     if (!V.IsNull()) {
         //float width = 0.35f/scale;
-        BRepMesh_IncrementalMesh(V,tolerance);
+        BRepMesh_IncrementalMesh(V, tolerance);
         result  << output.exportEdges(V);
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
         //float width = 0.35f/scale;
-        BRepMesh_IncrementalMesh(V1,tolerance);
+        BRepMesh_IncrementalMesh(V1, tolerance);
         result  << output.exportEdges(V1);
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
         //float width = 0.15f/scale;
-        BRepMesh_IncrementalMesh(H1,tolerance);
+        BRepMesh_IncrementalMesh(H1, tolerance);
         result  << output.exportEdges(H1);
     }
 

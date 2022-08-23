@@ -72,38 +72,38 @@ DrawLeaderLine::DrawLeaderLine()
 {
     static const char *group = "Leader";
 
-    ADD_PROPERTY_TYPE(LeaderParent,(nullptr),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(LeaderParent, (nullptr), group, (App::PropertyType)(App::Prop_None),
                       "View to which this leader is attached");
     LeaderParent.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(WayPoints,(Base::Vector3d()) ,group, App::Prop_None,
+    ADD_PROPERTY_TYPE(WayPoints, (Base::Vector3d()) ,group, App::Prop_None,
                       "Intermediate points for Leader line");
 
 //    EndType.setEnums(ArrowTypeEnums);
-//    ADD_PROPERTY(EndType,(prefEnd()));
+//    ADD_PROPERTY(EndType, (prefEnd()));
 
     StartSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(StartSymbol,(0l));              //filled arrow
+    ADD_PROPERTY(StartSymbol, (0l));              //filled arrow
 
 //    ADD_PROPERTY_TYPE(StartSymbol, (0), group, App::Prop_None, "Symbol (arrowhead) for start of line");
     EndSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(EndSymbol,(7l));                //no symbol
+    ADD_PROPERTY(EndSymbol, (7l));                //no symbol
 //    ADD_PROPERTY_TYPE(EndSymbol, (0), group, App::Prop_None, "Symbol (arrowhead) for end of line");
 
 
-    ADD_PROPERTY_TYPE(Scalable ,(false),group,App::Prop_None,"Scale line with LeaderParent");
-    ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()),group,App::Prop_None,"Forces last line segment to be horizontal");
+    ADD_PROPERTY_TYPE(Scalable ,(false), group, App::Prop_None, "Scale line with LeaderParent");
+    ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()), group, App::Prop_None, "Forces last line segment to be horizontal");
 
     //hide the DrawView properties that don't apply to Leader
-    ScaleType.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    Rotation.setStatus(App::Property::ReadOnly,true);
-    Rotation.setStatus(App::Property::Hidden,true);
-    Caption.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::ReadOnly, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::ReadOnly, true);
+    Scale.setStatus(App::Property::Hidden, true);
+    Rotation.setStatus(App::Property::ReadOnly, true);
+    Rotation.setStatus(App::Property::Hidden, true);
+    Caption.setStatus(App::Property::Hidden, true);
 
     LockPosition.setValue(true);
-    LockPosition.setStatus(App::Property::Hidden,true);
+    LockPosition.setStatus(App::Property::Hidden, true);
 }
 
 DrawLeaderLine::~DrawLeaderLine()
@@ -288,7 +288,7 @@ bool DrawLeaderLine::getDefAuto() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
-    bool result = hGrp->GetBool("AutoHorizontal",true);
+    bool result = hGrp->GetBool("AutoHorizontal", true);
     return result;
 }
 
@@ -297,7 +297,7 @@ PyObject *DrawLeaderLine::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawLeaderLinePy(this),true);
+        PythonObject = Py::Object(new DrawLeaderLinePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

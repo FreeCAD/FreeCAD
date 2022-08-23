@@ -68,16 +68,16 @@ DrawViewDimExtent::DrawViewDimExtent(void)
                                                                  //Cosmetic End points are stored in DVD::References2d
     App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
 
-    ADD_PROPERTY_TYPE(Source,(nullptr,nullptr),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");
+    ADD_PROPERTY_TYPE(Source, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View (Edges) to dimension");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Source3d,(nullptr,nullptr),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");   //TBI
+    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View (Edges) to dimension");   //TBI
     Source3d.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(DirExtent ,(0),"",App::Prop_Output,"Horizontal / Vertical");
+    ADD_PROPERTY_TYPE(DirExtent ,(0), "", App::Prop_Output, "Horizontal / Vertical");
 
-    ADD_PROPERTY_TYPE(CosmeticTags ,(""),"",App::Prop_Output,"Id of cosmetic endpoints");
+    ADD_PROPERTY_TYPE(CosmeticTags ,(""), "", App::Prop_Output, "Id of cosmetic endpoints");
 
     //hide the properties the user can't edit in the property editor
-    Source3d.setStatus(App::Property::Hidden,true);   //TBI
+    Source3d.setStatus(App::Property::Hidden, true);   //TBI
 
 }
 
@@ -173,7 +173,7 @@ std::vector<std::string> DrawViewDimExtent::getSubNames(void)
 
 pointPair DrawViewDimExtent::getPointsTwoVerts()
 {
-//    Base::Console().Message("DVDE::getPointsTwoVerts() - %s\n",getNameInDocument());
+//    Base::Console().Message("DVDE::getPointsTwoVerts() - %s\n", getNameInDocument());
     pointPair errorValue(
         Base::Vector3d(0.0, 0.0, 0.0),
         Base::Vector3d(0.0, 0.0, 0.0)
@@ -200,7 +200,7 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
 //! validate 2D references - only checks if the target exists
 bool DrawViewDimExtent::checkReferences2D() const
 {
-//    Base::Console().Message("DVDE::checkReFerences2d() - %s\n",getNameInDocument());
+//    Base::Console().Message("DVDE::checkReFerences2d() - %s\n", getNameInDocument());
     TechDraw::DrawViewPart* dvp = getViewPart();
     if (!dvp) {
         return false;
@@ -238,7 +238,7 @@ PyObject *DrawViewDimExtent::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewDimExtentPy(this),true);
+        PythonObject = Py::Object(new DrawViewDimExtentPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

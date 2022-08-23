@@ -64,15 +64,15 @@ DrawProjGroupItem::DrawProjGroupItem(void)
 {
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Type, ((long)0));
-    ADD_PROPERTY_TYPE(RotationVector ,(1.0,0.0,0.0)    ,"Base",
-            App::Prop_None,"Deprecated. Use XDirection.");
+    ADD_PROPERTY_TYPE(RotationVector ,(1.0, 0.0, 0.0)    ,"Base",
+            App::Prop_None, "Deprecated. Use XDirection.");
 
     //projection group controls these
-//    Direction.setStatus(App::Property::ReadOnly,true);
-    RotationVector.setStatus(App::Property::ReadOnly,true);   //Use XDirection
+//    Direction.setStatus(App::Property::ReadOnly, true);
+    RotationVector.setStatus(App::Property::ReadOnly, true);   //Use XDirection
     ScaleType.setValue("Custom");
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::Property::Hidden, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
 }
 
 DrawProjGroupItem::~DrawProjGroupItem()
@@ -164,7 +164,7 @@ void DrawProjGroupItem::postHlrTasks(void)
 
 void DrawProjGroupItem::autoPosition()
 {
-//    Base::Console().Message("DPGI::autoPosition(%s)\n",Label.getValue());
+//    Base::Console().Message("DPGI::autoPosition(%s)\n", Label.getValue());
     if (LockPosition.getValue()) {
         return;
     }
@@ -175,7 +175,7 @@ void DrawProjGroupItem::autoPosition()
         Y.setValue(newPos.y);
         requestPaint();
         purgeTouched();               //prevents "still touched after recompute" message
-        getPGroup()->purgeTouched();  //changing dpgi x,y marks parent dpg as touched
+        getPGroup()->purgeTouched();  //changing dpgi x, y marks parent dpg as touched
     }
 }
 
@@ -222,23 +222,23 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
     Base::Vector3d rotVec  = getXDirection();
 
 // mirror projDir through XZ plane
-    Base::Vector3d yNorm(0.0,1.0,0.0);
+    Base::Vector3d yNorm(0.0, 1.0, 0.0);
     projDir = projDir - (yNorm * 2.0) * (projDir.Dot(yNorm));
     rotVec = rotVec - (yNorm * 2.0) * (rotVec.Dot(yNorm));
 
-    if (DrawUtil::checkParallel(projDir,rotVec)) {
+    if (DrawUtil::checkParallel(projDir, rotVec)) {
          Base::Console().Warning("DPGI::getVA - %s - Direction and XDirection parallel. using defaults\n",
                                  getNameInDocument());
     }
     try {
-        viewAxis = gp_Ax2(gp_Pnt(pt.x,pt.y,pt.z),
+        viewAxis = gp_Ax2(gp_Pnt(pt.x, pt.y, pt.z),
                           gp_Dir(projDir.x, projDir.y, projDir.z),
                           gp_Dir(rotVec.x, rotVec.y, rotVec.z));
     }
     catch (Standard_Failure& e4) {
         Base::Console().Message("PROBLEM - DPGI (%s) failed to create viewAxis: %s **\n",
-                                getNameInDocument(),e4.GetMessageString());
-        return TechDraw::getViewAxis(pt,axis,false);
+                                getNameInDocument(), e4.GetMessageString());
+        return TechDraw::getViewAxis(pt, axis, false);
     }
 
     return viewAxis;
@@ -313,11 +313,11 @@ double DrawProjGroupItem::getRotateAngle()
     nx.Normalize();
     Base::Vector3d na = Direction.getValue();
     na.Normalize();
-    Base::Vector3d org(0.0,0.0,0.0);
+    Base::Vector3d org(0.0, 0.0, 0.0);
 
     viewAxis = getProjectionCS(org);
     gp_Dir gxDir = viewAxis.XDirection();
-    Base::Vector3d origX(gxDir.X(),gxDir.Y(),gxDir.Z());
+    Base::Vector3d origX(gxDir.X(), gxDir.Y(), gxDir.Z());
     origX.Normalize();
     double angle = origX.GetAngle(nx);
 
@@ -335,7 +335,7 @@ double DrawProjGroupItem::getScale(void) const
     if (pgroup) {
         result = pgroup->getScale();
         if (!(result > 0.0)) {
-            Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+            Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n", getNameInDocument(), Scale.getValue());
             result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
         }
     }
@@ -357,7 +357,7 @@ void DrawProjGroupItem::unsetupObject()
     if ( getPGroup()->getAnchor() == this &&
          !getPGroup()->isUnsetting() )         {
            Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
-                                   getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
+                                   getPGroup()->getNameInDocument(), getPGroup()->Label.getValue());
            getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
     }
 
@@ -400,7 +400,7 @@ PyObject *DrawProjGroupItem::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawProjGroupItemPy(this),true);
+        PythonObject = Py::Object(new DrawProjGroupItemPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

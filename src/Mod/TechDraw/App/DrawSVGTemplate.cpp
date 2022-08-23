@@ -73,9 +73,9 @@ DrawSVGTemplate::DrawSVGTemplate()
     ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");             //sb TemplateFileName???
 
     // Width and Height properties shouldn't be set by the user
-    Height.setStatus(App::Property::ReadOnly,true);
-    Width.setStatus(App::Property::ReadOnly,true);
-    Orientation.setStatus(App::Property::ReadOnly,true);
+    Height.setStatus(App::Property::ReadOnly, true);
+    Width.setStatus(App::Property::ReadOnly, true);
+    Orientation.setStatus(App::Property::ReadOnly, true);
 
     std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
     Template.setFilter(svgFilter);
@@ -89,7 +89,7 @@ PyObject *DrawSVGTemplate::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawSVGTemplatePy(this),true);
+        PythonObject = Py::Object(new DrawSVGTemplatePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

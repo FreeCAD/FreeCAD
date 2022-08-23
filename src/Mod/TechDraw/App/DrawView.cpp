@@ -159,7 +159,7 @@ void DrawView::onChanged(const App::Property* prop)
             requestPaint();
         } else if ((prop == &X) ||
             (prop == &Y)) {
-            //X,Y changes are only interesting to DPGI and Gui side
+            //X, Y changes are only interesting to DPGI and Gui side
         }
     }
     App::DocumentObject::onChanged(prop);
@@ -215,7 +215,7 @@ short DrawView::mustExecute() const
 ////you must override this in derived class
 QRectF DrawView::getRect() const
 {
-    QRectF result(0,0,1,1);
+    QRectF result(0, 0,1, 1);
     return result;
 }
 
@@ -357,10 +357,10 @@ double DrawView::autoScale() const
     auto page = findParentPage();
     double w = page->getPageWidth();
     double h = page->getPageHeight();
-    return autoScale(w,h);
+    return autoScale(w, h);
 }
 
-//compare 1:1 rect of view to pagesize(pw,h)
+//compare 1:1 rect of view to pagesize(pw, h)
 double DrawView::autoScale(double pw, double ph) const
 {
 //    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
@@ -374,7 +374,7 @@ double DrawView::autoScale(double pw, double ph) const
     double vbh = viewBox.height()/getScale();
     double xScale = pw/vbw;           // > 1 page bigger than figure
     double yScale = ph/vbh;           // < 1 page is smaller than figure
-    double newScale = std::min(xScale,yScale) * fudgeFactor;
+    double newScale = std::min(xScale, yScale) * fudgeFactor;
     double sensibleScale = DrawUtil::sensibleScale(newScale);
     return sensibleScale;
 }
@@ -413,7 +413,7 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
 void DrawView::setPosition(double x, double y, bool force)
 {
-//    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
+//    Base::Console().Message("DV::setPosition(%.3f, %.3f) - \n", x,y, getNameInDocument());
     if ( (!isLocked()) ||
          (force) ) {
         double currX = X.getValue();
@@ -438,7 +438,7 @@ double DrawView::getScale() const
     }
     if (!(result > 0.0)) {
         result = 1.0;
-        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
+        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n", getNameInDocument(), Scale.getValue());
     }
     return result;
 }
@@ -461,7 +461,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
-        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {                   //property in file is Float
             tmp.setContainer(this);
             tmp.Restore(reader);
             double tmpValue = tmp.getValue();
@@ -499,7 +499,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
     }
 
     // property X had App::PropertyFloat and was changed to App::PropertyLength
-    // and later to PropertyDistance because some X,Y are relative to existing points on page
+    // and later to PropertyDistance because some X, Y are relative to existing points on page
     else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat XProperty;
         XProperty.setContainer(this);
@@ -550,7 +550,7 @@ void DrawView::setScaleAttribute()
 {
     if (ScaleType.isValue("Page") ||
         ScaleType.isValue("Automatic")) {
-        Scale.setStatus(App::Property::ReadOnly,true);
+        Scale.setStatus(App::Property::ReadOnly, true);
     } else {
         Scale.setStatus(App::Property::ReadOnly, false);
     }
@@ -595,7 +595,7 @@ PyObject *DrawView::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewPy(this),true);
+        PythonObject = Py::Object(new DrawViewPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
