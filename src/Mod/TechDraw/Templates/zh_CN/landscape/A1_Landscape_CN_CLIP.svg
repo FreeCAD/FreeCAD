@@ -253,7 +253,7 @@ e">
         <polygon points="423.99998,581 432.49998,581 427.99998,587" />
 	</g>
 
-        <g id="bunding hole">
+        <g id="binding hole">
         <g stroke="black" stroke-width="0.5" fill="#BBBBBB" stroke="#666666" >
         <circle cx="10" cy="324.5" r="3" />
         <circle cx="10" cy="362.5" r="3" />

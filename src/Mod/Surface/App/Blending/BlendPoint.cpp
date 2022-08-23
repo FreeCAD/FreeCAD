@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
- *   Copyright (c) 2014 Balázs Bámer                                       *
+ *   Copyright (c) 2022 Matteo Grellier <matteogrellier@gmail.com>         *
+ *                                                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,65 +21,50 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+#include <Precision.hxx>
+#include <Standard_Real.hxx>
 #endif
+#include "Blending/BlendPoint.h"
+#include "Blending/BlendPointPy.h"
 
-#include "Workbench.h"
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
 
-using namespace SurfaceGui;
+using namespace Surface;
 
-/// @namespace SurfaceGui @class Workbench
-TYPESYSTEM_SOURCE(SurfaceGui::Workbench, Gui::StdWorkbench)
-
-Workbench::Workbench()
+BlendPoint::BlendPoint(const std::vector<Base::Vector3d>& vectorList)
+  : vectors{vectorList}
 {
 }
 
-Workbench::~Workbench()
+BlendPoint::BlendPoint()
 {
+    vectors.emplace_back(Base::Vector3d(0, 0, 0));
 }
 
-Gui::MenuItem *Workbench::setupMenuBar() const
+void BlendPoint::multiply(double f)
 {
-    Gui::MenuItem *root = StdWorkbench::setupMenuBar();
-    Gui::MenuItem *item = root->findItem("&Windows");
-
-    Gui::MenuItem *surface = new Gui::MenuItem;
-    root->insertItem(item, surface);
-    surface->setCommand("Surface");
-    *surface << "Surface_Filling"
-             << "Surface_GeomFillSurface"
-             << "Surface_Sections"
-             << "Surface_ExtendFace"
-             << "Surface_CurveOnMesh"
-             << "Surface_BlendCurve";
-    /*
-    *surface << "Surface_Cut";
-    */
-
-    return root;
+    for (int i = 0; i < nbVectors(); i++) {
+        vectors[i] *= Pow(f, i);
+    }
 }
 
-Gui::ToolBarItem *Workbench::setupToolBars() const
+void BlendPoint::setSize(double f)
 {
-    Gui::ToolBarItem *root = StdWorkbench::setupToolBars();
+    if (nbVectors() > 1) {
+        double il = vectors[1].Length();
+        if (il > Precision::Confusion()) {
+            multiply(f / il);
+        }
+    }
+}
 
-    Gui::ToolBarItem *surface = new Gui::ToolBarItem(root);
-    surface->setCommand("Surface");
-    *surface << "Surface_Filling"
-             << "Surface_GeomFillSurface"
-             << "Surface_Sections"
-             << "Surface_ExtendFace"
-             << "Surface_CurveOnMesh"
-             << "Surface_BlendCurve";
-    /*
-    *surface << "Surface_Cut";
-    */
+int BlendPoint::getContinuity()
+{
+    return vectors.size() - 1;
+}
 
-    return root;
+int BlendPoint::nbVectors()
+{
+    return vectors.size();
 }

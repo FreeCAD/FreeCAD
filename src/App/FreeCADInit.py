@@ -24,7 +24,7 @@
 # FreeCAD init module
 #
 # Gathering all the information to start FreeCAD.
-# This is the second of of three init scripts.
+# This is the second of three init scripts.
 # The third one runs when the gui is up,
 
 # imports the one and only

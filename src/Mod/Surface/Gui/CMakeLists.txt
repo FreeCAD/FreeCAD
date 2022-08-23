@@ -9,6 +9,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
@@ -36,6 +37,11 @@ SET(SurfaceGui_UIC_SRCS
     TaskSections.ui
 )
 
+SET(BlendingGui_SRCS
+    Blending/ViewProviderBlendCurve.cpp
+    Blending/ViewProviderBlendCurve.h
+)
+
 if (BUILD_QT5)
     qt5_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
 else()
@@ -45,6 +51,7 @@ endif()
 SET(SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
     ${SurfaceGui_UIC_HDRS}
+    ${BlendingGui_SRCS}
     TaskFilling.cpp
     TaskFilling.h
     TaskFillingEdge.cpp

@@ -70,7 +70,7 @@ DrawProjGroup::DrawProjGroup()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
-    
+
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
@@ -268,7 +268,7 @@ bool DrawProjGroup::checkFit() const
 {
 //    Base::Console().Message("DPG::checkFit() - %s\n", getNameInDocument());
     if (waitingForChildren()) {
-        //assume everything fits since we don't know what size the chilren are
+        //assume everything fits since we don't know what size the children are
         return true;
     }
     auto page = findParentPage();
@@ -348,7 +348,7 @@ void DrawProjGroup::getViewArea(DrawProjGroupItem *viewPtrs[10],
     // Get the child view bounding boxes
     Base::BoundBox3d bboxes[10];
     makeViewBbs(viewPtrs, bboxes, scaled);
-    
+
     //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
     double col0w = std::max(std::max(bboxes[0].LengthX(), bboxes[3].LengthX()), bboxes[7].LengthX()),
@@ -514,7 +514,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
     }
 
     return -1;
-} 
+}
 
 //removes all DPGI - used when deleting DPG
 int DrawProjGroup::purgeProjections()
@@ -576,7 +576,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
     gp_Ax2 newCS;
     gp_Dir gNewDir;
     gp_Dir gNewXDir;
-    
+
     double angle = M_PI / 2.0;                        //90*
 
     if (viewType == "Right") {

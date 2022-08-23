@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHTRIM_BY_PLANE_H
-#define MESHTRIM_BY_PLANE_H
+#ifndef FEATURE_BLEND_CURVE_H
+#define FEATURE_BLEND_CURVE_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
+#include <Mod/Part/App/FeaturePartSpline.h>
+#include <Mod/Surface/SurfaceGlobal.h>
+#include <Mod/Surface/App/Blending/BlendPoint.h>
 
-namespace MeshCore {
-
-/**
- * Trim the facets in 3D with a plane
- * \author Werner Mayer
- */
-class MeshExport MeshTrimByPlane
+namespace Surface
 {
-public:
-    MeshTrimByPlane(MeshKernel& mesh);
-    ~MeshTrimByPlane();
+
+class SurfaceExport FeatureBlendCurve: public Part::Spline
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::FeatureBlendCurve);
 
 public:
-    /**
-     * Checks all facets for intersection with the plane and writes all touched facets into the vector
-     */
-    void CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vector3f& base, const Base::Vector3f& normal,
-                     std::vector<FacetIndex>& trimFacets, std::vector<FacetIndex>& removeFacets) const;
 
-    /**
-     * The facets from \a trimFacets will be trimmed or deleted and \a trimmedFacets holds the newly generated facets
-     */
-    void TrimFacets(const std::vector<FacetIndex>& trimFacets, const Base::Vector3f& base,
-                    const Base::Vector3f& normal, std::vector<MeshGeomFacet>& trimmedFacets);
+    FeatureBlendCurve();
+
+    App::PropertyLinkSub StartEdge;
+    App::PropertyFloatConstraint StartParameter;
+    App::PropertyIntegerConstraint StartContinuity;
+    App::PropertyFloat StartSize;
+
+    App::PropertyLinkSub EndEdge;
+    App::PropertyFloatConstraint EndParameter;
+    App::PropertyIntegerConstraint EndContinuity;
+    App::PropertyFloat EndSize;
+
+    Standard_Integer maxDegree;
+
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    const char *getViewProviderName() const override
+    {
+        return "SurfaceGui::ViewProviderBlendCurve";
+    }
 
 private:
-    void CreateOneFacet(const Base::Vector3f& base, const Base::Vector3f& normal, unsigned short shift,
-                        const MeshGeomFacet& facet, std::vector<MeshGeomFacet>& trimmedFacets) const;
-    void CreateTwoFacet(const Base::Vector3f& base, const Base::Vector3f& normal, unsigned short shift,
-                        const MeshGeomFacet& facet, std::vector<MeshGeomFacet>& trimmedFacets) const;
+    BlendPoint GetBlendPoint(App::PropertyLinkSub &link, App::PropertyFloatConstraint &param, App::PropertyIntegerConstraint &Continuity);
+    double RelativeToRealParameters(double, double, double);
+    bool lockOnChangeMutex;
 
-private:
-    MeshKernel& myMesh;
+protected:
+    void onChanged(const App::Property *prop) override;
 };
 
-} //namespace MeshCore
+}//Namespace Surface
 
-#endif //MESHTRIM_BY_PLANE_H
+#endif

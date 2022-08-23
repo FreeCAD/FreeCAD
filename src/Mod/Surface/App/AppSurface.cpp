@@ -24,24 +24,29 @@
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
-#include "FeatureFilling.h"
-#include "FeatureSewing.h"
+
+#include "Blending/BlendCurvePy.h"
+#include "Blending/BlendPointPy.h"
+#include "Blending/FeatureBlendCurve.h"
 #include "FeatureCut.h"
-#include "FeatureGeomFillSurface.h"
 #include "FeatureExtend.h"
+#include "FeatureFilling.h"
+#include "FeatureGeomFillSurface.h"
 #include "FeatureSections.h"
+#include "FeatureSewing.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
 
-namespace Surface {
-class Module : public Py::ExtensionModule<Module>
+namespace Surface
+{
+class Module: public Py::ExtensionModule<Module>
 {
 public:
     Module() : Py::ExtensionModule<Module>("Surface")
     {
-        initialize("This module is the Surface module."); // register with Python
+        initialize("This module is the Surface module.");// register with Python
     }
 
     ~Module() override {}
@@ -49,13 +54,12 @@ public:
 private:
 };
 
-PyObject* initModule()
+PyObject *initModule()
 {
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace Surface
-
+}// namespace Surface
 
 /* Python entry */
 PyMOD_INIT_FUNC(Surface)
@@ -63,21 +67,24 @@ PyMOD_INIT_FUNC(Surface)
     try {
         Base::Interpreter().runString("import Part");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception &e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
 
-    PyObject* mod = Surface::initModule();
+    PyObject *mod = Surface::initModule();
     Base::Console().Log("Loading Surface module... done\n");
+    Base::Interpreter().addType(&Surface::BlendPointPy::Type, mod, "BlendPoint");
+    Base::Interpreter().addType(&Surface::BlendCurvePy::Type, mod, "BlendCurve");
 
     // Add types to module
-    Surface::Filling         ::init();
-    Surface::Sewing          ::init();
-    Surface::Cut             ::init();
-    Surface::GeomFillSurface ::init();
-    Surface::Extend          ::init();
-    Surface::Sections        ::init();
+    Surface::Filling           ::init();
+    Surface::Sewing            ::init();
+    Surface::Cut               ::init();
+    Surface::GeomFillSurface   ::init();
+    Surface::Extend            ::init();
+    Surface::FeatureBlendCurve ::init();
+    Surface::Sections          ::init();
 
     PyMOD_Return(mod);
 }

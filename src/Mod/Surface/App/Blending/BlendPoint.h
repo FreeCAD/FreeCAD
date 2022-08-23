@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Matteo Grellier <matteogrellier@gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,57 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHTRIM_BY_PLANE_H
-#define MESHTRIM_BY_PLANE_H
+#ifndef SURFACE_BLEND_POINT_H
+#define SURFACE_BLEND_POINT_H
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
 
-namespace MeshCore {
+#include <Mod/Surface/SurfaceGlobal.h>
+#include <Base/Vector3D.h>
+#include <vector>
 
-/**
- * Trim the facets in 3D with a plane
- * \author Werner Mayer
- */
-class MeshExport MeshTrimByPlane
+
+namespace Surface
+{
+
+/*!
+*   Create a list of vectors formed by a point and some derivatives 
+*   obtained from a curve or surface
+*/ 
+class SurfaceExport BlendPoint
 {
 public:
-    MeshTrimByPlane(MeshKernel& mesh);
-    ~MeshTrimByPlane();
+    std::vector<Base::Vector3d> vectors;
 
-public:
-    /**
-     * Checks all facets for intersection with the plane and writes all touched facets into the vector
-     */
-    void CheckFacets(const MeshFacetGrid& rclGrid, const Base::Vector3f& base, const Base::Vector3f& normal,
-                     std::vector<FacetIndex>& trimFacets, std::vector<FacetIndex>& removeFacets) const;
-
-    /**
-     * The facets from \a trimFacets will be trimmed or deleted and \a trimmedFacets holds the newly generated facets
-     */
-    void TrimFacets(const std::vector<FacetIndex>& trimFacets, const Base::Vector3f& base,
-                    const Base::Vector3f& normal, std::vector<MeshGeomFacet>& trimmedFacets);
+    BlendPoint();
+    /*!
+    *  Constructor
+    *\param std::vector<Base::Vector3d>
+    */
+    BlendPoint(const std::vector<Base::Vector3d>& vectorList);
+    ~BlendPoint() = default;
+    /*!
+    *  Scale the blendpoint vectors
+    *\param double scaling factor
+    */
+    void multiply(double f);
+    /*!
+    * Resize the blendpoint vectors
+    * by setting the size of the first derivative
+    *\param double new size
+    */
+    void setSize(double f);
+    /*!
+    *\return continuity of this BlendPoint
+    */
+    int getContinuity();
+    /*!
+    *\return Number of vectors of this BlendPoint
+    */
+    int nbVectors();
 
 private:
-    void CreateOneFacet(const Base::Vector3f& base, const Base::Vector3f& normal, unsigned short shift,
-                        const MeshGeomFacet& facet, std::vector<MeshGeomFacet>& trimmedFacets) const;
-    void CreateTwoFacet(const Base::Vector3f& base, const Base::Vector3f& normal, unsigned short shift,
-                        const MeshGeomFacet& facet, std::vector<MeshGeomFacet>& trimmedFacets) const;
-
-private:
-    MeshKernel& myMesh;
 };
+}// namespace Surface
 
-} //namespace MeshCore
+#endif
 
-#endif //MESHTRIM_BY_PLANE_H
