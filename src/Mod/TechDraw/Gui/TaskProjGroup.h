@@ -132,7 +132,7 @@ class TaskDlgProjGroup : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgProjGroup(TechDraw::DrawProjGroup* featView,bool mode);
+    TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode);
     ~TaskDlgProjGroup() override;
 
     const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }

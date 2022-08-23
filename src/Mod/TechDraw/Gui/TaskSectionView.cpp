@@ -326,7 +326,7 @@ void TaskSectionView::scaleTypeChanged(int index)
             ui->sbScale->setValue(m_section->Scale.getValue());
         }
     } else {
-        Base::Console().Log("Error - TaskSectionView::scaleTypeChanged - unknown scale type: %d\n",index);
+        Base::Console().Log("Error - TaskSectionView::scaleTypeChanged - unknown scale type: %d\n", index);
         return;
     }
 }
@@ -416,25 +416,25 @@ void TaskSectionView::createSectionView()
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
 
-        Command::doCommand(Command::Doc,"App.ActiveDocument.addObject('%s','%s')",
-                           sectionType.c_str(),m_sectionName.c_str());
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.addObject('%s', '%s')",
+                           sectionType.c_str(), m_sectionName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_savePageName.c_str(), m_sectionName.c_str());
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
-                           m_sectionName.c_str(),baseName.c_str());
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s.Source",
-                           m_sectionName.c_str(),baseName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
+                           m_sectionName.c_str(), baseName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Source = App.ActiveDocument.%s.Source",
+                           m_sectionName.c_str(), baseName.c_str());
         Command::doCommand(Command::Doc,
-                           "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                           "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
                            m_sectionName.c_str(), 
                            ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(),
                            ui->sbOrgZ->value().getValue());
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.Scale = %0.6f",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(),
                            ui->sbScale->value().getValue());
         int scaleType = ui->cmbScaleType->currentIndex();
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.ScaleType = %d",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
 
         App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
@@ -457,31 +457,31 @@ void TaskSectionView::updateSectionView()
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
     if (m_section) {
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.SectionDirection = '%s'",
-                           m_sectionName.c_str(),m_dirName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
+                           m_sectionName.c_str(), m_dirName.c_str());
         Command::doCommand(Command::Doc,
-                           "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                           "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
                            m_sectionName.c_str(), 
                            ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(),
                            ui->sbOrgZ->value().getValue());
         QString qTemp    = ui->leSymbol->text();
         std::string temp = Base::Tools::toStdString(qTemp);
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.SectionSymbol = '%s'",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(),
                            temp.c_str());
         std::string lblText = "Section " +
                               temp + 
                               " - " +
                               temp;
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.Label = '%s'",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
                            lblText.c_str());
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.Scale = %0.6f",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(),
                            ui->sbScale->value().getValue());
         int scaleType = ui->cmbScaleType->currentIndex();
-        Command::doCommand(Command::Doc,"App.ActiveDocument.%s.ScaleType = %d",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
         m_section->setCSFromBase(m_dirName.c_str());
     }
@@ -531,7 +531,7 @@ bool TaskSectionView::accept()
     }
     apply();
     Gui::Command::updateActive();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return true;
 }
 
@@ -539,7 +539,7 @@ bool TaskSectionView::reject()
 {
 //    Base::Console().Message("TSV::reject()\n");
     if (!m_section) {                 //no section created, nothing to undo
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         return false;
     }
 
@@ -547,7 +547,7 @@ bool TaskSectionView::reject()
         if (isBaseValid()) {
             m_base->requestPaint();
         }
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         return false;
     }
 
@@ -555,7 +555,7 @@ bool TaskSectionView::reject()
         std::string SectionName = m_section->getNameInDocument();
         Gui::Command::doCommand(Gui::Command::Gui,
                                 "App.ActiveDocument.%s.removeView(App.ActiveDocument.%s)",
-                                m_savePageName.c_str(),SectionName.c_str());
+                                m_savePageName.c_str(), SectionName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,
                                 "App.ActiveDocument.removeObject('%s')",
                                 SectionName.c_str());
@@ -569,7 +569,7 @@ bool TaskSectionView::reject()
         m_base->requestPaint();
     }
     Gui::Command::updateActive();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }

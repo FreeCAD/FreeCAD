@@ -154,9 +154,9 @@ static unsigned char pan_bitmap[PAN_BYTES] =
 
 static unsigned char pan_mask_bitmap[PAN_BYTES] =
 {
- 0xc0,0x03,0xe0,0x03,0xe0,0x07,0xf0,0x0f,0xe8,0x17,0xdc,0x3b,0xff,0xff,0xff,
- 0xff,0xff,0xff,0xff,0xff,0xdc,0x3b,0xe8,0x17,0xf0,0x0f,0xe0,0x07,0xc0,0x03,
- 0xc0,0x03
+ 0xc0, 0x03, 0xe0, 0x03, 0xe0, 0x07, 0xf0, 0x0f, 0xe8, 0x17, 0xdc, 0x3b, 0xff, 0xff, 0xff,
+ 0xff, 0xff, 0xff, 0xff, 0xff, 0xdc, 0x3b, 0xe8, 0x17, 0xf0, 0x0f, 0xe0, 0x07, 0xc0, 0x03,
+ 0xc0, 0x03
 };
 /*** zoom-style cursor ******/
 
@@ -176,9 +176,9 @@ static unsigned char zoom_bitmap[ZOOM_BYTES] =
 
 static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
 {
- 0x00,0x0f,0x80,0x1f,0xc0,0x3f,0xe0,0x7f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0x00,
- 0x0f,0x00,0x0f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0xe0,0x7f,0xc0,0x3f,0x80,0x1f,
- 0x00,0x0f
+ 0x00, 0x0f, 0x80, 0x1f, 0xc0, 0x3f, 0xe0, 0x7f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0x00,
+ 0x0f, 0x00, 0x0f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0xe0, 0x7f, 0xc0, 0x3f, 0x80, 0x1f,
+ 0x00, 0x0f
 };
 using namespace Gui;
 using namespace TechDraw;
@@ -197,24 +197,24 @@ public:
     void init() {
         page->m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
         page->m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
-        page->m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
+        page->m_zoomIncrement = hGrp->GetFloat("ZoomStep", 0.02);
 
         auto hTDPref = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-        page->m_reversePan = hTDPref->GetInt("KbPan",1);
-        page->m_reverseScroll = hTDPref->GetInt("KbScroll",1);
+        page->m_reversePan = hTDPref->GetInt("KbPan", 1);
+        page->m_reverseScroll = hTDPref->GetInt("KbScroll", 1);
     }
     /// Observer message from the ParameterGrp
-    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override {
+    void OnChange(ParameterGrp::SubjectType &rCaller, ParameterGrp::MessageType Reason) override {
         const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-        if (strcmp(Reason,"NavigationStyle") == 0) {
-            std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+        if (strcmp(Reason, "NavigationStyle") == 0) {
+            std::string model = rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
             page->setNavigationStyle(model);
-        } else if (strcmp(Reason,"InvertZoom") == 0) {
+        } else if (strcmp(Reason, "InvertZoom") == 0) {
             page->m_invertZoom = rGrp.GetBool("InvertZoom", true);
-        } else if (strcmp(Reason,"ZoomStep") == 0) {
+        } else if (strcmp(Reason, "ZoomStep") == 0) {
             page->m_zoomIncrement = rGrp.GetFloat("ZoomStep", 0.0f);
-        } else if (strcmp(Reason,"ZoomAtCursor") == 0) {
+        } else if (strcmp(Reason, "ZoomAtCursor") == 0) {
             page->m_atCursor = rGrp.GetBool("ZoomAtCursor", true);
             if (page->m_atCursor) {
                 page->setResizeAnchor(QGVPage::AnchorUnderMouse);
@@ -350,7 +350,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
 void QGVPage::startBalloonPlacing()
 {
     balloonPlacing = true;
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     activateCursor(QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
 #else
     activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
@@ -383,7 +383,7 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->resetTransform();
 
     p->setBrush(*bkgBrush);
-    p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
+    p->drawRect(viewport()->rect().adjusted(-2, -2, 2,2));   //just bigger than viewport to prevent artifacts
 
     // Default to A3 landscape, though this is currently relevant
     // only for opening corrupt docs, etc.

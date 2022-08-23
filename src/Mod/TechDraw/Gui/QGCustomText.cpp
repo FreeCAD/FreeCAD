@@ -76,12 +76,12 @@ void QGCustomText::centerAt(double cX, double cY)
     double height = box.height();
     double newX = cX - width/2.;
     double newY = cY - height/2.;
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 void QGCustomText::justifyLeftAt(QPointF centerPos, bool vCenter)
 {
-    justifyLeftAt(centerPos.x(),centerPos.y(), vCenter);
+    justifyLeftAt(centerPos.x(), centerPos.y(), vCenter);
 }
 
 void QGCustomText::justifyLeftAt(double cX, double cY, bool vCenter)
@@ -92,12 +92,12 @@ void QGCustomText::justifyLeftAt(double cX, double cY, bool vCenter)
     if (vCenter) {
         newY = cY - height/2.;
     }
-    setPos(cX,newY);
+    setPos(cX, newY);
 }
 
 void QGCustomText::justifyRightAt(QPointF centerPos, bool vCenter)
 {
-    justifyRightAt(centerPos.x(),centerPos.y(), vCenter);
+    justifyRightAt(centerPos.x(), centerPos.y(), vCenter);
 }
 
 void QGCustomText::justifyRightAt(double cX, double cY, bool vCenter)
@@ -110,7 +110,7 @@ void QGCustomText::justifyRightAt(double cX, double cY, bool vCenter)
     if (vCenter) {
         newY = cY - height/2.;
     }
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 double QGCustomText::getHeight()
@@ -253,7 +253,7 @@ void QGCustomText::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
     cmItem->setParentItem(this);
-    cmItem->setPos(x,y);
+    cmItem->setPos(x, y);
     cmItem->setThick(1.0);
     cmItem->setSize(40.0);
     cmItem->setZValue(ZVALUE::VERTEX);
@@ -261,6 +261,6 @@ void QGCustomText::makeMark(double x, double y)
 
 void QGCustomText::makeMark(Base::Vector3d v)
 {
-    makeMark(v.x,v.y);
+    makeMark(v.x, v.y);
 }
 

@@ -62,19 +62,19 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("TechDrawGui")
     {
-       add_varargs_method("export",&Module::exporter,
+       add_varargs_method("export", &Module::exporter,
             "TechDraw hook for FC Gui exporter."
        );
-       add_varargs_method("exportPageAsPdf",&Module::exportPageAsPdf,
-            "exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."
+       add_varargs_method("exportPageAsPdf", &Module::exportPageAsPdf,
+            "exportPageAsPdf(DrawPageObject, FilePath) -- print page as Pdf to file."
         );
-        add_varargs_method("exportPageAsSvg",&Module::exportPageAsSvg,
-            "exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."
+        add_varargs_method("exportPageAsSvg", &Module::exportPageAsSvg,
+            "exportPageAsSvg(DrawPageObject, FilePath) -- print page as Svg to file."
         );
-        add_varargs_method("copyActiveViewToSvgFile",&Module::copyActiveViewToSvgFile,
-            "copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."
+        add_varargs_method("copyActiveViewToSvgFile", &Module::copyActiveViewToSvgFile,
+            "copyActiveViewToSvgFile(DrawPageObject, FilePath) -- copy ActiveView to Svg file."
         );
-        add_varargs_method("addQGIToView",&Module::addQGIToView,
+        add_varargs_method("addQGIToView", &Module::addQGIToView,
             "addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic."
         );
         add_varargs_method("addQGObjToView", &Module::addQGObjToView,
@@ -124,7 +124,7 @@ private:
     {
         PyObject* object;
         char* Name;
-        if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))
+        if (!PyArg_ParseTuple(args.ptr(), "Oet", &object, "utf-8", &Name))
             throw Py::Exception();
 
         std::string EncodedName = std::string(Name);
@@ -166,13 +166,13 @@ private:
         return Py::None();
     }
 
-//!exportPageAsPdf(PageObject,FullPath)
+//!exportPageAsPdf(PageObject, FullPath)
     Py::Object exportPageAsPdf(const Py::Tuple& args)
     {
         PyObject *pageObj;
         char* name;
-        if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::TypeError("expected (Page,path");
+        if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8", &name)) {
+            throw Py::TypeError("expected (Page, path");
         } 
         
         std::string filePath = std::string(name);
@@ -212,13 +212,13 @@ private:
         return Py::None();
     }
 
-//!exportPageAsSvg(PageObject,FullPath)
+//!exportPageAsSvg(PageObject, FullPath)
     Py::Object exportPageAsSvg(const Py::Tuple& args)
     {
         PyObject *pageObj;
         char* name;
-        if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::TypeError("expected (Page,path");
+        if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8", &name)) {
+            throw Py::TypeError("expected (Page, path");
         } 
         
         std::string filePath = std::string(name);
@@ -278,12 +278,12 @@ private:
         int mode = 0;               //SoRenderManager::RenderMode(0) - AS_IS
 
         if (!PyArg_ParseTuple(args.ptr(), "Oet|ddOOddi",
-                                        &docObj, "utf-8",&name,
+                                        &docObj, "utf-8", &name,
                                         &outWidth, &outHeight,
                                         &paintObj, &colorObj,
                                         &lineWidth, &border,
                                         &mode)) {
-            throw Py::TypeError("expected (doc, file|,options)");
+            throw Py::TypeError("expected (doc, file|, options)");
         } 
 
         fileSpec = std::string(name);

@@ -208,13 +208,13 @@ void QGIBalloonLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
 void QGIBalloonLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
 {
-    //set label's Qt position(top,left) given boundingRect center point
+    //set label's Qt position(top, left) given boundingRect center point
     setPos(xCenter - m_labelText->boundingRect().width() / 2., yCenter - m_labelText->boundingRect().height() / 2.);
 }
 
 void QGIBalloonLabel::setLabelCenter()
 {
-    //save label's bRect center (posX,posY) given Qt position (top,left)
+    //save label's bRect center (posX, posY) given Qt position (top, left)
     posX = x() + m_labelText->boundingRect().width() / 2.;
     posY = y() + m_labelText->boundingRect().height() / 2.;
 }
@@ -346,7 +346,7 @@ QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant &v
 //Set selection state for this and it's children
 void QGIViewBalloon::setGroupSelection(bool b)
 {
-//    Base::Console().Message("QGIVB::setGroupSelection(%d)\n",b);
+//    Base::Console().Message("QGIVB::setGroupSelection(%d)\n", b);
     setSelected(b);
     balloonLabel->setSelected(b);
     balloonLines->setSelected(b);
@@ -506,7 +506,7 @@ void QGIViewBalloon::balloonLabelDragFinished()
     if (balloonParent)
         scale = balloonParent->getScale();
 
-    //set feature position (x,y) from graphic position
+    //set feature position (x, y) from graphic position
     double x = Rez::appX(balloonLabel->X() / scale),
            y = Rez::appX(balloonLabel->Y() / scale);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
@@ -562,7 +562,7 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         qgivParent = partVP->getQView();
         if (qgivParent) {
         //tip position is mouse release pos in parentView coords ==> OriginX, OriginY
-        //bubble pos is some arbitrary shift from tip position ==> X,Y
+        //bubble pos is some arbitrary shift from tip position ==> X, Y
             viewPos = qgivParent->mapFromScene(pos);
             balloon->OriginX.setValue(Rez::appX(viewPos.x()) / balloonParent->getScale());
             balloon->OriginY.setValue(-Rez::appX(viewPos.y()) / balloonParent->getScale());
@@ -676,7 +676,7 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         double balloonRadius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
         balloonRadius = balloonRadius * scale;
         balloonPath.moveTo(lblCenter.x, lblCenter.y);
-        balloonPath.addEllipse(lblCenter.x - balloonRadius,lblCenter.y - balloonRadius, balloonRadius * 2, balloonRadius * 2);
+        balloonPath.addEllipse(lblCenter.x - balloonRadius, lblCenter.y - balloonRadius, balloonRadius * 2, balloonRadius * 2);
         offsetLR     = balloonRadius;
     } else if (strcmp(balloonType, "None") == 0) {
         balloonPath = QPainterPath();

@@ -121,7 +121,7 @@ protected:
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
-    double calcOffset(TechDraw::BaseGeomPtr g,TechDraw::LineSet ls);
+    double calcOffset(TechDraw::BaseGeomPtr g, TechDraw::LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 

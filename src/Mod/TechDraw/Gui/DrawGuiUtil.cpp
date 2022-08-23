@@ -347,7 +347,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
 
     viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
     viewDir = viewDir * (-1.0);        // Inventor dir is opposite TD projection dir
-    viewUp  = Base::Vector3d(upvec[0],upvec[1],upvec[2]);
+    viewUp  = Base::Vector3d(upvec[0], upvec[1], upvec[2]);
 
     //    Base::Vector3d dirXup = viewDir.Cross(viewUp);
     Base::Vector3d right = viewUp.Cross(viewDir);

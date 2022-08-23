@@ -287,12 +287,12 @@ double Grabber3d::getViewerScale(Gui::View3DInventorViewer* viewer)
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords
 
-    Base::Vector3d p1v(0,0,0);
+    Base::Vector3d p1v(0, 0,0);
     Base::Vector3d p2v(winSizePx[0] - 1, winSizePx[1] - 1);
     double screenLengthpx = (p2v - p1v).Length();           //length in pixels
     double screenLengthmm = (screenLengthpx / coinpxmm);
 
-    SbVec2s p1s(0,0);
+    SbVec2s p1s(0, 0);
     SbVec2s p2s(winSizePx[0] - 1, winSizePx[1] - 1);
     SbVec3f p1w = viewer->getPointOnFocalPlane(p1s);
     SbVec3f p2w = viewer->getPointOnFocalPlane(p2s);
@@ -322,7 +322,7 @@ double Grabber3d::getPaperScale(Gui::View3DInventorViewer* viewer,
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords
 
-    Base::Vector3d p1v(0,0,0);
+    Base::Vector3d p1v(0, 0,0);
     Base::Vector3d p2v(winSizePx[0] - 1, winSizePx[1] - 1);
     double screenLengthpx = (p2v - p1v).Length();           //length in pixels
 

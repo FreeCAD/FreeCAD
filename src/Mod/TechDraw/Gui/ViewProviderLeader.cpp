@@ -67,10 +67,10 @@ ViewProviderLeader::ViewProviderLeader()
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group, (App::PropertyType)(App::Prop_None), "Line width");
     LineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
-    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"Color of the Markup");
+    ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Line style");
+    ADD_PROPERTY_TYPE(Color, (getDefLineColor()), group, App::Prop_None, "Color of the Markup");
 }
 
 ViewProviderLeader::~ViewProviderLeader()
@@ -79,7 +79,7 @@ ViewProviderLeader::~ViewProviderLeader()
 
 bool ViewProviderLeader::setEdit(int ModNum)
 {
-//    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
+//    Base::Console().Message("VPL::setEdit(%d)\n", ModNum);
     if (ModNum != ViewProvider::Default) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }

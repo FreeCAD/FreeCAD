@@ -169,7 +169,7 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             }
         } else if(scene() && qAnchor) {
             // End of Drag
-            getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getY()));
+            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getY()));
         }
     }
     QGIViewCollection::mouseReleaseEvent(event);

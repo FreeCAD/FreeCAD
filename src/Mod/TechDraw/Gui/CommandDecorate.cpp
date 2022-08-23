@@ -151,7 +151,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         for (auto& r: toRemove) {
             r.second->removeSub(r.first);
             if (r.second->empty()) {
-                doCommand(Doc,"App.activeDocument().removeObject('%s')",r.second->getNameInDocument());
+                doCommand(Doc, "App.activeDocument().removeObject('%s')", r.second->getNameInDocument());
             }
         }
         commitCommand();
@@ -213,8 +213,8 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawGeomHatch','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawGeomHatch', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
 
     auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
     geomhatch->Source.setValue(objFeat, subNames);
@@ -283,9 +283,9 @@ void CmdTechDrawImage::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Image");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), fileName.toUtf8().constData());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
 }
@@ -337,7 +337,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 bool CmdTechDrawToggleFrame::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this,false);
+    bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
 }
 

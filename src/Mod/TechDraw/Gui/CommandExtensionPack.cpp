@@ -1888,7 +1888,7 @@ namespace TechDrawGui {
             QGSPage* scenePage = pageVP->getQGSPage();
             featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
             std::string pageName = scenePage->getDrawPage()->getNameInDocument();
-            cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
+            cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
                            featName.c_str());
             cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                            pageName.c_str(), featName.c_str());

@@ -240,7 +240,7 @@ bool TaskLineDecor::accept()
     m_partFeat->requestPaint();
 
     //Gui::Command::updateActive();     //no chain of updates here
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -252,7 +252,7 @@ bool TaskLineDecor::reject()
     if (!doc)
         return false;
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
 }
 

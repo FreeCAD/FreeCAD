@@ -192,7 +192,7 @@ void QGSPage::updateTemplate(bool forceUpdate)
     App::DocumentObject *templObj = m_vpPage->getDrawPage()->Template.getValue();
     // TODO: what if template has been deleted? templObj will be NULL. segfault?
     if (!templObj) {
-        Base::Console().Log("INFO - QGSPage::updateTemplate - Page: %s has NO template!!\n",m_vpPage->getDrawPage()->getNameInDocument());
+        Base::Console().Log("INFO - QGSPage::updateTemplate - Page: %s has NO template!!\n", m_vpPage->getDrawPage()->getNameInDocument());
         return;
     }
 
@@ -220,7 +220,7 @@ QPointF QGSPage::getTemplateCenter()
     if( pageTemplate != nullptr ) {
         double cx  =  Rez::guiX(pageTemplate->Width.getValue())/2.0;
         double cy =  -Rez::guiX(pageTemplate->Height.getValue())/2.0;
-        return QPointF(cx,cy);
+        return QPointF(cx, cy);
     }
     return QPointF(0.0, 0.0);
 }
@@ -234,7 +234,7 @@ void QGSPage::matchSceneRectToTemplate(void)
         //make sceneRect 1 pagesize bigger in every direction
         double width  =  Rez::guiX(pageTemplate->Width.getValue());
         double height =  Rez::guiX(pageTemplate->Height.getValue());
-        setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
+        setSceneRect(QRectF(-width, -2.0 * height, 3.0*width, 3.0*height));
     }
 }
 
@@ -298,7 +298,7 @@ int QGSPage::addQView(QGIView *view)
 
         if(parent) {
             // move child view to center of parent
-            QPointF posRef(0.,0.);
+            QPointF posRef(0., 0.);
             QPointF mapPos = view->mapToItem(parent, posRef);
             view->moveBy(-mapPos.x(), -mapPos.y());
 
@@ -541,7 +541,7 @@ QGIView * QGSPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     parent = findParent(vBalloon);
 
     if (parent) {
-        addBalloonToParent(vBalloon,parent);
+        addBalloonToParent(vBalloon, parent);
     }
 
     return vBalloon;
@@ -552,7 +552,7 @@ void QGSPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
 //    Base::Console().Message("QGSP::addBalloonToParent()\n");
     assert(balloon);
     assert(parent);          //blow up if we don't have Dimension or Parent
-    QPointF posRef(0.,0.);
+    QPointF posRef(0., 0.);
     QPointF mapPos = balloon->mapToItem(parent, posRef);
     balloon->moveBy(-mapPos.x(), -mapPos.y());
     parent->addToGroup(balloon);
@@ -567,12 +567,12 @@ void QGSPage::createBalloon(QPointF origin, DrawViewPart *parent)
     std::string pageName = getDrawPage()->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
-    Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')", featName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')", featName.c_str());
     TechDraw::DrawViewBalloon *balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(featName.c_str()));
     if (!balloon) {
         throw Base::TypeError("QGSP::createBalloon - balloon not found\n");
     }
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
                        featName.c_str(), parent->getNameInDocument());
 
     QGIView* qgParent = getQGIVByName(parent->getNameInDocument());
@@ -610,7 +610,7 @@ QGIView * QGSPage::addViewDimension(TechDraw::DrawViewDimension *dim)
     parent = findParent(dimGroup);
 
     if(parent) {
-        addDimToParent(dimGroup,parent);
+        addDimToParent(dimGroup, parent);
     }
 
     return dimGroup;
@@ -621,7 +621,7 @@ void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 //    Base::Console().Message("QGSP::addDimToParent()\n");
     assert(dim);
     assert(parent);          //blow up if we don't have Dimension or Parent
-    QPointF posRef(0.,0.);
+    QPointF posRef(0., 0.);
     QPointF mapPos = dim->mapToItem(parent, posRef);
     dim->moveBy(-mapPos.x(), -mapPos.y());
     parent->addToGroup(dim);
@@ -630,7 +630,7 @@ void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 
 QGIView * QGSPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
 {
-//    Base::Console().Message("QGSP::addViewLeader(%s)\n",leader->getNameInDocument());
+//    Base::Console().Message("QGSP::addViewLeader(%s)\n", leader->getNameInDocument());
     QGILeaderLine* leaderGroup = new QGILeaderLine();
     addItem(leaderGroup);
 
@@ -640,7 +640,7 @@ QGIView * QGSPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
     parent = findParent(leaderGroup);
 
     if(parent) {
-        addLeaderToParent(leaderGroup,parent);
+        addLeaderToParent(leaderGroup, parent);
     }
 
     leaderGroup->updateView(true);
@@ -714,7 +714,7 @@ void QGSPage::setDimensionGroups(void)
             QGIView* parent = findParent(item);
             if (parent) {
                 QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(item);
-                addDimToParent(dim,parent);
+                addDimToParent(dim, parent);
             }
         }
     }
@@ -730,7 +730,7 @@ void QGSPage::setBalloonGroups(void)
             QGIView* parent = findParent(item);
             if (parent) {
                 QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>(item);
-                addBalloonToParent(balloon,parent);
+                addBalloonToParent(balloon, parent);
             }
         }
     }
@@ -749,7 +749,7 @@ void QGSPage::setLeaderGroups(void)
             QGIView* parent = findParent(item);
             if (parent) {
                 QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>(item);
-                addLeaderToParent(lead,parent);
+                addLeaderToParent(lead, parent);
             }
         }
     }
@@ -767,7 +767,7 @@ void QGSPage::setRichAnnoGroups(void)
             QGIView* parent = findParent(item);
             if (parent) {
                 QGIRichAnno* anno = dynamic_cast<QGIRichAnno*>(item);
-                addAnnoToParent(anno,parent);
+                addAnnoToParent(anno, parent);
             }
         }
     }
@@ -1151,14 +1151,14 @@ void QGSPage::saveSvg(QString filename)
 
     double width  =  Rez::guiX(page->getPageWidth());
     double height =  Rez::guiX(page->getPageHeight());
-    QRectF sourceRect(0.0,-height,width,height);
-    QRectF targetRect(0.0,0.0,width,height);
+    QRectF sourceRect(0.0, -height, width, height);
+    QRectF targetRect(0.0, 0.0, width, height);
 
     Gui::Selection().clearSelection();
     QPainter p;
 
     p.begin(&svgGen);
-    render(&p, targetRect,sourceRect);    //note: scene render, not item render!
+    render(&p, targetRect, sourceRect);    //note: scene render, not item render!
     p.end();
 
     m_vpPage->setFrameState(saveState);
@@ -1283,7 +1283,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Time to save our product
     QFile outFile( fileName );
     if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
-        Base::Console().Error("QGSP::ppxml - failed to open file for writing: %s\n",qPrintable(fileName) );
+        Base::Console().Error("QGSP::ppxml - failed to open file for writing: %s\n", qPrintable(fileName) );
     }
 
     QTextStream stream( &outFile );

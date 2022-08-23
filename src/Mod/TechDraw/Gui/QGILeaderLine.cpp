@@ -90,7 +90,7 @@ QGILeaderLine::QGILeaderLine() :
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     
     setCacheMode(QGraphicsItem::NoCache);
 
@@ -98,7 +98,7 @@ QGILeaderLine::QGILeaderLine() :
     addToGroup(m_line);
     m_line->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_line->setAcceptHoverEvents(false);
-    m_line->setPos(0.0,0.0);
+    m_line->setPos(0.0, 0.0);
 
     m_editPath = new QGEPath(this);
     addToGroup(m_editPath);
@@ -111,7 +111,7 @@ QGILeaderLine::QGILeaderLine() :
 
     m_arrow1 = new QGIArrow();
     addToGroup(m_arrow1);
-    m_arrow1->setPos(0.0,0.0);
+    m_arrow1->setPos(0.0, 0.0);
     m_arrow1->hide();
     m_arrow2 = new QGIArrow();
     addToGroup(m_arrow2);
@@ -133,7 +133,7 @@ void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
 
     float x = Rez::guiX(feat->X.getValue());
     float y = Rez::guiX(-feat->Y.getValue());
-    setPos(x,y);
+    setPos(x, y);
 
     setNormalColorAll();
     setPrettyNormal();
@@ -160,20 +160,20 @@ QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &va
 //QGILL isn't draggable so skip QGIV::mousePress have event
 void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGILL::mousePressEvent() - %s\n",getViewName());
+//    Base::Console().Message("QGILL::mousePressEvent() - %s\n", getViewName());
     QGraphicsItem::mousePressEvent(event);
 }
 
 //QGILL isn't draggable so skip QGIV::mouseRelease
 void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGILL::mouseReleaseEvent() - %s\n",getViewName());
+//    Base::Console().Message("QGILL::mouseReleaseEvent() - %s\n", getViewName());
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGILL::hoverEnter() - selected; %d\n",isSelected());
+//    Base::Console().Message("QGILL::hoverEnter() - selected; %d\n", isSelected());
     m_hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
@@ -183,7 +183,7 @@ void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    Base::Console().Message("QGILL::hoverLeave() - selected; %d\n",isSelected());
+//    Base::Console().Message("QGILL::hoverLeave() - selected; %d\n", isSelected());
     m_hasHover = false;
     if(!isSelected()) {
         setPrettyNormal();
@@ -193,7 +193,7 @@ void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
 {
-//    Base::Console().Message("QGILL::onSoureChange(%s)\n",newParent->getNameInDocument());
+//    Base::Console().Message("QGILL::onSoureChange(%s)\n", newParent->getNameInDocument());
     std::string parentName = newParent->getNameInDocument();
     QGIView* qgiParent = getQGIVByName(parentName);
     if (qgiParent) {
@@ -201,7 +201,7 @@ void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
         setParentItem(m_parentItem);
         draw();
     } else {
-        Base::Console().Warning("QGILL::onSourceChange - new parent %s has no QGIView\n",parentName.c_str());
+        Base::Console().Warning("QGILL::onSourceChange - new parent %s has no QGIView\n", parentName.c_str());
     }
 }
 
@@ -258,8 +258,8 @@ void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF>
         return;
     double baseScale = featLeader->getBaseScale();
 
-    if ( !(TechDraw::DrawUtil::fpCompare(tipDisplace.x(),0.0) &&
-           TechDraw::DrawUtil::fpCompare(tipDisplace.y(),0.0))  )  {
+    if ( !(TechDraw::DrawUtil::fpCompare(tipDisplace.x(), 0.0) &&
+           TechDraw::DrawUtil::fpCompare(tipDisplace.y(), 0.0))  )  {
         //tip was moved. need to change AttachPoint
         QPointF oldAttach = getAttachFromFeature();
         QPointF newAttach = oldAttach + (tipDisplace / baseScale);
@@ -271,7 +271,7 @@ void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF>
     std::vector<Base::Vector3d> waypoints;
     for (auto& p: points) {
         QPointF moved = p - tipDisplace;
-        Base::Vector3d v(moved.x(),moved.y(),0.0);
+        Base::Vector3d v(moved.x(), moved.y(), 0.0);
         waypoints.push_back(v);
     }
     waypoints.at(0) = Base::Vector3d(0.0, 0.0, 0.0);
@@ -329,7 +329,7 @@ void QGILeaderLine::restoreState()
 
 void QGILeaderLine::updateView(bool update)
 {
-//    Base::Console().Message("QGIL::updateView() %s\n",getViewObject()->getNameInDocument());
+//    Base::Console().Message("QGIL::updateView() %s\n", getViewObject()->getNameInDocument());
     Q_UNUSED(update);
     auto featLeader( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
     if (!featLeader) {
@@ -375,7 +375,7 @@ void QGILeaderLine::draw()
     double baseScale = featLeader->getBaseScale();
     double x = Rez::guiX(featLeader->X.getValue());
     double y = - Rez::guiX(featLeader->Y.getValue());
-    QPointF aPoint(x,y);
+    QPointF aPoint(x, y);
     aPoint *= baseScale;
     setPos(aPoint);
 
@@ -383,7 +383,7 @@ void QGILeaderLine::draw()
     m_line->setStyle(m_lineStyle);
     m_line->setWidth(getLineWidth());
 
-    m_line->setPos(0,0);                          //make m_line coords == leader coords
+    m_line->setPos(0, 0);                          //make m_line coords == leader coords
 
     std::vector<QPointF> qPoints = getWayPointsFromFeature();
     if (featLeader->Scalable.getValue()) {
@@ -416,9 +416,9 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
         return  result;
     }
 
-    QPointF startAdjVec(0.0,0.0);
+    QPointF startAdjVec(0.0, 0.0);
     double  startAdjLength(0.0);
-    QPointF endAdjVec(0.0,0.0);
+    QPointF endAdjVec(0.0, 0.0);
     double  endAdjLength(0.0);
     if (qPoints.size() > 1) {
         //make path adjustment to hide leaderline ends behind arrowheads
@@ -464,7 +464,7 @@ QPointF QGILeaderLine::getAttachFromFeature()
     }
     double x = Rez::guiX(featLeader->X.getValue());
     double y = - Rez::guiX(featLeader->Y.getValue());
-    result = QPointF(x,y);
+    result = QPointF(x, y);
     return result;
 }
 
@@ -492,7 +492,7 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature()
 void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 {
 //    Base::Console().Message("QGILL::setArrows()\n");
-    Base::Vector3d stdX(1.0,0.0,0.0);
+    Base::Vector3d stdX(1.0, 0.0, 0.0);
     TechDraw::DrawLeaderLine* featLeader = getFeature();
 
     QPointF lastOffset = (pathPoints.back() - pathPoints.front());
@@ -509,9 +509,9 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
             QPointF s = (*it);
             QPointF e = (*(it + 1));
             QPointF qsVec = s - e;
-            Base::Vector3d sVec(qsVec.x(),qsVec.y(),0.0);
+            Base::Vector3d sVec(qsVec.x(), qsVec.y(), 0.0);
             m_arrow1->setDirection(sVec);
-            m_arrow1->setPos(0.0,0.0);
+            m_arrow1->setPos(0.0, 0.0);
         }
         m_arrow1->draw();
         m_arrow1->show();
@@ -529,7 +529,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
             QPointF s = (*itr);
             QPointF e = (*(itr + 1));
             QPointF qeVec = s - e;
-            Base::Vector3d eVec(qeVec.x(),qeVec.y(),0.0);
+            Base::Vector3d eVec(qeVec.x(), qeVec.y(), 0.0);
             m_arrow2->setDirection(eVec);
             m_arrow2->setPos(lastOffset);
         }

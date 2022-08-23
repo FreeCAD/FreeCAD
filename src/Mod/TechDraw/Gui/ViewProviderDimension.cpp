@@ -153,7 +153,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
         }
     }
 
-    //Dimension handles X,Y updates differently that other QGIView
+    //Dimension handles X, Y updates differently that other QGIView
     //call QGIViewDimension::updateView
     if (p == &(getViewObject()->X)  ||
         p == &(getViewObject()->Y) ){
@@ -163,7 +163,7 @@ void ViewProviderDimension::updateData(const App::Property* p)
         }
     }
 
-    //Skip QGIView X,Y processing - do not call ViewProviderDrawingView
+    //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
     Gui::ViewProviderDocumentObject::updateData(p);
 }
 

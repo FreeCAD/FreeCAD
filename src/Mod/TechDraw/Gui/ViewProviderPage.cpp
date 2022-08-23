@@ -85,13 +85,13 @@ ViewProviderPage::ViewProviderPage()
     sPixmap = "TechDraw_TreePage";
     static const char *group = "Grid";
 
-    ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"Show or hide View frames and Labels on this Page");
-    ADD_PROPERTY_TYPE(ShowGrid ,(PreferencesGui::showGrid()),group,App::Prop_None,"Show or hide a grid on this Page");
+    ADD_PROPERTY_TYPE(ShowFrames ,(true), group, App::Prop_None, "Show or hide View frames and Labels on this Page");
+    ADD_PROPERTY_TYPE(ShowGrid ,(PreferencesGui::showGrid()), group, App::Prop_None, "Show or hide a grid on this Page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group, (App::PropertyType)(App::Prop_None),
                      "Grid line spacing in mm");
 
-    ShowFrames.setStatus(App::Property::Hidden,true);
-    DisplayMode.setStatus(App::Property::Hidden,true);
+    ShowFrames.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
 
     m_graphicsScene = new QGSPage(this);
     m_graphicsScene->setItemIndexMethod(QGraphicsScene::NoIndex); //this prevents crash when deleting dims.
@@ -436,7 +436,7 @@ void ViewProviderPage::toggleFrameState()
 
 void ViewProviderPage::setTemplateMarkers(bool state)
 {
-//    Base::Console().Message("VPP::setTemplateMarkers(%d)\n",state);
+//    Base::Console().Message("VPP::setTemplateMarkers(%d)\n", state);
     App::DocumentObject *templateFeat = nullptr;
     templateFeat = getDrawPage()->Template.getValue();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());

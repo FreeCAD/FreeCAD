@@ -2287,7 +2287,7 @@ namespace TechDrawGui {
         objs.push_back(objFeat);
         subs.push_back(startVertex);
         subs.push_back(endVertex);
-        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')", FeatName.c_str());
+        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
         cmd->doCommand(cmd->Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), dimType.c_str());
         dim = dynamic_cast<TechDraw::DrawViewDimension*>(cmd->getDocument()->getObject(FeatName.c_str()));
         if (!dim)

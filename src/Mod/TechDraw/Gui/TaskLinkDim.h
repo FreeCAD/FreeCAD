@@ -47,7 +47,7 @@ class TaskLinkDim : public QWidget
     Q_OBJECT
 
 public:
-    TaskLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page);
+    TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<std::string>& subs, TechDraw::DrawPage* page);
     ~TaskLinkDim() override;
 
 public:
@@ -76,7 +76,7 @@ class TaskDlgLinkDim : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page);
+    TaskDlgLinkDim(std::vector<App::DocumentObject*> parts, std::vector<std::string>& subs, TechDraw::DrawPage* page);
     ~TaskDlgLinkDim() override;
 
 public:

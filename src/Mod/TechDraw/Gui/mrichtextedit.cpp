@@ -196,7 +196,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // indentation
 
-    f_indent_dec->setShortcut(QKeySequence(QString::fromUtf8("CTRL+,")));
+    f_indent_dec->setShortcut(QKeySequence(QString::fromUtf8("CTRL+, ")));
     f_indent_inc->setShortcut(QKeySequence(QString::fromUtf8("CTRL+.")));
 
     connect(f_indent_inc, SIGNAL(clicked()), this, SLOT(increaseIndentation()));
@@ -262,7 +262,7 @@ void MRichTextEdit::textSource() {
     QPlainTextEdit *pte = new QPlainTextEdit(dialog);
     pte->setPlainText( f_textedit->toHtml() );
     QGridLayout *gl = new QGridLayout(dialog);
-    gl->addWidget(pte,0,0,1,1);
+    gl->addWidget(pte, 0,0, 1,1);
     dialog->setWindowTitle(tr("Document source"));
     dialog->setMinimumWidth (400);
     dialog->setMinimumHeight(600);
@@ -440,7 +440,7 @@ void MRichTextEdit::textStyle(int index) {
 void MRichTextEdit::textFgColor() {
     QColor col;
     if (Gui::DialogOptions::dontUseNativeColorDialog()){
-        col = QColorDialog::getColor(f_textedit->textColor(),this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
+        col = QColorDialog::getColor(f_textedit->textColor(), this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
     } else {
         col = QColorDialog::getColor(f_textedit->textColor(), this);
     }
@@ -462,7 +462,7 @@ void MRichTextEdit::textFgColor() {
 void MRichTextEdit::textBgColor() {
     QColor col;
     if (Gui::DialogOptions::dontUseNativeColorDialog()){
-        col = QColorDialog::getColor(f_textedit->textBackgroundColor(),this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
+        col = QColorDialog::getColor(f_textedit->textBackgroundColor(), this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
     } else {
         col = QColorDialog::getColor(f_textedit->textBackgroundColor(), this);
     }
@@ -605,9 +605,9 @@ void MRichTextEdit::fontChanged(const QFont &f) {
 }
 
 void MRichTextEdit::fgColorChanged(const QColor &c) {
-    QSize iconSize(16,16);
+    QSize iconSize(16, 16);
     QIcon fgIcon = f_fgcolor->icon();
-    QPixmap fgPix = fgIcon.pixmap(iconSize,QIcon::Mode::Normal, QIcon::State::On);
+    QPixmap fgPix = fgIcon.pixmap(iconSize, QIcon::Mode::Normal, QIcon::State::On);
     QPixmap filler(iconSize);
     if (c.isValid() ) {
         filler.fill(c);
@@ -617,9 +617,9 @@ void MRichTextEdit::fgColorChanged(const QColor &c) {
 }
 
 void MRichTextEdit::bgColorChanged(const QColor &c) {
-    QSize iconSize(16,16);
+    QSize iconSize(16, 16);
     QIcon bgIcon = f_bgcolor->icon();
-    QPixmap bgPix = bgIcon.pixmap(iconSize,QIcon::Mode::Normal, QIcon::State::On);
+    QPixmap bgPix = bgIcon.pixmap(iconSize, QIcon::Mode::Normal, QIcon::State::On);
     QPixmap filler(iconSize);
     if (c.isValid() ) {
         filler.fill(c);
@@ -747,7 +747,7 @@ bool MRichTextEdit::hasMultipleSizes(void)
             cursor.setPosition(currPos);
             QTextCharFormat fmt = cursor.charFormat();
             double currSize = fmt.fontPointSize();
-            QString asQS = QString::number(currSize,'f',2);
+            QString asQS = QString::number(currSize, 'f', 2);
             foundSizes.push_back(asQS);
             auto ret = countMap.insert(std::pair<QString, int>(asQS, 1));
             if (!ret.second) {            //already have this size

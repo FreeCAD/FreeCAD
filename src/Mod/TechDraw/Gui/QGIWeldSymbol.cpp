@@ -109,7 +109,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_allAround->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_allAround->setFlag(QGraphicsItem::ItemIsMovable, false);
     m_allAround->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_allAround->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
     m_fieldFlag = new QGIPrimPath();
@@ -119,7 +119,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsMovable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
-    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     m_fieldFlag->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
     m_fieldFlag->setFill(prefNormalColor(), Qt::SolidPattern);
 
@@ -259,7 +259,7 @@ void QGIWeldSymbol::drawTailText()
 {
 //    Base::Console().Message("QGIWS::drawTailText()\n");
     QPointF textPos = getTailPoint();
-    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0,0 !!!
+    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0, 0 !!!
     std::string tText = getFeature()->TailText.getValue();
     if (tText.empty()) {
         m_tailText->hide();

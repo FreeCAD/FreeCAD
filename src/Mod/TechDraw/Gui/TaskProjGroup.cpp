@@ -281,7 +281,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         multiView->Scale.setValue(scale);
         //unblock recompute
     } else {
-        Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
+        Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n", index);
         return;
     }
 }
@@ -533,7 +533,7 @@ bool TaskProjGroup::accept()
     multiView->recomputeChildren();
     multiView->recomputeFeature();
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -549,12 +549,12 @@ bool TaskProjGroup::reject()
         std::string multiViewName = multiView->getNameInDocument();
         std::string PageName = multiView->findParentPage()->getNameInDocument();
 
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.purgeProjections()",
+        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.purgeProjections()",
                                 multiViewName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                PageName.c_str(),multiViewName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",multiViewName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                                PageName.c_str(), multiViewName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", multiViewName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     } else {
         //set the DPG and it's views back to entry state.
         if (Gui::Command::hasPendingCommand()) {
@@ -567,7 +567,7 @@ bool TaskProjGroup::reject()
             Base::Console().Log("TaskProjGroup: Edit mode - NO command is active\n");
         }
     }
-    Gui::Command::runCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
 }
 
@@ -579,7 +579,7 @@ TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode)
     , multiView(featView)
 {
     //viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
-    widget  = new TaskProjGroup(featView,mode);
+    widget  = new TaskProjGroup(featView, mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ProjectionGroup"),
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
@@ -619,7 +619,7 @@ void TaskDlgProjGroup::open()
 void TaskDlgProjGroup::clicked(int i)
 {
 //    Q_UNUSED(i);
-//    Base::Console().Message("TDPG::clicked(%X)\n",i);
+//    Base::Console().Message("TDPG::clicked(%X)\n", i);
     if (i == QMessageBox::Apply) {
         widget->apply();
     }

@@ -38,7 +38,7 @@ ViewProviderImage::ViewProviderImage()
 {
     sPixmap = "actions/TechDraw_Image";
 
-    ADD_PROPERTY_TYPE(Crop ,(false),"Image", App::Prop_None, "Crop image to Width x Height");
+    ADD_PROPERTY_TYPE(Crop ,(false), "Image", App::Prop_None, "Crop image to Width x Height");
 }
 
 ViewProviderImage::~ViewProviderImage()
