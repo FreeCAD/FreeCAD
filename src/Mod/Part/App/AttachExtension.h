@@ -59,7 +59,7 @@ public:
  */
 class PartExport AttachExtension : public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::AttachableObject);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::AttachableObject);
 public:
     AttachExtension();
     ~AttachExtension() override;

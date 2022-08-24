@@ -51,7 +51,7 @@ struct AxisDefinition {
  */
 class RobotExport Robot6Axis : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Robot6Axis();

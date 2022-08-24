@@ -50,7 +50,7 @@ namespace Fem {
  *  Analysis.
  */
 class FemExport FemAnalysis : public App::DocumentObjectGroup {
-    PROPERTY_HEADER(Fem::FemAnalysis);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemAnalysis);
 
 public:
     /**
@@ -88,7 +88,7 @@ protected:
 
 class FemExport DocumentObject : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::DocumentObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::DocumentObject);
 };
 
 typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;

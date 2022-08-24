@@ -40,7 +40,7 @@ class Property;
  */
 class RaytracingExport RayProject: public App::DocumentObjectGroup
 {
-    PROPERTY_HEADER(Raytracing::RayProject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::RayProject);
 
 public:
     /// Constructor

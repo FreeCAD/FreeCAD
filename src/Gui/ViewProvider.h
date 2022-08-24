@@ -118,7 +118,7 @@ void GuiExport coinRemoveAllChildren(SoGroup *node);
   */
 class GuiExport ViewProvider : public App::TransactionalObject
 {
-    PROPERTY_HEADER(Gui::ViewProvider);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProvider);
 
 public:
     /// constructor.
@@ -187,7 +187,7 @@ public:
     /** partial rendering setup
      *
      * @param subelements: a list of dot separated string refer to the sub element
-     * @param clear: if true, remove the the subelement from partial rendering.
+     * @param clear: if true, remove the subelement from partial rendering.
      * If else, add the subelement for rendering.
      *
      * @return Return the number of subelement found

@@ -51,7 +51,7 @@ typedef std::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
  */
 class FemExport FemMesh : public Data::ComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     FemMesh();

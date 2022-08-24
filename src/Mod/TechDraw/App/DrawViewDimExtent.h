@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawViewDimExtent_h_
 #define _TechDraw_DrawViewDimExtent_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <tuple>
 
 #include <App/DocumentObject.h>
@@ -35,7 +37,7 @@ namespace TechDraw {
 
 class TechDrawExport DrawViewDimExtent : public TechDraw::DrawViewDimension
 {
-    PROPERTY_HEADER(TechDraw::DrawViewDimExtent);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimExtent);
 
 public:
     /// Constructor

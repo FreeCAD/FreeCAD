@@ -1680,7 +1680,7 @@ Py::List BSplineSurfacePy::getVKnotSequence(void) const
     return list;
 }
 
-PyObject* BSplineSurfacePy::setBounds(PyObject *args)
+PyObject* BSplineSurfacePy::scaleKnotsToBounds(PyObject *args)
 {
     double u0=0.0;
     double u1=1.0;
@@ -1695,7 +1695,7 @@ PyObject* BSplineSurfacePy::setBounds(PyObject *args)
             return nullptr;;
         }
         GeomBSplineSurface* surf = getGeomBSplineSurfacePtr();
-        surf->setBounds(u0, u1, v0, v1);
+        surf->scaleKnotsToBounds(u0, u1, v0, v1);
         Py_Return;
     }
     catch (Standard_Failure& e) {
@@ -1706,8 +1706,12 @@ PyObject* BSplineSurfacePy::setBounds(PyObject *args)
     }
 }
 
-PyObject *BSplineSurfacePy::getCustomAttributes(const char* /*attr*/) const
+PyObject *BSplineSurfacePy::getCustomAttributes(const char* attr) const
 {
+    // for backward compatibility
+    if (strcmp(attr, "setBounds") == 0) {
+        return PyObject_GetAttrString(const_cast<BSplineSurfacePy*>(this), "scaleKnotsToBounds");
+    }
     return nullptr;
 }
 

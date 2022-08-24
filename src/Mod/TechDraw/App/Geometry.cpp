@@ -587,7 +587,7 @@ void BaseGeom::intersectionLL(TechDraw::BaseGeomPtr geom1,
     // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
     TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
     TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
-    // we calculate vectors to start points and direction verctors
+    // we calculate vectors to start points and direction vectors
     Base::Vector3d startPnt1 = gen1->points.at(0);
     Base::Vector3d endPnt1 = gen1->points.at(1);
     Base::Vector3d startPnt2 = gen2->points.at(0);

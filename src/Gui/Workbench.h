@@ -51,7 +51,7 @@ class WorkbenchManager;
  */
 class GuiExport Workbench : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** Constructs a workbench object. */
@@ -146,7 +146,7 @@ private:
  */
 class GuiExport StdWorkbench : public Workbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     StdWorkbench();
@@ -176,7 +176,7 @@ protected:
  */
 class GuiExport BlankWorkbench : public Workbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     BlankWorkbench();
@@ -206,7 +206,7 @@ protected:
  */
 class GuiExport NoneWorkbench : public StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     NoneWorkbench();
@@ -228,7 +228,7 @@ protected:
 
 class GuiExport TestWorkbench : public StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     TestWorkbench();
@@ -247,7 +247,7 @@ protected:
  */
 class GuiExport PythonBaseWorkbench : public Workbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PythonBaseWorkbench();
@@ -298,7 +298,7 @@ protected:
 
 class GuiExport PythonBlankWorkbench : public PythonBaseWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PythonBlankWorkbench();
@@ -312,7 +312,7 @@ public:
  */
 class GuiExport PythonWorkbench : public PythonBaseWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PythonWorkbench();

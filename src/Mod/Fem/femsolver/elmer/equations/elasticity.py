@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer equation object Elasticity"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -56,15 +57,9 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
 
         obj.addProperty(
             "App::PropertyBool",
-            "CalculateStrains",
+            "CalculatePangle",
             "Elasticity",
-            "Compute the strain tensor"
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CalculateStresses",
-            "Elasticity",
-            "Compute stress tensor and vanMises"
+            "Compute principal stress angles"
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -74,9 +69,15 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "CalculatePangle",
+            "CalculateStrains",
             "Elasticity",
-            "Compute principal stress angles"
+            "Compute the strain tensor"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateStresses",
+            "Elasticity",
+            "Compute stress tensor and vanMises"
         )
         obj.addProperty(
             "App::PropertyBool",

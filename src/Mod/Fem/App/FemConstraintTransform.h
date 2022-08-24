@@ -31,7 +31,7 @@ namespace Fem
 
 class FemExport ConstraintTransform : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintTransform);
 
 public:
     /// Constructor

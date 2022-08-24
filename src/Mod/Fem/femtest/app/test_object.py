@@ -214,6 +214,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintInitialPressure",
+            type_of_obj(ObjectsFem.makeConstraintInitialPressure(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintInitialTemperature",
             type_of_obj(ObjectsFem.makeConstraintInitialTemperature(doc))
         )
@@ -433,6 +437,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintInitialFlowVelocity(doc),
             "Fem::ConstraintInitialFlowVelocity"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintInitialPressure(doc),
+            "Fem::ConstraintInitialPressure"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintInitialTemperature(doc),
@@ -818,6 +826,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_initial_flow_velocity,
             "Fem::ConstraintInitialFlowVelocity"
+        ))
+
+        # ConstraintInitialPressure
+        constraint_initial_pressure = ObjectsFem.makeConstraintInitialPressure(doc)
+        self.assertTrue(is_derived_from(
+            constraint_initial_pressure,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_initial_pressure,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_initial_pressure,
+            "Fem::ConstraintInitialPressure"
         ))
 
         # ConstraintInitialTemperature
@@ -1464,6 +1487,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintInitialPressure(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintInitialTemperature(
                 doc
             ).isDerivedFrom("Fem::ConstraintInitialTemperature")
@@ -1678,6 +1706,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintGear(doc))
     analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
     analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
+    analysis.addObject(ObjectsFem.makeConstraintInitialPressure(doc))
     analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
     analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
     analysis.addObject(ObjectsFem.makeConstraintPressure(doc))

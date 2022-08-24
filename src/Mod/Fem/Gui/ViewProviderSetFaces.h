@@ -31,7 +31,7 @@ namespace FemGui
 
 class ViewProviderSetFaces : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderSetFaces);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderSetFaces);
 
 public:
     bool doubleClicked() override;

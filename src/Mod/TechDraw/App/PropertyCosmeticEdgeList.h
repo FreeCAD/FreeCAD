@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_PropertyCosmeticEdgeList_H
 #define TECHDRAW_PropertyCosmeticEdgeList_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <App/Property.h>
 

@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost/uuid/uuid.hpp>
 
 #include <App/FeaturePython.h>
@@ -30,7 +32,6 @@
 #include <Base/Vector3D.h>
 
 #include "Geometry.h"
-
 
 class TopoDS_Edge;
 
@@ -44,7 +45,7 @@ class TechDrawExport LineFormat
 public:
     LineFormat(int style = getDefEdgeStyle(),
                double weight = getDefEdgeWidth(),
-               App::Color color = getDefEdgeWidth(),
+               App::Color color = getDefEdgeColor(),
                bool visible = true);
     ~LineFormat() = default;
 
@@ -64,7 +65,7 @@ public:
 //********** Cosmetic Vertex ***************************************************
 class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::Vertex
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     CosmeticVertex();
@@ -120,7 +121,7 @@ protected:
 
 class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     CosmeticEdge();
     CosmeticEdge(TechDraw::BaseGeomPtr* geometry);
@@ -170,7 +171,7 @@ protected:
 
 class TechDrawExport CenterLine: public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum CLMODE
@@ -302,7 +303,7 @@ protected:
 // format specifier for geometric edges (Edge5)
 class TechDrawExport GeomFormat: public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GeomFormat();

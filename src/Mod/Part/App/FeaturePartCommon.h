@@ -31,7 +31,7 @@ namespace Part
 
 class Common : public Boolean
 {
-    PROPERTY_HEADER(Part::Common);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Common);
 
 public:
     Common();
@@ -46,7 +46,7 @@ protected:
 
 class MultiCommon : public Part::Feature
 {
-    PROPERTY_HEADER(Part::MultiCommon);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiCommon);
 
 public:
     MultiCommon();

@@ -120,6 +120,12 @@ class Addon:
     class ResolutionFailed(RuntimeError):
         """An exception type for dependency resolution failure."""
 
+    # The location of Addon Manager cache files: overridden by testing code
+    cache_directory = os.path.join(FreeCAD.getUserCachePath(), "AddonManager")
+
+    # The location of the Mod directory: overridden by testing code
+    mod_directory = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
+
     def __init__(self, name: str, url: str, status: Status, branch: str):
         self.name = name.strip()
         self.display_name = self.name
@@ -199,7 +205,7 @@ class Addon:
     def from_cache(cls, cache_dict: Dict):
         """Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately."""
 
-        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", cache_dict["name"])
+        mod_dir = os.path.join(cls.mod_directory, cache_dict["name"])
         if os.path.isdir(mod_dir):
             status = Addon.Status.UNCHECKED
         else:
@@ -215,8 +221,7 @@ class Addon:
         if instance.repo_type == Addon.Kind.PACKAGE:
             # There must be a cached metadata file, too
             cached_package_xml_file = os.path.join(
-                FreeCAD.getUserCachePath(),
-                "AddonManager",
+                instance.cache_directory,
                 "PackageMetadata",
                 instance.name,
             )
@@ -457,9 +462,7 @@ class Addon:
         )  # Required path separator in the metadata.xml file to local separator
 
         _, file_extension = os.path.splitext(real_icon)
-        store = os.path.join(
-            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
-        )
+        store = os.path.join(self.cache_directory, "PackageMetadata")
         self.cached_icon_filename = os.path.join(
             store, self.name, "cached_icon" + file_extension
         )
@@ -512,17 +515,13 @@ class Addon:
     def is_disabled(self):
         """Check to see if the disabling stopfile exists"""
 
-        stopfile = os.path.join(
-            FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED"
-        )
+        stopfile = os.path.join(self.mod_directory, self.name, "ADDON_DISABLED")
         return os.path.exists(stopfile)
 
     def disable(self):
         """Disable this addon from loading when FreeCAD starts up by creating a stopfile"""
 
-        stopfile = os.path.join(
-            FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED"
-        )
+        stopfile = os.path.join(mod_directory, self.name, "ADDON_DISABLED")
         with open(stopfile, "w", encoding="utf-8") as f:
             f.write(
                 "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
@@ -531,9 +530,7 @@ class Addon:
     def enable(self):
         """Re-enable loading this addon by deleting the stopfile"""
 
-        stopfile = os.path.join(
-            FreeCAD.getUserAppDataDir(), "Mod", self.name, "ADDON_DISABLED"
-        )
+        stopfile = os.path.join(self.mod_directory, self.name, "ADDON_DISABLED")
         try:
             os.unlink(stopfile)
         except FileNotFoundError:

@@ -44,7 +44,7 @@ namespace Points
  */
 class PointsExport PropertyGreyValue : public App::PropertyFloat
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyGreyValue()
@@ -57,7 +57,7 @@ public:
 
 class PointsExport PropertyGreyValueList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyGreyValueList();
@@ -108,7 +108,7 @@ private:
 
 class PointsExport PropertyNormalList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyNormalList();
@@ -169,7 +169,7 @@ struct PointsExport CurvatureInfo
  */
 class PointsExport PropertyCurvatureList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum { 

@@ -74,7 +74,7 @@ private:
 
 class FemGuiExport ViewProviderFemPostFunctionProvider : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
 
 public:
     ViewProviderFemPostFunctionProvider();
@@ -100,7 +100,7 @@ protected:
 
 class FemGuiExport ViewProviderFemPostFunction : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
 
 public:
     /// constructor.
@@ -173,7 +173,7 @@ private:
 
 class FemGuiExport ViewProviderFemPostPlaneFunction : public ViewProviderFemPostFunction {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostPlaneFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostPlaneFunction);
 
 public:
     ViewProviderFemPostPlaneFunction();
@@ -216,7 +216,7 @@ private:
 
 class FemGuiExport ViewProviderFemPostSphereFunction : public ViewProviderFemPostFunction {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostSphereFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostSphereFunction);
 
 public:
     ViewProviderFemPostSphereFunction();

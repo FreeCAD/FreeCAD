@@ -23,15 +23,21 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
-#include "QGIViewCollection.h"
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QObject>
 
+#include "QGIViewCollection.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 class QEvent;
 QT_END_NAMESPACE
+
+namespace TechDraw {
+    class DrawProjGroup;
+}
 
 namespace TechDrawGui
 {
@@ -49,7 +55,6 @@ public:
 
     void alignTo(QGIProjGroup *, const QString &alignment);
 
-    void updateView(bool update = false) override;
     void rotateView() override;
 
     void drawBorder() override;
@@ -65,7 +70,7 @@ protected:
 
 private:
     /// Convenience function
-    TechDraw::DrawProjGroup * getDrawView() const;
+    TechDraw::DrawProjGroup* getDrawView() const;
 
     QGraphicsItem* m_origin;
     QPoint mousePos;

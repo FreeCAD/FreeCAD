@@ -33,7 +33,7 @@ namespace Part
 
 class Mirroring : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Mirroring);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Mirroring);
 
 public:
     Mirroring();

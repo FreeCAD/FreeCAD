@@ -23,9 +23,10 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItemGroup>
 #include <QObject>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -64,12 +65,11 @@ public:
     virtual void draw() = 0;
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     TechDraw::DrawTemplate *pageTemplate;
 
     std::vector<TemplateTextField *> textFields;
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
 #endif // DRAWINGGUI_QGRAPHICSITEMTEMPLATE_H

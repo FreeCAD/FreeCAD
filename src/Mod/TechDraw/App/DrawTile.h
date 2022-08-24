@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawTile_h_
 #define _TechDraw_DrawTile_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 
@@ -33,7 +35,7 @@ namespace TechDraw
 
 class TechDrawExport DrawTile : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawTile);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTile);
 
 public:
     DrawTile();

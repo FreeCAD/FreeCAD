@@ -108,7 +108,7 @@ namespace ConstraintFilter {
             return (... | (1 << static_cast<std::underlying_type_t<Args>>(args)));
     }
 
-    /// Array of FilterValue bit sets of size the the number of FilterValues indicating for each FilterValue, which other
+    /// Array of FilterValue bit sets of size of the number of FilterValues indicating for each FilterValue, which other
     /// FilterValues are comprised therein. It defines the dependencies between filters.
     constexpr std::array< FilterValueBitset, FilterValueLength> filterAggregates {
         buildBitset(FilterValue::All, FilterValue::Geometric, FilterValue::Datums, FilterValue::Named, FilterValue::NonDriving, FilterValue::Horizontal,

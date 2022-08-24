@@ -160,7 +160,7 @@ private:
 
 class InspectionExport PropertyDistanceList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -215,7 +215,7 @@ private:
  */
 class InspectionExport Feature : public App::DocumentObject
 {
-    PROPERTY_HEADER(Inspection::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Inspection::Feature);
 
 public:
     /// Constructor
@@ -245,7 +245,7 @@ public:
 
 class InspectionExport Group : public App::DocumentObjectGroup
 {
-    PROPERTY_HEADER(Inspection::Group);
+    PROPERTY_HEADER_WITH_OVERRIDE(Inspection::Group);
 
 public:
     /// Constructor

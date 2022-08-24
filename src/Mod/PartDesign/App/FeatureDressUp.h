@@ -31,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport DressUp : public PartDesign::FeatureAddSub
 {
-    PROPERTY_HEADER(PartDesign::DressUp);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::DressUp);
 
 public:
     DressUp();

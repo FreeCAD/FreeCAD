@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
 #define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 
 #include "ViewProviderDrawingView.h"
@@ -34,7 +36,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderAnnotation : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderAnnotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderAnnotation);
 
 public:
     /// constructor

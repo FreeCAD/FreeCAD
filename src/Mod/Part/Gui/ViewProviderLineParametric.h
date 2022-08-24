@@ -38,7 +38,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderLineParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderLineParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderLineParametric);
 
 public:
     /// constructor

@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport Pipe : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Pipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Pipe);
 
 public:
     Pipe();
@@ -72,14 +72,14 @@ private:
 
 class PartDesignExport AdditivePipe : public Pipe {
 
-    PROPERTY_HEADER(PartDesign::AdditivePipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditivePipe);
 public:
     AdditivePipe();
 };
 
 class PartDesignExport SubtractivePipe : public Pipe {
 
-    PROPERTY_HEADER(PartDesign::SubtractivePipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractivePipe);
 public:
     SubtractivePipe();
 };

@@ -75,6 +75,7 @@ except ImportError:
     HAVE_FREECAD = False
 
 from PySide2 import QtCore
+
 if FreeCAD.GuiUp:
     from PySide2 import QtWidgets
 
@@ -154,7 +155,10 @@ if HAVE_QTNETWORK:
             self.synchronous_result_data: Dict[int, QtCore.QByteArray] = {}
 
             # Make sure we exit nicely on quit
-            QtCore.QCoreApplication.instance().aboutToQuit.connect(self.__aboutToQuit)
+            if QtCore.QCoreApplication.instance() is not None:
+                QtCore.QCoreApplication.instance().aboutToQuit.connect(
+                    self.__aboutToQuit
+                )
 
             # Create the QNAM on this thread:
             self.QNAM = QtNetwork.QNetworkAccessManager()
@@ -179,13 +183,23 @@ if HAVE_QTNETWORK:
             self.__request_queued.connect(self.__setup_network_request)
 
         def _setup_proxy(self):
-            """ Set up the proxy based on user preferences or prompts on command line """
+            """Set up the proxy based on user preferences or prompts on command line"""
 
             # Set up the proxy, if necesssary:
             if HAVE_FREECAD:
-                noProxyCheck, systemProxyCheck, userProxyCheck, proxy_string = self._setup_proxy_freecad()
+                (
+                    noProxyCheck,
+                    systemProxyCheck,
+                    userProxyCheck,
+                    proxy_string,
+                ) = self._setup_proxy_freecad()
             else:
-                noProxyCheck, systemProxyCheck, userProxyCheck, proxy_string = self._setup_proxy_standalone()
+                (
+                    noProxyCheck,
+                    systemProxyCheck,
+                    userProxyCheck,
+                    proxy_string,
+                ) = self._setup_proxy_standalone()
 
             if noProxyCheck:
                 pass
@@ -208,7 +222,7 @@ if HAVE_QTNETWORK:
                 self.QNAM.setProxy(proxy)
 
         def _setup_proxy_freecad(self):
-            """ If we are running within FreeCAD, this uses the config data to set up the proxy """
+            """If we are running within FreeCAD, this uses the config data to set up the proxy"""
             noProxyCheck = True
             systemProxyCheck = False
             userProxyCheck = False
@@ -252,7 +266,7 @@ if HAVE_QTNETWORK:
             return noProxyCheck, systemProxyCheck, userProxyCheck, proxy_string
 
         def _setup_proxy_standalone(self):
-            """ If we are NOT running inside FreeCAD, prompt the user for proxy information """
+            """If we are NOT running inside FreeCAD, prompt the user for proxy information"""
             noProxyCheck = True
             systemProxyCheck = False
             userProxyCheck = False

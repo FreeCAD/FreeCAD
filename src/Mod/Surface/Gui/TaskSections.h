@@ -41,7 +41,7 @@ class Ui_Sections;
 
 class ViewProviderSections : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderSections);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderSections);
     typedef std::vector<App::PropertyLinkSubList::SubSet> References;
 
 public:

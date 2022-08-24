@@ -115,7 +115,7 @@ def processFileNameSubstitutions(
         j = job.Label
         filename = filename.replace("%j", j)
 
-    # Use the sequnce number if explicitly called
+    # Use the sequence number if explicitly called
     if "%S" in filename:
         j = job.Label
         filename = filename.replace("%S", str(sequencenumber))

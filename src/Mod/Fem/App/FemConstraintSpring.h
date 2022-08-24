@@ -31,7 +31,7 @@ namespace Fem {
 
 class FemExport ConstraintSpring : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintSpring);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintSpring);
 
 public:
     ConstraintSpring();

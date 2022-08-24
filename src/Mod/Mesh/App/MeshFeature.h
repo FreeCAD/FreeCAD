@@ -53,7 +53,7 @@ class MeshFeaturePy;
  */
 class MeshExport Feature : public App::GeoFeature
 {
-    PROPERTY_HEADER(Mesh::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Feature);
 
 public:
     /// Constructor

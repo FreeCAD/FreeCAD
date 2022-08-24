@@ -36,7 +36,7 @@ namespace Robot
 
 class RobotExport RobotObject : public App::GeoFeature
 {
-    PROPERTY_HEADER(Robot::RobotObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Robot::RobotObject);
 
 public:
     /// Constructor

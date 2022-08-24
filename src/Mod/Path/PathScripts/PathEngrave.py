@@ -51,7 +51,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         self.wires = []
 
     def opFeatures(self, obj):
-        """opFeatures(obj) ... return all standard features and edges based geomtries"""
+        """opFeatures(obj) ... return all standard features and edges based geometries"""
         return (
             PathOp.FeatureTool
             | PathOp.FeatureDepths

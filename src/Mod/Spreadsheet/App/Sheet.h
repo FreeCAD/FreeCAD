@@ -60,7 +60,7 @@ class SheetObserver;
  */
 class SpreadsheetExport PropertySpreadsheetQuantity : public App::PropertyQuantity
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertySpreadsheetQuantity(void){}
     ~PropertySpreadsheetQuantity() override{}
@@ -71,7 +71,7 @@ public:
 
 class SpreadsheetExport Sheet : public App::DocumentObject
 {
-    PROPERTY_HEADER(Spreadsheet::Sheet);
+    PROPERTY_HEADER_WITH_OVERRIDE(Spreadsheet::Sheet);
 
 public:
 

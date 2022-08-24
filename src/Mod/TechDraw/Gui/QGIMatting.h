@@ -29,7 +29,6 @@
 #include <QGraphicsItemGroup>
 #include <QGraphicsPathItem>
 
-
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;

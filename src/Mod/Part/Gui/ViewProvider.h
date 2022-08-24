@@ -44,7 +44,7 @@ public:
 
 class PartGuiExport ViewProviderPart : public ViewProviderPartExt
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPart);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPart);
 
 public:
     /// constructor

@@ -40,7 +40,7 @@ namespace Mesh
  */
 class MeshExport Curvature : public App::DocumentObject
 {
-    PROPERTY_HEADER(Mesh::Curvature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Curvature);
 
 public:
     Curvature();

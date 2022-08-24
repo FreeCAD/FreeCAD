@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
 #define DRAWINGGUI_VIEWPROVIDERBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 
@@ -36,7 +38,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderBalloon : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderBalloon);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderBalloon);
 
 public:
     /// constructor

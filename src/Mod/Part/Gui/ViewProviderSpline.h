@@ -55,7 +55,7 @@ protected:
 
 class PartGuiExport ViewProviderSpline : public ViewProviderPartExt
 {
-    PROPERTY_HEADER(PartGui::ViewProviderSpline);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSpline);
 
 public:
     /// constructor

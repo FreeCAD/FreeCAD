@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_QGIVBALLOON_H
 #define TECHDRAWGUI_QGIVBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
@@ -101,12 +103,10 @@ Q_SIGNALS:
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_labelText;
     QColor m_colNormal;
@@ -163,10 +163,6 @@ public Q_SLOTS:
     void updateBalloon(bool obtuse = false);
 
 protected:
-    void mousePressEvent( QGraphicsSceneMouseEvent * event) override;
-    void mouseMoveEvent( QGraphicsSceneMouseEvent * event) override;
-    void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
-
     void draw() override;
     void drawBalloon(bool dragged = false);
     QVariant itemChange( GraphicsItemChange change,

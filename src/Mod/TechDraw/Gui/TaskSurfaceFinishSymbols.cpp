@@ -21,17 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QLineEdit>
+#include <QGraphicsProxyWidget>
+#include <QComboBox>
+#endif
+
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/Gui/ui_TaskSurfaceFinishSymbols.h>
+
 #include "TaskSurfaceFinishSymbols.h"
-#include <QGraphicsScene>
-#include <QLineEdit>
-#include <QGraphicsProxyWidget>
-#include <QComboBox>
 
 using namespace Gui;
 using namespace TechDraw;

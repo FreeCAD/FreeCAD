@@ -67,6 +67,7 @@
 #endif
 
 #include <App/PropertyStandard.h>
+#include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/Rotation.h>
@@ -405,7 +406,8 @@ PyObject*  TopoShapePy::exportBinary(PyObject *args)
 
     try {
         // read binary brep
-        std::ofstream str(input, std::ios::out | std::ios::binary);
+        Base::FileInfo fi(input);
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
         getTopoShapePtr()->exportBinary(str);
         str.close();
     }
@@ -516,7 +518,8 @@ PyObject*  TopoShapePy::importBinary(PyObject *args)
 
     try {
         // read binary brep
-        std::ifstream str(input, std::ios::in | std::ios::binary);
+        Base::FileInfo fi(input);
+        Base::ifstream str(fi, std::ios::in | std::ios::binary);
         getTopoShapePtr()->importBinary(str);
         str.close();
     }

@@ -35,7 +35,7 @@ import FreeCAD
 import FreeCADGui
 
 import addonmanager_utilities as utils
-from addonmanager_workers import GetMacroDetailsWorker, CheckSingleUpdateWorker
+from addonmanager_workers_startup import GetMacroDetailsWorker, CheckSingleUpdateWorker
 from Addon import Addon
 import NetworkManager
 from change_branch import ChangeBranchDialog
@@ -70,8 +70,8 @@ except ImportError:
 
 
 class PackageDetails(QWidget):
-    """ The PackageDetails QWidget shows package README information and provides 
-    install, uninstall, and update buttons. """
+    """The PackageDetails QWidget shows package README information and provides
+    install, uninstall, and update buttons."""
 
     back = Signal()
     install = Signal(Addon)
@@ -114,9 +114,9 @@ class PackageDetails(QWidget):
                 self.ui.webView.hide()
 
     def show_repo(self, repo: Addon, reload: bool = False) -> None:
-        """ The main entry point for this class, shows the package details and related buttons
-       for the provided repo. If reload is true, then even if this is already the current repo
-       the data is reloaded. """
+        """The main entry point for this class, shows the package details and related buttons
+        for the provided repo. If reload is true, then even if this is already the current repo
+        the data is reloaded."""
 
         # If this is the same repo we were already showing, we do not have to do the
         # expensive refetch unless reload is true
@@ -155,20 +155,22 @@ class PackageDetails(QWidget):
         if repo.status() == Addon.Status.UNCHECKED:
             if not self.status_update_thread:
                 self.status_update_thread = QThread()
-            self.status_update_worker = CheckSingleUpdateWorker(repo)
-            self.status_update_worker.moveToThread(self.status_update_thread)
+            self.status_create_addon_list_worker = CheckSingleUpdateWorker(repo)
+            self.status_create_addon_list_worker.moveToThread(self.status_update_thread)
             self.status_update_thread.finished.connect(
-                self.status_update_worker.deleteLater
+                self.status_create_addon_list_worker.deleteLater
             )
-            self.check_for_update.connect(self.status_update_worker.do_work)
-            self.status_update_worker.update_status.connect(self.display_repo_status)
+            self.check_for_update.connect(self.status_create_addon_list_worker.do_work)
+            self.status_create_addon_list_worker.update_status.connect(
+                self.display_repo_status
+            )
             self.status_update_thread.start()
             self.check_for_update.emit(self.repo)
 
         self.display_repo_status(self.repo.update_status)
 
     def display_repo_status(self, status):
-        """ Updates the contents of the widget to display the current install status of the widget. """
+        """Updates the contents of the widget to display the current install status of the widget."""
         repo = self.repo
         self.set_change_branch_button_state()
         self.set_disable_button_state()
@@ -390,9 +392,9 @@ class PackageDetails(QWidget):
             self.ui.labelWarningInfo.hide()
 
     def requires_newer_freecad(self) -> Optional[str]:
-        """ If the current package is not installed, returns the first supported version of
-       FreeCAD, if one is set, or None if no information is available (or if the package is
-       already installed). """
+        """If the current package is not installed, returns the first supported version of
+        FreeCAD, if one is set, or None if no information is available (or if the package is
+        already installed)."""
 
         # If it's not installed, check to see if it's for a newer version of FreeCAD
         if self.repo.status() == Addon.Status.NOT_INSTALLED and self.repo.metadata:
@@ -449,7 +451,7 @@ class PackageDetails(QWidget):
         self.ui.buttonChangeBranch.show()
 
     def set_disable_button_state(self):
-        """ Set up the enable/disable button based on the enabled/disabled state of the addon """
+        """Set up the enable/disable button based on the enabled/disabled state of the addon"""
         self.ui.buttonEnable.hide()
         self.ui.buttonDisable.hide()
         status = self.repo.status()
@@ -503,7 +505,7 @@ class PackageDetails(QWidget):
             self.macro_readme_updated()
 
     def macro_readme_updated(self):
-        """ Update the display of a Macro's README data. """
+        """Update the display of a Macro's README data."""
         url = self.repo.macro.wiki
         if not url:
             url = self.repo.macro.url
@@ -588,16 +590,16 @@ class PackageDetails(QWidget):
         self.ui.webView.page().runJavaScript(s)
 
     def load_started(self):
-        """ Called when loading is started: sets up the progress bar """
+        """Called when loading is started: sets up the progress bar"""
         self.ui.progressBar.show()
         self.ui.progressBar.setValue(0)
 
     def load_progress(self, progress: int):
-        """ Called during load to update the progress bar """
+        """Called during load to update the progress bar"""
         self.ui.progressBar.setValue(progress)
 
     def load_finished(self, load_succeeded: bool):
-        """ Once loading is complete, update the display of the progress bar and loading widget. """
+        """Once loading is complete, update the display of the progress bar and loading widget."""
         self.ui.loadingLabel.hide()
         self.ui.slowLoadLabel.hide()
         self.ui.webView.show()
@@ -624,14 +626,14 @@ class PackageDetails(QWidget):
             self.show_error_for(url)
 
     def long_load_running(self):
-        """ Displays a message about loading taking a long time. """
+        """Displays a message about loading taking a long time."""
         if hasattr(self.ui, "webView") and self.ui.webView.isHidden():
             self.ui.slowLoadLabel.show()
             self.ui.loadingLabel.hide()
             self.ui.webView.show()
 
     def show_error_for(self, url: QUrl) -> None:
-        """ Displays error information. """
+        """Displays error information."""
         m = translate(
             "AddonsInstaller", "Could not load README data from URL {}"
         ).format(url.toString())
@@ -639,7 +641,7 @@ class PackageDetails(QWidget):
         self.ui.webView.setHtml(html)
 
     def change_branch_clicked(self) -> None:
-        """ Loads the branch-switching dialog """
+        """Loads the branch-switching dialog"""
         basedir = FreeCAD.getUserAppDataDir()
         path_to_repo = os.path.join(basedir, "Mod", self.repo.name)
         change_branch_dialog = ChangeBranchDialog(path_to_repo, self)
@@ -647,7 +649,7 @@ class PackageDetails(QWidget):
         change_branch_dialog.exec()
 
     def enable_clicked(self) -> None:
-        """ Called by the Enable button, enables this Addon and updates GUI to reflect that status. """
+        """Called by the Enable button, enables this Addon and updates GUI to reflect that status."""
         self.repo.enable()
         self.repo.set_status(Addon.Status.PENDING_RESTART)
         self.set_disable_button_state()
@@ -664,7 +666,7 @@ class PackageDetails(QWidget):
         self.ui.labelWarningInfo.setStyleSheet("color:" + utils.bright_color_string())
 
     def disable_clicked(self) -> None:
-        """ Called by the Disable button, disables this Addon and updates the GUI to reflect that status. """
+        """Called by the Disable button, disables this Addon and updates the GUI to reflect that status."""
         self.repo.disable()
         self.repo.set_status(Addon.Status.PENDING_RESTART)
         self.set_disable_button_state()
@@ -683,7 +685,7 @@ class PackageDetails(QWidget):
         )
 
     def branch_changed(self, name: str) -> None:
-        """ Displays a dialog confirming the branch changed, and tries to access the metadata file from that branch. """
+        """Displays a dialog confirming the branch changed, and tries to access the metadata file from that branch."""
         QMessageBox.information(
             self,
             translate("AddonsInstaller", "Success"),
@@ -728,8 +730,8 @@ if HAS_QTWEBENGINE:
             self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
 
         def acceptNavigationRequest(self, url, _type, isMainFrame):
-            """ A callback for navigation requests: this widget will only display navigation requests to the
-           FreeCAD Wiki (for translation purposes) -- anything else will open in a new window. """
+            """A callback for navigation requests: this widget will only display navigation requests to the
+            FreeCAD Wiki (for translation purposes) -- anything else will open in a new window."""
             if _type == QWebEnginePage.NavigationTypeLinkClicked:
 
                 # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
@@ -743,9 +745,9 @@ if HAS_QTWEBENGINE:
             return super().acceptNavigationRequest(url, _type, isMainFrame)
 
         def javaScriptConsoleMessage(self, level, message, lineNumber, _):
-            """ Handle JavaScript console messages by optionally outputting them to the FreeCAD Console. This
-           must be manually enabled in this Python file by setting the global show_javascript_console_output
-           to true. """
+            """Handle JavaScript console messages by optionally outputting them to the FreeCAD Console. This
+            must be manually enabled in this Python file by setting the global show_javascript_console_output
+            to true."""
             global show_javascript_console_output
             if show_javascript_console_output:
                 tag = translate("AddonsInstaller", "Page JavaScript reported")
@@ -758,8 +760,7 @@ if HAS_QTWEBENGINE:
 
 
 class Ui_PackageDetails(object):
-    """ The generated UI from the Qt Designer UI file """
-
+    """The generated UI from the Qt Designer UI file"""
 
     def setupUi(self, PackageDetails):
         if not PackageDetails.objectName():

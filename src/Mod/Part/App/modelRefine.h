@@ -29,6 +29,7 @@
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <GeomAbs_SurfaceType.hxx>
+#include <Standard_Version.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shell.hxx>
@@ -198,7 +199,11 @@ class PartExport BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
+#if OCC_VERSION_HEX >= 0x070600
+    void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
+#else
     void Build() override;
+#endif
     const TopTools_ListOfShape& Modified(const TopoDS_Shape& S) override;
     Standard_Boolean IsDeleted(const TopoDS_Shape& S) override;
 

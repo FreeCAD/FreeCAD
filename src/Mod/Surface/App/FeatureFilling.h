@@ -36,7 +36,7 @@ namespace Surface
 
 class SurfaceExport Filling :  public Part::Spline
 {
-    PROPERTY_HEADER(Surface::Filling);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Filling);
 
 public:
     Filling();

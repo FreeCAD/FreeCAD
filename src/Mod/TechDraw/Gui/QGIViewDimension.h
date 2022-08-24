@@ -116,12 +116,10 @@ Q_SIGNALS:
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_dimText;
     QGCustomText* m_tolTextOver;
@@ -136,6 +134,8 @@ protected:
 
     bool m_isFramed;
     double m_lineWidth;
+
+    int m_dragState;
     
 private:
 };

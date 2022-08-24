@@ -77,8 +77,6 @@ using namespace TechDrawGui;
 TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     ui(new Ui_TaskRichAnno),
     blockUpdate(false),
-    m_mdi(nullptr),
-    m_view(nullptr),
     m_annoVP(annoVP),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
@@ -92,8 +90,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_textDialog(nullptr),
-    m_rte(nullptr),
-    m_haveMdi(false)
+    m_rte(nullptr)
 {
     //existence of annoVP is guaranteed by caller being ViewProviderRichAnno.setEdit
 
@@ -115,20 +112,12 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* dvp = static_cast<ViewProviderPage*>(vp);
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
-    m_mdi = dvp->getMDIViewPage();
     m_qgParent = nullptr;
-    m_haveMdi = true;
-    if (m_mdi) {
-        m_scene = m_mdi->getQGSPage();
-        if (m_baseFeat) {
-            m_qgParent = m_scene->findQViewForDocObj(m_baseFeat);
-        }
-    } else {
-        m_haveMdi = false;
+    if (m_baseFeat) {
+        m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
     }
-
 
     ui->setupUi(this);
 
@@ -148,8 +137,6 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
                            TechDraw::DrawPage* page) :
     ui(new Ui_TaskRichAnno),
     blockUpdate(false),
-    m_mdi(nullptr),
-    m_view(nullptr),
     m_annoVP(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
@@ -163,24 +150,18 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_textDialog(nullptr),
-    m_rte(nullptr),
-    m_haveMdi(false)
+    m_rte(nullptr)
 {
     //existence of baseFeat and page guaranteed by CmdTechDrawRichTextAnnotation (CommandAnnotate.cpp)
-
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* dvp = static_cast<ViewProviderPage*>(vp);
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     m_qgParent = nullptr;
-    m_haveMdi = true;
-    m_mdi = dvp->getMDIViewPage();
-    if (m_mdi) {
-        m_scene= m_mdi->getQGSPage();
-        m_qgParent = m_scene->findQViewForDocObj(baseFeat);
-    } else {
-        m_haveMdi = false;
+    if (m_vpp->getQGSPage()) {
+        m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(baseFeat);
     }
+
     ui->setupUi(this);
     m_title = QObject::tr("Rich text creator");
 
@@ -295,8 +276,8 @@ void TaskRichAnno::onEditorClicked(bool b)
 
     connect(m_rte, SIGNAL(saveText(QString)),
             this, SLOT(onSaveAndExit(QString)));
-    connect(m_rte, SIGNAL(editorFinished(void)),
-            this, SLOT(onEditorExit(void)));
+    connect(m_rte, SIGNAL(editorFinished()),
+            this, SLOT(onEditorExit()));
 
     m_textDialog->show();
 }
@@ -354,13 +335,13 @@ void TaskRichAnno::createAnnoFeature()
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
         commonFeatureUpdate();
-        if (m_haveMdi) {
+        if (m_baseFeat != nullptr) {
             QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
             Base::Vector3d vTemp(qTemp.x(), qTemp.y());
             m_annoFeat->X.setValue(Rez::appX(vTemp.x));
             m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
         } else {
-            //if we don't have a mdi, we can't calculate start position, so just put it mid-page
+            //if we don't have a base featrue, we can't calculate start position, so just put it mid-page
             m_annoFeat->X.setValue(m_basePage->getPageWidth()/2.0);
             m_annoFeat->Y.setValue(m_basePage->getPageHeight()/2.0);
         }
@@ -378,10 +359,10 @@ void TaskRichAnno::createAnnoFeature()
         }
     }
 
-    Gui::Command::updateActive();
     Gui::Command::commitCommand();
+    Gui::Command::updateActive();
 
-    //trigger collectChildren in tree
+    //trigger claimChildren in tree
     if (m_baseFeat) {
         m_baseFeat->touch();
     }
@@ -405,7 +386,7 @@ void TaskRichAnno::updateAnnoFeature()
     m_annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
 
     Gui::Command::commitCommand();
-    m_annoFeat->requestPaint();
+    Gui::Command::updateActive();
 }
 
 void TaskRichAnno::commonFeatureUpdate()
@@ -450,6 +431,7 @@ void TaskRichAnno::removeFeature()
 //guess at the size of the text block.
 QPointF TaskRichAnno::calcTextStartPos(double scale)
 {
+    Q_UNUSED(scale)
 //    Base::Console().Message("TRA::calcTextStartPos(%.3f)\n", scale);
     double textWidth = 100.0;
     double textHeight = 20.0;
@@ -485,9 +467,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
     if (!points.empty()) {
         QPointF lastPoint(points.back().x, points.back().y);
         QPointF firstPoint(points.front().x, points.front().y);
-        QPointF lastOffset = lastPoint;
-        lastPoint = m_qgParent->mapFromScene(lastPoint) * scale;
-        firstPoint = m_qgParent->mapFromScene(firstPoint) * scale;
+        QPointF lastOffset = lastPoint - firstPoint;
 
         if (lastPoint.x() < firstPoint.x()) {                 //last is left of first
             tPosX = lastOffset.x() - horizGap - textWidth;    //left of last
@@ -533,7 +513,9 @@ bool TaskRichAnno::accept()
     } else {
         updateAnnoFeature();
     }
-//    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+
+    m_annoFeat->requestPaint();
+
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
     return true;

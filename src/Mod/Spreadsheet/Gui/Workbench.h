@@ -47,7 +47,7 @@ protected Q_SLOTS:
 
 class SpreadsheetGuiExport Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
   Workbench();

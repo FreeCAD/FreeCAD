@@ -31,7 +31,7 @@ namespace Part
 
 class Fuse : public Boolean
 {
-    PROPERTY_HEADER(Part::Fuse);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Fuse);
 
 public:
     Fuse();
@@ -46,7 +46,7 @@ protected:
 
 class MultiFuse : public Part::Feature
 {
-    PROPERTY_HEADER(Part::MultiFuse);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiFuse);
 
 public:
     MultiFuse();

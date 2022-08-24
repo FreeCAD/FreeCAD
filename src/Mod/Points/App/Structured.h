@@ -36,7 +36,7 @@ namespace Points
  */
 class PointsExport Structured : public Feature
 {
-    PROPERTY_HEADER(Points::Structured);
+    PROPERTY_HEADER_WITH_OVERRIDE(Points::Structured);
 
 public:
     /// Constructor

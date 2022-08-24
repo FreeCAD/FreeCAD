@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
 #define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 
 # include "QGIPrimPath.h"
@@ -72,8 +74,6 @@ public:
     static int getPrefArrowStyle();
     static double getPrefArrowSize();
     static double getOverlapAdjust(int style, double size);
-
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
 
 protected:
     QPainterPath makeFilledTriangle(double length, double width, bool flipped);

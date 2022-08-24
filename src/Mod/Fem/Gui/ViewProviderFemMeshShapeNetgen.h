@@ -30,7 +30,7 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemMeshShapeNetgen : public ViewProviderFemMeshShape
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemMeshShapeNetgen);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMeshShapeNetgen);
 
 public:
     /// constructor.

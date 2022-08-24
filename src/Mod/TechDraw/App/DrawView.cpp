@@ -74,7 +74,8 @@ PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
 
 DrawView::DrawView():
     autoPos(true),
-    mouseMove(false)
+    mouseMove(false),
+    m_overrideKeepUpdated(false)
 {
     static const char *group = "Base";
     ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output), "X position");
@@ -131,7 +132,7 @@ void DrawView::onChanged(const App::Property* prop)
         if (prop == &ScaleType) {
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
-                Scale.setStatus(App::Property::ReadOnly,true);
+                Scale.setStatus(App::Property::ReadOnly, true);
                 if (page) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
@@ -139,11 +140,11 @@ void DrawView::onChanged(const App::Property* prop)
                 }
             } else if ( ScaleType.isValue("Custom") ) {
                 //don't change Scale
-                Scale.setStatus(App::Property::ReadOnly,false);
+                Scale.setStatus(App::Property::ReadOnly, false);
             } else if ( ScaleType.isValue("Automatic") ) {
-                Scale.setStatus(App::Property::ReadOnly,true);
+                Scale.setStatus(App::Property::ReadOnly, true);
                 if (!checkFit(page)) {
-                    double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                    double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
                         Scale.setValue(newScale);
                     }
@@ -152,7 +153,7 @@ void DrawView::onChanged(const App::Property* prop)
         } else if (prop == &LockPosition) {
             handleXYLock();
             requestPaint();         //change lock icon
-            LockPosition.purgeTouched(); 
+            LockPosition.purgeTouched();
         } else if ((prop == &Caption) ||
             (prop == &Label)) {
             requestPaint();
@@ -179,20 +180,20 @@ void DrawView::handleXYLock()
 {
     if (isLocked()) {
         if (!X.testStatus(App::Property::ReadOnly)) {
-            X.setStatus(App::Property::ReadOnly,true);
+            X.setStatus(App::Property::ReadOnly, true);
             X.purgeTouched();
         }
         if (!Y.testStatus(App::Property::ReadOnly)) {
-            Y.setStatus(App::Property::ReadOnly,true);
+            Y.setStatus(App::Property::ReadOnly, true);
             Y.purgeTouched();
         }
     } else {
         if (X.testStatus(App::Property::ReadOnly)) {
-            X.setStatus(App::Property::ReadOnly,false);
+            X.setStatus(App::Property::ReadOnly, false);
             X.purgeTouched();
         }
         if (Y.testStatus(App::Property::ReadOnly)) {
-            Y.setStatus(App::Property::ReadOnly,false);
+            Y.setStatus(App::Property::ReadOnly, false);
             Y.purgeTouched();
         }
     }
@@ -359,7 +360,7 @@ double DrawView::autoScale() const
     return autoScale(w,h);
 }
 
-//compare 1:1 rect of view to pagesize(pw,h) 
+//compare 1:1 rect of view to pagesize(pw,h)
 double DrawView::autoScale(double pw, double ph) const
 {
 //    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
@@ -373,13 +374,14 @@ double DrawView::autoScale(double pw, double ph) const
     double vbh = viewBox.height()/getScale();
     double xScale = pw/vbw;           // > 1 page bigger than figure
     double yScale = ph/vbh;           // < 1 page is smaller than figure
-    double newScale = std::min(xScale,yScale) * fudgeFactor; 
+    double newScale = std::min(xScale,yScale) * fudgeFactor;
     double sensibleScale = DrawUtil::sensibleScale(newScale);
     return sensibleScale;
 }
 
 bool DrawView::checkFit() const
 {
+//    Base::Console().Message("DV::checkFit() - %s\n", getNameInDocument());
     auto page = findParentPage();
     return checkFit(page);
 }
@@ -387,6 +389,7 @@ bool DrawView::checkFit() const
 //!check if View is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
+//    Base::Console().Message("DV::checkFit(page) - %s\n", getNameInDocument());
     bool result = true;
     double fudge = 1.1;
 
@@ -454,8 +457,7 @@ std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
     return result;
 }
 
-void DrawView::handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
@@ -469,7 +471,7 @@ void DrawView::handleChangedPropertyType(
                 Scale.setValue(1.0);
             }
         } else {
-            // has Scale prop that isn't Float! 
+            // has Scale prop that isn't Float!
             Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
             // no idea
         }
@@ -521,7 +523,7 @@ void DrawView::handleChangedPropertyType(
         Y2Property.Restore(reader);
         Y.setValue(Y2Property.getValue());
     }
-       
+
 // property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
     else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat RotationProperty;
@@ -534,13 +536,14 @@ void DrawView::handleChangedPropertyType(
 bool DrawView::keepUpdated()
 {
 //    Base::Console().Message("DV::keepUpdated() - %s\n", getNameInDocument());
-    bool result = false;
-
+    if (overrideKeepUpdated()) {
+        return true;
+    }
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        result = page->canUpdate() || page->forceRedraw();
+        return (page->canUpdate() || page->forceRedraw());
     }
-    return result;
+    return false;
 }
 
 void DrawView::setScaleAttribute()
@@ -557,7 +560,7 @@ int DrawView::prefScaleType()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    int result = hGrp->GetInt("DefaultScaleType", 0); 
+    int result = hGrp->GetInt("DefaultScaleType", 0);
     return result;
 }
 
@@ -581,7 +584,14 @@ void DrawView::requestPaint()
     signalGuiPaint(this);
 }
 
-PyObject *DrawView::getPyObject()
+void DrawView::showProgressMessage(std::string featureName, std::string text)
+{
+    if (Preferences::reportProgress()) {
+        signalProgressMessage(this, featureName, text);
+    }
+}
+
+PyObject *DrawView::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

@@ -31,7 +31,7 @@ namespace Gui
 {
 
 class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
-    PROPERTY_HEADER(Gui::ViewProviderLine);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLine);
 public:
     /// Constructor
     ViewProviderLine();

@@ -130,12 +130,12 @@ class Solve(run.Solve):
             self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
                             .format(num_cores))
             args = []
-            if int(num_cores) > 1:
+            if num_cores > 1:
                 if system() != "Windows":
                     args.extend(["mpirun"])
                 else:
                     args.extend(["mpiexec"])
-                args.extend(["-np", num_cores])
+                args.extend(["-np", str(num_cores)])
             args.extend([binary])
             if system() == "Windows":
                 self._process = subprocess.Popen(
@@ -283,16 +283,22 @@ class Results(run.Results):
         possible_post_file_old = os.path.join(self.directory, "case0001.vtu")
         possible_post_file_single = os.path.join(self.directory, "case_t0001.vtu")
         possible_post_file_multi = os.path.join(self.directory, "case_t0001.pvtu")
-        # first try the multi-thread result, then single then old name
-        if os.path.isfile(possible_post_file_multi):
-            postPath = possible_post_file_multi
-        elif os.path.isfile(possible_post_file_single):
-            postPath = possible_post_file_single
-        elif os.path.isfile(possible_post_file_old):
-            postPath = possible_post_file_old
-        else:
-            self.report.error("Result file not found.")
-            self.fail()
+        # depending on the currently set number of cores we try to load either
+        # the multi-thread result or the single result
+        if settings.get_cores("ElmerSolver") > 1:
+            if os.path.isfile(possible_post_file_multi):
+                postPath = possible_post_file_multi
+            else:
+                self.report.error("Result file not found.")
+                self.fail()
+        else:    
+            if os.path.isfile(possible_post_file_single):
+                postPath = possible_post_file_single
+            elif os.path.isfile(possible_post_file_old):
+                postPath = possible_post_file_old
+            else:
+                self.report.error("Result file not found.")
+                self.fail()
         return postPath
 
 ##  @}

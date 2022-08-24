@@ -23,8 +23,9 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
-#include <memory>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <memory>
 
 #include <QGraphicsView>
 #include <QLabel>
@@ -111,6 +112,8 @@ public:
     void setZoomCursor();
 
     void pseudoContextEvent();
+
+    void centerOnPage(void);
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);

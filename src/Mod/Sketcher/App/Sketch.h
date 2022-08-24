@@ -41,7 +41,7 @@ namespace Sketcher
 
 class SketcherExport Sketch :public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Sketch();

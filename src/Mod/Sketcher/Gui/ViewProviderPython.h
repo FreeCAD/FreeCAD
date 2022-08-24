@@ -31,7 +31,7 @@ namespace SketcherGui {
 
 class SketcherGuiExport ViewProviderCustom : public ViewProviderSketch
 {
-    PROPERTY_HEADER(SketcherGui::ViewProviderCustom);
+    PROPERTY_HEADER_WITH_OVERRIDE(SketcherGui::ViewProviderCustom);
 
 public:
     /// constructor

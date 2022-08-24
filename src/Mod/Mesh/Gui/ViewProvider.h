@@ -90,7 +90,7 @@ public:
  */
 class MeshGuiExport ViewProviderExport : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderExport);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderExport);
 
 public:
     ViewProviderExport();
@@ -109,7 +109,7 @@ public:
  */
 class MeshGuiExport ViewProviderMesh : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMesh);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMesh);
 
 public:
     ViewProviderMesh();
@@ -252,7 +252,7 @@ private:
  */
 class MeshGuiExport ViewProviderIndexedFaceSet : public ViewProviderMesh
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderIndexedFaceSet);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderIndexedFaceSet);
 
 public:
     ViewProviderIndexedFaceSet();
@@ -279,7 +279,7 @@ private:
  */
 class MeshGuiExport ViewProviderMeshObject : public ViewProviderMesh
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshObject);
 
 public:
     ViewProviderMeshObject();

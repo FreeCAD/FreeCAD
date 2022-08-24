@@ -22,10 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cmath>
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
 #include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QTransform>
 #include <QMouseEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
@@ -34,18 +37,10 @@
 #include <QBitmap>
 #include <QFile>
 #include <QFileInfo>
-#endif
-
-#include <QFile>
 #include <QTextStream>
 #include <QRectF>
 #include <QPointF>
-
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QTransform>
-
-#include <cmath>
+#endif
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -717,7 +712,7 @@ void QGIFace::getParameters()
 
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color temp = hGrp->GetUnsigned("FaceColor",0xffffffff);
+    App::Color temp {static_cast<uint32_t>(hGrp->GetUnsigned("FaceColor",0xffffffff))};
     setFillColor(temp.asValue<QColor>());
 
     hGrp = App::GetApplication().GetUserParameter()
@@ -734,12 +729,3 @@ QPainterPath QGIFace::shape() const
 {
     return path();
 }
-
-void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-//    painter->drawRect(boundingRect());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
-}
-

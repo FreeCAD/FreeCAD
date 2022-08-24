@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport Groove : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Groove);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Groove);
 
 public:
     Groove();

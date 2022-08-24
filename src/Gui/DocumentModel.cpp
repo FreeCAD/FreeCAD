@@ -48,7 +48,7 @@ namespace Gui {
     // Base class
     class DocumentModelIndex : public Base::BaseClass
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
         ~DocumentModelIndex() override
@@ -113,7 +113,7 @@ namespace Gui {
     // Root node
     class ApplicationIndex : public DocumentModelIndex
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
         ApplicationIndex(){}
@@ -128,7 +128,7 @@ namespace Gui {
     class DocumentIndex : public DocumentModelIndex
     {
         friend class ViewProviderIndex;
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
         static QIcon* documentIcon;
         typedef boost::unordered_set<ViewProviderIndex*> IndexSet;
         std::map<const ViewProviderDocumentObject*, IndexSet> vp_nodes;
@@ -157,7 +157,7 @@ namespace Gui {
     // Object nodes
     class ViewProviderIndex : public DocumentModelIndex
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     public:
         const Gui::ViewProviderDocumentObject& v;

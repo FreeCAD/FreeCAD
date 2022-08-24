@@ -33,7 +33,7 @@ namespace Points
  */
 class PointsExport PropertyPointKernel : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPointKernel();

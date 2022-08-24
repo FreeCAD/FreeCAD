@@ -29,24 +29,29 @@
 #include <QFileInfo>
 #endif
 
+#include <qmath.h>
+
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
-#include <qmath.h>
 #include "Rez.h"
 #include "PreferencesGui.h"
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
 #include "QGIWeldSymbol.h"
+#include "QGCustomSvg.h"
+#include "QGCustomText.h"
+
 #include "QGITile.h"
 
 using namespace TechDrawGui;
@@ -101,12 +106,6 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
 QGITile::~QGITile()
 {
 
-}
-
-QVariant QGITile::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-//    Base::Console().Message("QGIT::itemChange(%d)\n", change);
-    return QGIDecoration::itemChange(change, value);
 }
 
 void QGITile::draw()
@@ -234,7 +233,8 @@ void QGITile::makeText()
 //read whole text file into std::string
 std::string QGITile::getStringFromFile(std::string inSpec)
 {
-    std::ifstream f(inSpec);
+    Base::FileInfo fi(inSpec);
+    Base::ifstream f(fi);
     std::stringstream ss;
     ss << f.rdbuf();
     return ss.str();
@@ -388,16 +388,6 @@ double QGITile::prefFontSize() const
 QString QGITile::prefTextFont() const
 {
     return Preferences::labelFontQString();
-}
-
-void QGITile::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->setPen(Qt::magenta);
-//    painter->drawRect(boundingRect());          //good for debugging
-    
-    QGIDecoration::paint (painter, &myOption, widget);
 }
 
 QRectF QGITile::boundingRect() const

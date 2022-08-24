@@ -34,7 +34,7 @@ namespace Gui
 class SoFCSelection;
 class GuiExport ViewProviderVRMLObject : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderVRMLObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderVRMLObject);
 
 public:
     /// constructor.

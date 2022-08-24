@@ -23,13 +23,10 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
-#include <Qt>
-#include <QGraphicsItem>
-#include <QSvgRenderer>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QByteArray>
-#include <QBrush>
 #include <QPixmap>
-#include <QImage>
 
 #include <App/Material.h>
 #include <Mod/TechDraw/App/HatchLine.h>
@@ -58,7 +55,6 @@ public:
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
 public:
     enum fillMode {

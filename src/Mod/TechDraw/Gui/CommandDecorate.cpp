@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QGraphicsView>
 # include <iostream>
 # include <string>
 # include <sstream>
@@ -30,7 +31,6 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
 
 #include <Base/Tools.h>
 #include <App/Document.h>

@@ -33,7 +33,7 @@ namespace FemGui
 
 class FemGuiExport ViewProviderFemPostPipeline : public ViewProviderFemPostObject {
 
-    PROPERTY_HEADER(FemGui::ViewProviderFemPostPipeline);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostPipeline);
 
 public:
     /// constructor.

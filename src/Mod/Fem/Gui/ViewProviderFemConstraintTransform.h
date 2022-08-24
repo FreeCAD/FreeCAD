@@ -33,7 +33,7 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintTransform : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintTransform);
 
 public:
     ViewProviderFemConstraintTransform();

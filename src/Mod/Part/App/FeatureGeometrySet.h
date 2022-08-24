@@ -32,7 +32,7 @@ namespace Part
 
 class PartExport FeatureGeometrySet :public Part::Feature
 {
-    PROPERTY_HEADER(Part::FeatureGeometrySet);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureGeometrySet);
 
 public:
     FeatureGeometrySet();

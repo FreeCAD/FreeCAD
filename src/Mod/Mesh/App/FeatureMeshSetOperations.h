@@ -42,7 +42,7 @@ namespace Mesh
  */
 class SetOperations : public Mesh::Feature
 {
-    PROPERTY_HEADER(Mesh::SetOperations);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::SetOperations);
 
 public:
     SetOperations();

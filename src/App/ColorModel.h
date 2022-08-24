@@ -74,7 +74,7 @@ class AppExport ColorModel
 {
 public:
     ColorModel() = default;
-    ColorModel (std::size_t usCt) {
+    explicit ColorModel (std::size_t usCt) {
         colors.resize(usCt);
     }
     ColorModel(const ColorModel&) = default;

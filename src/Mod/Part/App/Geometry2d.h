@@ -50,7 +50,7 @@ namespace Part {
 
 class PartExport Geometry2d : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ~Geometry2d() override;
 
@@ -73,7 +73,7 @@ private:
 
 class PartExport Geom2dPoint : public Geometry2d
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dPoint();
     Geom2dPoint(const Handle(Geom2d_CartesianPoint)&);
@@ -100,7 +100,7 @@ private:
 
 class PartExport Geom2dCurve : public Geometry2d
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dCurve();
     ~Geom2dCurve() override;
@@ -117,7 +117,7 @@ public:
 
 class PartExport Geom2dBezierCurve : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dBezierCurve();
     Geom2dBezierCurve(const Handle(Geom2d_BezierCurve)&);
@@ -140,7 +140,7 @@ private:
 
 class PartExport Geom2dBSplineCurve : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dBSplineCurve();
     Geom2dBSplineCurve(const Handle(Geom2d_BSplineCurve)&);
@@ -196,7 +196,7 @@ private:
 
 class PartExport Geom2dConic : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected:
     Geom2dConic();
 
@@ -220,7 +220,7 @@ protected:
 
 class PartExport Geom2dArcOfConic : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected:
     Geom2dArcOfConic();
 
@@ -250,7 +250,7 @@ protected:
 
 class PartExport Geom2dCircle : public Geom2dConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dCircle();
     Geom2dCircle(const Handle(Geom2d_Circle)&);
@@ -277,7 +277,7 @@ private:
 
 class PartExport Geom2dArcOfCircle : public Geom2dArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dArcOfCircle();
     Geom2dArcOfCircle(const Handle(Geom2d_Circle)&);
@@ -303,7 +303,7 @@ private:
 
 class PartExport Geom2dEllipse : public Geom2dConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dEllipse();
     Geom2dEllipse(const Handle(Geom2d_Ellipse)&);
@@ -333,7 +333,7 @@ private:
 
 class PartExport Geom2dArcOfEllipse : public Geom2dArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dArcOfEllipse();
     Geom2dArcOfEllipse(const Handle(Geom2d_Ellipse)&);
@@ -363,7 +363,7 @@ private:
 
 class PartExport Geom2dHyperbola : public Geom2dConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dHyperbola();
     Geom2dHyperbola(const Handle(Geom2d_Hyperbola)&);
@@ -390,7 +390,7 @@ private:
 
 class PartExport Geom2dArcOfHyperbola : public Geom2dArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dArcOfHyperbola();
     Geom2dArcOfHyperbola(const Handle(Geom2d_Hyperbola)&);
@@ -418,7 +418,7 @@ private:
 
 class PartExport Geom2dParabola : public Geom2dConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dParabola();
     Geom2dParabola(const Handle(Geom2d_Parabola)&);
@@ -443,7 +443,7 @@ private:
 
 class PartExport Geom2dArcOfParabola : public Geom2dArcOfConic
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dArcOfParabola();
     Geom2dArcOfParabola(const Handle(Geom2d_Parabola)&);
@@ -469,7 +469,7 @@ private:
 
 class PartExport Geom2dLine : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dLine();
     Geom2dLine(const Handle(Geom2d_Line)&);
@@ -496,7 +496,7 @@ private:
 
 class PartExport Geom2dLineSegment : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dLineSegment();
     ~Geom2dLineSegment() override;
@@ -524,7 +524,7 @@ private:
 
 class PartExport Geom2dOffsetCurve : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dOffsetCurve();
     Geom2dOffsetCurve(const Handle(Geom2d_Curve)&, double);
@@ -548,7 +548,7 @@ private:
 
 class PartExport Geom2dTrimmedCurve : public Geom2dCurve
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     Geom2dTrimmedCurve();
     Geom2dTrimmedCurve(const Handle(Geom2d_TrimmedCurve)&);

@@ -32,7 +32,7 @@ namespace Spreadsheet {
 
 class SpreadsheetExport PropertyRowHeights : public App::Property, std::map<int, int>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertyRowHeights();
 

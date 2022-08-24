@@ -81,7 +81,7 @@ private:
 
 class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderPointMarker);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderPointMarker);
 
 public:
     ViewProviderPointMarker();
@@ -121,7 +121,7 @@ private:
 
 class FemGuiExport ViewProviderDataMarker : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderDataMarker);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderDataMarker);
 
 public:
     ViewProviderDataMarker();

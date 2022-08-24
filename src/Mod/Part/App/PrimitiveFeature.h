@@ -55,7 +55,7 @@ protected:
 
 class PartExport Vertex : public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Vertex);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Vertex);
 
 public:
     Vertex();
@@ -80,7 +80,7 @@ public:
 
 class PartExport Line : public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Line);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Line);
 
 public:
     Line();
@@ -108,7 +108,7 @@ public:
 
 class PartExport Plane : public Primitive
 {
-    PROPERTY_HEADER(Part::Plane);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Plane);
 
 public:
     Plane();
@@ -130,7 +130,7 @@ public:
 
 class PartExport Sphere : public Primitive
 {
-    PROPERTY_HEADER(Part::Sphere);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Sphere);
 
 public:
     Sphere();
@@ -154,7 +154,7 @@ public:
 
 class PartExport Ellipsoid : public Primitive
 {
-    PROPERTY_HEADER(Part::Ellipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Ellipsoid);
 
 public:
     Ellipsoid();
@@ -180,7 +180,7 @@ public:
 class PartExport Cylinder : public Primitive,
                             public PrismExtension
 {
-    PROPERTY_HEADER(Part::Cylinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Cylinder);
 
 public:
     Cylinder();
@@ -204,7 +204,7 @@ public:
 class PartExport Prism : public Primitive,
                          public PrismExtension
 {
-    PROPERTY_HEADER(Part::Prism);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Prism);
 
 public:
     Prism();
@@ -229,7 +229,7 @@ private:
 
 class PartExport RegularPolygon : public Primitive
 {
-    PROPERTY_HEADER(Part::RegularPolygon);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::RegularPolygon);
 
 public:
     RegularPolygon();
@@ -253,7 +253,7 @@ private:
 
 class PartExport Cone : public Primitive
 {
-    PROPERTY_HEADER(Part::Cone);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Cone);
 
 public:
     Cone();
@@ -277,7 +277,7 @@ public:
 
 class PartExport Torus : public Primitive
 {
-    PROPERTY_HEADER(Part::Torus);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Torus);
 
 public:
     Torus();
@@ -302,7 +302,7 @@ public:
 
 class PartExport Helix : public Primitive
 {
-    PROPERTY_HEADER(Part::Helix);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Helix);
 
 public:
     Helix();
@@ -336,7 +336,7 @@ private:
 
 class PartExport Spiral : public Primitive
 {
-    PROPERTY_HEADER(Part::Spiral);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Spiral);
 
 public:
     Spiral();
@@ -363,7 +363,7 @@ protected:
 
 class PartExport Wedge : public Primitive
 {
-    PROPERTY_HEADER(Part::Wedge);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Wedge);
 
 public:
     Wedge();
@@ -396,7 +396,7 @@ protected:
 
 class PartExport Ellipse : public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Ellipse);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Ellipse);
 
 public:
     Ellipse();

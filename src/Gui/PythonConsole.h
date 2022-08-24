@@ -177,10 +177,10 @@ public:
     explicit PythonConsoleHighlighter(QObject* parent);
     ~PythonConsoleHighlighter() override;
 
-    void highlightBlock (const QString & text);
+    void highlightBlock (const QString & text) override;
 
 protected:
-    void colorChanged(const QString& type, const QColor& col);
+    void colorChanged(const QString& type, const QColor& col) override;
 };
 
 } // namespace Gui

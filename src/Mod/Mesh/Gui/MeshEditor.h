@@ -48,7 +48,7 @@ class SoFCMeshPickNode;
  */
 class MeshGuiExport ViewProviderFace : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderFace);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderFace);
 
 public:
     ViewProviderFace();

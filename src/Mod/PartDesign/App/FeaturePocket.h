@@ -31,7 +31,7 @@ namespace PartDesign
 
 class PartDesignExport Pocket : public FeatureExtrude
 {
-    PROPERTY_HEADER(PartDesign::Pocket);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Pocket);
 
 public:
     Pocket();

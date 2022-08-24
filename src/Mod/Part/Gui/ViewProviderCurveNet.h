@@ -43,7 +43,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderCurveNet:public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPart);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPart);
 
 public:
     /// constructor

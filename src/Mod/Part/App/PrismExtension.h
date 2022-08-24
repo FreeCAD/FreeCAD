@@ -35,7 +35,7 @@ namespace Part
 
 class PartExport PrismExtension : public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::PrismExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::PrismExtension);
 public:
     PrismExtension();
     ~PrismExtension() override;

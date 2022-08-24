@@ -34,7 +34,7 @@ namespace PartDesign
 
 class PartDesignExport Plane : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::Plane);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Plane);
 
 public:
     Plane();

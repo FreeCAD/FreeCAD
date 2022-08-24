@@ -33,7 +33,7 @@ namespace Fem
 
 class FemExport FemSetNodesObject : public FemSetObject
 {
-    PROPERTY_HEADER(Fem::FemSetNodesObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSetNodesObject);
 
 public:
     /// Constructor

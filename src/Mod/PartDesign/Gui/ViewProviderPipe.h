@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPipe : public ViewProviderAddSub
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPipe);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPipe);
 
 public:
     enum Reference {

@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKCOSMETICLINE_H
 #define TECHDRAWGUI_TASKCOSMETICLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>

@@ -34,7 +34,7 @@ namespace Part
 
 class Boolean : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Boolean);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Boolean);
 
 public:
     Boolean();

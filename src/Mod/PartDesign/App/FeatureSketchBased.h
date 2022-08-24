@@ -38,7 +38,7 @@ namespace PartDesign
 
 class PartDesignExport ProfileBased : public PartDesign::FeatureAddSub
 {
-    PROPERTY_HEADER(PartDesign::SketchBased);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SketchBased);
 
 public:
     enum class ForbiddenAxis {

@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer writer"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -44,12 +45,14 @@ from . import sifio
 from . import solver as solverClass
 from .. import settings
 from femmesh import gmshtools
+from femmesh import meshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
 from .equations import elasticity
 from .equations import electricforce
 from .equations import flow
+from .equations import flux
 from .equations import heat
 
 
@@ -196,17 +199,6 @@ class Writer(object):
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
 
-    def _getConstant(self, name, unit_dimension):
-        # TODO without method directly use self.constsdef[name]
-        return self._convert(self.constsdef[name], unit_dimension)
-
-    def _setConstant(self, name, quantityStr):
-        # TODO without method directly use self.constsdef[name]
-        if name == "PermittivityOfVacuum":
-            theUnit = "s^4*A^2 / (m^3*kg)"
-            self.constsdef[name] = "{} {}".format(self._convert(quantityStr, theUnit), theUnit)
-        return True
-
     def _writeMesh(self):
         mesh = self._getSingleMember("Fem::FemMeshObject")
         unvPath = os.path.join(self.directory, "mesh.unv")
@@ -240,9 +232,9 @@ class Writer(object):
                 )
             else:
                 subprocess.call(args, stdout=subprocess.DEVNULL)
-            if int(num_cores) > 1:
+            if num_cores > 1:
                 args = argsBasic
-                args.extend(["-partdual", "-metiskway", num_cores,
+                args.extend(["-partdual", "-metiskway", str(num_cores),
                              "-out", self.directory])
                 if system() == "Windows":
                     subprocess.call(
@@ -302,15 +294,19 @@ class Writer(object):
         """
         redefine constants in self.constsdef according constant redefine objects
         """
-        permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
-        if len(permittivity_objs) == 1:
-            Console.PrintLog("Constand permittivity overwriting.\n")
-            self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
-        elif len(permittivity_objs) > 1:
+        objs = self._getMember("Fem::ConstantVacuumPermittivity")
+        if len(objs) == 1:
+            permittivity = float(objs[0].VacuumPermittivity.getValueAs("F/m"))
+            # since the base unit of FC is in mm, we must scale it to get plain SI
+            permittivity = permittivity * 1e-9
+            Console.PrintLog("Overwriting vacuum permittivity with: {}\n".format(permittivity))
+            self.constsdef["PermittivityOfVacuum"] = "{} {}".format(permittivity, "F/m")
+            self._handled(objs[0])
+        elif len(objs) > 1:
             Console.PrintError(
                 "More than one permittivity constant overwriting objects ({} objs). "
                 "The permittivity constant overwriting is ignored.\n"
-                .format(len(permittivity_objs))
+                .format(len(objs))
             )
 
     def _handleSimulation(self):
@@ -430,7 +426,8 @@ class Writer(object):
     def _handleHeatConstants(self):
         self._constant(
             "Stefan Boltzmann",
-            self._getConstant("StefanBoltzmann", "M/(O^4*T^3)"))
+            self._convert(self.constsdef["StefanBoltzmann"], "M/(O^4*T^3)")
+        )
 
     def _handleHeatEquation(self, bodies, equation):
         for b in bodies:
@@ -461,14 +458,26 @@ class Writer(object):
             equation.PhaseChangeModel = "None"
 
     def _handleHeatBndConditions(self):
+        i = -1
         for obj in self._getMember("Fem::ConstraintTemperature"):
+            i = i + 1
+            femobjects = membertools.get_several_member(self.analysis, "Fem::ConstraintTemperature")
+            femobjects[i]["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                self._getSingleMember("Fem::FemMeshObject").FemMesh,
+                femobjects[i]
+            )
+            NumberOfNodes = len(femobjects[i]["Nodes"])
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.ConstraintType == "Temperature":
                         temp = self._getFromUi(obj.Temperature, "K", "O")
                         self._boundary(name, "Temperature", temp)
                     elif obj.ConstraintType == "CFlux":
-                        flux = self._getFromUi(obj.CFlux, "kg*mm^2*s^-3", "M*L^2*T^-3")
+                        # the CFLUX property stores the value in µW
+                        # but the unit system is not aware of µW, only of mW
+                        flux = 0.001 * self._getFromUi(obj.CFlux, "mW", "M*L^2*T^-3")
+                        # CFLUX is the flux per mesh node
+                        flux = flux / NumberOfNodes
                         self._boundary(name, "Temperature Load", flux)
                 self._handled(obj)
         for obj in self._getMember("Fem::ConstraintHeatflux"):
@@ -493,15 +502,31 @@ class Writer(object):
                 self._initial(name, "Temperature", temp)
             self._handled(obj)
 
+    def _outputHeatBodyForce(self, obj, name):
+        heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+        if heatSource == 0.0:
+            # a zero heat would break Elmer (division by zero)
+            raise WriteError("The body heat source must not be zero!")
+        self._bodyForce(name, "Heat Source", heatSource)
+
     def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
-        if obj is not None:
-            for name in bodies:
-                heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
-                # according Elmer forum W/kg is correct
-                # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
-                # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
-                self._bodyForce(name, "Heat Source", heatSource)
+        bodyHeats = self._getMember("Fem::ConstraintBodyHeatSource")
+        for obj in bodyHeats:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputHeatBodyForce(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one body heat without a reference
+                # add it to all bodies
+                if len(bodyHeats) == 1:
+                    for name in bodies:
+                        self._outputHeatBodyForce(obj, name)
+                else:
+                    raise WriteError(
+                        "Several body heat constraints found without reference to a body.\n"
+                        "Please set a body for each body heat constraint."
+                    )
             self._handled(obj)
 
     def _handleHeatMaterial(self, bodies):
@@ -624,9 +649,8 @@ class Writer(object):
     def _handleElectrostaticConstants(self):
         self._constant(
             "Permittivity Of Vacuum",
-            self._getConstant("PermittivityOfVacuum", "T^4*I^2/(L^3*M)")
+            self._convert(self.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
         )
-        # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
 
     def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
@@ -648,6 +672,18 @@ class Writer(object):
                 for name in obj.References[0][1]:
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
+                            # Potential was once a float and scaled not fitting SI units
+                            if isinstance(obj.Potential, float):
+                                savePotential = obj.Potential
+                                obj.removeProperty("Potential")
+                                obj.addProperty(
+                                    "App::PropertyElectricPotential",
+                                    "Potential",
+                                    "Parameter",
+                                    "Electric Potential"
+                                )
+                                # scale to match SI units
+                                obj.Potential = savePotential * 1e6
                             potential = float(obj.Potential.getValueAs("V"))
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
@@ -678,7 +714,7 @@ class Writer(object):
         # check if we need to update the equation
         self._updateFluxSolver(equation)
         # output the equation parameters
-        s["Equation"] = "Flux Solver"  # equation.Name
+        s["Equation"] = equation.Name
         s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
         if equation.AverageWithinMaterials is True:
             s["Average Within Materials"] = equation.AverageWithinMaterials
@@ -764,13 +800,41 @@ class Writer(object):
                     "are a posteriori set to zero."
                 )
             )
+        tempFluxCoefficient = ""
+        if hasattr(equation, "FluxCoefficient"):
+            if equation.FluxCoefficient not in flux.COEFFICIENTS:
+                # was an App::PropertyString and changed to
+                # App::PropertyEnumeration
+                tempFluxCoefficient = equation.FluxCoefficient
+                equation.removeProperty("FluxCoefficient")
         if not hasattr(equation, "FluxCoefficient"):
             equation.addProperty(
-                "App::PropertyString",
+                "App::PropertyEnumeration",
                 "FluxCoefficient",
                 "Flux",
                 "Name of proportionality coefficient\nto compute the flux"
             )
+            equation.FluxCoefficient = flux.COEFFICIENTS
+            if tempFluxCoefficient:
+                equation.FluxCoefficient = tempFluxCoefficient
+            else:
+                equation.FluxCoefficient = "None"
+        tempFluxVariable = ""
+        if hasattr(equation, "FluxVariable"):
+            if equation.FluxVariable not in flux.VARIABLES:
+                # was an App::PropertyString and changed to
+                # App::PropertyEnumeration
+                tempFluxVariable = equation.FluxVariable
+                equation.removeProperty("FluxVariable")
+                equation.addProperty(
+                    "App::PropertyEnumeration",
+                    "FluxVariable",
+                    "Flux",
+                    "Variable name for flux calculation"
+                )
+                equation.FluxVariable = flux.VARIABLES
+                equation.FluxVariable = tempFluxVariable
+
 
     def _handleElectricforce(self):
         activeIn = []
@@ -810,18 +874,31 @@ class Writer(object):
             equation.ExecSolver = electricforce.SOLVER_EXEC_METHODS
             equation.ExecSolver = "After Timestep"
 
+    def _haveMaterialSolid(self):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined
+            if not ("KinematicViscosity" in m):
+                return True
+        return False
+
     def _handleElasticity(self):
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
+                if not self._haveMaterialSolid():
+                    raise WriteError(
+                        "The Elasticity equation requires at least one body with a solid material!"
+                    )
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllBodies()
                 solverSection = self._getElasticitySolver(equation)
                 for body in activeIn:
-                    self._addSolver(body, solverSection)
-                self._handleElasticityEquation(activeIn, equation)
+                    if not self._isBodyMaterialFluid(body):
+                        self._addSolver(body, solverSection)
+                        self._handleElasticityEquation(activeIn, equation)
         if activeIn:
             self._handleElasticityConstants()
             self._handleElasticityBndConditions()
@@ -881,8 +958,10 @@ class Writer(object):
 
     def _handleElasticityEquation(self, bodies, equation):
         for b in bodies:
-            if equation.PlaneStress:
-                self._equation(b, "Plane Stress", equation.PlaneStress)
+            # not for bodies with fluid material
+            if not self._isBodyMaterialFluid(b):
+                if equation.PlaneStress:
+                    self._equation(b, "Plane Stress", equation.PlaneStress)
 
     def _updateElasticitySolver(self, equation):
         # updates older Elasticity equations
@@ -1132,7 +1211,7 @@ class Writer(object):
         obj = self._getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
-                gravity = self._getConstant("Gravity", "L/T^2")
+                gravity = self._convert(self.constsdef["Gravity"], "L/T^2")
                 m = self._getBodyMaterial(name).Material
 
                 densityQuantity = Units.Quantity(m["Density"])
@@ -1154,8 +1233,12 @@ class Writer(object):
 
     def _getBodyMaterial(self, name):
         for obj in self._getMember("App::MaterialObject"):
-            if not obj.References or name in obj.References[0][1]:
+            # we can have e.g. the case there are 2 bodies and 2 materials
+            # body 2 has material 2 as reference while material 1 has no reference
+            # therefore we must not return a material when it is not referenced
+            if obj.References and (name in obj.References[0][1]):
                 return obj
+        # 'name' was not in the reference of any material
         return None
 
     def _handleElasticityMaterial(self, bodies):
@@ -1176,7 +1259,7 @@ class Writer(object):
             refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
             for name in bodies:
                 self._material(name, "Reference Temperature", refTemp)
-        # get the material data for all boddies
+        # get the material data for all bodies
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
             refs = (
@@ -1185,6 +1268,18 @@ class Writer(object):
                 else self._getAllBodies()
             )
             for name in (n for n in refs if n in bodies):
+                # don't evaluate fluid material
+                if self._isBodyMaterialFluid(name):
+                    break
+                if not "YoungsModulus" in m:
+                    Console.PrintMessage("m: {}\n".format(m))
+                    # it is no fluid but also no solid
+                    # -> user set no material reference at all
+                    # that now material is known
+                    raise WriteError(
+                        "There are two or more materials with empty references.\n\n"
+                        "Set for the materials to what solid they belong to.\n"
+                    )
                 if density_needed is True:
                     self._material(
                         name, "Density",
@@ -1216,26 +1311,43 @@ class Writer(object):
             youngsModulus *= 1e3
         return youngsModulus
 
-    def _isMaterialFlow(self, body):
-        m = self._getBodyMaterial(body).Material
-        return "KinematicViscosity" in m
+    def _haveMaterialFluid(self):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined 
+            if "KinematicViscosity" in m:
+                return True
+        return False
+
+    def _isBodyMaterialFluid(self, body):
+        # we can have the case that a body has no assigned material
+        # then assume it is a solid
+        if self._getBodyMaterial(body) is not None:
+            m = self._getBodyMaterial(body).Material
+            return "KinematicViscosity" in m
+        return False
 
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
+                if not self._haveMaterialFluid():
+                    raise WriteError(
+                        "The Flow equation requires at least one body with a fluid material!"
+                    )
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self._getAllBodies()
                 solverSection = self._getFlowSolver(equation)
                 for body in activeIn:
-                    if self._isMaterialFlow(body):
+                    if self._isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
-                self._handleFlowEquation(activeIn, equation)
+                        self._handleFlowEquation(activeIn, equation)
         if activeIn:
             self._handleFlowConstants()
             self._handleFlowBndConditions()
+            self._handleFlowInitialPressure(activeIn)
             self._handleFlowInitialVelocity(activeIn)
             # self._handleFlowInitial(activeIn)
             # self._handleFlowBodyForces(activeIn)
@@ -1262,7 +1374,7 @@ class Writer(object):
         return s
 
     def _handleFlowConstants(self):
-        gravity = self._getConstant("Gravity", "L/T^2")
+        gravity = self._convert(self.constsdef["Gravity"], "L/T^2")
         self._constant("Gravity", (0.0, -1.0, 0.0, gravity))
 
     def _updateFlowSolver(self, equation):
@@ -1370,19 +1482,63 @@ class Writer(object):
                         name, "Compressibility Model",
                         m["CompressibilityModel"])
 
+    def _outputInitialPressure(self, obj, name):
+        # initial pressure only makes sense for fluid material
+        if self._isBodyMaterialFluid(name):
+            pressure = float(obj.Pressure.getValueAs("Pa"))
+            self._initial(name, "Pressure", pressure)
+
+    def _handleFlowInitialPressure(self, bodies):
+        initialPressures = self._getMember("Fem::ConstraintInitialPressure")
+        for obj in initialPressures:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputInitialPressure(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one initial velocity without a reference
+                # add it to all fluid bodies
+                if len(initialPressures) == 1:
+                    for name in bodies:
+                        self._outputInitialPressure(obj, name)
+                else:
+                    raise WriteError(
+                        "Several initial pressures found without reference to a body.\n"
+                        "Please set a body for each initial pressure."
+                    )
+            self._handled(obj)
+
+    def _outputInitialVelocity(self, obj, name):
+        # flow only makes sense for fluid material
+        if self._isBodyMaterialFluid(name):
+            if obj.VelocityXEnabled:
+                velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
+                self._initial(name, "Velocity 1", velocity)
+            if obj.VelocityYEnabled:
+                velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
+                self._initial(name, "Velocity 2", velocity)
+            if obj.VelocityZEnabled:
+                velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
+                self._initial(name, "Velocity 3", velocity)
+
     def _handleFlowInitialVelocity(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintInitialFlowVelocity")
-        if obj is not None:
-            for name in bodies:
-                if obj.VelocityXEnabled:
-                    velocity = self._getFromUi(obj.VelocityX, "m/s", "L/T")
-                    self._initial(name, "Velocity 1", velocity)
-                if obj.VelocityYEnabled:
-                    velocity = self._getFromUi(obj.VelocityY, "m/s", "L/T")
-                    self._initial(name, "Velocity 2", velocity)
-                if obj.VelocityZEnabled:
-                    velocity = self._getFromUi(obj.VelocityZ, "m/s", "L/T")
-                    self._initial(name, "Velocity 3", velocity)
+        initialVelocities = self._getMember("Fem::ConstraintInitialFlowVelocity")
+        for obj in initialVelocities:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputInitialVelocity(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one initial velocity without a reference
+                # add it to all fluid bodies
+                if len(initialVelocities) == 1:
+                    for name in bodies:
+                        self._outputInitialVelocity(obj, name)
+                else:
+                    raise WriteError(
+                        "Several initial velocities found without reference to a body.\n"
+                        "Please set a body for each initial velocity."
+                    )
             self._handled(obj)
 
     def _handleFlowBndConditions(self):
@@ -1401,13 +1557,23 @@ class Writer(object):
                     if obj.NormalToBoundary:
                         self._boundary(name, "Normal-Tangential Velocity", True)
                 self._handled(obj)
+        for obj in self._getMember("Fem::ConstraintPressure"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    pressure = self._getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
+                    if obj.Reversed:
+                        pressure *= -1
+                    self._boundary(name, "External Pressure", pressure)
+                self._handled(obj)
 
     def _handleFlowEquation(self, bodies, equation):
         for b in bodies:
-            if equation.Convection != "None":
-                self._equation(b, "Convection", equation.Convection)
-            if equation.MagneticInduction is True:
-                self._equation(b, "Magnetic Induction", equation.MagneticInduction)
+            # not for bodies with solid material
+            if self._isBodyMaterialFluid(b):
+                if equation.Convection != "None":
+                    self._equation(b, "Convection", equation.Convection)
+                if equation.MagneticInduction is True:
+                    self._equation(b, "Magnetic Induction", equation.MagneticInduction)
 
     def _createEmptySolver(self):
         s = sifio.createSection(sifio.SOLVER)
@@ -1426,6 +1592,27 @@ class Writer(object):
             equation.setExpression("LinearTolerance", str(equation.LinearTolerance))
         if self._hasExpression(equation) != equation.SteadyStateTolerance:
             equation.setExpression("SteadyStateTolerance", str(equation.SteadyStateTolerance))
+        if equation.BiCGstablDegree == 0:
+            equation.BiCGstablDegree = 2
+        if not hasattr(equation, "LinearSystemSolverDisabled"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "LinearSystemSolverDisabled",
+                "Linear System",
+                (
+                    "Disable the linear system.\n"
+                    "Only use for special cases\n"
+                    "and consult the Elmer docs."
+                )
+            )
+        if not hasattr(equation, "IdrsParameter"):
+            equation.addProperty(
+                "App::PropertyIntegerConstraint",
+                "IdrsParameter",
+                "Linear System",
+                "Parameter for iterative method 'Idrs'"
+            )
+            equation.IdrsParameter = (2, 1, 10, 1)
 
     def _createLinearSolver(self, equation):
         # first check if we have to update
@@ -1434,6 +1621,8 @@ class Writer(object):
         s = sifio.createSection(sifio.SOLVER)
         s.priority = equation.Priority
         s["Linear System Solver"] = equation.LinearSolverType
+        if equation.LinearSystemSolverDisabled is True:
+            s["Linear System Solver Disabled"] = equation.LinearSystemSolverDisabled
         if equation.LinearSolverType == "Direct":
             s["Linear System Direct Method"] = \
                 equation.LinearDirectMethod
@@ -1443,6 +1632,9 @@ class Writer(object):
             if equation.LinearIterativeMethod == "BiCGStabl":
                 s["BiCGstabl polynomial degree"] = \
                     equation.BiCGstablDegree
+            if equation.LinearIterativeMethod == "Idrs":
+                s["Idrs Parameter"] = \
+                    equation.IdrsParameter
             s["Linear System Max Iterations"] = \
                 equation.LinearIterations
             s["Linear System Convergence Tolerance"] = \

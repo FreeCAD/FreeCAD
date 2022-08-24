@@ -38,7 +38,7 @@ namespace MeshGui {
  */
 class MeshGuiExport ViewProviderMeshDefects : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDefects);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDefects);
 
 public:
     ViewProviderMeshDefects();
@@ -65,7 +65,7 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshOrientation : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshOrientation);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshOrientation);
 
 public:
     ViewProviderMeshOrientation();
@@ -83,7 +83,7 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshNonManifolds : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshNonManifolds);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshNonManifolds);
 
 public:
     ViewProviderMeshNonManifolds();
@@ -101,7 +101,7 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshNonManifoldPoints : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshNonManifoldPoints);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshNonManifoldPoints);
 
 public:
     ViewProviderMeshNonManifoldPoints();
@@ -119,7 +119,7 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshDuplicatedFaces : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDuplicatedFaces);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDuplicatedFaces);
 
 public:
     ViewProviderMeshDuplicatedFaces();
@@ -137,7 +137,7 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshDegenerations : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDegenerations);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDegenerations);
 
 public:
     ViewProviderMeshDegenerations();
@@ -152,7 +152,7 @@ protected:
 
 class MeshGuiExport ViewProviderMeshDuplicatedPoints : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshDuplicatedPoints);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshDuplicatedPoints);
 
 public:
     ViewProviderMeshDuplicatedPoints();
@@ -167,7 +167,7 @@ protected:
 
 class MeshGuiExport ViewProviderMeshIndices : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshIndices);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshIndices);
 
 public:
     ViewProviderMeshIndices();
@@ -185,7 +185,7 @@ protected:
  */
 class MeshGuiExport ViewProviderMeshSelfIntersections : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshSelfIntersections);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshSelfIntersections);
 
 public:
     ViewProviderMeshSelfIntersections();
@@ -200,7 +200,7 @@ protected:
 
 class MeshGuiExport ViewProviderMeshFolds : public ViewProviderMeshDefects
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshFolds);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshFolds);
 
 public:
     ViewProviderMeshFolds();

@@ -81,7 +81,7 @@ class WebGuiExport BrowserView : public Gui::MDIView,
 {
     Q_OBJECT
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     BrowserView(QWidget* parent);

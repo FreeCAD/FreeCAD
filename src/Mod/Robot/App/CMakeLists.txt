@@ -15,6 +15,7 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -34,7 +35,7 @@ SET(Python_SRCS
     Robot6AxisPy.xml
     Robot6AxisPyImp.cpp
     TrajectoryPy.xml
-    TrajectoryPyImp.cpp 
+    TrajectoryPyImp.cpp
     RobotObjectPy.xml
     RobotObjectPyImp.cpp
     WaypointPy.xml

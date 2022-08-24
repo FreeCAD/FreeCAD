@@ -31,7 +31,9 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 
 #include "Preferences.h"
 #include "LineGroup.h"
@@ -130,8 +132,8 @@ std::vector<double> LineGroup::split(std::string line)
 std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
 {
     std::string record;
-    std::ifstream inFile;
-    inFile.open (parmFile, std::ifstream::in);
+    Base::FileInfo fi(parmFile);
+    Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
         Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
         return record;
@@ -201,8 +203,8 @@ double LineGroup::getDefaultWidth(std::string weightName, int lineGroupNumber)
 std::string LineGroup::getGroupNamesFromFile(std::string FileName)
 {
     std::string record;
-    std::ifstream inFile;
-    inFile.open(FileName, std::ifstream::in);
+    Base::FileInfo fi(FileName);
+    Base::ifstream inFile(fi, std::ifstream::in);
     if (!inFile.is_open()) {
         Base::Console().Message("Cannot open LineGroup file: %s\n", FileName.c_str());
         return record;

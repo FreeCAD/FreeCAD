@@ -32,7 +32,7 @@ class QPlainTextEdit;
 namespace Gui {
 
 class GuiExport ViewProviderTextDocument : public ViewProviderDocumentObject {
-    PROPERTY_HEADER(Gui::ViewProviderTextDocument);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderTextDocument);
 public:
     ViewProviderTextDocument();
     ~ViewProviderTextDocument() override {}

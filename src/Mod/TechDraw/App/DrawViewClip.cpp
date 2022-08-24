@@ -119,6 +119,7 @@ App::DocumentObjectExecReturn *DrawViewClip::execute()
     }
 
     requestPaint();
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 

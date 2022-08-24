@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer equation object _Linear"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -39,13 +40,14 @@ from . import equation
 LINEAR_SOLVER = ["Direct", "Iterative"]
 LINEAR_DIRECT = ["Banded", "MUMPS", "Umfpack"]
 LINEAR_ITERATIVE = [
-    "CG",
-    "CGS",
     "BiCGStab",
     "BiCGStabl",
-    "TFQMR",
-    "GMRES",
+    "CG",
     "GCR",
+    "CGS",
+    "GMRES",
+    "Idrs",
+    "TFQMR"
 ]
 LINEAR_PRECONDITIONING = [
     "None",
@@ -55,6 +57,7 @@ LINEAR_PRECONDITIONING = [
     "ILU2",
     "ILU3",
     "ILU4",
+    "ILUT"
 ]
 
 
@@ -62,77 +65,95 @@ class Proxy(equation.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
         obj.addProperty(
-            "App::PropertyEnumeration",
-            "LinearSolverType",
+            "App::PropertyIntegerConstraint",
+            "BiCGstablDegree",
             "Linear System",
-            ""
+            "Polynom degree for iterative method 'BiCGstabl'"
         )
-        obj.LinearSolverType = LINEAR_SOLVER
-        obj.LinearSolverType = "Iterative"
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "IdrsParameter",
+            "Linear System",
+            "Parameter for iterative method 'Idrs'"
+        )
         obj.addProperty(
             "App::PropertyEnumeration",
             "LinearDirectMethod",
             "Linear System",
             ""
         )
-        obj.LinearDirectMethod = LINEAR_DIRECT
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "LinearIterations",
+            "Linear System",
+            ""
+        )
         obj.addProperty(
             "App::PropertyEnumeration",
             "LinearIterativeMethod",
             "Linear System",
             ""
         )
-        obj.LinearIterativeMethod = LINEAR_ITERATIVE
-        obj.LinearIterativeMethod = "BiCGStab"
-        obj.addProperty(
-            "App::PropertyInteger",
-            "BiCGstablDegree",
-            "Linear System",
-            ""
-        )
-        obj.BiCGstablDegree = 2
         obj.addProperty(
             "App::PropertyEnumeration",
             "LinearPreconditioning",
             "Linear System",
             ""
         )
-        obj.LinearPreconditioning = LINEAR_PRECONDITIONING
-        obj.LinearPreconditioning = "ILU0"
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "LinearSolverType",
+            "Linear System",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "LinearSystemSolverDisabled",
+            "Linear System",
+            (
+                "Disable the linear system.\n"
+                "Only use for special cases\n"
+                "and consult the Elmer docs."
+            )
+        )
         obj.addProperty(
             "App::PropertyFloat",
             "LinearTolerance",
             "Linear System",
-            ""
+            "Linear preconditioning method"
         )
-        # we must set an expression because we don't have a UI, the user has to
-        # view and edit the tolerance via the property editor and this does not
-        # yet allow to view and edit small numbers in scientific notation
-        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
-        obj.setExpression("LinearTolerance", "1e-10")
-        obj.addProperty(
-            "App::PropertyInteger",
-            "LinearIterations",
-            "Linear System",
-            ""
-        )
-        obj.LinearIterations = 500
-        obj.addProperty(
-            "App::PropertyFloat",
-            "SteadyStateTolerance",
-            "Steady State",
-            ""
-        )
-        # same as with LinearTolerance
-        obj.setExpression("SteadyStateTolerance", "1e-5")
-
         obj.addProperty(
             "App::PropertyBool",
             "Stabilize",
             "Base",
             ""
         )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "SteadyStateTolerance",
+            "Steady State",
+            ""
+        )
+        
+        obj.BiCGstablDegree = (2, 2, 10, 1)
+        obj.IdrsParameter = (2, 1, 10, 1)
+        obj.LinearDirectMethod = LINEAR_DIRECT
+        obj.LinearIterations = (500, 1, int(1e6), 50)
+        obj.LinearIterativeMethod = LINEAR_ITERATIVE
+        obj.LinearIterativeMethod = "BiCGStab"
+        obj.LinearPreconditioning = LINEAR_PRECONDITIONING
+        obj.LinearPreconditioning = "ILU0"
+        # we must set an expression because we don't have a UI, the user has to
+        # view and edit the tolerance via the property editor and this does not
+        # yet allow to view and edit small numbers in scientific notation
+        # forum thread: https://forum.freecadweb.org/viewtopic.php?p=613897#p613897
+        obj.setExpression("LinearTolerance", "1e-10")
+        obj.LinearSolverType = LINEAR_SOLVER
+        obj.LinearSolverType = "Iterative"
+        # same reason to setup an expression as with LinearTolerance
+        obj.setExpression("SteadyStateTolerance", "1e-5")
         obj.Stabilize = True
 
 

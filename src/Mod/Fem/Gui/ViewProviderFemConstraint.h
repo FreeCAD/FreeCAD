@@ -44,7 +44,7 @@ class TaskFemConstraint;
 
 class FemGuiExport ViewProviderFemConstraint : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraint);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraint);
 
 public:
     /// Constructor

@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
 #define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDialog>
 #include <QString>
 #include <memory>

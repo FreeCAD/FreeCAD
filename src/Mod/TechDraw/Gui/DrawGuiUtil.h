@@ -23,6 +23,8 @@
 #ifndef _DrawGuiUtil_h_
 #define _DrawGuiUtil_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <string>
 #include <QCoreApplication>
 

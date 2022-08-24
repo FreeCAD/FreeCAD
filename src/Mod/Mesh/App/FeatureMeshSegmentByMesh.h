@@ -42,7 +42,7 @@ namespace Mesh
  */
 class SegmentByMesh : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::SegmentByMesh);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::SegmentByMesh);
 
 public:
   SegmentByMesh();

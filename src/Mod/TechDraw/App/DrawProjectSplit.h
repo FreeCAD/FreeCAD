@@ -23,6 +23,8 @@
 #ifndef _DrawProjectSplit_h_
 #define _DrawProjectSplit_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 

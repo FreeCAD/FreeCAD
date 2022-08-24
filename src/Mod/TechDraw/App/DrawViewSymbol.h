@@ -25,6 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDomDocument>
 #include <QXmlResultItems>
 

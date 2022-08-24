@@ -32,7 +32,7 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintDisplacement : public FemGui::ViewProviderFemConstraintOnBoundary
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintDisplacement);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintDisplacement);
 
 public:
     ViewProviderFemConstraintDisplacement();

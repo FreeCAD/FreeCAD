@@ -26,6 +26,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Vector3D.h>
+#include <FCGlobal.h>
 #include <string>
 
 namespace App {
@@ -41,7 +42,7 @@ class SelectionChanges;
  */
 class GuiExport SelectionObject : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** Constructs a SelectionObject object. */

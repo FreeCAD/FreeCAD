@@ -32,7 +32,7 @@ namespace Fem
 
 class FemExport ConstraintPlaneRotation : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintPlaneRotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintPlaneRotation);
 
 public:
     /// Constructor

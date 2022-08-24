@@ -60,7 +60,7 @@ public:
 
 class GeomFillSurface : public Part::Spline
 {
-  PROPERTY_HEADER(Surface::GeomFillSurface);
+  PROPERTY_HEADER_WITH_OVERRIDE(Surface::GeomFillSurface);
 
 public:
     GeomFillSurface();

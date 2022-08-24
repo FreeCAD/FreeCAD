@@ -215,7 +215,7 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
 
 class StringGuard {
 public:
-    StringGuard(char *c)
+    explicit StringGuard(char *c)
         :c(c)
     {
         v1 = c[0];

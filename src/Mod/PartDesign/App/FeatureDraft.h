@@ -35,7 +35,7 @@ namespace PartDesign
 
 class PartDesignExport Draft : public DressUp
 {
-    PROPERTY_HEADER(PartDesign::Draft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Draft);
 
 public:
     Draft();

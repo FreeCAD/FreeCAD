@@ -45,7 +45,7 @@ class View3DInventorViewer;
  */
 class GuiExport ViewProviderGeometryObject : public ViewProviderDragger
 {
-    PROPERTY_HEADER(Gui::ViewProviderGeometryObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderGeometryObject);
 
 public:
     /// constructor.

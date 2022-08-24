@@ -73,7 +73,7 @@ public:
  */
 class PointsGuiExport ViewProviderPoints : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(PointsGui::ViewProviderPoints);
+    PROPERTY_HEADER_WITH_OVERRIDE(PointsGui::ViewProviderPoints);
 
 public:
     ViewProviderPoints();
@@ -120,7 +120,7 @@ private:
  */
 class PointsGuiExport ViewProviderScattered : public ViewProviderPoints
 {
-    PROPERTY_HEADER(PointsGui::ViewProviderScattered);
+    PROPERTY_HEADER_WITH_OVERRIDE(PointsGui::ViewProviderScattered);
 
 public:
     ViewProviderScattered();
@@ -148,7 +148,7 @@ protected:
  */
 class PointsGuiExport ViewProviderStructured : public ViewProviderPoints
 {
-    PROPERTY_HEADER(PointsGui::ViewProviderStructured);
+    PROPERTY_HEADER_WITH_OVERRIDE(PointsGui::ViewProviderStructured);
 
 public:
     ViewProviderStructured();

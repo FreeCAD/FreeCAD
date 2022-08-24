@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/BaseClass.h>
+#include <FCGlobal.h>
 #include <QtOpenGL.h>
 #include <QPoint>
 
@@ -84,7 +85,7 @@ private:
 
 class GuiExport GLGraphicsItem : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GLGraphicsItem()

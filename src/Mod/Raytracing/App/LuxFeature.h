@@ -41,7 +41,7 @@ class Property;
  */
 class RaytracingExport LuxFeature: public Raytracing::RaySegment
 {
-    PROPERTY_HEADER(Raytracing::LuxFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::LuxFeature);
 public:
     /// Constructor
     LuxFeature(void);

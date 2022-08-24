@@ -34,7 +34,7 @@ namespace PartDesign
 
 class PartDesignExport Line : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::Line);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Line);
 
 public:
     Line();

@@ -205,7 +205,7 @@ public:
     ~BOPProgressIndicator () override;
 
 #if OCC_VERSION_HEX < 0x070500
-    virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
+    Standard_Boolean Show (const Standard_Boolean theForce = Standard_True) override;
 #else
     void Show (const Message_ProgressScope& theScope,
                        const Standard_Boolean isForce) override;

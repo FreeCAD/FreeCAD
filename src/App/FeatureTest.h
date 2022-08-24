@@ -27,6 +27,7 @@
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
 #include "PropertyLinks.h"
+#include "PropertyPythonObject.h"
 #include "PropertyUnits.h"
 
 
@@ -169,6 +170,19 @@ public:
     //@{
     DocumentObjectExecReturn *execute() override;
     //@}
+};
+
+class FeatureTestAttribute : public DocumentObject
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeatureTestAttribute);
+
+public:
+    FeatureTestAttribute();
+    ~FeatureTestAttribute() override;
+    DocumentObjectExecReturn *execute() override;
+
+    App::PropertyPythonObject Object;
+    App::PropertyString Attribute;
 };
 
 

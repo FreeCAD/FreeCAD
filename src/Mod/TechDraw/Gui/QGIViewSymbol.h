@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QByteArray>
 
 #include "QGIView.h"
@@ -57,7 +59,6 @@ public:
 protected:
     virtual void drawSvg();
     void symbolToSvg(QByteArray qba);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGDisplayArea* m_displayArea;
     QGCustomSvg *m_svgItem;

@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "ViewProviderViewPart.h"
@@ -33,7 +35,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderViewSection : public ViewProviderViewPart
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderViewSection);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderViewSection);
 
 public:
     /// constructor

@@ -386,14 +386,14 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
         metadata = std::make_unique<App::Metadata>();
         metadata->setName("User-Saved PreferencePacks");
         metadata->setDescription("Generated automatically -- edits may be lost when saving new preferencePacks");
-        metadata->setVersion(1);
+        metadata->setVersion(static_cast<App::Meta::Version>(1));
         metadata->addMaintainer(App::Meta::Contact("No Maintainer", "email@freecadweb.org"));
         metadata->addLicense(App::Meta::License("(Unspecified)", "(Unspecified)"));
         metadata->addUrl(App::Meta::Url("https://github.com/FreeCAD/FreeCAD", App::Meta::UrlType::repository));
     }
     App::Metadata newPreferencePackMetadata;
     newPreferencePackMetadata.setName(name);
-    newPreferencePackMetadata.setVersion(1);
+    newPreferencePackMetadata.setVersion(static_cast<App::Meta::Version>(1));
 
     metadata->addContentItem("preferencepack", newPreferencePackMetadata);
     metadata->write(savedPreferencePacksDirectory / "package.xml");

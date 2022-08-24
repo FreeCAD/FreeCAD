@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIView.h"
 
 namespace TechDraw {
@@ -51,7 +53,6 @@ public:
 
 protected:
     virtual void drawImage();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGCustomImage* m_imageItem;
     QGCustomClip*  m_cliparea;

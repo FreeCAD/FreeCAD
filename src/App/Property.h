@@ -345,7 +345,7 @@ public:
          *                    hasn't been marked before, and calls its
          *                    aboutToSetValue().
          */
-        AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
+        explicit AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
             mProp.signalCounter++;
             if (markChange)
                 aboutToChange();

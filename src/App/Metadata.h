@@ -94,7 +94,7 @@ namespace App {
          */
         struct AppExport Version {
             Version();
-            Version(int major, int minor = 0, int patch = 0, const std::string& suffix = std::string());
+            explicit Version(int major, int minor = 0, int patch = 0, const std::string& suffix = std::string());
             explicit Version(const std::string& semanticString);
 
             int major;

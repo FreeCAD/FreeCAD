@@ -31,7 +31,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderMultiTransform)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderMultiTransform);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform() {
         featureName = std::string("MultiTransform");

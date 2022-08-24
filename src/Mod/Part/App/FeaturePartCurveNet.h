@@ -31,7 +31,7 @@ namespace Part
 
 class CurveNet :public Part::Feature
 {
-    PROPERTY_HEADER(Part::FeaturePartCurveNet);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeaturePartCurveNet);
 
 public:
     CurveNet();

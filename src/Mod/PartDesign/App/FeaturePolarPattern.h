@@ -34,7 +34,7 @@ namespace PartDesign
 
 class PartDesignExport PolarPattern : public PartDesign::Transformed
 {
-    PROPERTY_HEADER(PartDesign::PolarPattern);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::PolarPattern);
 
 public:
     PolarPattern();

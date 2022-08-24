@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
 #define DRAWINGGUI_VIEWPROVIDERCLIP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
 #include "ViewProviderDrawingView.h"
@@ -33,7 +35,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderViewClip : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderViewClip);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderViewClip);
 
 public:
     /// constructor

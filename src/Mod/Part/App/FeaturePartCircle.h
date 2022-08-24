@@ -32,7 +32,7 @@ namespace Part
 {
 class PartExport Circle : public Part::Primitive
 {
-    PROPERTY_HEADER(Part::Circle);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Circle);
 
 public:
     Circle();

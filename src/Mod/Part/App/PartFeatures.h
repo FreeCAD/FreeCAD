@@ -34,7 +34,7 @@ namespace Part
 
 class RuledSurface : public Part::Feature
 {
-    PROPERTY_HEADER(Part::RuledSurface);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::RuledSurface);
 
 public:
     RuledSurface();
@@ -65,7 +65,7 @@ private:
 
 class Loft : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Loft);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Loft);
 
 public:
     Loft();
@@ -95,7 +95,7 @@ private:
 
 class Sweep : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Sweep);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Sweep);
 
 public:
     Sweep();
@@ -125,7 +125,7 @@ private:
 
 class Thickness : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Thickness);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Thickness);
 
 public:
     Thickness();
@@ -157,7 +157,7 @@ private:
 
 class Refine : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Refine);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Refine);
 
 public:
     Refine();
@@ -176,7 +176,7 @@ public:
 
 class Reverse : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Reverse);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Reverse);
 
 public:
     Reverse();

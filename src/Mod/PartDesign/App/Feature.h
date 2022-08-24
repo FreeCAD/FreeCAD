@@ -46,7 +46,7 @@ class Body;
  */
 class PartDesignExport Feature : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Feature);
 
 public:
     Feature();

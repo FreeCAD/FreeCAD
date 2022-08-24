@@ -25,10 +25,12 @@
 #include <cassert>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QPaintDevice>
 #include <QPainter>
 #include <QPrinter>
+#include <QRectF>
 #include <QSvgGenerator>
 #include <QStyleOptionGraphicsItem>
 #endif
@@ -38,8 +40,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
-#include <QRectF>
 #include "Rez.h"
 #include "QGCustomLabel.h"
 

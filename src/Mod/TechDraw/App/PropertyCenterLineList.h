@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_PropertyCenterLineList_H
 #define TECHDRAW_PropertyCenterLineList_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <App/Property.h>
 

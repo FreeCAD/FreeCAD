@@ -37,7 +37,7 @@ namespace ImageGui
 
 class ImageGuiExport ViewProviderImagePlane : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(RobotGui::ViewProviderImagePlane);
+    PROPERTY_HEADER_WITH_OVERRIDE(RobotGui::ViewProviderImagePlane);
 
 public:
     /// constructor.

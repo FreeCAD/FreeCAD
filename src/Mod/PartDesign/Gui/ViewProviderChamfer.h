@@ -32,7 +32,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderChamfer : public ViewProviderDressUp
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderChamfer)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderChamfer);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderChamfer);
 
 public:
     /// constructor

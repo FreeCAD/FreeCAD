@@ -32,7 +32,7 @@ namespace PartDesign
 
 class PartDesignExport FeatureBase : public PartDesign::Feature
 {
-    PROPERTY_HEADER(PartDesign::FeatureBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureBase);
 
 public:
     FeatureBase();

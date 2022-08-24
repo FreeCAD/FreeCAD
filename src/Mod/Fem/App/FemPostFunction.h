@@ -39,7 +39,7 @@ namespace Fem
 
 class FemExport FemPostFunction : public App::DocumentObject
 {
-    PROPERTY_HEADER(Fem::FemPostFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFunction);
 
 public:
     /// Constructor
@@ -65,7 +65,7 @@ protected:
 
 class FemExport FemPostFunctionProvider : public App::DocumentObject {
 
-    PROPERTY_HEADER(Fem::FemPostFunctionProvider);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFunctionProvider);
 
 public:
     FemPostFunctionProvider();
@@ -86,7 +86,7 @@ protected:
 
 class FemExport FemPostPlaneFunction : public FemPostFunction
 {
-    PROPERTY_HEADER(Fem::FemPostPlaneFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPlaneFunction);
 
 public:
 
@@ -112,7 +112,7 @@ protected:
 
 class FemExport FemPostSphereFunction : public FemPostFunction
 {
-    PROPERTY_HEADER(Fem::FemPostSphereFunction);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostSphereFunction);
 
 public:
 

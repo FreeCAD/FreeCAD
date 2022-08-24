@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 

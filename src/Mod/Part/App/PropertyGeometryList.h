@@ -40,7 +40,7 @@ class Geometry;
 
 class PartExport PropertyGeometryList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**

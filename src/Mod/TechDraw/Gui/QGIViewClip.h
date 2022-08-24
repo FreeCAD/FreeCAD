@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMCLIP_H
 #define DRAWINGGUI_QGRAPHICSITEMCLIP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIView.h"
 
 namespace TechDrawGui
@@ -48,7 +50,6 @@ public:
 
 protected:
     void drawClip();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     QGCustomRect* m_frame;

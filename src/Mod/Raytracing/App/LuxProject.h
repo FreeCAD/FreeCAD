@@ -41,7 +41,7 @@ class Property;
 //class RayFeature: public Part::PartFeature
 class RaytracingExport LuxProject: public App::DocumentObjectGroup
 {
-    PROPERTY_HEADER(Raytracing::LuxProject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Raytracing::LuxProject);
 
 public:
     /// Constructor

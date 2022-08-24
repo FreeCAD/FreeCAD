@@ -23,6 +23,8 @@
 #ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 #define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIView.h"
 
 QT_BEGIN_NAMESPACE
@@ -41,13 +43,6 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 110};
     int type() const override { return Type;}
-
-    void updateView(bool update = false) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-
-protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-
 };
 
 } // namespace MDIViewPageGui

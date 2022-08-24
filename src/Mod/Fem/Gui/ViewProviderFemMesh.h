@@ -58,7 +58,7 @@ public:
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemMesh);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMesh);
 
 public:
     /// constructor.

@@ -21,15 +21,19 @@
 ** $QT_END_LICENSE$
 */
 // clazy:excludeall=qstring-arg
-#include "PreCompiled.h"
 
-#include "mtextedit.h"
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cstdlib>
+
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QImage>
 #include <QByteArray>
 #include <QBuffer>
-#include <cstdlib>
+#endif
+
+#include "mtextedit.h"
 
 
 MTextEdit::MTextEdit(QWidget *parent) : QTextEdit(parent) {

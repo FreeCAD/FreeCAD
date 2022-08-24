@@ -39,7 +39,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProvider2DObject : public PartGui::ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProvider2DObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProvider2DObject);
 
 public:
     /// constructor
@@ -52,7 +52,7 @@ public:
 
 class PartGuiExport ViewProvider2DObjectGrid : public ViewProvider2DObject
 {
-    PROPERTY_HEADER(PartGui::ViewProvider2DObjectGrid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProvider2DObjectGrid);
 
 public:
     /// constructor

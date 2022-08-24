@@ -31,7 +31,7 @@ namespace Part
 
 class Cut : public Boolean
 {
-    PROPERTY_HEADER(Part::Cut);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Cut);
 
 public:
     Cut();

@@ -32,7 +32,7 @@ namespace Fem
 
 class FemExport ConstraintContact : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintContact);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintContact);
 
 public:
     /// Constructor

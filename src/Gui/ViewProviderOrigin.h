@@ -35,7 +35,7 @@ class Document;
 
 class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderOrigin);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOrigin);
 
 public:
     /// Size of the origin as set by the part.
@@ -51,7 +51,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     std::vector<App::DocumentObject*> claimChildren3D() const override;
 
-    SoGroup* getChildRoot() const override {return pcGroupChildren;};
+    SoGroup* getChildRoot() const override {return pcGroupChildren;}
 
     void attach(App::DocumentObject* pcObject) override;
     std::vector<std::string> getDisplayModes() const override;

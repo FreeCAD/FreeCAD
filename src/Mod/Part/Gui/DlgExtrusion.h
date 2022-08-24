@@ -28,6 +28,7 @@
 #include <string>
 
 #include <Mod/Part/App/FeatureExtrusion.h>
+#include <QDialog>
 
 class TopoDS_Shape;
 
@@ -41,9 +42,9 @@ class DlgExtrusion : public QDialog, public Gui::SelectionObserver
 public:
     DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgExtrusion() override;
-    void accept();
+    void accept() override;
     void apply();
-    void reject();
+    void reject() override;
 
     Base::Vector3d getDir() const;
     void setDir(Base::Vector3d newDir);
@@ -64,8 +65,8 @@ public:
 protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent*) override;
 
 private Q_SLOTS:
     void on_rbDirModeCustom_toggled(bool on);

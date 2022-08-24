@@ -35,7 +35,7 @@ namespace Gui {
 
 class GuiExport ViewProviderExtern:public ViewProvider
 {
-    PROPERTY_HEADER(Gui::ViewProviderExtern);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderExtern);
 
 public:
     /// constructor.

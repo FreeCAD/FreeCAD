@@ -29,7 +29,7 @@
 namespace MeshCore {
 
 /**
- * Trim the the facets in 3D with a plane
+ * Trim the facets in 3D with a plane
  * \author Werner Mayer
  */
 class MeshExport MeshTrimByPlane

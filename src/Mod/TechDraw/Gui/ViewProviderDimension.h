@@ -24,18 +24,19 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 #include "ViewProviderDrawingView.h"
 
-
 namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderDimension : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderDimension);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDimension);
 
 public:
     /// constructor

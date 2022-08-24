@@ -112,7 +112,7 @@ private:
 
 class GuiExport GLFlagWindow : public Gui::GLGraphicsItem
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GLFlagWindow(View3DInventorViewer*);

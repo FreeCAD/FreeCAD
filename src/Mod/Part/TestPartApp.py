@@ -188,7 +188,7 @@ class PartTestBSplineSurface(unittest.TestCase):
         bs = to.toBSpline()
         self.assertAlmostEqual(bs.bounds()[1], 2 * math.pi)
         self.assertAlmostEqual(bs.bounds()[3], 2 * math.pi)
-        bs.setBounds(0.0, 1.0, 0.0, 1.0)
+        bs.scaleKnotsToBounds(0.0, 1.0, 0.0, 1.0)
         self.assertAlmostEqual(bs.bounds()[1], 1.0)
         self.assertAlmostEqual(bs.bounds()[3], 1.0)
 

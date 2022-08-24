@@ -24,8 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <string>
+#include <sstream>
 #include <QDialogButtonBox>
 #include <QGraphicsScene>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsItem>
@@ -36,18 +39,14 @@
 #include <QString>
 #include <QTextOption>
 #include <QVBoxLayout>
-#include <sstream>
-#endif
-
-#include <string>
-#include <regex>
-
-#include <qmath.h>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextBlockFormat>
 #include <QTextFrame>
 #include <QSizeF>
+#endif
+
+#include <regex>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -79,12 +78,6 @@ QGIViewAnnotation::QGIViewAnnotation()
     addToGroup(m_textItem);
     m_textItem->setPos(0.,0.);
 
-}
-
-
-QVariant QGIViewAnnotation::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGIView::itemChange(change, value);
 }
 
 void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj)

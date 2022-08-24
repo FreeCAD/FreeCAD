@@ -40,7 +40,7 @@ enum class HelixMode {
 
 class PartDesignExport Helix : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Helix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Helix);
 
 public:
     Helix();
@@ -106,7 +106,7 @@ private:
 
 class PartDesignExport AdditiveHelix : public Helix {
 
-    PROPERTY_HEADER(PartDesign::AdditiveHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::AdditiveHelix);
 public:
     AdditiveHelix();
 };
@@ -114,7 +114,7 @@ public:
 
 class PartDesignExport SubtractiveHelix : public Helix {
 
-    PROPERTY_HEADER(PartDesign::SubtractiveHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubtractiveHelix);
 public:
     SubtractiveHelix();
 };

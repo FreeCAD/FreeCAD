@@ -75,7 +75,7 @@ public:
 
 class PartExport ShapeSegment : public Data::Segment
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ShapeSegment(const TopoDS_Shape &ShapeIn):Shape(ShapeIn){}
@@ -91,7 +91,7 @@ public:
  */
 class PartExport TopoShape : public Data::ComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     TopoShape();

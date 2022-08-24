@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERWELD_H
 #define DRAWINGGUI_VIEWPROVIDERWELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderFeature.h>
 
 #include "ViewProviderDrawingView.h"
@@ -34,7 +36,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderWeld : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderWeld);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderWeld);
 
 public:
     /// constructor

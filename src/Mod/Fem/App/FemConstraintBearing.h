@@ -36,7 +36,7 @@ namespace Fem
 
 class FemExport ConstraintBearing : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintBearing);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintBearing);
 
 public:
     /// Constructor

@@ -36,7 +36,7 @@ namespace Fem
 
 class FemExport FemPostPipeline : public Fem::FemPostFilter
 {
-    PROPERTY_HEADER(Fem::FemPostPipeline);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostPipeline);
 
 public:
     /// Constructor

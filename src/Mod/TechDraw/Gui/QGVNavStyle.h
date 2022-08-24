@@ -22,11 +22,12 @@
 
 
 #ifndef TECHDRAW_NAVIGATIONSTYLE_H
-#include <QPoint>
 #define TECHDRAW_NAVIGATIONSTYLE_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QCursor>
+#include <QPoint>
 
 class QEvent;
 class QFocusEvent;

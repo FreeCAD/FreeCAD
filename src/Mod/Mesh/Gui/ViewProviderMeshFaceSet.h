@@ -48,7 +48,7 @@ class SoFCIndexedFaceSet;
  */
 class MeshGuiExport ViewProviderMeshFaceSet : public ViewProviderMesh
 {
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshFaceSet);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshFaceSet);
 
 public:
     ViewProviderMeshFaceSet();

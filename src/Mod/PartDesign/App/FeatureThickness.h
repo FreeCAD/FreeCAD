@@ -33,7 +33,7 @@ namespace PartDesign
 
 class PartDesignExport Thickness : public DressUp
 {
-    PROPERTY_HEADER(PartDesign::Thickness);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Thickness);
 
 public:
     Thickness();

@@ -105,7 +105,7 @@ struct PathExport CAreaConfig {
 /** Base class for FreeCAD wrapping of libarea */
 class PathExport Area: public Base::BaseClass {
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     struct Shape {

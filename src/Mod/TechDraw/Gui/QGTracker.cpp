@@ -106,11 +106,6 @@ QGTracker::~QGTracker()
 {
 }
 
-QVariant QGTracker::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGIPrimPath::itemChange(change, value);
-}
-
 void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 { 
     QPointF myScenePos = event->scenePos();
@@ -155,16 +150,6 @@ void QGTracker::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
     }
     m_lastClick = event->scenePos();
     QGIPrimPath::mouseDoubleClickEvent(event);
-}
-
-void QGTracker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    QGIPrimPath::hoverEnterEvent(event);
-}
-
-void QGTracker::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    QGIPrimPath::hoverLeaveEvent(event);
 }
 
 void QGTracker::hoverMoveEvent(QGraphicsSceneHoverEvent* event)

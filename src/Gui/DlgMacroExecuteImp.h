@@ -44,7 +44,7 @@ class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
     Q_OBJECT
 
 public:
-    explicit DlgMacroExecuteImp( QWidget* parent = nullptr, Qt::WindowFlags fl =  Qt::WindowFlags() );
+    explicit DlgMacroExecuteImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgMacroExecuteImp() override;
 
     void accept() override;

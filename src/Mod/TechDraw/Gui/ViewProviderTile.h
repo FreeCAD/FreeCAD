@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERTILE_H
 #define DRAWINGGUI_VIEWPROVIDERTILE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 
@@ -30,7 +32,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderTile : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderTile);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderTile);
 
 public:
     /// constructor

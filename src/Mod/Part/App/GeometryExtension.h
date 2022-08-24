@@ -36,7 +36,7 @@ class Geometry;
 
 class PartExport GeometryExtension: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ~GeometryExtension() override = default;
 
@@ -67,7 +67,7 @@ private:
 
 class PartExport GeometryPersistenceExtension : public Part::GeometryExtension
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ~GeometryPersistenceExtension() override = default;
 

@@ -60,7 +60,7 @@ class MeshGuiExport ViewProviderMeshCurvature : public Gui::ViewProviderDocument
                                                 public Base::Observer<int> {
     typedef Gui::ViewProviderDocumentObject inherited;
 
-    PROPERTY_HEADER(MeshGui::ViewProviderMeshCurvature);
+    PROPERTY_HEADER_WITH_OVERRIDE(MeshGui::ViewProviderMeshCurvature);
 
 public:
     ViewProviderMeshCurvature();

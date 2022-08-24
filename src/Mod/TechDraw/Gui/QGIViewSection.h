@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSECTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIViewPart.h"
 
 namespace TechDrawGui

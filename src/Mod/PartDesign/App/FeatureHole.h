@@ -43,7 +43,7 @@ static constexpr size_t ThreadRunout_size = 24;
 
 class PartDesignExport Hole : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Hole);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Hole);
 
 public:
     Hole();

@@ -56,8 +56,8 @@ class GuiExport ControlSingleton : public QObject
      Q_OBJECT
 
 public:
-    static ControlSingleton& instance(void);
-    static void destruct (void);
+    static ControlSingleton& instance();
+    static void destruct ();
 
     /** @name dialog handling
      *  These methods are used to control the TaskDialog stuff.
@@ -83,17 +83,17 @@ public:
       If a task dialog is open then it indicates whether this task dialog allows other commands to modify
       the document while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterDocument(void) const;
+    bool isAllowedAlterDocument() const;
     /*!
       If a task dialog is open then it indicates whether this task dialog allows other commands to modify
       the 3d view while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterView(void) const;
+    bool isAllowedAlterView() const;
     /*!
       If a task dialog is open then it indicates whether this task dialog allows other commands to modify
       the selection while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterSelection(void) const;
+    bool isAllowedAlterSelection() const;
 
 public Q_SLOTS:
     void accept();

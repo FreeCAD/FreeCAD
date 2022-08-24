@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 #define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 
 #include "ViewProviderSymbol.h"
@@ -33,7 +35,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderSpreadsheet : public ViewProviderSymbol
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderSpreadsheet);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderSpreadsheet);
 
 public:
     /// constructor

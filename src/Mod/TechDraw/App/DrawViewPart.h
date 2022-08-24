@@ -25,6 +25,12 @@
 #ifndef _DrawViewPart_h_
 #define _DrawViewPart_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QObject>
+
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 
@@ -163,6 +169,7 @@ public:
     virtual TopoDS_Shape getSourceShapeFused() const;
     virtual std::vector<TopoDS_Shape> getSourceShape2d() const;
 
+    virtual void postHlrTasks(void);
 
     bool isIso() const;
 
@@ -197,6 +204,17 @@ public:
 
     std::vector<App::DocumentObject*> getAllSources() const;
 
+    bool waitingForFaces() const { return m_waitingForFaces; }
+    void waitingForFaces(bool s) { m_waitingForFaces = s;}
+    bool waitingForHlr() const { return m_waitingForHlr; }
+    void waitingForHlr(bool s) { m_waitingForHlr = s; }
+    virtual bool waitingForResult() const;
+
+    void progressValueChanged(int v);
+
+public Q_SLOTS:
+    void onHlrFinished(void);
+    void onFacesFinished(void);
 
 protected:
     bool checkXDirection() const;
@@ -207,10 +225,10 @@ protected:
     void onChanged(const App::Property* prop) override;
     void unsetupObject() override;
 
-    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
-    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??
-    void partExec(TopoDS_Shape shape);
-    virtual void addShapes2d();
+    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis);
+    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape& shape);   //const??
+    void partExec(TopoDS_Shape& shape);
+    virtual void addShapes2d(void);
 
     void extractFaces();
 
@@ -238,6 +256,15 @@ protected:
 
 private:
     bool nowUnsetting;
+    bool m_waitingForFaces;
+    bool m_waitingForHlr;
+
+    QMetaObject::Connection connectHlrWatcher;
+    QFutureWatcher<void> m_hlrWatcher;
+    QFuture<void> m_hlrFuture;
+    QMetaObject::Connection connectFaceWatcher;
+    QFutureWatcher<void> m_faceWatcher;
+    QFuture<void> m_faceFuture;
 
 };
 

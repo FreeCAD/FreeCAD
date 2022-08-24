@@ -40,9 +40,9 @@ env:
   cpplintFailSilent: true
 
   checkPylint: true
-  pylintDisable: # additional disables to the .pylintrc file
+  # additional disables to the .pylintrc file
   # for the Message codes see: https://pylint.pycqa.org/en/latest/user_guide/messages/index.html
-  pylintFailSilent: true
+  pylintDisable: disable=C0302 # too-many-lines
 
   checkBlack: true
   blackFailSilent: true

@@ -95,7 +95,14 @@ enum SnapMode{
         HorizontalSnap
     };
 
-QGIDatumLabel::QGIDatumLabel()
+enum DragState {
+    NoDrag,
+    DragStarted,
+    Dragging };
+
+
+QGIDatumLabel::QGIDatumLabel() :
+    m_dragState(NoDrag)
 {
     verticalSep = false;
     posX = 0;
@@ -136,10 +143,16 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
             setPrettySel();
         } else {
             setPrettyNormal();
+            if (m_dragState == Dragging) {
+                //stop the drag if we are no longer selected.
+                m_dragState = NoDrag;
+                Q_EMIT dragFinished();
+            }
         }
-        update();
+
     } else if(change == ItemPositionHasChanged && scene()) {
         setLabelCenter();
+        m_dragState = Dragging;
         Q_EMIT dragging(m_ctrl);
     }
 
@@ -155,20 +168,13 @@ void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mousePressEvent(event);
 }
 
-void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
 void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
-    if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton))
-        .length() > 0) {
-        if (scene() && this == scene()->mouseGrabberItem()) {
-            Q_EMIT dragFinished();
-        }
+    if (m_dragState == Dragging) {
+        m_dragState = NoDrag;
+        Q_EMIT dragFinished();
     }
 
     QGraphicsItem::mouseReleaseEvent(event);

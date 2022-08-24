@@ -31,7 +31,7 @@ namespace Part
 
 class PartExport Spline :public Part::Feature
 {
-    PROPERTY_HEADER(Part::Spline);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Spline);
 
 public:
     Spline();

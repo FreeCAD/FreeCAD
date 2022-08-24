@@ -39,7 +39,7 @@ namespace PartDesign
  */
 class PartDesignExport Transformed : public PartDesign::Feature
 {
-    PROPERTY_HEADER(PartDesign::Transformed);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Transformed);
 
 public:
     Transformed();

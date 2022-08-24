@@ -26,6 +26,7 @@
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BSplCLib.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfEllipse.hxx>
 # include <GC_MakeArcOfHyperbola.hxx>
@@ -37,10 +38,10 @@
 # include <GCPnts_AbscissaPoint.hxx>
 # include <gce_ErrorType.hxx>
 # include <gce_MakeParab.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_BezierSurface.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BSplineSurface.hxx>
+# include <Geom_BezierCurve.hxx>
+# include <Geom_BezierSurface.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_ConicalSurface.hxx>
@@ -1609,6 +1610,25 @@ void GeomBSplineCurve::Trim(double u, double v)
                 splitUnwrappedBSpline(u, v);
             }
         }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
+
+void GeomBSplineCurve::scaleKnotsToBounds(double u0, double u1)
+{
+    try {
+        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(myCurve->Copy());
+        Standard_RangeError_Raise_if (u1 <= u0, " ");
+        TColStd_Array1OfReal k(1,curve->NbKnots());
+        curve->Knots(k);
+        if ((abs(u0-k.First()) > Precision::Confusion()) || (abs(u1-k.Last()) > Precision::Confusion())) {
+            BSplCLib::Reparametrize(u0, u1, k);
+            curve->SetKnots(k);
+        }
+        myCurve = curve;
+        return;
     }
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())
@@ -4458,7 +4478,7 @@ Geometry *GeomBSplineSurface::copy() const
     return newSurf;
 }
 
-void GeomBSplineSurface::setBounds(double u0, double u1, double v0, double v1)
+void GeomBSplineSurface::scaleKnotsToBounds(double u0, double u1, double v0, double v1)
 {
     try {
         Handle(Geom_BSplineSurface) surf = Handle(Geom_BSplineSurface)::DownCast(mySurface->Copy());
@@ -4467,23 +4487,15 @@ void GeomBSplineSurface::setBounds(double u0, double u1, double v0, double v1)
         surf->Bounds(bu0,bu1,bv0,bv1);
         if ((abs(u0-bu0) > Precision::Confusion()) || (abs(u1-bu1) > Precision::Confusion())) {
             TColStd_Array1OfReal uk(1,surf->NbUKnots());
-            TColStd_Array1OfReal nuk(1,surf->NbUKnots());
             surf->UKnots(uk);
-            Standard_Real ur = uk(uk.Upper()) - uk(uk.Lower());
-            for (Standard_Integer i=uk.Lower(); i<=uk.Upper(); i++) {
-                nuk(i) = u0 + ((u1 - u0) * (uk(i) - uk(uk.Lower())) / ur);
-            }
-            surf->SetUKnots(nuk);
+            BSplCLib::Reparametrize(u0, u1, uk);
+            surf->SetUKnots(uk);
         }
         if ((abs(v0-bv0) > Precision::Confusion()) || (abs(v1-bv1) > Precision::Confusion())) {
             TColStd_Array1OfReal vk(1,surf->NbVKnots());
-            TColStd_Array1OfReal nvk(1,surf->NbVKnots());
             surf->VKnots(vk);
-            Standard_Real vr = vk(vk.Upper()) - vk(vk.Lower());
-            for (Standard_Integer j=vk.Lower(); j<=vk.Upper(); j++) {
-                nvk(j) = v0 + ((v1 - v0) * (vk(j) - vk(vk.Lower())) / vr);
-            }
-            surf->SetVKnots(nvk);
+            BSplCLib::Reparametrize(v0, v1, vk);
+            surf->SetVKnots(vk);
         }
         mySurface = surf;
         return;

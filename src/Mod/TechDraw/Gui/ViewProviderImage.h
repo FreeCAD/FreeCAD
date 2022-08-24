@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
 #define DRAWINGGUI_VIEWPROVIDERIMAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
 #include "ViewProviderDrawingView.h"
@@ -33,7 +35,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderImage : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderImage);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderImage);
 
 public:
     /// constructor

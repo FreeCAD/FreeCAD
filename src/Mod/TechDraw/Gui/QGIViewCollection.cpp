@@ -52,21 +52,3 @@ QGIViewCollection::QGIViewCollection()
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
-
-QVariant QGIViewCollection::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
-void QGIViewCollection::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-    //TODO: should MouseMove logic go here instead of QGIView?
-    QGIView::mouseReleaseEvent(event);
-}
-
-void QGIViewCollection::updateView(bool update)
-{
-    return QGIView::updateView(update);
-}

@@ -38,7 +38,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPlaneParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPlaneParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPlaneParametric);
 
 public:
     /// constructor
@@ -54,7 +54,7 @@ protected:
 
 class PartGuiExport ViewProviderFace : public ViewProviderPlaneParametric
 {
-    PROPERTY_HEADER(PartGui::ViewProviderFace);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderFace);
 
 public:
     ViewProviderFace();

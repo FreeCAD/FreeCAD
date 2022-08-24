@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWGROUP_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWGROUP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "ViewProviderDrawingView.h"
@@ -32,7 +34,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderProjGroup : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderProjGroup);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderProjGroup);
 
 public:
 

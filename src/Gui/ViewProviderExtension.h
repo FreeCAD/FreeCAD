@@ -51,7 +51,7 @@ class GuiExport ViewProviderExtension : public App::Extension
 
     //The cass does not have properties itself, but it is important to provide the property access
     //functions.
-    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderExtension);
 
 public:
 

@@ -32,7 +32,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderThickness : public ViewProviderDressUp
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderThickness)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderThickness);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderThickness);
 
 public:
     /// constructor

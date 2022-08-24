@@ -22,23 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <QDir>
-# include <QFile>
-# include <QFileInfo>
-# include <QMessageBox>
-# include <QRegExp>
-#endif
-
-#include <QStringBuilder>
-
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 #include <QGraphicsView>
+#include <QMessageBox>
 #include <QPainter>
-#include <QSvgRenderer>
+#include <QRegExp>
+#include <QStringBuilder>
 #include <QSvgGenerator>
-
+#include <QSvgRenderer>
+#include <sstream>
 #include <vector>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -890,8 +887,8 @@ void CmdTechDrawBalloon::activated(int iMsg)
     ViewProviderViewPart* partVP = dynamic_cast<ViewProviderViewPart*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && partVP) {
-        QGVPage* viewPage = pageVP->getGraphicsView();
-        QGSPage* scenePage = pageVP->getGraphicsScene();
+        QGVPage* viewPage = pageVP->getQGVPage();
+        QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
             viewPage->startBalloonPlacing();
 

@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIView.h"
 
 namespace TechDraw {
@@ -54,7 +56,6 @@ public:
 
 protected:
     void drawAnnotation();
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 

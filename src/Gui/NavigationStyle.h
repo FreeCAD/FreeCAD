@@ -73,7 +73,7 @@ private:
  */
 class GuiExport NavigationStyle : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum ViewerMode {
@@ -278,7 +278,7 @@ private:
  * @author Werner Mayer
  */
 class GuiExport UserNavigationStyle : public NavigationStyle {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     UserNavigationStyle(){}
@@ -291,7 +291,7 @@ public:
 class GuiExport InventorNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     InventorNavigationStyle();
@@ -306,7 +306,7 @@ protected:
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     CADNavigationStyle();
@@ -323,7 +323,7 @@ private:
 class GuiExport RevitNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     RevitNavigationStyle();
@@ -340,7 +340,7 @@ private:
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     BlenderNavigationStyle();
@@ -357,7 +357,7 @@ private:
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MayaGestureNavigationStyle();
@@ -381,7 +381,7 @@ protected:
 class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     TouchpadNavigationStyle();
@@ -395,7 +395,7 @@ protected:
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     OpenCascadeNavigationStyle();
@@ -409,7 +409,7 @@ protected:
 class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     OpenSCADNavigationStyle();
@@ -423,7 +423,7 @@ protected:
 class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
     typedef UserNavigationStyle inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     TinkerCADNavigationStyle();

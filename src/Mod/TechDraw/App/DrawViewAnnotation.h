@@ -24,6 +24,8 @@
 #ifndef _DrawViewAnnotation_h_
 #define _DrawViewAnnotation_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
@@ -37,7 +39,7 @@ namespace TechDraw
 
 class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewAnnotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewAnnotation);
 
 public:
     /// Constructor
@@ -67,7 +69,7 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-	void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
     static const char* TextStyleEnums[];

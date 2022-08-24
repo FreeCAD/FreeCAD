@@ -31,7 +31,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderMirror : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMirror);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMirror);
 
 public:
     ViewProviderMirror();
@@ -58,7 +58,7 @@ private:
 
 class PartGuiExport ViewProviderFillet : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderFillet);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderFillet);
 
 public:
     ViewProviderFillet();
@@ -78,7 +78,7 @@ protected:
 
 class ViewProviderChamfer : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderChamfer);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderChamfer);
 
 public:
     /// constructor
@@ -100,7 +100,7 @@ protected:
 
 class ViewProviderRevolution : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderRevolution);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRevolution);
 
 public:
     /// constructor
@@ -115,7 +115,7 @@ public:
 
 class ViewProviderLoft : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderLoft);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderLoft);
 
 public:
     /// constructor
@@ -130,7 +130,7 @@ public:
 
 class ViewProviderSweep : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderSweep);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSweep);
 
 public:
     /// constructor
@@ -145,7 +145,7 @@ public:
 
 class ViewProviderOffset : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderOffset);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderOffset);
 
 public:
     /// constructor
@@ -165,7 +165,7 @@ protected:
 
 class ViewProviderOffset2D : public ViewProviderOffset
 {
-    PROPERTY_HEADER(PartGui::ViewProviderOffset2D);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderOffset2D);
 
 public:
     ViewProviderOffset2D(){
@@ -175,7 +175,7 @@ public:
 
 class ViewProviderThickness : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderThickness);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderThickness);
 
 public:
     /// constructor
@@ -195,7 +195,7 @@ protected:
 
 class ViewProviderRefine : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderRefine);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRefine);
 
 public:
     /// constructor
@@ -206,7 +206,7 @@ public:
 
 class ViewProviderReverse : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderReverse);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderReverse);
 
 public:
     /// constructor

@@ -61,7 +61,7 @@ private:
 
 class GuiExport ViewProviderPointMarker : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderPointMarker);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPointMarker);
 
 public:
     ViewProviderPointMarker();
@@ -75,7 +75,7 @@ protected:
 
 class GuiExport ViewProviderMeasureDistance : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderMeasureDistance);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderMeasureDistance);
 
 public:
     /// Constructor

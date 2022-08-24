@@ -37,7 +37,7 @@ namespace Mesh
  */
 class MeshExport FixDefects : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::FixDefects);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDefects);
 
 public:
   /// Constructor
@@ -67,7 +67,7 @@ public:
  */
 class MeshExport HarmonizeNormals : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::HarmonizeNormals);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::HarmonizeNormals);
 
 public:
   /// Constructor
@@ -87,7 +87,7 @@ public:
  */
 class MeshExport FlipNormals : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FlipNormals);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FlipNormals);
 
 public:
   /// Constructor
@@ -107,7 +107,7 @@ public:
  */
 class MeshExport FixNonManifolds : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixNonManifolds);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixNonManifolds);
 
 public:
   /// Constructor
@@ -127,7 +127,7 @@ public:
  */
 class MeshExport FixDuplicatedFaces : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDuplicatedFaces);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDuplicatedFaces);
 
 public:
   /// Constructor
@@ -147,7 +147,7 @@ public:
  */
 class MeshExport FixDuplicatedPoints : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDuplicatedPoints);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDuplicatedPoints);
 
 public:
   /// Constructor
@@ -167,7 +167,7 @@ public:
  */
 class MeshExport FixDegenerations : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDegenerations);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDegenerations);
 
 public:
   /// Constructor
@@ -187,7 +187,7 @@ public:
  */
 class MeshExport FixDeformations : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDeformations);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDeformations);
 
 public:
   /// Constructor
@@ -211,7 +211,7 @@ public:
  */
 class MeshExport FixIndices : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixIndices);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixIndices);
 
 public:
   /// Constructor
@@ -231,7 +231,7 @@ public:
  */
 class MeshExport FillHoles : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FillHoles);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FillHoles);
 
 public:
   /// Constructor
@@ -253,7 +253,7 @@ public:
  */
 class MeshExport RemoveComponents : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::RemoveComponents);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::RemoveComponents);
 
 public:
   /// Constructor

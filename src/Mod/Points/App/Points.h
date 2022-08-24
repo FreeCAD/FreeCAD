@@ -45,7 +45,7 @@ namespace Points
  */
 class PointsExport PointKernel : public Data::ComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     typedef float float_type;

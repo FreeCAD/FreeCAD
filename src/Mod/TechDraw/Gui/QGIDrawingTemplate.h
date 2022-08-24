@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMDRAWINGTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGITemplate.h"
 
 QT_BEGIN_NAMESPACE
@@ -57,7 +59,6 @@ protected:
   TechDraw::DrawParametricTemplate * getParametricTemplate();
 
 protected:
-  virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
   QGraphicsPathItem *pathItem;
 };
 

@@ -42,7 +42,6 @@ SET(DXF_Plate
 
 set(Import_Scripts
     Init.py
-    gzip_utf8.py
     stepZ.py
 )
 
@@ -82,4 +81,4 @@ INSTALL(
     FILES_MATCHING
         PATTERN "*.rub*"
 )
-   
+

@@ -43,9 +43,9 @@ struct AppExport Expression::Component {
     Expression* e2;
     Expression* e3;
 
-    Component(const std::string &n);
+    explicit Component(const std::string &n);
     Component(Expression *e1, Expression *e2, Expression *e3, bool isRange=false);
-    Component(const ObjectIdentifier::Component &comp);
+    explicit Component(const ObjectIdentifier::Component &comp);
     Component(const Component &other);
     ~Component();
     Component &operator=(const Component &)=delete;
@@ -71,7 +71,7 @@ struct AppExport Expression::Component {
 class  AppExport UnitExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    UnitExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
+    explicit UnitExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
 
     ~UnitExpression() override;
 
@@ -111,7 +111,7 @@ private:
 class AppExport NumberExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    NumberExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & quantity = Base::Quantity());
+    explicit NumberExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & quantity = Base::Quantity());
 
     Expression * simplify() const override;
 
@@ -127,7 +127,7 @@ protected:
 class AppExport ConstantExpression : public NumberExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConstantExpression(const App::DocumentObject *_owner = nullptr,
+    explicit ConstantExpression(const App::DocumentObject *_owner = nullptr,
             const char *_name = "",
             const Base::Quantity &_quantity = Base::Quantity());
 
@@ -170,7 +170,7 @@ public:
         NEG,
         POS
     };
-    OperatorExpression(const App::DocumentObject *_owner = nullptr, Expression * _left = nullptr, Operator _op = NONE, Expression * _right = nullptr);
+    explicit OperatorExpression(const App::DocumentObject *_owner = nullptr, Expression * _left = nullptr, Operator _op = NONE, Expression * _right = nullptr);
 
     ~OperatorExpression() override;
 
@@ -209,7 +209,7 @@ protected:
 class AppExport ConditionalExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConditionalExpression(const App::DocumentObject *_owner = nullptr, Expression * _condition = nullptr,Expression * _trueExpr = nullptr,  Expression * _falseExpr = nullptr);
+    explicit ConditionalExpression(const App::DocumentObject *_owner = nullptr, Expression * _condition = nullptr,Expression * _trueExpr = nullptr,  Expression * _falseExpr = nullptr);
 
     ~ConditionalExpression() override;
 
@@ -290,7 +290,7 @@ public:
         LAST,
     };
 
-    FunctionExpression(const App::DocumentObject *_owner = nullptr, Function _f = NONE,
+    explicit FunctionExpression(const App::DocumentObject *_owner = nullptr, Function _f = NONE,
             std::string &&name = std::string(), std::vector<Expression *> _args = std::vector<Expression*>());
 
     ~FunctionExpression() override;
@@ -327,7 +327,7 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = nullptr, const ObjectIdentifier& _var = ObjectIdentifier());
+    explicit VariableExpression(const App::DocumentObject *_owner = nullptr, const ObjectIdentifier& _var = ObjectIdentifier());
 
     ~VariableExpression() override;
 
@@ -375,7 +375,7 @@ class AppExport PyObjectExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PyObjectExpression(const App::DocumentObject *_owner=nullptr, PyObject *pyobj=nullptr, bool owned=false)
+    explicit PyObjectExpression(const App::DocumentObject *_owner=nullptr, PyObject *pyobj=nullptr, bool owned=false)
         :Expression(_owner)
     {
         setPyValue(pyobj,owned);
@@ -404,7 +404,7 @@ protected:
 class AppExport StringExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    StringExpression(const App::DocumentObject *_owner = nullptr, const std::string & _text = std::string());
+    explicit StringExpression(const App::DocumentObject *_owner = nullptr, const std::string & _text = std::string());
     ~StringExpression() override;
 
     Expression * simplify() const override;
@@ -424,7 +424,7 @@ private:
 class AppExport RangeExpression : public App::Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    RangeExpression(const App::DocumentObject * _owner = nullptr, const std::string & begin = std::string(), const std::string & end = std::string());
+    explicit RangeExpression(const App::DocumentObject * _owner = nullptr, const std::string & begin = std::string(), const std::string & end = std::string());
 
     ~RangeExpression() override = default;
 
@@ -460,7 +460,7 @@ AppExport std::vector<std::tuple<int, int, std::string> > tokenize(const std::st
 /// Convenient class to mark begin of importing
 class AppExport ExpressionImporter {
 public:
-    ExpressionImporter(Base::XMLReader &reader);
+    explicit ExpressionImporter(Base::XMLReader &reader);
     ~ExpressionImporter();
     static Base::XMLReader *reader();
 };

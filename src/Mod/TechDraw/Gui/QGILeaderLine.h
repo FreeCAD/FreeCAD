@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 #define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QGraphicsItem>
 #include <QObject>
@@ -64,7 +66,6 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = nullptr ) override;
     QRectF boundingRect() const override;
-    QPainterPath shape() const override;
 
     void drawBorder() override;
     void updateView(bool update = false) override;
@@ -81,7 +82,6 @@ public:
     double getEdgeFuzz() const;
 
     void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;

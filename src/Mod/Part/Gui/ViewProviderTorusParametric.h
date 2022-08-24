@@ -38,7 +38,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderTorusParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderTorusParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderTorusParametric);
 
 public:
     /// constructor

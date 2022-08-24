@@ -37,7 +37,7 @@ class PartFeaturePy;
  */
 class PartExport FeatureReference : public App::GeoFeature
 {
-    PROPERTY_HEADER(Part::FeatureReference);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureReference);
 
 public:
     /// Constructor

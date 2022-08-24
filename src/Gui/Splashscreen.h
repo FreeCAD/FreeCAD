@@ -26,7 +26,7 @@
 #include <QDialog>
 #include <QSplashScreen>
 #include <QTextBrowser>
-#include "MDIView.h"
+#include <Gui/MDIView.h>
 
 namespace Gui {
 

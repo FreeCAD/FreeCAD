@@ -25,6 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <boost_signals2.hpp>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItemGroup>
@@ -34,7 +36,6 @@
 
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
-
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -60,6 +61,7 @@ namespace TechDrawGui
 {
 class QGSPage;
 class QGVPage;
+class ViewProviderPage;
 class QGCustomBorder;
 class QGCustomLabel;
 class QGCustomText;
@@ -88,6 +90,8 @@ public:
     const std::string getViewNameAsString() const;
     void setViewFeature(TechDraw::DrawView *obj);
     TechDraw::DrawView * getViewObject() const;
+    MDIViewPage* getMDIViewPage() const;
+
     double getScale();
 
     virtual bool getFrameState();
@@ -129,8 +133,9 @@ public:
     virtual void   setSettingColor(QColor c) { m_colSetting = c; }
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
-    static QGVPage* getGraphicsView(TechDraw::DrawView* dv);
-    static QGSPage* getGraphicsScene(TechDraw::DrawView* dv);
+    static ViewProviderPage* getViewProviderPage(TechDraw::DrawView* dv);
+    static QGVPage* getQGVPage(TechDraw::DrawView* dv);
+    static QGSPage* getQGSPage(TechDraw::DrawView* dv);
     static int calculateFontPixelSize(double sizeInMillimetres);
     static int calculateFontPixelWidth(const QFont &font);
     static const double DefaultFontSizeInMM;
@@ -139,8 +144,6 @@ public:
     static double getPrefFontSize();
     static double getDimFontSize();
 
-
-    MDIViewPage* getMDIViewPage() const;
     virtual void removeChild(QGIView* child);
 
     virtual void addArbitraryItem(QGraphicsItem* qgi);

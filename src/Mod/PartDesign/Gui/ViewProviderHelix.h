@@ -31,7 +31,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderHelix : public ViewProviderAddSub
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderHelix);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderHelix);
 
 public:
     /// constructor

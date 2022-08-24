@@ -31,7 +31,7 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderRuledSurface:public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderRuledSurface);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderRuledSurface);
 
 public:
     /// constructor
