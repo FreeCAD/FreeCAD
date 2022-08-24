@@ -43,13 +43,9 @@
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
-#include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
 #include "DrawLeaderLine.h"
 #include "Preferences.h"
 #include "DrawUtil.h"
-#include "Geometry.h"
-#include "Cosmetic.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
@@ -65,9 +61,10 @@ const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
                                          "Custom",
                                          nullptr};
+const double SCALEINCREMENT(0.1);
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  (0.1)}; // increment by 0.1
+                                                                  (SCALEINCREMENT)}; // increment by 0.1
 
 
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
@@ -128,40 +125,46 @@ void DrawView::onChanged(const App::Property* prop)
 //Coding note: calling execute, recompute or recomputeFeature inside an onChanged
 //method can create infinite loops if the called method changes a property.  In general
 //don't do this!  There are situations where it is OK, but careful analysis is a must.
-    if (!isRestoring()) {
-        if (prop == &ScaleType) {
-            auto page = findParentPage();
-            if (ScaleType.isValue("Page")) {
-                Scale.setStatus(App::Property::ReadOnly, true);
-                if (page) {
-                    if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
-                       Scale.setValue(page->Scale.getValue());
-                    }
-                }
-            } else if ( ScaleType.isValue("Custom") ) {
-                //don't change Scale
-                Scale.setStatus(App::Property::ReadOnly, false);
-            } else if ( ScaleType.isValue("Automatic") ) {
-                Scale.setStatus(App::Property::ReadOnly, true);
-                if (!checkFit(page)) {
-                    double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                    if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                        Scale.setValue(newScale);
-                    }
+    if (isRestoring()) {
+        App::DocumentObject::onChanged(prop);
+        return;
+    }
+
+    if (prop == &ScaleType) {
+        auto page = findParentPage();
+        if (!page) {
+            //we don't belong to a page yet, so don't bother
+            return;
+        }
+        if (ScaleType.isValue("Page")) {
+            Scale.setStatus(App::Property::ReadOnly, true);
+            if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+               Scale.setValue(page->Scale.getValue());
+            }
+        } else if ( ScaleType.isValue("Custom") ) {
+            //don't change Scale
+            Scale.setStatus(App::Property::ReadOnly, false);
+        } else if ( ScaleType.isValue("Automatic") ) {
+            Scale.setStatus(App::Property::ReadOnly, true);
+            if (!checkFit(page)) {
+                double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
+                if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                    Scale.setValue(newScale);
                 }
             }
-        } else if (prop == &LockPosition) {
-            handleXYLock();
-            requestPaint();         //change lock icon
-            LockPosition.purgeTouched();
-        } else if ((prop == &Caption) ||
-            (prop == &Label)) {
-            requestPaint();
-        } else if ((prop == &X) ||
-            (prop == &Y)) {
-            //X, Y changes are only interesting to DPGI and Gui side
         }
+    } else if (prop == &LockPosition) {
+        handleXYLock();
+        requestPaint();         //change lock icon
+        LockPosition.purgeTouched();
+    } else if ((prop == &Caption) ||
+        (prop == &Label)) {
+        requestPaint();
+    } else if ((prop == &X) ||
+        (prop == &Y)) {
+        //X, Y changes are only interesting to DPGI and Gui side
     }
+
     App::DocumentObject::onChanged(prop);
 }
 

@@ -321,7 +321,7 @@ QRectF DrawProjGroup::getRect() const
 QRectF DrawProjGroup::getRect(bool scaled) const
 {
 //    Base::Console().Message("DPG::getRect - views: %d\n", Views.getValues().size());
-    DrawProjGroupItem *viewPtrs[10];
+    std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT> viewPtrs;
     arrangeViewPointers(viewPtrs);
     double totalWidth, totalHeight;
     getViewArea(viewPtrs, totalWidth, totalHeight, scaled);
@@ -337,12 +337,12 @@ QRectF DrawProjGroup::getRect(bool scaled) const
 }
 
 //find area consumed by Views only - scaled or unscaled
-void DrawProjGroup::getViewArea(DrawProjGroupItem *viewPtrs[10],
+void DrawProjGroup::getViewArea(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT>& viewPtrs,
                                    double &width, double &height,
                                    bool scaled) const
 {
     // Get the child view bounding boxes
-    Base::BoundBox3d bboxes[10];
+    std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes;
     makeViewBbs(viewPtrs, bboxes, scaled);
 
     //TODO: note that TLF/TRF/BLF, BRF extend a bit farther than a strict row/col arrangement would suggest.
@@ -659,8 +659,8 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
     if (strcmp(viewTypeCStr, "Front") == 0 ) {  // Front!
         return result;
     }
-    const int idxCount = 10;
-    DrawProjGroupItem *viewPtrs[idxCount];
+    const int idxCount = MAXPROJECTIONCOUNT;
+    std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT> viewPtrs;
     arrangeViewPointers(viewPtrs);
     int viewIndex = getViewIndex(viewTypeCStr);
 
@@ -677,7 +677,7 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         std::vector<Base::Vector3d> position(idxCount);
 
         // Calculate bounding boxes for each displayed view
-        Base::BoundBox3d bboxes[10];
+        std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes;
         makeViewBbs(viewPtrs, bboxes);         //scaled
 
         double xSpacing = spacingX.getValue();    //in mm, no scale
@@ -847,9 +847,9 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
     return result;
 }
 
-void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
+void DrawProjGroup::arrangeViewPointers(std::array<DrawProjGroupItem *, MAXPROJECTIONCOUNT> &viewPtrs) const
 {
-    for (int i=0; i<10; ++i) {
+    for (int i=0; i < MAXPROJECTIONCOUNT; ++i) {
         viewPtrs[i] = nullptr;
     }
 
@@ -926,12 +926,12 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
     }
 }
 
-void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
-                                          Base::BoundBox3d bboxes[10],
+void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem *, MAXPROJECTIONCOUNT> &viewPtrs,
+                                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> &bboxes,
                                           bool scaled) const
 {
     Base::BoundBox3d empty(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < MAXPROJECTIONCOUNT; ++i) {
         bboxes[i] = empty;
         if (viewPtrs[i]) {
             bboxes[i] = viewPtrs[i]->getBoundingBox();
