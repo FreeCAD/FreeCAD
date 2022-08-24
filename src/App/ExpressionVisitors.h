@@ -37,10 +37,10 @@ public:
     RenameObjectIdentifierExpressionVisitor(
         P &_prop,
         const std::map<ObjectIdentifier, ObjectIdentifier> &_paths,
-        const ObjectIdentifier &_owner )
-        : ExpressionModifier<P>( _prop ),
-          paths( _paths ),
-          owner( _owner )
+        const ObjectIdentifier &_owner)
+        : ExpressionModifier<P>(_prop)
+        , paths( _paths )
+        , owner( _owner )
     {
     }
 
