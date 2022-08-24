@@ -25,6 +25,7 @@
 # ***************************************************************************
 
 import os
+import functools
 import shutil
 import stat
 import tempfile
@@ -573,7 +574,7 @@ class CommandAddonManager:
             self.startup_sequence.append(self.load_macro_metadata)
         selection = pref.GetString("SelectedAddon", "")
         if selection:
-            self.startup_sequence.insert(2, lambda: self.select_addon(selection))
+            self.startup_sequence.insert(2, functools.partial(self.select_addon, selection))
             pref.SetString("SelectedAddon", "")
         if ADDON_MANAGER_DEVELOPER_MODE:
             self.startup_sequence.append(self.validate)
@@ -954,16 +955,17 @@ class CommandAddonManager:
         def __init__(self, repo: Addon, all_repos: List[Addon]):
 
             deps = Addon.Dependencies()
-            repo_name_dict = dict()
+            repo_name_dict = {}
             for r in all_repos:
                 repo_name_dict[r.name] = r
                 repo_name_dict[r.display_name] = r
+
             repo.walk_dependency_tree(repo_name_dict, deps)
 
             self.external_addons = []
             for dep in deps.required_external_addons:
                 if dep.status() == Addon.Status.NOT_INSTALLED:
-                    self.external_addons.append(dep)
+                    self.external_addons.append(dep.name)
 
             # Now check the loaded addons to see if we are missing an internal workbench:
             wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
@@ -1131,10 +1133,10 @@ class CommandAddonManager:
 
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Yes
-        ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
+        ).clicked.connect(functools.partial(self.dependency_dialog_yes_clicked, repo))
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Ignore
-        ).clicked.connect(lambda: self.dependency_dialog_ignore_clicked(repo))
+        ).clicked.connect(functools.partial(self.dependency_dialog_ignore_clicked, repo))
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Cancel
         ).setDefault(True)
@@ -1176,7 +1178,7 @@ class CommandAddonManager:
             # No missing deps, just install
             self.install(repo)
 
-    def dependency_dialog_yes_clicked(self, repo: Addon) -> None:
+    def dependency_dialog_yes_clicked(self, installing_repo: Addon) -> None:
         # Get the lists out of the dialog:
         addons = []
         for row in range(self.dependency_dialog.listWidgetAddons.count()):
@@ -1201,15 +1203,15 @@ class CommandAddonManager:
             addons, python_required, python_optional
         )
         self.dependency_installation_worker.no_python_exe.connect(
-            lambda: self.no_python_exe(repo)
+            functools.partial(self.no_python_exe, installing_repo)
         )
         self.dependency_installation_worker.no_pip.connect(
-            lambda command: self.no_pip(command, repo)
+            functools.partial(self.no_pip, repo=installing_repo)
         )
         self.dependency_installation_worker.failure.connect(
             self.dependency_installation_failure
         )
-        self.dependency_installation_worker.success.connect(lambda: self.install(repo))
+        self.dependency_installation_worker.success.connect(functools.partial(self.install,installing_repo))
         self.dependency_installation_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Information,
             translate("AddonsInstaller", "Installing dependencies"),
@@ -1373,10 +1375,10 @@ class CommandAddonManager:
         self.update_all_worker.progress_made.connect(self.update_progress_bar)
         self.update_all_worker.status_message.connect(self.show_information)
         self.update_all_worker.success.connect(
-            lambda repo: self.subupdates_succeeded.append(repo)
+            functools.partial (self.subupdates_succeeded.append, repo)
         )
         self.update_all_worker.failure.connect(
-            lambda repo: self.subupdates_failed.append(repo)
+            functools.partial(self.subupdates_failed.append, repo)
         )
         self.update_all_worker.finished.connect(self.on_update_all_completed)
         self.update_all_worker.start()
