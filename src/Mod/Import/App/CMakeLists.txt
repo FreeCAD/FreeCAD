@@ -81,7 +81,7 @@ ADD_CUSTOM_TARGET(ImportPy ALL
     SOURCES ${SCL_Resources}
 )
 
-fc_target_copy_resource(ImportPy 
+fc_target_copy_resource(ImportPy
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
     ${CMAKE_BINARY_DIR}/Mod/Import
     ${SCL_Resources})

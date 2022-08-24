@@ -95,7 +95,7 @@ else()
     qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
 endif()
 
-SET(MRTE_SRCS 
+SET(MRTE_SRCS
     mrichtextedit.ui
     mrichtextedit.cpp
     mrichtextedit.h
@@ -390,7 +390,7 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderWeld.cpp
     ViewProviderWeld.h
     ViewProviderCosmeticExtension.cpp
-    ViewProviderCosmeticExtension.h 
+    ViewProviderCosmeticExtension.h
 )
 
 SET(TechDrawGuiTaskDlgs_SRCS

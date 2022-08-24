@@ -185,7 +185,6 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         else {
             unitString = QString::fromLatin1("MN/m");
             factor = 1e6;
-            
         }
     }
     else if (unit == Unit::ThermalConductivity) {

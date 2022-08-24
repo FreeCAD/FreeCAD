@@ -24,14 +24,14 @@ include_directories(
 
 link_directories(${OCC_LIBRARY_DIR})
 
-set(Part_LIBS 
+set(Part_LIBS
     ${OCC_LIBRARIES}
     ${OCC_DEBUG_LIBRARIES}
     FreeCADApp
 )
 
 if(FREETYPE_FOUND)
-    set(Part_LIBS 
+    set(Part_LIBS
         ${Part_LIBS}
         ${FREETYPE_LIBRARIES}
     )

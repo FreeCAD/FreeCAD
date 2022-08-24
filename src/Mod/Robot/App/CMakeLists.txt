@@ -35,7 +35,7 @@ SET(Python_SRCS
     Robot6AxisPy.xml
     Robot6AxisPyImp.cpp
     TrajectoryPy.xml
-    TrajectoryPyImp.cpp 
+    TrajectoryPyImp.cpp
     RobotObjectPy.xml
     RobotObjectPyImp.cpp
     WaypointPy.xml

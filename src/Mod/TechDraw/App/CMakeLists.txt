@@ -263,7 +263,7 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Patterns
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Patterns
-)   
+)
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
@@ -277,7 +277,7 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Symbols
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Symbols
-)   
+)
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)
