@@ -73,6 +73,7 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/missing_macro_metadata.FCStd
     AddonManagerTest/data/prefpack_only.xml
     AddonManagerTest/data/test_repo.zip
+    AddonManagerTest/data/TestWorkbench.zip
     AddonManagerTest/data/test_version_detection.xml
     AddonManagerTest/data/workbench_only.xml
 )

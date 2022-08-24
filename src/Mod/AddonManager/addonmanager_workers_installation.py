@@ -22,33 +22,22 @@
 
 """ Worker thread classes for Addon Manager installation and removal """
 
-# pylint: disable=c-extension-no-member
+# pylint: disable=c-extension-no-member,too-few-public-methods
 
-import hashlib
 import io
-import itertools
-import json
 import os
-import platform
 import queue
-import re
 import shutil
-import stat
 import subprocess
-import sys
-import tempfile
-import threading
 import time
 import zipfile
-from datetime import datetime
-from typing import Union, List, Dict
+from typing import Dict, List
 from enum import Enum, auto
 
 from PySide2 import QtCore
 
 import FreeCAD
 import addonmanager_utilities as utils
-from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
 from addonmanager_git import initialize_git
@@ -89,8 +78,14 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
         self.git_manager = initialize_git()
 
+        # Some stored data for the ZIP processing
+        self.zip_complete = False
+        self.zipdir = None
+        self.bakdir = None
+        self.zip_download_index = None
+
     def run(self):
-        """ Normally not called directly: instead, create an instance of this worker class and
+        """Normally not called directly: instead, create an instance of this worker class and
         call start() on it to launch in a new thread. Installs or updates the selected addon"""
 
         if not self.repo:
@@ -124,13 +119,13 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.repo.set_status(Addon.Status.PENDING_RESTART)
 
     def update_status(self) -> None:
-        """ Periodically emit the progress of the git download, for asynchronous operations """
+        """Periodically emit the progress of the git download, for asynchronous operations"""
         if hasattr(self, "git_progress") and self.isRunning():
             self.progress_made.emit(self.git_progress.current, self.git_progress.total)
             self.status_message.emit(self.git_progress.message)
 
     def run_git(self, clonedir: str) -> None:
-        """ Clone or update the addon using git. Exits if git is disabled. """
+        """Clone or update the addon using git. Exits if git is disabled."""
 
         if not self.git_manager:
             FreeCAD.Console.PrintLog(
@@ -148,8 +143,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.run_git_clone(clonedir)
 
     def run_git_update(self, clonedir: str) -> None:
-        """ Runs git update operation: normally a fetch and pull, but if something goew wrong it 
-        will revert to a clean clone. """
+        """Runs git update operation: normally a fetch and pull, but if something goew wrong it
+        will revert to a clean clone."""
         self.status_message.emit("Updating module...")
         with self.repo.git_lock:
             if not os.path.exists(clonedir + os.sep + ".git"):
@@ -157,6 +152,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             try:
                 self.git_manager.update(clonedir)
                 if self.repo.contains_workbench():
+                    # pylint: disable=line-too-long
                     answer = translate(
                         "AddonsInstaller",
                         "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
@@ -181,7 +177,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.success.emit(self.repo, answer)
 
     def run_git_clone(self, clonedir: str) -> None:
-        """ Clones a repo using git """
+        """Clones a repo using git"""
         self.status_message.emit("Cloning module...")
         current_thread = QtCore.QThread.currentThread()
 
@@ -193,8 +189,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                     "Timeout waiting for a lock on the git process, failed to clone repo\n"
                 )
                 return
-            else:
-                self.repo.git_lock.release()
+            self.repo.git_lock.release()
 
         with self.repo.git_lock:
             FreeCAD.Console.PrintMessage("Lock acquired...\n")
@@ -232,13 +227,15 @@ class InstallWorkbenchWorker(QtCore.QThread):
                                 os.path.join(clonedir, f), os.path.join(macro_dir, f)
                             )
                         except OSError:
-                            # If the symlink failed (e.g. for a non-admin user on Windows), copy the macro instead
+                            # If the symlink failed (e.g. for a non-admin user on Windows), copy
+                            # the macro instead
                             shutil.copy(
                                 os.path.join(clonedir, f), os.path.join(macro_dir, f)
                             )
                         FreeCAD.ParamGet(
                             "User parameter:Plugins/" + self.repo.name
                         ).SetString("destination", clonedir)
+                        # pylint: disable=line-too-long
                         answer += "\n\n" + translate(
                             "AddonsInstaller",
                             "A macro has been installed and is available under Macro -> Macros menu",
@@ -248,7 +245,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.success.emit(self.repo, answer)
 
     def launch_zip(self, zipdir: str) -> None:
-        """ Downloads and unzip a zip version from a git repo """
+        """Downloads and unzip a zip version from a git repo"""
 
         bakdir = None
         if os.path.exists(zipdir):
@@ -277,8 +274,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
         )
 
     def update_zip_status(self, index: int, bytes_read: int, data_size: int):
-        """ Called periodically when downloading a zip file, emits a signal to display the
-        download progress. """
+        """Called periodically when downloading a zip file, emits a signal to display the
+        download progress."""
         if index == self.zip_download_index:
             locale = QtCore.QLocale()
             if data_size > 10 * 1024 * 1024:  # To avoid overflows, show MB instead
@@ -323,8 +320,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                     ).format(bytes_str=bytes_str)
                 )
 
-    def finish_zip(self, index: int, response_code: int, filename: os.PathLike):
-        """ Once the zip download is finished, unzip it into the correct location. """
+    def finish_zip(self, _index: int, response_code: int, filename: os.PathLike):
+        """Once the zip download is finished, unzip it into the correct location."""
         self.zip_complete = True
         if response_code != 200:
             self.failure.emit(
@@ -339,14 +336,14 @@ class InstallWorkbenchWorker(QtCore.QThread):
         with zipfile.ZipFile(filename, "r") as zfile:
             master = zfile.namelist()[0]  # github will put everything in a subfolder
             self.status_message.emit(
-                translate("AddonsInstaller", f"Download complete. Unzipping file...")
+                translate("AddonsInstaller", "Download complete. Unzipping file...")
             )
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
             zfile.extractall(self.zipdir)
-        for filename in os.listdir(self.zipdir + os.sep + master):
+        for extracted_filename in os.listdir(self.zipdir + os.sep + master):
             shutil.move(
-                self.zipdir + os.sep + master + os.sep + filename,
-                self.zipdir + os.sep + filename,
+                self.zipdir + os.sep + master + os.sep + extracted_filename,
+                self.zipdir + os.sep + extracted_filename,
             )
         os.rmdir(self.zipdir + os.sep + master)
         if self.bakdir:
@@ -361,7 +358,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         )
 
     def update_metadata(self):
-        """ Loads the package metadata from the Addon's downloaded package.xml file. """
+        """Loads the package metadata from the Addon's downloaded package.xml file."""
         basedir = FreeCAD.getUserAppDataDir()
         package_xml = os.path.join(basedir, "Mod", self.repo.name, "package.xml")
         if os.path.isfile(package_xml):
@@ -378,20 +375,40 @@ class DependencyInstallationWorker(QtCore.QThread):
     failure = QtCore.Signal(str, str)  # Short message, detailed message
     success = QtCore.Signal()
 
-    def __init__(self, addons, python_required, python_optional):
+    def __init__(
+        self,
+        addons: List[Addon],
+        python_required: List[str],
+        python_optional: List[str],
+        location: os.PathLike = None,
+    ):
+        """Install the various types of dependencies that might be specified. If an optional
+         dependency fails this is non-fatal, but other failures are considered fatal. If location
+        is specified it overrides the FreeCAD user base directory setting: this is used mostly
+        for testing purposes and shouldn't be set by normal code in most circumstances."""
         QtCore.QThread.__init__(self)
         self.addons = addons
         self.python_required = python_required
         self.python_optional = python_optional
+        self.location = location
 
     def run(self):
-        """ Normally not called directly: create the object and call start() to launch it
+        """Normally not called directly: create the object and call start() to launch it
         in its own thread. Installs dependencies for the Addon."""
+        self._install_required_addons()
+        if self.python_required or self.python_optional:
+            self._install_python_packages()
+        self.success.emit()
 
+    def _install_required_addons(self):
+        """Install whatever FreeCAD Addons were set as required."""
         for repo in self.addons:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            worker = InstallWorkbenchWorker(repo)
+            location = self.location
+            if location:
+                location = os.path.join(location, "Mod")
+            worker = InstallWorkbenchWorker(repo, location=location)
             worker.start()
             while worker.isRunning():
                 if QtCore.QThread.currentThread().isInterruptionRequested():
@@ -401,33 +418,52 @@ class DependencyInstallationWorker(QtCore.QThread):
                 time.sleep(0.1)
                 QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
-        if self.python_required or self.python_optional:
-            python_exe = utils.get_python_exe()
-            pip_failed = False
-            if python_exe:
-                try:
-                    proc = subprocess.run(
-                        [python_exe, "-m", "pip", "--version"], stdout=subprocess.PIPE
-                    )
-                except subprocess.CalledProcessError as e:
-                    pip_failed = True
-                if proc.returncode != 0:
-                    pip_failed = True
-            else:
-                pip_failed = True
-            if pip_failed:
-                self.no_pip.emit(f"{python_exe} -m pip --version")
-                return
-            FreeCAD.Console.PrintMessage(proc.stdout)
-            FreeCAD.Console.PrintWarning(proc.stderr)
-            result = proc.stdout
-            FreeCAD.Console.PrintMessage(result.decode())
+    def _install_python_packages(self):
+        """Install required and optional Python dependencies using pip."""
+        if not self._verify_pip():
+            return
+
+        if self.location:
+            vendor_path = os.path.join(self.location, "AdditionalPythonPackages")
+        else:
             vendor_path = os.path.join(
                 FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
             )
-            if not os.path.exists(vendor_path):
-                os.makedirs(vendor_path)
+        if not os.path.exists(vendor_path):
+            os.makedirs(vendor_path)
 
+        self._install_required(vendor_path)
+        self._install_optional(vendor_path)
+
+    def _verify_pip(self) -> bool:
+        """Ensure that pip is working -- returns True if it is, or False if not. Also emits the
+        no_pip signal if pip cannot execute."""
+        python_exe = utils.get_python_exe()
+        pip_failed = False
+        if python_exe:
+            try:
+                proc = subprocess.run(
+                    [python_exe, "-m", "pip", "--version"],
+                    stdout=subprocess.PIPE,
+                    check=True,
+                )
+            except subprocess.CalledProcessError:
+                pip_failed = True
+            if proc.returncode != 0:
+                pip_failed = True
+        else:
+            pip_failed = True
+        if pip_failed:
+            self.no_pip.emit(f"{python_exe} -m pip --version")
+        FreeCAD.Console.PrintMessage(proc.stdout)
+        FreeCAD.Console.PrintWarning(proc.stderr)
+        result = proc.stdout
+        FreeCAD.Console.PrintMessage(result.decode())
+        return not pip_failed
+
+    def _install_required(self, vendor_path: os.PathLike):
+        """Install the required Python package dependencies. If any fail a failure signal is
+        emitted and the function exits without proceeding with any additional installs."""
         for pymod in self.python_required:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
@@ -444,9 +480,8 @@ class DependencyInstallationWorker(QtCore.QThread):
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
+                check=True,
             )
-            # Note to self: how to list installed packages
-            # ./python.exe -m pip list --path ~/AppData/Roaming/FreeCAD/AdditionalPythonPackages
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
                 self.failure.emit(
@@ -458,37 +493,46 @@ class DependencyInstallationWorker(QtCore.QThread):
                 )
                 return
 
+    def _install_optional(self, vendor_path: os.PathLike):
+        """Install the optional Python package dependencies. If any fail a message is printed to
+        the console, but installation of the others continues."""
         for pymod in self.python_optional:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            proc = subprocess.run(
-                [python_exe, "-m", "pip", "install", "--target", vendor_path, pymod],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
+            try:
+                proc = subprocess.run(
+                    [
+                        python_exe,
+                        "-m",
+                        "pip",
+                        "install",
+                        "--target",
+                        vendor_path,
+                        pymod,
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as e:
+                FreeCAD.Console.PrintError(str(e))
+                continue
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                self.failure.emit(
-                    translate(
-                        "AddonsInstaller",
-                        "Installation of Python package {} failed",
-                    ).format(pymod),
-                    proc.stderr,
-                )
-                return
-
-        self.success.emit()
+                FreeCAD.Console.PrintError(proc.stderr.decode())
 
 
 class UpdateMetadataCacheWorker(QtCore.QThread):
-    "Scan through all available packages and see if our local copy of package.xml needs to be updated"
+    """Scan through all available packages and see if our local copy of package.xml needs to be
+    updated"""
 
     status_message = QtCore.Signal(str)
     progress_made = QtCore.Signal(int, int)
     package_updated = QtCore.Signal(Addon)
 
     class RequestType(Enum):
-        """ The type of item being downloaded. """
+        """The type of item being downloaded."""
+
         PACKAGE_XML = auto()
         METADATA_TXT = auto()
         REQUIREMENTS_TXT = auto()
@@ -562,6 +606,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     def download_completed(
         self, index: int, code: int, data: QtCore.QByteArray
     ) -> None:
+        """Callback for handling a completed metadata file download."""
         if index in self.requests:
             self.requests_completed += 1
             self.progress_made.emit(self.requests_completed, self.total_requests)
@@ -580,6 +625,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     self.process_icon(request[0], data)
 
     def process_package_xml(self, repo: Addon, data: QtCore.QByteArray):
+        """Process the package.xml metadata file"""
         repo.repo_type = Addon.Kind.PACKAGE  # By definition
         package_cache_directory = os.path.join(self.store, repo.name)
         if not os.path.exists(package_cache_directory):
@@ -619,6 +665,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.total_requests += 1
 
     def process_metadata_txt(self, repo: Addon, data: QtCore.QByteArray):
+        """Process the metadata.txt metadata file"""
         self.status_message.emit(
             translate("AddonsInstaller", "Downloaded metadata.txt for {}").format(
                 repo.display_name
@@ -656,7 +703,8 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     if dep:
                         repo.python_optional.add(dep)
                         FreeCAD.Console.PrintLog(
-                            f"{repo.display_name} optionally imports python package '{pl.strip()}'\n"
+                            f"{repo.display_name} optionally imports python package"
+                            + f" '{pl.strip()}'\n"
                         )
         # For review and debugging purposes, store the file locally
         package_cache_directory = os.path.join(self.store, repo.name)
@@ -667,6 +715,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
             f.write(data.data())
 
     def process_requirements_txt(self, repo: Addon, data: QtCore.QByteArray):
+        """Process the requirements.txt metadata file"""
         self.status_message.emit(
             translate(
                 "AddonsInstaller",
@@ -693,6 +742,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
             f.write(data.data())
 
     def process_icon(self, repo: Addon, data: QtCore.QByteArray):
+        """Convert icon data into a valid icon file and store it"""
         self.status_message.emit(
             translate("AddonsInstaller", "Downloaded icon for {}").format(
                 repo.display_name
@@ -712,7 +762,8 @@ class UpdateAllWorker(QtCore.QThread):
     success = QtCore.Signal(Addon)
     failure = QtCore.Signal(Addon)
 
-    # TODO: This should be re-written to be solidly single-threaded, some of the called code is not re-entrant
+    # TODO: This should be re-written to be solidly single-threaded, some of the called code is
+    # not re-entrant
 
     def __init__(self, repos):
         super().__init__()
@@ -809,7 +860,8 @@ class UpdateSingleWorker(QtCore.QThread):
                 self.update_package(repo)
             self.repo_queue.task_done()
             FreeCAD.Console.PrintLog(
-                f"  UPDATER: Worker thread completed action for '{repo.name}' and reported result to main thread\n"
+                f"  UPDATER: Worker thread completed action for '{repo.name}' and reported result "
+                + "to main thread\n"
             )
 
     def update_macro(self, repo: Addon):
@@ -831,7 +883,8 @@ class UpdateSingleWorker(QtCore.QThread):
             self.failure.emit(repo)
 
     def update_package(self, repo: Addon):
-        """Updating a package re-uses the package installation worker, so actually spawns another thread that we block on"""
+        """Updating a package re-uses the package installation worker, so actually spawns another
+        thread that we block on"""
 
         worker = InstallWorkbenchWorker(repo, location=self.location)
         worker.success.connect(lambda repo, _: self.success.emit(repo))
