@@ -23,8 +23,12 @@
 #ifndef PARTGUI_SECTIONCUTTING_H
 #define PARTGUI_SECTIONCUTTING_H
 
+#include <Inventor/SbBox3f.h>
 #include <QDialog>
+#include <App/DocumentObserver.h>
 
+class QDoubleSpinBox;
+class QSlider;
 
 namespace PartGui {
 

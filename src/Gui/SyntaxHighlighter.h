@@ -25,6 +25,7 @@
 #define GUI_SYNTAXHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
+#include <FCGlobal.h>
 
 namespace Gui {
 class SyntaxHighlighterP;

@@ -2015,10 +2015,13 @@ TopoDS_Shape TopoShape::makePipeShell(const TopTools_ListOfShape& profiles,
         mkPipeShell.Add(TopoDS_Shape(it.Value()));
     }
 
-    if (!mkPipeShell.IsReady()) Standard_Failure::Raise("shape is not ready to build");
-    else mkPipeShell.Build();
+    if (!mkPipeShell.IsReady())
+        throw Standard_Failure("shape is not ready to build");
 
-    if (make_solid)	mkPipeShell.MakeSolid();
+    mkPipeShell.Build();
+
+    if (make_solid)
+        mkPipeShell.MakeSolid();
 
     return mkPipeShell.Shape();
 }
