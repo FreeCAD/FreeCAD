@@ -47,9 +47,11 @@ BlendCurve::BlendCurve(const std::vector<BlendPoint>& blendPointsList)
     if (nb_pts > 2) {
         throw Base::NotImplementedError("Not implemented");
     }
-    else if (nb_pts < 2) {
+
+    if (nb_pts < 2) {
         throw Base::ValueError("Need two points for working");
     }
+
     blendPoints = blendPointsList;
 }
 

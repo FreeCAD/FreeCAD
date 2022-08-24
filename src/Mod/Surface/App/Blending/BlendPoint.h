@@ -33,9 +33,9 @@ namespace Surface
 {
 
 /*!
-*   Create a list of vectors formed by a point and some derivatives 
+*   Create a list of vectors formed by a point and some derivatives
 *   obtained from a curve or surface
-*/ 
+*/
 class SurfaceExport BlendPoint
 {
 public:
@@ -46,7 +46,7 @@ public:
     *  Constructor
     *\param std::vector<Base::Vector3d>
     */
-    BlendPoint(const std::vector<Base::Vector3d>& vectorList);
+    explicit BlendPoint(const std::vector<Base::Vector3d>& vectorList);
     ~BlendPoint() = default;
     /*!
     *  Scale the blendpoint vectors

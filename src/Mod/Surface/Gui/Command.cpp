@@ -212,8 +212,8 @@ CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
 
 void CmdSurfaceCurveOnMesh::activated(int)
 {
-    doCommand(Doc,"import MeshPartGui, FreeCADGui\n"
-                  "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n");
+    doCommand(Doc, "import MeshPartGui, FreeCADGui\n"
+                   "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n");
 }
 
 bool CmdSurfaceCurveOnMesh::isActive()
@@ -367,7 +367,7 @@ void CmdSurfaceExtendFace::activated(int)
             std::string FeatName = getUniqueObjectName("Surface");
             std::string supportString = faceFilter.Result[0][0].getAsPropertyLinkSubString();
             doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")", FeatName.c_str());
-            doCommand(Doc, "App.ActiveDocument.%s.Face = %s",FeatName.c_str(),supportString.c_str());
+            doCommand(Doc, "App.ActiveDocument.%s.Face = %s", FeatName.c_str(), supportString.c_str());
             updateActive();
             commitCommand();
         }
