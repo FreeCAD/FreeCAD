@@ -956,8 +956,8 @@ class CommandAddonManager:
             deps = Addon.Dependencies()
             repo_name_dict = dict()
             for r in all_repos:
-                repo_name_dict[repo.name] = r
-                repo_name_dict[repo.display_name] = r
+                repo_name_dict[r.name] = r
+                repo_name_dict[r.display_name] = r
             repo.walk_dependency_tree(repo_name_dict, deps)
 
             self.external_addons = []
