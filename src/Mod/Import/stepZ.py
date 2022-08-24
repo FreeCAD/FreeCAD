@@ -38,7 +38,6 @@ import importlib
 import zipfile  as zf
 
 # import stepZ; import importlib; importlib.reload(stepZ); stepZ.open(u"C:/Temp/brick.stpz")
-# import stepZ; import importlib; importlib.reload(stepZ); import gzip_utf8; importlib.reload(gzip_utf8)
 
 def mkz_string(input):
     if isinstance(input, str):
