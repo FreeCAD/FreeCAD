@@ -405,7 +405,7 @@ CheckOptions:
   - key:             portability-restrict-system-includes.Includes
     value:           '*'
   - key:             readability-implicit-bool-conversion.AllowPointerConditions
-    value:           'false'
+    value:           'true'
   - key:             modernize-make-unique.MakeSmartPtrFunctionHeader
     value:           '<memory>'
   - key:             bugprone-signal-handler.AsyncSafeFunctionSet
