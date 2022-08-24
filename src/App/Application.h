@@ -311,9 +311,9 @@ public:
     /** @name methods for parameter handling */
     //@{
     /// returns the system parameter
-    ParameterManager &                                GetSystemParameter() ;
+    ParameterManager &                                GetSystemParameter();
     /// returns the user parameter
-    ParameterManager &                                GetUserParameter() ;
+    ParameterManager &                                GetUserParameter();
     /** Gets a parameter group by a full qualified path
      * It's an easy method to get a group:
      * \code
@@ -326,7 +326,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string,ParameterManager *> &  GetParameterSetList() const;
+    const std::map<std::string, ParameterManager *> &  GetParameterSetList() const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -390,7 +390,7 @@ public:
     static std::list<std::string> processFiles(const std::list<std::string>&);
     static void runApplication();
     friend Application &GetApplication();
-    static std::map<std::string,std::string> &Config(){return mConfig;}
+    static std::map<std::string, std::string> &Config(){return mConfig;}
     static int GetARGC(){return _argc;}
     static char** GetARGV(){return _argv;}
     //@}
@@ -480,7 +480,7 @@ protected:
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
     public:
-        TransactionSignaller(bool abort,bool signal);
+        TransactionSignaller(bool abort, bool signal);
         ~TransactionSignaller();
     private:
         bool abort;
@@ -488,7 +488,7 @@ protected:
 
 private:
     /// Constructor
-    explicit Application(std::map<std::string,std::string> &mConfig);
+    explicit Application(std::map<std::string, std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 
@@ -507,27 +507,27 @@ private:
     static void setupPythonException(PyObject*);
 
     // static python wrapper of the exported functions
-    static PyObject* sGetParam          (PyObject *self,PyObject *args);
-    static PyObject* sSaveParameter     (PyObject *self,PyObject *args);
-    static PyObject* sGetVersion        (PyObject *self,PyObject *args);
-    static PyObject* sGetConfig         (PyObject *self,PyObject *args);
-    static PyObject* sSetConfig         (PyObject *self,PyObject *args);
-    static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
-    static PyObject* sAddImportType     (PyObject *self,PyObject *args);
-    static PyObject* sChangeImportModule(PyObject *self,PyObject *args);
-    static PyObject* sGetImportType     (PyObject *self,PyObject *args);
-    static PyObject* sAddExportType     (PyObject *self,PyObject *args);
-    static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
-    static PyObject* sGetExportType     (PyObject *self,PyObject *args);
-    static PyObject* sGetResourcePath   (PyObject *self,PyObject *args);
-    static PyObject* sGetLibraryPath    (PyObject *self,PyObject *args);
-    static PyObject* sGetTempPath       (PyObject *self,PyObject *args);
-    static PyObject* sGetUserCachePath  (PyObject *self,PyObject *args);
-    static PyObject* sGetUserConfigPath (PyObject *self,PyObject *args);
-    static PyObject* sGetUserAppDataPath(PyObject *self,PyObject *args);
-    static PyObject* sGetUserMacroPath  (PyObject *self,PyObject *args);
-    static PyObject* sGetHelpPath       (PyObject *self,PyObject *args);
-    static PyObject* sGetHomePath       (PyObject *self,PyObject *args);
+    static PyObject* sGetParam          (PyObject *self, PyObject *args);
+    static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
+    static PyObject* sGetVersion        (PyObject *self, PyObject *args);
+    static PyObject* sGetConfig         (PyObject *self, PyObject *args);
+    static PyObject* sSetConfig         (PyObject *self, PyObject *args);
+    static PyObject* sDumpConfig        (PyObject *self, PyObject *args);
+    static PyObject* sAddImportType     (PyObject *self, PyObject *args);
+    static PyObject* sChangeImportModule(PyObject *self, PyObject *args);
+    static PyObject* sGetImportType     (PyObject *self, PyObject *args);
+    static PyObject* sAddExportType     (PyObject *self, PyObject *args);
+    static PyObject* sChangeExportModule(PyObject *self, PyObject *args);
+    static PyObject* sGetExportType     (PyObject *self, PyObject *args);
+    static PyObject* sGetResourcePath   (PyObject *self, PyObject *args);
+    static PyObject* sGetLibraryPath    (PyObject *self, PyObject *args);
+    static PyObject* sGetTempPath       (PyObject *self, PyObject *args);
+    static PyObject* sGetUserCachePath  (PyObject *self, PyObject *args);
+    static PyObject* sGetUserConfigPath (PyObject *self, PyObject *args);
+    static PyObject* sGetUserAppDataPath(PyObject *self, PyObject *args);
+    static PyObject* sGetUserMacroPath  (PyObject *self, PyObject *args);
+    static PyObject* sGetHelpPath       (PyObject *self, PyObject *args);
+    static PyObject* sGetHomePath       (PyObject *self, PyObject *args);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args);
     static PyObject* sOpenDocument      (PyObject *self,PyObject *args, PyObject *kwd);
