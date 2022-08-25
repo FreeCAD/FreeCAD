@@ -191,7 +191,11 @@ class GitManager:
         old_dir = os.getcwd()
         os.chdir(local_path)
         try:
-            branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
+            # This only works with git 2.22 and later (June 2019)
+            # branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
+
+            # This is more universal:
+            branch = self._synchronous_call_git(["rev-parse", "--abbrev-ref", "HEAD"]).strip()
         except GitFailed as e:
             os.chdir(old_dir)
             raise e
