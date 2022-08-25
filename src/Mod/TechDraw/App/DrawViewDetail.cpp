@@ -67,10 +67,8 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#include "DrawPage.h"
 #include "DrawUtil.h"
 #include "DrawViewSection.h"
-#include "Geometry.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
 
@@ -418,20 +416,17 @@ void DrawViewDetail::makeDetailShape(TopoDS_Shape& shape,
 void DrawViewDetail::postHlrTasks(void)
 {
 //    Base::Console().Message("DVD::postHlrTasks()\n");
-    geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
-                                    Radius.getValue() * getScale());      //remove vertices beyond clipradius
     DrawViewPart::postHlrTasks();
+
+    geometryObject->pruneVertexGeom(Base::Vector3d(0.0, 0.0, 0.0),
+                                    Radius.getValue() * getScale());      //remove vertices beyond clipradius
 
     //second pass if required
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
         Scale.purgeTouched();
-        if (geometryObject) {
-            delete geometryObject;
-            geometryObject = nullptr;
-            detailExec(m_saveShape, m_saveDvp, m_saveDvs);
-        }
+        detailExec(m_saveShape, m_saveDvp, m_saveDvs);
     }
     overrideKeepUpdated(false);
 }
@@ -443,7 +438,7 @@ void DrawViewDetail::onMakeDetailFinished(void)
     QObject::disconnect(connectDetailWatcher);
 
     //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
-    geometryObject =  buildGeometryObject(m_scaledShape, m_viewAxis);
+    m_tempGeometryObject =  buildGeometryObject(m_scaledShape, m_viewAxis);
 
 }
 

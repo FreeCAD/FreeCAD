@@ -84,9 +84,6 @@
 #include "EdgeWalker.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
-#include "LandmarkDimension.h"
-#include "LineGroup.h"
-#include "Preferences.h"
 #include "ShapeExtractor.h"
 
 #include "DrawViewPart.h"
@@ -107,6 +104,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart,
 
 DrawViewPart::DrawViewPart(void) :
     geometryObject(nullptr),
+    m_tempGeometryObject(nullptr),
     m_waitingForFaces(false),
     m_waitingForHlr(false)
 {
@@ -318,18 +316,14 @@ void DrawViewPart::onChanged(const App::Property* prop)
 
 void DrawViewPart::partExec(TopoDS_Shape& shape)
 {
-//    Base::Console().Message("DVP::partExec()\n");
+//    Base::Console().Message("DVP::partExec() - %s\n", getNameInDocument());
     if (waitingForHlr()) {
         //finish what we are already doing before starting a new cycle
         return;
     }
 
-    if (geometryObject) {
-        delete geometryObject;
-        geometryObject = nullptr;
-    }
-
-    geometryObject = makeGeometryForShape(shape);
+    //we need to keep using the old geometryObject until the new one is fully populated
+    m_tempGeometryObject = makeGeometryForShape(shape);
     if (CoarseView.getValue()){
         onHlrFinished();    //poly algo does not run in separate thread, so we need to invoke
                             //the post hlr processing manually
@@ -339,7 +333,7 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 //prepare the shape for HLR processing by centering, scaling and rotating it
 GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
-//    Base::Console().Message("DVP::makeGeometryForShape()\n");
+//    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
     gp_Pnt inputCenter;
     Base::Vector3d stdOrg(0.0,0.0,0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
@@ -390,8 +384,7 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
         //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
         //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
         connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
-                                             &m_hlrWatcher, [this] { this->onHlrFinished(); }
-        );
+                                             &m_hlrWatcher, [this] { this->onHlrFinished(); } );
         m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
@@ -403,6 +396,14 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
 void DrawViewPart::onHlrFinished(void)
 {
 //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
+
+    //now that the new GeometryObject is fully populated, we can replace the old one
+    if (geometryObject) {
+        delete geometryObject;
+    }
+    geometryObject = m_tempGeometryObject;
+    m_tempGeometryObject = nullptr;     //superfluous
+
     //the last hlr related task is to make a bbox of the results
     bbox = geometryObject->calcBoundingBox();
 
@@ -413,8 +414,9 @@ void DrawViewPart::onHlrFinished(void)
     postHlrTasks();         //application level tasks that depend on HLR/GO being complete
 
     //start face finding in a separate thread.  We don't find faces when using the polygon
-    //HLR method
-    if (handleFaces() && !CoarseView.getValue() && !waitingForFaces()) {
+    //HLR method.
+    if (handleFaces() && !CoarseView.getValue() &&
+        !waitingForFaces() && !waitingForHlr()) {
         try {
             //note that &m_faceWatcher in the third parameter is not strictly required, but using the
             //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
@@ -472,21 +474,25 @@ void DrawViewPart::postHlrTasks(void)
 //! make faces from the edge geometry
 void DrawViewPart::extractFaces()
 {
-//    Base::Console().Message("DVP::extractFaces()\n");
-    if (!geometryObject ||
-        !this->hasGeometry()) {
-        //no geometry yet so don't bother
+//    Base::Console().Message("DVP::extractFaces() - %s waitingForHlr: %d waitingForFaces: %d\n",
+//                            getNameInDocument(), waitingForHlr(), waitingForFaces());
+    if ( !geometryObject ) {
+        //geometry is in flux, can not make faces right now
         return;
     }
 
     showProgressMessage(getNameInDocument(), "is extracting faces");
 
-    geometryObject->clearFaceGeom();
+    //make a copy of the input edges so the loose tolerances of face finding are
+    //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 
-    //make a copy of the input edges so the loose tolerances of face finding are
-    //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
+    if (goEdges.empty()) {
+        Base::Console().Message("DVP::extractFaces - %s - no face edges available!\n", getNameInDocument());
+        return;
+    }
+
     std::vector<TopoDS_Edge> copyEdges;
     for (auto& tdEdge: goEdges) {
         BRepBuilderAPI_Copy copier(tdEdge->occEdge, true, true);  //copy occEdge with its geometry (TShape) and mesh info
@@ -499,6 +505,7 @@ void DrawViewPart::extractFaces()
             nonZero.push_back(e);
         }
     }
+    geometryObject->clearFaceGeom();
 
     //HLR algo does not provide all edge intersections for edge endpoints.
     //need to split long edges touched by Vertex of another edge
