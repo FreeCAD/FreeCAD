@@ -71,15 +71,11 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
-#include "Preferences.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
-#include "Cosmetic.h"
 #include "HatchLine.h"
-#include "EdgeWalker.h"
 #include "DrawUtil.h"
 #include "DrawProjGroupItem.h"
-#include "DrawProjectSplit.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
 #include "DrawViewSection.h"
@@ -279,10 +275,6 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
         //should be caught before this
         return;
     }
-    if (geometryObject) {
-        delete geometryObject;
-        geometryObject = nullptr;
-    }
 
     try {
         //note that &m_cutWatcher in the third parameter is not strictly required, but using the
@@ -430,7 +422,7 @@ void DrawViewSection::onSectionCutFinished()
     postSectionCutTasks();
 
     //display geometry for cut shape is in geometryObject as in DVP
-    geometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
 }
 
 //activities that depend on updated geometry object

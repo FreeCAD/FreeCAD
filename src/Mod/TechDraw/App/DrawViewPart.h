@@ -219,7 +219,8 @@ public Q_SLOTS:
 protected:
     bool checkXDirection() const;
 
-    TechDraw::GeometryObject *geometryObject;
+    TechDraw::GeometryObject* geometryObject;
+    TechDraw::GeometryObject* m_tempGeometryObject;  //holds the new GO until hlr is completed
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop) override;
