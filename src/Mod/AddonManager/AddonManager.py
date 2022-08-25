@@ -1446,10 +1446,10 @@ class CommandAddonManager:
         self.update_all_worker.progress_made.connect(self.update_progress_bar)
         self.update_all_worker.status_message.connect(self.show_information)
         self.update_all_worker.success.connect(
-            functools.partial (self.subupdates_succeeded.append, repo)
+            self.subupdates_succeeded.append
         )
         self.update_all_worker.failure.connect(
-            functools.partial(self.subupdates_failed.append, repo)
+            self.subupdates_failed.append
         )
         self.update_all_worker.finished.connect(self.on_update_all_completed)
         self.update_all_worker.start()
