@@ -24,7 +24,6 @@
 
 # pylint: disable=too-few-public-methods
 
-import multiprocessing
 import os
 import platform
 import shutil
@@ -306,4 +305,3 @@ class GitManager:
             )
 
         return proc.stdout.decode()
-
