@@ -476,6 +476,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part::TopoShape> shapes;
     std::vector<const Base::Matrix4D*> shapeMats;
+    std::vector<std::pair<int,int> > shapeOwners;
 
     bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
     bool init = (!forced && (options & UpdateForced)) ? true : false;
@@ -508,7 +509,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
+    int idx = -1;
     for (auto& l : Support.getSubListValues()) {
+        ++idx;
         auto obj = l.getValue();
         if (!obj || !obj->getNameInDocument())
             continue;
@@ -618,6 +621,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         }
 
         const auto& subvals = copied ? _CopiedLink.getSubValues() : l.getSubValues();
+        int sidx = copied?-1:idx;
+        int subidx = -1;
         std::set<std::string> subs(subvals.begin(), subvals.end());
         static std::string none("");
         if (subs.empty())
@@ -625,12 +630,14 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         else if (subs.size() > 1)
             subs.erase(none);
         for (const auto& sub : subs) {
+            ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
-                if (!shape.isNull()) {
-                    shapes.push_back(shape);
-                    shapeMats.push_back(&res.first->second);
-                }
+                if(shape.isNull())
+                    throw Part::NullShapeException("Null shape");
+                shapes.push_back(shape);
+                shapeMats.push_back(&res.first->second);
+                shapeOwners.emplace_back(sidx, subidx);
             }
             catch (Base::Exception& e) {
                 e.ReportException();
@@ -684,24 +691,37 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 return;
         }
 
-        if (shapes.size() == 1 && !Relative.getValue())
+        std::ostringstream ss;
+        idx = -1;
+        for(auto &shape : shapes) {
+            ++idx;
+            if(shape.Hasher
+                    && shape.getElementMapSize()
+                    && shape.Hasher != getDocument()->getStringHasher())
+            {
+                ss.str("");
+                ss << Data::ComplexGeoData::externalTagPostfix()
+                   << Data::ComplexGeoData::elementMapPrefix()
+                   << Part::OpCodes::Shapebinder << ':' << shapeOwners[idx].first
+                   << ':' << shapeOwners[idx].second;
+                shape.reTagElementMap(-getID(),
+                        getDocument()->getStringHasher(),ss.str().c_str());
+            }
+            if (!shape.hasSubShape(TopAbs_FACE) && shape.hasSubShape(TopAbs_EDGE))
+                shape = shape.makECopy();
+        }
+
+        if(shapes.size()==1 && !Relative.getValue())
             shapes.back().setPlacement(Base::Placement());
         else {
-            for (size_t i = 0; i < shapes.size(); ++i) {
-                auto& shape = shapes[i];
+            for(size_t i=0;i<shapes.size();++i) {
+                auto &shape = shapes[i];
                 shape = shape.makETransform(*shapeMats[i]);
-                // if(shape.Hasher
-                //         && shape.getElementMapSize()
-                //         && shape.Hasher != getDocument()->getStringHasher())
-                // {
-                //     shape.reTagElementMap(getID(),
-                //             getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
-                // }
             }
         }
 
         if (shapes.empty()) {
-            // Shape.resetElementMapVersion();
+            Shape.resetElementMapVersion();
             return;
         }
 
