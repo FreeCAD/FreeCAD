@@ -257,7 +257,7 @@ public:
     PropertyLinkT();
 
     /*! Constructor */
-    PropertyLinkT(DocumentObject *obj);// explicit bombs
+    explicit PropertyLinkT(DocumentObject *obj);
 
     /*! Constructor */
     PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames);
