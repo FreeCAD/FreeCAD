@@ -362,6 +362,12 @@ public:
     /// Checks if the loaded data are valid
     bool isValid() const;
 
+    /// Returns true if the data come from a non-indexed node as SoFaceSet.
+    /// This means that the read points contain duplicates.
+    bool isNonIndexed() const {
+        return isnonindexed;
+    }
+
     /// Return the vectors of an SoNormal node
     const std::vector<Vector3f>& getVector() {
         return vector;
@@ -380,14 +386,17 @@ public:
 private:
     void readNormals();
     void readCoords();
+    void readIndexedFaceSet();
     void readFaceSet();
     template<typename T>
     std::vector<T> readData(const char*) const;
     std::vector<Vector3f> convert(const std::vector<float>&) const;
     std::vector<Face> convert(const std::vector<int32_t>&) const;
+    std::vector<Face> convert(const std::vector<std::vector<int32_t>>&) const;
     static std::vector<std::vector<int32_t>> split(const std::vector<int32_t>&);
 
 private:
+    bool isnonindexed = false;
     std::vector<Vector3f> vector;
     std::vector<Vector3f> points;
     std::vector<Face> faces;

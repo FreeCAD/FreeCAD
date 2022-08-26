@@ -29,6 +29,7 @@
 #include "MeshIO.h"
 #include "Algorithm.h"
 #include "Builder.h"
+#include "Degeneration.h"
 
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
@@ -1516,6 +1517,12 @@ bool MeshInput::LoadInventor (std::istream &inp)
     MeshPointFacetAdjacency meshAdj(meshPoints.size(), meshFacets);
     meshAdj.SetFacetNeighbourhood();
     this->_rclMesh.Adopt(meshPoints, meshFacets);
+
+    if (loader.isNonIndexed()) {
+        if (!MeshEvalDuplicatePoints(this->_rclMesh).Evaluate()) {
+            MeshFixDuplicatePoints(this->_rclMesh).Fixup();
+        }
+    }
 
     return true;
 }

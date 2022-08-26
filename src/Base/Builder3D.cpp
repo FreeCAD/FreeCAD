@@ -991,6 +991,24 @@ std::vector<Vector3f> InventorLoader::convert(const std::vector<float>& data) co
     return points;
 }
 
+std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<int32_t>& data) const
+{
+    std::vector<Face> faces;
+    faces.reserve(data.size());
+    int32_t coordIndex = 0;
+    for (const auto it : data) {
+        if (it == 3) {
+            faces.emplace_back(coordIndex, coordIndex+1, coordIndex+2);
+        }
+        else if (it == 4) {
+            faces.emplace_back(coordIndex, coordIndex+1, coordIndex+2);
+            faces.emplace_back(coordIndex, coordIndex+2, coordIndex+3);
+        }
+        coordIndex += it;
+    }
+    return faces;
+}
+
 std::vector<std::vector<int32_t>> InventorLoader::split(const std::vector<int32_t>& data)
 {
     std::vector<std::vector<int32_t>> splitdata;
@@ -1005,9 +1023,8 @@ std::vector<std::vector<int32_t>> InventorLoader::split(const std::vector<int32_
     return splitdata;
 }
 
-std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<int32_t>& data) const
+std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<std::vector<int32_t>>& coordIndex) const
 {
-    std::vector<std::vector<int32_t>> coordIndex = split(data);
     std::vector<Face> faces;
     faces.reserve(coordIndex.size());
     for (const auto it : coordIndex) {
@@ -1034,10 +1051,17 @@ void InventorLoader::readCoords()
     points = convert(data);
 }
 
-void InventorLoader::readFaceSet()
+void InventorLoader::readIndexedFaceSet()
 {
     auto data = readData<int32_t>("coordIndex");
+    faces = convert(split(data));
+}
+
+void InventorLoader::readFaceSet()
+{
+    auto data = readData<int32_t>("numVertices");
     faces = convert(data);
+    isnonindexed = true;
 }
 
 bool InventorLoader::read()
@@ -1061,6 +1085,10 @@ bool InventorLoader::read()
             readCoords();
         }
         else if (line.find("IndexedFaceSet {") != std::string::npos) {
+            readIndexedFaceSet();
+            break;
+        }
+        else if (line.find("FaceSet {") != std::string::npos) {
             readFaceSet();
             break;
         }
