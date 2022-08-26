@@ -2024,11 +2024,8 @@ private:
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
-#if PY_VERSION_HEX >= 0x03030000
+
             pysize = PyUnicode_GetLength(p);
-#else
-            pysize = PyUnicode_GetSize(p);
-#endif
 #if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(p);
 #else
@@ -2036,11 +2033,8 @@ private:
 #endif
         }
         else if (PyUnicode_Check(intext)) {
-#if PY_VERSION_HEX >= 0x03030000
             pysize = PyUnicode_GetLength(intext);
-#else
-            pysize = PyUnicode_GetSize(intext);
-#endif
+
 #if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(intext);
 #else
