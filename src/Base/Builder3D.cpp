@@ -24,9 +24,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <cassert>
 # include <string>
 # include <fstream>
+# include <boost/algorithm/string.hpp>
+# include <boost/lexical_cast.hpp>
+# include <boost/tokenizer.hpp>
 #endif
 
 #include "Builder3D.h"
@@ -919,4 +923,167 @@ void InventorBuilder::addTransformation(const Vector3f& translation, const Vecto
          << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
          << " " << fAngle << std::endl;
     result << Base::blanks(indent) <<  "}" << std::endl;
+}
+
+// -----------------------------------------------------------------------------
+
+template<typename T>
+std::vector<T> InventorLoader::readData(const char* fieldName) const
+{
+    std::vector<T> fieldValues;
+    std::string str;
+
+    // search for 'fieldName' and '['
+    bool found = false;
+    while (std::getline(inp, str)) {
+        std::string::size_type point = str.find(fieldName);
+        std::string::size_type open = str.find("[");
+        if (point != std::string::npos && open > point) {
+            str = str.substr(open);
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+        return {};
+
+    do {
+        boost::char_separator<char> sep(" ,");
+        boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
+        std::vector<std::string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+
+        for (const auto& it : token_results) {
+            try {
+                T value = boost::lexical_cast<T>(it);
+                fieldValues.emplace_back(value);
+            }
+            catch (const boost::bad_lexical_cast&) {
+            }
+        }
+
+        // search for ']' to finish the reading
+        if (str.find("]") != std::string::npos)
+            break;
+    }
+    while (std::getline(inp, str));
+
+    return fieldValues;
+}
+
+std::vector<Vector3f> InventorLoader::convert(const std::vector<float>& data) const
+{
+    if (data.size() % 3 != 0)
+        throw std::string("Reading failed");
+
+    std::size_t len = data.size() / 3;
+    std::vector<Vector3f> points;
+    points.reserve(len);
+
+    for (std::size_t i = 0; i < len; i++) {
+        float x = data[3 * i];
+        float y = data[3 * i + 1];
+        float z = data[3 * i + 2];
+        points.emplace_back(x, y, z);
+    }
+
+    return points;
+}
+
+std::vector<std::vector<int32_t>> InventorLoader::split(const std::vector<int32_t>& data)
+{
+    std::vector<std::vector<int32_t>> splitdata;
+    std::vector<int32_t>::const_iterator begin = data.cbegin();
+    std::vector<int32_t>::const_iterator it = begin;
+
+    while ((it = std::find(begin, data.cend(), -1)) != data.cend()) {
+        splitdata.emplace_back(begin, it);
+        begin = it;
+        std::advance(begin, 1);
+    }
+    return splitdata;
+}
+
+std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<int32_t>& data) const
+{
+    std::vector<std::vector<int32_t>> coordIndex = split(data);
+    std::vector<Face> faces;
+    faces.reserve(coordIndex.size());
+    for (const auto it : coordIndex) {
+        if (it.size() == 3) {
+            faces.emplace_back(it[0], it[1], it[2]);
+        }
+        else if (it.size() == 4) {
+            faces.emplace_back(it[0], it[1], it[2]);
+            faces.emplace_back(it[0], it[2], it[3]);
+        }
+    }
+    return faces;
+}
+
+void InventorLoader::readNormals()
+{
+    auto data = readData<float>("vector");
+    vector = convert(data);
+}
+
+void InventorLoader::readCoords()
+{
+    auto data = readData<float>("point");
+    points = convert(data);
+}
+
+void InventorLoader::readFaceSet()
+{
+    auto data = readData<int32_t>("coordIndex");
+    faces = convert(data);
+}
+
+bool InventorLoader::read()
+{
+    if (!inp || inp.bad())
+        return false;
+
+    std::string line;
+
+    // Verify it's an Inventor 2.1 file
+    std::getline(inp, line);
+    if (line.find("#Inventor V2.1 ascii") == std::string::npos)
+        return false;
+
+    while (std::getline(inp, line)) {
+        // read the normals if they are defined
+        if (line.find("Normal {") != std::string::npos) {
+            readNormals();
+        }
+        else if (line.find("Coordinate3 {") != std::string::npos) {
+            readCoords();
+        }
+        else if (line.find("IndexedFaceSet {") != std::string::npos) {
+            readFaceSet();
+            break;
+        }
+    }
+    return true;
+}
+
+bool InventorLoader::isValid() const
+{
+    int32_t value{static_cast<int32_t>(points.size())};
+    auto inRange = [value](const Face& f) {
+        if (f.p1 < 0 || f.p1 >= value)
+            return false;
+        if (f.p2 < 0 || f.p2 >= value)
+            return false;
+        if (f.p3 < 0 || f.p3 >= value)
+            return false;
+        return true;
+    };
+    for (auto it : faces) {
+        if (!inRange(it))
+            return false;
+    }
+
+    return true;
 }
