@@ -34,16 +34,16 @@ namespace PointsGui {
  */
 class PointsGuiExport Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
   Workbench();
-  virtual ~Workbench();
+  ~Workbench() override;
 
 protected:
-  Gui::ToolBarItem* setupToolBars() const;
-  Gui::ToolBarItem* setupCommandBars() const;
-  Gui::MenuItem* setupMenuBar() const;
+  Gui::ToolBarItem* setupToolBars() const override;
+  Gui::ToolBarItem* setupCommandBars() const override;
+  Gui::MenuItem* setupMenuBar() const override;
 };
 
 } // namespace PointsGui

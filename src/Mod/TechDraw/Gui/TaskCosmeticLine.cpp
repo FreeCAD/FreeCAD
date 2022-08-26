@@ -26,14 +26,11 @@
 #include <cmath>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-
-#endif // #ifndef _PreComp_
-
-#include <BRepBuilderAPI_MakeEdge.hxx>
-
 #include <QButtonGroup>
 #include <QStatusBar>
-#include <QGraphicsScene>
+#endif
+
+#include <BRepBuilderAPI_MakeEdge.hxx>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -86,7 +83,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
     //existence of partFeat is checked in calling command
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
-    if (m_ce == nullptr) {
+    if (!m_ce) {
         Base::Console().Error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
         return;
     }
@@ -117,7 +114,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
 TaskCosmeticLine::~TaskCosmeticLine()
 {
-    if (m_saveCE != nullptr) {
+    if (m_saveCE) {
         delete m_saveCE;
     }
 }

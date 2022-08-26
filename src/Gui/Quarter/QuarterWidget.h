@@ -4,22 +4,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -62,31 +62,7 @@ class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
   typedef QGraphicsView inherited;
   Q_OBJECT
 
-  Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET resetNavigationModeFile)
-  Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
-  Q_PROPERTY(bool contextMenuEnabled READ contextMenuEnabled WRITE setContextMenuEnabled)
-  Q_PROPERTY(bool headlightEnabled READ headlightEnabled WRITE setHeadlightEnabled)
-  Q_PROPERTY(bool clearZBuffer READ clearZBuffer WRITE setClearZBuffer)
-  Q_PROPERTY(bool clearWindow READ clearWindow WRITE setClearWindow)
-  Q_PROPERTY(bool interactionModeEnabled READ interactionModeEnabled WRITE setInteractionModeEnabled)
-  Q_PROPERTY(bool interactionModeOn READ interactionModeOn WRITE setInteractionModeOn)
-
-  Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE setTransparencyType)
-  Q_PROPERTY(RenderMode renderMode READ renderMode WRITE setRenderMode)
-  Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE setStereoMode)
-  Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio NOTIFY devicePixelRatioChanged)
-
-  Q_ENUMS(TransparencyType)
-  Q_ENUMS(RenderMode)
-  Q_ENUMS(StereoMode)
-
-
 public:
-  explicit QuarterWidget(QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(QtGLContext * context, QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = nullptr, const QtGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  virtual ~QuarterWidget();
-
   enum TransparencyType {
     SCREEN_DOOR = SoGLRenderAction::SCREEN_DOOR,
     ADD = SoGLRenderAction::ADD,
@@ -117,6 +93,31 @@ public:
     INTERLEAVED_ROWS = SoRenderManager::INTERLEAVED_ROWS,
     INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
   };
+
+  Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET resetNavigationModeFile) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(bool contextMenuEnabled READ contextMenuEnabled WRITE setContextMenuEnabled) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(bool headlightEnabled READ headlightEnabled WRITE setHeadlightEnabled) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(bool clearZBuffer READ clearZBuffer WRITE setClearZBuffer) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(bool clearWindow READ clearWindow WRITE setClearWindow) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(bool interactionModeEnabled READ interactionModeEnabled WRITE setInteractionModeEnabled) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(bool interactionModeOn READ interactionModeOn WRITE setInteractionModeOn) // clazy:exclude=qproperty-without-notify
+
+  Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE setTransparencyType) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(RenderMode renderMode READ renderMode WRITE setRenderMode) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE setStereoMode) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio NOTIFY devicePixelRatioChanged)
+
+  Q_ENUM(TransparencyType)
+  Q_ENUM(RenderMode)
+  Q_ENUM(StereoMode)
+
+
+public:
+  explicit QuarterWidget(QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(QtGLContext * context, QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = nullptr, const QtGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+  virtual ~QuarterWidget();
 
   TransparencyType transparencyType() const;
   RenderMode renderMode() const;
@@ -183,9 +184,9 @@ public Q_SLOTS:
 
   void redraw();
 
-  void setRenderMode(RenderMode mode);
-  void setStereoMode(StereoMode mode);
-  void setTransparencyType(TransparencyType type);
+  void setRenderMode(SIM::Coin3D::Quarter::QuarterWidget::RenderMode mode);
+  void setStereoMode(SIM::Coin3D::Quarter::QuarterWidget::StereoMode mode);
+  void setTransparencyType(SIM::Coin3D::Quarter::QuarterWidget::TransparencyType type);
 
 Q_SIGNALS:
   void devicePixelRatioChanged(qreal dev_pixel_ratio);

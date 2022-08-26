@@ -102,12 +102,12 @@ void StdCmdWorkbench::activated(int i)
     }
 }
 
-bool StdCmdWorkbench::isActive(void)
+bool StdCmdWorkbench::isActive()
 {
     return true;
 }
 
-Action * StdCmdWorkbench::createAction(void)
+Action * StdCmdWorkbench::createAction()
 {
     Action *pcAction;
 
@@ -152,7 +152,7 @@ void StdCmdRecentFiles::activated(int iMsg)
 /**
  * Creates the QAction object containing the recent files.
  */
-Action * StdCmdRecentFiles::createAction(void)
+Action * StdCmdRecentFiles::createAction()
 {
     RecentFilesAction* pcAction = new RecentFilesAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentFiles"));
@@ -192,7 +192,7 @@ void StdCmdRecentMacros::activated(int iMsg)
 /**
  * Creates the QAction object containing the recent macros.
  */
-Action * StdCmdRecentMacros::createAction(void)
+Action * StdCmdRecentMacros::createAction()
 {
     RecentMacrosAction* pcAction = new RecentMacrosAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentMacros"));
@@ -218,7 +218,7 @@ StdCmdAbout::StdCmdAbout()
     eType         = 0;
 }
 
-Action * StdCmdAbout::createAction(void)
+Action * StdCmdAbout::createAction()
 {
     Action *pcAction;
 
@@ -356,7 +356,7 @@ StdCmdDlgPreferences::StdCmdDlgPreferences()
     eType         = 0;
 }
 
-Action * StdCmdDlgPreferences::createAction(void)
+Action * StdCmdDlgPreferences::createAction()
 {
     Action *pcAction = Command::createAction();
     pcAction->setMenuRole(QAction::PreferencesRole);
@@ -803,7 +803,7 @@ void StdCmdTextDocument::activated(int iMsg)
     commitCommand();
 }
 
-bool StdCmdTextDocument::isActive(void)
+bool StdCmdTextDocument::isActive()
 {
     return hasActiveDocument();
 }
@@ -839,14 +839,14 @@ class StdCmdUserEditMode : public Gui::Command
 {
 public:
     StdCmdUserEditMode();
-    virtual ~StdCmdUserEditMode(){}
-    virtual void languageChange();
-    virtual const char* className() const {return "StdCmdUserEditMode";}
+    ~StdCmdUserEditMode() override{}
+    void languageChange() override;
+    const char* className() const override {return "StdCmdUserEditMode";}
     void updateIcon(int mode);
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
-    virtual Gui::Action * createAction(void);
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action * createAction() override;
 };
 
 StdCmdUserEditMode::StdCmdUserEditMode()
@@ -863,7 +863,7 @@ StdCmdUserEditMode::StdCmdUserEditMode()
     this->getGuiApplication()->signalUserEditModeChanged.connect(boost::bind(&StdCmdUserEditMode::updateIcon, this, bp::_1));
 }
 
-Gui::Action * StdCmdUserEditMode::createAction(void)
+Gui::Action * StdCmdUserEditMode::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -928,14 +928,14 @@ void StdCmdUserEditMode::activated(int iMsg)
     Gui::Application::Instance->setUserEditMode(iMsg);
 }
 
-bool StdCmdUserEditMode::isActive(void)
+bool StdCmdUserEditMode::isActive()
 {
     return true;
 }
 
 namespace Gui {
 
-void CreateStdCommands(void)
+void CreateStdCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

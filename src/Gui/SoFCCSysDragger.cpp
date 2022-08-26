@@ -216,7 +216,7 @@ void TDragger::fieldSensorCB(void *f, SoSensor *)
 {
   TDragger *sudoThis = static_cast<TDragger *>(f);
 
-  SbMatrix matrix = sudoThis->getMotionMatrix();
+  SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
   sudoThis->workFieldsIntoTransform(matrix);
   sudoThis->setMotionMatrix(matrix);
 }
@@ -225,7 +225,7 @@ void TDragger::valueChangedCB(void *, SoDragger *d)
 {
     TDragger *sudoThis = dynamic_cast<TDragger *>(d);
     assert(sudoThis);
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
 
     //all this just to get the translation?
     SbVec3f trans, scaleDummy;
@@ -318,7 +318,7 @@ SbBool TDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != nullptr)
+    if (this->fieldSensor.getAttachedField())
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -488,7 +488,7 @@ void RDragger::fieldSensorCB(void *f, SoSensor *)
 {
   RDragger *sudoThis = static_cast<RDragger *>(f);
 
-  SbMatrix matrix = sudoThis->getMotionMatrix();
+  SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
   sudoThis->workFieldsIntoTransform(matrix);
   sudoThis->setMotionMatrix(matrix);
 }
@@ -497,7 +497,7 @@ void RDragger::valueChangedCB(void *, SoDragger *d)
 {
     RDragger *sudoThis = dynamic_cast<RDragger *>(d);
     assert(sudoThis);
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
 
     //all this just to get the translation?
     SbVec3f translationDummy, scaleDummy;
@@ -603,7 +603,7 @@ SbBool RDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != nullptr)
+    if (this->fieldSensor.getAttachedField())
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -857,10 +857,10 @@ SbBool SoFCCSysDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
         inherited::setUpConnections(onoff, doitalways);
 
-        if (this->translationSensor.getAttachedField() != nullptr)
+        if (this->translationSensor.getAttachedField())
           this->translationSensor.detach();
 
-        if (this->rotationSensor.getAttachedField() != nullptr)
+        if (this->rotationSensor.getAttachedField())
             this->rotationSensor.detach();
     }
     return !(this->connectionsSetUp = onoff);
@@ -870,7 +870,7 @@ void SoFCCSysDragger::translationSensorCB(void *f, SoSensor *)
 {
     SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(f);
 
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
     sudoThis->workFieldsIntoTransform(matrix);
     sudoThis->setMotionMatrix(matrix);
 }
@@ -879,7 +879,7 @@ void SoFCCSysDragger::rotationSensorCB(void *f, SoSensor *)
 {
     SoFCCSysDragger *sudoThis = static_cast<SoFCCSysDragger *>(f);
 
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
     sudoThis->workFieldsIntoTransform(matrix);
     sudoThis->setMotionMatrix(matrix);
 }
@@ -888,7 +888,7 @@ void SoFCCSysDragger::valueChangedCB(void *, SoDragger *d)
 {
     SoFCCSysDragger *sudoThis = dynamic_cast<SoFCCSysDragger *>(d);
     assert(sudoThis);
-    SbMatrix matrix = sudoThis->getMotionMatrix();
+    SbMatrix matrix = sudoThis->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
 
     //all this just to get the translation?
     SbVec3f localTranslation, scaleDummy;

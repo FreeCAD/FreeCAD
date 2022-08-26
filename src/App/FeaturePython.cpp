@@ -129,14 +129,14 @@ bool FeaturePythonImp::mustExecute() const
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
-    if(py_onBeforeChange.isNone())
+    if (py_onBeforeChange.isNone())
         return;
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         const char *prop_name = object->getPropertyName(prop);
-        if(prop_name == nullptr)
+        if (!prop_name)
             return;
         if (has__object__) {
             Py::Tuple args(1);
@@ -184,13 +184,13 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
 
 void FeaturePythonImp::onChanged(const Property* prop)
 {
-    if(py_onChanged.isNone())
+    if (py_onChanged.isNone())
         return;
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         const char *prop_name = object->getPropertyName(prop);
-        if(prop_name == nullptr)
+        if (!prop_name)
             return;
         if (has__object__) {
             Py::Tuple args(1);
@@ -374,7 +374,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
     }
 }
 
-PyObject *FeaturePythonImp::getPyObject(void)
+PyObject *FeaturePythonImp::getPyObject()
 {
     // ref counter is set to 1
     return new FeaturePythonPyT<DocumentObjectPy>(object);
@@ -584,10 +584,10 @@ bool FeaturePythonImp::editProperty(const char *name)
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::FeaturePython, App::DocumentObject)
-template<> const char* App::FeaturePython::getViewProviderName(void) const {
+template<> const char* App::FeaturePython::getViewProviderName() const {
     return "Gui::ViewProviderPythonFeature";
 }
-template<> PyObject* App::FeaturePython::getPyObject(void) {
+template<> PyObject* App::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
@@ -602,7 +602,7 @@ template class AppExport FeaturePythonT<DocumentObject>;
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::GeometryPython, App::GeoFeature)
-template<> const char* App::GeometryPython::getViewProviderName(void) const {
+template<> const char* App::GeometryPython::getViewProviderName() const {
     return "Gui::ViewProviderPythonGeometry";
 }
 // explicit template instantiation

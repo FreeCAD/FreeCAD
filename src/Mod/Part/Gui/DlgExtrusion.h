@@ -28,6 +28,7 @@
 #include <string>
 
 #include <Mod/Part/App/FeatureExtrusion.h>
+#include <QDialog>
 
 class TopoDS_Shape;
 
@@ -40,10 +41,10 @@ class DlgExtrusion : public QDialog, public Gui::SelectionObserver
 
 public:
     DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgExtrusion();
-    void accept();
+    ~DlgExtrusion() override;
+    void accept() override;
     void apply();
-    void reject();
+    void reject() override;
 
     Base::Vector3d getDir() const;
     void setDir(Base::Vector3d newDir);
@@ -64,8 +65,8 @@ public:
 protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent*) override;
 
 private Q_SLOTS:
     void on_rbDirModeCustom_toggled(bool on);
@@ -81,7 +82,7 @@ private Q_SLOTS:
 private:
     ///updates enabling of controls
     void on_DirMode_changed();
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
     App::DocumentObject& getShapeToExtrude() const;
     ///if dirMode is not custom, it tries to compute the actual extrusion direction. Also, it does some auto-magic manipulation of length value.
@@ -103,14 +104,14 @@ class TaskExtrusion : public Gui::TaskView::TaskDialog
 
 public:
     TaskExtrusion();
-    ~TaskExtrusion();
+    ~TaskExtrusion() override;
 
 public:
-    bool accept();
-    bool reject();
-    void clicked(int);
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close; }
 
 private:

@@ -115,7 +115,9 @@ class Solve(run.Solve):
         self.pushStatus("Get solver binary...\n")
         binary = settings.get_binary("Calculix")
         if binary is None:
-            self.fail()  # a print has been made in settings module
+            self.pushStatus("Error: The Calculix binary has not been found!")
+            self.fail()
+            return
 
         # run solver
         self._process = subprocess.Popen(

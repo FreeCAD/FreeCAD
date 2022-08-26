@@ -1,28 +1,20 @@
-Check Keywords Warn
+Check Keywords "Warn"
 
 Header
   Mesh DB "."
 End
 
 Solver 1
-  Bubbles = Logical False
-  Calculate Pangle = Logical False
-  Calculate Principal = Logical False
-  Calculate Strains = Logical False
-  Calculate Stresses = Logical False
-  Displace mesh = Logical False
+  Calculate Principal = Logical True
+  Displace mesh = Logical True
   Eigen Analysis = Logical False
-  Eigen System Values = Integer 5
-  Equation = String "Elasticity"
-  Exec Solver = String "Always"
+  Equation = String "Stress Solver"
+  Geometric Stiffness = Logical False
   Linear System Abort Not Converged = Logical False
-  Linear System Convergence Tolerance = Real 1e-08
-  Linear System Iterative Method = String "BiCGStab"
-  Linear System Max Iterations = Integer 500
+  Linear System Direct Method = String "Umfpack"
   Linear System Precondition Recompute = Integer 1
-  Linear System Preconditioning = String "ILU0"
   Linear System Residual Output = Integer 1
-  Linear System Solver = String "Iterative"
+  Linear System Solver = String "Direct"
   Optimize Bandwidth = Logical True
   Procedure = File "StressSolve" "StressSolver"
   Stabilize = Logical True
@@ -32,14 +24,13 @@ Solver 1
 End
 
 Simulation 
-  BDF Order = Integer 1
   Coordinate Mapping(3) = Integer 1 2 3
+  Coordinate Scaling = Real 0.001
   Coordinate System = String "Cartesian 3D"
   Output Intervals = Integer 1
-  Simulation Type = String "Steady state"
+  Simulation Type = String "Steady State"
   Steady State Max Iterations = Integer 1
   Steady State Min Iterations = Integer 0
-  Timestepping Method = String "BDF"
   Use Mesh Names = Logical True
 End
 

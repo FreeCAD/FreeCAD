@@ -72,7 +72,7 @@ public:
   typedef std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> > result_type;
 
 
-  result_type &result(void) {return  mvEdgeSplitPoints;}
+  result_type &result() {return  mvEdgeSplitPoints;}
 
   void writeIntersectionPointsToFile(const char *name="export_pts.asc");
 
@@ -91,7 +91,7 @@ class MeshPartExport CurveProjectorShape: public CurveProjector
 {
 public:
   CurveProjectorShape(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  virtual ~CurveProjectorShape() {}
+  ~CurveProjectorShape() override {}
 
   void projectCurve(const TopoDS_Edge& aEdge,
                     std::vector<FaceSplitEdge> &vSplitEdges);
@@ -101,7 +101,7 @@ public:
 
 
 protected:
-  virtual void Do();
+  void Do() override;
 };
 
 
@@ -112,7 +112,7 @@ class MeshPartExport CurveProjectorSimple: public CurveProjector
 {
 public:
   CurveProjectorSimple(const TopoDS_Shape &aShape, const MeshKernel &pMesh);
-  virtual ~CurveProjectorSimple() {}
+  ~CurveProjectorSimple() override {}
 
   /// helper to discredicice a Edge...
   void GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints = 30);
@@ -127,7 +127,7 @@ public:
 
 
 protected:
-  virtual void Do();
+  void Do() override;
 };
 
 /** Project by projecting a sampled curve to the mesh
@@ -141,7 +141,7 @@ public:
   };
 
   CurveProjectorWithToolMesh(const TopoDS_Shape &aShape, const MeshKernel &pMesh,MeshKernel &rToolMesh);
-  virtual ~CurveProjectorWithToolMesh() {}
+  ~CurveProjectorWithToolMesh() override {}
 
 
   void makeToolMesh(const TopoDS_Edge& aEdge,std::vector<MeshGeomFacet> &cVAry );
@@ -150,7 +150,7 @@ public:
   MeshKernel &ToolMesh;
 
 protected:
-  virtual void Do();
+  void Do() override;
 };
 
 /**
@@ -177,7 +177,7 @@ public:
     };
 
     /// Construction
-    MeshProjection(const MeshKernel& rMesh);
+    explicit MeshProjection(const MeshKernel& rMesh);
     /// Destruction
     ~MeshProjection();
 

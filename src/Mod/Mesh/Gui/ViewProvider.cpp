@@ -180,7 +180,7 @@ ViewProviderExport::~ViewProviderExport()
 std::vector<std::string> ViewProviderExport::getDisplayModes() const
 {
     std::vector<std::string> mode;
-    mode.push_back("");
+    mode.emplace_back("");
     return mode;
 }
 
@@ -630,10 +630,10 @@ std::vector<std::string> ViewProviderMesh::getDisplayModes() const
     std::vector<std::string> StrList;
 
     // add your own modes
-    StrList.push_back("Shaded");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Flat Lines");
-    StrList.push_back("Points");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Flat Lines");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
@@ -1265,7 +1265,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getFacetsOfRegion(const SbViewpo
 void ViewProviderMesh::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
                                  const SbVec2f & currpos, const SbVec2f & prevpos)
 {
-    if (cam == nullptr) // can happen for empty scenegraph
+    if (!cam) // can happen for empty scenegraph
         return;
     if (currpos == prevpos) // useless invocation
         return;
@@ -1589,7 +1589,7 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint * point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No facet picked.\n");
             return;
         }
@@ -1663,7 +1663,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint * point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No facet picked.\n");
             return;
         }
@@ -1730,7 +1730,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == nullptr) {
+            if (!point) {
                 Base::Console().Message("No facet picked.\n");
                 return;
             }

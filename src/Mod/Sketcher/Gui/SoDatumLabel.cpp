@@ -458,7 +458,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         }
 
         const unsigned char * dataptr = this->image.getValue(imgsize, nc);
-        if (dataptr == nullptr) // no image
+        if (!dataptr) // no image
             return;
 
         srcw = imgsize[0];

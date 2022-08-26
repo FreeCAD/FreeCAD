@@ -40,16 +40,16 @@ class DlgPropertyLink : public QDialog, public Gui::SelectionObserver
 
 public:
     DlgPropertyLink(QWidget* parent = nullptr);
-    ~DlgPropertyLink();
+    ~DlgPropertyLink() override;
 
-    void accept();
+    void accept() override;
 
     QList<App::SubObjectT> currentLinks() const;
     QList<App::SubObjectT> originalLinks() const;
 
     void init(const App::DocumentObjectT &prop, bool tryFilter=true);
 
-    static QString linksToPython(QList<App::SubObjectT> links);
+    static QString linksToPython(const QList<App::SubObjectT>& links);
 
     static QList<App::SubObjectT> getLinksFromProperty(const App::PropertyLinkBase *prop);
 
@@ -62,17 +62,17 @@ public:
     static QString formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links);
 
 protected:
-    void showEvent(QShowEvent *);
-    void hideEvent(QHideEvent *);
-    void closeEvent (QCloseEvent * e);
-    void leaveEvent(QEvent *);
-    bool eventFilter(QObject *obj, QEvent *ev);
-    void keyPressEvent(QKeyEvent *ev);
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
+    void closeEvent (QCloseEvent * e) override;
+    void leaveEvent(QEvent *) override;
+    bool eventFilter(QObject *obj, QEvent *ev) override;
+    void keyPressEvent(QKeyEvent *ev) override;
 
     void detachObserver();
     void attachObserver();
 
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);

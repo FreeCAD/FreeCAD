@@ -50,7 +50,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-:oldWb(""), oldTip(nullptr), isSetTipIcon(false)
+: oldTip(nullptr), isSetTipIcon(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
@@ -59,7 +59,7 @@ ViewProvider::~ViewProvider()
 {
 }
 
-bool ViewProvider::doubleClicked(void)
+bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
@@ -248,7 +248,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
     // find surrounding features in the tree
     Part::BodyBase* body = PartDesign::Body::findBodyOf(getObject());
 
-    if (body != nullptr) {
+    if (body) {
         // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
         // about what a body is. Therefore, Bodies, although an "activable" container, know nothing
         // about what happens at Document level with the features they contain.

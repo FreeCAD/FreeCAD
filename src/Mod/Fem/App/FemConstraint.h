@@ -57,11 +57,11 @@ namespace Fem {
  *  scale&).
  */
 class FemExport Constraint : public App::DocumentObject {
-    PROPERTY_HEADER(Fem::Constraint);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::Constraint);
 
 public:
     Constraint();
-    virtual ~Constraint();
+    ~Constraint() override;
 
     /**
      * @brief List of objects the constraints applies to.
@@ -113,7 +113,7 @@ public:
      *  cleared right after the @ref execute call by the recompute mechanism.
      *  See Document::recompute() and DocumentObject::purgeTouched().
      */
-    virtual App::DocumentObjectExecReturn *execute();
+    App::DocumentObjectExecReturn *execute() override;
 
     /**
      * @brief Calculates scale factor based on length of edge.
@@ -154,7 +154,7 @@ public:
      */
     int calcDrawScaleFactor() const;
 
-    virtual const char* getViewProviderName() const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemConstraint";
     }
 
@@ -163,7 +163,7 @@ protected:
     /**
      * @brief Updates NormalDirection if References change.
      */
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
     /**
      * @brief Triggers @ref onChanged to update View Provider.
@@ -172,7 +172,7 @@ protected:
      *  This should not be necessary and is properly a bug in the View Provider
      *  of FemConstraint.
      */
-    virtual void onDocumentRestored();
+    void onDocumentRestored() override;
 
     /**
      * @brief Returns data based on References relevant for rendering widgets.

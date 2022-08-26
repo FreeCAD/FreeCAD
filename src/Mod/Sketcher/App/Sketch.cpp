@@ -88,7 +88,7 @@ Sketch::~Sketch()
     clear();
 }
 
-void Sketch::clear(void)
+void Sketch::clear()
 {
     // clear all internal data sets
     Points.clear();
@@ -320,7 +320,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
 void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
 {
-    if(params_to_block.size() > 0) { // only there are parameters to fix
+    if(!params_to_block.empty()) { // only there are parameters to fix
         for( auto p : params_to_block ) {
             auto findparam = std::find(Parameters.begin(),Parameters.end(), p);
 
@@ -411,12 +411,12 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
     bool unsatisfied_groups = false;
     for(size_t i = 0; i < prop_groups.size(); i++) {
         // 4.1. unsatisfiable group
-        if(prop_groups[i].blockable_params_in_group.size() == 0) {
+        if(prop_groups[i].blockable_params_in_group.empty()) {
         // this group does not contain any blockable parameter, so it is by definition satisfied (or impossible to satisfy by block constraints)
             continue;
         }
         // 4.2. satisfiable and not satisfied
-        if(prop_groups[i].blocking_param_in_group == nullptr) {
+        if(!prop_groups[i].blocking_param_in_group) {
             unsatisfied_groups = true;
         }
     }
@@ -425,12 +425,12 @@ bool Sketch::analyseBlockedConstraintDependentParameters(std::vector<int> &block
 }
 
 
-void Sketch::clearTemporaryConstraints(void)
+void Sketch::clearTemporaryConstraints()
 {
     GCSsys.clearByTag(GCS::DefaultTemporaryConstraint);
 }
 
-void Sketch::calculateDependentParametersElements(void)
+void Sketch::calculateDependentParametersElements()
 {
     // initialize solve extensions to a know state
     solverExtensions.resize(Geoms.size());
@@ -1477,7 +1477,7 @@ void Sketch::updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension>
 
 }
 
-Py::Tuple Sketch::getPyGeometry(void) const
+Py::Tuple Sketch::getPyGeometry() const
 {
     Py::Tuple tuple(Geoms.size());
     int i=0;
@@ -2677,7 +2677,7 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
         l2p2 = &Points[Geoms[geoId2].startPointId];
     }
 
-    if (l1p1 == nullptr || l2p1 == nullptr)
+    if (!l1p1 || !l2p1)
         return -1;
 
     int tag = ++ConstraintsCounter;
@@ -3577,7 +3577,7 @@ bool Sketch::updateNonDrivingConstraints()
 
 // solving ==========================================================
 
-int Sketch::solve(void)
+int Sketch::solve()
 {
     Base::TimeInfo start_time;
     std::string solvername;
@@ -4226,7 +4226,7 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos) const
     return Base::Vector3d();
 }
 
-TopoShape Sketch::toShape(void) const
+TopoShape Sketch::toShape() const
 {
     TopoShape result;
     std::vector<GeoDef>::const_iterator it=Geoms.begin();
@@ -4269,7 +4269,7 @@ TopoShape Sketch::toShape(void) const
     // Hint: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
     //
     // sort them together to wires
-    while (edge_list.size() > 0) {
+    while (!edge_list.empty()) {
         BRepBuilderAPI_MakeWire mkWire;
         // add and erase first edge
         mkWire.Add(edge_list.front());
@@ -4333,7 +4333,7 @@ TopoShape Sketch::toShape(void) const
 
 // Persistence implementer -------------------------------------------------
 
-unsigned int Sketch::getMemSize(void) const
+unsigned int Sketch::getMemSize() const
 {
     return 0;
 }

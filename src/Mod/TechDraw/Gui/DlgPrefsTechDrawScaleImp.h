@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,16 +38,16 @@ class DlgPrefsTechDrawScaleImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawScaleImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawScaleImp();
+    explicit DlgPrefsTechDrawScaleImp( QWidget* parent = nullptr );
+    ~DlgPrefsTechDrawScaleImp() override;
 
 protected Q_SLOTS:
     void onScaleTypeChanged(int index);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawScaleImp> ui;

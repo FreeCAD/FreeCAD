@@ -128,13 +128,13 @@ void ViewProviderInspection::onChanged(const App::Property* prop)
     }
 }
 
-void ViewProviderInspection::hide(void)
+void ViewProviderInspection::hide()
 {
     inherited::hide();
     pcColorStyle->style = SoDrawStyle::INVISIBLE;
 }
 
-void ViewProviderInspection::show(void)
+void ViewProviderInspection::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
@@ -296,7 +296,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
     }
 }
 
-SoSeparator* ViewProviderInspection::getFrontRoot(void) const
+SoSeparator* ViewProviderInspection::getFrontRoot() const
 {
     return pcColorRoot;
 }
@@ -376,11 +376,11 @@ void ViewProviderInspection::setDisplayMode(const char* ModeName)
     inherited::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
+std::vector<std::string> ViewProviderInspection::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Visual Inspection");
+    StrList.emplace_back("Visual Inspection");
     return StrList;
 }
 
@@ -394,9 +394,9 @@ namespace InspectionGui {
 class ViewProviderProxyObject : public QObject
 {
 public:
-    ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
-    ~ViewProviderProxyObject() {}
-    void customEvent(QEvent *)
+    explicit ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
+    ~ViewProviderProxyObject() override {}
+    void customEvent(QEvent *) override
     {
         if (!widget.isNull()) {
             QList<Gui::Flag*> flags = widget->findChildren<Gui::Flag*>();
@@ -479,7 +479,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == nullptr) {
+            if (!point) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }

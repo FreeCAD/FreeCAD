@@ -122,6 +122,19 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonUpdateDependencies">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>View and update Python package dependencies</string>
+       </property>
+       <property name="text">
+        <string>Update dependencies</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

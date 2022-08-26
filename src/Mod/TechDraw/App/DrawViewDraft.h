@@ -23,6 +23,8 @@
 #ifndef _DrawViewDraft_h_
 #define _DrawViewDraft_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
@@ -40,8 +42,8 @@ class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 
 public:
     /// Constructor
-    DrawViewDraft(void);
-    virtual ~DrawViewDraft();
+    DrawViewDraft();
+    ~DrawViewDraft() override;
 
     App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;
@@ -55,21 +57,21 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderDraft";
     }
 
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
 
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
-    std::string getSVGHead(void);
-    std::string getSVGTail(void);
+    std::string getSVGHead();
+    std::string getSVGTail();
 };
 
 typedef App::FeaturePythonT<DrawViewDraft> DrawViewDraftPython;

@@ -270,7 +270,7 @@ public:
     CustomReportEvent(ReportHighlighter::Paragraph p, const QString& s)
     : QEvent(QEvent::Type(QEvent::User))
     { par = p; msg = s;}
-    ~CustomReportEvent()
+    ~CustomReportEvent() override
     { }
     const QString& message() const
     { return msg; }

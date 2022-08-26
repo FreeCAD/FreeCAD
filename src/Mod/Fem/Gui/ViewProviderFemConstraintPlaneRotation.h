@@ -32,15 +32,15 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintPlaneRotation : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPlaneRotation);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintPlaneRotation);
 
 public:
     ViewProviderFemConstraintPlaneRotation();
-    virtual ~ViewProviderFemConstraintPlaneRotation();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintPlaneRotation() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 
 }

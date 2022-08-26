@@ -100,7 +100,7 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
     return hidStyle;
 }
 
- double QGIEdge::getEdgeFuzz(void) const
+ double QGIEdge::getEdgeFuzz() const
 {
     return PreferencesGui::edgeFuzz();
 }
@@ -118,13 +118,4 @@ QPainterPath QGIEdge::shape() const
     stroker.setWidth(getEdgeFuzz());
     outline = stroker.createStroke(path());
     return outline;
-}
-
-void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    //~ painter->drawRect(boundingRect());          //good for debugging
-
-    QGIPrimPath::paint (painter, &myOption, widget);
 }

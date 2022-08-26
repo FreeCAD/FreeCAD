@@ -24,9 +24,7 @@
 
 from math import cos, sin, pi, acos, atan, sqrt
 
-import sys
-if sys.version_info.major >= 3:
-    xrange = range
+xrange = range
 
 
 def CreateExternalGear(w, m, Z, phi, split=True):

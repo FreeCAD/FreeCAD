@@ -114,9 +114,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG2(AddedDynamicExtension, AddedDynamicExtension)
 }
 
-DocumentObserverPython::~DocumentObserverPython()
-{
-}
+DocumentObserverPython::~DocumentObserverPython() = default;
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
 {
@@ -255,8 +253,8 @@ void DocumentObserverPython::slotCloseTransaction(bool abort)
     }
 }
 
-void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, const App::Property& Prop) 
-{   
+void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, const App::Property& Prop)
+{
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -275,7 +273,7 @@ void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, 
     }
 }
 
-void DocumentObserverPython::slotChangedDocument(const App::Document& Doc, const App::Property& Prop) 
+void DocumentObserverPython::slotChangedDocument(const App::Document& Doc, const App::Property& Prop)
 {
     Base::PyGILStateLocker lock;
     try {
@@ -489,7 +487,7 @@ void DocumentObserverPython::slotRemoveDynamicProperty(const App::Property& Prop
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
-    }    
+    }
 }
 
 void DocumentObserverPython::slotChangePropertyEditor(const App::Document &, const App::Property& Prop)

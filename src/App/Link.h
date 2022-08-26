@@ -55,7 +55,7 @@ class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 
 public:
     LinkBaseExtension();
-    virtual ~LinkBaseExtension();
+    ~LinkBaseExtension() override;
 
     PropertyBool _LinkTouched;
     PropertyInteger _LinkOwner;
@@ -270,7 +270,7 @@ public:
 
     const char *getSubName() const {
         parseSubName();
-        return mySubName.size()?mySubName.c_str():nullptr;
+        return !mySubName.empty()?mySubName.c_str():nullptr;
     }
 
     const std::vector<std::string> &getSubElements() const {
@@ -286,19 +286,19 @@ public:
     bool extensionGetLinkedObject(DocumentObject *&ret,
             bool recurse, Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
-    virtual short extensionMustExecute(void) override;
-    virtual void extensionOnChanged(const Property* p) override;
-    virtual void onExtendedUnsetupObject () override;
-    virtual void onExtendedDocumentRestored() override;
+    App::DocumentObjectExecReturn *extensionExecute() override;
+    short extensionMustExecute() override;
+    void extensionOnChanged(const Property* p) override;
+    void onExtendedUnsetupObject () override;
+    void onExtendedDocumentRestored() override;
 
-    virtual int extensionSetElementVisible(const char *, bool) override;
-    virtual int extensionIsElementVisible(const char *) override;
-    virtual bool extensionHasChildElement() const override;
+    int extensionSetElementVisible(const char *, bool) override;
+    int extensionIsElementVisible(const char *) override;
+    bool extensionHasChildElement() const override;
 
-    virtual PyObject* getExtensionPyObject(void) override;
+    PyObject* getExtensionPyObject() override;
 
-    virtual Property *extensionGetPropertyByName(const char* name) const override;
+    Property *extensionGetPropertyByName(const char* name) const override;
 
     static int getArrayIndex(const char *subname, const char **psubname=nullptr);
     int getElementIndex(const char *subname, const char **psubname=nullptr) const;
@@ -409,7 +409,7 @@ class AppExport LinkExtension : public LinkBaseExtension
 
 public:
     LinkExtension();
-    virtual ~LinkExtension();
+    ~LinkExtension() override;
 
     /** \name Helpers for defining extended parameter
      *
@@ -536,9 +536,9 @@ public:
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
-    Link(void);
+    Link();
 
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "Gui::ViewProviderLink";
     }
 
@@ -581,7 +581,7 @@ public:
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
 
     LinkElement();
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "Gui::ViewProviderLink";
     }
 
@@ -620,7 +620,7 @@ public:
 
     LinkGroup();
 
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "Gui::ViewProviderLink";
     }
 

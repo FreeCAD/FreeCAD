@@ -45,7 +45,7 @@ class BaseExport StdInputStream : public XERCES_CPP_NAMESPACE_QUALIFIER BinInput
 {
 public :
   StdInputStream ( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager = XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager );
-  virtual ~StdInputStream();
+  ~StdInputStream() override;
 
   // -----------------------------------------------------------------------
   //  Implementation of the input stream interface
@@ -54,9 +54,9 @@ public :
   virtual unsigned int curPos() const;
   virtual unsigned int readBytes( XMLByte* const toFill, const unsigned int maxToRead );
 #else
-  virtual XMLFilePos curPos() const;
-  virtual XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead );
-  virtual const XMLCh* getContentType() const {return nullptr;}
+  XMLFilePos curPos() const override;
+  XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead ) override;
+  const XMLCh* getContentType() const override {return nullptr;}
 #endif
 
 private :
@@ -83,9 +83,9 @@ class BaseExport StdInputSource : public XERCES_CPP_NAMESPACE_QUALIFIER InputSou
 {
 public :
   StdInputSource ( std::istream& Stream, const char* filePath, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager = XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager );
-   ~StdInputSource();
+   ~StdInputSource() override;
 
-  virtual XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream* makeStream() const;
+  XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream* makeStream() const override;
 
 private:
   StdInputSource(const StdInputSource&);

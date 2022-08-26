@@ -59,10 +59,10 @@ public:
 class InspectionExport InspectActualMesh : public InspectActualGeometry
 {
 public:
-    InspectActualMesh(const Mesh::MeshObject& rMesh);
-    ~InspectActualMesh();
-    virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    explicit InspectActualMesh(const Mesh::MeshObject& rMesh);
+    ~InspectActualMesh() override;
+    unsigned long countPoints() const override;
+    Base::Vector3f getPoint(unsigned long) const override;
 
 private:
     const MeshCore::MeshKernel& _mesh;
@@ -73,9 +73,9 @@ private:
 class InspectionExport InspectActualPoints : public InspectActualGeometry
 {
 public:
-    InspectActualPoints(const Points::PointKernel&);
-    virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    explicit InspectActualPoints(const Points::PointKernel&);
+    unsigned long countPoints() const override;
+    Base::Vector3f getPoint(unsigned long) const override;
 
 private:
     const Points::PointKernel& _rKernel;
@@ -84,9 +84,9 @@ private:
 class InspectionExport InspectActualShape : public InspectActualGeometry
 {
 public:
-    InspectActualShape(const Part::TopoShape&);
-    virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    explicit InspectActualShape(const Part::TopoShape&);
+    unsigned long countPoints() const override;
+    Base::Vector3f getPoint(unsigned long) const override;
 
 private:
     const Part::TopoShape& _rShape;
@@ -106,8 +106,8 @@ class InspectionExport InspectNominalMesh : public InspectNominalGeometry
 {
 public:
     InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset);
-    ~InspectNominalMesh();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalMesh() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 private:
     const MeshCore::MeshKernel& _mesh;
@@ -121,8 +121,8 @@ class InspectionExport InspectNominalFastMesh : public InspectNominalGeometry
 {
 public:
     InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset);
-    ~InspectNominalFastMesh();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalFastMesh() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 protected:
     const MeshCore::MeshKernel& _mesh;
@@ -137,8 +137,8 @@ class InspectionExport InspectNominalPoints : public InspectNominalGeometry
 {
 public:
     InspectNominalPoints(const Points::PointKernel&, float offset);
-    ~InspectNominalPoints();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalPoints() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 private:
     const Points::PointKernel& _rKernel;
@@ -149,8 +149,8 @@ class InspectionExport InspectNominalShape : public InspectNominalGeometry
 {
 public:
     InspectNominalShape(const TopoDS_Shape&, float offset);
-    ~InspectNominalShape();
-    virtual float getDistance(const Base::Vector3f&) const;
+    ~InspectNominalShape() override;
+    float getDistance(const Base::Vector3f&) const override;
 
 private:
     BRepExtrema_DistShapeShape* distss;
@@ -160,7 +160,7 @@ private:
 
 class InspectionExport PropertyDistanceList: public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -174,10 +174,10 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    virtual ~PropertyDistanceList();
+    ~PropertyDistanceList() override;
     
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    void setSize(int newSize) override;
+    int getSize() const override;
 
     /** Sets the property 
      */
@@ -189,20 +189,20 @@ public:
     void set1Value (const int idx, float value){_lValueList.operator[] (idx) = value;}
     void setValues (const std::vector<float>& values);
     
-    const std::vector<float> &getValues(void) const{return _lValueList;}
+    const std::vector<float> &getValues() const{return _lValueList;}
     
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
     
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
     
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    Property *Copy() const override;
+    void Paste(const Property &from) override;
+    unsigned int getMemSize () const override;
 
 private:
     std::vector<float> _lValueList;
@@ -215,12 +215,12 @@ private:
  */
 class InspectionExport Feature : public App::DocumentObject
 {
-    PROPERTY_HEADER(Inspection::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Inspection::Feature);
 
 public:
     /// Constructor
-    Feature(void);
-    virtual ~Feature();
+    Feature();
+    ~Feature() override;
 
     /** @name Properties */
     //@{
@@ -233,27 +233,27 @@ public:
 
     /** @name Actions */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     /// recalculate the Feature
-    App::DocumentObjectExecReturn* execute(void);
+    App::DocumentObjectExecReturn* execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const 
+    const char* getViewProviderName() const override
     { return "InspectionGui::ViewProviderInspection"; }
 };
 
 class InspectionExport Group : public App::DocumentObjectGroup
 {
-    PROPERTY_HEADER(Inspection::Group);
+    PROPERTY_HEADER_WITH_OVERRIDE(Inspection::Group);
 
 public:
     /// Constructor
-    Group(void);
-    virtual ~Group();
+    Group();
+    ~Group() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const 
+    const char* getViewProviderName() const override
     { return "InspectionGui::ViewProviderInspectionGroup"; }
 };
 

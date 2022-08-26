@@ -25,6 +25,7 @@
 
 #include <QDialog>
 #include <QProcess>
+#include <FCGlobal.h>
 
 namespace Gui {
 namespace Dialog {
@@ -40,19 +41,19 @@ class GuiExport DlgRunExternal : public QDialog
     Q_OBJECT
 
 public:
-    DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    virtual ~DlgRunExternal();
+    explicit DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgRunExternal() override;
 
-    int Do(void);
+    int Do();
 
     QString ProcName;
     QStringList arguments;
 
 protected Q_SLOTS:
-    virtual void reject(void);
-    virtual void accept(void);
-    virtual void abort(void);
-    virtual void advanced(void);
+    void reject() override;
+    void accept() override;
+    virtual void abort();
+    virtual void advanced();
     void finished (int exitCode, QProcess::ExitStatus exitStatus);
     void on_chooseProgram_clicked();
 

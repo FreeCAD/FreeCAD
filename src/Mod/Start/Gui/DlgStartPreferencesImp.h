@@ -34,13 +34,13 @@ namespace StartGui {
         Q_OBJECT
 
     public:
-        DlgStartPreferencesImp( QWidget* parent = nullptr );
-        ~DlgStartPreferencesImp();
+        explicit DlgStartPreferencesImp( QWidget* parent = nullptr );
+        ~DlgStartPreferencesImp() override;
 
     protected:
-        void saveSettings();
-        void loadSettings();
-        void changeEvent(QEvent *e);
+        void saveSettings() override;
+        void loadSettings() override;
+        void changeEvent(QEvent *e) override;
 
     private:
         std::unique_ptr<Ui_DlgStartPreferences> ui;

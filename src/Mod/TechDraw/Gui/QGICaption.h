@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGICAPTION_H
 #define DRAWINGGUI_QGICAPTION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGCustomText.h"
 
 namespace TechDrawGui

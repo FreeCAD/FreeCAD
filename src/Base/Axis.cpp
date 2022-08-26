@@ -26,10 +26,7 @@
 
 using namespace Base;
 
-Axis::Axis()
-{
-
-}
+Axis::Axis() = default;
 
 Axis::Axis(const Axis& that)
 {

@@ -343,8 +343,8 @@ namespace MeshCore {
 class FitPointCollector : public MeshCollector
 {
 public:
-    FitPointCollector(std::set<PointIndex>& ind) : indices(ind){}
-    virtual void Append(const MeshCore::MeshKernel& kernel, FacetIndex index)
+    explicit FitPointCollector(std::set<PointIndex>& ind) : indices(ind){}
+    void Append(const MeshCore::MeshKernel& kernel, FacetIndex index) override
     {
         PointIndex ulP1, ulP2, ulP3;
         kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);

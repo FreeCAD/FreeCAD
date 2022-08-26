@@ -536,7 +536,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         return;
     if(selContext2->checkGlobal(ctx))
         ctx = selContext2;
-    if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
+    if(ctx && (ctx->selectionIndex.empty() && ctx->highlightIndex<0))
         ctx.reset();
 
     auto state = action->getState();
@@ -592,7 +592,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
         if(!action->isRenderingDelayedPaths())
             renderHighlight(action,ctx);
-        if(ctx && ctx->selectionIndex.size()) {
+        if(ctx && !ctx->selectionIndex.empty()) {
             if(ctx->isSelectAll()) {
                 if(ctx2) {
                     ctx2->selectionColor = ctx->selectionColor;
@@ -735,7 +735,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
         &&
        ((ctx && Gui::Selection().needPickedList()) || 
         trans0!=0.0 ||
-        (ctx2 && ctx2->colors.size())))
+        (ctx2 && !ctx2->colors.empty())))
     {
         state->push();
 
@@ -857,7 +857,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
                 }
             }
 
-            if(ctx && ctx->selectionIndex.size()) {
+            if(ctx && !ctx->selectionIndex.empty()) {
                 packedColors.push_back(ctx->selectionColor.getPackedValue(trans0));
                 for(auto idx : ctx->selectionIndex) {
                     if(idx>=0 && idx<partIndex.getNum())
@@ -1052,14 +1052,15 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
         }
         else {
             tbind = PER_VERTEX_INDEXED;
-            if (tindices == nullptr) tindices = cindices;
+            if (!tindices)
+                tindices = cindices;
         }
     }
 
-    if (nbind == PER_VERTEX_INDEXED && nindices == nullptr) {
+    if (nbind == PER_VERTEX_INDEXED && !nindices) {
         nindices = cindices;
     }
-    if (mbind == PER_VERTEX_INDEXED && mindices == nullptr) {
+    if (mbind == PER_VERTEX_INDEXED && !mindices) {
         mindices = cindices;
     }
 

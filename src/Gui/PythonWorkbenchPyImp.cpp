@@ -40,7 +40,7 @@ using namespace Gui;
  */
 
 // returns a string which represent the object e.g. when printed in python
-std::string PythonWorkbenchPy::representation(void) const
+std::string PythonWorkbenchPy::representation() const
 {
     return std::string("<Workbench object>");
 }
@@ -62,14 +62,14 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pPath, j);
                 if (PyUnicode_Check(item)) {
                     const char* pItem = PyUnicode_AsUTF8(item);
-                    path.push_back(pItem);
+                    path.emplace_back(pItem);
                 } else {
                     continue;
                 }
             }
         } else if (PyUnicode_Check(pPath)) {
             const char* pItem = PyUnicode_AsUTF8(pPath);
-            path.push_back(pItem);
+            path.emplace_back(pItem);
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
             return nullptr;
@@ -83,14 +83,14 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pItems, i);
                 if (PyUnicode_Check(item)) {
                     const char* pItem = PyUnicode_AsUTF8(item);
-                    items.push_back(pItem);
+                    items.emplace_back(pItem);
                 } else {
                     continue;
                 }
             }
         } else if (PyUnicode_Check(pItems)) {
             const char* pItem = PyUnicode_AsUTF8(pItems);
-            items.push_back(pItem);
+            items.emplace_back(pItem);
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
             return nullptr;
@@ -132,14 +132,14 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pPath, j);
                 if (PyUnicode_Check(item)) {
                     const char* pItem = PyUnicode_AsUTF8(item);
-                    path.push_back(pItem);
+                    path.emplace_back(pItem);
                 } else {
                     continue;
                 }
             }
         } else if (PyUnicode_Check(pPath)) {
             const char* pItem = PyUnicode_AsUTF8(pPath);
-            path.push_back(pItem);
+            path.emplace_back(pItem);
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
             return nullptr;
@@ -153,14 +153,14 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
                 PyObject* item = PyList_GetItem(pItems, i);
                 if (PyUnicode_Check(item)) {
                     const char* pItem = PyUnicode_AsUTF8(item);
-                    items.push_back(pItem);
+                    items.emplace_back(pItem);
                 } else {
                     continue;
                 }
             }
         } else if (PyUnicode_Check(pItems)) {
             const char* pItem = PyUnicode_AsUTF8(pItems);
-            items.push_back(pItem);
+            items.emplace_back(pItem);
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
             return nullptr;
@@ -204,7 +204,7 @@ PyObject*  PythonWorkbenchPy::appendToolbar(PyObject *args)
             PyObject* item = PyList_GetItem(pObject, i);
             if (PyUnicode_Check(item)) {
                 const char* pItem = PyUnicode_AsUTF8(item);
-                items.push_back(pItem);
+                items.emplace_back(pItem);
             } else {
                 continue;
             }
@@ -247,7 +247,7 @@ PyObject*  PythonWorkbenchPy::appendCommandbar(PyObject *args)
             PyObject* item = PyList_GetItem(pObject, i);
             if (PyUnicode_Check(item)) {
                 const char* pItem = PyUnicode_AsUTF8(item);
-                items.push_back(pItem);
+                items.emplace_back(pItem);
             } else {
                 continue;
             }

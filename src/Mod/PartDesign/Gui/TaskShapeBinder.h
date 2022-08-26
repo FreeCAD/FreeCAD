@@ -51,14 +51,14 @@ class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
-    ~TaskShapeBinder();
+    explicit TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
+    ~TaskShapeBinder() override;
 
     void accept();
 
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd };
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     selectionModes selectionMode = none;
     
     void removeFromListWidget(QListWidget *w, QString name);
@@ -67,7 +67,7 @@ protected:
 private:
     void setupButtonGroup();
     void setupContextMenu();
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void onButtonToggled(QAbstractButton *button, bool checked);
     void updateUI();
     void supportChanged(const QString&);
@@ -91,14 +91,14 @@ class TaskDlgShapeBinder : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
-    ~TaskDlgShapeBinder();
+    explicit TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
+    ~TaskDlgShapeBinder() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
 
 protected:
     TaskShapeBinder  *parameter;

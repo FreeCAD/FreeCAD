@@ -73,7 +73,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
     const Part::TopoShape& TopShape = base->Shape.getShape();
 
     const std::vector<std::string>& SubVals = Source.getSubValuesStartsWith("Edge");
-    if (SubVals.size() == 0)
+    if (SubVals.empty())
         return new App::DocumentObjectExecReturn("No Edges specified");
 
     // container for all the edges 
@@ -89,7 +89,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
     Part::Edgecluster acluster(edges);
     Part::tEdgeClusterVector aclusteroutput = acluster.GetClusters();
 
-    if(aclusteroutput.size() == 0)
+    if(aclusteroutput.empty())
         return new App::DocumentObjectExecReturn("No Edges specified");
 
     // set the number of cluster and edges 

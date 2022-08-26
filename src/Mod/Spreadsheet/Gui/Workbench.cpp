@@ -78,7 +78,7 @@ void Workbench::activated()
             QPalette palette = Gui::getMainWindow()->palette();
 
             QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
-            if (fgList.size() > 0)
+            if (!fgList.empty())
                 foregroundColor = fgList[0];
             else {
                 foregroundColor = new QtColorPicker();
@@ -93,7 +93,7 @@ void Workbench::activated()
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
-            if (bgList.size() > 0)
+            if (!bgList.empty())
                 backgroundColor = bgList[0];
             else {
                 backgroundColor = new QtColorPicker();
@@ -125,7 +125,7 @@ void WorkbenchHelper::setForegroundColor(const QColor & color)
             std::vector<Range> ranges = sheetView->selectedRanges();
 
             // Execute mergeCells commands
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set foreground color"));
@@ -152,7 +152,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor & color)
             std::vector<Range> ranges = sheetView->selectedRanges();
 
             // Execute mergeCells commands
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set background color"));

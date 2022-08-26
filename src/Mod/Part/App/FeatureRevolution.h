@@ -51,13 +51,13 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
 
     void onChanged(const App::Property* prop) override;
 
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override{
+    const char* getViewProviderName() const override{
         return "PartGui::ViewProviderRevolution";
     }
     //@}
@@ -83,7 +83,7 @@ private:
     static App::PropertyFloatConstraint::Constraints angleRangeU;
 
 protected:
-    virtual void setupObject() override;
+    void setupObject() override;
 };
 
 } //namespace Part

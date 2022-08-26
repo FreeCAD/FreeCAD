@@ -48,7 +48,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string CosmeticEdgePy::representation(void) const
+std::string CosmeticEdgePy::representation() const
 {
     std::stringstream ss;
     ss << "<CosmeticEdge object> at " << std::hex << this;
@@ -157,7 +157,7 @@ void CosmeticEdgePy::setFormat(Py::Object arg)
     }
 }
 
-Py::Object CosmeticEdgePy::getFormat(void) const
+Py::Object CosmeticEdgePy::getFormat() const
 {
     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
 
@@ -176,7 +176,7 @@ Py::Object CosmeticEdgePy::getFormat(void) const
     return Py::asObject(result);
 }
 
-Py::String CosmeticEdgePy::getTag(void) const
+Py::String CosmeticEdgePy::getTag() const
 {
     std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getTag());
     return Py::String(tmp);
@@ -211,7 +211,7 @@ Py::String CosmeticEdgePy::getTag(void) const
 //    }
 //}
 
-Py::Object CosmeticEdgePy::getStart(void) const
+Py::Object CosmeticEdgePy::getStart() const
 {
     Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
     point = DrawUtil::invertY(point);
@@ -245,7 +245,7 @@ void CosmeticEdgePy::setStart(Py::Object arg)
 //    delete oldGeom;
 }
 
-Py::Object CosmeticEdgePy::getEnd(void) const
+Py::Object CosmeticEdgePy::getEnd() const
 {
     Base::Vector3d point = getCosmeticEdgePtr()->permaEnd;
     point = DrawUtil::invertY(point);
@@ -279,7 +279,7 @@ void CosmeticEdgePy::setEnd(Py::Object arg)
 //    delete oldGeom;
 }
 
-Py::Object CosmeticEdgePy::getRadius(void) const
+Py::Object CosmeticEdgePy::getRadius() const
 {
     TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
@@ -322,7 +322,7 @@ void CosmeticEdgePy::setRadius(Py::Object arg)
 //    delete oldGeom;
 }
 
-Py::Object CosmeticEdgePy::getCenter(void) const
+Py::Object CosmeticEdgePy::getCenter() const
 {
     TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
@@ -363,7 +363,7 @@ void CosmeticEdgePy::setCenter(Py::Object arg)
     pNew = DrawUtil::invertY(pNew);
     auto oldGeom = getCosmeticEdgePtr()->m_geometry;
     TechDraw::CirclePtr oldCircle = std::dynamic_pointer_cast<TechDraw::Circle> (oldGeom);
-    if (oldCircle == nullptr) {
+    if (!oldCircle) {
         throw Py::TypeError("Edge geometry is not a circle");
     }
 

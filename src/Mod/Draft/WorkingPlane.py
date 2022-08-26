@@ -571,7 +571,7 @@ class Plane:
 
         See Also
         --------
-        alignToPointAndAxis, DraftGeomUtils.getQuad
+        alignToPointAndAxis
         """
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
@@ -579,22 +579,28 @@ class Plane:
                 place = parent.getGlobalPlacement()
             else:
                 place = FreeCAD.Placement()
-            cen = place.multVec(shape.Faces[0].CenterOfMass)
-            place.Base = FreeCAD.Vector(0, 0, 0) # Reset the Base for the conversion of the normal.
-            nor = place.multVec(shape.Faces[0].normalAt(0, 0))
+            rot = place.Rotation
+
+            cen = place.multVec(shape.CenterOfMass)
+            nor = rot.multVec(shape.normalAt(0, 0))
             self.alignToPointAndAxis(cen, nor, offset)
-            import DraftGeomUtils
-            q = DraftGeomUtils.getQuad(shape)
-            if q:
-                self.u = place.multVec(q[1])
-                self.v = place.multVec(q[2])
-                if not DraftVecUtils.equals(self.u.cross(self.v), self.axis):
-                    self.u, self.v = self.v, self.u
-                if DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
-                    # the X axis is vertical: rotate 90 degrees
-                    self.u, self.v = self.v.negative(), self.u
-                elif DraftVecUtils.equals(self.u, Vector(0, 0, -1)):
-                    self.u, self.v = self.v, self.u.negative()
+
+            pmr = shape.ParameterRange # (uMin, uMax, vMin, vMax)
+            u = shape.valueAt(pmr[1], 0).sub(shape.valueAt(pmr[0], 0))
+            v = shape.valueAt(0, pmr[3]).sub(shape.valueAt(0, pmr[2]))
+            self.u = rot.multVec(u).normalize()
+            self.v = rot.multVec(v).normalize()
+
+            if shape.Orientation == "Reversed":
+                self.u, self.v = self.v, self.u
+
+            # If self.u or self.v matches a wrong global axis, rotate them:
+            if DraftVecUtils.equals(self.v, Vector(0, 0, -1)):
+                self.u, self.v = self.u.negative(), self.v.negative()
+            elif DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
+                self.u, self.v = self.v.negative(), self.u
+            elif DraftVecUtils.equals(self.u, Vector(0, 0, -1)):
+                self.u, self.v = self.v, self.u.negative()
 
             self.weak = False
             return True

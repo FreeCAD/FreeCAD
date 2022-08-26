@@ -144,8 +144,8 @@ void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
     QTreeWidgetItem* ExpandItem;
 
     // at first reset all items to the default font and expand state
-    if (foundList.size() > 0) {
-        for (QTreeWidgetItem* item : foundList) {
+    if (!foundList.empty()) {
+        for (QTreeWidgetItem* item : qAsConst(foundList)) {
             item->setFont(0, defaultFont);
             item->setForeground(0, defaultColor);
             ExpandItem = item;
@@ -172,11 +172,11 @@ void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
 
     // search the tree widget
     foundList = paramGroup->findItems(SearchStr, Qt::MatchContains | Qt::MatchRecursive);
-    if (foundList.size() > 0) {
+    if (!foundList.empty()) {
         // reset background style sheet
         if (!ui->findGroupLE->styleSheet().isEmpty())
             ui->findGroupLE->setStyleSheet(QString());
-        for (QTreeWidgetItem* item : foundList) {
+        for (QTreeWidgetItem* item : qAsConst(foundList)) {
             item->setFont(0, boldFont);
             item->setForeground(0, Qt::red);
             // expand its parent to see the item
@@ -937,7 +937,7 @@ ParameterGroupItem::~ParameterGroupItem()
     _hcGrp->ClearObserver();
 }
 
-void ParameterGroupItem::fillUp(void)
+void ParameterGroupItem::fillUp()
 {
     // filling up groups
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();

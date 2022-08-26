@@ -62,7 +62,7 @@ class fdoutbuf : public std::streambuf {
     }
   protected:
     // write one character
-    virtual int_type overflow (int_type c) {
+    int_type overflow (int_type c) override {
         if (c != EOF) {
             char z = c;
 #ifdef _MSC_VER
@@ -76,9 +76,9 @@ class fdoutbuf : public std::streambuf {
         return c;
     }
     // write multiple characters
-    virtual
+
     std::streamsize xsputn (const char* s,
-                            std::streamsize num) {
+                            std::streamsize num) override {
 #ifdef _MSC_VER
         return _write(fd,s,num);
 #else
@@ -129,7 +129,7 @@ class fdinbuf : public std::streambuf {
 
   protected:
     // insert new characters into the buffer
-    virtual int_type underflow () {
+    int_type underflow () override {
 #ifndef _MSC_VER
 using std::memcpy;
 #endif

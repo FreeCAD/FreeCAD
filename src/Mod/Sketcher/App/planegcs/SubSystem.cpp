@@ -68,7 +68,7 @@ void SubSystem::initialize(VEC_pD &params, MAP_pD_pD &reductionmap)
 
     plist.clear();
     MAP_pD_I rindex;
-    if (reductionmap.size() > 0) {
+    if (!reductionmap.empty()) {
         int i=0;
         MAP_pD_I pindex;
         for (VEC_pD::const_iterator itt=tmpplist.begin();

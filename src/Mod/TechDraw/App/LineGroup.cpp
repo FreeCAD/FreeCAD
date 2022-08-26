@@ -31,7 +31,9 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 
 #include "Preferences.h"
 #include "LineGroup.h"
@@ -54,7 +56,7 @@ LineGroup::~LineGroup()
 {
 }
 
-void LineGroup::init(void)
+void LineGroup::init()
 {
     m_name    = "Default";
     m_thin    = 0.35;
@@ -130,8 +132,8 @@ std::vector<double> LineGroup::split(std::string line)
 std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
 {
     std::string record;
-    std::ifstream inFile;
-    inFile.open (parmFile, std::ifstream::in);
+    Base::FileInfo fi(parmFile);
+    Base::ifstream inFile(fi, std::ifstream::in);
     if(!inFile.is_open()) {
         Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
         return record;
@@ -178,15 +180,19 @@ LineGroup* LineGroup::lineGroupFactory(int groupNumber)
     return lg;
 }
 
-//valid weight names: Thick, Thin, Graphic, Extra
-double LineGroup::getDefaultWidth(std::string weightName, int groupNumber)
+/**
+ * @brief Returns the default line width given a weight name and group number.
+ * 
+ * @param weightName can be "Thick", "Thin", "Graphic" or "Extra"
+ * @param lineGroupNumber if -1 will then use groupNumber in preferences. Default value is -1.
+ * @return the default line width.
+ */
+double LineGroup::getDefaultWidth(std::string weightName, int lineGroupNumber)
 {
-    //default line weights
-    int lgNumber = groupNumber;
-    if (lgNumber == -1) {
-        lgNumber = Preferences::lineGroup();
+    if (lineGroupNumber == -1) {
+        lineGroupNumber = Preferences::lineGroup();
     }
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lineGroupNumber);
 
     double weight = lg->getWeight(weightName);
     delete lg;
@@ -197,8 +203,8 @@ double LineGroup::getDefaultWidth(std::string weightName, int groupNumber)
 std::string LineGroup::getGroupNamesFromFile(std::string FileName)
 {
     std::string record;
-    std::ifstream inFile;
-    inFile.open(FileName, std::ifstream::in);
+    Base::FileInfo fi(FileName);
+    Base::ifstream inFile(fi, std::ifstream::in);
     if (!inFile.is_open()) {
         Base::Console().Message("Cannot open LineGroup file: %s\n", FileName.c_str());
         return record;

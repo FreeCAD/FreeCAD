@@ -31,7 +31,6 @@ __url__ = "https://www.freecadweb.org"
 #  \brief FreeCAD FEM _ViewProviderFemMaterial
 #  \brief task panel for common material object
 
-import sys
 from PySide import QtCore
 from PySide import QtGui
 
@@ -42,8 +41,7 @@ from FreeCAD import Units
 from femguiutils import selection_widgets
 
 
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 
 class _TaskPanel:
@@ -138,11 +136,13 @@ class _TaskPanel:
         self.toggleInputFieldsReadOnly()
 
         # hide some groupBox according to material category
+        # note: input_fd_vol_expansion_coefficient is currently not used
+        #       it might be used in future for solids
         self.parameterWidget.label_category.setText(self.obj.Category)
         if self.obj.Category == "Fluid":
             self.parameterWidget.groupBox_mechanical.setVisible(0)
-            self.parameterWidget.label_expansion_coefficient.setVisible(0)
-            self.parameterWidget.input_fd_expansion_coefficient.setVisible(0)
+            self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
+            self.parameterWidget.input_fd_vol_expansion_coefficient.setVisible(0)
         else:
             self.parameterWidget.groupBox_fluidic.setVisible(0)
             self.parameterWidget.label_vol_expansion_coefficient.setVisible(0)
@@ -265,10 +265,9 @@ class _TaskPanel:
     # choose material ****************************************************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
+            # check if every item of the current material fits to a known material card
+            # if all items were found we know it is the right card
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
-            # print(a_mat + "  -->  unmatched_items = " + str(len(unmatched_items)))
-            # if len(unmatched_items) < 4:
-            #     print(unmatched_items)
             if len(unmatched_items) == 0:
                 return a_mat
         return ""
@@ -475,7 +474,7 @@ class _TaskPanel:
                     "ThermalExpansionCoefficient not found in {}\n"
                     .format(self.material["Name"])
                 )
-                self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
+                self.material["ThermalExpansionCoefficient"] = "0 1/K"
             if "VolumetricThermalExpansionCoefficient" in self.material:
                 # unit type VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
                 vol_ther_ex_co = self.material["VolumetricThermalExpansionCoefficient"]
@@ -487,10 +486,9 @@ class _TaskPanel:
                     )
                     self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
             else:
-                if "ThermalExpansionCoefficient" in self.material:
-                    the_index = "VolumetricThermalExpansionCoefficient"  # line was to long
-                    self.material[the_index] = self.material["ThermalExpansionCoefficient"]
-                else:
+                # as fallback only add VolumetricThermalExpansionCoefficient if there is no
+                # ThermalExpansionCoefficient
+                if "ThermalExpansionCoefficient" not in self.material:
                     self.material["VolumetricThermalExpansionCoefficient"] = "0 1/K"
         # Thermal properties
         if "ThermalConductivity" in self.material:

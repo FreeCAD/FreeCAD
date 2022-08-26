@@ -24,6 +24,8 @@
 #ifndef _TECHDRAW_FEATUREVIEWCOLLECTION_h_
 #define _TECHDRAW_FEATUREVIEWCOLLECTION_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 
@@ -36,36 +38,36 @@ namespace TechDraw
  */
 class TechDrawExport DrawViewCollection : public DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewCollection);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewCollection);
 
 public:
     App::PropertyLinkList Views;
 public:
     /// Constructor
     DrawViewCollection();
-    virtual ~DrawViewCollection();
-    short mustExecute() const;
+    ~DrawViewCollection() override;
+    short mustExecute() const override;
 
     int addView(DrawView *view);
     int removeView(DrawView *view);
-    void rebuildViewList(void);
-    bool isUnsetting(void) { return nowUnsetting; }
+    void rebuildViewList();
+    bool isUnsetting() { return nowUnsetting; }
 
     int countChildren();
-    void lockChildren(void);
+    void lockChildren();
 
-    virtual void onDocumentRestored();
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void unsetupObject();
+    void onDocumentRestored() override;
+    App::DocumentObjectExecReturn *execute() override;
+    void unsetupObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderViewCollection";
     }
-    virtual QRectF getRect(void) const;
+    QRectF getRect() const override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
     bool nowUnsetting;
 };
 

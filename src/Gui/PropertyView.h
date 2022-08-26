@@ -56,8 +56,8 @@ class PropertyView : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    PropertyView(QWidget *parent=nullptr);
-    virtual ~PropertyView();
+    explicit PropertyView(QWidget *parent=nullptr);
+    ~PropertyView() override;
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
     Gui::PropertyEditor::PropertyEditor* propertyEditorData;
@@ -120,8 +120,8 @@ class PropertyDockView : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
-    virtual ~PropertyDockView();
+    explicit PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
+    ~PropertyDockView() override;
 };
 
 } // namespace DockWnd

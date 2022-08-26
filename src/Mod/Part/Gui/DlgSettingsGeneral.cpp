@@ -31,6 +31,7 @@
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
+#include <Mod/Part/App/ImportStep.h>
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
@@ -216,6 +217,18 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
     QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
     authorValidator->setRegExp(rx);
     ui->lineEditAuthor->setValidator(authorValidator);
+
+    Part::ImportExportSettings settings;
+    ui->checkBoxMergeCompound->setChecked(settings.getReadShapeCompoundMode());
+    ui->checkBoxExportHiddenObj->setChecked(settings.getExportHiddenObject());
+    ui->checkBoxImportHiddenObj->setChecked(settings.getImportHiddenObject());
+    ui->checkBoxExportLegacy->setChecked(settings.getExportLegacy());
+    ui->checkBoxKeepPlacement->setChecked(settings.getExportKeepPlacement());
+    ui->checkBoxUseLinkGroup->setChecked(settings.getUseLinkGroup());
+    ui->checkBoxUseBaseName->setChecked(settings.getUseBaseName());
+    ui->checkBoxReduceObjects->setChecked(settings.getReduceObjects());
+    ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
+    ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
 }
 
 /**

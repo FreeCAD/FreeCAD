@@ -44,20 +44,20 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     edges : int
         Number of edges of the polygon.
 
-    radius : 
+    radius :
         Radius of the control circle.
 
     inscribed : bool
         Defines is the polygon is inscribed or not into the control circle.
 
     placement : Base.Placement
-        If placement is given, it is used. 
-    
+        If placement is given, it is used.
+
     face : bool
-        If face is True, the resulting shape is displayed as a face, 
+        If face is True, the resulting shape is displayed as a face,
         otherwise as a wireframe.
-    
-    support : 
+
+    support :
         TODO: Describe
     """
     if not App.ActiveDocument:
@@ -68,7 +68,7 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     Polygon(obj)
     obj.FacesNumber = nfaces
     obj.Radius = radius
-    if face != None:
+    if face is not None:
         obj.MakeFace = face
     if inscribed:
         obj.DrawMode = "inscribed"

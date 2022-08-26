@@ -31,10 +31,10 @@ namespace SurfaceGui
 
 class ViewProviderExtend : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderExtend);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderExtend);
 
 public:
-    QIcon getIcon(void) const;
+    QIcon getIcon() const override;
 };
 
 } //namespace SurfaceGui

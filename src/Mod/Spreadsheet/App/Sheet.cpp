@@ -208,7 +208,7 @@ bool Sheet::importFromFile(const std::string &filename, char delimiter, char quo
                 tokenizer<escaped_list_separator<char> > tok(line, e);
 
                 for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
-                    if ((*i).size() > 0)
+                    if (!i->empty())
                         setCell(CellAddress(row, col), (*i).c_str());
                     col++;
                 }
@@ -266,10 +266,11 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
 
 bool Sheet::exportToFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar) const
 {
-    std::ofstream file;
+    Base::ofstream file;
     int prevRow = -1, prevCol = -1;
 
-    file.open(filename.c_str(), std::ios::out | std::ios::ate | std::ios::binary);
+    Base::FileInfo fi(filename);
+    file.open(fi, std::ios::out | std::ios::ate | std::ios::binary);
 
     if (!file.is_open())
         return false;
@@ -368,7 +369,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 {
      Cell * cell = getCell(address);
 
-    if (cell == nullptr)
+    if (!cell)
         cell = cells.createCell(address);
 
     return cell;
@@ -384,7 +385,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 
 void Sheet::setCell(const char * address, const char * contents)
 {
-    assert(address != nullptr &&  contents != nullptr);
+    assert(address && contents);
 
     setCell(CellAddress(address), contents);
 }
@@ -400,7 +401,7 @@ void Sheet::setCell(const char * address, const char * contents)
 
 void Sheet::setCell(CellAddress address, const char * value)
 {
-    assert(value != nullptr);
+    assert(value);
 
 
     if (*value == '\0') {
@@ -672,7 +673,7 @@ void Sheet::updateProperty(CellAddress key)
 {
     Cell * cell = getCell(key);
 
-    if (cell != nullptr) {
+    if (cell) {
         std::unique_ptr<Expression> output;
         const Expression * input = cell->getExpression();
 
@@ -930,7 +931,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
     std::map<CellAddress, Vertex> VertexList;
     std::map<Vertex, CellAddress> VertexIndexList;
     std::deque<CellAddress> workQueue(dirtyCells.begin(),dirtyCells.end());
-    while(workQueue.size()) {
+    while(!workQueue.empty()) {
         CellAddress currPos = workQueue.front();
         workQueue.pop_front();
 
@@ -978,7 +979,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
         }
 
         // Try to be more user friendly by finding individual loops
-        while(dirtyCells.size()) {
+        while(!dirtyCells.empty()) {
 
             std::deque<CellAddress> workQueue;
             DependencyList graph;
@@ -989,7 +990,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
             workQueue.push_back(currentAddr);
             dirtyCells.erase(dirtyCells.begin());
 
-            while (workQueue.size() > 0) {
+            while (!workQueue.empty()) {
                 CellAddress currPos = workQueue.front();
                 workQueue.pop_front();
 
@@ -1057,7 +1058,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
     rowHeights.clearDirty();
     columnWidths.clearDirty();
 
-    if (cellErrors.size() == 0)
+    if (cellErrors.empty())
         return DocumentObject::StdReturn;
     else
         return new DocumentObjectExecReturn("One or more cells failed contains errors.", this);
@@ -1070,7 +1071,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
 
 short Sheet::mustExecute(void) const
 {
-    if (cellErrors.size() > 0 || cells.isDirty())
+    if (!cellErrors.empty() || cells.isDirty())
         return 1;
     return DocumentObject::mustExecute();
 }
@@ -1381,13 +1382,13 @@ void Sheet::setAlias(CellAddress address, const std::string &alias)
 {
     std::string existingAlias = getAddressFromAlias(alias);
 
-    if (existingAlias.size() > 0) {
+    if (!existingAlias.empty()) {
         if (existingAlias == address.toString()) // Same as old?
             return;
         else
             throw Base::ValueError("Alias already defined");
     }
-    else if (alias.size() == 0) // Empty?
+    else if (alias.empty()) // Empty?
         cells.setAlias(address, "");
     else if (isValidAlias(alias)) // Valid?
         cells.setAlias(address, alias);
@@ -1427,7 +1428,7 @@ bool Sheet::isValidAlias(const std::string & candidate)
         return false;
 
     // Existing alias? Then it's ok
-    if (getAddressFromAlias(candidate).size() > 0 )
+    if (!getAddressFromAlias(candidate).empty() )
         return true;
 
     // Check to see that is does not crash with any other property in the Sheet object.
@@ -1633,10 +1634,10 @@ void PropertySpreadsheetQuantity::Paste(const Property &from)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
-template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
+template<> const char* Spreadsheet::SheetPython::getViewProviderName() const {
     return "SpreadsheetGui::ViewProviderSheet";
 }
-template<> PyObject* Spreadsheet::SheetPython::getPyObject(void) {
+template<> PyObject* Spreadsheet::SheetPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<Spreadsheet::SheetPy>(this),true);

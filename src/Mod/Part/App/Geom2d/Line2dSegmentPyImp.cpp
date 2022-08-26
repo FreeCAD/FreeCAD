@@ -41,7 +41,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string Line2dSegmentPy::representation(void) const
+std::string Line2dSegmentPy::representation() const
 {
     return "<Line2dSegment object>";
 }
@@ -192,7 +192,7 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject *args)
     Py_Return; 
 }
 
-Py::Object Line2dSegmentPy::getStartPoint(void) const
+Py::Object Line2dSegmentPy::getStartPoint() const
 {
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
@@ -246,7 +246,7 @@ void Line2dSegmentPy::setStartPoint(Py::Object arg)
     }
 }
 
-Py::Object Line2dSegmentPy::getEndPoint(void) const
+Py::Object Line2dSegmentPy::getEndPoint() const
 {
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());

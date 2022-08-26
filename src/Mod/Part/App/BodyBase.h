@@ -78,14 +78,14 @@ public:
      * TODO introduce a findBodiesOf() if needed (2015-08-04, Fat-Zer)
      */
     static BodyBase* findBodyOf(const App::DocumentObject* f);
-    virtual PyObject* getPyObject() override;
+    PyObject* getPyObject() override;
 
 protected:
     /// If BaseFeature is getting changed and Tip points to it reset the Tip
-    virtual void onBeforeChange (const App::Property* prop) override;
+    void onBeforeChange (const App::Property* prop) override;
     /// If BaseFeature is set and Tip is null set the Tip to it
-    virtual void onChanged (const App::Property* prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+    void onChanged (const App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName,
                                            const char *PropName) override;
 

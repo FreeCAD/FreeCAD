@@ -35,23 +35,23 @@ namespace Gui {
 
 class GuiExport ViewProviderExtern:public ViewProvider
 {
-    PROPERTY_HEADER(Gui::ViewProviderExtern);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderExtern);
 
 public:
     /// constructor.
     ViewProviderExtern();
 
     /// destructor.
-    virtual ~ViewProviderExtern();
+    ~ViewProviderExtern() override;
 
     void setModeByString(const char* name, const char* ivFragment);
     void setModeByFile(const char* name, const char* ivFileName);
     void setModeBySoInput(const char* name, SoInput &ivFileInput);
     void adjustDocumentName(const char* docname);
 
-    virtual const char* getDefaultDisplayMode() const;
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*){}
+    const char* getDefaultDisplayMode() const override;
+    std::vector<std::string> getDisplayModes() const override;
+    void updateData(const App::Property*) override{}
 
 private:
     void adjustRecursiveDocumentName(SoNode*, const char* docname);

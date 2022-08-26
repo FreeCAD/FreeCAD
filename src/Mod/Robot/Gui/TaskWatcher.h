@@ -43,10 +43,10 @@ class RobotGuiExport TaskWatcherRobot : public Gui::TaskView::TaskWatcher
 
 public:
     TaskWatcherRobot();
-    ~TaskWatcherRobot();
+    ~TaskWatcherRobot() override;
 
     /// is called when the document or the selection changes. 
-    virtual bool shouldShow(void);
+    bool shouldShow() override;
 
 protected:
     TaskRobot6Axis    *rob; 

@@ -44,7 +44,7 @@ class TransactionalObject;
  */
 class AppExport Transaction : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /** Construction
@@ -55,9 +55,9 @@ public:
      * transactions from different document, so that they can be undo/redo
      * together.
      */
-    Transaction(int id = 0);
+    explicit Transaction(int id = 0);
     /// Construction
-    virtual ~Transaction();
+    ~Transaction() override;
 
     /// apply the content to the document
     void apply(Document &Doc,bool forward);
@@ -65,17 +65,17 @@ public:
     // the utf-8 name of the transaction
     std::string Name;
 
-    virtual unsigned int getMemSize (void) const;
-    virtual void Save (Base::Writer &writer) const;
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &writer) const override;
     /// This method is used to restore properties from an XML document.
-    virtual void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
     /// Return the transaction ID
-    int getID(void) const;
+    int getID() const;
 
     /// Generate a new unique transaction ID
-    static int getNewID(void);
-    static int getLastID(void);
+    static int getNewID();
+    static int getLastID();
 
     /// Returns true if the transaction list is empty; otherwise returns false.
     bool isEmpty() const;
@@ -105,13 +105,13 @@ private:
  */
 class AppExport TransactionObject : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Construction
     TransactionObject();
     /// Destruction
-    virtual ~TransactionObject();
+    ~TransactionObject() override;
 
     virtual void applyNew(Document &Doc, TransactionalObject *pcObj);
     virtual void applyDel(Document &Doc, TransactionalObject *pcObj);
@@ -120,10 +120,10 @@ public:
     void setProperty(const Property* pcProp);
     void addOrRemoveProperty(const Property* pcProp, bool add);
 
-    virtual unsigned int getMemSize (void) const;
-    virtual void Save (Base::Writer &writer) const;
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &writer) const override;
     /// This method is used to restore properties from an XML document.
-    virtual void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
     friend class Transaction;
 
@@ -143,16 +143,16 @@ protected:
  */
 class AppExport TransactionDocumentObject : public TransactionObject
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /// Construction
     TransactionDocumentObject();
     /// Destruction
-    virtual ~TransactionDocumentObject();
+    ~TransactionDocumentObject() override;
 
-    void applyNew(Document &Doc, TransactionalObject *pcObj);
-    void applyDel(Document &Doc, TransactionalObject *pcObj);
+    void applyNew(Document &Doc, TransactionalObject *pcObj) override;
+    void applyDel(Document &Doc, TransactionalObject *pcObj) override;
 };
 
 class AppExport TransactionFactory
@@ -168,25 +168,25 @@ private:
     static TransactionFactory* self;
     std::map<Base::Type, Base::AbstractProducer*> producers;
 
-    TransactionFactory(){}
-    ~TransactionFactory(){}
+    TransactionFactory() = default;
+    ~TransactionFactory() = default;
 };
 
 template <class CLASS>
 class TransactionProducer : public Base::AbstractProducer
 {
 public:
-    TransactionProducer (const Base::Type& type)
+    explicit TransactionProducer (const Base::Type& type)
     {
         TransactionFactory::instance().addProducer(type, this);
     }
 
-    virtual ~TransactionProducer (){}
+    ~TransactionProducer () override = default;
 
     /**
      * Creates an instance of the specified transaction object.
      */
-    virtual void* Produce () const
+    void* Produce () const override
     {
         return (new CLASS);
     }

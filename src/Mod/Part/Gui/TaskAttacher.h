@@ -56,10 +56,10 @@ public:
     typedef std::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
                                 App::DocumentObject *, const std::string&)>  VisibilityFunction;
 
-    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = nullptr,
+    explicit TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = nullptr,
                  QString picture = QString(),
                  QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
-    ~TaskAttacher();
+    ~TaskAttacher() override;
 
     bool   getFlip(void) const;
 
@@ -151,8 +151,8 @@ class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
-    ~TaskDlgAttacher();
+    explicit TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
+    ~TaskDlgAttacher() override;
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
     { return ViewProvider; }
@@ -160,19 +160,19 @@ public:
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button 
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument(void) const override
     { return false; }
 
     /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    QDialogButtonBox::StandardButtons getStandardButtons(void) const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:

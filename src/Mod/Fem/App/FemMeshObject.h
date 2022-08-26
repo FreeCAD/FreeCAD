@@ -35,28 +35,28 @@ namespace Fem
 
 class FemExport FemMeshObject : public App::GeoFeature
 {
-    PROPERTY_HEADER(Fem::FemMeshObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemMeshObject);
 
 public:
     /// Constructor
-    FemMeshObject(void);
-    virtual ~FemMeshObject();
+    FemMeshObject();
+    ~FemMeshObject() override;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderFemMesh";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
     PropertyFemMesh FemMesh;
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    void onChanged (const App::Property* prop) override;
 };
 
 typedef App::FeaturePythonT<FemMeshObject> FemMeshObjectPython;

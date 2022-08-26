@@ -48,15 +48,15 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderChamfer";
     }
     //@}
 
-    virtual void onChanged(const App::Property* /*prop*/) override;
+    void onChanged(const App::Property* /*prop*/) override;
 
     void updateProperties();
 

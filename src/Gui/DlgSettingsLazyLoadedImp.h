@@ -44,18 +44,18 @@ class DlgSettingsLazyLoadedImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsLazyLoadedImp( QWidget* parent = nullptr );
-    ~DlgSettingsLazyLoadedImp();
+    explicit DlgSettingsLazyLoadedImp( QWidget* parent = nullptr );
+    ~DlgSettingsLazyLoadedImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected Q_SLOTS:
     void onLoadClicked(const QString& wbName);
 
 protected:
     void buildUnloadedWorkbenchList();
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsLazyLoaded> ui;

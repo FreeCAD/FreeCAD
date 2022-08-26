@@ -38,20 +38,20 @@ class TaskFemConstraintSpring : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView,QWidget *parent = nullptr);
-    ~TaskFemConstraintSpring();
-    const std::string getReferences() const;
+    explicit TaskFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView,QWidget *parent = nullptr);
+    ~TaskFemConstraintSpring() override;
+    const std::string getReferences() const override;
     double get_normalStiffness()const;
     double get_tangentialStiffness()const;
 
 private Q_SLOTS:
-    void onReferenceDeleted(void);
-    void addToSelection();
-    void removeFromSelection();
+    void onReferenceDeleted();
+    void addToSelection() override;
+    void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -65,10 +65,10 @@ class TaskDlgFemConstraintSpring : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintSpring(ViewProviderFemConstraintSpring *ConstraintView);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

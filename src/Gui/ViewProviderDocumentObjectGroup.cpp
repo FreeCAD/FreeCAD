@@ -41,9 +41,6 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewP
  */
 ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 {
-#if 0
-    setDefaultMode(SO_SWITCH_ALL);
-#endif
     ViewProviderGroupExtension::initExtension(this);
 
     sPixmap = "folder";
@@ -53,18 +50,18 @@ ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 {
 }
 
-std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
+std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes() const
 {
     // empty
     return std::vector<std::string>();
 }
 
-bool ViewProviderDocumentObjectGroup::isShow(void) const
+bool ViewProviderDocumentObjectGroup::isShow() const
 {
     return Visibility.getValue();
 }
 
-QIcon ViewProviderDocumentObjectGroup::getIcon(void) const
+QIcon ViewProviderDocumentObjectGroup::getIcon() const
 {
     return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
 }

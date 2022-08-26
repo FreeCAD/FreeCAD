@@ -47,7 +47,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewDraft, TechDraw::DrawViewSymbol)
 
 
-DrawViewDraft::DrawViewDraft(void)
+DrawViewDraft::DrawViewDraft()
 {
     static const char *group = "Draft view";
 
@@ -69,26 +69,24 @@ DrawViewDraft::~DrawViewDraft()
 
 short DrawViewDraft::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = Source.isTouched() ||
-                    LineWidth.isTouched() ||
-                    FontSize.isTouched() ||
-                    Direction.isTouched() ||
-                    Color.isTouched() ||
-                    LineStyle.isTouched() ||
-                    LineSpacing.isTouched() ||
-                    OverrideStyle.isTouched();
-    }
-    if ((bool) result) {
-        return result;
+        if(Source.isTouched() ||
+            LineWidth.isTouched() ||
+            FontSize.isTouched() ||
+            Direction.isTouched() ||
+            Color.isTouched() ||
+            LineStyle.isTouched() ||
+            LineSpacing.isTouched() ||
+            OverrideStyle.isTouched()) {
+            return true;
+        }
     }
     return DrawViewSymbol::mustExecute();
 }
 
 
 
-App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
+App::DocumentObjectExecReturn *DrawViewDraft::execute()
 {
 //    Base::Console().Message("DVDr::execute() \n");
     if (!keepUpdated()) {
@@ -112,7 +110,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
                  // TODO treat fillstyle here
                  << ",direction=FreeCAD.Vector(" << Direction.getValue().x << "," << Direction.getValue().y << "," << Direction.getValue().z << ")"
                  << ",linestyle=\"" << LineStyle.getValue() << "\""
-                 << ",color=\"" << col.asCSSString() << "\""
+                 << ",color=\"" << col.asHexString() << "\""
                  << ",linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
                  << ",techdraw=True"
@@ -128,11 +126,12 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
         }
-//    requestPaint();
+
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
-std::string DrawViewDraft::getSVGHead(void)
+std::string DrawViewDraft::getSVGHead()
 {
     std::string head = std::string("<svg\\n") +
                        std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\\n") +
@@ -140,7 +139,7 @@ std::string DrawViewDraft::getSVGHead(void)
     return head;
 }
 
-std::string DrawViewDraft::getSVGTail(void)
+std::string DrawViewDraft::getSVGTail()
 {
     std::string tail = "\\n</svg>";
     return tail;
@@ -151,7 +150,7 @@ std::string DrawViewDraft::getSVGTail(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDraftPython, TechDraw::DrawViewDraft)
-template<> const char* TechDraw::DrawViewDraftPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewDraftPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderDraft";
 }
 /// @endcond

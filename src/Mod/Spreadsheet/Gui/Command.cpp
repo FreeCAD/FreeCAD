@@ -87,7 +87,7 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
             std::vector<Range> ranges = sheetView->selectedRanges();
 
             // Execute mergeCells commands
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Merge cells"));
                 std::vector<Range>::const_iterator i = ranges.begin();
                 for (; i != ranges.end(); ++i)
@@ -311,7 +311,7 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             std::vector<Range> ranges = sheetView->selectedRanges();
 
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Left-align cell"));
@@ -363,7 +363,7 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             std::vector<Range> ranges = sheetView->selectedRanges();
 
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Center cell"));
@@ -415,7 +415,7 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             std::vector<Range> ranges = sheetView->selectedRanges();
 
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Right-align cell"));
@@ -467,7 +467,7 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             std::vector<Range> ranges = sheetView->selectedRanges();
 
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Top-align cell"));
@@ -519,7 +519,7 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             std::vector<Range> ranges = sheetView->selectedRanges();
 
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bottom-align cell"));
@@ -571,7 +571,7 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             std::vector<Range> ranges = sheetView->selectedRanges();
 
-            if (ranges.size() > 0) {
+            if (!ranges.empty()) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Vertically center cells"));
@@ -623,10 +623,10 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             QModelIndexList selection = sheetView->selectedIndexes();
 
-            if (selection.size() > 0) {
+            if (!selection.empty()) {
                 bool allBold = true;
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
                     const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
                     if (cell) {
@@ -697,10 +697,10 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             QModelIndexList selection = sheetView->selectedIndexes();
 
-            if (selection.size() > 0) {
+            if (!selection.empty()) {
                 bool allItalic = true;
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
                     const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
                     if (cell) {
@@ -771,10 +771,10 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
             Sheet * sheet = sheetView->getSheet();
             QModelIndexList selection = sheetView->selectedIndexes();
 
-            if (selection.size() > 0) {
+            if (!selection.empty()) {
                 bool allUnderline = true;
 
-                for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
+                for (QModelIndexList::const_iterator it = selection.cbegin(); it != selection.cend(); ++it) {
                     const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
                     if (cell) {

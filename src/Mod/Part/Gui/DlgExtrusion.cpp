@@ -67,7 +67,7 @@ public:
     {
         canSelect = false;
     }
-    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
         this->canSelect = false;
 
@@ -276,7 +276,7 @@ void DlgExtrusion::onSelectionChanged(const Gui::SelectionChanges& msg)
 App::DocumentObject& DlgExtrusion::getShapeToExtrude() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToExtrude();
-    if (objs.size() == 0)
+    if (objs.empty())
         throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }
@@ -553,7 +553,7 @@ void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
             return;
         } else if (parts.size() == 2) {
             std::vector<std::string> subs;
-            subs.push_back(std::string(parts[1].toLatin1().constData()));
+            subs.emplace_back(parts[1].toLatin1().constData());
             lnk.setValue(obj,subs);
         }
     }
@@ -702,7 +702,7 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::D
     App::PropertyLinkSub lnk;
     this->getAxisLink(lnk);
     std::stringstream linkstr;
-    if(lnk.getValue() == nullptr){
+    if (!lnk.getValue()) {
         linkstr << "None";
     } else {
         linkstr << "(App.getDocument(\"" << lnk.getValue()->getDocument()->getName() <<"\")." << lnk.getValue()->getNameInDocument();

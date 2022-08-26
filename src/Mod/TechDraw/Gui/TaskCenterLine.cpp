@@ -184,7 +184,7 @@ void TaskCenterLine::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Center Line"));
 
-    if (m_partFeat != nullptr) {
+    if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
         for (auto& s: m_subNames) {
@@ -213,7 +213,7 @@ void TaskCenterLine::setUiPrimary()
 void TaskCenterLine::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Center Line"));
-    if (m_partFeat != nullptr) {
+    if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
         QString listItem = Base::Tools::fromStdString(m_edgeName);
@@ -311,7 +311,7 @@ void TaskCenterLine::onStyleChanged()
 }
 
 //******************************************************************************
-void TaskCenterLine::createCenterLine(void)
+void TaskCenterLine::createCenterLine()
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
 
@@ -320,9 +320,9 @@ void TaskCenterLine::createCenterLine(void)
     // the centerline creation can fail if m_type is edge and both selected edges are horizontal
     // because we attempt by default to create a vertical centerline
 
-    if (cl == nullptr) { // try a horizontal line
+    if (!cl) { // try a horizontal line
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, CenterLine::CLMODE::HORIZONTAL, false);
-        if (cl != nullptr) {
+        if (cl) {
             m_mode = CenterLine::CLMODE::HORIZONTAL;
             ui->rbHorizontal->blockSignals(true);
             ui->rbHorizontal->setChecked(true);
@@ -330,7 +330,7 @@ void TaskCenterLine::createCenterLine(void)
         }
     }
 
-    if (cl == nullptr) {
+    if (!cl) {
         Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
         Gui::Command::abortCommand();
         return;
@@ -361,7 +361,7 @@ void TaskCenterLine::createCenterLine(void)
     m_cl = cl;
 }
 
-void TaskCenterLine::updateOrientation(void)
+void TaskCenterLine::updateOrientation()
 {
     // When the orientation was changed, it can be that the centerline becomes invalid
     // this can lead to a crash, see e.g.
@@ -379,13 +379,13 @@ void TaskCenterLine::updateOrientation(void)
 
     CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, orientation, m_cl->m_flip2Line);
 
-    if (cl == nullptr) { // try another orientation
+    if (!cl) { // try another orientation
         if (orientation == CenterLine::CLMODE::VERTICAL)
             orientation = CenterLine::CLMODE::HORIZONTAL;
         else if (orientation == CenterLine::CLMODE::HORIZONTAL)
             orientation = CenterLine::CLMODE::VERTICAL;
         cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, orientation, m_cl->m_flip2Line);
-        if (cl != nullptr) {
+        if (cl) {
             if (orientation == CenterLine::CLMODE::VERTICAL) {
                 m_cl->m_mode = CenterLine::CLMODE::VERTICAL;
                 ui->rbVertical->blockSignals(true);
@@ -404,7 +404,7 @@ void TaskCenterLine::updateOrientation(void)
         }
     }
 
-    if (cl != nullptr) { // we succeeded
+    if (cl) { // we succeeded
         // reset the flip for existing centerline that might use the flip feature (when created with FC 0.19)
         m_cl->m_flip2Line = false;
         m_partFeat->recomputeFeature();
@@ -426,17 +426,12 @@ void TaskCenterLine::enableTaskButtons(bool b)
 
 double TaskCenterLine::getCenterWidth()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-
-    double width = lg->getWeight("Graphic");
-    delete lg;
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( partVP != nullptr ) {
-        width = partVP->IsoWidth.getValue();
+    if (!partVP) {
+        return TechDraw::LineGroup::getDefaultWidth("Graphic");
     }
-    return width;
+    return partVP->IsoWidth.getValue();
 }
 
 Qt::PenStyle TaskCenterLine::getCenterStyle()
@@ -452,7 +447,7 @@ QColor TaskCenterLine::getCenterColor()
     return PreferencesGui::centerQColor();
 }
 
-double TaskCenterLine::getExtendBy(void)
+double TaskCenterLine::getExtendBy()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

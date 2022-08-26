@@ -56,11 +56,11 @@ class GuiExport DefaultTransformStrategy : public TransformStrategy,
 {
 public:
     DefaultTransformStrategy(QWidget* widget);
-    virtual ~DefaultTransformStrategy();
-    std::set<App::DocumentObject*> transformObjects() const;
+    ~DefaultTransformStrategy() override;
+    std::set<App::DocumentObject*> transformObjects() const override;
 
 private:
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     std::set<App::DocumentObject*> selection;
@@ -74,15 +74,15 @@ class GuiExport Transform : public Gui::LocationDialog
 
 public:
     Transform(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Transform();
-    void accept();
-    void reject();
+    ~Transform() override;
+    void accept() override;
+    void reject() override;
     void showStandardButtons(bool);
     void setTransformStrategy(TransformStrategy* ts);
 
 protected:
-    Base::Vector3d getDirection() const;
-    void changeEvent(QEvent *e);
+    Base::Vector3d getDirection() const override;
+    void changeEvent(QEvent *e) override;
 
 public Q_SLOTS:
     void on_applyButton_clicked();
@@ -92,7 +92,7 @@ private Q_SLOTS:
 
 private:
     Base::Placement getPlacementData() const;
-    void directionActivated(int);
+    void directionActivated(int) override;
 
 Q_SIGNALS:
     void directionChanged();
@@ -111,15 +111,15 @@ class GuiExport TaskTransform : public Gui::TaskView::TaskDialog
 
 public:
     TaskTransform();
-    ~TaskTransform();
+    ~TaskTransform() override;
 
 public:
-    bool accept();
-    bool reject();
-    void clicked(int);
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
     void setTransformStrategy(TransformStrategy* ts);
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok |
              QDialogButtonBox::Apply |
              QDialogButtonBox::Cancel; }

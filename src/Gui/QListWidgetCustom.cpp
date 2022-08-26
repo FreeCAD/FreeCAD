@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDragMoveEvent>
-# include <QListWidget>
 # include <QString>
 #endif
 
@@ -46,7 +45,7 @@ QListWidgetCustom::~QListWidgetCustom()
  */
 void QListWidgetCustom::dragMoveEvent(QDragMoveEvent *e)
 {
-    if (e->source() != nullptr) {
+    if (e->source()) {
         QVariant prop = this->property("OnlyAcceptFrom");
         if (prop.isValid()) {
             QStringList filter = prop.toStringList();

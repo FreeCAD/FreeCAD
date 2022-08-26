@@ -42,7 +42,7 @@ class GuiExport SoFCInteractiveElement : public SoReplacedElement {
   SO_ELEMENT_HEADER(SoFCInteractiveElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node, SbBool mode);
@@ -63,14 +63,14 @@ class GuiExport SoGLWidgetElement : public SoElement {
   SO_ELEMENT_HEADER(SoGLWidgetElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  virtual SoElement * copyMatchInfo() const;
 
   static  void set(SoState * state, QtGLWidget * window);
   static  void get(SoState * state, QtGLWidget *& window);
@@ -88,14 +88,14 @@ class GuiExport SoGLRenderActionElement : public SoElement {
   SO_ELEMENT_HEADER(SoGLRenderActionElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  virtual SoElement * copyMatchInfo() const;
 
   static  void set(SoState * state, SoGLRenderAction * action);
   static  void get(SoState * state, SoGLRenderAction * & action);
@@ -113,8 +113,8 @@ class GuiExport SoGLWidgetNode : public SoNode {
     SO_NODE_HEADER(SoGLWidgetNode);
 
 public:
-    static void initClass(void);
-    SoGLWidgetNode(void);
+    static void initClass();
+    SoGLWidgetNode();
 
     QtGLWidget * window;
 
@@ -131,14 +131,14 @@ class GuiExport SoGLVBOActivatedElement : public SoElement {
   SO_ELEMENT_HEADER(SoGLVBOActivatedElement);
 
 public:
-  static void initClass(void);
+  static void initClass();
 
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  virtual SoElement * copyMatchInfo() const;
 
   static  void set(SoState * state, SbBool);
   static  void get(SoState * state, SbBool& active);

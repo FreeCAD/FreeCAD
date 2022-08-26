@@ -133,7 +133,7 @@ std::vector<int> Tessellator::tessellate() const
 
 class ItemViewSelection::MatchName {
 public:
-    MatchName(const QString& n) : name(n)
+    explicit MatchName(const QString& n) : name(n)
     {}
     bool operator() (const App::DocumentObject* obj) {
         return name == QLatin1String(obj->getNameInDocument());

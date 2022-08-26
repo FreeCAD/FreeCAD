@@ -155,8 +155,8 @@ private:
       Base::Builder3D& _builder;
 
       CollectFacetVisitor (const MeshKernel& mesh, std::vector<FacetIndex>& facets, std::map<Edge, EdgeInfo>& edges, int side, float mult, Base::Builder3D& builder);
-      bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel);
-      bool AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom, FacetIndex ulFInd, unsigned long ulLevel, unsigned short neighbourIndex);
+      bool Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, FacetIndex ulFInd, unsigned long ulLevel) override;
+      bool AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom, FacetIndex ulFInd, unsigned long ulLevel, unsigned short neighbourIndex) override;
   };
 
   /** all points from cut */

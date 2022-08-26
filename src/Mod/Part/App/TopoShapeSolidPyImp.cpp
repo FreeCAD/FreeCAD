@@ -58,7 +58,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeSolidPy::representation(void) const
+std::string TopoShapeSolidPy::representation() const
 {
     std::stringstream str;
     str << "<Solid object at " << getTopoShapePtr() << ">";
@@ -134,7 +134,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
-Py::Object TopoShapeSolidPy::getMass(void) const
+Py::Object TopoShapeSolidPy::getMass() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -142,7 +142,7 @@ Py::Object TopoShapeSolidPy::getMass(void) const
     return Py::Float(c);
 }
 
-Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
+Py::Object TopoShapeSolidPy::getCenterOfMass() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -150,7 +150,7 @@ Py::Object TopoShapeSolidPy::getCenterOfMass(void) const
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
 
-Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
+Py::Object TopoShapeSolidPy::getMatrixOfInertia() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -164,7 +164,7 @@ Py::Object TopoShapeSolidPy::getMatrixOfInertia(void) const
     return Py::Matrix(mat);
 }
 
-Py::Object TopoShapeSolidPy::getStaticMoments(void) const
+Py::Object TopoShapeSolidPy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -177,7 +177,7 @@ Py::Object TopoShapeSolidPy::getStaticMoments(void) const
     return tuple;
 }
 
-Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
+Py::Dict TopoShapeSolidPy::getPrincipalProperties() const
 {
     GProp_GProps props;
     BRepGProp::VolumeProperties(getTopoShapePtr()->getShape(), props);
@@ -210,7 +210,7 @@ Py::Dict TopoShapeSolidPy::getPrincipalProperties(void) const
     return dict;
 }
 
-Py::Object TopoShapeSolidPy::getOuterShell(void) const
+Py::Object TopoShapeSolidPy::getOuterShell() const
 {
     TopoDS_Shell shell;
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();

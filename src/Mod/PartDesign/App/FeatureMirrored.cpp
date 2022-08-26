@@ -60,7 +60,7 @@ short Mirrored::mustExecute() const
 const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
-    if (refObject == nullptr)
+    if (!refObject)
         throw Base::ValueError("No mirror plane reference specified");
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
     if (subStrings.empty())
@@ -75,7 +75,7 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
         else if (subStrings[0] == "V_Axis")
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0] == "")
+        else if (subStrings[0].empty())
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());

@@ -24,6 +24,7 @@
 #ifndef _AppComplexGeoData_h_
 #define _AppComplexGeoData_h_
 
+#include <algorithm>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
@@ -50,10 +51,10 @@ namespace Data
  */
 class AppExport Segment: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    virtual ~Segment(){}
+    ~Segment() override = default;
     virtual std::string getName() const=0;
 };
 
@@ -62,7 +63,7 @@ public:
  */
 class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     struct Line  {uint32_t I1; uint32_t I2;};
@@ -75,7 +76,7 @@ public:
     /// Constructor
     ComplexGeoData();
     /// Destructor
-    virtual ~ComplexGeoData();
+    ~ComplexGeoData() override;
 
     /** @name Subelement management */
     //@{
@@ -199,14 +200,52 @@ public:
 protected:
 
     /// from local to outside
-    inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
+    inline Base::Vector3d transformPointToOutside(const Base::Vector3f& vec) const
     {
         return getTransform() * Base::Vector3d(static_cast<double>(vec.x),
                                                static_cast<double>(vec.y),
                                                static_cast<double>(vec.z));
     }
+    /// from local to outside
+    template<typename Vec>
+    inline std::vector<Base::Vector3d> transformPointsToOutside(const std::vector<Vec>& input) const
+    {
+        std::vector<Base::Vector3d> output;
+        output.reserve(input.size());
+        Base::Matrix4D mat(getTransform());
+        std::transform(input.cbegin(), input.cend(), std::back_inserter(output), [&mat](const Vec& vec) {
+            return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                        static_cast<double>(vec.y),
+                                        static_cast<double>(vec.z));
+        });
+
+        return output;
+    }
+    inline Base::Vector3d transformVectorToOutside(const Base::Vector3f& vec) const
+    {
+        Base::Matrix4D mat(getTransform());
+        mat.setCol(3, Base::Vector3d());
+        return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                    static_cast<double>(vec.y),
+                                    static_cast<double>(vec.z));
+    }
+    template<typename Vec>
+    std::vector<Base::Vector3d> transformVectorsToOutside(const std::vector<Vec>& input) const
+    {
+        std::vector<Base::Vector3d> output;
+        output.reserve(input.size());
+        Base::Matrix4D mat(getTransform());
+        mat.setCol(3, Base::Vector3d());
+        std::transform(input.cbegin(), input.cend(), std::back_inserter(output), [&mat](const Vec& vec) {
+            return mat * Base::Vector3d(static_cast<double>(vec.x),
+                                        static_cast<double>(vec.y),
+                                        static_cast<double>(vec.z));
+        });
+
+        return output;
+    }
     /// from local to inside
-    inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
+    inline Base::Vector3f transformPointToInside(const Base::Vector3d& vec) const
     {
         Base::Matrix4D tmpM(getTransform());
         tmpM.inverse();

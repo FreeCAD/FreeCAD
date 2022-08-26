@@ -31,8 +31,6 @@ from PathTests.PathTestUtils import PathTestBase
 
 
 def refstring(string):
-    if sys.version_info.major < 3:
-        return string
     return string.replace(" u'", " '")
 
 

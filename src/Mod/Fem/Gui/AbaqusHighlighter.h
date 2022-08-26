@@ -35,7 +35,7 @@ namespace FemGui {
 class AbaqusHighlighter : public Gui::SyntaxHighlighter
 {
 public:
-    AbaqusHighlighter(QObject* parent);
+    explicit AbaqusHighlighter(QObject* parent);
     virtual ~AbaqusHighlighter();
 
 protected:

@@ -94,7 +94,7 @@ void SoAutoZoomTranslation::doAction(SoAction * action)
     auto state = action->getState();
     SbRotation r,so;
     SbVec3f s,t;
-    SbMatrix matrix = SoModelMatrixElement::get(action->getState());
+    SbMatrix matrix = SoModelMatrixElement::get(action->getState()); // clazy:exclude=rule-of-two-soft
     matrix.getTransform(t,r,s,so);
     matrix.multVecMatrix(SbVec3f(0,0,0),t);
     // reset current model scale factor

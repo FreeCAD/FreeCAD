@@ -149,11 +149,10 @@ void QGIWeldSymbol::updateView(bool update)
 //    Base::Console().Message("QGIWS::updateView()\n");
     Q_UNUSED(update);
     auto viewWeld( dynamic_cast<TechDraw::DrawWeldSymbol*>(getViewObject()) );
-    if( viewWeld == nullptr ) {
+    if (!viewWeld)
         return;
-    }
 
-    if ( getFeature() == nullptr ) {
+    if (!getFeature()) {
         Base::Console().Warning("QGIWS::updateView - no feature!\n");
         return;
     }
@@ -171,11 +170,11 @@ void QGIWeldSymbol::draw()
 
     removeQGITiles();
 
-    if (m_arrowFeat != nullptr) {
+    if (m_arrowFeat) {
         drawTile(m_arrowFeat);
     }
 
-    if (m_otherFeat != nullptr) {
+    if (m_otherFeat) {
         drawTile(m_otherFeat);
     }
 
@@ -189,19 +188,17 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
 //    Base::Console().Message("QGIWS::drawTile() - tileFeat: %X\n", tileFeat);
-    if (tileFeat == nullptr) {
+    if (!tileFeat) {
         Base::Console().Message("QGIWS::drawTile - tile is null\n");
         return;
     }
 
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
     double      sizeMM = vp->TileFontSize.getValue();
     double      fontSize = QGIView::calculateFontPixelSize(sizeMM);
@@ -234,7 +231,7 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     tile->draw();
 }
 
-void QGIWeldSymbol::drawAllAround(void)
+void QGIWeldSymbol::drawAllAround()
 {
 //    Base::Console().Message("QGIWS::drawAllAround()\n");
     QPointF allAroundPos = getKinkPoint();
@@ -258,7 +255,7 @@ void QGIWeldSymbol::drawAllAround(void)
     m_allAround->setZValue(ZVALUE::DIMENSION);
 }
 
-void QGIWeldSymbol::drawTailText(void)
+void QGIWeldSymbol::drawTailText()
 {
 //    Base::Console().Message("QGIWS::drawTailText()\n");
     QPointF textPos = getTailPoint();
@@ -271,13 +268,11 @@ void QGIWeldSymbol::drawTailText(void)
         m_tailText->show();
     }
     const auto sym( dynamic_cast<TechDraw::DrawWeldSymbol *>(getViewObject()) );
-    if( sym == nullptr ) {
+    if (!sym)
         return;
-    }
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     std::string fontName = vp->Font.getValue();
     QString qFontName = Base::Tools::fromStdString(fontName);
     double sizeMM = vp->FontSize.getValue();
@@ -340,7 +335,7 @@ void QGIWeldSymbol::drawFieldFlag()
     m_fieldFlag->setPath(path);
 }
 
-void QGIWeldSymbol::getTileFeats(void)
+void QGIWeldSymbol::getTileFeats()
 {
     std::vector<TechDraw::DrawTileWeld*> tiles = getFeature()->getTiles();
     m_arrowFeat = nullptr;
@@ -364,7 +359,7 @@ void QGIWeldSymbol::getTileFeats(void)
     }
 }
 
-void QGIWeldSymbol::removeQGITiles(void) 
+void QGIWeldSymbol::removeQGITiles()
 {
     std::vector<QGITile*> tiles = getQGITiles();
     for (auto t: tiles) {
@@ -380,7 +375,7 @@ void QGIWeldSymbol::removeQGITiles(void)
     }
 }
 
-std::vector<QGITile*> QGIWeldSymbol::getQGITiles(void) const
+std::vector<QGITile*> QGIWeldSymbol::getQGITiles() const
 {
     std::vector<QGITile*> result;
     QList<QGraphicsItem*> children = childItems();
@@ -475,21 +470,21 @@ void QGIWeldSymbol::setPrettySel()
     m_tailText->setPrettySel();
 }
 
-QPointF QGIWeldSymbol::getTileOrigin(void)
+QPointF QGIWeldSymbol::getTileOrigin()
 {
     Base::Vector3d org = m_leadFeat->getTileOrigin();
     QPointF result(org.x, org.y);
     return result;
 }
 
-QPointF QGIWeldSymbol::getKinkPoint(void)
+QPointF QGIWeldSymbol::getKinkPoint()
 {
     Base::Vector3d org = m_leadFeat->getKinkPoint();
     QPointF result(org.x, org.y);
     return result;
 }
 
-QPointF QGIWeldSymbol::getTailPoint(void)
+QPointF QGIWeldSymbol::getTailPoint()
 {
     Base::Vector3d org = m_leadFeat->getTailPoint();
     QPointF result(org.x, org.y);
@@ -503,7 +498,7 @@ void QGIWeldSymbol::setFeature(TechDraw::DrawWeldSymbol* feat)
     m_weldFeatName = feat->getNameInDocument();
 }
 
-TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature(void)
+TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature()
 {
     return m_weldFeat;
 }
@@ -520,7 +515,7 @@ double QGIWeldSymbol::prefArrowSize()
     return PreferencesGui::dimArrowSize();
 }
 
-double QGIWeldSymbol::prefFontSize(void) const
+double QGIWeldSymbol::prefFontSize() const
 {
     return Preferences::labelFontSizeMM();
 }

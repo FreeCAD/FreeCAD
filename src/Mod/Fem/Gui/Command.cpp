@@ -314,7 +314,7 @@ void CmdFemConstraintBearing::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintBearing::isActive(void)
+bool CmdFemConstraintBearing::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -359,7 +359,7 @@ void CmdFemConstraintContact::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintContact::isActive(void)
+bool CmdFemConstraintContact::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -402,7 +402,7 @@ void CmdFemConstraintDisplacement::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintDisplacement::isActive(void)
+bool CmdFemConstraintDisplacement::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -444,7 +444,7 @@ void CmdFemConstraintFixed::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintFixed::isActive(void)
+bool CmdFemConstraintFixed::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -487,7 +487,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintFluidBoundary::isActive(void)
+bool CmdFemConstraintFluidBoundary::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -531,7 +531,7 @@ void CmdFemConstraintForce::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintForce::isActive(void)
+bool CmdFemConstraintForce::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -572,7 +572,7 @@ void CmdFemConstraintGear::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintGear::isActive(void)
+bool CmdFemConstraintGear::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -617,7 +617,7 @@ void CmdFemConstraintHeatflux::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintHeatflux::isActive(void)
+bool CmdFemConstraintHeatflux::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -660,7 +660,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintInitialTemperature::isActive(void)
+bool CmdFemConstraintInitialTemperature::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -702,7 +702,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintPlaneRotation::isActive(void)
+bool CmdFemConstraintPlaneRotation::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -734,7 +734,7 @@ void CmdFemConstraintPressure::activated(int)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint pressure on face"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Pressure = 1000.0", FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc, "App.activeDocument().%s.Pressure = 0.1", FeatName.c_str()); //OvG: set default not equal to 0
     doCommand(Doc, "App.activeDocument().%s.Reversed = False", FeatName.c_str()); //OvG: set default to False
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -747,7 +747,7 @@ void CmdFemConstraintPressure::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintPressure::isActive(void)
+bool CmdFemConstraintPressure::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -792,7 +792,7 @@ void CmdFemConstraintSpring::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintSpring::isActive(void)
+bool CmdFemConstraintSpring::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -838,7 +838,7 @@ void CmdFemConstraintPulley::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintPulley::isActive(void)
+bool CmdFemConstraintPulley::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -881,7 +881,7 @@ void CmdFemConstraintTemperature::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintTemperature::isActive(void)
+bool CmdFemConstraintTemperature::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -927,7 +927,7 @@ void CmdFemConstraintTransform::activated(int)
     doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
-bool CmdFemConstraintTransform::isActive(void)
+bool CmdFemConstraintTransform::isActive()
 {
     return FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
@@ -1063,7 +1063,7 @@ void CmdFemDefineNodesSet::activated(int)
     }
 }
 
-bool CmdFemDefineNodesSet::isActive(void)
+bool CmdFemDefineNodesSet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1)
@@ -1121,7 +1121,7 @@ void CmdFemCreateNodesSet::activated(int)
     }
 }
 
-bool CmdFemCreateNodesSet::isActive(void)
+bool CmdFemCreateNodesSet::isActive()
 {
     return hasActiveDocument();
 }
@@ -1199,9 +1199,13 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
     cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
     cmd->doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
     cmd->doCommand(Gui::Command::Doc, "del __list__");
-        
+
     // set display to assure the user sees the new object
     cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
+    // Set SelectionStyle to BoundBox because the idea is that the user gets the useful result
+    // from the colors. The default would be to highlight the shape but then the colors are changed
+    // by every highlighting leading to confusions for the user.
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
 
     // in case selObject is no pipeline we must set it as input object
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
@@ -1215,7 +1219,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 }
 
 
-std::string Plot() 
+std::string Plot()
 {
     auto xAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Thickness [mm]", "Plot X-Axis Label").toStdString();
     auto yAxisLabel = QCoreApplication::translate("CmdFemPostLinearizedStressesFilter", "Stress [MPa]", "Plot Y-Axis Label").toStdString();
@@ -1307,7 +1311,7 @@ void CmdFemPostClipFilter::activated(int)
     setupFilter(this, "Clip");
 }
 
-bool CmdFemPostClipFilter::isActive(void)
+bool CmdFemPostClipFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1350,7 +1354,7 @@ void CmdFemPostCutFilter::activated(int)
     setupFilter(this, "Cut");
 }
 
-bool CmdFemPostCutFilter::isActive(void)
+bool CmdFemPostCutFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1393,7 +1397,7 @@ void CmdFemPostDataAlongLineFilter::activated(int)
     setupFilter(this, "DataAlongLine");
 }
 
-bool CmdFemPostDataAlongLineFilter::isActive(void)
+bool CmdFemPostDataAlongLineFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1436,7 +1440,7 @@ void CmdFemPostDataAtPointFilter::activated(int)
 
 }
 
-bool CmdFemPostDataAtPointFilter::isActive(void)
+bool CmdFemPostDataAtPointFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1491,7 +1495,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
             // names need to match with names in FemVTKTools.cpp, this is not failsafe, but ATM there is no better way for test on a stress result in vtk pipeline
             ) {
             // TODO FIXME only works if the data along the line object has the name DataAlongLine
-            // we should get the selected data along the line object 
+            // we should get the selected data along the line object
             App::DocumentObjectT objT(DataAlongLine);
             std::string ObjName = objT.getObjectPython();
             Gui::doCommandT(Gui::Command::Doc, "t_coords = %s.XAxisData", ObjName);
@@ -1511,7 +1515,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
     }
 }
 
-bool CmdFemPostLinearizedStressesFilter::isActive(void)
+bool CmdFemPostLinearizedStressesFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1543,7 +1547,7 @@ void CmdFemPostScalarClipFilter::activated(int)
     setupFilter(this, "ScalarClip");
 }
 
-bool CmdFemPostScalarClipFilter::isActive(void)
+bool CmdFemPostScalarClipFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1584,7 +1588,7 @@ void CmdFemPostWarpVectorFilter::activated(int)
     setupFilter(this, "WarpVector");
 }
 
-bool CmdFemPostWarpVectorFilter::isActive(void)
+bool CmdFemPostWarpVectorFilter::isActive()
 {
     // only allow one object
     if (getSelection().getSelection().size() > 1)
@@ -1675,7 +1679,7 @@ void CmdFemPostFunctions::activated(int iMsg)
 
         this->updateActive();
         //most of the times functions are added inside of a filter, make sure this still works
-        if (Gui::Application::Instance->activeDocument()->getInEdit() == nullptr)
+        if (!Gui::Application::Instance->activeDocument()->getInEdit())
             doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
     else {
@@ -1693,7 +1697,7 @@ void CmdFemPostFunctions::activated(int iMsg)
     pcAction->setIcon(a[iMsg]->icon());
 }
 
-Gui::Action* CmdFemPostFunctions::createAction(void)
+Gui::Action* CmdFemPostFunctions::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1736,7 +1740,7 @@ void CmdFemPostFunctions::languageChange()
 
 }
 
-bool CmdFemPostFunctions::isActive(void)
+bool CmdFemPostFunctions::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -1766,7 +1770,7 @@ void CmdFemPostApllyChanges::activated(int iMsg)
     FemGui::FemSettings().setPostAutoRecompute(iMsg == 1);
 }
 
-bool CmdFemPostApllyChanges::isActive(void)
+bool CmdFemPostApllyChanges::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -1774,7 +1778,7 @@ bool CmdFemPostApllyChanges::isActive(void)
         return false;
 }
 
-Gui::Action* CmdFemPostApllyChanges::createAction(void)
+Gui::Action* CmdFemPostApllyChanges::createAction()
 {
     Gui::Action* pcAction = Command::createAction();
     pcAction->setCheckable(true);
@@ -1849,6 +1853,10 @@ void CmdFemPostPipelineFromResult::activated(int)
             "App.activeDocument().getObject(\"%s\"))", results[0]->getNameInDocument());
         // set display to assure the user sees the new object
         doCommand(Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
+        // Set SelectionStyle to BoundBox because the idea is that the user gets the useful result
+        // from the colors. The default would be to highlight the shape but then the colors are changed
+        // by every highlighting leading to confusions for the user.
+        doCommand(Doc, "App.activeDocument().ActiveObject.ViewObject.SelectionStyle = \"BoundBox\"");
         commitCommand();
 
         this->updateActive();
@@ -1861,7 +1869,7 @@ void CmdFemPostPipelineFromResult::activated(int)
     }
 }
 
-bool CmdFemPostPipelineFromResult::isActive(void)
+bool CmdFemPostPipelineFromResult::isActive()
 {
     // only activate if a result object is selected from which the pipeline can be loaded
     std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
@@ -1873,7 +1881,7 @@ bool CmdFemPostPipelineFromResult::isActive(void)
 
 //================================================================================================
 //================================================================================================
-void CreateFemCommands(void)
+void CreateFemCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 

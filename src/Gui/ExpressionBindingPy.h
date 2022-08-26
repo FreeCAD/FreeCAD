@@ -31,12 +31,12 @@ class ExpressionBinding;
 class ExpressionBindingPy : public Py::PythonExtension<ExpressionBindingPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
-    ExpressionBindingPy(ExpressionBinding*);
-    ~ExpressionBindingPy();
+    explicit ExpressionBindingPy(ExpressionBinding*);
+    ~ExpressionBindingPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object bind(const Py::Tuple&);
     Py::Object isBound(const Py::Tuple&);

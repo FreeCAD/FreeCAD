@@ -290,7 +290,7 @@ namespace e57
    void ImageFileImpl::close()
    {
       /// If file already closed, have nothing to do
-      if ( file_ == nullptr )
+      if ( !file_ )
       {
          return;
       }
@@ -349,7 +349,7 @@ namespace e57
    void ImageFileImpl::cancel()
    {
       /// If file already closed, have nothing to do
-      if ( file_ == nullptr )
+      if ( !file_ )
       {
          return;
       }

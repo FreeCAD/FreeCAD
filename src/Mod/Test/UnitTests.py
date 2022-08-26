@@ -53,20 +53,20 @@ class UnitBasicCases(unittest.TestCase):
 
     def testConversions(self):
         #tu = FreeCAD.Units.translateUnit
-        self.failUnless(compare(tu('10 m'), 10000.0))
-        self.failUnless(compare(tu('3/8 in'), 9.525))
-        self.failUnless(compare(tu('100 km/h'), 27777.77777777))
-        self.failUnless(compare(tu('m^2*kg*s^-3*A^-2'), 1000000.0))
-        self.failUnless(compare(tu('(m^2*kg)/(A^2*s^3)'), 1000000.0))
-        self.failUnless(compare(tu('2*pi rad'), 360.0))
-        self.failUnless(compare(tu('2*pi rad') / tu('gon'), 400.0))
-        self.failUnless(compare(tu('999 kg') / tu('1 m^3'), 0.000009999))
+        self.assertTrue(compare(tu('10 m'), 10000.0))
+        self.assertTrue(compare(tu('3/8 in'), 9.525))
+        self.assertTrue(compare(tu('100 km/h'), 27777.77777777))
+        self.assertTrue(compare(tu('m^2*kg*s^-3*A^-2'), 1000000.0))
+        self.assertTrue(compare(tu('(m^2*kg)/(A^2*s^3)'), 1000000.0))
+        self.assertTrue(compare(tu('2*pi rad'), 360.0))
+        self.assertTrue(compare(tu('2*pi rad') / tu('gon'), 400.0))
+        self.assertTrue(compare(tu('999 kg') / tu('1 m^3'), 0.000009999))
 
     def testImperial(self):
         #tu = FreeCAD.Units.translateUnit
-        self.failUnless(compare(tu('3/8in'), 9.525))
-        #self.failUnless(compare(tu('1fo(3+7/16)in'),392.112500))thisgivesaparsersyntaxerror!!!
-        self.failUnless(compare(tu('1\'(3+7/16)"'), 392.112500))
+        self.assertTrue(compare(tu('3/8in'), 9.525))
+        #self.assertTrue(compare(tu('1fo(3+7/16)in'),392.112500))thisgivesaparsersyntaxerror!!!
+        self.assertTrue(compare(tu('1\'(3+7/16)"'), 392.112500))
 
         psi = FreeCAD.Units.parseQuantity("1psi")
         mpa = psi.getValueAs("MPa").Value
@@ -109,6 +109,13 @@ class UnitBasicCases(unittest.TestCase):
             v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("ksi")
             self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1 (delta: {2})".format(schemes[i], v.Value, self.delta), delta=self.delta)
 
+        vacuum_permittivity = FreeCAD.Units.parseQuantity("1F/m")
+        vacuum_permittivity.Format = {"NumberFormat" : FreeCAD.Units.NumberFormat.Scientific}
+        for i in range(num):
+            t = FreeCAD.Units.schemaTranslate(vacuum_permittivity, i)
+            v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("F/m")
+            self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1 (delta: {2})".format(schemes[i], v.Value, self.delta), delta=self.delta)
+
     def testSchemeTranslation(self):
         quantities = []
         for i in dir(FreeCAD.Units):
@@ -143,9 +150,9 @@ class UnitBasicCases(unittest.TestCase):
 
     def testTrigonometric(self):
         #tu=FreeCAD.Units.translateUnit
-        self.failUnless(compare(tu('sin(pi)'), math.sin(math.pi)))
-        self.failUnless(compare(tu('cos(pi)'), math.cos(math.pi)))
-        self.failUnless(compare(tu('tan(pi)'), math.tan(math.pi)))
+        self.assertTrue(compare(tu('sin(pi)'), math.sin(math.pi)))
+        self.assertTrue(compare(tu('cos(pi)'), math.cos(math.pi)))
+        self.assertTrue(compare(tu('tan(pi)'), math.tan(math.pi)))
 
     def testQuantity(self):
         length = FreeCAD.Units.Quantity(1, "m")

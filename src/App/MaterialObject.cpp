@@ -46,7 +46,7 @@ MaterialObject::~MaterialObject()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::MaterialObjectPython, App::MaterialObject)
-template<> const char* App::MaterialObjectPython::getViewProviderName(void) const {
+template<> const char* App::MaterialObjectPython::getViewProviderName() const {
     return "Gui::ViewProviderMaterialObjectPython";
 }
 /// @endcond

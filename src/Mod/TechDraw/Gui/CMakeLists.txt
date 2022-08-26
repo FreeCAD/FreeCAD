@@ -23,6 +23,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 if(BUILD_QT5)
@@ -82,6 +83,7 @@ set(TechDrawGui_UIC_SRCS
     TaskRichAnno.ui
     TaskSectionView.ui
     TaskWeldingSymbol.ui
+    TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
     TaskMoveView.ui
     TaskProjection.ui
@@ -93,7 +95,7 @@ else()
     qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
 endif()
 
-SET(MRTE_SRCS 
+SET(MRTE_SRCS
     mrichtextedit.ui
     mrichtextedit.cpp
     mrichtextedit.h
@@ -186,6 +188,9 @@ SET(TechDrawGui_SRCS
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
+    TaskSurfaceFinishSymbols.ui
+    TaskSurfaceFinishSymbols.cpp
+    TaskSurfaceFinishSymbols.h
     TaskSelectLineAttributes.ui
     TaskSelectLineAttributes.cpp
     TaskSelectLineAttributes.h
@@ -385,7 +390,7 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderWeld.cpp
     ViewProviderWeld.h
     ViewProviderCosmeticExtension.cpp
-    ViewProviderCosmeticExtension.h 
+    ViewProviderCosmeticExtension.h
 )
 
 SET(TechDrawGuiTaskDlgs_SRCS
@@ -404,6 +409,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
+    TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui

@@ -113,7 +113,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintFluidBoundary::execute(void)
+App::DocumentObjectExecReturn *ConstraintFluidBoundary::execute()
 {
     return Constraint::execute();
 }
@@ -182,7 +182,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         }
     } else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
-        if (Direction.getValue() == nullptr) {
+        if (!Direction.getValue()) {
             Base::Vector3d direction = NormalDirection.getValue();
             if (Reversed.getValue())
                 direction = -direction;

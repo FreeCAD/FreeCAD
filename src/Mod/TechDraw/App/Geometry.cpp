@@ -109,7 +109,7 @@ Wire::Wire(const TopoDS_Wire &w)
     for (; edges.More(); edges.Next()) {
         const auto edge( TopoDS::Edge(edges.Current()) );
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
-        if (bg != nullptr) {
+        if (bg) {
             geoms.push_back(bg);
         } else {
             Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
@@ -123,7 +123,7 @@ Wire::~Wire()
     geoms.clear();
 }
 
-TopoDS_Wire Wire::toOccWire(void) const
+TopoDS_Wire Wire::toOccWire() const
 {
     TopoDS_Wire result;
     BRepBuilderAPI_MakeWire mkWire;
@@ -143,7 +143,7 @@ void Wire::dump(std::string s)
     BRepTools::Write(toOccWire(), s.c_str());            //debug
 }
 
-TopoDS_Face Face::toOccFace(void) const
+TopoDS_Face Face::toOccFace() const
 {
     TopoDS_Face result;
     //if (!wires.empty) {
@@ -192,7 +192,7 @@ BaseGeomPtr BaseGeom::copy()
     BaseGeomPtr result;
     if (!occEdge.IsNull()) {
         result = baseFactory(occEdge);
-        if (result != nullptr) {
+        if (result) {
             result->extractType = extractType;
             result->classOfEdge = classOfEdge;
             result->hlrVisible = hlrVisible;
@@ -219,7 +219,7 @@ BaseGeomPtr BaseGeom::copy()
     return result;
 }
 
-std::string BaseGeom::toString(void) const
+std::string BaseGeom::toString() const
 {
     std::stringstream ss;
     ss << geomType << "," <<
@@ -239,7 +239,7 @@ boost::uuids::uuid BaseGeom::getTag() const
     return tag;
 }
 
-std::string BaseGeom::getTagAsString(void) const
+std::string BaseGeom::getTagAsString() const
 {
     std::string tmp = boost::uuids::to_string(getTag());
     return tmp;
@@ -433,7 +433,7 @@ std::string BaseGeom::dump()
     return ss.str();
 }
 
-bool BaseGeom::closed(void)
+bool BaseGeom::closed()
 {
     bool result = false;
     Base::Vector3d start(getStartPoint().x,
@@ -587,7 +587,7 @@ void BaseGeom::intersectionLL(TechDraw::BaseGeomPtr geom1,
     // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
     TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
     TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
-    // we calculate vectors to start points and direction verctors
+    // we calculate vectors to start points and direction vectors
     Base::Vector3d startPnt1 = gen1->points.at(0);
     Base::Vector3d endPnt1 = gen1->points.at(1);
     Base::Vector3d startPnt2 = gen2->points.at(0);
@@ -785,7 +785,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 }
 
 
-Circle::Circle(void) 
+Circle::Circle()
 {
     geomType = CIRCLE;
     radius = 0.0;
@@ -825,7 +825,7 @@ Circle::Circle(const TopoDS_Edge &e)
     radius = circ.Radius();
     center = Base::Vector3d(p.X(), p.Y(), p.Z());
 }
-std::string Circle::toString(void) const
+std::string Circle::toString() const
 {
     std::string baseCSV = BaseGeom::toString();
     std::stringstream ss;
@@ -934,7 +934,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
 }
 
 
-AOC::AOC(void) : Circle()
+AOC::AOC() : Circle()
 {
     geomType = ARCOFCIRCLE;
 
@@ -998,7 +998,7 @@ bool AOC::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
     return result;
 }
 
-std::string AOC::toString(void) const
+std::string AOC::toString() const
 {
     std::string circleCSV = Circle::toString();
     std::stringstream ss;
@@ -1106,7 +1106,7 @@ Generic::Generic()
     geomType = GENERIC;
 }
 
-std::string Generic::toString(void) const
+std::string Generic::toString() const
 {
     std::string baseCSV = BaseGeom::toString();
     std::stringstream ss;
@@ -1157,13 +1157,13 @@ void Generic::Restore(Base::XMLReader &reader)
     reader.readEndElement("Points");
 }
 
-Base::Vector3d Generic::asVector(void)
+Base::Vector3d Generic::asVector()
 {
     Base::Vector3d result = getEndPoint() - getStartPoint();
     return result;
 }
 
-double Generic::slope(void)
+double Generic::slope()
 {
     double slope;
     Base::Vector3d v = asVector();
@@ -1704,7 +1704,7 @@ boost::uuids::uuid Vertex::getTag() const
     return tag;
 }
 
-std::string Vertex::getTagAsString(void) const
+std::string Vertex::getTagAsString() const
 {
     std::string tmp = boost::uuids::to_string(getTag());
     return tmp;

@@ -50,25 +50,25 @@ public:
     /// constructor
     ViewProviderBody();
     /// destructor
-    virtual ~ViewProviderBody();
+    ~ViewProviderBody() override;
 
     App::PropertyEnumeration DisplayModeBody;
     
-    virtual void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject *) override;
 
-    virtual bool doubleClicked(void) override;
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool doubleClicked(void) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
-    virtual std::vector< std::string > getDisplayModes(void) const override;
-    virtual void setDisplayMode(const char* ModeName) override;
-    virtual void setOverrideMode(const std::string& mode) override;
+    std::vector< std::string > getDisplayModes(void) const override;
+    void setDisplayMode(const char* ModeName) override;
+    void setOverrideMode(const std::string& mode) override;
 
-    virtual bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /// Update the children's highlighting when triggered
-    virtual void updateData(const App::Property* prop) override;
+    void updateData(const App::Property* prop) override;
     ///unify children visuals
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
     /// Update the sizes of origin and datums
     void updateOriginDatumSize ();
@@ -80,11 +80,11 @@ public:
     SbBox3f getBoundBox ();
 
     /** Check whether objects can be added to the view provider by drag and drop */
-    virtual bool canDropObjects() const override;
+    bool canDropObjects() const override;
     /** Check whether the object can be dropped to the view provider by drag and drop */
-    virtual bool canDropObject(App::DocumentObject*) const override;
+    bool canDropObject(App::DocumentObject*) const override;
     /** Add an object to the view provider by drag and drop */
-    virtual void dropObject(App::DocumentObject*) override;
+    void dropObject(App::DocumentObject*) override;
 
 protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );

@@ -624,13 +624,14 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     auto contextIndex = currentIndex();
 
     std::unordered_set<App::Property*> props;
-    for(auto index : selectedIndexes()) {
+    const auto indexes = selectedIndexes();
+    for(const auto& index : indexes) {
         auto item = static_cast<PropertyItem*>(index.internalPointer());
         if(item->isSeparator())
             continue;
         for(auto parent=item;parent;parent=parent->parent()) {
             const auto &ps = parent->getPropertyData();
-            if(ps.size()) {
+            if(!ps.empty()) {
                 props.insert(ps.begin(),ps.end());
                 break;
             }
@@ -654,7 +655,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     }
 
     if(PropertyView::showAll()) {
-        if(props.size()) {
+        if(!props.empty()) {
             menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
             if (std::all_of(props.begin(), props.end(), [](auto prop) {
                     return prop->testStatus(App::Property::PropDynamic)
@@ -680,7 +681,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         if(canRemove)
             menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
 
-        if(props.size()) {
+        if(!props.empty()) {
             menu.addSeparator();
 
             QAction *action;

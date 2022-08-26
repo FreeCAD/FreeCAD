@@ -20,23 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRepAlgoAPI_BooleanOperation.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
 #endif
 
-#include "ViewProviderBoolean.h"
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Mod/Part/App/FeaturePartBoolean.h>
-#include <Mod/Part/App/FeaturePartFuse.h>
 #include <Mod/Part/App/FeaturePartCommon.h>
+#include <Mod/Part/App/FeaturePartFuse.h>
+
+#include "ViewProviderBoolean.h"
+
 
 using namespace PartGui;
 
@@ -50,7 +47,7 @@ ViewProviderBoolean::~ViewProviderBoolean()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Part::Boolean*>(getObject())->Base.getValue());
@@ -59,7 +56,7 @@ std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren(void)const
     return temp;
 }
 
-QIcon ViewProviderBoolean::getIcon(void) const
+QIcon ViewProviderBoolean::getIcon() const
 {
     App::DocumentObject* obj = getObject();
     if (obj) {
@@ -130,6 +127,12 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
                     applyColor(hist[1], colTool, colBool);
                 }
 
+                // If the view provider has set a transparency then override the values
+                // of the input shapes
+                if (Transparency.getValue() > 0) {
+                    applyTransparency(Transparency.getValue(), colBool);
+                }
+
                 this->DiffuseColor.setValues(colBool);
             }
         }
@@ -166,12 +169,12 @@ ViewProviderMultiFuse::~ViewProviderMultiFuse()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderMultiFuse::claimChildren()const
 {
     return std::vector<App::DocumentObject*>(static_cast<Part::MultiFuse*>(getObject())->Shapes.getValues());
 }
 
-QIcon ViewProviderMultiFuse::getIcon(void) const
+QIcon ViewProviderMultiFuse::getIcon() const
 {
     return Gui::BitmapFactory().iconFromTheme("Part_Fuse");
 }
@@ -216,6 +219,12 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
                     applyColor(hist[index], colBase, colBool);
                 }
             }
+        }
+
+        // If the view provider has set a transparency then override the values
+        // of the input shapes
+        if (Transparency.getValue() > 0) {
+            applyTransparency(Transparency.getValue(), colBool);
         }
 
         this->DiffuseColor.setValues(colBool);
@@ -297,12 +306,12 @@ ViewProviderMultiCommon::~ViewProviderMultiCommon()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderMultiCommon::claimChildren()const
 {
     return std::vector<App::DocumentObject*>(static_cast<Part::MultiCommon*>(getObject())->Shapes.getValues());
 }
 
-QIcon ViewProviderMultiCommon::getIcon(void) const
+QIcon ViewProviderMultiCommon::getIcon() const
 {
     return Gui::BitmapFactory().iconFromTheme("Part_Common");
 }
@@ -347,6 +356,12 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
                     applyColor(hist[index], colBase, colBool);
                 }
             }
+        }
+
+        // If the view provider has set a transparency then override the values
+        // of the input shapes
+        if (Transparency.getValue() > 0) {
+            applyTransparency(Transparency.getValue(), colBool);
         }
 
         this->DiffuseColor.setValues(colBool);

@@ -61,18 +61,11 @@ QGIViewClip::QGIViewClip()
     m_frame->setRect(0.,0.,Rez::guiX(5.),Rez::guiX(5.));
 }
 
-
-QVariant QGIViewClip::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewClip::updateView(bool update)
 {
     auto viewClip( dynamic_cast<TechDraw::DrawViewClip *>(getViewObject()) );
-    if( viewClip == nullptr ) {
+    if (!viewClip)
         return;
-    }
 
     if (update ||
         viewClip->isTouched() ||
@@ -103,9 +96,8 @@ void QGIViewClip::drawClip()
 {
     auto viewClip( dynamic_cast<TechDraw::DrawViewClip *>(getViewObject()) );
 
-    if( viewClip == nullptr ) {
+    if (!viewClip)
         return;
-    }
 
     prepareGeometryChange();
     double h = viewClip->Height.getValue();

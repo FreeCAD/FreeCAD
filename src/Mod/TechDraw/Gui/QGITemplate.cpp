@@ -52,14 +52,9 @@ QGITemplate::~QGITemplate()
     pageTemplate = nullptr;
 }
 
-QVariant QGITemplate::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGraphicsItemGroup::itemChange(change, value);
-}
-
 void QGITemplate::setTemplate(TechDraw::DrawTemplate *obj)
 {
-    if(obj == nullptr)
+    if (!obj)
         return;
 
     pageTemplate = obj;

@@ -258,7 +258,7 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
             DressUpView->highlightReferences(true);
             // clear existing selection because only the current item is highlighted, not all selected ones to keep the overview
             Gui::Selection().clearSelection();
-            // highligh the selected item
+            // highlight the selected item
             Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
         }
     }
@@ -351,7 +351,7 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 {
     QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }

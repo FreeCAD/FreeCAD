@@ -20,18 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "ViewProviderLineParametric.h"
 
 
 using namespace PartGui;
 using namespace std;
-
 
 //**************************************************************************
 // Construction/Destruction
@@ -53,14 +48,14 @@ ViewProviderLineParametric::~ViewProviderLineParametric()
 
 // **********************************************************************************
 
-std::vector<std::string> ViewProviderLineParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderLineParametric::getDisplayModes() const
 {
   // get the modes of the father
   std::vector<std::string> StrList;
 
   // add your own modes
-  StrList.push_back("Wireframe");
-  StrList.push_back("Points");
+  StrList.emplace_back("Wireframe");
+  StrList.emplace_back("Points");
 
   return StrList;
 }

@@ -47,25 +47,25 @@ class TaskScaledParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
-    virtual ~TaskScaledParameters();
+    ~TaskScaledParameters() override;
 
-    virtual void apply();
+    void apply() override;
 
 private Q_SLOTS:
     void onFactor(const double f);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    void onFeatureDeleted() override;
 
 protected:
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
-    double getFactor(void) const;
-    unsigned getOccurrences(void) const;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void clearButtons() override;
+    double getFactor() const;
+    unsigned getOccurrences() const;
 
 private:
     void setupUI();
@@ -82,12 +82,12 @@ class TaskDlgScaledParameters : public TaskDlgTransformedParameters
     Q_OBJECT
 
 public:
-    TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
-    virtual ~TaskDlgScaledParameters() {}
+    explicit TaskDlgScaledParameters(ViewProviderScaled *ScaledView);
+    ~TaskDlgScaledParameters() override {}
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
 } //namespace PartDesignGui

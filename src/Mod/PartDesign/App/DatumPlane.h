@@ -34,25 +34,25 @@ namespace PartDesign
 
 class PartDesignExport Plane : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::Plane);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Plane);
 
 public:
     Plane();
-    virtual ~Plane();
+    ~Plane() override;
 
     App::PropertyEnumeration ResizeMode;
     App::PropertyLength Length;
     App::PropertyLength Width;
 
-    virtual void onChanged(const App::Property *prop);
-    const char* getViewProviderName(void) const {
+    void onChanged(const App::Property *prop) override;
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumPlane";
     }
 
     Base::Vector3d getNormal();
 
 protected:
-    virtual void Restore(Base::XMLReader& reader);
+    void Restore(Base::XMLReader& reader) override;
 
 private:
     static const char* ResizeModeEnums[];

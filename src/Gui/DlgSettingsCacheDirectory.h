@@ -41,14 +41,14 @@ class DlgSettingsCacheDirectory : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsCacheDirectory(QWidget* parent = nullptr);
-    ~DlgSettingsCacheDirectory();
+    explicit DlgSettingsCacheDirectory(QWidget* parent = nullptr);
+    ~DlgSettingsCacheDirectory() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     void runCheck();

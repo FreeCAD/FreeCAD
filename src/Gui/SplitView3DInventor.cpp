@@ -286,10 +286,10 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
     }
     else {
-        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor", 3940932863UL);
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2", 2526456575UL); // default color (blue/grey)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3", 3570714879UL); // default color (light yellow/blue)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4", 1869583359UL); // default color (blue/grey)
         float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
@@ -305,12 +305,12 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
 }
 
-void AbstractSplitView::onUpdate(void)
+void AbstractSplitView::onUpdate()
 {
     update();
 }
 
-const char *AbstractSplitView::getName(void) const
+const char *AbstractSplitView::getName() const
 {
     return "SplitView3DInventor";
 }
@@ -423,7 +423,7 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
     //_viewer->getWidget()->setCursor(aCursor);
 }
 
-PyObject *AbstractSplitView::getPyObject(void)
+PyObject *AbstractSplitView::getPyObject()
 {
     if (!_viewerPy)
         _viewerPy = new AbstractSplitViewPy(this);
@@ -502,7 +502,7 @@ Py::Object AbstractSplitViewPy::getattr(const char * attr)
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
-        for (auto it : dict_base) {
+        for (const auto& it : dict_base) {
             dict_self.setItem(it.first, it.second);
         }
         return dict_self;
@@ -728,7 +728,7 @@ Py::Object AbstractSplitViewPy::sequence_item(Py_ssize_t viewIndex)
     return Py::asObject(viewer);
 }
 
-int AbstractSplitViewPy::sequence_length()
+PyCxx_ssize_t AbstractSplitViewPy::sequence_length()
 {
     AbstractSplitView* view = getSplitViewPtr();
     return view->getSize();

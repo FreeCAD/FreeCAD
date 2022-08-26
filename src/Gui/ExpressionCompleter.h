@@ -69,8 +69,8 @@ public Q_SLOTS:
 
 private:
     void init();
-    virtual QString pathFromIndex ( const QModelIndex & index ) const;
-    virtual QStringList splitPath ( const QString & path ) const;
+    QString pathFromIndex ( const QModelIndex & index ) const override;
+    QStringList splitPath ( const QString & path ) const override;
 
     int prefixStart = 0;
     int prefixEnd = 0;
@@ -97,8 +97,8 @@ public Q_SLOTS:
     void slotTextChanged(const QString & text);
     void slotCompleteText(const QString & completionPrefix);
 protected:
-    void keyPressEvent(QKeyEvent * event);
-    void contextMenuEvent(QContextMenuEvent * event);
+    void keyPressEvent(QKeyEvent * event) override;
+    void contextMenuEvent(QContextMenuEvent * event) override;
 private:
     ExpressionCompleter * completer;
     bool block;
@@ -117,8 +117,8 @@ public:
     void hideCompleter();
     void setExactMatch(bool enabled=true);
 protected:
-    void keyPressEvent(QKeyEvent * event);
-    void contextMenuEvent(QContextMenuEvent * event);
+    void keyPressEvent(QKeyEvent * event) override;
+    void contextMenuEvent(QContextMenuEvent * event) override;
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:

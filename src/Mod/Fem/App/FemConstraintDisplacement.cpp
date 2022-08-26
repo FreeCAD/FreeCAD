@@ -88,12 +88,12 @@ ConstraintDisplacement::ConstraintDisplacement()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintDisplacement::execute(void)
+App::DocumentObjectExecReturn *ConstraintDisplacement::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintDisplacement::getViewProviderName(void) const
+const char* ConstraintDisplacement::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintDisplacement";
 }

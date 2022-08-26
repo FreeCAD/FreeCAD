@@ -47,17 +47,8 @@
 #include "ViewParams.h"
 
 
-// For 64-bit system the method using the front buffer doesn't work at all for lines.
-// Thus, use the method which forces a redraw every time. This is a bit slower but at
-// least it works.
-//
-// Disable front buffer in all cases, in order to spare the repeating logic of
-// handling selection contextn. SoFCSelection is not really used that much
-// anyway.
-//
-// #if defined(_OCC64) // is set by configure or cmake
 # define NO_FRONTBUFFER
-// #endif
+
 
 using namespace Gui;
 
@@ -126,7 +117,7 @@ SoFCSelection::~SoFCSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != nullptr &&
+    if (currenthighlight &&
         (!currenthighlight->getTail()->isOfType(SoFCSelection::getClassTypeId()))) {
         currenthighlight->unref();
         currenthighlight = nullptr;
@@ -136,7 +127,7 @@ SoFCSelection::~SoFCSelection()
 
 // doc from parent
 void
-SoFCSelection::initClass(void)
+SoFCSelection::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSelection,SoGroup,"Group");
 }
@@ -331,19 +322,6 @@ SoFCSelection::getPickedPoint(SoHandleEventAction* action) const
         return nullptr;
     else if (points.getLength() == 1)
         return points[0];
-    //const SoPickedPoint* pp0 = points[0];
-    //const SoPickedPoint* pp1 = points[1];
-    //const SoDetail* det0 = pp0->getDetail();
-    //const SoDetail* det1 = pp1->getDetail();
-    //if (det0 && det0->isOfType(SoFaceDetail::getClassTypeId()) &&
-    //    det1 && det1->isOfType(SoLineDetail::getClassTypeId())) {
-    //    const SbVec3f& pt0 = pp0->getPoint();
-    //    const SbVec3f& pt1 = pp1->getPoint();
-    //    if (pt0.equals(pt1, 0.01f))
-    //        return pp1;
-    //}
-
-    //return pp0;
 
     const SoPickedPoint* picked = points[0];
 
@@ -574,13 +552,6 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                  ,pp->getPoint()[2]);
             }
         }
-        //if(selected == SELECTED){
-        //    redrawHighlighted(action, true);
-        //}
-        //if(selectionCleared ){
-        //    redrawHighlighted(action, false);
-        //    selectionCleared = false;
-        //}
     }
     // key press events
     else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
@@ -861,7 +832,6 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 {
     Q_UNUSED(action);
     Q_UNUSED(doHighlight);
-    //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
 
 #ifdef NO_FRONTBUFFER
 #else
@@ -912,12 +882,8 @@ SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 
     SoState *state = action->getState();
 
-    //void* window;
-    //void* context;
-    //void *display;
     QtGLWidget* window;
     SoGLRenderAction *glAction;
-    //SoWindowElement::get(state, window, context, display, glAction);
     SoGLWidgetElement::get(state, window);
     SoGLRenderActionElement::get(state, glAction);
 
@@ -1094,4 +1060,3 @@ void SoFCSelection::applySettings ()
     }
 }
 
-//#undef THIS

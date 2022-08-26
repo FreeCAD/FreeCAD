@@ -47,27 +47,27 @@ ViewProviderPipe::~ViewProviderPipe()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
 
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
 
     App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
-    if (sketch != nullptr)
+    if (sketch)
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-        if (obj != nullptr && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
             temp.push_back(obj);
     }
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine != nullptr && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (spine && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
     App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
-    if (auxspine != nullptr && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (auxspine && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
     return temp;
@@ -174,7 +174,7 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     }
 }
 
-QIcon ViewProviderPipe::getIcon(void) const {
+QIcon ViewProviderPipe::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Pipe*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)

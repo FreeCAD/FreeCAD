@@ -36,8 +36,8 @@ class DlgDecimating : public QWidget
     Q_OBJECT
 
 public:
-    DlgDecimating(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgDecimating();
+    explicit DlgDecimating(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgDecimating() override;
     void setNumberOfTriangles(int);
     double tolerance() const;
     double reduction() const;
@@ -61,14 +61,14 @@ class TaskDecimating : public Gui::TaskView::TaskDialog
 
 public:
     TaskDecimating();
-    ~TaskDecimating();
+    ~TaskDecimating() override;
 
 public:
-    bool accept();
+    bool accept() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
+    bool isAllowedAlterDocument() const override
     { return true; }
 
 private:

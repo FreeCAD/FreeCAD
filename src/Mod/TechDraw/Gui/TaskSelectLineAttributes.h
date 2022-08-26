@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 #define TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -33,11 +35,11 @@ class dimAttributes {
 
     public:
 
-    dimAttributes(void);
+    dimAttributes();
     void setCascadeSpacing(double);
-    double getCascadeSpacing(void) {return cascadeSpacing;}
+    double getCascadeSpacing() {return cascadeSpacing;}
     void setLineStretch(double);
-    double getLineStretch(void) {return lineStretch;}
+    double getLineStretch() {return lineStretch;}
 
 }; // class dimAttributes
 
@@ -74,15 +76,15 @@ class lineAttributes {
 
 public:
 
-    lineAttributes(void);
+    lineAttributes();
     void setStyle(int);
-    int getStyle(void) const {return style;}
+    int getStyle() const {return style;}
     void setWidth(int);
-    int getWidth(void) const {return width;}
-    float getWidthValue(void);
+    int getWidth() const {return width;}
+    float getWidthValue();
     void setColor(int);
-    int getColor(void) const {return color;}
-    App::Color getColorValue(void);
+    int getColor() const {return color;}
+    App::Color getColorValue();
 
 }; // class lineAttributes
 
@@ -91,8 +93,8 @@ class TaskSelectLineAttributes : public QWidget
     Q_OBJECT
 
 public:
-    TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
-    ~TaskSelectLineAttributes();
+    explicit TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    ~TaskSelectLineAttributes() override;
 
 public Q_SLOTS:
 
@@ -104,9 +106,9 @@ public:
 protected Q_SLOTS:
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
-    void setUiEdit(void);
+    void setUiEdit();
 
 private:
     lineAttributes* activeAttributes;
@@ -118,21 +120,21 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
-    ~TaskDlgSelectLineAttributes();
+    explicit TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    ~TaskDlgSelectLineAttributes() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 

@@ -159,8 +159,8 @@ class SoFCColorBarProxyObject : public QObject
 public:
     SoFCColorBarProxyObject(SoFCColorBar* b)
         : QObject(nullptr), bar(b) {}
-    ~SoFCColorBarProxyObject() {}
-    void customEvent(QEvent *)
+    ~SoFCColorBarProxyObject() override {}
+    void customEvent(QEvent *) override
     {
         bar->customize(bar->getActiveBar());
         this->deleteLater();

@@ -168,7 +168,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(const char *attr)
         // Return the default dict
         PyTypeObject *tp = this->ob_type;
         // register type if needed
-        if (tp->tp_dict == nullptr) {
+        if (!tp->tp_dict) {
             if (PyType_Ready(tp) < 0)
                 return nullptr;
         }

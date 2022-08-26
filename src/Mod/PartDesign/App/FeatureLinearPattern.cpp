@@ -81,7 +81,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     bool reversed = Reversed.getValue();
 
     App::DocumentObject* refObject = Direction.getValue();
-    if (refObject == nullptr)
+    if (!refObject)
         throw Base::ValueError("No direction reference specified");
 
     std::vector<std::string> subStrings = Direction.getSubValues();

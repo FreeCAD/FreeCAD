@@ -28,11 +28,10 @@ import FreeCAD
 import os
 import zipfile
 import re
-import sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -160,8 +159,7 @@ class ArchReference:
                             f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
-                            if sys.version_info.major >= 3:
-                                shapedata = shapedata.decode("utf8")
+                            shapedata = shapedata.decode("utf8")
                             shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
                             obj.Shape = shape
                             if not pl.isIdentity():
@@ -263,8 +261,7 @@ class ArchReference:
             materials = {}
             writemode = False
             for line in docf:
-                if sys.version_info.major >= 3:
-                    line = line.decode("utf8")
+                line = line.decode("utf8")
                 if "<Object name=" in line:
                     n = re.findall('name=\"(.*?)\"',line)
                     if n:
@@ -320,8 +317,7 @@ class ArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
-                if sys.version_info.major >= 3:
-                    line = line.decode("utf8")
+                line = line.decode("utf8")
                 if ("<ViewProvider name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
@@ -341,10 +337,7 @@ class ArchReference:
         buf = cf.read()
         cf.close()
         for i in range(1,int(len(buf)/4)):
-            if sys.version_info.major >= 3:
-                colors.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
-            else:
-                colors.append((ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0))
+            colors.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
         if colors:
             return colors
         return None
@@ -473,7 +466,7 @@ class ViewProviderArchReference:
                 if vobj.DiffuseColor and vobj.UpdateColors:
                     vobj.DiffuseColor = vobj.DiffuseColor
         elif prop == "Visibility":
-            if vobj.Visibility == True:
+            if vobj.Visibility:
                 if (not vobj.Object.Shape) or vobj.Object.Shape.isNull():
                     vobj.Object.Proxy.reload = True
                     vobj.Object.Proxy.execute(vobj.Object)
@@ -610,8 +603,7 @@ class ViewProviderArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
-                if sys.version_info.major >= 3:
-                    line = line.decode("utf8")
+                line = line.decode("utf8")
                 if ("<Object name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"SavedInventor\"" in line):
@@ -628,8 +620,7 @@ class ViewProviderArchReference:
             return None
         f = zdoc.open(ivfile)
         buf = f.read()
-        if sys.version_info.major >= 3:
-            buf = buf.decode("utf8")
+        buf = buf.decode("utf8")
         f.close()
         buf = buf.replace("lineWidth 2","lineWidth "+str(int(obj.ViewObject.LineWidth)))
         return buf

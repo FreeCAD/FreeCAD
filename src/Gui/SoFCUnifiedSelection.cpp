@@ -137,7 +137,7 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != nullptr) {
+    if (currenthighlight) {
         currenthighlight->unref();
         currenthighlight = nullptr;
     }
@@ -149,7 +149,7 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
 
 // doc from parent
 void
-SoFCUnifiedSelection::initClass(void)
+SoFCUnifiedSelection::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCUnifiedSelection,SoSeparator,"Separator");
 }
@@ -194,7 +194,7 @@ void SoFCUnifiedSelection::applySettings()
     }
 }
 
-const char* SoFCUnifiedSelection::getFileFormatName(void) const
+const char* SoFCUnifiedSelection::getFileFormatName() const
 {
     return "Separator";
 }
@@ -658,32 +658,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         }
     }
 
-#if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
-
-    // If no next hierarchy is found, do another try on view provider hierarchies,
-    // which is used by geo feature group.
-    if(!hasNext) {
-        bool found = false;
-        auto vps = this->pcDocument->getViewProvidersByPath(pPath);
-        for(auto it=vps.begin();it!=vps.end();++it) {
-            auto vpdNext = it->first;
-            if(Gui::Selection().isSelected(vpdNext->getObject(),"")) {
-                found = true;
-                continue;
-            }
-            if(!found || !vpdNext->useNewSelectionModel() || !vpdNext->isSelectable())
-                continue;
-            hasNext = true;
-            vpd = vpdNext;
-            det = 0;
-            pPath->truncate(it->second+1);
-            objectName = vpd->getObject()->getNameInDocument();
-            subName = "";
-            break;
-        }
-    }
-#endif
-
     FC_TRACE("clearing selection");
     Gui::Selection().clearSelection();
     FC_TRACE("add selection");
@@ -749,7 +723,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         if (mymode == AUTO || mymode == ON) {
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action,true);
-            if(infos.size())
+            if(!infos.empty())
                 setHighlight(infos[0]);
             else {
                 setHighlight(PickedInfo());
@@ -1042,7 +1016,7 @@ void SoFCSeparator::GLRenderBelowPath(SoGLRenderAction * action) {
     inherited::GLRenderBelowPath(action);
 }
 
-void SoFCSeparator::initClass(void)
+void SoFCSeparator::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSeparator,SoSeparator,"FCSeparator");
 }
@@ -1082,7 +1056,7 @@ static void so_bbox_destruct_data(void * closure)
 static SbStorage * so_bbox_storage = nullptr;
 
 // called from atexit
-static void so_bbox_cleanup(void)
+static void so_bbox_cleanup()
 {
     delete so_bbox_storage;
 }
@@ -1112,7 +1086,7 @@ SoFCSelectionRoot::~SoFCSelectionRoot()
 {
 }
 
-void SoFCSelectionRoot::initClass(void)
+void SoFCSelectionRoot::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCSelectionRoot,SoFCSeparator,"FCSelectionRoot");
 
@@ -1129,7 +1103,7 @@ void SoFCSelectionRoot::finish()
 }
 
 SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
-    if(SelStack.size())
+    if(!SelStack.empty())
         return front?SelStack.front():SelStack.back();
     return def;
 }
@@ -1229,7 +1203,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
 bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color)
 {
     auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
-    if (data->bboxaction == nullptr) {
+    if (!data->bboxaction) {
         // The viewport region will be replaced every time the action is
         // used, so we can just feed it a dummy here.
         data->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
@@ -1710,7 +1684,7 @@ void SoFCPathAnnotation::finish()
     atexit_cleanup();
 }
 
-void SoFCPathAnnotation::initClass(void)
+void SoFCPathAnnotation::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCPathAnnotation,SoSeparator,"Separator");
 }

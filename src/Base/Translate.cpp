@@ -72,10 +72,7 @@ Translate::Translate()
     initialize("This module is the Translate module"); // register with Python
 }
 
-Translate::~Translate()
-{
-
-}
+Translate::~Translate() = default;
 
 Py::Object Translate::translate(const Py::Tuple& args)
 {

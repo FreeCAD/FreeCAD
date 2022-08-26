@@ -44,7 +44,7 @@ Feature::~Feature()
 {
 }
 
-short Feature::mustExecute(void) const
+short Feature::mustExecute() const
 {
     return App::GeoFeature::mustExecute();
 }
@@ -68,7 +68,7 @@ void Feature::onChanged(const App::Property* prop)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeaturePython, Path::Feature)
-template<> const char* Path::FeaturePython::getViewProviderName(void) const {
+template<> const char* Path::FeaturePython::getViewProviderName() const {
     return "PathGui::ViewProviderPathPython";
 }
 /// @endcond

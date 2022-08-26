@@ -71,7 +71,7 @@ struct SketchAnalysis::VertexIds {
 
 struct SketchAnalysis::Vertex_Less
 {
-    Vertex_Less(double tolerance) : tolerance(tolerance){}
+    explicit Vertex_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
                     const VertexIds& y) const
     {
@@ -98,7 +98,7 @@ struct SketchAnalysis::VertexID_Less
 
 struct SketchAnalysis::Vertex_EqualTo
 {
-    Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
+    explicit Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
                     const VertexIds& y) const
     {
@@ -122,7 +122,7 @@ struct SketchAnalysis::EdgeIds {
 
 struct SketchAnalysis::Edge_Less
 {
-    Edge_Less(double tolerance) : tolerance(tolerance){}
+    explicit Edge_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
                     const EdgeIds& y) const
                     {
@@ -136,7 +136,7 @@ private:
 
 struct SketchAnalysis::Edge_EqualTo
 {
-    Edge_EqualTo(double tolerance) : tolerance(tolerance){}
+    explicit Edge_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
                     const EdgeIds& y) const
                     {
@@ -295,7 +295,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
                     std::set<VertexIds, VertexID_Less> *tempGrp = nullptr;
                     for (auto it = coincVertexGrps.begin(); it < coincVertexGrps.end(); ++it) {
                         if ( (it->find(v1) != it->end()) || (it->find(v2) != it->end()) ) {
-                            if (tempGrp == nullptr) {
+                            if (!tempGrp) {
                                 tempGrp = &*it;
                             }
                             else {
@@ -881,7 +881,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
 }
 
 
-std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices(void) const
+std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices() const
 {
     std::vector<Base::Vector3d> points;
     TopoDS_Shape shape = sketch->Shape.getValue();

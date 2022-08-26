@@ -51,7 +51,7 @@
 using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SketchObjectPy::representation(void) const
+std::string SketchObjectPy::representation() const
 {
     return "<Sketcher::SketchObject>";
 }
@@ -1682,7 +1682,7 @@ PyObject* SketchObjectPy::autoRemoveRedundants(PyObject *args)
     Py_Return;
 }
 
-Py::List SketchObjectPy::getMissingPointOnPointConstraints(void) const
+Py::List SketchObjectPy::getMissingPointOnPointConstraints() const
 {
     std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingPointOnPointConstraints();
 
@@ -1708,7 +1708,7 @@ void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1723,7 +1723,7 @@ void SketchObjectPy::setMissingPointOnPointConstraints(Py::List arg)
     this->getSketchObjectPtr()->setMissingPointOnPointConstraints(constraints);
 }
 
-Py::List SketchObjectPy::getMissingVerticalHorizontalConstraints(void) const
+Py::List SketchObjectPy::getMissingVerticalHorizontalConstraints() const
 {
     std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingVerticalHorizontalConstraints();
 
@@ -1749,7 +1749,7 @@ void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1764,7 +1764,7 @@ void SketchObjectPy::setMissingVerticalHorizontalConstraints(Py::List arg)
     this->getSketchObjectPtr()->setMissingVerticalHorizontalConstraints(constraints);
 }
 
-Py::List SketchObjectPy::getMissingLineEqualityConstraints(void) const
+Py::List SketchObjectPy::getMissingLineEqualityConstraints() const
 {
     std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingLineEqualityConstraints();
 
@@ -1789,7 +1789,7 @@ void SketchObjectPy::setMissingLineEqualityConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1804,7 +1804,7 @@ void SketchObjectPy::setMissingLineEqualityConstraints(Py::List arg)
     this->getSketchObjectPtr()->setMissingLineEqualityConstraints(constraints);
 }
 
-Py::List SketchObjectPy::getMissingRadiusConstraints(void) const
+Py::List SketchObjectPy::getMissingRadiusConstraints() const
 {
     std::vector<ConstraintIds> constraints = this->getSketchObjectPtr()->getMissingRadiusConstraints();
 
@@ -1829,7 +1829,7 @@ void SketchObjectPy::setMissingRadiusConstraints(Py::List arg)
         return (checkitem(t,i,0)?Sketcher::PointPos::none:(checkitem(t,i,1)?Sketcher::PointPos::start:(checkitem(t,i,2)?Sketcher::PointPos::end:Sketcher::PointPos::mid)));
     };
 
-    for (auto ti : arg) {
+    for (const auto& ti : arg) {
         Py::Tuple t(ti);
         ConstraintIds c;
         c.First = (long)Py::Long(t.getItem(0));
@@ -1863,7 +1863,7 @@ PyObject* SketchObjectPy::getGeometryWithDependentParameters(PyObject *args)
     return Py::new_reference_to(list);
 }
 
-Py::List SketchObjectPy::getOpenVertices(void) const
+Py::List SketchObjectPy::getOpenVertices() const
 {
     std::vector<Base::Vector3d> points = this->getSketchObjectPtr()->getOpenVertices();
 
@@ -1878,23 +1878,23 @@ Py::List SketchObjectPy::getOpenVertices(void) const
     return list;
 }
 
-Py::Long SketchObjectPy::getConstraintCount(void) const
+Py::Long SketchObjectPy::getConstraintCount() const
 {
     return Py::Long(this->getSketchObjectPtr()->Constraints.getSize());
 }
 
-Py::Long SketchObjectPy::getGeometryCount(void) const
+Py::Long SketchObjectPy::getGeometryCount() const
 {
     return Py::Long(this->getSketchObjectPtr()->Geometry.getSize());
 }
 
-Py::Long SketchObjectPy::getAxisCount(void) const
+Py::Long SketchObjectPy::getAxisCount() const
 {
     return Py::Long(this->getSketchObjectPtr()->getAxisCount());
 }
 
 
-Py::List SketchObjectPy::getGeometryFacadeList(void) const
+Py::List SketchObjectPy::getGeometryFacadeList() const
 {
     Py::List list;
 

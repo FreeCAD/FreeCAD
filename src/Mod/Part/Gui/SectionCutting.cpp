@@ -42,6 +42,7 @@
 #include <App/Document.h>
 #include <App/Link.h>
 #include <App/Part.h>
+#include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -111,7 +112,7 @@ SectionCut::SectionCut(QWidget* parent)
     // now store those that are currently visible
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->Visibility.getValue())
-            ObjectsListVisible.push_back(*it);
+            ObjectsListVisible.emplace_back(*it);
     }
 
     // lambda function to set color and transparency
@@ -1136,8 +1137,8 @@ void SectionCut::onCutYvalueChanged(double val)
         pcCut->recomputeFeature(true);
         // refresh X limits
         // this is done by
-        // first making the cut X box visible, the setting the limits only for X
-        // if x-limit in box direcion is larger than object, reset value to saved limit
+        // first making the cut X box visible, then setting the limits only for X
+        // if x-limit in box direction is larger than object, reset value to saved limit
         if (hasBoxX) {
             auto CutBoxX = doc->getObject(BoxXName);
             if (!CutBoxX)
@@ -1229,8 +1230,8 @@ void SectionCut::onCutZvalueChanged(double val)
     pcCut->recomputeFeature(true);
     // refresh X and Y limits
     // this is done e.g. for X by
-    // first making the cut X box visible, the setting the limits only for X
-    // if x-limit in box direcion is larger than object, reset value to saved limit
+    // first making the cut X box visible, then setting the limits only for X
+    // if x-limit in box direction is larger than object, reset value to saved limit
     SbBox3f CutBoundingBox;
     if (hasBoxX) {
         auto CutBoxX = doc->getObject(BoxXName);
@@ -1531,7 +1532,7 @@ void SectionCut::onRefreshCutPBclicked()
     // now store those that are currently visible
     for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         if ((*it)->Visibility.getValue()) {
-            ObjectsListVisible.push_back(*it);
+            ObjectsListVisible.emplace_back(*it);
         }
     }
     // reset defaults

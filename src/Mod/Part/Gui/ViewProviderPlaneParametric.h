@@ -38,15 +38,15 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderPlaneParametric : public ViewProviderPrimitive
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPlaneParametric);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPlaneParametric);
 
 public:
     /// constructor
     ViewProviderPlaneParametric();
     /// destructor
-    virtual ~ViewProviderPlaneParametric();
+    ~ViewProviderPlaneParametric() override;
 
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
 protected:
 
@@ -54,19 +54,19 @@ protected:
 
 class PartGuiExport ViewProviderFace : public ViewProviderPlaneParametric
 {
-    PROPERTY_HEADER(PartGui::ViewProviderFace);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderFace);
 
 public:
     ViewProviderFace();
-    virtual ~ViewProviderFace();
+    ~ViewProviderFace() override;
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual bool canDragObjects() const;
-    virtual bool canDragObject(App::DocumentObject*) const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual bool canDropObject(App::DocumentObject*) const;
-    virtual void dropObject(App::DocumentObject*);
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool canDragObjects() const override;
+    bool canDragObject(App::DocumentObject*) const override;
+    void dragObject(App::DocumentObject*) override;
+    bool canDropObjects() const override;
+    bool canDropObject(App::DocumentObject*) const override;
+    void dropObject(App::DocumentObject*) override;
 };
 
 } // namespace PartGui

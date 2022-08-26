@@ -169,7 +169,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 {
     auto selection = Gui::Selection().getSelection();
     // Add move Tip Command
-    if ( selection.size () >= 1 ) {
+    if ( !selection.empty() ) {
         App::DocumentObject *feature = selection.front().pObject;
         PartDesign::Body *body = nullptr;
 
@@ -194,7 +194,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
             Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-            if ( selection.size () > 0 && activeView ) {
+            if ( !selection.empty() && activeView ) {
                 bool docHaveBodies = activeView->getAppDocument()->countObjectsOfType (
                                         PartDesign::Body::getClassTypeId () ) > 0;
 

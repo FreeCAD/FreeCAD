@@ -40,11 +40,11 @@ namespace Part
  */
 class PartExport PropertyPartShape : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPartShape();
-    ~PropertyPartShape();
+    ~PropertyPartShape() override;
 
     /** @name Getter/setter */
     //@{
@@ -53,48 +53,48 @@ public:
     /// set the part shape
     void setValue(const TopoDS_Shape&);
     /// get the part shape
-    const TopoDS_Shape& getValue(void) const;
+    const TopoDS_Shape& getValue() const;
     const TopoShape& getShape() const;
-    const Data::ComplexGeoData* getComplexData() const;
+    const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
     /** @name Modification */
     //@{
     /// Set the placement of the geometry
-    void setTransform(const Base::Matrix4D& rclTrf);
+    void setTransform(const Base::Matrix4D& rclTrf) override;
     /// Get the placement of the geometry
-    Base::Matrix4D getTransform() const;
+    Base::Matrix4D getTransform() const override;
     /// Transform the real shape data
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
 
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const;
+    Base::BoundBox3d getBoundingBox() const override;
     //@}
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
     //@}
 
     /// Get valid paths for this property; used by auto completer
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+    void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
 
 private:
     void saveToFile(Base::Writer &writer) const;
@@ -119,16 +119,16 @@ struct PartExport ShapeHistory {
 
 class PartExport PropertyShapeHistory : public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyShapeHistory();
-    ~PropertyShapeHistory();
+    ~PropertyShapeHistory() override;
 
-    virtual void setSize(int newSize) {
+    void setSize(int newSize) override {
         _lValueList.resize(newSize);
     }
-    virtual int getSize(void) const {
+    int getSize() const override {
         return _lValueList.size();
     }
 
@@ -138,23 +138,23 @@ public:
 
     void setValues (const std::vector<ShapeHistory>& values);
 
-    const std::vector<ShapeHistory> &getValues(void) const {
+    const std::vector<ShapeHistory> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    Property *Copy() const override;
+    void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const {
+    unsigned int getMemSize () const override {
         return _lValueList.size() * sizeof(ShapeHistory);
     }
 
@@ -172,16 +172,16 @@ struct PartExport FilletElement {
 
 class PartExport PropertyFilletEdges : public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFilletEdges();
-    ~PropertyFilletEdges();
+    ~PropertyFilletEdges() override;
 
-    virtual void setSize(int newSize) {
+    void setSize(int newSize) override {
         _lValueList.resize(newSize);
     }
-    virtual int getSize(void) const {
+    int getSize() const override {
         return _lValueList.size();
     }
 
@@ -191,23 +191,23 @@ public:
 
     void setValues (const std::vector<FilletElement>& values);
 
-    const std::vector<FilletElement> &getValues(void) const {
+    const std::vector<FilletElement> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    PyObject *getPyObject() override;
+    void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    Property *Copy() const override;
+    void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const {
+    unsigned int getMemSize () const override {
         return _lValueList.size() * sizeof(FilletElement);
     }
 

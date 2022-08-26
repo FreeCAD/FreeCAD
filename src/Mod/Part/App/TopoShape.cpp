@@ -297,7 +297,7 @@ TopoShape::TopoShape(const TopoShape& shape)
     Tag = shape.Tag;
 }
 
-std::vector<const char*> TopoShape::getElementTypes(void) const
+std::vector<const char*> TopoShape::getElementTypes() const
 {
     static const std::vector<const char*> temp = {"Face","Edge","Vertex"};
     return temp;
@@ -469,7 +469,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
     if(type) {
         initShapeNameMap();
         for(size_t idx=0;idx<_ShapeNames.size();++idx) {
-            if(_ShapeNames[idx].size() && boost::starts_with(type,_ShapeNames[idx]))
+            if(!_ShapeNames[idx].empty() && boost::starts_with(type,_ShapeNames[idx]))
                 return (TopAbs_ShapeEnum)idx;
         }
     }
@@ -507,11 +507,11 @@ TopAbs_ShapeEnum TopoShape::shapeType(bool silent) const {
 
 const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type, bool silent) {
     initShapeNameMap();
-    if(type>=0 && type<_ShapeNames.size() && _ShapeNames[type].size())
+    if(type>=0 && type<_ShapeNames.size() && !_ShapeNames[type].empty())
         return _ShapeNames[type];
     if(!silent)
         FC_THROWM(Base::CADKernelError, "invalid shape type '" << type << "'");
-    static std::string ret("");
+    static std::string ret;
     return ret;
 }
 
@@ -642,7 +642,7 @@ void TopoShape::setTransform(const Base::Matrix4D& rclTrf)
     _Shape.Location(loc);
 }
 
-Base::Matrix4D TopoShape::getTransform(void) const
+Base::Matrix4D TopoShape::getTransform() const
 {
     Base::Matrix4D mtrx;
     gp_Trsf Trf = _Shape.Location().Transformation();
@@ -670,7 +670,7 @@ void TopoShape::setShapePlacement(const Base::Placement& rclTrf)
 /*!
  * \obsolete
  */
-Base::Placement TopoShape::getShapePlacement(void) const
+Base::Placement TopoShape::getShapePlacement() const
 {
     TopLoc_Location loc = _Shape.Location();
     gp_Trsf trsf = loc.Transformation();
@@ -1136,7 +1136,7 @@ void TopoShape::exportLineSet(std::ostream& str) const
     }
 }
 
-Base::BoundBox3d TopoShape::getBoundBox(void) const
+Base::BoundBox3d TopoShape::getBoundBox() const
 {
     Base::BoundBox3d box;
     try {
@@ -1218,7 +1218,7 @@ unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)
     return size;
 }
 
-unsigned int TopoShape::getMemSize (void) const
+unsigned int TopoShape::getMemSize () const
 {
     if (!_Shape.IsNull()) {
         // Count total amount of references of TopoDS_Shape objects
@@ -1378,33 +1378,33 @@ namespace Part {
 std::vector<std::string> buildShapeEnumVector()
 {
    std::vector<std::string> names;
-   names.push_back("Compound");             //TopAbs_COMPOUND
-   names.push_back("Compound Solid");       //TopAbs_COMPSOLID
-   names.push_back("Solid");                //TopAbs_SOLID
-   names.push_back("Shell");                //TopAbs_SHELL
-   names.push_back("Face");                 //TopAbs_FACE
-   names.push_back("Wire");                 //TopAbs_WIRE
-   names.push_back("Edge");                 //TopAbs_EDGE
-   names.push_back("Vertex");               //TopAbs_VERTEX
-   names.push_back("Shape");                //TopAbs_SHAPE
+   names.emplace_back("Compound");             //TopAbs_COMPOUND
+   names.emplace_back("Compound Solid");       //TopAbs_COMPSOLID
+   names.emplace_back("Solid");                //TopAbs_SOLID
+   names.emplace_back("Shell");                //TopAbs_SHELL
+   names.emplace_back("Face");                 //TopAbs_FACE
+   names.emplace_back("Wire");                 //TopAbs_WIRE
+   names.emplace_back("Edge");                 //TopAbs_EDGE
+   names.emplace_back("Vertex");               //TopAbs_VERTEX
+   names.emplace_back("Shape");                //TopAbs_SHAPE
    return names;
 }
 
 std::vector<std::string> buildBOPCheckResultVector()
 {
   std::vector<std::string> results;
-  results.push_back("BOPAlgo CheckUnknown");               //BOPAlgo_CheckUnknown
-  results.push_back("BOPAlgo BadType");                    //BOPAlgo_BadType
-  results.push_back("BOPAlgo SelfIntersect");              //BOPAlgo_SelfIntersect
-  results.push_back("BOPAlgo TooSmallEdge");               //BOPAlgo_TooSmallEdge
-  results.push_back("BOPAlgo NonRecoverableFace");         //BOPAlgo_NonRecoverableFace
-  results.push_back("BOPAlgo IncompatibilityOfVertex");    //BOPAlgo_IncompatibilityOfVertex
-  results.push_back("BOPAlgo IncompatibilityOfEdge");      //BOPAlgo_IncompatibilityOfEdge
-  results.push_back("BOPAlgo IncompatibilityOfFace");      //BOPAlgo_IncompatibilityOfFace
-  results.push_back("BOPAlgo OperationAborted");           //BOPAlgo_OperationAborted
-  results.push_back("BOPAlgo GeomAbs_C0");                 //BOPAlgo_GeomAbs_C0
-  results.push_back("BOPAlgo_InvalidCurveOnSurface");      //BOPAlgo_InvalidCurveOnSurface
-  results.push_back("BOPAlgo NotValid");                   //BOPAlgo_NotValid
+  results.emplace_back("BOPAlgo CheckUnknown");               //BOPAlgo_CheckUnknown
+  results.emplace_back("BOPAlgo BadType");                    //BOPAlgo_BadType
+  results.emplace_back("BOPAlgo SelfIntersect");              //BOPAlgo_SelfIntersect
+  results.emplace_back("BOPAlgo TooSmallEdge");               //BOPAlgo_TooSmallEdge
+  results.emplace_back("BOPAlgo NonRecoverableFace");         //BOPAlgo_NonRecoverableFace
+  results.emplace_back("BOPAlgo IncompatibilityOfVertex");    //BOPAlgo_IncompatibilityOfVertex
+  results.emplace_back("BOPAlgo IncompatibilityOfEdge");      //BOPAlgo_IncompatibilityOfEdge
+  results.emplace_back("BOPAlgo IncompatibilityOfFace");      //BOPAlgo_IncompatibilityOfFace
+  results.emplace_back("BOPAlgo OperationAborted");           //BOPAlgo_OperationAborted
+  results.emplace_back("BOPAlgo GeomAbs_C0");                 //BOPAlgo_GeomAbs_C0
+  results.emplace_back("BOPAlgo_InvalidCurveOnSurface");      //BOPAlgo_InvalidCurveOnSurface
+  results.emplace_back("BOPAlgo NotValid");                   //BOPAlgo_NotValid
   return results;
 }
 }
@@ -2015,10 +2015,13 @@ TopoDS_Shape TopoShape::makePipeShell(const TopTools_ListOfShape& profiles,
         mkPipeShell.Add(TopoDS_Shape(it.Value()));
     }
 
-    if (!mkPipeShell.IsReady()) Standard_Failure::Raise("shape is not ready to build");
-    else mkPipeShell.Build();
+    if (!mkPipeShell.IsReady())
+        throw Standard_Failure("shape is not ready to build");
 
-    if (make_solid)	mkPipeShell.MakeSolid();
+    mkPipeShell.Build();
+
+    if (make_solid)
+        mkPipeShell.MakeSolid();
 
     return mkPipeShell.Shape();
 }
@@ -2800,7 +2803,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         shapesToProcess.push_back(this->_Shape);
     }
 
-    if(shapesToProcess.size() > 0) {
+    if(!shapesToProcess.empty()) {
 
         //although 2d offset supports offsetting a face directly, it seems there is
         //no way to do a collective offset of multiple faces. So, we are doing it
@@ -2952,7 +2955,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                     openWires.push_back(w);
 
             wiresForMakingFaces = closedWires;
-            if (!allowOpenResult || openWires.size() == 0){
+            if (!allowOpenResult || openWires.empty()){
                 //just ignore all open wires
             }
             else {
@@ -3027,7 +3030,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         }
 
         //make faces
-        if (wiresForMakingFaces.size()>0){
+        if (!wiresForMakingFaces.empty()){
             FaceMakerBullseye mkFace;
             mkFace.setPlane(workingPlane);
             for(TopoDS_Wire &w : wiresForMakingFaces){
@@ -3378,7 +3381,7 @@ struct MeshVertex
         : x(X),y(Y),z(Z),i(0)
     {
     }
-    MeshVertex(const Base::Vector3d& p)
+    explicit MeshVertex(const Base::Vector3d& p)
         : x(p.x),y(p.y),z(p.z),i(0)
     {
     }
@@ -4010,13 +4013,13 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
     TopTools_IndexedMapOfShape anIndices;
     TopExp::MapShapes(shape.getShape(), TopAbs_EDGE, anIndices);
     for(int i=1;i<=anIndices.Extent();++i)
-        edge_list.push_back(anIndices.FindKey(i));
+        edge_list.emplace_back(anIndices.FindKey(i));
 
     edges.reserve(edge_list.size());
     wires.reserve(edge_list.size());
 
     // sort them together to wires
-    while (edge_list.size() > 0) {
+    while (!edge_list.empty()) {
         BRepBuilderAPI_MakeWire mkWire;
         // add and erase first edge
         edges.push_back(edge_list.front());
@@ -4053,7 +4056,7 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
         // Assuming FixReorder() just reorder and don't change the underlying
         // edges, we get the wire and do a name mapping now, as the following
         // two operations (FixConnected and FixClosed) may change the edges.
-        wires.push_back(aFix.Wire());
+        wires.emplace_back(aFix.Wire());
 
         aFix.FixConnected();
         aFix.FixClosed();
@@ -4099,7 +4102,7 @@ TopoShape &TopoShape::makeFace(const TopoShape &shape, const char *op, const cha
     std::vector<TopoShape> shapes;
     if(shape.shapeType() == TopAbs_COMPOUND) {
         for(TopoDS_Iterator it(shape.getShape());it.More();it.Next())
-            shapes.push_back(it.Value());
+            shapes.emplace_back(it.Value());
     } else
         shapes.push_back(shape);
     return makeFace(shapes,op,maker);

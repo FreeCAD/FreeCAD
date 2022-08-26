@@ -40,20 +40,20 @@ class DlgWorkbenchesImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgWorkbenchesImp(QWidget* parent = nullptr);
-    ~DlgWorkbenchesImp();
+    explicit DlgWorkbenchesImp(QWidget* parent = nullptr);
+    ~DlgWorkbenchesImp() override;
     static QStringList load_enabled_workbenches();
     static QStringList load_disabled_workbenches();
     static const QString all_workbenches;
 
 protected:
-    void changeEvent(QEvent *e);
-    void hideEvent(QHideEvent * event);
+    void changeEvent(QEvent *e) override;
+    void hideEvent(QHideEvent * event) override;
 
 protected Q_SLOTS:
-    void onAddMacroAction(const QByteArray&);
-    void onRemoveMacroAction(const QByteArray&);
-    void onModifyMacroAction(const QByteArray&);
+    void onAddMacroAction(const QByteArray&) override;
+    void onRemoveMacroAction(const QByteArray&) override;
+    void onModifyMacroAction(const QByteArray&) override;
     void on_add_to_enabled_workbenches_btn_clicked();
     void on_remove_from_enabled_workbenches_btn_clicked();
     void on_shift_workbench_up_btn_clicked();

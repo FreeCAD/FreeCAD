@@ -40,14 +40,12 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 // Feature
 //===========================================================================
 
-GeoFeature::GeoFeature(void)
+GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
 }
 
-GeoFeature::~GeoFeature(void)
-{
-}
+GeoFeature::~GeoFeature() = default;
 
 void GeoFeature::transformPlacement(const Base::Placement &transform)
 {
@@ -71,7 +69,7 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
-PyObject* GeoFeature::getPyObject(void)
+PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -132,7 +130,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     else{
         const auto &names = geo->getElementName(element,type);
         std::string prefix(subname,element-subname);
-        if(names.first.size())
+        if(!names.first.empty())
             elementName.first = prefix + names.first;
         elementName.second = prefix + names.second;
     }

@@ -53,8 +53,8 @@ class DlgCustomActionsImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgCustomActionsImp( QWidget* parent = nullptr );
-    ~DlgCustomActionsImp();
+    explicit DlgCustomActionsImp( QWidget* parent = nullptr );
+    ~DlgCustomActionsImp() override;
 
 Q_SIGNALS:
     void addMacroAction( const QByteArray& );
@@ -63,8 +63,8 @@ Q_SIGNALS:
 
 protected:
     /** Trigger for reparent event. */
-    bool event(QEvent* e);
-    void changeEvent(QEvent *e);
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent *e) override;
 
 protected Q_SLOTS:
     /** Enables/disables buttons for deletion */
@@ -77,9 +77,9 @@ protected Q_SLOTS:
     void on_buttonRemoveAction_clicked();
     /** Shows the setup of the action */
     void on_buttonReplaceAction_clicked();
-    void onAddMacroAction(const QByteArray&);
-    void onRemoveMacroAction(const QByteArray&);
-    void onModifyMacroAction(const QByteArray&);
+    void onAddMacroAction(const QByteArray&) override;
+    void onRemoveMacroAction(const QByteArray&) override;
+    void onModifyMacroAction(const QByteArray&) override;
 
 private:
     /** Shows all actions and their pixmaps if available  */
@@ -96,9 +96,9 @@ class IconDialog : public QDialog
     Q_OBJECT
 
 public:
-    IconDialog(QWidget* parent);
-    ~IconDialog();
-    void resizeEvent(QResizeEvent*);
+    explicit IconDialog(QWidget* parent);
+    ~IconDialog() override;
+    void resizeEvent(QResizeEvent*) override;
     QListWidgetItem* currentItem() const;
 
 private Q_SLOTS:
@@ -114,7 +114,7 @@ class IconFolders : public QDialog
 
 public:
     IconFolders(const QStringList&, QWidget* parent);
-    ~IconFolders();
+    ~IconFolders() override;
     QStringList getPaths() const;
 
 private Q_SLOTS:

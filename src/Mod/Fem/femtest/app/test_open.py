@@ -25,7 +25,6 @@ __title__ = "Open files FEM App unit tests"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 
-import sys
 import tempfile
 import unittest
 from os.path import join
@@ -129,10 +128,6 @@ class TestObjectOpen(unittest.TestCase):
     def test_femobjects_open_de9b3fb438(
         self
     ):
-        # migration modules do not import on Python 2 thus this can not work
-        if sys.version_info.major < 3:
-            return
-
         # the number in method name is the FreeCAD commit the document was created with
         # https://github.com/FreeCAD/FreeCAD/commit/de9b3fb438
         # the document was created by running the object create unit test

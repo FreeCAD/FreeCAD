@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,16 +27,8 @@
 # include <QMenu>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <App/Document.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
-
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
 #include "ViewProviderPrimitive.h"
@@ -45,7 +36,6 @@
 
 
 using namespace PartGui;
-
 
 PROPERTY_SOURCE(PartGui::ViewProviderPrimitive, PartGui::ViewProviderPart)
 

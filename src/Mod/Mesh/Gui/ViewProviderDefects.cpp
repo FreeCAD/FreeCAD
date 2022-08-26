@@ -651,7 +651,7 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<Mesh::Elem
     for (it = indices.begin(); it != indices.end(); ) {
         Mesh::ElementIndex id1 = *it; ++it;
         Mesh::ElementIndex id2 = *it; ++it;
-        intersection.push_back(std::make_pair(id1,id2));
+        intersection.emplace_back(id1,id2);
     }
 
     std::vector<std::pair<Base::Vector3f, Base::Vector3f> > lines;

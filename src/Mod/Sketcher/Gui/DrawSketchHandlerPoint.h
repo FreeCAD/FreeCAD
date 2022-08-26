@@ -37,7 +37,7 @@ public:
     DrawSketchHandlerPoint() : selectionDone(false) {}
     virtual ~DrawSketchHandlerPoint() {}
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         setPositionText(onSketchPos);
         if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -47,14 +47,14 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         EditPoint = onSketchPos;
         selectionDone = true;
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (selectionDone){
@@ -74,7 +74,7 @@ public:
             }
 
             // add auto constraints for the line segment start
-            if (sugConstr.size() > 0) {
+            if (!sugConstr.empty()) {
                 createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::PointPos::start);
                 sugConstr.clear();
             }
@@ -99,7 +99,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_Point");
     }

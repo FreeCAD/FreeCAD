@@ -53,9 +53,7 @@ Writer::Writer()
     indBuf[0] = '\0';
 }
 
-Writer::~Writer()
-{
-}
+Writer::~Writer() = default;
 
 void Writer::insertAsciiFile(const char* FileName)
 {
@@ -286,9 +284,7 @@ FileWriter::FileWriter(const char* DirName) : DirName(DirName)
 {
 }
 
-FileWriter::~FileWriter()
-{
-}
+FileWriter::~FileWriter() = default;
 
 void FileWriter::putNextEntry(const char* file)
 {

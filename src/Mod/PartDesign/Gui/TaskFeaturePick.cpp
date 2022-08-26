@@ -112,8 +112,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
         QListWidgetItem* item = new QListWidgetItem(
                 QString::fromLatin1("%1 (%2)")
-                    .arg(QString::fromUtf8((*objIt)->Label.getValue()))
-                    .arg(getFeatureStatusString(*statusIt)
+                    .arg(QString::fromUtf8((*objIt)->Label.getValue()),
+                         getFeatureStatusString(*statusIt)
                 )
         );
         item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));

@@ -83,7 +83,7 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
-            if (constraintDialog != nullptr) {
+            if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
             } else {
@@ -276,7 +276,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             return;
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-        if (points.size() > 0) {
+        if (!points.empty()) {
             Base::Vector3d base = pcConstraint->BasePoint.getValue();
             Base::Vector3d axis = pcConstraint->Axis.getValue();
 

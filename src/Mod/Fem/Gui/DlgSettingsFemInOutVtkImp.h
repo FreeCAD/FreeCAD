@@ -36,13 +36,13 @@ class DlgSettingsFemInOutVtkImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemInOutVtkImp( QWidget* parent = nullptr );
-    ~DlgSettingsFemInOutVtkImp();
+    explicit DlgSettingsFemInOutVtkImp( QWidget* parent = nullptr );
+    ~DlgSettingsFemInOutVtkImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     Ui_DlgSettingsFemInOutVtk* ui;

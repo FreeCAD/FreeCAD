@@ -91,7 +91,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeEdgePy::representation(void) const
+std::string TopoShapeEdgePy::representation() const
 {
     std::stringstream str;
     str << "<Edge object at " << getTopoShapePtr() << ">";
@@ -769,7 +769,7 @@ Py::String TopoShapeEdgePy::getContinuity() const
     return Py::String(cont);
 }
 
-Py::Float TopoShapeEdgePy::getTolerance(void) const
+Py::Float TopoShapeEdgePy::getTolerance() const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     return Py::Float(BRep_Tool::Tolerance(e));
@@ -782,7 +782,7 @@ void TopoShapeEdgePy::setTolerance(Py::Float tol)
     aBuilder.UpdateEdge(e, (double)tol);
 }
 
-Py::Float TopoShapeEdgePy::getLength(void) const
+Py::Float TopoShapeEdgePy::getLength() const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -884,7 +884,7 @@ Py::Object TopoShapeEdgePy::getCurve() const
     throw Py::TypeError("undefined curve type");
 }
 
-Py::Tuple TopoShapeEdgePy::getParameterRange(void) const
+Py::Tuple TopoShapeEdgePy::getParameterRange() const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -897,7 +897,7 @@ Py::Tuple TopoShapeEdgePy::getParameterRange(void) const
     return t;
 }
 
-Py::Float TopoShapeEdgePy::getFirstParameter(void) const
+Py::Float TopoShapeEdgePy::getFirstParameter() const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -905,7 +905,7 @@ Py::Float TopoShapeEdgePy::getFirstParameter(void) const
     return Py::Float(t);
 }
 
-Py::Float TopoShapeEdgePy::getLastParameter(void) const
+Py::Float TopoShapeEdgePy::getLastParameter() const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -913,7 +913,7 @@ Py::Float TopoShapeEdgePy::getLastParameter(void) const
     return Py::Float(t);
 }
 
-Py::Object TopoShapeEdgePy::getMass(void) const
+Py::Object TopoShapeEdgePy::getMass() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -921,7 +921,7 @@ Py::Object TopoShapeEdgePy::getMass(void) const
     return Py::Float(c);
 }
 
-Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
+Py::Object TopoShapeEdgePy::getCenterOfMass() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -929,7 +929,7 @@ Py::Object TopoShapeEdgePy::getCenterOfMass(void) const
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
 
-Py::Object TopoShapeEdgePy::getMatrixOfInertia(void) const
+Py::Object TopoShapeEdgePy::getMatrixOfInertia() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -943,7 +943,7 @@ Py::Object TopoShapeEdgePy::getMatrixOfInertia(void) const
     return Py::Matrix(mat);
 }
 
-Py::Object TopoShapeEdgePy::getStaticMoments(void) const
+Py::Object TopoShapeEdgePy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -956,7 +956,7 @@ Py::Object TopoShapeEdgePy::getStaticMoments(void) const
     return tuple;
 }
 
-Py::Dict TopoShapeEdgePy::getPrincipalProperties(void) const
+Py::Dict TopoShapeEdgePy::getPrincipalProperties() const
 {
     GProp_GProps props;
     BRepGProp::LinearProperties(getTopoShapePtr()->getShape(), props);
@@ -989,7 +989,7 @@ Py::Dict TopoShapeEdgePy::getPrincipalProperties(void) const
     return dict;
 }
 
-Py::Boolean TopoShapeEdgePy::getClosed(void) const
+Py::Boolean TopoShapeEdgePy::getClosed() const
 {
     if (getTopoShapePtr()->getShape().IsNull())
         throw Py::RuntimeError("Cannot determine the 'Closed'' flag of an empty shape");
@@ -997,7 +997,7 @@ Py::Boolean TopoShapeEdgePy::getClosed(void) const
     return Py::Boolean(ok ? true : false);
 }
 
-Py::Boolean TopoShapeEdgePy::getDegenerated(void) const
+Py::Boolean TopoShapeEdgePy::getDegenerated() const
 {
     Standard_Boolean ok = BRep_Tool::Degenerated(TopoDS::Edge(getTopoShapePtr()->getShape()));
     return Py::Boolean(ok ? true : false);

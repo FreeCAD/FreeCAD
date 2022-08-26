@@ -455,7 +455,7 @@ void CheckedFile::seek( uint64_t offset, OffsetMode omode )
 
 uint64_t CheckedFile::lseek64( int64_t offset, int whence )
 {
-   if ( ( fd_ < 0 ) && ( bufView_ != nullptr ) )
+   if ( ( fd_ < 0 ) && bufView_ )
    {
       const auto uoffset = static_cast<uint64_t>( offset );
 
@@ -652,7 +652,7 @@ void CheckedFile::close()
       fd_ = -1;
    }
 
-   if ( bufView_ != nullptr )
+   if ( bufView_ )
    {
       delete bufView_;
       bufView_ = nullptr;
@@ -746,7 +746,7 @@ void CheckedFile::readPhysicalPage( char *page_buffer, uint64_t page )
    /// Seek to start of physical page
    seek( page * physicalPageSize, Physical );
 
-   if ( ( fd_ < 0 ) && ( bufView_ != nullptr ) )
+   if ( ( fd_ < 0 ) && bufView_ )
    {
       bufView_->read( page_buffer, physicalPageSize );
       return;

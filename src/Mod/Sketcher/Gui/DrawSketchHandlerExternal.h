@@ -36,7 +36,7 @@ class ExternalSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    ExternalSelection(App::DocumentObject* obj)
+    explicit ExternalSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 
@@ -99,20 +99,20 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
@@ -122,11 +122,11 @@ public:
         return true;
     }
 
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
+    bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-            if (obj == nullptr)
+            if (!obj)
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
@@ -165,7 +165,7 @@ public:
     }
 
 private:
-    virtual void activated() override
+    void activated() override
     {
         setAxisPickStyle(false);
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
@@ -180,11 +180,11 @@ private:
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
     }
 
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_External");
     }
 
-    virtual void deactivated() override
+    void deactivated() override
     {
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);

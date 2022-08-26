@@ -63,7 +63,7 @@ void ViewProviderExtension::extensionUpdateData(const App::Property*) {
 
 }
 
-PyObject* ViewProviderExtension::getExtensionPyObject(void) {
+PyObject* ViewProviderExtension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1

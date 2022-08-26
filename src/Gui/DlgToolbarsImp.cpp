@@ -49,7 +49,7 @@ typedef std::vector< std::pair<QLatin1String, QString> > GroupMap;
 
 struct GroupMap_find {
     const QLatin1String& item;
-    GroupMap_find(const QLatin1String& item) : item(item) {}
+    explicit GroupMap_find(const QLatin1String& item) : item(item) {}
     bool operator () (const std::pair<QLatin1String, QString>& elem) const
     {
         return elem.first == item;
@@ -831,7 +831,7 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
                         continue;
                     }
                 }
-                if (before != nullptr) {
+                if (before) {
                     QList<QAction*> group = getActionGroup(*it);
                     bars.front()->removeAction(*it);
                     bars.front()->insertAction(before, *it);

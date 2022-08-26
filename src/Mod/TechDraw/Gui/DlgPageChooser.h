@@ -22,6 +22,8 @@
 #ifndef GUI_DLGPAGECHOOSER_H
 #define GUI_DLGPAGECHOOSER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDialog>
 
 namespace TechDrawGui {

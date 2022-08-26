@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer equation object Heat"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -31,6 +32,9 @@ __url__ = "https://www.freecadweb.org"
 from femtools import femutils
 from . import nonlinear
 from ... import equationbase
+
+CONVECTION_TYPE = ["None", "Computed", "Constant"]
+PHASE_CHANGE_MODEL = ["None", "Spatial 1", "Spatial 2", "Temporal"]
 
 
 def create(doc, name="Heat"):
@@ -44,6 +48,34 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        # according to the Elmer models manual Bubbles is by default True
+        # and Stabilize is False (Stabilize is added in linear.py)
+        obj.addProperty(
+            "App::PropertyBool",
+            "Bubbles",
+            "Heat",
+            ""
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Convection",
+            "Equation",
+            "Type of convection to be used"
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "PhaseChangeModel",
+            "Equation",
+            "Model for phase change"
+        )
+
+        obj.Bubbles = True
+        obj.Stabilize = False
+        obj.Convection = CONVECTION_TYPE
+        obj.Convection = "None"
+        obj.PhaseChangeModel = PHASE_CHANGE_MODEL
+        obj.PhaseChangeModel = "None"
         obj.Priority = 20
 
 

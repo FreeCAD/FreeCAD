@@ -35,7 +35,7 @@ class FilletSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    FilletSelection(App::DocumentObject* obj)
+    explicit FilletSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 
@@ -80,7 +80,7 @@ public:
         ConstraintPreservingFillet
     };
 
-    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
+    explicit DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
@@ -91,18 +91,18 @@ public:
         STATUS_SEEK_Second
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         bool construction=false;
         int VtId = getPreselectPoint();
@@ -270,7 +270,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));

@@ -53,10 +53,10 @@ class DlgProjectionOnSurface : public QWidget,
 
 public:
     explicit DlgProjectionOnSurface(QWidget *parent = nullptr);
-    ~DlgProjectionOnSurface();
+    ~DlgProjectionOnSurface() override;
 
-    void apply(void);
-    void reject(void);
+    void apply();
+    void reject();
 
 private Q_SLOTS:
 
@@ -97,10 +97,10 @@ private:
   };
 
   //from Gui::SelectionObserver
-  virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+  void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 
-  void get_camera_direction(void);
+  void get_camera_direction();
   void store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, const unsigned int iColor);
   bool store_part_in_vector(SShapeStore& iCurrentShape, std::vector<SShapeStore>& iStoreVec);
   void create_projection_wire(std::vector<SShapeStore>& iCurrentShape);
@@ -120,9 +120,9 @@ private:
 
 private:
   /** Checks if the given document is about to be closed */
-  virtual void slotDeletedDocument(const App::Document& Doc);
+  void slotDeletedDocument(const App::Document& Doc) override;
   /** Checks if the given object is about to be removed. */
-  virtual void slotDeletedObject(const App::DocumentObject& Obj);
+  void slotDeletedObject(const App::DocumentObject& Obj) override;
 
 private:
     Ui::DlgProjectionOnSurface *ui;
@@ -152,14 +152,14 @@ class TaskProjectionOnSurface : public Gui::TaskView::TaskDialog
 
 public:
   TaskProjectionOnSurface();
-  ~TaskProjectionOnSurface();
+  ~TaskProjectionOnSurface() override;
 
 public:
-  bool accept();
-  bool reject();
-  void clicked(int);
+  bool accept() override;
+  bool reject() override;
+  void clicked(int) override;
 
-  virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+  QDialogButtonBox::StandardButtons getStandardButtons() const override
   {
     return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
   }

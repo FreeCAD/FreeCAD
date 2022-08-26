@@ -63,7 +63,7 @@ ShapeValidator::ShapeValidator()
    initValidator();
 }
 
-void ShapeValidator::initValidator(void)
+void ShapeValidator::initValidator()
 {
     willBezier = true;
     edgeCount = 0;
@@ -94,7 +94,7 @@ void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD)
 {
     checkEdge(shape);
-    if (aWD != nullptr) {
+    if (aWD) {
         BRepBuilderAPI_Copy copier(shape);
         // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
         (*aWD)->Add(TopoDS::Edge(copier.Shape()));
@@ -104,7 +104,7 @@ void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_W
 void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWD)
 {
     try {
-        if (subName != nullptr && *subName != '\0') {
+        if (subName && *subName != '\0') {
             //we want only the subshape which is linked
             checkAndAdd(ts.getSubShape(subName), aWD);
         }
@@ -162,7 +162,7 @@ void GeomFillSurface::onChanged(const App::Property* prop)
     Part::Spline::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *GeomFillSurface::execute(void)
+App::DocumentObjectExecReturn *GeomFillSurface::execute()
 {
     try {
         TopoDS_Wire aWire;
@@ -218,7 +218,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
         App::PropertyLinkSubList::SubSet set = boundary[i];
 
         if (set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            for (auto jt: set.second) {
+            for (const auto& jt: set.second) {
                 const Part::TopoShape &ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
                 validator.checkAndAdd(ts, jt.c_str(), &aWD);
             }

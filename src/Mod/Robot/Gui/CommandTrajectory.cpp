@@ -79,7 +79,7 @@ void CmdRobotCreateTrajectory::activated(int)
 
 }
 
-bool CmdRobotCreateTrajectory::isActive(void)
+bool CmdRobotCreateTrajectory::isActive()
 {
     return hasActiveDocument();
 }
@@ -136,7 +136,7 @@ void CmdRobotInsertWaypoint::activated(int)
 
 }
 
-bool CmdRobotInsertWaypoint::isActive(void)
+bool CmdRobotInsertWaypoint::isActive()
 {
     return hasActiveDocument();
 }
@@ -178,16 +178,16 @@ void CmdRobotInsertWaypointPreselect::activated(int)
 
 
     Robot::TrajectoryObject *pcTrajectoryObject;
-    if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
+    if (Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
-    else  {
+    else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Trajectory object."));
         return;
     }
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
-    if(PreSel.pDocName == nullptr){
+    if (!PreSel.pDocName) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No preselection"),
             QObject::tr("You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details."));
         return;
@@ -200,7 +200,7 @@ void CmdRobotInsertWaypointPreselect::activated(int)
 
 }
 
-bool CmdRobotInsertWaypointPreselect::isActive(void)
+bool CmdRobotInsertWaypointPreselect::isActive()
 {
     return hasActiveDocument();
 }
@@ -238,7 +238,7 @@ void CmdRobotSetDefaultOrientation::activated(int)
     }
 }
 
-bool CmdRobotSetDefaultOrientation::isActive(void)
+bool CmdRobotSetDefaultOrientation::isActive()
 {
     return true;
 }
@@ -304,7 +304,7 @@ void CmdRobotSetDefaultValues::activated(int)
 
 }
 
-bool CmdRobotSetDefaultValues::isActive(void)
+bool CmdRobotSetDefaultValues::isActive()
 {
     return true;
 }
@@ -368,7 +368,7 @@ void CmdRobotEdge2Trac::activated(int)
 
 }
 
-bool CmdRobotEdge2Trac::isActive(void)
+bool CmdRobotEdge2Trac::isActive()
 {
     return true;
 }
@@ -415,7 +415,7 @@ void CmdRobotTrajectoryDressUp::activated(int)
     }
  }
 
-bool CmdRobotTrajectoryDressUp::isActive(void)
+bool CmdRobotTrajectoryDressUp::isActive()
 {
     return true;
 }
@@ -455,7 +455,7 @@ void CmdRobotTrajectoryCompound::activated(int)
     }
 }
 
-bool CmdRobotTrajectoryCompound::isActive(void)
+bool CmdRobotTrajectoryCompound::isActive()
 {
     return true;
 }
@@ -466,7 +466,7 @@ bool CmdRobotTrajectoryCompound::isActive(void)
 
 
 
-void CreateRobotCommandsTrajectory(void)
+void CreateRobotCommandsTrajectory()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

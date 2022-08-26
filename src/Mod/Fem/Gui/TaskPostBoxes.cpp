@@ -32,6 +32,8 @@
 
 # include <QApplication>
 # include <QMessageBox>
+# include <QSlider>
+# include <QToolTip>
 #endif
 
 #include <App/Document.h>
@@ -98,7 +100,7 @@ void PointMarker::customEvent(QEvent*)
     const SbVec3f& pt2 = vp->pCoords->point[1];
 
     if (!m_name.empty()) {
-        PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
+        Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", m_name.c_str(), pt2[0], pt2[1], pt2[2]);
     }
@@ -166,7 +168,7 @@ void DataMarker::customEvent(QEvent*)
     const SbVec3f& pt1 = vp->pCoords->point[0];
 
     if (!m_name.empty()) {
-        PointsChanged(pt1[0], pt1[1], pt1[2]);
+        Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2]);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
     }
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
@@ -223,7 +225,7 @@ TaskDlgPost::~TaskDlgPost()
 
 }
 
-QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons(void) const {
+QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons() const {
 
     //check if we only have gui task boxes
     bool guionly = true;
@@ -389,6 +391,7 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget*
     Base::Console().Log("Transparency %i: \n", trans);
     // sync the trancparency slider
     ui->Transparency->setValue(trans);
+    ui->Transparency->setToolTip(QString::number(trans) + QString::fromLatin1(" %"));
 }
 
 TaskPostDisplay::~TaskPostDisplay()
@@ -421,6 +424,9 @@ void TaskPostDisplay::on_VectorMode_activated(int i) {
 void TaskPostDisplay::on_Transparency_valueChanged(int i) {
 
     getTypedView<ViewProviderFemPostObject>()->Transparency.setValue(i);
+    ui->Transparency->setToolTip(QString::number(i) + QString::fromLatin1(" %"));
+    // highlight the tooltip
+    QToolTip::showText(QCursor::pos(), QString::number(i) + QString::fromLatin1(" %"), nullptr);
 }
 
 void TaskPostDisplay::applyPythonCode() {
@@ -430,7 +436,7 @@ void TaskPostDisplay::applyPythonCode() {
 // ***************************************************************************
 // ?
 // the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
-TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent) 
+TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent)
 {
 
@@ -830,7 +836,7 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -1059,7 +1065,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = n->getPickedPoint();
-        if (point == nullptr) {
+        if (!point) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -1093,22 +1099,46 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
         return;
     }
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
-    if ((FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
-        || (FieldName == "Major Principal Stress") || (FieldName == "Intermediate Principal Stress")
+
+    // Set the unit for the different known result types.
+
+    //  CCX names
+    if ( (FieldName == "von Mises Stress") || (FieldName == "Tresca Stress")
+        || (FieldName == "Major Principal Stress")
+        || (FieldName == "Intermediate Principal Stress")
         || (FieldName == "Minor Principal Stress")
+        || (FieldName == "Major Principal Stress Vector")
+        || (FieldName == "Intermediate Principal Stress Vector")
+        || (FieldName == "Minor Principal Stress Vector")
         || (FieldName == "Stress xx component") || (FieldName == "Stress xy component")
         || (FieldName == "Stress xz component") || (FieldName == "Stress yy component")
-        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component")) {
+        || (FieldName == "Stress yz component") || (FieldName == "Stress zz component") ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("Pa");
     }
-    else if ((FieldName == "Displacement") || (FieldName == "Displacement Magnitude")) {
+    // The elmer names are different. If there are EigenModes, the names are unique for
+    // every mode. Therefore we only check for the beginning of the name.
+    else if ( (FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
+        || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0) ) {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("Pa");
+    }
+    else if ( (FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
+        || (FieldName.find("displacement", 0) == 0) // Elmer name
+        ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("m");
     }
-    else if (FieldName == "Temperature") {
+    else if (
+        // CalculiX name
+        FieldName == "Temperature" ||
+        // Elmer name
+        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))
+        ) {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
     }
     else if (FieldName == "electric field") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V/m");
+    }
+    else if (FieldName == "electric force density") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("N/m^2");
     }
     else if (FieldName == "potential") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("V");
@@ -1116,9 +1146,18 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     else if (FieldName == "electric energy density") {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("J/m^3");
     }
-    // ToDo: set a proper unit once it is known
+    else if (FieldName == "electric flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("A*s/m^2");
+    }
+    else if (FieldName == "potential flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
+    }
+    // potential loads are in Coulomb: https://www.elmerfem.org/forum/viewtopic.php?t=7780
     else if (FieldName == "potential loads") {
-        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("C");
+    }
+    else if (FieldName == "temperature flux") {
+        static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.setValue("W/m^2");
     }
     else {
         static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("");
@@ -1188,7 +1227,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
     // sync the slider
     // slider min = 0%, slider max = 100%
     //
-    //                 scalar_factor 
+    //                 scalar_factor
     // slider_value = --------------- x 100
     //                      max
     //

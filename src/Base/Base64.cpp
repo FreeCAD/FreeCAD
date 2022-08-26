@@ -32,7 +32,7 @@
 
 #include "Base64.h"
 
-
+// clazy:excludeall=non-pod-global-static
 static const std::string base64_chars = 
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"

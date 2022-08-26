@@ -48,10 +48,10 @@ class ConstraintView : public QListWidget
 
 public:
     explicit ConstraintView(QWidget *parent = nullptr);
-    ~ConstraintView();
+    ~ConstraintView() override;
 
 protected:
-    void contextMenuEvent (QContextMenuEvent* event);
+    void contextMenuEvent (QContextMenuEvent* event) override;
 
 Q_SIGNALS:
     void onUpdateDrivingStatus(QListWidgetItem *item, bool status);
@@ -83,14 +83,14 @@ class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::Selec
     };
 
 public:
-    TaskSketcherConstraints(ViewProviderSketch *sketchView);
-    ~TaskSketcherConstraints();
+    explicit TaskSketcherConstraints(ViewProviderSketch *sketchView);
+    ~TaskSketcherConstraints() override;
 
     /// Observer message from the Selection
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
-    void slotConstraintsChanged(void);
+    void slotConstraintsChanged();
     bool isConstraintFiltered(QListWidgetItem * item);
     void change3DViewVisibilityToTrackFilter();
     void changeFilteredVisibility(bool show, ActionTarget target = ActionTarget::All);
@@ -106,12 +106,12 @@ private:
 
 public Q_SLOTS:
     void on_comboBoxFilter_currentIndexChanged(int);
-    void on_listWidgetConstraints_itemSelectionChanged(void);
+    void on_listWidgetConstraints_itemSelectionChanged();
     void on_listWidgetConstraints_itemActivated(QListWidgetItem *item);
     void on_listWidgetConstraints_itemChanged(QListWidgetItem * item);
     void on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status);
     void on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *item, bool status);
-    void on_listWidgetConstraints_emitCenterSelectedItems(void);
+    void on_listWidgetConstraints_emitCenterSelectedItems();
     void on_filterInternalAlignment_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
     void on_visualisationTrackingFilter_stateChanged(int state);
@@ -125,7 +125,7 @@ public Q_SLOTS:
     void on_settingsDialogButton_clicked(bool);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     ViewProviderSketch *sketchView;
     typedef boost::signals2::connection Connection;
     Connection connectionConstraintsChanged;

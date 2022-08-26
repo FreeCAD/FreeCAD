@@ -38,9 +38,9 @@ class DlgSheetConf : public QDialog
     
 public:
     explicit DlgSheetConf(Spreadsheet::Sheet *sheet, App::Range range, QWidget *parent = nullptr);
-    ~DlgSheetConf();
+    ~DlgSheetConf() override;
     
-    void accept();
+    void accept() override;
 
     App::Property *prepare(App::CellAddress &from, App::CellAddress &to,
                 std::string &rangeConf, App::ObjectIdentifier &path, bool init);

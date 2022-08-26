@@ -91,7 +91,7 @@ App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
 
-DrawGeomHatch::DrawGeomHatch(void)
+DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
@@ -123,15 +123,13 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
             DrawGeomHatch::execute();
         }
         App::Document* doc = getDocument();
-        if ((prop == &FilePattern) &&
-            (doc != nullptr) ) {
+        if ((prop == &FilePattern) && doc) {
             if (!FilePattern.isEmpty()) {
                 replacePatIncluded(FilePattern.getValue());
                 DrawGeomHatch::execute();         //remake the line sets
             }
         }
-        if ((prop == &NamePattern) &&
-                (doc != nullptr)) {
+        if ((prop == &NamePattern) && doc) {
             DrawGeomHatch::execute();            //remake the line sets
         }
     } else {
@@ -161,35 +159,49 @@ short DrawGeomHatch::mustExecute() const
 }
 
 
-App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
+App::DocumentObjectExecReturn *DrawGeomHatch::execute()
 {
 //    Base::Console().Message("DGH::execute()\n");
     makeLineSets();
     DrawViewPart* parent = getSourceView();
-    if (parent != nullptr) {
+    if (parent) {
         parent->requestPaint();
     }
     return App::DocumentObject::StdReturn;
 }
 
 
-void DrawGeomHatch::makeLineSets(void)
+void DrawGeomHatch::makeLineSets()
 {
 //    Base::Console().Message("DGH::makeLineSets()\n");
     if ((!PatIncluded.isEmpty())  &&
         (!NamePattern.isEmpty())) {
-        std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
         m_lineSets.clear();
-        for (auto& hl: specs) {
-            //hl.dump("hl from file");
-            LineSet ls;
-            ls.setPATLineSpec(hl);
-            m_lineSets.push_back(ls);
-        }
+        m_lineSets = makeLineSets(PatIncluded.getValue(),
+                                  NamePattern.getValue());
     }
 }
 
-DrawViewPart* DrawGeomHatch::getSourceView(void) const
+/*static*/
+std::vector<LineSet> DrawGeomHatch::makeLineSets(std::string fileSpec, std::string myPattern)
+{
+    std::vector<LineSet> lineSets;
+    if (!fileSpec.empty()  &&
+        !myPattern.empty()) {
+        std::vector<PATLineSpec> specs =
+                   DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
+                                                          myPattern);
+        for (auto& hl: specs) {
+            //hl.dump("hl from section");
+            LineSet ls;
+            ls.setPATLineSpec(hl);
+            lineSets.push_back(ls);
+        }
+    }
+    return lineSets;
+}
+
+DrawViewPart* DrawGeomHatch::getSourceView() const
 {
     App::DocumentObject* obj = Source.getValue();
     DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
@@ -334,7 +346,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         int i = 0;
         for (auto& e: resultEdges) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
-            if (base == nullptr) {
+            if (!base) {
                 Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
             }
@@ -483,7 +495,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         int i = 0;
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
-            if (base == nullptr) {
+            if (!base) {
                 Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
             }
@@ -538,7 +550,7 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     return result;
 }
 
-PyObject *DrawGeomHatch::getPyObject(void)
+PyObject *DrawGeomHatch::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         PythonObject = Py::Object(new DrawGeomHatchPy(this),true);
@@ -582,7 +594,7 @@ void DrawGeomHatch::setupObject()
     App::DocumentObject::setupObject();
 }
 
-void DrawGeomHatch::setupPatIncluded(void)
+void DrawGeomHatch::setupPatIncluded()
 {
 //    Base::Console().Message("DGH::setupPatIncluded()\n");
     App::Document* doc = getDocument();
@@ -603,18 +615,18 @@ void DrawGeomHatch::setupPatIncluded(void)
     }
 }
 
-void DrawGeomHatch::unsetupObject(void)
+void DrawGeomHatch::unsetupObject()
 {
 //    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = dynamic_cast<DrawView*>(source);
-    if (dv != nullptr) {
+    if (dv) {
         dv->requestPaint();
     }
     App::DocumentObject::unsetupObject();
 }
 
-std::string DrawGeomHatch::prefGeomHatchFile(void)
+std::string DrawGeomHatch::prefGeomHatchFile()
 {
     return Preferences::patFile();
 }
@@ -647,7 +659,7 @@ App::Color DrawGeomHatch::prefGeomHatchColor()
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawGeomHatchPython, TechDraw::DrawGeomHatch)
-template<> const char* TechDraw::DrawGeomHatchPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawGeomHatchPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderGeomHatch";
 }
 /// @endcond

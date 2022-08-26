@@ -24,13 +24,18 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
+#include <sstream>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Base/Unit.h>
+#include <CXX/Objects.hxx>
 
 #include "FeatureTest.h"
 #include "Material.h"
+#include "Range.h"
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4700 )
@@ -109,17 +114,9 @@ FeatureTest::FeatureTest()
   QuantityLength.setUnit(Base::Unit::Length);
   ADD_PROPERTY(QuantityOther,(5.0));
   QuantityOther.setUnit(Base::Unit(-3,1));
-  //ADD_PROPERTY(QuantityMass,(1.0));
-  //QuantityMass.setUnit(Base::Unit::Mass);
-  //ADD_PROPERTY(QuantityAngle,(1.0));
-  //QuantityAngle.setUnit(Base::Unit::Angle);
-
 }
 
-FeatureTest::~FeatureTest()
-{
-
-}
+FeatureTest::~FeatureTest() = default;
 
 short FeatureTest::mustExecute() const
 {
@@ -161,31 +158,7 @@ DocumentObjectExecReturn *FeatureTest::execute()
     list.emplace_back("World");
     enumObj6.setEnums(list);
     enumObj6.setValue(list.back());
-    /*
-doc=App.newDocument()
-obj=doc.addObject("App::FeatureTest")
 
-obj.ExceptionType=0 # good
-doc.recompute()
-
-obj.ExceptionType=1 # unknown exception
-doc.recompute()
-
-obj.ExceptionType=2 # Runtime error
-doc.recompute()
-
-obj.ExceptionType=3 # segfault
-doc.recompute()
-
-obj.ExceptionType=4 # segfault
-doc.recompute()
-
-obj.ExceptionType=5 # int division by zero
-doc.recompute()
-
-obj.ExceptionType=6 # float division by zero
-doc.recompute()
-     */
     int *i=nullptr,j;
     float f;
     void *s;
@@ -198,15 +171,7 @@ doc.recompute()
         case 0: break;
         case 1: throw std::runtime_error("Test Exception");
         case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
-#if 0 // only allow these error types on purpose
-        case 3: *i=0;printf("%i",*i);break;                 // seg-fault
-        case 4: t = nullptr; break;                         // seg-fault
-        case 5: j=0; printf("%i",1/j); break;               // int division by zero
-        case 6: f=0.0; printf("%f",1/f); break;             // float division by zero
-        case 7: s = malloc(3600000000ul); free(s); break;   // out-of-memory
-#else
         default: (void)i; (void)j; (void)f; (void)s; (void)t; break;
-#endif
     }
 
     ExecCount.setValue(ExecCount.getValue() + 1);
@@ -216,6 +181,7 @@ doc.recompute()
     return DocumentObject::StdReturn;
 }
 
+// ----------------------------------------------------------------------------
 
 PROPERTY_SOURCE(App::FeatureTestException, App::FeatureTest)
 
@@ -231,4 +197,98 @@ DocumentObjectExecReturn *FeatureTestException::execute()
     throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
 
     return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestColumn, App::DocumentObject)
+
+
+FeatureTestColumn::FeatureTestColumn()
+{
+    ADD_PROPERTY_TYPE(Column, ("A"), "Test", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(Silent, (false), "Test", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(Value, (0L), "Test", App::Prop_Output, "");
+}
+
+DocumentObjectExecReturn *FeatureTestColumn::execute()
+{
+    Value.setValue(decodeColumn(Column.getStrValue(), Silent.getValue()));
+    return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestPlacement, App::DocumentObject)
+
+
+FeatureTestPlacement::FeatureTestPlacement()
+{
+    ADD_PROPERTY_TYPE(Input1, (Base::Placement()), "Test", Prop_None, "");
+    ADD_PROPERTY_TYPE(Input2, (Base::Placement()), "Test", Prop_None, "");
+    ADD_PROPERTY_TYPE(MultLeft, (Base::Placement()), "Test", Prop_Output, "");
+    ADD_PROPERTY_TYPE(MultRight, (Base::Placement()), "Test", Prop_Output, "");
+}
+
+DocumentObjectExecReturn *FeatureTestPlacement::execute()
+{
+    Base::Placement p1 = Input1.getValue();
+    Base::Placement q1 = Input1.getValue();
+    Base::Placement p2 = Input2.getValue();
+    MultLeft.setValue(p1.multLeft(p2));
+    MultRight.setValue(q1.multRight(p2));
+    return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestAttribute, App::DocumentObject)
+
+
+FeatureTestAttribute::FeatureTestAttribute()
+{
+    ADD_PROPERTY(Object, (Py::Object()));
+    ADD_PROPERTY(Attribute, ("Name"));
+}
+
+FeatureTestAttribute::~FeatureTestAttribute()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Object.getValue().getAttr("Name");
+#if PYCXX_VERSION_MAJOR >= 7
+        Py::ifPyErrorThrowCxxException();
+#else
+        if (PyErr_Occurred())
+            throw Py::RuntimeError();
+#endif
+    }
+    catch (Py::RuntimeError& e) {
+        e.clear();
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        Base::Console().Error("Unexpected exception in ~FeatureTestRemoval()\n");
+    }
+}
+
+DocumentObjectExecReturn *FeatureTestAttribute::execute()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Object.getValue().getAttr(Attribute.getValue());
+#if PYCXX_VERSION_MAJOR >= 7
+        Py::ifPyErrorThrowCxxException();
+#else
+        if (PyErr_Occurred())
+            throw Py::AttributeError();
+#endif
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        std::stringstream str;
+        str << "No such attribute '" << Attribute.getValue() << "'";
+        throw Base::AttributeError(str.str());
+    }
+    return StdReturn;
 }

@@ -96,10 +96,10 @@ public:
 
         updateVirtualSpaceStatus();
     }
-    ~ConstraintItem()
+    ~ConstraintItem() override
     {
     }
-    void setData(int role, const QVariant & value)
+    void setData(int role, const QVariant & value) override
     {
         if (role == Qt::EditRole)
             this->value = value;
@@ -107,7 +107,7 @@ public:
         QListWidgetItem::setData(role, value);
     }
 
-    QVariant data (int role) const
+    QVariant data (int role) const override
     {
         if (ConstraintNbr < 0 || ConstraintNbr >= sketch->Constraints.getSize())
             return QVariant();
@@ -148,7 +148,7 @@ public:
             case Sketcher::Weight:
             case Sketcher::Diameter:
             case Sketcher::Angle:
-                name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
+                name = QString::fromLatin1("%1 (%2)").arg(name, constraint->getPresentationValue().getUserString());
                 break;
             case Sketcher::SnellsLaw: {
                 double v = constraint->getPresentationValue().getValue();
@@ -382,7 +382,7 @@ public:
 class ExpressionDelegate : public QStyledItemDelegate
 {
 public:
-    ExpressionDelegate(QListWidget * _view) : QStyledItemDelegate(_view), view(_view) { }
+    explicit ExpressionDelegate(QListWidget * _view) : QStyledItemDelegate(_view), view(_view) { }
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
@@ -400,7 +400,7 @@ protected:
         return icon;
     }
 
-    void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
+    void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const override {
         QStyleOptionViewItem options = option;
         initStyleOption(&options, index);
 
@@ -464,7 +464,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
         for (auto&& it : items) {
             auto ci = static_cast<ConstraintItem*>(it);
             std::string constraint_name = Sketcher::PropertyConstraintList::getConstraintName(ci->ConstraintNbr);
-            constraintSubNames.push_back(constraint_name.c_str());
+            constraintSubNames.emplace_back(constraint_name.c_str());
         }
 
         if(!constraintSubNames.empty())
@@ -537,7 +537,7 @@ void ConstraintView::updateDrivingStatus()
 
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
-        onUpdateDrivingStatus(item, !it->isDriving());
+        Q_EMIT onUpdateDrivingStatus(item, !it->isDriving());
     }
 }
 
@@ -547,7 +547,7 @@ void ConstraintView::updateActiveStatus()
 
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
-        onUpdateActiveStatus(item, !it->isActive());
+        Q_EMIT onUpdateActiveStatus(item, !it->isActive());
     }
 }
 
@@ -563,7 +563,7 @@ void ConstraintView::hideConstraints()
 
 void ConstraintView::modifyCurrentItem()
 {
-    /*emit*/itemActivated(currentItem());
+    Q_EMIT itemActivated(currentItem());
 }
 
 void ConstraintView::renameCurrentItem()
@@ -708,7 +708,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
         );
 
     QObject::connect(
-        ui->visibilityButton->actions()[0], SIGNAL(changed()),
+        qAsConst(ui->visibilityButton)->actions()[0], SIGNAL(changed()),
         this                     , SLOT  (on_visibilityButton_trackingaction_changed())
         );
 
@@ -1079,8 +1079,8 @@ void TaskSketcherConstraints::on_visualisationTrackingFilter_stateChanged(int st
     {
         QSignalBlocker block(this);
 
-        if(ui->visibilityButton->actions()[0]->isChecked() != (state == Qt::Checked))
-            ui->visibilityButton->actions()[0]->setChecked(state);
+        if (qAsConst(ui->visibilityButton)->actions()[0]->isChecked() != (state == Qt::Checked))
+            qAsConst(ui->visibilityButton)->actions()[0]->setChecked(state);
     }
 
     if(state == Qt::Checked)
@@ -1093,7 +1093,7 @@ void TaskSketcherConstraints::on_visibilityButton_trackingaction_changed()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter",false);
 
-    bool bstate = ui->visibilityButton->actions()[0]->isChecked();
+    bool bstate = qAsConst(ui->visibilityButton)->actions()[0]->isChecked();
 
     if(visibilityTracksFilter != bstate) {
         hGrp->SetBool("VisualisationTrackingFilter", bstate);
@@ -1120,7 +1120,7 @@ void TaskSketcherConstraints::on_listWidgetConstraints_emitCenterSelectedItems()
     sketchView->centerSelection();
 }
 
-void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged(void)
+void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged()
 {
     std::string doc_name = sketchView->getSketchObject()->getDocument()->getName();
     std::string obj_name = sketchView->getSketchObject()->getNameInDocument();
@@ -1419,7 +1419,7 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem * item)
     return !visible;
 }
 
-void TaskSketcherConstraints::slotConstraintsChanged(void)
+void TaskSketcherConstraints::slotConstraintsChanged()
 {
     assert(sketchView);
     // Build up ListView with the constraints
@@ -1430,7 +1430,7 @@ void TaskSketcherConstraints::slotConstraintsChanged(void)
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
         ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
 
-        assert(it != nullptr);
+        assert(it);
 
         it->ConstraintNbr = i;
         it->value = QVariant();

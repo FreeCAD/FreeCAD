@@ -57,12 +57,12 @@ ConstraintInitialTemperature::ConstraintInitialTemperature()
     References.setStatus(App::Property::Hidden, true);
 }
 
-App::DocumentObjectExecReturn *ConstraintInitialTemperature::execute(void)
+App::DocumentObjectExecReturn *ConstraintInitialTemperature::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintInitialTemperature::getViewProviderName(void) const
+const char* ConstraintInitialTemperature::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintInitialTemperature";
 }

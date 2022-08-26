@@ -62,7 +62,7 @@ DocumentObjectExecReturn *DocumentObject::StdReturn = nullptr;
 // DocumentObject
 //===========================================================================
 
-DocumentObject::DocumentObject(void)
+DocumentObject::DocumentObject()
     : ExpressionEngine(),_pDoc(nullptr),pcNameInDocument(nullptr),_Id(0)
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
@@ -81,7 +81,7 @@ DocumentObject::DocumentObject(void)
     Visibility.setStatus(Property::NoModify,true);
 }
 
-DocumentObject::~DocumentObject(void)
+DocumentObject::~DocumentObject()
 {
     if (!PythonObject.is(Py::_None())){
         Base::PyGILStateLocker lock;
@@ -96,15 +96,14 @@ DocumentObject::~DocumentObject(void)
     }
 }
 
-App::DocumentObjectExecReturn *DocumentObject::recompute(void)
+App::DocumentObjectExecReturn *DocumentObject::recompute()
 {
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this)) {
-#if 1
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
-        std::string objnames = "", scopenames = "";
+        std::string objnames, scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
         for (auto& obj : invalid_linkobjs) {
             objnames += obj->getNameInDocument();
@@ -133,9 +132,6 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
             scopenames.pop_back();
         }
         Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. Instead, the linked object(s) reside within '%s'.\n", getTypeId().getName(), objnames.c_str(), getNameInDocument(), scopenames.c_str());
-#else
-        return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
-#endif
     }
 
     // set/unset the execution bit
@@ -156,7 +152,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
     return ret;
 }
 
-DocumentObjectExecReturn *DocumentObject::execute(void)
+DocumentObjectExecReturn *DocumentObject::execute()
 {
     return executeExtensions();
 }
@@ -213,7 +209,7 @@ bool DocumentObject::isTouched() const
  * This can be useful to recompute the feature without
  * having to change one of its input properties.
  */
-void DocumentObject::enforceRecompute(void)
+void DocumentObject::enforceRecompute()
 {
     touch(false);
 }
@@ -224,7 +220,7 @@ void DocumentObject::enforceRecompute(void)
  * returns a value > 0.
  * @return true if document object must be recomputed, false if not.
  */
-bool DocumentObject::mustRecompute(void) const
+bool DocumentObject::mustRecompute() const
 {
     if (StatusBits.test(ObjectStatus::Enforce))
         return true;
@@ -232,7 +228,7 @@ bool DocumentObject::mustRecompute(void) const
     return mustExecute() > 0;
 }
 
-short DocumentObject::mustExecute(void) const
+short DocumentObject::mustExecute() const
 {
     if (ExpressionEngine.isTouched())
         return 1;
@@ -247,7 +243,7 @@ short DocumentObject::mustExecute(void) const
     return 0;
 }
 
-const char* DocumentObject::getStatusString(void) const
+const char* DocumentObject::getStatusString() const
 {
     if (isError()) {
         const char* text = getDocument()->getErrorDescription(this);
@@ -379,7 +375,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 
 #else // ifndef USE_OLD_DAG
 
-const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
+const std::vector<App::DocumentObject*> &DocumentObject::getInList() const
 {
     return _inList;
 }
@@ -387,42 +383,6 @@ const std::vector<App::DocumentObject*> &DocumentObject::getInList(void) const
 #endif // if USE_OLD_DAG
 
 
-#if 0
-
-void _getInListRecursive(std::set<DocumentObject*>& objSet,
-                         const DocumentObject* obj,
-                         const DocumentObject* checkObj, int depth)
-{
-    for (const auto objIt : obj->getInList()) {
-        // if the check object is in the recursive inList we have a cycle!
-        if (objIt == checkObj || depth <= 0) {
-            throw Base::BadGraphError("DocumentObject::getInListRecursive(): cyclic dependency detected!");
-        }
-
-        // if the element was already in the set then there is no need to process it again
-        auto pair = objSet.insert(objIt);
-        if (pair.second)
-            _getInListRecursive(objSet, objIt, checkObj, depth-1);
-    }
-}
-
-std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
-{
-    // number of objects in document is a good estimate in result size
-    // int maxDepth = getDocument()->countObjects() +2;
-    int maxDepth = GetApplication().checkLinkDepth(0);
-    std::vector<App::DocumentObject*> result;
-    result.reserve(maxDepth);
-
-    // using a rcursie helper to collect all InLists
-    _getInListRecursive(result, this, this, maxDepth);
-
-    std::vector<App::DocumentObject*> array;
-    array.insert(array.begin(), result.begin(), result.end());
-    return array;
-}
-
-#else
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -431,14 +391,13 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 // of objects. And this may not be the worst case. getInListEx() has no such
 // problem.
 
-std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const {
+std::vector<App::DocumentObject*> DocumentObject::getInListRecursive() const {
     std::set<App::DocumentObject*> inSet;
     std::vector<App::DocumentObject*> res;
     getInListEx(inSet,true,&res);
     return res;
 }
 
-#endif
 
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
@@ -490,7 +449,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
 
     std::stack<DocumentObject*> pendings;
     pendings.push(const_cast<DocumentObject*>(this));
-    while(pendings.size()) {
+    while(!pendings.empty()) {
         auto obj = pendings.top();
         pendings.pop();
         for(auto o : obj->getInList()) {
@@ -528,7 +487,7 @@ void _getOutListRecursive(std::set<DocumentObject*>& objSet,
     }
 }
 
-std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) const
+std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive() const
 {
     // number of objects in document is a good estimate in result size
     int maxDepth = GetApplication().checkLinkDepth(0);
@@ -569,12 +528,7 @@ bool _isInInListRecursive(const DocumentObject* act,
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
-#if 0
-    int maxDepth = getDocument()->countObjects() + 2;
-    return _isInInListRecursive(this, linkTo, maxDepth);
-#else
     return this==linkTo || getInListEx(true).count(linkTo);
-#endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
@@ -641,24 +595,12 @@ bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
 
 bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
 {
-#if 0
-    Document* doc = this->getDocument();
-    if (!doc)
-        throw Base::RuntimeError("DocumentObject::testIfLinkIsDAG: object is not in any document.");
-    std::vector<App::DocumentObject*> deplist = doc->getDependencyList(linksTo);
-    if( std::find(deplist.begin(),deplist.end(),this) != deplist.end() )
-        //found this in dependency list
-        return false;
-    else
-        return true;
-#else
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for(auto obj : linksTo)
         if(inLists.count(obj))
             return false;
     return true;
-#endif
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const
@@ -680,7 +622,7 @@ void DocumentObject::onLostLinkToObject(DocumentObject*)
 
 }
 
-App::Document *DocumentObject::getDocument(void) const
+App::Document *DocumentObject::getDocument() const
 {
     return _pDoc;
 }
@@ -801,7 +743,7 @@ void DocumentObject::clearOutListCache() const {
     _outListCached = false;
 }
 
-PyObject *DocumentObject::getPyObject(void)
+PyObject *DocumentObject::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

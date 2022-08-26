@@ -20,7 +20,7 @@
 using namespace FemGui;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ViewProviderFemMeshPy::representation(void) const
+std::string ViewProviderFemMeshPy::representation() const
 {
     return std::string("<ViewProviderFemMesh object>");
 }
@@ -150,7 +150,7 @@ PyObject* ViewProviderFemMeshPy::resetNodeDisplacement(PyObject* args)
 }
 
 
-Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
+Py::Dict ViewProviderFemMeshPy::getNodeColor() const
 {
     //return Py::List();
     throw Py::AttributeError("Not yet implemented");
@@ -191,7 +191,7 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 }
 
 
-Py::Dict ViewProviderFemMeshPy::getElementColor(void) const
+Py::Dict ViewProviderFemMeshPy::getElementColor() const
 {
     //return Py::List();
     throw Py::AttributeError("Not yet implemented");
@@ -215,7 +215,7 @@ void ViewProviderFemMeshPy::setElementColor(Py::Dict arg)
 }
 
 
-Py::Dict ViewProviderFemMeshPy::getNodeDisplacement(void) const
+Py::Dict ViewProviderFemMeshPy::getNodeDisplacement() const
 {
     //return Py::Dict();
     throw Py::AttributeError("Not yet implemented");
@@ -242,7 +242,7 @@ void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
 }
 
 
-Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
+Py::List ViewProviderFemMeshPy::getHighlightedNodes() const
 {
     Py::List list;
     ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
@@ -281,7 +281,7 @@ PyObject* ViewProviderFemMeshPy::resetHighlightedNodes(PyObject* args)
 }
 
 
-Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
+Py::List ViewProviderFemMeshPy::getVisibleElementFaces() const
 {
     const std::vector<unsigned long>& visElmFc = this->getViewProviderFemMeshPtr()->getVisibleElementFaces();
     std::vector<unsigned long> trans;

@@ -42,8 +42,8 @@ class EditTableView : public QTableView
     Q_OBJECT
 
 public:
-    EditTableView(QWidget *parent = nullptr);
-    void keyPressEvent(QKeyEvent *event);
+    explicit EditTableView(QWidget *parent = nullptr);
+    void keyPressEvent(QKeyEvent *event) override;
 
 public Q_SLOTS:
     void removeOne();
@@ -55,10 +55,10 @@ class SqueezeLabel : public QLabel
     Q_OBJECT
 
 public:
-    SqueezeLabel(QWidget *parent = nullptr);
+    explicit SqueezeLabel(QWidget *parent = nullptr);
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
 
 };
 
@@ -72,15 +72,15 @@ class AutoSaver : public QObject {
 Q_OBJECT
 
 public:
-    AutoSaver(QObject *parent);
-    ~AutoSaver();
+    explicit AutoSaver(QObject *parent);
+    ~AutoSaver() override;
     void saveIfNecessary();
 
 public Q_SLOTS:
     void changeOccurred();
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     QBasicTimer m_timer;
@@ -93,7 +93,7 @@ class NetworkAccessManager : public QNetworkAccessManager
     Q_OBJECT
 
 public:
-    NetworkAccessManager(QObject *parent = nullptr);
+    explicit NetworkAccessManager(QObject *parent = nullptr);
 
 private Q_SLOTS:
     void authenticationRequired(QNetworkReply *reply, QAuthenticator *auth);  // clazy:exclude=overridden-signal
@@ -114,7 +114,7 @@ Q_SIGNALS:
     void statusChanged();
 
 public:
-    DownloadItem(QNetworkReply *reply = nullptr, bool requestFileName = false, QWidget *parent = nullptr);
+    explicit DownloadItem(QNetworkReply *reply = nullptr, bool requestFileName = false, QWidget *parent = nullptr);
     bool downloading() const;
     bool downloadedSuccessfully() const;
 
@@ -137,7 +137,7 @@ private Q_SLOTS:
     void finished();
 
 private:
-    void contextMenuEvent(QContextMenuEvent *);
+    void contextMenuEvent(QContextMenuEvent *) override;
     void getFileName();
     void init();
     void updateInfoLabel();

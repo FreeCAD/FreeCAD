@@ -37,7 +37,7 @@ class SplittingSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    SplittingSelection(App::DocumentObject* obj)
+    explicit SplittingSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 
@@ -72,18 +72,18 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         int GeoId = getPreselectCurve();
         if (GeoId >= 0) {
@@ -112,14 +112,14 @@ public:
     }
 
 private:
-    virtual void activated() override
+    void activated() override
     {
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
     }
 
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Splitting");
     }
 };

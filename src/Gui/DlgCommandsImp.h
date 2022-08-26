@@ -46,18 +46,18 @@ class DlgCustomCommandsImp : public CustomizeActionPage
   Q_OBJECT
 
 public:
-    DlgCustomCommandsImp(QWidget* parent = nullptr);
-    ~DlgCustomCommandsImp();
+    explicit DlgCustomCommandsImp(QWidget* parent = nullptr);
+    ~DlgCustomCommandsImp() override;
 
 protected Q_SLOTS:
     void onGroupActivated(QTreeWidgetItem *i);
     void onDescription(QTreeWidgetItem *i);
-    void onAddMacroAction(const QByteArray&);
-    void onRemoveMacroAction(const QByteArray&);
-    void onModifyMacroAction(const QByteArray&);
+    void onAddMacroAction(const QByteArray&) override;
+    void onRemoveMacroAction(const QByteArray&) override;
+    void onModifyMacroAction(const QByteArray&) override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgCustomCommands> ui;

@@ -29,6 +29,7 @@
 #include <QString>
 
 #include "UnitsSchemaInternal.h"
+#include <cmath>
 
 
 using namespace Base;
@@ -232,7 +233,6 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         else {
             unitString = QString::fromLatin1("MN/m");
             factor = 1e6;
-            
         }
     }
     else if (unit == Unit::Force) {
@@ -434,6 +434,10 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             unitString = QString::fromLatin1("H");
             factor = 1e6;
         }
+    }
+    else if (unit == Unit::VacuumPermittivity) {
+        unitString = QString::fromLatin1("F/m");
+        factor = 1e-9;
     }
     else if (unit == Unit::Frequency) {
         if (UnitValue < 1e3) {

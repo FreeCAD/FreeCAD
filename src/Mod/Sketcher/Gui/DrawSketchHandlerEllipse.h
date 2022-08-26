@@ -75,7 +75,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerEllipse(int constructionMethod)
+    explicit DrawSketchHandlerEllipse(int constructionMethod)
       : mode(STATUS_Close)
       , method(CENTER_PERIAPSIS_B)
       , constrMethod(constructionMethod)
@@ -104,7 +104,7 @@ public:
      * @brief Updates the ellipse when the cursor moves
      * @param onSketchPos the position of the cursor on the sketch
      */
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -196,7 +196,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -231,7 +231,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
@@ -257,7 +257,7 @@ private:
      * @brief Slot called when the create ellipse command is activated
      * @param sketchgui A pointer to the active sketch
      */
-    virtual void activated() override
+    void activated() override
     {
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
@@ -267,7 +267,7 @@ private:
             mode = STATUS_SEEK_PERIAPSIS;
         }
     }
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse");
     }
@@ -739,30 +739,30 @@ private:
 
         if (method == CENTER_PERIAPSIS_B) {
             // add auto constraints for the center point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, currentgeoid, Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
         }
 
         if (method == PERIAPSIS_APOAPSIS_B) {
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::none);
                 sugConstr1.clear();
             }
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, currentgeoid, Sketcher::PointPos::none);
                 sugConstr3.clear();
             }

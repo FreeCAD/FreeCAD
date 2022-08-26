@@ -45,11 +45,11 @@ public:
       : Base::XMLReader(FileName, str), nameMap(name)
     {}
 
-    void addName(const char* s1, const char* s2)
+    void addName(const char* s1, const char* s2) override
     {
         nameMap[s1] = s2;
     }
-    const char* getName(const char* name) const
+    const char* getName(const char* name) const override
     {
         std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
         if (it != nameMap.end())
@@ -57,64 +57,12 @@ public:
         else
             return name;
     }
-    bool doNameMapping() const
+    bool doNameMapping() const override
     {
         return true;
     }
 protected:
 
-    // It is not safe to change potential object name reference at this level.
-    // For example, a LinkSub with sub element name Face1 may also be some
-    // object's name that may potentially be mapped. In addition, with the
-    // introduction of full qualified SubName reference, the Sub value inside
-    // LinkSub may require customized mapping. So we move the mapping logic to
-    // various link property's Restore() function.
-#if 0
-    void startElement(const XMLCh* const uri, const XMLCh* const localname,
-                      const XMLCh* const qname,
-                      const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
-    {
-        Base::XMLReader::startElement(uri, localname, qname, attrs);
-        if (LocalName == "Property")
-            propertyStack.push(std::make_pair(AttrMap["name"],AttrMap["type"]));
-
-        if (!propertyStack.empty()) {
-            // replace the stored object name with the real one
-            if (LocalName == "Link" || LocalName == "LinkSub" || (LocalName == "String" && propertyStack.top().first == "Label")) {
-                for (std::map<std::string, std::string>::iterator it = AttrMap.begin(); it != AttrMap.end(); ++it) {
-                    std::map<std::string, std::string>::const_iterator jt = nameMap.find(it->second);
-                    if (jt != nameMap.end())
-                        it->second = jt->second;
-                }
-            }
-            // update the expression if name of the object is used
-            else if (LocalName == "Expression") {
-                std::map<std::string, std::string>::iterator it = AttrMap.find("expression");
-                if (it != AttrMap.end()) {
-                    // search for the part before the first dot that should be the object name.
-                    std::string expression = it->second;
-                    std::string::size_type dotpos = expression.find_first_of(".");
-                    if (dotpos != std::string::npos) {
-                        std::string name = expression.substr(0, dotpos);
-                        std::map<std::string, std::string>::const_iterator jt = nameMap.find(name);
-                        if (jt != nameMap.end()) {
-                            std::string newexpression = jt->second;
-                            newexpression += expression.substr(dotpos);
-                            it->second = newexpression;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    void endElement(const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname)
-    {
-        Base::XMLReader::endElement(uri, localname, qname);
-        if (LocalName == "Property")
-            propertyStack.pop();
-    }
-#endif
 
 private:
     std::map<std::string, std::string>& nameMap;
@@ -142,7 +90,7 @@ MergeDocuments::~MergeDocuments()
     connectImport.disconnect();
 }
 
-unsigned int MergeDocuments::getMemSize (void) const
+unsigned int MergeDocuments::getMemSize () const
 {
     return 0;
 }

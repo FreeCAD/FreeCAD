@@ -53,7 +53,7 @@ namespace Gui { namespace Dialog {
 class find_placement
 {
 public:
-    find_placement(const std::string& name) : propertyname(name)
+    explicit find_placement(const std::string& name) : propertyname(name)
     {
     }
     bool operator () (const std::pair<std::string, App::Property*>& elem) const
@@ -371,7 +371,7 @@ void Placement::on_selectedVertex_clicked()
     Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
     for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
         std::vector<Base::Vector3d> points = it->getPickedPoints();
-        if (it==selection.begin() && points.size()>0){
+        if (it==selection.begin() && !points.empty()){
             firstSelected=points[0];
         }
         picked.insert(picked.begin(),points.begin(),points.end());

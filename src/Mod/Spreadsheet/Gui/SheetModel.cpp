@@ -85,7 +85,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     int col = index.column();
     const Cell * cell = sheet->getCell(CellAddress(row, col));
 
-    if (cell == nullptr)
+    if (!cell)
         cell = emptyCell;
 
 //#define DEBUG_DEPS
@@ -224,7 +224,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             if(cell->getExpression()) {
                 std::string str;
                 if (cell->getStringContent(str))
-                    if (str.size() > 0 && str[0] == '=')
+                    if (!str.empty() && str[0] == '=')
                         // If this is a real computed value, indicate that a recompute is
                         // needed before we can display it
                         return QVariant(QLatin1String("#PENDING"));
@@ -516,7 +516,7 @@ void SheetModel::cellUpdated(CellAddress address)
 {
     QModelIndex i = index(address.row(), address.col());
 
-    dataChanged(i, i);
+    Q_EMIT dataChanged(i, i);
 }
 
 void SheetModel::rangeUpdated(const Range &range)
@@ -524,7 +524,7 @@ void SheetModel::rangeUpdated(const Range &range)
     QModelIndex i = index(range.from().row(), range.from().col());
     QModelIndex j = index(range.to().row(), range.to().col());
 
-    dataChanged(i, j);
+    Q_EMIT dataChanged(i, j);
 }
 
 #include "moc_SheetModel.cpp"

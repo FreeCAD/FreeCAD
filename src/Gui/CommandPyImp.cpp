@@ -39,7 +39,7 @@
 
 
 // returns a string which represents the object e.g. when printed in python
-std::string CommandPy::representation(void) const
+std::string CommandPy::representation() const
 {
     return std::string("<Command object>");
 }
@@ -106,19 +106,19 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
                }
 
                if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1) {
-                   matches.push_back(c->getName());
+                   matches.emplace_back(c->getName());
                }
             }
             else if (action->shortcut().toString().remove(spc).toUpper() ==
                      QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()) {
-                matches.push_back(c->getName());
+                matches.emplace_back(c->getName());
             }
         }
     }
 
     PyObject* pyList = PyList_New(matches.size());
     int i=0;
-    for (std::string match : matches) {
+    for (const std::string& match : matches) {
         PyObject* str = PyUnicode_FromString(match.c_str());
         PyList_SetItem(pyList, i++, str);
     }
@@ -268,7 +268,7 @@ PyObject* CommandPy::getInfo(PyObject *args)
         const char* whatsThisTxt = cmd->getWhatsThis();
         const char* statustipTxt = cmd->getStatusTip();
         const char* pixMapTxt = cmd->getPixmap();
-        std::string shortcutTxt = "";
+        std::string shortcutTxt;
         if (action)
             shortcutTxt = action->shortcut().toString().toStdString();
 
@@ -309,7 +309,8 @@ PyObject* CommandPy::getAction(PyObject *args)
 
         Py::List list;
         if (group) {
-            for (auto a : group->actions())
+            const auto actions = group->actions();
+            for (auto a : actions)
                 list.append(wrap.fromQObject(a));
         }
         else if (action) {

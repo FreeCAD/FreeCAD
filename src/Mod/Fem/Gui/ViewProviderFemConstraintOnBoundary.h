@@ -32,11 +32,11 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintOnBoundary : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintOnBoundary);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintOnBoundary);
 
 public:
     ViewProviderFemConstraintOnBoundary();
-    virtual ~ViewProviderFemConstraintOnBoundary();
+    ~ViewProviderFemConstraintOnBoundary() override;
 
     void highlightReferences(const bool on) override;
 

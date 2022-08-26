@@ -42,15 +42,15 @@ class Ui_TaskFilling;
 
 class ViewProviderFilling : public PartGui::ViewProviderSpline
 {
-    PROPERTY_HEADER(SurfaceGui::ViewProviderFilling);
+    PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderFilling);
     typedef std::vector<App::PropertyLinkSubList::SubSet> References;
 
 public:
     enum ShapeType {Vertex, Edge, Face};
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    QIcon getIcon(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+    QIcon getIcon() const override;
     void highlightReferences(ShapeType type, const References& refs, bool on);
 };
 
@@ -73,7 +73,7 @@ private:
 
 public:
     FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~FillingPanel();
+    ~FillingPanel() override;
 
     void open();
     void checkOpenCommand();
@@ -82,14 +82,14 @@ public:
     void setEditedObject(Surface::Filling* obj);
 
 protected:
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     /** Notifies on undo */
-    virtual void slotUndoDocument(const Gui::Document& Doc);
+    void slotUndoDocument(const Gui::Document& Doc) override;
     /** Notifies on redo */
-    virtual void slotRedoDocument(const Gui::Document& Doc);
+    void slotRedoDocument(const Gui::Document& Doc) override;
     /** Notifies when the object is about to be removed. */
-    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+    void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
     void modifyBoundary(bool);
 
 private Q_SLOTS:
@@ -100,7 +100,7 @@ private Q_SLOTS:
     void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
     void on_buttonAccept_clicked();
     void on_buttonIgnore_clicked();
-    void onDeleteEdge(void);
+    void onDeleteEdge();
     void onIndexesMoved();
     void clearSelection();
 };
@@ -111,16 +111,16 @@ class TaskFilling : public Gui::TaskView::TaskDialog
 
 public:
     TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj);
-    ~TaskFilling();
+    ~TaskFilling() override;
     void setEditedObject(Surface::Filling* obj);
 
 public:
-    void open();
-    void closed();
-    bool accept();
-    bool reject();
+    void open() override;
+    void closed() override;
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:

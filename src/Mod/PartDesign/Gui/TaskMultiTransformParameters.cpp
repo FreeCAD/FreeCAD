@@ -134,7 +134,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         if (*i)
             ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
     }
-    if (transformFeatures.size() > 0) {
+    if (!transformFeatures.empty()) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
         editHint = false;
     } else {
@@ -188,7 +188,7 @@ void TaskMultiTransformParameters::clearButtons()
     ui->buttonRemoveFeature->setChecked(false);
 }
 
-void TaskMultiTransformParameters::onFeatureDeleted(void)
+void TaskMultiTransformParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
@@ -504,7 +504,7 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
     }
 }
 
-const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
+const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures() const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     return pcMultiTransform->Transformations.getValues();

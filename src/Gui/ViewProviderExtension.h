@@ -51,23 +51,23 @@ class GuiExport ViewProviderExtension : public App::Extension
 
     //The cass does not have properties itself, but it is important to provide the property access
     //functions.
-    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderExtension);
 
 public:
 
     ViewProviderExtension ();
-    virtual ~ViewProviderExtension ();
+    ~ViewProviderExtension () override;
 
     Gui::ViewProviderDocumentObject*       getExtendedViewProvider();
     const Gui::ViewProviderDocumentObject* getExtendedViewProvider() const;
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const {
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D() const {
         return std::vector<App::DocumentObject*>(); }
 
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
     virtual void extensionBeforeDelete(){}
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const {
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren() const {
         return std::vector<App::DocumentObject*>(); }
 
     virtual bool extensionCanDragObjects() const { return false; }
@@ -88,24 +88,24 @@ public:
         { return -1; }
 
     /// Hides the view provider
-    virtual void extensionHide(void) { }
+    virtual void extensionHide() { }
     /// Shows the view provider
-    virtual void extensionShow(void) { }
+    virtual void extensionShow() { }
 
-    virtual void extensionModeSwitchChange(void) { }
+    virtual void extensionModeSwitchChange() { }
 
-    virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
-    virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
-    virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
+    virtual SoSeparator* extensionGetFrontRoot() const {return nullptr;}
+    virtual SoGroup*     extensionGetChildRoot() const {return nullptr;}
+    virtual SoSeparator* extensionGetBackRoot() const {return nullptr;}
     virtual void extensionAttach(App::DocumentObject* ) { }
     virtual void extensionReattach(App::DocumentObject* ) { }
     virtual void extensionSetDisplayMode(const char* ) { }
-    virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();}
+    virtual std::vector<std::string> extensionGetDisplayModes() const {return std::vector<std::string>();}
     virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) {}
 
-    //update data of extended opject
+    // update data of extended object
     virtual void extensionUpdateData(const App::Property*);
-    virtual PyObject* getExtensionPyObject();
+    PyObject* getExtensionPyObject() override;
 
     void setIgnoreOverlayIcon(bool on) {
         m_ignoreOverlayIcon = on;

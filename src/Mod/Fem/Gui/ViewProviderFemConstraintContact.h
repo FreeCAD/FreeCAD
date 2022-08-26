@@ -32,15 +32,15 @@ namespace FemGui {
 
 class FemGuiExport ViewProviderFemConstraintContact : public FemGui::ViewProviderFemConstraint
 {
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintContact);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemConstraintContact);
 
 public:
     ViewProviderFemConstraintContact();
-    virtual ~ViewProviderFemConstraintContact();
-    virtual void updateData(const App::Property*);
+    ~ViewProviderFemConstraintContact() override;
+    void updateData(const App::Property*) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 };
 }
 

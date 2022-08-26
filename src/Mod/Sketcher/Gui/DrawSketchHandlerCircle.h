@@ -44,7 +44,7 @@ public:
         STATUS_Close
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -82,7 +82,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -94,7 +94,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -119,13 +119,13 @@ public:
             }
 
             // add auto constraints for the center point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for circumference
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
@@ -154,7 +154,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
     }
@@ -180,7 +180,7 @@ public:
         STATUS_End
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -239,7 +239,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             // N point curve + center + endpoint
@@ -264,7 +264,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -288,19 +288,19 @@ public:
             }
 
             // Auto Constraint first picked point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr1.clear();
             }
 
             // Auto Constraint second picked point
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
             // Auto Constraint third picked point
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
@@ -329,7 +329,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Create_3PointCircle");
     }

@@ -77,7 +77,7 @@ class MergeExporter : public Exporter
 {
     public:
         MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
-        ~MergeExporter();
+        ~MergeExporter() override;
 
         bool addMesh(const char *name, const MeshObject & mesh) override;
 
@@ -103,7 +103,7 @@ class AmfExporter : public Exporter
                     bool compress = true);
 
         /// Writes AMF footer
-        ~AmfExporter();
+        ~AmfExporter() override;
 
         bool addMesh(const char *name, const MeshObject & mesh) override;
 

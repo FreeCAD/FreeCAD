@@ -37,7 +37,7 @@
 
 #include "CXX/Objects.hxx"
 #include <limits>
-namespace Py 
+namespace Py
 {
 
 Py_ssize_t numeric_limits_max()
@@ -45,10 +45,13 @@ Py_ssize_t numeric_limits_max()
     return std::numeric_limits<Py_ssize_t>::max();
 }
 
+#if !defined(Py_LIMITED_API)
 Py_UNICODE unicode_null_string[1] = { 0 };
+#endif
+Py_UCS4 ucs4_null_string[1] = { 0 };
 
 Type Object::type() const
-{ 
+{
     return Type( PyObject_Type( p ), true );
 }
 
@@ -58,7 +61,7 @@ String Object::str() const
 }
 
 String Object::repr() const
-{ 
+{
     return String( PyObject_Repr( p ), true );
 }
 
@@ -73,7 +76,7 @@ List Object::dir() const
 }
 
 bool Object::isType( const Type &t ) const
-{ 
+{
     return type().ptr() == t.ptr();
 }
 
@@ -91,49 +94,42 @@ String Bytes::decode( const char *encoding, const char *error )
 bool operator==( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_EQ );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator!=( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_NE );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
-
 }
 
 bool operator>=( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_GE );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator<=( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_LE );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator<( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_LT );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator>( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_GT );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
@@ -228,7 +224,7 @@ bool operator!=( const Mapping::const_iterator &left, const Mapping::const_itera
 std::ostream &operator<<( std::ostream &os, const Object &ob )
 {
     return( os << static_cast<std::string>( ob.str() ) );
-}  
+}
 #endif
 
 } // Py

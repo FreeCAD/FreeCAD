@@ -26,6 +26,8 @@
 #include <cassert>
 #include <sstream>
 #include <string>
+#include <cmath>
+#include <regex>
 #endif
 
 #include <Base/Exception.h>
@@ -42,9 +44,9 @@ Range::Range(const char * range, bool normalize)
     std::string from;
     std::string to;
 
-    assert(range != nullptr);
+    assert(range);
 
-    if (strchr(range, ':') == nullptr) {
+    if (!strchr(range, ':')) {
         from = range;
         to = range;
     }
@@ -136,22 +138,33 @@ int App::decodeRow(const std::string &rowstr, bool silent)
 }
 
 /**
-  * @brief Decode a column specification into a 0-based integer.
+ * Assumes well-formed input. A through ZZZ. 0-based output
+ */
+int columnStringToNum(const std::string &colstr){
+  double out {0};
+  int pos {0};
+  for(auto chr = colstr.crbegin(); chr != colstr.crend(); chr++){
+    out += (*chr - 'A' + 1) * std::pow(26, pos++);
+  }
+  return static_cast<int>(out - 1);
+}
+
+/**
+  * @brief Decode a column name string into a 0-based integer.
   *
-  * @param colstr Column specified as a string, with "A" begin the first column.
+  * @param colstr input string.
   *
   * @returns The column.
   *
   */
 
-int App::decodeColumn(const std::string &colstr, bool silent)
+int App::decodeColumn( const std::string &colstr, bool silent )
 {
-    int col = validColumn(colstr);
-
-    if (silent || col >= 0)
-        return col;
-    else
-        throw Base::IndexError("Invalid column specification");
+    if(validColumn( colstr ) )
+        return columnStringToNum( colstr );
+    if( silent )
+        return -1;
+    throw Base::IndexError("Invalid column specification");
 }
 
 /**
@@ -174,39 +187,17 @@ int App::validRow(const std::string &rowstr)
 }
 
 /**
-  * @brief Determine whether a column specification is valid or not.
+  * @brief Determine if a string is a valid column specification.
   *
-  * @param colstr Column specified as a string, with "A" begin the first column.
+  * @param colstr input string.
   *
-  * @returns 0 or positive on success, -1 on error.
+  * @returns true if valid, false if not.
   *
   */
 
-int App::validColumn(const std::string &colstr)
+bool App::validColumn( const std::string &colstr )
 {
-    int col = 0;
-
-    if (colstr.length() == 1) {
-        if ((colstr[0] >= 'A' && colstr[0] <= 'Z'))
-            col = colstr[0] - 'A';
-        else
-            return -1;
-    }
-    else {
-        col = 0;
-        for (std::string::const_iterator i = colstr.begin(); i != colstr.end(); ++i) {
-            int v;
-
-            if ((*i >= 'A' && *i <= 'Z'))
-                v = *i - 'A';
-            else
-                return -1;
-
-            col = col * 26 + v;
-        }
-        col += 26;
-    }
-    return col;
+    return boost::regex_match(colstr, boost::regex("[A-Z]{1,3}"));
 }
 
 /**
@@ -221,7 +212,7 @@ int App::validColumn(const std::string &colstr)
 
 App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
 {
-    assert(strAddress != nullptr);
+    assert(strAddress);
 
     static boost::regex e("(\\$?[A-Z]{1,2})(\\$?[0-9]{1,5})");
     boost::cmatch cm;

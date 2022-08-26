@@ -51,16 +51,16 @@ struct AxisDefinition {
  */
 class RobotExport Robot6Axis : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     Robot6Axis();
-    ~Robot6Axis();
+    ~Robot6Axis() override;
 
     // from base class
-    virtual unsigned int getMemSize (void) const;
-    virtual void Save (Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
     // interface
     /// set the kinematic parameters of the robot
@@ -75,8 +75,8 @@ public:
     double getMaxAngle(int Axis);
     double getMinAngle(int Axis);
     /// calculate the new Tcp out of the Axis
-    bool calcTcp(void);
-    Base::Placement getTcp(void);
+    bool calcTcp();
+    Base::Placement getTcp();
 
     //void setKinematik(const std::vector<std::vector<float> > &KinTable);
 

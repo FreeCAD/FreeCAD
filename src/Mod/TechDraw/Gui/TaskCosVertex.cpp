@@ -74,9 +74,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     ui(new Ui_TaskCosVertex),
     blockUpdate(false),
     m_tracker(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_qgParent(nullptr),
@@ -94,10 +91,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->getQGSPage();
-    m_view = m_mdi->getQGVPage();
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     setUiPrimary();
 
@@ -130,7 +124,7 @@ void TaskCosVertex::setUiPrimary()
 //    Base::Console().Message("TCV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("New Cosmetic Vertex"));
 
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
@@ -145,7 +139,7 @@ void TaskCosVertex::setUiPrimary()
     ui->dsbY->setUnit(Base::Unit::Length);
 }
 
-void TaskCosVertex::updateUi(void)
+void TaskCosVertex::updateUi()
 {
     double x = m_savePoint.x();
     double y = - m_savePoint.y();
@@ -186,8 +180,8 @@ void TaskCosVertex::onTrackerClicked(bool b)
     }
 
     m_inProgressLock = true;
-    m_saveContextPolicy = m_mdi->contextMenuPolicy();
-    m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
+    m_saveContextPolicy = m_vpp->getMDIViewPage()->contextMenuPolicy();
+    m_vpp->getMDIViewPage()->setContextMenuPolicy(Qt::PreventContextMenu);
     m_trackerMode = QGTracker::TrackerMode::Point;
     setEditCursor(Qt::CrossCursor);
     startTracker();
@@ -201,18 +195,18 @@ void TaskCosVertex::onTrackerClicked(bool b)
     enableTaskButtons(false);
 }
 
-void TaskCosVertex::startTracker(void)
+void TaskCosVertex::startTracker()
 {
 //    Base::Console().Message("TCV::startTracker()\n");
     if (m_trackerMode == QGTracker::TrackerMode::None) {
         return;
     }
 
-    if (m_tracker == nullptr) {
-        m_tracker = new QGTracker(m_scene, m_trackerMode);
+    if (!m_tracker) {
+        m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
         QObject::connect(
-            m_tracker, SIGNAL(drawingFinished(std::vector<QPointF>, QGIView*)),
-            this, SLOT(onTrackerFinished(std::vector<QPointF>, QGIView*))
+            m_tracker, &QGTracker::drawingFinished,
+            this, &TaskCosVertex::onTrackerFinished
         );
     }
     else {
@@ -242,9 +236,9 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 
     DrawViewPart* dvp = m_baseFeat;
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
-    if (dpgi != nullptr) {
+    if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (dpg == nullptr) {
+        if (!dpg) {
             Base::Console().Message("TCV:onTrackerFinished - projection group is confused\n");
             //TODO::throw something.
             return;
@@ -268,16 +262,15 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
 
 }
 
-void TaskCosVertex::removeTracker(void)
+void TaskCosVertex::removeTracker()
 {
 //    Base::Console().Message("TCV::removeTracker()\n");
-    if ((m_tracker != nullptr) &&
-        (m_tracker->scene() != nullptr)) {
-        m_scene->removeItem(m_tracker);
+    if (m_tracker && m_tracker->scene()) {
+        m_vpp->getQGSPage()->removeItem(m_tracker);
         delete m_tracker;
         m_tracker = nullptr;
     }
@@ -285,13 +278,13 @@ void TaskCosVertex::removeTracker(void)
 
 void TaskCosVertex::setEditCursor(QCursor c)
 {
-    if (m_baseFeat != nullptr) {
-        QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
+    if (m_baseFeat) {
+        QGIView* qgivBase = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
         qgivBase->setCursor(c);
     }
 }
 
-void TaskCosVertex::abandonEditSession(void)
+void TaskCosVertex::abandonEditSession()
 {
     QString msg = tr("In progress edit abandoned. Start over.");
     getMainWindow()->statusBar()->show();
@@ -330,7 +323,7 @@ bool TaskCosVertex::accept()
 
     m_baseFeat->recomputeFeature();
     m_baseFeat->requestPaint();
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
     m_trackerMode = QGTracker::TrackerMode::None;
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
@@ -345,8 +338,8 @@ bool TaskCosVertex::reject()
 
     removeTracker();
     m_trackerMode = QGTracker::TrackerMode::None;
-    if (m_mdi != nullptr) {
-        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    if (m_vpp->getMDIViewPage()) {
+        m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
     }
 
     //make sure any dangling objects are cleaned up

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QGraphicsView>
 # include <iostream>
 # include <string>
 # include <sstream>
@@ -30,7 +31,6 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
 
 #include <Base/Tools.h>
 #include <App/Document.h>
@@ -103,7 +103,7 @@ void CmdTechDrawHatch::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( partFeat == nullptr ) {
+    if (!partFeat) {
         return;
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
@@ -167,7 +167,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     getDocument()->recompute();
 }
 
-bool CmdTechDrawHatch::isActive(void)
+bool CmdTechDrawHatch::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -201,7 +201,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    if (!objFeat) {
         return;
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
@@ -236,7 +236,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     getDocument()->recompute();
 }
 
-bool CmdTechDrawGeometricHatch::isActive(void)
+bool CmdTechDrawGeometricHatch::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -290,7 +290,7 @@ void CmdTechDrawImage::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawImage::isActive(void)
+bool CmdTechDrawImage::isActive()
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -326,7 +326,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
     ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
 
-    if (vpp == nullptr) {
+    if (!vpp) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));
         return;
@@ -334,7 +334,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
     vpp->toggleFrameState();
 }
 
-bool CmdTechDrawToggleFrame::isActive(void)
+bool CmdTechDrawToggleFrame::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this,false);
@@ -342,7 +342,7 @@ bool CmdTechDrawToggleFrame::isActive(void)
 }
 
 
-void CreateTechDrawCommandsDecorate(void)
+void CreateTechDrawCommandsDecorate()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
@@ -360,7 +360,7 @@ void CreateTechDrawCommandsDecorate(void)
 
 bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select a Face first"));
         return false;

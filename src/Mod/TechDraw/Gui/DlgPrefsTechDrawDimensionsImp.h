@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,15 +38,15 @@ class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawDimensionsImp();
+    explicit DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
+    ~DlgPrefsTechDrawDimensionsImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
-    int prefArrowStyle(void) const;
+    int prefArrowStyle() const;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawDimensionsImp> ui;

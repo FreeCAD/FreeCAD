@@ -242,7 +242,7 @@ void StdCmdImport::activated(int iMsg)
     }
 }
 
-bool StdCmdImport::isActive(void)
+bool StdCmdImport::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -398,7 +398,7 @@ void StdCmdExport::activated(int iMsg)
     static QString lastExportFilterUsed = QString();
 
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
             QString::fromUtf8(QT_TR_NOOP("No selection")),
             QString::fromUtf8(QT_TR_NOOP("Select the objects to export before choosing Export.")));
@@ -490,7 +490,7 @@ void StdCmdExport::activated(int iMsg)
     }
 }
 
-bool StdCmdExport::isActive(void)
+bool StdCmdExport::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -543,7 +543,7 @@ void StdCmdMergeProjects::activated(int iMsg)
     }
 }
 
-bool StdCmdMergeProjects::isActive(void)
+bool StdCmdMergeProjects::isActive()
 {
     return this->hasActiveDocument();
 }
@@ -576,7 +576,7 @@ void StdCmdDependencyGraph::activated(int iMsg)
     getMainWindow()->addWindow(view);
 }
 
-bool StdCmdDependencyGraph::isActive(void)
+bool StdCmdDependencyGraph::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -634,22 +634,11 @@ StdCmdSave::StdCmdSave()
 void StdCmdSave::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->save();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Save\")");
 }
 
-bool StdCmdSave::isActive(void)
+bool StdCmdSave::isActive()
 {
-#if 0
-  if( getActiveGuiDocument() )
-    return true;
-  else
-#endif
     return getGuiApplication()->sendHasMsgToActiveView("Save");
 }
 
@@ -674,22 +663,11 @@ StdCmdSaveAs::StdCmdSaveAs()
 void StdCmdSaveAs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->saveAs();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveAs\")");
 }
 
-bool StdCmdSaveAs::isActive(void)
+bool StdCmdSaveAs::isActive()
 {
-#if 0
-  if( getActiveGuiDocument() )
-    return true;
-  else
-#endif
     return getGuiApplication()->sendHasMsgToActiveView("SaveAs");
 }
 
@@ -712,16 +690,10 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 void StdCmdSaveCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-  Gui::Document* pActiveDoc = getActiveGuiDocument();
-  if ( pActiveDoc )
-    pActiveDoc->saveCopy();
-  else
-#endif
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"SaveCopy\")");
 }
 
-bool StdCmdSaveCopy::isActive(void)
+bool StdCmdSaveCopy::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -748,7 +720,7 @@ void StdCmdSaveAll::activated(int iMsg)
     Gui::Document::saveAll();
 }
 
-bool StdCmdSaveAll::isActive(void)
+bool StdCmdSaveAll::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -786,7 +758,7 @@ void StdCmdRevert::activated(int iMsg)
         doCommand(Command::App,"App.ActiveDocument.restore()");
 }
 
-bool StdCmdRevert::isActive(void)
+bool StdCmdRevert::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -816,7 +788,7 @@ void StdCmdProjectInfo::activated(int iMsg)
     dlg.exec();
 }
 
-bool StdCmdProjectInfo::isActive(void)
+bool StdCmdProjectInfo::isActive()
 {
   return ( getActiveGuiDocument() ? true : false );
 }
@@ -846,7 +818,7 @@ void StdCmdProjectUtil::activated(int iMsg)
     dlg.exec();
 }
 
-bool StdCmdProjectUtil::isActive(void)
+bool StdCmdProjectUtil::isActive()
 {
     return true;
 }
@@ -878,7 +850,7 @@ void StdCmdPrint::activated(int iMsg)
     }
 }
 
-bool StdCmdPrint::isActive(void)
+bool StdCmdPrint::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Print");
 }
@@ -908,7 +880,7 @@ void StdCmdPrintPreview::activated(int iMsg)
     }
 }
 
-bool StdCmdPrintPreview::isActive(void)
+bool StdCmdPrintPreview::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("PrintPreview");
 }
@@ -939,7 +911,7 @@ void StdCmdPrintPdf::activated(int iMsg)
     }
 }
 
-bool StdCmdPrintPdf::isActive(void)
+bool StdCmdPrintPdf::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("PrintPdf");
 }
@@ -996,12 +968,12 @@ void StdCmdUndo::activated(int iMsg)
     getGuiApplication()->sendMsgToActiveView("Undo");
 }
 
-bool StdCmdUndo::isActive(void)
+bool StdCmdUndo::isActive()
 {
   return getGuiApplication()->sendHasMsgToActiveView("Undo");
 }
 
-Action * StdCmdUndo::createAction(void)
+Action * StdCmdUndo::createAction()
 {
     Action *pcAction;
 
@@ -1040,12 +1012,12 @@ void StdCmdRedo::activated(int iMsg)
     getGuiApplication()->sendMsgToActiveView("Redo");
 }
 
-bool StdCmdRedo::isActive(void)
+bool StdCmdRedo::isActive()
 {
   return getGuiApplication()->sendHasMsgToActiveView("Redo");
 }
 
-Action * StdCmdRedo::createAction(void)
+Action * StdCmdRedo::createAction()
 {
     Action *pcAction;
 
@@ -1081,7 +1053,7 @@ void StdCmdCut::activated(int iMsg)
     getGuiApplication()->sendMsgToActiveView("Cut");
 }
 
-bool StdCmdCut::isActive(void)
+bool StdCmdCut::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Cut");
 }
@@ -1114,7 +1086,7 @@ void StdCmdCopy::activated(int iMsg)
     }
 }
 
-bool StdCmdCopy::isActive(void)
+bool StdCmdCopy::isActive()
 {
     if (getGuiApplication()->sendHasMsgToFocusView("Copy"))
         return true;
@@ -1152,7 +1124,7 @@ void StdCmdPaste::activated(int iMsg)
     }
 }
 
-bool StdCmdPaste::isActive(void)
+bool StdCmdPaste::isActive()
 {
     if (getGuiApplication()->sendHasMsgToFocusView("Paste"))
         return true;
@@ -1203,7 +1175,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         }
         std::vector<App::Document*> unsaved;
         hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
-        if(unsaved.size()) {
+        if(!unsaved.empty()) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
                 QObject::tr("The exported object contains external link. Please save the document"
                    "at least once before exporting."));
@@ -1243,7 +1215,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     fi.deleteFile();
 }
 
-bool StdCmdDuplicateSelection::isActive(void)
+bool StdCmdDuplicateSelection::isActive()
 {
     return Gui::Selection().hasSelection();
 }
@@ -1275,7 +1247,7 @@ void StdCmdSelectAll::activated(int iMsg)
     rSel.setSelection(doc->getName(), objs);
 }
 
-bool StdCmdSelectAll::isActive(void)
+bool StdCmdSelectAll::isActive()
 {
     return App::GetApplication().getActiveDocument() != nullptr;
 }
@@ -1359,23 +1331,6 @@ void StdCmdDelete::activated(int iMsg)
                     break;
             }
 
-            // The check below is not needed because we now only get selection
-            // from the active document
-#if 0
-            //check for inactive objects in selection  Mantis #3477
-            std::set<QString> inactiveLabels;
-            App::Application& app = App::GetApplication();
-            App::Document* actDoc = app.getActiveDocument();
-            for (std::vector<Gui::SelectionObject>::iterator ft = sels.begin(); ft != sels.end(); ++ft) {
-                App::DocumentObject* obj = ft->getObject();
-                App::Document* objDoc = obj->getDocument();
-                if (actDoc != objDoc) {
-                    inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
-                    autoDeletion = false;
-                }
-            }
-#endif
-
             if (!autoDeletion) {
                 QString bodyMessage;
                 QTextStream bodyMessageStream(&bodyMessage);
@@ -1386,19 +1341,6 @@ void StdCmdDelete::activated(int iMsg)
                     bodyMessageStream << '\n' << currentLabel;
                 if(more)
                     bodyMessageStream << "\n...";
-#if 0
-                //message for inactive items
-                if (!inactiveLabels.empty()) {
-                    if (!affectedLabels.empty()) {
-                        bodyMessageStream << "\n";
-                    }
-                    std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete",
-                                            "These items are selected for deletion, but are not in the active document.");
-                    for (const auto &currentLabel : inactiveLabels)
-                        bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
-                }
-#endif
 
                 int ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
@@ -1420,7 +1362,7 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
         }
-        if(docs.size()) {
+        if(!docs.empty()) {
             const auto &outList = App::PropertyXLink::getDocumentOutList();
             for(auto it=docs.begin();it!=docs.end();++it) {
                 auto itd = outList.find(*it);
@@ -1448,9 +1390,9 @@ void StdCmdDelete::activated(int iMsg)
     Gui::getMainWindow()->update();
 }
 
-bool StdCmdDelete::isActive(void)
+bool StdCmdDelete::isActive()
 {
-    return Selection().getCompleteSelection().size() > 0;
+    return !Selection().getCompleteSelection().empty();
 }
 
 //===========================================================================
@@ -1502,7 +1444,7 @@ void StdCmdRefresh::activated(int iMsg)
     }
 }
 
-bool StdCmdRefresh::isActive(void)
+bool StdCmdRefresh::isActive()
 {
     return this->getDocument() && this->getDocument()->mustExecute();
 }
@@ -1528,9 +1470,9 @@ void StdCmdTransform::activated(int iMsg)
     Gui::Control().showDialog(new Gui::Dialog::TaskTransform());
 }
 
-bool StdCmdTransform::isActive(void)
+bool StdCmdTransform::isActive()
 {
-    return (Gui::Control().activeDialog()==nullptr);
+    return (Gui::Control().activeDialog() == nullptr);
 }
 
 //===========================================================================
@@ -1562,7 +1504,7 @@ void StdCmdPlacement::activated(int iMsg)
     Gui::Control().showDialog(plm);
 }
 
-bool StdCmdPlacement::isActive(void)
+bool StdCmdPlacement::isActive()
 {
     return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) >= 1;
 }
@@ -1596,7 +1538,7 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Transform);
 }
 
-bool StdCmdTransformManip::isActive(void)
+bool StdCmdTransformManip::isActive()
 {
     return Gui::Selection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1;
 }
@@ -1664,7 +1606,7 @@ void StdCmdAlignment::activated(int iMsg)
     Gui::Selection().clearSelection();
 }
 
-bool StdCmdAlignment::isActive(void)
+bool StdCmdAlignment::isActive()
 {
     if (ManualAlignment::hasInstance())
         return false;
@@ -1698,7 +1640,7 @@ void StdCmdEdit::activated(int iMsg)
         if (viewer->isEditingViewProvider()) {
             doCommand(Command::Gui,"Gui.activeDocument().resetEdit()");
         } else {
-            if (Selection().getCompleteSelection().size() > 0) {
+            if (!Selection().getCompleteSelection().empty()) {
                 SelectionSingleton::SelObj obj = Selection().getCompleteSelection()[0];
                 doCommand(Command::Gui,"Gui.activeDocument().setEdit(\"%s\",0)",obj.FeatName);
             }
@@ -1706,9 +1648,9 @@ void StdCmdEdit::activated(int iMsg)
     }
 }
 
-bool StdCmdEdit::isActive(void)
+bool StdCmdEdit::isActive()
 {
-    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != nullptr);
+    return (!Selection().getCompleteSelection().empty()) || (Gui::Control().activeDialog() != nullptr);
 }
 
 //======================================================================
@@ -1731,10 +1673,10 @@ public:
         eType         = ForEdit;
     }
 
-    virtual const char* className() const {return "StdCmdExpression";}
+    const char* className() const override {return "StdCmdExpression";}
 protected:
 
-    virtual void activated(int iMsg) {
+    void activated(int iMsg) override {
         std::map<App::Document*, std::set<App::DocumentObject*> > objs;
         switch(iMsg) {
         case 0:
@@ -1763,7 +1705,7 @@ protected:
         copyExpressions(objs);
     }
 
-    virtual Gui::Action * createAction(void) {
+    Gui::Action * createAction() override {
         ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
         pcAction->setDropDownMenu(true);
         applyCommandData(this->className(), pcAction);
@@ -1791,7 +1733,7 @@ protected:
                            << obj->getFullName() << '.' << p->getName()
                            << " (" << obj->Label.getValue() << ')' << std::endl;
                         ss << "##@@";
-                        if(v.second->comment.size()) {
+                        if(!v.second->comment.empty()) {
                             if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
                                     || v.second->comment.find('\r') != std::string::npos)
@@ -1860,7 +1802,7 @@ protected:
             size_t len = (found?m2[0].first:tend) - m[0].second;
             try {
                 App::ExpressionPtr expr(App::Expression::parse(obj,std::string(m[0].second,len)));
-                if(expr && comment.size()) {
+                if(expr && !comment.empty()) {
                     if(comment[0] == '&') {
                         expr->comment = comment.c_str()+1;
                         boost::replace_all(expr->comment,"&amp;","&");
@@ -1894,7 +1836,7 @@ protected:
                         if(iter != old.end() && it->second->isSame(*iter->second))
                             expressions.erase(it);
                     }
-                    if(expressions.size())
+                    if(!expressions.empty())
                         v2.first->setExpressions(std::move(expressions));
                 }
             }
@@ -1907,7 +1849,7 @@ protected:
         }
     }
 
-    bool isActive() {
+    bool isActive() override {
         if(!App::GetApplication().getActiveDocument()) {
             pcActionCopyAll->setEnabled(false);
             pcActionCopySel->setEnabled(false);
@@ -1932,7 +1874,7 @@ protected:
 
 namespace Gui {
 
-void CreateDocCommands(void)
+void CreateDocCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

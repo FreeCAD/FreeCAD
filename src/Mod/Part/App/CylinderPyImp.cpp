@@ -42,7 +42,7 @@ using namespace Part;
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
-std::string CylinderPy::representation(void) const
+std::string CylinderPy::representation() const
 {
     return "<Cylinder object>";
 }
@@ -150,7 +150,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
     return -1;
 }
 
-Py::Float CylinderPy::getRadius(void) const
+Py::Float CylinderPy::getRadius() const
 {
     Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
@@ -164,7 +164,7 @@ void CylinderPy::setRadius(Py::Float arg)
     cyl->SetRadius((double)arg);
 }
 
-Py::Object CylinderPy::getCenter(void) const
+Py::Object CylinderPy::getCenter() const
 {
     Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast
         (getGeomCylinderPtr()->handle());
@@ -194,7 +194,7 @@ void CylinderPy::setCenter(Py::Object arg)
     }
 }
 
-Py::Object CylinderPy::getAxis(void) const
+Py::Object CylinderPy::getAxis() const
 {
     Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast
         (getGeometryPtr()->handle());

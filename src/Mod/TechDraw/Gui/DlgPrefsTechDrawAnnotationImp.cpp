@@ -48,7 +48,7 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     ui->setupUi(this);
     ui->pdsbBalloonKink->setUnit(Base::Unit::Length);
     ui->pdsbBalloonKink->setMinimum(0);
-    
+
     // connect the LineGroup the update the tooltip if index changed
     connect(ui->pcbLineGroup, SIGNAL(currentIndexChanged(int)),
         this, SLOT(onLineGroupChanged(int)));
@@ -98,7 +98,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     for (auto it = lgNames.begin(); it < lgNames.end(); ++it) {
         ui->pcbLineGroup->addItem(tr((*it).c_str()));
     }
- 
+
     ui->cbAutoHoriz->onRestore();
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
@@ -133,7 +133,7 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
     }
 }
 
-int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow(void) const
+int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow() const
 {
     return Preferences::balloonArrow();
 }
@@ -147,7 +147,7 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
         ui->pcbLineGroup->setToolTip(QObject::tr("Please select a Line Group"));
         return;
     }
-    // get the definition the the selected LineGroup (includes the name)
+    // get the definition of the selected LineGroup (includes the name)
     std::string lgRecord = LineGroup::getRecordFromFile(Preferences::lineGroupFile(), index);
     std::stringstream ss(lgRecord);
     std::vector<std::string> lgNames;

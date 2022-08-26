@@ -48,25 +48,25 @@ class PartExport Feature : public App::GeoFeature
 
 public:
     /// Constructor
-    Feature(void);
-    virtual ~Feature();
+    Feature();
+    ~Feature() override;
 
     PropertyPartShape Shape;
 
     /** @name methods override feature */
     //@{
-    virtual short mustExecute() const override;
+    short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName() const override;
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
+    const char* getViewProviderName() const override;
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
-    virtual PyObject* getPyObject() override;
+    PyObject* getPyObject() override;
 
     TopLoc_Location getLocation() const;
 
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
+    DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
     /** Convenience function to extract shape from fully qualified subname 
@@ -109,10 +109,10 @@ public:
 
 protected:
     /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute() override;
+    App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute() override;
-    virtual void onChanged(const App::Property* prop) override;
+    App::DocumentObjectExecReturn *execute() override;
+    void onChanged(const App::Property* prop) override;
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
@@ -127,7 +127,7 @@ protected:
 
 class FilletBase : public Part::Feature
 {
-    PROPERTY_HEADER(Part::FilletBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
 public:
     FilletBase();
@@ -135,7 +135,7 @@ public:
     App::PropertyLink   Base;
     PropertyFilletEdges Edges;
 
-    short mustExecute() const;
+    short mustExecute() const override;
 };
 
 typedef App::FeaturePythonT<Feature> FeaturePython;
@@ -145,10 +145,10 @@ typedef App::FeaturePythonT<Feature> FeaturePython;
  */
 class PartExport FeatureExt : public Feature
 {
-    PROPERTY_HEADER(Part::FeatureExt);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureExt);
 
 public:
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderPartExt";
     }
 };

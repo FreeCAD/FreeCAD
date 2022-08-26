@@ -38,7 +38,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SurfaceOfExtrusionPy::representation(void) const
+std::string SurfaceOfExtrusionPy::representation() const
 {
     return std::string("<SurfaceOfExtrusion object>");
 }
@@ -81,7 +81,7 @@ int SurfaceOfExtrusionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-Py::Object SurfaceOfExtrusionPy::getDirection(void) const
+Py::Object SurfaceOfExtrusionPy::getDirection() const
 {
     Handle(Geom_SurfaceOfLinearExtrusion) curve = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
         (getGeometryPtr()->handle());
@@ -115,7 +115,7 @@ namespace Part {
     extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
 }
 
-Py::Object SurfaceOfExtrusionPy::getBasisCurve(void) const
+Py::Object SurfaceOfExtrusionPy::getBasisCurve() const
 {
     Handle(Geom_SurfaceOfLinearExtrusion) surf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
     (getGeometryPtr()->handle());

@@ -51,7 +51,7 @@ public:
         STATUS_Close
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -161,7 +161,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -187,7 +187,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -275,25 +275,25 @@ public:
             Gui::Command::commitCommand();
 
             // add auto constraints for the center point
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for arc
-            if (sugConstr2.size() > 0) {
+            if (!sugConstr2.empty()) {
                 createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
             // add suggested constraints for start of arc
-            if (sugConstr3.size() > 0) {
+            if (!sugConstr3.empty()) {
                 createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::start:Sketcher::PointPos::end);
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
-            if (sugConstr4.size() > 0) {
+            if (!sugConstr4.empty()) {
                 createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::end:Sketcher::PointPos::start);
                 sugConstr4.clear();
             }
@@ -322,7 +322,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfEllipse");
     }
 

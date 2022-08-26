@@ -66,11 +66,11 @@ ViewProviderOrigin::~ViewProviderOrigin() {
     pcGroupChildren = nullptr;
 }
 
-std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren(void) const {
+std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren() const {
     return static_cast<App::Origin*>( getObject() )->OriginFeatures.getValues ();
 }
 
-std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D(void) const {
+std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren3D() const {
     return claimChildren ();
 }
 
@@ -80,7 +80,7 @@ void ViewProviderOrigin::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(pcGroupChildren, "Base");
 }
 
-std::vector<std::string> ViewProviderOrigin::getDisplayModes(void) const
+std::vector<std::string> ViewProviderOrigin::getDisplayModes() const
 {
     return { "Base" };
 }

@@ -43,9 +43,9 @@ struct AppExport Expression::Component {
     Expression* e2;
     Expression* e3;
 
-    Component(const std::string &n);
+    explicit Component(const std::string &n);
     Component(Expression *e1, Expression *e2, Expression *e3, bool isRange=false);
-    Component(const ObjectIdentifier::Component &comp);
+    explicit Component(const ObjectIdentifier::Component &comp);
     Component(const Component &other);
     ~Component();
     Component &operator=(const Component &)=delete;
@@ -71,11 +71,11 @@ struct AppExport Expression::Component {
 class  AppExport UnitExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    UnitExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
+    explicit UnitExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
 
-    ~UnitExpression();
+    ~UnitExpression() override;
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
     void setUnit(const Base::Quantity &_quantity);
 
@@ -92,9 +92,9 @@ public:
     double getScaler() const { return quantity.getValue(); }
 
 protected:
-    virtual Expression * _copy() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual Py::Object _getPyValue() const override;
+    Expression * _copy() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Py::Object _getPyValue() const override;
 
 protected:
     mutable PyObject *cache = nullptr;
@@ -111,23 +111,23 @@ private:
 class AppExport NumberExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    NumberExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & quantity = Base::Quantity());
+    explicit NumberExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & quantity = Base::Quantity());
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
     void negate();
 
     bool isInteger(long *v=nullptr) const;
 
 protected:
-    virtual Expression * _copy() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Expression * _copy() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
 };
 
 class AppExport ConstantExpression : public NumberExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConstantExpression(const App::DocumentObject *_owner = nullptr,
+    explicit ConstantExpression(const App::DocumentObject *_owner = nullptr,
             const char *_name = "",
             const Base::Quantity &_quantity = Base::Quantity());
 
@@ -136,9 +136,9 @@ public:
     bool isNumber() const;
 
 protected:
-    virtual Py::Object _getPyValue() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual Expression* _copy() const override;
+    Py::Object _getPyValue() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Expression* _copy() const override;
 
 protected:
     const char *name;
@@ -170,15 +170,15 @@ public:
         NEG,
         POS
     };
-    OperatorExpression(const App::DocumentObject *_owner = nullptr, Expression * _left = nullptr, Operator _op = NONE, Expression * _right = nullptr);
+    explicit OperatorExpression(const App::DocumentObject *_owner = nullptr, Expression * _left = nullptr, Operator _op = NONE, Expression * _right = nullptr);
 
-    virtual ~OperatorExpression();
+    ~OperatorExpression() override;
 
-    virtual bool isTouched() const override;
+    bool isTouched() const override;
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
-    virtual int priority() const override;
+    int priority() const override;
 
     Operator getOperator() const { return op; }
 
@@ -187,13 +187,13 @@ public:
     Expression * getRight() const { return right; }
 
 protected:
-    virtual Expression * _copy() const override;
+    Expression * _copy() const override;
 
-    virtual Py::Object _getPyValue() const override;
+    Py::Object _getPyValue() const override;
 
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
 
-    virtual void _visit(ExpressionVisitor & v) override;
+    void _visit(ExpressionVisitor & v) override;
 
     virtual bool isCommutative() const;
 
@@ -209,21 +209,21 @@ protected:
 class AppExport ConditionalExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConditionalExpression(const App::DocumentObject *_owner = nullptr, Expression * _condition = nullptr,Expression * _trueExpr = nullptr,  Expression * _falseExpr = nullptr);
+    explicit ConditionalExpression(const App::DocumentObject *_owner = nullptr, Expression * _condition = nullptr,Expression * _trueExpr = nullptr,  Expression * _falseExpr = nullptr);
 
-    virtual ~ConditionalExpression();
+    ~ConditionalExpression() override;
 
-    virtual bool isTouched() const override;
+    bool isTouched() const override;
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
-    virtual int priority() const override;
+    int priority() const override;
 
 protected:
-    virtual Expression * _copy() const override;
-    virtual void _visit(ExpressionVisitor & v) override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual Py::Object _getPyValue() const override;
+    Expression * _copy() const override;
+    void _visit(ExpressionVisitor & v) override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Py::Object _getPyValue() const override;
 
 protected:
 
@@ -290,14 +290,14 @@ public:
         LAST,
     };
 
-    FunctionExpression(const App::DocumentObject *_owner = nullptr, Function _f = NONE,
+    explicit FunctionExpression(const App::DocumentObject *_owner = nullptr, Function _f = NONE,
             std::string &&name = std::string(), std::vector<Expression *> _args = std::vector<Expression*>());
 
-    virtual ~FunctionExpression();
+    ~FunctionExpression() override;
 
-    virtual bool isTouched() const override;
+    bool isTouched() const override;
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
     static Py::Object evaluate(const Expression *owner, int type, const std::vector<Expression*> &args);
 
@@ -306,10 +306,10 @@ public:
 
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
-    virtual Py::Object _getPyValue() const override;
-    virtual Expression * _copy() const override;
-    virtual void _visit(ExpressionVisitor & v) override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Py::Object _getPyValue() const override;
+    Expression * _copy() const override;
+    void _visit(ExpressionVisitor & v) override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
 
     Function f;        /**< Function to execute */
     std::string fname;
@@ -327,13 +327,13 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = nullptr, const ObjectIdentifier& _var = ObjectIdentifier());
+    explicit VariableExpression(const App::DocumentObject *_owner = nullptr, const ObjectIdentifier& _var = ObjectIdentifier());
 
-    ~VariableExpression();
+    ~VariableExpression() override;
 
-    virtual bool isTouched() const override;
+    bool isTouched() const override;
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
     std::string name() const { return var.getPropertyName(); }
 
@@ -343,26 +343,26 @@ public:
 
     const App::Property *getProperty() const;
 
-    virtual void addComponent(Component* component) override;
+    void addComponent(Component* component) override;
 
 protected:
-    virtual Expression * _copy() const override;
-    virtual Py::Object _getPyValue() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual bool _isIndexable() const override;
-    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
-    virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) override;
-    virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) override;
-    virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) override;
-    virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) override;
-    virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) override;
-    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
+    Expression * _copy() const override;
+    Py::Object _getPyValue() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    bool _isIndexable() const override;
+    void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
+    bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) override;
+    void _importSubNames(const ObjectIdentifier::SubNameMap &) override;
+    void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) override;
+    bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) override;
+    bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) override;
+    bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
-    virtual void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &,
+    void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &,
                     const App::DocumentObject *parent, App::DocumentObject *oldObj,
                     App::DocumentObject *newObj) const override;
-    virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
-    virtual void _offsetCells(int, int, ExpressionVisitor &) override;
+    void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
+    void _offsetCells(int, int, ExpressionVisitor &) override;
 
 protected:
 
@@ -375,22 +375,22 @@ class AppExport PyObjectExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PyObjectExpression(const App::DocumentObject *_owner=nullptr, PyObject *pyobj=nullptr, bool owned=false)
+    explicit PyObjectExpression(const App::DocumentObject *_owner=nullptr, PyObject *pyobj=nullptr, bool owned=false)
         :Expression(_owner)
     {
         setPyValue(pyobj,owned);
     }
 
-    virtual ~PyObjectExpression();
+    ~PyObjectExpression() override;
 
     void setPyValue(Py::Object pyobj);
     void setPyValue(PyObject *pyobj, bool owned=false);
-    virtual Expression * simplify() const override { return copy(); }
+    Expression * simplify() const override { return copy(); }
 
 protected:
-    virtual Expression* _copy() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual Py::Object _getPyValue() const override;
+    Expression* _copy() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Py::Object _getPyValue() const override;
 
 protected:
     PyObject *pyObj = nullptr;
@@ -404,17 +404,17 @@ protected:
 class AppExport StringExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    StringExpression(const App::DocumentObject *_owner = nullptr, const std::string & _text = std::string());
-    ~StringExpression();
+    explicit StringExpression(const App::DocumentObject *_owner = nullptr, const std::string & _text = std::string());
+    ~StringExpression() override;
 
-    virtual Expression * simplify() const override;
+    Expression * simplify() const override;
 
     virtual std::string getText() const { return text; }
 protected:
-    virtual Expression * _copy() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual Py::Object _getPyValue() const override;
-    virtual bool _isIndexable() const override { return true; }
+    Expression * _copy() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Py::Object _getPyValue() const override;
+    bool _isIndexable() const override { return true; }
 
 private:
     std::string text; /**< Text string */
@@ -424,25 +424,25 @@ private:
 class AppExport RangeExpression : public App::Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    RangeExpression(const App::DocumentObject * _owner = nullptr, const std::string & begin = std::string(), const std::string & end = std::string());
+    explicit RangeExpression(const App::DocumentObject * _owner = nullptr, const std::string & begin = std::string(), const std::string & end = std::string());
 
-    virtual ~RangeExpression() { }
+    ~RangeExpression() override = default;
 
-    virtual bool isTouched() const override;
+    bool isTouched() const override;
 
-    virtual App::Expression * simplify() const override;
+    App::Expression * simplify() const override;
 
     Range getRange() const;
 
 protected:
-    virtual Expression * _copy() const override;
-    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
-    virtual Py::Object _getPyValue() const override;
-    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
-    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
+    Expression * _copy() const override;
+    void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    Py::Object _getPyValue() const override;
+    void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
+    bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
-    virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
-    virtual void _offsetCells(int, int, ExpressionVisitor &) override;
+    void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
+    void _offsetCells(int, int, ExpressionVisitor &) override;
 
 protected:
     std::string begin;
@@ -460,7 +460,7 @@ AppExport std::vector<std::tuple<int, int, std::string> > tokenize(const std::st
 /// Convenient class to mark begin of importing
 class AppExport ExpressionImporter {
 public:
-    ExpressionImporter(Base::XMLReader &reader);
+    explicit ExpressionImporter(Base::XMLReader &reader);
     ~ExpressionImporter();
     static Base::XMLReader *reader();
 };

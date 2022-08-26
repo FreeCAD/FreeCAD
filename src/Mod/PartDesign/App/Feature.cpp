@@ -197,7 +197,7 @@ bool Feature::isDatum(const App::DocumentObject* feature)
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
-    if (plane == nullptr)
+    if (!plane)
         throw Base::ValueError("Feature: Null object");
 
     Base::Vector3d pos = plane->Placement.getValue().getPosition();
@@ -239,10 +239,10 @@ Body* Feature::getFeatureBody() const {
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeaturePython, PartDesign::Feature)
-template<> const char* PartDesign::FeaturePython::getViewProviderName(void) const {
+template<> const char* PartDesign::FeaturePython::getViewProviderName() const {
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeaturePython::getPyObject(void) {
+template<> PyObject* PartDesign::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);

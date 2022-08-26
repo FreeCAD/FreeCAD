@@ -33,7 +33,7 @@ using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetFaces, Gui::ViewProviderGeometryObject)
 
-bool ViewProviderSetFaces::doubleClicked(void)
+bool ViewProviderSetFaces::doubleClicked()
 {
     //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
     //Gui::Control().showDialog(dlg);

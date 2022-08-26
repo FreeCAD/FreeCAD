@@ -42,7 +42,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
 
 
-Fuse::Fuse(void)
+Fuse::Fuse()
 {
 }
 
@@ -57,7 +57,7 @@ BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, cons
 PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
 
 
-MultiFuse::MultiFuse(void)
+MultiFuse::MultiFuse()
 {
     ADD_PROPERTY(Shapes,(nullptr));
     Shapes.setSize(0);
@@ -81,7 +81,7 @@ short MultiFuse::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiFuse::execute(void)
+App::DocumentObjectExecReturn *MultiFuse::execute()
 {
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();

@@ -114,6 +114,10 @@ void TaskPocketParameters::onModeChanged(int index)
             pcPocket->Type.setValue("UpToFace");
             pcPocket->Length.setValue(0.0);
             ui->lengthEdit->setValue(0.0);
+            if (ui->lineFaceName->text().isEmpty()) {
+                ui->buttonFace->setChecked(true);
+                handleLineFaceNameClick(); // sets placeholder text
+            }
             break;
         case Modes::TwoDimensions:
             oldLength = pcPocket->Length.getValue();

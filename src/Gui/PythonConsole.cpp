@@ -190,8 +190,8 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
 #endif
 
-    Py_DECREF(args);
-    Py_DECREF(func);
+    Py_XDECREF(args);
+    Py_XDECREF(func);
 
     if (eval){
         return eval;
@@ -300,10 +300,10 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
     Base::PyGILStateLocker lock;
     PyObject *module, *dict, *presult;           /* "exec code in d, d" */
     module = PyImport_AddModule("__main__");     /* get module, init python */
-    if (module == nullptr)
+    if (!module)
         throw Base::PyException();                 /* not incref'd */
     dict = PyModule_GetDict(module);             /* get dict namespace */
-    if (dict == nullptr)
+    if (!dict)
         throw Base::PyException();                 /* not incref'd */
 
     // It seems that the return value is always 'None' or Null
@@ -356,11 +356,10 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
  */
 bool InteractiveInterpreter::push(const char* line)
 {
-    d->buffer.append(QString::fromLatin1(line));
+    d->buffer.append(QString::fromUtf8(line));
     QString source = d->buffer.join(QLatin1String("\n"));
     try {
-        // Source is already UTF-8, so we can use toLatin1()
-        bool more = runSource(source.toLatin1());
+        bool more = runSource(source.toUtf8());
         if (!more)
             d->buffer.clear();
         return more;
@@ -378,7 +377,7 @@ bool InteractiveInterpreter::push(const char* line)
     return false;
 }
 
-bool InteractiveInterpreter::hasPendingInput( void ) const
+bool InteractiveInterpreter::hasPendingInput( ) const
 {
     return (!d->buffer.isEmpty());
 }
@@ -1083,7 +1082,7 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     }
 }
 
-QTextCursor PythonConsole::inputBegin(void) const
+QTextCursor PythonConsole::inputBegin() const
 {
     // construct cursor at begin of input line ...
     QTextCursor inputLineBegin(this->textCursor());
@@ -1362,7 +1361,7 @@ void PythonConsole::onCopyCommand()
     d->type = PythonConsoleP::Normal;
 }
 
-QString PythonConsole::readline( void )
+QString PythonConsole::readline( )
 {
     QEventLoop loop;
     // output is set to the current prompt which we need to extract
@@ -1421,7 +1420,7 @@ void PythonConsole::saveHistory() const
         // only save last 100 entries so we don't inflate forever...
         if (hist.length() > 100)
             hist = hist.mid(hist.length()-100);
-        for (QStringList::ConstIterator it = hist.begin(); it != hist.end(); ++it)
+        for (QStringList::ConstIterator it = hist.cbegin(); it != hist.cend(); ++it)
             t << *it << "\n";
         f.close();
     }
@@ -1575,7 +1574,7 @@ const QStringList& ConsoleHistory::values() const
 /**
  * restart resets the history access to the latest item.
  */
-void ConsoleHistory::restart( void )
+void ConsoleHistory::restart( )
 {
     _it = _history.cend();
 }
@@ -1585,7 +1584,7 @@ void ConsoleHistory::restart( void )
  * Note: with simply remembering a start index, it does not work to nest scratch regions.
  * However, just replace the index keeping by a stack - in case this is be a concern.
  */
-void ConsoleHistory::markScratch( void )
+void ConsoleHistory::markScratch( )
 {
     _scratchBegin = _history.length();
 }
@@ -1593,7 +1592,7 @@ void ConsoleHistory::markScratch( void )
 /**
  * doScratch removes the tail of the history list, starting from the index marked lately.
  */
-void ConsoleHistory::doScratch( void )
+void ConsoleHistory::doScratch( )
 {
     if (_scratchBegin < _history.length())
     {

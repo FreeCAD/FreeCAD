@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERTILE_H
 #define DRAWINGGUI_VIEWPROVIDERTILE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 
@@ -30,22 +32,16 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderTile : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderTile);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderTile);
 
 public:
     /// constructor
     ViewProviderTile();
     /// destructor
-    virtual ~ViewProviderTile();
+    ~ViewProviderTile() override;
 
-
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual bool canDelete(App::DocumentObject *obj) const;
+    bool useNewSelectionModel() const override {return false;}
+    bool canDelete(App::DocumentObject *obj) const override;
 
 /*    virtual TechDraw::DrawTile* getViewObject() const;*/
     virtual TechDraw::DrawTile* getFeature() const;

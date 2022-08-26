@@ -43,7 +43,7 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawTile, App::DocumentObject)
 
-DrawTile::DrawTile(void)
+DrawTile::DrawTile()
 {
     static const char *group = "Tile";
 
@@ -80,7 +80,7 @@ short DrawTile::mustExecute() const
     return DocumentObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawTile::execute(void)
+App::DocumentObjectExecReturn *DrawTile::execute()
 {
 //    Base::Console().Message("DT::execute()\n");
     return DocumentObject::execute();
@@ -98,21 +98,13 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
     }
 }
 
-DrawView* DrawTile::getParent(void) const
+DrawView* DrawTile::getParent() const
 {
 //    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
-    DrawView* result = nullptr;
-    App::DocumentObject* baseObj = TileParent.getValue();
-    if (baseObj != nullptr) {
-        DrawView* cast = dynamic_cast<DrawView*>(baseObj);
-        if (cast != nullptr) {
-            result = cast;
-        }
-    }
-    return result;
+    return dynamic_cast<DrawView*>(TileParent.getValue());
 }
 
-PyObject *DrawTile::getPyObject(void)
+PyObject *DrawTile::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -126,7 +118,7 @@ PyObject *DrawTile::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTilePython, TechDraw::DrawTile)
-template<> const char* TechDraw::DrawTilePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawTilePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderTile";
 }
 /// @endcond

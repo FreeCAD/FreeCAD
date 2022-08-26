@@ -35,14 +35,14 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleGesture : public QGVNavStyle
 {
 public:
-    QGVNavStyleGesture(QGVPage* qgvp);
-    virtual ~QGVNavStyleGesture();
+    explicit QGVNavStyleGesture(QGVPage* qgvp);
+    ~QGVNavStyleGesture() override;
 
-    virtual void handleMousePressEvent(QMouseEvent *event) override;
-    virtual void handleMouseMoveEvent(QMouseEvent *event) override;
-    virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
+    void handleMousePressEvent(QMouseEvent *event) override;
+    void handleMouseMoveEvent(QMouseEvent *event) override;
+    void handleMouseReleaseEvent(QMouseEvent *event) override;
 
-    virtual bool allowContextMenu(QContextMenuEvent *event) override;
+    bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:

@@ -37,9 +37,9 @@ class PartDesignExport Point : public Part::Datum
 
 public:
     Point();
-    virtual ~Point();
+    ~Point() override;
 
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderDatumPoint";
     }
 
@@ -48,8 +48,8 @@ public:
     typedef Part::Datum Superclass;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
 
 private:
     void makeShape();

@@ -34,7 +34,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string GroupExtensionPy::representation(void) const
+std::string GroupExtensionPy::representation() const
 {
     return std::string("<group extension object>");
 }

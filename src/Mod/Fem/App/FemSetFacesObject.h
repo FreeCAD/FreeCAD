@@ -32,22 +32,22 @@ namespace Fem
 
 class FemExport FemSetFacesObject : public FemSetObject
 {
-    PROPERTY_HEADER(Fem::FemSetFacesObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSetFacesObject);
 
 public:
     /// Constructor
-    FemSetFacesObject(void);
-    virtual ~FemSetFacesObject();
+    FemSetFacesObject();
+    ~FemSetFacesObject() override;
 
     // returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "FemGui::ViewProviderSetFaces";
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
+    App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 };
 
 } //namespace Fem

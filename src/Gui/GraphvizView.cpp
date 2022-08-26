@@ -64,12 +64,12 @@ namespace Gui {
 class GraphvizWorker : public QThread {
     Q_OBJECT
 public:
-    GraphvizWorker(QObject * parent = nullptr)
+    explicit GraphvizWorker(QObject * parent = nullptr)
         : QThread(parent)
     {
     }
 
-    virtual ~GraphvizWorker()
+    ~GraphvizWorker() override
     {
         dotProc.moveToThread(this);
         unflattenProc.moveToThread(this);
@@ -90,7 +90,7 @@ public:
         Q_EMIT emitFinished();
     }
 
-    void run() {
+    void run() override {
         QByteArray preprocessed = str;
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -140,7 +140,7 @@ class GraphvizGraphicsView final : public QGraphicsView
 {
   public:
     GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent);
-    ~GraphvizGraphicsView() = default;
+    ~GraphvizGraphicsView() override = default;
 
     GraphvizGraphicsView(const GraphvizGraphicsView&) = delete;
     GraphvizGraphicsView(GraphvizGraphicsView&&) = delete;
@@ -164,8 +164,7 @@ GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* paren
 
 void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
 {
-  if(e && e->button() == Qt::LeftButton)
-  {
+  if (e && e->button() == Qt::LeftButton) {
     isPanning = true;
     panStart = e->pos();
     e->accept();
@@ -179,20 +178,14 @@ void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
 
 void GraphvizGraphicsView::mouseMoveEvent(QMouseEvent *e)
 {
-  if(e == nullptr)
-  {
+  if (!e)
     return;
-  }
 
-  if(isPanning)
-  {
-    auto* horizontalScrollbar = horizontalScrollBar();
-    auto* verticalScrollbar = verticalScrollBar();
-    if(horizontalScrollbar == nullptr ||
-       verticalScrollbar   == nullptr)
-    {
+  if (isPanning) {
+    auto *horizontalScrollbar = horizontalScrollBar();
+    auto *verticalScrollbar = verticalScrollBar();
+    if (!horizontalScrollbar || !verticalScrollbar)
       return;
-    }
 
     auto direction = e->pos() - panStart;
     horizontalScrollbar->setValue(horizontalScrollbar->value() - direction.x());

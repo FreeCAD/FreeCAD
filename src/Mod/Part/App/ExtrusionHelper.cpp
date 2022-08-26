@@ -69,7 +69,7 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
         TopExp_Explorer ex;
         size_t i = 0;
         for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
-            wiresections.push_back(std::vector<TopoDS_Shape>());
+            wiresections.emplace_back();
             wiresections[i].push_back(TopoDS::Wire(ex.Current()));
         }
         return i;

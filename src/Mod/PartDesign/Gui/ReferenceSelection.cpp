@@ -340,12 +340,12 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
 
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
 {
-    if (obj == nullptr)
+    if (!obj)
         return QString::fromLatin1("");
 
     if (PartDesign::Feature::isDatum(obj))
         return QString::fromLatin1(obj->getNameInDocument());
-    else if (sub.size()>0)
+    else if (!sub.empty())
         return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") +
                QString::fromLatin1(sub.front().c_str());
     else
@@ -354,7 +354,7 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
 
 std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs)
 {
-    if ( obj == nullptr)
+    if (!obj)
         return "None";
 
     std::string result("[");
@@ -369,7 +369,7 @@ std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vec
 std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
         const std::vector<std::string>& subs)
 {
-    if (obj == nullptr)
+    if (!obj)
         return "None";
 
     if (PartDesign::Feature::isDatum(obj))

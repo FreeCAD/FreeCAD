@@ -138,7 +138,7 @@ public:
         return res;
     }
 
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const {
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override {
         if(role!=Qt::EditRole && role!=Qt::DisplayRole && role!=Qt::UserRole)
             return QVariant();
         QVariant v;
@@ -260,7 +260,7 @@ public:
         return;
     }
 
-    QModelIndex parent(const QModelIndex & index) const {
+    QModelIndex parent(const QModelIndex & index) const override {
         if(!index.isValid())
             return QModelIndex();
         Info info;
@@ -277,7 +277,7 @@ public:
         return QModelIndex();
     }
 
-    QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const {
+    QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const override {
         if(row<0)
             return QModelIndex();
         Info info;
@@ -296,7 +296,7 @@ public:
         return createIndex(row,column,infoId(info));
     }
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const {
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override {
         Info info;
         int row = 0;
         if(!parent.isValid()) {
@@ -318,7 +318,7 @@ public:
         return count;
     }
 
-    int columnCount(const QModelIndex &) const {
+    int columnCount(const QModelIndex &) const override {
         return 1;
     }
 
@@ -407,9 +407,9 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
             std::vector<std::string> sl = p.getStringList();
             std::vector<std::string>::const_iterator sli = sl.begin();
-            if(retry && sl.size())
+            if(retry && !sl.empty())
                 sl.pop_back();
-            if(trim.size() && boost::ends_with(sl.back(),trim))
+            if(!trim.empty() && boost::ends_with(sl.back(),trim))
                 sl.back().resize(sl.back().size()-trim.size());
             while (sli != sl.end()) {
                 l << Base::Tools::fromStdString(*sli);
@@ -588,7 +588,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setDocumentObject(currentDocObj, checkInList);
         return;
     }
-    if (currentDocObj != nullptr) {
+    if (currentDocObj) {
         completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -701,7 +701,7 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
 
-    if (currentDocObj != nullptr) {
+    if (currentDocObj) {
         completer = new ExpressionCompleter(currentDocObj, this);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);

@@ -41,10 +41,10 @@ public:
     static Py::Object type();
     static Py::ExtensionObject<MDIViewPy> create(MDIView *mdi);
 
-    MDIViewPy(MDIView *mdi);
-    ~MDIViewPy();
+    explicit MDIViewPy(MDIView *mdi);
+    ~MDIViewPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     /** @name Printing */
     //@{

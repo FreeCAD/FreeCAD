@@ -169,7 +169,7 @@ short SketchObject::mustExecute() const
     return Part2DObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn *SketchObject::execute(void)
+App::DocumentObjectExecReturn *SketchObject::execute()
 {
     try {
         App::DocumentObjectExecReturn* rtn = Part2DObject::execute();//to positionBySupport
@@ -227,7 +227,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-int SketchObject::hasConflicts(void) const
+int SketchObject::hasConflicts() const
 {
     if (lastDoF < 0) // over-constrained sketch
         return -2;
@@ -560,7 +560,7 @@ int SketchObject::setDatumsDriving(bool isdriving)
     return 0;
 }
 
-int SketchObject::moveDatumsToEnd(void)
+int SketchObject::moveDatumsToEnd()
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
@@ -828,7 +828,7 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
     return Base::Vector3d();
 }
 
-int SketchObject::getAxisCount(void) const
+int SketchObject::getAxisCount() const
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
@@ -3343,7 +3343,7 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this == nullptr) {
+        if (!body_this) {
             return true;
         } else if (body_this == body_obj) {
             return true;
@@ -3402,7 +3402,7 @@ bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject 
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj){ //either in the same part, or in the root of document
-        if (body_this != nullptr) {
+        if (body_this) {
             if (body_this != body_obj) {
                 if (!this->allowOtherBody) {
                     if (rsn)
@@ -4111,7 +4111,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
     std::vector<int> newgeoIdList(geoIdList);
 
-    if(newgeoIdList.size() == 0) {// default option to operate on all the geometry
+    if(newgeoIdList.empty()) {// default option to operate on all the geometry
         for(int i = 0; i < int(geovals.size()); i++)
             newgeoIdList.push_back(i);
     }
@@ -5361,7 +5361,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
-        if (delgeometries.size()>0) {
+        if (!delgeometries.empty()) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it,false);
             }
@@ -5453,7 +5453,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
-        if (delgeometries.size()>0) {
+        if (!delgeometries.empty()) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it,false);
             }
@@ -6536,7 +6536,7 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
     }
 }
 
-bool SketchObject::evaluateSupport(void)
+bool SketchObject::evaluateSupport()
 {
     // returns false if the shape is broken, null or non-planar
     App::DocumentObject *link = Support.getValue();
@@ -6545,7 +6545,7 @@ bool SketchObject::evaluateSupport(void)
     return true;
 }
 
-void SketchObject::validateExternalLinks(void)
+void SketchObject::validateExternalLinks()
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
@@ -6609,7 +6609,7 @@ void SketchObject::validateExternalLinks(void)
     }
 }
 
-void SketchObject::rebuildExternalGeometry(void)
+void SketchObject::rebuildExternalGeometry()
 {
     // get the actual lists of the externals
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
@@ -7182,14 +7182,14 @@ void SketchObject::rebuildExternalGeometry(void)
     rebuildVertexIndex();
 }
 
-std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const
+std::vector<Part::Geometry*> SketchObject::getCompleteGeometry() const
 {
     std::vector<Part::Geometry*> vals = getInternalGeometry();
     vals.insert(vals.end(), ExternalGeo.rbegin(), ExternalGeo.rend()); // in reverse order
     return vals;
 }
 
-GeoListFacade SketchObject::getGeoListFacade(void) const
+GeoListFacade SketchObject::getGeoListFacade() const
 {
     std::vector<GeometryFacadeUniquePtr> facade;
     facade.reserve( Geometry.getSize() + ExternalGeo.size() );
@@ -7203,7 +7203,7 @@ GeoListFacade SketchObject::getGeoListFacade(void) const
     return GeoListFacade::getGeoListModel(std::move(facade), Geometry.getSize());
 }
 
-void SketchObject::rebuildVertexIndex(void)
+void SketchObject::rebuildVertexIndex()
 {
     VertexId2GeoId.resize(0);
     VertexId2PosId.resize(0);
@@ -7494,7 +7494,7 @@ void SketchObject::appendConstraintsMsg(const std::vector<int> &vector,
     std::stringstream ss;
     if (msg.length() > 0)
         ss << msg;
-    if (vector.size() > 0) {
+    if (!vector.empty()) {
         if (vector.size() == 1)
             ss << singularmsg << std::endl;
         else
@@ -7671,7 +7671,7 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
 {
     const App::Property * prop = path.getProperty();
 
-    assert(expr != nullptr);
+    assert(expr);
 
     if (!prop)
         return "Property not found";
@@ -7685,10 +7685,10 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
 
     auto deps = expr->getDeps();
     auto it = deps.find(this);
-    if(it!=deps.end()) {
+    if (it!=deps.end()) {
         auto it2 = it->second.find("Constraints");
-        if(it2 != it->second.end()) {
-            for(auto &oid : it2->second) {
+        if (it2 != it->second.end()) {
+            for (auto &oid : it2->second) {
                 const Constraint * constraint = Constraints.getConstraint(oid);
 
                 if (!constraint->isDriving)
@@ -7710,7 +7710,7 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
     const Part::Geometry *p1=this->getGeometry(GeoId1);
     const Part::Geometry *p2=this->getGeometry(GeoId2);
 
-    if(p1!=nullptr && p2!=nullptr) {
+    if (p1 && p2) {
         int i1 = sk.addGeometry(this->getGeometry(GeoId1));
         int i2 = sk.addGeometry(this->getGeometry(GeoId2));
 
@@ -7794,7 +7794,7 @@ double SketchObject::calculateConstraintError(int ConstrId)
     return result;
 }
 
-PyObject *SketchObject::getPyObject(void)
+PyObject *SketchObject::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -7803,7 +7803,7 @@ PyObject *SketchObject::getPyObject(void)
     return Py::new_reference_to(PythonObject);
 }
 
-unsigned int SketchObject::getMemSize(void) const
+unsigned int SketchObject::getMemSize() const
 {
     return 0;
 }
@@ -8039,7 +8039,7 @@ void SketchObject::restoreFinished()
     }
 }
 
-void SketchObject::migrateSketch(void)
+void SketchObject::migrateSketch()
 {
     bool noextensions = false;
 
@@ -8366,22 +8366,22 @@ int SketchObject::detectMissingEqualityConstraints(double precision)
     return analyser->detectMissingEqualityConstraints(precision);
 }
 
-std::vector<ConstraintIds> & SketchObject::getMissingPointOnPointConstraints(void)
+std::vector<ConstraintIds> & SketchObject::getMissingPointOnPointConstraints()
 {
     return analyser->getMissingPointOnPointConstraints();
 }
 
-std::vector<ConstraintIds> & SketchObject::getMissingVerticalHorizontalConstraints(void)
+std::vector<ConstraintIds> & SketchObject::getMissingVerticalHorizontalConstraints()
 {
     return analyser->getMissingVerticalHorizontalConstraints();
 }
 
-std::vector<ConstraintIds> & SketchObject::getMissingLineEqualityConstraints(void)
+std::vector<ConstraintIds> & SketchObject::getMissingLineEqualityConstraints()
 {
     return analyser->getMissingLineEqualityConstraints();
 }
 
-std::vector<ConstraintIds> & SketchObject::getMissingRadiusConstraints(void)
+std::vector<ConstraintIds> & SketchObject::getMissingRadiusConstraints()
 {
     return analyser->getMissingRadiusConstraints();
 }
@@ -8432,7 +8432,7 @@ int SketchObject::autoRemoveRedundants(bool updategeo)
 {
     auto redundants = getLastRedundant();
 
-    if(redundants.size() == 0)
+    if(redundants.empty())
         return 0;
 
     for(size_t i=0;i<redundants.size();i++) // getLastRedundant is base 1, while delConstraints is base 0
@@ -8464,7 +8464,7 @@ int SketchObject::renameConstraint(int GeoId, std::string name)
     return -1;
 }
 
-std::vector<Base::Vector3d> SketchObject::getOpenVertices(void) const
+std::vector<Base::Vector3d> SketchObject::getOpenVertices() const
 {
     std::vector<Base::Vector3d> points;
 
@@ -8529,10 +8529,10 @@ int SketchObject::getGeometryId(int GeoId, long &id) const
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Sketcher::SketchObjectPython, Sketcher::SketchObject)
-template<> const char* Sketcher::SketchObjectPython::getViewProviderName(void) const {
+template<> const char* Sketcher::SketchObjectPython::getViewProviderName() const {
     return "SketcherGui::ViewProviderPython";
 }
-template<> PyObject* Sketcher::SketchObjectPython::getPyObject(void) {
+template<> PyObject* Sketcher::SketchObjectPython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<SketchObjectPy>(this),true);

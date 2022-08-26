@@ -39,8 +39,8 @@ class ProjectWidget : public QTreeView
     Q_OBJECT
 
 public:
-    ProjectWidget(QWidget* parent=nullptr);
-    ~ProjectWidget();
+    explicit ProjectWidget(QWidget* parent=nullptr);
+    ~ProjectWidget() override;
 
 private:
     QFileSystemModel *fileModel;

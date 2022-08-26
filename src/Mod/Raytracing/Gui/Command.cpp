@@ -355,8 +355,8 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
         return;
     }
 
-    QAction* a = pcAction->actions()[iMsg];
-    QFileInfo tfi(a->property("Template").toString());
+    const QList<QAction*> actions = pcAction->actions();
+    QFileInfo tfi(actions.at(iMsg)->property("Template").toString());
     if (tfi.isReadable()) {
         try {
             openCommand("Create POV-Ray project");
@@ -410,7 +410,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     _pcAction = pcAction;
     languageChange();
     if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 
@@ -614,7 +614,7 @@ void CmdRaytracingRender::activated(int)
     std::string renderer;
     if (renderType == Raytracing::RayProject::getClassTypeId()) {
         renderer = hGrp->GetASCII("PovrayExecutable", "");
-        if (renderer == "") {
+        if (renderer.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray not found"),
                 QObject::tr("Please set the path to the POV-Ray executable in the preferences."));
             return;
@@ -628,7 +628,7 @@ void CmdRaytracingRender::activated(int)
         }
     } else {
         renderer = hGrp->GetASCII("LuxrenderExecutable", "");
-        if (renderer == "") {
+        if (renderer.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Luxrender not found"),
                 QObject::tr("Please set the path to the luxrender or luxconsole executable in the preferences."));
             return;
@@ -801,8 +801,8 @@ void CmdRaytracingNewLuxProject::activated(int iMsg)
         return;
     }
 
-    QAction* a = pcAction->actions()[iMsg];
-    QFileInfo tfi(a->property("Template").toString());
+    const QList<QAction*> actions = pcAction->actions();
+    QFileInfo tfi(actions.at(iMsg)->property("Template").toString());
     if (tfi.isReadable()) {
         try {
             openCommand("Create LuxRender project");
@@ -852,7 +852,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
     _pcAction = pcAction;
     languageChange();
     if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 

@@ -177,7 +177,7 @@ public:
 
         MeshCore::MeshFacetArray faces;
         std::size_t numTriangles = 0;
-        for (auto it : domains)
+        for (const auto& it : domains)
             numTriangles += it.facets.size();
         faces.reserve(numTriangles);
 
@@ -265,7 +265,7 @@ public:
 
         MeshCore::MeshPointArray verts;
         verts.resize(vertices.size());
-        for (auto it : vertices)
+        for (const auto& it : vertices)
             verts[it.i] = it.toPoint();
 
         MeshCore::MeshKernel kernel;
@@ -275,7 +275,7 @@ public:
         meshdata->swap(kernel);
         if (createSegm) {
             int index = 0;
-            for (auto it : colorMap) {
+            for (const auto& it : colorMap) {
                 Mesh::Segment segm(meshdata, false);
                 for (auto jt : it.second) {
                     segm.addIndices(meshSegments[jt]);
@@ -291,7 +291,7 @@ public:
             }
         }
         else {
-            for (auto it : meshSegments) {
+            for (const auto& it : meshSegments) {
                 meshdata->addSegment(it);
             }
         }

@@ -46,10 +46,10 @@ class TaskRevolutionParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
-    ~TaskRevolutionParameters();
+    explicit TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
+    ~TaskRevolutionParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
@@ -72,9 +72,9 @@ protected:
     void changeEvent(QEvent *e) override;
     bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
-    double getAngle(void) const;
-    bool getMidplane(void) const;
-    bool getReversed(void) const;
+    double getAngle() const;
+    bool getMidplane() const;
+    bool getReversed() const;
 
     //mirrors of revolution's or groove's properties
     //should have been done by inheriting revolution and groove from common class...
@@ -108,7 +108,7 @@ class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
+    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
 
     ViewProvider* getRevolutionView() const
     { return vp; }

@@ -23,6 +23,8 @@
 #ifndef _DrawProjGroupItem_h_
 #define _DrawProjGroupItem_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
@@ -45,7 +47,7 @@ enum ProjItemType{ Front,
           FrontTopRight,
           FrontBottomLeft,
           FrontBottomRight };
-          
+
 class DrawProjGroup;
 
 class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
@@ -55,50 +57,52 @@ class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 public:
     /// Constructor
     DrawProjGroupItem();
-    virtual ~DrawProjGroupItem();
+    ~DrawProjGroupItem() override;
 
     App::PropertyEnumeration Type;
     App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection
 
     short mustExecute() const override;
-    virtual void onDocumentRestored() override;
-    virtual void unsetupObject() override;
+    void onDocumentRestored() override;
+    void unsetupObject() override;
 
-    DrawProjGroup* getPGroup(void) const;
+    void postHlrTasks(void) override;
+
+    DrawProjGroup* getPGroup() const;
     double getRotateAngle();
-    virtual Base::Vector3d getXDirection(void) const override;
-    virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
-                                      const Base::Vector3d& axis,
-                                      const bool flip = true)  const override;
+    Base::Vector3d getXDirection() const override;
+    Base::Vector3d getLegacyX(const Base::Vector3d& pt,
+                              const Base::Vector3d& axis,
+                              const bool flip = true)  const override;
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual const char* getViewProviderName(void) const override {
+    App::DocumentObjectExecReturn *execute() override;
+
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderProjGroupItem";
     }
     //return PyObject as DrawProjGroupItemPy
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    //this doesn't override for dvp pointer??
-    virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
-                               const Base::Vector3d& direction, 
-                               const bool flip=true) const override;
+    gp_Ax2 getViewAxis(const Base::Vector3d& pt,
+                       const Base::Vector3d& direction,
+                       const bool flip=true) const override;
 
-    virtual double getScale(void) const override;
-    void autoPosition(void);
-    bool isAnchor(void) const;
+    double getScale() const override;
+    void autoPosition();
+    bool isAnchor() const;
 
     //DPGI always fits on page since DPG handles scaling
-    virtual bool checkFit(void) const override { return true; }
-    virtual bool checkFit(DrawPage*) const override { return true; }
+    bool checkFit() const override { return true; }
+    bool checkFit(DrawPage*) const override { return true; }
 
-    virtual int countParentPages() const override;
-    virtual DrawPage* findParentPage() const override;
-    virtual std::vector<DrawPage*> findAllParentPages() const override;
+    int countParentPages() const override;
+    DrawPage* findParentPage() const override;
+    std::vector<DrawPage*> findAllParentPages() const override;
 
 protected:
     void onChanged(const App::Property* prop) override;
-    virtual bool isLocked(void) const override;
-    virtual bool showLock(void) const override;
+    bool isLocked() const override;
+    bool showLock() const override;
 
 private:
     static const char* TypeEnums[];

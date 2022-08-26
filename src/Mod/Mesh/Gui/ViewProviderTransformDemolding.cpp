@@ -220,6 +220,6 @@ const char* ViewProviderMeshTransformDemolding::getDefaultDisplayMode() const
 std::vector<std::string> ViewProviderMeshTransformDemolding::getDisplayModes() const
 {
   std::vector<std::string> StrList = ViewProviderMesh::getDisplayModes();
-  StrList.push_back("Demold");
+  StrList.emplace_back("Demold");
   return StrList;
 }

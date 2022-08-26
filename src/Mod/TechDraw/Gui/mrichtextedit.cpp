@@ -25,8 +25,11 @@
  * includes changes by wandererfan@gmail.com
  * for FreeCAD project https://www.freecadweb.org/
  ********************************/
-#include "PreCompiled.h"
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <iostream>
 #include <QApplication>
 #include <QClipboard>
 #include <QMimeData>
@@ -44,16 +47,17 @@
 #include <QMenu>
 #include <QDialog>
 #include <QBitmap>
-
-#include <iostream>
-#include <algorithm>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Gui/FileDialog.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
+
 #include <App/Application.h>
+
 #include "PreferencesGui.h"
 #include "mrichtextedit.h"
 
@@ -201,7 +205,8 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     // font size
 
     QFontDatabase db;
-    for(int size: db.standardSizes()) {
+    const auto sizes = db.standardSizes();
+    for(int size: sizes) {
         f_fontsize->addItem(QString::number(size));
     }
     //TODO: void QComboBox::setEditText(const QString &text) to " " when multiple select
@@ -536,7 +541,7 @@ void MRichTextEdit::slotCursorPositionChanged() {
 
     if (m_lastBlockList && 
         (l == m_lastBlockList || 
-        (l != nullptr && m_lastBlockList != nullptr && l->format().style() == m_lastBlockList->format().style()) ) ) {
+        (l && m_lastBlockList && l->format().style() == m_lastBlockList->format().style()) ) ) {
         return;
     }
     m_lastBlockList = l;

@@ -81,9 +81,9 @@ public:
   {
     canSelect = false;
   }
-  ~EdgeSelection() {}
+  ~EdgeSelection() override {}
 
-  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
+  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
     if (!aPart)
@@ -115,9 +115,9 @@ public:
   {
     canSelect = false;
   }
-  ~FaceSelection() {}
+  ~FaceSelection() override {}
 
-  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
+  bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName) override
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
     if (!aPart)
@@ -188,7 +188,7 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget *parent)
 DlgProjectionOnSurface::~DlgProjectionOnSurface()
 {
   delete ui;
-  for ( auto it : m_projectionSurfaceVec)
+  for (const auto& it : m_projectionSurfaceVec)
   {
     try {
       higlight_object(it.partFeature, it.partName, false, 0);
@@ -203,7 +203,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
       vp->Transparency.setValue(it.transparency);
     }
   }
-  for (auto it : m_shapeVec)
+  for (const auto& it : m_shapeVec)
   {
     try {
       higlight_object(it.partFeature, it.partName, false, 0);
@@ -230,13 +230,13 @@ void PartGui::DlgProjectionOnSurface::slotDeletedObject(const App::DocumentObjec
   }
 }
 
-void PartGui::DlgProjectionOnSurface::apply(void)
+void PartGui::DlgProjectionOnSurface::apply()
 {
   if (m_partDocument)
     m_partDocument->commitTransaction();
 }
 
-void PartGui::DlgProjectionOnSurface::reject(void)
+void PartGui::DlgProjectionOnSurface::reject()
 {
   if (m_partDocument)
     m_partDocument->abortTransaction();
@@ -322,7 +322,7 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
     {
       m_projectionSurfaceVec.clear();
       store_current_selected_parts(m_projectionSurfaceVec, 0xffff0000);
-      if (m_projectionSurfaceVec.size())
+      if (!m_projectionSurfaceVec.empty())
       {
         PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(m_projectionSurfaceVec.back().partFeature));
         if (vp)
@@ -338,7 +338,7 @@ void PartGui::DlgProjectionOnSurface::onSelectionChanged(const Gui::SelectionCha
   }
 }
 
-void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
+void PartGui::DlgProjectionOnSurface::get_camera_direction()
 {
   auto mainWindow = Gui::getMainWindow();
 
@@ -363,7 +363,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
   if (!m_partDocument)
       return;
   std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
-  if (selObj.size())
+  if (!selObj.empty())
   {
     for (auto it = selObj.begin(); it != selObj.end(); ++it)
     {
@@ -383,7 +383,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           currentShapeStore.is_selectable = vp->Selectable.getValue();
           currentShapeStore.transparency = vp->Transparency.getValue();
         }
-        if (it->getSubNames().size() )
+        if (!it->getSubNames().empty() )
         {
           auto parentShape = currentShapeStore.inputShape;
           for (auto itName = selObj.front().getSubNames().begin(); itName != selObj.front().getSubNames().end(); ++itName)
@@ -451,7 +451,7 @@ bool PartGui::DlgProjectionOnSurface::store_part_in_vector(SShapeStore& iCurrent
   auto valZ = ui->doubleSpinBoxDirZ->value();
 
   iCurrentShape.aProjectionDir = gp_Dir(valX, valY, valZ);
-  if ( m_projectionSurfaceVec.size() )
+  if ( !m_projectionSurfaceVec.empty() )
   {
     iCurrentShape.surfaceToProject = m_projectionSurfaceVec.front().aFace;
   }
@@ -468,14 +468,14 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
     for ( auto &itCurrentShape : iCurrentShape )
     {
       if (m_projectionSurfaceVec.empty()) continue;;
-      if (itCurrentShape.aProjectedEdgeVec.size()) continue;;
+      if (!itCurrentShape.aProjectedEdgeVec.empty()) continue;;
       if (!itCurrentShape.aProjectedFace.IsNull()) continue;;
-      if (itCurrentShape.aProjectedWireVec.size()) continue;;
+      if (!itCurrentShape.aProjectedWireVec.empty()) continue;;
 
       if (!itCurrentShape.aFace.IsNull())
       {
         get_all_wire_from_face(itCurrentShape);
-        for (auto itWire : itCurrentShape.aWireVec)
+        for (const auto& itWire : itCurrentShape.aWireVec)
         {
           BRepProj_Projection aProjection(itWire, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
           double minDistance = std::numeric_limits<double>::max();
@@ -534,15 +534,15 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
   TopoDS_Builder aBuilder;
   aBuilder.MakeCompound(aCompound);
 
-  for (auto it : iShapeVec)
+  for (const auto& it : iShapeVec)
   {
     if ( m_currentShowType == "edges" )
     {
-      for (auto it2 : it.aProjectedEdgeVec)
+      for (const auto& it2 : it.aProjectedEdgeVec)
       {
         aBuilder.Add(aCompound, it2);
       }
-      for (auto it2 : it.aProjectedWireVec)
+      for (const auto& it2 : it.aProjectedWireVec)
       {
         aBuilder.Add(aCompound, it2);
       }
@@ -552,7 +552,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
     {
       if (it.aProjectedFace.IsNull())
       {
-        for (auto it2 : it.aProjectedWireVec)
+        for (const auto& it2 : it.aProjectedWireVec)
         {
           if (!it2.IsNull())
           {
@@ -573,17 +573,17 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       {
         aBuilder.Add(aCompound, it.aProjectedFace);
       }
-      else if (it.aProjectedWireVec.size())
+      else if (!it.aProjectedWireVec.empty())
       {
-        for ( auto itWire : it.aProjectedWireVec )
+        for (const auto& itWire : it.aProjectedWireVec )
         {
           if ( itWire.IsNull() ) continue;
           aBuilder.Add(aCompound, itWire);
         }
       }
-      else if (it.aProjectedEdgeVec.size())
+      else if (!it.aProjectedEdgeVec.empty())
       {
-        for (auto itEdge : it.aProjectedEdgeVec)
+        for (const auto& itEdge : it.aProjectedEdgeVec)
         {
           if (itEdge.IsNull()) continue;
           aBuilder.Add(aCompound, itEdge);
@@ -731,7 +731,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
 
       //create a wire of all edges in parametric space on the surface of the face to projected
       // --> otherwise BRepBuilderAPI_MakeFace can not make a face from the wire!
-      for (auto itWireVec : itCurrentShape.aProjectedWireVec)
+      for (const auto& itWireVec : itCurrentShape.aProjectedWireVec)
       {
         std::vector<TopoDS_Shape> edgeVec;
         for (TopExp_Explorer aExplorer(itWireVec, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
@@ -827,7 +827,7 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   Handle(TopTools_HSequenceOfShape) aWireHandle;
   Handle(TopTools_HSequenceOfShape) aWireWireHandle;
 
-  for (auto it : iEdgeVec)
+  for (const auto& it : iEdgeVec)
   {
     shapeList->Append(it);
   }
@@ -903,7 +903,7 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
   }
 
   std::vector<TopoDS_Edge> edgeVec;
-  for ( auto it : aWireVec )
+  for (const auto& it : aWireVec )
   {
     bool edgeExists = false;
     for (TopExp_Explorer aExplorer(it, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
@@ -923,7 +923,7 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
   if (indexMap.IsEmpty())
       return;
 
-  for ( auto it : edgeVec )
+  for (const auto& it : edgeVec )
   {
     if ( it.IsSame(iCurrentShape.inputShape)) continue;
     if (!indexMap.Contains(it))

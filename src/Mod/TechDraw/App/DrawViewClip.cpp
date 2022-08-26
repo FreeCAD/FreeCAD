@@ -45,7 +45,7 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewClip, TechDraw::DrawView)
 
-DrawViewClip::DrawViewClip(void)
+DrawViewClip::DrawViewClip()
 {
     static const char *group = "Clip Group";
     //App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
@@ -104,7 +104,7 @@ void DrawViewClip::removeView(DrawView *view)
     Views.setValues(newViews);
 }
 
-App::DocumentObjectExecReturn *DrawViewClip::execute(void)
+App::DocumentObjectExecReturn *DrawViewClip::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -119,19 +119,19 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
     }
 
     requestPaint();
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewClip::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = ( Height.isTouched() ||
-                   Width.isTouched()  ||
-                   Views.isTouched());
-    }
-    if (result) {
-        return result;
+        if (Height.isTouched() ||
+            Width.isTouched() ||
+            Views.isTouched()) {
+            return 1;
+        }
     }
     return TechDraw::DrawView::mustExecute();
 }
@@ -151,17 +151,16 @@ std::vector<std::string> DrawViewClip::getChildViewNames()
 
 bool DrawViewClip::isViewInClip(App::DocumentObject* view)
 {
-    bool result = false;
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ((*it) == view) {
-            result = true;
+            return true;
         }
     }
-    return result;
+    return false;
 }
 
-PyObject *DrawViewClip::getPyObject(void)
+PyObject *DrawViewClip::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -176,7 +175,7 @@ PyObject *DrawViewClip::getPyObject(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewClipPython, TechDraw::DrawViewClip)
-template<> const char* TechDraw::DrawViewClipPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewClipPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewClip";
 }
 /// @endcond

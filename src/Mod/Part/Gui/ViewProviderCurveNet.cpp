@@ -20,45 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <Geom_Curve.hxx>
-# include <TColgp_Array1OfPnt.hxx>
-# include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoComplexity.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoLocateHighlight.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoSphere.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/nodes/SoTransform.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCSelection.h>
-#include <App/Application.h>
-
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "ViewProviderCurveNet.h"
 
 
-
 using namespace PartGui;
-
 
 //**************************************************************************
 // Construction/Destruction
@@ -89,7 +80,7 @@ ViewProviderCurveNet::~ViewProviderCurveNet()
 void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderGeometryObject::attach(pcFeat);
+    ViewProviderGeometryObject::attach(pcFeat); // clazy:exclude=skipped-base-method
 
     // setup the root and material for the edges
     SoSeparator* ModeRoot = new SoSeparator();
@@ -111,7 +102,7 @@ void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderCurveNet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    Gui::ViewProviderGeometryObject::updateData(prop); // clazy:exclude=skipped-base-method
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         TopoDS_Shape cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
         if (cShape.IsNull())
@@ -138,13 +129,13 @@ void ViewProviderCurveNet::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderCurveNet::getDisplayModes(void) const
+std::vector<std::string> ViewProviderCurveNet::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList;
 
     // add your own modes
-    StrList.push_back("Edge");
+    StrList.emplace_back("Edge");
 
     return StrList;
 }

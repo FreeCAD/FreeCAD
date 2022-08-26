@@ -161,7 +161,8 @@ bool PropertyView::showAll() {
 void PropertyView::setShowAll(bool enable) {
     if(_ShowAll != enable) {
         _ShowAll = enable;
-        for(auto view : getMainWindow()->findChildren<PropertyView*>()) {
+        const auto views = getMainWindow()->findChildren<PropertyView*>();
+        for(auto view : views) {
             if(view->isVisible()) {
                 view->propertyEditorData->buildUp();
                 view->propertyEditorView->buildUp();
@@ -310,7 +311,7 @@ struct PropertyView::PropInfo
 
 struct PropertyView::PropFind {
     const PropInfo& item;
-    PropFind(const PropInfo& item) : item(item) {}
+    explicit PropFind(const PropInfo& item) : item(item) {}
     bool operator () (const PropInfo& elem) const
     {
         return (elem.propId == item.propId) &&

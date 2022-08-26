@@ -35,13 +35,13 @@ class PoissonWidget : public QWidget
     Q_OBJECT
 
 public:
-    PoissonWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
-    ~PoissonWidget();
+    explicit PoissonWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
+    ~PoissonWidget() override;
 
     bool accept();
 
 private:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -53,14 +53,14 @@ class TaskPoisson : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskPoisson(const App::DocumentObjectT&);
-    ~TaskPoisson();
+    explicit TaskPoisson(const App::DocumentObjectT&);
+    ~TaskPoisson() override;
 
 public:
-    void open();
-    bool accept();
+    void open() override;
+    bool accept() override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

@@ -44,7 +44,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeCompoundPy::representation(void) const
+std::string TopoShapeCompoundPy::representation() const
 {
     std::stringstream str;
     str << "<Compound object at " << getTopoShapePtr() << ">";

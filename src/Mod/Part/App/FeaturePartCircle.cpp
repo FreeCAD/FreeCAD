@@ -58,7 +58,7 @@ short Circle::mustExecute() const
         Angle2.isTouched() ||
         Radius.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::Primitive::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Circle::execute(void)
@@ -85,7 +85,7 @@ void Circle::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::Feature::onChanged(prop); // clazy:exclude=skipped-base-method
 }
 
 void Circle::Restore(Base::XMLReader &reader)

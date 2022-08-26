@@ -165,9 +165,9 @@ RotTransDragger::RotTransDragger()
 
 RotTransDragger::~RotTransDragger()
 {
-   if (rotFieldSensor!=nullptr)
+   if (rotFieldSensor)
      delete rotFieldSensor;
-   if (translFieldSensor!=nullptr)
+   if (translFieldSensor)
      delete translFieldSensor;
 }
 
@@ -315,9 +315,9 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       unregisterChildDragger(ZD);
 
      // Disconnect the field sensors.
-     if (translFieldSensor->getAttachedField()!=nullptr)
+     if (translFieldSensor->getAttachedField())
         translFieldSensor->detach();
-     if (rotFieldSensor->getAttachedField()!=nullptr)
+     if (rotFieldSensor->getAttachedField())
         rotFieldSensor->detach();
 
      SoDragger::setUpConnections(onOff, doItAlways);
@@ -334,7 +334,7 @@ RotTransDragger::valueChangedCB(void *, SoDragger *inDragger)
    RotTransDragger *myself = (RotTransDragger *) inDragger;
 
    // Factor the motionMatrix into its parts
-   SbMatrix motMat = myself->getMotionMatrix();
+   SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
    SbVec3f   trans, scale;
    SbRotation rot, scaleOrient;
    motMat.getTransform(trans, rot, scale, scaleOrient);
@@ -357,7 +357,7 @@ RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 {
    RotTransDragger *myself = (RotTransDragger *) inDragger;
 
-   SbMatrix motMat = myself->getMotionMatrix();
+   SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
    myself->workFieldsIntoTransform(motMat);
 
    myself->setMotionMatrix(motMat);
@@ -374,7 +374,7 @@ RotTransDragger::invalidateSurroundScaleCB(void *parent, SoDragger *)
    // Invalidate the surroundScale, if it exists.
    SoSurroundScale *mySS = SO_CHECK_PART(
             myParentDragger, "surroundScale", SoSurroundScale);
-   if (mySS != nullptr)
+   if (mySS)
       mySS->invalidate();
 }
 

@@ -17,20 +17,21 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
-set(Part_LIBS 
+set(Part_LIBS
     ${OCC_LIBRARIES}
     ${OCC_DEBUG_LIBRARIES}
     FreeCADApp
 )
 
 if(FREETYPE_FOUND)
-    set(Part_LIBS 
+    set(Part_LIBS
         ${Part_LIBS}
         ${FREETYPE_LIBRARIES}
     )
@@ -91,7 +92,6 @@ generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 generate_from_xml(BRepOffsetAPI_MakeFillingPy)
-generate_from_xml(PrecisionPy)
 
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
@@ -343,8 +343,6 @@ SET(Python_SRCS
     BRepOffsetAPI_MakePipeShellPyImp.cpp
     BRepOffsetAPI_MakeFillingPy.xml
     BRepOffsetAPI_MakeFillingPyImp.cpp
-    PrecisionPy.xml
-    PrecisionPyImp.cpp
     PartPyCXX.cpp
     PartPyCXX.h
 )

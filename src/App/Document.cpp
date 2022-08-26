@@ -328,7 +328,7 @@ void Document::exportGraphviz(std::ostream& out) const
     class GraphCreator {
     public:
 
-        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
+        explicit GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
             build();
         }
 
@@ -938,7 +938,7 @@ void Document::exportGraphviz(std::ostream& out) const
 //  return false;
 //}
 
-bool Document::checkOnCycle(void)
+bool Document::checkOnCycle()
 {/*
   std::vector < default_color_type > color(num_vertices(_DepList), white_color);
   graph_traits < DependencyList >::vertex_iterator vi, vi_end;
@@ -957,7 +957,7 @@ bool Document::undo(int id)
             if(it == mUndoMap.end())
                 return false;
             if(it->second != d->activeUndoTransaction) {
-                while(mUndoTransactions.size() && mUndoTransactions.back()!=it->second)
+                while(!mUndoTransactions.empty() && mUndoTransactions.back()!=it->second)
                     undo(0);
             }
         }
@@ -1008,7 +1008,7 @@ bool Document::redo(int id)
             auto it = mRedoMap.find(id);
             if(it == mRedoMap.end())
                 return false;
-            while(mRedoTransactions.size() && mRedoTransactions.back()!=it->second)
+            while(!mRedoTransactions.empty() && mRedoTransactions.back()!=it->second)
                 redo(0);
         }
 
@@ -1428,12 +1428,12 @@ void Document::setUndoMode(int iMode)
     d->iUndoMode = iMode;
 }
 
-int Document::getUndoMode(void) const
+int Document::getUndoMode() const
 {
     return d->iUndoMode;
 }
 
-unsigned int Document::getUndoMemSize (void) const
+unsigned int Document::getUndoMemSize () const
 {
     return d->UndoMemSize;
 }
@@ -1448,7 +1448,7 @@ void Document::setMaxUndoStackSize(unsigned int UndoMaxStackSize)
      d->UndoMaxStackSize = UndoMaxStackSize;
 }
 
-unsigned int Document::getMaxUndoStackSize(void)const
+unsigned int Document::getMaxUndoStackSize()const
 {
     return d->UndoMaxStackSize;
 }
@@ -1541,94 +1541,90 @@ Document::Document(const char *name)
     d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
 
 #ifdef FC_LOGUPDATECHAIN
-    Console().Log("+App::Document: %p\n",this);
+    Console().Log("+App::Document: %p\n", this);
 #endif
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
-    std::string Author = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
-    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany","");
-    ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
-    ADD_PROPERTY_TYPE(FileName,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),"The path to the file where the document is saved to");
-    ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
-    ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
-    ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
-    ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the name of the company");
-    ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
-    ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
-    ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
+    std::string Author = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor", "");
+    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany", "");
+    ADD_PROPERTY_TYPE(Label, ("Unnamed"), 0, Prop_None, "The name of the document");
+    ADD_PROPERTY_TYPE(FileName, (""), 0, PropertyType(Prop_Transient | Prop_ReadOnly), "The path to the file where the document is saved to");
+    ADD_PROPERTY_TYPE(CreatedBy, (Author.c_str()), 0, Prop_None, "The creator of the document");
+    ADD_PROPERTY_TYPE(CreationDate, (CreationDateString.c_str()), 0, Prop_ReadOnly, "Date of creation");
+    ADD_PROPERTY_TYPE(LastModifiedBy, (""), 0, Prop_None, 0);
+    ADD_PROPERTY_TYPE(LastModifiedDate, ("Unknown"), 0, Prop_ReadOnly, "Date of last modification");
+    ADD_PROPERTY_TYPE(Company, (AuthorComp.c_str()), 0, Prop_None, "Additional tag to save the name of the company");
+    ADD_PROPERTY_TYPE(Comment, (""), 0, Prop_None, "Additional tag to save a comment");
+    ADD_PROPERTY_TYPE(Meta, (), 0, Prop_None, "Map with additional meta information");
+    ADD_PROPERTY_TYPE(Material, (), 0, Prop_None, "Map with material properties");
     // create the uuid for the document
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
-    ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
+    ADD_PROPERTY_TYPE(Id, (""), 0, Prop_None, "ID of the document");
+    ADD_PROPERTY_TYPE(Uid, (id), 0, Prop_ReadOnly, "UUID of the document");
 
     // license stuff
-    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
+    ADD_PROPERTY_TYPE(License, ("CC-BY 3.0"), 0, Prop_None, "License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL, ("https://creativecommons.org/licenses/by/3.0/"), 0, Prop_None, "URL to the license text/contract");
 
     // license stuff
-    int licenseId = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
+    int licenseId = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType", 0);
     std::string license;
     std::string licenseUrl;
     switch (licenseId) {
         case 0:
             license = "All rights reserved";
-            licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
+            licenseUrl = "https://en.wikipedia.org/wiki/All_rights_reserved";
             break;
         case 1:
             license = "Creative Commons Attribution";
-            licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by/4.0/";
             break;
         case 2:
             license = "Creative Commons Attribution-ShareAlike";
-            licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/";
             break;
         case 3:
             license = "Creative Commons Attribution-NoDerivatives";
-            licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nd/4.0/";
             break;
         case 4:
             license = "Creative Commons Attribution-NonCommercial";
-            licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nc/4.0/";
             break;
         case 5:
             license = "Creative Commons Attribution-NonCommercial-ShareAlike";
-            licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
             break;
         case 6:
             license = "Creative Commons Attribution-NonCommercial-NoDerivatives";
-            licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
+            licenseUrl = "https://creativecommons.org/licenses/by-nc-nd/4.0/";
             break;
         case 7:
             license = "Public Domain";
-            licenseUrl = "http://en.wikipedia.org/wiki/Public_domain";
+            licenseUrl = "https://en.wikipedia.org/wiki/Public_domain";
             break;
         case 8:
             license = "FreeArt";
-            licenseUrl = "http://artlibre.org/licence/lal";
+            licenseUrl = "https://artlibre.org/licence/lal";
             break;
         default:
             license = "Other";
             break;
     }
 
-    licenseUrl = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+    licenseUrl = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
 
-    ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
-    ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None),
-                        "Whether to show hidden object items in the tree view");
+    ADD_PROPERTY_TYPE(License, (license.c_str()), 0, Prop_None, "License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL, (licenseUrl.c_str()), 0, Prop_None, "URL to the license text/contract");
+    ADD_PROPERTY_TYPE(ShowHidden, (false), 0, PropertyType(Prop_None),
+                      "Whether to show hidden object items in the tree view");
 
     // this creates and sets 'TransientDir' in onChanged()
-    ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
-        "Transient directory, where the files live while the document is open");
-    ADD_PROPERTY_TYPE(Tip,(nullptr),0,PropertyType(Prop_Transient),
-        "Link of the tip object of the document");
-    ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
-        "Link of the tip object of the document");
+    ADD_PROPERTY_TYPE(TransientDir, (""), 0, PropertyType(Prop_Transient | Prop_ReadOnly),
+                      "Transient directory, where the files live while the document is open");
+    ADD_PROPERTY_TYPE(Tip, (nullptr), 0, PropertyType(Prop_Transient),
+                      "Link of the tip object of the document");
+    ADD_PROPERTY_TYPE(TipName, (""), 0, PropertyType(Prop_Hidden | Prop_ReadOnly),
+                      "Link of the tip object of the document");
     Uid.touch();
 }
 
@@ -1797,7 +1793,7 @@ static DocExportStatus _ExportStatus;
 // Exception-safe exporting status setter
 class DocumentExporting {
 public:
-    DocumentExporting(const std::vector<App::DocumentObject*> &objs) {
+    explicit DocumentExporting(const std::vector<App::DocumentObject*> &objs) {
         _ExportStatus.status = Document::Exporting;
         _ExportStatus.objs.insert(objs.begin(),objs.end());
     }
@@ -2003,7 +1999,7 @@ Document::readObjects(Base::XMLReader& reader)
 
     if(!reader.hasAttribute(FC_ATTR_DEPENDENCIES))
         d->partialLoadObjects.clear();
-    else if(d->partialLoadObjects.size()) {
+    else if(!d->partialLoadObjects.empty()) {
         std::unordered_map<std::string,DepInfo> deps;
         for (int i=0 ;i<Cnt ;i++) {
             reader.readElement(FC_ELEMENT_OBJECT_DEPS);
@@ -2024,7 +2020,7 @@ Document::readObjects(Base::XMLReader& reader)
         std::vector<std::string> objs;
         objs.reserve(d->partialLoadObjects.size());
         for(auto &v : d->partialLoadObjects)
-            objs.push_back(v.first.c_str());
+            objs.emplace_back(v.first.c_str());
         for(auto &name : objs)
             _loadDeps(name,d->partialLoadObjects,deps);
         if(Cnt > (int)d->partialLoadObjects.size())
@@ -2049,7 +2045,7 @@ Document::readObjects(Base::XMLReader& reader)
         std::string viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):"";
 
         bool partial = false;
-        if(d->partialLoadObjects.size()) {
+        if(!d->partialLoadObjects.empty()) {
             auto it = d->partialLoadObjects.find(name);
             if(it == d->partialLoadObjects.end())
                 continue;
@@ -2224,7 +2220,7 @@ Document::importObjects(Base::XMLReader& reader)
     return objs;
 }
 
-unsigned int Document::getMemSize (void) const
+unsigned int Document::getMemSize () const
 {
     unsigned int size = 0;
 
@@ -2285,7 +2281,7 @@ bool Document::saveCopy(const char* _file) const
 }
 
 // Save the document under the name it has been opened
-bool Document::save (void)
+bool Document::save ()
 {
     if(testStatus(Document::PartialDoc)) {
         FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
@@ -2332,8 +2328,7 @@ public:
         useFCBakExtension = false;
         saveBackupDateFormat = "%Y%m%d-%H%M%S";
     }
-    ~BackupPolicy() {
-    }
+    ~BackupPolicy() = default;
     void setPolicy(Policy p) {
         policy = p;
     }
@@ -2373,7 +2368,7 @@ private:
                     if (file.substr(0,fn.length()) == fn) {
                         // starts with the same file name
                         std::string suf(file.substr(fn.length()));
-                        if (suf.size() > 0) {
+                        if (!suf.empty()) {
                             std::string::size_type nPos = suf.find_first_not_of("0123456789");
                             if (nPos==std::string::npos) {
                                 // store all backup files
@@ -2505,7 +2500,7 @@ private:
                         fn = str.str();
                         bool done = false;
 
-                        if ((fn == "") || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
+                        if ((fn.empty()) || (fn[fn.length()-1] == ' ') || (fn[fn.length()-1] == '-')) {
                             if (fn[fn.length()-1] == ' ') {
                                 fn = fn.substr(0,fn.length()-1);
                             }
@@ -2614,15 +2609,37 @@ bool Document::saveToFile(const char* filename) const
     bool policy = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("BackupPolicy",true);
 
-    //realpath is canonical filename i.e. without symlink
+    auto canonical_path = [](const char* filename) {
+        try {
 #ifdef FC_OS_WIN32
-    QString utf8Name = QString::fromUtf8(filename);
-    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
-    std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
+            QString utf8Name = QString::fromUtf8(filename);
+            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
+            std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
 #else
-    auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
-    std::string nativePath = realpath.native();
+            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
+            std::string nativePath = realpath.native();
 #endif
+            // In case some folders in the path do not exist
+            auto parentPath = realpath.parent_path();
+            fs::create_directories(parentPath);
+
+            return nativePath;
+        }
+        catch (const std::exception&) {
+#ifdef FC_OS_WIN32
+            QString utf8Name = QString::fromUtf8(filename);
+            auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
+#else
+            auto parentPath = fs::absolute(fs::path(filename)).parent_path();
+#endif
+            fs::create_directories(parentPath);
+
+            return std::string(filename);
+        }
+    };
+
+    //realpath is canonical filename i.e. without symlink
+    std::string nativePath = canonical_path(filename);
 
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
@@ -2635,10 +2652,6 @@ bool Document::saveToFile(const char* filename) const
     }
     Base::FileInfo tmp(fn);
 
-
-    // In case some folders in the path do not exist
-    auto parentPath = realpath.parent_path();
-    fs::create_directories(parentPath);
 
     // open extra scope to close ZipWriter properly
     {
@@ -2804,7 +2817,7 @@ bool Document::afterRestore(bool checkPartial) {
 bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkPartial)
 {
     checkPartial = checkPartial && testStatus(Document::PartialDoc);
-    if(checkPartial && d->touchedObjs.size())
+    if(checkPartial && !d->touchedObjs.empty())
         return false;
 
     // some link type property cannot restore link information until other
@@ -2827,7 +2840,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         }
     }
 
-    if(checkPartial && d->touchedObjs.size()) {
+    if(checkPartial && !d->touchedObjs.empty()) {
         // partial document touched, signal full reload
         return false;
     }
@@ -2888,7 +2901,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             }
         }
 
-        if(checkPartial && d->touchedObjs.size()) {
+        if(checkPartial && !d->touchedObjs.empty()) {
             // partial document touched, signal full reload
             return false;
         } else if(!d->touchedObjs.count(obj))
@@ -2956,7 +2969,7 @@ bool Document::isTouched() const
     return false;
 }
 
-vector<DocumentObject*> Document::getTouched(void) const
+vector<DocumentObject*> Document::getTouched() const
 {
     vector<DocumentObject*> result;
 
@@ -2977,7 +2990,7 @@ bool Document::isClosable() const
     return testStatus(Document::Closable);
 }
 
-int Document::countObjects(void) const
+int Document::countObjects() const
 {
    return static_cast<int>(d->objectArray.size());
 }
@@ -2988,7 +3001,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 {
     std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
-    for(auto o : objs.size()?objs:d->objectArray) {
+    for(auto o : !objs.empty()?objs:d->objectArray) {
         if(o == obj) continue;
         auto linked = o;
         if(options & GetLinkArrayElement)
@@ -3022,7 +3035,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         return;
 
     std::vector<const DocumentObject*> current(1,obj);
-    for(int depth=0;current.size();++depth) {
+    for(int depth=0;!current.empty();++depth) {
         if(!GetApplication().checkLinkDepth(depth,true))
             break;
         std::vector<const DocumentObject*> next;
@@ -3092,7 +3105,7 @@ static void _buildDependencyList(const std::vector<App::DocumentObject*> &object
     int op = (options & Document::DepNoXLinked)?DocumentObject::OutListNoXLinked:0;
     for (auto obj : objectArray) {
         objs.push_back(obj);
-        while(objs.size()) {
+        while(!objs.empty()) {
             auto obj = objs.front();
             objs.pop_front();
             if(!obj || !obj->getNameInDocument())
@@ -3228,7 +3241,7 @@ std::vector<App::Document*> Document::getDependentDocuments(
         for(auto doc : pending)
             docMap[doc] = add_vertex(depList);
     }
-    while(pending.size()) {
+    while(!pending.empty()) {
         auto doc = pending.back();
         pending.pop_back();
 
@@ -3579,7 +3592,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
     FC_TIME_LOG(t,"Recompute total");
 
-    if (d->_RecomputeLog.size()) {
+    if (!d->_RecomputeLog.empty()) {
         d->pendingRemove.clear();
         if (!testStatus(Status::IgnoreErrorOnRecompute))
             Base::Console().Error("Recompute failed! Please check report view.\n");
@@ -3891,8 +3904,6 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
     d->objectArray.push_back(pcObject);
-    // insert in the adjacence list and reference through the ConectionMap
-    //_DepConMap[pcObject] = add_vertex(_DepList);
 
     // If we are restoring, don't set the Label object now; it will be restored later. This is to avoid potential duplicate
     // label conflicts later.
@@ -4134,27 +4145,6 @@ void Document::removeObject(const char* sName)
 
     _checkTransaction(pos->second,nullptr,__LINE__);
 
-#if 0
-    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
-        // Preserve link group sub object global visibilities. Normally those
-        // claimed object should be hidden in global coordinate space. However,
-        // when the group is deleted, the user will naturally try to show the
-        // children, which may now in the global space. When the parent is
-        // undeleted, having its children shown in both the local and global
-        // coordinate space is very confusing. Hence, we preserve the visibility
-        // here
-        for(auto &sub : pos->second->getSubObjects()) {
-            if(sub.empty())
-                continue;
-            if(sub[sub.size()-1]!='.')
-                sub += '.';
-            auto sobj = pos->second->getSubObject(sub.c_str());
-            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
-                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
-        }
-    }
-#endif
-
     if (d->activeObject == pos->second)
         d->activeObject = nullptr;
 
@@ -4225,6 +4215,10 @@ void Document::removeObject(const char* sName)
         }
     }
 
+    // In case the object gets deleted the pointer must be nullified
+    if (tobedestroyed) {
+        tobedestroyed->pcNameInDocument = nullptr;
+    }
     d->objectMap.erase(pos);
 }
 
@@ -4496,7 +4490,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     return objs.back();
 }
 
-DocumentObject * Document::getActiveObject(void) const
+DocumentObject * Document::getActiveObject() const
 {
     return d->activeObject;
 }

@@ -108,9 +108,11 @@ def cmdCreateImageScaling(name, trackers):
             self.label.setObjectName(_fromUtf8("label"))
             self.horizontalLayout.addWidget(self.label)
 
-            self.lineEdit = QtGui.QLineEdit(Dialog)
-            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-            self.horizontalLayout.addWidget(self.lineEdit)
+            self.quantity = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.quantity.setParent(Dialog)
+            self.quantity.setProperty('unit', 'mm')
+            self.quantity.setObjectName(_fromUtf8("QuantityField"))
+            self.horizontalLayout.addWidget(self.quantity)
 
             self.label1 = QtGui.QLabel(Dialog)
             self.label1.setObjectName(_fromUtf8("label1"))
@@ -136,23 +138,13 @@ def cmdCreateImageScaling(name, trackers):
     
         def retranslateUi(self, Dialog):
             Dialog.setWindowTitle(translate("Dialog", "Scale image plane", None))
-            self.label.setText(translate("Dialog", "Distance [mm]", None))
+            self.label.setText(translate("Dialog", "Distance", None))
             self.label1.setText(translate("Dialog", "Select first point", None))
             
         def accept(self):
             sel = FreeCADGui.Selection.getSelection()
             try:
-                try:
-                    q = FreeCAD.Units.parseQuantity(self.lineEdit.text())
-                    d = q.Value
-                    if q.Unit == FreeCAD.Units.Unit(): # plain number
-                        ok = True
-                    elif q.Unit == FreeCAD.Units.Length:
-                        ok = True
-                except Exception:
-                    ok = False
-                if not ok:
-                    raise ValueError
+                d = self.quantity.property('rawValue')
                 s=d/self.distance
                 sel[0].XSize.Value=sel[0].XSize.Value*s
                 sel[0].YSize.Value=sel[0].YSize.Value*s

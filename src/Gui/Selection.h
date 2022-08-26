@@ -102,9 +102,10 @@ public:
         pDocName = Object.getDocumentName().c_str();
         pObjectName = Object.getObjectName().c_str();
         pSubName = Object.getSubName().c_str();
-        if(typeName) TypeName = typeName;
+        if (typeName)
+            TypeName = typeName;
         pTypeName = TypeName.c_str();
-    }
+    }//explicit bombs
 
     SelectionChanges(MsgType type,
                      const std::string &docName,
@@ -229,7 +230,7 @@ public:
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      */
-    SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
     /** Constructor
      *
      * @param vp: filtering view object.
@@ -242,7 +243,7 @@ public:
      * Constructs an selection observer that receives only selection event of
      * objects within the same document as the input view object.
      */
-    SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, ResolveMode resolve = ResolveMode::OldStyleElement);
 
     virtual ~SelectionObserver();
     bool blockSelection(bool block);
@@ -279,14 +280,14 @@ class GuiExport SelectionObserverPython : public SelectionObserver
 
 public:
     /// Constructor
-    SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
-    virtual ~SelectionObserverPython();
+    explicit SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
+    ~SelectionObserverPython() override;
 
     static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
     static void removeObserver(const Py::Object& obj);
 
 private:
-    void onSelectionChanged(const SelectionChanges& msg);
+    void onSelectionChanged(const SelectionChanges& msg) override;
     void addSelection(const SelectionChanges&);
     void removeSelection(const SelectionChanges&);
     void setSelection(const SelectionChanges&);
@@ -341,8 +342,8 @@ public:
 class GuiExport SelectionGateFilterExternal: public SelectionGate
 {
 public:
-    SelectionGateFilterExternal(const char *docName, const char *objName=nullptr);
-    virtual bool allow(App::Document*,App::DocumentObject*, const char*) override;
+    explicit SelectionGateFilterExternal(const char *docName, const char *objName=nullptr);
+    bool allow(App::Document*,App::DocumentObject*, const char*) override;
 private:
     std::string DocName;
     std::string ObjName;
@@ -418,11 +419,11 @@ public:
     /// sets different coords for the preselection
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection
-    const SelectionChanges& getPreselection(void) const;
+    const SelectionChanges& getPreselection() const;
     /// add a SelectionGate to control what is selectable
     void addSelectionGate(Gui::SelectionGate *gate, ResolveMode resolve = ResolveMode::OldStyleElement);
     /// remove the active SelectionGate
-    void rmvSelectionGate(void);
+    void rmvSelectionGate();
 
     int disableCommandLog();
     int enableCommandLog(bool silent=false);
@@ -567,7 +568,7 @@ public:
     bool hasPreselection() const;
 
     /// Size of selected entities for all documents
-    unsigned int size(void) const {
+    unsigned int size() const {
         return static_cast<unsigned int>(_SelList.size());
     }
 
@@ -642,8 +643,8 @@ public:
             const char* pDocName=nullptr, Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
     //@}
 
-    static SelectionSingleton& instance(void);
-    static void destruct (void);
+    static SelectionSingleton& instance();
+    static void destruct ();
     friend class SelectionFilter;
 
     // Python interface
@@ -680,7 +681,7 @@ protected:
     /// Construction
     SelectionSingleton();
     /// Destruction
-    virtual ~SelectionSingleton();
+    ~SelectionSingleton() override;
 
     /// Observer message from the App doc
     void slotDeletedObject(const App::DocumentObject&);
@@ -761,7 +762,7 @@ inline std::vector<T*> SelectionSingleton::getObjectsOfType(const char* pDocName
 }
 
 /// Get the global instance
-inline SelectionSingleton& Selection(void)
+inline SelectionSingleton& Selection()
 {
     return SelectionSingleton::instance();
 }
@@ -770,7 +771,7 @@ inline SelectionSingleton& Selection(void)
  */
 class GuiExport SelectionLogDisabler {
 public:
-    SelectionLogDisabler(bool silent=false) :silent(silent) {
+    explicit SelectionLogDisabler(bool silent=false) :silent(silent) {
         Selection().disableCommandLog();
     }
     ~SelectionLogDisabler() {

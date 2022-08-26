@@ -33,7 +33,7 @@ template <>
 struct vec_traits<Wm4::Vector3d> {
     typedef Wm4::Vector3d vec_type;
     typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -45,7 +45,7 @@ template <>
 struct vec_traits<Wm4::Vector3f> {
     typedef Wm4::Vector3f vec_type;
     typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }

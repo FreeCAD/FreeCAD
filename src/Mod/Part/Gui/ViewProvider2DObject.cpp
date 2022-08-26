@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -50,7 +49,6 @@
 
 using namespace PartGui;
 using namespace std;
-
 
 //**************************************************************************
 // Construction/Destruction
@@ -92,7 +90,7 @@ ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
 
 // **********************************************************************************
 
-SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
+SoSeparator* ViewProvider2DObjectGrid::createGrid()
 {
     //double dx = 10 * GridSize.getValue();                       // carpet size
     //double dy = 10 * GridSize.getValue();
@@ -201,7 +199,8 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     int lines = vlines + hlines;
 
     if (lines > maxNumberOfLines.getValue()) {
-        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n.", lines, maxNumberOfLines.getValue());
+        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n."
+                                "Either increase the 'GridSize' property to a more reasonable value (recommended) or increase the 'maxNumberOfLines' property.\n", lines, maxNumberOfLines.getValue());
         parent->addChild(vts);
         parent->addChild(grid);
         return GridRoot;
@@ -359,16 +358,16 @@ ViewProvider2DObject::~ViewProvider2DObject()
 {
 }
 
-std::vector<std::string> ViewProvider2DObject::getDisplayModes(void) const
+std::vector<std::string> ViewProvider2DObject::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
 
     // add your own modes
-    StrList.push_back("Flat Lines");
+    StrList.emplace_back("Flat Lines");
     //StrList.push_back("Shaded");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }

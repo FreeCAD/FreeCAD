@@ -52,7 +52,7 @@ public:
   /** @name Construction */
   //@{
   /// Construction
-  PointsGrid (const PointKernel &rclM);
+  explicit PointsGrid (const PointKernel &rclM);
   /// Construction
   PointsGrid ();
   /// Construction
@@ -175,7 +175,7 @@ class PointsExport PointsGridIterator
 {
 public:
   /// Construction
-  PointsGridIterator (const PointsGrid &rclG);
+  explicit PointsGridIterator (const PointsGrid &rclG);
   /** Returns the bounding box of the current grid element. */
   Base::BoundBox3d GetBoundBox () const
   { return _rclGrid.GetBoundBox(_ulX, _ulY, _ulZ); }

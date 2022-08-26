@@ -52,11 +52,11 @@ namespace PartGui {
     class BooleanOperationItem : public QTreeWidgetItem
     {
     public:
-        BooleanOperationItem(int type = Type)
+        explicit BooleanOperationItem(int type = Type)
             : QTreeWidgetItem(type)
         {
         }
-        void setData (int column, int role, const QVariant & value)
+        void setData (int column, int role, const QVariant & value) override
         {
             QTreeWidgetItem::setData(column, role, value);
             if (role == Qt::CheckStateRole && value.toBool()) {

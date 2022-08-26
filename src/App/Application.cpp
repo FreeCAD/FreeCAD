@@ -70,6 +70,7 @@
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
+#include <Base/PrecisionPy.h>
 #include <Base/RotationPy.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
@@ -122,13 +123,6 @@
 #include "Branding.h"
 
 
-using namespace App;
-using namespace std;
-using namespace boost;
-using namespace boost::program_options;
-namespace sp = std::placeholders;
-
-
 // scriptings (scripts are built-in but can be overridden by command line option)
 #include <App/InitScript.h>
 #include <App/TestScript.h>
@@ -146,12 +140,15 @@ namespace sp = std::placeholders;
 # include <new>
 #endif
 
-FC_LOG_LEVEL_INIT("App",true,true)
+FC_LOG_LEVEL_INIT("App", true, true)
 
-//using Base::GetConsole;
-using namespace Base;
 using namespace App;
+using namespace Base;
 using namespace std;
+using namespace boost;
+using namespace boost::program_options;
+using Base::FileInfo;
+namespace sp = std::placeholders;
 
 //==========================================================================
 // Application
@@ -162,7 +159,7 @@ ParameterManager *App::Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
-AppExport std::map<std::string,std::string> Application::mConfig;
+AppExport std::map<std::string, std::string> Application::mConfig;
 
 // Custom Python exception types
 BaseExport extern PyObject* Base::PyExc_FC_GeneralError;
@@ -190,7 +187,11 @@ PyDoc_STRVAR(FreeCAD_doc,
     );
 
 PyDoc_STRVAR(Console_doc,
-     "FreeCAD Console\n"
+    "FreeCAD Console module.\n\n"
+    "The Console module contains functions to manage log entries, messages,\n"
+    "warnings and errors.\n"
+    "There are also functions to get/set the status of the observers used as\n"
+    "logging interfaces."
     );
 
 PyDoc_STRVAR(Base_doc,
@@ -213,7 +214,7 @@ init_freecad_base_module(void)
 }
 
 // Set in inside Application
-static PyMethodDef* __AppMethods = nullptr;
+static PyMethodDef* ApplicationMethods = nullptr;
 
 PyMODINIT_FUNC
 init_freecad_module(void)
@@ -221,7 +222,7 @@ init_freecad_module(void)
     static struct PyModuleDef FreeCADModuleDef = {
         PyModuleDef_HEAD_INIT,
         "FreeCAD", FreeCAD_doc, -1,
-        __AppMethods,
+        ApplicationMethods,
         nullptr, nullptr, nullptr, nullptr
     };
     return PyModule_Create(&FreeCADModuleDef);
@@ -239,9 +240,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     setupPythonTypes();
 }
 
-Application::~Application()
-{
-}
+Application::~Application() = default;
 
 void Application::setupPythonTypes()
 {
@@ -249,7 +248,7 @@ void Application::setupPythonTypes()
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    __AppMethods = Application::Methods;
+    ApplicationMethods = Application::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();
@@ -261,7 +260,7 @@ void Application::setupPythonTypes()
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
-        ConsoleSingleton::Methods,
+        Base::ConsoleSingleton::Methods,
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
@@ -301,6 +300,7 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
     Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
+    Base::Interpreter().addType(&Base::PrecisionPy       ::Type,pBaseModule,"Precision");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
     Base::Interpreter().addType(&App::MetadataPy::Type, pAppModule, "Metadata");
@@ -412,25 +412,9 @@ void Application::setupPythonException(PyObject* module)
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
-#if 1
     (void)OldName;
     (void)NewName;
     throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
-#else
-    std::map<std::string,Document*>::iterator pos;
-    pos = DocMap.find(OldName);
-
-    if (pos != DocMap.end()) {
-        Document* temp;
-        temp = pos->second;
-        DocMap.erase(pos);
-        DocMap[NewName] = temp;
-        signalRenameDocument(*temp);
-    }
-    else {
-        throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
-    }
-#endif
 }
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
@@ -457,7 +441,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
         for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            names.push_back(pos->second->Label.getValue());
+            names.emplace_back(pos->second->Label.getValue());
         }
 
         if (!names.empty())
@@ -544,7 +528,7 @@ bool Application::closeDocument(const char* name)
     return true;
 }
 
-void Application::closeAllDocuments(void)
+void Application::closeAllDocuments()
 {
     Base::FlagToggler<bool> flag(_isClosingAll);
     std::map<std::string,Document*>::iterator pos;
@@ -617,9 +601,9 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
     if(!_docReloadAttempts[FileName].emplace(objName).second)
         return -1;
     auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
-    ret.first->second.push_back(objName);
+    ret.first->second.emplace_back(objName);
     if(ret.second) {
-        _pendingDocs.push_back(ret.first->first.c_str());
+        _pendingDocs.emplace_back(ret.first->first.c_str());
         return 1;
     }
     return -1;
@@ -668,7 +652,7 @@ public:
 Document* Application::openDocument(const char * FileName, bool createView) {
     std::vector<std::string> filenames(1,FileName);
     auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createView);
-    if(docs.size())
+    if(!docs.empty())
         return docs.front();
     return nullptr;
 }
@@ -679,7 +663,7 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     if(DocFileMap.empty()) {
         for(const auto &v : DocMap) {
             const auto &file = v.second->FileName.getStrValue();
-            if(file.size())
+            if(!file.empty())
                 DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
         }
     }
@@ -733,7 +717,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     for (auto &name : filenames)
-        _pendingDocs.push_back(name.c_str());
+        _pendingDocs.emplace_back(name.c_str());
 
     std::map<DocumentT, DocTiming> timings;
 
@@ -794,7 +778,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -802,7 +786,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (...) {
                 if (errs) {
@@ -869,7 +853,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             FC_TIME_INIT(t1);
             // Finalize document restoring with the correct order
             if(doc->afterRestore(true)) {
-                openedDocs.push_back(doc);
+                openedDocs.emplace_back(doc);
                 it = docs.erase(it);
             } else {
                 ++it;
@@ -880,7 +864,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 // 'touched' object requires recomputation. And an object may
                 // become touched during restoring if externally linked
                 // document time stamp mismatches with the stamp saved.
-                _pendingDocs.push_back(doc->FileName.getValue());
+                _pendingDocs.emplace_back(doc->FileName.getValue());
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
             FC_DURATION_PLUS(timing.d2,t1);
@@ -953,7 +937,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // close and reopen the document immediately here, but
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj : doc->getObjects())
-                            objNames.push_back(obj->getNameInDocument());
+                            objNames.emplace_back(obj->getNameInDocument());
                         _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
                         break;
                     }
@@ -993,7 +977,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     try {
         // read the document
         newDoc->restore(File.filePath().c_str(),true,objNames);
-        if(DocFileMap.size())
+        if(!DocFileMap.empty())
             DocFileMap[FileInfo(newDoc->FileName.getValue()).filePath()] = newDoc;
         return newDoc;
     }
@@ -1014,7 +998,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 }
 
-Document* Application::getActiveDocument(void) const
+Document* Application::getActiveDocument() const
 {
     return _pActiveDoc;
 }
@@ -1213,12 +1197,12 @@ bool Application::hasLinksTo(const DocumentObject *obj) const {
     return !getLinksTo(obj,0,1).empty();
 }
 
-ParameterManager & Application::GetSystemParameter(void)
+ParameterManager & Application::GetSystemParameter()
 {
     return *_pcSysParamMngr;
 }
 
-ParameterManager & Application::GetUserParameter(void)
+ParameterManager & Application::GetUserParameter()
 {
     return *_pcUserParamMngr;
 }
@@ -1232,7 +1216,7 @@ ParameterManager * Application::GetParameterSet(const char* sName) const
         return nullptr;
 }
 
-const std::map<std::string,ParameterManager *> & Application::GetParameterSetList(void) const
+const std::map<std::string,ParameterManager *> & Application::GetParameterSetList() const
 {
     return mpcPramManager;
 }
@@ -1359,7 +1343,7 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
     return types;
 }
 
-std::vector<std::string> Application::getImportTypes(void) const
+std::vector<std::string> Application::getImportTypes() const
 {
     std::vector<std::string> types;
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
@@ -1390,7 +1374,7 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
     return moduleFilter;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(void) const
+std::map<std::string, std::string> Application::getImportFilters() const
 {
     std::map<std::string, std::string> filter;
     for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
@@ -1482,7 +1466,7 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
     return types;
 }
 
-std::vector<std::string> Application::getExportTypes(void) const
+std::vector<std::string> Application::getExportTypes() const
 {
     std::vector<std::string> types;
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
@@ -1513,7 +1497,7 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
     return moduleFilter;
 }
 
-std::map<std::string, std::string> Application::getExportFilters(void) const
+std::map<std::string, std::string> Application::getExportFilters() const
 {
     std::map<std::string, std::string> filter;
     for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
@@ -1649,25 +1633,25 @@ void Application::cleanupUnits()
     }
 }
 
-void Application::destruct(void)
+void Application::destruct()
 {
     // saving system parameter
-    Console().Log("Saving system parameter...\n");
+    Base::Console().Log("Saving system parameter...\n");
     _pcSysParamMngr->SaveDocument();
     // saving the User parameter
-    Console().Log("Saving system parameter...done\n");
-    Console().Log("Saving user parameter...\n");
+    Base::Console().Log("Saving system parameter...done\n");
+    Base::Console().Log("Saving user parameter...\n");
     _pcUserParamMngr->SaveDocument();
-    Console().Log("Saving user parameter...done\n");
+    Base::Console().Log("Saving user parameter...done\n");
 
     // now save all other parameter files
     std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
     for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
             if (it->second->HasSerializer()) {
-                Console().Log("Saving %s...\n", it->first.c_str());
+                Base::Console().Log("Saving %s...\n", it->first.c_str());
                 it->second->SaveDocument();
-                Console().Log("Saving %s...done\n", it->first.c_str());
+                Base::Console().Log("Saving %s...done\n", it->first.c_str());
             }
         }
 
@@ -1693,21 +1677,21 @@ void Application::destruct(void)
 
     Base::Interpreter().finalize();
 
-    ScriptFactorySingleton::Destruct();
-    InterpreterSingleton::Destruct();
+    Base::ScriptFactorySingleton::Destruct();
+    Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
     ParameterManager::Terminate();
 }
 
-void Application::destructObserver(void)
+void Application::destructObserver()
 {
     if ( _pConsoleObserverFile ) {
-        Console().DetachObserver(_pConsoleObserverFile);
+        Base::Console().DetachObserver(_pConsoleObserverFile);
         delete _pConsoleObserverFile;
         _pConsoleObserverFile = nullptr;
     }
     if ( _pConsoleObserverStd ) {
-        Console().DetachObserver(_pConsoleObserverStd);
+        Base::Console().DetachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
         _pConsoleObserverStd = nullptr;
     }
@@ -1905,185 +1889,193 @@ void Application::initTypes()
     Data::Segment                   ::init();
 
     // Properties
-    App ::Property                  ::init();
-    App ::PropertyContainer         ::init();
-    App ::PropertyLists             ::init();
-    App ::PropertyBool              ::init();
-    App ::PropertyBoolList          ::init();
-    App ::PropertyFloat             ::init();
-    App ::PropertyFloatList         ::init();
-    App ::PropertyFloatConstraint   ::init();
-    App ::PropertyPrecision         ::init();
-    App ::PropertyQuantity          ::init();
-    App ::PropertyQuantityConstraint::init();
-    App ::PropertyAngle             ::init();
-    App ::PropertyDistance          ::init();
-    App ::PropertyLength            ::init();
-    App ::PropertyArea              ::init();
-    App ::PropertyVolume            ::init();
-    App ::PropertyFrequency         ::init();
-    App ::PropertySpeed             ::init();
-    App ::PropertyAcceleration      ::init();
-    App ::PropertyForce             ::init();
-    App ::PropertyPressure          ::init();
-    App ::PropertyElectricPotential ::init();
-    App ::PropertyVacuumPermittivity::init();
-    App ::PropertyInteger           ::init();
-    App ::PropertyIntegerConstraint ::init();
-    App ::PropertyPercent           ::init();
-    App ::PropertyEnumeration       ::init();
-    App ::PropertyIntegerList       ::init();
-    App ::PropertyIntegerSet        ::init();
-    App ::PropertyMap               ::init();
-    App ::PropertyString            ::init();
-    App ::PropertyPersistentObject  ::init();
-    App ::PropertyUUID              ::init();
-    App ::PropertyFont              ::init();
-    App ::PropertyStringList        ::init();
-    App ::PropertyLinkBase          ::init();
-    App ::PropertyLinkListBase      ::init();
-    App ::PropertyLink              ::init();
-    App ::PropertyLinkChild         ::init();
-    App ::PropertyLinkGlobal        ::init();
-    App ::PropertyLinkHidden        ::init();
-    App ::PropertyLinkSub           ::init();
-    App ::PropertyLinkSubChild      ::init();
-    App ::PropertyLinkSubGlobal     ::init();
-    App ::PropertyLinkSubHidden     ::init();
-    App ::PropertyLinkList          ::init();
-    App ::PropertyLinkListChild     ::init();
-    App ::PropertyLinkListGlobal    ::init();
-    App ::PropertyLinkListHidden    ::init();
-    App ::PropertyLinkSubList       ::init();
-    App ::PropertyLinkSubListChild  ::init();
-    App ::PropertyLinkSubListGlobal ::init();
-    App ::PropertyLinkSubListHidden ::init();
-    App ::PropertyXLink             ::init();
-    App ::PropertyXLinkSub          ::init();
-    App ::PropertyXLinkSubList      ::init();
-    App ::PropertyXLinkList         ::init();
-    App ::PropertyXLinkContainer    ::init();
-    App ::PropertyMatrix            ::init();
-    App ::PropertyVector            ::init();
-    App ::PropertyVectorDistance    ::init();
-    App ::PropertyPosition          ::init();
-    App ::PropertyDirection         ::init();
-    App ::PropertyVectorList        ::init();
-    App ::PropertyPlacement         ::init();
-    App ::PropertyPlacementList     ::init();
-    App ::PropertyPlacementLink     ::init();
-    App ::PropertyRotation          ::init();
-    App ::PropertyGeometry          ::init();
-    App ::PropertyComplexGeoData    ::init();
-    App ::PropertyColor             ::init();
-    App ::PropertyColorList         ::init();
-    App ::PropertyMaterial          ::init();
-    App ::PropertyMaterialList      ::init();
-    App ::PropertyPath              ::init();
-    App ::PropertyFile              ::init();
-    App ::PropertyFileIncluded      ::init();
-    App ::PropertyPythonObject      ::init();
-    App ::PropertyExpressionContainer  ::init();
-    App ::PropertyExpressionEngine  ::init();
+    // Note: the order matters
+    App::Property                   ::init();
+    App::PropertyContainer          ::init();
+    App::PropertyLists              ::init();
+    App::PropertyBool               ::init();
+    App::PropertyBoolList           ::init();
+    App::PropertyFloat              ::init();
+    App::PropertyFloatList          ::init();
+    App::PropertyFloatConstraint    ::init();
+    App::PropertyPrecision          ::init();
+    App::PropertyQuantity           ::init();
+    App::PropertyQuantityConstraint ::init();
+    App::PropertyAngle              ::init();
+    App::PropertyDistance           ::init();
+    App::PropertyLength             ::init();
+    App::PropertyArea               ::init();
+    App::PropertyVolume             ::init();
+    App::PropertyFrequency          ::init();
+    App::PropertySpeed              ::init();
+    App::PropertyAcceleration       ::init();
+    App::PropertyForce              ::init();
+    App::PropertyPressure           ::init();
+    App::PropertyElectricPotential  ::init();
+    App::PropertyVacuumPermittivity ::init();
+    App::PropertyInteger            ::init();
+    App::PropertyIntegerConstraint  ::init();
+    App::PropertyPercent            ::init();
+    App::PropertyEnumeration        ::init();
+    App::PropertyIntegerList        ::init();
+    App::PropertyIntegerSet         ::init();
+    App::PropertyMap                ::init();
+    App::PropertyString             ::init();
+    App::PropertyPersistentObject   ::init();
+    App::PropertyUUID               ::init();
+    App::PropertyFont               ::init();
+    App::PropertyStringList         ::init();
+    App::PropertyLinkBase           ::init();
+    App::PropertyLinkListBase       ::init();
+    App::PropertyLink               ::init();
+    App::PropertyLinkChild          ::init();
+    App::PropertyLinkGlobal         ::init();
+    App::PropertyLinkHidden         ::init();
+    App::PropertyLinkSub            ::init();
+    App::PropertyLinkSubChild       ::init();
+    App::PropertyLinkSubGlobal      ::init();
+    App::PropertyLinkSubHidden      ::init();
+    App::PropertyLinkList           ::init();
+    App::PropertyLinkListChild      ::init();
+    App::PropertyLinkListGlobal     ::init();
+    App::PropertyLinkListHidden     ::init();
+    App::PropertyLinkSubList        ::init();
+    App::PropertyLinkSubListChild   ::init();
+    App::PropertyLinkSubListGlobal  ::init();
+    App::PropertyLinkSubListHidden  ::init();
+    App::PropertyXLink              ::init();
+    App::PropertyXLinkSub           ::init();
+    App::PropertyXLinkSubList       ::init();
+    App::PropertyXLinkList          ::init();
+    App::PropertyXLinkContainer     ::init();
+    App::PropertyMatrix             ::init();
+    App::PropertyVector             ::init();
+    App::PropertyVectorDistance     ::init();
+    App::PropertyPosition           ::init();
+    App::PropertyDirection          ::init();
+    App::PropertyVectorList         ::init();
+    App::PropertyPlacement          ::init();
+    App::PropertyPlacementList      ::init();
+    App::PropertyPlacementLink      ::init();
+    App::PropertyRotation           ::init();
+    App::PropertyGeometry           ::init();
+    App::PropertyComplexGeoData     ::init();
+    App::PropertyColor              ::init();
+    App::PropertyColorList          ::init();
+    App::PropertyMaterial           ::init();
+    App::PropertyMaterialList       ::init();
+    App::PropertyPath               ::init();
+    App::PropertyFile               ::init();
+    App::PropertyFileIncluded       ::init();
+    App::PropertyPythonObject       ::init();
+    App::PropertyExpressionContainer::init();
+    App::PropertyExpressionEngine   ::init();
 
     // Extension classes
-    App ::Extension                     ::init();
-    App ::ExtensionContainer            ::init();
-    App ::DocumentObjectExtension       ::init();
-    App ::GroupExtension                ::init();
-    App ::GroupExtensionPython          ::init();
-    App ::GeoFeatureGroupExtension      ::init();
-    App ::GeoFeatureGroupExtensionPython::init();
-    App ::OriginGroupExtension          ::init();
-    App ::OriginGroupExtensionPython    ::init();
-    App ::LinkBaseExtension             ::init();
-    App ::LinkBaseExtensionPython       ::init();
-    App ::LinkExtension                 ::init();
-    App ::LinkExtensionPython           ::init();
+    App::Extension                     ::init();
+    App::ExtensionContainer            ::init();
+    App::DocumentObjectExtension       ::init();
+    App::GroupExtension                ::init();
+    App::GroupExtensionPython          ::init();
+    App::GeoFeatureGroupExtension      ::init();
+    App::GeoFeatureGroupExtensionPython::init();
+    App::OriginGroupExtension          ::init();
+    App::OriginGroupExtensionPython    ::init();
+    App::LinkBaseExtension             ::init();
+    App::LinkBaseExtensionPython       ::init();
+    App::LinkExtension                 ::init();
+    App::LinkExtensionPython           ::init();
 
     // Document classes
-    App ::TransactionalObject       ::init();
-    App ::DocumentObject            ::init();
-    App ::GeoFeature                ::init();
-    App ::FeatureTest               ::init();
-    App ::FeatureTestException      ::init();
-    App ::FeaturePython             ::init();
-    App ::GeometryPython            ::init();
-    App ::Document                  ::init();
-    App ::DocumentObjectGroup       ::init();
-    App ::DocumentObjectGroupPython ::init();
-    App ::DocumentObjectFileIncluded::init();
-    App ::InventorObject            ::init();
-    App ::VRMLObject                ::init();
-    App ::Annotation                ::init();
-    App ::AnnotationLabel           ::init();
-    App ::MeasureDistance           ::init();
-    App ::MaterialObject            ::init();
-    App ::MaterialObjectPython      ::init();
-    App ::TextDocument              ::init();
-    App ::Placement                 ::init();
-    App ::PlacementPython           ::init();
-    App ::OriginFeature             ::init();
-    App ::Plane                     ::init();
-    App ::Line                      ::init();
-    App ::Part                      ::init();
-    App ::Origin                    ::init();
-    App ::Link                      ::init();
-    App ::LinkPython                ::init();
-    App ::LinkElement               ::init();
-    App ::LinkElementPython         ::init();
-    App ::LinkGroup                 ::init();
-    App ::LinkGroupPython           ::init();
+    App::TransactionalObject       ::init();
+    App::DocumentObject            ::init();
+    App::GeoFeature                ::init();
+
+    // Test features
+    App::FeatureTest               ::init();
+    App::FeatureTestException      ::init();
+    App::FeatureTestColumn         ::init();
+    App::FeatureTestPlacement      ::init();
+    App::FeatureTestAttribute      ::init();
+
+    // Feature class
+    App::FeaturePython             ::init();
+    App::GeometryPython            ::init();
+    App::Document                  ::init();
+    App::DocumentObjectGroup       ::init();
+    App::DocumentObjectGroupPython ::init();
+    App::DocumentObjectFileIncluded::init();
+    App::InventorObject            ::init();
+    App::VRMLObject                ::init();
+    App::Annotation                ::init();
+    App::AnnotationLabel           ::init();
+    App::MeasureDistance           ::init();
+    App ::MaterialObject           ::init();
+    App::MaterialObjectPython      ::init();
+    App::TextDocument              ::init();
+    App::Placement                 ::init();
+    App::PlacementPython           ::init();
+    App::OriginFeature             ::init();
+    App::Plane                     ::init();
+    App::Line                      ::init();
+    App::Part                      ::init();
+    App::Origin                    ::init();
+    App::Link                      ::init();
+    App::LinkPython                ::init();
+    App::LinkElement               ::init();
+    App::LinkElementPython         ::init();
+    App::LinkGroup                 ::init();
+    App::LinkGroupPython           ::init();
 
     // Expression classes
-    App ::Expression                ::init();
-    App ::UnitExpression            ::init();
-    App ::NumberExpression          ::init();
-    App ::ConstantExpression        ::init();
-    App ::OperatorExpression        ::init();
-    App ::VariableExpression        ::init();
-    App ::ConditionalExpression     ::init();
-    App ::StringExpression          ::init();
-    App ::FunctionExpression        ::init();
-    App ::RangeExpression           ::init();
-    App ::PyObjectExpression        ::init();
+    App::Expression                ::init();
+    App::UnitExpression            ::init();
+    App::NumberExpression          ::init();
+    App::ConstantExpression        ::init();
+    App::OperatorExpression        ::init();
+    App::VariableExpression        ::init();
+    App::ConditionalExpression     ::init();
+    App::StringExpression          ::init();
+    App::FunctionExpression        ::init();
+    App::RangeExpression           ::init();
+    App::PyObjectExpression        ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
-    new ExceptionProducer<Base::AbortException>;
-    new ExceptionProducer<Base::XMLBaseException>;
-    new ExceptionProducer<Base::XMLParseException>;
-    new ExceptionProducer<Base::XMLAttributeError>;
-    new ExceptionProducer<Base::FileException>;
-    new ExceptionProducer<Base::FileSystemError>;
-    new ExceptionProducer<Base::BadFormatError>;
-    new ExceptionProducer<Base::MemoryException>;
-    new ExceptionProducer<Base::AccessViolation>;
-    new ExceptionProducer<Base::AbnormalProgramTermination>;
-    new ExceptionProducer<Base::UnknownProgramOption>;
-    new ExceptionProducer<Base::ProgramInformation>;
-    new ExceptionProducer<Base::TypeError>;
-    new ExceptionProducer<Base::ValueError>;
-    new ExceptionProducer<Base::IndexError>;
-    new ExceptionProducer<Base::NameError>;
-    new ExceptionProducer<Base::ImportError>;
-    new ExceptionProducer<Base::AttributeError>;
-    new ExceptionProducer<Base::RuntimeError>;
-    new ExceptionProducer<Base::BadGraphError>;
-    new ExceptionProducer<Base::NotImplementedError>;
-    new ExceptionProducer<Base::ZeroDivisionError>;
-    new ExceptionProducer<Base::ReferenceError>;
-    new ExceptionProducer<Base::ExpressionError>;
-    new ExceptionProducer<Base::ParserError>;
-    new ExceptionProducer<Base::UnicodeError>;
-    new ExceptionProducer<Base::OverflowError>;
-    new ExceptionProducer<Base::UnderflowError>;
-    new ExceptionProducer<Base::UnitsMismatchError>;
-    new ExceptionProducer<Base::CADKernelError>;
-    new ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::AbortException>;
+    new Base::ExceptionProducer<Base::XMLBaseException>;
+    new Base::ExceptionProducer<Base::XMLParseException>;
+    new Base::ExceptionProducer<Base::XMLAttributeError>;
+    new Base::ExceptionProducer<Base::FileException>;
+    new Base::ExceptionProducer<Base::FileSystemError>;
+    new Base::ExceptionProducer<Base::BadFormatError>;
+    new Base::ExceptionProducer<Base::MemoryException>;
+    new Base::ExceptionProducer<Base::AccessViolation>;
+    new Base::ExceptionProducer<Base::AbnormalProgramTermination>;
+    new Base::ExceptionProducer<Base::UnknownProgramOption>;
+    new Base::ExceptionProducer<Base::ProgramInformation>;
+    new Base::ExceptionProducer<Base::TypeError>;
+    new Base::ExceptionProducer<Base::ValueError>;
+    new Base::ExceptionProducer<Base::IndexError>;
+    new Base::ExceptionProducer<Base::NameError>;
+    new Base::ExceptionProducer<Base::ImportError>;
+    new Base::ExceptionProducer<Base::AttributeError>;
+    new Base::ExceptionProducer<Base::RuntimeError>;
+    new Base::ExceptionProducer<Base::BadGraphError>;
+    new Base::ExceptionProducer<Base::NotImplementedError>;
+    new Base::ExceptionProducer<Base::ZeroDivisionError>;
+    new Base::ExceptionProducer<Base::ReferenceError>;
+    new Base::ExceptionProducer<Base::ExpressionError>;
+    new Base::ExceptionProducer<Base::ParserError>;
+    new Base::ExceptionProducer<Base::UnicodeError>;
+    new Base::ExceptionProducer<Base::OverflowError>;
+    new Base::ExceptionProducer<Base::UnderflowError>;
+    new Base::ExceptionProducer<Base::UnitsMismatchError>;
+    new Base::ExceptionProducer<Base::CADKernelError>;
+    new Base::ExceptionProducer<Base::RestoreError>;
 }
 
 namespace {
@@ -2219,7 +2211,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
             args.back() += av[i];
         }
         else {
-            args.push_back(av[i]);
+            args.emplace_back(av[i]);
         }
         if (strcmp(av[i],"-style") == 0) {
             merge = true;
@@ -2261,12 +2253,12 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     catch (const std::exception& e) {
         std::stringstream str;
         str << e.what() << endl << endl << visible << endl;
-        throw UnknownProgramOption(str.str());
+        throw Base::UnknownProgramOption(str.str());
     }
     catch (...) {
         std::stringstream str;
         str << "Wrong or unknown option, bailing out!" << endl << endl << visible << endl;
-        throw UnknownProgramOption(str.str());
+        throw Base::UnknownProgramOption(str.str());
     }
 
     if (vm.count("help")) {
@@ -2489,7 +2481,7 @@ void Application::initConfig(int argc, char ** argv)
     // init python
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
-    const char* pythonpath = Interpreter().init(argc,argv);
+    const char* pythonpath = Base::Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;
     else
@@ -2500,8 +2492,8 @@ void Application::initConfig(int argc, char ** argv)
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    _pConsoleObserverStd = new ConsoleObserverStd();
-    Console().AttachObserver(_pConsoleObserverStd);
+    _pConsoleObserverStd = new Base::ConsoleObserverStd();
+    Base::Console().AttachObserver(_pConsoleObserverStd);
     if (mConfig["LoggingConsole"] != "1") {
         _pConsoleObserverStd->bMsg = false;
         _pConsoleObserverStd->bLog = false;
@@ -2509,12 +2501,12 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverStd->bErr = false;
     }
     if (mConfig["Verbose"] == "Strict")
-        Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
+        Base::Console().UnsetConsoleMode(Base::ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
-        _pConsoleObserverFile = new ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
-        Console().AttachObserver(_pConsoleObserverFile);
+        _pConsoleObserverFile = new Base::ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
+        Base::Console().AttachObserver(_pConsoleObserverFile);
     }
     else
         _pConsoleObserverFile = nullptr;
@@ -2524,14 +2516,14 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (!(mConfig["Verbose"] == "Strict"))
-            Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+            Base::Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
                               mConfig["BuildVersionMinor"].c_str(),
@@ -2625,23 +2617,24 @@ void Application::SaveEnv(const char* s)
         mConfig[s] = c;
 }
 
-void Application::initApplication(void)
+void Application::initApplication()
 {
     // interpreter and Init script ==========================================================
     // register scripts
-    new ScriptProducer( "CMakeVariables", CMakeVariables );
-    new ScriptProducer( "FreeCADInit",    FreeCADInit    );
-    new ScriptProducer( "FreeCADTest",    FreeCADTest    );
+    new Base::ScriptProducer( "CMakeVariables", CMakeVariables );
+    new Base::ScriptProducer( "FreeCADInit",    FreeCADInit    );
+    new Base::ScriptProducer( "FreeCADTest",    FreeCADTest    );
 
     // creating the application
-    if (!(mConfig["Verbose"] == "Strict")) Console().Log("Create Application\n");
+    if (!(mConfig["Verbose"] == "Strict"))
+        Base::Console().Log("Create Application\n");
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
-    UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
 
     // In case we are using fractional inches, get user setting for min unit
     int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
@@ -2649,14 +2642,14 @@ void Application::initApplication(void)
 
 
 #if defined (_DEBUG)
-    Console().Log("Application is built with debug information\n");
+    Base::Console().Log("Application is built with debug information\n");
 #endif
 
     // starting the init script
-    Console().Log("Run App init script\n");
+    Base::Console().Log("Run App init script\n");
     try {
-        Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
-        Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -2712,7 +2705,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
                     processed.push_back(*it);
                 }
-                catch (const PyException&) {
+                catch (const Base::PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
                     processed.push_back(*it);
@@ -2733,7 +2726,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
-                    Console().Warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
         }
@@ -2741,17 +2734,17 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
 
     return processed; // successfully processed files
 }
 
-void Application::processCmdLineFiles(void)
+void Application::processCmdLineFiles()
 {
     // process files passed to command line
     std::list<std::string> files = getCmdLineFiles();
@@ -2766,7 +2759,7 @@ void Application::processCmdLineFiles(void)
         // then execute it. This is to behave like the standard Python executable.
         Base::FileInfo file(files.front());
         if (!file.exists()) {
-            Interpreter().runString(files.front().c_str());
+            Base::Interpreter().runString(files.front().c_str());
             mConfig["RunMode"] = "Exit";
         }
     }
@@ -2788,14 +2781,14 @@ void Application::processCmdLineFiles(void)
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Console().Warning("File format not supported: %s \n", output.c_str());
+                Base::Console().Warning("File format not supported: %s \n", output.c_str());
             }
         }
         catch (const Base::Exception& e) {
-            Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
         }
         catch (...) {
-            Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
         }
     }
 }
@@ -2807,19 +2800,19 @@ void Application::runApplication()
 
     if (mConfig["RunMode"] == "Cmd") {
         // Run the commandline interface
-        Interpreter().runCommandLine("FreeCAD Console mode");
+        Base::Interpreter().runCommandLine("FreeCAD Console mode");
     }
     else if (mConfig["RunMode"] == "Internal") {
         // run internal script
-        Console().Log("Running internal script:\n");
-        Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
+        Base::Console().Log("Running internal script:\n");
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out
-        Console().Log("Exiting on purpose\n");
+        Base::Console().Log("Exiting on purpose\n");
     }
     else {
-        Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
+        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
     }
 }
 
@@ -2827,14 +2820,14 @@ void Application::logStatus()
 {
     std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Console().Log("Time = %s\n", time_str.c_str());
+    Base::Console().Log("Time = %s\n", time_str.c_str());
 
     for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
-        Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
+        Base::Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
     }
 }
 
-void Application::LoadParameters(void)
+void Application::LoadParameters()
 {
     // Init parameter sets ===========================================================
     //
@@ -2854,10 +2847,10 @@ void Application::LoadParameters(void)
         if (_pcSysParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Console().Warning("   Parameter does not exist, writing initial one\n");
-                Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
-                                  "   configuration.\n");
+                Base::Console().Warning("   Parameter does not exist, writing initial one\n");
+                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                                        "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
+                                        "   configuration.\n");
             }
         }
     }
@@ -2888,10 +2881,10 @@ void Application::LoadParameters(void)
 
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Console().Warning("   User settings do not exist, writing initial one\n");
-                Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or your configuration was deleted or moved. The system defaults\n"
-                                  "   will be automatically generated for you.\n");
+                Base::Console().Warning("   User settings do not exist, writing initial one\n");
+                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                                        "   or your configuration was deleted or moved. The system defaults\n"
+                                        "   will be automatically generated for you.\n");
             }
         }
     }

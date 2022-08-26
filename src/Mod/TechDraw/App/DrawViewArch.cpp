@@ -52,7 +52,7 @@ const char* DrawViewArch::RenderModeEnums[]= {"Wireframe",
                                               "Coin mono",
                                               nullptr};
 
-DrawViewArch::DrawViewArch(void)
+DrawViewArch::DrawViewArch()
 {
     static const char *group = "Arch view";
 
@@ -75,28 +75,29 @@ DrawViewArch::~DrawViewArch()
 {
 }
 
+//NOTE: DocumentObject::mustExecute returns 1/0 and not true/false
 short DrawViewArch::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result = (Source.isTouched() ||
-                AllOn.isTouched() ||
-                RenderMode.isTouched() ||
-                ShowHidden.isTouched() ||
-                ShowFill.isTouched() ||
-                LineWidth.isTouched() ||
-                FontSize.isTouched() ||
-                CutLineWidth.isTouched() ||
-                JoinArch.isTouched());
-    }
-    if ((bool) result) {
-        return result;
+        if (
+            Source.isTouched() ||
+            AllOn.isTouched() ||
+            RenderMode.isTouched() ||
+            ShowHidden.isTouched() ||
+            ShowFill.isTouched() ||
+            LineWidth.isTouched() ||
+            FontSize.isTouched() ||
+            CutLineWidth.isTouched() ||
+            JoinArch.isTouched()
+        ) {
+            return 1;
+        }
     }
     return DrawViewSymbol::mustExecute();
 }
 
 
-App::DocumentObjectExecReturn *DrawViewArch::execute(void)
+App::DocumentObjectExecReturn *DrawViewArch::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -106,7 +107,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
     if (sourceObj) {
         //if (sourceObj is not ArchSection) return
         App::Property* proxy = sourceObj->getPropertyByName("Proxy");
-        if (proxy == nullptr) {
+        if (!proxy) {
             Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
             //this is definitely not an ArchSection
             return DrawView::execute();
@@ -139,11 +140,11 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
                                           FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
     }
-//    requestPaint();
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
-std::string DrawViewArch::getSVGHead(void)
+std::string DrawViewArch::getSVGHead()
 {
     std::string head = std::string("<svg\\n") +
                        std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\\n") +
@@ -151,8 +152,7 @@ std::string DrawViewArch::getSVGHead(void)
     return head;
 }
 
-std::string DrawViewArch::getSVGTail(void)
+std::string DrawViewArch::getSVGTail()
 {
-    std::string tail = "\\n</svg>";
-    return tail;
+    return "\\n</svg>";
 }

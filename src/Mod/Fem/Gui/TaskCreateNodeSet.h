@@ -52,15 +52,15 @@ class TaskCreateNodeSet : public Gui::TaskView::TaskBox, public Gui::SelectionOb
     Q_OBJECT
 
 public:
-    TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = nullptr);
-    ~TaskCreateNodeSet();
+    explicit TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = nullptr);
+    ~TaskCreateNodeSet() override;
 
     std::set<long> tempSet;
     ViewProviderFemMesh * MeshViewProvider;
 
 private Q_SLOTS:
-    void Poly(void);
-    void Pick(void);
+    void Poly();
+    void Pick();
     void SwitchMethod(int Value);
 
 protected:
@@ -69,7 +69,7 @@ protected:
     void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj,bool);
 
 protected:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     enum selectionModes { none, PickElement} selectionMode;
 
 private:

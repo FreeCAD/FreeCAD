@@ -48,12 +48,12 @@ class TaskPolarPatternParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
+    explicit TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
-    virtual ~TaskPolarPatternParameters();
+    ~TaskPolarPatternParameters() override;
 
-    void apply();
+    void apply() override;
 
 private Q_SLOTS:
     void onUpdateViewTimer();
@@ -62,20 +62,20 @@ private Q_SLOTS:
     void onAngle(const double a);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
+    void onFeatureDeleted() override;
 
 protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
-    virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
+    void addObject(App::DocumentObject*) override;
+    void removeObject(App::DocumentObject*) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void clearButtons() override;
     void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
-    const std::string getStdAxis(void) const;
-    const std::string getAxis(void) const;
-    bool getReverse(void) const;
-    double getAngle(void) const;
-    unsigned getOccurrences(void) const;
+    const std::string getStdAxis() const;
+    const std::string getAxis() const;
+    bool getReverse() const;
+    double getAngle() const;
+    unsigned getOccurrences() const;
 
 private:
     void connectSignals();
@@ -97,8 +97,8 @@ class TaskDlgPolarPatternParameters : public TaskDlgTransformedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
-    virtual ~TaskDlgPolarPatternParameters() {}
+    explicit TaskDlgPolarPatternParameters(ViewProviderPolarPattern *PolarPatternView);
+    ~TaskDlgPolarPatternParameters() override {}
 };
 
 } //namespace PartDesignGui

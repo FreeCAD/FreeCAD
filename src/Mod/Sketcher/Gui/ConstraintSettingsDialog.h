@@ -37,8 +37,8 @@ class ConstraintSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    ConstraintSettingsDialog(void);
-    ~ConstraintSettingsDialog();
+    ConstraintSettingsDialog();
+    ~ConstraintSettingsDialog() override;
 
 Q_SIGNALS:
     void emit_filterInternalAlignment_stateChanged(int);
@@ -46,8 +46,8 @@ Q_SIGNALS:
     void emit_visualisationTrackingFilter_stateChanged(int);
 
 public Q_SLOTS:
-    void accept();
-    void reject();
+    void accept() override;
+    void reject() override;
     void on_filterInternalAlignment_stateChanged(int state);
     void on_extendedInformation_stateChanged(int state);
     void on_visualisationTrackingFilter_stateChanged(int state);

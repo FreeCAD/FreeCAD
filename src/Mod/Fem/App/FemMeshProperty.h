@@ -37,11 +37,11 @@ namespace Fem
  */
 class FemExport PropertyFemMesh : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyFemMesh();
-    ~PropertyFemMesh();
+    ~PropertyFemMesh() override;
 
     /** @name Getter/setter */
     //@{
@@ -49,41 +49,41 @@ public:
     /// set the FemMesh shape
     void setValue(const FemMesh&);
     /// does nothing, for add property macro
-    void setValue(void){}
+    void setValue(){}
     /// get the FemMesh shape
-    const FemMesh &getValue(void) const;
-    const Data::ComplexGeoData* getComplexData() const;
+    const FemMesh &getValue() const;
+    const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
 
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const;
+    Base::BoundBox3d getBoundingBox() const override;
     /// Set the placement of the geometry
-    void setTransform(const Base::Matrix4D& rclTrf);
+    void setTransform(const Base::Matrix4D& rclTrf) override;
     /// Get the placement of the geometry
-    Base::Matrix4D getTransform() const;
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    Base::Matrix4D getTransform() const override;
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
-    const char* getEditorName(void) const { return "FemGui::PropertyFemMeshItem"; }
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
+    const char* getEditorName() const override { return "FemGui::PropertyFemMeshItem"; }
     //@}
 
 private:

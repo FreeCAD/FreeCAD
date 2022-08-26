@@ -57,8 +57,8 @@ class GuiExport TextEdit : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    TextEdit(QWidget *parent = nullptr);
-    virtual ~TextEdit();
+    explicit TextEdit(QWidget *parent = nullptr);
+    ~TextEdit() override;
 
 private Q_SLOTS:
     void complete();
@@ -69,7 +69,7 @@ Q_SIGNALS:
     void findPrevious();
 
 protected:
-    void keyPressEvent(QKeyEvent *);
+    void keyPressEvent(QKeyEvent *) override;
 
 private:
     void createListBox();
@@ -86,11 +86,11 @@ class GuiExport TextEditor : public TextEdit, public WindowParameter
     Q_OBJECT
 
 public:
-    TextEditor(QWidget *parent = nullptr);
-    ~TextEditor();
+    explicit TextEditor(QWidget *parent = nullptr);
+    ~TextEditor() override;
     void setSyntaxHighlighter(SyntaxHighlighter*);
 
-    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
+    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
 
     void lineNumberAreaPaintEvent(QPaintEvent* );
     int lineNumberAreaWidth();
@@ -101,10 +101,10 @@ private Q_SLOTS:
     void highlightCurrentLine();
 
 protected:
-    void keyPressEvent (QKeyEvent * e);
+    void keyPressEvent (QKeyEvent * e) override;
     /** Draw a beam in the line where the cursor is. */
-    void paintEvent (QPaintEvent * e);
-    void resizeEvent(QResizeEvent* e);
+    void paintEvent (QPaintEvent * e) override;
+    void resizeEvent(QResizeEvent* e) override;
     QWidget* getMarker() const
     { return lineNumberArea; }
     virtual void drawMarker(int line, int x, int y, QPainter*);
@@ -122,13 +122,13 @@ class LineMarker : public QWidget
     Q_OBJECT
 
 public:
-    LineMarker(TextEditor* editor);
-    virtual ~LineMarker();
+    explicit LineMarker(TextEditor* editor);
+    ~LineMarker() override;
 
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 protected:
-    void paintEvent (QPaintEvent *);
+    void paintEvent (QPaintEvent *) override;
 
 private:
     TextEditor *textEditor;
@@ -145,14 +145,14 @@ class CompletionList : public QListWidget
 
 public:
     /// Construction
-    CompletionList(QPlainTextEdit* parent);
+    explicit CompletionList(QPlainTextEdit* parent);
     /// Destruction
-    ~CompletionList();
+    ~CompletionList() override;
 
     void findCurrentWord(const QString&);
 
 protected:
-    bool eventFilter(QObject *, QEvent *);
+    bool eventFilter(QObject *, QEvent *) override;
 
 private Q_SLOTS:
     void completionItem(QListWidgetItem *item);

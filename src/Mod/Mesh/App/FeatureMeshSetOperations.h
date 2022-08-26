@@ -42,7 +42,7 @@ namespace Mesh
  */
 class SetOperations : public Mesh::Feature
 {
-    PROPERTY_HEADER(Mesh::SetOperations);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::SetOperations);
 
 public:
     SetOperations();
@@ -54,8 +54,8 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute();
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 };
 

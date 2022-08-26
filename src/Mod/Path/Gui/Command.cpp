@@ -73,7 +73,7 @@ void CmdPathArea::activated(int iMsg)
     {
         const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
         const std::vector<std::string> &subnames = selObj.getSubNames();
-        if(addView && areaName.size()) addView = false;
+        if(addView && !areaName.empty()) addView = false;
 
         if(subnames.empty()) {
             if(addView && pcObj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId()))
@@ -102,7 +102,7 @@ void CmdPathArea::activated(int iMsg)
             sources << "FreeCAD.activeDocument()." << sub_fname << ",";
         }
     }
-    if(addView && areaName.size()) {
+    if(addView && !areaName.empty()) {
         std::string FeatName = getUniqueObjectName("FeatureAreaView");
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Area View"));
         doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureAreaView','%s')",FeatName.c_str());
@@ -123,7 +123,7 @@ void CmdPathArea::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPathArea::isActive(void)
+bool CmdPathArea::isActive()
 {
     return hasActiveDocument();
 }
@@ -162,7 +162,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         const Part::Feature *pcObj = static_cast<Part::Feature*>(selObj.getObject());
         if(subnames.empty()) {
             if(pcObj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId()))  {
-                if(areaName.size()){
+                if(!areaName.empty()){
                     Base::Console().Error("Please select one FeatureArea only\n");
                     return;
                 }
@@ -174,7 +174,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
                 return;
             }
         }
-        if(planeName.size()){
+        if(!planeName.empty()){
             Base::Console().Error("Please select one shape object for plane only\n");
             return;
         }else{
@@ -210,7 +210,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPathAreaWorkplane::isActive(void)
+bool CmdPathAreaWorkplane::isActive()
 {
     return !getSelection().getSelectionEx(nullptr, Path::FeatureArea::getClassTypeId()).empty();
 }
@@ -237,7 +237,7 @@ void CmdPathCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    if (Sel.size() > 0) {
+    if (!Sel.empty()) {
         std::ostringstream cmd;
         cmd << "[";
         Path::Feature *pcPathObject;
@@ -263,7 +263,7 @@ void CmdPathCompound::activated(int iMsg)
     }
 }
 
-bool CmdPathCompound::isActive(void)
+bool CmdPathCompound::isActive()
 {
     return hasActiveDocument();
 }
@@ -332,14 +332,14 @@ void CmdPathShape::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPathShape::isActive(void)
+bool CmdPathShape::isActive()
 {
     return hasActiveDocument();
 }
 
 
 
-void CreatePathCommands(void)
+void CreatePathCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPathCompound());

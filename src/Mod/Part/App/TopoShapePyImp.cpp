@@ -67,6 +67,7 @@
 #endif
 
 #include <App/PropertyStandard.h>
+#include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/Rotation.h>
@@ -103,7 +104,7 @@ using namespace Part;
 #endif
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapePy::representation(void) const
+std::string TopoShapePy::representation() const
 {
     std::stringstream str;
     str << "<Shape object at " << getTopoShapePtr() << ">";
@@ -405,7 +406,8 @@ PyObject*  TopoShapePy::exportBinary(PyObject *args)
 
     try {
         // read binary brep
-        std::ofstream str(input, std::ios::out | std::ios::binary);
+        Base::FileInfo fi(input);
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
         getTopoShapePtr()->exportBinary(str);
         str.close();
     }
@@ -516,7 +518,8 @@ PyObject*  TopoShapePy::importBinary(PyObject *args)
 
     try {
         // read binary brep
-        std::ifstream str(input, std::ios::in | std::ios::binary);
+        Base::FileInfo fi(input);
+        Base::ifstream str(fi, std::ios::in | std::ios::binary);
         getTopoShapePtr()->importBinary(str);
         str.close();
     }
@@ -2184,7 +2187,8 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
         gp_Pnt vertex = gp_Pnt(pnt.x,pnt.y,pnt.z);
         if (shape.ShapeType() == TopAbs_VERTEX ||
             shape.ShapeType() == TopAbs_EDGE ||
-            shape.ShapeType() == TopAbs_WIRE) {
+            shape.ShapeType() == TopAbs_WIRE ||
+            shape.ShapeType() == TopAbs_FACE) {
 
             BRepBuilderAPI_MakeVertex mkVertex(vertex);
             BRepExtrema_DistShapeShape extss;
@@ -2811,7 +2815,7 @@ void TopoShapePy::setLocation(Py::Object o)
 }
 #endif
 
-Py::String TopoShapePy::getShapeType(void) const
+Py::String TopoShapePy::getShapeType() const
 {
     TopoDS_Shape sh = getTopoShapePtr()->getShape();
     if (sh.IsNull())
@@ -2852,7 +2856,7 @@ Py::String TopoShapePy::getShapeType(void) const
     return Py::String(name);
 }
 
-Py::String TopoShapePy::getOrientation(void) const
+Py::String TopoShapePy::getOrientation() const
 {
     TopoDS_Shape sh = getTopoShapePtr()->getShape();
     if (sh.IsNull())
@@ -2906,7 +2910,7 @@ void TopoShapePy::setOrientation(Py::String arg)
     getTopoShapePtr()->setShape(sh);
 }
 
-Py::List TopoShapePy::getSubShapes(void) const
+Py::List TopoShapePy::getSubShapes() const
 {
     Py::List ret;
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
@@ -2939,47 +2943,47 @@ template<typename T> Py::List getShapes(const TopoShape* shapePtr)
     return ret;
 }
 
-Py::List TopoShapePy::getFaces(void) const
+Py::List TopoShapePy::getFaces() const
 {
     return getShapes<TopoShapeFacePy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getVertexes(void) const
+Py::List TopoShapePy::getVertexes() const
 {
     return getShapes<TopoShapeVertexPy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getShells(void) const
+Py::List TopoShapePy::getShells() const
 {
     return getShapes<TopoShapeShellPy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getSolids(void) const
+Py::List TopoShapePy::getSolids() const
 {
     return getShapes<TopoShapeSolidPy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getCompSolids(void) const
+Py::List TopoShapePy::getCompSolids() const
 {
     return getShapes<TopoShapeCompSolidPy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getEdges(void) const
+Py::List TopoShapePy::getEdges() const
 {
     return getShapes<TopoShapeEdgePy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getWires(void) const
+Py::List TopoShapePy::getWires() const
 {
     return getShapes<TopoShapeWirePy>(getTopoShapePtr());
 }
 
-Py::List TopoShapePy::getCompounds(void) const
+Py::List TopoShapePy::getCompounds() const
 {
     return getShapes<TopoShapeCompoundPy>(getTopoShapePtr());
 }
 
-Py::Float TopoShapePy::getLength(void) const
+Py::Float TopoShapePy::getLength() const
 {
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (shape.IsNull())
@@ -2989,7 +2993,7 @@ Py::Float TopoShapePy::getLength(void) const
     return Py::Float(props.Mass());
 }
 
-Py::Float TopoShapePy::getArea(void) const
+Py::Float TopoShapePy::getArea() const
 {
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (shape.IsNull())
@@ -2999,7 +3003,7 @@ Py::Float TopoShapePy::getArea(void) const
     return Py::Float(props.Mass());
 }
 
-Py::Float TopoShapePy::getVolume(void) const
+Py::Float TopoShapePy::getVolume() const
 {
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (shape.IsNull())

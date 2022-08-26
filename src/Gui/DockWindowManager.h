@@ -109,7 +109,7 @@ private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
 
     DockWindowManager();
-    ~DockWindowManager();
+    ~DockWindowManager() override;
     static DockWindowManager* _instance;
     struct DockWindowManagerP* d;
 };

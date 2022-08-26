@@ -55,7 +55,7 @@ typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectI
 
 class AppExport ExpressionVisitor {
 public:
-    virtual ~ExpressionVisitor() {}
+    virtual ~ExpressionVisitor() = default;
     virtual void visit(Expression &e) = 0;
     virtual void aboutToChange() {}
     virtual int changed() const { return 0;}
@@ -63,16 +63,16 @@ public:
     virtual App::PropertyLinkBase* getPropertyLink() {return nullptr;}
 
 protected:
-    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &); 
+    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &);
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
     bool relabeledDocument(Expression &e, const std::string &oldName, const std::string &newName);
     bool renameObjectIdentifier(Expression &e,
             const std::map<ObjectIdentifier,ObjectIdentifier> &, const ObjectIdentifier &);
-    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    void collectReplacement(Expression &e, std::map<ObjectIdentifier,ObjectIdentifier> &,
             const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const;
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
     void importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap);
-    void updateLabelReference(Expression &e, App::DocumentObject *obj, 
+    void updateLabelReference(Expression &e, App::DocumentObject *obj,
             const std::string &ref, const char *newLabel);
     void moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount);
     void offsetCells(Expression &e, int rowOffset, int colOffset);
@@ -80,25 +80,25 @@ protected:
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
-    ExpressionModifier(P & _prop)
+    explicit ExpressionModifier(P & _prop)
         : prop(_prop)
         , propLink(Base::freecad_dynamic_cast<App::PropertyLinkBase>(&prop))
         , signaller(_prop,false)
-        , _changed(0) 
+        , _changed(0)
     {}
 
-    virtual ~ExpressionModifier() { }
+    ~ExpressionModifier() override = default;
 
-    virtual void aboutToChange() override{
+    void aboutToChange() override{
         ++_changed;
         signaller.aboutToChange();
     }
 
-    virtual int changed() const override { return _changed; }
+    int changed() const override { return _changed; }
 
-    virtual void reset() override {_changed = 0;}
+    void reset() override {_changed = 0;}
 
-    virtual App::PropertyLinkBase* getPropertyLink() override {return propLink;}
+    App::PropertyLinkBase* getPropertyLink() override {return propLink;}
 
 protected:
     P & prop;
@@ -113,13 +113,13 @@ protected:
   */
 
 class AppExport Expression : public Base::BaseClass {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
-    Expression(const App::DocumentObject * _owner);
+    explicit Expression(const App::DocumentObject * _owner);
 
-    virtual ~Expression();
+    ~Expression() override;
 
     virtual bool isTouched() const { return false; }
 
@@ -150,7 +150,7 @@ public:
 
     ExpressionPtr importSubNames(const std::map<std::string,std::string> &nameMap) const;
 
-    ExpressionPtr updateLabelReference(App::DocumentObject *obj, 
+    ExpressionPtr updateLabelReference(App::DocumentObject *obj,
             const std::string &ref, const char *newLabel) const;
 
     ExpressionPtr replaceObject(const App::DocumentObject *parent,
@@ -164,7 +164,7 @@ public:
 
     class Exception : public Base::Exception {
     public:
-        Exception(const char *sMessage) : Base::Exception(sMessage) { }
+        explicit Exception(const char *sMessage) : Base::Exception(sMessage) { }
     };
 
     App::DocumentObject *  getOwner() const { return owner; }
@@ -186,7 +186,7 @@ public:
 
     bool isSame(const Expression &other, bool checkComment=true) const;
 
-    friend ExpressionVisitor;
+    friend class ExpressionVisitor;
 
 protected:
     virtual bool _isIndexable() const {return false;}
@@ -198,10 +198,10 @@ protected:
     virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) {}
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}
-    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) {return false;}
     virtual void _collectReplacement(std::map<ObjectIdentifier,ObjectIdentifier> &,
-        const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const 
+        const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const
     {
         (void)parent;
         (void)oldObj;

@@ -48,7 +48,7 @@ public:
         Standard = 3
     };
 
-    Mesher(const TopoDS_Shape&);
+    explicit Mesher(const TopoDS_Shape&);
     ~Mesher();
 
     void setMethod(Method m)
@@ -170,8 +170,8 @@ public:
     MeshingOutput();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;

@@ -38,7 +38,7 @@
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
-std::string DrawTilePy::representation(void) const
+std::string DrawTilePy::representation() const
 {
     return std::string("<DrawTile object>");
 }

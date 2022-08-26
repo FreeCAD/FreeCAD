@@ -54,7 +54,7 @@
 using namespace Gui;
 
 // returns a string which represent the object e.g. when printed in python
-std::string ViewProviderPy::representation(void) const
+std::string ViewProviderPy::representation() const
 {
     return "<View provider object>";
 }
@@ -641,19 +641,11 @@ Py::String ViewProviderPy::getIV() const
 
 Py::Object ViewProviderPy::getIcon() const
 {
-#if 0
-    QByteArray ba;
-    QDataStream str(&ba, QIODevice::WriteOnly);
-    QIcon icon = getViewProviderPtr()->getIcon();
-    str << icon;
-    return Py::String(ba.constData(), ba.size());
-#else
     PythonWrapper wrap;
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
     QIcon icon = getViewProviderPtr()->getIcon();
     return wrap.fromQIcon(new QIcon(icon));
-#endif
 }
 
 Py::Int ViewProviderPy::getDefaultMode() const

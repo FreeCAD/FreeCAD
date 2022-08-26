@@ -98,7 +98,7 @@ int Breakpoint::lineIndex(int ind)const
 
 // -----------------------------------------------------
 
-void PythonDebugModule::init_module(void)
+void PythonDebugModule::init_module()
 {
     PythonDebugStdout::init_type();
     PythonDebugStderr::init_type();
@@ -321,7 +321,7 @@ class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
     PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
-    ~PythonDebuggerPy() {}
+    ~PythonDebuggerPy() override {}
     PythonDebugger* dbg;
     int depth;
 };
@@ -438,18 +438,18 @@ void PythonDebugger::runFile(const QString& fn)
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
         dict = PyDict_Copy(dict);
-        if (PyDict_GetItemString(dict, "__file__") == nullptr) {
-            PyObject *f = PyUnicode_FromString((const char*)pxFileName);
-            if (f == nullptr) {
+        if (!PyDict_GetItemString(dict, "__file__")) {
+            PyObject *pyObj = PyUnicode_FromString((const char*)pxFileName);
+            if (!pyObj) {
                 fclose(fp);
                 return;
             }
-            if (PyDict_SetItemString(dict, "__file__", f) < 0) {
-                Py_DECREF(f);
+            if (PyDict_SetItemString(dict, "__file__", pyObj) < 0) {
+                Py_DECREF(pyObj);
                 fclose(fp);
                 return;
             }
-            Py_DECREF(f);
+            Py_DECREF(pyObj);
         }
 
         PyObject *result = PyRun_File(fp, (const char*)pxFileName, Py_file_input, dict, dict);

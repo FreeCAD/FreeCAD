@@ -41,13 +41,13 @@ class DlgSettingsImportExport : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsImportExport(QWidget* parent = nullptr);
-    ~DlgSettingsImportExport();
+    explicit DlgSettingsImportExport(QWidget* parent = nullptr);
+    ~DlgSettingsImportExport() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     Ui_DlgSettingsImportExport* ui;

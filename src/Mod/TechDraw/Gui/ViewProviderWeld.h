@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERWELD_H
 #define DRAWINGGUI_VIEWPROVIDERWELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderFeature.h>
 
 #include "ViewProviderDrawingView.h"
@@ -34,38 +36,32 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderWeld : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderWeld);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderWeld);
 
 public:
     /// constructor
     ViewProviderWeld();
     /// destructor
-    virtual ~ViewProviderWeld();
+    ~ViewProviderWeld() override;
 
     App::PropertyString      Font;
     App::PropertyLength      FontSize;
     App::PropertyLength      TileFontSize;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property* p);
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    bool useNewSelectionModel() const override {return false;}
+    void onChanged(const App::Property* p) override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 
-    virtual TechDraw::DrawWeldSymbol* getViewObject() const;
+    TechDraw::DrawWeldSymbol* getViewObject() const override;
     virtual TechDraw::DrawWeldSymbol* getFeature() const;
 
-    std::string prefFontName(void);
-    double prefFontSize(void);
-    double prefTileTextAdjust(void);
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    std::string prefFontName();
+    double prefFontSize();
+    double prefTileTextAdjust();
+    bool onDelete(const std::vector<std::string> &) override;
+    bool canDelete(App::DocumentObject* obj) const override;
     
 };
 

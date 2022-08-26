@@ -60,7 +60,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraint, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraint, Gui::ViewProviderGeometryObject)
 
 
 ViewProviderFemConstraint::ViewProviderFemConstraint()
@@ -106,7 +106,7 @@ ViewProviderFemConstraint::~ViewProviderFemConstraint()
 
 void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
 {
-    ViewProviderDocumentObject::attach(pcObject);
+    ViewProviderGeometryObject::attach(pcObject);
 
     SoPickStyle* ps = new SoPickStyle();
     ps->style = SoPickStyle::UNPICKABLE;
@@ -122,11 +122,11 @@ void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(sep, "Base");
 }
 
-std::vector<std::string> ViewProviderFemConstraint::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemConstraint::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Base");
+    StrList.emplace_back("Base");
     return StrList;
 }
 
@@ -137,7 +137,7 @@ void ViewProviderFemConstraint::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren()const
 {
     return std::vector<App::DocumentObject*>();
 }
@@ -147,7 +147,7 @@ void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver,
     QAction* act;
     act = menu->addAction(QObject::tr("Edit constraint"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
 void ViewProviderFemConstraint::onChanged(const App::Property* prop)
@@ -167,7 +167,7 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
         pFont->size = FontSize.getValue();
     }
     else {
-        ViewProviderDocumentObject::onChanged(prop);
+        ViewProviderDocumentObject::onChanged(prop); // clazy:exclude=skipped-base-method
     }
 }
 
@@ -197,7 +197,7 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    if ((wizardWidget != nullptr) && (wizardSubLayout != nullptr) && (constraintDialog != nullptr)) {
+    if (wizardWidget && wizardSubLayout && constraintDialog) {
         wizardWidget = nullptr;
         wizardSubLayout = nullptr;
         delete constraintDialog;
@@ -213,7 +213,7 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
             Gui::Control().closeDialog();
         }
         else {
-            ViewProviderDocumentObject::unsetEdit(ModNum);
+            ViewProviderGeometryObject::unsetEdit(ModNum);
         }
     }
 }
@@ -489,7 +489,7 @@ QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const
             return *o;
         if (!(*o)->children().empty()) {
             QObject* result = findChildByName(*o, name);
-            if (result != nullptr)
+            if (result)
                 return result;
         }
     }
@@ -502,28 +502,28 @@ void ViewProviderFemConstraint::checkForWizard()
     wizardWidget= nullptr;
     wizardSubLayout = nullptr;
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (mw == nullptr)
+    if (!mw)
         return;
     QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (dw == nullptr)
+    if (!dw)
         return;
     QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (cw == nullptr)
+    if (!cw)
         return;
     QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (tw == nullptr)
+    if (!tw)
         return;
     QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (sw == nullptr)
+    if (!sw)
         return;
     QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (sa== nullptr)
+    if (!sa)
         return;
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
-    if (wd == nullptr)
+    if (!wd)
         return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
-    if (wiz != nullptr) {
+    if (wiz) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
         wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }

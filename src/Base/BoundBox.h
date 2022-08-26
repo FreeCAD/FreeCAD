@@ -263,9 +263,7 @@ inline BoundBox3<_Precision>::BoundBox3 (const Vector3<_Precision> &rcVector, _P
 }
 
 template <class _Precision>
-inline BoundBox3<_Precision>::~BoundBox3 ()
-{
-}
+inline BoundBox3<_Precision>::~BoundBox3 () = default;
 
 template <class _Precision>
 inline  BoundBox3<_Precision>& BoundBox3<_Precision>::operator = (const BoundBox3<_Precision> &rcBound)

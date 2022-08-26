@@ -40,13 +40,13 @@ class DlgSettingsRayImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsRayImp( QWidget* parent = nullptr );
-    ~DlgSettingsRayImp();
+    explicit DlgSettingsRayImp( QWidget* parent = nullptr );
+    ~DlgSettingsRayImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsRay> ui;

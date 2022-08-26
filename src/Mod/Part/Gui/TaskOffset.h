@@ -35,8 +35,8 @@ class OffsetWidget : public QWidget
     Q_OBJECT
 
 public:
-    OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
-    ~OffsetWidget();
+    explicit OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
+    ~OffsetWidget() override;
 
     bool accept();
     bool reject();
@@ -52,7 +52,7 @@ private Q_SLOTS:
     void on_updateView_toggled(bool);
 
 private:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     class Private;
@@ -64,17 +64,17 @@ class TaskOffset : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskOffset(Part::Offset*);
-    ~TaskOffset();
+    explicit TaskOffset(Part::Offset*);
+    ~TaskOffset() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
     Part::Offset* getObject() const;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

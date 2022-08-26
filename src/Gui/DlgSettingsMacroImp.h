@@ -41,14 +41,14 @@ class DlgSettingsMacroImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsMacroImp( QWidget* parent = nullptr );
-    ~DlgSettingsMacroImp();
+    explicit DlgSettingsMacroImp( QWidget* parent = nullptr );
+    ~DlgSettingsMacroImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsMacro> ui;

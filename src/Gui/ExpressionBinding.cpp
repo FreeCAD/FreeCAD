@@ -77,7 +77,7 @@ void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
     if (expr) {
         const std::string error = docObj->ExpressionEngine.validateExpression(path, expr);
 
-        if (error.size())
+        if (!error.empty())
             throw Base::RuntimeError(error.c_str());
 
     }
@@ -238,7 +238,7 @@ bool ExpressionBinding::apply()
 {
     Property * prop(path.getProperty());
 
-    assert(prop != nullptr);
+    assert(prop);
     Q_UNUSED(prop);
 
     DocumentObject * docObj(path.getDocumentObject());

@@ -420,7 +420,7 @@ Py::Object RotationPy::getRawAxis() const
     return Py::Vector(axis);
 }
 
-Py::Object RotationPy::getAxis(void) const
+Py::Object RotationPy::getAxis() const
 {
     Base::Vector3d axis; double angle;
     this->getRotationPtr()->getValue(axis, angle);

@@ -36,7 +36,7 @@ class CarbonCopySelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    CarbonCopySelection(App::DocumentObject* obj)
+    explicit CarbonCopySelection(App::DocumentObject* obj)
     : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 
@@ -97,20 +97,20 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
@@ -120,11 +120,11 @@ public:
         return true;
     }
 
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
+    bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-            if (obj == nullptr)
+            if (!obj)
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
 
             if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
@@ -155,7 +155,7 @@ public:
     }
 
 private:
-    virtual void activated() override
+    void activated() override
     {
         setAxisPickStyle(false);
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
@@ -170,11 +170,11 @@ private:
         Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
     }
 
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_CarbonCopy");
     }
 
-    virtual void deactivated() override
+    void deactivated() override
     {
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);

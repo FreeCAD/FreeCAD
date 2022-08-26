@@ -111,17 +111,14 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
     CosmeticVertex* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     TechDraw::VertexPtr v = dvp->getProjVertexByIndex(idx);
-    if (v == nullptr) {
+    if (!v)
         return result;
-    }
-    if (!v->cosmeticTag.empty()) {
+    if (!v->cosmeticTag.empty())
         result = getCosmeticVertex(v->cosmeticTag);
-    }
     return result;
 }
 
@@ -153,14 +150,6 @@ void CosmeticExtension::removeCosmeticVertex(std::vector<std::string> delTags)
     for (auto& t: delTags) {
         removeCosmeticVertex(t);
     }
-}
-
-bool CosmeticExtension::replaceCosmeticVertex(CosmeticVertex* newCV)
-{
-    (void) newCV;
-    Base::Console().Message("CX::replaceCosmeticVertex() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
 }
 
 //********** Cosmetic Edge *****************************************************
@@ -219,18 +208,15 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
     CosmeticEdge* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (base == nullptr) {
+    if (!base)
         return result;
-    }
     
-    if (!base->getCosmeticTag().empty()) {
+    if (!base->getCosmeticTag().empty())
         result = getCosmeticEdge(base->getCosmeticTag());
-    }
     return result;
 }
 
@@ -262,15 +248,6 @@ void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
     for (auto& t: delTags) {
         removeCosmeticEdge(t);
     }
-}
-
-
-bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
-{
-    (void) newCE;
-    Base::Console().Message("CX::replaceCosmeticEdge() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
 }
 
 //********** Center Line *******************************************************
@@ -338,17 +315,14 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
     CenterLine* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
-    if (base == nullptr) {
+    if (!base)
         return result;
-    }
-    if (!base->getCosmeticTag().empty()) {
+    if (!base->getCosmeticTag().empty())
         result = getCenterLine(base->getCosmeticTag());
-    }
     return result;
 }
 
@@ -380,14 +354,6 @@ void CosmeticExtension::removeCenterLine(std::vector<std::string> delTags)
     for (auto& t: delTags) {
         removeCenterLine(t);
     }
-}
-
-bool CosmeticExtension::replaceCenterLine(CenterLine* newCL)
-{
-    (void) newCL;
-    Base::Console().Message("CX::replaceCenterLine() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
 }
 
 
@@ -430,9 +396,8 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string na
     GeomFormat* result = nullptr;
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
-    if (dvp == nullptr) {
+    if (!dvp)
         return result;
-    }
     int idx = DrawUtil::getIndexFromName(name);
     const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
     for (auto& gf: formats) {
@@ -452,14 +417,6 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
     ss << "Edge" << i;
     std::string eName = ss.str();
     return getGeomFormatBySelection(eName);
-}
-
-bool CosmeticExtension::replaceGeomFormat(GeomFormat* newGF)
-{
-    (void) newGF;
-    Base::Console().Message("CX::replaceGeomFormat() - deprecated. do not use.\n");
-    bool result = false;
-    return result;
 }
 
 void CosmeticExtension::removeGeomFormat(std::string delTag)

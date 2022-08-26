@@ -51,7 +51,7 @@ void SolverGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) cons
     static_cast<SolverGeometryExtension *>(cpy)->Mid = this->Mid;
 }
 
-std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy(void) const
+std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy() const
 {
     auto cpy = std::make_unique<SolverGeometryExtension>();
 
@@ -64,7 +64,7 @@ std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy(void) con
 #endif
 }
 
-PyObject * SolverGeometryExtension::getPyObject(void)
+PyObject * SolverGeometryExtension::getPyObject()
 {
     THROWM(Base::NotImplementedError, "SolverGeometryExtension does not have a Python counterpart");
 }

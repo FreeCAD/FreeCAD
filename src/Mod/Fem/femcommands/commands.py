@@ -177,7 +177,7 @@ class _ConstraintBodyHeatSource(CommandManager):
 
     def __init__(self):
         super(_ConstraintBodyHeatSource, self).__init__()
-        self.pixmap = "FEM_ConstraintHeatflux"  # the heatflux icon is used
+        self.pixmap = "FEM_ConstraintBodyHeatSource"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintBodyHeatSource",
             "Constraint body heat source"
@@ -187,7 +187,7 @@ class _ConstraintBodyHeatSource(CommandManager):
             "Creates a FEM constraint body heat source"
         )
         self.is_active = "with_analysis"
-        self.do_activated = "add_obj_on_gui_noset_edit"
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ConstraintCentrif(CommandManager):
@@ -253,6 +253,23 @@ class _ConstraintInitialFlowVelocity(CommandManager):
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialFlowVelocity",
             "Creates a FEM constraint initial flow velocity"
+        )
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
+class _ConstraintInitialPressure(CommandManager):
+    "The FEM_ConstraintInitialPressure command definition"
+
+    def __init__(self):
+        super(_ConstraintInitialPressure, self).__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintInitialPressure",
+            "Constraint initial pressure"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintInitialPressure",
+            "Creates a FEM constraint initial pressure"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -1103,6 +1120,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintInitialFlowVelocity",
     _ConstraintInitialFlowVelocity()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintInitialPressure",
+    _ConstraintInitialPressure()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintSectionPrint",

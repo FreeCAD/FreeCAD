@@ -34,7 +34,7 @@ using namespace Path;
 
 
 // returns a string which represents the object e.g. when printed in python
-std::string FeaturePathCompoundPy::representation(void) const
+std::string FeaturePathCompoundPy::representation() const
 {
     return std::string("<Path::FeatureCompound>");
 }

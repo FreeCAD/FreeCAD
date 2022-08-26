@@ -35,15 +35,15 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleMaya : public QGVNavStyle
 {
 public:
-    QGVNavStyleMaya(QGVPage* qgvp);
-    virtual ~QGVNavStyleMaya();
+    explicit QGVNavStyleMaya(QGVPage* qgvp);
+    ~QGVNavStyleMaya() override;
 
-    virtual void handleKeyReleaseEvent(QKeyEvent *event) override;
-    virtual void handleMousePressEvent(QMouseEvent *event) override;
-    virtual void handleMouseMoveEvent(QMouseEvent *event) override;
-    virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
+    void handleKeyReleaseEvent(QKeyEvent *event) override;
+    void handleMousePressEvent(QMouseEvent *event) override;
+    void handleMouseMoveEvent(QMouseEvent *event) override;
+    void handleMouseReleaseEvent(QMouseEvent *event) override;
 
-    virtual bool allowContextMenu(QContextMenuEvent *event) override;
+    bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:

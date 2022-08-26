@@ -158,7 +158,7 @@ void CmdSketcherBSplineDegree::activated(int iMsg)
     ShowRestoreInformationLayer("BSplineDegreeVisible");
 }
 
-bool CmdSketcherBSplineDegree::isActive(void)
+bool CmdSketcherBSplineDegree::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -187,7 +187,7 @@ void CmdSketcherBSplinePolygon::activated(int iMsg)
     ShowRestoreInformationLayer("BSplineControlPolygonVisible");
 }
 
-bool CmdSketcherBSplinePolygon::isActive(void)
+bool CmdSketcherBSplinePolygon::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -216,7 +216,7 @@ void CmdSketcherBSplineComb::activated(int iMsg)
     ShowRestoreInformationLayer("BSplineCombVisible");
 }
 
-bool CmdSketcherBSplineComb::isActive(void)
+bool CmdSketcherBSplineComb::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -245,7 +245,7 @@ void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
     ShowRestoreInformationLayer("BSplineKnotMultiplicityVisible");
 }
 
-bool CmdSketcherBSplineKnotMultiplicity::isActive(void)
+bool CmdSketcherBSplineKnotMultiplicity::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -274,7 +274,7 @@ void CmdSketcherBSplinePoleWeight::activated(int iMsg)
     ShowRestoreInformationLayer("BSplinePoleWeightVisible");
 }
 
-bool CmdSketcherBSplinePoleWeight::isActive(void)
+bool CmdSketcherBSplinePoleWeight::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -325,7 +325,7 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
     pcAction->setToolTip(a[iMsg]->toolTip());
 }
 
-Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(void)
+Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -403,7 +403,7 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*
 {
 }
 
-bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
+bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -477,7 +477,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     tryAutoRecomputeIfNotSolve(Obj);
 }
 
-bool CmdSketcherConvertToNURBS::isActive(void)
+bool CmdSketcherConvertToNURBS::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -549,7 +549,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherIncreaseDegree::isActive(void)
+bool CmdSketcherIncreaseDegree::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -627,7 +627,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherDecreaseDegree::isActive(void)
+bool CmdSketcherDecreaseDegree::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -766,7 +766,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherIncreaseKnotMultiplicity::isActive(void)
+bool CmdSketcherIncreaseKnotMultiplicity::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -889,7 +889,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
+bool CmdSketcherDecreaseKnotMultiplicity::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -934,7 +934,7 @@ void CmdSketcherCompModifyKnotMultiplicity::activated(int iMsg)
     pcAction->setIcon(a[iMsg]->icon());
 }
 
-Gui::Action * CmdSketcherCompModifyKnotMultiplicity::createAction(void)
+Gui::Action * CmdSketcherCompModifyKnotMultiplicity::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -984,7 +984,7 @@ void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
 {
 }
 
-bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
+bool CmdSketcherCompModifyKnotMultiplicity::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
@@ -1124,7 +1124,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override {
+    QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_InsertKnot");
     }
 
@@ -1167,7 +1167,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    if (SubNames.size() == 0) {
+    if (SubNames.empty()) {
       // Check that only one object is selected,
       // as we need only one object to get the new GeoId after multiplicity change
       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
@@ -1192,12 +1192,12 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherInsertKnot::isActive(void)
+bool CmdSketcherInsertKnot::isActive()
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
 
-void CreateSketcherCommandsBSpline(void)
+void CreateSketcherCommandsBSpline()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

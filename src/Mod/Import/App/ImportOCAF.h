@@ -89,7 +89,7 @@ public:
     }
 
 private:
-    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors);
+    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override;
 
 private:
     std::map<Part::Feature*, std::vector<App::Color> > partColors;

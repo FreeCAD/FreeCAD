@@ -81,18 +81,7 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 short DrawProjGroupItem::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Direction.isTouched()  ||
-                    XDirection.isTouched() ||
-                    Source.isTouched()  ||
-                    XSource.isTouched()  ||
-                    Scale.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
+    //there is nothing unique about dpgi vs dvp
     return TechDraw::DrawViewPart::mustExecute();
 }
 
@@ -101,7 +90,7 @@ void DrawProjGroupItem::onChanged(const App::Property *prop)
     if ((prop == &X) ||
         (prop == &Y)) {
         DrawProjGroup* parent = getPGroup();
-        if (parent != nullptr) {
+        if (parent) {
             parent->touch(false);
         }
     }
@@ -121,7 +110,7 @@ bool DrawProjGroupItem::showLock(void) const
     bool result = DrawView::showLock();
     DrawProjGroup* parent = getPGroup();
     bool parentLock = false;
-    if (parent != nullptr) {
+    if (parent) {
         parentLock = parent->LockPosition.getValue();
     }
 
@@ -135,9 +124,13 @@ bool DrawProjGroupItem::showLock(void) const
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
-//    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
+//    Base::Console().Message("DPGI::execute() - %s / %s\n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
+    }
+
+    if (waitingForHlr()) {
+        return DrawView::execute();
     }
 
     bool haveX = checkXDirection();
@@ -154,9 +147,19 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
         return new App::DocumentObjectExecReturn("DPGI: Direction and XDirection are parallel");
     }
 
-    App::DocumentObjectExecReturn* ret = DrawViewPart::execute();
+    return DrawViewPart::execute();
+}
+
+void DrawProjGroupItem::postHlrTasks(void)
+{
+//    Base::Console().Message("DPGI::postHlrTasks() - %s\n", getNameInDocument());
+    DrawViewPart::postHlrTasks();
+
+    //DPGI has no geometry until HLR has finished, and the DPG can not properly
+    //AutoDistibute until all its items have geometry.
     autoPosition();
-    return ret;
+
+    getPGroup()->reportReady();     //tell the parent DPG we are ready
 }
 
 void DrawProjGroupItem::autoPosition()
@@ -165,16 +168,14 @@ void DrawProjGroupItem::autoPosition()
     if (LockPosition.getValue()) {
         return;
     }
-    auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if (pgroup != nullptr) {
-        if (pgroup->AutoDistribute.getValue()) {
-            newPos = pgroup->getXYPosition(Type.getValueAsString());
-            X.setValue(newPos.x);
-            Y.setValue(newPos.y);
-            requestPaint();
-            purgeTouched();               //prevents "still touched after recompute" message
-        }
+    if (getPGroup() && getPGroup()->AutoDistribute.getValue()) {
+        newPos = getPGroup()->getXYPosition(Type.getValueAsString());
+        X.setValue(newPos.x);
+        Y.setValue(newPos.y);
+        requestPaint();
+        purgeTouched();               //prevents "still touched after recompute" message
+        getPGroup()->purgeTouched();  //changing dpgi x,y marks parent dpg as touched
     }
 }
 
@@ -203,15 +204,10 @@ DrawProjGroup* DrawProjGroupItem::getPGroup() const
 
 bool DrawProjGroupItem::isAnchor(void) const
 {
-    bool result = false;
-    auto group = getPGroup();
-    if (group != nullptr) {
-        DrawProjGroupItem* anchor = group->getAnchor();
-        if (anchor == this) {
-            result = true;
-        }
+    if (getPGroup() && (getPGroup()->getAnchor() == this) ) {
+        return true;
     }
-    return result;
+    return false;
 }
 
 /// get a coord system aligned with Direction and Rotation Vector
@@ -253,11 +249,11 @@ Base::Vector3d DrawProjGroupItem::getXDirection(void) const
 //    Base::Console().Message("DPGI::getXDirection() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);               //default X
     App::Property* prop = getPropertyByName("XDirection");
-    if (prop != nullptr) {
+    if (prop) {
         Base::Vector3d propVal = XDirection.getValue();
         if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {  //have XDirection property, but not set
             prop = getPropertyByName("RotationVector");
-            if (prop != nullptr) {
+            if (prop) {
                 result = RotationVector.getValue();         //use RotationVector if we have it
             } else {
                 result = DrawViewPart::getXDirection();     //over complex.
@@ -268,7 +264,7 @@ Base::Vector3d DrawProjGroupItem::getXDirection(void) const
     } else {                                     //not sure this branch can actually happen
         Base::Console().Message("DPGI::getXDirection - unexpected branch taken!\n");
         prop = getPropertyByName("RotationVector");
-        if (prop != nullptr) {
+        if (prop) {
             result = RotationVector.getValue();
             
         } else {
@@ -285,7 +281,7 @@ Base::Vector3d DrawProjGroupItem::getLegacyX(const Base::Vector3d& pt,
 //    Base::Console().Message("DPGI::getLegacyX() - %s\n", Label.getValue());
     Base::Vector3d result(1.0, 0.0, 0.0);
     App::Property* prop = getPropertyByName("RotationVector");
-    if (prop != nullptr) {
+    if (prop) {
         result = RotationVector.getValue();
         if (DrawUtil::fpCompare(result.Length(), 0.0))  {  //have RotationVector property, but not set
             gp_Ax2 va = getViewAxis(pt,
@@ -336,7 +332,7 @@ double DrawProjGroupItem::getScale(void) const
 {
     double result = 1.0;
     auto pgroup = getPGroup();
-    if (pgroup != nullptr) {
+    if (pgroup) {
         result = pgroup->getScale();
         if (!(result > 0.0)) {
             Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
@@ -348,16 +344,23 @@ double DrawProjGroupItem::getScale(void) const
 
 void DrawProjGroupItem::unsetupObject()
 {
-    if (getPGroup() != nullptr) {
-        if (getPGroup()->hasProjection(Type.getValueAsString()) ) {
-            if ((getPGroup()->getAnchor() == this) &&
-                 !getPGroup()->isUnsetting() )         {
-                   Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
-                                           getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
-                   getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
-             }
-        }
+    if (!getPGroup()) {
+        DrawViewPart::unsetupObject();
+        return;
     }
+
+    if (!getPGroup()->hasProjection(Type.getValueAsString()) ) {
+        DrawViewPart::unsetupObject();
+        return;
+    }
+
+    if ( getPGroup()->getAnchor() == this &&
+         !getPGroup()->isUnsetting() )         {
+           Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
+                                   getPGroup()->getNameInDocument(),getPGroup()->Label.getValue());
+           getPGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+    }
+
     DrawViewPart::unsetupObject();
 }
 
@@ -365,7 +368,7 @@ void DrawProjGroupItem::unsetupObject()
 int DrawProjGroupItem::countParentPages() const
 {
     DrawProjGroup* dpg = getPGroup();
-    if (dpg != nullptr) {
+    if (dpg) {
         int count = dpg->countParentPages();
         return count;
     }
@@ -375,7 +378,7 @@ int DrawProjGroupItem::countParentPages() const
 DrawPage* DrawProjGroupItem::findParentPage() const
 {
     DrawProjGroup* dpg = getPGroup();
-    if (dpg != nullptr) {
+    if (dpg) {
         DrawPage* dp = dpg->findParentPage();
         return dp;
     }
@@ -385,7 +388,7 @@ DrawPage* DrawProjGroupItem::findParentPage() const
 std::vector<DrawPage*> DrawProjGroupItem::findAllParentPages() const
 {
     DrawProjGroup* dpg = getPGroup();
-    if (dpg != nullptr) {
+    if (dpg) {
         std::vector<DrawPage*> dps = dpg->findAllParentPages();
         return dps;
     }

@@ -29,11 +29,11 @@
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
 #include <QDomDocument>
-#endif // #ifndef _PreComp_
-
 #include <QFile>
 #include <QXmlQuery>
 #include <QXmlResultItems>
+#endif // #ifndef _PreComp_
+
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -78,13 +78,6 @@ QGISVGTemplate::~QGISVGTemplate()
 {
     delete m_svgRender;
 }
-
-QVariant QGISVGTemplate::itemChange(GraphicsItemChange change,
-                                    const QVariant &value)
-{
-    return QGraphicsItemGroup::itemChange(change, value);
-}
-
 
 void QGISVGTemplate::openFile(const QFile &file)
 {
@@ -145,7 +138,7 @@ void QGISVGTemplate::updateView(bool update)
     draw();
 }
 
-void QGISVGTemplate::createClickHandles(void)
+void QGISVGTemplate::createClickHandles()
 {
     TechDraw::DrawSVGTemplate *svgTemplate = getSVGTemplate();
     QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));

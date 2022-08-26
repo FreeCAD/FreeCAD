@@ -503,7 +503,7 @@ struct SketchSelection{
         Circle,
         Arc
     };
-    int setUp(void);
+    int setUp();
     struct SketchSelectionItem {
         GeoType type;
         int GeoId;
@@ -513,7 +513,7 @@ struct SketchSelection{
     QString ErrorMsg;
 };
 
-int SketchSelection::setUp(void)
+int SketchSelection::setUp()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
 
@@ -600,12 +600,12 @@ namespace SketcherGui {
     {
         App::DocumentObject* object;
     public:
-        GenericConstraintSelection(App::DocumentObject* obj)
+        explicit GenericConstraintSelection(App::DocumentObject* obj)
             : Gui::SelectionFilterGate(nullPointer())
             , object(obj), allowedSelTypes(0)
         {}
 
-        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
+        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName) override
         {
             if (pObj != this->object)
                 return false;
@@ -641,12 +641,12 @@ class CmdSketcherConstraint : public Gui::Command
 {
     friend class DrawSketchHandlerGenConstraint;
 public:
-    CmdSketcherConstraint(const char* name)
+    explicit CmdSketcherConstraint(const char* name)
             : Command(name) {}
 
-    virtual ~CmdSketcherConstraint(){}
+    ~CmdSketcherConstraint() override{}
 
-    virtual const char* className() const
+    const char* className() const override
     { return "CmdSketcherConstraint"; }
 
 protected:
@@ -667,29 +667,29 @@ protected:
     std::vector<std::vector<SketcherGui::SelType> > allowedSelSequences;
 
     virtual void applyConstraint(std::vector<SelIdPair> &, int) {}
-    virtual void activated(int /*iMsg*/);
-    virtual bool isActive(void)
+    void activated(int /*iMsg*/) override;
+    bool isActive() override
     { return isCommandActive(getActiveGuiDocument()); }
 };
 
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
+    explicit DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
         : cmd(_cmd), seqIndex(0) {}
-    virtual ~DrawSketchHandlerGenConstraint()
+    ~DrawSketchHandlerGenConstraint() override
     {
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d /*onSketchPos*/) override {}
+    void mouseMove(Base::Vector2d /*onSketchPos*/) override {}
 
-    virtual bool pressButton(Base::Vector2d /*onSketchPos*/) override
+    bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -780,7 +780,7 @@ public:
     }
 
 private:
-    virtual void activated() override
+    void activated() override
     {
         selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
 
@@ -862,12 +862,12 @@ class CmdSketcherConstrainHorizontal : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainHorizontal();
-    virtual ~CmdSketcherConstrainHorizontal(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainHorizontal() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainHorizontal"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 
 };
 
@@ -1100,12 +1100,12 @@ class CmdSketcherConstrainVertical : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainVertical();
-    virtual ~CmdSketcherConstrainVertical(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainVertical() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainVertical"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 
 };
 
@@ -1334,13 +1334,13 @@ class CmdSketcherConstrainLock : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainLock();
-    virtual ~CmdSketcherConstrainLock(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainLock() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainLock"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainLock::CmdSketcherConstrainLock()
@@ -1561,12 +1561,12 @@ class CmdSketcherConstrainBlock : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainBlock();
-    virtual ~CmdSketcherConstrainBlock(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainBlock() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainBlock"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainBlock::CmdSketcherConstrainBlock()
@@ -1779,20 +1779,20 @@ public:
         GeoId1 = GeoId2 = GeoEnum::GeoUndef;
         PosId1 = PosId2 = Sketcher::PointPos::none;
     }
-    virtual ~DrawSketchHandlerCoincident()
+    ~DrawSketchHandlerCoincident() override
     {
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override {Q_UNUSED(onSketchPos);}
+    void mouseMove(Base::Vector2d onSketchPos) override {Q_UNUSED(onSketchPos);}
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         int VtId = getPreselectPoint();
         int CrsId = getPreselectCross();
@@ -1853,7 +1853,7 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    void activated() override
     {
         Gui::Selection().rmvSelectionGate();
         GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
@@ -1873,12 +1873,12 @@ class CmdSketcherConstrainCoincident : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainCoincident();
-    virtual ~CmdSketcherConstrainCoincident(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainCoincident() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainCoincident"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
     // returns true if a substitution took place
     bool substituteConstraintCombinations(SketchObject * Obj,
                                           int GeoId1, PointPos PosId1,
@@ -2082,13 +2082,13 @@ class CmdSketcherConstrainDistance : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDistance();
-    virtual ~CmdSketcherConstrainDistance(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDistance() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDistance"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
@@ -2138,7 +2138,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
+    if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
         return;
@@ -2429,12 +2429,12 @@ class CmdSketcherConstrainPointOnObject : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainPointOnObject();
-    virtual ~CmdSketcherConstrainPointOnObject(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainPointOnObject() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainPointOnObject"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
     // returns true if a substitution took place
     bool substituteConstraintCombinations(SketchObject * Obj,
                                           int GeoId1, PointPos PosId1, int GeoId2);
@@ -2529,8 +2529,8 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             points.push_back(id);
     }
 
-    if ((points.size() == 1 && curves.size() >= 1) ||
-        (points.size() >= 1 && curves.size() == 1)) {
+    if ((points.size() == 1 && !curves.empty()) ||
+        (!points.empty() && curves.size() == 1)) {
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
         int cnt = 0;
@@ -2679,13 +2679,13 @@ class CmdSketcherConstrainDistanceX : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDistanceX();
-    virtual ~CmdSketcherConstrainDistanceX(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDistanceX() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDistanceX"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
@@ -2735,7 +2735,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
+    if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one line or up to two points from the sketch."));
         return;
@@ -2933,13 +2933,13 @@ class CmdSketcherConstrainDistanceY : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDistanceY();
-    virtual ~CmdSketcherConstrainDistanceY(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDistanceY() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDistanceY"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
@@ -2987,7 +2987,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
+    if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one line or up to two points from the sketch."));
         return;
@@ -3180,12 +3180,12 @@ class CmdSketcherConstrainParallel : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainParallel();
-    virtual ~CmdSketcherConstrainParallel(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainParallel() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainParallel"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
@@ -3330,12 +3330,12 @@ class CmdSketcherConstrainPerpendicular : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainPerpendicular();
-    virtual ~CmdSketcherConstrainPerpendicular(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainPerpendicular() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainPerpendicular"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
@@ -3972,12 +3972,12 @@ class CmdSketcherConstrainTangent : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainTangent();
-    virtual ~CmdSketcherConstrainTangent(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainTangent() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainTangent"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
     // returns true if a substitution took place
     bool substituteConstraintCombinations(SketchObject * Obj, int GeoId1, int GeoId2);
 };
@@ -4415,7 +4415,6 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 {
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-    QString strError;
 
     int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::PointPos::none, PosId2 = Sketcher::PointPos::none, PosId3 = Sketcher::PointPos::none;
@@ -4693,13 +4692,13 @@ class CmdSketcherConstrainRadius : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainRadius();
-    virtual ~CmdSketcherConstrainRadius(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainRadius() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainRadius"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
@@ -4780,10 +4779,10 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             double radius = arc->getRadius();
 
             if(issegmentfixed) {
-                externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                externalGeoIdRadiusMap.emplace_back(GeoId, radius);
             }
             else {
-                geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                geoIdRadiusMap.emplace_back(GeoId, radius);
             }
 
             nonpoles = true;
@@ -4793,10 +4792,10 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             double radius = circle->getRadius();
 
             if(issegmentfixed) {
-                externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                externalGeoIdRadiusMap.emplace_back(GeoId, radius);
             }
             else {
-                geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+                geoIdRadiusMap.emplace_back(GeoId, radius);
             }
 
             if(isBsplinePole(geom))
@@ -4993,13 +4992,13 @@ class CmdSketcherConstrainDiameter : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainDiameter();
-    virtual ~CmdSketcherConstrainDiameter(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainDiameter() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainDiameter"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainDiameter::CmdSketcherConstrainDiameter()
@@ -5077,10 +5076,10 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             double radius = arc->getRadius();
 
             if(issegmentfixed) {
-                externalGeoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                externalGeoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
             else {
-                geoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                geoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
         }
         else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -5094,10 +5093,10 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             }
 
             if(issegmentfixed) {
-                externalGeoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                externalGeoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
             else {
-                geoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
+                geoIdDiameterMap.emplace_back(GeoId, 2*radius);
             }
         }
     }
@@ -5267,13 +5266,13 @@ class CmdSketcherConstrainRadiam : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainRadiam();
-    virtual ~CmdSketcherConstrainRadiam(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainRadiam() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainRadiam"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
@@ -5282,7 +5281,7 @@ CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain auto radius/diameter");
-    sToolTipText    = QT_TR_NOOP("Fix automatically diameter on circle and radius on arc/pole");
+    sToolTipText    = QT_TR_NOOP("Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen");
     sWhatsThis      = "Sketcher_ConstrainRadiam";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Radiam";
@@ -5367,10 +5366,10 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
             continue;
 
         if(issegmentfixed) {
-            externalGeoIdRadiamMap.push_back(std::make_pair(GeoId, radius));
+            externalGeoIdRadiamMap.emplace_back(GeoId, radius);
         }
         else {
-            geoIdRadiamMap.push_back(std::make_pair(GeoId, radius));
+            geoIdRadiamMap.emplace_back(GeoId, radius);
         }
     }
 
@@ -5585,7 +5584,7 @@ CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain arc or circle");
     sToolTipText    = QT_TR_NOOP("Constrain an arc or a circle");
-    sWhatsThis      = "Sketcher_CompCreateCircle";
+    sWhatsThis      = "Sketcher_CompConstrainRadDia";
     sStatusTip      = sToolTipText;
     sAccel          = "R";
     eType           = ForEdit;
@@ -5619,7 +5618,7 @@ void CmdSketcherCompConstrainRadDia::activated(int iMsg)
     pcAction->setIcon(a[iMsg]->icon());
 }
 
-Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
+Gui::Action * CmdSketcherCompConstrainRadDia::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -5702,7 +5701,7 @@ void CmdSketcherCompConstrainRadDia::languageChange()
     arc3->setStatusTip(QApplication::translate("Sketcher_ConstrainRadiam", "Fix the radius/diameter of a circle or an arc"));
 }
 
-bool CmdSketcherCompConstrainRadDia::isActive(void)
+bool CmdSketcherCompConstrainRadDia::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -5713,13 +5712,13 @@ class CmdSketcherConstrainAngle : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainAngle();
-    virtual ~CmdSketcherConstrainAngle(){}
-    virtual void updateAction(int mode);
-    virtual const char* className() const
+    ~CmdSketcherConstrainAngle() override{}
+    void updateAction(int mode) override;
+    const char* className() const override
     { return "CmdSketcherConstrainAngle"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
@@ -5778,7 +5777,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 3) {
+    if (SubNames.empty() || SubNames.size() > 3) {
         //goto ExitWithMessage;
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one or two lines from the sketch. Or select two edges and a point."));
@@ -6241,12 +6240,12 @@ class CmdSketcherConstrainEqual : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainEqual();
-    virtual ~CmdSketcherConstrainEqual(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainEqual() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainEqual"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
@@ -6403,7 +6402,6 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
 {
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-    QString strError;
 
     int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef;
 
@@ -6458,12 +6456,12 @@ class CmdSketcherConstrainSymmetric : public CmdSketcherConstraint
 {
 public:
     CmdSketcherConstrainSymmetric();
-    virtual ~CmdSketcherConstrainSymmetric(){}
-    virtual const char* className() const
+    ~CmdSketcherConstrainSymmetric() override{}
+    const char* className() const override
     { return "CmdSketcherConstrainSymmetric"; }
 protected:
-    virtual void activated(int iMsg);
-    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex) override;
 };
 
 CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
@@ -6651,7 +6649,6 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 {
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-    QString strError;
 
     int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::PointPos::none, PosId2 = Sketcher::PointPos::none, PosId3 = Sketcher::PointPos::none;
@@ -6923,7 +6920,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     }
 }
 
-bool CmdSketcherConstrainSnellsLaw::isActive(void)
+bool CmdSketcherConstrainSnellsLaw::isActive()
 {
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
@@ -7096,12 +7093,12 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         // if some element is missing and we are adding an element of that type
-        if((!(focus1 && focus2) && pointids.size() >= 1) ||
-           (!(major && minor) && lineids.size() >= 1) ){
+        if((!(focus1 && focus2) && !pointids.empty()) ||
+           (!(major && minor) && !lineids.empty()) ){
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add internal alignment constraint"));
 
-            if(pointids.size()>=1)
+            if(!pointids.empty())
             {
                 if(!focus1) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7129,7 +7126,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
                     extra_elements=true;
             }
 
-            if(lineids.size()>=1)
+            if(!lineids.empty())
             {
                 if(!major) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7213,7 +7210,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             return;
         }
 
-        if(ellipseids.size()>0){
+        if(!ellipseids.empty()){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("You cannot internally constrain an ellipse "
                             "on an arc of ellipse. "
@@ -7274,12 +7271,12 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         // if some element is missing and we are adding an element of that type
-        if((!(focus1 && focus2) && pointids.size() >= 1) ||
-           (!(major && minor) && lineids.size() >= 1) ){
+        if((!(focus1 && focus2) && !pointids.empty()) ||
+           (!(major && minor) && !lineids.empty()) ){
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add internal alignment constraint"));
 
-            if(pointids.size()>=1)
+            if(!pointids.empty())
             {
                 if(!focus1) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7307,7 +7304,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
                     extra_elements=true;
             }
 
-            if(lineids.size()>=1)
+            if(!lineids.empty())
             {
                 if(!major) {
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -7385,7 +7382,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
     }
 }
 
-bool CmdSketcherConstrainInternalAlignment::isActive(void)
+bool CmdSketcherConstrainInternalAlignment::isActive()
 {
     return isCreateConstraintActive(getActiveGuiDocument());
 }
@@ -7514,7 +7511,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
     }
 }
 
-bool CmdSketcherToggleDrivingConstraint::isActive(void)
+bool CmdSketcherToggleDrivingConstraint::isActive()
 {
     return isCommandActive( getActiveGuiDocument() );
 }
@@ -7598,13 +7595,13 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
     }
 }
 
-bool CmdSketcherToggleActiveConstraint::isActive(void)
+bool CmdSketcherToggleActiveConstraint::isActive()
 {
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
 
-void CreateSketcherCommandsConstraints(void)
+void CreateSketcherCommandsConstraints()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

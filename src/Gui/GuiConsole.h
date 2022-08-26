@@ -44,11 +44,11 @@ class GuiExport GUIConsole :public Base::ILogger
 {
 public:
   /// Constructor
-  GUIConsole(void);
+  GUIConsole();
   /// Destructor
-  virtual ~GUIConsole(void);
+  ~GUIConsole() override;
   void SendLog(const std::string& msg, Base::LogStyle level) override;
-  const char* Name(void) override {return "GUIConsole";}
+  const char* Name() override {return "GUIConsole";}
 
 protected:
   static const unsigned int s_nMaxLines;

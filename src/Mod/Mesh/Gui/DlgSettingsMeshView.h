@@ -42,13 +42,13 @@ class DlgSettingsMeshView : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsMeshView(QWidget* parent = nullptr);
-    ~DlgSettingsMeshView();
+    explicit DlgSettingsMeshView(QWidget* parent = nullptr);
+    ~DlgSettingsMeshView() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsMeshView> ui;

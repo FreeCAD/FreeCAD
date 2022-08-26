@@ -108,7 +108,10 @@ namespace PartGui
   void ensure3dDimensionVisible();
   /*convert a vertex to vector*/
   gp_Vec convert(const TopoDS_Vertex &vertex);
-  
+
+  auto getDimensionsFontName();
+  auto getDimensionsFontSize();
+
 class DimensionLinear : public SoSeparatorKit
 {
   SO_KIT_HEADER(DimensionLinear);
@@ -122,7 +125,7 @@ class DimensionLinear : public SoSeparatorKit
 public:
   DimensionLinear();
   static void initClass();
-  virtual SbBool affectsState() const;
+  SbBool affectsState() const override;
   void setupDimension();
 
   SoSFVec3f point1;
@@ -135,7 +138,7 @@ protected:
   SoSFVec3f origin;
 
 private:
-  virtual ~DimensionLinear();
+  ~DimensionLinear() override;
 };
 
 /*kit for anglular dimensions*/
@@ -152,7 +155,7 @@ class DimensionAngular : public SoSeparatorKit
 public:
   DimensionAngular();
   static void initClass();
-  virtual SbBool affectsState() const;
+  SbBool affectsState() const override;
 
   SoSFFloat radius;//radians.
   SoSFFloat angle;//radians.
@@ -161,7 +164,7 @@ public:
   SoSFMatrix matrix;
   void setupDimension();
 private:
-  virtual ~DimensionAngular();
+  ~DimensionAngular() override;
 };
 
 /*used for generating points for arc display*/
@@ -179,9 +182,9 @@ public:
     SoEngineOutput points;
     SoEngineOutput pointCount;
 protected:
-    virtual void evaluate();
+    void evaluate() override;
 private:
-    virtual ~ArcEngine(){}
+    ~ArcEngine() override{}
     void defaultValues(); //some non error values if something goes wrong.
 };
 
@@ -190,8 +193,8 @@ class SteppedSelection : public QWidget
 {
   Q_OBJECT
 public:
-  SteppedSelection(const uint &buttonCountIn, QWidget *parent = nullptr);
-  ~SteppedSelection();
+  explicit SteppedSelection(const uint &buttonCountIn, QWidget *parent = nullptr);
+  ~SteppedSelection() override;
   QPushButton* getButton(const uint &index);
   void setIconDone(const uint &index);
   
@@ -244,14 +247,14 @@ class TaskMeasureLinear : public Gui::TaskView::TaskDialog, public Gui::Selectio
     Q_OBJECT
 public:
   TaskMeasureLinear();
-  ~TaskMeasureLinear();
+  ~TaskMeasureLinear() override;
 
-  virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+  QDialogButtonBox::StandardButtons getStandardButtons() const override
       {return QDialogButtonBox::Close;}
-  virtual bool isAllowedAlterDocument(void) const {return false;}
-  virtual bool needsFullSpace() const {return false;}
+  bool isAllowedAlterDocument() const override {return false;}
+  bool needsFullSpace() const override {return false;}
 protected:
-  virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+  void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     
 protected Q_SLOTS:
   void selection1Slot(bool checked);
@@ -305,9 +308,9 @@ public:
   bool isValid() const {return status;}
   /*!get the calculated vector.
    * @return the vector. use isValid to ensure correct results.*/
-  operator gp_Vec() const {return vector;}
+  operator gp_Vec() const {return vector;}//explicit bombs
   /*!build occ line used for extrema calculation*/
-  operator gp_Lin() const;
+  operator gp_Lin() const;//explicit bombs
   gp_Vec getPickPoint() const {return origin;}
   
 private:
@@ -323,14 +326,14 @@ class TaskMeasureAngular : public Gui::TaskView::TaskDialog, public Gui::Selecti
     Q_OBJECT
 public:
   TaskMeasureAngular();
-  ~TaskMeasureAngular();
+  ~TaskMeasureAngular() override;
 
-  virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+  QDialogButtonBox::StandardButtons getStandardButtons() const override
       {return QDialogButtonBox::Close;}
-  virtual bool isAllowedAlterDocument(void) const {return false;}
-  virtual bool needsFullSpace() const {return false;}
+  bool isAllowedAlterDocument() const override {return false;}
+  bool needsFullSpace() const override {return false;}
 protected:
-  virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+  void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     
 protected Q_SLOTS:
   void selection1Slot(bool checked);

@@ -55,7 +55,6 @@
 #include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
 #include "QGSPage.h"
-#include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
 #include "QGIGhostHighlight.h"
@@ -78,9 +77,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     ui(new Ui_TaskDetail),
     blockUpdate(false),
     m_ghost(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_detailFeat(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(nullptr),
@@ -102,7 +98,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
-    if (m_basePage == nullptr) {
+    if (!m_basePage) {
         Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
         return;
     }
@@ -115,10 +111,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_doc);
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->getQGSPage();
-    m_view = m_mdi->getQGVPage();
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     createDetail();
     setUiFromFeat();
@@ -143,7 +136,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
-    m_scene->addItem(m_ghost);
+    m_vpp->getQGSPage()->addItem(m_ghost);
     m_ghost->hide();
     connect(m_ghost, SIGNAL(positionChange(QPointF)),
             this, SLOT(onHighlightMoved(QPointF)));
@@ -154,9 +147,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     ui(new Ui_TaskDetail),
     blockUpdate(false),
     m_ghost(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_detailFeat(detailFeat),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
@@ -174,7 +164,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_mode(EDITMODE),
     m_created(false)
 {
-    if (m_detailFeat == nullptr)  {
+    if (!m_detailFeat)  {
         //should be caught in CMD caller
         Base::Console().Error("TaskDetail - bad parameters.  Can not proceed.\n");
         return;
@@ -184,13 +174,13 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_detailName = m_detailFeat->getNameInDocument();
 
     m_basePage = m_detailFeat->findParentPage();
-    if (m_basePage != nullptr) {
+    if (m_basePage) {
         m_pageName = m_basePage->getNameInDocument();
     }
 
     App::DocumentObject* baseObj = m_detailFeat->BaseView.getValue();
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         m_baseName = m_baseFeat->getNameInDocument();
     } else {
         Base::Console().Error("TaskDetail - no BaseView.  Can not proceed.\n");
@@ -201,10 +191,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->getQGSPage();
-    m_view = m_mdi->getQGVPage();
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     saveDetailState();
     setUiFromFeat();
@@ -229,7 +216,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
         this, SLOT(onReferenceEdit()));
 
     m_ghost = new QGIGhostHighlight();
-    m_scene->addItem(m_ghost);
+    m_vpp->getQGSPage()->addItem(m_ghost);
     m_ghost->hide();
     connect(m_ghost, SIGNAL(positionChange(QPointF)),
             this, SLOT(onHighlightMoved(QPointF)));
@@ -276,7 +263,7 @@ void TaskDetail::restoreDetailState()
 void TaskDetail::setUiFromFeat()
 {
 //    Base::Console().Message("TD::setUIFromFeat()\n");
-    if (m_baseFeat != nullptr) {
+    if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
@@ -357,7 +344,7 @@ void TaskDetail::onScaleTypeEdit()
          ui->qsbScale->setEnabled(false);
          detailFeat->ScaleType.setValue(0.0);
          // set the page scale if there is a valid page
-         if (m_basePage != nullptr) {
+         if (m_basePage) {
              // set the page scale
              detailFeat->Scale.setValue(m_basePage->Scale.getValue());
              ui->qsbScale->setValue(m_basePage->Scale.getValue());
@@ -402,13 +389,13 @@ void TaskDetail::onDraggerClicked(bool b)
 void TaskDetail::editByHighlight()
 {
 //    Base::Console().Message("TD::editByHighlight()\n");
-    if (m_ghost == nullptr) {
+    if (!m_ghost) {
         Base::Console().Error("TaskDetail::editByHighlight - no ghost object\n");
         return;
     }
 
     double scale = getBaseFeat()->getScale();
-    m_scene->clearSelection();
+    m_vpp->getQGSPage()->clearSelection();
     m_ghost->setSelected(true);
     m_ghost->setRadius(ui->qsbRadius->rawValue() * scale);
     m_ghost->setPos(getAnchorScene());
@@ -429,9 +416,9 @@ void TaskDetail::onHighlightMoved(QPointF dragEnd)
 
     DrawViewPart* dvp = getBaseFeat();
     DrawProjGroupItem* dpgi = dynamic_cast<DrawProjGroupItem*>(dvp);
-    if (dpgi != nullptr) {
+    if (dpgi) {
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (dpg == nullptr) {
+        if (!dpg) {
             Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
             //TODO::throw something.
             return;
@@ -543,7 +530,7 @@ QPointF TaskDetail::getAnchorScene()
     Base::Vector3d basePos;
     double scale = 1;
 
-    if (dpgi == nullptr) {          //base is normal view
+    if (!dpgi) {          //base is normal view
         double x = dvp->X.getValue();
         double y = dvp->Y.getValue();
         basePos = Base::Vector3d (x, -y, 0.0);
@@ -551,7 +538,7 @@ QPointF TaskDetail::getAnchorScene()
     } else {                       //part of projection group
 
         DrawProjGroup* dpg = dpgi->getPGroup();
-        if (dpg == nullptr) {
+        if (!dpg) {
             Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
             //TODO::throw something.
             return QPointF(0.0, 0.0);
@@ -576,9 +563,9 @@ DrawViewPart* TaskDetail::getBaseFeat()
 {
 //    Base::Console().Message("TD::getBaseFeat()\n");
 
-    if (m_doc != nullptr) {
+    if (m_doc) {
         App::DocumentObject* baseObj = m_doc->getObject(m_baseName.c_str());
-        if (baseObj != nullptr) {
+        if (baseObj) {
             return static_cast<DrawViewPart*>(baseObj);
         }
     }
@@ -595,9 +582,9 @@ DrawViewDetail* TaskDetail::getDetailFeat()
 {
 //    Base::Console().Message("TD::getDetailFeat()\n");
 
-    if (m_doc != nullptr) {
+    if (m_doc) {
         App::DocumentObject* detailObj = m_doc->getObject(m_detailName.c_str());
-        if (detailObj != nullptr) {
+        if (detailObj) {
             return static_cast<DrawViewDetail*>(detailObj);
         }
     }

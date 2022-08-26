@@ -52,12 +52,12 @@ namespace Gui
     {
     Q_OBJECT
     public:
-      LineEdit(QWidget *parentIn = nullptr);
+      explicit LineEdit(QWidget *parentIn = nullptr);
     Q_SIGNALS:
       void acceptedSignal();
       void rejectedSignal();
     protected:
-    virtual void keyPressEvent(QKeyEvent*);
+    void keyPressEvent(QKeyEvent*) override;
     };
     
     class Model : public QGraphicsScene
@@ -65,15 +65,15 @@ namespace Gui
       Q_OBJECT
     public:
       Model(QObject *parentIn, const Gui::Document &documentIn);
-      virtual ~Model() override;
+      ~Model() override;
       void awake(); //!< hooked up to event dispatcher for update when idle.
       void selectionChanged(const SelectionChanges& msg);
       
     protected:
-      virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
-      virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
-      virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
-      virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
+      void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+      void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+      void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+      void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
       
     private Q_SLOTS:
       void updateSlot();

@@ -101,7 +101,7 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
     }
-    if (Objects.size() > 0) {
+    if (!Objects.empty()) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
@@ -166,7 +166,7 @@ void TaskFemConstraintTemperature::Flux()
 void TaskFemConstraintTemperature::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -207,7 +207,7 @@ void TaskFemConstraintTemperature::addToSelection()
 void TaskFemConstraintTemperature::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -235,7 +235,7 @@ void TaskFemConstraintTemperature::removeFromSelection()
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0) {
+    while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
@@ -278,7 +278,7 @@ double TaskFemConstraintTemperature::get_cflux() const {
     return cflux_in_watt;
 }
 
-std::string TaskFemConstraintTemperature::get_constraint_type(void) const {
+std::string TaskFemConstraintTemperature::get_constraint_type() const {
     std::string type;
     if (ui->rb_temperature->isChecked()) {
         type = "\"Temperature\"";

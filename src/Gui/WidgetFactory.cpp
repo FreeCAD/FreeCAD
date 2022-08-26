@@ -53,14 +53,14 @@ Gui::WidgetFactoryInst* Gui::WidgetFactoryInst::_pcSingleton = nullptr;
 
 WidgetFactoryInst& WidgetFactoryInst::instance()
 {
-    if (_pcSingleton == nullptr)
+    if (!_pcSingleton)
         _pcSingleton = new WidgetFactoryInst;
     return *_pcSingleton;
 }
 
 void WidgetFactoryInst::destruct ()
 {
-    if (_pcSingleton != nullptr)
+    if (_pcSingleton)
         delete _pcSingleton;
     _pcSingleton = nullptr;
 }

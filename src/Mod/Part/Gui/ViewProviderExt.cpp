@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -40,8 +39,8 @@
 # include <TColgp_Array1OfDir.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
@@ -65,8 +64,12 @@
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/nodes/SoNormalBinding.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/regex.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -74,11 +77,9 @@
 #include <Base/Parameter.h>
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/regex.hpp>
+
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
@@ -468,16 +469,16 @@ void ViewProviderPartExt::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderPartExt::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPartExt::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
 
     // add your own modes
-    StrList.push_back("Flat Lines");
-    StrList.push_back("Shaded");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Flat Lines");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
@@ -840,7 +841,7 @@ void ViewProviderPartExt::reload()
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
     const char *propName = prop->getName();
-    if (propName && (strcmp(propName, "Shape") == 0 || strstr(propName, "Touched") != nullptr)) {
+    if (propName && (strcmp(propName, "Shape") == 0 || strstr(propName, "Touched"))) {
         // calculate the visual only if visible
         if (isUpdateForced() || Visibility.getValue())
             updateVisual();

@@ -47,8 +47,8 @@ class Mesh2ShapeGmsh : public MeshGui::GmshWidget
     Q_OBJECT
 
 public:
-    Mesh2ShapeGmsh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Mesh2ShapeGmsh();
+    explicit Mesh2ShapeGmsh(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~Mesh2ShapeGmsh() override;
 
     void process(App::Document* doc, const std::list<App::SubObjectT>&);
 
@@ -56,8 +56,8 @@ Q_SIGNALS:
     void processed();
 
 protected:
-    virtual bool writeProject(QString& inpFile, QString& outFile);
-    virtual bool loadOutput();
+    bool writeProject(QString& inpFile, QString& outFile) override;
+    bool loadOutput() override;
 
 private:
     class Private;
@@ -77,12 +77,12 @@ class Tessellation : public QWidget
     };
 
 public:
-    Tessellation(QWidget* parent = nullptr);
-    ~Tessellation();
+    explicit Tessellation(QWidget* parent = nullptr);
+    ~Tessellation() override;
     bool accept();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void process(int method, App::Document* doc, const std::list<App::SubObjectT>&);
     void saveParameters(int method);
     void setFaceColors(int method, App::Document* doc, App::DocumentObject* obj);
@@ -112,15 +112,15 @@ class TaskTessellation : public Gui::TaskView::TaskDialog
 
 public:
     TaskTessellation();
-    ~TaskTessellation();
+    ~TaskTessellation() override;
 
 public:
-    virtual void open();
-    virtual void clicked(int);
-    virtual bool accept();
-    virtual bool reject();
+    void open() override;
+    void clicked(int) override;
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

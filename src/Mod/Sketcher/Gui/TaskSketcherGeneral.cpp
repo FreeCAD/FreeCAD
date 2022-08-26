@@ -69,7 +69,7 @@ SketcherGeneralWidget::~SketcherGeneralWidget()
 bool SketcherGeneralWidget::eventFilter(QObject *object, QEvent *event)
 {
     if (object == ui->renderingOrder && event->type() == QEvent::ChildRemoved) {
-        emitRenderOrderChanged();
+        Q_EMIT emitRenderOrderChanged();
     }
     return false;
 }

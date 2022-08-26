@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QGraphicsView>
 # include <iostream>
 # include <string>
 # include <sstream>
@@ -31,7 +32,6 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -233,7 +233,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 //    objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawDimension::isActive(void)
+bool CmdTechDrawDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -349,7 +349,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawRadiusDimension::isActive(void)
+bool CmdTechDrawRadiusDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -460,7 +460,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawDiameterDimension::isActive(void)
+bool CmdTechDrawDiameterDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -564,7 +564,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawLengthDimension::isActive(void)
+bool CmdTechDrawLengthDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -669,7 +669,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawHorizontalDimension::isActive(void)
+bool CmdTechDrawHorizontalDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -773,7 +773,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawVerticalDimension::isActive(void)
+bool CmdTechDrawVerticalDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -861,7 +861,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawAngleDimension::isActive(void)
+bool CmdTechDrawAngleDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -950,7 +950,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDraw3PtAngleDimension::isActive(void)
+bool CmdTechDraw3PtAngleDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1026,7 +1026,7 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
     page->getDocument()->recompute();                                  //still need to recompute in Gui. why?
 }
 
-bool CmdTechDrawLinkDimension::isActive(void)
+bool CmdTechDrawLinkDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1059,7 +1059,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1079,7 +1079,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
     };
 }
 
-Gui::Action * CmdTechDrawExtentGroup::createAction(void)
+Gui::Action * CmdTechDrawExtentGroup::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1123,7 +1123,7 @@ void CmdTechDrawExtentGroup::languageChange()
     arc2->setStatusTip(arc2->toolTip());
 }
 
-bool CmdTechDrawExtentGroup::isActive(void)
+bool CmdTechDrawExtentGroup::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1153,7 +1153,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1162,7 +1162,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     execHExtent(this);
 }
 
-bool CmdTechDrawHorizontalExtentDimension::isActive(void)
+bool CmdTechDrawHorizontalExtentDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1185,7 +1185,7 @@ void execHExtent(Gui::Command* cmd)
     }
 
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if( baseFeat == nullptr ) {
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                 QObject::tr("No base View in Selection."));
         return;
@@ -1240,7 +1240,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
+    if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
             QObject::tr("Close active task dialog and try again."));
         return;
@@ -1249,7 +1249,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     execVExtent(this);
 }
 
-bool CmdTechDrawVerticalExtentDimension::isActive(void)
+bool CmdTechDrawVerticalExtentDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1273,7 +1273,7 @@ void execVExtent(Gui::Command* cmd)
 
 
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if( baseFeat == nullptr ) {
+    if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                 QObject::tr("No base View in Selection."));
         return;
@@ -1347,8 +1347,8 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     std::vector<App::DocumentObject*> refs2d;
 
     std::vector<std::string> subs;
-    subs.push_back("Vertex1");
-    subs.push_back("Vertex1");
+    subs.emplace_back("Vertex1");
+    subs.emplace_back("Vertex1");
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string parentName = dvp->getNameInDocument();
     std::string PageName = page->getNameInDocument();
@@ -1390,7 +1390,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     dvp->X.setValue(x);
 }
 
-bool CmdTechDrawLandmarkDimension::isActive(void)
+bool CmdTechDrawLandmarkDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1399,7 +1399,7 @@ bool CmdTechDrawLandmarkDimension::isActive(void)
 
 
 //------------------------------------------------------------------------------
-void CreateTechDrawCommandsDims(void)
+void CreateTechDrawCommandsDims()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
@@ -1426,7 +1426,7 @@ void CreateTechDrawCommandsDims(void)
 //non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select an object first"));
         return false;
@@ -1481,9 +1481,8 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     auto selection( cmd->getSelection().getSelectionEx() );
 
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    if (!objFeat)
         return isInvalid;
-    }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() != 1 ||
@@ -1579,7 +1578,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
     TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
-    if ((geom0 == nullptr) || (geom1 == nullptr)) {                                         // missing gometry
+    if (!geom0 || !geom1) {                                         // missing gometry
         Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
         return isInvalid;
     }
@@ -1634,7 +1633,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     }
     e = objFeat0->getGeomByIndex(eId);
     v = objFeat0->getProjVertexByIndex(vId);
-    if ((e == nullptr) || (v == nullptr)) {
+    if (!e || !v) {
         Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
         return false;
     }

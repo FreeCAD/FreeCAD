@@ -258,7 +258,7 @@ void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString items
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }
@@ -486,11 +486,10 @@ bool TaskPipeParameters::accept()
             for (auto &subSet : pcPipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first) &&
                     !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
-                    subSets.push_back(
-                        std::make_pair(
+                    subSets.emplace_back(
                             PartDesignGui::TaskFeaturePick::makeCopy(
                                 subSet.first, "", dlg.radioIndependent->isChecked()),
-                            subSet.second));
+                            subSet.second);
                     copies.push_back(subSets.back().first);
                 }
                 else {
@@ -758,7 +757,7 @@ void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name
 {
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }
@@ -876,7 +875,6 @@ void TaskPipeScaling::indexesMoved()
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
     auto originals = pipe->Sections.getSubListValues();
 
-    QByteArray name;
     int rows = model->rowCount();
     for (int i = 0; i < rows; i++) {
         QModelIndex index = model->index(i, 0);
@@ -988,7 +986,7 @@ void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name)
 {
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }

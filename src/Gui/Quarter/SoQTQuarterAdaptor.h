@@ -44,6 +44,8 @@ typedef void SoQTQuarterAdaptorCB(void* data, SoQTQuarterAdaptor* viewer);
 
 class QUARTER_DLL_API SoQTQuarterAdaptor :  public QuarterWidget {
 
+    Q_OBJECT
+
 public:
     explicit SoQTQuarterAdaptor(QWidget* parent = nullptr, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     explicit SoQTQuarterAdaptor(const QtGLFormat& format, QWidget* parent = nullptr, const QtGLWidget* shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());

@@ -207,13 +207,12 @@ ResultEntry::~ResultEntry()
 void ResultEntry::buildEntryName()
 {
   ResultEntry *parentEntry = this;
-  while(parentEntry->parent != nullptr)
-  {
-      ResultEntry *temp = parentEntry->parent;
-      if (temp->parent == nullptr)
-        break;
-      parentEntry = parentEntry->parent;
-  }
+    while (parentEntry->parent != nullptr) {
+        ResultEntry *temp = parentEntry->parent;
+        if (!temp->parent)
+            break;
+        parentEntry = parentEntry->parent;
+    }
 
   QString stringOut;
   QTextStream stream(&stringOut);
@@ -838,10 +837,10 @@ bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &obje
 QString PartGui::buildSelectionName(const ResultEntry *entry, const TopoDS_Shape &shape)
 {
     const ResultEntry *parentEntry = entry;
-    while(parentEntry->parent != nullptr)
+    while(parentEntry->parent)
     {
         ResultEntry *temp = parentEntry->parent;
-        if (temp->parent == nullptr)
+        if (!temp->parent)
           break;
         parentEntry = parentEntry->parent;
     }

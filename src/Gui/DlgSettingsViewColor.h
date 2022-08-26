@@ -41,14 +41,14 @@ class DlgSettingsViewColor : public PreferencePage
   Q_OBJECT
 
 public:
-  DlgSettingsViewColor(QWidget* parent = nullptr);
-  ~DlgSettingsViewColor();
+  explicit DlgSettingsViewColor(QWidget* parent = nullptr);
+  ~DlgSettingsViewColor() override;
 
-  void saveSettings();
-  void loadSettings();
+  void saveSettings() override;
+  void loadSettings() override;
 
 protected:
-  void changeEvent(QEvent *e);
+  void changeEvent(QEvent *e) override;
 
 protected Q_SLOTS:
   void onSwitchGradientColorsPressed();

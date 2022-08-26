@@ -37,8 +37,8 @@ class UndoDialog : public QMenu
     Q_OBJECT
 
 public:
-  UndoDialog( QWidget* parent = nullptr );
-  virtual ~UndoDialog();
+  explicit UndoDialog( QWidget* parent = nullptr );
+  ~UndoDialog() override;
 
 protected Q_SLOTS:
   void onSelected();
@@ -53,8 +53,8 @@ class RedoDialog : public QMenu
     Q_OBJECT
 
 public:
-  RedoDialog( QWidget* parent = nullptr );
-  virtual ~RedoDialog();
+  explicit RedoDialog( QWidget* parent = nullptr );
+  ~RedoDialog() override;
 
 protected Q_SLOTS:
   void onSelected();

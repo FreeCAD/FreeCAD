@@ -67,7 +67,7 @@ PROPERTY_SOURCE_ABSTRACT(Fem::DocumentObject, App::DocumentObject)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FemAnalysisPython, Fem::FemAnalysis)
-template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
+template<> const char* Fem::FemAnalysisPython::getViewProviderName() const {
     return "FemGui::ViewProviderFemAnalysisPython";
 }
 
@@ -92,10 +92,10 @@ template class FemExport FeaturePythonT<Fem::FemAnalysis>;
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Fem::FeaturePython, Fem::DocumentObject)
-template<> const char* Fem::FeaturePython::getViewProviderName(void) const {
+template<> const char* Fem::FeaturePython::getViewProviderName() const {
     return "Gui::ViewProviderPythonFeature";
 }
-template<> PyObject* Fem::FeaturePython::getPyObject(void) {
+template<> PyObject* Fem::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);

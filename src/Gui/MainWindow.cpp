@@ -101,8 +101,6 @@ FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
 #if defined(Q_OS_WIN32)
 #define slots
-//#include <private/qmainwindowlayout_p.h>
-//#include <private/qwidgetresizehandler_p.h>
 #endif
 
 using namespace Gui;
@@ -128,7 +126,7 @@ public:
     CustomMessageEvent(int t, const QString& s, int timeout=0)
       : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
-    ~CustomMessageEvent()
+    ~CustomMessageEvent() override
     { }
     int type() const
     { return _type; }
@@ -167,20 +165,20 @@ struct MainWindowP
 class MDITabbar : public QTabBar
 {
 public:
-    MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
+    explicit MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
     {
         menu = new QMenu(this);
         setDrawBase(false);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
     }
 
-    ~MDITabbar()
+    ~MDITabbar() override
     {
         delete menu;
     }
 
 protected:
-    void contextMenuEvent ( QContextMenuEvent * e )
+    void contextMenuEvent ( QContextMenuEvent * e ) override
     {
         menu->clear();
         CommandManager& cMgr = Application::Instance->commandManager();
@@ -336,18 +334,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     if (ht != config.end())
         hiddenDockWindows = ht->second;
 
-    // Show all dockable windows over the workbench facility
-    //
-#if 0
-    // Toolbox
-    if (hiddenDockWindows.find("Std_ToolBox") == std::string::npos) {
-        ToolBox* toolBox = new ToolBox(this);
-        toolBox->setObjectName(QT_TRANSLATE_NOOP("QDockWidget","Toolbox"));
-        pDockMgr->registerDockWindow("Std_ToolBox", toolBox);
-        ToolBoxManager::getInstance()->setToolBox( toolBox );
-    }
-#endif
-
     bool treeView = false, propertyView = false;
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
         //work through parameter.
@@ -435,7 +421,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     //TODO: Add external object support for DAGView
-#if 1
+
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
@@ -459,25 +445,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
-#endif
-
-#if 0 //defined(Q_OS_WIN32) this portion of code is not able to run with a vanilla Qtlib build on Windows.
-    // The MainWindowTabBar is used to show tabbed dock windows with icons
-    //
-    // add our own QTabBar-derived class to the main window layout
-    // NOTE: This uses some private stuff from QMainWindow which doesn't
-    // seem to be accessible on all platforms.
-    QMainWindowLayout* l = static_cast<QMainWindowLayout*>(this->layout());
-    for (int i=0; i<5; i++) {
-        MainWindowTabBar* result = new MainWindowTabBar(this);
-        result->setDrawBase(true);
-        result->setElideMode(Qt::ElideRight);
-        result->hide(); // avoid to show horizontal bar in top left area
-        //result->setDocumentMode(_documentMode);
-        connect(result, SIGNAL(currentChanged(int)), l, SLOT(tabChanged()));
-        l->unusedTabBars << result;
-    }
-#endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
@@ -676,7 +643,7 @@ void MainWindow::activateWorkbench(const QString& name)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     QMdiSubWindow* subWin = d->mdiArea->activeSubWindow();
-    if (subWin /*!= nullptr*/ && saveWB) {
+    if (subWin && saveWB) {
         QString currWb = subWin->property("ownWB").toString();
         if (currWb.isEmpty() || currWb != name) {
             subWin->setProperty("ownWB", name);
@@ -909,10 +876,8 @@ void MainWindow::addWindow(MDIView* view)
         d->mdiArea->addSubWindow(child);
     }
 
-    connect(view, SIGNAL(message(const QString&, int)),
-            this, SLOT(showMessage(const QString&, int)));
-    connect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    connect(view, &MDIView::message, this, &MainWindow::showMessage);
+    connect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
 
     // listen to the incoming events of the view
     view->installEventFilter(this);
@@ -933,10 +898,9 @@ void MainWindow::addWindow(MDIView* view)
 void MainWindow::removeWindow(Gui::MDIView* view, bool close)
 {
     // free all connections
-    disconnect(view, SIGNAL(message(const QString&, int)),
-            this, SLOT(showMessage(const QString&, int )));
-    disconnect(this, SIGNAL(windowStateChanged(MDIView*)),
-            view, SLOT(windowStateChanged(MDIView*)));
+    disconnect(view, &MDIView::message, this, &MainWindow::showMessage);
+    disconnect(this, &MainWindow::windowStateChanged, view, &MDIView::windowStateChanged);
+
     view->removeEventFilter(this);
 
     // check if the focus widget is a child of the view
@@ -1143,7 +1107,7 @@ QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
     return mdis;
 }
 
-MDIView* MainWindow::activeWindow(void) const
+MDIView* MainWindow::activeWindow() const
 {
     // each activated window notifies this main window when it is activated
     return d->activeView;
@@ -1224,7 +1188,7 @@ void MainWindow::processMessages(const QList<QByteArray> & msg)
         QByteArray action("OpenFile:");
         for (QList<QByteArray>::const_iterator it = msg.begin(); it != msg.end(); ++it) {
             if (it->startsWith(action))
-                files.push_back(std::string(it->mid(action.size()).constData()));
+                files.emplace_back(it->mid(action.size()).constData());
         }
         files = App::Application::processFiles(files);
         for (std::list<std::string>::iterator it = files.begin(); it != files.end(); ++it) {
@@ -1275,7 +1239,7 @@ void MainWindow::delayedStartup()
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
-        if (App::GetApplication().getDocuments().size()==0){
+        if (App::GetApplication().getDocuments().empty()){
             App::GetApplication().newDocument();
             Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.activeDocument().activeView().viewDefaultOrientation()");
@@ -1450,7 +1414,7 @@ void MainWindow::saveWindowSettings()
     ToolBarManager::getInstance()->saveState();
 }
 
-void MainWindow::startSplasher(void)
+void MainWindow::startSplasher()
 {
     // startup splasher
     // when running in verbose mode no splasher
@@ -1468,7 +1432,7 @@ void MainWindow::startSplasher(void)
     }
 }
 
-void MainWindow::stopSplasher(void)
+void MainWindow::stopSplasher()
 {
     if (d->splashscreen) {
         d->splashscreen->finish(this);
@@ -1624,17 +1588,6 @@ void MainWindow::dragEnterEvent (QDragEnterEvent * e)
     // Here we must allow uri drafs and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls()) {
-#if 0
-#ifdef QT_NO_OPENSSL
-        QList<QUrl> urls = data->urls();
-        for (QList<QUrl>::ConstIterator it = urls.begin(); it != urls.end(); ++it) {
-            if (it->scheme().toLower() == QLatin1String("https")) {
-                e->ignore();
-                return;
-            }
-        }
-#endif
-#endif
         e->accept();
     }
     else {
@@ -1670,7 +1623,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
 
     std::vector<App::Document*> unsaved;
     bool hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
-    if(unsaved.size()) {
+    if(!unsaved.empty()) {
         QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
             tr("The exported object contains external link. Please save the document"
                 "at least once before exporting."));
@@ -1850,7 +1803,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
             dm->download(dm->redirectUrl(*it));
         }
-//#ifndef QT_NO_OPENSSL
+
         else if (it->scheme().toLower() == QLatin1String("https")) {
             QUrl url = *it;
             QUrlQuery urlq(url);
@@ -1862,7 +1815,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
             dm->download(dm->redirectUrl(url));
         }
-//#endif
+
         else if (it->scheme().toLower() == QLatin1String("ftp")) {
             Gui::Dialog::DownloadManager::getInstance()->download(*it);
         }

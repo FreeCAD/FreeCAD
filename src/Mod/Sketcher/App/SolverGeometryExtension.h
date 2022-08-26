@@ -51,7 +51,7 @@ public:
 
     class PointParameterStatus {
     public:
-        PointParameterStatus(ParameterStatus status) {setStatus(status);}
+        explicit PointParameterStatus(ParameterStatus status) {setStatus(status);}
         PointParameterStatus(ParameterStatus statusx, ParameterStatus statusy) {setStatus(statusx, statusy);}
 
         PointParameterStatus(const PointParameterStatus &) = default;
@@ -234,13 +234,13 @@ public:
 
 
     SolverGeometryExtension();
-    virtual ~SolverGeometryExtension() override = default;
+    ~SolverGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    virtual void notifyAttachment(Part::Geometry * geo) override;
+    void notifyAttachment(Part::Geometry * geo) override;
 
     SolverStatus getGeometry() const  {return ( Edge.getStatus() == Independent &&
                                                 Start.getStatus() == Independent &&
@@ -290,7 +290,7 @@ public:
     }
 
 protected:
-    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    void copyAttributes(Part::GeometryExtension * cpy) const override;
 
 private:
     SolverGeometryExtension(const SolverGeometryExtension&) = default;

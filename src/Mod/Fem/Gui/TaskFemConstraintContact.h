@@ -40,22 +40,22 @@ class TaskFemConstraintContact : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
-    ~TaskFemConstraintContact();
-    const std::string getReferences() const;
+    explicit TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
+    ~TaskFemConstraintContact() override;
+    const std::string getReferences() const override;
     double get_Slope()const;
     double get_Friction()const;
 
 private Q_SLOTS:
-    void onReferenceDeletedSlave(void);
-    void onReferenceDeletedMaster(void);
+    void onReferenceDeletedSlave();
+    void onReferenceDeletedMaster();
     void addToSelectionSlave();
     void removeFromSelectionSlave();
     void addToSelectionMaster();
     void removeFromSelectionMaster();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     //void onSelectionChanged(const Gui::SelectionChanges& msg);
@@ -69,10 +69,10 @@ class TaskDlgFemConstraintContact : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView);
-    void open();
-    bool accept();
-    bool reject();
+    explicit TaskDlgFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace FemGui

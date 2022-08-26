@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
 #define DRAWINGGUI_VIEWPROVIDERBALLOON_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 
@@ -36,13 +38,13 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderBalloon : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderBalloon);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderBalloon);
 
 public:
     /// constructor
     ViewProviderBalloon();
     /// destructor
-    virtual ~ViewProviderBalloon();
+    ~ViewProviderBalloon() override;
 
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
@@ -50,23 +52,18 @@ public:
     App::PropertyBool   LineVisible;
     App::PropertyColor  Color;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property* p);
-    virtual void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* p) override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
-    virtual TechDraw::DrawViewBalloon* getViewObject() const;
+    TechDraw::DrawViewBalloon* getViewObject() const override;
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 };
 
 } // namespace TechDrawGui

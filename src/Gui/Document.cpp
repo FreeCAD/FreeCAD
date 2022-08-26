@@ -457,11 +457,11 @@ void Document::setEditingTransform(const Base::Matrix4D &mat) {
         activeView->getViewer()->setEditingTransform(mat);
 }
 
-void Document::resetEdit(void) {
+void Document::resetEdit() {
     Application::Instance->setEditDocument(nullptr);
 }
 
-void Document::_resetEdit(void)
+void Document::_resetEdit()
 {
     std::list<Gui::BaseView*>::iterator it;
     if (d->_editViewProvider) {
@@ -487,17 +487,7 @@ void Document::_resetEdit(void)
         // changed into a private one,  _resetEdit(). And the exposed
         // resetEdit() above calls into Application->setEditDocument(0) which
         // will prevent recursive calling.
-#if 0
-        // Nullify the member variable before calling finishEditing().
-        // This is to avoid a possible stack overflow when a view provider wrongly
-        // invokes the document's resetEdit() method.
-        ViewProvider* editViewProvider = d->_editViewProvider;
-        d->_editViewProvider = nullptr;
 
-        editViewProvider->finishEditing();
-        if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
-#endif
         App::GetApplication().closeActiveTransaction();
     }
     d->_editViewProviderParent = nullptr;
@@ -759,9 +749,6 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     handleChildren3D(viewProvider,true);
 
-#if 0 // With this we can show child objects again if this method was called by undo
-    viewProvider->onDelete(std::vector<std::string>());
-#endif
     if (viewProvider && viewProvider->getTypeId().isDerivedFrom
         (ViewProviderDocumentObject::getClassTypeId())) {
         // go through the views
@@ -796,7 +783,6 @@ void Document::beforeDelete() {
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
-    //Base::Console().Log("Document::slotChangedObject() called\n");
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider) {
         try {
@@ -939,7 +925,7 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
     }
     if(!obj)
         obj = doc.getActiveObject();
-    if(!obj || !obj->getNameInDocument() || (objs.size() && objs.front()!=obj))
+    if(!obj || !obj->getNameInDocument() || (!objs.empty() && objs.front()!=obj))
         return;
     obj->recomputeFeature(true);
 }
@@ -1036,7 +1022,7 @@ std::vector<std::pair<ViewProviderDocumentObject*,int> > Document::getViewProvid
     return ret;
 }
 
-App::Document* Document::getDocument(void) const
+App::Document* Document::getDocument() const
 {
     return d->_pcDocument;
 }
@@ -1130,7 +1116,7 @@ bool Document::askIfSavingFailed(const QString& error)
 }
 
 /// Save the document
-bool Document::save(void)
+bool Document::save()
 {
     if (d->_pcDocument->isSaved()) {
         try {
@@ -1213,14 +1199,14 @@ bool Document::save(void)
 }
 
 /// Save the document under a new file name
-bool Document::saveAs(void)
+bool Document::saveAs()
 {
     getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
 
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
         QString::fromUtf8(getDocument()->FileName.getValue()),
-        QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+        QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
 
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -1314,7 +1300,7 @@ void Document::saveAll()
 }
 
 /// Save a copy of the document under a new file name
-bool Document::saveCopy(void)
+bool Document::saveCopy()
 {
     getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename..."));
 
@@ -1339,7 +1325,7 @@ bool Document::saveCopy(void)
     }
 }
 
-unsigned int Document::getMemSize (void) const
+unsigned int Document::getMemSize () const
 {
     unsigned int size = 0;
 
@@ -1900,7 +1886,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
         d->baseViews.remove(pcView);
 
         // last view?
-        if (d->baseViews.size() == 0) {
+        if (d->baseViews.empty()) {
             // decouple a passive view
             std::list<Gui::BaseView*>::iterator it = d->passiveViews.begin();
             while (it != d->passiveViews.end()) {
@@ -1918,7 +1904,7 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
     }
 }
 
-void Document::onUpdate(void)
+void Document::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
     Base::Console().Log("Acti: Gui::Document::onUpdate()");
@@ -1935,7 +1921,7 @@ void Document::onUpdate(void)
     }
 }
 
-void Document::onRelabel(void)
+void Document::onRelabel()
 {
 #ifdef FC_LOGUPDATECHAIN
     Base::Console().Log("Acti: Gui::Document::onRelabel()");
@@ -1954,7 +1940,7 @@ void Document::onRelabel(void)
     d->connectChangeDocumentBlocker.unblock();
 }
 
-bool Document::isLastView(void)
+bool Document::isLastView()
 {
     if (d->baseViews.size() <= 1)
         return true;
@@ -1988,7 +1974,7 @@ bool Document::canClose (bool checkModify, bool checkLink)
     //    }
     //}
 
-    if (checkLink && App::PropertyXLink::getDocumentInList(getDocument()).size())
+    if (checkLink && !App::PropertyXLink::getDocumentInList(getDocument()).empty())
         return true;
 
     if (getDocument()->testStatus(App::Document::TempDoc))
@@ -2113,7 +2099,7 @@ bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, co
 }
 
 /// Getter for the active view
-MDIView* Document::getActiveView(void) const
+MDIView* Document::getActiveView() const
 {
     // get the main window's active view
     MDIView* active = getMainWindow()->activeWindow();
@@ -2276,29 +2262,29 @@ void Document::openCommand(const char* sName)
     getDocument()->openTransaction(sName);
 }
 
-void Document::commitCommand(void)
+void Document::commitCommand()
 {
     getDocument()->commitTransaction();
 }
 
-void Document::abortCommand(void)
+void Document::abortCommand()
 {
     getDocument()->abortTransaction();
 }
 
-bool Document::hasPendingCommand(void) const
+bool Document::hasPendingCommand() const
 {
     return getDocument()->hasPendingTransaction();
 }
 
 /// Get a string vector with the 'Undo' actions
-std::vector<std::string> Document::getUndoVector(void) const
+std::vector<std::string> Document::getUndoVector() const
 {
     return getDocument()->getAvailableUndoNames();
 }
 
 /// Get a string vector with the 'Redo' actions
-std::vector<std::string> Document::getRedoVector(void) const
+std::vector<std::string> Document::getRedoVector() const
 {
     return getDocument()->getAvailableRedoNames();
 }
@@ -2328,7 +2314,7 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
                 currentSteps = steps;
         }
     }
-    if(prompts.size()) {
+    if(!prompts.empty()) {
         std::ostringstream str;
         int i=0;
         for(auto doc : prompts) {
@@ -2338,20 +2324,18 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
             }
             str << "    " << doc->getName() << "\n";
         }
-        int ret = QMessageBox::warning(getMainWindow(),
-                    undo?QObject::tr("Undo"):QObject::tr("Redo"),
-                    QString::fromLatin1("%1,\n%2%3")
-                        .arg(QObject::tr(
-                            "There are grouped transactions in the following documents with "
-                            "other preceding transactions"))
-                        .arg(QString::fromUtf8(str.str().c_str()))
-                        .arg(QObject::tr("Choose 'Yes' to roll back all preceding transactions.\n"
-                                         "Choose 'No' to roll back in the active document only.\n"
-                                         "Choose 'Abort' to abort")),
+        int ret = QMessageBox::warning(getMainWindow(), undo ? QObject::tr("Undo") : QObject::tr("Redo"),
+                    QString::fromLatin1("%1,\n%2%3").arg(
+                        QObject::tr("There are grouped transactions in the following documents with "
+                                    "other preceding transactions"),
+                        QString::fromStdString(str.str()),
+                        QObject::tr("Choose 'Yes' to roll back all preceding transactions.\n"
+                                    "Choose 'No' to roll back in the active document only.\n"
+                                    "Choose 'Abort' to abort")),
                     QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort, QMessageBox::Yes);
-        if(ret == QMessageBox::Abort)
+        if (ret == QMessageBox::Abort)
             return false;
-        if(ret == QMessageBox::No)
+        if (ret == QMessageBox::No)
             return true;
     }
     for(auto &v : dmap) {
@@ -2401,7 +2385,7 @@ void Document::redo(int iSteps)
     d->_redoViewProviders.clear();
 }
 
-PyObject* Document::getPyObject(void)
+PyObject* Document::getPyObject()
 {
     _pcDocPy->IncRef();
     return _pcDocPy;

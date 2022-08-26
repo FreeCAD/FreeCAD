@@ -39,7 +39,7 @@ using namespace PartDesign;
 
 /* TRANSLATOR PartDesign::Pocket */
 
-const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",nullptr};
+const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "TwoLengths", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -73,7 +73,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
     // empty FaceName (because it didn't exist) and a value for Length
     if (std::string(Type.getValueAsString()) == "UpToFace" &&
-        (UpToFace.getValue() == nullptr && Length.getValue() > Precision::Confusion()))
+        (!UpToFace.getValue() && Length.getValue() > Precision::Confusion()))
         Type.setValue("Length");
 
     // Validate parameters
@@ -236,6 +236,9 @@ App::DocumentObjectExecReturn *Pocket::execute()
             remapSupportShape(solRes);
             this->Shape.setValue(getSolid(solRes));
         }
+
+        // eventually disable some settings that are not valid for the current method
+        updateProperties(method);
 
         return App::DocumentObject::StdReturn;
     }

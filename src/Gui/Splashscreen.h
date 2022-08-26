@@ -26,7 +26,7 @@
 #include <QDialog>
 #include <QSplashScreen>
 #include <QTextBrowser>
-#include "MDIView.h"
+#include <Gui/MDIView.h>
 
 namespace Gui {
 
@@ -41,11 +41,11 @@ class SplashScreen : public QSplashScreen
     Q_OBJECT
 
 public:
-    SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
-    ~SplashScreen();
+    explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
+    ~SplashScreen() override;
 
 protected:
-    void drawContents ( QPainter * painter );
+    void drawContents ( QPainter * painter ) override;
 
 private:
     SplashObserver* messages;
@@ -74,11 +74,11 @@ class GuiExport LicenseView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    LicenseView(QWidget* parent=nullptr);
-    virtual ~LicenseView();
+    explicit LicenseView(QWidget* parent=nullptr);
+    ~LicenseView() override;
 
     void setSource(const QUrl & url);
-    const char *getName(void) const {
+    const char *getName() const override {
         return "LicenseView";
     }
 
@@ -95,8 +95,8 @@ class GuiExport AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    AboutDialog(bool showLic, QWidget* parent = nullptr);
-    ~AboutDialog();
+    explicit AboutDialog(bool showLic, QWidget* parent = nullptr);
+    ~AboutDialog() override;
 
 protected:
     void setupLabels();

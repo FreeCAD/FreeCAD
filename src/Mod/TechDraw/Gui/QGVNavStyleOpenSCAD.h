@@ -35,15 +35,15 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleOpenSCAD : public QGVNavStyle
 {
 public:
-    QGVNavStyleOpenSCAD(QGVPage* qgvp);
-    virtual ~QGVNavStyleOpenSCAD();
+    explicit QGVNavStyleOpenSCAD(QGVPage* qgvp);
+    ~QGVNavStyleOpenSCAD() override;
 
-    virtual void handleKeyReleaseEvent(QKeyEvent *event) override;
-    virtual void handleMouseMoveEvent(QMouseEvent *event) override;
-    virtual void handleMousePressEvent(QMouseEvent *event) override;
-    virtual void handleMouseReleaseEvent(QMouseEvent *event) override;
+    void handleKeyReleaseEvent(QKeyEvent *event) override;
+    void handleMouseMoveEvent(QMouseEvent *event) override;
+    void handleMousePressEvent(QMouseEvent *event) override;
+    void handleMouseReleaseEvent(QMouseEvent *event) override;
 
-    virtual bool allowContextMenu(QContextMenuEvent *event) override;
+    bool allowContextMenu(QContextMenuEvent *event) override;
 
 protected:
 private:

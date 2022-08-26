@@ -37,7 +37,7 @@ namespace Sketcher
 
 class SketchObjectSF :public Part::Part2DObject
 {
-    PROPERTY_HEADER(Sketcher::SketchObjectSF);
+    PROPERTY_HEADER_WITH_OVERRIDE(Sketcher::SketchObjectSF);
 
 public:
     SketchObjectSF();
@@ -48,8 +48,8 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// Uses the standard ViewProvider
     //const char* getViewProviderName(void) const {
     //    return "SketcherGui::ViewProviderSketchSF";

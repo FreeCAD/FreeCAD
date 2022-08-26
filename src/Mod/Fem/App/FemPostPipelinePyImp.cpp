@@ -35,7 +35,7 @@
 using namespace Fem;
 
 // returns a string which represents the object e.g. when printed in python
-std::string FemPostPipelinePy::representation(void) const
+std::string FemPostPipelinePy::representation() const
 {
     return std::string("<FemPostPipeline object>");
 }
@@ -74,6 +74,15 @@ PyObject* FemPostPipelinePy::load(PyObject *args)
     }
 
     getFemPostPipelinePtr()->load(static_cast<FemResultObject*>(obj));
+    Py_Return;
+}
+
+PyObject *FemPostPipelinePy::recomputeChildren(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    getFemPostPipelinePtr()->recomputeChildren();
     Py_Return;
 }
 

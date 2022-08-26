@@ -42,14 +42,14 @@ class View3DInventorViewer;
 class View3DInventorViewerPy : public Py::PythonExtension<View3DInventorViewerPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
-    View3DInventorViewerPy(View3DInventorViewer *vi);
-    ~View3DInventorViewerPy();
+    explicit View3DInventorViewerPy(View3DInventorViewer *vi);
+    ~View3DInventorViewerPy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
-    int setattr(const char *, const Py::Object &);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
+    int setattr(const char *, const Py::Object &) override;
 
     //exposed methods
     Py::Object getSoEventManager(const Py::Tuple&);

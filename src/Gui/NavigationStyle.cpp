@@ -93,23 +93,23 @@ public:
     {
     }
 
-    void setViewVolume (const SbViewVolume &vol)
+    void setViewVolume (const SbViewVolume &vol) override
     {
         inherited::setViewVolume(vol);
     }
 
-    void setWorkingSpace (const SbMatrix &space)
+    void setWorkingSpace (const SbMatrix &space) override
     {
         //inherited::setWorkingSpace(space);
         this->worldToScreen = space.inverse();
     }
 
-    SbVec3f project(const SbVec2f &point)
+    SbVec3f project(const SbVec2f &point) override
     {
         return inherited::project(point);
     }
 
-    SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2)
+    SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
     {
         SbRotation rot = inherited::getRotation(point1, point2);
         if (orbit == Trackball)
@@ -325,7 +325,7 @@ void NavigationStyle::seekToPoint(const SbVec3f& scenepos)
 SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return false;
 
     SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
@@ -348,7 +348,7 @@ SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return;
     PRIVATE(this)->rotationCenterFound = false;
 
@@ -407,7 +407,7 @@ void NavigationStyle::lookAtPoint(const SbVec3f& pos)
 void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToCenter)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return;
 
     // Find global coordinates of focal point.
@@ -559,15 +559,6 @@ void NavigationStyle::viewAll()
     if (box.isEmpty())
         return;
 
-#if 0
-    // check whether the box is very wide or tall, if not do nothing
-    float box_width, box_height, box_depth;
-    box.getSize( box_width, box_height, box_depth );
-    if (box_width < 5.0f*box_height && box_width < 5.0f*box_depth &&
-        box_height < 5.0f*box_width && box_height < 5.0f*box_depth &&
-        box_depth < 5.0f*box_width && box_depth < 5.0f*box_height )
-        return;
-#endif
 
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     if (!cam)
@@ -592,23 +583,7 @@ void NavigationStyle::viewAll()
 
     float aspect = cam->aspectRatio.getValue();
 
-    if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        // set the new camera position dependent on the occupied space of projected bounding box
-        //SbVec3f direction = cam->position.getValue() - box.getCenter();
-        //float movelength = direction.length();
-        //direction.normalize();
-        //float fRatio = getViewportRegion().getViewportAspectRatio();
-        //if ( fRatio > 1.0f ) {
-        //  float factor = std::max<float>(s[0]/fRatio,s[1]);
-        //  movelength = factor * movelength;
-        //}
-        //else {
-        //    float factor = std::max<float>(s[0],s[1]/fRatio);
-        //    movelength = factor * movelength;
-        //}
-        //cam->position.setValue(box.getCenter() + direction * movelength);
-    }
-    else if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         SoOrthographicCamera* ocam = (SoOrthographicCamera *)cam;  // safe downward cast, knows the type
         if (aspect < 1.0f)
             ocam->height = cam_height / aspect;
@@ -622,7 +597,7 @@ void NavigationStyle::viewAll()
  */
 void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 {
-    if (cam == nullptr)
+    if (!cam)
         return;
 
     // Find global coordinates of focal point.
@@ -642,7 +617,7 @@ void NavigationStyle::reorientCamera(SoCamera * cam, const SbRotation & rot)
 void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
                                 const SbVec2f & currpos, const SbVec2f & prevpos)
 {
-    if (cam == nullptr) // can happen for empty scenegraph
+    if (!cam) // can happen for empty scenegraph
         return;
     if (currpos == prevpos) // useless invocation
         return;
@@ -673,7 +648,7 @@ void NavigationStyle::pan(SoCamera* camera)
     // The plane we're projecting the mouse coordinates to get 3D
     // coordinates should stay the same during the whole pan
     // operation, so we should calculate this value here.
-    if (camera == nullptr) { // can happen for empty scenegraph
+    if (!camera) { // can happen for empty scenegraph
         this->panningplane = SbPlane(SbVec3f(0, 0, 1), 0);
     }
     else {
@@ -703,7 +678,7 @@ void NavigationStyle::panToCenter(const SbPlane & pplane, const SbVec2f & currpo
  */
 void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
 {
-    if (cam == nullptr) // can happen for empty scenegraph
+    if (!cam) // can happen for empty scenegraph
         return;
     SoType t = cam->getTypeId();
     SbName tname = t.getName();
@@ -885,7 +860,7 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 SbVec3f NavigationStyle::getFocalPoint() const
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (cam == nullptr)
+    if (!cam)
         return SbVec3f(0,0,0);
 
     // Find global coordinates of focal point.
@@ -903,7 +878,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
 {
     if (this->log.historysize < 2)
         return;
-    assert(this->spinprojector != nullptr);
+    assert(this->spinprojector);
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s glsize(vp.getViewportSizePixels());
@@ -981,7 +956,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
  * \param prevpos  previous normalized position of mouse pointer
  */
 void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos){
-    assert(this->spinprojector != nullptr);
+    assert(this->spinprojector);
 
     // 0000333: Turntable camera rotation
     SbMatrix mat;

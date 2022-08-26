@@ -90,7 +90,7 @@ public:
         }
     }
 
-    void onSelectionChanged(const Gui::SelectionChanges& msg) {
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override {
         if(msg.Type == Gui::SelectionChanges::RmvPreselect) {
             setArrow();
             return;
@@ -280,7 +280,7 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(pcPathRoot, "Waypoints");
 }
 
-bool ViewProviderPath::useNewSelectionModel(void) const {
+bool ViewProviderPath::useNewSelectionModel() const {
     return SelectionStyle.getValue()!=2;
 }
 
@@ -291,10 +291,10 @@ void ViewProviderPath::setDisplayMode(const char* ModeName)
     inherited::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderPath::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPath::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Waypoints");
+    StrList.emplace_back("Waypoints");
     return StrList;
 }
 
@@ -344,7 +344,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     } else if (prop == &NormalColor) {
-        if (colorindex.size() > 0 && coordStart>=0 && coordStart<(int)colorindex.size()) {
+        if (!colorindex.empty() && coordStart>=0 && coordStart<(int)colorindex.size()) {
             const App::Color& c = NormalColor.getValue();
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
             unsigned long rcol = hGrp->GetUnsigned("DefaultRapidPathColor",2852126975UL); // dark red (170,0,0)
@@ -492,33 +492,33 @@ public:
         command2Edge.resize(tp.getSize(),-1);
     }
 
-    virtual void setup(const Base::Vector3d &last)
+    void setup(const Base::Vector3d &last) override
     {
         points.push_back(last);
         markers.push_back(last);
     }
 
-    virtual void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)last;
         gx(id, &next, pts, 0);
     }
 
-    virtual void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)last;
         gx(id, &next, pts, 1);
     }
 
-    virtual void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center)
+    void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center) override
     {
         (void)last;
         gx(id, &next, pts, 1);
         markers.push_back(center);
     }
 
-    virtual void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
-                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q)
+    void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
+                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q) override
     {
         (void)last;
 
@@ -547,7 +547,7 @@ public:
         pushCommand(id);
     }
 
-    virtual void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next)
+    void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
     {
 #if 0
       Base::Vector3d p1(next.x,next.y,last.z);
@@ -588,7 +588,7 @@ private:
           colorindex.push_back(color);
         }
 
-        if (next != nullptr) {
+        if (next) {
             points.push_back(*next);
             markers.push_back(*next);
             colorindex.push_back(color);

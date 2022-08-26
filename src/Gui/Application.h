@@ -55,7 +55,7 @@ class GuiExport Application
 {
 public:
     /// construction
-    Application(bool GUIenabled);
+    explicit Application(bool GUIenabled);
     /// destruction
     ~Application();
 
@@ -89,9 +89,9 @@ public:
     /// get called if a view gets activated, this manage the whole activation scheme
     void viewActivated(Gui::MDIView* pcView);
     /// call update to all documents and all views (costly!)
-    void onUpdate(void);
+    void onUpdate();
     /// call update to all views of the active document
-    void updateActive(void);
+    void updateActive();
     /// call update to all command actions
     void updateActions(bool delay = false);
     //@}
@@ -160,11 +160,11 @@ public:
     /// message when a GuiDocument is about to vanish
     void onLastWindowClosed(Gui::Document* pcDoc);
     /// Getter for the active document
-    Gui::Document* activeDocument(void) const;
+    Gui::Document* activeDocument() const;
     /// Set the active document
     void setActiveDocument(Gui::Document* pcDocument);
     /// Getter for the editing document
-    Gui::Document* editDocument(void) const;
+    Gui::Document* editDocument() const;
     Gui::MDIView* editViewOfNode(SoNode *node) const;
     /// Set editing document, which will reset editing of all other document
     void setEditDocument(Gui::Document* pcDocument);
@@ -177,7 +177,7 @@ public:
     */
     Gui::Document* getDocument(const App::Document* pDoc) const;
     /// Getter for the active view of the active document or null
-    Gui::MDIView* activeView(void) const;
+    Gui::MDIView* activeView() const;
     /// Activate a view of the given type of the active document
     void activateView(const Base::Type&, bool create=false);
     /// Shows the associated view provider of the given object
@@ -189,7 +189,7 @@ public:
     //@}
 
     /// true when the application shutting down
-    bool isClosing(void);
+    bool isClosing();
     void checkForPreviousCrashes();
 
     /** @name workbench handling */
@@ -199,7 +199,7 @@ public:
     QPixmap workbenchIcon(const QString&) const;
     QString workbenchToolTip(const QString&) const;
     QString workbenchMenuText(const QString&) const;
-    QStringList workbenches(void) const;
+    QStringList workbenches() const;
     void setupContextMenu(const char* recipient, MenuItem*) const;
     //@}
 
@@ -212,24 +212,24 @@ public:
     /** @name User Commands */
     //@{
     /// Get macro manager
-    Gui::MacroManager *macroManager(void);
+    Gui::MacroManager *macroManager();
     /// Reference to the command manager
-    Gui::CommandManager &commandManager(void);
+    Gui::CommandManager &commandManager();
     /// helper which create the commands
     void createStandardOperations();
     //@}
 
-    Gui::PreferencePackManager* prefPackManager(void);
+    Gui::PreferencePackManager* prefPackManager();
 
     /** @name Init, Destruct an Access methods */
     //@{
     /// some kind of singleton
     static Application* Instance;
-    static void initApplication(void);
-    static void initTypes(void);
-    static void initOpenInventor(void);
-    static void runInitGuiScript(void);
-    static void runApplication(void);
+    static void initApplication();
+    static void initTypes();
+    static void initOpenInventor();
+    static void runInitGuiScript();
+    static void runApplication();
     void tryClose( QCloseEvent * e );
     //@}
     

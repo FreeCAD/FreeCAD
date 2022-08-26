@@ -34,7 +34,7 @@ namespace Surface
 
 class SurfaceExport Cut :  public Part::Feature
 {
-    PROPERTY_HEADER(Surface::Cut);
+    PROPERTY_HEADER_WITH_OVERRIDE(Surface::Cut);
 
 public:
     Cut();
@@ -42,8 +42,8 @@ public:
     App::PropertyLinkSubList ShapeList; //Shapes to be cut.
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     /// returns the type name of the view provider
 //    const char* getViewProviderName(void) const {
 //        return "SurfaceGui::ViewProviderCut";

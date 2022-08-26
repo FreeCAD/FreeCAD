@@ -43,7 +43,7 @@ public:
     ~ConsoleObserverFile() override;
 
     void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void) override {return "File";}
+    const char* Name() override {return "File";}
 
 protected:
     Base::ofstream cFileStream;
@@ -58,7 +58,7 @@ public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
     void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void) override {return "Console";}
+    const char* Name() override {return "Console";}
 protected:
     bool useColorStderr;
 private:
@@ -113,8 +113,8 @@ public:
     RedirectStdOutput();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;
@@ -126,8 +126,8 @@ public:
     RedirectStdError();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;
@@ -139,8 +139,8 @@ public:
     RedirectStdLog();
 
 protected:
-    int overflow(int c = EOF);
-    int sync();
+    int overflow(int c = EOF) override;
+    int sync() override;
 
 private:
     std::string buffer;

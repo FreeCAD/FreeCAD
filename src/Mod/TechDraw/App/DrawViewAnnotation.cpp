@@ -55,7 +55,7 @@ const char* DrawViewAnnotation::TextStyleEnums[]= {"Normal",
                                       "Bold-Italic",
                                       nullptr};
 
-DrawViewAnnotation::DrawViewAnnotation(void)
+DrawViewAnnotation::DrawViewAnnotation()
 {
     static const char *vgroup = "Annotation";
 
@@ -118,7 +118,6 @@ void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, cons
 
 QRectF DrawViewAnnotation::getRect() const
 {
-    QRectF result;
     double tSize = TextSize.getValue();
     int lines = Text.getValues().size();
     int chars = 1;
@@ -129,11 +128,10 @@ QRectF DrawViewAnnotation::getRect() const
     }
     int w = chars * std::max(1,(int)tSize);
     int h = lines * std::max(1,(int)tSize);
-    result = QRectF(0,0,getScale() * w,getScale() * h);
-    return result;
+    return QRectF(0,0,getScale() * w,getScale() * h);
 }
 
-App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)
+App::DocumentObjectExecReturn *DrawViewAnnotation::execute()
 {
     requestPaint();
     return TechDraw::DrawView::execute();
@@ -144,7 +142,7 @@ App::DocumentObjectExecReturn *DrawViewAnnotation::execute(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewAnnotationPython, TechDraw::DrawViewAnnotation)
-template<> const char* TechDraw::DrawViewAnnotationPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewAnnotationPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderAnnotation";
 }
 /// @endcond

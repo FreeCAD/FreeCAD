@@ -23,7 +23,12 @@
 #ifndef DRAWINGGUI_QGIPRIMPATH_H
 #define DRAWINGGUI_QGIPRIMPATH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <QBrush>
 #include <QGraphicsItem>
+#include <QPen>
+
 #include <Base/Parameter.h>
 
 QT_BEGIN_NAMESPACE

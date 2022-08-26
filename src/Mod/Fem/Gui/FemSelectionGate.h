@@ -37,7 +37,7 @@ class FemSelectionGate : public Gui::SelectionFilterGate
         NodeElement
     };
 
-    FemSelectionGate(ElemType type)
+    explicit FemSelectionGate(ElemType type)
         : Gui::SelectionFilterGate(nullPointer()),Type(type)
     {
     }
@@ -45,7 +45,7 @@ class FemSelectionGate : public Gui::SelectionFilterGate
     ElemType Type;
 
     /// get called by the frame-work
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 };
 
 } //namespace FemGui

@@ -180,13 +180,13 @@ void DlgUnitsCalculator::parseError(const QString& errorText)
     ui->ValueOutput->setText(errorText);
 }
 
-void DlgUnitsCalculator::copy(void)
+void DlgUnitsCalculator::copy()
 {
     QClipboard *cb = QApplication::clipboard();
     cb->setText(ui->ValueOutput->text());
 }
 
-void DlgUnitsCalculator::returnPressed(void)
+void DlgUnitsCalculator::returnPressed()
 {
     if (ui->pushButton_Copy->isEnabled()) {
         ui->textEdit->append(ui->ValueInput->text() + QString::fromLatin1(" = ") + ui->ValueOutput->text());

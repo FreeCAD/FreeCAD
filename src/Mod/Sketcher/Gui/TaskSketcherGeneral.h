@@ -46,10 +46,10 @@ class SketcherGeneralWidget : public QWidget
     Q_OBJECT
 
 public:
-    SketcherGeneralWidget(QWidget *parent=nullptr);
-    ~SketcherGeneralWidget();
+    explicit SketcherGeneralWidget(QWidget *parent=nullptr);
+    ~SketcherGeneralWidget() override;
     
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event) override;
 
     void saveSettings();
     void saveOrderingOrder();
@@ -72,7 +72,7 @@ Q_SIGNALS:
     void emitRenderOrderChanged();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_TaskSketcherGeneral> ui;
@@ -84,11 +84,11 @@ class TaskSketcherGeneral : public Gui::TaskView::TaskBox,
     Q_OBJECT
 
 public:
-    TaskSketcherGeneral(ViewProviderSketch *sketchView);
-    ~TaskSketcherGeneral();
+    explicit TaskSketcherGeneral(ViewProviderSketch *sketchView);
+    ~TaskSketcherGeneral() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+                  Gui::SelectionSingleton::MessageType Reason) override;
 
 public Q_SLOTS:
     void onToggleGridView(bool on);

@@ -43,25 +43,25 @@ namespace FemGui
 
 class FemGuiExport ViewProviderSolver : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(FemGui::ViewProviderSolver);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSolver);
 
 public:
     /// constructor
     ViewProviderSolver();
 
     /// destructor
-    ~ViewProviderSolver();
+    ~ViewProviderSolver() override;
 
     // shows solid in the tree
-    virtual bool isShow(void) const {
+    bool isShow() const override {
         return Visibility.getValue();
     }
     /// A list of all possible display modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const override;
 
     // handling when object is deleted
-    virtual bool onDelete(const std::vector<std::string>&);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool onDelete(const std::vector<std::string>&) override;
+    bool canDelete(App::DocumentObject* obj) const override;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderSolver> ViewProviderSolverPython;

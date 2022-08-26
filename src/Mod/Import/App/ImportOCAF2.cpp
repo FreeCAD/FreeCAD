@@ -176,32 +176,29 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-    merge = hGrp->GetBool("ReadShapeCompoundMode", true);
+    Part::ImportExportSettings settings;
+    merge = settings.getReadShapeCompoundMode();
+    useLinkGroup = settings.getUseLinkGroup();
+    useBaseName = settings.getUseBaseName();
+    importHidden = settings.getImportHiddenObject();
+    reduceObjects = settings.getReduceObjects();
+    showProgress = settings.getShowProgress();
+    expandCompound = settings.getExpandCompound();
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    useLinkGroup = hGrp->GetBool("UseLinkGroup",true);
-    useBaseName = hGrp->GetBool("UseBaseName",true);
-    importHidden = hGrp->GetBool("ImportHiddenObject",true);
-    reduceObjects = hGrp->GetBool("ReduceObjects",true);
-    showProgress = hGrp->GetBool("ShowProgress",true);
-    expandCompound = hGrp->GetBool("ExpandCompound",true);
-
-    if(d->isSaved()) {
+    if (d->isSaved()) {
         Base::FileInfo fi(d->FileName.getValue());
         filePath = fi.dirPath();
     }
-    mode = hGrp->GetInt("ImportMode",SingleDoc);
+    mode = static_cast<int>(settings.getImportMode());
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     defaultFaceColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
     defaultFaceColor.a = 0;
 
     defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
     defaultEdgeColor.a = 0;
 
-    if(useLinkGroup) {
+    if (useLinkGroup) {
         // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
         aShapeTool->SetAutoNaming(Standard_False);
     }
@@ -248,7 +245,7 @@ void ImportOCAF2::setObjectName(Info &info, TDF_Label label) {
     if(!info.obj)
         return;
     info.baseName = getLabelName(label);
-    if(info.baseName.size())
+    if(!info.baseName.empty())
         info.obj->Label.setValue(info.baseName.c_str());
     else{
         auto linked = info.obj->getLinkedObject(false);
@@ -403,7 +400,7 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                 if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
                     edgeColor = convertColor(aColor);
                     foundEdgeColor = true;
-                    if(j==0 && foundFaceColor && faceColors.size() && edgeColor==faceColor) {
+                    if(j==0 && foundFaceColor && !faceColors.empty() && edgeColor==faceColor) {
                         // Do not set edge the same color as face
                         foundEdgeColor = false;
                     }
@@ -662,7 +659,7 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
                     ss.str("");
                     break;
                 }
-                if(it->second.size())
+                if(!it->second.empty())
                     ss << it->second << '.';
             }
             if(!shuo->NbChildren())
@@ -724,7 +721,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         auto name = getLabelName(label);
         if(info.faceColor!=it->second.faceColor ||
            info.edgeColor!=it->second.edgeColor ||
-           (name.size() && info.baseName.size() && name!=info.baseName)) 
+           (!name.empty() && !info.baseName.empty() && name!=info.baseName))
         {
             auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
             compound->Links.setValue(info.obj);
@@ -752,7 +749,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         applyLinkColor(link,-1,info.faceColor);
 
     myNames.emplace(label,link->getNameInDocument());
-    if(shuoColors.size())
+    if(!shuoColors.empty())
         applyElementColors(link,shuoColors);
     return link;
 }
@@ -875,7 +872,7 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
 
     if(!createGroup(doc,info,shape,children,visibilities,shuoColors.empty()))
         return false;
-    if(shuoColors.size())
+    if(!shuoColors.empty())
         applyElementColors(info.obj,shuoColors);
     return true;
 }
@@ -888,9 +885,9 @@ ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    exportHidden = hGrp->GetBool("ExportHiddenObject",true);
-    keepPlacement = hGrp->GetBool("ExportKeepPlacement",false);
+    Part::ImportExportSettings settings;
+    exportHidden = settings.getExportHiddenObject();
+    keepPlacement = settings.getExportKeepPlacement();
 
     Interface_Static::SetIVal("write.step.assembly",2);
 
@@ -1045,7 +1042,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
 
     for(auto &v : colors) {
         TDF_Label nodeLabel = label;
-        if(v.first.size()) {
+        if(!v.first.empty()) {
             TDF_LabelSequence labels;
             if(aShapeTool->IsComponent(label))
                 labels.Append(label);
@@ -1289,7 +1286,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
         int vis = -1;
         if(parentGrp) {
-            if(groupLinks.size() 
+            if(!groupLinks.empty()
                 && parentGrp->getExtensionByType<App::GroupExtension>(true,false))
             {
                 vis = groupLinks.back()->isElementVisible(childName.c_str());
@@ -1334,7 +1331,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
     }
 
-    if (groupLinks.size() && groupLinks.back()==obj)
+    if (!groupLinks.empty() && groupLinks.back()==obj)
         groupLinks.pop_back();
 
     // Finished adding components. Now retrieve the computed non-located shape
@@ -1345,7 +1342,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     for(auto link : links)
         myObjects.emplace(link, label);
 
-    if(!parent.IsNull() && links.size())
+    if(!parent.IsNull() && !links.empty())
         linked = links.back();
     else
         linked = obj;

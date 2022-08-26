@@ -21,12 +21,11 @@
 #***************************************************************************
 
 from __future__ import print_function
-import sys
 import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -172,11 +171,7 @@ class _ArchSchedule:
                 # blank line
                 continue
             # write description
-            if sys.version_info.major >= 3:
-                # use unicode for python3
-                self.data["A"+str(li)] = obj.Description[i]
-            else:
-                self.data["A"+str(li)] = obj.Description[i].encode("utf8")
+            self.data["A"+str(li)] = obj.Description[i]
             if verbose:
                 l= "OPERATION: "+obj.Description[i]
                 print("")
@@ -192,7 +187,7 @@ class _ArchSchedule:
                 if objs:
                     objs = objs.split(";")
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
-                    objs = [o for o in objs if o != None]
+                    objs = [o for o in objs if o is not None]
                 else:
                     objs = FreeCAD.ActiveDocument.Objects
                 if len(objs) == 1:
@@ -261,8 +256,6 @@ class _ArchSchedule:
                     q = None
                     if obj.Unit[i]:
                         unit = obj.Unit[i]
-                        if sys.version_info.major < 3:
-                            unit = unit.encode("utf8")
                         unit = unit.replace("2","^2")
                         unit = unit.replace("3","^3")
                         unit = unit.replace("²","^2")
@@ -504,8 +497,6 @@ class ArchScheduleTaskPanel:
         filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
         if filename:
             filename = filename[0]
-            if sys.version_info.major < 3:
-                filename = filename.encode("utf8")
             self.form.list.clearContents()
             import csv
             with open(filename,'r') as csvfile:
@@ -542,8 +533,6 @@ class ArchScheduleTaskPanel:
         if filename:
             filt = filename[1]
             filename = filename[0]
-            if sys.version_info.major < 3:
-                filename = filename.encode("utf8")
             # add missing extension
             if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".tsv")) and (not filename.lower().endswith(".md")):
                 if "csv" in filt:

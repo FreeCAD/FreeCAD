@@ -24,12 +24,12 @@
 
 #ifndef _PreComp_
 #include <cmath>
-#endif // #ifndef _PreComp_
-
 #include <QApplication>
 #include <QStatusBar>
 #include <QGraphicsScene>
 #include <QMessageBox>
+#endif // #ifndef _PreComp_
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -76,7 +76,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_base(base),
     m_section(nullptr),
     m_saveScale(1.0),
-    m_dirName(""),
     m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
@@ -118,10 +117,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_sectionName = m_section->getNameInDocument();
     App::DocumentObject* newObj = m_section->BaseView.getValue();
     m_base = dynamic_cast<TechDraw::DrawViewPart*>(newObj);
-    if ( (newObj == nullptr) ||
-         (m_base == nullptr) ) {
+    if (!newObj || !m_base)
         throw Base::RuntimeError("TaskSectionView - BaseView not found");
-    }
 
     m_saveBaseName = m_base->getNameInDocument();
     m_savePageName = m_base->findParentPage()->getNameInDocument();
@@ -217,9 +214,8 @@ void TaskSectionView::setUiEdit()
 void TaskSectionView::saveSectionState()
 {
 //    Base::Console().Message("TSV::saveSectionState()\n");
-    if (m_section == nullptr) {
+    if (!m_section)
         return;
-    }
 
     m_saveSymbol = m_section->SectionSymbol.getValue();
     m_saveScale  = m_section->getScale();
@@ -235,9 +231,8 @@ void TaskSectionView::saveSectionState()
 void TaskSectionView::restoreSectionState()
 {
 //    Base::Console().Message("TSV::restoreSectionState()\n");
-    if (m_section == nullptr) {
+    if (!m_section)
         return;
-    }
 
     m_section->SectionSymbol.setValue(m_saveSymbol);
     m_section->Scale.setValue(m_saveScale);
@@ -355,7 +350,7 @@ void TaskSectionView::enableAll(bool b)
 }
 
 //******************************************************************************
-bool TaskSectionView::apply(void)
+bool TaskSectionView::apply()
 {
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
     if (m_dirName.empty()) {
@@ -364,11 +359,10 @@ bool TaskSectionView::apply(void)
         Base::Console().Error((msg + "\n").c_str());
         return false;
     }
-    if (m_section == nullptr) {          //didn't create the feature yet
+    if (!m_section)         //didn't create the feature yet
         //this can't happen as applyQuick has to be called by the direction
         //setting process
         return false;
-    }
 
     checkAll(false);
     applyQuick(m_dirName);
@@ -379,9 +373,8 @@ void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
-    if (m_section == nullptr) {
+    if (!m_section)
         createSectionView();
-    }
 
     if (!isSectionValid()) {
         failNoObject(m_sectionName);
@@ -392,12 +385,11 @@ void TaskSectionView::applyQuick(std::string dir)
     enableAll(true);
 
     m_section->recomputeFeature();
-    if (isBaseValid()) {
+    if (isBaseValid())
         m_base->requestPaint();
-    }
 }
 
-void TaskSectionView::applyAligned(void) 
+void TaskSectionView::applyAligned()
 {
     Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
 //    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
@@ -408,7 +400,7 @@ void TaskSectionView::applyAligned(void)
 //*********************************************************************
 
 //pointer to created view is not returned, but stored in m_section
-void TaskSectionView::createSectionView(void)
+void TaskSectionView::createSectionView()
 {
 //    Base::Console().Message("TSV::createSectionView()\n");
     if (!isBaseValid()) {
@@ -420,7 +412,7 @@ void TaskSectionView::createSectionView(void)
     std::string baseName = m_base->getNameInDocument();
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
-    if (m_section == nullptr) {
+    if (!m_section) {
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
 
@@ -447,17 +439,15 @@ void TaskSectionView::createSectionView(void)
 
         App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
         m_section = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
-        if ( (newObj == nullptr) ||
-             (m_section == nullptr) ) {
+        if (!newObj || !m_section)
             throw Base::RuntimeError("TaskSectionView - new section object not found");
-         }
     }
     Gui::Command::commitCommand();
 
     return;
 }
 
-void TaskSectionView::updateSectionView(void)
+void TaskSectionView::updateSectionView()
 {
 //    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
@@ -466,7 +456,7 @@ void TaskSectionView::updateSectionView(void)
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
-    if (m_section != nullptr) {
+    if (m_section) {
         Command::doCommand(Command::Doc,"App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(),m_dirName.c_str());
         Command::doCommand(Command::Doc,
@@ -507,30 +497,26 @@ void TaskSectionView::failNoObject(std::string objectName)
     m_abort = true;
 }
 
-bool TaskSectionView::isBaseValid(void)
+bool TaskSectionView::isBaseValid()
 {
-    if (m_base == nullptr) {
+    if (!m_base)
         return false;
-    }
 
     App::DocumentObject* baseObj = m_doc->getObject(m_saveBaseName.c_str());
-    if (baseObj == nullptr) {
+    if (!baseObj)
         return false;
-    }
 
     return true;
 }
 
-bool TaskSectionView::isSectionValid(void)
+bool TaskSectionView::isSectionValid()
 {
-    if (m_section == nullptr) {
+    if (!m_section)
         return false;
-    }
 
     App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
-    if (sectionObj == nullptr) {
+    if (!sectionObj)
         return false;
-    }
     
     return true;
 }
@@ -552,7 +538,7 @@ bool TaskSectionView::accept()
 bool TaskSectionView::reject()
 {
 //    Base::Console().Message("TSV::reject()\n");
-    if (m_section == nullptr) {                 //no section created, nothing to undo
+    if (!m_section) {                 //no section created, nothing to undo
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
         return false;
     }

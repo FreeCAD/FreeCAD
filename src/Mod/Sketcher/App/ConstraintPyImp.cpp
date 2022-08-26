@@ -105,13 +105,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Equal;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) {
+            else if (strstr(ConstraintType,"InternalAlignment")) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
-                if(strstr(ConstraintType,"EllipseMajorDiameter") != nullptr)
+                if(strstr(ConstraintType,"EllipseMajorDiameter"))
                     this->getConstraintPtr()->AlignmentType=EllipseMajorDiameter;
-                else if(strstr(ConstraintType,"EllipseMinorDiameter") != nullptr)
+                else if(strstr(ConstraintType,"EllipseMinorDiameter"))
                     this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -198,14 +198,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = PointOnObject;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) {
+            else if (strstr(ConstraintType,"InternalAlignment")) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"EllipseFocus1") != nullptr)
+                if(strstr(ConstraintType,"EllipseFocus1"))
                     this->getConstraintPtr()->AlignmentType=EllipseFocus1;
-                else if(strstr(ConstraintType,"EllipseFocus2") != nullptr)
+                else if(strstr(ConstraintType,"EllipseFocus2"))
                     this->getConstraintPtr()->AlignmentType=EllipseFocus2;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -313,12 +313,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
                 return 0;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) { // InteralAlignment with InternalElementIndex argument
+            else if (strstr(ConstraintType,"InternalAlignment")) { // InteralAlignment with InternalElementIndex argument
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"BSplineControlPoint") != nullptr) {
+                if(strstr(ConstraintType,"BSplineControlPoint")) {
                     this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
                 else {
@@ -470,7 +470,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string ConstraintPy::representation(void) const
+std::string ConstraintPy::representation() const
 {
     std::stringstream result;
     result << "<Constraint " ;
@@ -524,7 +524,7 @@ std::string ConstraintPy::representation(void) const
     return result.str();
 }
 
-Py::String ConstraintPy::getType(void) const
+Py::String ConstraintPy::getType() const
 {
     switch(this->getConstraintPtr()->Type) {
         case None               : return Py::String("None");break;
@@ -551,7 +551,7 @@ Py::String ConstraintPy::getType(void) const
     }
 }
 
-Py::Long ConstraintPy::getFirst(void) const
+Py::Long ConstraintPy::getFirst() const
 {
     return Py::Long(this->getConstraintPtr()->First);
 }
@@ -561,7 +561,7 @@ void  ConstraintPy::setFirst(Py::Long arg)
     this->getConstraintPtr()->First = arg;
 }
 
-Py::Long ConstraintPy::getFirstPos(void) const
+Py::Long ConstraintPy::getFirstPos() const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos));
 }
@@ -581,7 +581,7 @@ void ConstraintPy::setFirstPos(Py::Long arg)
     }
 }
 
-Py::Long ConstraintPy::getSecond(void) const
+Py::Long ConstraintPy::getSecond() const
 {
     return Py::Long(this->getConstraintPtr()->Second);
 }
@@ -591,7 +591,7 @@ void  ConstraintPy::setSecond(Py::Long arg)
     this->getConstraintPtr()->Second = arg;
 }
 
-Py::Long ConstraintPy::getSecondPos(void) const
+Py::Long ConstraintPy::getSecondPos() const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos));
 }
@@ -611,7 +611,7 @@ void ConstraintPy::setSecondPos(Py::Long arg)
     }
 }
 
-Py::Long ConstraintPy::getThird(void) const
+Py::Long ConstraintPy::getThird() const
 {
     return Py::Long(this->getConstraintPtr()->Third);
 }
@@ -621,7 +621,7 @@ void  ConstraintPy::setThird(Py::Long arg)
     this->getConstraintPtr()->Third = arg;
 }
 
-Py::Long ConstraintPy::getThirdPos(void) const
+Py::Long ConstraintPy::getThirdPos() const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos));
 }
@@ -641,7 +641,7 @@ void ConstraintPy::setThirdPos(Py::Long arg)
     }
 }
 
-Py::String ConstraintPy::getName(void) const
+Py::String ConstraintPy::getName() const
 {
     return Py::String(this->getConstraintPtr()->Name);
 }
@@ -651,22 +651,22 @@ void  ConstraintPy::setName(Py::String arg)
     this->getConstraintPtr()->Name = arg;
 }
 
-Py::Float ConstraintPy::getValue(void) const
+Py::Float ConstraintPy::getValue() const
 {
     return Py::Float(this->getConstraintPtr()->getValue());
 }
 
-Py::Boolean ConstraintPy::getDriving(void) const
+Py::Boolean ConstraintPy::getDriving() const
 {
     return Py::Boolean(this->getConstraintPtr()->isDriving);
 }
 
-Py::Boolean ConstraintPy::getInVirtualSpace(void) const
+Py::Boolean ConstraintPy::getInVirtualSpace() const
 {
     return Py::Boolean(this->getConstraintPtr()->isInVirtualSpace);
 }
 
-Py::Boolean ConstraintPy::getIsActive(void) const
+Py::Boolean ConstraintPy::getIsActive() const
 {
     return Py::Boolean(this->getConstraintPtr()->isActive);
 }

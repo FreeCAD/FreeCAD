@@ -186,7 +186,7 @@ QTreeWidgetItem *DlgObjectSelection::getItem(App::DocumentObject *obj,
         *pitems = &items;
     QTreeWidgetItem *item;
     if (!parent) {
-        if (items.size())
+        if (!items.empty())
             return items[0];
         item = new QTreeWidgetItem(ui->treeWidget);
         auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
@@ -204,7 +204,7 @@ QTreeWidgetItem *DlgObjectSelection::getItem(App::DocumentObject *obj,
         item->setData(0, Qt::UserRole, QVariant::fromValue(objT));
         item->setChildIndicatorPolicy(obj->getOutList().empty() ?
                 QTreeWidgetItem::DontShowIndicator : QTreeWidgetItem::ShowIndicator);
-    } else if (items.size()) {
+    } else if (!items.empty()) {
         item = new QTreeWidgetItem(parent);
         item->setIcon(0, items[0]->icon(0));
         item->setText(0, items[0]->text(0));
@@ -365,7 +365,8 @@ void DlgObjectSelection::onDepItemChanged(QTreeWidgetItem * depItem, int column)
     QSignalBlocker blocker3(ui->treeWidget);
     auto state = depItem->checkState(0);
     if (depItem->isSelected()) {
-        for (auto item : depItem->treeWidget()->selectedItems()) {
+        const auto items = depItem->treeWidget()->selectedItems();
+        for (auto item : items) {
             auto objT = qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole));
             auto it = itemMap.find(objT);
             if (it == itemMap.end())
@@ -437,7 +438,8 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem * objItem, int column)
         onItemSelectionChanged();
     }
     else {
-        for (auto item : ui->treeWidget->selectedItems()) {
+        const auto items = ui->treeWidget->selectedItems();
+        for (auto item : items) {
             setCheckState(item, state);
             itemChanged[qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole))] = state;
         }
@@ -484,7 +486,7 @@ void DlgObjectSelection::checkItemChanged() {
         }
     }
 
-    if (unchecked.size()) {
+    if (!unchecked.empty()) {
         // When some item is unchecked by the user, we need to re-check the
         // recursive outlist of the initially selected object, excluding all
         // currently unchecked object. And then uncheck any item that does not
@@ -552,7 +554,8 @@ void DlgObjectSelection::onItemSelectionChanged() {
     inMap.clear();
 
     std::vector<App::DocumentObject *> sels;
-    for (auto item : ui->treeWidget->selectedItems()) {
+    const auto items = ui->treeWidget->selectedItems();
+    for (auto item : items) {
         if (item == allItem) {
             sels.clear();
             break;
@@ -563,7 +566,7 @@ void DlgObjectSelection::onItemSelectionChanged() {
     }
 
     std::vector<App::DocumentObject*> _deps;
-    if (sels.size()) {
+    if (!sels.empty()) {
         std::sort(sels.begin(), sels.end());
         for (auto dep : App::Document::getDependencyList(sels, App::Document::DepSort)) {
             if (!std::binary_search(sels.begin(), sels.end(), dep))
@@ -581,7 +584,7 @@ void DlgObjectSelection::onItemSelectionChanged() {
 
     {
         QSignalBlocker blocker(ui->depList);
-        auto &objs = sels.size() ? _deps : deps;
+        auto &objs = !sels.empty() ? _deps : deps;
         for (auto it = objs.rbegin(); it != objs.rend(); ++it)
             createDepItem(ui->depList, *it);
     }

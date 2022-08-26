@@ -52,8 +52,8 @@ class GuiExport SelectionFilter
 
 public:
     /** Constructs a SelectionFilter object. */
-    SelectionFilter(const char* filter);
-    SelectionFilter(const std::string& filter);
+    explicit SelectionFilter(const char* filter);
+    explicit SelectionFilter(const std::string& filter);
     virtual ~SelectionFilter();
 
     /// Set a new filter string
@@ -66,7 +66,7 @@ public:
      *  against the filter and returns true if the
      *  described object(s) are selected.
      */
-    bool match(void);
+    bool match();
     /** Test objects
      *  This method tests if a given object is described in the
      *  filter. If SubName is not NULL the Subelement gets also
@@ -81,12 +81,12 @@ public:
     std::vector<std::vector<SelectionObject> > Result;
 
     /// true if a valid filter is set
-    bool isValid(void) const {return Ast ? true : false;}
+    bool isValid() const {return Ast ? true : false;}
 
 protected:
     std::string Filter;
     std::string Errors;
-    bool parse(void);
+    bool parse();
 
     std::shared_ptr<Node_Block> Ast;
 };
@@ -103,10 +103,10 @@ class GuiExport SelectionFilterGate: public SelectionGate
 {
 public:
     /// construct with the filter string
-    SelectionFilterGate(const char* filter);
-    SelectionFilterGate(SelectionFilter* filter);
-    ~SelectionFilterGate();
-    virtual bool allow(App::Document*,App::DocumentObject*, const char*);
+    explicit SelectionFilterGate(const char* filter);
+    explicit SelectionFilterGate(SelectionFilter* filter);
+    ~SelectionFilterGate() override;
+    bool allow(App::Document*,App::DocumentObject*, const char*) override;
 
 protected:
     static SelectionFilter* nullPointer() {
@@ -130,10 +130,10 @@ class SelectionGatePython : public SelectionGate
 {
 public:
     /// Constructor
-    SelectionGatePython(const Py::Object& obj);
-    virtual ~SelectionGatePython();
+    explicit SelectionGatePython(const Py::Object& obj);
+    ~SelectionGatePython() override;
 
-    bool allow(App::Document*, App::DocumentObject*, const char*);
+    bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 private:
     Py::Object gate;
@@ -154,12 +154,12 @@ public:
     SelectionFilter filter;
 
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
-    SelectionFilterPy(const std::string&);
-    ~SelectionFilterPy();
+    explicit SelectionFilterPy(const std::string&);
+    ~SelectionFilterPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object match(const Py::Tuple&);
     Py::Object result(const Py::Tuple&);
     Py::Object test(const Py::Tuple&);
@@ -189,10 +189,10 @@ class SelectionFilterGatePython : public SelectionGate
 {
 public:
     /// Constructor
-    SelectionFilterGatePython(SelectionFilterPy* obj);
-    virtual ~SelectionFilterGatePython();
+    explicit SelectionFilterGatePython(SelectionFilterPy* obj);
+    ~SelectionFilterGatePython() override;
 
-    bool allow(App::Document*, App::DocumentObject*, const char*);
+    bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 private:
     SelectionFilterPy* filter;
@@ -202,7 +202,7 @@ private:
 
 struct Node_Slice
 {
-    Node_Slice(int min=1,int max=INT_MAX):Min(min),Max(max){}
+    explicit Node_Slice(int min=1,int max=INT_MAX):Min(min),Max(max){}
     int Min,Max;
 
 };
@@ -229,7 +229,7 @@ typedef std::shared_ptr<Node_Object> Node_ObjectPtr;
 
 struct Node_Block
 {
-    Node_Block(Node_Object* obj){
+    explicit Node_Block(Node_Object* obj){
         Objects.emplace_back(obj);
     }
     std::vector<Node_ObjectPtr> Objects;

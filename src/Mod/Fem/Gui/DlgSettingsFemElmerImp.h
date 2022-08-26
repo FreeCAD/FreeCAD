@@ -36,8 +36,8 @@ class DlgSettingsFemElmerImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemElmerImp( QWidget* parent = nullptr );
-    ~DlgSettingsFemElmerImp();
+    explicit DlgSettingsFemElmerImp( QWidget* parent = nullptr );
+    ~DlgSettingsFemElmerImp() override;
 
 protected Q_SLOTS:
     void onfileNameChanged(QString FileName);
@@ -45,9 +45,9 @@ protected Q_SLOTS:
     void onCoresValueChanged(int cores);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemElmerImp> ui;

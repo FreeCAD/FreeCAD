@@ -117,8 +117,8 @@ class SketcherGuiExport EditModeCoinManager
         };
 
     public:
-        ParameterObserver(EditModeCoinManager & client);
-        ~ParameterObserver();
+        explicit ParameterObserver(EditModeCoinManager & client);
+        ~ParameterObserver() override;
 
         void subscribeToParameters();
 
@@ -194,7 +194,7 @@ public:
     void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
     void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2d &Pos);
-    void resetPositionText(void);
+    void resetPositionText();
     void setAxisPickStyle(bool on);
     //@}
 

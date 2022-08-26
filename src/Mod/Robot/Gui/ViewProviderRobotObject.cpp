@@ -92,7 +92,7 @@ ViewProviderRobotObject::~ViewProviderRobotObject()
 
 void ViewProviderRobotObject::setDragger()
 {
-    assert(pcDragger==nullptr);
+    assert(!pcDragger);
     pcDragger = new SoJackDragger();
     pcDragger->addMotionCallback(sDraggerMotionCallback,this);
     pcTcpRoot->addChild(pcDragger);
@@ -146,12 +146,12 @@ void ViewProviderRobotObject::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderRobotObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderRobotObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("VRML");
-    StrList.push_back("Simple");
-    StrList.push_back("Off");
+    StrList.emplace_back("VRML");
+    StrList.emplace_back("Simple");
+    StrList.emplace_back("Off");
     return StrList;
 }
 

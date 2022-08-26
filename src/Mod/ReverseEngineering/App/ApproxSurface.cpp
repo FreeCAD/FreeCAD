@@ -720,7 +720,7 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
                                                                bool  bParaCor,
                                                                double fSizeFactor)
 {
-    if (_pvcPoints != nullptr) {
+    if (_pvcPoints) {
         delete _pvcPoints;
         _pvcPoints = nullptr;
         delete _pvcUVParam;
@@ -1007,7 +1007,7 @@ namespace Reen {
 class ScalarProduct
 {
 public:
-    ScalarProduct(const math_Matrix& mat) : mat(mat)
+    explicit ScalarProduct(const math_Matrix& mat) : mat(mat)
     {
     }
     std::vector<double> multiply(int col) const

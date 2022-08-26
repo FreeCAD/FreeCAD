@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMLABEL_H
 #define DRAWINGGUI_QGCUSTOMLABEL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>

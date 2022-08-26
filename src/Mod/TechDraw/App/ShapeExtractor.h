@@ -50,7 +50,7 @@ public:
     static bool isPointType(App::DocumentObject* obj);
     static bool isDraftPoint(App::DocumentObject* obj);
     static Base::Vector3d getLocation3dFromFeat(App::DocumentObject* obj);
-    static bool prefAdd2d(void);
+    static bool prefAdd2d();
 
     static TopoDS_Shape stripInfiniteShapes(TopoDS_Shape inShape);
 

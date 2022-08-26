@@ -315,10 +315,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 {
     d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
-    QObject::connect(lineEdit(), SIGNAL(textChanged(QString)),
-                     this, SLOT(userInput(QString)));
-    QObject::connect(this, SIGNAL(editingFinished()),
-                     this, SLOT(handlePendingEmit()));
+    connect(lineEdit(), &QLineEdit::textChanged,
+            this, &QuantitySpinBox::userInput);
+    connect(this, &QuantitySpinBox::editingFinished,
+            this, [&]{
+        this->handlePendingEmit(true);
+    });
 
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
 #ifndef Q_OS_MAC
@@ -441,8 +443,8 @@ bool QuantitySpinBox::apply(const std::string & propName)
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), dValue);
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void QuantitySpinBox::resizeEvent(QResizeEvent * event)
@@ -601,7 +603,7 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
             d->pendingEmit = false;
             Q_EMIT valueChanged(res);
             Q_EMIT valueChanged(res.getValue());
-            textChanged(text);
+            Q_EMIT textChanged(text);
         }
     }
 }
@@ -631,7 +633,7 @@ void QuantitySpinBox::setUnitText(const QString& str)
     }
 }
 
-QString QuantitySpinBox::unitText(void)
+QString QuantitySpinBox::unitText()
 {
     Q_D(QuantitySpinBox);
     return d->unitStr;
@@ -889,27 +891,6 @@ void QuantitySpinBox::closeEvent(QCloseEvent * event)
 
 bool QuantitySpinBox::event(QEvent * event)
 {
-    // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
-    // Here we must not try to show the tooltip of the icon label
-    // because it would override a custom tooltip set to this widget.
-    //
-    // We could also check if the text of this tooltip is empty but
-    // it will fail in cases where the widget is embedded into the
-    // property editor and the corresponding item has set a tooltip.
-    // Instead of showing the item's tooltip it will again show the
-    // tooltip of the icon label.
-#if 0
-    if (event->type() == QEvent::ToolTip) {
-        if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
-            QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
-
-            QToolTip::showText( helpEvent->globalPos(), Base::Tools::fromStdString(getExpression()->toString()), this);
-            event->accept();
-            return true;
-        }
-    }
-#endif
-
     return QAbstractSpinBox::event(event);
 }
 
@@ -1002,7 +983,6 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
 QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
 {
     Q_D(const QuantitySpinBox);
-
     QValidator::State state;
     d->validateAndInterpret(text, pos, state);
     return state;

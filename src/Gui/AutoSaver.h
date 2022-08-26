@@ -70,7 +70,7 @@ class AutoSaver : public QObject
 private:
     static AutoSaver* self;
     AutoSaver(QObject* parent);
-    virtual ~AutoSaver();
+    ~AutoSaver() override;
 
 public:
     static AutoSaver* instance();
@@ -86,7 +86,7 @@ public:
 protected:
     void slotCreateDocument(const App::Document& Doc);
     void slotDeleteDocument(const App::Document& Doc);
-    void timerEvent(QTimerEvent * event);
+    void timerEvent(QTimerEvent * event) override;
     void saveDocument(const std::string&, AutoSaveProperty&);
 
 public Q_SLOTS:
@@ -102,15 +102,15 @@ class RecoveryWriter : public Base::FileWriter
 {
 public:
     RecoveryWriter(AutoSaveProperty&);
-    virtual ~RecoveryWriter();
+    ~RecoveryWriter() override;
 
     /*!
      This method can be re-implemented in sub-classes to avoid
      to write out certain objects. The default implementation
      always returns true.
      */
-    virtual bool shouldWrite(const std::string&, const Base::Persistence *) const;
-    virtual void writeFiles(void);
+    bool shouldWrite(const std::string&, const Base::Persistence *) const override;
+    void writeFiles() override;
 
 private:
     AutoSaveProperty& saver;

@@ -76,7 +76,7 @@ bool ViewProviderFemConstraintPlaneRotation::setEdit(int ModNum)
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
-            if (constraintDialog != nullptr) {
+            if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
             } else {
@@ -96,7 +96,7 @@ bool ViewProviderFemConstraintPlaneRotation::setEdit(int ModNum)
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);
+        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
     }
 }
 

@@ -70,11 +70,11 @@ public:
     {
         const App::DocumentObject* object;
     public:
-        FaceSelection(const App::DocumentObject* obj)
+        explicit FaceSelection(const App::DocumentObject* obj)
             : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {
         }
-        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
         {
             if (pObj != this->object)
                 return false;

@@ -136,7 +136,7 @@ void DrawPage::onChanged(const App::Property* prop)
             const std::vector<App::DocumentObject*> &vals = Views.getValues();
             for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
                 TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-                if (view != nullptr && view->ScaleType.isValue("Page")) {
+                if (view && view->ScaleType.isValue("Page")) {
                     if(std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                        view->Scale.setValue(Scale.getValue());
                     }
@@ -148,7 +148,7 @@ void DrawPage::onChanged(const App::Property* prop)
       const std::vector<App::DocumentObject*> &vals = Views.getValues();
       for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
           TechDraw::DrawProjGroup *view = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
-          if (view != nullptr && view->ProjectionType.isValue("Default")) {
+          if (view && view->ProjectionType.isValue("Default")) {
               view->ProjectionType.touch();
           }
       }
@@ -287,7 +287,7 @@ int DrawPage::removeView(App::DocumentObject *docObj)
         return -1;
 
     App::Document* doc = docObj->getDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         return -1;
     }
 
@@ -300,7 +300,7 @@ int DrawPage::removeView(App::DocumentObject *docObj)
     std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
     for (; it != currViews.end(); it++) {
         App::Document* viewDoc = (*it)->getDocument();
-        if (viewDoc == nullptr) {
+        if (!viewDoc) {
             continue;
         }
 
@@ -335,46 +335,34 @@ void DrawPage::redrawCommand()
     updateAllViews();
     forceRedraw(false);
 }
-//should really be called "updateMostViews".  can still be problems to due execution order.
+
 void DrawPage::updateAllViews()
 {
 //    Base::Console().Message("DP::updateAllViews()\n");
-    std::vector<App::DocumentObject*> featViews = getAllViews();
-    std::vector<App::DocumentObject*>::iterator it = featViews.begin();
+    std::vector<App::DocumentObject*> featViews = getAllViews();  //unordered list of views within page
+
     //first, make sure all the Parts have been executed so GeometryObjects exist
-    for(; it != featViews.end(); ++it) {
-        TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
-        TechDraw::DrawViewCollection *collect = dynamic_cast<TechDraw::DrawViewCollection*>(*it);
-        if (part != nullptr) {
+    for(auto& v: featViews) {
+        TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(v);
+        if (part) {
+            //view, section, detail, dpgi
             part->recomputeFeature();
-        } else if (collect != nullptr) {
-            collect->recomputeFeature();
         }
     }
-    //second, make sure all the Dimensions have been executed so Measurements have References
-    for(it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-        if (dim != nullptr) {
-            dim->recomputeFeature();
+    //second, do the rest of the views that may depend on a part view
+    //TODO: check if we have 2 layers of dependency (ex. leader > weld > tile?)
+    for(auto& v: featViews) {
+        TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(v);
+        if (part) {
+            continue;
         }
-    }
 
-    //third, try to execute all leader lines. may not work if parent DVP isn't ready.
-    for(it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawLeaderLine *line = dynamic_cast<TechDraw::DrawLeaderLine *>(*it);
-        if (line != nullptr) {
-            line->recomputeFeature();
+        TechDraw::DrawView* view = dynamic_cast<TechDraw::DrawView*>(v);
+        if (view) {
+            view->overrideKeepUpdated(true);
+            view->recomputeFeature();
         }
     }
-
-    //fourth, try to execute all spreadsheets.
-    for (it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawViewSpreadsheet *sheet = dynamic_cast<TechDraw::DrawViewSpreadsheet *>(*it);
-        if (sheet != nullptr) {
-            sheet->recomputeFeature();
-        }
-    }
-
 }
 
 std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 
@@ -385,7 +373,7 @@ std::vector<App::DocumentObject*> DrawPage::getAllViews(void)
         allViews.push_back(v);
         if (v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
             TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
-            if (dpg != nullptr) {                                              //can't really happen!
+            if (dpg) {                                              //can't really happen!
               std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
               allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
             }
@@ -426,7 +414,7 @@ void DrawPage::unsetupObject()
    }
 
     App::DocumentObject* tmp = Template.getValue();
-    if (tmp != nullptr) {
+    if (tmp) {
         std::string templateName = Template.getValue()->getNameInDocument();
         Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
                                               docName.c_str(), templateName.c_str());

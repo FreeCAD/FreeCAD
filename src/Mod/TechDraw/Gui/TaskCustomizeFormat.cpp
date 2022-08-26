@@ -25,15 +25,12 @@
 #ifndef _PreComp_
 #include <cmath>
 #include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-
-#endif // #ifndef _PreComp_
-
 #include <BRepBuilderAPI_MakeEdge.hxx>
-
+#include <Bnd_Box.hxx>
 #include <QButtonGroup>
 #include <QStatusBar>
 #include <QGraphicsScene>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -51,9 +48,9 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
-# include <Mod/TechDraw/App/DrawViewDimension.h>
-# include <Mod/TechDraw/App/DrawViewBalloon.h>
-# include <Mod/TechDraw/Gui/ui_TaskCustomizeFormat.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/Gui/ui_TaskCustomizeFormat.h>
 
 #include "PreferencesGui.h"
 #include "QGVPage.h"

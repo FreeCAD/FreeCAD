@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIViewSymbol.h"
 
 namespace TechDraw {
@@ -36,7 +38,7 @@ class TechDrawGuiExport QGIViewSpreadsheet : public QGIViewSymbol
 {
 public:
     QGIViewSpreadsheet();
-    ~QGIViewSpreadsheet() = default;
+    ~QGIViewSpreadsheet() override = default;
 
     enum {Type = QGraphicsItem::UserType + 124};
     int type() const override { return Type;}

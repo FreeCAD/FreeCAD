@@ -44,14 +44,14 @@ class CrossSections : public QDialog
     enum Plane { XY, XZ, YZ };
 
 public:
-    CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~CrossSections();
-    void accept();
+    explicit CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~CrossSections() override;
+    void accept() override;
     void apply();
 
 protected:
-    void changeEvent(QEvent *e);
-    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent *e) override;
+    void keyPressEvent(QKeyEvent*) override;
 
 private Q_SLOTS:
     void on_xyPlane_clicked();
@@ -82,14 +82,14 @@ class TaskCrossSections : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskCrossSections(const Base::BoundBox3d& bb);
-    ~TaskCrossSections();
+    explicit TaskCrossSections(const Base::BoundBox3d& bb);
+    ~TaskCrossSections() override;
 
 public:
-    bool accept();
-    void clicked(int id);
+    bool accept() override;
+    void clicked(int id) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
 
 private:

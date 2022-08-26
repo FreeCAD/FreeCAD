@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 #define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 
@@ -38,38 +40,37 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderRichAnno : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderRichAnno);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderRichAnno);
 
 public:
     /// constructor
     ViewProviderRichAnno();
     /// destructor
-    virtual ~ViewProviderRichAnno();
+    ~ViewProviderRichAnno() override;
 
     App::PropertyLength      LineWidth;
     App::PropertyEnumeration LineStyle;
     App::PropertyColor       LineColor;
 
-    virtual void attach(App::DocumentObject *);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property* p);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    bool useNewSelectionModel() const override {return false;}
+    void updateData(const App::Property*) override;
+    void onChanged(const App::Property* p) override;
+    bool doubleClicked() override;
+    bool canDelete(App::DocumentObject* obj) const override;
 
     static const char* LineStyleEnums[];
 
-    virtual TechDraw::DrawRichAnno* getViewObject() const;
+    TechDraw::DrawRichAnno* getViewObject() const override;
     TechDraw::DrawRichAnno* getFeature()  const;
 
 protected:
-    App::Color getDefLineColor(void);
-    std::string getDefFont(void);
-    double getDefFontSize(void);
-    double getDefLineWeight(void);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    App::Color getDefLineColor();
+    std::string getDefFont();
+    double getDefFontSize();
+    double getDefLineWeight();
+    void handleChangedPropertyType(Base::XMLReader &reader,
+                                   const char *TypeName,
+                                   App::Property * prop) override;
 
 private:
     static App::PropertyIntegerConstraint::Constraints LineStyleRange;

@@ -50,7 +50,7 @@ ViewProviderHole::~ViewProviderHole()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderHole::claimChildren(void)const
+std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<PartDesign::Hole*>(getObject())->Profile.getValue());
@@ -61,7 +61,7 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren(void)const
 void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit hole"));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
+    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
 bool ViewProviderHole::setEdit(int ModNum)
@@ -102,7 +102,7 @@ bool ViewProviderHole::setEdit(int ModNum)
         return true;
     }
     else {
-        return PartGui::ViewProviderPart::setEdit(ModNum);
+        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
     }
 }
 

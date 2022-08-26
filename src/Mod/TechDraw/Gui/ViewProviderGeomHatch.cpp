@@ -70,25 +70,6 @@ ViewProviderGeomHatch::~ViewProviderGeomHatch()
 {
 }
 
-void ViewProviderGeomHatch::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderGeomHatch::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderGeomHatch::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
 bool ViewProviderGeomHatch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
@@ -111,17 +92,7 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderGeomHatch::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDocumentObject::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderGeomHatch::doubleClicked(void)
+bool ViewProviderGeomHatch::doubleClicked()
 {
     setEdit(0);
     return true;
@@ -133,7 +104,7 @@ void ViewProviderGeomHatch::onChanged(const App::Property* p)
     if ((p == &WeightPattern)  ||
         (p == &ColorPattern) ) {
         auto gHatch = getViewObject();
-        if (gHatch != nullptr) {
+        if (gHatch) {
             TechDraw::DrawViewPart* parent = gHatch->getSourceView();
             if (parent) {
                 parent->requestPaint();
@@ -150,7 +121,7 @@ void ViewProviderGeomHatch::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderGeomHatch::updateGraphic(void)
+void ViewProviderGeomHatch::updateGraphic()
 {
     TechDraw::DrawGeomHatch* dc = getViewObject();
     if (!dc) {
@@ -176,12 +147,9 @@ void ViewProviderGeomHatch::updateGraphic(void)
     qgiv->updateView(true);
 }
 
-void ViewProviderGeomHatch::getParameters(void)
+void ViewProviderGeomHatch::getParameters()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Graphic");
-    delete lg;                                                    //Coverity CID 174667
+    double weight = TechDraw::LineGroup::getDefaultWidth("Graphic");
     WeightPattern.setValue(weight);
 }
 

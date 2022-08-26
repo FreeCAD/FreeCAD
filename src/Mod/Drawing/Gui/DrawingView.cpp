@@ -509,7 +509,7 @@ void DrawingView::printPdf()
 
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
-        QString filename = dlg.selectedFiles().front();
+        QString filename = dlg.selectedFiles().constFirst();
         QPrinter printer(QPrinter::HighResolution);
         printer.setFullPage(true);
         printer.setOutputFormat(QPrinter::PdfFormat);

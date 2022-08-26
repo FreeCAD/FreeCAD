@@ -34,6 +34,7 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
 
+from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
 
@@ -42,10 +43,23 @@ class _TaskPanel(object):
 
     def __init__(self, obj):
         self._obj = obj
+
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
         self._initParamWidget()
-        self.form = [self._paramWidget]
+
+        # geometry selection widget
+        # start with Solid in list!
+        self._selectionWidget = selection_widgets.GeometryElementsSelection(
+            obj.References,
+            ["Solid", "Face"],
+            True,
+            False
+        )
+
+        # form made from param and selection widget
+        self.form = [self._paramWidget, self._selectionWidget]
+
         analysis = obj.getParentGroup()
         self._mesh = None
         self._part = None
@@ -69,6 +83,8 @@ class _TaskPanel(object):
         return True
 
     def accept(self):
+        if self._obj.References != self._selectionWidget.references:
+            self._obj.References = self._selectionWidget.references
         self._applyWidgetChanges()
         self._obj.Document.recompute()
         FreeCADGui.ActiveDocument.resetEdit()

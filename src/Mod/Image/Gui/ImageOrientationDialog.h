@@ -35,12 +35,12 @@ class ImageOrientationDialog : public QDialog
 
 public:
     ImageOrientationDialog();
-    ~ImageOrientationDialog();
+    ~ImageOrientationDialog() override;
 
     Base::Placement Pos;
     int             DirType;
 
-    void accept();
+    void accept() override;
 
 protected Q_SLOTS:
     void onPreview();

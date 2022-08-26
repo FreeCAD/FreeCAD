@@ -37,7 +37,7 @@ class AppExport OriginGroupExtension : public App::GeoFeatureGroupExtension
 
 public:
     OriginGroupExtension ();
-    virtual ~OriginGroupExtension ();
+    ~OriginGroupExtension () override;
 
     /// Returns the origin link or throws an exception
     App::Origin *getOrigin () const;
@@ -55,7 +55,7 @@ public:
     static DocumentObject* getGroupOfObject (const DocumentObject* obj);
 
     /// Returns true on changing OriginFeature set
-    virtual short extensionMustExecute () override;
+    short extensionMustExecute () override;
 
     /// Origin linked to the group
     PropertyLink Origin;
@@ -63,21 +63,21 @@ public:
     // changes all links of obj to a origin to point to this groups origin
     void relinkToOrigin(App::DocumentObject* obj);
 
-    virtual std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
-    virtual bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
+    std::vector<DocumentObject*> addObjects(std::vector<DocumentObject*> obj) override;
+    bool hasObject(const DocumentObject* obj, bool recursive = false) const override;
 
-    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
+    bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    virtual void extensionOnChanged(const Property* p) override;
+    void extensionOnChanged(const Property* p) override;
 
 protected:
     /// Checks integrity of the Origin
-    virtual App::DocumentObjectExecReturn *extensionExecute () override;
+    App::DocumentObjectExecReturn *extensionExecute () override;
     /// Creates the corresponding Origin object
-    virtual void onExtendedSetupObject () override;
+    void onExtendedSetupObject () override;
     /// Removes all planes and axis if they are still linked to the document
-    virtual void onExtendedUnsetupObject () override;
+    void onExtendedUnsetupObject () override;
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>> OriginGroupExtensionPython;

@@ -39,7 +39,7 @@ class GuiExport TextureMapping : public QDialog
     Q_OBJECT
 
 public:
-    TextureMapping(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit TextureMapping(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~TextureMapping();
     void accept();
     void reject();
@@ -66,13 +66,13 @@ class TaskTextureMapping : public Gui::TaskView::TaskDialog
 
 public:
     TaskTextureMapping();
-    ~TaskTextureMapping();
+    ~TaskTextureMapping() override;
 
 public:
-    bool accept();
-    bool reject();
+    bool accept() override;
+    bool reject() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Close; }
 
 private:

@@ -34,15 +34,15 @@ using namespace App;
 
 namespace {
 struct StringCopy : public Enumeration::Object {
-    StringCopy(const char* str) : d(str) {
+    explicit StringCopy(const char* str) : d(str) {
     }
-    const char* data() const {
+    const char* data() const override {
         return d.data();
     }
-    bool isEqual(const char* str) const {
+    bool isEqual(const char* str) const override {
         return d == str;
     }
-    bool isCustom() const {
+    bool isCustom() const override {
         return true;
     }
 
@@ -51,15 +51,15 @@ private:
 };
 
 struct StringView : public Enumeration::Object {
-    StringView(const char* str) : d(str) {
+    explicit StringView(const char* str) : d(str) {
     }
-    const char* data() const {
+    const char* data() const override {
         return d.data();
     }
-    bool isEqual(const char* str) const {
+    bool isEqual(const char* str) const override {
         return d == str;
     }
-    bool isCustom() const {
+    bool isCustom() const override {
         return false;
     }
 
@@ -274,7 +274,7 @@ bool Enumeration::operator==(const Enumeration &other) const
     for (size_t i = 0; i < enumArray.size(); ++i) {
         if (enumArray[i]->data() == other.enumArray[i]->data())
             continue;
-        if (enumArray[i]->data() == nullptr || other.enumArray[i]->data() == nullptr)
+        if (!enumArray[i]->data() || !other.enumArray[i]->data())
             return false;
         if (!enumArray[i]->isEqual(other.enumArray[i]->data()))
             return false;
@@ -284,7 +284,7 @@ bool Enumeration::operator==(const Enumeration &other) const
 
 bool Enumeration::operator==(const char *other) const
 {
-    if (getCStr() == nullptr) {
+    if (!getCStr()) {
         return false;
     }
 

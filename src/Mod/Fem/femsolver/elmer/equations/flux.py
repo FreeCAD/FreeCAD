@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer equation object Flux"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
@@ -33,6 +34,8 @@ from femtools import femutils
 from ... import equationbase
 from . import linear
 
+COEFFICIENTS = ["Heat Conductivity", "None"]
+VARIABLES = ["Potential", "Temperature"]
 
 def create(doc, name="Flux"):
     return femutils.createObject(
@@ -45,59 +48,93 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "AverageWithinMaterials",
+            "Flux",
+            (
+                "Enforces continuity within the same material\n"
+                "in the 'Discontinuous Galerkin' discretization"
+            )
+        )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFlux",
             "Flux",
-            ""
+            "Computes flux vector"
         )
-        obj.addProperty(
-            "App::PropertyString",
-            "FluxVariable",
-            "Flux",
-            "Insert variable name for flux calculation"
-        )
-        """
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFluxAbs",
             "Flux",
-            "Select calculation of abs of flux"
+            "Computes absolute of flux vector"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFluxMagnitude",
             "Flux",
-            "Select calculation of magnitude of flux"
+            "Computes magnitude of flux vector field"
         )
-        """
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGrad",
             "Flux",
             "Select calculation of gradient"
         )
-        """
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGradAbs",
             "Flux",
-            "Select calculation of abs of gradient"
+            "Computes absolute of gradient field"
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGradMagnitude",
             "Flux",
-            "Select calculation of magnitude of gradient"
+            "Computes magnitude of gradient field"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "DiscontinuousGalerkin",
+            "Flux",
+            (
+                "Enable if standard Galerkin approximation leads to\n"
+                "unphysical results when there are discontinuities"
+            )
         )
         obj.addProperty(
             "App::PropertyBool",
             "EnforcePositiveMagnitude",
             "Flux",
-            "Select calculation of positive magnitude"
+            (
+                "If true, negative values of computed magnitude fields\n"
+                "are a posteriori set to zero."
+            )
         )
-        """
-        obj.Priority = 5
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "FluxCoefficient",
+            "Flux",
+            "Proportionality coefficient\nto compute the flux"
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "FluxVariable",
+            "Flux",
+            "Variable name for flux calculation"
+        )
+
+        obj.CalculateFlux = True
+        # set defaults according to the Elmer manual
+        obj.FluxCoefficient = COEFFICIENTS
+        obj.FluxCoefficient = "Heat Conductivity"
+        obj.FluxVariable = VARIABLES
+        obj.FluxVariable = "Temperature"
+        # Electrostatic has priority 10, Heat has 20 and Flux needs
+        # to be solved before these equations
+        # therefore set priority to 25
+        obj.Priority = 25
 
 
 class ViewProxy(linear.ViewProxy, equationbase.FluxViewProxy):

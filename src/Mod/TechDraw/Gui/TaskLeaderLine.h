@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKTEXTLEADER_H
 #define TECHDRAWGUI_TASKTEXTLEADER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -46,15 +48,13 @@ class DrawLeaderLine;
 
 namespace TechDrawGui
 {
-class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGILeaderLine;
+class ViewProviderPage;
 class ViewProviderLeader;
 class Ui_TaskLeaderLine;
 
@@ -65,19 +65,19 @@ class TaskLeaderLine : public QWidget
 public:
     TaskLeaderLine(TechDraw::DrawView* baseFeat,
                    TechDraw::DrawPage* page);
-    TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskLeaderLine();
+    explicit TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
+    ~TaskLeaderLine() override;
 
 public Q_SLOTS:
     void onTrackerClicked(bool b);
     void onCancelEditClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 public:
     virtual bool accept();
     virtual bool reject();
     virtual void setCreateMode(bool b) { m_createMode = b; }
-    virtual bool getCreateMode(void) { return m_createMode; }
+    virtual bool getCreateMode() { return m_createMode; }
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
@@ -86,23 +86,23 @@ public:
 
 
 protected Q_SLOTS:
-    void onPointEditComplete(void);
+    void onPointEditComplete();
 
 protected:
     void trackerPointsFromQPoints(std::vector<QPointF> pts);
-    void changeEvent(QEvent *e);
-    void startTracker(void);
-    void removeTracker(void);
-    void abandonEditSession(void);
+    void changeEvent(QEvent *e) override;
+    void startTracker();
+    void removeTracker();
+    void abandonEditSession();
 
     void createLeaderFeature(std::vector<Base::Vector3d> converted);
     void updateLeaderFeature();
-    void commonFeatureUpdate(void);
-    void removeFeature(void);
+    void commonFeatureUpdate();
+    void removeFeature();
 
     void blockButtons(bool b);
-    void setUiPrimary(void);
-    void setUiEdit(void);
+    void setUiPrimary();
+    void setUiEdit();
     void enableTextUi(bool b);
     void enableVPUi(bool b);
     void setEditCursor(QCursor c);
@@ -110,10 +110,10 @@ protected:
     QGIView* findParentQGIV();
     int getPrefArrowStyle();
     double prefWeight() const;
-    App::Color prefLineColor(void);
+    App::Color prefLineColor();
 
-   void saveState(void);
-   void restoreState(void);
+   void saveState();
+   void restoreState();
 
 private Q_SLOTS:
     void onStartSymbolChanged();
@@ -128,9 +128,7 @@ private:
 
     QGTracker* m_tracker;
     
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+    ViewProviderPage* m_vpp;
     ViewProviderLeader* m_lineVP;
     TechDraw::DrawView* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
@@ -170,25 +168,25 @@ class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog
 public:
     TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
                       TechDraw::DrawPage* page);
-    TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskDlgLeaderLine();
+    explicit TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
+    ~TaskDlgLeaderLine() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 protected:
 

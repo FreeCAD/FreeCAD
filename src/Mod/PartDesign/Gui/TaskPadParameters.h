@@ -43,10 +43,10 @@ class TaskPadParameters : public TaskExtrudeParameters
     Q_OBJECT
 
 public:
-    TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
-    ~TaskPadParameters();
+    explicit TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
+    ~TaskPadParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
 private:
     void onModeChanged(int index) override;
@@ -60,7 +60,7 @@ class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
+    explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
     ViewProviderPad* getPadView() const
     { return static_cast<ViewProviderPad*>(vp); }

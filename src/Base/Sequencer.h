@@ -269,15 +269,15 @@ public:
 
 protected:
     /** Starts the sequencer */
-    void startStep();
+    void startStep() override;
     /** Writes the current progress to the console window. */
-    void nextStep(bool canAbort);
+    void nextStep(bool canAbort) override;
 
 private:
     /** Puts text to the console window */
-    void setText (const char* pszTxt);
+    void setText (const char* pszTxt) override;
     /** Resets the sequencer */
-    void resetData();
+    void resetData() override;
 };
 
 /** The SequencerLauncher class is provided for convenience. It allows you to run an instance of the
@@ -390,9 +390,9 @@ public:
     static void init_type();    // announce properties and methods
 
     ProgressIndicatorPy();
-    ~ProgressIndicatorPy();
+    ~ProgressIndicatorPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
 
     Py::Object start(const Py::Tuple&);
     Py::Object next(const Py::Tuple&);

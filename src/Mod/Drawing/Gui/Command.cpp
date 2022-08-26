@@ -101,7 +101,7 @@ CmdDrawingNewPage::CmdDrawingNewPage()
 void CmdDrawingNewPage::activated(int iMsg)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QAction* a = pcAction->actions()[iMsg];
+    QAction* a = qAsConst(pcAction)->actions()[iMsg];
 
     std::string FeatName = getUniqueObjectName("Page");
 
@@ -164,7 +164,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
             lastPaper = paper;
             lastId = id;
 
-            QFile file(QString::fromLatin1(":/icons/actions/drawing-%1-%2%3.svg").arg(orientation.toLower()).arg(paper).arg(id));
+            QFile file(QString::fromLatin1(":/icons/actions/drawing-%1-%2%3.svg").arg(orientation.toLower(), paper).arg(id));
             QAction* a = pcAction->addAction(QString());
             if (file.open(QFile::ReadOnly)) {
                 QByteArray data = file.readAll();
@@ -195,7 +195,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
         pcAction->setProperty("defaultAction", QVariant(defaultId));
     }
     else if (!pcAction->actions().isEmpty()) {
-        pcAction->setIcon(pcAction->actions()[0]->icon());
+        pcAction->setIcon(qAsConst(pcAction)->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
 
@@ -225,28 +225,28 @@ void CmdDrawingNewPage::languageChange()
         if (info.isEmpty()) {
             (*it)->setText(QCoreApplication::translate(
                 "Drawing_NewPage", "%1%2 %3")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation));
+                .arg(paper,
+                     QString::number(id),
+                     orientation));
             (*it)->setToolTip(QCoreApplication::translate(
                 "Drawing_NewPage", "Insert new %1%2 %3 drawing")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation));
+                .arg(paper,
+                     QString::number(id),
+                     orientation));
         }
         else {
             (*it)->setText(QCoreApplication::translate(
                 "Drawing_NewPage", "%1%2 %3 (%4)")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation)
-                .arg(info));
+                .arg(paper,
+                     QString::number(id),
+                     orientation,
+                     info));
             (*it)->setToolTip(QCoreApplication::translate(
                 "Drawing_NewPage", "Insert new %1%2 %3 (%4) drawing")
-                .arg(paper)
-                .arg(id)
-                .arg(orientation)
-                .arg(info));
+                .arg(paper,
+                     QString::number(id),
+                     orientation,
+                     info));
         }
     }
 }

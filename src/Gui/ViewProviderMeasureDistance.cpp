@@ -141,11 +141,11 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
     }
 }
 
-std::vector<std::string> ViewProviderMeasureDistance::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeasureDistance::getDisplayModes() const
 {
     // add modes
     std::vector<std::string> StrList;
-    StrList.push_back("Base");
+    StrList.emplace_back("Base");
     return StrList;
 }
 
@@ -337,7 +337,7 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
 
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == nullptr) {
+            if (!point) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }

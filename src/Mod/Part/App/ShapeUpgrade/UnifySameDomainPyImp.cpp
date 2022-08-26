@@ -106,7 +106,7 @@ PyObject* UnifySameDomainPy::initialize(PyObject *args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string UnifySameDomainPy::representation(void) const
+std::string UnifySameDomainPy::representation() const
 {
     return std::string("<ShapeUpgrade_UnifySameDomain object>");
 }

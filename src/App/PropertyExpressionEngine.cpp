@@ -96,9 +96,7 @@ PropertyExpressionEngine::PropertyExpressionEngine()
  * @brief Destroy the PropertyExpressionEngine object.
  */
 
-PropertyExpressionEngine::~PropertyExpressionEngine()
-{
-}
+PropertyExpressionEngine::~PropertyExpressionEngine() = default;
 
 /**
  * @brief Estimate memory size of this property.
@@ -182,11 +180,11 @@ void PropertyExpressionEngine::hasSetValue()
                         std::string key = objName + propName;
                         auto &propDeps = pimpl->propMap[key];
                         if(propDeps.empty()) {
-                            if(propName.size()) 
-                                pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
+                            if(!propName.empty())
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
                                             &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
                             else
-                                pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
+                                pimpl->conns.emplace_back(obj->signalChanged.connect(boost::bind(
                                             &PropertyExpressionEngine::slotChangedObject,this,_1,_2)));
                         }
                         propDeps.push_back(e.first);
@@ -484,7 +482,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, std::shar
 
     if (expr) {
         std::string error = validateExpression(usePath, expr);
-        if (error.size() > 0)
+        if (!error.empty())
             throw Base::RuntimeError(error.c_str());
         AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr);
@@ -634,7 +632,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
 
     class resetter {
     public:
-        resetter(bool & b) : _b(b) { _b = true; }
+        explicit resetter(bool & b) : _b(b) { _b = true; }
         ~resetter() { _b = false; }
 
     private:
@@ -724,7 +722,7 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
 {
     DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
 
-    if (owner == nullptr || owner==obj)
+    if (!owner || owner==obj)
         return;
 
     for(auto &v : expressions) {
@@ -768,7 +766,7 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
 
     if (validator) {
         error = validator(usePath, expr);
-        if (error.size() > 0)
+        if (!error.empty())
             return error;
     }
 
@@ -854,7 +852,7 @@ void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIden
     }
 }
 
-PyObject *PropertyExpressionEngine::getPyObject(void)
+PyObject *PropertyExpressionEngine::getPyObject()
 {
     Py::List list;
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {

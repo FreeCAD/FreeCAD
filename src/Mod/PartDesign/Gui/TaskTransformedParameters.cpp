@@ -233,7 +233,7 @@ void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, co
 {
     QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.cbegin(); i != items.cend(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
             delete it;
         }
@@ -498,7 +498,7 @@ int ComboLinks::addLink(const App::PropertyLinkSub &lnk, QString itemText)
     this->linksInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
     newitem.Paste(lnk);
-    if (newitem.getValue() && this->doc == nullptr)
+    if (newitem.getValue() && !this->doc)
         this->doc = newitem.getValue()->getDocument();
     return linksInList.size()-1;
 }
@@ -511,7 +511,7 @@ int ComboLinks::addLink(App::DocumentObject *linkObj, std::string linkSubname, Q
     this->linksInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
     newitem.setValue(linkObj,std::vector<std::string>(1,linkSubname));
-    if (newitem.getValue() && this->doc == nullptr)
+    if (newitem.getValue() && !this->doc)
         this->doc = newitem.getValue()->getDocument();
     return linksInList.size()-1;
 }

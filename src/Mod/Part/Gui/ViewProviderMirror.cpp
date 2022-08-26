@@ -20,43 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
 # include <QTimer>
+
 # include <Standard_math.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
+
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoDragger.h>
+# include <Inventor/manips/SoCenterballManip.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/manips/SoCenterballManip.h>
 #endif
 
-#include <Mod/Part/App/FeatureMirroring.h>
-#include <Mod/Part/App/FeatureFillet.h>
-#include <Mod/Part/App/FeatureChamfer.h>
-#include <Mod/Part/App/FeatureRevolution.h>
-#include <Mod/Part/App/FeatureOffset.h>
-#include <Mod/Part/App/PartFeatures.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Mod/Part/App/FeatureChamfer.h>
+#include <Mod/Part/App/FeatureFillet.h>
+#include <Mod/Part/App/FeatureMirroring.h>
+#include <Mod/Part/App/FeatureOffset.h>
+#include <Mod/Part/App/FeatureRevolution.h>
+#include <Mod/Part/App/PartFeatures.h>
+
 #include "ViewProviderMirror.h"
 #include "DlgFilletEdges.h"
 #include "TaskOffset.h"
 #include "TaskThickness.h"
 
-using namespace PartGui;
 
+using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
@@ -266,6 +266,12 @@ void ViewProviderFillet::updateData(const App::Property* prop)
                     applyColor(hist[0], colBase, colFill);
                 }
 
+                // If the view provider has set a transparency then override the values
+                // of the input shapes
+                if (Transparency.getValue() > 0) {
+                    applyTransparency(Transparency.getValue(), colFill);
+                }
+
                 this->DiffuseColor.setValues(colFill);
             }
         }
@@ -357,21 +363,29 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
             TopExp::MapShapes(chamShape, TopAbs_FACE, chamMap);
 
-            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
-            std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            std::vector<App::Color> colCham;
-            colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
-            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
+            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
+            if (vpBase) {
+                std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
+                std::vector<App::Color> colCham;
+                colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeColor.getValue());
+                applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
 
-            if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                applyColor(hist[0], colBase, colCham);
-            }
-            else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
-                colBase.resize(baseMap.Extent(), colBase[0]);
-                applyColor(hist[0], colBase, colCham);
-            }
+                if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
+                    applyColor(hist[0], colBase, colCham);
+                }
+                else if (!colBase.empty() && colBase[0] != this->ShapeColor.getValue()) {
+                    colBase.resize(baseMap.Extent(), colBase[0]);
+                    applyColor(hist[0], colBase, colCham);
+                }
 
-            this->DiffuseColor.setValues(colCham);
+                // If the view provider has set a transparency then override the values
+                // of the input shapes
+                if (Transparency.getValue() > 0) {
+                    applyTransparency(Transparency.getValue(), colCham);
+                }
+
+                this->DiffuseColor.setValues(colCham);
+            }
         }
     }
 }

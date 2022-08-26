@@ -63,7 +63,7 @@
 using namespace Fem;
 
 // returns a string which represents the object e.g. when printed in python
-std::string FemMeshPy::representation(void) const
+std::string FemMeshPy::representation() const
 {
     std::stringstream str;
     getFemMeshPtr()->getSMesh()->Dump(str);
@@ -134,14 +134,14 @@ PyObject* FemMeshPy::setShape(PyObject *args)
 PyObject* FemMeshPy::addHypothesis(PyObject *args)
 {
     PyObject* hyp;
-    PyObject* shp=nullptr;
+    PyObject* shp = nullptr;
     // Since we have not a common base class for the Python binding of the
     // hypotheses classes we cannot pass a certain Python type
     if (!PyArg_ParseTuple(args, "O|O!",&hyp, &(Part::TopoShapePy::Type), &shp))
         return nullptr;
 
     TopoDS_Shape shape;
-    if (shp == nullptr)
+    if (!shp)
         shape = getFemMeshPtr()->getSMesh()->GetShapeToMesh();
     else
         shape = static_cast<Part::TopoShapePy*>(shp)->getTopoShapePtr()->getShape();
@@ -1160,7 +1160,7 @@ PyObject* FemMeshPy::getIdByElementType(PyObject *args)
 
 // ===== Attributes ============================================================
 
-Py::Dict FemMeshPy::getNodes(void) const
+Py::Dict FemMeshPy::getNodes() const
 {
     //int count = getFemMeshPtr()->getSMesh()->GetMeshDS()->NbNodes();
     //Py::Tuple tup(count);
@@ -1183,12 +1183,12 @@ Py::Dict FemMeshPy::getNodes(void) const
     return dict;
 }
 
-Py::Long FemMeshPy::getNodeCount(void) const
+Py::Long FemMeshPy::getNodeCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbNodes());
 }
 
-Py::Tuple FemMeshPy::getEdges(void) const
+Py::Tuple FemMeshPy::getEdges() const
 {
     std::set<int> ids;
     SMDS_EdgeIteratorPtr aEdgeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->edgesIterator();
@@ -1206,7 +1206,7 @@ Py::Tuple FemMeshPy::getEdges(void) const
     return tuple;
 }
 
-Py::Tuple FemMeshPy::getEdgesOnly(void) const
+Py::Tuple FemMeshPy::getEdgesOnly() const
 {
     std::set<int> resultSet = getFemMeshPtr()->getEdgesOnly();
     Py::Tuple tuple(resultSet.size());
@@ -1218,12 +1218,12 @@ Py::Tuple FemMeshPy::getEdgesOnly(void) const
     return tuple;
 }
 
-Py::Long FemMeshPy::getEdgeCount(void) const
+Py::Long FemMeshPy::getEdgeCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbEdges());
 }
 
-Py::Tuple FemMeshPy::getFaces(void) const
+Py::Tuple FemMeshPy::getFaces() const
 {
     std::set<int> ids;
     SMDS_FaceIteratorPtr aFaceIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->facesIterator();
@@ -1241,7 +1241,7 @@ Py::Tuple FemMeshPy::getFaces(void) const
     return tuple;
 }
 
-Py::Tuple FemMeshPy::getFacesOnly(void) const
+Py::Tuple FemMeshPy::getFacesOnly() const
 {
     std::set<int> resultSet = getFemMeshPtr()->getFacesOnly();
     Py::Tuple tuple(resultSet.size());
@@ -1253,27 +1253,27 @@ Py::Tuple FemMeshPy::getFacesOnly(void) const
     return tuple;
 }
 
-Py::Long FemMeshPy::getFaceCount(void) const
+Py::Long FemMeshPy::getFaceCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbFaces());
 }
 
-Py::Long FemMeshPy::getTriangleCount(void) const
+Py::Long FemMeshPy::getTriangleCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbTriangles());
 }
 
-Py::Long FemMeshPy::getQuadrangleCount(void) const
+Py::Long FemMeshPy::getQuadrangleCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbQuadrangles());
 }
 
-Py::Long FemMeshPy::getPolygonCount(void) const
+Py::Long FemMeshPy::getPolygonCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbPolygons());
 }
 
-Py::Tuple FemMeshPy::getVolumes(void) const
+Py::Tuple FemMeshPy::getVolumes() const
 {
     std::set<int> ids;
     SMDS_VolumeIteratorPtr aVolIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->volumesIterator();
@@ -1291,47 +1291,47 @@ Py::Tuple FemMeshPy::getVolumes(void) const
     return tuple;
 }
 
-Py::Long FemMeshPy::getVolumeCount(void) const
+Py::Long FemMeshPy::getVolumeCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbVolumes());
 }
 
-Py::Long FemMeshPy::getTetraCount(void) const
+Py::Long FemMeshPy::getTetraCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbTetras());
 }
 
-Py::Long FemMeshPy::getHexaCount(void) const
+Py::Long FemMeshPy::getHexaCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbHexas());
 }
 
-Py::Long FemMeshPy::getPyramidCount(void) const
+Py::Long FemMeshPy::getPyramidCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbPyramids());
 }
 
-Py::Long FemMeshPy::getPrismCount(void) const
+Py::Long FemMeshPy::getPrismCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbPrisms());
 }
 
-Py::Long FemMeshPy::getPolyhedronCount(void) const
+Py::Long FemMeshPy::getPolyhedronCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbPolyhedrons());
 }
 
-Py::Long FemMeshPy::getSubMeshCount(void) const
+Py::Long FemMeshPy::getSubMeshCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbSubMesh());
 }
 
-Py::Long FemMeshPy::getGroupCount(void) const
+Py::Long FemMeshPy::getGroupCount() const
 {
     return Py::Long(getFemMeshPtr()->getSMesh()->NbGroup());
 }
 
-Py::Tuple FemMeshPy::getGroups(void) const
+Py::Tuple FemMeshPy::getGroups() const
 {
     std::list<int> groupIDs = getFemMeshPtr()->getSMesh()->GetGroupIds();
 
@@ -1344,7 +1344,7 @@ Py::Tuple FemMeshPy::getGroups(void) const
     return tuple;
 }
 
-Py::Object FemMeshPy::getVolume(void) const
+Py::Object FemMeshPy::getVolume() const
 {
     return Py::asObject(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
 

@@ -43,7 +43,7 @@ namespace MeshCore {
 class MeshSearchNeighbours 
 {
 public:
-  MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
+  explicit MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
   virtual ~MeshSearchNeighbours () {}
   /** Re-initilaizes internal structures. */
   void Reinit (float fSampleDistance);
@@ -69,7 +69,7 @@ protected:
 
   struct CDistRad
   {
-    CDistRad (const Base::Vector3f clCenter) : _clCenter(clCenter) {}
+    explicit CDistRad (const Base::Vector3f clCenter) : _clCenter(clCenter) {}
     bool operator()(const Base::Vector3f &rclPt1, const Base::Vector3f &rclPt2) { return Base::DistanceP2(_clCenter, rclPt1) < Base::DistanceP2(_clCenter, rclPt2); }
     Base::Vector3f  _clCenter;
   };
@@ -144,7 +144,7 @@ inline bool MeshSearchNeighbours::TriangleCutsSphere (const MeshFacet &rclF) con
 class MeshFaceIterator
 {
 public:
-    MeshFaceIterator(const MeshKernel& mesh)
+    explicit MeshFaceIterator(const MeshKernel& mesh)
         : it(mesh) {}
     Base::Vector3f operator() (FacetIndex index)
     {
@@ -159,7 +159,7 @@ private:
 class MeshVertexIterator
 {
 public:
-    MeshVertexIterator(const MeshKernel& mesh)
+    explicit MeshVertexIterator(const MeshKernel& mesh)
         : it(mesh) {}
     Base::Vector3f operator() (PointIndex index)
     {

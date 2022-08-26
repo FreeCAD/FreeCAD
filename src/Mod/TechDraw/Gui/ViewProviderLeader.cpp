@@ -77,11 +77,6 @@ ViewProviderLeader::~ViewProviderLeader()
 {
 }
 
-void ViewProviderLeader::attach(App::DocumentObject *pcFeat)
-{
-    ViewProviderDrawingView::attach(pcFeat);
-}
-
 bool ViewProviderLeader::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPL::setEdit(%d)\n",ModNum);
@@ -97,18 +92,7 @@ bool ViewProviderLeader::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderLeader::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderLeader::doubleClicked(void)
+bool ViewProviderLeader::doubleClicked()
 {
 //    Base::Console().Message("VPL::doubleClicked()\n");
     setEdit(ViewProvider::Default);
@@ -121,7 +105,7 @@ void ViewProviderLeader::updateData(const App::Property* p)
         if (p == &getFeature()->LeaderParent)  {
             App::DocumentObject* docObj = getFeature()->LeaderParent.getValue();
             TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(docObj);
-            if (dv != nullptr) {
+            if (dv) {
                 QGIView* qgiv = getQView();
                 if (qgiv) {
                     qgiv->onSourceChange(dv);
@@ -145,7 +129,7 @@ void ViewProviderLeader::onChanged(const App::Property* p)
     ViewProviderDrawingView::onChanged(p);
 }
 
-std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a ViewLeader are:
@@ -179,16 +163,12 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
     return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
 }
 
-double ViewProviderLeader::getDefLineWeight(void)
+double ViewProviderLeader::getDefLineWeight()
 {
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double result = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return result;
+    return TechDraw::LineGroup::getDefaultWidth("Thin");
 }
 
-App::Color ViewProviderLeader::getDefLineColor(void)
+App::Color ViewProviderLeader::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }

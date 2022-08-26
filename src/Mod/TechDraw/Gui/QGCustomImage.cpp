@@ -23,14 +23,13 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QPainter>
+#include <QPixmap>
+#include <QRectF>
 #include <QStyleOptionGraphicsItem>
 #include <QtGlobal>
 #endif
 
 #include <Base/Console.h>
-
-#include <QRectF>
-#include <QPixmap>
 
 #include "QGCustomImage.h"
 
@@ -83,7 +82,7 @@ bool QGCustomImage::load(QPixmap map)
     return(success);
 }
 
-QSize QGCustomImage::imageSize(void)
+QSize QGCustomImage::imageSize()
 {
     QSize result = m_px.size() * scale();
     return result;

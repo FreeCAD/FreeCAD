@@ -41,11 +41,11 @@
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string VoronoiPy::representation(void) const
+std::string VoronoiPy::representation() const
 {
   std::stringstream ss;
   ss.precision(5);
-  ss << "Voronoi("
+  ss << "VoronoiDiagram("
     << "{" << getVoronoiPtr()->numSegments() << ", " << getVoronoiPtr()->numPoints() << "}"
     << " -> "
     << "{" << getVoronoiPtr()->numCells() << ", " << getVoronoiPtr()->numEdges() << ", " << getVoronoiPtr()->numVertices() << "}"
@@ -143,7 +143,7 @@ PyObject* VoronoiPy::numVertices(PyObject *args)
   return PyLong_FromLong(getVoronoiPtr()->numVertices());
 }
 
-Py::List VoronoiPy::getVertices(void) const {
+Py::List VoronoiPy::getVertices() const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numVertices(); ++i) {
     list.append(Py::asObject(new VoronoiVertexPy(getVoronoiPtr()->create<VoronoiVertex>(i))));
@@ -151,7 +151,7 @@ Py::List VoronoiPy::getVertices(void) const {
   return list;
 }
 
-Py::List VoronoiPy::getEdges(void) const {
+Py::List VoronoiPy::getEdges() const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numEdges(); ++i) {
     list.append(Py::asObject(new VoronoiEdgePy(getVoronoiPtr()->create<VoronoiEdge>(i))));
@@ -159,7 +159,7 @@ Py::List VoronoiPy::getEdges(void) const {
   return list;
 }
 
-Py::List VoronoiPy::getCells(void) const {
+Py::List VoronoiPy::getCells() const {
   Py::List list;
   for (int i=0; i<getVoronoiPtr()->numCells(); ++i) {
     list.append(Py::asObject(new VoronoiCellPy(getVoronoiPtr()->create<VoronoiCell>(i))));
@@ -188,7 +188,7 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 #endif
       Py_DECREF(arglist);
       Py_DECREF(vx);
-      if (result == nullptr) {
+      if (!result) {
         bail = true;
       } else {
         rc = result == Py_True;

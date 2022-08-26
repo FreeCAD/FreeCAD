@@ -57,7 +57,7 @@ class SketcherExport SketchObject : public Part::Part2DObject
 
 public:
     SketchObject();
-    ~SketchObject();
+    ~SketchObject() override;
 
     /// Property
     /**
@@ -76,10 +76,10 @@ public:
     //@{
     short mustExecute() const override;
     /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "SketcherGui::ViewProviderSketch";
     }
     //@}
@@ -185,18 +185,18 @@ public:
     std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
 
     /// returns a list of all internal geometries
-    const std::vector<Part::Geometry *> &getInternalGeometry(void) const { return Geometry.getValues(); }
+    const std::vector<Part::Geometry *> &getInternalGeometry() const { return Geometry.getValues(); }
     /// returns a list of projected external geometries
-    const std::vector<Part::Geometry *> &getExternalGeometry(void) const { return ExternalGeo; }
+    const std::vector<Part::Geometry *> &getExternalGeometry() const { return ExternalGeo; }
     /// rebuilds external geometry (projection onto the sketch plane)
-    void rebuildExternalGeometry(void);
+    void rebuildExternalGeometry();
     /// returns the number of external Geometry entities
-    int getExternalGeometryCount(void) const { return ExternalGeo.size(); }
+    int getExternalGeometryCount() const { return ExternalGeo.size(); }
 
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
-    std::vector<Part::Geometry*> getCompleteGeometry(void) const;
+    std::vector<Part::Geometry*> getCompleteGeometry() const;
 
-    GeoListFacade getGeoListFacade(void) const;
+    GeoListFacade getGeoListFacade() const;
 
     /// converts a GeoId index into an index of the CompleteGeometry vector
     int getCompleteGeometryIndex(int GeoId) const;
@@ -204,7 +204,7 @@ public:
     int getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const;
 
     /// returns non zero if the sketch contains conflicting constraints
-    int hasConflicts(void) const;
+    int hasConflicts() const;
     /**
      * sets the geometry of sketchObject as the solvedsketch geometry
      * returns the DoF of such a geometry.
@@ -241,7 +241,7 @@ public:
     /// Make all dimensionals Driving/non-Driving
     int setDatumsDriving(bool isdriving);
     /// Move Dimensional constraints at the end of the properties array
-    int moveDatumsToEnd(void);
+    int moveDatumsToEnd();
 
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
@@ -354,9 +354,9 @@ public:
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
-    int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; } // Most recently created
-    int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
-    void rebuildVertexIndex(void);
+    int getHighestVertexIndex() const { return VertexId2GeoId.size() - 1; } // Most recently created
+    int getHighestCurveIndex() const { return Geometry.getSize() - 1; }
+    void rebuildVertexIndex();
 
     /// retrieves for a GeoId and PosId the Vertex number
     int getVertexIndexGeoPos(int GeoId, PointPos PosId) const;
@@ -397,17 +397,17 @@ public:
     int port_reversedExternalArcs(bool justAnalyze);
 
     // from base class
-    virtual PyObject *getPyObject(void) override;
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
+    PyObject *getPyObject() override;
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer &/*writer*/) const override;
+    void Restore(Base::XMLReader &/*reader*/) override;
 
     /// returns the number of construction lines (to be used as axes)
-    virtual int getAxisCount(void) const override;
+    int getAxisCount() const override;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
-    virtual Base::Axis getAxis(int axId) const override;
+    Base::Axis getAxis(int axId) const override;
     /// verify and accept the assigned geometry
-    virtual void acceptGeometry() override;
+    void acceptGeometry() override;
     /// Check if constraint has invalid indexes
     bool evaluateConstraint(const Constraint *constraint) const;
     /// Check for constraints with invalid indexes
@@ -415,9 +415,9 @@ public:
     /// Remove constraints with invalid indexes
     void validateConstraints();
     /// Checks if support is valid
-    bool evaluateSupport(void);
+    bool evaluateSupport();
     /// validate External Links (remove invalid external links)
-    void validateExternalLinks(void);
+    void validateExternalLinks();
 
     /// gets DoF of last solver execution
     inline int getLastDoF() const {return lastDoF;}
@@ -434,17 +434,17 @@ public:
     /// gets solver SolveTime of last solver execution
     inline float getLastSolveTime() const {return lastSolveTime;}
     /// gets the conflicting constraints of the last solver execution
-    inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
+    inline const std::vector<int> &getLastConflicting() const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
-    inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
+    inline const std::vector<int> &getLastRedundant() const { return lastRedundant; }
     /// gets the redundant constraints of last solver execution
-    inline const std::vector<int> &getLastPartiallyRedundant(void) const { return lastPartiallyRedundant; }
+    inline const std::vector<int> &getLastPartiallyRedundant() const { return lastPartiallyRedundant; }
     /// gets the redundant constraints of last solver execution
-    inline const std::vector<int> &getLastMalformedConstraints(void) const { return lastMalformedConstraints; }
+    inline const std::vector<int> &getLastMalformedConstraints() const { return lastMalformedConstraints; }
 
 public: /* Solver exposed interface */
     /// gets the solved sketch as a reference
-    inline const Sketch &getSolvedSketch(void) const {return solvedSketch;}
+    inline const Sketch &getSolvedSketch() const {return solvedSketch;}
     /// enables/disables solver initial solution recalculation when moving point mode (useful for dragging)
     inline void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
         {solvedSketch.setRecalculateInitialSolutionWhileMovingPoint(recalculateInitialSolutionWhileMovingPoint);}
@@ -517,10 +517,10 @@ public:
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
     int detectMissingEqualityConstraints(double precision);
 
-    std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void);
-    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void);
-    std::vector<ConstraintIds> &getMissingLineEqualityConstraints(void);
-    std::vector<ConstraintIds> &getMissingRadiusConstraints(void);
+    std::vector<ConstraintIds> &getMissingPointOnPointConstraints();
+    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints();
+    std::vector<ConstraintIds> &getMissingLineEqualityConstraints();
+    std::vector<ConstraintIds> &getMissingRadiusConstraints();
 
     void setMissingRadiusConstraints(std::vector<ConstraintIds> &cl);
     void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl);
@@ -538,7 +538,7 @@ public:
     int renameConstraint(int GeoId, std::string name);
 
     // Validation routines
-    std::vector<Base::Vector3d> getOpenVertices(void) const;
+    std::vector<Base::Vector3d> getOpenVertices() const;
 
 public: // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
@@ -546,11 +546,11 @@ public: // geometry extension functionalities for single element sketch object u
 
 protected:
     /// get called by the container when a property has changed
-    virtual void onChanged(const App::Property* /*prop*/) override;
-    virtual void onDocumentRestored() override;
-    virtual void restoreFinished() override;
+    void onChanged(const App::Property* /*prop*/) override;
+    void onDocumentRestored() override;
+    void restoreFinished() override;
 
-    virtual void setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr) override;
+    void setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr) override;
 
     std::string validateExpression(const App::ObjectIdentifier &path, std::shared_ptr<const App::Expression> expr);
 
@@ -581,10 +581,10 @@ protected:
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
 
-    virtual void onUndoRedoFinished() override;
+    void onUndoRedoFinished() override;
 
     // migration functions
-    void migrateSketch(void);
+    void migrateSketch();
 
     static void appendConstraintsMsg(const std::vector<int> &vector,
                                      const std::string & singularmsg,

@@ -39,6 +39,7 @@ class DrawView;
 namespace TechDrawGui {
 class QGIView;
 class MDIViewPage;
+class ViewProviderPage;
 
 class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
@@ -48,44 +49,47 @@ public:
     /// constructor
     ViewProviderDrawingView();
     /// destructor
-    virtual ~ViewProviderDrawingView();
+    ~ViewProviderDrawingView() override;
 
     App::PropertyBool  KeepLabel;
 
-    virtual void attach(App::DocumentObject *) override;
-    virtual void setDisplayMode(const char* ModeName) override;
-    virtual bool useNewSelectionModel(void) const override {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const override;
+    void attach(App::DocumentObject *) override;
+    bool useNewSelectionModel() const override {return false;}
     /// Hide the object in the view
-    virtual void hide(void) override;
+    void hide() override;
     /// Show the object in the view
-    virtual void show(void) override;
-    virtual bool isShow(void) const override;
+    void show() override;
+    bool isShow() const override;
 
-    virtual void onChanged(const App::Property *prop) override;
-    virtual void updateData(const App::Property*) override;
-    virtual void unsetEdit(int ModNum) override;
+    void onChanged(const App::Property *prop) override;
+    void updateData(const App::Property*) override;
 
-    QGIView* getQView(void);
+    QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
-    virtual Gui::MDIView *getMDIView() const override;
+    Gui::MDIView *getMDIView() const override;
+    ViewProviderPage* getViewProviderPage() const;
 
     /** @name Restoring view provider from document load */
     //@{
-    virtual void startRestoring() override;
-    virtual void finishRestoring() override;
+    void startRestoring() override;
+    void finishRestoring() override;
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;
+    void showProgressMessage(const std::string featureName, const std::string text) const;
     
-    void onGuiRepaint(const TechDraw::DrawView* dv); 
+    void onGuiRepaint(const TechDraw::DrawView* dv);
+    void onProgressMessage(const TechDraw::DrawView* dv,
+                         const std::string featureName,
+                         const std::string text);
     typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
-    
+    Connection connectProgressMessage;
 
 private:
-    bool m_docReady;                                                   //sb MDI + QGraphicsScene ready
+    void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
+    void singleParentPaint(const TechDraw::DrawView* dv);
+
 
 };
 

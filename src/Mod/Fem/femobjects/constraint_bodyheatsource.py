@@ -39,10 +39,17 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
 
     def __init__(self, obj):
         super(ConstraintBodyHeatSource, self).__init__(obj)
+        self.add_properties(obj)
 
-        obj.addProperty(
-            "App::PropertyFloat",
-            "HeatSource",
-            "Base",
-            "Body heat source"
-        )
+    def onDocumentRestored(self, obj):
+        self.add_properties(obj)
+
+    def add_properties(self, obj):
+        if not hasattr(obj, "HeatSource"):
+            obj.addProperty(
+                "App::PropertyFloat",
+                "HeatSource",
+                "Base",
+                "Body heat source"
+            )
+            obj.HeatSource = 0.0

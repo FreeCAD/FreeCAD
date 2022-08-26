@@ -40,7 +40,7 @@ class BaseExport AbstractExceptionProducer : public AbstractProducer
 public:
     AbstractExceptionProducer () = default;
     // just implement it
-    void* Produce () const {
+    void* Produce () const override {
         return nullptr;
     }
     virtual void raiseException(PyObject * pydict) const = 0;
@@ -74,9 +74,9 @@ public:
         ExceptionFactory::Instance().AddProducer(typeid(CLASS).name(), this);
     }
 
-    virtual ~ExceptionProducer (){}
+    ~ExceptionProducer () override = default;
 
-    void raiseException(PyObject * pydict) const
+    void raiseException(PyObject * pydict) const override
     {
         CLASS c;
         c.setPyObject(pydict);

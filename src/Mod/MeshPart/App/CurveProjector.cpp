@@ -59,7 +59,9 @@
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
+#include <Base/Stream.h>
 
 
 using namespace MeshPart;
@@ -78,7 +80,8 @@ CurveProjector::CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMe
 void CurveProjector::writeIntersectionPointsToFile(const char *name)
 {
   // export points
-  std::ofstream str(name, std::ios::out | std::ios::binary);
+  Base::FileInfo fi(name);
+  Base::ofstream str(fi, std::ios::out | std::ios::binary);
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
   for (result_type::const_iterator it1 = mvEdgeSplitPoints.begin();it1!=mvEdgeSplitPoints.end();++it1) {
@@ -101,20 +104,15 @@ CurveProjectorShape::CurveProjectorShape(const TopoDS_Shape &aShape, const MeshK
   Do();
 }
 
-void CurveProjectorShape::Do(void)
+void CurveProjectorShape::Do()
 {
   TopExp_Explorer Ex;
-  TopoDS_Shape Edge;
-
-  for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next())
-  {
-	  const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+  for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+    const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
 
     //std::vector<FaceSplitEdge> vSplitEdges;
     projectCurve(aEdge, mvEdgeSplitPoints[aEdge]);
-
   }
-
 }
 
 
@@ -269,25 +267,21 @@ CurveProjectorSimple::CurveProjectorSimple(const TopoDS_Shape &aShape, const Mes
 }
 
 
-void CurveProjectorSimple::Do(void)
+void CurveProjectorSimple::Do()
 {
   TopExp_Explorer Ex;
-  TopoDS_Shape Edge;
 
   std::vector<Base::Vector3f> vEdgePolygon;
 
   for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next())
   {
-	  const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+    const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
 //    GetSampledCurves(aEdge,vEdgePolygon,2000);
 
     //std::vector<FaceSplitEdge> vSplitEdges;
     projectCurve(aEdge,vEdgePolygon, mvEdgeSplitPoints[aEdge]);
-
   }
-
 }
-
 
 void CurveProjectorSimple::GetSampledCurves( const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& rclPoints, unsigned long ulNbOfPoints)
 {
@@ -328,7 +322,8 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   MeshFacetIterator It(_Mesh);
 
   Base::SequencerLauncher seq("Building up projection map...", ulNbOfPoints+1);
-  std::ofstream str("projected.asc", std::ios::out | std::ios::binary);
+  Base::FileInfo fi("projected.asc");
+  Base::ofstream str(fi, std::ios::out | std::ios::binary);
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
 
@@ -583,26 +578,19 @@ CurveProjectorWithToolMesh::CurveProjectorWithToolMesh(const TopoDS_Shape &aShap
 }
 
 
-void CurveProjectorWithToolMesh::Do(void)
+void CurveProjectorWithToolMesh::Do()
 {
   TopExp_Explorer Ex;
-  TopoDS_Shape Edge;
   std::vector<MeshGeomFacet> cVAry;
-
-  std::vector<Base::Vector3f> vEdgePolygon;
 
   for (Ex.Init(_Shape, TopAbs_EDGE); Ex.More(); Ex.Next())
   {
-	  const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
-
+    const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
     makeToolMesh(aEdge,cVAry);
-
   }
 
   ToolMesh.AddFacets(cVAry);
-
 }
-
 
 //projectToNeighbours(Handle(Geom_Curve) hCurve,float pos
 
@@ -727,7 +715,8 @@ void MeshProjection::splitMeshByShape ( const TopoDS_Shape &aShape, float fMaxDi
     std::vector<PolyLine> rPolyLines;
     projectToMesh( aShape, fMaxDist, rPolyLines );
 
-    std::ofstream str("output.asc", std::ios::out | std::ios::binary);
+    Base::FileInfo fi("output.asc");
+    Base::ofstream str(fi, std::ios::out | std::ios::binary);
     str.precision(4);
     str.setf(std::ios::fixed | std::ios::showpoint);
     for (std::vector<PolyLine>::const_iterator it = rPolyLines.begin();it!=rPolyLines.end();++it) {
@@ -785,7 +774,7 @@ void MeshProjection::findSectionParameters(const TopoDS_Edge& edge, const Base::
     const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
 
     Base::Vector3f res;
-    for (auto it : facets) {
+    for (const auto& it : facets) {
         for (int i=0; i<3; i++) {
             Base::Vector3f pt1 = points[it._aulPoints[i]];
             Base::Vector3f pt2 = points[it._aulPoints[(i+1)%3]];
@@ -860,7 +849,7 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
 
     const MeshCore::MeshFacetArray& facets = _rcMesh.GetFacets();
     const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
-    for (auto it : facets) {
+    for (const auto& it : facets) {
         for (int i=0; i<3; i++) {
             if (!it.HasNeighbour(i)) {
                 boundaryPoints.push_back(points[it._aulPoints[i]]);
@@ -985,7 +974,7 @@ void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges,
 
     Base::SequencerLauncher seq( "Project curve on mesh", aEdges.size() );
 
-    for (auto it : aEdges) {
+    for (const auto& it : aEdges) {
         std::vector<Base::Vector3f> points = it.points;
 
         typedef std::pair<Base::Vector3f, MeshCore::FacetIndex> HitPoint;

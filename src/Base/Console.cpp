@@ -30,6 +30,7 @@
 #  include <unistd.h>
 # endif
 # include <cstring>
+# include <functional>
 #endif
 
 #include "Console.h"
@@ -54,12 +55,10 @@ public:
         : QEvent(QEvent::User), msgtype(type), msg(msg)
     {
     }
-    ~ConsoleEvent()
-    {
-    }
+    ~ConsoleEvent() override = default;
 };
 
-class ConsoleOutput : public QObject
+class ConsoleOutput : public QObject // clazy:exclude=missing-qobject-macro
 {
 public:
     static ConsoleOutput* getInstance() {
@@ -72,7 +71,7 @@ public:
         instance = nullptr;
     }
 
-    void customEvent(QEvent* ev) {
+    void customEvent(QEvent* ev) override {
         if (ev->type() == QEvent::User) {
             ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
             switch (ce->msgtype) {
@@ -93,12 +92,8 @@ public:
     }
 
 private:
-    ConsoleOutput()
-    {
-    }
-    ~ConsoleOutput()
-    {
-    }
+    ConsoleOutput() = default;
+    ~ConsoleOutput() override = default;
 
     static ConsoleOutput* instance;
 };
@@ -451,134 +446,94 @@ ConsoleSingleton & ConsoleSingleton::Instance()
 //**************************************************************************
 // Python stuff
 
-// ConsoleSingleton Methods						// Methods structure
+// ConsoleSingleton Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
     {"PrintMessage",         ConsoleSingleton::sPyMessage, METH_VARARGS,
-     "PrintMessage(string) -- Print a message to the output"},
+     "PrintMessage(obj) -> None\n\n"
+     "Print a message to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
     {"PrintLog",             ConsoleSingleton::sPyLog, METH_VARARGS,
-     "PrintLog(string) -- Print a log message to the output"},
-    {"PrintError"  ,         ConsoleSingleton::sPyError, METH_VARARGS,
-     "PrintError(string) -- Print an error message to the output"},
+     "PrintLog(obj) -> None\n\n"
+     "Print a log message to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
+    {"PrintError",           ConsoleSingleton::sPyError, METH_VARARGS,
+     "PrintError(obj) -> None\n\n"
+     "Print an error message to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
     {"PrintWarning",         ConsoleSingleton::sPyWarning, METH_VARARGS,
-     "PrintWarning -- Print a warning to the output"},
+     "PrintWarning(obj) -> None\n\n"
+     "Print a warning message to the output.\n\n"
+     "obj : object\n    The string representation is printed."},
     {"SetStatus",            ConsoleSingleton::sPySetStatus, METH_VARARGS,
-     "Set the status for either Log, Msg, Wrn or Error for an observer"},
+     "SetStatus(observer, type, status) -> None\n\n"
+     "Set the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.\n\n"
+     "observer : str\n    Logging interface name.\n"
+     "type : str\n    Message type.\n"
+     "status : bool"},
     {"GetStatus",            ConsoleSingleton::sPyGetStatus, METH_VARARGS,
-     "Get the status for either Log, Msg, Wrn or Error for an observer"},
-    {nullptr, nullptr, 0, nullptr}		/* Sentinel */
+     "GetStatus(observer, type) -> bool or None\n\n"
+     "Get the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.\n"
+     "Returns None if the specified observer doesn't exist.\n\n"
+     "observer : str\n    Logging interface name.\n"
+     "type : str\n    Message type."},
+    {"GetObservers",      ConsoleSingleton::sPyGetObservers, METH_VARARGS,
+     "GetObservers() -> list of str\n\n"
+     "Get the names of the current logging interfaces."},
+    {nullptr, nullptr, 0, nullptr}  /* Sentinel */
 };
 
-
-PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
+namespace {
+PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*)> func, PyObject* args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
         return nullptr;
-
-    const char* string=nullptr;
-    PyObject* unicode=nullptr;
-    if (PyUnicode_Check(output)) {
-        string = PyUnicode_AsUTF8(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyUnicode_AsUTF8(unicode);
-    }
-
     PY_TRY {
+        const char* string = nullptr;
+        PyObject* unicode = nullptr;
+        if (PyUnicode_Check(output)) {
+            string = PyUnicode_AsUTF8(output);
+        }
+        else {
+            unicode = PyObject_Str(output);
+            if (unicode)
+                string = PyUnicode_AsUTF8(unicode);
+        }
         if (string)
-            Instance().Message("%s",string);            // process message
-    } PY_CATCH;
+            func(string);            /*process message*/
+        Py_XDECREF(unicode);
+    }
+    PY_CATCH
+    Py_Return;
+}
+}
 
-    Py_XDECREF(unicode);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
+{
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Message("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 {
-    PyObject *output;
-    if (!PyArg_ParseTuple(args, "O", &output))
-        return nullptr;
-
-    const char* string=nullptr;
-    PyObject* unicode=nullptr;
-    if (PyUnicode_Check(output)) {
-        string = PyUnicode_AsUTF8(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyUnicode_AsUTF8(unicode);
-    }
-
-    PY_TRY {
-        if (string)
-            Instance().Warning("%s",string);            // process message
-    } PY_CATCH;
-
-    Py_XDECREF(unicode);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Warning("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 {
-    PyObject *output;
-    if (!PyArg_ParseTuple(args, "O", &output))
-        return nullptr;
-
-    const char* string=nullptr;
-    PyObject* unicode=nullptr;
-    if (PyUnicode_Check(output)) {
-        string = PyUnicode_AsUTF8(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyUnicode_AsUTF8(unicode);
-    }
-
-    PY_TRY {
-        if (string)
-            Instance().Error("%s",string);            // process message
-    } PY_CATCH;
-
-    Py_XDECREF(unicode);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Error("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 {
-    PyObject *output;
-    if (!PyArg_ParseTuple(args, "O", &output))
-        return nullptr;
-
-    const char* string=nullptr;
-    PyObject* unicode=nullptr;
-    if (PyUnicode_Check(output)) {
-        string = PyUnicode_AsUTF8(output);
-    }
-    else {
-        unicode = PyObject_Str(output);
-        if (unicode)
-            string = PyUnicode_AsUTF8(unicode);
-    }
-
-    PY_TRY {
-        if (string)
-            Instance().Log("%s",string);            // process message
-    } PY_CATCH;
-
-    Py_XDECREF(unicode);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    return FC_PYCONSOLE_MSG([](const char* msg) {
+        Instance().Log("%s", msg);
+    }, args);
 }
 
 PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
@@ -592,10 +547,7 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
         bool b=false;
         ILogger *pObs = Instance().Get(pstr1);
         if (!pObs)
-        {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
+            Py_Return;
 
         if (strcmp(pstr2,"Log") == 0)
             b = pObs->bLog;
@@ -605,43 +557,60 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
             b = pObs->bMsg;
         else if (strcmp(pstr2,"Err") == 0)
             b = pObs->bErr;
+        else
+            Py_Error(Base::PyExc_FC_GeneralError,"Unknown message type (use 'Log', 'Err', 'Msg' or 'Wrn')");
 
-        return Py_BuildValue("i",b?1:0);
-    }PY_CATCH;
+        return PyBool_FromLong(b ? 1 : 0);
+    }
+    PY_CATCH;
 }
 
 PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 {
     char *pstr1;
     char *pstr2;
-    int  Bool;
-    if (!PyArg_ParseTuple(args, "ssi", &pstr1, &pstr2,&Bool))
+    PyObject* pyStatus;
+    if (!PyArg_ParseTuple(args, "ssO!", &pstr1, &pstr2, &PyBool_Type, &pyStatus))
         return nullptr;
 
     PY_TRY{
+        bool status = asBoolean(pyStatus);
         ILogger *pObs = Instance().Get(pstr1);
-        if (pObs)
-        {
+        if (pObs) {
             if (strcmp(pstr2,"Log") == 0)
-                pObs->bLog = (Bool==0)?false:true;
+                pObs->bLog = status;
             else if (strcmp(pstr2,"Wrn") == 0)
-                pObs->bWrn = (Bool==0)?false:true;
+                pObs->bWrn = status;
             else if (strcmp(pstr2,"Msg") == 0)
-                pObs->bMsg = (Bool==0)?false:true;
+                pObs->bMsg = status;
             else if (strcmp(pstr2,"Err") == 0)
-                pObs->bErr = (Bool==0)?false:true;
+                pObs->bErr = status;
             else
-                Py_Error(Base::PyExc_FC_GeneralError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
+                Py_Error(Base::PyExc_FC_GeneralError,"Unknown message type (use 'Log', 'Err', 'Msg' or 'Wrn')");
 
-            Py_INCREF(Py_None);
-            return Py_None;
+            Py_Return;
         }
         else {
-            Py_Error(Base::PyExc_FC_GeneralError,"Unknown Console Type");
+            Py_Error(Base::PyExc_FC_GeneralError,"Unknown logger type");
         }
 
-    } PY_CATCH;
+    }
+    PY_CATCH;
 }
 
-Base::ILogger::~ILogger()
-{}
+PyObject *ConsoleSingleton::sPyGetObservers(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        Py::List list;
+        for (auto i : Instance()._aclObservers)
+            list.append(Py::String(i->Name() ? i->Name() : ""));
+
+        return Py::new_reference_to(list);
+    }
+    PY_CATCH
+}
+
+Base::ILogger::~ILogger() = default;

@@ -33,7 +33,7 @@ class GuiExport ViewProviderOriginGroup: public ViewProviderDocumentObject,
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup);
 public:
     ViewProviderOriginGroup ();
-    virtual ~ViewProviderOriginGroup ();
+    ~ViewProviderOriginGroup () override;
 };
 
 } /* Gui  */

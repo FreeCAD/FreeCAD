@@ -43,10 +43,10 @@ class TaskPocketParameters : public TaskExtrudeParameters
     Q_OBJECT
 
 public:
-    TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = nullptr, bool newObj=false);
-    ~TaskPocketParameters();
+    explicit TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = nullptr, bool newObj=false);
+    ~TaskPocketParameters() override;
 
-    virtual void apply() override;
+    void apply() override;
 
 private:
     void onModeChanged(int index) override;
@@ -63,7 +63,7 @@ class TaskDlgPocketParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgPocketParameters(ViewProviderPocket *PocketView);
+    explicit TaskDlgPocketParameters(ViewProviderPocket *PocketView);
 
     ViewProviderPocket* getPocketView() const
     { return static_cast<ViewProviderPocket*>(vp); }

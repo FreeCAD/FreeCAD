@@ -61,14 +61,14 @@ public:
         , editedObject(editedObject)
     {
     }
-    ~ShapeSelection()
+    ~ShapeSelection() override
     {
         mode = FillingEdgePanel::None;
     }
     /**
       * Allow the user to pick only edges.
       */
-    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName)
+    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
     {
         // don't allow references to itself
         if (pObj == editedObject)
@@ -97,9 +97,9 @@ private:
             return false;
 
         auto links = editedObject->UnboundEdges.getSubListValues();
-        for (auto it : links) {
+        for (const auto& it : links) {
             if (it.first == pObj) {
-                for (auto jt : it.second) {
+                for (const auto& jt : it.second) {
                     if (jt == sSubName)
                         return !appendEdges;
                 }
@@ -179,8 +179,8 @@ void FillingEdgePanel::setEditedObject(Surface::Filling* fea)
         ui->listUnbound->addItem(item);
 
         QString text = QString::fromLatin1("%1.%2")
-                .arg(QString::fromUtf8(obj->Label.getValue()))
-                .arg(QString::fromStdString(edge));
+                .arg(QString::fromUtf8(obj->Label.getValue()),
+                     QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -381,8 +381,8 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             Gui::SelectionObject sel(msg);
             QString text = QString::fromLatin1("%1.%2")
-                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()))
-                    .arg(QString::fromLatin1(msg.pSubName));
+                    .arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                         QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;
@@ -397,7 +397,7 @@ void FillingEdgePanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::size_t count = objects.size();
             objects.push_back(sel.getObject());
             auto element = editedObject->UnboundEdges.getSubValues();
-            element.push_back(msg.pSubName);
+            element.emplace_back(msg.pSubName);
             editedObject->UnboundEdges.setValues(objects, element);
 
             // extend faces and continuities lists if needed

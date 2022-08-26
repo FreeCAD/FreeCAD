@@ -34,7 +34,7 @@
 
 
 // use a different name to CreateCommand()
-void CreateStartCommands(void);
+void CreateStartCommands();
 
 void loadStartResource()
 {
@@ -52,7 +52,7 @@ public:
         initialize("This module is the StartGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

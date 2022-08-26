@@ -112,7 +112,7 @@ SourceDestBufferImpl::SourceDestBufferImpl( ImageFileImplWeakPtr destImageFile, 
    /// don't checkImageFileOpen, checkState_ will do it
 
    /// Set capacity_ after testing that b is OK
-   if ( b == nullptr )
+   if ( !b )
    {
       throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "sdbuf.pathName=" + pathName );
    }
@@ -291,7 +291,7 @@ void SourceDestBufferImpl::checkState_() const
 
    if ( memoryRepresentation_ != E57_USTRING )
    {
-      if ( base_ == nullptr )
+      if ( !base_ )
       {
          throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
       }
@@ -304,7 +304,7 @@ void SourceDestBufferImpl::checkState_() const
    }
    else
    {
-      if ( ustrings_ == nullptr )
+      if ( !ustrings_ )
       {
          throw E57_EXCEPTION2( E57_ERROR_BAD_BUFFER, "pathName=" + pathName_ );
       }

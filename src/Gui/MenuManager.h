@@ -38,7 +38,7 @@ class GuiExport MenuItem
 {
 public:
     MenuItem();
-    MenuItem(MenuItem*);
+    explicit MenuItem(MenuItem*);
     ~MenuItem();
 
     void setCommand(const std::string&);

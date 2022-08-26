@@ -222,7 +222,7 @@ class NS::NaviMachine : public sc::state_machine<NS::NaviMachine, NS::IdleState>
 public:
     typedef sc::state_machine<NS::NaviMachine, NS::IdleState> superclass;
 
-    NaviMachine(NS& ns) : ns(ns) {}
+    explicit NaviMachine(NS& ns) : ns(ns) {}
     NS& ns;
 
 public:
@@ -238,7 +238,7 @@ class NS::IdleState : public sc::state<NS::IdleState, NS::NaviMachine>
 public:
     typedef sc::custom_reaction<NS::Event> reactions;
 
-    IdleState(my_context ctx):my_base(ctx)
+    explicit IdleState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::IDLE);
@@ -347,7 +347,7 @@ private:
     int hold_timeout; //in milliseconds
 
 public:
-    AwaitingMoveState(my_context ctx):my_base(ctx)
+    explicit AwaitingMoveState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         if (ns.logging)
@@ -486,7 +486,7 @@ private:
     SbVec2s base_pos;
 
 public:
-    RotateState(my_context ctx):my_base(ctx)
+    explicit RotateState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::DRAGGING);
@@ -529,7 +529,7 @@ private:
     float ratio;
 
 public:
-    PanState(my_context ctx):my_base(ctx)
+    explicit PanState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
@@ -576,7 +576,7 @@ private:
     float ratio;
 
 public:
-    StickyPanState(my_context ctx):my_base(ctx)
+    explicit StickyPanState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
@@ -622,7 +622,7 @@ private:
     SbVec2s base_pos;
 
 public:
-    TiltState(my_context ctx):my_base(ctx)
+    explicit TiltState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::DRAGGING);
@@ -672,7 +672,7 @@ private:
     bool enableTilt = false;
 
 public:
-    GestureState(my_context ctx):my_base(ctx)
+    explicit GestureState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
@@ -753,7 +753,7 @@ public:
     typedef sc::custom_reaction<NS::Event> reactions;
 
 public:
-    AwaitingReleaseState(my_context ctx):my_base(ctx)
+    explicit AwaitingReleaseState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         if (ns.logging)
@@ -803,7 +803,7 @@ public:
     typedef sc::custom_reaction<NS::Event> reactions;
 
 public:
-    InteractState(my_context ctx):my_base(ctx)
+    explicit InteractState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::INTERACT);
@@ -994,7 +994,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
         cmd = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View")->GetASCII("GestureRollBackCommand");
     }
-    if (cmd.size() == 0)
+    if (cmd.empty())
         return;
     std::stringstream code;
     code << "Gui.runCommand(\"" << cmd << "\")";

@@ -37,7 +37,7 @@ namespace PartDesign
 
 class PartDesignExport FeatureExtrude : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::FeatureExtrude);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureExtrude);
 
 public:
     FeatureExtrude();
@@ -59,7 +59,7 @@ public:
 
     /** @name methods override feature */
     //@{
-    short mustExecute() const;
+    short mustExecute() const override;
     //@}
 
 protected:
@@ -111,6 +111,11 @@ protected:
                               const double angle,
                               const double angle2,
                               const bool midplane);
+    
+    /**
+      * Disables settings that are not valid for the current method
+      */
+    void updateProperties(const std::string &method);
 };
 
 } //namespace PartDesign

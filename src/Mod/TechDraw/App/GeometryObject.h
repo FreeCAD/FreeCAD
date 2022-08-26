@@ -29,6 +29,7 @@
 #include <vector>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Compound.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 
@@ -121,32 +122,33 @@ public:
     TopoDS_Shape projectFace(const TopoDS_Shape &face,
                              const gp_Ax2 &CS);
 
+    void makeTDGeometry();
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(FacePtr f);
     void clearFaceGeom();
     void setIsoCount(int i) { m_isoCount = i; }
     void setParentName(std::string n);                          //for debug messages
     void isPerspective(bool b) { m_isPersp = b; }
-    bool isPerspective(void) { return m_isPersp; }
+    bool isPerspective() { return m_isPersp; }
     void usePolygonHLR(bool b) { m_usePolygonHLR = b; }
-    bool usePolygonHLR(void) const { return m_usePolygonHLR; }
+    bool usePolygonHLR() const { return m_usePolygonHLR; }
     void setFocus(double f) { m_focus = f; }
-    double getFocus(void) { return m_focus; }
+    double getFocus() { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
 
     //dupl mirrorShape???
     static TopoDS_Shape invertGeometry(const TopoDS_Shape s);
 
-    TopoDS_Shape getVisHard(void)    { return visHard; }
-    TopoDS_Shape getVisOutline(void) { return visOutline; }
-    TopoDS_Shape getVisSmooth(void)  { return visSmooth; }
-    TopoDS_Shape getVisSeam(void)    { return visSeam; }
-    TopoDS_Shape getVisIso(void)     { return visIso; }
-    TopoDS_Shape getHidHard(void)    { return hidHard; }
-    TopoDS_Shape getHidOutline(void) { return hidOutline; }
-    TopoDS_Shape getHidSmooth(void)  { return hidSmooth; }
-    TopoDS_Shape getHidSeam(void)    { return hidSeam; }
-    TopoDS_Shape getHidIso(void)     { return hidIso; }
+    TopoDS_Shape getVisHard()    { return visHard; }
+    TopoDS_Shape getVisOutline() { return visOutline; }
+    TopoDS_Shape getVisSmooth()  { return visSmooth; }
+    TopoDS_Shape getVisSeam()    { return visSeam; }
+    TopoDS_Shape getVisIso()     { return visIso; }
+    TopoDS_Shape getHidHard()    { return hidHard; }
+    TopoDS_Shape getHidOutline() { return hidOutline; }
+    TopoDS_Shape getHidSmooth()  { return hidSmooth; }
+    TopoDS_Shape getHidSeam()    { return hidSeam; }
+    TopoDS_Shape getHidIso()     { return hidIso; }
 
     void addVertex(TechDraw::VertexPtr v);
     void addEdge(TechDraw::BaseGeomPtr bg);
@@ -168,7 +170,6 @@ public:
 
     int addCenterLine(TechDraw::BaseGeomPtr bg,
                       std::string tag);
-/*                       int s = 0, int si = -1);*/
 
 protected:
     //HLR output
@@ -184,7 +185,7 @@ protected:
     TopoDS_Shape hidIso;
 
     void addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible);
-    TechDraw::DrawViewDetail* isParentDetail(void);
+    TechDraw::DrawViewDetail* isParentDetail();
 
     //similar function in Geometry?
     /*!

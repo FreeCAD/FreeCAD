@@ -114,19 +114,21 @@ class GuiExport DlgPreferencesImp : public QDialog
 public:
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
+    static void setGroupData(const std::string& group, const std::string& icon, const QString& tip);
+    static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
-    DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~DlgPreferencesImp();
+    explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~DlgPreferencesImp() override;
 
-    void accept();
+    void accept() override;
     void reload();
     void activateGroupPage(const QString& group, int id);
 
 protected:
-    void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
-    void resizeEvent(QResizeEvent*);
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
 
 
 protected Q_SLOTS:
@@ -143,11 +145,17 @@ private:
     void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
     void restoreDefaults();
+    QString longestGroupName() const;
     //@}
 
 private:
     typedef std::pair<std::string, std::list<std::string>> TGroupPages;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
+    struct Group {
+        std::string iconName;
+        QString tooltip;
+    };
+    static std::map<std::string, Group> _groupMap;
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
     bool canEmbedScrollArea;

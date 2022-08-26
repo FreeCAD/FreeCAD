@@ -41,7 +41,7 @@ using namespace App;
 
 
 // returns a string which represent the object e.g. when printed in python
-std::string DocumentPy::representation(void) const
+std::string DocumentPy::representation() const
 {
     std::stringstream str;
     str << "<Document object at " << getDocumentPtr() << ">";
@@ -275,7 +275,9 @@ PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
             if (pyvp.hasAttr("__vobject__")) {
                 pyvp.setAttr("__vobject__", pyftr.getAttr("ViewObject"));
             }
-            pyftr.getAttr("ViewObject").setAttr("Proxy", pyvp);
+
+            Py::Object pyprx(pyftr.getAttr("ViewObject"));
+            pyprx.setAttr("Proxy", pyvp);
             return Py::new_reference_to(pyftr);
         }
         catch (Py::Exception& e) {
@@ -642,7 +644,7 @@ PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
     return list;
 }
 
-Py::Object DocumentPy::getActiveObject(void) const
+Py::Object DocumentPy::getActiveObject() const
 {
     DocumentObject *pcFtr = getDocumentPtr()->getActiveObject();
     if (pcFtr)
@@ -663,7 +665,7 @@ PyObject*  DocumentPy::supportedTypes(PyObject *args)
     return Py::new_reference_to(res);
 }
 
-Py::List DocumentPy::getObjects(void) const
+Py::List DocumentPy::getObjects() const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->getObjects();
     Py::List res;
@@ -675,7 +677,7 @@ Py::List DocumentPy::getObjects(void) const
     return res;
 }
 
-Py::List DocumentPy::getTopologicalSortedObjects(void) const
+Py::List DocumentPy::getTopologicalSortedObjects() const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;
@@ -687,7 +689,7 @@ Py::List DocumentPy::getTopologicalSortedObjects(void) const
     return res;
 }
 
-Py::List DocumentPy::getRootObjects(void) const
+Py::List DocumentPy::getRootObjects() const
 {
     std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
     Py::List res;
@@ -699,7 +701,7 @@ Py::List DocumentPy::getRootObjects(void) const
     return res;
 }
 
-Py::Int DocumentPy::getUndoMode(void) const
+Py::Int DocumentPy::getUndoMode() const
 {
     return Py::Int(getDocumentPtr()->getUndoMode());
 }
@@ -710,22 +712,22 @@ void  DocumentPy::setUndoMode(Py::Int arg)
 }
 
 
-Py::Int DocumentPy::getUndoRedoMemSize(void) const
+Py::Int DocumentPy::getUndoRedoMemSize() const
 {
     return Py::Int((long)getDocumentPtr()->getUndoMemSize());
 }
 
-Py::Int DocumentPy::getUndoCount(void) const
+Py::Int DocumentPy::getUndoCount() const
 {
     return Py::Int((long)getDocumentPtr()->getAvailableUndos());
 }
 
-Py::Int DocumentPy::getRedoCount(void) const
+Py::Int DocumentPy::getRedoCount() const
 {
     return Py::Int((long)getDocumentPtr()->getAvailableRedos());
 }
 
-Py::List DocumentPy::getUndoNames(void) const
+Py::List DocumentPy::getUndoNames() const
 {
     std::vector<std::string> vList = getDocumentPtr()->getAvailableUndoNames();
     Py::List res;
@@ -736,7 +738,7 @@ Py::List DocumentPy::getUndoNames(void) const
     return res;
 }
 
-Py::List DocumentPy::getRedoNames(void) const
+Py::List DocumentPy::getRedoNames() const
 {
     std::vector<std::string> vList = getDocumentPtr()->getAvailableRedoNames();
     Py::List res;
@@ -747,19 +749,19 @@ Py::List DocumentPy::getRedoNames(void) const
     return res;
 }
 
-Py::String  DocumentPy::getDependencyGraph(void) const
+Py::String  DocumentPy::getDependencyGraph() const
 {
     std::stringstream out;
     getDocumentPtr()->exportGraphviz(out);
     return Py::String(out.str());
 }
 
-Py::String DocumentPy::getName(void) const
+Py::String DocumentPy::getName() const
 {
     return Py::String(getDocumentPtr()->getName());
 }
 
-Py::Boolean DocumentPy::getRecomputesFrozen(void) const
+Py::Boolean DocumentPy::getRecomputesFrozen() const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::SkipRecompute));
 }
@@ -808,7 +810,7 @@ PyObject *DocumentPy::getCustomAttributes(const char* attr) const
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop)
         return nullptr;
-    if (this->ob_type->tp_dict == nullptr) {
+    if (!this->ob_type->tp_dict) {
         if (PyType_Ready(this->ob_type) < 0)
             return nullptr;
     }
@@ -830,7 +832,7 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop)
         return 0;
-    if (this->ob_type->tp_dict == nullptr) {
+    if (!this->ob_type->tp_dict) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
@@ -877,7 +879,7 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
     } PY_CATCH
 }
 
-Py::List DocumentPy::getInList(void) const
+Py::List DocumentPy::getInList() const
 {
     Py::List ret;
     auto lists = PropertyXLink::getDocumentInList(getDocumentPtr());
@@ -888,7 +890,7 @@ Py::List DocumentPy::getInList(void) const
     return ret;
 }
 
-Py::List DocumentPy::getOutList(void) const
+Py::List DocumentPy::getOutList() const
 {
     Py::List ret;
     auto lists = PropertyXLink::getDocumentOutList(getDocumentPtr());
@@ -912,22 +914,22 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     } PY_CATCH;
 }
 
-Py::Boolean DocumentPy::getRestoring(void) const
+Py::Boolean DocumentPy::getRestoring() const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
 }
 
-Py::Boolean DocumentPy::getPartial(void) const
+Py::Boolean DocumentPy::getPartial() const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::PartialDoc));
 }
 
-Py::Boolean DocumentPy::getImporting(void) const
+Py::Boolean DocumentPy::getImporting() const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Importing));
 }
 
-Py::Boolean DocumentPy::getRecomputing(void) const
+Py::Boolean DocumentPy::getRecomputing() const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Recomputing));
 }

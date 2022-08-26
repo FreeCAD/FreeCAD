@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -30,6 +29,7 @@
 
 #include <Gui/Application.h>
 #include <Mod/Part/App/FeatureCompound.h>
+
 #include "ViewProviderCompound.h"
 
 
@@ -123,6 +123,12 @@ void ViewProviderCompound::updateData(const App::Property* prop)
                     applyColor(hist[index], baseCol, compCol);
                 }
             }
+        }
+
+        // If the view provider has set a transparency then override the values
+        // of the input shapes
+        if (Transparency.getValue() > 0) {
+            applyTransparency(Transparency.getValue(), compCol);
         }
 
         this->DiffuseColor.setValues(compCol);

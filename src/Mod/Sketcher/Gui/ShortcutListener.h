@@ -44,11 +44,11 @@ class ShortcutListener: public QObject
     //Q_OBJECT
 
 public:
-    ShortcutListener(ViewProviderSketch * vp);
-    ~ShortcutListener();
+    explicit ShortcutListener(ViewProviderSketch * vp);
+    ~ShortcutListener() override;
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
     ViewProviderSketch * pViewProvider;
 };

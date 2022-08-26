@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/BaseClass.h>
+#include <FCGlobal.h>
 #include <QtOpenGL.h>
 #include <QPoint>
 
@@ -84,13 +85,13 @@ private:
 
 class GuiExport GLGraphicsItem : public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     GLGraphicsItem()
     {
     }
-    virtual ~GLGraphicsItem()
+    ~GLGraphicsItem() override
     {
     }
     virtual void paintGL() = 0;
@@ -104,16 +105,16 @@ class GuiExport Rubberband : public Gui::GLGraphicsItem
     bool working, stipple;
 
 public:
-    Rubberband(View3DInventorViewer* v);
+    explicit Rubberband(View3DInventorViewer* v);
     Rubberband();
-    ~Rubberband();
+    ~Rubberband() override;
     void setWorking(bool on);
     void setLineStipple(bool on);
     bool isWorking();
     void setViewer(View3DInventorViewer* v);
     void setCoords(int x1, int y1, int x2, int y2);
     void setColor(float r, float g, float b, float a);
-    void paintGL();
+    void paintGL() override;
 };
 
 class GuiExport Polyline : public Gui::GLGraphicsItem
@@ -126,9 +127,9 @@ class GuiExport Polyline : public Gui::GLGraphicsItem
     GLPainter p;
 
 public:
-    Polyline(View3DInventorViewer* v);
+    explicit Polyline(View3DInventorViewer* v);
     Polyline();
-    ~Polyline();
+    ~Polyline() override;
     void setWorking(bool on);
     bool isWorking() const;
     void setViewer(View3DInventorViewer* v);
@@ -140,7 +141,7 @@ public:
     void addNode(const QPoint& p);
     void popNode();
     void clear();
-    void paintGL();
+    void paintGL() override;
 };
 
 } // namespace Gui

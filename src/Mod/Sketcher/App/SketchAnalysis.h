@@ -63,7 +63,7 @@ public:
     /// They may also apply a variaty of types of Constraints.
     ///
     /// A third type of routines do not relate to autoconstraining at all, and include validation methods for sketches.
-    SketchAnalysis(Sketcher::SketchObject * Obj);
+    explicit SketchAnalysis(Sketcher::SketchObject * Obj);
     ~SketchAnalysis();
 
     // Simple routines (see constructor)
@@ -74,7 +74,7 @@ public:
     /// Point on Point constraint simple routine Analyse step (see constructor)
     void analyseMissingPointOnPointCoincident(double angleprecision = M_PI/8);
     /// Point on Point constraint simple routine Get step (see constructor)
-    std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void) {return vertexConstraints;}
+    std::vector<ConstraintIds> &getMissingPointOnPointConstraints() {return vertexConstraints;}
     /// Vertical/Horizontal constraints simple routine Set step (see constructor)
     void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl) {vertexConstraints = cl;}
     /// Point on Point constraint simple routine Make step (see constructor)
@@ -84,7 +84,7 @@ public:
     /// Vertical/Horizontal constraints simple routine Detect step (see constructor)
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
     /// Vertical/Horizontal constraints simple routine Get step (see constructor)
-    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void) {return verthorizConstraints;}
+    std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints() {return verthorizConstraints;}
     /// Vertical/Horizontal constraints simple routine Set step (see constructor)
     void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl) {verthorizConstraints = cl;}
     /// Vertical/Horizontal constraints simple routine Make step (see constructor)
@@ -93,9 +93,9 @@ public:
     /// Equality constraints simple routine Detect step (see constructor)
     int detectMissingEqualityConstraints(double precision);
     /// Equality constraints simple routine Get step for line segments (see constructor)
-    std::vector<ConstraintIds> &getMissingLineEqualityConstraints(void) {return lineequalityConstraints;}
+    std::vector<ConstraintIds> &getMissingLineEqualityConstraints() {return lineequalityConstraints;}
     /// Equality constraints simple routine Get step for radii (see constructor)
-    std::vector<ConstraintIds> &getMissingRadiusConstraints(void) {return radiusequalityConstraints;}
+    std::vector<ConstraintIds> &getMissingRadiusConstraints() {return radiusequalityConstraints;}
     /// Equality constraints simple routine Set step for line segments (see constructor)
     void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl) {lineequalityConstraints = cl;}
     /// Equality constraints simple routine Set step for radii (see constructor)
@@ -124,7 +124,7 @@ public:
     void solvesketch(int &status, int &dofs, bool updategeo);
 
     // third type of routines
-    std::vector<Base::Vector3d> getOpenVertices(void) const;
+    std::vector<Base::Vector3d> getOpenVertices() const;
 
 protected:
     Sketcher::SketchObject* sketch;

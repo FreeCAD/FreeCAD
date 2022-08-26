@@ -46,7 +46,7 @@ public:
         initialize("This module is the PathSimulator module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

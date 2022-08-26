@@ -23,8 +23,9 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
-#include <memory>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <memory>
 
 #include <QGraphicsView>
 #include <QLabel>
@@ -77,15 +78,15 @@ public:
     enum RendererType { Native, OpenGL, Image };
 
     QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent = nullptr);
-    virtual ~QGVPage();
+    ~QGVPage() override;
 
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect) override;
 
     QGSPage* getScene() {return m_scene; }
 
-    void startBalloonPlacing(void);
-    void cancelBalloonPlacing(void);
+    void startBalloonPlacing();
+    void cancelBalloonPlacing();
 
     TechDraw::DrawPage * getDrawPage();
 
@@ -93,7 +94,7 @@ public:
 
     void makeGrid(int width, int height, double step);
     void showGrid(bool state) {m_showGrid = state;}
-    void updateViewport(void) {viewport()->repaint();}
+    void updateViewport() {viewport()->repaint();}
 
     bool isBalloonPlacing() {return balloonPlacing; }
     void setBalloonPlacing(bool s) {balloonPlacing = s;}
@@ -111,6 +112,8 @@ public:
     void setZoomCursor();
 
     void pseudoContextEvent();
+
+    void centerOnPage(void);
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);

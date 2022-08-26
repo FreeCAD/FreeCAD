@@ -23,40 +23,43 @@
 #ifndef _TechDraw_DrawRichAnno_h_
 #define _TechDraw_DrawRichAnno_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 
 #include "DrawView.h"
-
 
 namespace TechDraw
 {
 
 class TechDrawExport DrawRichAnno : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawRichAnno);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawRichAnno);
 
 public:
     DrawRichAnno();
-    virtual ~DrawRichAnno();
+    ~DrawRichAnno() override;
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;
     App::PropertyBool         ShowFrame;
     App::PropertyFloat        MaxWidth;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const override;
+    App::DocumentObjectExecReturn *execute() override;
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderRichAnno";
     }
-    virtual PyObject *getPyObject(void);
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}
-    DrawView* getBaseView(void) const;
+    PyObject *getPyObject() override;
+    QRectF getRect() const override { return QRectF(0,0,1,1);}
+    DrawView* getBaseView() const;
+
+    DrawPage* findParentPage() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 private:
 };

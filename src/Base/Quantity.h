@@ -116,7 +116,7 @@ public:
     explicit Quantity(double value, const Unit& unit=Unit());
     explicit Quantity(double value, const QString& unit);
     /// Destruction
-    ~Quantity () {}
+    ~Quantity () = default;
 
     /** Operators. */
     //@{
@@ -249,7 +249,7 @@ public:
     static Quantity MilliNewtonPerMeter;
     static Quantity KiloNewtonPerMeter;
     static Quantity MegaNewtonPerMeter;
-    
+
     static Quantity Pascal;
     static Quantity KiloPascal;
     static Quantity MegaPascal;

@@ -35,7 +35,7 @@ depending on the actual extension object underlying this python
 object.
 
 If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
-it is assumed the the actually property name is the same as 'key'
+it is assumed that the actual property name is the same as 'key'
         </UserDocu>
       </Documentation>
     </Methode>

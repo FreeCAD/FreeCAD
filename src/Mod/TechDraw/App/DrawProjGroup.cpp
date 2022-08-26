@@ -62,8 +62,7 @@ const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
-DrawProjGroup::DrawProjGroup(void) :
-    m_lockScale(false)
+DrawProjGroup::DrawProjGroup()
 {
     static const char *group = "Base";
     static const char *agroup = "Distribute";
@@ -71,7 +70,7 @@ DrawProjGroup::DrawProjGroup(void) :
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
-    
+
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
@@ -97,7 +96,7 @@ DrawProjGroup::~DrawProjGroup()
 }
 
 //TODO: this duplicates code in DVP
-std::vector<App::DocumentObject*> DrawProjGroup::getAllSources(void) const
+std::vector<App::DocumentObject*> DrawProjGroup::getAllSources() const
 {
 //    Base::Console().Message("DPG::getAllSources()\n");
     const std::vector<App::DocumentObject*> links = Source.getValues();
@@ -115,91 +114,101 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 {
     //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones don't... Or vice-versa.  WF: why would you change from 1st to 3rd in mid drawing?
     //if group hasn't been added to page yet, can't scale or distribute projItems
+    if (isRestoring() || !getPage()) {
+        return TechDraw::DrawViewCollection::onChanged(prop);
+    }
+
     TechDraw::DrawPage *page = getPage();
-    if (!isRestoring() && page) {
-        if (prop == &Scale) {
-            if (!m_lockScale) {
+
+    if (prop == &Scale) {
+        updateChildrenScale();
+        recomputeChildren();
+        return;
+    }
+
+    if (prop == &ProjectionType) {
+        updateChildrenEnforce();
+        return;
+    }
+
+    if ( prop == &Source ||
+         prop == &XSource ) {
+        updateChildrenSource();
+        return;
+    }
+
+    if ( prop == &spacingX ||
+         prop == &spacingY ) {
+        updateChildrenEnforce();
+        return;
+    }
+
+    if (prop == &LockPosition) {
+        updateChildrenLock();
+        return;
+    }
+
+    if (prop == &ScaleType) {
+        if (ScaleType.isValue("Page")) {
+            double newScale = page->Scale.getValue();
+            if(std::abs(getScale() - newScale) > FLT_EPSILON) {
+                Scale.setValue(newScale);
                 updateChildrenScale();
-                updateChildrenEnforce();
             }
         }
+    }
 
-        if (prop == &ProjectionType) {
-            updateChildrenEnforce();
-        }
+//        if ( ScaleType.isValue("Automatic") ||
+//             ScaleType.isValue("Custom") ){
+//            //just documenting that nothing is required here
+//            //DrawView::onChanged will sort out Scale hidden/readonly/etc
+//        }
 
-        if ( (prop == &Source) ||
-             (prop == &XSource) ) {
-            updateChildrenSource();
+    if (prop == &Rotation) {
+        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+            Rotation.setValue(0.0);
+            purgeTouched();
+            Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
         }
-
-        if ((prop == &spacingX) || (prop == &spacingY)) {
-            updateChildrenEnforce();
-        }
-
-        if (prop == &LockPosition) {
-            updateChildrenLock();
-        }
-
-        if (prop == &ScaleType) {
-            if (ScaleType.isValue("Automatic")) {
-                //Nothing in particular
-            } else if (ScaleType.isValue("Page")) {
-                double newScale = page->Scale.getValue();
-                if(std::abs(getScale() - newScale) > FLT_EPSILON) {
-                    Scale.setValue(newScale);
-                }
-            }
-            updateChildrenScale();
-        }
-        if (prop == &Rotation) {
-            if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-                Rotation.setValue(0.0);
-                purgeTouched();
-                Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
-            }
-        }
+        return;
     }
 
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
+App::DocumentObjectExecReturn *DrawProjGroup::execute()
 {
-//    Base::Console().Message("DPG::execute() - %s\n", getNameInDocument());
-    if (!keepUpdated()) {
+//    Base::Console().Message("DPG::execute() - %s - waitingForChildren: %d\n",
+//                            getNameInDocument(), waitingForChildren());
+    if (!keepUpdated())
         return App::DocumentObject::StdReturn;
-    }
 
     //if group hasn't been added to page yet, can't scale or distribute projItems
-    TechDraw::DrawPage *page = getPage();
-    if (!page) {
+    if (!getPage())
         return DrawViewCollection::execute();
-    }
 
-    std::vector<App::DocumentObject*> docObjs = getAllSources();
-    if (docObjs.empty()) {
-        return DrawViewCollection::execute();
-    }
-
-    App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj == nullptr) {
+    if (!Anchor.getValue())
         //no anchor yet.  nothing to do.
         return DrawViewCollection::execute();
+
+    if (waitingForChildren()) {
+        return DrawViewCollection::execute();
     }
 
-    if (ScaleType.isValue("Automatic")) {
-        if (!checkFit()) {
-            double newScale = autoScale();
-            m_lockScale = true;
-            Scale.setValue(newScale);
-            Scale.purgeTouched();
-            updateChildrenScale();
-            m_lockScale = false;
+    if (ScaleType.isValue("Automatic") && !checkFit()) {
+        if (!DrawUtil::fpCompare(getScale(), autoScale(), 0.00001)) {
+            Scale.setValue(autoScale());
+            //don't bother repositioning children since they will be
+            //recomputed at new scale
+            overrideKeepUpdated(false);
+            return DrawViewCollection::execute();
         }
     }
 
-    autoPositionChildren();
+    if (AutoDistribute.getValue()) {
+        autoPositionChildren();
+    }
+    overrideKeepUpdated(false);
     return DrawViewCollection::execute();
 }
 
@@ -224,121 +233,121 @@ short DrawProjGroup::mustExecute() const
     return TechDraw::DrawViewCollection::mustExecute();
 }
 
-Base::BoundBox3d DrawProjGroup::getBoundingBox() const
+void DrawProjGroup::reportReady()
 {
-    Base::BoundBox3d bbox;
-
-    std::vector<App::DocumentObject*> views = Views.getValues();
-    TechDraw::DrawProjGroupItem *anchorView = dynamic_cast<TechDraw::DrawProjGroupItem *>(Anchor.getValue());
-    if (anchorView == nullptr) {
-        //if an element in Views is not a DPGI, something really bad has happened somewhere
-        Base::Console().Log("PROBLEM - DPG::getBoundingBox - non DPGI entry in Views! %s\n",
-                                getNameInDocument());
-        throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+//    Base::Console().Message("DPG::reportReady - waitingForChildren: %d\n", waitingForChildren());
+    if (waitingForChildren()) {
+        //not ready yet
+        return;
     }
-    for (std::vector<App::DocumentObject*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-         if ((*it)->getTypeId().isDerivedFrom(DrawViewPart::getClassTypeId())) {
-            DrawViewPart *part = static_cast<DrawViewPart *>(*it);
-            Base::BoundBox3d  bb = part->getBoundingBox();
-
-            bb.ScaleX(1. / part->getScale());
-            bb.ScaleY(1. / part->getScale());
-            bb.ScaleZ(1. / part->getScale());
-
-            // X and Y of dependent views are relative to the anchorView
-            if (part != anchorView) {
-                bb.MoveX(part->X.getValue());
-                bb.MoveY(part->Y.getValue());
-            }
-
-            bbox.Add(bb);
-        }
+    //all the secondary views are ready so we can now figure out alignment
+    if (AutoDistribute.getValue()) {
+        recomputeFeature();
     }
-    return bbox;
 }
 
-TechDraw::DrawPage * DrawProjGroup::getPage(void) const
+bool DrawProjGroup::waitingForChildren() const
+{
+    for(const auto v : Views.getValues()) {
+        DrawProjGroupItem* dpgi = static_cast<DrawProjGroupItem*>(v);
+        if (dpgi->waitingForHlr() ||     //dpgi is still thinking
+            dpgi->isTouched()) {            //dpgi needs to execute
+            return true;
+        }
+    }
+    return false;
+}
+
+TechDraw::DrawPage * DrawProjGroup::getPage() const
 {
     return findParentPage();
 }
 
-// obs? replaced by autoscale?
-// Function provided by Joe Dowsett, 2014
-double DrawProjGroup::calculateAutomaticScale() const
+//does the unscaled DPG fit on the page?
+bool DrawProjGroup::checkFit() const
 {
-    TechDraw::DrawPage *page = getPage();
-    if (page == nullptr)
-      throw Base::RuntimeError("No page is assigned to this feature");
-
-    DrawProjGroupItem *viewPtrs[10];
-
-    arrangeViewPointers(viewPtrs);
-    double width, height;
-    minimumBbViews(viewPtrs, width, height);   //get SCALED boxes!
-                                        // if Page.keepUpdated is false, and DrawViews have never been executed,
-                                        // bb's will be 0x0 and this routine will return 0!!!
-                                        // if we return 1.0, AutoScale will sort itself out once bb's are non-zero.
-    double bbFudge = 1.2;
-    width *= bbFudge;
-    height *= bbFudge;
-
-    // C++ Standard says casting bool to int gives 0 or 1
-    int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
-                        (viewPtrs[2] || viewPtrs[5] || viewPtrs[9]) +
-                        (viewPtrs[6] != nullptr);
-    int numHorizSpaces = (viewPtrs[0] || viewPtrs[1] || viewPtrs[2]) +
-                         (viewPtrs[7] || viewPtrs[8] || viewPtrs[9]);
-
-    double availableX = page->getPageWidth();
-    double availableY = page->getPageHeight();
-    double xWhite = spacingX.getValue() * (numVertSpaces + 1);
-    double yWhite = spacingY.getValue() * (numHorizSpaces + 1);
-    width += xWhite;
-    height += yWhite;
-    double scale_x = availableX / width;
-    double scale_y = availableY / height;
-
-    double scaleFudge = 0.80;
-    float working_scale = scaleFudge * std::min(scale_x, scale_y);
-    double result = DrawUtil::sensibleScale(working_scale);
-    if (!(result > 0.0)) {
-        Base::Console().Log("DPG - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),result);
-        result = 1.0;
+//    Base::Console().Message("DPG::checkFit() - %s\n", getNameInDocument());
+    if (waitingForChildren()) {
+        //assume everything fits since we don't know what size the children are
+        return true;
     }
-
-    return result;
+    auto page = findParentPage();
+    if (!page)
+      throw Base::RuntimeError("No page is assigned to this feature");
+    return checkFit(page);
 }
 
-//returns the (scaled) bounding rectangle of all the views.
-QRectF DrawProjGroup::getRect() const         //this is current rect, not potential rect
+bool DrawProjGroup::checkFit(DrawPage* page) const
+{
+//    Base::Console().Message("DPG::checkFit(page) - %s\n", getNameInDocument());
+    if (waitingForChildren()) {
+        return true;
+    }
+
+    QRectF bigBox = getRect(false);
+    if ( bigBox.width() <= page->getPageWidth() &&
+         bigBox.height() <= page->getPageHeight() ) {
+        return true;
+    }
+    return false;
+}
+
+//calculate a scale that fits all views on page
+double DrawProjGroup::autoScale() const
+{
+//    Base::Console().Message("DPG::autoScale() - %s\n", getNameInDocument());
+    auto page = findParentPage();
+    if (!page) {
+      throw Base::RuntimeError("No page is assigned to this feature");
+    }
+    return autoScale(page->getPageWidth(), page->getPageHeight());
+}
+
+double DrawProjGroup::autoScale(double w, double h) const
+{
+//    Base::Console().Message("DPG::autoScale(%.3f, %.3f) - %s\n", w, h, getNameInDocument());
+    //get the space used by views + white space at 1:1 scale
+    QRectF bigBox = getRect(false);     //unscaled box
+
+    double xScale = w / bigBox.width();            // > 1 page bigger than figure
+    double yScale = h / bigBox.height();           // < 1 page is smaller than figure
+
+    double newScale = std::min(xScale,yScale);
+    return DrawUtil::sensibleScale(newScale);
+}
+
+//returns the bounding rectangle of all the views in the current scale
+QRectF DrawProjGroup::getRect() const
+{
+    return getRect(true);
+}
+
+QRectF DrawProjGroup::getRect(bool scaled) const
 {
 //    Base::Console().Message("DPG::getRect - views: %d\n", Views.getValues().size());
     DrawProjGroupItem *viewPtrs[10];
     arrangeViewPointers(viewPtrs);
-    double width, height;
-    minimumBbViews(viewPtrs, width, height);                //this is scaled!
-    double xSpace = spacingX.getValue() * 3.0 * std::max(1.0, getScale());
-    double ySpace = spacingY.getValue() * 2.0 * std::max(1.0, getScale());
-    double rectW = 0.0;
-    double rectH = 0.0;
-    if ( !(DrawUtil::fpCompare(width, 0.0) &&
-           DrawUtil::fpCompare(height, 0.0)) ) {
-        rectW = width + xSpace;
-        rectH = height + ySpace;
-    }
-    double fudge = 1.3;  //make rect a little big to make sure it fits
+    double totalWidth, totalHeight;
+    getViewArea(viewPtrs, totalWidth, totalHeight, scaled);
+    double xSpace = spacingX.getValue() * 3.0;
+    double ySpace = spacingY.getValue() * 2.0;
+    double rectW = totalWidth + xSpace;
+    double rectH = totalHeight + ySpace;
+    double fudge = 1.2;  //make rect a little big to make sure it fits
     rectW *= fudge;
     rectH *= fudge;
+
     return QRectF(0,0,rectW,rectH);
 }
 
-//find area consumed by Views only in current scale
-void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
-                                            double &width, double &height) const
+//find area consumed by Views only - scaled or unscaled
+void DrawProjGroup::getViewArea(DrawProjGroupItem *viewPtrs[10],
+                                   double &width, double &height,
+                                   bool scaled) const
 {
-    // Get bounding boxes in object scale
+    // Get the child view bounding boxes
     Base::BoundBox3d bboxes[10];
-    makeViewBbs(viewPtrs, bboxes, true);   //true => scaled
+    makeViewBbs(viewPtrs, bboxes, scaled);
 
     //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
@@ -359,7 +368,7 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 {
     for( auto it : Views.getValues() ) {
         auto projPtr( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (projPtr == nullptr) {
+        if (!projPtr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
                                     getNameInDocument(),viewProjType);
@@ -376,8 +385,7 @@ DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
 {
     App::DocumentObject* docObj = getProjObj(viewProjType);
     auto result( dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj) );
-    if ( (result == nullptr) &&
-         (docObj != nullptr) ) {
+    if (!result && docObj) {
         //should never have a item in DPG that is not a DPGI.
         Base::Console().Log("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
                                 getNameInDocument(),viewProjType);
@@ -410,7 +418,7 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //should never have a item in DPG that is not a DPGI.
             Base::Console().Log("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
                                     getNameInDocument(),viewProjType);
@@ -430,23 +438,21 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
     std::pair<Base::Vector3d,Base::Vector3d> vecs;
 
     DrawPage* dp = findParentPage();
-    if (dp == nullptr) {
+    if (!dp)
         Base::Console().Error("DPG:addProjection - %s - DPG is not on a page!\n",getNameInDocument());
-    }
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
         view = dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj);
-        if ( (view == nullptr) &&
-             (docObj != nullptr) ) {
+        if (!view && docObj) {
             //should never happen that we create a DPGI that isn't a DPGI!!
             Base::Console().Log("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
                                     getNameInDocument(),viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-        if (view != nullptr) {                        //coverity CID 151722
+        if (view) {                        //coverity CID 151722
             // the label must be set before the view is added
             view->Label.setValue(viewProjType);
             addView(view);                            //from DrawViewCollection
@@ -484,16 +490,16 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 int DrawProjGroup::removeProjection(const char *viewProjType)
 {
     // TODO: shouldn't be able to delete "Front" unless deleting whole group
-    if ( checkViewProjType(viewProjType) ) {
-        if( !hasProjection(viewProjType) ) {
+    if (checkViewProjType(viewProjType)) {
+        if (!hasProjection(viewProjType)) {
             throw Base::RuntimeError("The projection doesn't exist in the group");
         }
 
         // Iterate through the child views and find the projection type
-        for( auto it : Views.getValues() ) {
+        for (auto it : Views.getValues()) {
             auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
-            if( projPtr != nullptr) {
-                if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+            if (projPtr) {
+                if (strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0) {
                     removeView(projPtr);                                           // Remove from collection
                     getDocument()->removeObject( it->getNameInDocument() );        // Remove from the document
                     return Views.getValues().size();
@@ -508,7 +514,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
     }
 
     return -1;
-} 
+}
 
 //removes all DPGI - used when deleting DPG
 int DrawProjGroup::purgeProjections()
@@ -518,7 +524,7 @@ int DrawProjGroup::purgeProjections()
         DrawProjGroupItem* dpgi;
         DocumentObject* dObj =  views.back();
         dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
-        if (dpgi != nullptr) {
+        if (dpgi) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
         } else {
@@ -529,7 +535,7 @@ int DrawProjGroup::purgeProjections()
         }
     }
     auto page = findParentPage();
-    if (page != nullptr) {
+    if (page) {
         page->requestPaint();
     }
 
@@ -551,7 +557,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
     Base::Vector3d projDir, rotVec;
     DrawProjGroupItem* anch = getAnchor();
-    if (anch == nullptr) {
+    if (!anch) {
         Base::Console().Warning("DPG::getDirsFromFront - %s - No Anchor!\n",Label.getValue());
         throw Base::RuntimeError("Project Group missing Anchor projection item");
     }
@@ -570,7 +576,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
     gp_Ax2 newCS;
     gp_Dir gNewDir;
     gp_Dir gNewXDir;
-    
+
     double angle = M_PI / 2.0;                        //90*
 
     if (viewType == "Right") {
@@ -793,7 +799,7 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
     const char* projType;
     DrawPage* dp = findParentPage();
     if (ProjectionType.isValue("Default")) {
-        if (dp != nullptr) {
+        if (dp) {
             projType = dp->ProjectionType.getValueAsString();
         } else {
             Base::Console().Warning("DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
@@ -855,7 +861,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
     const char* projType;
     if (ProjectionType.isValue("Default")) {
         DrawPage* dp = findParentPage();
-        if (dp != nullptr) {
+        if (dp) {
             projType = dp->ProjectionType.getValueAsString();
         } else {
             Base::Console().Error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
@@ -883,7 +889,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
         bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
         for (auto it : Views.getValues()) {
             auto oView( dynamic_cast<DrawProjGroupItem *>(it) );
-            if (oView == nullptr) {
+            if (!oView) {
                 //if an element in Views is not a DPGI, something really bad has happened somewhere
                 Base::Console().Log("PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
                                     getNameInDocument());
@@ -926,16 +932,16 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
 
 void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
                                           Base::BoundBox3d bboxes[10],
-                                          bool documentScale) const
+                                          bool scaled) const
 {
     Base::BoundBox3d empty(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
     for (int i = 0; i < 10; ++i) {
         bboxes[i] = empty;
         if (viewPtrs[i]) {
             bboxes[i] = viewPtrs[i]->getBoundingBox();
-//            bboxes[i] = viewPtrs[i]->getBoundingBox(viewPtrs[i]->getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0)));
-            if (!documentScale) {
+            if (!scaled) {
                 double scale = 1.0 / viewPtrs[i]->getScale();    //convert bbx to 1:1 scale
+//                double scale = 1.0 / viewPtrs[i]->getLastScale();    //convert bbx to 1:1 scale
                 bboxes[i].ScaleX(scale);
                 bboxes[i].ScaleY(scale);
                 bboxes[i].ScaleZ(scale);
@@ -944,12 +950,12 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
     }
 }
 
-void DrawProjGroup::recomputeChildren(void)
+void DrawProjGroup::recomputeChildren()
 {
-//    Base::Console().Message("DPG::recomputeChildren()\n");
+//    Base::Console().Message("DPG::recomputeChildren() - waiting: %d\n", waitingForChildren());
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         } else {
             view->recomputeFeature();
@@ -957,11 +963,14 @@ void DrawProjGroup::recomputeChildren(void)
     }
 }
 
-void DrawProjGroup::autoPositionChildren(void)
+void DrawProjGroup::autoPositionChildren()
 {
+//    Base::Console().Message("DPG::autoPositionChildren() - %s - waiting: %d\n",
+//                            getNameInDocument(), waitingForChildren());
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         } else {
             view->autoPosition();
@@ -972,18 +981,18 @@ void DrawProjGroup::autoPositionChildren(void)
 /*!
  * tell children DPGIs that parent DPG has changed Scale
  */
-void DrawProjGroup::updateChildrenScale(void)
+void DrawProjGroup::updateChildrenScale()
 {
-//    Base::Console().Message("DPG::updateChildrenScale\n");
+//    Base::Console().Message("DPG::updateChildrenScale() - waiting: %d\n", waitingForChildren());
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
-                                    getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         } else {
             view->Scale.setValue(getScale());
+            view->Scale.purgeTouched();
+            view->purgeTouched();
         }
     }
 }
@@ -991,11 +1000,11 @@ void DrawProjGroup::updateChildrenScale(void)
 /*!
  * tell children DPGIs that parent DPG has changed Source
  */
-void DrawProjGroup::updateChildrenSource(void)
+void DrawProjGroup::updateChildrenSource()
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
@@ -1015,11 +1024,11 @@ void DrawProjGroup::updateChildrenSource(void)
  * tell children DPGIs that parent DPG has changed LockPosition
  * (really for benefit of QGIV on Gui side)
  */
-void DrawProjGroup::updateChildrenLock(void)
+void DrawProjGroup::updateChildrenLock()
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
@@ -1030,26 +1039,11 @@ void DrawProjGroup::updateChildrenLock(void)
     }
 }
 
-void DrawProjGroup::updateViews(void) {
-    // this is intended to update the views in general, e.g. when the spacing changed
-    for (const auto it : Views.getValues()) {
-        auto view(dynamic_cast<DrawProjGroupItem *>(it));
-        if (view == nullptr) {
-            //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateViews - non DPGI entry in Views! %s\n",
-                getNameInDocument());
-            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        }
-        else // the views are OK
-            view->recomputeFeature();
-    }
-}
-
 void DrawProjGroup::updateChildrenEnforce(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view == nullptr) {
+        if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             Base::Console().Log("PROBLEM - DPG::updateChildrenEnforce - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
@@ -1060,34 +1054,34 @@ void DrawProjGroup::updateChildrenEnforce(void)
     }
 }
 
-App::Enumeration DrawProjGroup::usedProjectionType(void)
+App::Enumeration DrawProjGroup::usedProjectionType()
 {
     //TODO: Would've been nice to have an Enumeration(const PropertyEnumeration &) constructor
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
     if (ret.isValue("Default")) {
         TechDraw::DrawPage * page = getPage();
-        if ( page != nullptr ) {
+        if (page) {
             ret.setValue(page->ProjectionType.getValueAsString());
         }
     }
     return ret;
 }
 
-bool DrawProjGroup::hasAnchor(void)
+bool DrawProjGroup::hasAnchor()
 {
     bool result = false;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj != nullptr) {
+    if (docObj) {
         result = true;
     }
     return result;
 }
 
-TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
+TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor()
 {
     DrawProjGroupItem* result = nullptr;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj != nullptr) {
+    if (docObj) {
         result = static_cast<DrawProjGroupItem*>(docObj);
     }
     return result;
@@ -1100,11 +1094,11 @@ void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
     item->Direction.setValue(dir);
 }
 
-Base::Vector3d DrawProjGroup::getAnchorDirection(void)
+Base::Vector3d DrawProjGroup::getAnchorDirection()
 {
     Base::Vector3d result;
     App::DocumentObject* docObj = Anchor.getValue();
-    if (docObj != nullptr) {
+    if (docObj) {
         DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
         result = item->Direction.getValue();
     } else {
@@ -1245,7 +1239,7 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
     return result;
 }
 
-int DrawProjGroup::getDefProjConv(void) const
+int DrawProjGroup::getDefProjConv() const
 {
     return Preferences::projectionAngle();
 }
@@ -1269,7 +1263,7 @@ void DrawProjGroup::dumpISO(const char * title)
     }
 }
 
-PyObject *DrawProjGroup::getPyObject(void)
+PyObject *DrawProjGroup::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

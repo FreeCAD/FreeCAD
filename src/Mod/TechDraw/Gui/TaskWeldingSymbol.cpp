@@ -126,7 +126,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     //                                or ViewProviderWeld.setEdit
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
-    if (obj == nullptr ||
+    if (!obj ||
         !obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) )  {
         Base::Console().Error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
         return;
@@ -225,7 +225,7 @@ void TaskWeldingSymbol::setUiEdit()
     ui->leTailText->setText(QString::fromUtf8(m_weldFeat->TailText.getValue()));
 
     getTileFeats();
-    if (m_arrowFeat != nullptr) {
+    if (m_arrowFeat) {
         QString qTemp = QString::fromUtf8(m_arrowFeat->LeftText.getValue());
         ui->leArrowTextL->setText(qTemp);
         qTemp = QString::fromUtf8(m_arrowFeat->RightText.getValue());
@@ -247,7 +247,7 @@ void TaskWeldingSymbol::setUiEdit()
         }
     }
 
-    if (m_otherFeat != nullptr) {
+    if (m_otherFeat) {
         QString qTemp = QString::fromUtf8(m_otherFeat->LeftText.getValue());
         ui->leOtherTextL->setText(qTemp);
         qTemp = QString::fromUtf8(m_otherFeat->RightText.getValue());
@@ -429,7 +429,7 @@ void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
     }
 }
 
-void TaskWeldingSymbol::collectArrowData(void)
+void TaskWeldingSymbol::collectArrowData()
 {
 //    Base::Console().Message("TWS::collectArrowData()\n");
     m_arrowOut.toBeSaved = true;
@@ -443,7 +443,7 @@ void TaskWeldingSymbol::collectArrowData(void)
     m_arrowOut.tileName = "";
 }
 
-void TaskWeldingSymbol::collectOtherData(void)
+void TaskWeldingSymbol::collectOtherData()
 {
 //    Base::Console().Message("TWS::collectOtherData()\n");
     m_otherOut.toBeSaved = true;
@@ -457,7 +457,7 @@ void TaskWeldingSymbol::collectOtherData(void)
     m_otherOut.tileName = "";
 }
 
-void TaskWeldingSymbol::getTileFeats(void)
+void TaskWeldingSymbol::getTileFeats()
 {
 //    Base::Console().Message("TWS::getTileFeats()\n");
     std::vector<TechDraw::DrawTileWeld*> tiles = m_weldFeat->getTiles();
@@ -485,7 +485,7 @@ void TaskWeldingSymbol::getTileFeats(void)
 }
 
 //******************************************************************************
-TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
+TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
 
@@ -524,15 +524,13 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
 
     App::DocumentObject* newObj = m_leadFeat->getDocument()->getObject(symbolName.c_str());
     TechDraw::DrawWeldSymbol* newSym = dynamic_cast<TechDraw::DrawWeldSymbol*>(newObj);
-    if ( (newObj == nullptr) ||
-         (newSym == nullptr) ) {
+    if (!newObj || !newSym)
         throw Base::RuntimeError("TaskWeldingSymbol - new symbol object not found");
-    }
 
     return newSym;
 }
 
-void TaskWeldingSymbol::updateWeldingSymbol(void)
+void TaskWeldingSymbol::updateWeldingSymbol()
 {
 //    Base::Console().Message("TWS::updateWeldingSymbol()\n");
     std::string symbolName = m_weldFeat->getNameInDocument();
@@ -558,12 +556,12 @@ void TaskWeldingSymbol::updateWeldingSymbol(void)
                            symbolName.c_str(), tailText.c_str());
 }
 
-void TaskWeldingSymbol::updateTiles(void)
+void TaskWeldingSymbol::updateTiles()
 {
 //    Base::Console().Message("TWS::updateTiles()\n");
     getTileFeats();
 
-    if (m_arrowFeat == nullptr) {
+    if (!m_arrowFeat) {
         Base::Console().Message("TWS::updateTiles - no arrow tile!\n");
     } else {
         collectArrowData();
@@ -587,7 +585,7 @@ void TaskWeldingSymbol::updateTiles(void)
         }
     }
 
-    if (m_otherFeat == nullptr) {
+    if (!m_otherFeat) {
 //        Base::Console().Message("TWS::updateTiles - no other tile!\n");
     } else {
         if (m_otherDirty) {

@@ -48,6 +48,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
@@ -1630,7 +1631,7 @@ static gp_Pnt toPnt(gp_Vec dir)
     return gp_Pnt(dir.X(), dir.Y(), dir.Z());
 }
 
-App::DocumentObjectExecReturn* Hole::execute(void)
+App::DocumentObjectExecReturn* Hole::execute()
 {
      TopoDS_Shape profileshape;
     try {
@@ -2295,7 +2296,7 @@ void Hole::readCutDefinitions()
         for (const auto& f : files) {
             if (f.extension() == "json") {
                 try {
-                    std::ifstream input(f.filePath());
+                    Base::ifstream input(f);
                     nlohmann::json j;
                     input >> j;
                     CutDimensionSet screwtype = j.get<CutDimensionSet>();

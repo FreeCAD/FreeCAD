@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <functional>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -43,25 +44,84 @@
 # include <QTextStream>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemPostFilter.h>
 
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
 
 
 using namespace FemGui;
+namespace sp = std::placeholders;
 
 #ifdef VTK_CELL_ARRAY_V2
-typedef const vtkIdType* vtkIdTypePtr;
+using vtkIdTypePtr = const vtkIdType*;
 #else
-typedef vtkIdType* vtkIdTypePtr;
+using vtkIdTypePtr = vtkIdType*;
 #endif
+
+// ----------------------------------------------------------------------------
+
+namespace {
+/*
+ * The class FemPostObjectSelectionObserver notifies a ViewProviderFemPostObject
+ *  only if its selection status has changed
+ */
+class FemPostObjectSelectionObserver
+{
+public:
+    static FemPostObjectSelectionObserver& instance() {
+        static FemPostObjectSelectionObserver inst;
+        return inst;
+    }
+    void registerFemPostObject(ViewProviderFemPostObject* vp) {
+        views.insert(vp);
+    }
+    void unregisterFemPostObject(ViewProviderFemPostObject* vp) {
+        auto it = views.find(vp);
+        if (it != views.end())
+            views.erase(it);
+    }
+
+    void selectionChanged(const Gui::SelectionChanges& msg) {
+        Gui::SelectionObject obj(msg);
+        auto findVP = std::find_if(views.begin(), views.end(), [&obj](const auto& vp) {
+            return obj.getObject() == vp->getObject();
+        });
+
+        if (findVP != views.end()) {
+            (*findVP)->onSelectionChanged(msg);
+        }
+    }
+
+private:
+    FemPostObjectSelectionObserver() {
+        this->connectSelection = Gui::Selection().signalSelectionChanged.connect(
+            std::bind(&FemPostObjectSelectionObserver::selectionChanged, this, sp::_1));
+    }
+
+    ~FemPostObjectSelectionObserver() = default;
+    FemPostObjectSelectionObserver(const FemPostObjectSelectionObserver&) = delete;
+    FemPostObjectSelectionObserver& operator= (const FemPostObjectSelectionObserver&) = delete;
+
+private:
+    std::set<ViewProviderFemPostObject*> views;
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectSelection;
+};
+
+}
+
+// ----------------------------------------------------------------------------
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
@@ -130,10 +190,13 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_currentAlgorithm = m_outline;
 
     updateProperties();  // initialize the enums
+
+    FemPostObjectSelectionObserver::instance().registerFemPostObject(this);
 }
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()
 {
+    FemPostObjectSelectionObserver::instance().unregisterFemPostObject(this);
     m_shapeHints->unref();
     m_coordinates->unref();
     m_materialBinding->unref();
@@ -191,7 +254,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     (void)setupPipeline();
 }
 
-SoSeparator* ViewProviderFemPostObject::getFrontRoot(void) const {
+SoSeparator* ViewProviderFemPostObject::getFrontRoot() const {
 
     return m_colorRoot;
 }
@@ -219,16 +282,16 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderFemPostObject::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Outline");
-    StrList.push_back("Nodes");
+    StrList.emplace_back("Outline");
+    StrList.emplace_back("Nodes");
     //StrList.push_back("Nodes (surface only)"); somehow this filter does not work
-    StrList.push_back("Surface");
-    StrList.push_back("Surface with Edges");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Wireframe (surface only)");
+    StrList.emplace_back("Surface");
+    StrList.emplace_back("Surface with Edges");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Wireframe (surface only)");
     return StrList;
 }
 
@@ -253,7 +316,7 @@ void ViewProviderFemPostObject::updateProperties() {
         val = Field.getValueAsString();
 
     std::vector<std::string> colorArrays;
-    colorArrays.push_back("None");
+    colorArrays.emplace_back("None");
 
     vtkPointData* point = poly->GetPointData();
     for (int i = 0; i < point->GetNumberOfArrays(); ++i) {
@@ -264,7 +327,7 @@ void ViewProviderFemPostObject::updateProperties() {
 
     vtkCellData* cell = poly->GetCellData();
     for (int i = 0; i < cell->GetNumberOfArrays(); ++i)
-        colorArrays.push_back(cell->GetArrayName(i));
+        colorArrays.emplace_back(cell->GetArrayName(i));
 
     App::Enumeration empty;
     Field.setValue(empty);
@@ -283,22 +346,22 @@ void ViewProviderFemPostObject::updateProperties() {
 
     colorArrays.clear();
     if (Field.getValue() == 0)
-        colorArrays.push_back("Not a vector");
+        colorArrays.emplace_back("Not a vector");
     else {
         int array = Field.getValue() - 1; //0 is none
         vtkPolyData* pd = m_currentAlgorithm->GetOutput();
         vtkDataArray* data = pd->GetPointData()->GetArray(array);
 
         if (data->GetNumberOfComponents() == 1)
-            colorArrays.push_back("Not a vector");
+            colorArrays.emplace_back("Not a vector");
         else {
-            colorArrays.push_back("Magnitude");
+            colorArrays.emplace_back("Magnitude");
             if (data->GetNumberOfComponents() >= 2) {
-                colorArrays.push_back("X");
-                colorArrays.push_back("Y");
+                colorArrays.emplace_back("X");
+                colorArrays.emplace_back("Y");
             }
             if (data->GetNumberOfComponents() >= 3)
-                colorArrays.push_back("Z");
+                colorArrays.emplace_back("Z");
         }
     }
 
@@ -459,6 +522,11 @@ void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
     }
 }
 
+void ViewProviderFemPostObject::updateMaterial()
+{
+    WriteColorData(true);
+}
+
 void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     if (!setupPipeline())
@@ -469,6 +537,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         m_material->transparency.setValue(0.);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
         m_materialBinding->touch();
+        // since there is no field, set the range to the default
+        // range as if a new object is created
+        setRangeOfColorBar(-0.5, 0.5);
         return;
     };
 
@@ -565,7 +636,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     if (static_cast<Fem::FemPostObject*>(getObject())->getTypeId()
          == Base::Type::fromName("Fem::FemPostDataAtPointFilter"))
         ResetColorBarRange = false;
-    else 
+    else
         ResetColorBarRange = true;
 
     if (prop == &Field && setupPipeline()) {
@@ -584,7 +655,7 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     ViewProviderDocumentObject::onChanged(prop);
 }
 
-bool ViewProviderFemPostObject::doubleClicked(void) {
+bool ViewProviderFemPostObject::doubleClicked() {
     // work around for a problem in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
     // check if backlight is enabled
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -654,16 +725,48 @@ void ViewProviderFemPostObject::unsetEdit(int ModNum) {
     }
 }
 
-void ViewProviderFemPostObject::hide(void) {
+void ViewProviderFemPostObject::hide() {
     Gui::ViewProviderDocumentObject::hide();
     m_colorStyle->style = SoDrawStyle::INVISIBLE;
+    // The object is now hidden but the color bar is wrong
+    // if there are other FemPostObjects visible.
+    // We must therefore search for the first visible FemPostObject
+    // according to their order in the Tree View (excluding the point
+    // object FemPostDataAtPointFilter) and refresh its color bar.
+
+    // get all objects in the document
+    auto docGui = Gui::Application::Instance->activeDocument();
+    if (!docGui)
+        return;
+    auto doc = docGui->getDocument();
+    std::vector<App::DocumentObject *> ObjectsList = doc->getObjects();
+    App::DocumentObject *firstVisiblePostObject = nullptr;
+    // step through the objects
+    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+            if (!firstVisiblePostObject && (*it)->Visibility.getValue()
+                && !(*it)->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
+                firstVisiblePostObject = *it;
+                break;
+            }
+        }
+    }
+    // refresh found object
+    if (firstVisiblePostObject) {
+        auto viewProvider = docGui->getViewProvider(firstVisiblePostObject);
+        auto FEMviewProvider = static_cast<FemGui::ViewProviderFemPostObject *>(viewProvider);
+        if (FEMviewProvider)
+            FEMviewProvider->WriteColorData(true);
+    }
 }
 
-void ViewProviderFemPostObject::show(void) {
+void ViewProviderFemPostObject::show() {
     Gui::ViewProviderDocumentObject::show();
     m_colorStyle->style = SoDrawStyle::FILLED;
+    // we must update the color bar except for data point filters
+    // (for ViewProviderFemPostDataAtPoint show() is overridden to prevent the update)
+    WriteColorData(true);
 }
-
 
 void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int /*rcReason*/) {
     bool ResetColorBarRange = false;
@@ -706,5 +809,17 @@ bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)
-        return true;
+    return true;
+}
+
+void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &sel)
+{
+    // If a FemPostObject is selected in the document tree we must refresh its
+    // color bar.
+    // But don't do this if the object is invisible because other objects with a
+    // color bar might be visible and the color bar is then wrong.
+    if (sel.Type == Gui::SelectionChanges::AddSelection) {
+        if (this->getObject()->Visibility.getValue())
+            updateMaterial();
+    }
 }

@@ -60,7 +60,7 @@ namespace bp = boost::placeholders;
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
     QHeaderView::mouseReleaseEvent(event);
-    resizeFinished();
+    Q_EMIT resizeFinished();
 }
 
 bool SheetViewHeader::viewportEvent(QEvent *e) {
@@ -223,7 +223,7 @@ void SheetTableView::onRecompute() {
 
 void SheetTableView::onBind() {
     auto ranges = selectedRanges();
-    if(ranges.size()>=1 && ranges.size()<=2) {
+    if(!ranges.empty() && ranges.size()<=2) {
         DlgBindSheet dlg(sheet,ranges,this);
         dlg.exec();
     }
@@ -308,13 +308,13 @@ QModelIndexList SheetTableView::selectedIndexesRaw() const
 
 void SheetTableView::insertRows()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
 
     /* Make sure rows are sorted in ascending order */
-    for (QModelIndexList::const_iterator it = rows.begin(); it != rows.end(); ++it)
+    for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
         sortedRows.push_back(it->row());
     std::sort(sortedRows.begin(), sortedRows.end());
 
@@ -345,7 +345,7 @@ void SheetTableView::insertRows()
 
 void SheetTableView::insertRowsAfter()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
     const auto rows = selectionModel()->selectedRows();
     const auto & [min, max] = selectedMinMaxRows(rows);
     assert(max - min == rows.size() - 1);
@@ -359,13 +359,13 @@ void SheetTableView::insertRowsAfter()
 
 void SheetTableView::removeRows()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
 
     /* Make sure rows are sorted in descending order */
-    for (QModelIndexList::const_iterator it = rows.begin(); it != rows.end(); ++it)
+    for (QModelIndexList::const_iterator it = rows.cbegin(); it != rows.cend(); ++it)
         sortedRows.push_back(it->row());
     std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
 
@@ -380,13 +380,13 @@ void SheetTableView::removeRows()
 
 void SheetTableView::insertColumns()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
 
     /* Make sure rows are sorted in ascending order */
-    for (QModelIndexList::const_iterator it = cols.begin(); it != cols.end(); ++it)
+    for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
         sortedColumns.push_back(it->column());
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
@@ -418,7 +418,7 @@ void SheetTableView::insertColumns()
 
 void SheetTableView::insertColumnsAfter()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
     const auto columns = selectionModel()->selectedColumns();
     const auto& [min, max] = selectedMinMaxColumns(columns);
     assert(max - min == columns.size() - 1);
@@ -432,13 +432,13 @@ void SheetTableView::insertColumnsAfter()
 
 void SheetTableView::removeColumns()
 {
-    assert(sheet != nullptr);
+    assert(sheet);
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
 
     /* Make sure rows are sorted in descending order */
-    for (QModelIndexList::const_iterator it = cols.begin(); it != cols.end(); ++it)
+    for (QModelIndexList::const_iterator it = cols.cbegin(); it != cols.cend(); ++it)
         sortedColumns.push_back(it->column());
     std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
 
@@ -599,7 +599,7 @@ void SheetTableView::deleteSelection()
 {
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
-    if (selection.size() > 0) {
+    if (!selection.empty()) {
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
         std::vector<Range> ranges = selectedRanges();
         std::vector<Range>::const_iterator i = ranges.begin();
@@ -672,7 +672,7 @@ void SheetTableView::pasteClipboard()
             ranges = sheet->getCopyOrCutRange(copy);
         }
 
-        if(ranges.size())
+        if(!ranges.empty())
             _copySelection(ranges, copy);
 
         const QMimeData* mimeData = QApplication::clipboard()->mimeData();
@@ -694,13 +694,13 @@ void SheetTableView::pasteClipboard()
         Range range = ranges.back();
         if (!mimeData->hasFormat(_SheetMime)) {
             CellAddress current = range.from();
-            QStringList cells;
             QString text = mimeData->text();
+            QStringList cells = text.split(QLatin1Char('\n'));
             int i=0;
-            for (auto it : text.split(QLatin1Char('\n'))) {
+            for (const auto& it : cells) {
                 QStringList cols = it.split(QLatin1Char('\t'));
                 int j=0;
-                for (auto jt : cols) {
+                for (const auto& jt : cols) {
                     QModelIndex index = model()->index(current.row()+i, current.col()+j);
                     model()->setData(index, jt);
                     j++;
@@ -1004,7 +1004,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
     }
 
     auto ranges = selectedRanges();
-    actionBind->setEnabled(ranges.size()>=1 && ranges.size()<=2);
+    actionBind->setEnabled(!ranges.empty() && ranges.size()<=2);
 
     contextMenu->exec(QCursor::pos());
 }

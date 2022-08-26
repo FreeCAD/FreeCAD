@@ -178,7 +178,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     else {
         App::Document* aDoc = pcConstraint->getDocument();
         std::vector<App::DocumentObject*> fem = aDoc->getObjectsOfType(Fem::FemAnalysis::getClassTypeId());
-        if (fem.size() >= 1) {
+        if (!fem.empty()) {
             pcAnalysis = static_cast<Fem::FemAnalysis*>(fem[0]);  // get the first
         }
     }
@@ -195,7 +195,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         Base::Console().Log("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
         dimension = -1;  // unknown dimension of mesh
     }
-    if (pcMesh != nullptr) {
+    if (pcMesh) {
         App::Property* prop = pcMesh->getPropertyByName("Shape");  // PropertyLink
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
             App::PropertyLink* pcLink = static_cast<App::PropertyLink*>(prop);
@@ -226,7 +226,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
 
     pHeatTransferring = nullptr;
     pTurbulenceModel = nullptr;
-    if (pcSolver != nullptr) {
+    if (pcSolver) {
         //if only it is CFD solver, otherwise exit by SIGSEGV error, detect getPropertyByName() !=  NULL
         if (pcSolver->getPropertyByName("HeatTransferring")) {
             pHeatTransferring = static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransferring"));
@@ -298,7 +298,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
-    if (Objects.size() > 0)
+    if (!Objects.empty())
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineDirection->setText(dir.isEmpty() ? tr("") : dir);
     ui->checkReverse->setVisible(true); // it is still useful to swap direction of an edge
@@ -551,7 +551,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
 
     //get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face, please."));
         return;
     }
@@ -726,7 +726,7 @@ TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary()
 void TaskFemConstraintFluidBoundary::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -784,7 +784,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
 void TaskFemConstraintFluidBoundary::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -812,7 +812,7 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0) {
+    while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();

@@ -23,6 +23,8 @@
 #ifndef _DrawDimHelper_h_
 #define _DrawDimHelper_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Geom2d_Curve.hxx>
 
 #include <string>

@@ -20,18 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "ViewProviderPlaneParametric.h"
 #include <Mod/Part/App/FeatureFace.h>
 #include <Mod/Part/App/Part2DObject.h>
 
-using namespace PartGui;
 
+using namespace PartGui;
 
 //**************************************************************************
 // Construction/Destruction
@@ -49,16 +45,16 @@ ViewProviderPlaneParametric::~ViewProviderPlaneParametric()
 
 }
 
-std::vector<std::string> ViewProviderPlaneParametric::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPlaneParametric::getDisplayModes() const
 {
     // get the modes of the father
     std::vector<std::string> StrList;
 
     // add your own modes
-    StrList.push_back("Flat Lines");
-    StrList.push_back("Shaded");
-    StrList.push_back("Wireframe");
-    StrList.push_back("Points");
+    StrList.emplace_back("Flat Lines");
+    StrList.emplace_back("Shaded");
+    StrList.emplace_back("Wireframe");
+    StrList.emplace_back("Points");
 
     return StrList;
 }
@@ -76,7 +72,7 @@ ViewProviderFace::~ViewProviderFace()
 {
 }
 
-std::vector<App::DocumentObject*> ViewProviderFace::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderFace::claimChildren() const
 {
     return std::vector<App::DocumentObject*>(static_cast<Part::Face*>(getObject())->Sources.getValues());
 }

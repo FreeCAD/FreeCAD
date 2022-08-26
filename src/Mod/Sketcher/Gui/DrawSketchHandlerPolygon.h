@@ -36,7 +36,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerRegularPolygon( size_t nof_corners ):
+    explicit DrawSketchHandlerRegularPolygon( size_t nof_corners ):
         Corners( nof_corners ),
         AngleOfSeparation( 2.0*M_PI/static_cast<double>(Corners) ),
         cos_v( cos( AngleOfSeparation ) ),
@@ -53,7 +53,7 @@ public:
         STATUS_End
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode==STATUS_SEEK_First) {
@@ -94,7 +94,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             StartPos = onSketchPos;
@@ -106,7 +106,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -126,13 +126,13 @@ public:
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the center of the polygon
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints to the last side of the polygon
-                if (sugConstr2.size() > 0) {
+                if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 1, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
@@ -169,7 +169,7 @@ public:
     }
 
 private:
-    virtual QString getCrosshairCursorSVGName() const override
+    QString getCrosshairCursorSVGName() const override
     {
         return QString::fromLatin1("Sketcher_Pointer_Regular_Polygon");
     }

@@ -51,11 +51,11 @@ class ReportView : public QWidget
     Q_OBJECT
 
 public:
-    ReportView( QWidget* parent = nullptr);
-    ~ReportView();
+    explicit ReportView( QWidget* parent = nullptr);
+    ~ReportView() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     QTabWidget* tabWidget;
@@ -77,11 +77,11 @@ public:
     };
 
 public:
-    ReportHighlighter(QTextEdit* );
-    ~ReportHighlighter();
+    explicit ReportHighlighter(QTextEdit* );
+    ~ReportHighlighter() override;
 
     /** Parses the given text and highlight it in the right colors. */
-    void highlightBlock ( const QString & text );
+    void highlightBlock ( const QString & text ) override;
     /**
      * Sets the current paragraph type used in ReportOutput
      * @see ReportOutput::Message
@@ -128,8 +128,8 @@ class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public 
     Q_OBJECT
 
 public:
-    ReportOutput(QWidget* parent=nullptr);
-    virtual ~ReportOutput();
+    explicit ReportOutput(QWidget* parent=nullptr);
+    ~ReportOutput() override;
 
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
@@ -137,7 +137,7 @@ public:
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 
     /// returns the name for observer handling
-    const char* Name(void) override {return "ReportOutput";}
+    const char* Name() override {return "ReportOutput";}
 
     /** Restore the default font settings. */
     void restoreFont ();
@@ -207,12 +207,12 @@ class ReportOutputObserver : public QObject
     Q_OBJECT
 
 public:
-    ReportOutputObserver (ReportOutput* view);
-    bool eventFilter(QObject *obj, QEvent *event);
+    explicit ReportOutputObserver (ReportOutput* view);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected:
     QPointer <ReportOutput> reportView;
-    void showReportView(void);
+    void showReportView();
 };
 
 } // namespace DockWnd

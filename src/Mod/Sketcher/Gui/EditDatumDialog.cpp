@@ -85,7 +85,7 @@ void EditDatumDialog::exec(bool atCursor)
         Base::Quantity init_val;
 
         QDialog dlg(Gui::getMainWindow());
-        if (ui_ins_datum == nullptr) {
+        if (!ui_ins_datum) {
             ui_ins_datum.reset(new Ui_InsertDatum);
             ui_ins_datum->setupUi(&dlg);
         }
@@ -244,7 +244,7 @@ void EditDatumDialog::drivingToggled(bool state)
 
 void EditDatumDialog::datumChanged()
 {
-    if (ui_ins_datum->labelEdit->text() != ui_ins_datum->labelEdit->getHistory()[0]) {
+    if (ui_ins_datum->labelEdit->text() != qAsConst(ui_ins_datum->labelEdit)->getHistory()[0]) {
         ui_ins_datum->cbDriving->setChecked(false);
     }
 }

@@ -36,8 +36,8 @@ class LoftWidget : public QWidget
     Q_OBJECT
 
 public:
-    LoftWidget(QWidget* parent = nullptr);
-    ~LoftWidget();
+    explicit LoftWidget(QWidget* parent = nullptr);
+    ~LoftWidget() override;
 
     bool accept();
     bool reject();
@@ -46,7 +46,7 @@ private Q_SLOTS:
     void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void findShapes();
 
 private:
@@ -60,15 +60,15 @@ class TaskLoft : public Gui::TaskView::TaskDialog
 
 public:
     TaskLoft();
-    ~TaskLoft();
+    ~TaskLoft() override;
 
 public:
-    void open();
-    bool accept();
-    bool reject();
-    void clicked(int);
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+    void clicked(int) override;
 
-    QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 private:

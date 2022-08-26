@@ -122,7 +122,7 @@ void TaskMirroredParameters::setupUI()
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
         const App::DocumentObject* obj = *i;
-        if (obj != nullptr) {
+        if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -230,7 +230,7 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
     setupTransaction();
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
     try{
-        if(planeLinks.getCurrentLink().getValue() == nullptr){
+        if (!planeLinks.getCurrentLink().getValue()) {
             // enter reference selection mode
             hideObject();
             showBase();
@@ -265,7 +265,7 @@ void TaskMirroredParameters::onUpdateView(bool on)
     }
 }
 
-void TaskMirroredParameters::onFeatureDeleted(void)
+void TaskMirroredParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();

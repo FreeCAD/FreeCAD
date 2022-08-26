@@ -44,17 +44,17 @@ public:
 	Simulation(const Trajectory &Trac,Robot6Axis &Rob);
 	virtual ~Simulation();
 
-	double getLength(void){return Trac.getLength();}
-	double getDuration(void){return Trac.getDuration();}
+	double getLength(){return Trac.getLength();}
+	double getDuration(){return Trac.getDuration();}
 
-    Base::Placement getPosition(void){return Trac.getPosition(Pos);}
-    double getVelocity(void){return Trac.getVelocity(Pos);}
+    Base::Placement getPosition(){return Trac.getPosition(Pos);}
+    double getVelocity(){return Trac.getVelocity(Pos);}
 
 	void step(double tick);
     void setToWaypoint(unsigned int n);
     void setToTime(float t);
     // apply the start axis angles and set to time 0. Restores the exact start position
-    void reset(void);
+    void reset();
 
 	double Pos;
 	double Axis[6];

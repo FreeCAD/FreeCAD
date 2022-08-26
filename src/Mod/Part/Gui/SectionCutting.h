@@ -23,8 +23,12 @@
 #ifndef PARTGUI_SECTIONCUTTING_H
 #define PARTGUI_SECTIONCUTTING_H
 
+#include <Inventor/SbBox3f.h>
 #include <QDialog>
+#include <App/DocumentObserver.h>
 
+class QDoubleSpinBox;
+class QSlider;
 
 namespace PartGui {
 
@@ -36,8 +40,8 @@ class SectionCut : public QDialog
 
 public:
     static SectionCut* makeDockWidget(QWidget* parent = nullptr);
-    SectionCut(QWidget* parent = nullptr);
-    ~SectionCut();
+    explicit SectionCut(QWidget* parent = nullptr);
+    ~SectionCut() override;
 
 protected Q_SLOTS:
     void onGroupBoxXtoggled();
@@ -61,7 +65,7 @@ protected Q_SLOTS:
     void onTransparencyChanged(int);
 
 public:
-    void reject();
+    void reject() override;
 
 private:
     Ui_SectionCut* ui;

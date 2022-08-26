@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMCLIP_H
 #define DRAWINGGUI_QGRAPHICSITEMCLIP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include "QGIView.h"
 
 namespace TechDrawGui
@@ -35,20 +37,19 @@ class TechDrawGuiExport QGIViewClip : public QGIView
 public:
 
     QGIViewClip();
-    ~QGIViewClip() = default;
+    ~QGIViewClip() override = default;
 
     enum {Type = QGraphicsItem::UserType + 123};
     int type() const override { return Type;}
 
-    virtual void updateView(bool update = false) override;
+    void updateView(bool update = false) override;
 
-    virtual void draw() override;
-    QGCustomRect* getFrame(void) {return m_frame;}
-    QGCustomClip* getClipArea(void) {return m_cliparea;}
+    void draw() override;
+    QGCustomRect* getFrame() {return m_frame;}
+    QGCustomClip* getClipArea() {return m_cliparea;}
 
 protected:
     void drawClip();
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     QGCustomRect* m_frame;

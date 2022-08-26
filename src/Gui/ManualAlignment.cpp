@@ -429,14 +429,14 @@ public:
         static_cast<SoGroup*>(getViewer(1)->getSoRenderManager()->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Fixed object")));
     }
-    ~AlignmentView()
+    ~AlignmentView() override
     {
     }
-    PyObject* getPyObject()
+    PyObject* getPyObject() override
     {
         Py_Return;
     }
-    bool canClose()
+    bool canClose() override
     {
         return false;
     }
@@ -518,7 +518,7 @@ public:
     static
     void  reorientCamera(SoCamera * cam, const SbRotation & rot)
     {
-        if (cam == nullptr)
+        if (!cam)
             return;
 
         // Find global coordinates of focal point.

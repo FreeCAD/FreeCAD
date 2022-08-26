@@ -68,7 +68,7 @@ SoFCOffscreenRenderer* SoFCOffscreenRenderer::inst = nullptr;
 
 SoFCOffscreenRenderer& SoFCOffscreenRenderer::instance()
 {
-    if (inst==nullptr)
+    if (!inst)
         inst = new SoFCOffscreenRenderer(SbViewportRegion());
     return *inst;
 }
@@ -423,7 +423,7 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     }
 
     this->didallocation = glrenderaction ? false : true;
-    this->viewport = vpr;
+    this->viewport = vpr; // clazy:exclude=rule-of-two-soft
 
     this->framebuffer = nullptr;
     this->numSamples = -1;
@@ -473,7 +473,7 @@ SoQtOffscreenRenderer::~SoQtOffscreenRenderer()
 void
 SoQtOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
 {
-    PRIVATE(this)->viewport = region;
+    PRIVATE(this)->viewport = region; // clazy:exclude=rule-of-two-soft
 }
 
 /*!

@@ -29,24 +29,29 @@
 #include <QFileInfo>
 #endif
 
+#include <qmath.h>
+
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
-#include <qmath.h>
 #include "Rez.h"
 #include "PreferencesGui.h"
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
 #include "QGIWeldSymbol.h"
+#include "QGCustomSvg.h"
+#include "QGCustomText.h"
+
 #include "QGITile.h"
 
 using namespace TechDrawGui;
@@ -98,18 +103,12 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_colCurrent = m_colNormal;
 }
 
-QGITile::~QGITile(void)
+QGITile::~QGITile()
 {
 
 }
 
-QVariant QGITile::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-//    Base::Console().Message("QGIT::itemChange(%d)\n", change);
-    return QGIDecoration::itemChange(change, value);
-}
-
-void QGITile::draw(void)
+void QGITile::draw()
 {
 //    Base::Console().Message("QGIT::draw()\n");
 
@@ -150,7 +149,7 @@ void QGITile::draw(void)
     }
 }
 
-void QGITile::makeSymbol(void)
+void QGITile::makeSymbol()
 {
 //    Base::Console().Message("QGIT::makeSymbol()\n");
 //    m_effect->setColor(m_colCurrent);
@@ -169,7 +168,7 @@ void QGITile::makeSymbol(void)
    m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
 }
 
-void QGITile::makeText(void)
+void QGITile::makeText()
 {
 //    Base::Console().Message("QGIT::makeText()\n");
     prepareGeometryChange();
@@ -234,7 +233,8 @@ void QGITile::makeText(void)
 //read whole text file into std::string
 std::string QGITile::getStringFromFile(std::string inSpec)
 {
-    std::ifstream f(inSpec);
+    Base::FileInfo fi(inSpec);
+    Base::ifstream f(fi);
     std::stringstream ss;
     ss << f.rdbuf();
     return ss.str();
@@ -323,18 +323,18 @@ void QGITile::setPrettySel() {
     draw();
 }
 
-bool QGITile::isTailRight(void) 
+bool QGITile::isTailRight()
 {
     return m_tailRight;
 }
 
-bool QGITile::getAltWeld(void) 
+bool QGITile::getAltWeld()
 {
     return m_altWeld;
 }
 
 //TODO: this is Pen, not Brush. sb Brush to colour background
-QColor QGITile::getTileColor(void) const
+QColor QGITile::getTileColor() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
@@ -342,7 +342,7 @@ QColor QGITile::getTileColor(void) const
     return fcColor.asValue<QColor>();
 }
 
-double QGITile::getSymbolWidth(void) const
+double QGITile::getSymbolWidth() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -356,7 +356,7 @@ double QGITile::getSymbolWidth(void) const
     return w;
 }
 
-double QGITile::getSymbolHeight(void) const
+double QGITile::getSymbolHeight() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -369,7 +369,7 @@ double QGITile::getSymbolHeight(void) const
 }
 
 //make symbols larger or smaller than standard
-double QGITile::getSymbolFactor(void) const
+double QGITile::getSymbolFactor() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
@@ -378,26 +378,16 @@ double QGITile::getSymbolFactor(void) const
     return s;
 }
 
-double QGITile::prefFontSize(void) const
+double QGITile::prefFontSize() const
 {
 //    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
 //                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     return Preferences::dimFontSizeMM();
 }
 
-QString QGITile::prefTextFont(void) const
+QString QGITile::prefTextFont() const
 {
     return Preferences::labelFontQString();
-}
-
-void QGITile::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-//    painter->setPen(Qt::magenta);
-//    painter->drawRect(boundingRect());          //good for debugging
-    
-    QGIDecoration::paint (painter, &myOption, widget);
 }
 
 QRectF QGITile::boundingRect() const

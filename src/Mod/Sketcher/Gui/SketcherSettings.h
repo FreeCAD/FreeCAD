@@ -41,14 +41,14 @@ class SketcherSettings : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    SketcherSettings(QWidget* parent = nullptr);
-    ~SketcherSettings();
+    explicit SketcherSettings(QWidget* parent = nullptr);
+    ~SketcherSettings() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_SketcherSettings> ui;
@@ -64,14 +64,14 @@ class SketcherSettingsDisplay : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    SketcherSettingsDisplay(QWidget* parent = nullptr);
-    ~SketcherSettingsDisplay();
+    explicit SketcherSettingsDisplay(QWidget* parent = nullptr);
+    ~SketcherSettingsDisplay() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private Q_SLOTS:
     void onBtnTVApplyClicked(bool);
@@ -89,14 +89,14 @@ class SketcherSettingsColors : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    SketcherSettingsColors(QWidget* parent = nullptr);
-    ~SketcherSettingsColors();
+    explicit SketcherSettingsColors(QWidget* parent = nullptr);
+    ~SketcherSettingsColors() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_SketcherSettingsColors> ui;

@@ -292,13 +292,13 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         MaxGS = prefs.GetInt("MaxGS", 100000000)
         MaxKOI = prefs.GetInt("MaxKOI", 2800000)
         global z88_dyn_template
-        templateArray = z88_dyn_template.splitlines()
+        template_array = z88_dyn_template.splitlines()
         output = ""
-        for line in templateArray:
+        for line in template_array:
             if line.find("MAXGS") > -1:
-                line = "    MAXGS  " + str(MaxGS)
+                line = "    MAXGS  {}".format(MaxGS)
             if line.find("MAXKOI") > -1:
-                line = "    MAXKOI   " + str(MaxKOI)
+                line = "    MAXKOI   {}".format(MaxKOI)
             output += line + "\n"
 
         solver_parameter_file_path = self.file_name + ".dyn"

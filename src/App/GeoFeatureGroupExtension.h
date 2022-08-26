@@ -56,7 +56,7 @@ class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 public:
     PropertyPlacement& placement();
     
-    virtual void initExtension(ExtensionContainer* obj) override;
+    void initExtension(ExtensionContainer* obj) override;
 
     /**
      * @brief transformPlacement applies transform to placement of this shape.
@@ -67,10 +67,10 @@ public:
     virtual void transformPlacement(const Base::Placement &transform);
     
     /// Constructor
-    GeoFeatureGroupExtension(void);
-    virtual ~GeoFeatureGroupExtension();
+    GeoFeatureGroupExtension();
+    ~GeoFeatureGroupExtension() override;
     
-    virtual void extensionOnChanged(const Property* p) override;
+    void extensionOnChanged(const Property* p) override;
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
@@ -97,13 +97,13 @@ public:
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
 
-    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
+    bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
+    bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
     
-    virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
-    virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
+    std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
+    std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
     /// Collects all links that are relevant for the coordinate system, meaning all recursive links to 
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 

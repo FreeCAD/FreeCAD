@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QPointF>
 #include <QPrinter>
 
@@ -37,7 +39,6 @@ QT_BEGIN_NAMESPACE
 class QAction;
 class QGraphicsItem;
 class QGraphicsScene;
-class QTimer;
 QT_END_NAMESPACE
 
 namespace TechDraw {
@@ -57,17 +58,17 @@ class QGIView;
 class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::SelectionObserver
 {
     Q_OBJECT
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = nullptr);
-    virtual ~MDIViewPage();
+    ~MDIViewPage() override;
 
-    void addChildrenToPage(void);
+    void addChildrenToPage();
 
 
     /// Observer message from the Tree Selection mechanism
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void preSelectionChanged(const QPoint &pos);
 
     /// QGraphicsScene selection routines
@@ -75,19 +76,14 @@ public:
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
-    void attachTemplate(TechDraw::DrawTemplate *obj);
-    void updateTemplate(bool force = false);
-    void fixOrphans(bool force = false);
-    void matchSceneRectToTemplate(void);
-    
-    bool onMsg(const char* pMsg,const char** ppReturn);
-    bool onHasMsg(const char* pMsg) const;
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onHasMsg(const char* pMsg) const override;
 
-    void print();
-    void print(QPrinter* printer);
-    void printPdf();
+    void print() override;
+    void print(QPrinter* printer) override;
+    void printPdf() override;
     void printPdf(std::string file);
-    void printPreview();
+    void printPreview() override;
 
     void saveSVG(std::string file);
     void saveDXF(std::string file);
@@ -95,50 +91,32 @@ public:
 
     void setDocumentObject(const std::string&);
     void setDocumentName(const std::string&);
-    PyObject* getPyObject();
+
+    PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
-    QGVPage* getQGVPage(void) {return m_view;}
-    QGSPage* getQGSPage(void) {return m_scene;}
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
-    QPointF getTemplateCenter(TechDraw::DrawTemplate *obj);
-    void centerOnPage(void);
-
-    void redrawAllViews(void);
-    void redraw1View(TechDraw::DrawView* dv);
-    
     void setTabText(std::string t);
 
-    bool addView(const App::DocumentObject *obj);
-
     static MDIViewPage *getFromScene(const QGSPage *scene);
-    void contextMenuEvent(QContextMenuEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event) override;
+
+    void setScene(QGSPage* scene, QGVPage* view);
 
 public Q_SLOTS:
-    void viewAll();
-    void saveSVG(void);
-    void saveDXF(void);
-    void savePDF(void);
-    void toggleFrame(void);
-    void toggleKeepUpdated(void);
+    void viewAll() override;
+    void saveSVG();
+    void saveDXF();
+    void savePDF();
+    void toggleFrame();
+    void toggleKeepUpdated();
 //    void testAction(void);
     void sceneSelectionChanged();
-    void onTimer();
 
 protected:
-    void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
-    bool hasQView(App::DocumentObject *obj);
-    bool orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list);
+    void closeEvent(QCloseEvent*) override;
 
-    /// Attaches view of obj to m_scene.  Returns true on success, false otherwise
-    bool attachView(App::DocumentObject *obj);
-
-    void closeEvent(QCloseEvent*);
-
-    void setDimensionGroups(void);
-    void setBalloonGroups(void);
-    void setLeaderGroups(void);
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
     
     void onDeleteObject(const App::DocumentObject& obj);
@@ -147,9 +125,8 @@ protected:
     Connection connectDeletedObject;
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel,QList<QGraphicsItem*> sceneSel);
-    void setTreeToSceneSelect(void);
-    void sceneSelectionManager(void);
-
+    void setTreeToSceneSelect();
+    void sceneSelectionManager();
 
 private:
     QAction *m_toggleFrameAction;
@@ -162,18 +139,18 @@ private:
     std::string m_objectName;
     std::string m_documentName;
     bool isSelectionBlocked;
-    QGSPage* m_scene;
-    QGVPage *m_view;
-    QTimer *m_timer;
+    QPointer<QGSPage> m_scene;
 
     QString m_currentPath;
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    qreal pagewidth, pageheight;
-    ViewProviderPage *m_vpPage;
+    ViewProviderPage* m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
-//    QList<QGIView *> deleteItems;
+
+    void getPaperAttributes(void);
+    QPageLayout::Orientation m_orientation;
+    QPageSize::PageSizeId m_paperSize;
+    double m_pagewidth, m_pageheight;
+
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>
@@ -182,11 +159,11 @@ public:
     using BaseType = Py::PythonExtension<MDIViewPagePy>;
     static void init_type();
 
-    MDIViewPagePy(MDIViewPage *mdi);
-    ~MDIViewPagePy();
+    explicit MDIViewPagePy(MDIViewPage *mdi);
+    ~MDIViewPagePy() override;
 
-    Py::Object repr();
-    Py::Object getattr(const char *);
+    Py::Object repr() override;
+    Py::Object getattr(const char *) override;
     Py::Object getPage(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
 

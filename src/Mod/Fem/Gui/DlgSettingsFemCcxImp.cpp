@@ -26,6 +26,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <thread>
+# include <QMessageBox>
 #endif
 
 #include <Gui/Application.h>
@@ -49,6 +50,9 @@ DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
     // hardware check might fail and then returns 0
     if (processor_count > 0)
         ui->sb_ccx_numcpu->setMaximum(processor_count);
+
+    connect(ui->fc_ccx_binary_path, &Gui::PrefFileChooser::fileNameChanged,
+            this, &DlgSettingsFemCcxImp::onfileNameChanged);
 }
 
 DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp()
@@ -132,6 +136,15 @@ void DlgSettingsFemCcxImp::changeEvent(QEvent* e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemCcxImp::onfileNameChanged(QString FileName)
+{
+    if (!QFileInfo::exists(FileName)) {
+        QMessageBox::critical(this, tr("File does not exist"),
+                              tr("The specified executable \n'%1'\n does not exist!\n"
+                                 "Specify another file please.").arg(FileName));
     }
 }
 

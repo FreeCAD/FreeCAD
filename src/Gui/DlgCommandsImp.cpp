@@ -43,7 +43,7 @@ typedef std::vector< std::pair<QLatin1String, QString> > GroupMap;
 
 struct GroupMap_find {
     const QLatin1String& item;
-    GroupMap_find(const QLatin1String& item) : item(item) {}
+    explicit GroupMap_find(const QLatin1String& item) : item(item) {}
     bool operator () (const std::pair<QLatin1String, QString>& elem) const
     {
         return elem.first == item;

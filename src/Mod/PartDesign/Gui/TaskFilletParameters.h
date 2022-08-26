@@ -36,23 +36,23 @@ class TaskFilletParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
-    ~TaskFilletParameters();
+    explicit TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    ~TaskFilletParameters() override;
 
-    virtual void apply();
+    void apply() override;
 
 private Q_SLOTS:
     void onLengthChanged(double);
-    void onRefDeleted(void);
-    void onAddAllEdges(void);
+    void onRefDeleted() override;
+    void onAddAllEdges();
     void onCheckBoxUseAllEdgesToggled(bool checked);
 
 protected:
-    double getLength(void) const;
-    virtual void clearButtons(const selectionModes notThis);
-    bool event(QEvent *e);
-    void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    double getLength() const;
+    void clearButtons(const selectionModes notThis) override;
+    bool event(QEvent *e) override;
+    void changeEvent(QEvent *e) override;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;
@@ -64,12 +64,12 @@ class TaskDlgFilletParameters : public TaskDlgDressUpParameters
     Q_OBJECT
 
 public:
-    TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
-    ~TaskDlgFilletParameters();
+    explicit TaskDlgFilletParameters(ViewProviderFillet *DressUpView);
+    ~TaskDlgFilletParameters() override;
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
 };
 
 } //namespace PartDesignGui

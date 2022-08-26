@@ -307,11 +307,11 @@ void Tessellation::process(int method, App::Document* doc, const std::list<App::
                 "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
                 "__mesh__.Label=\"%5 (Meshed)\"\n"
                 "del __doc__, __mesh__, __part__, __shape__\n")
-                .arg(this->document)
-                .arg(objname)
-                .arg(subname)
-                .arg(param)
-                .arg(label);
+                .arg(this->document,
+                     objname,
+                     subname,
+                     param,
+                     label);
 
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
@@ -370,7 +370,7 @@ std::vector<App::Color> Tessellation::getUniqueColors(const std::vector<App::Col
 
     std::vector<App::Color> unique;
     for (const auto& it : col_set)
-        unique.push_back(App::Color(it));
+        unique.emplace_back(it);
     return unique;
 }
 

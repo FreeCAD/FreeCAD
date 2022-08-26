@@ -90,7 +90,7 @@ int Measurement::addReference3D(App::DocumentObject *obj, const char* subName)
   std::vector<std::string> subElements = References3D.getSubValues();
 
   objects.push_back(obj);
-  subElements.push_back(subName);
+  subElements.emplace_back(subName);
 
   References3D.setValues(objects, subElements);
 
@@ -496,12 +496,12 @@ Base::Vector3d Measurement::massCenter() const
     return result;
 }
 
-unsigned int Measurement::getMemSize(void) const
+unsigned int Measurement::getMemSize() const
 {
     return 0;
 }
 
-PyObject *Measurement::getPyObject(void)
+PyObject *Measurement::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1

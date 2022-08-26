@@ -126,7 +126,7 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
     boost::cmatch cm;
 
     /* Check if it is used before */
-    if (getValueFromAlias(candidate) != nullptr)
+    if (getValueFromAlias(candidate))
         return false;
 
     /* Check to make sure it doesn't clash with a predefined unit */
@@ -142,7 +142,7 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
             const boost::sub_match<const char *> rowstr = cm[2];
 
             // A valid cell address?
-            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
+            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()))
                 return false;
         }
         return true;
@@ -578,14 +578,14 @@ Cell * PropertySheet::nonNullCellAt(CellAddress address)
 void PropertySheet::setContent(CellAddress address, const char *value)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setContent(value);
 }
 
 void PropertySheet::setAlignment(CellAddress address, int _alignment)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     if (cell->address != address) //Reject alignment change for merged cell except top-left one
         return;
     cell->setAlignment(_alignment);
@@ -594,40 +594,40 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
 void PropertySheet::setStyle(CellAddress address, const std::set<std::string> &_style)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setStyle(_style);
 }
 
 void PropertySheet::setForeground(CellAddress address, const App::Color &color)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setForeground(color);
 }
 
 void PropertySheet::setBackground(CellAddress address, const App::Color &color)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setBackground(color);
 }
 
 void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setDisplayUnit(unit);
 }
 
 
 void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 {
-    if (alias.size() > 0 && !isValidAlias(alias))
+    if (!alias.empty() && !isValidAlias(alias))
         throw Base::ValueError("Invalid alias");
 
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
 
     if(aliasedCell == cell)
         return;
@@ -654,7 +654,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     cell->getAlias(oldAlias);
     cell->setAlias(alias);
 
-    if (oldAlias.size() > 0) {
+    if (!oldAlias.empty()) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
 
         App::ObjectIdentifier key(owner, oldAlias);
@@ -671,14 +671,14 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setComputedUnit(unit);
 }
 
 void PropertySheet::setSpans(CellAddress address, int rows, int columns)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != nullptr);
+    assert(cell);
     cell->setSpans(rows, columns);
 }
 
@@ -1133,7 +1133,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
     const Expression * expression = cell->getExpression();
 
-    if (expression == nullptr)
+    if (!expression)
         return;
 
     for(auto &var : expression->getIdentifiers()) {
@@ -1158,7 +1158,7 @@ void PropertySheet::addDependencies(CellAddress key)
                 cellToPropertyNameMap[key].insert(propName);
 
                 // Also an alias?
-                if (name.size() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
+                if (!name.empty() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
                     auto other = static_cast<Sheet*>(docObj);
                     auto j = other->cells.revAliasProp.find(name);
 
@@ -1219,7 +1219,7 @@ void PropertySheet::removeDependencies(CellAddress key)
             if (k != documentObjectToCellMap.end()) {
                 k->second.erase(key);
 
-                if (k->second.size() == 0)
+                if (k->second.empty())
                     documentObjectToCellMap.erase(*j);
             }
 
@@ -1358,7 +1358,7 @@ void PropertySheet::onRelabeledDocument(const App::Document &doc)
 
 void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
 {
-    RenameObjectIdentifierExpressionVisitor<PropertySheet> v(*this, paths, *this);
+    RenameObjectIdentifierExpressionVisitor<PropertySheet> v {*this, paths, *this};
     for(auto &c : data) {
         c.second->visit(v);
         if(v.changed()) {

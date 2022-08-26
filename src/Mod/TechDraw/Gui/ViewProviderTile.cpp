@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include <App/DocumentObject.h>
 #include "ViewProviderTile.h"
@@ -43,30 +39,6 @@ ViewProviderTile::ViewProviderTile()
 
 ViewProviderTile::~ViewProviderTile()
 {
-}
-
-void ViewProviderTile::attach(App::DocumentObject *pcFeat)
-{
-    // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
-}
-
-void ViewProviderTile::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderTile::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
-
-    return StrList;
-}
-
-void ViewProviderTile::updateData(const App::Property* prop)
-{
-    ViewProviderDocumentObject::updateData(prop);
 }
 
 //TechDraw::DrawTile* ViewProviderTile::getViewObject() const

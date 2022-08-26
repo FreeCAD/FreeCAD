@@ -37,24 +37,24 @@ class PartFeaturePy;
  */
 class PartExport FeatureReference : public App::GeoFeature
 {
-    PROPERTY_HEADER(Part::FeatureReference);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FeatureReference);
 
 public:
     /// Constructor
-    FeatureReference(void);
-    virtual ~FeatureReference();
+    FeatureReference();
+    ~FeatureReference() override;
 
 	App::PropertyLink Reference;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute(void) const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderPartReference";
     }
 protected:

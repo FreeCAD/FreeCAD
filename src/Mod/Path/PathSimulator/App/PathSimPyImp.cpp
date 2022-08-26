@@ -37,7 +37,7 @@
 using namespace PathSimulator;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PathSimPy::representation(void) const
+std::string PathSimPy::representation() const
 {
     return std::string("<PathSim object>");
 }
@@ -87,7 +87,7 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 	if (!PyArg_ParseTuple(args, ""))
 		return nullptr;
 	cStock *stock = getPathSimPtr()->m_stock;
-	if (stock == nullptr)
+	if (!stock)
 	{
 		PyErr_SetString(PyExc_RuntimeError, "Simulation has stock object");
 		return nullptr;
@@ -122,7 +122,7 @@ PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 	return newposPy;
 }
 
-Py::Object PathSimPy::getTool(void) const
+Py::Object PathSimPy::getTool() const
 {
     //return Py::Object();
     throw Py::AttributeError("Not yet implemented");

@@ -82,7 +82,7 @@ public:
             : Gui::SelectionFilterGate(nullPointer())
         {
         }
-        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName) override
         {
             if (!sSubName || sSubName[0] == '\0') {
                 // If selecting again the same edge the passed sub-element is empty. If the whole
@@ -359,11 +359,11 @@ bool SweepWidget::accept()
             "App.getDocument('%5').ActiveObject.Solid=%3\n"
             "App.getDocument('%5').ActiveObject.Frenet=%4\n"
             )
-            .arg(list)
-            .arg(QLatin1String(selection.c_str()))
-            .arg(solid)
-            .arg(frenet)
-            .arg(QString::fromLatin1(d->document.c_str()));
+            .arg(list,
+                 QLatin1String(selection.c_str()),
+                 solid,
+                 frenet,
+                 QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc)

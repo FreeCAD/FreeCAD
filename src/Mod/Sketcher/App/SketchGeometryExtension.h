@@ -83,24 +83,24 @@ class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceE
 public:
 
     SketchGeometryExtension();
-    SketchGeometryExtension(long cid);
-    virtual ~SketchGeometryExtension() override = default;
+    explicit SketchGeometryExtension(long cid);
+    ~SketchGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    virtual long getId() const override {return Id;}
-    virtual void setId(long id) override {Id = id;}
+    long getId() const override {return Id;}
+    void setId(long id) override {Id = id;}
 
-    virtual InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
-    virtual void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
+    InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
+    void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
 
-    virtual bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
-    virtual void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
+    bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
+    void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
 
-    virtual int getGeometryLayerId() const override { return GeometryLayer;}
-    virtual void setGeometryLayerId(int geolayer) override { GeometryLayer = geolayer;}
+    int getGeometryLayerId() const override { return GeometryLayer;}
+    void setGeometryLayerId(int geolayer) override { GeometryLayer = geolayer;}
 
     constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
 
@@ -111,9 +111,9 @@ public:
     static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type);
 
 protected:
-    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
-    virtual void restoreAttributes(Base::XMLReader &reader) override;
-    virtual void saveAttributes(Base::Writer &writer) const override;
+    void copyAttributes(Part::GeometryExtension * cpy) const override;
+    void restoreAttributes(Base::XMLReader &reader) override;
+    void saveAttributes(Base::Writer &writer) const override;
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;

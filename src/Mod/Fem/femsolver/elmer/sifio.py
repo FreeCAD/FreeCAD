@@ -31,7 +31,6 @@ __url__ = "https://www.freecadweb.org"
 import collections
 import six
 
-
 SIMULATION = "Simulation"
 CONSTANTS = "Constants"
 BODY = "Body"
@@ -57,7 +56,6 @@ _VALID_SECTIONS = (
     COMPONENT,
 )
 
-
 _NUMBERED_SECTIONS = (
     BODY,
     MATERIAL,
@@ -69,12 +67,10 @@ _NUMBERED_SECTIONS = (
     COMPONENT,
 )
 
-
 _SECTION_DELIM = "End"
 _WHITESPACE = " "
 _INDENT = " " * 2
 _NEWLINE = "\n"
-
 
 _TYPE_REAL = "Real"
 _TYPE_INTEGER = "Integer"
@@ -82,11 +78,10 @@ _TYPE_LOGICAL = "Logical"
 _TYPE_STRING = "String"
 _TYPE_FILE = "File"
 
-
-WARN = "Warn"
-IGNORE = "Ignore"
-ABORT = "Abort"
-SILENT = "Silent"
+WARN = "\"Warn\""
+IGNORE = "\"Ignore\""
+ABORT = "\"Abort\""
+SILENT = "\"Silent\""
 
 
 def createSection(name):

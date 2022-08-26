@@ -38,7 +38,7 @@
 using namespace Gui;
 
 // returns a string which represents the object e.g. when printed in python
-std::string SelectionObjectPy::representation(void) const
+std::string SelectionObjectPy::representation() const
 {
     return "<SelectionObject>";
 }
@@ -68,12 +68,12 @@ PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-Py::String SelectionObjectPy::getObjectName(void) const
+Py::String SelectionObjectPy::getObjectName() const
 {
     return Py::String(getSelectionObjectPtr()->getFeatName());
 }
 
-Py::Tuple SelectionObjectPy::getSubElementNames(void) const
+Py::Tuple SelectionObjectPy::getSubElementNames() const
 {
     std::vector<std::string> objs = getSelectionObjectPtr()->getSubNames();
 
@@ -85,22 +85,22 @@ Py::Tuple SelectionObjectPy::getSubElementNames(void) const
     return temp;
 }
 
-Py::String SelectionObjectPy::getFullName(void) const
+Py::String SelectionObjectPy::getFullName() const
 {
     return Py::String(getSelectionObjectPtr()->getAsPropertyLinkSubString());
 }
 
-Py::String SelectionObjectPy::getTypeName(void) const
+Py::String SelectionObjectPy::getTypeName() const
 {
     return Py::String(getSelectionObjectPtr()->getTypeName());
 }
 
-Py::String SelectionObjectPy::getDocumentName(void) const
+Py::String SelectionObjectPy::getDocumentName() const
 {
     return Py::String(getSelectionObjectPtr()->getDocName());
 }
 
-Py::Object SelectionObjectPy::getDocument(void) const
+Py::Object SelectionObjectPy::getDocument() const
 {
     App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
     if (!obj)
@@ -108,7 +108,7 @@ Py::Object SelectionObjectPy::getDocument(void) const
     return Py::Object(obj->getDocument()->getPyObject(), true);
 }
 
-Py::Object SelectionObjectPy::getObject(void) const
+Py::Object SelectionObjectPy::getObject() const
 {
     App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
     if (!obj)
@@ -116,7 +116,7 @@ Py::Object SelectionObjectPy::getObject(void) const
     return Py::Object(obj->getPyObject(), true);
 }
 
-Py::Tuple SelectionObjectPy::getSubObjects(void) const
+Py::Tuple SelectionObjectPy::getSubObjects() const
 {
     App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
     if (!obj)
@@ -140,12 +140,12 @@ Py::Tuple SelectionObjectPy::getSubObjects(void) const
     return temp;
 }
 
-Py::Boolean SelectionObjectPy::getHasSubObjects(void) const
+Py::Boolean SelectionObjectPy::getHasSubObjects() const
 {
     return Py::Boolean(getSelectionObjectPtr()->hasSubNames());
 }
 
-Py::Tuple SelectionObjectPy::getPickedPoints(void) const
+Py::Tuple SelectionObjectPy::getPickedPoints() const
 {
     const std::vector<Base::Vector3d>& points = getSelectionObjectPtr()->getPickedPoints();
 

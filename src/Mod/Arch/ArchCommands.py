@@ -20,7 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import sys
 import FreeCAD,Draft,ArchComponent,DraftVecUtils
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
@@ -60,8 +59,6 @@ def string_replace(text, pattern, replacement):
     u'abc mm \xc2\xb3'
     ```
     """
-    if sys.version_info.major < 3:
-        text = text.encode("utf8")
     return text.replace(pattern, replacement)
 
 
@@ -427,7 +424,8 @@ def getCutVolume(cutplane,shapes,clip=False,depth=None):
         return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
-    u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
+    prm_range = p.ParameterRange # (uMin, uMax, vMin, vMax)
+    u = p.valueAt(prm_range[0], 0).sub(p.valueAt(prm_range[1], 0)).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
         #FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane)+"\n")
@@ -936,8 +934,6 @@ def survey(callback=False):
                     if FreeCAD.SurveyObserver.totalLength:
                         u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalLength,FreeCAD.Units.Length)
                         t = u.getUserPreferred()[0]
-                        if sys.version_info.major < 3:
-                            t = t.encode("utf8")
                         msg += " Length: " + t
                     if FreeCAD.SurveyObserver.totalArea:
                         u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea,FreeCAD.Units.Area)
@@ -1044,8 +1040,6 @@ class SurveyTaskPanel:
         if hasattr(FreeCAD,"SurveyObserver"):
             u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalLength,FreeCAD.Units.Length)
             t = u.getUserPreferred()[0]
-            if sys.version_info.major < 3:
-                t = t.encode("utf8")
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
                 QtGui.QApplication.clipboard().setText(t)
             else:
@@ -1109,11 +1103,7 @@ class SurveyTaskPanel:
         if rows:
             filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
             if filename:
-                if sys.version_info.major < 3:
-                    mode = 'wb'
-                else:
-                    mode = 'w'
-                with open(filename[0].encode("utf8"), mode) as csvfile:
+                with open(filename[0].encode("utf8"), "w") as csvfile:
                     csvfile = csv.writer(csvfile,delimiter="\t")
                     suml = 0
                     for i in range(rows):
@@ -1329,15 +1319,11 @@ def getExtrusionData(shape,sortmethod="area"):
 def printMessage( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
-        if sys.version_info.major < 3:
-            message = message.decode("utf8")
         QtGui.QMessageBox.information( None , "" , message )
 
 def printWarning( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
-        if sys.version_info.major < 3:
-            message = message.decode("utf8")
         QtGui.QMessageBox.warning( None , "" , message )
 
 
@@ -1703,7 +1689,7 @@ class _ToggleSubs:
                         if mode is None:
                             # take the first sub as base
                             mode = sub.ViewObject.isVisible()
-                        if mode == True:
+                        if mode:
                             sub.ViewObject.hide()
                         else:
                             sub.ViewObject.show()

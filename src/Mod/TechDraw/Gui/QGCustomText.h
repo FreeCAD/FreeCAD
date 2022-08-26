@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMTEXT_H
 #define DRAWINGGUI_QGCUSTOMTEXT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>

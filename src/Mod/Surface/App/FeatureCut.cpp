@@ -56,7 +56,7 @@ short Cut::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Cut::execute(void)
+App::DocumentObjectExecReturn *Cut::execute()
 {
     //Perform error checking
 

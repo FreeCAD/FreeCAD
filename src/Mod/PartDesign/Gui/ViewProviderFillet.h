@@ -32,7 +32,7 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderFillet : public ViewProviderDressUp
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderFillet)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderFillet);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderFillet);
 
 public:
     /// constructor
@@ -41,11 +41,11 @@ public:
           menuName = tr("Fillet parameters"); }
 
     /// return "Fillet"
-    virtual const std::string & featureName() const;
+    const std::string & featureName() const override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
-    virtual TaskDlgFeatureParameters *getEditDialog();
+    TaskDlgFeatureParameters *getEditDialog() override;
 };
 
 } // namespace PartDesignGui

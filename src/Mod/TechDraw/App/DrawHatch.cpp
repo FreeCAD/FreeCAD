@@ -80,8 +80,7 @@ void DrawHatch::onChanged(const App::Property* prop)
             DrawHatch::execute();
         }
         App::Document* doc = getDocument();
-        if ((prop == &HatchPattern) &&
-            (doc != nullptr) ) {
+        if ((prop == &HatchPattern) && doc) {
             if (!HatchPattern.isEmpty()) {
                 replaceFileIncluded(HatchPattern.getValue());
             }
@@ -267,7 +266,7 @@ void DrawHatch::unsetupObject(void)
 //    Base::Console().Message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = dynamic_cast<DrawView*>(source);
-    if (dv != nullptr) {
+    if (dv) {
         dv->requestPaint();
     }
     App::DocumentObject::unsetupObject();

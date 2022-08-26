@@ -46,7 +46,7 @@
 # include <SMESHDS_Mesh.hxx>
 #endif
 
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>
@@ -66,7 +66,7 @@ struct FemFace
     unsigned short Size;
     unsigned short FaceNo;
     bool hide;
-    Base::Vector3d getFirstNodePoint(void) {
+    Base::Vector3d getFirstNodePoint() {
         return Base::Vector3d(Nodes[0]->X(),Nodes[0]->Y(),Nodes[0]->Z());
     }
 
@@ -331,15 +331,15 @@ void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
+std::vector<std::string> ViewProviderFemMesh::getDisplayModes() const
 {
     std::vector<std::string> StrList;
-    StrList.push_back(Private::dm_face_wire);
-    StrList.push_back(Private::dm_face_wire_node);
-    StrList.push_back(Private::dm_face);
-    StrList.push_back(Private::dm_wire);
-    StrList.push_back(Private::dm_node);
-    StrList.push_back(Private::dm_wire_node);
+    StrList.emplace_back(Private::dm_face_wire);
+    StrList.emplace_back(Private::dm_face_wire_node);
+    StrList.emplace_back(Private::dm_face);
+    StrList.emplace_back(Private::dm_wire);
+    StrList.emplace_back(Private::dm_node);
+    StrList.emplace_back(Private::dm_wire_node);
     return StrList;
 }
 
@@ -493,7 +493,7 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
     }
 }
 
-void ViewProviderFemMesh::resetHighlightNodes(void)
+void ViewProviderFemMesh::resetHighlightNodes()
 {
     pcAnoCoords->point.setNum(0);
     vHighlightedIdx.clear();
@@ -550,7 +550,7 @@ void ViewProviderFemMesh::setColorByNodeIdHelper(const std::vector<App::Color> &
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
-void ViewProviderFemMesh::resetColorByNodeId(void)
+void ViewProviderFemMesh::resetColorByNodeId()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);
@@ -596,7 +596,7 @@ void ViewProviderFemMesh::setDisplacementByNodeIdHelper(const std::vector<Base::
 
 }
 
-void ViewProviderFemMesh::resetDisplacementByNodeId(void)
+void ViewProviderFemMesh::resetDisplacementByNodeId()
 {
     applyDisplacementToNodes(0.0);
     DisplacementVector.clear();
@@ -604,7 +604,7 @@ void ViewProviderFemMesh::resetDisplacementByNodeId(void)
 /// reaply the node displacement with a certain factor and do a redraw
 void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
 {
-    if(DisplacementVector.size() == 0)
+    if(DisplacementVector.empty())
         return;
 
     float x,y,z;
@@ -654,7 +654,7 @@ void ViewProviderFemMesh::setColorByElementId(const std::map<long,App::Color> &E
     pcShapeMaterial->diffuseColor.finishEditing();
 }
 
-void ViewProviderFemMesh::resetColorByElementId(void)
+void ViewProviderFemMesh::resetColorByElementId()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(0);

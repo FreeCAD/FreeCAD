@@ -75,7 +75,7 @@ void StdCmdPart::activated(int iMsg)
     updateActive();
 }
 
-bool StdCmdPart::isActive(void)
+bool StdCmdPart::isActive()
 {
     return hasActiveDocument();
 }
@@ -117,14 +117,14 @@ void StdCmdGroup::activated(int iMsg)
         gui->signalScrollToObject(*static_cast<ViewProviderDocumentObject*>(vp));
 }
 
-bool StdCmdGroup::isActive(void)
+bool StdCmdGroup::isActive()
 {
     return hasActiveDocument();
 }
 
 namespace Gui {
 
-void CreateStructureCommands(void)
+void CreateStructureCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 

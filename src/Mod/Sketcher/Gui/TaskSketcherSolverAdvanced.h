@@ -42,8 +42,8 @@ class TaskSketcherSolverAdvanced : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
-    ~TaskSketcherSolverAdvanced();
+    explicit TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView);
+    ~TaskSketcherSolverAdvanced() override;
 
 private Q_SLOTS:
     void on_comboBoxDefaultSolver_currentIndexChanged(int index); 
@@ -68,9 +68,9 @@ private Q_SLOTS:
     void on_pushButtonSolve_clicked(bool checked = false);
 
 protected:
-    void updateDefaultMethodParameters(void);
-    void updateRedundantMethodParameters(void);
-    void updateSketchObject(void); 
+    void updateDefaultMethodParameters();
+    void updateRedundantMethodParameters();
+    void updateSketchObject();
 protected:
     ViewProviderSketch *sketchView;
 

@@ -38,8 +38,8 @@ class GuiExport PropertyPage : public QWidget
     Q_OBJECT
 
 public:
-    PropertyPage(QWidget* parent = nullptr);
-    virtual ~PropertyPage();
+    explicit PropertyPage(QWidget* parent = nullptr);
+    ~PropertyPage() override;
 
     bool isModified();
     void setModified(bool b);
@@ -68,15 +68,15 @@ class GuiExport PreferencePage : public QWidget
     Q_OBJECT
 
 public:
-    PreferencePage(QWidget* parent = nullptr);
-    virtual ~PreferencePage();
+    explicit PreferencePage(QWidget* parent = nullptr);
+    ~PreferencePage() override;
 
 public Q_SLOTS:
     virtual void loadSettings()=0;
     virtual void saveSettings()=0;
 
 protected:
-    virtual void changeEvent(QEvent *e) = 0;
+    void changeEvent(QEvent *e) override = 0;
 };
 
 /** Subclass that embeds a form from a UI file.
@@ -87,14 +87,14 @@ class GuiExport PreferenceUiForm : public PreferencePage
     Q_OBJECT
 
 public:
-    PreferenceUiForm(const QString& fn, QWidget* parent = nullptr);
-    virtual ~PreferenceUiForm();
+    explicit PreferenceUiForm(const QString& fn, QWidget* parent = nullptr);
+    ~PreferenceUiForm() override;
 
-    void loadSettings();
-    void saveSettings();
+    void loadSettings() override;
+    void saveSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     template <typename PW>
@@ -114,12 +114,12 @@ class GuiExport CustomizeActionPage : public QWidget
     Q_OBJECT
 
 public:
-    CustomizeActionPage(QWidget* parent = nullptr);
-    virtual ~CustomizeActionPage();
+    explicit CustomizeActionPage(QWidget* parent = nullptr);
+    ~CustomizeActionPage() override;
 
 protected:
-    bool event(QEvent* e);
-    virtual void changeEvent(QEvent *e) = 0;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent *e) override = 0;
 
 protected Q_SLOTS:
     virtual void onAddMacroAction(const QByteArray&)=0;

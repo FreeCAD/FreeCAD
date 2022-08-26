@@ -38,7 +38,7 @@ class SurfaceExport Extend :  public Part::Spline
 
 public:
     Extend();
-    ~Extend();
+    ~Extend() override;
 
     App::PropertyLinkSub Face;
     App::PropertyFloatConstraint Tolerance;
@@ -52,16 +52,16 @@ public:
     App::PropertyIntegerConstraint SampleV;
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) override;
+    App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const override {
+    const char* getViewProviderName() const override {
         return "SurfaceGui::ViewProviderExtend";
     }
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader,
+    void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader &reader,
                                            const char * TypeName,
                                            const char *PropName) override;
 

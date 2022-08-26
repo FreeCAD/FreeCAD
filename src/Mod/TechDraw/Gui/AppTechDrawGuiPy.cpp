@@ -82,10 +82,10 @@ public:
         );
         initialize("This is a module for displaying drawings"); // register with Python
     }
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -299,8 +299,7 @@ private:
         try {
            if (PyObject_TypeCheck(docObj, &(App::DocumentPy::Type))) {
                appDoc = static_cast<App::DocumentPy*>(docObj)->getDocumentPtr();
-               if ( (colorObj != nullptr) && 
-                    PyTuple_Check(colorObj)) {
+               if (colorObj && PyTuple_Check(colorObj)) {
                    App::Color c = TechDraw::DrawUtil::pyTupleToColor(colorObj);
                    bgColor = c.asValue<QColor>();
                }
@@ -341,13 +340,13 @@ private:
                             dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
                if (vpdv) {
                    qgiv = vpdv->getQView();
-                   if (qgiv != nullptr) {
+                   if (qgiv) {
                        Gui::PythonWrapper wrap;
                        if (!wrap.loadGuiModule()) {
                            throw Py::RuntimeError("Failed to load Python wrapper for Qt::Gui");
                        }
                         QGraphicsItem* item = wrap.toQGraphicsItem(qgiPy);
-                        if (item != nullptr) {
+                        if (item) {
                             qgiv->addArbitraryItem(item);
                         }
                     }
@@ -384,13 +383,13 @@ private:
                             dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
                if (vpdv) {
                    qgiv = vpdv->getQView();
-                   if (qgiv != nullptr) {
+                   if (qgiv) {
                        Gui::PythonWrapper wrap;
                        if (!wrap.loadGuiModule()) {
                            throw Py::RuntimeError("Failed to load Python wrapper for Qt::Gui");
                         }
                         QGraphicsObject* item = wrap.toQGraphicsObject(qgiPy);
-                        if (item != nullptr) {
+                        if (item) {
                             qgiv->addArbitraryItem(item);
                         }
                     }

@@ -28,16 +28,7 @@
 using namespace App;
 
 
-Path::Path(void)
-{
-}
-
 Path::Path(const std::vector<Base::Persistence *> &PathVector)
-:_PathVector(PathVector)
+  : _PathVector(PathVector)
 {
 }
-
-Path::~Path(void)
-{
-}
-

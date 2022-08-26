@@ -24,6 +24,8 @@
 #ifndef GUI_TASKVIEW_TASKHATCH_H
 #define GUI_TASKVIEW_TASKHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/Material.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -49,24 +51,24 @@ class TaskHatch : public QWidget
 
 public:
     TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
-    TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
-    ~TaskHatch();
+    explicit TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
+    ~TaskHatch() override;
 
 public:
     virtual bool accept();
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onFileChanged(void);
+    void onFileChanged();
     void onScaleChanged();
     void onColorChanged();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void apply(bool forceUpdate = false);
 
-    void createHatch(void);
-    void updateHatch(void);
+    void createHatch();
+    void updateHatch();
 
     void setUiPrimary();
     void setUiEdit();
@@ -98,21 +100,21 @@ class TaskDlgHatch : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
-    TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
-    ~TaskDlgHatch();
+    explicit TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
+    ~TaskDlgHatch() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     void update();

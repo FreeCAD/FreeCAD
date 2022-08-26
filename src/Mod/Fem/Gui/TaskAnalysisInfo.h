@@ -56,8 +56,8 @@ class TaskAnalysisInfo : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo();
+    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
+    ~TaskAnalysisInfo() override;
 
 private Q_SLOTS:
     void SwitchMethod(int Value);

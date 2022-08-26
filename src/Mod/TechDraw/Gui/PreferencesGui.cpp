@@ -37,6 +37,8 @@
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
+
 #include "Rez.h"
 #include "PreferencesGui.h"
 

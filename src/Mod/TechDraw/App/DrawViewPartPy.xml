@@ -43,11 +43,6 @@
         <UserDocu>cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="replaceCosmeticVertex">
-      <Documentation>
-        <UserDocu>rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False.</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="removeCosmeticVertex">
       <Documentation>
         <UserDocu>removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.</UserDocu>
@@ -88,11 +83,6 @@
         <UserDocu>ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="replaceCosmeticEdge">
-      <Documentation>
-        <UserDocu>replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False.</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="removeCosmeticEdge">
       <Documentation>
         <UserDocu>removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.</UserDocu>
@@ -111,11 +101,6 @@
     <Methode Name="getCenterLineBySelection">
       <Documentation>
         <UserDocu>cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="replaceCenterLine">
-      <Documentation>
-        <UserDocu>replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCenterLine">

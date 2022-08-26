@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-		Father="PyObjectBase"
-		Name="QuantityPy"
-		Twin="Quantity"
-		TwinPointer="Quantity"
-		Include="Base/Quantity.h"
-		FatherInclude="Base/PyObjectBase.h"
-		Namespace="Base"
-		NumberProtocol="true"
-		RichCompare="true"
-		Constructor="true"
-		Delete="true"
-		FatherNamespace="Base">
-	<Documentation>
-		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-		<UserDocu>Quantity
+    <PythonExport
+        Father="PyObjectBase"
+        Name="QuantityPy"
+        Twin="Quantity"
+        TwinPointer="Quantity"
+        Include="Base/Quantity.h"
+        FatherInclude="Base/PyObjectBase.h"
+        Namespace="Base"
+        NumberProtocol="true"
+        RichCompare="true"
+        Constructor="true"
+        Delete="true"
+        FatherNamespace="Base">
+    <Documentation>
+        <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+        <UserDocu>Quantity
 defined by a value and a unit.
 
 The following constructors are supported:
@@ -24,9 +24,9 @@ Quantity(Value) -- empty constructor
 Quantity(Value,Unit) -- empty constructor
 Quantity(Quantity) -- copy constructor
 Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
-		</UserDocu>
-		<DeveloperDocu>Quantity</DeveloperDocu>
-	</Documentation>
+        </UserDocu>
+        <DeveloperDocu>Quantity</DeveloperDocu>
+    </Documentation>
     <Methode Name="toStr" Const="true">
       <Documentation>
         <UserDocu>
@@ -50,8 +50,8 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 
           Following parameters are allowed:
           getValueAs('m/s')  # unit string to parse
-          getValueAs(2.45,1) # translatrion value and unit signature
-          getValueAs(FreeCAD.Units.Pascal) # predefined standard units 
+          getValueAs(2.45,1) # translation value and unit signature
+          getValueAs(FreeCAD.Units.Pascal) # predefined standard units
           getValueAs(Qantity('N/m^2')) # a quantity
           getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
         </UserDocu>
@@ -66,11 +66,11 @@ When an argument is passed, work like built-in round(x, ndigits).
       </Documentation>
     </Methode>
     <Attribute Name="Value" ReadOnly="false">
-			<Documentation>
-				<UserDocu>Numeric Value of the Quantity (in internal system mm,kg,s)</UserDocu>
-			</Documentation>
-			<Parameter Name="Value" Type="Float" />
-		</Attribute>
+            <Documentation>
+                <UserDocu>Numeric Value of the Quantity (in internal system mm,kg,s)</UserDocu>
+            </Documentation>
+            <Parameter Name="Value" Type="Float" />
+        </Attribute>
     <Attribute Name="Unit" ReadOnly="false">
       <Documentation>
         <UserDocu>Unit of the Quantity</UserDocu>

@@ -60,17 +60,17 @@ class GuiExport SoFCUnifiedSelection : public SoSeparator {
     SO_NODE_HEADER(Gui::SoFCUnifiedSelection);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCUnifiedSelection(void);
+    static void initClass();
+    static void finish();
+    SoFCUnifiedSelection();
     void applySettings();
 
     enum HighlightModes {
         AUTO, ON, OFF
     };
 
-    const char* getFileFormatName(void) const;
-    void write(SoWriteAction * action);
+    const char* getFileFormatName() const override;
+    void write(SoWriteAction * action) override;
 
     SoSFColor colorHighlight;
     SoSFColor colorSelection;
@@ -79,11 +79,11 @@ public:
     SoSFBool selectionRole;
     SoSFBool useNewSelection;
 
-    virtual void doAction(SoAction *action);
+    void doAction(SoAction *action) override;
     //virtual void GLRender(SoGLRenderAction * action);
 
-    virtual void handleEvent(SoHandleEventAction * action);
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
+    void handleEvent(SoHandleEventAction * action) override;
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
     //virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
@@ -92,7 +92,7 @@ public:
     friend class View3DInventorViewer;
 
 protected:
-    virtual ~SoFCUnifiedSelection();
+    ~SoFCUnifiedSelection() override;
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
     //virtual SbBool readInstance(SoInput *  in, unsigned short  flags);
 
@@ -135,8 +135,8 @@ class GuiExport SoFCPathAnnotation : public SoSeparator {
 
     SO_NODE_HEADER(Gui::SoFCPathAnnotation);
 public:
-    static void initClass(void);
-    static void finish(void);
+    static void initClass();
+    static void finish();
     SoFCPathAnnotation();
 
     void setPath(SoPath *);
@@ -144,14 +144,14 @@ public:
     void setDetail(SoDetail *d);
     SoDetail *getDetail() {return det;}
 
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void GLRender(SoGLRenderAction * action);
-    virtual void GLRenderInPath(SoGLRenderAction * action);
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void GLRender(SoGLRenderAction * action) override;
+    void GLRenderInPath(SoGLRenderAction * action) override;
 
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 protected:
-    virtual ~SoFCPathAnnotation();
+    ~SoFCPathAnnotation() override;
 
 protected:
     SoPath *path;
@@ -165,11 +165,11 @@ class GuiExport SoFCSeparator : public SoSeparator {
     SO_NODE_HEADER(Gui::SoFCSeparator);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCSeparator(bool trackCacheMode=true);
+    static void initClass();
+    static void finish();
+    explicit SoFCSeparator(bool trackCacheMode=true);
 
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
 
     static void setCacheMode(CacheEnabled mode) {
         CacheMode = mode;
@@ -189,22 +189,22 @@ class GuiExport SoFCSelectionRoot : public SoFCSeparator {
     SO_NODE_HEADER(Gui::SoFCSelectionRoot);
 
 public:
-    static void initClass(void);
-    static void finish(void);
-    SoFCSelectionRoot(bool trackCacheMode=false);
+    static void initClass();
+    static void finish();
+    explicit SoFCSelectionRoot(bool trackCacheMode=false);
 
-    virtual void GLRenderBelowPath(SoGLRenderAction * action);
-    virtual void GLRenderInPath(SoGLRenderAction * action);
+    void GLRenderBelowPath(SoGLRenderAction * action) override;
+    void GLRenderInPath(SoGLRenderAction * action) override;
 
-    virtual void doAction(SoAction *action);
-    virtual void pick(SoPickAction * action);
-    virtual void rayPick(SoRayPickAction * action);
-    virtual void handleEvent(SoHandleEventAction * action);
-    virtual void search(SoSearchAction * action);
-    virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-    virtual void getMatrix(SoGetMatrixAction * action);
-    virtual void callback(SoCallbackAction *action);
+    void doAction(SoAction *action) override;
+    void pick(SoPickAction * action) override;
+    void rayPick(SoRayPickAction * action) override;
+    void handleEvent(SoHandleEventAction * action) override;
+    void search(SoSearchAction * action) override;
+    void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+    void getBoundingBox(SoGetBoundingBoxAction * action) override;
+    void getMatrix(SoGetMatrixAction * action) override;
+    void callback(SoCallbackAction *action) override;
 
     template<class T>
     static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def = std::shared_ptr<T>()) {
@@ -326,7 +326,7 @@ public:
     static bool renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color);
 
 protected:
-    virtual ~SoFCSelectionRoot();
+    ~SoFCSelectionRoot() override;
 
     void renderPrivate(SoGLRenderAction *, bool inPath);
     bool _renderPrivate(SoGLRenderAction *, bool inPath);
@@ -385,7 +385,7 @@ class GuiExport SoHighlightElementAction : public SoAction
 
 public:
     SoHighlightElementAction ();
-    ~SoHighlightElementAction();
+    ~SoHighlightElementAction() override;
 
     void setHighlighted(SbBool);
     SbBool isHighlighted() const;
@@ -397,7 +397,7 @@ public:
     static void initClass();
 
 protected:
-    virtual void beginTraversal(SoNode *node);
+    void beginTraversal(SoNode *node) override;
 
 private:
     static void callDoAction(SoAction *action,SoNode *node);
@@ -418,8 +418,8 @@ class GuiExport SoSelectionElementAction : public SoAction
 public:
     enum Type {None, Append, Remove, All, Color, Hide, Show};
 
-    SoSelectionElementAction (Type=None, bool secondary = false);
-    ~SoSelectionElementAction();
+    explicit SoSelectionElementAction (Type=None, bool secondary = false);
+    ~SoSelectionElementAction() override;
 
     Type getType() const;
     void setType(Type type) {
@@ -449,7 +449,7 @@ public:
     static void initClass();
 
 protected:
-    virtual void beginTraversal(SoNode *node);
+    void beginTraversal(SoNode *node) override;
 
 private:
     static void callDoAction(SoAction *action,SoNode *node);
@@ -471,7 +471,7 @@ class GuiExport SoVRMLAction : public SoAction
 
 public:
     SoVRMLAction();
-    ~SoVRMLAction();
+    ~SoVRMLAction() override;
     void setOverrideMode(SbBool);
     SbBool isOverrideMode() const;
 

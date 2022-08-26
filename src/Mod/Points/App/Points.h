@@ -45,7 +45,7 @@ namespace Points
  */
 class PointsExport PointKernel : public Data::ComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     typedef float float_type;
@@ -56,12 +56,12 @@ public:
     PointKernel()
     {
     }
-    PointKernel(size_type size)
+    explicit PointKernel(size_type size)
     {
         resize(size);
     }
     PointKernel(const PointKernel&);
-    virtual ~PointKernel()
+    ~PointKernel() override
     {
     }
 
@@ -73,14 +73,14 @@ public:
      *  List of different subelement types
      *  its NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes() const;
-    virtual unsigned long countSubElements(const char* Type) const;
+    std::vector<const char*> getElementTypes() const override;
+    unsigned long countSubElements(const char* Type) const override;
     /// get the subelement by type and number
-    virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
+    Data::Segment* getSubElement(const char* Type, unsigned long) const override;
     //@}
 
-    inline void setTransform(const Base::Matrix4D& rclTrf){_Mtrx = rclTrf;}
-    inline Base::Matrix4D getTransform() const{return _Mtrx;}
+    inline void setTransform(const Base::Matrix4D& rclTrf) override{_Mtrx = rclTrf;}
+    inline Base::Matrix4D getTransform() const override{return _Mtrx;}
     std::vector<value_type>& getBasicPoints()
     { return this->_Points; }
     const std::vector<value_type>& getBasicPoints() const
@@ -90,20 +90,20 @@ public:
     void swap(std::vector<value_type>& pts)
     { this->_Points.swap(pts); }
 
-    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+    void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
-    virtual void transformGeometry(const Base::Matrix4D &rclMat);
-    virtual Base::BoundBox3d getBoundBox()const;
+        float Accuracy, uint16_t flags=0) const override;
+    void transformGeometry(const Base::Matrix4D &rclMat) override;
+    Base::BoundBox3d getBoundBox()const override;
 
     /** @name I/O */
     //@{
     // Implemented from Persistence
-    unsigned int getMemSize () const;
-    void Save (Base::Writer &writer) const;
-    void SaveDocFile (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-    void RestoreDocFile(Base::Reader &reader);
+    unsigned int getMemSize () const override;
+    void Save (Base::Writer &writer) const override;
+    void SaveDocFile (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+    void RestoreDocFile(Base::Reader &reader) override;
     void save(const char* file) const;
     void save(std::ostream&) const;
     void load(const char* file);
@@ -130,15 +130,15 @@ public:
 
     /// get the points
     inline const Base::Vector3d getPoint(const int idx) const {
-        return transformToOutside(_Points[idx]);
+        return transformPointToOutside(_Points[idx]);
     }
     /// set the points
     inline void setPoint(const int idx,const Base::Vector3d& point) {
-        _Points[idx] = transformToInside(point);
+        _Points[idx] = transformPointToInside(point);
     }
     /// insert the points
     inline void push_back(const Base::Vector3d& point) {
-        _Points.push_back(transformToInside(point));
+        _Points.push_back(transformPointToInside(point));
     }
 
     class PointsExport const_point_iterator

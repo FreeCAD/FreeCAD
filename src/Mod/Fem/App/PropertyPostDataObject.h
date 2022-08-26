@@ -39,11 +39,11 @@ namespace Fem
  */
 class FemExport PropertyPostDataObject : public App::Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPostDataObject();
-    ~PropertyPostDataObject();
+    ~PropertyPostDataObject() override;
 
     /** @name Getter/setter */
     //@{
@@ -52,7 +52,7 @@ public:
     /// set the dataset
     void setValue(const vtkSmartPointer<vtkDataObject>&);
     /// get the part shape
-    const vtkSmartPointer<vtkDataObject>& getValue(void) const;
+    const vtkSmartPointer<vtkDataObject>& getValue() const;
     /// check if we hold a dataset or a dataobject (which would mean a composite data structure)
     bool isDataSet();
     bool isComposite();
@@ -61,25 +61,25 @@ public:
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    void SaveDocFile (Base::Writer &writer) const override;
+    void RestoreDocFile(Base::Reader &reader) override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    App::Property *Copy() const override;
+    void Paste(const App::Property &from) override;
+    unsigned int getMemSize () const override;
     //@}
 
     /// Get valid paths for this property; used by auto completer
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+    void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
 
 private:
     static void scaleDataObject(vtkDataObject*, double s);

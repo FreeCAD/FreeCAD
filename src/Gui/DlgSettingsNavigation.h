@@ -44,18 +44,18 @@ class DlgSettingsNavigation : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsNavigation(QWidget* parent = nullptr);
-    ~DlgSettingsNavigation();
+    explicit DlgSettingsNavigation(QWidget* parent = nullptr);
+    ~DlgSettingsNavigation() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 private Q_SLOTS:
     void on_mouseButton_clicked();
     void onNewDocViewChanged(int);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void retranslate();
 
 private:
@@ -68,8 +68,8 @@ class CameraDialog : public QDialog
     Q_OBJECT
 
 public:
-    CameraDialog(QWidget* parent=nullptr);
-    ~CameraDialog();
+    explicit CameraDialog(QWidget* parent=nullptr);
+    ~CameraDialog() override;
     void setValues(double q0, double q1, double q2, double q3);
     void getValues(double& q0, double& q1, double& q2, double& q3) const;
 

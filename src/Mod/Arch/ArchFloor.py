@@ -31,7 +31,7 @@ IfcType.
 import FreeCAD,Draft,ArchCommands, DraftVecUtils, ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -139,7 +139,7 @@ class _CommandFloor:
             if not Draft.getType(obj) in ["Site", "Building"] :
                 floorobj.append(obj)
             else :
-                if link == True :
+                if link:
                     floorobj.append(obj)
                 else:
                     warning = True

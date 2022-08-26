@@ -72,7 +72,7 @@ public:
     std::string editSub;
     std::string editElement;
 
-    Private(ViewProviderDocumentObject* vp, const char *element="")
+    explicit Private(ViewProviderDocumentObject* vp, const char *element="")
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
         vpDoc = vp->getDocument();
@@ -100,7 +100,7 @@ public:
         px = QPixmap(w,w);
     }
 
-    ~Private() {
+    ~Private() override {
         try {
             vpParent->OnTopWhenSelected.setValue(onTopMode);
         }
@@ -109,7 +109,7 @@ public:
         }
     }
 
-    bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) {
+    bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) override {
         if(editDoc!=doc->getName() ||
            editObj!=obj->getNameInDocument() ||
            !boost::starts_with(subname,editSub))
@@ -206,7 +206,7 @@ public:
     }
 
     void removeAll() {
-        if(elements.size()) {
+        if(!elements.empty()) {
             hiddenSub.clear();
             ui->elementList->clear();
             elements.clear();
@@ -215,7 +215,8 @@ public:
     }
 
     void removeItems() {
-        for(auto item : ui->elementList->selectedItems()) {
+        const auto items = ui->elementList->selectedItems();
+        for(auto item : items) {
             std::string sub = qPrintable(item->data(Qt::UserRole+1).value<QString>());
             if(sub == hiddenSub)
                 hiddenSub.clear();
@@ -259,8 +260,8 @@ public:
                    editObj == msg.pObjectName &&
                    boost::starts_with(msg.pSubName,editSub))
                 {
-                    for(auto item : ui->elementList->findItems(
-                                QString::fromLatin1(msg.pSubName-editSub.size()), Qt::MatchExactly))
+                    const auto items = ui->elementList->findItems(QString::fromLatin1(msg.pSubName-editSub.size()), Qt::MatchExactly);
+                    for(auto item : items)
                         item->setSelected(msg.Type==SelectionChanges::AddSelection);
                 }
             }
@@ -285,7 +286,8 @@ public:
             }
             break;
         }
-        for(auto item : ui->elementList->selectedItems()) {
+        const auto items = ui->elementList->selectedItems();
+        for(auto item : items) {
             std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
             if(ViewProvider::hasHiddenMarker(name.c_str()))
                 continue;
@@ -384,7 +386,7 @@ void ElementColors::on_hideSelection_clicked() {
         if(d->editObj!=sel.getFeatName())
             continue;
         const auto &subs = sel.getSubNames();
-        if(subs.size()) {
+        if(!subs.empty()) {
             for(auto &sub : subs) {
                 if(boost::starts_with(sub,d->editSub)) {
                     auto name = Data::ComplexGeoData::noElementName(sub.c_str()+d->editSub.size());
@@ -420,7 +422,7 @@ void ElementColors::on_addSelection_clicked()
             break;
         }
     }
-    if(d->items.size()) {
+    if(!d->items.empty()) {
         auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, this);
         cd.setOption(QColorDialog::ShowAlphaChannel);
@@ -468,7 +470,7 @@ void ElementColors::changeEvent(QEvent *e)
 void ElementColors::leaveEvent(QEvent *e) {
     QWidget::leaveEvent(e);
     Selection().rmvPreselect();
-    if(d->hiddenSub.size()) {
+    if(!d->hiddenSub.empty()) {
         d->vp->partialRender({d->hiddenSub},false);
         d->hiddenSub.clear();
     }
@@ -476,7 +478,7 @@ void ElementColors::leaveEvent(QEvent *e) {
 
 void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
     std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
-    if(d->hiddenSub.size()) {
+    if(!d->hiddenSub.empty()) {
         d->vp->partialRender({d->hiddenSub},false);
         d->hiddenSub.clear();
     }

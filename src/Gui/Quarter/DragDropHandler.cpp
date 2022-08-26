@@ -119,7 +119,7 @@ DragDropHandlerP::dragEnterEvent(QDragEnterEvent * event)
       return;
 
   if (mimedata->hasUrls()) {
-    QFileInfo fileinfo(mimedata->urls().takeFirst().path());
+    QFileInfo fileinfo(mimedata->urls().constFirst().path());
     QString suffix = fileinfo.suffix().toLower();
     if (!this->suffixes.contains(suffix)) {
         return;
@@ -139,7 +139,7 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
   QByteArray bytes;
 
   if (mimedata->hasUrls()) {
-    QUrl url = mimedata->urls().takeFirst();
+    QUrl url = mimedata->urls().constFirst();
     if (url.scheme().isEmpty() || url.scheme().toLower() == QString("file") ) {
       // attempt to open file
       if (!in.openFile(url.toLocalFile().toLatin1().constData()))
@@ -155,7 +155,7 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
 
   // attempt to import it
   root = SoDB::readAll(&in);
-  if (root == nullptr)
+  if (!root)
       return;
 
   // set new scenegraph

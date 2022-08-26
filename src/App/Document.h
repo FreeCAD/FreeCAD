@@ -183,7 +183,7 @@ public:
     /// Save the Document under a new Name
     //void saveAs (const char* Name);
     /// Save the document to the file in Property Path
-    bool save (void);
+    bool save ();
     bool saveAs(const char* file);
     bool saveCopy(const char* file) const;
     /// Restore the document from the file in Property Path
@@ -230,11 +230,11 @@ public:
     const char* getFileName() const;
     //@}
 
-    virtual void Save (Base::Writer &writer) const override;
-    virtual void Restore(Base::XMLReader &reader) override;
+    void Save (Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
 
     /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
-    unsigned int getMemSize (void) const override;
+    unsigned int getMemSize () const override;
 
     /** @name Object handling  */
     //@{
@@ -289,7 +289,7 @@ public:
      */
     DocumentObject* moveObject(DocumentObject* obj, bool recursive=false);
     /// Returns the active Object of this document
-    DocumentObject *getActiveObject(void) const;
+    DocumentObject *getActiveObject() const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
     /// Returns a Object of this document by its id
@@ -314,7 +314,7 @@ public:
     template<typename T> inline std::vector<T*> getObjectsOfType() const;
     int countObjectsOfType(const Base::Type& typeId) const;
     /// get the number of objects in the document
-    int countObjects(void) const;
+    int countObjects() const;
     //@}
 
     /** @name methods for modification and state handling
@@ -323,11 +323,11 @@ public:
     /// Remove all modifications. After this call The document becomes Valid again.
     void purgeTouched();
     /// check if there is any touched object in this document
-    bool isTouched(void) const;
+    bool isTouched() const;
     /// check if there is any object must execute in this document
-    bool mustExecute(void) const;
+    bool mustExecute() const;
     /// returns all touched objects
-    std::vector<App::DocumentObject *> getTouched(void) const;
+    std::vector<App::DocumentObject *> getTouched() const;
     /// set the document to be closable, this is on by default.
     void setClosable(bool);
     /// check whether the document can be closed
@@ -361,7 +361,7 @@ public:
      * transactions, meaning that there are other transactions before the given
      * ID. The Gui component shall ask user if they want to undo multiple steps.
      * And if the user agrees, call undo(id) to unroll all transaction before
-     * and including the the one with the give ID. Same applies for redo.
+     * and including the one with the given ID. Same applies for redo.
      *
      * The new transaction ID describe here is fully backward compatible.
      * Calling the APIs with a default id=0 gives the original behavior.
@@ -370,7 +370,7 @@ public:
     /// switch the level of Undo/Redo
     void setUndoMode(int iMode);
     /// switch the level of Undo/Redo
-    int getUndoMode(void) const;
+    int getUndoMode() const;
     /// switch the transaction mode
     void setTransactionMode(int iMode);
     /** Open a new command Undo/Redo, an UTF-8 name can be specified
@@ -398,11 +398,11 @@ public:
     /// Set the Undo limit in Byte!
     void setUndoLimit(unsigned int UndoMemSize=0);
     /// Returns the actual memory consumption of the Undo redo stuff.
-    unsigned int getUndoMemSize (void) const;
+    unsigned int getUndoMemSize () const;
     /// Set the Undo limit as stack size
     void setMaxUndoStackSize(unsigned int UndoMaxStackSize=20);
     /// Set the Undo limit as stack size
-    unsigned int getMaxUndoStackSize(void)const;
+    unsigned int getMaxUndoStackSize()const;
     /// Remove all stored Undos and Redos
     void clearUndos();
     /// Returns the number of stored Undos. If greater than 0 Undo will be effective.
@@ -428,7 +428,7 @@ public:
     /// write GraphViz file
     void writeDependencyGraphViz(std::ostream &out);
     /// checks if the graph is directed and has no cycles
-    bool checkOnCycle(void);
+    bool checkOnCycle();
     /// get a list of all objects linking to the given object
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
 
@@ -491,9 +491,9 @@ public:
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
-    virtual std::string getFullName() const override;
+    std::string getFullName() const override;
 
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
@@ -506,11 +506,11 @@ public:
     friend class TransactionDocumentObject;
 
     /// Destruction
-    virtual ~Document();
+    ~Document() override;
 
 protected:
     /// Construction
-    Document(const char *name = "");
+    explicit Document(const char *name = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

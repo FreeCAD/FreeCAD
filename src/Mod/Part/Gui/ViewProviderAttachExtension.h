@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERATTACHEXTENSION_H
 #define GUI_VIEWPROVIDERATTACHEXTENSION_H
 
-#include <App/Extension.h>
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 namespace PartGui
 {
@@ -37,13 +36,13 @@ class PartGuiExport ViewProviderAttachExtension : public Gui::ViewProviderExtens
 
 public:
     /// Constructor
-    ViewProviderAttachExtension(void);
-    virtual ~ViewProviderAttachExtension() = default;
+    ViewProviderAttachExtension();
+    ~ViewProviderAttachExtension() override = default;
 
-    virtual QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;
+    QIcon extensionMergeColorfullOverlayIcons (const QIcon & orig) const override;
 
-    virtual void extensionUpdateData(const App::Property*) override;
-    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
+    void extensionUpdateData(const App::Property*) override;
+    void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
 private:
     void showAttachmentEditor();

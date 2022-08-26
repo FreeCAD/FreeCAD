@@ -91,7 +91,7 @@ void MeshGrid::Rebuild (int iCtGridPerAxis)
 
 void MeshGrid::InitGrid ()
 {
-  assert(_pclMesh != nullptr);
+  assert(_pclMesh);
 
   unsigned long i, j;
 
@@ -646,7 +646,7 @@ unsigned long MeshGrid::GetElements (unsigned long ulX, unsigned long ulY, unsig
                                      std::set<ElementIndex> &raclInd) const
 {
   const std::set<ElementIndex> &rclSet = _aulGrid[ulX][ulY][ulZ];
-  if (rclSet.size() > 0)
+  if (!rclSet.empty())
   {
     raclInd.insert(rclSet.begin(), rclSet.end());
     return rclSet.size();
@@ -730,7 +730,7 @@ void MeshFacetGrid::Validate (const MeshKernel &rclMesh)
 
 void MeshFacetGrid::Validate ()
 {
-  if (_pclMesh == nullptr)
+  if (!_pclMesh)
     return;
 
   if (_pclMesh->CountFacets() != _ulCtElements)
@@ -1072,7 +1072,7 @@ void MeshPointGrid::Validate (const MeshKernel &rclMesh)
 
 void MeshPointGrid::Validate ()
 {
-  if (_pclMesh == nullptr)
+  if (!_pclMesh)
     return;
 
   if (_pclMesh->CountPoints() != _ulCtElements)

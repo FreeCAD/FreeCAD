@@ -360,7 +360,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd,
         }
     }
 
-    if (aclEdges.size() == 0)
+    if (aclEdges.empty())
         return; // no borders found (=> solid)
 
     // search for edges in the unsorted list
@@ -373,7 +373,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd,
     clBorder.push_back(ulFirst);
     clBorder.push_back(ulLast);
 
-    while (aclEdges.size() > 0) {
+    while (!aclEdges.empty()) {
         // get adjacent edge
         std::list<std::pair<PointIndex, PointIndex> >::iterator pEI;
         for (pEI = aclEdges.begin(); pEI != aclEdges.end(); ++pEI) {
@@ -417,7 +417,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<FacetIndex> &raulInd,
             rclBorders.emplace_back(clBorder.begin(), clBorder.end());
             clBorder.clear();
 
-            if (aclEdges.size() > 0) {
+            if (!aclEdges.empty()) {
                 // start new boundary
                 ulFirst = aclEdges.begin()->first;
                 ulLast  = aclEdges.begin()->second;

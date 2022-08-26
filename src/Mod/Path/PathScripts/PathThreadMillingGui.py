@@ -140,32 +140,32 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def _isThreadCustom(self):
         return self.form.threadType.currentData() in [
-            PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomInternal,
-            PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomExternal,
+            PathThreadMilling.ThreadTypeCustomInternal,
+            PathThreadMilling.ThreadTypeCustomExternal,
         ]
 
     def _isThreadImperial(self):
         return (
             self.form.threadType.currentData()
-            in PathThreadMilling.ObjectThreadMilling.ThreadTypesImperial
+            in PathThreadMilling.ThreadTypesImperial
         )
 
     def _isThreadMetric(self):
         return (
             self.form.threadType.currentData()
-            in PathThreadMilling.ObjectThreadMilling.ThreadTypesMetric
+            in PathThreadMilling.ThreadTypesMetric
         )
 
     def _isThreadInternal(self):
         return (
             self.form.threadType.currentData()
-            in PathThreadMilling.ObjectThreadMilling.ThreadTypesInternal
+            in PathThreadMilling.ThreadTypesInternal
         )
 
     def _isThreadExternal(self):
         return (
             self.form.threadType.currentData()
-            in PathThreadMilling.ObjectThreadMilling.ThreadTypesExternal
+            in PathThreadMilling.ThreadTypesExternal
         )
 
     def _updateFromThreadType(self):
@@ -195,7 +195,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 self.pitch.updateSpinBox(0)
             fillThreads(
                 self.form,
-                PathThreadMilling.ObjectThreadMilling.ThreadTypeData[
+                PathThreadMilling.ThreadTypeData[
                     self.form.threadType.currentData()
                 ],
                 self.obj.ThreadName,

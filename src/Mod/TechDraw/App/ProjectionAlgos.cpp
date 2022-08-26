@@ -108,7 +108,7 @@ static const TopoDS_Shape& build3dCurves(const TopoDS_Shape &shape)
   return shape;
 }
 
-void ProjectionAlgos::execute(void)
+void ProjectionAlgos::execute()
 {
     Handle( HLRBRep_Algo ) brep_hlr = new HLRBRep_Algo;
     brep_hlr->Add(Input);

@@ -74,7 +74,7 @@ class AppExport ColorModel
 {
 public:
     ColorModel() = default;
-    ColorModel (std::size_t usCt) {
+    explicit ColorModel (std::size_t usCt) {
         colors.resize(usCt);
     }
     ColorModel(const ColorModel&) = default;
@@ -442,7 +442,7 @@ class AppExport ColorLegend
 public:
     ColorLegend ();
     ColorLegend (const ColorLegend &rclCL);
-    virtual ~ColorLegend () {}
+    virtual ~ColorLegend () = default;
 
     ColorLegend& operator = (const ColorLegend &rclCL);
     bool operator == (const ColorLegend &rclCL) const;

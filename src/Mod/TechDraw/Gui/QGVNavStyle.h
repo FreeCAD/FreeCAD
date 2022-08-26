@@ -22,11 +22,12 @@
 
 
 #ifndef TECHDRAW_NAVIGATIONSTYLE_H
-#include <QPoint>
 #define TECHDRAW_NAVIGATIONSTYLE_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QCursor>
+#include <QPoint>
 
 class QEvent;
 class QFocusEvent;
@@ -61,8 +62,8 @@ private:
 class TechDrawGuiExport QGVNavStyle : public Base::BaseClass
 {
 public:
-    QGVNavStyle(QGVPage* qgvp);
-    virtual ~QGVNavStyle();
+    explicit QGVNavStyle(QGVPage* qgvp);
+    ~QGVNavStyle() override;
 
     void setViewer(QGVPage* qgvp) { m_viewer = qgvp;} ;
     QGVPage* getViewer() { return m_viewer;};
@@ -90,7 +91,7 @@ public:
     virtual void stopPan();
 
     virtual void startClick(Qt::MouseButton b);
-    virtual void stopClick(void);
+    virtual void stopClick();
 
     virtual void placeBalloon(QPoint p);
 

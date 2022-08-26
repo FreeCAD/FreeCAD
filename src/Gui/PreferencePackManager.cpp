@@ -243,7 +243,7 @@ std::string findUnusedName(const std::string &basename, ParameterGrp::handle par
 
 bool PreferencePackManager::isVisible(const std::string& addonName, const std::string& preferencePackName) const
 {
-    if (addonName == "" || preferencePackName == "")
+    if (addonName.empty() || preferencePackName.empty())
         return true;
 
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General/HiddenPreferencePacks");
@@ -259,7 +259,7 @@ bool PreferencePackManager::isVisible(const std::string& addonName, const std::s
 
 void PreferencePackManager::toggleVisibility(const std::string& addonName, const std::string& preferencePackName)
 {
-    if (preferencePackName == "")
+    if (preferencePackName.empty())
         return;
     auto pref = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General/HiddenPreferencePacks");
     auto hiddenPacks = pref->GetGroups();
@@ -282,7 +282,7 @@ void PreferencePackManager::toggleVisibility(const std::string& addonName, const
 
 void Gui::PreferencePackManager::deleteUserPack(const std::string& name)
 {
-    if (name == "")
+    if (name.empty())
         return;
     auto savedPreferencePacksDirectory = fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
     auto savedPath = savedPreferencePacksDirectory / name;
@@ -386,14 +386,14 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
         metadata = std::make_unique<App::Metadata>();
         metadata->setName("User-Saved PreferencePacks");
         metadata->setDescription("Generated automatically -- edits may be lost when saving new preferencePacks");
-        metadata->setVersion(1);
+        metadata->setVersion(static_cast<App::Meta::Version>(1));
         metadata->addMaintainer(App::Meta::Contact("No Maintainer", "email@freecadweb.org"));
         metadata->addLicense(App::Meta::License("(Unspecified)", "(Unspecified)"));
         metadata->addUrl(App::Meta::Url("https://github.com/FreeCAD/FreeCAD", App::Meta::UrlType::repository));
     }
     App::Metadata newPreferencePackMetadata;
     newPreferencePackMetadata.setName(name);
-    newPreferencePackMetadata.setVersion(1);
+    newPreferencePackMetadata.setVersion(static_cast<App::Meta::Version>(1));
 
     metadata->addContentItem("preferencepack", newPreferencePackMetadata);
     metadata->write(savedPreferencePacksDirectory / "package.xml");

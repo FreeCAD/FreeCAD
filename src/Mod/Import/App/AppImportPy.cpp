@@ -93,7 +93,7 @@ public:
     std::map<Part::Feature*, std::vector<App::Color> > partColors;
 
 private:
-    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         partColors[part] = colors;
     }
 };
@@ -127,7 +127,7 @@ public:
        initialize("This module is the Import module."); // register with Python       
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object importer(const Py::Tuple& args, const Py::Dict &kwds)
@@ -314,9 +314,8 @@ private:
             }
 
             if (legacy == Py_None) {
-                auto hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Import");
-                legacy = hGrp->GetBool("ExportLegacy",false) ? Py_True : Py_False;
+                Part::ImportExportSettings settings;
+                legacy = settings.getExportLegacy() ? Py_True : Py_False;
             }
 
             Import::ExportOCAF2 ocaf(hDoc);
@@ -478,7 +477,7 @@ private:
             if (usePolyline == Py_True) {
                polyOverride = true; 
             }
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
 
@@ -527,7 +526,7 @@ private:
             if (usePolyline == Py_True) {
                polyOverride = true; 
             }
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
 
@@ -587,7 +586,7 @@ private:
                polyOverride = true; 
             }
 
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
 
@@ -641,7 +640,7 @@ private:
                polyOverride = true; 
             }
 
-            if (optionSource != nullptr) {
+            if (optionSource) {
                 defaultOptions = optionSource;
             }
             

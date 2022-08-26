@@ -41,7 +41,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string BezierSurfacePy::representation(void) const
+std::string BezierSurfacePy::representation() const
 {
     return "<BezierSurface object>";
 }
@@ -178,7 +178,7 @@ PyObject* BezierSurfacePy::insertPoleColAfter(PyObject *args)
 
         Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
             (getGeometryPtr()->handle());
-        if (obj2 == nullptr) {
+        if (!obj2) {
             surf->InsertPoleColAfter(vindex, poles);
         }
         else {
@@ -218,7 +218,7 @@ PyObject* BezierSurfacePy::insertPoleRowAfter(PyObject *args)
 
         Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
             (getGeometryPtr()->handle());
-        if (obj2 == nullptr) {
+        if (!obj2) {
             surf->InsertPoleRowAfter(uindex, poles);
         }
         else {
@@ -258,7 +258,7 @@ PyObject* BezierSurfacePy::insertPoleColBefore(PyObject *args)
 
         Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
             (getGeometryPtr()->handle());
-        if (obj2 == nullptr) {
+        if (!obj2) {
             surf->InsertPoleColBefore(vindex, poles);
         }
         else {
@@ -298,7 +298,7 @@ PyObject* BezierSurfacePy::insertPoleRowBefore(PyObject *args)
 
         Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
             (getGeometryPtr()->handle());
-        if (obj2 == nullptr) {
+        if (!obj2) {
             surf->InsertPoleRowBefore(uindex, poles);
         }
         else {
@@ -412,7 +412,7 @@ PyObject* BezierSurfacePy::setPoleCol(PyObject *args)
 
         Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
             (getGeometryPtr()->handle());
-        if (obj2 == nullptr) {
+        if (!obj2) {
             surf->SetPoleCol(vindex, poles);
         }
         else {
@@ -452,7 +452,7 @@ PyObject* BezierSurfacePy::setPoleRow(PyObject *args)
 
         Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
             (getGeometryPtr()->handle());
-        if (obj2 == nullptr) {
+        if (!obj2) {
             surf->SetPoleRow(uindex, poles);
         }
         else {
@@ -669,35 +669,35 @@ PyObject* BezierSurfacePy::exchangeUV(PyObject *args)
     }
 }
 
-Py::Long BezierSurfacePy::getUDegree(void) const
+Py::Long BezierSurfacePy::getUDegree() const
 {
     Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->UDegree()); 
 }
 
-Py::Long BezierSurfacePy::getVDegree(void) const
+Py::Long BezierSurfacePy::getVDegree() const
 {
     Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->VDegree()); 
 }
 
-Py::Long BezierSurfacePy::getMaxDegree(void) const
+Py::Long BezierSurfacePy::getMaxDegree() const
 {
     Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->MaxDegree()); 
 }
 
-Py::Long BezierSurfacePy::getNbUPoles(void) const
+Py::Long BezierSurfacePy::getNbUPoles() const
 {
     Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
         (getGeometryPtr()->handle());
     return Py::Long(surf->NbUPoles()); 
 }
 
-Py::Long BezierSurfacePy::getNbVPoles(void) const
+Py::Long BezierSurfacePy::getNbVPoles() const
 {
     Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast
         (getGeometryPtr()->handle());

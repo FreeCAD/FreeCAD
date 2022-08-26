@@ -9,7 +9,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
@@ -20,19 +19,21 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/DlgPreferencesImp.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
 #include "AttacherTexts.h"
 #include "PropertyEnumAttacherItem.h"
+#include "DlgSettings3DViewPartImp.h"
+#include "DlgSettingsGeneral.h"
+#include "DlgSettingsMeasure.h"
+#include "DlgSettingsObjectColor.h"
+#include "TaskDimension.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
 #include "SoFCShapeObject.h"
-#include "TaskDimension.h"
-#include "DlgSettings3DViewPartImp.h"
-#include "DlgSettingsGeneral.h"
-#include "DlgSettingsObjectColor.h"
 #include "ViewProvider.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderAttachExtension.h"
@@ -64,9 +65,9 @@
 
 
 // use a different name to CreateCommand()
-void CreatePartCommands(void);
-void CreateSimplePartCommands(void);
-void CreateParamPartCommands(void);
+void CreatePartCommands();
+void CreateSimplePartCommands();
+void CreateParamPartCommands();
 
 void loadPartResource()
 {
@@ -84,7 +85,7 @@ public:
         initialize("This module is the PartGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };
@@ -207,9 +208,11 @@ PyMOD_INIT_FUNC(PartGui)
     }
 
     // register preferences pages
+    Gui::Dialog::DlgPreferencesImp::setGroupData("Part/Part Design", "Part design", QObject::tr("Part and Part Design workbench"));
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsMeasure>(QT_TRANSLATE_NOOP("QObject", "Part/Part Design"));
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>(QT_TRANSLATE_NOOP("QObject", "Import-Export"));
     Gui::ViewProviderBuilder::add(

@@ -39,11 +39,9 @@ MeasureDistance::MeasureDistance()
 
 }
 
-MeasureDistance::~MeasureDistance()
-{
-}
+MeasureDistance::~MeasureDistance() = default;
 
-DocumentObjectExecReturn *MeasureDistance::execute(void)
+DocumentObjectExecReturn *MeasureDistance::execute()
 {
     Distance.setValue(Base::Distance(P1.getValue(), P2.getValue()));
     return DocumentObject::StdReturn;

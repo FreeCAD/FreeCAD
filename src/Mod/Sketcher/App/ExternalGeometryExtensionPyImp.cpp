@@ -35,7 +35,7 @@
 using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ExternalGeometryExtensionPy::representation(void) const
+std::string ExternalGeometryExtensionPy::representation() const
 {
     std::stringstream str;
 
@@ -45,7 +45,7 @@ std::string ExternalGeometryExtensionPy::representation(void) const
 
     str << "<ExternalGeometryExtension (";
 
-    if(getExternalGeometryExtensionPtr()->getName().size()>0)
+    if(!getExternalGeometryExtensionPtr()->getName().empty())
         str << "\'" << getExternalGeometryExtensionPtr()->getName() << "\', ";
 
     str << "\"" << ref;
@@ -140,7 +140,7 @@ PyObject* ExternalGeometryExtensionPy::setFlag(PyObject *args)
     Py_Return;
 }
 
-Py::String ExternalGeometryExtensionPy::getRef(void) const
+Py::String ExternalGeometryExtensionPy::getRef() const
 {
     return Py::String(this->getExternalGeometryExtensionPtr()->getRef());
 }

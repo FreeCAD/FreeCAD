@@ -44,9 +44,7 @@ StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALI
 }
 
 
-StdInputStream::~StdInputStream()
-{
-}
+StdInputStream::~StdInputStream() = default;
 
 
 // ---------------------------------------------------------------------------
@@ -135,9 +133,7 @@ StdInputSource::StdInputSource ( std::istream& Stream, const char* filePath, XER
 }
 
 
-StdInputSource::~StdInputSource()
-{
-}
+StdInputSource::~StdInputSource() = default;
 
 
 // ---------------------------------------------------------------------------

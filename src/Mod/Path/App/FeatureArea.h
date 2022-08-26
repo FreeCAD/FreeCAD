@@ -36,23 +36,23 @@ namespace Path
 
 class PathExport FeatureArea : public Part::Feature
 {
-    PROPERTY_HEADER(Path::FeatureArea);
+    PROPERTY_HEADER_WITH_OVERRIDE(Path::FeatureArea);
 
 public:
     /// Constructor
-    FeatureArea(void);
-    virtual ~FeatureArea();
+    FeatureArea();
+    ~FeatureArea() override;
 
     Area &getArea();
     const std::vector<TopoDS_Shape> &getShapes();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PathGui::ViewProviderArea";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
+    PyObject *getPyObject() override;
 
     App::PropertyLinkList   Sources;
     Part::PropertyPartShape WorkPlane;
@@ -74,18 +74,18 @@ typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;
 
 class PathExport FeatureAreaView : public Part::Feature
 {
-    PROPERTY_HEADER(Path::FeatureAreaView);
+    PROPERTY_HEADER_WITH_OVERRIDE(Path::FeatureAreaView);
 
 public:
     /// Constructor
-    FeatureAreaView(void);
+    FeatureAreaView();
 
     std::list<TopoDS_Shape> getShapes();
 
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PathGui::ViewProviderAreaView";
     }
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     App::PropertyLink       Source;
     App::PropertyInteger    SectionIndex;

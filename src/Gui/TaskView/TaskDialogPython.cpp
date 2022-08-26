@@ -128,7 +128,7 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    return Py::Boolean(dlg!=nullptr);
+    return Py::Boolean(dlg != nullptr);
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)
@@ -478,7 +478,7 @@ void TaskDialogPython::helpRequested()
     }
 }
 
-QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons(void) const
+QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
 {
     Base::PyGILStateLocker lock;
     try {
@@ -518,7 +518,7 @@ void TaskDialogPython::modifyStandardButtons(QDialogButtonBox *buttonBox)
     }
 }
 
-bool TaskDialogPython::isAllowedAlterDocument(void) const
+bool TaskDialogPython::isAllowedAlterDocument() const
 {
     Base::PyGILStateLocker lock;
     try {
@@ -537,7 +537,7 @@ bool TaskDialogPython::isAllowedAlterDocument(void) const
     return TaskDialog::isAllowedAlterDocument();
 }
 
-bool TaskDialogPython::isAllowedAlterView(void) const
+bool TaskDialogPython::isAllowedAlterView() const
 {
     Base::PyGILStateLocker lock;
     try {
@@ -556,7 +556,7 @@ bool TaskDialogPython::isAllowedAlterView(void) const
     return TaskDialog::isAllowedAlterView();
 }
 
-bool TaskDialogPython::isAllowedAlterSelection(void) const
+bool TaskDialogPython::isAllowedAlterSelection() const
 {
     Base::PyGILStateLocker lock;
     try {

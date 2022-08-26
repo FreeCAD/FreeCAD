@@ -36,7 +36,7 @@ class MeshKernel;
 class MeshExport MeshInfo
 {
 public:
-  MeshInfo (const MeshKernel &rclM);
+  explicit MeshInfo (const MeshKernel &rclM);
   virtual ~MeshInfo () {}
   /**
    * Writes general information about the mesh structure into the stream.

@@ -50,7 +50,7 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string TopoShapeShellPy::representation(void) const
+std::string TopoShapeShellPy::representation() const
 {
     // Note: As the return type is 'const char*' we cannot create a temporary
     // char array neither on the stack because the array would be freed when
@@ -199,7 +199,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
     }
 }
 
-Py::Object TopoShapeShellPy::getMass(void) const
+Py::Object TopoShapeShellPy::getMass() const
 {
     GProp_GProps props;
     BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
@@ -207,7 +207,7 @@ Py::Object TopoShapeShellPy::getMass(void) const
     return Py::Float(c);
 }
 
-Py::Object TopoShapeShellPy::getCenterOfMass(void) const
+Py::Object TopoShapeShellPy::getCenterOfMass() const
 {
     GProp_GProps props;
     BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
@@ -215,7 +215,7 @@ Py::Object TopoShapeShellPy::getCenterOfMass(void) const
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
 
-Py::Object TopoShapeShellPy::getMatrixOfInertia(void) const
+Py::Object TopoShapeShellPy::getMatrixOfInertia() const
 {
     GProp_GProps props;
     BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
@@ -229,7 +229,7 @@ Py::Object TopoShapeShellPy::getMatrixOfInertia(void) const
     return Py::Matrix(mat);
 }
 
-Py::Object TopoShapeShellPy::getStaticMoments(void) const
+Py::Object TopoShapeShellPy::getStaticMoments() const
 {
     GProp_GProps props;
     BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
@@ -242,7 +242,7 @@ Py::Object TopoShapeShellPy::getStaticMoments(void) const
     return tuple;
 }
 
-Py::Dict TopoShapeShellPy::getPrincipalProperties(void) const
+Py::Dict TopoShapeShellPy::getPrincipalProperties() const
 {
     GProp_GProps props;
     BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);

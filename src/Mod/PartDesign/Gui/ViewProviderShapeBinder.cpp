@@ -144,7 +144,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
         Gui::Application::Instance->getViewProvider(obj));
-    if (svp == nullptr)
+    if (!svp)
         return;
 
     if (on) {
@@ -160,7 +160,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
             std::vector<App::Color> fcolors = originalFaceColors;
             fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
 
-            for (std::string e : subs) {
+            for (const std::string& e : subs) {
                 // Note: stoi may throw, but it strictly shouldn't happen
                 if (e.compare(0, 4, "Edge") == 0) {
                     int idx = std::stoi(e.substr(4)) - 1;
@@ -280,7 +280,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, A
         values[owner ? owner : obj] = elements;
     else {
         std::vector<std::string> subs;
-        if (elements.size()) {
+        if (!elements.empty()) {
             subs.reserve(elements.size());
             for (auto& element : elements)
                 subs.push_back(sub + element);
@@ -330,7 +330,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
             if (!obj || !obj->getNameInDocument())
                 continue;
             const auto& subs = link.getSubValues();
-            if (subs.size())
+            if (!subs.empty())
                 Gui::Selection().addSelections(obj->getDocument()->getName(),
                     obj->getNameInDocument(), subs);
             else
@@ -355,7 +355,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     bool relative = self->Relative.getValue();
     App::DocumentObject* parent = nullptr;
     std::string parentSub;
-    if (relative && self->getParents().size()) {
+    if (relative && !self->getParents().empty()) {
         const auto& sel = Gui::Selection().getSelection("", Gui::ResolveMode::NoResolve);
         if (sel.size() != 1 || !sel[0].pObject ||
             sel[0].pObject->getSubObject(sel[0].SubName) != self)

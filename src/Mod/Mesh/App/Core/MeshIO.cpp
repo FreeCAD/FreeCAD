@@ -29,6 +29,7 @@
 #include "MeshIO.h"
 #include "Algorithm.h"
 #include "Builder.h"
+#include "Degeneration.h"
 
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
@@ -262,8 +263,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     boost::algorithm::to_upper(szBuf);
 
     try {
-        if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
-            (strstr(szBuf, "VERTEX") == nullptr) && (strstr(szBuf, "ENDFACET") == nullptr) && (strstr(szBuf, "ENDLOOP") == nullptr)) {
+        if (!strstr(szBuf, "SOLID") && !strstr(szBuf, "FACET") && !strstr(szBuf, "NORMAL") &&
+            !strstr(szBuf, "VERTEX") && !strstr(szBuf, "ENDFACET") && !strstr(szBuf, "ENDLOOP")) {
             // probably binary STL
             buf->pubseekoff(0, std::ios::beg, std::ios::in);
             return LoadBinarySTL(rstrIn);
@@ -1485,145 +1486,45 @@ void MeshInput::LoadXML (Base::XMLReader &reader)
 }
 
 /** Loads an OpenInventor file. */
-bool MeshInput::LoadInventor (std::istream &rstrIn)
+bool MeshInput::LoadInventor (std::istream &inp)
 {
-    if (!rstrIn || rstrIn.bad())
+    Base::InventorLoader loader(inp);
+    if (!loader.read())
         return false;
 
-    boost::regex rx_p("\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s*[\\,\\]]\\s*");
-    boost::regex rx_f("\\s*([0-9]+)\\s*\\,\\s*"
-                      "\\s+([0-9]+)\\s*\\,\\s*"
-                      "\\s+([0-9]+)\\s*\\,\\s*");
-    boost::cmatch what;
-
-    // get file size and estimate the number of lines
-    std::streamoff ulSize = 0;
-    std::streambuf* buf = rstrIn.rdbuf();
-    if (!buf)
+    if (!loader.isValid())
         return false;
 
-    std::streamoff ulCurr;
-    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
-    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
-    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
+    const auto& points = loader.getPoints();
+    const auto& faces = loader.getFaces();
 
-    std::string line;
-    MeshGeomFacet clFacet;
-    std::vector<MeshGeomFacet> clFacetAry;
-    std::vector<Base::Vector3f> aclPoints;
+    MeshPointArray meshPoints;
+    meshPoints.reserve(points.size());
+    std::transform(points.begin(), points.end(), std::back_inserter(meshPoints),
+                   [](const Base::Vector3f& v) {
+        return MeshPoint(v);
+    });
 
-    // We have approx. 30 characters per line
-    Base::SequencerLauncher seq("Loading...", ulSize/30);
-    bool flag = false;
-    bool normals = false;
-    bool points = false;
-    bool facets = false;
-    while (std::getline(rstrIn, line) && !facets) {
-        boost::algorithm::to_upper(line);
+    MeshFacetArray meshFacets;
+    meshFacets.reserve(faces.size());
+    std::transform(faces.begin(), faces.end(), std::back_inserter(meshFacets),
+                   [](const Base::InventorLoader::Face& f) {
+        return MeshFacet(f.p1, f.p2, f.p3);
+    });
 
-        // read the normals if they are defined
-        if (!normals && line.find("NORMAL {") != std::string::npos) {
-            float fX, fY, fZ;
-            normals = true; // okay, the normals are set by an SoNormal node
-            flag = true;
-            // Get the next line and check for the normal field which might begin
-            // with the first vector already i.e. it's of the form 'vector [ 0.0 0.0 1.0,'
-            // This is a special case to support also file formats directly written by
-            // Inventor 2.1 classes.
-            std::getline(rstrIn, line);
-            boost::algorithm::to_upper(line);
-            std::string::size_type pos = line.find("VECTOR [");
-            if (pos != std::string::npos)
-                line = line.substr(pos+8); // 8 = length of 'VECTOR ['
-            do {
-                if (boost::regex_match(line.c_str(), what, rx_p)) {
-                    fX = (float)std::atof(what[1].first);
-                    fY = (float)std::atof(what[4].first);
-                    fZ = (float)std::atof(what[7].first);
-                    clFacet.SetNormal(Base::Vector3f(fX, fY, fZ));
-                    clFacetAry.push_back(clFacet);
-                    seq.next(true); // allow to cancel
-                } else
-                    flag = false;
-            } while (std::getline(rstrIn, line) && flag);
-        }
-        // read the coordinates
-        else if (!points && line.find("COORDINATE3 {") != std::string::npos) {
-            Base::Vector3f clPoint;
-            points = true; // the SoCoordinate3 node
-            flag = true;
-            // Get the next line and check for the points field which might begin
-            // with the first point already i.e. it's of the form 'point [ 0.0 0.0 0.0,'
-            // This is a special case to support also file formats directly written by
-            // Inventor 2.1 classes.
-            std::getline(rstrIn, line);
-            boost::algorithm::to_upper(line);
-            std::string::size_type pos = line.find("POINT [");
-            if (pos != std::string::npos)
-                line = line.substr(pos+7); // 7 = length of 'POINT ['
-            do {
-                if (boost::regex_match(line.c_str(), what, rx_p)) {
-                    clPoint.x = (float)std::atof(what[1].first);
-                    clPoint.y = (float)std::atof(what[4].first);
-                    clPoint.z = (float)std::atof(what[7].first);
-                    aclPoints.push_back(clPoint);
-                    seq.next(true); // allow to cancel
-                } else
-                    flag = false;
-            } while (std::getline(rstrIn, line) && flag);
-        }
-        // read the point indices of the facets
-        else if (points && line.find("INDEXEDFACESET {") != std::string::npos) {
-            PointIndex ulPoints[3];
-            facets = true;
-            unsigned long ulCt = 0;
-            // Get the next line and check for the index field which might begin
-            // with the first index already.
-            // This is a special case to support also file formats directly written by
-            // Inventor 2.1 classes.
-            // Furthermore we must check whether more than one triple is given per line, which
-            // is handled in the while-loop.
-            std::getline(rstrIn, line);
-            boost::algorithm::to_upper(line);
-            std::string::size_type pos = line.find("COORDINDEX [");
-            if (pos != std::string::npos)
-                line = line.substr(pos+12); // 12 = length of 'COORDINDEX ['
-            do {
-                flag = false;
-                std::string::size_type pos = line.find("-1");
-                while (pos != std::string::npos) {
-                    std::string part = line.substr(0, pos);
-                    pos = line.find_first_of(",]", pos);
-                    line = line.substr(pos+1);
-                    pos = line.find("-1");
-                    if (boost::regex_match(part.c_str(), what, rx_f)) {
-                        flag = true;
-                        ulPoints[0] = std::atol(what[1].first);
-                        ulPoints[1] = std::atol(what[2].first);
-                        ulPoints[2] = std::atol(what[3].first);
-                        if (normals) {
-                            // get a reference to the facet with defined normal
-                            MeshGeomFacet& rclFacet = clFacetAry[ulCt++];
-                            for (int i = 0; i < 3; i++)
-                                rclFacet._aclPoints[i] = aclPoints[ulPoints[i]];
-                        }
-                        else {
-                            for (int i = 0; i < 3; i++)
-                                clFacet._aclPoints[i] = aclPoints[ulPoints[i]];
-                            clFacetAry.push_back(clFacet);
-                        }
-                        seq.next(true); // allow to cancel
-                    }
-                }
-            } while (std::getline(rstrIn, line) && flag);
+    MeshCleanup meshCleanup(meshPoints, meshFacets);
+    meshCleanup.RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(), meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints, meshFacets);
+
+    if (loader.isNonIndexed()) {
+        if (!MeshEvalDuplicatePoints(this->_rclMesh).Evaluate()) {
+            MeshFixDuplicatePoints(this->_rclMesh).Fixup();
         }
     }
 
-    _rclMesh = clFacetAry;
-    return (rstrIn?true:false);
+    return true;
 }
 
 /** Loads a Nastran file. */

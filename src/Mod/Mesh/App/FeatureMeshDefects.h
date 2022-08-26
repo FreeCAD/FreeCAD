@@ -37,12 +37,12 @@ namespace Mesh
  */
 class MeshExport FixDefects : public Mesh::Feature
 {
-  PROPERTY_HEADER(Mesh::FixDefects);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDefects);
 
 public:
   /// Constructor
   FixDefects();
-  virtual ~FixDefects();
+  ~FixDefects() override;
 
   /** @name Properties */
   //@{
@@ -53,8 +53,8 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
-  short mustExecute() const;
+  App::DocumentObjectExecReturn *execute() override;
+  short mustExecute() const override;
   //@}
 
   /// returns the type name of the ViewProvider
@@ -67,17 +67,17 @@ public:
  */
 class MeshExport HarmonizeNormals : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::HarmonizeNormals);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::HarmonizeNormals);
 
 public:
   /// Constructor
   HarmonizeNormals();
-  virtual ~HarmonizeNormals();
+  ~HarmonizeNormals() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -87,17 +87,17 @@ public:
  */
 class MeshExport FlipNormals : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FlipNormals);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FlipNormals);
 
 public:
   /// Constructor
   FlipNormals();
-  virtual ~FlipNormals();
+  ~FlipNormals() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -107,17 +107,17 @@ public:
  */
 class MeshExport FixNonManifolds : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixNonManifolds);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixNonManifolds);
 
 public:
   /// Constructor
   FixNonManifolds();
-  virtual ~FixNonManifolds();
+  ~FixNonManifolds() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -127,17 +127,17 @@ public:
  */
 class MeshExport FixDuplicatedFaces : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDuplicatedFaces);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDuplicatedFaces);
 
 public:
   /// Constructor
   FixDuplicatedFaces();
-  virtual ~FixDuplicatedFaces();
+  ~FixDuplicatedFaces() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -147,17 +147,17 @@ public:
  */
 class MeshExport FixDuplicatedPoints : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDuplicatedPoints);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDuplicatedPoints);
 
 public:
   /// Constructor
   FixDuplicatedPoints();
-  virtual ~FixDuplicatedPoints();
+  ~FixDuplicatedPoints() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -167,17 +167,17 @@ public:
  */
 class MeshExport FixDegenerations : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDegenerations);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDegenerations);
 
 public:
   /// Constructor
   FixDegenerations();
-  virtual ~FixDegenerations();
+  ~FixDegenerations() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -187,12 +187,12 @@ public:
  */
 class MeshExport FixDeformations : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixDeformations);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixDeformations);
 
 public:
   /// Constructor
   FixDeformations();
-  virtual ~FixDeformations();
+  ~FixDeformations() override;
 
   /** @name Properties */
   //@{
@@ -201,7 +201,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -211,17 +211,17 @@ public:
  */
 class MeshExport FixIndices : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FixIndices);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FixIndices);
 
 public:
   /// Constructor
   FixIndices();
-  virtual ~FixIndices();
+  ~FixIndices() override;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -231,19 +231,19 @@ public:
  */
 class MeshExport FillHoles : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::FillHoles);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::FillHoles);
 
 public:
   /// Constructor
   FillHoles();
-  virtual ~FillHoles();
+  ~FillHoles() override;
   App::PropertyInteger FillupHolesOfLength;
   App::PropertyFloat MaxArea;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 
@@ -253,18 +253,18 @@ public:
  */
 class MeshExport RemoveComponents : public Mesh::FixDefects
 {
-  PROPERTY_HEADER(Mesh::RemoveComponents);
+  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::RemoveComponents);
 
 public:
   /// Constructor
   RemoveComponents();
-  virtual ~RemoveComponents();
+  ~RemoveComponents() override;
   App::PropertyInteger RemoveCompOfSize;
 
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  virtual App::DocumentObjectExecReturn *execute();
+  App::DocumentObjectExecReturn *execute() override;
   //@}
 };
 

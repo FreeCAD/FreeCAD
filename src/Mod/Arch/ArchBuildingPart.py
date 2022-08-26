@@ -24,13 +24,12 @@ import FreeCAD
 import Draft
 import ArchCommands
 import DraftVecUtils
-import sys
 import ArchIFC
 import tempfile
 import os
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import draftutils.units as units
 else:
@@ -40,8 +39,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-if sys.version_info.major >= 3:
-    unicode = str
+unicode = str
 
 ## @package ArchBuildingPart
 #  \ingroup ARCH
@@ -758,10 +756,7 @@ class ViewProviderBuildingPart:
         elif prop == "FontName":
             if hasattr(vobj,"FontName") and hasattr(self,"fon"):
                 if vobj.FontName:
-                    if sys.version_info.major < 3:
-                        self.fon.name = vobj.FontName.encode("utf8")
-                    else:
-                        self.fon.name = vobj.FontName
+                    self.fon.name = vobj.FontName
         elif prop in ["FontSize","DisplayOffset","OriginOffset"]:
             if hasattr(vobj,"FontSize") and hasattr(vobj,"DisplayOffset") and hasattr(vobj,"OriginOffset") and hasattr(self,"fon"):
                 fs = vobj.FontSize.Value

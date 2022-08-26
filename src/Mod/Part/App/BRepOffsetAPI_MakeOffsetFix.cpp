@@ -103,7 +103,11 @@ void BRepOffsetAPI_MakeOffsetFix::Perform (const Standard_Real Offset, const Sta
     mkOffset.Perform(Offset, Alt);
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void BRepOffsetAPI_MakeOffsetFix::Build(const Message_ProgressRange&)
+#else
 void BRepOffsetAPI_MakeOffsetFix::Build()
+#endif
 {
     mkOffset.Build();
 }
@@ -136,7 +140,7 @@ void BRepOffsetAPI_MakeOffsetFix::MakeWire(TopoDS_Shape& wire)
     }
 
     std::list<TopoDS_Edge> edgeList;
-    for (auto itLoc : myLocations) {
+    for (const auto& itLoc : myLocations) {
         TopTools_ListOfShape newShapes = mkOffset.Generated(itLoc.first);
         // Check generated shapes for the vertexes, too
         TopExp_Explorer xpv(itLoc.first, TopAbs_VERTEX);
@@ -252,7 +256,7 @@ TopoDS_Shape BRepOffsetAPI_MakeOffsetFix::Replace(GeomAbs_CurveType type, const 
             xp.Next();
         }
 
-        return comp;
+        return TopoDS_Compound(std::move(comp));
     }
     else if (S.ShapeType() == TopAbs_WIRE) {
         return ReplaceEdges(type, TopoDS::Wire(S));

@@ -172,7 +172,7 @@ void CmdPartDesignPlane::activated(int iMsg)
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Plane"),"DatumPlane");
 }
 
-bool CmdPartDesignPlane::isActive(void)
+bool CmdPartDesignPlane::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -200,7 +200,7 @@ void CmdPartDesignLine::activated(int iMsg)
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Line"),"DatumLine");
 }
 
-bool CmdPartDesignLine::isActive(void)
+bool CmdPartDesignLine::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -228,7 +228,7 @@ void CmdPartDesignPoint::activated(int iMsg)
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Point"),"DatumPoint");
 }
 
-bool CmdPartDesignPoint::isActive(void)
+bool CmdPartDesignPoint::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -256,7 +256,7 @@ void CmdPartDesignCS::activated(int iMsg)
     UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::CoordinateSystem"),"Local_CS");
 }
 
-bool CmdPartDesignCS::isActive(void)
+bool CmdPartDesignCS::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -299,7 +299,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-        if (pcActiveBody == nullptr)
+        if (!pcActiveBody)
             return;
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);
@@ -325,7 +325,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     // TODO do a proper error processing (2015-09-11, Fat-Zer)
 }
 
-bool CmdPartDesignShapeBinder::isActive(void)
+bool CmdPartDesignShapeBinder::isActive()
 {
     return hasActiveDocument ();
 }
@@ -410,7 +410,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     }
 }
 
-bool CmdPartDesignSubShapeBinder::isActive(void) {
+bool CmdPartDesignSubShapeBinder::isActive() {
     return hasActiveDocument();
 }
 
@@ -466,7 +466,7 @@ void CmdPartDesignClone::activated(int iMsg)
     }
 }
 
-bool CmdPartDesignClone::isActive(void)
+bool CmdPartDesignClone::isActive()
 {
     return getSelection().countObjectsOfType(Part::Feature::getClassTypeId()) == 1;
 }
@@ -830,7 +830,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     }
 }
 
-bool CmdPartDesignNewSketch::isActive(void)
+bool CmdPartDesignNewSketch::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -939,7 +939,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             else
                 ++o;
         }
-        if (inList.size() > 0) {
+        if (!inList.empty()) {
             status.push_back(PartDesignGui::TaskFeaturePick::isUsed);
             continue;
         }
@@ -1320,7 +1320,7 @@ void CmdPartDesignPad::activated(int iMsg)
     prepareProfileBased(this, "Pad", 10.0);
 }
 
-bool CmdPartDesignPad::isActive(void)
+bool CmdPartDesignPad::isActive()
 {
     return hasActiveDocument();
 }
@@ -1352,7 +1352,7 @@ void CmdPartDesignPocket::activated(int iMsg)
     prepareProfileBased(this, "Pocket", 5.0);
 }
 
-bool CmdPartDesignPocket::isActive(void)
+bool CmdPartDesignPocket::isActive()
 {
     return hasActiveDocument();
 }
@@ -1399,7 +1399,7 @@ void CmdPartDesignHole::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "Hole", worker);
 }
 
-bool CmdPartDesignHole::isActive(void)
+bool CmdPartDesignHole::isActive()
 {
     return hasActiveDocument();
 }
@@ -1458,7 +1458,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "Revolution", worker);
 }
 
-bool CmdPartDesignRevolution::isActive(void)
+bool CmdPartDesignRevolution::isActive()
 {
     return hasActiveDocument();
 }
@@ -1525,7 +1525,7 @@ void CmdPartDesignGroove::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "Groove", worker);
 }
 
-bool CmdPartDesignGroove::isActive(void)
+bool CmdPartDesignGroove::isActive()
 {
     return hasActiveDocument();
 }
@@ -1575,7 +1575,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "AdditivePipe", worker);
 }
 
-bool CmdPartDesignAdditivePipe::isActive(void)
+bool CmdPartDesignAdditivePipe::isActive()
 {
     return hasActiveDocument();
 }
@@ -1626,7 +1626,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "SubtractivePipe", worker);
 }
 
-bool CmdPartDesignSubtractivePipe::isActive(void)
+bool CmdPartDesignSubtractivePipe::isActive()
 {
     return hasActiveDocument();
 }
@@ -1677,7 +1677,7 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "AdditiveLoft", worker);
 }
 
-bool CmdPartDesignAdditiveLoft::isActive(void)
+bool CmdPartDesignAdditiveLoft::isActive()
 {
     return hasActiveDocument();
 }
@@ -1728,7 +1728,7 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "SubtractiveLoft", worker);
 }
 
-bool CmdPartDesignSubtractiveLoft::isActive(void)
+bool CmdPartDesignSubtractiveLoft::isActive()
 {
     return hasActiveDocument();
 }
@@ -1804,7 +1804,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "AdditiveHelix", worker);
 }
 
-bool CmdPartDesignAdditiveHelix::isActive(void)
+bool CmdPartDesignAdditiveHelix::isActive()
 {
     return hasActiveDocument();
 }
@@ -1862,7 +1862,7 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
     prepareProfileBased(pcActiveBody, this, "SubtractiveHelix", worker);
 }
 
-bool CmdPartDesignSubtractiveHelix::isActive(void)
+bool CmdPartDesignSubtractiveHelix::isActive()
 {
     return hasActiveDocument();
 }
@@ -1886,7 +1886,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
 
-    if (selection.size() == 0) {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select an edge, face, or body."));
         return false;
@@ -1924,7 +1924,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     // if 1 Part::Feature object selected, but no subobjects, select all edges for the user
     // but only for fillet and chamfer (not for draft or thickness)
-    if (selection[0].getSubNames().size() == 0 && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)){
+    if (selection[0].getSubNames().empty() && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)){
         useAllEdges = true;
         std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
         int count = TopShape.countSubElements(edgeTypeName.c_str());
@@ -1946,7 +1946,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
         Part::Feature *base, const std::vector<std::string> & SubNames, const bool useAllEdges)
 {
-    if (SubNames.size() == 0) {
+    if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QString::fromStdString(which) + QObject::tr(" not possible on selected faces/edges."));
         return;
@@ -2021,7 +2021,7 @@ void CmdPartDesignFillet::activated(int iMsg)
     makeChamferOrFillet(this, "Fillet");
 }
 
-bool CmdPartDesignFillet::isActive(void)
+bool CmdPartDesignFillet::isActive()
 {
     return hasActiveDocument();
 }
@@ -2050,7 +2050,7 @@ void CmdPartDesignChamfer::activated(int iMsg)
     doCommand(Gui,"Gui.Selection.clearSelection()");
 }
 
-bool CmdPartDesignChamfer::isActive(void)
+bool CmdPartDesignChamfer::isActive()
 {
     return hasActiveDocument();
 }
@@ -2107,7 +2107,7 @@ void CmdPartDesignDraft::activated(int iMsg)
     finishDressupFeature (this, "Draft", base, SubNames, useAllEdges);
 }
 
-bool CmdPartDesignDraft::isActive(void)
+bool CmdPartDesignDraft::isActive()
 {
     return hasActiveDocument();
 }
@@ -2157,7 +2157,7 @@ void CmdPartDesignThickness::activated(int iMsg)
     finishDressupFeature (this, "Thickness", base, SubNames, useAllEdges);
 }
 
-bool CmdPartDesignThickness::isActive(void)
+bool CmdPartDesignThickness::isActive()
 {
     return hasActiveDocument();
 }
@@ -2210,7 +2210,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     // First check selections
     std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Feature::getClassTypeId());
     // Next create a list of all eligible objects
-    if (features.size() == 0) {
+    if (features.empty()) {
         features = cmd->getDocument()->getObjectsOfType(PartDesign::Feature::getClassTypeId());
         // If there is more than one selected or eligible object, show dialog and let user pick one
         if (features.size() > 1) {
@@ -2319,7 +2319,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
     prepareTransformed(pcActiveBody, this, "Mirrored", worker);
 }
 
-bool CmdPartDesignMirrored::isActive(void)
+bool CmdPartDesignMirrored::isActive()
 {
     return hasActiveDocument();
 }
@@ -2383,7 +2383,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
     prepareTransformed(pcActiveBody, this, "LinearPattern", worker);
 }
 
-bool CmdPartDesignLinearPattern::isActive(void)
+bool CmdPartDesignLinearPattern::isActive()
 {
     return hasActiveDocument();
 }
@@ -2448,7 +2448,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
     prepareTransformed(pcActiveBody, this, "PolarPattern", worker);
 }
 
-bool CmdPartDesignPolarPattern::isActive(void)
+bool CmdPartDesignPolarPattern::isActive()
 {
     return hasActiveDocument();
 }
@@ -2497,7 +2497,7 @@ void CmdPartDesignScaled::activated(int iMsg)
     prepareTransformed(pcActiveBody, this, "Scaled", worker);
 }
 
-bool CmdPartDesignScaled::isActive(void)
+bool CmdPartDesignScaled::isActive()
 {
     return hasActiveDocument();
 }
@@ -2558,7 +2558,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
             prevFeature = pcActiveBody->getPrevSolidFeature(trFeat);
         }
         Gui::Selection().clearSelection();
-        if (prevFeature != nullptr)
+        if (prevFeature)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Convert to MultiTransform feature"));
@@ -2608,7 +2608,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
             App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
-            if (prevSolid != nullptr) {
+            if (prevSolid) {
                 Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
                 FCMD_OBJ_CMD(Feat,"Shape = "<<getObjectCmd(feat)<<".Shape");
             }
@@ -2619,7 +2619,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     }
 }
 
-bool CmdPartDesignMultiTransform::isActive(void)
+bool CmdPartDesignMultiTransform::isActive()
 {
     return hasActiveDocument();
 }
@@ -2680,7 +2680,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
     finishFeature(this, Feat, nullptr, false, updateDocument);
 }
 
-bool CmdPartDesignBoolean::isActive(void)
+bool CmdPartDesignBoolean::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -2693,7 +2693,7 @@ bool CmdPartDesignBoolean::isActive(void)
 // Initialization
 //===========================================================================
 
-void CreatePartDesignCommands(void)
+void CreatePartDesignCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

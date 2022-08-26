@@ -93,6 +93,27 @@ void FileDialog::onSelectedFilter(const QString& /*filter*/)
     }
 }
 
+QList<QUrl> FileDialog::fetchSidebarUrls()
+{
+    QStringList list;
+    list << QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    list << QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    list << QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    list << QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    list << getWorkingDirectory();
+    list << restoreLocation();
+    list << QDir::currentPath();
+
+    QList<QUrl> urls;
+    for (const auto& it : list) {
+        if (QFileInfo::exists(it)) {
+            urls << QUrl::fromLocalFile(it);
+        }
+    }
+
+    return urls;
+}
+
 bool FileDialog::hasSuffix(const QString& ext) const
 {
     QRegExp rx(QString::fromLatin1("\\*.(%1)\\W").arg(ext));
@@ -156,7 +177,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         // get the suffix for the filter: use the selected filter if there is one,
         // otherwise find the first valid suffix in the complete list of filters
         const QString *filterToSearch;
-        if (selectedFilter != nullptr) {
+        if (selectedFilter) {
             filterToSearch = selectedFilter;
         }
         else {
@@ -182,18 +203,9 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // before showing the file dialog.
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        QList<QUrl> urls;
+        QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-        urls << QUrl::fromLocalFile(getWorkingDirectory());
-        urls << QUrl::fromLocalFile(restoreLocation());
-        urls << QUrl::fromLocalFile(QDir::currentPath());
 
         FileDialog dlg(parent);
         dlg.setOptions(options);
@@ -264,18 +276,9 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
 
     QString file;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        QList<QUrl> urls;
+        QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-        urls << QUrl::fromLocalFile(getWorkingDirectory());
-        urls << QUrl::fromLocalFile(restoreLocation());
-        urls << QUrl::fromLocalFile(QDir::currentPath());
 
         FileDialog dlg(parent);
         dlg.setOptions(options);
@@ -326,18 +329,9 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
 
     QStringList files;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        QList<QUrl> urls;
+        QList<QUrl> urls = fetchSidebarUrls();
 
         options |= QFileDialog::DontUseNativeDialog;
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-        urls << QUrl::fromLocalFile(getWorkingDirectory());
-        urls << QUrl::fromLocalFile(restoreLocation());
-        urls << QUrl::fromLocalFile(QDir::currentPath());
 
         FileDialog dlg(parent);
         dlg.setOptions(options);
@@ -767,6 +761,15 @@ void FileChooser::chooseFile()
 }
 
 /**
+ * Sets the accept mode.
+ */
+void FileChooser::setAcceptMode(FileChooser::AcceptMode mode)
+{
+    accMode = mode;
+    Q_EMIT acceptModeChanged(accMode);
+}
+
+/**
  * \property FileChooser::mode
  *
  * This property holds whether the widgets selects either a file or a directory.
@@ -786,6 +789,7 @@ FileChooser::Mode FileChooser::mode() const
 void FileChooser::setMode( FileChooser::Mode m )
 {
     md = m;
+    Q_EMIT modeChanged(md);
 }
 
 /**
@@ -807,6 +811,7 @@ QString FileChooser::filter() const
 void FileChooser::setFilter ( const QString& filter )
 {
     _filter = filter;
+    Q_EMIT filterChanged(_filter);
 }
 
 /**
@@ -818,6 +823,7 @@ void FileChooser::setButtonText( const QString& txt )
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
     int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
     button->setFixedWidth( (w1 > w2 ? w1 : w2) );
+    Q_EMIT buttonTextChanged(txt);
 }
 
 /**

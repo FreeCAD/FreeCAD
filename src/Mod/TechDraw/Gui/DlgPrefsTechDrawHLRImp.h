@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPHLR_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,13 +38,13 @@ class DlgPrefsTechDrawHLRImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawHLRImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawHLRImp();
+    explicit DlgPrefsTechDrawHLRImp( QWidget* parent = nullptr );
+    ~DlgPrefsTechDrawHLRImp() override;
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawHLRImp> ui;

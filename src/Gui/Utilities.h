@@ -43,7 +43,7 @@ template <>
 struct vec_traits<SbVec3f> {
     typedef SbVec3f vec_type;
     typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v[0], v[1], v[2]);
     }
@@ -56,7 +56,7 @@ template <>
 struct vec_traits<SbVec3d> {
     typedef SbVec3d vec_type;
     typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v[0], v[1], v[2]);
     }
@@ -69,7 +69,7 @@ template <>
 struct vec_traits<SbRotation> {
     typedef SbRotation vec_type;
     typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type,float_type> get() const {
         float_type q1,q2,q3,q4;
         v.getValue(q1,q2,q3,q4);
@@ -84,7 +84,7 @@ template <>
 struct vec_traits<SbColor> {
     typedef SbColor vec_type;
     typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v[0], v[1], v[2]);
     }
@@ -97,7 +97,7 @@ template <>
 struct vec_traits<App::Color> {
     typedef App::Color vec_type;
     typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.r, v.g, v.b);
     }
@@ -114,15 +114,15 @@ namespace Gui {
 class GuiExport ViewVolumeProjection : public Base::ViewProjMethod
 {
 public:
-    ViewVolumeProjection (const SbViewVolume &vv);
-    virtual ~ViewVolumeProjection(){}
+    explicit ViewVolumeProjection (const SbViewVolume &vv);
+    ~ViewVolumeProjection() override{}
 
-    Base::Vector3f operator()(const Base::Vector3f &rclPt) const;
-    Base::Vector3d operator()(const Base::Vector3d &rclPt) const;
-    Base::Vector3f inverse (const Base::Vector3f &rclPt) const;
-    Base::Vector3d inverse (const Base::Vector3d &rclPt) const;
+    Base::Vector3f operator()(const Base::Vector3f &rclPt) const override;
+    Base::Vector3d operator()(const Base::Vector3d &rclPt) const override;
+    Base::Vector3f inverse (const Base::Vector3f &rclPt) const override;
+    Base::Vector3d inverse (const Base::Vector3d &rclPt) const override;
 
-    Base::Matrix4D getProjectionMatrix () const;
+    Base::Matrix4D getProjectionMatrix () const override;
 
 protected:
     SbViewVolume viewVolume;
@@ -133,7 +133,7 @@ protected:
 class GuiExport Tessellator
 {
 public:
-    Tessellator(const std::vector<SbVec2f>&);
+    explicit Tessellator(const std::vector<SbVec2f>&);
     std::vector<int> tessellate() const;
 
 private:
@@ -146,7 +146,7 @@ private:
 class GuiExport ItemViewSelection
 {
 public:
-    ItemViewSelection(QAbstractItemView* view);
+    explicit ItemViewSelection(QAbstractItemView* view);
     void applyFrom(const std::vector<App::DocumentObject*> objs);
 
 private:

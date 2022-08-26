@@ -23,6 +23,8 @@
 #ifndef _Preferences_h_
 #define _Preferences_h_
 
+#include <App/Material.h>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>
@@ -74,11 +76,12 @@ static int         mattingStyle();
 static std::string svgFile();
 static std::string patFile();
 
-static std::string bitmapFill(void);
+static std::string bitmapFill();
 
 static double      GapISO();
 static double      GapASME();
 
+static bool        reportProgress();
 };
 
 } //end namespace TechDraw

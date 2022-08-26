@@ -44,7 +44,7 @@ namespace MeshCore {
 class MeshExport MeshEvaluation
 {
 public:
-  MeshEvaluation (const MeshKernel &rclB) : _rclMesh(rclB) {}
+  explicit MeshEvaluation (const MeshKernel &rclB) : _rclMesh(rclB) {}
   virtual ~MeshEvaluation () {}
 
   /**
@@ -70,7 +70,7 @@ protected:
 class MeshExport MeshValidation
 {
 public:
-  MeshValidation (MeshKernel &rclB) : _rclMesh(rclB) {}
+  explicit MeshValidation (MeshKernel &rclB) : _rclMesh(rclB) {}
   virtual ~MeshValidation () {}
 
   /**
@@ -95,7 +95,7 @@ public:
     MeshOrientationVisitor();
 
     /** Returns false after the first inconsistence is found, true otherwise. */
-    bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long );
+    bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long ) override;
     bool HasNonUnifomOrientedFacets() const;
 
 private:
@@ -114,7 +114,7 @@ public:
                              std::vector<FacetIndex>& aulComplement);
 
     /** Returns always true and collects the indices with wrong orientation. */
-    bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long);
+    bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long) override;
 
 private:
     std::vector<FacetIndex>& _aulIndices;
@@ -127,9 +127,9 @@ private:
 class MeshExport MeshSameOrientationCollector : public MeshOrientationVisitor
 {
 public:
-    MeshSameOrientationCollector(std::vector<FacetIndex>& aulIndices);
+    explicit MeshSameOrientationCollector(std::vector<FacetIndex>& aulIndices);
     /** Returns always true and collects the indices with wrong orientation. */
-    bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long);
+    bool Visit (const MeshFacet &, const MeshFacet &, FacetIndex , unsigned long) override;
 
 private:
     std::vector<FacetIndex>& _aulIndices;
@@ -142,9 +142,9 @@ private:
 class MeshExport MeshEvalOrientation : public MeshEvaluation
 {
 public:
-    MeshEvalOrientation (const MeshKernel& rclM);
-    ~MeshEvalOrientation();
-    bool Evaluate ();
+    explicit MeshEvalOrientation (const MeshKernel& rclM);
+    ~MeshEvalOrientation() override;
+    bool Evaluate () override;
     std::vector<FacetIndex> GetIndices() const;
 
 private:
@@ -158,9 +158,9 @@ private:
 class MeshExport MeshFixOrientation : public MeshValidation
 {
 public:
-    MeshFixOrientation (MeshKernel& rclM);
-    ~MeshFixOrientation();
-    bool Fixup();
+    explicit MeshFixOrientation (MeshKernel& rclM);
+    ~MeshFixOrientation() override;
+    bool Fixup() override;
 };
 
 // ----------------------------------------------------
@@ -172,9 +172,9 @@ public:
 class MeshExport MeshEvalSolid : public MeshEvaluation
 {
 public:
-  MeshEvalSolid (const MeshKernel& rclM);
-  ~MeshEvalSolid();
-  bool Evaluate ();
+  explicit MeshEvalSolid (const MeshKernel& rclM);
+  ~MeshEvalSolid() override;
+  bool Evaluate () override;
 };
 
 // ----------------------------------------------------
@@ -188,9 +188,9 @@ public:
 class MeshExport MeshEvalTopology : public MeshEvaluation
 {
 public:
-    MeshEvalTopology (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
-    virtual ~MeshEvalTopology () {}
-    virtual bool Evaluate ();
+    explicit MeshEvalTopology (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    ~MeshEvalTopology () override {}
+    bool Evaluate () override;
 
     void GetFacetManifolds (std::vector<FacetIndex> &raclFacetIndList) const;
     unsigned long CountManifolds() const;
@@ -211,8 +211,8 @@ class MeshExport MeshFixTopology : public MeshValidation
 public:
     MeshFixTopology (MeshKernel &rclB, const std::list<std::vector<FacetIndex> >& mf)
       : MeshValidation(rclB), nonManifoldList(mf) {}
-    virtual ~MeshFixTopology () {}
-    bool Fixup();
+    ~MeshFixTopology () override {}
+    bool Fixup() override;
 
     const std::vector<FacetIndex>& GetDeletedFaces() const { return deletedFaces; }
 
@@ -232,9 +232,9 @@ protected:
 class MeshExport MeshEvalPointManifolds : public MeshEvaluation
 {
 public:
-    MeshEvalPointManifolds (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
-    virtual ~MeshEvalPointManifolds () {}
-    virtual bool Evaluate ();
+    explicit MeshEvalPointManifolds (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    ~MeshEvalPointManifolds () override {}
+    bool Evaluate () override;
 
     void GetFacetIndices (std::vector<FacetIndex> &facets) const;
     const std::list<std::vector<FacetIndex> >& GetFacetIndices () const { return facetsOfNonManifoldPoints; }
@@ -258,9 +258,9 @@ protected:
 class MeshExport MeshEvalSingleFacet : public MeshEvalTopology
 {
 public:
-  MeshEvalSingleFacet (const MeshKernel &rclB) : MeshEvalTopology(rclB) {}
-  virtual ~MeshEvalSingleFacet () {}
-  bool Evaluate ();
+  explicit MeshEvalSingleFacet (const MeshKernel &rclB) : MeshEvalTopology(rclB) {}
+  ~MeshEvalSingleFacet () override {}
+  bool Evaluate () override;
 };
 
 /**
@@ -272,8 +272,8 @@ class MeshExport MeshFixSingleFacet : public MeshValidation
 public:
   MeshFixSingleFacet (MeshKernel &rclB, const std::vector<std::list<FacetIndex> >& mf)
     : MeshValidation(rclB), _raclManifoldList(mf) {}
-  virtual ~MeshFixSingleFacet () {}
-  bool Fixup();
+  ~MeshFixSingleFacet () override {}
+  bool Fixup() override;
 
 protected:
   const std::vector<std::list<FacetIndex> >& _raclManifoldList;
@@ -288,10 +288,10 @@ protected:
 class MeshExport MeshEvalSelfIntersection : public MeshEvaluation
 {
 public:
-    MeshEvalSelfIntersection (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
-    virtual ~MeshEvalSelfIntersection () {}
+    explicit MeshEvalSelfIntersection (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+    ~MeshEvalSelfIntersection () override {}
     /// Evaluate the mesh and return if true if there are self intersections
-    bool Evaluate ();
+    bool Evaluate () override;
     /// collect all intersection lines
     void GetIntersections(const std::vector<std::pair<FacetIndex, FacetIndex> >&,
         std::vector<std::pair<Base::Vector3f, Base::Vector3f> >&) const;
@@ -308,9 +308,9 @@ class MeshExport MeshFixSelfIntersection : public MeshValidation
 public:
     MeshFixSelfIntersection (MeshKernel &rclB, const std::vector<std::pair<FacetIndex, FacetIndex> >& si)
         : MeshValidation(rclB), selfIntersectons(si) {}
-    virtual ~MeshFixSelfIntersection () {}
+    ~MeshFixSelfIntersection () override {}
     std::vector<FacetIndex> GetFacets() const;
-    bool Fixup();
+    bool Fixup() override;
 
 private:
     const std::vector<std::pair<FacetIndex, FacetIndex> >& selfIntersectons;
@@ -326,9 +326,9 @@ private:
 class MeshExport MeshEvalNeighbourhood : public MeshEvaluation
 {
 public:
-  MeshEvalNeighbourhood (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
-  ~MeshEvalNeighbourhood () {}
-  bool Evaluate ();
+  explicit MeshEvalNeighbourhood (const MeshKernel &rclB) : MeshEvaluation(rclB) {}
+  ~MeshEvalNeighbourhood () override {}
+  bool Evaluate () override;
   std::vector<FacetIndex> GetIndices() const;
 };
 
@@ -339,9 +339,9 @@ public:
 class MeshExport MeshFixNeighbourhood : public MeshValidation
 {
 public:
-  MeshFixNeighbourhood (MeshKernel &rclB) : MeshValidation(rclB) {}
-  ~MeshFixNeighbourhood () {}
-  bool Fixup();
+  explicit MeshFixNeighbourhood (MeshKernel &rclB) : MeshValidation(rclB) {}
+  ~MeshFixNeighbourhood () override {}
+  bool Fixup() override;
 };
 
 // ----------------------------------------------------
@@ -357,8 +357,8 @@ public:
 class MeshExport MeshEigensystem : public MeshEvaluation
 {
 public:
-  MeshEigensystem (const MeshKernel &rclB);
-  virtual ~MeshEigensystem () {}
+  explicit MeshEigensystem (const MeshKernel &rclB);
+  ~MeshEigensystem () override {}
 
   /** Returns the transformation matrix. */
   Base::Matrix4D Transform() const;
@@ -367,7 +367,7 @@ public:
    */
   Base::Vector3f GetBoundings() const;
 
-  bool Evaluate();
+  bool Evaluate() override;
   /** 
    * Calculates the local coordinate system defined by \a u, \a v, \a w
    * and \a c. 

@@ -112,13 +112,13 @@ public:
 
 class NaviCubeImplementation : public ParameterGrp::ObserverType {
 public:
-	NaviCubeImplementation(Gui::View3DInventorViewer*);
-	virtual ~NaviCubeImplementation();
+	explicit NaviCubeImplementation(Gui::View3DInventorViewer*);
+	~NaviCubeImplementation() override;
 	void drawNaviCube();
 	void createContextMenu(const std::vector<std::string>& cmd);
 
 	/// Observer message from the ParameterGrp
-	virtual void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason);
+	void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
 	bool processSoEvent(const SoEvent* ev);
 private:
@@ -617,17 +617,17 @@ void NaviCubeImplementation::addFace(float gap, const Vector3f& x, const Vector3
 
 	int t = m_VertexArray.size();
 
-	m_VertexArray.push_back(z - x - y);
-	m_VertexArray2.push_back(z - x2 - y2);
+	m_VertexArray.emplace_back(z - x - y);
+	m_VertexArray2.emplace_back(z - x2 - y2);
 	m_TextureCoordArray.emplace_back(0, 0);
-	m_VertexArray.push_back(z + x - y);
-	m_VertexArray2.push_back(z + x2 - y2);
+	m_VertexArray.emplace_back(z + x - y);
+	m_VertexArray2.emplace_back(z + x2 - y2);
 	m_TextureCoordArray.emplace_back(1, 0);
-	m_VertexArray.push_back(z + x + y);
-	m_VertexArray2.push_back(z + x2 + y2);
+	m_VertexArray.emplace_back(z + x + y);
+	m_VertexArray2.emplace_back(z + x2 + y2);
 	m_TextureCoordArray.emplace_back(1, 1);
-	m_VertexArray.push_back(z - x + y);
-	m_VertexArray2.push_back(z - x2 + y2);
+	m_VertexArray.emplace_back(z - x + y);
+	m_VertexArray2.emplace_back(z - x2 + y2);
 	m_TextureCoordArray.emplace_back(0, 1);
 
 	// TEX_TOP, TEX_FRONT_FACE, TEX_TOP
@@ -903,7 +903,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	// FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
 	if (!m_NaviCubeInitialised) {
 		QtGLWidget* gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
-		if (gl == nullptr)
+		if (!gl)
 			return;
 		initNaviCube(gl);
 		m_NaviCubeInitialised = true;
@@ -1267,10 +1267,9 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
 		int pick = pickFace(x, y);
 
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-		long step = Base::clamp(hGrp->GetInt("NaviStepByTurn", 8), 4L, 36L);
-		float rotStepAngle = 360.0f / step;
 		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+		long step = Base::clamp(hGrpNavi->GetInt("NaviStepByTurn", 8), 4L, 36L);
+		float rotStepAngle = 360.0f / step;
 		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
 		bool applyRotation = true;
 
@@ -1790,11 +1789,11 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
 
 	vector<string> commands = NaviCubeImplementation::m_commands;
 	if (commands.empty()) {
-		commands.push_back("ViewOrthographicCmd");
-		commands.push_back("ViewPerspectiveCmd");
-		commands.push_back("ViewIsometricCmd");
-		commands.push_back("Separator");
-		commands.push_back("ViewZoomToFit");
+		commands.emplace_back("ViewOrthographicCmd");
+		commands.emplace_back("ViewPerspectiveCmd");
+		commands.emplace_back("ViewIsometricCmd");
+		commands.emplace_back("Separator");
+		commands.emplace_back("ViewZoomToFit");
 	}
 
 	for (vector<string>::iterator i = commands.begin(); i != commands.end(); ++i) {

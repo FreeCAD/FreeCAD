@@ -97,7 +97,7 @@ void ViewProviderExtern::setModeBySoInput(const char* name, SoInput &ivFileInput
            ::iterator,string>(modes.begin(),modes.end(),string(name));
         if (pos == modes.end()) {
             // new mode
-            modes.push_back(name);
+            modes.emplace_back(name);
             addDisplayMaskMode(root, name);
             setDisplayMaskMode(name);
         }
@@ -143,7 +143,7 @@ const char* ViewProviderExtern::getDefaultDisplayMode() const
     return (modes.empty() ? "" : modes.front().c_str());
 }
 
-std::vector<std::string> ViewProviderExtern::getDisplayModes(void) const
+std::vector<std::string> ViewProviderExtern::getDisplayModes() const
 {
     return modes;
 }

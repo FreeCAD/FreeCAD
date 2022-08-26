@@ -28,10 +28,10 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import cmath
 import os
 import os.path
 import subprocess
-import sys
 from platform import system
 
 import FreeCAD
@@ -76,6 +76,9 @@ class Prepare(run.Prepare):
     def run(self):
         # TODO print working dir to report console
         self.pushStatus("Preparing input files...\n")
+        num_cores = settings.get_cores("ElmerGrid")
+        self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
+                        .format(num_cores))
         if self.testmode:
             # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
             FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
@@ -86,6 +89,7 @@ class Prepare(run.Prepare):
         try:
             w.write_solver_input()
             self.checkHandled(w)
+            self.pushStatus("Writing solver input completed.")
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
@@ -123,13 +127,15 @@ class Solve(run.Solve):
                     os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
             # different call depending if with multithreading or not
             num_cores = settings.get_cores("ElmerSolver")
+            self.pushStatus("Number of CPU cores to be used for the solver run: {}\n"
+                            .format(num_cores))
             args = []
-            if int(num_cores) > 1:
+            if num_cores > 1:
                 if system() != "Windows":
                     args.extend(["mpirun"])
                 else:
                     args.extend(["mpiexec"])
-                args.extend(["-np", num_cores])
+                args.extend(["-np", str(num_cores)])
             args.extend([binary])
             if system() == "Windows":
                 self._process = subprocess.Popen(
@@ -153,16 +159,16 @@ class Solve(run.Solve):
             if not self.aborted:
                 self._updateOutput(output)
         else:
-            self.report.error("ElmerSolver executable not found.")
+            self.report.error("ElmerSolver binary not found.")
+            self.pushStatus("Error: ElmerSolver binary has not been found!")
             self.fail()
 
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:
             self._createOutput()
-        if sys.version_info.major >= 3:
-            self.solver.ElmerOutput.Text = output
-        else:
-            self.solver.ElmerOutput.Text = output.decode("utf-8")
+        # check if eigenmodes were calculated and if so append them to output
+        output = self._calculateEigenfrequencies(output)
+        self.solver.ElmerOutput.Text = output
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(
@@ -174,6 +180,66 @@ class Solve(run.Solve):
         self.analysis.addObject(self.solver.ElmerOutput)
         self.solver.Document.recompute()
 
+    def _calculateEigenfrequencies(self, output):
+        # takes the EigenSolve results and performs the calculation
+        # sqrt(aResult) / 2*PI but with aResult as complex number
+
+        # first search the output file for the results
+        OutputList = output.split("\n")
+        modeNumber = 0
+        modeCount = 0
+        real = 0
+        imaginary = 0
+        haveImaginary = False
+        FrequencyList = []
+        for line in OutputList:
+            LineList = line.split(" ")
+            if (
+                len(LineList) > 1
+                and LineList[0] == "EigenSolve:"
+                and LineList[1] == "Computed"
+            ):
+                # we found a result and take now the next LineList[2] lines
+                modeCount = int(LineList[2])
+                modeNumber = modeCount
+                continue
+            if modeCount > 0:
+                for LineString in reversed(LineList):
+                    # the output of Elmer may vary, we only know the last float
+                    # is the imaginary and second to last float the real part
+                    if self._isNumber(LineString):
+                        if not haveImaginary:
+                            imaginary = float(LineString)
+                            haveImaginary = True
+                        else:
+                            real = float(LineString)
+                            break
+                eigenFreq = complex(real, imaginary)
+                haveImaginary = False
+                # now we can perform the calculation
+                eigenFreq = cmath.sqrt(eigenFreq) / (2 * cmath.pi)
+                # create an output line
+                FrequencyList.append(
+                    "Mode {}: {} Hz".format(modeNumber - modeCount + 1, eigenFreq.real)
+                )
+                modeCount = modeCount - 1
+        if modeNumber > 0:
+            # push the results and append to output
+            self.pushStatus("\n\nEigenfrequency results:")
+            output = output + "\n\nEigenfrequency results:"
+            for i in range(0, modeNumber):
+                output = output + "\n" + FrequencyList[i]
+                self.pushStatus("\n" + FrequencyList[i])
+            self.pushStatus("\n")
+        return output
+
+    def _isNumber(self, string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
+
 
 class Results(run.Results):
 
@@ -181,15 +247,30 @@ class Results(run.Results):
         if self.solver.ElmerResult is None:
             self._createResults()
         postPath = self._getResultFile()
+        if postPath is None:
+            self.pushStatus("\nNo result file was created.\n")
+            self.fail()
+            return
         self.solver.ElmerResult.read(postPath)
-        self.solver.ElmerResult.scale(1000)
-        self.solver.ElmerResult.getLastPostObject().touch()
+        # at the moment we scale the mesh back using Elmer
+        # this might be changed in future, therefore leave this
+        # self.solver.ElmerResult.scale(1000)
+
+        # for eigen analyses the resulting values are by a factor 1000 to high
+        # therefore scale all *EigenMode results
+        self.solver.ElmerResult.ViewObject.transformField("displacement EigenMode1", 0.001)
+
+        self.solver.ElmerResult.recomputeChildren()
         self.solver.Document.recompute()
+        # recompute() updated the result mesh data
+        # but not the shape and bar coloring
+        self.solver.ElmerResult.ViewObject.updateColorBars()
 
     def _createResults(self):
         self.solver.ElmerResult = self.analysis.Document.addObject(
             "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
+        self.solver.ElmerResult.ViewObject.SelectionStyle = "BoundBox"
         self.analysis.addObject(self.solver.ElmerResult)
         # to assure the user sees something, set the default to Surface
         self.solver.ElmerResult.ViewObject.DisplayMode = "Surface"
@@ -202,16 +283,22 @@ class Results(run.Results):
         possible_post_file_old = os.path.join(self.directory, "case0001.vtu")
         possible_post_file_single = os.path.join(self.directory, "case_t0001.vtu")
         possible_post_file_multi = os.path.join(self.directory, "case_t0001.pvtu")
-        # first try the multi-thread result, then single then old name
-        if os.path.isfile(possible_post_file_multi):
-            postPath = possible_post_file_multi
-        elif os.path.isfile(possible_post_file_single):
-            postPath = possible_post_file_single
-        elif os.path.isfile(possible_post_file_old):
-            postPath = possible_post_file_old
-        else:
-            self.report.error("Result file not found.")
-            self.fail()
+        # depending on the currently set number of cores we try to load either
+        # the multi-thread result or the single result
+        if settings.get_cores("ElmerSolver") > 1:
+            if os.path.isfile(possible_post_file_multi):
+                postPath = possible_post_file_multi
+            else:
+                self.report.error("Result file not found.")
+                self.fail()
+        else:    
+            if os.path.isfile(possible_post_file_single):
+                postPath = possible_post_file_single
+            elif os.path.isfile(possible_post_file_old):
+                postPath = possible_post_file_old
+            else:
+                self.report.error("Result file not found.")
+                self.fail()
         return postPath
 
 ##  @}

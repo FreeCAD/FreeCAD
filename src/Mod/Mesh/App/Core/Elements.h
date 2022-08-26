@@ -110,7 +110,7 @@ public:
   //@{
   MeshPoint () : _ucFlag(0), _ulProp(0) { }
   inline MeshPoint (float x, float y, float z);
-  inline MeshPoint (const Base::Vector3f &rclPt);
+  inline MeshPoint (const Base::Vector3f &rclPt);//explicit bombs
   inline MeshPoint (const MeshPoint &rclPt);
   ~MeshPoint () { }
   //@}
@@ -328,6 +328,12 @@ public:
    */
   bool HasNeighbour (unsigned short usSide) const
   { return (_aulNeighbours[usSide] != FACET_INDEX_MAX); }
+  /**
+   * Checks if the given index is a neighbour facet.
+   */
+  bool IsNeighbour(FacetIndex index) const {
+      return Side(index) < 3;
+  }
   /** Counts the number of edges without neighbour. */
   inline unsigned short CountOpenEdges() const;
   /** Returns true if there is an edge without neighbour, otherwise false. */
@@ -577,7 +583,7 @@ public:
   // constructor
   MeshPointArray () { }
   // constructor
-  MeshPointArray (PointIndex ulSize) : TMeshPointArray(ulSize) { }
+  explicit MeshPointArray (PointIndex ulSize) : TMeshPointArray(ulSize) { }
   /// copy-constructor
   MeshPointArray (const MeshPointArray&);
   // Destructor
@@ -631,7 +637,7 @@ public:
     /// constructor
     MeshFacetArray () { }
     /// constructor
-    MeshFacetArray (FacetIndex ulSize) : TMeshFacetArray(ulSize) { }
+    explicit MeshFacetArray (FacetIndex ulSize) : TMeshFacetArray(ulSize) { }
     /// copy-constructor
     MeshFacetArray (const MeshFacetArray&);
     /// destructor
@@ -678,7 +684,7 @@ public:
 class MeshExport MeshPointModifier
 {
 public:
-    MeshPointModifier(MeshPointArray& points)
+    explicit MeshPointModifier(MeshPointArray& points)
         : rPoints(points)
     {
     }
@@ -699,7 +705,7 @@ private:
 class MeshExport MeshFacetModifier
 {
 public:
-    MeshFacetModifier(MeshFacetArray& facets)
+    explicit MeshFacetModifier(MeshFacetArray& facets)
         : rFacets(facets)
     {
     }

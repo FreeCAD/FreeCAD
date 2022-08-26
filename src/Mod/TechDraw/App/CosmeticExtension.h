@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_COSMETICEXTENSION_H
 #define TECHDRAW_COSMETICEXTENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
 #include <Base/Vector3D.h>
@@ -40,11 +42,11 @@ class DrawViewPart;
 class GeometryObject;
 
 class TechDrawExport CosmeticExtension : public App::DocumentObjectExtension {
-    EXTENSION_PROPERTY_HEADER(TechDraw::CosmeticObject);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::CosmeticObject);
 
 public:
     CosmeticExtension();
-    virtual ~CosmeticExtension();
+    ~CosmeticExtension() override;
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
     TechDraw::PropertyCosmeticEdgeList   CosmeticEdges;
@@ -55,7 +57,6 @@ public:
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
     virtual CosmeticVertex* getCosmeticVertexBySelection(int i) const;
     virtual CosmeticVertex* getCosmeticVertex(std::string id) const;
-    virtual bool            replaceCosmeticVertex(CosmeticVertex* newVertex);
     virtual void            removeCosmeticVertex(std::string tag);
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
 
@@ -64,7 +65,6 @@ public:
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
     virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
-    virtual bool            replaceCosmeticEdge(CosmeticEdge* newEdge);
     virtual void            removeCosmeticEdge(std::string tag);
     virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
 
@@ -74,7 +74,6 @@ public:
     virtual CenterLine*     getCenterLineBySelection(std::string name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
     virtual CenterLine*     getCenterLine(std::string tag) const;
-    virtual bool            replaceCenterLine(CenterLine* newLine);
     virtual void            removeCenterLine(std::string tag);
     virtual void            removeCenterLine(std::vector<std::string> delTags);
 
@@ -82,11 +81,10 @@ public:
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
     virtual GeomFormat*     getGeomFormatBySelection(int i) const;
     virtual GeomFormat*     getGeomFormat(std::string id) const;
-    virtual bool            replaceGeomFormat(TechDraw::GeomFormat* gf);
     virtual void            removeGeomFormat(std::string tag);
 
 
-    PyObject* getExtensionPyObject(void);
+    PyObject* getExtensionPyObject() override;
 
 protected:
 /*    virtual void extHandleChangedPropertyName(Base::XMLReader &reader, */

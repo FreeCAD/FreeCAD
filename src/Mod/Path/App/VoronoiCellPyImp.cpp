@@ -36,7 +36,7 @@
 using namespace Path;
 
 // returns a string which represents the object e.g. when printed in python
-std::string VoronoiCellPy::representation(void) const
+std::string VoronoiCellPy::representation() const
 {
   std::stringstream ss;
   ss.precision(5);
@@ -103,7 +103,7 @@ VoronoiCell* getVoronoiCellFromPy(const VoronoiCellPy *c, PyObject *args = nullp
   return self;
 }
 
-Py::Long VoronoiCellPy::getIndex(void) const {
+Py::Long VoronoiCellPy::getIndex() const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {
     return Py::Long(c->dia->index(c->ptr));
@@ -111,7 +111,7 @@ Py::Long VoronoiCellPy::getIndex(void) const {
   return Py::Long(-1);
 }
 
-Py::Long VoronoiCellPy::getColor(void) const {
+Py::Long VoronoiCellPy::getColor() const {
   VoronoiCell *c = getVoronoiCellPtr();
   if (c->isBound()) {
     Voronoi::color_type color = c->ptr->color() & Voronoi::ColorMask;
@@ -124,20 +124,35 @@ void VoronoiCellPy::setColor(Py::Long color) {
   getCellFromPy(this)->color(long(color) & Voronoi::ColorMask);
 }
 
-Py::Long VoronoiCellPy::getSourceIndex(void) const
+Py::Long VoronoiCellPy::getSourceIndex() const
 {
   VoronoiCell *c = getVoronoiCellFromPy(this);
   long index = c->ptr->source_index();
   return Py::Long(index);
 }
 
-Py::Int VoronoiCellPy::getSourceCategory(void) const
+Py::Int VoronoiCellPy::getSourceCategory() const
 {
   VoronoiCell *c = getVoronoiCellFromPy(this);
   return Py::Int(c->ptr->source_category());
 }
 
-Py::Object VoronoiCellPy::getIncidentEdge(void) const
+Py::String VoronoiCellPy::getSourceCategoryName() const
+{
+  VoronoiCell *c = getVoronoiCellFromPy(this);
+  switch (c->ptr->source_category()) {
+    case boost::polygon::SOURCE_CATEGORY_SINGLE_POINT:        return Py::String("SINGLE_POINT");
+    case boost::polygon::SOURCE_CATEGORY_SEGMENT_START_POINT: return Py::String("SEGMENT_START_POINT");
+    case boost::polygon::SOURCE_CATEGORY_SEGMENT_END_POINT:   return Py::String("SEGMENT_END_POINT");
+    case boost::polygon::SOURCE_CATEGORY_INITIAL_SEGMENT:     return Py::String("INITIAL_SEGMENT");
+    case boost::polygon::SOURCE_CATEGORY_REVERSE_SEGMENT:     return Py::String("REVERSE_SEGMENT");
+    case boost::polygon::SOURCE_CATEGORY_GEOMETRY_SHIFT:      return Py::String("GEOMETRY_SHIFT");
+    case boost::polygon::SOURCE_CATEGORY_BITMASK:             return Py::String("BITMASK");
+  }
+  return Py::String("");
+}
+
+Py::Object VoronoiCellPy::getIncidentEdge() const
 {
   VoronoiCell *c = getVoronoiCellFromPy(this);
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(c->dia, c->ptr->incident_edge())));

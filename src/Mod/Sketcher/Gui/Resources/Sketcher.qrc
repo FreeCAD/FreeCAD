@@ -123,10 +123,10 @@
         <file>icons/geometry/Sketcher_CreateBSpline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle.svg</file>
         <file>icons/geometry/Sketcher_CreateCircle_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateEllipse.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points.svg</file>
         <file>icons/geometry/Sketcher_CreateEllipse_3points_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateEllipse_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateEllipseByCenter.svg</file>
+        <file>icons/geometry/Sketcher_CreateEllipseByCenter_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateElliptical_Arc.svg</file>
         <file>icons/geometry/Sketcher_CreateElliptical_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateFillet.svg</file>

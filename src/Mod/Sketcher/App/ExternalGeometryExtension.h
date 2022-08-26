@@ -66,29 +66,29 @@ public:
 public:
 
     ExternalGeometryExtension() = default;
-    virtual ~ExternalGeometryExtension() override = default;
+    ~ExternalGeometryExtension() override = default;
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+    std::unique_ptr<Part::GeometryExtension> copy() const override;
 
-    virtual PyObject *getPyObject(void) override;
+    PyObject *getPyObject() override;
 
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
-    virtual bool testFlag(int flag) const override { return Flags.test((size_t)(flag)); }
-    virtual void setFlag(int flag, bool v=true) override { Flags.set((size_t)(flag),v); }
+    bool testFlag(int flag) const override { return Flags.test((size_t)(flag)); }
+    void setFlag(int flag, bool v=true) override { Flags.set((size_t)(flag),v); }
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
-    virtual bool isClear() const override {return Flags.none();}
-    virtual size_t flagSize() const override {return Flags.size();}
+    bool isClear() const override {return Flags.none();}
+    size_t flagSize() const override {return Flags.size();}
 
-    virtual const std::string& getRef() const override {return Ref;}
-    virtual void setRef(const std::string & ref) override {Ref = ref;}
+    const std::string& getRef() const override {return Ref;}
+    void setRef(const std::string & ref) override {Ref = ref;}
 
     static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
 
 protected:
-    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
-    virtual void restoreAttributes(Base::XMLReader &reader) override;
-    virtual void saveAttributes(Base::Writer &writer) const override;
+    void copyAttributes(Part::GeometryExtension * cpy) const override;
+    void restoreAttributes(Base::XMLReader &reader) override;
+    void saveAttributes(Base::Writer &writer) const override;
 
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;

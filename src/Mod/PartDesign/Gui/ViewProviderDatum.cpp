@@ -158,7 +158,7 @@ bool ViewProviderDatum::onDelete(const std::vector<std::string> &)
     return true;
 }
 
-std::vector<std::string> ViewProviderDatum::getDisplayModes(void) const
+std::vector<std::string> ViewProviderDatum::getDisplayModes() const
 {
     return { "Base" };
 }
@@ -214,7 +214,7 @@ SoDetail* ViewProviderDatum::getDetail(const char* subelement) const
     return nullptr;
 }
 
-bool ViewProviderDatum::isSelectable(void) const
+bool ViewProviderDatum::isSelectable() const
 {
     return true;
 }
@@ -272,7 +272,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
     }
 }
 
-bool ViewProviderDatum::doubleClicked(void)
+bool ViewProviderDatum::doubleClicked()
 {
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
@@ -289,7 +289,7 @@ bool ViewProviderDatum::doubleClicked(void)
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
 
-    if (datumBody != nullptr) {
+    if (datumBody) {
         if (datumBody != activeBody) {
             Gui::Command::doCommand(Gui::Command::Gui,
                     "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",

@@ -64,12 +64,12 @@ ConstraintTransform::ConstraintTransform()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintTransform::execute(void)
+App::DocumentObjectExecReturn *ConstraintTransform::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintTransform::getViewProviderName(void) const
+const char* ConstraintTransform::getViewProviderName() const
 {
         return "FemGui::ViewProviderFemConstraintTransform";
 }

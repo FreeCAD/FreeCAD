@@ -42,8 +42,8 @@ class MeshGuiExport RemoveComponents : public QWidget
     Q_OBJECT
 
 public:
-    RemoveComponents(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~RemoveComponents();
+    explicit RemoveComponents(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~RemoveComponents() override;
     void reject();
     void deleteSelection();
     void invertSelection();
@@ -63,7 +63,7 @@ public Q_SLOTS:
     void on_cbDeselectComp_toggled(bool);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     Ui_RemoveComponents* ui;
@@ -78,9 +78,9 @@ class MeshGuiExport RemoveComponentsDialog : public QDialog
     Q_OBJECT
 
 public:
-    RemoveComponentsDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~RemoveComponentsDialog();
-    void reject();
+    explicit RemoveComponentsDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    ~RemoveComponentsDialog() override;
+    void reject() override;
 
 private Q_SLOTS:
     void clicked(QAbstractButton* btn);
@@ -98,17 +98,17 @@ class TaskRemoveComponents : public Gui::TaskView::TaskDialog
 
 public:
     TaskRemoveComponents();
-    ~TaskRemoveComponents();
+    ~TaskRemoveComponents() override;
 
 public:
-    bool accept();
-    void clicked(int);
+    bool accept() override;
+    void clicked(int) override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument() const
+    bool isAllowedAlterDocument() const override
     { return true; }
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    void modifyStandardButtons(QDialogButtonBox*) override;
 
 private:
     RemoveComponents* widget;

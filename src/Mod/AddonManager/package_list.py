@@ -22,14 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
+""" Defines the PackageList QWidget for displaying a list of Addons. """
+
+from enum import IntEnum
+import threading
+
 import FreeCAD
 
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
-
-from enum import IntEnum
-import threading
 
 from Addon import Addon
 
@@ -42,11 +44,15 @@ translate = FreeCAD.Qt.translate
 
 
 class ListDisplayStyle(IntEnum):
+    """The display mode of the list"""
+
     COMPACT = 0
     EXPANDED = 1
 
 
 class StatusFilter(IntEnum):
+    """Predefined filers"""
+
     ANY = 0
     INSTALLED = 1
     NOT_INSTALLED = 2
@@ -89,7 +95,11 @@ class PackageList(QWidget):
         status = pref.GetInt("StatusSelection", 0)
         self.ui.comboStatus.setCurrentIndex(status)
 
+        # Pre-init of other members:
+        self.item_model = None
+
     def setModel(self, model):
+        """This is a model-view-controller widget: set its model."""
         self.item_model = model
         self.item_filter.setSourceModel(self.item_model)
         self.item_filter.sort(0)
@@ -109,6 +119,8 @@ class PackageList(QWidget):
         )
 
     def on_listPackages_clicked(self, index: QModelIndex):
+        """Determine what addon was selected and emit the itemSelected signal with it as
+        an argument."""
         source_selection = self.item_filter.mapToSource(index)
         selected_repo = self.item_model.repos[source_selection.row()]
         self.itemSelected.emit(selected_repo)
@@ -166,6 +178,7 @@ class PackageList(QWidget):
             self.item_filter.setFilterRegExp(text_filter)
 
     def set_view_style(self, style: ListDisplayStyle) -> None:
+        """Set the style (compact or expanded) of the list"""
         self.item_model.layoutAboutToBeChanged.emit()
         self.item_delegate.set_view(style)
         if style == ListDisplayStyle.COMPACT:
@@ -179,6 +192,7 @@ class PackageList(QWidget):
 
 
 class PackageListItemModel(QAbstractListModel):
+    """The model for use with the PackageList class."""
 
     repos = []
     write_lock = threading.Lock()
@@ -187,20 +201,20 @@ class PackageListItemModel(QAbstractListModel):
     StatusUpdateRole = Qt.UserRole + 1
     IconUpdateRole = Qt.UserRole + 2
 
-    def __init__(self, parent=None) -> None:
-        super().__init__(parent)
-
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
+        """The number of rows"""
         if parent.isValid():
             return 0
         return len(self.repos)
 
     def columnCount(self, parent: QModelIndex = QModelIndex()) -> int:
+        """Only one column, always returns 1."""
         if parent.isValid():
             return 0
         return 1
 
     def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
+        """Get the data for a given index and role."""
         if not index.isValid():
             return None
         row = index.row()
@@ -219,52 +233,53 @@ class PackageListItemModel(QAbstractListModel):
                     "AddonsInstaller", "Click for details about macro {}"
                 ).format(self.repos[row].display_name)
             return tooltip
-        elif role == PackageListItemModel.DataAccessRole:
+        if role == PackageListItemModel.DataAccessRole:
             return self.repos[row]
 
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
+    def headerData(self, _unused1, _unused2, _role=Qt.DisplayRole):
+        """No header in this implementation: always returns None."""
         return None
 
     def setData(self, index: QModelIndex, value, role=Qt.EditRole) -> None:
         """Set the data for this row. The column of the index is ignored."""
 
         row = index.row()
-        self.write_lock.acquire()
-        if role == PackageListItemModel.StatusUpdateRole:
-            self.repos[row].set_status(value)
-            self.dataChanged.emit(
-                self.index(row, 2),
-                self.index(row, 2),
-                [PackageListItemModel.StatusUpdateRole],
-            )
-        elif role == PackageListItemModel.IconUpdateRole:
-            self.repos[row].icon = value
-            self.dataChanged.emit(
-                self.index(row, 0),
-                self.index(row, 0),
-                [PackageListItemModel.IconUpdateRole],
-            )
-        self.write_lock.release()
+        with self.write_lock:
+            if role == PackageListItemModel.StatusUpdateRole:
+                self.repos[row].set_status(value)
+                self.dataChanged.emit(
+                    self.index(row, 2),
+                    self.index(row, 2),
+                    [PackageListItemModel.StatusUpdateRole],
+                )
+            elif role == PackageListItemModel.IconUpdateRole:
+                self.repos[row].icon = value
+                self.dataChanged.emit(
+                    self.index(row, 0),
+                    self.index(row, 0),
+                    [PackageListItemModel.IconUpdateRole],
+                )
 
     def append_item(self, repo: Addon) -> None:
+        """Adds this addon to the end of the model. Thread safe."""
         if repo in self.repos:
             # Cowardly refuse to insert the same repo a second time
             return
-        self.write_lock.acquire()
-        self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self.repos.append(repo)
-        self.endInsertRows()
-        self.write_lock.release()
+        with self.write_lock:
+            self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
+            self.repos.append(repo)
+            self.endInsertRows()
 
     def clear(self) -> None:
+        """Clear the model, removing all rows. Thread safe."""
         if self.rowCount() > 0:
-            self.write_lock.acquire()
-            self.beginRemoveRows(QModelIndex(), 0, self.rowCount() - 1)
-            self.repos = []
-            self.endRemoveRows()
-            self.write_lock.release()
+            with self.write_lock:
+                self.beginRemoveRows(QModelIndex(), 0, self.rowCount() - 1)
+                self.repos = []
+                self.endRemoveRows()
 
     def update_item_status(self, name: str, status: Addon.Status) -> None:
+        """Set the status of addon with name to status."""
         for row, item in enumerate(self.repos):
             if item.name == name:
                 self.setData(
@@ -273,6 +288,7 @@ class PackageListItemModel(QAbstractListModel):
                 return
 
     def update_item_icon(self, name: str, icon: QIcon) -> None:
+        """Set the icon for Addon with name to icon"""
         for row, item in enumerate(self.repos):
             if item.name == name:
                 self.setData(
@@ -281,11 +297,11 @@ class PackageListItemModel(QAbstractListModel):
                 return
 
     def reload_item(self, repo: Addon) -> None:
+        """Sets the addon data for the given addon (based on its name)"""
         for index, item in enumerate(self.repos):
             if item.name == repo.name:
-                self.write_lock.acquire()
-                self.repos[index] = repo
-                self.write_lock.release()
+                with self.write_lock:
+                    self.repos[index] = repo
                 return
 
 
@@ -322,14 +338,17 @@ class PackageListItemDelegate(QStyledItemDelegate):
         self.widget = self.expanded
 
     def set_view(self, style: ListDisplayStyle) -> None:
+        """Set the view of to style"""
         if not self.displayStyle == style:
             self.displayStyle = style
 
-    def sizeHint(self, option, index):
+    def sizeHint(self, _option, index):
+        """Attempt to figure out the correct height for the widget based on its current contents."""
         self.update_content(index)
         return self.widget.sizeHint()
 
     def update_content(self, index):
+        """Creates the display of the content for a given index."""
         repo = index.data(PackageListItemModel.DataAccessRole)
         if self.displayStyle == ListDisplayStyle.EXPANDED:
             self.widget = self.expanded
@@ -347,57 +366,9 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelDescription.setText(repo.metadata.Description)
             self.widget.ui.labelVersion.setText(f"<i>v{repo.metadata.Version}</i>")
             if self.displayStyle == ListDisplayStyle.EXPANDED:
-                maintainers = repo.metadata.Maintainer
-                maintainers_string = ""
-                if len(maintainers) == 1:
-                    maintainers_string = (
-                        translate("AddonsInstaller", "Maintainer")
-                        + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
-                    )
-                elif len(maintainers) > 1:
-                    n = len(maintainers)
-                    maintainers_string = translate(
-                        "AddonsInstaller", "Maintainers:", "", n
-                    )
-                    for maintainer in maintainers:
-                        maintainers_string += (
-                            f"\n{maintainer['name']} <{maintainer['email']}>"
-                        )
-                self.widget.ui.labelMaintainer.setText(maintainers_string)
-                if repo.tags:
-                    self.widget.ui.labelTags.setText(
-                        translate("AddonsInstaller", "Tags")
-                        + ": "
-                        + ", ".join(repo.tags)
-                    )
+                self._setup_expanded_package(repo)
         elif repo.macro and repo.macro.parsed:
-            self.widget.ui.labelDescription.setText(repo.macro.comment)
-            version_string = ""
-            if repo.macro.version:
-                version_string = repo.macro.version + " "
-            if repo.macro.on_wiki:
-                version_string += "(wiki)"
-            elif repo.macro.on_git:
-                version_string += "(git)"
-            else:
-                version_string += "(unknown source)"
-            if repo.macro.date:
-                version_string = (
-                    version_string
-                    + ", "
-                    + translate("AddonsInstaller", "updated")
-                    + " "
-                    + repo.macro.date
-                )
-            self.widget.ui.labelVersion.setText("<i>" + version_string + "</i>")
-            if self.displayStyle == ListDisplayStyle.EXPANDED:
-                if repo.macro.author:
-                    caption = translate("AddonsInstaller", "Author")
-                    self.widget.ui.labelMaintainer.setText(
-                        caption + ": " + repo.macro.author
-                    )
-                else:
-                    self.widget.ui.labelMaintainer.setText("")
+            self._setup_macro(repo)
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")
@@ -411,6 +382,56 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelStatus.setText(self.get_compact_update_string(repo))
 
         self.widget.adjustSize()
+
+    def _setup_expanded_package(self, repo: Addon):
+        """Set up the display for a package in expanded view"""
+        maintainers = repo.metadata.Maintainer
+        maintainers_string = ""
+        if len(maintainers) == 1:
+            maintainers_string = (
+                translate("AddonsInstaller", "Maintainer")
+                + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
+            )
+        elif len(maintainers) > 1:
+            n = len(maintainers)
+            maintainers_string = translate("AddonsInstaller", "Maintainers:", "", n)
+            for maintainer in maintainers:
+                maintainers_string += f"\n{maintainer['name']} <{maintainer['email']}>"
+        self.widget.ui.labelMaintainer.setText(maintainers_string)
+        if repo.tags:
+            self.widget.ui.labelTags.setText(
+                translate("AddonsInstaller", "Tags") + ": " + ", ".join(repo.tags)
+            )
+
+    def _setup_macro(self, repo: Addon):
+        """Set up the display for a macro"""
+        self.widget.ui.labelDescription.setText(repo.macro.comment)
+        version_string = ""
+        if repo.macro.version:
+            version_string = repo.macro.version + " "
+        if repo.macro.on_wiki:
+            version_string += "(wiki)"
+        elif repo.macro.on_git:
+            version_string += "(git)"
+        else:
+            version_string += "(unknown source)"
+        if repo.macro.date:
+            version_string = (
+                version_string
+                + ", "
+                + translate("AddonsInstaller", "updated")
+                + " "
+                + repo.macro.date
+            )
+        self.widget.ui.labelVersion.setText("<i>" + version_string + "</i>")
+        if self.displayStyle == ListDisplayStyle.EXPANDED:
+            if repo.macro.author:
+                caption = translate("AddonsInstaller", "Author")
+                self.widget.ui.labelMaintainer.setText(
+                    caption + ": " + repo.macro.author
+                )
+            else:
+                self.widget.ui.labelMaintainer.setText("")
 
     def get_compact_update_string(self, repo: Addon) -> str:
         """Get a single-line string listing details about the installed version and date"""
@@ -501,6 +522,8 @@ class PackageListItemDelegate(QStyledItemDelegate):
         return result
 
     def paint(self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex):
+        """Main paint function: renders this widget into a given rectangle, successively drawing
+        all of its children."""
         painter.save()
         self.widget.resize(option.rect.size())
         painter.translate(option.rect.topLeft())
@@ -521,36 +544,44 @@ class PackageListFilter(QSortFilterProxyModel):
         self.hide_newer_freecad_required = False
 
     def setPackageFilter(
-        self, type: int
+        self, package_type: int
     ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
-        self.package_type = type
+        """Set the package filter to package_type and refreshes."""
+        self.package_type = package_type
         self.invalidateFilter()
 
     def setStatusFilter(
         self, status: int
     ) -> None:  # 0=Any, 1=Installed, 2=Not installed, 3=Update available
+        """Sets the status filter to status and refreshes."""
         self.status = status
         self.invalidateFilter()
 
     def setHidePy2(self, hide_py2: bool) -> None:
+        """Sets whether or not to hide Python 2-only Addons"""
         self.hide_py2 = hide_py2
         self.invalidateFilter()
 
     def setHideObsolete(self, hide_obsolete: bool) -> None:
+        """Sets whether or not to hide Addons marked obsolete"""
         self.hide_obsolete = hide_obsolete
         self.invalidateFilter()
 
     def setHideNewerFreeCADRequired(self, hide_nfr: bool) -> None:
+        """Sets whether or not to hide packages that have indicated they need a newer version
+        of FreeCAD than the one currently running."""
         self.hide_newer_freecad_required = hide_nfr
         self.invalidateFilter()
 
     def lessThan(self, left, right) -> bool:
+        """Enable sorting of display name (not case sensitive)."""
         l = self.sourceModel().data(left, PackageListItemModel.DataAccessRole)
         r = self.sourceModel().data(right, PackageListItemModel.DataAccessRole)
 
         return l.display_name.lower() < r.display_name.lower()
 
     def filterAcceptsRow(self, row, parent=QModelIndex()):
+        """Do the actual filtering (called automatically by Qt when drawing the list)"""
         index = self.sourceModel().createIndex(row, 0)
         data = self.sourceModel().data(index, PackageListItemModel.DataAccessRole)
         if self.package_type == 1:
@@ -607,7 +638,7 @@ class PackageListFilter(QSortFilterProxyModel):
 
                 if int(required_version[0]) > fc_major:
                     return False
-                elif int(required_version[0]) == fc_major and len(required_version) > 1:
+                if int(required_version[0]) == fc_major and len(required_version) > 1:
                     if int(required_version[1]) > fc_minor:
                         return False
 
@@ -630,29 +661,25 @@ class PackageListFilter(QSortFilterProxyModel):
                 for tag in data.tags:
                     if re.match(tag).hasMatch():
                         return True
-                return False
-            else:
-                return False
-        else:
-            re = self.filterRegExp()
-            if re.isValid():
-                re.setCaseSensitivity(Qt.CaseInsensitive)
-                if re.indexIn(name) != -1:
+            return False
+        # Only get here for Qt < 5.12
+        re = self.filterRegExp()
+        if re.isValid():
+            re.setCaseSensitivity(Qt.CaseInsensitive)
+            if re.indexIn(name) != -1:
+                return True
+            if re.indexIn(desc) != -1:
+                return True
+            if (
+                data.macro
+                and data.macro.comment
+                and re.indexIn(data.macro.comment) != -1
+            ):
+                return True
+            for tag in data.tags:
+                if re.indexIn(tag) != -1:
                     return True
-                if re.indexIn(desc) != -1:
-                    return True
-                if (
-                    data.macro
-                    and data.macro.comment
-                    and re.indexIn(data.macro.comment) != -1
-                ):
-                    return True
-                for tag in data.tags:
-                    if re.indexIn(tag) != -1:
-                        return True
-                return False
-            else:
-                return False
+        return False
 
 
 class Ui_PackageList(object):

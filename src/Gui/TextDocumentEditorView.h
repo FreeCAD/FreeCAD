@@ -40,7 +40,7 @@ public:
     TextDocumentEditorView(
             App::TextDocument* textDocument,
             QPlainTextEdit* editor, QWidget* parent);
-    ~TextDocumentEditorView();
+    ~TextDocumentEditorView() override;
     const char *getName() const override { return "TextDocumentEditorView"; }
     bool onMsg(const char* msg, const char**) override;
     bool onHasMsg(const char* msg) const override;

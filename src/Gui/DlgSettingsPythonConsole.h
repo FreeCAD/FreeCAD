@@ -41,14 +41,14 @@ class DlgSettingsPythonConsole : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsPythonConsole(QWidget* parent = nullptr);
-    ~DlgSettingsPythonConsole();
+    explicit DlgSettingsPythonConsole(QWidget* parent = nullptr);
+    ~DlgSettingsPythonConsole() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsPythonConsole> ui;

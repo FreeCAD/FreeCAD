@@ -94,7 +94,7 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
-    if (Objects.size() > 0)
+    if (!Objects.empty())
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineLocation->setText(loc);
     ui->checkAxial->setChecked(axialfree);
@@ -152,7 +152,7 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
             std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-            if (Objects.size() > 0) {
+            if (!Objects.empty()) {
                 QMessageBox::warning(this, tr("Selection error"), tr("Please use only a single reference for bearing constraint"));
                 return;
             }
@@ -235,7 +235,7 @@ void TaskFemConstraintBearing::onCheckAxial(const bool pressed)
     pcConstraint->AxialFree.setValue(pressed);
 }
 
-double TaskFemConstraintBearing::getDistance(void) const
+double TaskFemConstraintBearing::getDistance() const
 {
     return ui->spinDistance->value();
 }
@@ -250,7 +250,7 @@ const std::string TaskFemConstraintBearing::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-const std::string TaskFemConstraintBearing::getLocationName(void) const
+const std::string TaskFemConstraintBearing::getLocationName() const
 {
     std::string loc = ui->lineLocation->text().toStdString();
     if (loc.empty())
@@ -260,7 +260,7 @@ const std::string TaskFemConstraintBearing::getLocationName(void) const
     return loc.substr(0, pos).c_str();
 }
 
-const std::string TaskFemConstraintBearing::getLocationObject(void) const
+const std::string TaskFemConstraintBearing::getLocationObject() const
 {
     std::string loc = ui->lineLocation->text().toStdString();
     if (loc.empty())

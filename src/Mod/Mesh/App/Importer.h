@@ -42,7 +42,7 @@ class Feature;
 class Importer
 {
 public:
-    Importer(App::Document*);
+    explicit Importer(App::Document*);
     ~Importer() = default;
 
     void load(const std::string& fileName);

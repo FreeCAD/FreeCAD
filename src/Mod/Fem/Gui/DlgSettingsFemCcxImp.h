@@ -37,13 +37,16 @@ class DlgSettingsFemCcxImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemCcxImp( QWidget* parent = nullptr );
-    ~DlgSettingsFemCcxImp();
+    explicit DlgSettingsFemCcxImp( QWidget* parent = nullptr );
+    ~DlgSettingsFemCcxImp() override;
+
+protected Q_SLOTS:
+    void onfileNameChanged(QString FileName);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemCcxImp> ui;

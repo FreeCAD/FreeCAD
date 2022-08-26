@@ -34,13 +34,13 @@ namespace TaskView {
 class ControlPy : public Py::PythonExtension<ControlPy> 
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
     static ControlPy* getInstance();
 
     ControlPy();
-    ~ControlPy();
+    ~ControlPy() override;
 
-    Py::Object repr();
+    Py::Object repr() override;
     Py::Object showDialog(const Py::Tuple&);
     Py::Object activeDialog(const Py::Tuple&);
     Py::Object closeDialog(const Py::Tuple&);
@@ -59,9 +59,9 @@ private:
 class GuiExport TaskWatcherPython : public TaskWatcher
 {
 public:
-    TaskWatcherPython(const Py::Object&);
-    ~TaskWatcherPython();
-    bool shouldShow();
+    explicit TaskWatcherPython(const Py::Object&);
+    ~TaskWatcherPython() override;
+    bool shouldShow() override;
 
 private:
     Py::Object watcher;
@@ -70,40 +70,40 @@ private:
 class GuiExport TaskDialogPython : public TaskDialog
 {
 public:
-    TaskDialogPython(const Py::Object&);
-    ~TaskDialogPython();
+    explicit TaskDialogPython(const Py::Object&);
+    ~TaskDialogPython() override;
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
-    virtual void modifyStandardButtons(QDialogButtonBox*);
+    QDialogButtonBox::StandardButtons getStandardButtons() const override;
+    void modifyStandardButtons(QDialogButtonBox*) override;
 
     /*!
       Indicates whether this task dialog allows other commands to modify
       the document while it is open.
     */
-    virtual bool isAllowedAlterDocument(void) const;
+    bool isAllowedAlterDocument() const override;
     /*!
       Indicates whether this task dialog allows other commands to modify
       the 3d view while it is open.
     */
-    virtual bool isAllowedAlterView(void) const;
+    bool isAllowedAlterView() const override;
     /*!
       Indicates whether this task dialog allows other commands to modify
       the selection while it is open.
     */
-    virtual bool isAllowedAlterSelection(void) const;
-    virtual bool needsFullSpace() const;
+    bool isAllowedAlterSelection() const override;
+    bool needsFullSpace() const override;
 
 public:
     /// is called by the framework when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if a button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user press the help button 
-    virtual void helpRequested();
+    void helpRequested() override;
 
 private:
     void clearForm();

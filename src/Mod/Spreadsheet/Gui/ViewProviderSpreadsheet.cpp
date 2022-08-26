@@ -82,7 +82,7 @@ void ViewProviderSheet::setDisplayMode(const char* ModeName)
 std::vector<std::string> ViewProviderSheet::getDisplayModes(void) const
 {
     std::vector<std::string> StrList;
-    StrList.push_back("Spreadsheet");
+    StrList.emplace_back("Spreadsheet");
     return StrList;
 }
 

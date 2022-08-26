@@ -59,23 +59,23 @@ class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
 {
     Q_OBJECT
 
-    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
-    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
-    Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
-    Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum ) // clazy:exclude=qproperty-without-notify
     Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
-    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
-    Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
-    Q_PROPERTY(int precision READ getPrecision WRITE setPrecision )
-    Q_PROPERTY(QString format READ getFormat WRITE setFormat )
-    Q_PROPERTY(Base::Quantity quantity READ getQuantity WRITE setValue )
-    Q_PROPERTY(QString quantityString READ getQuantityString WRITE setQuantityString )
-    Q_PROPERTY(QString rawText READ rawText WRITE setRawText )
+    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(int precision READ getPrecision WRITE setPrecision ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString format READ getFormat WRITE setFormat ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(Base::Quantity quantity READ getQuantity WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(QString quantityString READ getQuantityString WRITE setQuantityString ) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QString rawText READ rawText WRITE setRawText ) // clazy:exclude=qproperty-without-notify
 
 
 public:
     InputField (QWidget * parent = nullptr);
-    virtual ~InputField();
+    ~InputField() override;
 
     /// set the field with a quantity
     void setValue(const Base::Quantity&);
@@ -83,18 +83,18 @@ public:
     void setValue(const double&);
 
     /// get the current value
-    Base::Quantity getQuantity(void)const{return this->actQuantity;}
+    Base::Quantity getQuantity()const{return this->actQuantity;}
     /// Get the current quantity without unit
     double rawValue() const;
 
     /// get stored, valid quantity as a string (user string - avoid storing)
-    QString getQuantityString(void) const;
+    QString getQuantityString() const;
 
     /// set, validate and display quantity from a string. Must match existing units.
     void setQuantityString(const QString& text);
 
     /// return the quantity in C locale, i.e. decimal separator is a dot.
-    QString rawText(void) const;
+    QString rawText() const;
 
     /// expects the string in C locale and internally converts it into the OS-specific locale
     void setRawText(const QString& text);
@@ -114,37 +114,37 @@ public:
     const Base::Unit& getUnit() const;
 
     /// set the input field to the last used value (works only if the setParamGrpPath() was called)
-    void setToLastUsedValue(void);
+    void setToLastUsedValue();
     /// get the value of the singleStep property
-    double singleStep(void)const;
+    double singleStep()const;
     /// set the value of the singleStep property
     void setSingleStep(double);
     /// get the value of the maximum property
-    double maximum(void)const;
+    double maximum()const;
     /// set the value of the maximum property
     void setMaximum(double);
     /// get the value of the minimum property
-    double minimum(void)const;
+    double minimum()const;
     /// set the value of the minimum property
     void setMinimum(double);
     /// get the value of the minimum property
-    int historySize(void)const;
+    int historySize()const;
     /// set the value of the minimum property
     void setHistorySize(int);
     /// set the unit by a string (can be used in the *.ui file)
     void setUnitText(const QString&);
     /// get the unit as a string (can be used in the *.ui file)
-    QString getUnitText(void);
+    QString getUnitText();
     /// get the value of the precision property
-    int getPrecision(void) const;
+    int getPrecision() const;
     /// set the value of the precision property (can be used in the *.ui file)
     void setPrecision(const int);
     /// get the value of the format property: "f" (fixed), "e" (scientific), "g" (general)
-    QString getFormat(void) const;
+    QString getFormat() const;
     /// set the value of the format property (can be used in the *.ui file)
     void setFormat(const QString&);
     /// set the number portion selected (use after setValue())
-    void selectNumber(void);
+    void selectNumber();
     /// input validation
     void fixup(QString& input) const;
     /// input validation
@@ -159,16 +159,16 @@ public:
     /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToHistory(const QString &valueq = QString());
     /// get the history of the field, newest first
-    std::vector<QString> getHistory(void);
+    std::vector<QString> getHistory();
     /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToSavedValues(const QString &valueq = QString());
     /// get the history of the field, newest first
-    std::vector<QString> getSavedValues(void);
+    std::vector<QString> getSavedValues();
     //@}
 
-    void bind(const App::ObjectIdentifier &_path);
-    bool apply(const std::string &propName);
-    bool apply();
+    void bind(const App::ObjectIdentifier &_path) override;
+    bool apply(const std::string &propName) override;
+    bool apply() override;
 
 Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
@@ -194,13 +194,13 @@ protected Q_SLOTS:
     void updateIconLabel(const QString& text);
 
 protected:
-    virtual void showEvent(QShowEvent * event);
-    virtual void focusInEvent(QFocusEvent * event);
-    virtual void focusOutEvent(QFocusEvent * event);
-    virtual void keyPressEvent(QKeyEvent * event);
-    virtual void wheelEvent(QWheelEvent * event);
-    virtual void contextMenuEvent(QContextMenuEvent * event);
-    virtual void resizeEvent(QResizeEvent*);
+    void showEvent(QShowEvent * event) override;
+    void focusInEvent(QFocusEvent * event) override;
+    void focusOutEvent(QFocusEvent * event) override;
+    void keyPressEvent(QKeyEvent * event) override;
+    void wheelEvent(QWheelEvent * event) override;
+    void contextMenuEvent(QContextMenuEvent * event) override;
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;

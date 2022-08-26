@@ -55,7 +55,7 @@ public:
         initialize("This module is the Robot module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object simulateToFile(const Py::Tuple& args)

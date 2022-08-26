@@ -34,11 +34,11 @@ namespace Fem
 
 class FemExport ConstraintDisplacement : public Fem::Constraint
 {
-    PROPERTY_HEADER(Fem::ConstraintDisplacement);
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintDisplacement);
 
 public:
     /// Constructor
-    ConstraintDisplacement(void);
+    ConstraintDisplacement();
 
     // Read-only (calculated values). These trigger changes in the ViewProvider
     App::PropertyVectorList Points;
@@ -66,13 +66,13 @@ public:
     //App::PropertyBool element;
 
     /// recalculate the object
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const;
+    const char* getViewProviderName() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 };
 

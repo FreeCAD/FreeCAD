@@ -116,7 +116,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string CurveConstraintPy::representation(void) const
+std::string CurveConstraintPy::representation() const
 {
     return std::string("<GeomPlate_CurveConstraint object>");
 }
@@ -353,7 +353,7 @@ PyObject* CurveConstraintPy::projectedCurve(PyObject *args)
     }
 }
 
-Py::Long CurveConstraintPy::getNbPoints(void) const
+Py::Long CurveConstraintPy::getNbPoints() const
 {
     try {
         Standard_Integer v = getGeomPlate_CurveConstraintPtr()->NbPoints();
@@ -374,7 +374,7 @@ void  CurveConstraintPy::setNbPoints(Py::Long arg)
     }
 }
 
-Py::Float CurveConstraintPy::getFirstParameter(void) const
+Py::Float CurveConstraintPy::getFirstParameter() const
 {
     try {
         Standard_Real v = getGeomPlate_CurveConstraintPtr()->FirstParameter();
@@ -385,7 +385,7 @@ Py::Float CurveConstraintPy::getFirstParameter(void) const
     }
 }
 
-Py::Float CurveConstraintPy::getLastParameter(void) const
+Py::Float CurveConstraintPy::getLastParameter() const
 {
     try {
         Standard_Real v = getGeomPlate_CurveConstraintPtr()->LastParameter();
@@ -396,7 +396,7 @@ Py::Float CurveConstraintPy::getLastParameter(void) const
     }
 }
 
-Py::Float CurveConstraintPy::getLength(void) const
+Py::Float CurveConstraintPy::getLength() const
 {
     try {
         Standard_Real v = getGeomPlate_CurveConstraintPtr()->Length();

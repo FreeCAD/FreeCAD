@@ -36,6 +36,7 @@
 //-----------------------------------------------------------------------------
 #include "CXX/Extensions.hxx"
 #include "CXX/Exception.hxx"
+#include "CXX/Objects.hxx"
 
 #include <assert.h>
 
@@ -49,7 +50,7 @@ void bpt( void )
 
 void printRefCount( PyObject *obj )
 {
-    std::cout << "RefCount of 0x" << std::hex << reinterpret_cast< unsigned int >( obj ) << std::dec << " is " << Py_REFCNT( obj ) << std::endl;
+    std::cout << "RefCount of 0x" << std::hex << reinterpret_cast< unsigned long >( obj ) << std::dec << " is " << Py_REFCNT( obj ) << std::endl;
 }
 #endif
 
@@ -77,10 +78,10 @@ void Object::validate()
         }
 #endif
         release();
-        if( PyErr_Occurred() )
-        { // Error message already set
-            throw Exception();
-        }
+
+        // If error message already set
+        ifPyErrorThrowCxxException();
+
         // Better error message if RTTI available
 #if defined( _CPPRTTI ) || defined( __GNUG__ )
         throw TypeError( s );
@@ -151,7 +152,11 @@ PyMethodDef *MethodTable::table()
 //================================================================================
 ExtensionModuleBase::ExtensionModuleBase( const char *name )
 : m_module_name( name )
+#if defined( Py_LIMITED_API )
+, m_full_module_name( m_module_name )
+#else
 , m_full_module_name( __Py_PackageContext() != NULL ? std::string( __Py_PackageContext() ) : m_module_name )
+#endif
 , m_method_table()
 //m_module_def
 , m_module( NULL )
@@ -183,8 +188,13 @@ public:
     ExtensionModuleBase *module;
 };
 
+void initExceptions();
+
 void ExtensionModuleBase::initialize( const char *module_doc )
 {
+    // init the exception code
+    initExceptions();
+
     memset( &m_module_def, 0, sizeof( m_module_def ) );
 
     m_module_def.m_name = const_cast<char *>( m_module_name.c_str() );
@@ -195,12 +205,12 @@ void ExtensionModuleBase::initialize( const char *module_doc )
     m_module = PyModule_Create( &m_module_def );
 }
 
-Py::Module ExtensionModuleBase::module( void ) const
+Module ExtensionModuleBase::module( void ) const
 {
     return Module( m_module );
 }
 
-Py::Dict ExtensionModuleBase::moduleDictionary( void ) const
+Dict ExtensionModuleBase::moduleDictionary( void ) const
 {
     return module().getDict();
 }
@@ -244,6 +254,11 @@ extern "C"
     static PyObject *sequence_item_handler( PyObject *, Py_ssize_t );
     static int sequence_ass_item_handler( PyObject *, Py_ssize_t, PyObject * );
 
+    static PyObject *sequence_inplace_concat_handler( PyObject *, PyObject * );
+    static PyObject *sequence_inplace_repeat_handler( PyObject *, Py_ssize_t );
+
+    static int sequence_contains_handler( PyObject *, PyObject * );
+
     // Mapping
     static Py_ssize_t mapping_length_handler( PyObject * );
     static PyObject *mapping_subscript_handler( PyObject *, PyObject * );
@@ -267,10 +282,34 @@ extern "C"
     static PyObject *number_xor_handler( PyObject *, PyObject * );
     static PyObject *number_or_handler( PyObject *, PyObject * );
     static PyObject *number_power_handler( PyObject *, PyObject *, PyObject * );
+    static PyObject *number_floor_divide_handler( PyObject *, PyObject * );
+    static PyObject *number_true_divide_handler( PyObject *, PyObject * );
+    static PyObject *number_index_handler( PyObject * );
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    static PyObject *number_matrix_multiply_handler( PyObject *, PyObject * );
+#endif
+
+    static PyObject *number_inplace_add_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_subtract_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_multiply_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_remainder_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_power_handler( PyObject *, PyObject *, PyObject * );
+    static PyObject *number_inplace_lshift_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_rshift_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_and_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_xor_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_or_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_floor_divide_handler( PyObject *, PyObject * );
+    static PyObject *number_inplace_true_divide_handler( PyObject *, PyObject * );
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    static PyObject *number_inplace_matrix_multiply_handler( PyObject *, PyObject * );
+#endif
 
     // Buffer
+#if !defined( Py_LIMITED_API )
     static int buffer_get_handler( PyObject *, Py_buffer *, int );
     static void buffer_release_handler( PyObject *, Py_buffer * );
+#endif
 }
 
 extern "C" void standard_dealloc( PyObject *p )
@@ -280,88 +319,213 @@ extern "C" void standard_dealloc( PyObject *p )
 
 bool PythonType::readyType()
 {
+#if defined( Py_LIMITED_API )
+    if( !tp_object )
+    {
+        std::vector<PyType_Slot> spec_slots( slots.size() + 1 );
+        int index = 0;
+
+        for (std::unordered_map<int, void*>::const_iterator i = slots.cbegin(); i != slots.cend(); i++)
+        {
+            spec_slots[ index ].slot = i->first;
+            spec_slots[ index ].pfunc = i->second;
+            index++;
+        }
+        spec_slots[ index ].slot = 0;
+        spec->slots = spec_slots.data();
+        tp_object = reinterpret_cast<PyTypeObject *>( PyType_FromSpec(spec) );
+    }
+    return tp_object != NULL;
+#else
     return PyType_Ready( table ) >= 0;
+#endif
 }
 
-PythonType &PythonType::supportSequenceType()
-{
-    if( !sequence_table )
-    {
-        sequence_table = new PySequenceMethods;
-        memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
-        table->tp_as_sequence = sequence_table;
-        sequence_table->sq_length = sequence_length_handler;
-        sequence_table->sq_concat = sequence_concat_handler;
-        sequence_table->sq_repeat = sequence_repeat_handler;
-        sequence_table->sq_item = sequence_item_handler;
-
-        sequence_table->sq_ass_item = sequence_ass_item_handler;    // BAS setup separately?
-        // QQQ sq_inplace_concat
-        // QQQ sq_inplace_repeat
+#if defined( Py_LIMITED_API )
+#define FILL_SEQUENCE_SLOT(slot) \
+    if( methods_to_support&support_sequence_ ## slot ) { \
+        slots[ Py_sq_ ## slot ] = reinterpret_cast<void *>( sequence_ ## slot ## _handler ); \
     }
+#else
+#define FILL_SEQUENCE_SLOT(slot) \
+    if( methods_to_support&support_sequence_ ## slot ) { \
+        sequence_table->sq_ ## slot = sequence_ ## slot ## _handler; \
+    }
+#endif
+
+PythonType &PythonType::supportSequenceType( int methods_to_support ) {
+#if !defined( Py_LIMITED_API )
+    if(sequence_table)
+    {
+        return *this;
+    }
+    sequence_table = new PySequenceMethods;
+    memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
+    table->tp_as_sequence = sequence_table;
+#endif
+
+    FILL_SEQUENCE_SLOT(length)
+    FILL_SEQUENCE_SLOT(concat)
+    FILL_SEQUENCE_SLOT(repeat)
+    FILL_SEQUENCE_SLOT(item)
+    FILL_SEQUENCE_SLOT(ass_item)
+    FILL_SEQUENCE_SLOT(inplace_concat)
+    FILL_SEQUENCE_SLOT(inplace_repeat)
+    FILL_SEQUENCE_SLOT(contains)
     return *this;
 }
 
-PythonType &PythonType::supportMappingType()
-{
-    if( !mapping_table )
-    {
-        mapping_table = new PyMappingMethods;
-        memset( mapping_table, 0, sizeof( PyMappingMethods ) );   // ensure new fields are 0
-        table->tp_as_mapping = mapping_table;
-        mapping_table->mp_length = mapping_length_handler;
-        mapping_table->mp_subscript = mapping_subscript_handler;
-        mapping_table->mp_ass_subscript = mapping_ass_subscript_handler;    // BAS setup separately?
+#undef FILL_SEQUENCE_SLOT
+
+#if defined( Py_LIMITED_API )
+#define FILL_MAPPING_SLOT(slot) \
+    if( methods_to_support&support_mapping_ ## slot ) { \
+        slots[ Py_mp_ ## slot ] = reinterpret_cast<void *>( mapping_ ## slot ## _handler ); \
     }
+#else
+#define FILL_MAPPING_SLOT(slot) \
+    if( methods_to_support&support_mapping_ ## slot ) { \
+        mapping_table->mp_ ## slot = mapping_ ## slot ## _handler; \
+    }
+#endif
+
+PythonType &PythonType::supportMappingType( int methods_to_support )
+{
+#if !defined( Py_LIMITED_API )
+    if( mapping_table )
+    {
+        return *this;
+    }
+    mapping_table = new PyMappingMethods;
+    memset( mapping_table, 0, sizeof( PyMappingMethods ) );   // ensure new fields are 0
+    table->tp_as_mapping = mapping_table;
+#endif
+    FILL_MAPPING_SLOT(length)
+    FILL_MAPPING_SLOT(subscript)
+    FILL_MAPPING_SLOT(ass_subscript)
     return *this;
 }
 
-PythonType &PythonType::supportNumberType()
-{
-    if( !number_table )
-    {
-        number_table = new PyNumberMethods;
-        memset( number_table, 0, sizeof( PyNumberMethods ) );   // ensure new fields are 0
-        table->tp_as_number = number_table;
-        number_table->nb_add = number_add_handler;
-        number_table->nb_subtract = number_subtract_handler;
-        number_table->nb_multiply = number_multiply_handler;
-        number_table->nb_remainder = number_remainder_handler;
-        number_table->nb_divmod = number_divmod_handler;
-        number_table->nb_power = number_power_handler;
-        number_table->nb_negative = number_negative_handler;
-        number_table->nb_positive = number_positive_handler;
-        number_table->nb_absolute = number_absolute_handler;
-        number_table->nb_invert = number_invert_handler;
-        number_table->nb_lshift = number_lshift_handler;
-        number_table->nb_rshift = number_rshift_handler;
-        number_table->nb_and = number_and_handler;
-        number_table->nb_xor = number_xor_handler;
-        number_table->nb_or = number_or_handler;
-        number_table->nb_int = number_int_handler;
-        number_table->nb_float = number_float_handler;
+#undef FILL_MAPPING_SLOT
 
-        // QQQ lots of new methods to add
+#if defined( Py_LIMITED_API )
+#define FILL_NUMBER_SLOT(slot) \
+    if( methods_to_support&support_number_ ## slot ) { \
+        slots[ Py_nb_ ## slot ] = reinterpret_cast<void *>( number_ ## slot ## _handler ); \
     }
+#define FILL_NUMBER_INPLACE_SLOT(slot) \
+    if( inplace_methods_to_support&support_number_ ## slot ) { \
+        slots[ Py_nb_ ## slot ] = reinterpret_cast<void *>( number_ ## slot ## _handler ); \
+    }
+#else
+#define FILL_NUMBER_SLOT(slot) \
+    if( methods_to_support&support_number_ ## slot ) { \
+        number_table->nb_ ## slot = number_ ## slot ## _handler; \
+    }
+#define FILL_NUMBER_INPLACE_SLOT(slot) \
+    if( inplace_methods_to_support&support_number_ ## slot ) { \
+        number_table->nb_ ## slot = number_ ## slot ## _handler; \
+    }
+#endif
+
+PythonType &PythonType::supportNumberType( int methods_to_support, int inplace_methods_to_support )
+{
+#if !defined( Py_LIMITED_API )
+    if( number_table )
+    {
+        return *this;
+    }
+    number_table = new PyNumberMethods;
+    memset( number_table, 0, sizeof( PyNumberMethods ) );   // ensure new fields are 0
+    table->tp_as_number = number_table;
+#endif
+
+    FILL_NUMBER_SLOT(add)
+    FILL_NUMBER_SLOT(subtract)
+    FILL_NUMBER_SLOT(multiply)
+    FILL_NUMBER_SLOT(remainder)
+    FILL_NUMBER_SLOT(divmod)
+    FILL_NUMBER_SLOT(power)
+    FILL_NUMBER_SLOT(negative)
+    FILL_NUMBER_SLOT(positive)
+    FILL_NUMBER_SLOT(absolute)
+    FILL_NUMBER_SLOT(invert)
+    FILL_NUMBER_SLOT(lshift)
+    FILL_NUMBER_SLOT(rshift)
+    FILL_NUMBER_SLOT(and)
+    FILL_NUMBER_SLOT(xor)
+    FILL_NUMBER_SLOT(or)
+    FILL_NUMBER_SLOT(int)
+    FILL_NUMBER_SLOT(float)
+    FILL_NUMBER_SLOT(floor_divide)
+    FILL_NUMBER_SLOT(true_divide)
+    FILL_NUMBER_SLOT(index)
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    FILL_NUMBER_SLOT(matrix_multiply)
+#endif
+
+    FILL_NUMBER_INPLACE_SLOT(inplace_add)
+    FILL_NUMBER_INPLACE_SLOT(inplace_subtract)
+    FILL_NUMBER_INPLACE_SLOT(inplace_multiply)
+    FILL_NUMBER_INPLACE_SLOT(inplace_remainder)
+    FILL_NUMBER_INPLACE_SLOT(inplace_power)
+    FILL_NUMBER_INPLACE_SLOT(inplace_lshift)
+    FILL_NUMBER_INPLACE_SLOT(inplace_rshift)
+    FILL_NUMBER_INPLACE_SLOT(inplace_and)
+    FILL_NUMBER_INPLACE_SLOT(inplace_xor)
+    FILL_NUMBER_INPLACE_SLOT(inplace_or)
+    FILL_NUMBER_INPLACE_SLOT(inplace_floor_divide)
+    FILL_NUMBER_INPLACE_SLOT(inplace_true_divide)
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+    FILL_NUMBER_INPLACE_SLOT(inplace_matrix_multiply)
+#endif
+
     return *this;
 }
 
-PythonType &PythonType::supportBufferType()
+#undef FILL_NUMBER_SLOT
+
+#if !defined( Py_LIMITED_API )
+PythonType &PythonType::supportBufferType( int methods_to_support )
 {
     if( !buffer_table )
     {
         buffer_table = new PyBufferProcs;
         memset( buffer_table, 0, sizeof( PyBufferProcs ) );   // ensure new fields are 0
         table->tp_as_buffer = buffer_table;
-        buffer_table->bf_getbuffer = buffer_get_handler;
-        buffer_table->bf_releasebuffer = buffer_release_handler;
+
+        if( methods_to_support&support_buffer_getbuffer )
+        {
+            buffer_table->bf_getbuffer = buffer_get_handler;
+        }
+        if( methods_to_support&support_buffer_releasebuffer )
+        {
+            buffer_table->bf_releasebuffer = buffer_release_handler;
+        }
     }
     return *this;
 }
+#endif
 
 // if you define one sequence method you must define
 // all of them except the assigns
 
+#if defined( Py_LIMITED_API )
+PythonType::PythonType( size_t basic_size, int itemsize, const char *default_name )
+: spec( new PyType_Spec )
+{
+    memset( spec, 0, sizeof( PyType_Spec ) );
+    spec->name = const_cast<char *>( default_name );
+    spec->basicsize = basic_size;
+    spec->itemsize = itemsize;
+    spec->flags = Py_TPFLAGS_DEFAULT;
+
+    slots[ Py_tp_dealloc ] = reinterpret_cast<void *>( standard_dealloc );
+
+    tp_object = 0;
+}
+
+#else
 PythonType::PythonType( size_t basic_size, int itemsize, const char *default_name )
 : table( new PyTypeObject )
 , sequence_table( NULL )
@@ -458,74 +622,126 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
     table->tp_next = 0;
 #endif
 }
+#endif
 
 PythonType::~PythonType()
 {
+#if defined( Py_LIMITED_API )
+    delete spec;
+    PyObject_Free( tp_object );
+#else
     delete table;
     delete sequence_table;
     delete mapping_table;
     delete number_table;
     delete buffer_table;
+#endif
 }
 
 PyTypeObject *PythonType::type_object() const
 {
+#if defined( Py_LIMITED_API )
+    return tp_object;
+#else
     return table;
+#endif
 }
 
 PythonType &PythonType::name( const char *nam )
 {
+#if defined( Py_LIMITED_API )
+    spec->name = nam;
+#else
     table->tp_name = const_cast<char *>( nam );
+#endif
     return *this;
 }
 
 const char *PythonType::getName() const
 {
+#if defined( Py_LIMITED_API )
+    return spec->name;
+#else
     return table->tp_name;
+#endif
 }
 
 PythonType &PythonType::doc( const char *d )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_doc ] = reinterpret_cast<void *>( const_cast<char *>( d ) );
+#else
     table->tp_doc = const_cast<char *>( d );
+#endif
     return *this;
 }
 
 const char *PythonType::getDoc() const
 {
+#if defined( Py_LIMITED_API )
+    if( tp_object )
+        return reinterpret_cast<char *>( PyType_GetSlot( tp_object, Py_tp_doc ) );
+
+    std::unordered_map<int, void*>::const_iterator slot = slots.find( Py_tp_doc );
+    if( slot == slots.end() )
+        return NULL;
+    return reinterpret_cast<char *>( slot->second );
+#else
     return table->tp_doc;
+#endif
 }
 
 PythonType &PythonType::set_tp_dealloc( void (*tp_dealloc)( PyObject *self ) )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_dealloc ] = reinterpret_cast<void *>( tp_dealloc );
+#else
     table->tp_dealloc = tp_dealloc;
+#endif
     return *this;
 }
 
 PythonType &PythonType::set_tp_init( int (*tp_init)( PyObject *self, PyObject *args, PyObject *kwds ) )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_init ] = reinterpret_cast<void *>( tp_init );
+#else
     table->tp_init = tp_init;
+#endif
     return *this;
 }
 
 PythonType &PythonType::set_tp_new( PyObject *(*tp_new)( PyTypeObject *subtype, PyObject *args, PyObject *kwds ) )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_new ] = reinterpret_cast<void *>( tp_new );
+#else
     table->tp_new = tp_new;
+#endif
     return *this;
 }
 
 PythonType &PythonType::set_methods( PyMethodDef *methods )
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_methods ] = reinterpret_cast<void *>( methods );
+#else
     table->tp_methods = methods;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportClass()
 {
+#if defined( Py_LIMITED_API )
+    spec->flags |= Py_TPFLAGS_BASETYPE;
+#else
     table->tp_flags |= Py_TPFLAGS_BASETYPE;
+#endif
     return *this;
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 PythonType &PythonType::supportPrint()
 {
 #if PY_VERSION_HEX < 0x03080000
@@ -537,25 +753,41 @@ PythonType &PythonType::supportPrint()
 
 PythonType &PythonType::supportGetattr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_getattr ] = reinterpret_cast<void *>( getattr_handler );
+#else
     table->tp_getattr = getattr_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportSetattr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_setattr ] = reinterpret_cast<void *>( setattr_handler );
+#else
     table->tp_setattr = setattr_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportGetattro()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_getattro ] = reinterpret_cast<void *>( getattro_handler );
+#else
     table->tp_getattro = getattro_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportSetattro()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_setattro ] = reinterpret_cast<void *>( setattro_handler );
+#else
     table->tp_setattro = setattro_handler;
+#endif
     return *this;
 }
 
@@ -569,38 +801,72 @@ PythonType &PythonType::supportCompare( void )
 
 PythonType &PythonType::supportRichCompare()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_richcompare ] = reinterpret_cast<void *>( rich_compare_handler );
+#else
     table->tp_richcompare = rich_compare_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportRepr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_repr ] = reinterpret_cast<void *>( repr_handler );
+#else
     table->tp_repr = repr_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportStr()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_str ] = reinterpret_cast<void *>( str_handler );
+#else
     table->tp_str = str_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportHash()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_hash ] = reinterpret_cast<void *>( hash_handler );
+#else
     table->tp_hash = hash_handler;
+#endif
     return *this;
 }
 
 PythonType &PythonType::supportCall()
 {
+#if defined( Py_LIMITED_API )
+    slots[ Py_tp_call ] = reinterpret_cast<void *>( call_handler );
+#else
     table->tp_call = call_handler;
+#endif
     return *this;
 }
 
-PythonType &PythonType::supportIter()
+PythonType &PythonType::supportIter( int methods_to_support )
 {
-    table->tp_iter = iter_handler;
-    table->tp_iternext = iternext_handler;
+    if( methods_to_support&support_iter_iter )
+    {
+#if defined( Py_LIMITED_API )
+        slots[ Py_tp_iter ] = reinterpret_cast<void *>( iter_handler );
+#else
+        table->tp_iter = iter_handler;
+#endif
+    }
+    if( methods_to_support&support_iter_iternext )
+    {
+#if defined( Py_LIMITED_API )
+        slots[ Py_tp_iternext ] = reinterpret_cast<void *>( iternext_handler );
+#else
+        table->tp_iternext = iternext_handler;
+#endif
+    }
     return *this;
 }
 
@@ -611,7 +877,7 @@ PythonType &PythonType::supportIter()
 //--------------------------------------------------------------------------------
 PythonExtensionBase *getPythonExtensionBase( PyObject *self )
 {
-    if( self->ob_type->tp_flags&Py_TPFLAGS_BASETYPE )
+    if(PyType_HasFeature(self->ob_type, Py_TPFLAGS_BASETYPE))
     {
         PythonClassInstance *instance = reinterpret_cast<PythonClassInstance *>( self );
         return instance->m_pycxx_object;
@@ -622,7 +888,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined ( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -630,7 +896,7 @@ extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->print( fp, flags );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -644,7 +910,7 @@ extern "C" PyObject *getattr_handler( PyObject *self, char *name )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->getattr( name ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -655,9 +921,9 @@ extern "C" int setattr_handler( PyObject *self, char *name, PyObject *value )
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->setattr( name, Py::Object( value ) );
+        return p->setattr( name, Object( value ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -668,9 +934,9 @@ extern "C" PyObject *getattro_handler( PyObject *self, PyObject *name )
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->getattro( Py::String( name ) ) );
+        return new_reference_to( p->getattro( String( name ) ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -681,9 +947,9 @@ extern "C" int setattro_handler( PyObject *self, PyObject *name, PyObject *value
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->setattro( Py::String( name ), Py::Object( value ) );
+        return p->setattro( String( name ), Object( value ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -694,9 +960,9 @@ extern "C" PyObject *rich_compare_handler( PyObject *self, PyObject *other, int 
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->rich_compare( Py::Object( other ), op ) );
+        return new_reference_to( p->rich_compare( Object( other ), op ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -709,7 +975,7 @@ extern "C" PyObject *repr_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->repr() );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -722,7 +988,7 @@ extern "C" PyObject *str_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->str() );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -735,7 +1001,7 @@ extern "C" Py_hash_t hash_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->hash();
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -747,11 +1013,11 @@ extern "C" PyObject *call_handler( PyObject *self, PyObject *args, PyObject *kw 
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
         if( kw != NULL )
-            return new_reference_to( p->call( Py::Object( args ), Py::Object( kw ) ) );
+            return new_reference_to( p->call( Object( args ), Object( kw ) ) );
         else
-            return new_reference_to( p->call( Py::Object( args ), Py::Object() ) );
+            return new_reference_to( p->call( Object( args ), Object() ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -764,7 +1030,7 @@ extern "C" PyObject *iter_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->iter() );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -777,7 +1043,7 @@ extern "C" PyObject *iternext_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->iternext();  // might be a NULL ptr on end of iteration
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -792,7 +1058,7 @@ extern "C" Py_ssize_t sequence_length_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->sequence_length();
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -803,9 +1069,9 @@ extern "C" PyObject *sequence_concat_handler( PyObject *self, PyObject *other )
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->sequence_concat( Py::Object( other ) ) );
+        return new_reference_to( p->sequence_concat( Object( other ) ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -818,7 +1084,7 @@ extern "C" PyObject *sequence_repeat_handler( PyObject *self, Py_ssize_t count )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->sequence_repeat( count ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -831,7 +1097,7 @@ extern "C" PyObject *sequence_item_handler( PyObject *self, Py_ssize_t index )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->sequence_item( index ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -842,9 +1108,48 @@ extern "C" int sequence_ass_item_handler( PyObject *self, Py_ssize_t index, PyOb
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->sequence_ass_item( index, Py::Object( value ) );
+        return p->sequence_ass_item( index, Object( value ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
+    {
+        return -1;    // indicate error
+    }
+}
+
+extern "C" PyObject *sequence_inplace_concat_handler( PyObject *self, PyObject *o2 )
+{
+    try
+    {
+        PythonExtensionBase *p = getPythonExtensionBase( self );
+        return new_reference_to( p->sequence_inplace_concat( Object( o2 ) ) );
+    }
+    catch( BaseException & )
+    {
+        return NULL;    // indicate error
+    }
+}
+
+extern "C" PyObject *sequence_inplace_repeat_handler( PyObject *self, Py_ssize_t count )
+{
+    try
+    {
+        PythonExtensionBase *p = getPythonExtensionBase( self );
+        return new_reference_to( p->sequence_inplace_repeat( count ) );
+    }
+    catch( BaseException & )
+    {
+        return NULL;    // indicate error
+    }
+}
+
+extern "C" int sequence_contains_handler( PyObject *self, PyObject *value )
+{
+    try
+    {
+        PythonExtensionBase *p = getPythonExtensionBase( self );
+        return p->sequence_contains( Object( value ) );
+    }
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -858,7 +1163,7 @@ extern "C" Py_ssize_t mapping_length_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->mapping_length();
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -869,9 +1174,9 @@ extern "C" PyObject *mapping_subscript_handler( PyObject *self, PyObject *key )
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->mapping_subscript( Py::Object( key ) ) );
+        return new_reference_to( p->mapping_subscript( Object( key ) ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return NULL;    // indicate error
     }
@@ -882,237 +1187,101 @@ extern "C" int mapping_ass_subscript_handler( PyObject *self, PyObject *key, PyO
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->mapping_ass_subscript( Py::Object( key ), Py::Object( value ) );
+        return p->mapping_ass_subscript( Object( key ), Object( value ) );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
 }
 
 // Number
-extern "C" PyObject *number_negative_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_negative() );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
+#define NUMBER_UNARY( slot ) \
+extern "C" PyObject *number_ ## slot ## _handler( PyObject *self ) \
+{ \
+    try \
+    { \
+        PythonExtensionBase *p = getPythonExtensionBase( self ); \
+        return new_reference_to( p->number_ ## slot() ); \
+    } \
+    catch( BaseException & ) \
+    { \
+        return NULL; /* indicates error */ \
+    } \
 }
 
-extern "C" PyObject *number_positive_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_positive() );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
+#define NUMBER_BINARY( slot ) \
+extern "C" PyObject *number_ ## slot ## _handler( PyObject *self, PyObject *other ) \
+{ \
+    try \
+    { \
+        PythonExtensionBase *p = getPythonExtensionBase( self ); \
+        return new_reference_to( p->number_ ## slot( Object( other ) ) ); \
+    } \
+    catch( BaseException & ) \
+    { \
+        return NULL; /* indicates error */ \
+    } \
+}
+#define NUMBER_TERNARY( slot ) \
+extern "C" PyObject *number_ ## slot ## _handler( PyObject *self, PyObject *other1, PyObject *other2 ) \
+{ \
+    try \
+    { \
+        PythonExtensionBase *p = getPythonExtensionBase( self ); \
+        return new_reference_to( p->number_ ## slot( Object( other1 ), Object( other2 ) ) ); \
+    } \
+    catch( BaseException & ) \
+    { \
+        return NULL; /* indicates error */ \
+    } \
 }
 
-extern "C" PyObject *number_absolute_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_absolute() );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
+NUMBER_UNARY( negative )
+NUMBER_UNARY( positive )
+NUMBER_UNARY( absolute )
+NUMBER_UNARY( invert )
+NUMBER_UNARY( int )
+NUMBER_UNARY( float )
+NUMBER_BINARY( add )
+NUMBER_BINARY( subtract )
+NUMBER_BINARY( multiply )
+NUMBER_BINARY( remainder )
+NUMBER_BINARY( divmod )
+NUMBER_BINARY( lshift )
+NUMBER_BINARY( rshift )
+NUMBER_BINARY( and )
+NUMBER_BINARY( xor )
+NUMBER_BINARY( or )
+NUMBER_TERNARY( power )
+NUMBER_BINARY( floor_divide )
+NUMBER_BINARY( true_divide )
+NUMBER_UNARY( index )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( matrix_multiply )
+#endif
+NUMBER_BINARY( inplace_add )
+NUMBER_BINARY( inplace_subtract )
+NUMBER_BINARY( inplace_multiply )
+NUMBER_BINARY( inplace_remainder )
+NUMBER_TERNARY( inplace_power )
+NUMBER_BINARY( inplace_lshift )
+NUMBER_BINARY( inplace_rshift )
+NUMBER_BINARY( inplace_and )
+NUMBER_BINARY( inplace_xor )
+NUMBER_BINARY( inplace_or )
+NUMBER_BINARY( inplace_floor_divide )
+NUMBER_BINARY( inplace_true_divide )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( inplace_matrix_multiply )
+#endif
 
-extern "C" PyObject *number_invert_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_invert() );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_int_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_int() );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_float_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_float() );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_add_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_add( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_subtract_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_subtract( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_multiply_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_multiply( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_remainder_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_remainder( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_divmod_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_divmod( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_lshift_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_lshift( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_rshift_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_rshift( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_and_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_and( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_xor_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_xor( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_or_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_or( Py::Object( other ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_power_handler( PyObject *self, PyObject *x1, PyObject *x2 )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_power( Py::Object( x1 ), Py::Object( x2 ) ) );
-    }
-    catch( Py::Exception & )
-    {
-        return NULL;    // indicate error
-    }
-}
+#undef NUMBER_UNARY
+#undef NUMBER_BINARY
+#undef NUMBER_TERNARY
 
 // Buffer
+#ifndef Py_LIMITED_API
 extern "C" int buffer_get_handler( PyObject *self, Py_buffer *buf, int flags )
 {
     try
@@ -1120,7 +1289,7 @@ extern "C" int buffer_get_handler( PyObject *self, Py_buffer *buf, int flags )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->buffer_get( buf, flags );
     }
-    catch( Py::Exception & )
+    catch( BaseException & )
     {
         return -1;    // indicate error
     }
@@ -1132,6 +1301,7 @@ extern "C" void buffer_release_handler( PyObject *self, Py_buffer *buf )
     p->buffer_release( buf );
     // NOTE: No way to indicate error to Python
 }
+#endif
 
 //================================================================================
 //
@@ -1151,81 +1321,81 @@ PythonExtensionBase::~PythonExtensionBase()
     assert( ob_refcnt == 0 );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name )
 {
-    Py::TupleN args;
+    TupleN args;
     return  self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1 )
 {
-    Py::TupleN args( arg1 );
+    TupleN args( arg1 );
     return  self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2 )
 {
-    Py::TupleN args( arg1, arg2 );
+    TupleN args( arg1, arg2 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3 )
 {
-    Py::TupleN args( arg1, arg2, arg3 );
+    TupleN args( arg1, arg2, arg3 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3,
-                                            const Py::Object &arg4 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3,
+                                            const Object &arg4 )
 {
-    Py::TupleN args( arg1, arg2, arg3, arg4 );
+    TupleN args( arg1, arg2, arg3, arg4 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3,
-                                            const Py::Object &arg4, const Py::Object &arg5 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3,
+                                            const Object &arg4, const Object &arg5 )
 {
-    Py::TupleN args( arg1, arg2, arg3, arg4, arg5 );
+    TupleN args( arg1, arg2, arg3, arg4, arg5 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3,
-                                            const Py::Object &arg4, const Py::Object &arg5, const Py::Object &arg6 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3,
+                                            const Object &arg4, const Object &arg5, const Object &arg6 )
 {
-    Py::TupleN args( arg1, arg2, arg3, arg4, arg5, arg6 );
+    TupleN args( arg1, arg2, arg3, arg4, arg5, arg6 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3,
-                                            const Py::Object &arg4, const Py::Object &arg5, const Py::Object &arg6,
-                                            const Py::Object &arg7 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3,
+                                            const Object &arg4, const Object &arg5, const Object &arg6,
+                                            const Object &arg7 )
 {
-    Py::TupleN args( arg1, arg2, arg3, arg4, arg5, arg6, arg7 );
+    TupleN args( arg1, arg2, arg3, arg4, arg5, arg6, arg7 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3,
-                                            const Py::Object &arg4, const Py::Object &arg5, const Py::Object &arg6,
-                                            const Py::Object &arg7, const Py::Object &arg8 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3,
+                                            const Object &arg4, const Object &arg5, const Object &arg6,
+                                            const Object &arg7, const Object &arg8 )
 {
-    Py::TupleN args( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 );
+    TupleN args( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 );
     return self().callMemberFunction( fn_name, args );
 }
 
-Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
-                                            const Py::Object &arg1, const Py::Object &arg2, const Py::Object &arg3,
-                                            const Py::Object &arg4, const Py::Object &arg5, const Py::Object &arg6,
-                                            const Py::Object &arg7, const Py::Object &arg8, const Py::Object &arg9 )
+Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
+                                            const Object &arg1, const Object &arg2, const Object &arg3,
+                                            const Object &arg4, const Object &arg5, const Object &arg6,
+                                            const Object &arg7, const Object &arg8, const Object &arg9 )
 {
-    Py::TupleN args( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 );
+    TupleN args( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 );
     return self().callMemberFunction( fn_name, args );
 }
 
@@ -1235,270 +1405,208 @@ void PythonExtensionBase::reinit( Tuple & /* args */, Dict & /* kwds */)
 }
 
 
-Py::Object PythonExtensionBase::genericGetAttro( const Py::String &name )
+Object PythonExtensionBase::genericGetAttro( const String &name )
 {
     return asObject( PyObject_GenericGetAttr( selfPtr(), name.ptr() ) );
 }
 
-int PythonExtensionBase::genericSetAttro( const Py::String &name, const Py::Object &value )
+int PythonExtensionBase::genericSetAttro( const String &name, const Object &value )
 {
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API ) && PY_MINOR_VERSION <= 7
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
-    return -1;
 }
 #endif
 
-Py::Object PythonExtensionBase::getattr( const char * )
+Object PythonExtensionBase::getattr( const char * )
 {
     missing_method( getattr );
-    return Py::None();
 }
 
-int PythonExtensionBase::setattr( const char *, const Py::Object & )
+int PythonExtensionBase::setattr( const char *, const Object & )
 {
     missing_method( setattr );
-    return -1;
 }
 
-Py::Object PythonExtensionBase::getattro( const Py::String &name )
+Object PythonExtensionBase::getattro( const String &name )
 {
     return asObject( PyObject_GenericGetAttr( selfPtr(), name.ptr() ) );
 }
 
-int PythonExtensionBase::setattro( const Py::String &name, const Py::Object &value )
+int PythonExtensionBase::setattro( const String &name, const Object &value )
 {
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
 
-int PythonExtensionBase::compare( const Py::Object & )
+int PythonExtensionBase::compare( const Object & )
 {
     missing_method( compare );
-    return -1;
 }
 
-Py::Object PythonExtensionBase::rich_compare( const Py::Object &, int )
+Object PythonExtensionBase::rich_compare( const Object &, int )
 {
     missing_method( rich_compare );
-    return Py::None();
 }
 
-Py::Object PythonExtensionBase::repr()
+Object PythonExtensionBase::repr()
 {
     missing_method( repr );
-    return Py::None();
 }
 
-Py::Object PythonExtensionBase::str()
+Object PythonExtensionBase::str()
 {
     missing_method( str );
-    return Py::None();
 }
 
 long PythonExtensionBase::hash()
 {
     missing_method( hash );
-    return -1; }
-
-
-Py::Object PythonExtensionBase::call( const Py::Object &, const Py::Object & )
-{
-    missing_method( call );
-    return Py::None();
 }
 
-Py::Object PythonExtensionBase::iter()
+Object PythonExtensionBase::call( const Object &, const Object & )
+{
+    missing_method( call );
+}
+
+Object PythonExtensionBase::iter()
 {
     missing_method( iter );
-    return Py::None();
 }
 
 PyObject *PythonExtensionBase::iternext()
 {
     missing_method( iternext );
-    return NULL; }
-
-
+}
 
 // Sequence methods
-int PythonExtensionBase::sequence_length()
+PyCxx_ssize_t PythonExtensionBase::sequence_length()
 {
     missing_method( sequence_length );
-    return -1; }
+}
 
-
-Py::Object PythonExtensionBase::sequence_concat( const Py::Object & )
+Object PythonExtensionBase::sequence_concat( const Object & )
 {
     missing_method( sequence_concat );
-    return Py::None();
 }
 
-Py::Object PythonExtensionBase::sequence_repeat( Py_ssize_t )
+Object PythonExtensionBase::sequence_repeat( Py_ssize_t )
 {
     missing_method( sequence_repeat );
-    return Py::None();
 }
 
-Py::Object PythonExtensionBase::sequence_item( Py_ssize_t )
+Object PythonExtensionBase::sequence_item( Py_ssize_t )
 {
     missing_method( sequence_item );
-    return Py::None();
 }
 
-int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Py::Object & )
+int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Object & )
 {
     missing_method( sequence_ass_item );
-    return -1;
 }
 
+Object PythonExtensionBase::sequence_inplace_concat( const Object & )
+{
+    missing_method( sequence_inplace_concat );
+}
+
+Object PythonExtensionBase::sequence_inplace_repeat( Py_ssize_t )
+{
+    missing_method( sequence_inplace_repeat );
+}
+
+int PythonExtensionBase::sequence_contains( const Object & )
+{
+    missing_method( sequence_contains );
+}
 
 // Mapping
-int PythonExtensionBase::mapping_length()
+PyCxx_ssize_t PythonExtensionBase::mapping_length()
 {
     missing_method( mapping_length );
-    return -1;
 }
 
-
-Py::Object PythonExtensionBase::mapping_subscript( const Py::Object & )
+Object PythonExtensionBase::mapping_subscript( const Object & )
 {
     missing_method( mapping_subscript );
-    return Py::None();
 }
 
-int PythonExtensionBase::mapping_ass_subscript( const Py::Object &, const Py::Object & )
+int PythonExtensionBase::mapping_ass_subscript( const Object &, const Object & )
 {
     missing_method( mapping_ass_subscript );
-    return -1;
 }
 
-Py::Object PythonExtensionBase::number_negative()
-{
-    missing_method( number_negative );
-    return Py::None();
-}
+// Number
+#define NUMBER_UNARY( slot ) Object PythonExtensionBase::number_ ## slot() \
+    { missing_method( number_ ## slot ); }
+#define NUMBER_BINARY( slot ) Object PythonExtensionBase::number_ ## slot( const Object & ) \
+    { missing_method( number_ ## slot ); }
+#define NUMBER_TERNARY( slot ) Object PythonExtensionBase::number_ ## slot( const Object &, const Object & ) \
+    { missing_method( number_ ## slot ); }
 
-Py::Object PythonExtensionBase::number_positive()
-{
-    missing_method( number_positive );
-    return Py::None();
-}
+NUMBER_UNARY( negative )
+NUMBER_UNARY( positive )
+NUMBER_UNARY( absolute )
+NUMBER_UNARY( invert )
+NUMBER_UNARY( int )
+NUMBER_UNARY( float )
+NUMBER_BINARY( add )
+NUMBER_BINARY( subtract )
+NUMBER_BINARY( multiply )
+NUMBER_BINARY( remainder )
+NUMBER_BINARY( divmod )
+NUMBER_BINARY( lshift )
+NUMBER_BINARY( rshift )
+NUMBER_BINARY( and )
+NUMBER_BINARY( xor )
+NUMBER_BINARY( or )
+NUMBER_TERNARY( power )
+NUMBER_BINARY( floor_divide )
+NUMBER_BINARY( true_divide )
+NUMBER_UNARY( index )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( matrix_multiply )
+#endif
 
-Py::Object PythonExtensionBase::number_absolute()
-{
-    missing_method( number_absolute );
-    return Py::None();
-}
+NUMBER_BINARY( inplace_add )
+NUMBER_BINARY( inplace_subtract )
+NUMBER_BINARY( inplace_multiply )
+NUMBER_BINARY( inplace_remainder )
+NUMBER_TERNARY( inplace_power )
+NUMBER_BINARY( inplace_lshift )
+NUMBER_BINARY( inplace_rshift )
+NUMBER_BINARY( inplace_and )
+NUMBER_BINARY( inplace_xor )
+NUMBER_BINARY( inplace_or )
+NUMBER_BINARY( inplace_floor_divide )
+NUMBER_BINARY( inplace_true_divide )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
+NUMBER_BINARY( inplace_matrix_multiply )
+#endif
 
-Py::Object PythonExtensionBase::number_invert()
-{
-    missing_method( number_invert );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_int()
-{
-    missing_method( number_int );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_float()
-{
-    missing_method( number_float );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_long()
-{
-    missing_method( number_long );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_add( const Py::Object & )
-{
-    missing_method( number_add );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_subtract( const Py::Object & )
-{
-    missing_method( number_subtract );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_multiply( const Py::Object & )
-{
-    missing_method( number_multiply );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_remainder( const Py::Object & )
-{
-    missing_method( number_remainder );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_divmod( const Py::Object & )
-{
-    missing_method( number_divmod );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_lshift( const Py::Object & )
-{
-    missing_method( number_lshift );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_rshift( const Py::Object & )
-{
-    missing_method( number_rshift );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_and( const Py::Object & )
-{
-    missing_method( number_and );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_xor( const Py::Object & )
-{
-    missing_method( number_xor );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_or( const Py::Object & )
-{
-    missing_method( number_or );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_power( const Py::Object &, const Py::Object & )
-{
-    missing_method( number_power );
-    return Py::None();
-}
+#undef NUMBER_UNARY
+#undef NUMBER_BINARY
+#undef NUMBER_TERNARY
 
 
 // Buffer
-int PythonExtensionBase::buffer_get( Py_buffer * /* buf */, int /* flags */ )
+#ifndef Py_LIMITED_API
+int PythonExtensionBase::buffer_get( Py_buffer * /*buf*/, int /*flags*/ )
 {
     missing_method( buffer_get );
-    return -1;
 }
 
 int PythonExtensionBase::buffer_release( Py_buffer * /*buf*/ )
 {
-    /* This method is optional and only required if the buffer's
-       memory is dynamic. */
+    // This method is optional and only required if the buffer's
+    // memory is dynamic.
     return 0;
 }
+#endif
 
 //--------------------------------------------------------------------------------
 //
@@ -1525,7 +1633,7 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
 
         return new_reference_to( result.ptr() );
     }
-    catch( Exception & )
+    catch( BaseException & )
     {
         return 0;
     }
@@ -1555,7 +1663,7 @@ extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple
 
         return new_reference_to( result.ptr() );
     }
-    catch( Exception & )
+    catch( BaseException & )
     {
         return 0;
     }
@@ -1609,7 +1717,7 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
             return new_reference_to( result.ptr() );
         }
     }
-    catch( Exception & )
+    catch( BaseException & )
     {
         return 0;
     }
@@ -1622,7 +1730,7 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
 //
 //--------------------------------------------------------------------------------
 ExtensionExceptionType::ExtensionExceptionType()
-    : Py::Object()
+: Object()
 {
 }
 
@@ -1648,20 +1756,65 @@ ExtensionExceptionType::~ExtensionExceptionType()
 {
 }
 
-Exception::Exception( ExtensionExceptionType &exception, const std::string& reason )
+BaseException::BaseException( ExtensionExceptionType &exception, const std::string& reason )
 {
     PyErr_SetString( exception.ptr(), reason.c_str() );
 }
 
-Exception::Exception( ExtensionExceptionType &exception, Object &reason )
+BaseException::BaseException( ExtensionExceptionType &exception, Object &reason )
 {
     PyErr_SetObject( exception.ptr(), reason.ptr() );
 }
 
-Exception::Exception( PyObject *exception, Object &reason )
+BaseException::BaseException( PyObject *exception, Object &reason )
 {
     PyErr_SetObject( exception, reason.ptr() );
 }
+
+BaseException::BaseException( PyObject *exception, const std::string &reason )
+{
+    PyErr_SetString( exception, reason.c_str() );
+}
+
+BaseException::BaseException()
+{
+}
+
+void BaseException::clear()
+{
+    PyErr_Clear();
+}
+
+// is the exception this specific exception 'exc'
+bool BaseException::matches( ExtensionExceptionType &exc )
+{
+    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
+}
+
+Object BaseException::errorType()
+{
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    Object result( type );
+
+    PyErr_Restore( type, value, traceback );
+    return result;
+}
+
+Object BaseException::errorValue()
+{
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    Object result( value );
+
+    PyErr_Restore( type, value, traceback );
+    return result;
+}
+
+
+//------------------------------------------------------------
 
 #if 1
 //------------------------------------------------------------

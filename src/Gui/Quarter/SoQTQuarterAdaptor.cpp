@@ -318,10 +318,10 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
 
     // Turn off the selection indicators when we go back from picking
     // mode into viewing mode.
-    if(m_viewingflag) {
+    if (m_viewingflag) {
         SoGLRenderAction* action = getSoRenderManager()->getGLRenderAction();
 
-        if(action != nullptr)
+        if (action)
             SoLocateHighlight::turnOffCurrentHighlight(action);
     }
 }
@@ -756,3 +756,5 @@ SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
     this->starttime = timeofday;
     return SbVec2f(1000 * this->drawtime, 1.0f / this->frametime);
 }
+
+#include "moc_SoQTQuarterAdaptor.cpp"

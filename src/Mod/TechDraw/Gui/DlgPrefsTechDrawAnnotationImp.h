@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,18 +38,18 @@ class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
-    ~DlgPrefsTechDrawAnnotationImp();
+    explicit DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
+    ~DlgPrefsTechDrawAnnotationImp() override;
 
 public Q_SLOTS:
     void onLineGroupChanged(int);
 
 protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
 
-    int prefBalloonArrow(void) const;
+    int prefBalloonArrow() const;
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;

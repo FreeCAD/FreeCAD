@@ -37,7 +37,7 @@ public:
     virtual ~SoSVGVectorOutput();
 
     virtual SbBool openFile (const char *filename);
-    virtual void closeFile (void);
+    virtual void closeFile ();
     std::fstream& getFileStream();
 
 private:
@@ -54,11 +54,11 @@ class GuiExport SoFCVectorizeSVGAction : public SoVectorizeAction {
     SO_ACTION_HEADER(SoFCVectorizeSVGAction);
 
 public:
-    SoFCVectorizeSVGAction(void);
+    SoFCVectorizeSVGAction();
     virtual ~SoFCVectorizeSVGAction();
 
-    static void initClass(void);
-    SoSVGVectorOutput * getSVGOutput(void) const;
+    static void initClass();
+    SoSVGVectorOutput * getSVGOutput() const;
 
     virtual void setBackgroundState(bool b) { m_backgroundState = b; }
     virtual bool getBackgroundState(void) const { return m_backgroundState; }
@@ -68,11 +68,11 @@ public:
     virtual bool getUseMM(void) const { return m_usemm; }
 
 protected:
-    virtual void printHeader(void) const;
-    virtual void printFooter(void) const;
-    virtual void printBackground(void) const;
+    virtual void printHeader() const;
+    virtual void printFooter() const;
+    virtual void printBackground() const;
     virtual void printItem(const SoVectorizeItem * item) const;
-    virtual void printViewport(void) const;
+    virtual void printViewport() const;
 
 private:
     SoFCVectorizeSVGActionP* p;

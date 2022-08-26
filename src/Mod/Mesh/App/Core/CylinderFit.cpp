@@ -27,21 +27,21 @@
 //	(X0i,Y0i,Z0i) = (Xc,Yc,Zc) + s(L,M,N)
 // where s is the distance from (Xc,Yc,Zc) to (X0i,Y0i,Z0i) when (L,M,N) is
 // of unit length (normalized).
-// The distance between a cylinder surface point (Xi,Yi,Zi) and its 
+// The distance between a cylinder surface point (Xi,Yi,Zi) and its
 // projection onto the axis (X0i,Y0i,Z0i) is the radius:
 // (Xi - X0i)^2 + (Yi - Y0i)^2 + (Zi - Z0i)^2 = R^2
-// Also the vector to a cylinder surface point (Xi,Yi,Zi) from its 
+// Also the vector to a cylinder surface point (Xi,Yi,Zi) from its
 // projection onto the axis (X0i,Y0i,Z0i) is orthogonal to the axis so we can
 // write:
 // (Xi - X0i, Yi - Y0i, Zi - Z0i).(L,M,N) = 0 or
 // L(Xi - X0i) + M(Yi - Y0i) + N(Zi - Z0i) = 0
-// If we substitute these various equations into each other and further add 
-// the constraint that L^2 + M^2 + N^2 = 1 then we can arrive at a single 
+// If we substitute these various equations into each other and further add
+// the constraint that L^2 + M^2 + N^2 = 1 then we can arrive at a single
 // equation for the cylinder surface points:
 // (Xi - Xc + L*L*(Xc - Xi) + L*M*(Yc - Yi) + L*N*(Zc - Zi))^2 +
 // (Yi - Yc + M*L*(Xc - Xi) + M*M*(Yc - Yi) + M*N*(Zc - Zi))^2 +
 // (Zi - Zc + N*L*(Xc - Xi) + N*M*(Yc - Yi) + N*N*(Zc - Zi))^2 - R^2 = 0
-// This equation is what is used in the least squares solution below. Because 
+// This equation is what is used in the least squares solution below. Because
 // we are constraining the direction vector to a unit length and also because
 // we need to stop the axis point from moving along the axis we need to fix one
 // of the ordinates in the solution. So from our initial approximations for the
@@ -58,7 +58,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstdlib>
-# include <iterator> 
+# include <iterator>
 #endif
 
 #include "CylinderFit.h"
@@ -106,7 +106,7 @@ void CylinderFit::SetApproximations(const Base::Vector3d &base, const Base::Vect
 	_vAxis = axis;
 	_vAxis.Normalize();
 	_dRadius = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list< Base::Vector3f >::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			_dRadius += Base::Vector3d(cIt->x, cIt->y, cIt->z).DistanceToLine(_vBase, _vAxis);
@@ -226,7 +226,7 @@ void CylinderFit::ProjectToCylinder()
     }
 }
 
-// Compute approximations for the parameters using all points by computing a 
+// Compute approximations for the parameters using all points by computing a
 // line through the points. This doesn't work well if the points are only from
 // one small surface area.
 // In that case rather use SetApproximations() with a better estimate.
@@ -238,7 +238,7 @@ void CylinderFit::ComputeApproximationsLine()
 	_vBase.Set(0.0, 0.0, 0.0);
 	_vAxis.Set(0.0, 0.0, 0.0);
 	_dRadius = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		std::vector<Wm4::Vector3d> input;
 		std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
@@ -388,7 +388,7 @@ void CylinderFit::findBestSolDirection(SolutionD &solDir)
 double CylinderFit::meanXObs()
 {
 	double mx = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			mx += cIt->x;
@@ -400,7 +400,7 @@ double CylinderFit::meanXObs()
 double CylinderFit::meanYObs()
 {
 	double my = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			my += cIt->y;
@@ -412,7 +412,7 @@ double CylinderFit::meanYObs()
 double CylinderFit::meanZObs()
 {
 	double mz = 0.0;
-	if (_vPoints.size() > 0)
+	if (!_vPoints.empty())
 	{
 		for (std::list<Base::Vector3f>::const_iterator cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
 			mz += cIt->z;
@@ -430,8 +430,8 @@ void CylinderFit::setupNormalEquationMatrices(SolutionD solDir, const std::vecto
 	atpa.setZero();
 	atpl.setZero();
 
-	// For each point, setup the observation equation coefficients and add their 
-	// contribution into the the normal equation matrices
+	// For each point, setup the observation equation coefficients and add their
+	// contribution into the normal equation matrices
 	double a[5], b[3];
 	double f0, qw;
     std::vector< Base::Vector3d >::const_iterator vIt = residuals.begin();
@@ -446,7 +446,7 @@ void CylinderFit::setupNormalEquationMatrices(SolutionD solDir, const std::vecto
 	setLowerPart(atpa);
 }
 
-// Sets up contributions of given observation to the quasi parameteric 
+// Sets up contributions of given observation to the quasi parameteric
 // normal equation matrices. Assumes uncorrelated coordinates.
 // point ... point
 // residual ... residual for this point computed from previous iteration (zero for first iteration)
@@ -456,13 +456,13 @@ void CylinderFit::setupNormalEquationMatrices(SolutionD solDir, const std::vecto
 // b[3] ... observation partials
 void CylinderFit::setupObservation(SolutionD solDir, const Base::Vector3f &point, const Base::Vector3d &residual, double a[5], double &f0, double &qw, double b[3]) const
 {
-	// This adjustment requires an update of the observation approximations 
+	// This adjustment requires an update of the observation approximations
 	// because the residuals do not have a linear relationship.
 	// New estimates for the observations:
 	double xEstimate = (double)point.x + residual.x;
 	double yEstimate = (double)point.y + residual.y;
 	double zEstimate = (double)point.z + residual.z;
-	
+
 	// intermediate parameters
 	double lambda = _vAxis.x * (xEstimate - _vBase.x) + _vAxis.y * (yEstimate - _vBase.y) + _vAxis.z * (zEstimate - _vBase.z);
 	double x0 = _vBase.x + lambda * _vAxis.x;
@@ -493,7 +493,7 @@ void CylinderFit::setupObservation(SolutionD solDir, const Base::Vector3f &point
 			ddzdm = -(_vAxis.y * _vAxis.z / _vAxis.x) * dx00 + _vAxis.z * dy00;
 			ddxdn = -2.0 * _vAxis.z * dx00 - (_vAxis.y * _vAxis.z / _vAxis.x) * dy00 + (_vAxis.x - _vAxis.z * _vAxis.z / _vAxis.x) * dz00;
 			ddydn = -(_vAxis.y * _vAxis.z / _vAxis.x) * dx00 + _vAxis.y * dz00;
-			ddzdn = (_vAxis.x - _vAxis.z * _vAxis.z / _vAxis.x) * dx00 + _vAxis.y * dy00 + 2.0 * _vAxis.z * dz00;			
+			ddzdn = (_vAxis.x - _vAxis.z * _vAxis.z / _vAxis.x) * dx00 + _vAxis.y * dy00 + 2.0 * _vAxis.z * dz00;
 			a[0] = -b[1];
 			a[1] = -b[2];
 			a[2] = 2.0 * (dx * ddxdm + dy * ddydm + dz * ddzdm);
@@ -529,10 +529,10 @@ void CylinderFit::setupObservation(SolutionD solDir, const Base::Vector3f &point
 			a[4] = -2.0 * _dRadius;
 			break;
 	}
-		
+
 	// free term
 	f0 = _dRadius * _dRadius - dx * dx - dy * dy - dz * dz + b[0] * residual.x + b[1] * residual.y + b[2] * residual.z;
-	
+
 	// quasi weight (using equal weights for cylinder point coordinate observations)
 	//w[0] = 1.0;
 	//w[1] = 1.0;
@@ -618,7 +618,7 @@ bool CylinderFit::computeResiduals(SolutionD solDir, const Eigen::VectorXd &x, s
 
 		//sigma0 += v.x * w[0] * v.x + v.y * w[1] * v.y + v.z * w[2] * v.z;
 		sigma0 += v.x * v.x + v.y * v.y + v.z * v.z;
-			
+
 		if ((dVx > vConvLimit) || (dVy > vConvLimit) || (dVz > vConvLimit))
 			vConverged = false;
 
@@ -650,7 +650,7 @@ bool CylinderFit::computeResiduals(SolutionD solDir, const Eigen::VectorXd &x, s
 
 // Update the parameters after solving the normal equations
 bool CylinderFit::updateParameters(SolutionD solDir, const Eigen::VectorXd &x)
-{	 
+{
 	// Update the parameters used as unknowns in the solution
 	switch (solDir)
 	{

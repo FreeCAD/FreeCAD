@@ -76,12 +76,6 @@ QGIViewImage::~QGIViewImage()
     // m_imageItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewImage::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-
-    return QGIView::itemChange(change, value);
-}
-
 void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)
 {
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
@@ -90,9 +84,8 @@ void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)
 void QGIViewImage::updateView(bool update)
 {
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage *>(getViewObject()) );
-    if( viewImage == nullptr ) {
+    if (!viewImage)
         return;
-    }
 
     if (update ||
         viewImage->isTouched() ||
@@ -120,9 +113,8 @@ void QGIViewImage::draw()
         return;
 
     auto vp = static_cast<ViewProviderImage*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
     bool crop = vp->Crop.getValue();
 
     drawImage();
@@ -141,9 +133,8 @@ void QGIViewImage::draw()
 void QGIViewImage::drawImage()
 {
     auto viewImage( dynamic_cast<TechDraw::DrawViewImage *>(getViewObject()) );
-    if( viewImage == nullptr ) {
+    if (!viewImage)
         return;
-    }
 
     if (!viewImage->ImageIncluded.isEmpty()) {
         QString fileSpec = QString::fromUtf8(viewImage->ImageIncluded.getValue(),strlen(viewImage->ImageIncluded.getValue()));
@@ -157,7 +148,7 @@ void QGIViewImage::drawImage()
     }
 }
 
-void QGIViewImage::rotateView(void)
+void QGIViewImage::rotateView()
 {
     QRectF r = m_cliparea->boundingRect();
     m_cliparea->setTransformOriginPoint(r.center());

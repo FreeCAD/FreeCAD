@@ -122,7 +122,7 @@ namespace ImportGui {
 class OCAFBrowser
 {
 public:
-    OCAFBrowser(Handle(TDocStd_Document) h)
+    explicit OCAFBrowser(Handle(TDocStd_Document) h)
         : pDoc(h)
     {
         myGroupIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);
@@ -178,7 +178,7 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
 
     Handle(TDataStd_Name) name;
     if (label.FindAttribute(TDataStd_Name::GetID(),name)) {
-        QString text = QString::fromLatin1("%1 %2").arg(s).arg(QString::fromUtf8(toString(name->Get()).c_str()));
+        QString text = QString::fromLatin1("%1 %2").arg(s, QString::fromUtf8(toString(name->Get()).c_str()));
         item->setText(0, text);
     }
 
@@ -292,7 +292,7 @@ public:
     }
 
 private:
-    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
         if (!vp)
             return;
@@ -311,7 +311,7 @@ private:
             vp->DiffuseColor.setValues(colors);
         }
     }
-    virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+    void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
         if (!vp)
             return;
@@ -321,7 +321,7 @@ private:
         else
             vp->LineColorArray.setValues(colors);
     }
-    virtual void applyLinkColor(App::DocumentObject *obj, int index, App::Color color) override {
+    void applyLinkColor(App::DocumentObject *obj, int index, App::Color color) override {
         auto vp = dynamic_cast<Gui::ViewProviderLink*>(Gui::Application::Instance->getViewProvider(obj));
         if(!vp)
             return;
@@ -339,7 +339,7 @@ private:
         mat.diffuseColor = color;
         vp->MaterialList.set1Value(index,mat);
     }
-    virtual void applyElementColors(App::DocumentObject *obj, 
+    void applyElementColors(App::DocumentObject *obj,
             const std::map<std::string,App::Color> &colors) override 
     {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
@@ -357,7 +357,7 @@ public:
         : ExportOCAF(h, explicitPlacement)
     {
     }
-    virtual void findColors(Part::Feature* part, std::vector<App::Color>& colors) const
+    void findColors(Part::Feature* part, std::vector<App::Color>& colors) const override
     {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
         if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
@@ -388,7 +388,7 @@ public:
         initialize("This module is the ImportGui module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
@@ -423,10 +423,7 @@ private:
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
-            bool optionReadShapeCompoundMode = true;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-            optionReadShapeCompoundMode = hGrp->GetBool("ReadShapeCompoundMode", optionReadShapeCompoundMode);
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             FC_TIME_INIT(t);
             FC_DURATION_DECL_INIT2(d1,d2);
@@ -586,9 +583,8 @@ private:
             }
 
             if (legacy == Py_None) {
-                auto hGrp = App::GetApplication().GetParameterGroupByPath(
-                        "User parameter:BaseApp/Preferences/Mod/Import");
-                legacy = hGrp->GetBool("ExportLegacy",false) ? Py_True : Py_False;
+                Part::ImportExportSettings settings;
+                legacy = settings.getExportLegacy() ? Py_True : Py_False;
             }
 
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);

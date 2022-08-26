@@ -50,8 +50,8 @@ class TaskDatumParameters : public PartGui::TaskAttacher
     Q_OBJECT
 
 public:
-    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = nullptr);
-    ~TaskDatumParameters(); 
+    explicit TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = nullptr);
+    ~TaskDatumParameters() override;
 };
 
 /// simulation dialog for the TaskView
@@ -60,11 +60,11 @@ class TaskDlgDatumParameters : public PartGui::TaskDlgAttacher
     Q_OBJECT
 
 public:
-    TaskDlgDatumParameters(ViewProviderDatum *DatumView);
-    ~TaskDlgDatumParameters();
+    explicit TaskDlgDatumParameters(ViewProviderDatum *DatumView);
+    ~TaskDlgDatumParameters() override;
     
-    virtual bool accept();
-    virtual bool reject();
+    bool accept() override;
+    bool reject() override;
 };
 
 } //namespace PartDesignGui

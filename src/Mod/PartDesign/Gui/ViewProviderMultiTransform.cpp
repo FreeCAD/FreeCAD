@@ -40,13 +40,13 @@ TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
 void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     this->addDefaultAction(menu, QObject::tr("Edit %1").arg(QString::fromStdString(featureName)));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
-std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
+std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren() const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    if (pcMultiTransform == nullptr)
+    if (!pcMultiTransform)
         return std::vector<App::DocumentObject*>(); // TODO: Show error?
 
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();

@@ -33,12 +33,12 @@
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string GeometryStringExtensionPy::representation(void) const
+std::string GeometryStringExtensionPy::representation() const
 {
     std::stringstream str;
     str << "<GeometryStringExtension (" ;
 
-    if(getGeometryStringExtensionPtr()->getName().size()>0)
+    if(!getGeometryStringExtensionPtr()->getName().empty())
         str << "\'" << getGeometryStringExtensionPtr()->getName() << "\', ";
 
     str << getGeometryStringExtensionPtr()->getValue() << ") >";
@@ -84,7 +84,7 @@ int GeometryStringExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::String GeometryStringExtensionPy::getValue(void) const
+Py::String GeometryStringExtensionPy::getValue() const
 {
     return Py::String(this->getGeometryStringExtensionPtr()->getValue());
 }

@@ -68,7 +68,7 @@ namespace bp = boost::placeholders;
 // Create reference name from PropertyLinkSub values in a translatable fashion
 const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
 {
-    if (obj == nullptr)
+    if (!obj)
         return QObject::tr("No reference selected");
 
     if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
@@ -99,14 +99,14 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     refnames = pcAttach->Support.getSubValues();
 
     for (size_t r = 0; r < 4; r++) {
-        if ((r < refs.size()) && (refs[r] != nullptr)) {
+        if ((r < refs.size()) && (refs[r])) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
             // for Origin or Datum features refnames is empty but we need a non-empty return value
             if (refnames[r].empty())
                 refnames[r] = refs[r]->getNameInDocument();
         } else {
             refstrings.push_back(QObject::tr("No reference selected"));
-            refnames.push_back("");
+            refnames.emplace_back("");
         }
     }
 }
@@ -289,7 +289,7 @@ void TaskAttacher::updateReferencesUI()
     pcAttach->attacher().suggestMapModes(this->lastSuggestResult);
 
     if (this->lastSuggestResult.message != SuggestResult::srOK) {
-        if(this->lastSuggestResult.nextRefTypeHint.size() > 0){
+        if(!this->lastSuggestResult.nextRefTypeHint.empty()){
             //message = "Need more references";
         }
     } else {
@@ -419,7 +419,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         QLineEdit* line = getLine(iActiveRef);
-        if (line != nullptr) {
+        if (line) {
             line->blockSignals(true);
             line->setText(makeRefString(selObj, subname));
             line->setProperty("RefName", QByteArray(subname.c_str()));
@@ -429,7 +429,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (autoNext) {
             if (iActiveRef == -1){
                 //nothing to do
-            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
+            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.empty()){
                 iActiveRef = -1;
             } else {
                 iActiveRef++;
@@ -563,7 +563,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         return;
 
     QLineEdit* line = getLine(idx);
-    if (line == nullptr)
+    if (!line)
         return;
 
     if (text.length() == 0) {
@@ -607,7 +607,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == nullptr)
+    if (!obj)
         return;
 
     std::string subElement;
@@ -661,7 +661,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         refnames[idx] = subElement.c_str();
     } else {
         refs.push_back(obj);
-        refnames.push_back(subElement.c_str());
+        refnames.emplace_back(subElement.c_str());
     }
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();
@@ -692,7 +692,7 @@ void TaskAttacher::updateRefButton(int idx)
     bool enable = true;
     if (idx > numrefs)
         enable = false;
-    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.size() == 0)
+    if (idx == numrefs && this->lastSuggestResult.nextRefTypeHint.empty())
         enable = false;
     b->setEnabled(enable);
 
@@ -806,7 +806,7 @@ void TaskAttacher::updateListOfModes()
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
     QListWidgetItem* iSelect = nullptr;
-    if (modesInList.size()>0) {
+    if (!modesInList.empty()) {
         for (size_t i = 0  ;  i < modesInList.size()  ;  ++i){
             eMapMode mmode = modesInList[i];
             std::vector<QString> mstr = AttacherGui::getUIStrings(pcAttach->attacher().getTypeId(),mmode);
@@ -999,7 +999,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
-        if(sels.size() && sels[0].pResolvedObject 
+        if(!sels.empty() && sels[0].pResolvedObject
                        && sels[0].pResolvedObject->getLinkedObject()==editObj) 
         {
             editObj = sels[0].pObject;

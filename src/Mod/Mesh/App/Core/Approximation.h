@@ -53,7 +53,7 @@ template <class Real>
 class PolynomialSurface : public ImplicitSurface<Real>
 {
 public:
-  PolynomialSurface (const Real afCoeff[6])
+  explicit PolynomialSurface (const Real afCoeff[6])
   { for (int i=0; i<6; i++) m_afCoeff[i] = afCoeff[i]; }
 
   virtual ~PolynomialSurface () {}
@@ -194,7 +194,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~PlaneFit();
+    ~PlaneFit() override;
     Base::Vector3f GetBase() const;
     Base::Vector3f GetDirU() const;
     Base::Vector3f GetDirV() const;
@@ -207,7 +207,7 @@ public:
      * Fit a plane into the given points. We must have at least three non-collinear points
      * to succeed. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /** 
      * Returns the distance from the point \a rcPoint to the fitted plane. If Fit() has not been
      * called FLOAT_MAX is returned.
@@ -274,7 +274,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~QuadraticFit(){}
+    ~QuadraticFit() override{}
     /**
      * Get the quadric coefficients
      * @param ulIndex Number of coefficient (0..9)
@@ -291,7 +291,7 @@ public:
      * Invocation of fitting algorithm
      * @return float Quality of fit.
      */
-    float Fit();
+    float Fit() override;
 
     void CalcZValues(double x, double y, double &dZ1, double &dZ2) const;
     /**
@@ -349,12 +349,12 @@ public:
     /**
      * Destruction
      */
-    virtual ~SurfaceFit(){}
+    ~SurfaceFit() override{}
 
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
                           Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfcurv1);
-    float Fit();
+    float Fit() override;
     double Value(double x, double y) const;
     void GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const;
     /**
@@ -393,7 +393,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~CylinderFit();
+    ~CylinderFit() override;
     float GetRadius() const;
     Base::Vector3f GetBase() const;
     void SetInitialValues(const Base::Vector3f&, const Base::Vector3f&);
@@ -409,7 +409,7 @@ public:
     /**
      * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
      * called FLOAT_MAX is returned.
@@ -452,13 +452,13 @@ public:
     /**
      * Destruction
      */
-    virtual ~SphereFit();
+    ~SphereFit() override;
     float GetRadius() const;
     Base::Vector3f GetCenter() const;
     /**
      * Fit a sphere into the given points. If the fit fails FLOAT_MAX is returned.
      */
-    float Fit();
+    float Fit() override;
     /**
      * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
      * called FLOAT_MAX is returned.
@@ -498,7 +498,7 @@ public:
      * @param pKoef Pointer to the quadric coefficients
      *        (double [10])
      */
-    FunctionContainer(const double *pKoef)
+    explicit FunctionContainer(const double *pKoef)
     {
         Assign( pKoef );
         pImplSurf = new Wm4::QuadricSurface<double>( dKoeff );
@@ -662,8 +662,8 @@ public:
     /**
      * Destruction
      */
-    virtual ~PolynomialFit();
-    float Fit();
+    ~PolynomialFit() override;
+    float Fit() override;
     float Value(float x, float y) const;
 
 protected:

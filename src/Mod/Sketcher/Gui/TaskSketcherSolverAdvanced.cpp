@@ -92,7 +92,7 @@ TaskSketcherSolverAdvanced::~TaskSketcherSolverAdvanced()
 {
 }
 
-void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
+void TaskSketcherSolverAdvanced::updateDefaultMethodParameters()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
 
@@ -161,7 +161,7 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
     }
 }
 
-void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
+void TaskSketcherSolverAdvanced::updateRedundantMethodParameters()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
 
@@ -560,7 +560,7 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
     updateSketchObject();
 }
 
-void TaskSketcherSolverAdvanced::updateSketchObject(void)
+void TaskSketcherSolverAdvanced::updateSketchObject()
 {
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDebugMode((GCS::DebugMode) ui->comboBoxDebugMode->currentIndex());
     const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());

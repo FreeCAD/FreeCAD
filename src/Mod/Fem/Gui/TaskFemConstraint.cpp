@@ -81,7 +81,7 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,Q
     selectionMode = selref;
 
     // Setup the dialog inside the Shaft Wizard dialog
-    if ((ConstraintView->wizardWidget != nullptr) && (ConstraintView->wizardSubLayout != nullptr)) {
+    if ((ConstraintView->wizardWidget) && (ConstraintView->wizardSubLayout)) {
         // Hide the shaft wizard table widget to make more space
         ConstraintView->wizardSubLayout->itemAt(0)->widget()->hide();
         QGridLayout* buttons = ConstraintView->wizardSubLayout->findChild<QGridLayout*>();
@@ -105,7 +105,7 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,Q
 
 void TaskFemConstraint::keyPressEvent(QKeyEvent *ke)
 {
-    if ((ConstraintView->wizardWidget != nullptr) && (ConstraintView->wizardSubLayout != nullptr))
+    if ((ConstraintView->wizardWidget) && (ConstraintView->wizardSubLayout))
         // Prevent <Enter> from closing this dialog AND the shaft wizard dialog
         // TODO: This should trigger an update in the shaft wizard but its difficult to access a python dialog from here...
         if (ke->key() == Qt::Key_Return)
@@ -151,7 +151,7 @@ void TaskFemConstraint::setSelection(QListWidgetItem* item) {
     ItemName.erase(0, pos + delimiter.length());
     // clear existing selection
     Gui::Selection().clearSelection();
-    // highligh the selected item
+    // highlight the selected item
     Gui::Selection().addSelection(docName.c_str(), objName.c_str(), ItemName.c_str(), 0, 0, 0);
 }
 
@@ -196,7 +196,7 @@ void TaskFemConstraint::onButtonWizOk()
 void TaskFemConstraint::onButtonWizCancel()
 {
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
-    if (pcConstraint != nullptr)
+    if (pcConstraint)
         pcConstraint->getDocument()->removeObject(pcConstraint->getNameInDocument());
     onButtonWizOk();
 }

@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 #define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSvgItem;
@@ -46,7 +48,7 @@ class TechDrawGuiExport QGISVGTemplate : public QGITemplate
     Q_OBJECT
 
 public:
-    QGISVGTemplate(QGSPage* scene);
+    explicit QGISVGTemplate(QGSPage* scene);
     virtual ~QGISVGTemplate();
 
     enum {Type = QGraphicsItem::UserType + 153};
@@ -66,7 +68,6 @@ protected:
     bool firstTime;
     QGraphicsSvgItem *m_svgItem;
     QSvgRenderer *m_svgRender;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };  // class QGISVGTemplate
 
 }

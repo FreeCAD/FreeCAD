@@ -50,7 +50,7 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewImage, TechDraw::DrawView)
 
 
-DrawViewImage::DrawViewImage(void)
+DrawViewImage::DrawViewImage()
 {
     static const char *vgroup = "Image";
 
@@ -73,8 +73,7 @@ void DrawViewImage::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
     if (!isRestoring()) {
-        if ((prop == &ImageFile) &&
-            (doc != nullptr) ) {
+        if ((prop == &ImageFile) && doc) {
             if (!ImageFile.isEmpty()) {
                 replaceImageIncluded(ImageFile.getValue());
             }
@@ -89,19 +88,17 @@ void DrawViewImage::onChanged(const App::Property* prop)
 
 short DrawViewImage::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  =  (Height.isTouched() ||
-                    Width.isTouched());
+        if (Height.isTouched() ||
+            Width.isTouched()) {
+            return true;
+        };
     }
 
-    if (result) {
-        return result;
-    }
     return App::DocumentObject::mustExecute();
 }
 
-App::DocumentObjectExecReturn *DrawViewImage::execute(void)
+App::DocumentObjectExecReturn *DrawViewImage::execute()
 {
     requestPaint();
     return DrawView::execute();
@@ -109,13 +106,12 @@ App::DocumentObjectExecReturn *DrawViewImage::execute(void)
 
 QRectF DrawViewImage::getRect() const
 {
-    QRectF result(0.0,0.0,Width.getValue(),Height.getValue());
-    return result;
+    return QRectF(0.0,0.0,Width.getValue(), Height.getValue());
 }
 
 void DrawViewImage::replaceImageIncluded(std::string newFileName)
 {
-    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
+//    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
     if (ImageIncluded.isEmpty()) {
         setupImageIncluded();
     } else {
@@ -125,9 +121,9 @@ void DrawViewImage::replaceImageIncluded(std::string newFileName)
     }
 }
 
-void DrawViewImage::setupImageIncluded(void)
+void DrawViewImage::setupImageIncluded()
 {
-    Base::Console().Message("DVI::setupImageIncluded()\n");
+//    Base::Console().Message("DVI::setupImageIncluded()\n");
     App::Document* doc = getDocument();
     std::string dir = doc->TransientDir.getValue();
     std::string special = getNameInDocument();
@@ -139,14 +135,18 @@ void DrawViewImage::setupImageIncluded(void)
     DrawUtil::copyFile(std::string(), imageName);
     ImageIncluded.setValue(imageName.c_str());
 
-    if (!ImageFile.isEmpty()) {
-        Base::FileInfo fi(ImageFile.getValue());
-        if (fi.isReadable()) {
-            std::string exchName = ImageIncluded.getExchangeTempFile();
-            DrawUtil::copyFile(ImageFile.getValue(), exchName);
-            ImageIncluded.setValue(exchName.c_str(), special.c_str());
-        }
+    if (ImageFile.isEmpty()) {
+        return;
     }
+
+    Base::FileInfo fi(ImageFile.getValue());
+    if (!fi.isReadable()) {
+        return;
+    }
+
+    std::string exchName = ImageIncluded.getExchangeTempFile();
+    DrawUtil::copyFile(ImageFile.getValue(), exchName);
+    ImageIncluded.setValue(exchName.c_str(), special.c_str());
 }
 
 // Python Drawing feature ---------------------------------------------------------
@@ -154,7 +154,7 @@ void DrawViewImage::setupImageIncluded(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewImagePython, TechDraw::DrawViewImage)
-template<> const char* TechDraw::DrawViewImagePython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewImagePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderImage";
 }
 /// @endcond

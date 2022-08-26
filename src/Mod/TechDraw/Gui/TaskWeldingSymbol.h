@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
 #define TECHDRAWGUI_TASKWELDINGSYMBOL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -73,7 +75,7 @@ public:
     std::string symbolPath;
     std::string symbolString;
     std::string tileName;
-    void init(void) {
+    void init() {
         toBeSaved = false;
         arrowSide = true;
         row = 0;
@@ -173,26 +175,26 @@ class TaskDlgWeldingSymbol : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
-    TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
-    ~TaskDlgWeldingSymbol();
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
+    explicit TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
+    ~TaskDlgWeldingSymbol() override;
 
 public:
     /// is called the TaskView when the dialog is opened
-    virtual void open();
+    void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
+    bool reject() override;
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
-    virtual bool isAllowedAlterDocument(void) const
+    void helpRequested() override { return;}
+    bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
-    void modifyStandardButtons(QDialogButtonBox* box);
+    void modifyStandardButtons(QDialogButtonBox* box) override;
 
 protected:
 

@@ -36,7 +36,7 @@ public:
         initialize("This module is the Start module."); // register with Python
     }
 
-    virtual ~Module() {}
+    ~Module() override {}
 
 private:
 };

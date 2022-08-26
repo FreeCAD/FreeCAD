@@ -83,13 +83,34 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     // list of toggle construction commands
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateLine");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle_Center");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOblong");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseByCenter");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseBy3Points");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfEllipse");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfHyperbola");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcOfParabola");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateConic");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointCircle");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateCircle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateTriangle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSquare");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePentagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateHexagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateHeptagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOctagon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRegularPolygon");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRegularPolygon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateBSpline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
 }
@@ -171,14 +192,14 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     }
 }
 
-bool CmdSketcherToggleConstruction::isActive(void)
+bool CmdSketcherToggleConstruction::isActive()
 {
     return isAlterGeoActive( getActiveGuiDocument() );
 }
 
 }
 
-void CreateSketcherCommandsAlterGeo(void)
+void CreateSketcherCommandsAlterGeo()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

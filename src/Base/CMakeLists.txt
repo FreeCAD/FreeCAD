@@ -89,6 +89,7 @@ generate_from_xml(PlacementPy)
 generate_from_xml(AxisPy)
 generate_from_xml(UnitPy)
 generate_from_xml(QuantityPy)
+generate_from_xml(PrecisionPy)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -175,6 +176,7 @@ SET(FreeCADBase_XML_SRCS
     QuantityPy.xml
     TypePy.xml
     UnitPy.xml
+    PrecisionPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
 
@@ -250,6 +252,7 @@ SET(FreeCADBase_CPP_SRCS
     PersistencePyImp.cpp
     Placement.cpp
     PlacementPyImp.cpp
+    PrecisionPyImp.cpp
     PyExport.cpp
     PyObjectBase.cpp
     QtTools.cpp
@@ -264,6 +267,7 @@ SET(FreeCADBase_CPP_SRCS
     TimeInfo.cpp
     Tools.cpp
     Tools2D.cpp
+    Tools3D.cpp
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -313,6 +317,7 @@ SET(FreeCADBase_HPP_SRCS
     Parameter.h
     Persistence.h
     Placement.h
+    Precision.h
     PyExport.h
     PyObjectBase.h
     QtTools.h
@@ -326,6 +331,7 @@ SET(FreeCADBase_HPP_SRCS
     TimeInfo.h
     Tools.h
     Tools2D.h
+    Tools3D.h
     Translate.h
     Type.h
     Uuid.h

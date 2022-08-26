@@ -464,9 +464,9 @@ class Renderer:
                 else:
                     if faces.index(f2) < h:
                         h = faces.index(f2)
-        if l != None:
+        if l is not None:
             return l + 1
-        elif h != None:
+        elif h is not None:
             return h
         else:
             return None

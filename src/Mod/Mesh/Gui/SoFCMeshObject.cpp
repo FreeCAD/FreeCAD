@@ -71,11 +71,11 @@ using namespace MeshGui;
 class SoOutputStreambuf : public std::streambuf
 {
 public:
-    SoOutputStreambuf(SoOutput* o) : out(o)
+    explicit SoOutputStreambuf(SoOutput* o) : out(o)
     {
     }
 protected:
-    int overflow(int c = EOF)
+    int overflow(int c = EOF) override
     {
         if (c != EOF) {
             char z = static_cast<char>(c);
@@ -83,7 +83,7 @@ protected:
         }
         return c;
     }
-    std::streamsize xsputn (const char* s, std::streamsize num)
+    std::streamsize xsputn (const char* s, std::streamsize num) override
     {
         out->write(s);
         return num;
@@ -96,7 +96,7 @@ private:
 class SoOutputStream : public std::ostream
 {
 public:
-    SoOutputStream(SoOutput* o) : std::ostream(nullptr), buf(o)
+    explicit SoOutputStream(SoOutput* o) : std::ostream(nullptr), buf(o)
     {
         this->rdbuf(&buf);
     }
@@ -107,14 +107,14 @@ private:
 class SoInputStreambuf : public std::streambuf
 {
 public:
-    SoInputStreambuf(SoInput* o) : inp(o)
+    explicit SoInputStreambuf(SoInput* o) : inp(o)
     {
         setg (buffer+pbSize,
               buffer+pbSize,
               buffer+pbSize);
     }
 protected:
-    int underflow()
+    int underflow() override
     {
         if (gptr() < egptr()) {
             return *gptr();
@@ -160,11 +160,11 @@ private:
 class SoInputStream : public std::istream
 {
 public:
-    SoInputStream(SoInput* o) : std::istream(nullptr), buf(o)
+    explicit SoInputStream(SoInput* o) : std::istream(nullptr), buf(o)
     {
         this->rdbuf(&buf);
     }
-    ~SoInputStream()
+    ~SoInputStream() override
     {
     }
 
@@ -1132,7 +1132,7 @@ void SoFCMeshObjectShape::generatePrimitives(SoAction* action)
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (rPoints.size() < 3)
         return;
-    if (rFacets.size() < 1)
+    if (rFacets.empty())
         return;
 
     // get material binding
@@ -1544,7 +1544,7 @@ void SoFCMeshSegmentShape::generatePrimitives(SoAction* action)
     const MeshCore::MeshFacetArray & rFacets = mesh->getKernel().GetFacets();
     if (rPoints.size() < 3)
         return;
-    if (rFacets.size() < 1)
+    if (rFacets.empty())
         return;
     if (mesh->countSegments() <= this->index.getValue())
         return;
@@ -1788,7 +1788,7 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction *action, SbBox3f &box, SbVec3f
     if (!mesh)
         return;
     const MeshCore::MeshPointArray & rPoints = mesh->getKernel().GetPoints();
-    if (rPoints.size() > 0) {
+    if (!rPoints.empty()) {
         Base::BoundBox3f cBox;
         for (MeshCore::MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it)
             cBox.Add(*it);

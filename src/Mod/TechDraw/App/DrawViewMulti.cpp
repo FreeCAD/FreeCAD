@@ -94,13 +94,10 @@ DrawViewMulti::~DrawViewMulti()
 
 short DrawViewMulti::mustExecute() const
 {
-    short result = 0;
-    if (!isRestoring()) {
-        result  = (Sources.isTouched());
+    if (!isRestoring() && Sources.isTouched()) {
+        return true;
     }
-    if (result) {
-        return result;
-    }
+
     return TechDraw::DrawViewPart::mustExecute();
 }
 
@@ -119,7 +116,7 @@ void DrawViewMulti::onChanged(const App::Property* prop)
     DrawViewPart::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
+App::DocumentObjectExecReturn *DrawViewMulti::execute()
 {
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -171,7 +168,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewMultiPython, TechDraw::DrawViewMulti)
-template<> const char* TechDraw::DrawViewMultiPython::getViewProviderName(void) const {
+template<> const char* TechDraw::DrawViewMultiPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderViewProviderViewPart";
 }
 /// @endcond

@@ -38,7 +38,7 @@
 
 using namespace SketcherGui;
 
-SketchMirrorDialog::SketchMirrorDialog(void)
+SketchMirrorDialog::SketchMirrorDialog()
   : QDialog(Gui::getMainWindow())
   , RefGeoid(-1)
   , RefPosid(Sketcher::PointPos::none)

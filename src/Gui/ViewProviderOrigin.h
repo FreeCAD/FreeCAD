@@ -35,7 +35,7 @@ class Document;
 
 class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderOrigin);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOrigin);
 
 public:
     /// Size of the origin as set by the part.
@@ -44,18 +44,18 @@ public:
     /// constructor.
     ViewProviderOrigin();
     /// destructor.
-    virtual ~ViewProviderOrigin();
+    ~ViewProviderOrigin() override;
 
     /// @name Override methods
     ///@{
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    std::vector<App::DocumentObject*> claimChildren3D() const override;
 
-    virtual SoGroup* getChildRoot(void) const {return pcGroupChildren;};
+    SoGroup* getChildRoot() const override {return pcGroupChildren;}
 
-    virtual void attach(App::DocumentObject* pcObject);
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject* pcObject) override;
+    std::vector<std::string> getDisplayModes() const override;
+    void setDisplayMode(const char* ModeName) override;
     ///@}
 
     /** @name Temporary visibility mode
@@ -70,15 +70,15 @@ public:
     void resetTemporaryVisibility ();
     ///@}
 
-    virtual bool canDragObjects() const {
+    bool canDragObjects() const override {
         return false;
     }
 
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
 protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual bool onDelete(const std::vector<std::string> &);
+    void onChanged(const App::Property* prop) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
 private:
     SoGroup *pcGroupChildren;

@@ -547,7 +547,7 @@ class ViewProviderMolecule:
 		sep2.addChild(coin.SoSphere())
 		obj.RootNode.addChild(sep1)
 		obj.RootNode.addChild(sep2)
-		# triggers an updateData call so the the assignment at the end
+		# triggers an updateData call so the assignment at the end
 		obj.Proxy = self
 
 	def updateData(self, fp, prop):

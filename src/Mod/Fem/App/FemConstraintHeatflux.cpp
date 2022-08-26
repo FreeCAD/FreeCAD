@@ -61,12 +61,12 @@ ConstraintHeatflux::ConstraintHeatflux()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintHeatflux::execute(void)
+App::DocumentObjectExecReturn *ConstraintHeatflux::execute()
 {
     return Constraint::execute();
 }
 
-const char* ConstraintHeatflux::getViewProviderName(void) const
+const char* ConstraintHeatflux::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintHeatflux";
 }

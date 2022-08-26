@@ -31,7 +31,7 @@ namespace Part
 
 class Common : public Boolean
 {
-    PROPERTY_HEADER(Part::Common);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Common);
 
 public:
     Common();
@@ -40,13 +40,13 @@ public:
     //@{
     /// recalculate the Feature
 protected:
-    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const;
+    BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const override;
     //@}
 };
 
 class MultiCommon : public Part::Feature
 {
-    PROPERTY_HEADER(Part::MultiCommon);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiCommon);
 
 public:
     MultiCommon();
@@ -58,11 +58,11 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute() override;
+    short mustExecute() const override;
     //@}
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const override {
         return "PartGui::ViewProviderMultiCommon";
     }
 

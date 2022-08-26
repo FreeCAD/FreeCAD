@@ -44,10 +44,10 @@ class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionOb
     Q_OBJECT
 
 public:
-    TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,const char* pixmapname = "");
-    virtual ~TaskFemConstraint() {}
+    explicit TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,const char* pixmapname = "");
+    ~TaskFemConstraint() override {}
 
-    virtual const std::string getReferences(void) const {return std::string();}
+    virtual const std::string getReferences() const {return std::string();}
     const std::string getReferences(const std::vector<std::string>& items) const;
     const std::string getScale() const;
 
@@ -60,13 +60,13 @@ protected Q_SLOTS:
     void onButtonWizCancel();
 
 protected:
-    virtual void changeEvent(QEvent *e) { TaskBox::changeEvent(e); }
+    void changeEvent(QEvent *e) override { TaskBox::changeEvent(e); }
     const QString makeRefText(const std::string& objName, const std::string& subName) const;
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
-    virtual void keyPressEvent(QKeyEvent * ke);
+    void keyPressEvent(QKeyEvent * ke) override;
     void createDeleteAction(QListWidget* parentList);
     bool KeyEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges&) {}
+    void onSelectionChanged(const Gui::SelectionChanges&) override {}
 
 protected:
     QWidget* proxy;
@@ -89,20 +89,20 @@ class TaskDlgFemConstraint : public Gui::TaskView::TaskDialog
 public:
 
     /// is called the TaskView when the dialog is opened
-    void open();
+    void open() override;
     /*
     /// is called by the framework if an button is clicked which has no accept or reject role
     virtual void clicked(int) {}
     /// is called by the framework if the dialog is accepted (Ok)
     */
-    virtual bool accept();
+    bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
+    bool reject() override;
+    bool isAllowedAlterDocument() const override
     { return false; }
 
     /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
     ViewProviderFemConstraint* getConstraintView() const

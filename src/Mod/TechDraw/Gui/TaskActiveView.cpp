@@ -112,7 +112,7 @@ void TaskActiveView::blockButtons(bool b)
 }
 
 //******************************************************************************
-TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
+TechDraw::DrawViewSymbol* TaskActiveView::createActiveView()
 {
 //    Base::Console().Message("TAV::createActiveView()\n");
 
@@ -155,8 +155,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
 
     App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(symbolName.c_str());
     TechDraw::DrawViewSymbol* newSym = dynamic_cast<TechDraw::DrawViewSymbol*>(newObj);
-    if ( (newObj == nullptr) ||
-         (newSym == nullptr) ) {
+    if (!newObj || !newSym) {
         throw Base::RuntimeError("TaskActiveView - new symbol object not found");
     }
 

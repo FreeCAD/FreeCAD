@@ -40,14 +40,14 @@ class DlgSettingsUnitsImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsUnitsImp(QWidget* parent = nullptr);
-    ~DlgSettingsUnitsImp();
+    explicit DlgSettingsUnitsImp(QWidget* parent = nullptr);
+    ~DlgSettingsUnitsImp() override;
 
-    void saveSettings();
-    void loadSettings();
+    void saveSettings() override;
+    void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
 public Q_SLOTS:
     void on_comboBox_ViewSystem_currentIndexChanged(int index);

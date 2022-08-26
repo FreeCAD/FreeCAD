@@ -40,7 +40,7 @@ class EditDatumDialog : public QObject {
 public:
     EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
     EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
-    ~EditDatumDialog();
+    ~EditDatumDialog() override;
 
     void exec(bool atCursor=true);
 

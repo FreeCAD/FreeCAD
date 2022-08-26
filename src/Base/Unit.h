@@ -64,7 +64,7 @@ public:
     Unit(const Unit&);
     explicit Unit(const QString& expr);
     /// Destruction
-    ~Unit () {}
+    ~Unit () = default;
 
 
     /** Operators. */
@@ -131,7 +131,7 @@ public:
     static Unit YoungsModulus;
 
     static Unit Stiffness;
-    
+
     static Unit Force;
     static Unit Work;
     static Unit Power;

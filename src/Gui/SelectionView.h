@@ -51,25 +51,25 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    SelectionView(Gui::Document* pcDocument, QWidget *parent=nullptr);
+    explicit SelectionView(Gui::Document* pcDocument, QWidget *parent=nullptr);
 
     /**
      * A destructor.
      * A more elaborate description of the destructor.
     */
-    virtual ~SelectionView();
+    ~SelectionView() override;
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges& msg) override;
+    void onSelectionChanged(const SelectionChanges& msg) override;
 
-    virtual void leaveEvent(QEvent*) override;
+    void leaveEvent(QEvent*) override;
 
     bool onMsg(const char* pMsg,const char** ppReturn) override;
 
-    virtual const char *getName(void) const override {return "SelectionView";}
+    const char *getName() const override {return "SelectionView";}
 
     /// get called when the document is changed or updated
-    virtual void onUpdate(void) override;
+    void onUpdate() override;
 
     QListWidget* selectionView;
     QLabel*      countLabel;
@@ -81,17 +81,17 @@ public Q_SLOTS:
     /// get called when text is entered in the search box
     void search(const QString& text);
     /// get called when enter is pressed in the search box
-    void validateSearch(void);
+    void validateSearch();
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
     void select(QListWidgetItem* item=nullptr);
-    void deselect(void);
-    void zoom(void);
-    void treeSelect(void);
-    void toPython(void);
-    void touch(void);
-    void showPart(void);
+    void deselect();
+    void zoom();
+    void treeSelect();
+    void toPython();
+    void touch();
+    void showPart();
     void onEnablePickList();
     void toggleSelect(QListWidgetItem* item=nullptr);
     void preselect(QListWidgetItem* item=nullptr);

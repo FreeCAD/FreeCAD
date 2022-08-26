@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -34,13 +36,13 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderViewPart : public ViewProviderDrawingView
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderViewPart);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderViewPart);
 
 public:
     /// constructor
     ViewProviderViewPart();
     /// destructor
-    virtual ~ViewProviderViewPart();
+    ~ViewProviderViewPart() override;
 
     App::PropertyLength LineWidth;
     App::PropertyLength HiddenWidth;
@@ -60,29 +62,24 @@ public:
 
     static const char* LineStyleEnums[];
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual bool canDelete(App::DocumentObject* obj) const;
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    void attach(App::DocumentObject *) override;
+    bool useNewSelectionModel(void) const override {return false;}
+    bool onDelete(const std::vector<std::string> &) override;
+    bool canDelete(App::DocumentObject* obj) const override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked(void) override;
 
 public:
-    virtual void onChanged(const App::Property *prop);
-    virtual void updateData(const App::Property*);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void onChanged(const App::Property *prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
     App::Color prefSectionColor(void);
     App::Color prefHighlightColor(void);
     int prefHighlightStyle(void);
 
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+    std::vector<App::DocumentObject*> claimChildren(void) const override;
 
-    virtual TechDraw::DrawViewPart* getViewObject() const;
+    TechDraw::DrawViewPart* getViewObject() const override;
     TechDraw::DrawViewPart* getViewPart() const;
 };
 

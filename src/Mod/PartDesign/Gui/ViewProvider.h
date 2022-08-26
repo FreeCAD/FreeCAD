@@ -46,9 +46,9 @@ public:
     /// constructor
     ViewProvider();
     /// destructor
-    virtual ~ViewProvider();
+    ~ViewProvider() override;
 
-    virtual bool doubleClicked(void) override;
+    bool doubleClicked(void) override;
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
 
@@ -68,16 +68,16 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    virtual PyObject* getPyObject(void) override;
+    PyObject* getPyObject(void) override;
 
-    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
+    QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
 protected:
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
-    virtual bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string> &) override;
 
     /**
      * Returns a newly create dialog for the part to be placed in the task view

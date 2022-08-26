@@ -23,7 +23,7 @@
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from DraftTools import translate
+    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
@@ -86,7 +86,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         obj.Diameter = p.GetFloat("RebarDiameter",6)
     obj.Amount = amount
     obj.Document.recompute()
-    if offset != None:
+    if offset is not None:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
     else:

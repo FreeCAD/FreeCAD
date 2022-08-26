@@ -133,7 +133,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
 }
 
-bool CmdSketcherSelectConstraints::isActive(void)
+bool CmdSketcherSelectConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -179,7 +179,7 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
         Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
 }
 
-bool CmdSketcherSelectOrigin::isActive(void)
+bool CmdSketcherSelectOrigin::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -223,7 +223,7 @@ void CmdSketcherSelectVerticalAxis::activated(int iMsg)
       Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
 }
 
-bool CmdSketcherSelectVerticalAxis::isActive(void)
+bool CmdSketcherSelectVerticalAxis::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -267,7 +267,7 @@ void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
       Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
 }
 
-bool CmdSketcherSelectHorizontalAxis::isActive(void)
+bool CmdSketcherSelectHorizontalAxis::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -324,7 +324,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
-bool CmdSketcherSelectRedundantConstraints::isActive(void)
+bool CmdSketcherSelectRedundantConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -380,7 +380,7 @@ void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
-bool CmdSketcherSelectMalformedConstraints::isActive(void)
+bool CmdSketcherSelectMalformedConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -436,7 +436,7 @@ void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
-bool CmdSketcherSelectPartiallyRedundantConstraints::isActive(void)
+bool CmdSketcherSelectPartiallyRedundantConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -491,7 +491,7 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 }
 
-bool CmdSketcherSelectConflictingConstraints::isActive(void)
+bool CmdSketcherSelectConflictingConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -612,7 +612,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
 }
 
-bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
+bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -703,7 +703,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
 }
 
-bool CmdSketcherSelectElementsWithDoFs::isActive(void)
+bool CmdSketcherSelectElementsWithDoFs::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -816,7 +816,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
     }
 }
 
-bool CmdSketcherRestoreInternalAlignmentGeometry::isActive(void)
+bool CmdSketcherRestoreInternalAlignmentGeometry::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -1018,7 +1018,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     tryAutoRecomputeIfNotSolve(Obj);
 }
 
-bool CmdSketcherSymmetry::isActive(void)
+bool CmdSketcherSymmetry::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -1032,7 +1032,7 @@ public:
         Clone,
         Move
     };
-    SketcherCopy(const char* name);
+    explicit SketcherCopy(const char* name);
     void activate(SketcherCopy::Op op);
     virtual void activate() = 0;
 };
@@ -1094,7 +1094,7 @@ public:
     {
     }
 
-    virtual ~DrawSketchHandlerCopy(){}
+    ~DrawSketchHandlerCopy() override{}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -1106,7 +1106,7 @@ public:
         Snap5Degree
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -1139,7 +1139,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d) override
+    bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1148,7 +1148,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End)
@@ -1181,13 +1181,13 @@ public:
 
             if (Op != SketcherCopy::Move) {
                 // add auto constraints for the destination copy
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, currentgeoid+nElements, OriginPos);
                     sugConstr1.clear();
                 }
             }
             else {
-                if (sugConstr1.size() > 0) {
+                if (!sugConstr1.empty()) {
                     createAutoConstraints(sugConstr1, OriginGeoId, OriginPos);
                     sugConstr1.clear();
                 }
@@ -1203,7 +1203,7 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    void activated() override
     {
         setCursor(QPixmap(cursor_createcopy), 7, 7);
         Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
@@ -1351,13 +1351,13 @@ class CmdSketcherCopy : public SketcherCopy
 {
 public:
     CmdSketcherCopy();
-    virtual ~CmdSketcherCopy(){}
-    virtual const char* className() const
+    ~CmdSketcherCopy() override{}
+    const char* className() const override
     { return "CmdSketcherCopy"; }
-    virtual void activate();
+    void activate() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
+    void activated(int iMsg) override;
+    bool isActive() override;
 };
 
 CmdSketcherCopy::CmdSketcherCopy()
@@ -1386,7 +1386,7 @@ void CmdSketcherCopy::activate()
     SketcherCopy::activate(SketcherCopy::Copy);
 }
 
-bool CmdSketcherCopy::isActive(void)
+bool CmdSketcherCopy::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -1397,13 +1397,13 @@ class CmdSketcherClone : public SketcherCopy
 {
 public:
     CmdSketcherClone();
-    virtual ~CmdSketcherClone(){}
-    virtual const char* className() const
+    ~CmdSketcherClone() override{}
+    const char* className() const override
     { return "CmdSketcherClone"; }
-    virtual void activate();
+    void activate() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
+    void activated(int iMsg) override;
+    bool isActive() override;
 };
 
 CmdSketcherClone::CmdSketcherClone()
@@ -1431,7 +1431,7 @@ void CmdSketcherClone::activate()
     SketcherCopy::activate(SketcherCopy::Clone);
 }
 
-bool CmdSketcherClone::isActive(void)
+bool CmdSketcherClone::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -1440,13 +1440,13 @@ class CmdSketcherMove : public SketcherCopy
 {
 public:
     CmdSketcherMove();
-    virtual ~CmdSketcherMove(){}
-    virtual const char* className() const
+    ~CmdSketcherMove() override{}
+    const char* className() const override
     { return "CmdSketcherMove"; }
-    virtual void activate();
+    void activate() override;
 protected:
-    virtual void activated(int iMsg);
-    virtual bool isActive(void);
+    void activated(int iMsg) override;
+    bool isActive() override;
 };
 
 CmdSketcherMove::CmdSketcherMove()
@@ -1474,7 +1474,7 @@ void CmdSketcherMove::activate()
     SketcherCopy::activate(SketcherCopy::Move);
 }
 
-bool CmdSketcherMove::isActive(void)
+bool CmdSketcherMove::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -1526,7 +1526,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     }
 }
 
-Gui::Action * CmdSketcherCompCopy::createAction(void)
+Gui::Action * CmdSketcherCompCopy::createAction()
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -1574,7 +1574,7 @@ void CmdSketcherCompCopy::languageChange()
     move->setStatusTip(QApplication::translate("Sketcher_Move","Moves the geometry taking as reference the last selected point"));
 }
 
-bool CmdSketcherCompCopy::isActive(void)
+bool CmdSketcherCompCopy::isActive()
 {
     return isCommandActive( getActiveGuiDocument(), true );
 }
@@ -1643,7 +1643,7 @@ public:
     {
     }
 
-    virtual ~DrawSketchHandlerRectangularArray(){}
+    ~DrawSketchHandlerRectangularArray() override{}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
@@ -1655,7 +1655,7 @@ public:
         Snap5Degree
     };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
 
@@ -1690,7 +1690,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d) override
+    bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1699,7 +1699,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -1725,7 +1725,7 @@ public:
             }
 
             // add auto constraints for the destination copy
-            if (sugConstr1.size() > 0) {
+            if (!sugConstr1.empty()) {
                 createAutoConstraints(sugConstr1, OriginGeoId+nElements, OriginPos);
                 sugConstr1.clear();
             }
@@ -1740,7 +1740,7 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    void activated() override
     {
         setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
         Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
@@ -1896,7 +1896,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
 }
 
-bool CmdSketcherRectangularArray::isActive(void)
+bool CmdSketcherRectangularArray::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
@@ -1959,7 +1959,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
     }
 }
 
-bool CmdSketcherDeleteAllGeometry::isActive(void)
+bool CmdSketcherDeleteAllGeometry::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -2022,7 +2022,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
 }
 
-bool CmdSketcherDeleteAllConstraints::isActive(void)
+bool CmdSketcherDeleteAllConstraints::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), false);
 }
@@ -2140,12 +2140,12 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
 
 }
 
-bool CmdSketcherRemoveAxesAlignment::isActive(void)
+bool CmdSketcherRemoveAxesAlignment::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
 
-void CreateSketcherCommandsConstraintAccel(void)
+void CreateSketcherCommandsConstraintAccel()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

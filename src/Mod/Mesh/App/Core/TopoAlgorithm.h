@@ -52,7 +52,7 @@ class MeshExport MeshTopoAlgorithm
 {
 public:
     // construction/destruction
-    MeshTopoAlgorithm (MeshKernel &rclM);
+    explicit MeshTopoAlgorithm (MeshKernel &rclM);
     virtual ~MeshTopoAlgorithm ();
 
 public:
@@ -336,7 +336,7 @@ class MeshExport MeshComponents
 public:
     enum TMode {OverEdge, OverPoint};
 
-    MeshComponents( const MeshKernel& rclMesh );
+    explicit MeshComponents( const MeshKernel& rclMesh );
     ~MeshComponents();
 
     /**

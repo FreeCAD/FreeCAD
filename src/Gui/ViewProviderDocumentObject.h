@@ -55,7 +55,7 @@ public:
     ViewProviderDocumentObject();
 
     /// destructor.
-    virtual ~ViewProviderDocumentObject();
+    ~ViewProviderDocumentObject() override;
 
     // Display properties
     App::PropertyEnumeration DisplayMode;
@@ -66,43 +66,43 @@ public:
 
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
-    virtual void update(const App::Property*) override;
+    void update(const App::Property*) override;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
-    virtual void hide(void) override;
+    void hide() override;
     /// Show the object in the view
-    virtual void show(void) override;
+    void show() override;
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
-    virtual const char* getTransactionText() const override;
+    const char* getTransactionText() const override;
 
-    virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *,
+    bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *,
             const char *, const std::vector<std::string> &) const override;
 
-    virtual int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
+    int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
 
-    virtual bool showInTree() const override;
+    bool showInTree() const override;
 
     /// Get a list of TaskBoxes associated with this object
-    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
+    void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
 
     /// Run a redraw
     void updateView();
     /// Get the object of this ViewProvider object
-    App::DocumentObject *getObject(void) const {return pcObject;}
+    App::DocumentObject *getObject() const {return pcObject;}
     /// Asks the view provider if the given object can be deleted.
-    virtual bool canDelete(App::DocumentObject* obj) const override;
+    bool canDelete(App::DocumentObject* obj) const override;
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
     /// return a hit element given the picked point which contains the full node path
-    virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
+    bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
     /// return the coin node detail and path to the node of the subname
-    virtual bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const override;
+    bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const override;
 
     /* Force update visual
      *
@@ -121,9 +121,9 @@ public:
     virtual void finishRestoring();
     //@}
 
-    virtual bool removeDynamicProperty(const char* prop) override;
+    bool removeDynamicProperty(const char* prop) override;
 
-    virtual App::Property* addDynamicProperty(
+    App::Property* addDynamicProperty(
             const char* type, const char* name=nullptr,
             const char* group=nullptr, const char* doc=nullptr,
             short attr=0, bool ro=false, bool hidden=false) override;
@@ -142,7 +142,7 @@ public:
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=nullptr, bool recursive=false) const;
 
-    virtual std::string getFullName() const override;
+    std::string getFullName() const override;
 
     /** Allow this class to be used as an override for the original view provider of the given object
      *
@@ -181,9 +181,9 @@ protected:
      */
     Gui::MDIView* getViewOfNode(SoNode* node) const;
     /// get called before the value is changed
-    virtual void onBeforeChange(const App::Property* prop) override;
+    void onBeforeChange(const App::Property* prop) override;
     /// Gets called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
     /** Searches in all view providers that are attached to an object that
      * is part of the same document as the object this view provider is
      * attached to for an front root of \a type.
@@ -196,15 +196,15 @@ protected:
     /** @name Transaction handling
      */
     //@{
-    virtual bool isAttachedToDocument() const override;
-    virtual const char* detachFromDocument() override;
+    bool isAttachedToDocument() const override;
+    const char* detachFromDocument() override;
 
     /// get called when a property status has changed
-    virtual void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;
+    void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;
 
     //@}
 
-    virtual void setModeSwitch() override;
+    void setModeSwitch() override;
 
     /** Adds a menu item and bind it with \ref startDefaultEditMode().  */
     void addDefaultAction(QMenu*, const QString&);

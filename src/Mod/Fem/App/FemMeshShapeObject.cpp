@@ -86,7 +86,7 @@ FemMeshShapeObject::~FemMeshShapeObject()
 {
 }
 
-App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
+App::DocumentObjectExecReturn *FemMeshShapeObject::execute()
 {
     Fem::FemMesh newMesh;
 

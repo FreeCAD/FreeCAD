@@ -43,35 +43,35 @@ class ConstraintInitialFlowVelocity(base_fempythonobject.BaseFemPythonObject):
             "App::PropertyFloat",
             "VelocityX",
             "Parameter",
-            "Body heat flux"
+            "Velocity in x-direction"
         )
         obj.addProperty(
             "App::PropertyBool",
             "VelocityXEnabled",
             "Parameter",
-            "Body heat flux"
+            "Use velocity in x-direction"
         )
         obj.addProperty(
             "App::PropertyFloat",
             "VelocityY",
             "Parameter",
-            "Body heat flux"
+            "Velocity in y-direction"
         )
         obj.addProperty(
             "App::PropertyBool",
             "VelocityYEnabled",
             "Parameter",
-            "Body heat flux"
+            "Use velocity in y-direction"
         )
         obj.addProperty(
             "App::PropertyFloat",
             "VelocityZ",
             "Parameter",
-            "Body heat flux"
+            "Velocity in z-direction"
         )
         obj.addProperty(
             "App::PropertyBool",
             "VelocityZEnabled",
             "Parameter",
-            "Body heat flux"
+            "Use velocity in z-direction"
         )

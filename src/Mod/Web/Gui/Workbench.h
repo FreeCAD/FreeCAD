@@ -33,24 +33,24 @@ namespace WebGui {
  */
 class Workbench : public Gui::StdWorkbench
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
   Workbench();
-  virtual ~Workbench();
+  ~Workbench() override;
 
     /** Defines the standard context menu. */
-  virtual void setupContextMenu(const char* recipient,Gui::MenuItem*) const;
+  void setupContextMenu(const char* recipient,Gui::MenuItem*) const override;
 
 protected:
     /** Defines the standard menus. */
-    virtual Gui::MenuItem* setupMenuBar() const;
+    Gui::MenuItem* setupMenuBar() const override;
     /** Defines the standard toolbars. */
-    virtual Gui::ToolBarItem* setupToolBars() const;
+    Gui::ToolBarItem* setupToolBars() const override;
     /** Defines the standard command bars. */
-    virtual Gui::ToolBarItem* setupCommandBars() const;
+    Gui::ToolBarItem* setupCommandBars() const override;
     /** Returns a DockWindowItems structure of dock windows this workbench. */
-    virtual Gui::DockWindowItems* setupDockWindows() const;
+    Gui::DockWindowItems* setupDockWindows() const override;
 
 
 }; // namespace WebGui
