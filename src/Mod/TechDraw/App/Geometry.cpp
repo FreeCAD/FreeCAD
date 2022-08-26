@@ -125,17 +125,16 @@ Wire::~Wire()
 
 TopoDS_Wire Wire::toOccWire() const
 {
-    TopoDS_Wire result;
     BRepBuilderAPI_MakeWire mkWire;
     for (auto& g: geoms) {
         TopoDS_Edge e = g->occEdge;
         mkWire.Add(e);
     }
     if (mkWire.IsDone())  {
-        result = mkWire.Wire();
+        return mkWire.Wire();
     }
 //    BRepTools::Write(result, "toOccWire.brep");
-    return result;
+    return TopoDS_Wire();
 }
 
 void Wire::dump(std::string s)
@@ -158,9 +157,9 @@ TopoDS_Face Face::toOccFace() const
         }
     }
     if (mkFace.IsDone())  {
-        result = mkFace.Face();
+        return mkFace.Face();
     }
-    return result;
+    return TopoDS_Face();
 }
 
 Face::~Face()
@@ -192,29 +191,20 @@ BaseGeomPtr BaseGeom::copy()
     BaseGeomPtr result;
     if (!occEdge.IsNull()) {
         result = baseFactory(occEdge);
-        if (result) {
-            result->extractType = extractType;
-            result->classOfEdge = classOfEdge;
-            result->hlrVisible = hlrVisible;
-            result->reversed = reversed;
-            result->ref3D = ref3D;
-            result->cosmetic = cosmetic;
-            result->source(m_source);
-            result->sourceIndex(m_sourceIndex);
-            result->cosmeticTag = cosmeticTag;
+        if (!result) {
+            result = std::make_shared<BaseGeom>();
         }
-    } else {
-        result = std::make_shared<BaseGeom>();
-        result->extractType = extractType;
-        result->classOfEdge = classOfEdge;
-        result->hlrVisible = hlrVisible;
-        result->reversed = reversed;
-        result->ref3D = ref3D;
-        result->cosmetic = cosmetic;
-        result->source(m_source);
-        result->sourceIndex(m_sourceIndex);
-        result->cosmeticTag = cosmeticTag;
     }
+
+    result->extractType = extractType;
+    result->classOfEdge = classOfEdge;
+    result->hlrVisible = hlrVisible;
+    result->reversed = reversed;
+    result->ref3D = ref3D;
+    result->cosmetic = cosmetic;
+    result->source(m_source);
+    result->sourceIndex(m_sourceIndex);
+    result->cosmeticTag = cosmeticTag;
 
     return result;
 }
@@ -241,8 +231,7 @@ boost::uuids::uuid BaseGeom::getTag() const
 
 std::string BaseGeom::getTagAsString() const
 {
-    std::string tmp = boost::uuids::to_string(getTag());
-    return tmp;
+    return boost::uuids::to_string(getTag());
 }
 
 void BaseGeom::Save(Base::Writer &writer) const
@@ -367,7 +356,7 @@ std::vector<Base::Vector3d> BaseGeom::getQuads()
     double q1 = u + (range / 4.0);
     double q2 = u + (range / 2.0);
     double q3 = u + (3.0 * range / 4.0);
-    BRepLProp_CLProps prop(adapt, q1, 0,Precision::Confusion());
+    BRepLProp_CLProps prop(adapt, q1, 0, Precision::Confusion());
     const gp_Pnt& p1 = prop.Value();
     result.emplace_back(p1.X(), p1.Y(), 0.0);
     prop.SetParameter(q2);
@@ -381,45 +370,33 @@ std::vector<Base::Vector3d> BaseGeom::getQuads()
 
 double BaseGeom::minDist(Base::Vector3d p)
 {
-    double minDist = -1.0;
-    gp_Pnt pnt(p.x, p.y, 0.0);
+    gp_Pnt pnt(p.x, p.y,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
-    minDist = TechDraw::DrawUtil::simpleMinDist(occEdge, v);
-    return minDist;
+    return TechDraw::DrawUtil::simpleMinDist(occEdge, v);
 }
 
 //!find point on me nearest to p
 Base::Vector3d BaseGeom::nearPoint(const BaseGeomPtr p)
 {
-    Base::Vector3d result(0.0, 0.0, 0.0);
     TopoDS_Edge pEdge = p->occEdge;
     BRepExtrema_DistShapeShape extss(occEdge, pEdge);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            gp_Pnt p1;
-            p1 = extss.PointOnShape1(1);
-            result =  Base::Vector3d(p1.X(), p1.Y(), 0.0);
-        }
+    if (!extss.IsDone() || extss.NbSolution() == 0) {
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
-    return result;
+    gp_Pnt p1 = extss.PointOnShape1(1);
+    return Base::Vector3d(p1.X(), p1.Y(), 0.0);
 }
 
 Base::Vector3d BaseGeom::nearPoint(Base::Vector3d p)
 {
-    gp_Pnt pnt(p.x, p.y, 0.0);
-    Base::Vector3d result(0.0, 0.0, 0.0);
+    gp_Pnt pnt(p.x, p.y,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
     BRepExtrema_DistShapeShape extss(occEdge, v);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            gp_Pnt p1;
-            p1 = extss.PointOnShape1(1);
-            result =  Base::Vector3d(p1.X(), p1.Y(), 0.0);
-        }
+    if (!extss.IsDone() || extss.NbSolution() == 0) {
+        return Base::Vector3d(0.0, 0.0, 0.0);
     }
-    return result;
+    gp_Pnt p1 = extss.PointOnShape1(1);
+    return Base::Vector3d(p1.X(), p1.Y(), 0.0);
 }
 
 std::string BaseGeom::dump()
@@ -435,7 +412,6 @@ std::string BaseGeom::dump()
 
 bool BaseGeom::closed()
 {
-    bool result = false;
     Base::Vector3d start(getStartPoint().x,
                          getStartPoint().y,
                          0.0);
@@ -443,9 +419,9 @@ bool BaseGeom::closed()
                        getEndPoint().y,
                        0.0);
     if (start.IsEqual(end, 0.00001)) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 
@@ -763,7 +739,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
     try {
         gp_Vec v1(m, s);
         gp_Vec v2(m, ePt);
-        gp_Vec v3(0, 0,1);
+        gp_Vec v3(0, 0, 1);
         a = v3.DotCross(v1, v2);
     }
     catch (const Standard_Failure& e) {
@@ -798,7 +774,7 @@ Circle::Circle(Base::Vector3d c, double r)
     radius = r;
     center = c;
     gp_Pnt loc(c.x, c.y, c.z);
-    gp_Dir dir(0, 0,1);
+    gp_Dir dir(0, 0, 1);
     gp_Ax1 axis(loc, dir);
     gp_Circ circle;
     circle.SetAxis(axis);
@@ -874,7 +850,7 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     gp_Pnt ePt = c.Value(l);           //if start == end, it isn't an arc!
     gp_Vec v1(m, s);        //vector mid to start
     gp_Vec v2(m, ePt);      //vector mid to end
-    gp_Vec v3(0, 0,1);      //stdZ
+    gp_Vec v3(0, 0, 1);      //stdZ
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
@@ -897,7 +873,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     radius = r;
     center = c;
     gp_Pnt loc(c.x, c.y, c.z);
-    gp_Dir dir(0, 0,1);
+    gp_Dir dir(0, 0, 1);
     gp_Ax1 axis(loc, dir);
     gp_Circ circle;
     circle.SetAxis(axis);
@@ -917,7 +893,7 @@ AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
     gp_Pnt ePt = adp.Value(l);           //if start == end, it isn't an arc!
     gp_Vec v1(m, s);        //vector mid to start
     gp_Vec v2(m, ePt);      //vector mid to end
-    gp_Vec v3(0, 0,1);      //stdZ
+    gp_Vec v3(0, 0, 1);      //stdZ
     double a = v3.DotCross(v1, v2);    //error if v1 = v2?
 
     startAngle = fmod(f, 2.0*M_PI);
@@ -950,52 +926,42 @@ AOC::AOC() : Circle()
 
 bool AOC::isOnArc(Base::Vector3d p)
 {
-    bool result = false;
-    double minDist = -1.0;
-    gp_Pnt pnt(p.x, p.y, p.z);
+    gp_Pnt pnt(p.x, p.y,p.z);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
     BRepExtrema_DistShapeShape extss(occEdge, v);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            minDist = extss.Value();
-            if (minDist < Precision::Confusion()) {
-                result = true;
-            }
-        }
+    if (!extss.IsDone() || extss.NbSolution() == 0) {
+        return false;
     }
-    return result;
+    double minDist = extss.Value();
+    if (minDist < Precision::Confusion()) {
+        return true;
+    }
+    return false;
 }
 
 double AOC::distToArc(Base::Vector3d p)
 {
-    Base::Vector3d p2(p.x, p.y, p.z);
-    double result = minDist(p2);
-    return result;
+    return minDist(p);
 }
 
 
 bool AOC::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
 {
-    bool result = false;
-    double minDist = -1.0;
-    gp_Pnt pnt1(p1.x, p1.y, p1.z);
+    gp_Pnt pnt1(p1.x, p1.y,p1.z);
     TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(pnt1);
     gp_Pnt pnt2(p2.x, p2.y, p2.z);
     TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(pnt2);
     BRepBuilderAPI_MakeEdge mkEdge(v1, v2);
     TopoDS_Edge line = mkEdge.Edge();
     BRepExtrema_DistShapeShape extss(occEdge, line);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            minDist = extss.Value();
-            if (minDist < Precision::Confusion()) {
-                result = true;
-            }
-        }
+    if (!extss.IsDone() || extss.NbSolution() == 0) {
+        return false;
     }
-    return result;
+    double minDist = extss.Value();
+    if (minDist < Precision::Confusion()) {
+        return true;
+    }
+    return false;
 }
 
 std::string AOC::toString() const
@@ -1017,8 +983,7 @@ std::string AOC::toString() const
           cw << ", " <<
           largeArc;
 
-    std::string result = circleCSV + ", $$$, " + ss.str();
-    return result;
+    return circleCSV + ", $$$," + ss.str();
 }
 
 void AOC::Save(Base::Writer &writer) const
@@ -1159,20 +1124,17 @@ void Generic::Restore(Base::XMLReader &reader)
 
 Base::Vector3d Generic::asVector()
 {
-    Base::Vector3d result = getEndPoint() - getStartPoint();
-    return result;
+    return getEndPoint() - getStartPoint();
 }
 
 double Generic::slope()
 {
-    double slope;
     Base::Vector3d v = asVector();
     if (v.x == 0.0) {
-        slope = DOUBLE_MAX;
+        return DOUBLE_MAX;
     } else {
-        slope = v.y/v.x;
+        return v.y/v.x;
     }
-    return slope;
 }
 
 Base::Vector3d Generic::apparentInter(GenericPtr g)
@@ -1191,9 +1153,7 @@ Base::Vector3d Generic::apparentInter(GenericPtr g)
     double y = (dir0.y*c1 - dir1.y*c0)/det;
 
     // Apparent Intersection point
-    Base::Vector3d result = Base::Vector3d(x, y, 0.0);
-    return result;
-
+    return Base::Vector3d(x, y, 0.0);
 }
 
 BSpline::BSpline(const TopoDS_Edge &e)
@@ -1216,7 +1176,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     midPnt = Base::Vector3d(m.X(), m.Y(), m.Z());
     gp_Vec v1(m, s);
     gp_Vec v2(m, ePt);
-    gp_Vec v3(0, 0,1);
+    gp_Vec v3(0, 0, 1);
     double a = v3.DotCross(v1, v2);
     cw = (a < 0) ? true: false;
 
@@ -1237,22 +1197,22 @@ BSpline::BSpline(const TopoDS_Edge &e)
     Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
         spline = approx.Curve();
-    } else {
-        if (approx.HasResult()) {                   //result, but not within tolerance
-            spline = approx.Curve();
-            Base::Console().Log("Geometry::BSpline - result not within tolerance\n");
-        } else {
-            f = c.FirstParameter();
-            l = c.LastParameter();
-            s = c.Value(f);
-            ePt = c.Value(l);
-            Base::Console().Log("Error - Geometry::BSpline - no result- from:(%.3f, %.3f) to:(%.3f, %.3f) poles: %d\n",
-                                 s.X(), s.Y(), ePt.X(), ePt.Y(), spline->NbPoles());
-            TColgp_Array1OfPnt controlPoints(0, 1);
-            controlPoints.SetValue(0, s);
-            controlPoints.SetValue(1, ePt);
-            spline = GeomAPI_PointsToBSpline(controlPoints, 1).Curve();
-        }
+    }
+    else if (approx.HasResult()) { //result, but not within tolerance
+        spline = approx.Curve();
+        Base::Console().Log("Geometry::BSpline - result not within tolerance\n");
+    }
+    else {
+        f = c.FirstParameter();
+        l = c.LastParameter();
+        s = c.Value(f);
+        ePt = c.Value(l);
+        Base::Console().Log("Error - Geometry::BSpline - no result- from:(%.3f, %.3f) to:(%.3f, %.3f) poles: %d\n",
+                                s.X(), s.Y(),ePt.X(),ePt.Y(),spline->NbPoles());
+        TColgp_Array1OfPnt controlPoints(0, 1);
+        controlPoints.SetValue(0, s);
+        controlPoints.SetValue(1, ePt);
+        spline = GeomAPI_PointsToBSpline(controlPoints, 1).Curve();
     }
 
     GeomConvert_BSplineCurveToBezierCurve crt(spline);
@@ -1282,7 +1242,6 @@ BSpline::BSpline(const TopoDS_Edge &e)
 // if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
-    bool result = false;
     BRepAdaptor_Curve c(occEdge);
 
     Handle(Geom_BSplineCurve) spline = c.BSpline();
@@ -1292,28 +1251,30 @@ bool BSpline::isLine()
     gp_Pnt e = c.Value(l);
 
     bool samePnt = s.IsEqual(e, FLT_EPSILON);
-    if (!samePnt) {
-        Base::Vector3d vs = DrawUtil::gpPnt2V3(s);
-        Base::Vector3d ve = DrawUtil::gpPnt2V3(e);
-        double endLength = (vs - ve).Length();
-        int low = 0;
-        int high = spline->NbPoles() - 1;
-        TColgp_Array1OfPnt poles(low, high);
-        spline->Poles(poles);
-        double lenTotal = 0.0;
-        for (int i = 0; i < high; i++) {
-            gp_Pnt p1 = poles(i);
-            Base::Vector3d v1 = DrawUtil::gpPnt2V3(p1);
-            gp_Pnt p2 = poles(i+1);
-            Base::Vector3d v2 = DrawUtil::gpPnt2V3(p2);
-            lenTotal += (v2-v1).Length();
-        }
-
-        if (DrawUtil::fpCompare(lenTotal, endLength)) {
-            result = true;
-        }
+    if (samePnt) {
+        return false;
     }
-    return result;
+
+    Base::Vector3d vs = DrawUtil::gpPnt2V3(s);
+    Base::Vector3d ve = DrawUtil::gpPnt2V3(e);
+    double endLength = (vs - ve).Length();
+    int low = 0;
+    int high = spline->NbPoles() - 1;
+    TColgp_Array1OfPnt poles(low, high);
+    spline->Poles(poles);
+    double lenTotal = 0.0;
+    for (int i = 0; i < high; i++) {
+        gp_Pnt p1 = poles(i);
+        Base::Vector3d v1 = DrawUtil::gpPnt2V3(p1);
+        gp_Pnt p2 = poles(i+1);
+        Base::Vector3d v2 = DrawUtil::gpPnt2V3(p2);
+        lenTotal += (v2-v1).Length();
+    }
+
+    if (DrawUtil::fpCompare(lenTotal, endLength)) {
+        return true;
+    }
+    return false;
 }
 
 //used by DVDim for approximate dims
@@ -1345,7 +1306,7 @@ void BSpline::getCircleParms(bool& isCircle, double& radius, Base::Vector3d& cen
     double sumCurvature = 0;
     Base::Vector3d sumCenter, valueAt;
     try {
-        GeomLProp_CLProps prop(spline, f,3, Precision::Confusion());
+        GeomLProp_CLProps prop(spline, f, 3, Precision::Confusion());
         curvatures.push_back(prop.Curvature());
         sumCurvature += prop.Curvature();
         prop.CentreOfCurvature(curveCenter);
@@ -1489,7 +1450,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
                 radius = (radius1 + radius2) / 2.0;
                 center = (vc1 + vc2) / 2.0;
                 gp_Pnt gCenter(center.x, center.y, center.z);
-                gp_Ax2 stdZ(gCenter, gp_Dir(0, 0,1));
+                gp_Ax2 stdZ(gCenter, gp_Dir(0, 0, 1));
                 gp_Circ newCirc(stdZ, radius);
                 BRepBuilderAPI_MakeEdge newEdge(newCirc);
                 result = newEdge;
@@ -1513,25 +1474,21 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
 
 bool BSpline::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
 {
-    bool result = false;
-    double minDist = -1.0;
-    gp_Pnt pnt1(p1.x, p1.y, p1.z);
+    gp_Pnt pnt1(p1.x, p1.y,p1.z);
     TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(pnt1);
     gp_Pnt pnt2(p2.x, p2.y, p2.z);
     TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(pnt2);
     BRepBuilderAPI_MakeEdge mkEdge(v1, v2);
     TopoDS_Edge line = mkEdge.Edge();
     BRepExtrema_DistShapeShape extss(occEdge, line);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            minDist = extss.Value();
-            if (minDist < Precision::Confusion()) {
-                result = true;
-            }
-        }
+    if (!extss.IsDone() || extss.NbSolution() == 0) {
+        return false;
     }
-    return result;
+    double minDist = extss.Value();
+    if (minDist < Precision::Confusion()) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -1554,7 +1511,6 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
         reversed = true;
     }
 }
-
 
 //**** Vertex
 Vertex::Vertex()
@@ -1595,7 +1551,7 @@ Vertex::Vertex(double x, double y)
     hlrVisible = false;
     ref3D = -1;                        //obs. never used.
     isCenter = false;
-    BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x, y,0.0));
+    BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x, y, 0.0));
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
@@ -1613,12 +1569,11 @@ Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
 
 bool Vertex::isEqual(const Vertex& v, double tol)
 {
-    bool result = false;
     double dist = (pnt - (v.pnt)).Length();
     if (dist <= tol) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 void Vertex::Save(Base::Writer &writer) const
@@ -1706,8 +1661,7 @@ boost::uuids::uuid Vertex::getTag() const
 
 std::string Vertex::getTagAsString() const
 {
-    std::string tmp = boost::uuids::to_string(getTag());
-    return tmp;
+    return boost::uuids::to_string(getTag());
 }
 
 void Vertex::dump(const char* title)
@@ -1795,28 +1749,26 @@ TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::GenericPtr g)
     Base::Vector3d last  = g->points.back();
     gp_Pnt gp1(first.x, first.y, first.z);
     gp_Pnt gp2(last.x, last.y, last.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    return e;
+    return BRepBuilderAPI_MakeEdge(gp1, gp2);
 }
 
 TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::CirclePtr c)
 {
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
-    gp_Dir dir(0, 0,1);
+    gp_Dir dir(0, 0, 1);
     gp_Ax1 axis(loc, dir);
     gp_Circ circle;
     circle.SetAxis(axis);
     circle.SetRadius(c->radius);
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
     BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, 0.0, 2.0 * M_PI);
-    TopoDS_Edge e = aMakeEdge.Edge();
-    return e;
+    return aMakeEdge.Edge();
 }
 
 TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOCPtr c)
 {
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
-    gp_Dir dir(0, 0,1);
+    gp_Dir dir(0, 0, 1);
     gp_Ax1 axis(loc, dir);
     gp_Circ circle;
     circle.SetAxis(axis);
@@ -1825,8 +1777,7 @@ TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOCPtr c)
     double startAngle = c->startAngle;
     double endAngle = c->endAngle;
     BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, startAngle, endAngle);
-    TopoDS_Edge e = aMakeEdge.Edge();
-    return e;
+    return aMakeEdge.Edge();
 }
 
 
