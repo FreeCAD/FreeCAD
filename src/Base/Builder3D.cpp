@@ -1027,7 +1027,7 @@ std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<std:
 {
     std::vector<Face> faces;
     faces.reserve(coordIndex.size());
-    for (const auto it : coordIndex) {
+    for (const auto& it : coordIndex) {
         if (it.size() == 3) {
             faces.emplace_back(it[0], it[1], it[2]);
         }
