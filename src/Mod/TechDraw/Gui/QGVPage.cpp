@@ -225,6 +225,11 @@ public:
             }
         }
     }
+    void detach() {
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Detach(this);
+
+    }
 };
 
 QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
@@ -285,6 +290,7 @@ QGVPage::~QGVPage()
 {
     delete bkgBrush;
     delete m_navStyle;
+    d->detach();
 }
 
 void QGVPage::centerOnPage(void)
