@@ -536,19 +536,13 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Add expressions and its dependencies
-            auto expressions = docObj->ExpressionEngine.getExpressions();
-            auto i = expressions.begin();
-
-            // Add nodes for each property that has an expression attached to it
-            while (i != expressions.end()) {
-                std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(i->first));
+            for (const auto &expr : docObj->ExpressionEngine.getExpressions()) {
+                auto k = std::as_const(GlobalVertexList).find(getId(expr.first));
                 if (k == GlobalVertexList.end()) {
-                    int vid = LocalVertexList[getId(i->first)] = add_vertex(*sgraph);
-                    GlobalVertexList[getId(i->first)] = vertex_no++;
-                    setPropertyVertexAttributes(*sgraph, vid, i->first.toString());
+                    int vid = LocalVertexList[getId(expr.first)] = add_vertex(*sgraph);
+                    GlobalVertexList[getId(expr.first)] = vertex_no++;
+                    setPropertyVertexAttributes(*sgraph, vid, expr.first.toString());
                 }
-
-                ++i;
             }
 
             // Add all dependencies
