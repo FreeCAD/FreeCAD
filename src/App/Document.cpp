@@ -484,31 +484,32 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param name Name of node.
          */
 
-        void add(DocumentObject * docObj, const std::string & name, const std::string & label, bool CSSubgraphs) {
+        void add(DocumentObject *docObj, const std::string &name, const std::string &label, bool CSSubgraphs)
+        {
 
             //don't add objects twice
-            if(std::find(objects.begin(), objects.end(), docObj) != objects.end())
+            if (std::find(objects.begin(), objects.end(), docObj) != objects.end())
                 return;
 
             //find the correct graph to add the vertex to. Check first expression graphs, afterwards
             //the parent CS and origin graphs
-            Graph * sgraph = GraphList[docObj];
-            if(CSSubgraphs) {
-                if(!sgraph) {
+            Graph *sgraph = GraphList[docObj];
+            if (CSSubgraphs) {
+                if (!sgraph) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
-                    if(group) {
-                        if(docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                    if (group) {
+                        if (docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                             sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
                         else
                             sgraph = GraphList[group];
                     }
                 }
-                if(!sgraph) {
-                    if(docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
-                        sgraph = GraphList[static_cast<OriginFeature*>(docObj)->getOrigin()];
+                if (!sgraph) {
+                    if (docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
+                        sgraph = GraphList[static_cast<OriginFeature *>(docObj)->getOrigin()];
                 }
             }
-            if(!sgraph)
+            if (!sgraph)
                 sgraph = &DepList;
 
             // Keep a list of all added document objects.
@@ -536,45 +537,38 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Add expressions and its dependencies
-            auto expressions = docObj->ExpressionEngine.getExpressions();
-            auto i = expressions.begin();
-
-            // Add nodes for each property that has an expression attached to it
-            while (i != expressions.end()) {
-                std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(i->first));
-                if (k == GlobalVertexList.end()) {
-                    int vid = LocalVertexList[getId(i->first)] = add_vertex(*sgraph);
-                    GlobalVertexList[getId(i->first)] = vertex_no++;
-                    setPropertyVertexAttributes(*sgraph, vid, i->first.toString());
+            auto expressions{docObj->ExpressionEngine.getExpressions()};
+            for (const auto &expr : expressions) {
+                auto found = std::as_const(GlobalVertexList).find(getId(expr.first));
+                if (found == GlobalVertexList.end()) {
+                    int vid = LocalVertexList[getId(expr.first)] = add_vertex(*sgraph);
+                    GlobalVertexList[getId(expr.first)] = vertex_no++;
+                    setPropertyVertexAttributes(*sgraph, vid, expr.first.toString());
                 }
-
-                ++i;
             }
 
             // Add all dependencies
-            i = expressions.begin();
-            while (i != expressions.end()) {
-
+            for (const auto &expression : expressions) {
                 // Get dependencies
-                std::map<ObjectIdentifier,bool> deps;
-                i->second->getIdentifiers(deps);
+                std::map<ObjectIdentifier, bool> deps;
+                expression.second->getIdentifiers(deps);
 
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                for(auto j=deps.begin(); j!=deps.end(); ++j) {
-                    if(j->second)
+                for (const auto &dep : deps) {
+                    if (dep.second) {
                         continue;
-                    DocumentObject * depObjDoc = j->first.getDocumentObject();
-                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(j->first));
+                    }
+                    DocumentObject *depObjDoc = dep.first.getDocumentObject();
+                    auto found = GlobalVertexList.find(getId(dep.first));
 
-                    if (k == GlobalVertexList.end()) {
-                        Graph * depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
+                    if (found == GlobalVertexList.end()) {
+                        Graph *depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
 
-                        LocalVertexList[getId(j->first)] = add_vertex(*depSgraph);
-                        GlobalVertexList[getId(j->first)] = vertex_no++;
-                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(j->first)], j->first.getPropertyName() + j->first.getSubPathStr());
+                        LocalVertexList[getId(dep.first)] = add_vertex(*depSgraph);
+                        GlobalVertexList[getId(dep.first)] = vertex_no++;
+                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(dep.first)], dep.first.getPropertyName() + dep.first.getSubPathStr());
                     }
                 }
-                ++i;
             }
         }
 
