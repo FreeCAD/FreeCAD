@@ -436,14 +436,14 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
         return nullptr;
     }
 
-    PropertyEnumeration *enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    auto *enumProp = dynamic_cast<PropertyEnumeration*>(prop);
     if (!enumProp)
         Py_Return;
 
     std::vector<std::string> enumerations = enumProp->getEnumVector();
     Py::List ret;
-    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
-        ret.append(Py::String(*it));
+    for (const auto & enumeration : enumerations) {
+        ret.append(Py::String(enumeration));
     }
     return Py::new_reference_to(ret);
 }
@@ -451,12 +451,13 @@ PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
 Py::List PropertyContainerPy::getPropertiesList() const
 {
     Py::List ret;
-    std::map<std::string,Property*> Map;
+    std::map<std::string, Property *> Map;
 
     getPropertyContainerPtr()->getPropertyMap(Map);
 
-    for (std::map<std::string,Property*>::const_iterator It=Map.begin(); It!=Map.end(); ++It)
-        ret.append(Py::String(It->first));
+    for (const auto &It : Map) {
+        ret.append(Py::String(It.first));
+    }
 
     return ret;
 }
@@ -577,19 +578,19 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         }
         return pyobj;
     }
-    else if (Base::streq(attr, "__dict__")) {
+    if (Base::streq(attr, "__dict__")) {
         // get the properties to the C++ PropertyContainer class
         std::map<std::string,App::Property*> Map;
         getPropertyContainerPtr()->getPropertyMap(Map);
 
         Py::Dict dict;
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-            dict.setItem(it->first, Py::String(""));
+        for (const auto & it : Map) {
+            dict.setItem(it.first, Py::String(""));
         }
         return Py::new_reference_to(dict);
     }
     ///FIXME: For v0.20: Do not use stuff from Part module here!
-    else if(Base::streq(attr,"Shape") && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if(Base::streq(attr,"Shape") && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         // Special treatment of Shape property
         static PyObject *_getShape = nullptr;
         if(!_getShape) {

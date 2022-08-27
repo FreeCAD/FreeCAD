@@ -495,11 +495,11 @@ bool ColorLegend::setColor (std::size_t ulPos, float ucRed, float ucGreen, float
 }
 
 // color as 0x00rrggbb
-bool ColorLegend::setColor (std::size_t ulPos, unsigned long ulColor)
+bool ColorLegend::setColor(std::size_t ulPos, unsigned long ulColor)
 {
-    unsigned char ucRed   = (unsigned char)((ulColor & 0x00ff0000) >> 16);
-    unsigned char ucGreen = (unsigned char)((ulColor & 0x0000ff00) >> 8);
-    unsigned char ucBlue  = (unsigned char)(ulColor & 0x000000ff);
+    auto ucRed = (unsigned char)((ulColor & 0x00ff0000) >> 16);
+    auto ucGreen = (unsigned char)((ulColor & 0x0000ff00) >> 8);
+    auto ucBlue = (unsigned char)(ulColor & 0x000000ff);
     return setColor(ulPos, ucRed, ucGreen, ucBlue);
 }
 

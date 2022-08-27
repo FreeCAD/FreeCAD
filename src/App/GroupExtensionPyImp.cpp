@@ -61,7 +61,7 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))
         return nullptr;
 
-    DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
+    auto* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
         return nullptr;
@@ -76,7 +76,7 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
         return nullptr;
     }
     if (docObj->getDocumentObjectPtr()->hasExtension(GroupExtension::getExtensionClassTypeId())) {
-        App::GroupExtension* docGrp = docObj->getDocumentObjectPtr()->getExtensionByType<GroupExtension>();
+        auto* docGrp = docObj->getDocumentObjectPtr()->getExtensionByType<GroupExtension>();
         if (docGrp->hasObject(getGroupExtensionPtr()->getExtendedObject())) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add a group object to a child group");
             return nullptr;
@@ -173,7 +173,7 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object))
         return nullptr;
 
-    DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
+    auto* docObj = static_cast<DocumentObjectPy*>(object);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
         return nullptr;
@@ -260,7 +260,7 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!|O!", &(DocumentObjectPy::Type), &object, &PyBool_Type, &recursivePy))
         return nullptr;
 
-    DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
+    auto* docObj = static_cast<DocumentObjectPy*>(object);
     bool recursive = Base::asBoolean(recursivePy);
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");

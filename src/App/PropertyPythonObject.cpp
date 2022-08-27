@@ -405,7 +405,7 @@ unsigned int PropertyPythonObject::getMemSize () const
 
 Property *PropertyPythonObject::Copy() const
 {
-    PropertyPythonObject *p = new PropertyPythonObject();
+    auto *p = new PropertyPythonObject();
     Base::PyGILStateLocker lock;
     p->object = this->object;
     return p;

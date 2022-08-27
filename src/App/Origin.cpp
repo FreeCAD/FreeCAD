@@ -157,7 +157,7 @@ void Origin::setupObject () {
 
         assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
 
-        App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
+        auto *feature = static_cast <App::OriginFeature *> ( featureObj );
         feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );
         feature->Role.setValue ( data.role );
 

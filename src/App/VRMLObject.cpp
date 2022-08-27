@@ -69,10 +69,10 @@ void VRMLObject::onChanged(const App::Property* prop)
         // save the relative paths to the resource files in the project file
         Resources.setSize(Urls.getSize());
         const std::vector<std::string>& urls = Urls.getValues();
-        int index=0;
-        for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it, ++index) {
+        int ndx =0;
+        for (auto it = urls.begin(); it != urls.end(); ++it, ++ndx) {
             std::string output = getRelativePath(this->vrmlPath, *it);
-            Resources.set1Value(index, output);
+            Resources.set1Value(ndx, output);
         }
     }
     GeoFeature::onChanged(prop);
@@ -139,8 +139,8 @@ void VRMLObject::Save (Base::Writer &writer) const
 
     // save also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        writer.addFile(it->c_str(), this);
+    for (const auto & url : urls) {
+        writer.addFile(url.c_str(), this);
     }
 
     this->index = 0;
@@ -153,8 +153,8 @@ void VRMLObject::Restore(Base::XMLReader &reader)
 
     // restore also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for(std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        reader.addFile(it->c_str(), this);
+    for(const auto & url : urls) {
+        reader.addFile(url.c_str(), this);
     }
 
     this->index = 0;

@@ -274,35 +274,27 @@ void Document::setStatus(Status pos, bool on)
     d->StatusBits.set((size_t)pos, on);
 }
 
-void Document::writeDependencyGraphViz(std::ostream &out)
+void Document::writeDependencyGraphViz(std::ostream &outStream)
 {
     //  // caching vertex to DocObject
     //std::map<Vertex,DocumentObject*> VertexMap;
     //for(std::map<DocumentObject*,Vertex>::const_iterator It1= _DepConMap.begin();It1 != _DepConMap.end(); ++It1)
     //  VertexMap[It1->second] = It1->first;
 
-    out << "digraph G {" << std::endl;
-    out << "\tordering=out;" << std::endl;
-    out << "\tnode [shape = box];" << std::endl;
+    outStream << "digraph G {" << std::endl;
+    outStream << "\tordering=out;" << std::endl;
+    outStream << "\tnode [shape = box];" << std::endl;
 
-    for (const auto &It : d->objectMap) {
-        out << "\t" << It.first << ";" << std::endl;
-        std::vector<DocumentObject*> OutList = It.second->getOutList();
-        for (const auto &It2 : OutList)
-            if (It2)
-                out << "\t" << It.first << "->" << It2->getNameInDocument() << ";" << std::endl;
+    for (const auto &object : d->objectMap) {
+        outStream << "\t" << object.first << ";" << endl;
+        std::vector<DocumentObject *> outList = object.second->getOutList();
+        for (const auto &out : outList) {
+            if (out != nullptr) {
+                outStream << "\t" << object.first << "->" << out->getNameInDocument() << ";" << std::endl;
+            }
+        }
     }
-
-    /*
-    graph_traits<DependencyList>::edge_iterator ei, ei_end;
-    for (tie(ei,ei_end) = edges(_DepList); ei != ei_end; ++ei)
-      out << "\t"
-          << VertexMap[source(*ei, _DepList)]->getNameInDocument()
-          << " -> "
-          << VertexMap[target(*ei, _DepList)]->getNameInDocument()
-          << ";" << endl;
-    */
-    out << "}" << endl;
+    outStream << "}" << endl;
 }
 
 void Document::exportGraphviz(std::ostream& out) const
@@ -458,14 +450,14 @@ void Document::exportGraphviz(std::ostream& out) const
                         if (o && !GraphList[o]) {
 
                             if (CSsubgraphs) {
-                                auto group = GeoFeatureGroupExtension::getGroupOfObject(o);
-                                auto graph2 = group ? GraphList[group] : &DepList;
-                                if (graph2) {
+                                auto *group = GeoFeatureGroupExtension::getGroupOfObject(o);
+                                auto *graph2 = group != nullptr ? GraphList[group] : &DepList;
+                                if (graph2 != nullptr) {
                                     GraphList[o] = &graph2->create_subgraph();
                                     setGraphAttributes(o);
                                 }
                             }
-                            else if (graph) {
+                            else if (graph != nullptr) {
                                 GraphList[o] = &graph->create_subgraph();
                                 setGraphAttributes(o);
                             }
@@ -569,45 +561,48 @@ void Document::exportGraphviz(std::ostream& out) const
             }
         }
 
-        void recursiveCSSubgraphs(DocumentObject* cs, DocumentObject* parent) {
+        void recursiveCSSubgraphs(DocumentObject *documentObject, DocumentObject *parent)
+        {
 
-            auto graph = parent ? GraphList[parent] : &DepList;
+            auto *graph = parent != nullptr ? GraphList[parent] : &DepList;
             // check if the value for the key 'parent' is null
-            if (!graph)
+            if (graph == nullptr) {
                 return;
-            auto& sub = graph->create_subgraph();
-            GraphList[cs] = &sub;
-            get_property(sub, graph_name) = getClusterName(cs);
+            }
+            auto &sub = graph->create_subgraph();
+            GraphList[documentObject] = &sub;
+            get_property(sub, graph_name) = getClusterName(documentObject);
 
             //build random color string
             std::stringstream stream;
-            stream << "#" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
-                   << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
-                   << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed) << 80;
+            stream << "#" << std::setfill('0') << std::setw(2) << std::hex << distribution(seed)
+                   << std::setfill('0') << std::setw(2) << std::hex << distribution(seed)
+                   << std::setfill('0') << std::setw(2) << std::hex << distribution(seed) << 80;
             std::string result(stream.str());
 
             get_property(sub, graph_graph_attribute)["bgcolor"] = result;
             get_property(sub, graph_graph_attribute)["style"] = "rounded,filled";
-            setGraphLabel(sub, cs);
+            setGraphLabel(sub, documentObject);
 
-            for(auto obj : cs->getOutList()) {
-                if (obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            for (auto *pDocumentObject : documentObject->getOutList()) {// todo: getOutList mis-named?
+                if (pDocumentObject->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
                     // in case of dependencies loops check if obj is already part of the
                     // map to avoid infinite recursions
-                    auto it = GraphList.find(obj);
-                    if (it == GraphList.end())
-                        recursiveCSSubgraphs(obj, cs);
+                    auto found = std::as_const(GraphList).find(pDocumentObject);
+                    if (found == GraphList.end()) {
+                        recursiveCSSubgraphs(pDocumentObject, documentObject);
+                    }
                 }
             }
 
             //setup the origin if available
-            if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
-                auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
-                if (!origin) {
+            if (documentObject->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+                auto *origin = documentObject->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
+                if (origin == nullptr) {
                     std::cerr << "Origin feature not found" << std::endl;
                     return;
                 }
-                auto& osub = sub.create_subgraph();
+                auto &osub = sub.create_subgraph();
                 GraphList[origin] = &osub;
                 get_property(osub, graph_name) = getClusterName(origin);
                 get_property(osub, graph_graph_attribute)["bgcolor"] = "none";
@@ -615,64 +610,67 @@ void Document::exportGraphviz(std::ostream& out) const
             }
         }
 
-        void addSubgraphs() {
+        void addSubgraphs()
+        {
 
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
-            if(CSSubgraphs) {
+            if (CSSubgraphs) {
                 //first build up the coordinate system subgraphs
-                for (auto objectIt : d->objectArray) {
+                for (auto *objectIt : d->objectArray) {
                     // do not require an empty inlist (#0003465: Groups breaking dependency graph)
                     // App::Origin now has the GeoFeatureGroupExtension but it should not move its
                     // group symbol outside its parent
-                    if (!objectIt->isDerivedFrom(Origin::getClassTypeId()) &&
-                         objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                    if (!objectIt->isDerivedFrom(Origin::getClassTypeId()) && objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
                         recursiveCSSubgraphs(objectIt, nullptr);
-                }
-            }
-
-            // Internal document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
-                addExpressionSubgraphIfNeeded(It->second, CSSubgraphs);
-
-            // Add external document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-                std::vector<DocumentObject*> OutList = It->second->getOutList();
-                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-                    if (*It2) {
-                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
-
-                        if (item == GlobalVertexList.end())
-                            addExpressionSubgraphIfNeeded(*It2, CSSubgraphs);
                     }
                 }
             }
 
+            // Internal document objects
+            for (const auto &object : d->objectMap) {
+                addExpressionSubgraphIfNeeded(object.second, CSSubgraphs);
+            }
+
+            // Add external document objects
+            for (const auto &object : d->objectMap) {
+                std::vector<DocumentObject *> outs = object.second->getOutList();
+                for (auto &It2 : outs) {
+                    if (It2 != nullptr) {
+                        auto item = std::as_const(GlobalVertexList).find(getId(It2));
+                        if (item == GlobalVertexList.end()) {
+                            addExpressionSubgraphIfNeeded(It2, CSSubgraphs);
+                        }
+                    }
+                }
+            }
         }
 
         // Filling up the adjacency List
-        void buildAdjacencyList() {
+        void buildAdjacencyList()
+        {
 
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
             bool CSSubgraphs = depGrp->GetBool("GeoFeatureSubgraphs", true);
 
             // Add internal document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It)
-                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue(), CSSubgraphs);
+            for (const auto &object : d->objectMap) {
+                add(object.second, object.second->getNameInDocument(), object.second->Label.getValue(), CSSubgraphs);
+            }
 
             // Add external document objects
-            for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-                std::vector<DocumentObject*> OutList = It->second->getOutList();
-                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-                    if (*It2) {
-                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
-
-                        if (item == GlobalVertexList.end())
-                            add(*It2,
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
-                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue(),
+            for (const auto &object : d->objectMap) {
+                std::vector<DocumentObject *> OutList = object.second->getOutList();
+                for (const auto &pDocumentObject : OutList) {
+                    if (pDocumentObject != nullptr) {
+                        auto item = GlobalVertexList.find(getId(pDocumentObject));
+                        if (item == GlobalVertexList.end()) {
+                            add(pDocumentObject,
+                                std::string(pDocumentObject->getDocument()->getName()) + "#" + pDocumentObject->getNameInDocument(),
+                                std::string(pDocumentObject->getDocument()->getName()) + "#" + pDocumentObject->Label.getValue(),
                                 CSSubgraphs);
+                        }
                     }
                 }
             }
@@ -763,11 +761,11 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
 
                 // Set labels for duplicate edges
-                for (std::map<DocumentObject*, int>::const_iterator It2 = dups.begin(); It2 != dups.end(); ++It2) {
-                    Edge e(edge(GlobalVertexList[getId(It->second)], GlobalVertexList[getId(It2->first)], DepList).first);
-                    std::stringstream s;
-                    s << " " << (It2->second + 1) << "x";
-                    edgeAttrMap[e]["label"] = s.str();
+                for (const auto & dup : dups) {
+                    Edge edg {edge(GlobalVertexList[getId(It->second)], GlobalVertexList[getId(dup.first)], DepList).first};
+                    std::stringstream stream;
+                    stream << " " << (dup.second + 1) << "x";
+                    edgeAttrMap[edg]["label"] = stream.str();
                 }
 
             }
@@ -1058,18 +1056,21 @@ bool Document::isPerformingTransaction() const
 std::vector<std::string> Document::getAvailableUndoNames() const
 {
     std::vector<std::string> vList;
-    if (d->activeUndoTransaction)
+    if (d->activeUndoTransaction) {
         vList.push_back(d->activeUndoTransaction->Name);
-    for (std::list<Transaction*>::const_reverse_iterator It=mUndoTransactions.rbegin();It!=mUndoTransactions.rend();++It)
+    }
+    for (auto It = mUndoTransactions.rbegin(); It != mUndoTransactions.rend(); ++It) {
         vList.push_back((**It).Name);
+    }
     return vList;
 }
 
 std::vector<std::string> Document::getAvailableRedoNames() const
 {
     std::vector<std::string> vList;
-    for (std::list<Transaction*>::const_reverse_iterator It=mRedoTransactions.rbegin();It!=mRedoTransactions.rend();++It)
+    for (auto It = mRedoTransactions.rbegin(); It != mRedoTransactions.rend(); ++It) {
         vList.push_back((**It).Name);
+    }
     return vList;
 }
 
@@ -1637,7 +1638,7 @@ Document::~Document()
     // But we must still invalidate the Python object because it doesn't need to be
     // destructed right now because the interpreter can own several references to it.
     Base::PyGILStateLocker lock;
-    Base::PyObjectBase* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.ptr());
+    auto *doc = static_cast<Base::PyObjectBase *>(d->DocumentPythonObject.ptr());
     // Call before decrementing the reference counter, otherwise a heap error can occur
     doc->setInvalid();
 
@@ -2338,55 +2339,59 @@ public:
     }
 
 private:
-    void applyStandard(const std::string& sourcename, const std::string& targetname) {
+
+    void applyStandard(const std::string &sourcename, const std::string &targetname)
+    {
         // if saving the project data succeeded rename to the actual file name
-        Base::FileInfo fi(targetname);
-        if (fi.exists()) {
+        Base::FileInfo target{targetname};
+        if (target.exists()) {
             if (numberOfFiles > 0) {
                 int nSuff = 0;
-                std::string fn = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
-                std::vector<Base::FileInfo> backup;
-                std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                    std::string file = it->fileName();
-                    if (file.substr(0,fn.length()) == fn) {
+                std::string targetName{target.fileName()};
+                Base::FileInfo targetPath{target.dirPath()};
+                std::vector<Base::FileInfo> backups;
+                std::vector<Base::FileInfo> targetDirFiles{targetPath.getDirectoryContent()};
+                for (const auto &targetDirFile : targetDirFiles) {
+                    std::string file{targetDirFile.fileName()};
+                    if (file.substr(0, targetName.length()) == targetName) {
                         // starts with the same file name
-                        std::string suf(file.substr(fn.length()));
-                        if (!suf.empty()) {
-                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
-                            if (nPos==std::string::npos) {
+                        std::string suffix{file.substr(targetName.length())};
+                        if (!suffix.empty()) {
+                            std::string::size_type nPos = suffix.find_first_not_of("0123456789");
+                            if (nPos == std::string::npos) {
                                 // store all backup files
-                                backup.push_back(*it);
-                                nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
+                                backups.push_back(targetDirFile);
+                                nSuff = std::max<int>(nSuff, std::atol(suffix.c_str()));
                             }
                         }
                     }
                 }
 
-                if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
+                if (!backups.empty() && (int)backups.size() >= numberOfFiles) {
                     // delete the oldest backup file we found
-                    Base::FileInfo del = backup.front();
-                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                        if (it->lastModified() < del.lastModified())
-                            del = *it;
+                    Base::FileInfo del = backups.front();
+                    for (auto &backup : backups) {
+                        if (backup.lastModified() < del.lastModified()) {
+                            del = backup;
+                        }
                     }
 
                     del.deleteFile();
-                    fn = del.filePath();
+                    targetName = del.filePath();
                 }
                 else {
                     // create a new backup file
                     std::stringstream str;
-                    str << fi.filePath() << (nSuff + 1);
-                    fn = str.str();
+                    str << target.filePath() << (nSuff + 1);
+                    targetName = str.str();
                 }
 
-                if (!fi.renameFile(fn.c_str()))
+                if (!target.renameFile(targetName.c_str())) {
                     Base::Console().Warning("Cannot rename project file to backup file\n");
+                }
             }
             else {
-                fi.deleteFile();
+                target.deleteFile();
             }
         }
 
@@ -2396,6 +2401,7 @@ private:
                 "Cannot rename tmp save file to project file", targetname);
         }
     }
+
     void applyTimeStamp(const std::string& sourcename, const std::string& targetname) {
         Base::FileInfo fi(targetname);
 
@@ -2419,14 +2425,14 @@ private:
                 boost::replace_all(saveBackupDateFormat, ".", "-");
                 {
                     // Remove all extra backups
-                    std::string fn = fi.fileName();
-                    Base::FileInfo di(fi.dirPath());
-                    std::vector<Base::FileInfo> backup;
-                    std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                    for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                        if (it->isFile()) {
-                            std::string file = it->fileName();
-                            std::string fext = it->extension();
+                    std::string fn {fi.fileName()};
+                    Base::FileInfo di {fi.dirPath()};
+                    std::vector<Base::FileInfo> backups;
+                    std::vector<Base::FileInfo> dirFiles {di.getDirectoryContent()};
+                    for (auto &dirFile : dirFiles) {
+                        if (dirFile.isFile()) {
+                            std::string file = dirFile.fileName();
+                            std::string fext = dirFile.extension();
                             std::string fextUp = fext;
                             std::transform(fextUp.begin(), fextUp.end(), fextUp.begin(),(int (*)(int))toupper);
                             // re-enforcing identification of the backup file
@@ -2440,28 +2446,28 @@ private:
                                  // + complement with no "." + ".FCBak"
                                  ((fextUp == "FCBAK") && startsWith(file, pbn) &&
                                  (checkValidComplement(file, pbn, fext)))) {
-                                backup.push_back(*it);
+                                backups.push_back(dirFile);
                             }
                         }
                     }
 
-                    if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
-                        std::sort (backup.begin(), backup.end(), fileComparisonByDate);
+                    if (!backups.empty() && (int)backups.size() >= numberOfFiles) {
+                        std::sort (backups.begin(), backups.end(), fileComparisonByDate);
                         // delete the oldest backup file we found
                         // Base::FileInfo del = backup.front();
-                        int nb = 0;
-                        for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                            nb++;
-                            if (nb >= numberOfFiles) {
+                        int numBackupsProcessed {};
+                        for (const auto &backup : backups) {
+                            numBackupsProcessed++;
+                            if (numBackupsProcessed >= numberOfFiles) {
                                 try {
-                                    if (!it->deleteFile()) {
+                                    if (!backup.deleteFile()) {
                                         backupManagementError = true;
-                                        Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
+                                        Base::Console().Warning("Cannot remove backup file : %s\n", backup.fileName().c_str());
                                     }
                                 }
                                 catch (...) {
                                     backupManagementError = true;
-                                    Base::Console().Warning("Cannot remove backup file : %s\n", it->fileName().c_str());
+                                    Base::Console().Warning("Cannot remove backup file : %s\n", backup.fileName().c_str());
                                 }
                             }
                         }
@@ -2933,7 +2939,7 @@ const char* Document::getProgramVersion() const
     return d->programVersion.c_str();
 }
 
-const char* Document::getFileName() const
+const char *Document::getFileName() const
 {
     return testStatus(TempDoc) ? TransientDir.getValue()
                                : FileName.getValue();
@@ -2942,25 +2948,30 @@ const char* Document::getFileName() const
 /// Remove all modifications. After this call The document becomes valid again.
 void Document::purgeTouched()
 {
-    for (std::vector<DocumentObject*>::iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        (*It)->purgeTouched();
+    for (auto &pDocumentObject : d->objectArray) {
+        pDocumentObject->purgeTouched();
+    }
 }
 
 bool Document::isTouched() const
 {
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched())
+    for (auto *const pDocumentObject : d->objectArray) {
+        if (pDocumentObject->isTouched()) {
             return true;
+        }
+    }
     return false;
 }
 
-vector<DocumentObject*> Document::getTouched() const
+vector<DocumentObject *> Document::getTouched() const
 {
-    vector<DocumentObject*> result;
+    vector<DocumentObject *> result;
 
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched())
-            result.push_back(*It);
+    for (auto *const object : d->objectArray) {
+        if (object->isTouched()) {
+            result.push_back(object);
+        }
+    }
 
     return result;
 }
@@ -3047,20 +3058,21 @@ bool Document::hasLinksTo(const DocumentObject *obj) const {
     return !links.empty();
 }
 
-std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) const
+std::vector<App::DocumentObject *> Document::getInList(const DocumentObject *objToFind) const
 {
-    // result list
-    std::vector<App::DocumentObject*> result;
+    std::vector<App::DocumentObject *> results{};
     // go through all objects
-    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (const auto &obj : d->objectMap) {
         // get the outList and search if me is in that list
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-            if (*It2 && *It2 == me)
+        std::vector<DocumentObject *> pDocObjs{obj.second->getOutList()};
+        for (auto *const pDocObj : pDocObjs) {
+            if ((pDocObj != nullptr) && pDocObj == objToFind) {
                 // add the parent object
-                result.push_back(It->second);
+                results.push_back(obj.second);
+            }
+        }
     }
-    return result;
+    return results;
 }
 
 // This function unifies the old _rebuildDependencyList() and
@@ -3199,8 +3211,9 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
         return ret;
     }
 
-    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i)
+    for (auto i = make_order.rbegin(); i != make_order.rend(); ++i) {
         ret.push_back(vertexMap[*i]);
+    }
     return ret;
 }
 
@@ -3284,19 +3297,19 @@ void Document::_rebuildDependencyList(const std::vector<App::DocumentObject*> &o
  * @param paths Map with current and new names
  */
 
-void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths, const std::function<bool(const App::DocumentObject*)> & selector)
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths, const std::function<bool(const App::DocumentObject *)> &selector)
 {
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
 
-    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
-    while (it != paths.end()) {
-        extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
-        ++it;
+    for (const auto &path : paths) {
+        extendedPaths[path.first.canonicalPath()] = path.second.canonicalPath();
     }
 
-    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
-        if (selector(*it))
-            (*it)->renameObjectIdentifiers(extendedPaths);
+    for (auto &obj : d->objectArray) {
+        if (selector(obj)) {
+            obj->renameObjectIdentifiers(extendedPaths);
+        }
+    }
 }
 
 #ifdef USE_OLD_DAG
@@ -3857,7 +3870,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     if (!typeInstance)
         return nullptr;
 
-    App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(typeInstance);
+    auto* pcObject = static_cast<App::DocumentObject*>(typeInstance);
 
     pcObject->setDocument(this);
 
@@ -4193,7 +4206,7 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
+    for (auto obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         if (*obj == pos->second) {
             d->objectArray.erase(obj);
             break;
@@ -4208,7 +4221,7 @@ void Document::removeObject(const char* sName)
 }
 
 /// Remove an object out of the document (internal)
-void Document::_removeObject(DocumentObject* pcObject)
+void Document::_removeObject(DocumentObject *pcObject)
 {
     if (testStatus(Document::Recomputing)) {
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
@@ -4218,26 +4231,30 @@ void Document::_removeObject(DocumentObject* pcObject)
     TransactionLocker tlock;
 
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
-    _checkTransaction(pcObject,nullptr,__LINE__);
+    _checkTransaction(pcObject, nullptr, __LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
 
-    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
+    if (!d->rollback && (d->activeUndoTransaction != nullptr) && pos->second->hasChildElement()) {
         // Preserve link group children global visibility. See comments in
         // removeObject() for more details.
-        for(auto &sub : pos->second->getSubObjects()) {
-            if(sub.empty())
+        for (auto &sub : pos->second->getSubObjects()) {
+            if (sub.empty()) {
                 continue;
-            if(sub[sub.size()-1]!='.')
+            }
+            if (sub[sub.size() - 1] != '.') {
                 sub += '.';
-            auto sobj = pos->second->getSubObject(sub.c_str());
-            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
-                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
+            }
+            auto *sobj = pos->second->getSubObject(sub.c_str());
+            if ((sobj != nullptr) && sobj->getDocument() == this && !sobj->Visibility.getValue()) {
+                d->activeUndoTransaction->addObjectChange(sobj, &sobj->Visibility);
+            }
         }
     }
 
-    if (d->activeObject == pcObject)
+    if (d->activeObject == pcObject) {
         d->activeObject = nullptr;
+    }
 
     // Mark the object as about to be removed
     pcObject->setStatus(ObjectStatus::Remove, true);
@@ -4266,11 +4283,11 @@ void Document::_removeObject(DocumentObject* pcObject)
     }
 
     // remove from map
-    pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
+    pcObject->setStatus(ObjectStatus::Remove, false);// Unset the bit to be on the safe side
     d->objectIdMap.erase(pcObject->_Id);
     d->objectMap.erase(pos);
 
-    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
+    for (auto it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if (*it == pcObject) {
             d->objectArray.erase(it);
             break;
@@ -4290,39 +4307,37 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
     PropertyLinkBase::breakLinks(pcObject,d->objectArray,clear);
 }
 
-std::vector<DocumentObject*> Document::copyObject(
-    const std::vector<DocumentObject*> &objs, bool recursive, bool returnAll)
+std::vector<DocumentObject *> Document::copyObject(
+    const std::vector<DocumentObject *> &objs,
+    bool recursive,
+    bool returnAll)
 {
-    std::vector<DocumentObject*> deps;
-    if(!recursive)
-        deps = objs;
-    else
-        deps = getDependencyList(objs,DepNoXLinked|DepSort);
+    std::vector<DocumentObject *> deps{recursive ? getDependencyList(objs, DepNoXLinked | DepSort) : objs};
 
     if (!testStatus(TempDoc) && !isSaved() && PropertyXLink::hasXLink(deps)) {
-        throw Base::RuntimeError(
-                "Document must be saved at least once before link to external objects");
+        throw Base::RuntimeError("Document must be saved at least once before link to external objects");
     }
 
-    MergeDocuments md(this);
+    MergeDocuments md{this};
     // if not copying recursively then suppress possible warnings
     md.setVerbose(recursive);
 
-    unsigned int memsize=1000; // ~ for the meta-information
-    for (std::vector<App::DocumentObject*>::iterator it = deps.begin(); it != deps.end(); ++it)
-        memsize += (*it)->getMemSize();
+    unsigned int memsize = 1000;// ~ for the meta-information
+    for (const auto &dep : deps) {
+        memsize += dep->getMemSize();
+    }
 
     // if less than ~10 MB
-    bool use_buffer=(memsize < 0xA00000);
+    bool use_buffer = (memsize < 0xA00000);
     QByteArray res;
     try {
         res.reserve(memsize);
     }
-    catch (const Base::MemoryException&) {
+    catch (const Base::MemoryException &) {
         use_buffer = false;
     }
 
-    std::vector<App::DocumentObject*> imported;
+    std::vector<App::DocumentObject *> imported;
     if (use_buffer) {
         Base::ByteArrayOStreambuf obuf(res);
         std::ostream ostr(&obuf);
@@ -4332,7 +4347,8 @@ std::vector<DocumentObject*> Document::copyObject(
         std::istream istr(nullptr);
         istr.rdbuf(&ibuf);
         imported = md.importObjects(istr);
-    } else {
+    }
+    else {
         static Base::FileInfo fi(App::Application::getTempFileName());
         Base::ofstream ostr(fi, std::ios::out | std::ios::binary);
         exportObjects(deps, ostr);
@@ -4342,16 +4358,16 @@ std::vector<DocumentObject*> Document::copyObject(
         imported = md.importObjects(istr);
     }
 
-    if (returnAll || imported.size()!=deps.size())
+    if (returnAll || imported.size() != deps.size())
         return imported;
 
-    std::unordered_map<App::DocumentObject*,size_t> indices;
-    size_t i=0;
-    for(auto o : deps)
+    std::unordered_map<App::DocumentObject *, size_t> indices;
+    size_t i = 0;
+    for (auto o : deps)
         indices[o] = i++;
-    std::vector<App::DocumentObject*> result;
+    std::vector<App::DocumentObject *> result;
     result.reserve(objs.size());
-    for(auto o : objs)
+    for (auto o : objs)
         result.push_back(imported[indices[o]]);
     return result;
 }
@@ -4554,12 +4570,12 @@ std::string Document::getUniqueObjectName(const char *Name) const
 
 std::string Document::getStandardObjectName(const char *Name, int d) const
 {
-    std::vector<App::DocumentObject*> mm = getObjects();
+    std::vector<App::DocumentObject *> objects = getObjects();
     std::vector<std::string> labels;
-    labels.reserve(mm.size());
+    labels.reserve(objects.size());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it = mm.begin(); it != mm.end(); ++it) {
-        std::string label = (*it)->Label.getValue();
+    for (const auto & object : objects) {
+        std::string label = object->Label.getValue();
         labels.push_back(label);
     }
     return Base::Tools::getUniqueName(Name, labels, d);
@@ -4575,32 +4591,33 @@ const std::vector<DocumentObject*> &Document::getObjects() const
     return d->objectArray;
 }
 
-
-std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
+std::vector<DocumentObject *> Document::getObjectsOfType(const Base::Type &typeId) const
 {
-    std::vector<DocumentObject*> Objects;
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(typeId))
-            Objects.push_back(*it);
+    std::vector<DocumentObject *> objects;
+    for (auto &obj : d->objectArray) {
+        if (obj->getTypeId().isDerivedFrom(typeId)) {
+            objects.push_back(obj);
+        }
     }
-    return Objects;
+    return objects;
 }
 
-std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Type& typeId, bool derived) const {
-
-    std::vector<DocumentObject*> Objects;
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->hasExtension(typeId, derived))
-            Objects.push_back(*it);
+std::vector<DocumentObject *> Document::getObjectsWithExtension(const Base::Type &typeId, bool derived) const
+{
+    std::vector<DocumentObject *> objects;
+    for (auto &obj : d->objectArray) {
+        if (obj->hasExtension(typeId, derived)) {
+            objects.push_back(obj);
+        }
     }
-    return Objects;
+    return objects;
 }
-
 
 std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname, const char* label) const
 {
     boost::cmatch what;
-    boost::regex rx_name, rx_label;
+    boost::regex rx_name;
+    boost::regex rx_label;
 
     if (objname)
         rx_name.set_expression(objname);
@@ -4610,17 +4627,17 @@ std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, con
 
     std::vector<DocumentObject*> Objects;
     DocumentObject* found = nullptr;
-    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(typeId)) {
-            found = *it;
+    for (auto &obj : d->objectArray) {
+        if (obj->getTypeId().isDerivedFrom(typeId)) {
+            found = obj;
 
-            if (!rx_name.empty() && !boost::regex_search((*it)->getNameInDocument(), what, rx_name))
+            if (!rx_name.empty() && !boost::regex_search(obj->getNameInDocument(), what, rx_name))
                 found = nullptr;
 
-            if (!rx_label.empty() && !boost::regex_search((*it)->Label.getValue(), what, rx_label))
+            if (!rx_label.empty() && !boost::regex_search(obj->Label.getValue(), what, rx_label))
                 found = nullptr;
 
-            if (found)
+            if (found != nullptr)
                 Objects.push_back(found);
         }
     }
@@ -4704,15 +4721,15 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
     std::vector<Path> all_paths;
     DocumentP::findAllPathsAt(all_nodes, index_from, all_paths, tmp);
 
-    for (std::vector<Path>::iterator it = all_paths.begin(); it != all_paths.end(); ++it) {
-        Path::iterator jt = std::find(it->begin(), it->end(), index_to);
-        if (jt != it->end()) {
+    for (auto & all_path : all_paths) {
+        auto found = std::find(all_path.begin(), all_path.end(), index_to);
+        if (found != all_path.end()) {
             std::list<App::DocumentObject*> path;
-            for (Path::iterator kt = it->begin(); kt != jt; ++kt) {
+            for (auto kt = all_path.begin(); kt != found; ++kt) {
                 path.push_back(d->objectArray[*kt]);
             }
 
-            path.push_back(d->objectArray[*jt]);
+            path.push_back(d->objectArray[*found]);
             array.push_back(path);
         }
     }
@@ -4726,14 +4743,16 @@ Document::getPathsByOutList(const App::DocumentObject* from, const App::Document
 
 bool Document::mustExecute() const
 {
-    if(PropertyXLink::hasXLink(this)) {
+    if (PropertyXLink::hasXLink(this)) {
         bool touched = false;
-        _buildDependencyList(d->objectArray,false,nullptr,nullptr,nullptr,&touched);
+        _buildDependencyList(d->objectArray, false, nullptr, nullptr, nullptr, &touched);
         return touched;
     }
 
-    for (std::vector<DocumentObject*>::const_iterator It = d->objectArray.begin();It != d->objectArray.end();++It)
-        if ((*It)->isTouched() || (*It)->mustExecute()==1)
+    for (auto &obj : d->objectArray) {
+        if (obj->isTouched() || obj->mustExecute() == 1) {
             return true;
+        }
+    }
     return false;
 }

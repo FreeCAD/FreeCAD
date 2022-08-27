@@ -75,7 +75,7 @@ PyObject* ComplexGeoDataPy::countSubElements(PyObject *args)
     }
 }
 
-PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject *args)
+PyObject *ComplexGeoDataPy::getFacesFromSubElement(PyObject *args)
 {
     char *type;
     unsigned long index;
@@ -96,24 +96,23 @@ PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
-    tuple.setItem(0, vertex);
-    Py::List facet;
-    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
-        it = facets.begin(); it != facets.end(); ++it) {
-        Py::Tuple f(3);
-        f.setItem(0,Py::Int(int(it->I1)));
-        f.setItem(1,Py::Int(int(it->I2)));
-        f.setItem(2,Py::Int(int(it->I3)));
-        facet.append(f);
+    for (auto &point : points) {
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     }
-    tuple.setItem(1, facet);
+    tuple.setItem(0, vertex);
+    Py::List facetList;
+    for (auto &facet : facets) {
+        Py::Tuple tup(3);
+        tup.setItem(0, Py::Int(int(facet.I1)));
+        tup.setItem(1, Py::Int(int(facet.I2)));
+        tup.setItem(2, Py::Int(int(facet.I3)));
+        facetList.append(tup);
+    }
+    tuple.setItem(1, facetList);
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject *args)
+PyObject *ComplexGeoDataPy::getLinesFromSubElement(PyObject *args)
 {
     char *type;
     int index;
@@ -121,10 +120,10 @@ PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject *args)
         return nullptr;
 
     std::vector<Base::Vector3d> points;
-    std::vector<Data::ComplexGeoData::Line> lines;
+    std::vector<Data::ComplexGeoData::Line> subElementLines;
     try {
         std::unique_ptr<Data::Segment> segm(getComplexGeoDataPtr()->getSubElement(type, index));
-        getComplexGeoDataPtr()->getLinesFromSubElement(segm.get(), points, lines);
+        getComplexGeoDataPtr()->getLinesFromSubElement(segm.get(), points, subElementLines);
     }
     catch (...) {
         PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
@@ -133,23 +132,22 @@ PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
-    tuple.setItem(0, vertex);
-    Py::List line;
-    for (std::vector<Data::ComplexGeoData::Line>::const_iterator
-        it = lines.begin(); it != lines.end(); ++it) {
-        Py::Tuple l(2);
-        l.setItem(0,Py::Int((int)it->I1));
-        l.setItem(1,Py::Int((int)it->I2));
-        line.append(l);
+    for (const auto &point : points) {
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     }
-    tuple.setItem(1, line);
+    tuple.setItem(0, vertex);
+    Py::List lines;
+    for (const auto &subElementLine : subElementLines) {
+        Py::Tuple tup(2);
+        tup.setItem(0, Py::Int((int)subElementLine.I1));
+        tup.setItem(1, Py::Int((int)subElementLine.I2));
+        lines.append(tup);
+    }
+    tuple.setItem(1, lines);
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getPoints(PyObject *args)
+PyObject *ComplexGeoDataPy::getPoints(PyObject *args)
 {
     double accuracy = 0.05;
     if (!PyArg_ParseTuple(args, "d", &accuracy))
@@ -167,22 +165,20 @@ PyObject* ComplexGeoDataPy::getPoints(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-         it != points.end(); ++it) {
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto &point : points) {
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     }
     tuple.setItem(0, vertex);
 
-    Py::List normal;
-    for (std::vector<Base::Vector3d>::const_iterator it = normals.begin();
-         it != normals.end(); ++it) {
-        normal.append(Py::asObject(new Base::VectorPy(*it)));
+    Py::List pyNormals;
+    for (const auto &normal : normals) {
+        pyNormals.append(Py::asObject(new Base::VectorPy(normal)));
     }
-    tuple.setItem(1, normal);
+    tuple.setItem(1, pyNormals);
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getLines(PyObject *args)
+PyObject *ComplexGeoDataPy::getLines(PyObject *args)
 {
     double accuracy = 0.05;
     if (!PyArg_ParseTuple(args, "d", &accuracy))
@@ -200,23 +196,22 @@ PyObject* ComplexGeoDataPy::getLines(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
-    tuple.setItem(0, vertex);
-    Py::List line;
-    for (std::vector<Data::ComplexGeoData::Line>::const_iterator
-        it = lines.begin(); it != lines.end(); ++it) {
-        Py::Tuple l(2);
-        l.setItem(0,Py::Int((int)it->I1));
-        l.setItem(1,Py::Int((int)it->I2));
-        line.append(l);
+    for (const auto &point : points) {
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     }
-    tuple.setItem(1, line);
+    tuple.setItem(0, vertex);
+    Py::List pyLines;
+    for (const auto &line : lines) {
+        Py::Tuple tup(2);
+        tup.setItem(0, Py::Int((int)line.I1));
+        tup.setItem(1, Py::Int((int)line.I2));
+        pyLines.append(tup);
+    }
+    tuple.setItem(1, pyLines);
     return Py::new_reference_to(tuple);
 }
 
-PyObject* ComplexGeoDataPy::getFaces(PyObject *args)
+PyObject *ComplexGeoDataPy::getFaces(PyObject *args)
 {
     double accuracy = 0.05;
     if (!PyArg_ParseTuple(args, "d", &accuracy))
@@ -233,21 +228,20 @@ PyObject* ComplexGeoDataPy::getFaces(PyObject *args)
     }
 
     Py::Tuple tuple(2);
-    Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
-    tuple.setItem(0, vertex);
-    Py::List facet;
-    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
-        it = facets.begin(); it != facets.end(); ++it) {
-        Py::Tuple f(3);
-        f.setItem(0,Py::Int((int)it->I1));
-        f.setItem(1,Py::Int((int)it->I2));
-        f.setItem(2,Py::Int((int)it->I3));
-        facet.append(f);
+    Py::List vertexes;
+    for (const auto &point : points) {
+        vertexes.append(Py::asObject(new Base::VectorPy(point)));
     }
-    tuple.setItem(1, facet);
+    tuple.setItem(0, vertexes);
+    Py::List pyFacets;
+    for (const auto &facet : facets) {
+        Py::Tuple tup(3);
+        tup.setItem(0, Py::Int((int)facet.I1));
+        tup.setItem(1, Py::Int((int)facet.I2));
+        tup.setItem(2, Py::Int((int)facet.I3));
+        pyFacets.append(tup);
+    }
+    tuple.setItem(1, pyFacets);
     return Py::new_reference_to(tuple);
 }
 

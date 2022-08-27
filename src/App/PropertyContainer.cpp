@@ -97,17 +97,18 @@ void PropertyContainer::getPropertyNamedList(std::vector<std::pair<const char*, 
     getPropertyData().getPropertyNamedList(this,List);
 }
 
-void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
+void PropertyContainer::setPropertyStatus(unsigned char bit, bool value)
 {
-    std::vector<Property*> List;
-    getPropertyList(List);
-    for(std::vector<Property*>::const_iterator it=List.begin();it!=List.end();++it)
-        (**it).StatusBits.set(bit,value);
+    std::vector<Property *> properties;
+    getPropertyList(properties);
+    for (const auto &property : properties) {
+        (*property).StatusBits.set(bit, value);
+    }
 }
 
-short PropertyContainer::getPropertyType(const Property* prop) const
+short PropertyContainer::getPropertyType(const Property *prop) const
 {
-    return prop?prop->getType():0;
+    return prop ? prop->getType() : 0;
 }
 
 short PropertyContainer::getPropertyType(const char *name) const

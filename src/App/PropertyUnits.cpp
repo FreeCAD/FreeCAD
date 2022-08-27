@@ -76,7 +76,7 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
     else if (PyLong_Check(value))
         quant = Quantity(double(PyLong_AsLong(value)),_Unit);
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
-        Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
+        auto  *pcObject = static_cast<Base::QuantityPy*>(value);
         quant = *(pcObject->getQuantityPtr());
     }
     else {
@@ -95,7 +95,7 @@ void PropertyQuantity::setPyObject(PyObject *value)
     // and set the value
     
     if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
-        Base::UnitPy  *pcObject = static_cast<Base::UnitPy*>(value);
+        auto pcObject = static_cast<Base::UnitPy*>(value);
         Base::Unit unit = *(pcObject->getUnitPtr());
         aboutToSetValue();
         _Unit = unit;

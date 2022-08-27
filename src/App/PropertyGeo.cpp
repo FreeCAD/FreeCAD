@@ -95,7 +95,7 @@ PyObject *PropertyVector::getPyObject()
 void PropertyVector::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
-        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
+        auto  *pcObject = static_cast<Base::VectorPy*>(value);
         Base::Vector3d* val = pcObject->getVectorPtr();
         setValue(*val);
     }
@@ -155,7 +155,7 @@ void PropertyVector::Restore(Base::XMLReader &reader)
 
 Property *PropertyVector::Copy() const
 {
-    PropertyVector *p= new PropertyVector();
+    auto *p= new PropertyVector();
     p->_cVec = _cVec;
     return p;
 }
@@ -309,18 +309,18 @@ void PropertyVectorList::Restore(Base::XMLReader &reader)
 void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
 {
     Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
+    auto uCt = (uint32_t)getSize();
     str << uCt;
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            str << it->x << it->y << it->z;
+        for (const auto & it : _lValueList) {
+            str << it.x << it.y << it.z;
         }
     }
     else {
-        for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            float x = (float)it->x;
-            float y = (float)it->y;
-            float z = (float)it->z;
+        for (const auto & it : _lValueList) {
+            auto x = (float)it.x;
+            auto y = (float)it.y;
+            auto z = (float)it.z;
             str << x << y << z;
         }
     }
@@ -333,15 +333,17 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     std::vector<Base::Vector3d> values(uCt);
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
-            str >> it->x >> it->y >> it->z;
+        for (auto & value : values) {
+            str >> value.x >> value.y >> value.z;
         }
     }
     else {
-        float x,y,z;
-        for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
+        float x;
+        float y;
+        float z;
+        for (auto & value : values) {
             str >> x >> y >> z;
-            it->Set(x, y, z);
+            value.Set(x, y, z);
         }
     }
     setValues(values);
@@ -349,7 +351,7 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
 
 Property *PropertyVectorList::Copy() const
 {
-    PropertyVectorList *p= new PropertyVectorList();
+    auto *p= new PropertyVectorList();
     p->_lValueList = _lValueList;
     return p;
 }
@@ -405,7 +407,7 @@ PyObject *PropertyMatrix::getPyObject()
 void PropertyMatrix::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
-        Base::MatrixPy  *pcObject = (Base::MatrixPy*)value;
+        auto  *pcObject = (Base::MatrixPy*)value;
         setValue( pcObject->value() );
     }
     else if (PyTuple_Check(value)&&PyTuple_Size(value)==16) {
@@ -474,7 +476,7 @@ void PropertyMatrix::Restore(Base::XMLReader &reader)
 
 Property *PropertyMatrix::Copy() const
 {
-    PropertyMatrix *p= new PropertyMatrix();
+    auto *p= new PropertyMatrix();
     p->_cMat = _cMat;
     return p;
 }
@@ -630,7 +632,7 @@ PyObject *PropertyPlacement::getPyObject()
 void PropertyPlacement::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
-        Base::MatrixPy  *pcObject = (Base::MatrixPy*)value;
+        auto  *pcObject = (Base::MatrixPy*)value;
         Base::Matrix4D mat = pcObject->value();
         Base::Placement p;
         p.fromMatrix(mat);
@@ -699,7 +701,7 @@ void PropertyPlacement::Restore(Base::XMLReader &reader)
 
 Property *PropertyPlacement::Copy() const
 {
-    PropertyPlacement *p= new PropertyPlacement();
+    auto *p= new PropertyPlacement();
     p->_cPos = _cPos;
     return p;
 }
@@ -765,23 +767,23 @@ void PropertyPlacementList::Restore(Base::XMLReader &reader)
 void PropertyPlacementList::SaveDocFile (Base::Writer &writer) const
 {
     Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
+    auto uCt = (uint32_t)getSize();
     str << uCt;
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            str << it->getPosition().x << it->getPosition().y << it->getPosition().z
-                << it->getRotation()[0] << it->getRotation()[1] << it->getRotation()[2] << it->getRotation()[3] ;
+        for (const auto & it : _lValueList) {
+            str << it.getPosition().x << it.getPosition().y << it.getPosition().z
+                << it.getRotation()[0] << it.getRotation()[1] << it.getRotation()[2] << it.getRotation()[3] ;
         }
     }
     else {
-        for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-            float x = (float)it->getPosition().x;
-            float y = (float)it->getPosition().y;
-            float z = (float)it->getPosition().z;
-            float q0 = (float)it->getRotation()[0];
-            float q1 = (float)it->getRotation()[1];
-            float q2 = (float)it->getRotation()[2];
-            float q3 = (float)it->getRotation()[3];
+        for (const auto & it : _lValueList) {
+            auto x = (float)it.getPosition().x;
+            auto y = (float)it.getPosition().y;
+            auto z = (float)it.getPosition().z;
+            auto q0 = (float)it.getRotation()[0];
+            auto q1 = (float)it.getRotation()[1];
+            auto q2 = (float)it.getRotation()[2];
+            auto q3 = (float)it.getRotation()[3];
             str << x << y << z << q0 << q1 << q2 << q3;
         }
     }
@@ -794,23 +796,32 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     std::vector<Base::Placement> values(uCt);
     if (!isSinglePrecision()) {
-        for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
+        for (auto & value : values) {
             Base::Vector3d pos;
-            double q0, q1, q2, q3;
+            double q0 {};
+            double q1 {};
+            double q2 {};
+            double q3 {};
             str >> pos.x >> pos.y >> pos.z >> q0 >> q1 >> q2 >> q3;
             Base::Rotation rot(q0,q1,q2,q3);
-            it->setPosition(pos);
-            it->setRotation(rot);
+            value.setPosition(pos);
+            value.setRotation(rot);
         }
     }
     else {
-        float x,y,z,q0,q1,q2,q3;
-        for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
+        float x {};
+        float y {};
+        float z {};
+        float q0 {};
+        float q1 {};
+        float q2 {};
+        float q3 {};
+        for (auto & value : values) {
             str >> x >> y >> z >> q0 >> q1 >> q2 >> q3;
             Base::Vector3d pos(x, y, z);
             Base::Rotation rot(q0,q1,q2,q3);
-            it->setPosition(pos);
-            it->setRotation(rot);
+            value.setPosition(pos);
+            value.setRotation(rot);
         }
     }
     setValues(values);
@@ -818,7 +829,7 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
 
 Property *PropertyPlacementList::Copy() const
 {
-    PropertyPlacementList *p= new PropertyPlacementList();
+    auto *p= new PropertyPlacementList();
     p->_lValueList = _lValueList;
     return p;
 }
@@ -866,7 +877,7 @@ App::Placement * PropertyPlacementLink::getPlacementObject() const
 
 Property *PropertyPlacementLink::Copy() const
 {
-    PropertyPlacementLink *p= new PropertyPlacementLink();
+    auto *p= new PropertyPlacementLink();
     p->_pcLink = _pcLink;
     return p;
 }
@@ -993,7 +1004,7 @@ PyObject *PropertyRotation::getPyObject()
 void PropertyRotation::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
-        Base::MatrixPy *object = static_cast<Base::MatrixPy*>(value);
+        auto *object = static_cast<Base::MatrixPy*>(value);
         Base::Matrix4D mat = object->value();
         Base::Rotation p;
         p.setValue(mat);
@@ -1037,7 +1048,7 @@ void PropertyRotation::Restore(Base::XMLReader &reader)
 
 Property *PropertyRotation::Copy() const
 {
-    PropertyRotation *p = new PropertyRotation();
+    auto *p = new PropertyRotation();
     p->_rot = _rot;
     return p;
 }

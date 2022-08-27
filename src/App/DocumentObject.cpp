@@ -90,7 +90,7 @@ DocumentObject::~DocumentObject()
         // not to dec'ref the Python object any more.
         // But we must still invalidate the Python object because it need not to be
         // destructed right now because the interpreter can own several references to it.
-        Base::PyObjectBase* obj = (Base::PyObjectBase*)PythonObject.ptr();
+        auto* obj = (Base::PyObjectBase*)PythonObject.ptr();
         // Call before decrementing the reference counter, otherwise a heap error can occur
         obj->setInvalid();
     }
@@ -103,7 +103,8 @@ App::DocumentObjectExecReturn *DocumentObject::recompute()
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
-        std::string objnames, scopenames;
+        std::string objnames;
+        std::string scopenames;
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
         for (auto& obj : invalid_linkobjs) {
             objnames += obj->getNameInDocument();

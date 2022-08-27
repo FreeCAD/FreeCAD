@@ -426,11 +426,11 @@ public:
     /** @name dependency stuff */
     //@{
     /// write GraphViz file
-    void writeDependencyGraphViz(std::ostream &out);
+    void writeDependencyGraphViz(std::ostream &outStream);
     /// checks if the graph is directed and has no cycles
     bool checkOnCycle();
     /// get a list of all objects linking to the given object
-    std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
+    std::vector<App::DocumentObject*> getInList(const DocumentObject*objToFind) const;
 
     /// Option bit flags used by getDepenencyList()
     enum DependencyOption {
@@ -568,13 +568,14 @@ private:
 };
 
 template<typename T>
-inline std::vector<T*> Document::getObjectsOfType() const
+inline std::vector<T *> Document::getObjectsOfType() const
 {
-    std::vector<T*> type;
-    std::vector<App::DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId());
+    std::vector<T *> type;
+    std::vector<App::DocumentObject *> obj = this->getObjectsOfType(T::getClassTypeId());
     type.reserve(obj.size());
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-        type.push_back(static_cast<T*>(*it));
+    for (auto &it : obj) {
+        type.push_back(static_cast<T *>(it));
+    }
     return type;
 }
 

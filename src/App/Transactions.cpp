@@ -85,7 +85,7 @@ Transaction::~Transaction()
                     // possible dangling pointers.
                     // An alternative solution is to call breakDependency inside
                     // Document::_removeObject. Make this change in v0.18.
-                    const DocumentObject* obj = static_cast<const DocumentObject*>(It->first);
+                    const auto* obj = static_cast<const DocumentObject*>(It->first);
                     const_cast<DocumentObject*>(obj)->setStatus(ObjectStatus::Destroy, true);
                 }
                 delete It->first;
@@ -444,15 +444,16 @@ TransactionDocumentObject::~TransactionDocumentObject() = default;
 void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcObj)
 {
     if (status == Del) {
-        DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
+        auto *obj = static_cast<DocumentObject *>(pcObj);
 
 #ifndef USE_OLD_DAG
         //Make sure the backlinks of all linked objects are updated. As the links of the removed
-        //object are never set to [] they also do not remove the backlink. But as they are 
+        //object are never set to [] they also do not remove the backlink. But as they are
         //not in the document anymore we need to remove them anyway to ensure a correct graph
         auto list = obj->getOutList();
-        for (auto link : list)
+        for (auto link : list) {
             link->_removeBackLink(obj);
+        }
 #endif
 
         // simply filling in the saved object
@@ -463,7 +464,7 @@ void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcO
 void TransactionDocumentObject::applyNew(Document &Doc, TransactionalObject *pcObj)
 {
     if (status == New) {
-        DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
+        auto* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
 
 #ifndef USE_OLD_DAG

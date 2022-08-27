@@ -411,22 +411,20 @@ PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args)
 }
 
 
-PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args)
+PyObject *Application::sGetConfig(PyObject * /*self*/, PyObject *args)
 {
     char *pstr;
 
     if (!PyArg_ParseTuple(args, "s", &pstr))
         return nullptr;
-    const std::map<std::string, std::string>& Map = GetApplication().Config();
+    const std::map<std::string, std::string> &Map = GetApplication().Config();
 
-    std::map<std::string, std::string>::const_iterator it = Map.find(pstr);
-    if (it != Map.end()) {
-        return Py_BuildValue("s", it->second.c_str());
+    auto found = Map.find(pstr);
+    if (found != Map.end()) {
+        return Py_BuildValue("s", found->second.c_str());
     }
-    else {
-        // do not set an error because this may break existing python code
-        return PyUnicode_FromString("");
-    }
+    // do not set an error because this may break existing python code
+    return PyUnicode_FromString("");
 }
 
 PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
@@ -435,8 +433,8 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (auto It= GetApplication()._mConfig.begin(); It != GetApplication()._mConfig.end(); ++It) {
-        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+    for (const auto &config : GetApplication()._mConfig) {
+        PyDict_SetItemString(dict, config.first.c_str(), PyUnicode_FromString(config.second.c_str()));
     }
     return dict;
 }
@@ -513,44 +511,43 @@ PyObject* Application::sChangeImportModule(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
+PyObject *Application::sGetImportType(PyObject * /*self*/, PyObject *args)
 {
-    char*       psKey=nullptr;
+    char *psKey = nullptr;
 
-    if (!PyArg_ParseTuple(args, "|s", &psKey))
+    if (PyArg_ParseTuple(args, "|s", &psKey) == 0) {
         return nullptr;
+    }
 
-    if (psKey) {
+    if (psKey != nullptr) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getImportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (auto &module : modules) {
+            list.append(Py::String(module));
         }
 
         return Py::new_reference_to(list);
     }
-    else {
-        Py::Dict dict;
-        std::vector<std::string> types = GetApplication().getImportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getImportModules(it->c_str());
-            if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
-            }
-            else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
-            }
-            else {
-                Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
-                }
-                dict.setItem(it->c_str(), list);
-            }
+    Py::Dict dict;
+    std::vector<std::string> types = GetApplication().getImportTypes();
+    for (const auto &type : types) {
+        std::vector<std::string> modules = GetApplication().getImportModules(type.c_str());
+        if (modules.empty()) {
+            dict.setItem(type.c_str(), Py::None());
         }
-
-        return Py::new_reference_to(dict);
+        else if (modules.size() == 1) {
+            dict.setItem(type.c_str(), Py::String(modules.front()));
+        }
+        else {
+            Py::List list;
+            for (auto &module : modules) {
+                list.append(Py::String(module));
+            }
+            dict.setItem(type.c_str(), list);
+        }
     }
+
+    return Py::new_reference_to(dict);
 }
 
 PyObject* Application::sAddExportType(PyObject * /*self*/, PyObject *args)
@@ -577,44 +574,43 @@ PyObject* Application::sChangeExportModule(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
+PyObject *Application::sGetExportType(PyObject * /*self*/, PyObject *args)
 {
-    char*       psKey=nullptr;
+    char *psKey = nullptr;
 
-    if (!PyArg_ParseTuple(args, "|s", &psKey))
+    if (PyArg_ParseTuple(args, "|s", &psKey) == 0) {
         return nullptr;
+    }
 
-    if (psKey) {
+    if (psKey != nullptr) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getExportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (auto &module : modules) {
+            list.append(Py::String(module));
         }
 
         return Py::new_reference_to(list);
     }
-    else {
-        Py::Dict dict;
-        std::vector<std::string> types = GetApplication().getExportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it->c_str());
-            if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
-            }
-            else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
-            }
-            else {
-                Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
-                }
-                dict.setItem(it->c_str(), list);
-            }
+    Py::Dict dict;
+    std::vector<std::string> types = GetApplication().getExportTypes();
+    for (const auto &type : types) {
+        std::vector<std::string> modules = GetApplication().getExportModules(type.c_str());
+        if (modules.empty()) {
+            dict.setItem(type.c_str(), Py::None());
         }
-
-        return Py::new_reference_to(dict);
+        else if (modules.size() == 1) {
+            dict.setItem(type.c_str(), Py::String(modules.front()));
+        }
+        else {
+            Py::List list;
+            for (auto &module : modules) {
+                list.append(Py::String(module));
+            }
+            dict.setItem(type.c_str(), list);
+        }
     }
+
+    return Py::new_reference_to(dict);
 }
 
 PyObject* Application::sGetResourcePath(PyObject * /*self*/, PyObject *args)

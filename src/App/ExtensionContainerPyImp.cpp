@@ -48,7 +48,7 @@ int  ExtensionContainerPy::initialization() {
             return 0;
     }
 
-    ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
+    auto it = this->getExtensionContainerPtr()->extensionBegin();
     for(; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
 
         // The PyTypeObject is shared by all instances of this type and therefore
@@ -119,7 +119,7 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
             Py_DECREF(props);
         }
 
-        ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
+        auto it = this->getExtensionContainerPtr()->extensionBegin();
         for (; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
             // The PyTypeObject is shared by all instances of this type and therefore
             // we have to add new methods only once.
@@ -140,7 +140,7 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
     // with the PyObject pointer of the extension to make sure the method will
     // be called for the correct instance.
     PyObject *func = nullptr;
-    ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
+    auto it = this->getExtensionContainerPtr()->extensionBegin();
     for (; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
         // The PyTypeObject is shared by all instances of this type and therefore
         // we have to add new methods only once.
@@ -150,7 +150,7 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
         Py_DECREF(nameobj);
         Py_DECREF(obj);
         if (func && PyCFunction_Check(func)) {
-            PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(func);
+            auto* cfunc = reinterpret_cast<PyCFunctionObject*>(func);
 
             // OK, that's what we wanted
             if (cfunc->m_self == obj)
@@ -216,7 +216,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     }
 
     //register the extension
-    App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
+    auto* ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
     if (!ext->isPythonExtension()) {
         delete ext;

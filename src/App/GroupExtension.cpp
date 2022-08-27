@@ -127,8 +127,8 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
     std::vector<DocumentObject*> newGrp = grp;
     std::vector<DocumentObject*> removed;
 
-    std::vector<DocumentObject*>::iterator end = newGrp.end();
-    for(auto obj : objs) {       
+    auto end = newGrp.end();
+    for(auto *obj : objs) {
        auto res = std::remove(newGrp.begin(), end, obj);
        if(res != end) {
            end = res;
@@ -256,25 +256,26 @@ const std::vector<DocumentObject*> &GroupExtension::getObjects() const
     return Group.getValues();
 }
 
-std::vector<DocumentObject*> GroupExtension::getObjectsOfType(const Base::Type& typeId) const
+std::vector<DocumentObject *> GroupExtension::getObjectsOfType(const Base::Type &typeId) const
 {
-    std::vector<DocumentObject*> type;
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type.push_back(*it);
+    std::vector<DocumentObject *> type;
+    const std::vector<DocumentObject *> &values = Group.getValues();
+    for (const auto &value : values) {
+        if (value->getTypeId().isDerivedFrom(typeId)) {
+            type.push_back(value);
+        }
     }
-
     return type;
 }
 
-int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
+int GroupExtension::countObjectsOfType(const Base::Type &typeId) const
 {
-    int type=0;
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
+    int type{0};
+    const std::vector<DocumentObject *> &values{Group.getValues()};
+    for (const auto &value : values) {
+        if (value->getTypeId().isDerivedFrom(typeId)) {
             type++;
+        }
     }
 
     return type;
@@ -285,7 +286,7 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups.
     //That is important as there are clear differences between groups/geofeature groups (e.g. an object
     //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
-    for (auto o : obj->getInList()) {
+    for (auto *o : obj->getInList()) {
         if (o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
             return o;
         if (o->hasExtension(App::GroupExtensionPython::getExtensionClassTypeId(), false))

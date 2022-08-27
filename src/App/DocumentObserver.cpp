@@ -836,12 +836,11 @@ void DocumentObjectObserver::slotCreatedObject(const App::DocumentObject&)
 {
 }
 
-void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject& Obj)
+void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject &Obj)
 {
-    std::set<App::DocumentObject*>::iterator it = _objects.find
-        (const_cast<App::DocumentObject*>(&Obj));
-    if (it != _objects.end())
-        _objects.erase(it);
+    auto found = _objects.find(const_cast<App::DocumentObject *>(&Obj));
+    if (found != _objects.end())
+        _objects.erase(found);
     if (_objects.empty())
         cancelObservation();
 }

@@ -117,7 +117,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
     , _hash(0)
 {
     if (_owner) {
-        const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        const auto * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
         if (!docObj)
             FC_THROWM(Base::RuntimeError,"Property must be owned by a document object.");
         owner = const_cast<DocumentObject*>(docObj);
@@ -141,7 +141,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, bool l
     , _hash(0)
 {
     if (_owner) {
-        const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        const auto * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
         if (!docObj)
             FC_THROWM(Base::RuntimeError,"Property must be owned by a document object.");
         owner = const_cast<DocumentObject*>(docObj);
@@ -160,7 +160,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     , localProperty(false)
     , _hash(0)
 {
-    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
+    auto * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
 
     if (!docObj)
         FC_THROWM(Base::TypeError, "Property must be owned by a document object.");
@@ -561,7 +561,7 @@ bool ObjectIdentifier::relabeledDocument(ExpressionVisitor &v,
 
 void ObjectIdentifier::getSubPathStr(std::ostream &s, const ResolveResults &result, bool toPython) const
 {
-    std::vector<Component>::const_iterator i = components.begin() + result.propertyIndex + 1;
+    auto i = components.begin() + result.propertyIndex + 1;
     while (i != components.end()) {
         if(i->isSimple())
             s << '.';
@@ -852,14 +852,14 @@ App::DocumentObject * ObjectIdentifier::getDocumentObject(const App::Document * 
     }
 
     std::vector<DocumentObject*> docObjects = doc->getObjects();
-    for (std::vector<DocumentObject*>::iterator j = docObjects.begin(); j != docObjects.end(); ++j) {
-        if (strcmp((*j)->Label.getValue(), static_cast<const char*>(name)) == 0) {
+    for (auto & docObject : docObjects) {
+        if (strcmp(docObject->Label.getValue(), static_cast<const char*>(name)) == 0) {
             // Found object with matching label
-            if (objectByLabel)  {
+            if (objectByLabel != nullptr)  {
                 FC_WARN("duplicate object label " << doc->getName() << '#' << static_cast<const char*>(name));
                 return nullptr;
             }
-            objectByLabel = *j;
+            objectByLabel = docObject;
         }
     }
 
@@ -1030,14 +1030,14 @@ Document * ObjectIdentifier::getDocument(String name, bool *ambiguous) const
     App::Document * docByLabel = nullptr;
     const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
 
-    for (std::vector<App::Document*>::const_iterator i = docs.begin(); i != docs.end(); ++i) {
-        if ((*i)->Label.getValue() == name.getString()) {
+    for (const auto & doc : docs) {
+        if (doc->Label.getValue() == name.getString()) {
             /* Multiple hits for same label? */
             if (docByLabel) {
                 if(ambiguous) *ambiguous = true;
                 return nullptr;
             }
-            docByLabel = *i;
+            docByLabel = doc;
         }
     }
 
@@ -1170,7 +1170,7 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
     if(!subObjectName.getString().empty()) {
         l.back() += subObjectName.toString();
     }
-    std::vector<Component>::const_iterator i = components.begin();
+    auto i = std::as_const(components).begin();
     while (i != components.end()) {
         std::ostringstream ss;
         i->toString(ss);
@@ -1218,12 +1218,12 @@ ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier &other) con
 ObjectIdentifier ObjectIdentifier::parse(const DocumentObject *docObj, const std::string &str)
 {
     std::unique_ptr<Expression> expr(ExpressionParser::parse(docObj, str.c_str()));
-    VariableExpression * v = freecad_dynamic_cast<VariableExpression>(expr.get());
+    auto * v = freecad_dynamic_cast<VariableExpression>(expr.get());
 
-    if (v)
+    if (v) {
         return v->getPath();
-    else
-        FC_THROWM(Base::RuntimeError,"Invalid property specification.");
+}
+    FC_THROWM(Base::RuntimeError,"Invalid property specification.");
 }
 
 std::string ObjectIdentifier::resolveErrorString() const

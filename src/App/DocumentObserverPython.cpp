@@ -41,14 +41,13 @@ void DocumentObserverPython::addObserver(const Py::Object& obj)
     _instances.push_back(new DocumentObserverPython(obj));
 }
 
-void DocumentObserverPython::removeObserver(const Py::Object& obj)
+void DocumentObserverPython::removeObserver(const Py::Object &obj)
 {
-    DocumentObserverPython* obs=nullptr;
-    for (std::vector<DocumentObserverPython*>::iterator it =
-        _instances.begin(); it != _instances.end(); ++it) {
-        if ((*it)->inst == obj) {
-            obs = *it;
-            _instances.erase(it);
+    DocumentObserverPython *obs = nullptr;
+    for (auto instance = _instances.begin(); instance != _instances.end(); ++instance) {
+        if ((*instance)->inst == obj) {
+            obs = *instance;
+            _instances.erase(instance);
             break;
         }
     }
