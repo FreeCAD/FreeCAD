@@ -131,7 +131,7 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     linkGeom = -1;
     color = Preferences::vertexColor();
     size  = Preferences::vertexScale() * 
-            LineGroup::getDefaultWidth("Thick");
+            LineGroup::getDefaultWidth("Thin");
     style = 1;
     visible = true;
     hlrVisible = true;

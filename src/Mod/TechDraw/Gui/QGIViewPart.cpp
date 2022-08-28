@@ -642,7 +642,7 @@ void QGIViewPart::drawViewPart()
             if (showCenterMarks) {
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
-                cmItem->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 cmItem->setThick(0.5 * lineWidth);             //need minimum?
                 cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
                 cmItem->setPrettyNormal();
@@ -651,18 +651,11 @@ void QGIViewPart::drawViewPart()
         } else {        //regular Vertex
             if (showVertices) {
                 QGIVertex *item = new QGIVertex(i);
-                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexBySelection(i);
-//                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
-                if (cv) {
-                    item->setNormalColor(cv->color.asValue<QColor>());
-                    item->setRadius(Rez::guiX(cv->size));
-                } else {
-                    item->setNormalColor(vertexColor);
-                    item->setFillColor(vertexColor);
-                    item->setRadius(lineWidth * vertexScaleFactor);
-                }
                 addToGroup(item);
-                item->setPos(Rez::guiX((*vert)->point().x), Rez::guiX((*vert)->point().y));
+                item->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
+                item->setNormalColor(vertexColor);
+                item->setFillColor(vertexColor);
+                item->setRadius(lineWidth * vertexScaleFactor);
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
             }
