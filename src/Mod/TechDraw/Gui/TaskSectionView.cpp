@@ -54,11 +54,6 @@
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "Rez.h"
-#include "MDIViewPage.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-
 //#include "ViewProviderPage.h"
 //#include "ViewProviderViewPart.h"
 
@@ -133,10 +128,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_dirName = m_section->SectionDirection.getValueAsString();
     saveSectionState();
     setUiEdit();
-}
-
-TaskSectionView::~TaskSectionView()
-{
 }
 
 void TaskSectionView::setUiPrimary()
@@ -331,22 +322,22 @@ void TaskSectionView::scaleTypeChanged(int index)
     }
 }
 
-void TaskSectionView::checkAll(bool b)
+void TaskSectionView::checkAll(bool check)
 {
-    ui->pbUp->setChecked(b);
-    ui->pbDown->setChecked(b);
-    ui->pbRight->setChecked(b);
-    ui->pbLeft->setChecked(b);
+    ui->pbUp->setChecked(check);
+    ui->pbDown->setChecked(check);
+    ui->pbRight->setChecked(check);
+    ui->pbLeft->setChecked(check);
 }
 
-void TaskSectionView::enableAll(bool b)
+void TaskSectionView::enableAll(bool enable)
 {
-    ui->leSymbol->setEnabled(b);
-    ui->sbScale->setEnabled(b);
-    ui->sbOrgX->setEnabled(b);
-    ui->sbOrgY->setEnabled(b);
-    ui->sbOrgZ->setEnabled(b);
-    ui->cmbScaleType->setEnabled(b);
+    ui->leSymbol->setEnabled(enable);
+    ui->sbScale->setEnabled(enable);
+    ui->sbOrgX->setEnabled(enable);
+    ui->sbOrgY->setEnabled(enable);
+    ui->sbOrgZ->setEnabled(enable);
+    ui->cmbScaleType->setEnabled(enable);
 }
 
 //******************************************************************************
@@ -574,9 +565,9 @@ bool TaskSectionView::reject()
     return false;
 }
 
-void TaskSectionView::changeEvent(QEvent *e)
+void TaskSectionView::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }

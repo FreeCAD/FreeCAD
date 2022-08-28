@@ -47,11 +47,11 @@ SvgString::SvgString(int width, int height)
     svgStream << "<svg width='" << width << "' height='" << height << "'>\n";
 }
 
-void SvgString::addLine(int x1, int y1, int x2, int y2)
+void SvgString::addLine(int xStart, int yStart, int xEnd, int yEnd)
 {
     svgStream << "<path stroke='#000' stroke-width='1' d='";
-    svgStream << " M" << x1 << ", " << y1; // startpoint
-    svgStream << " L" << x2 << ", " << y2; // endpoint
+    svgStream << " M" << xStart << ", " << yStart; // startpoint
+    svgStream << " L" << xEnd << ", " << yEnd; // endpoint
     svgStream << "' />\n";
 }
 
@@ -160,11 +160,6 @@ std::string TaskSurfaceFinishSymbols::completeSymbol()
     return symbolAsString;
 }
 
-TaskSurfaceFinishSymbols::~TaskSurfaceFinishSymbols()
-{
-
-}
-
 void TaskSurfaceFinishSymbols::updateTask()
 {
 //    blockUpdate = true;
@@ -173,9 +168,9 @@ void TaskSurfaceFinishSymbols::updateTask()
 }
 
 
-void TaskSurfaceFinishSymbols::changeEvent(QEvent *e)
+void TaskSurfaceFinishSymbols::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }

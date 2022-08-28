@@ -31,10 +31,11 @@
 
 
 //TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
+static constexpr int TRACKERPICK(0);
+static constexpr int TRACKEREDIT(1);
+static constexpr int TRACKERCANCEL(2);
+static constexpr int TRACKERCANCELEDIT(3);
+
 
 namespace TechDraw
 {
@@ -62,28 +63,27 @@ class TaskDetail : public QWidget
 public:
     explicit TaskDetail(TechDraw::DrawViewPart* baseFeat);
     explicit TaskDetail(TechDraw::DrawViewDetail* detailFeat);
-    ~TaskDetail() override;
+    ~TaskDetail() = default;
 
-public Q_SLOTS:
-    void onDraggerClicked(bool b);
-    void onHighlightMoved(QPointF newPos);
-    void onXEdit();
-    void onYEdit();
-    void onRadiusEdit();
-    void onScaleTypeEdit();
-    void onScaleEdit();
-    void onReferenceEdit();
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
+    void enableTaskButtons(bool button);
+
+public Q_SLOTS:
+        void onDraggerClicked(bool clicked);
+        void onHighlightMoved(QPointF dragEnd);
+        void onXEdit();
+        void onYEdit();
+        void onRadiusEdit();
+        void onScaleTypeEdit();
+        void onScaleEdit();
+        void onReferenceEdit();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void startDragger();
 
     void createDetail();
@@ -91,10 +91,10 @@ protected:
 
     void editByHighlight();
 
-    void blockButtons(bool b);
+    void blockButtons(bool isBlocked);
     void setUiFromFeat();
-    void updateUi(QPointF p);
-    void enableInputFields(bool b);
+    void updateUi(QPointF pos);
+    void enableInputFields(bool isEnabled);
 
     void saveDetailState();
     void restoreDetailState();
@@ -144,7 +144,6 @@ public:
     explicit TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat);
     ~TaskDlgDetail() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -154,14 +153,11 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
-
-protected:
 
 private:
     TaskDetail * widget;

@@ -74,9 +74,6 @@
 #include "QGISectionLine.h"
 #include "QGICenterLine.h"
 #include "QGIHighlight.h"
-#include "QGCustomBorder.h"
-#include "QGCustomLabel.h"
-#include "QGCustomRect.h"
 #include "QGIMatting.h"
 #include "QGIViewPart.h"
 #include "ViewProviderGeomHatch.h"
@@ -857,7 +854,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setPos(0.0, 0.0);
         sectionLine->setWidth(Rez::guiX(vp->LineWidth.getValue()));
         double fontSize = Preferences::dimFontSizeMM();
-        sectionLine->setFont(m_font, fontSize);
+        sectionLine->setFont(getFont(), fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(- viewPart->Rotation.getValue());
         sectionLine->draw();
@@ -948,7 +945,7 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius, center.x + radius, center.y - radius);
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
-        highlight->setFont(m_font, fontSize);
+        highlight->setFont(getFont(), fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
 
         QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());

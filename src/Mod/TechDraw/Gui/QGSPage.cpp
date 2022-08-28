@@ -88,11 +88,9 @@
 
 
 #include "Rez.h"
-#include "PreferencesGui.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
-#include "TemplateTextField.h"
 #include "QGIViewCollection.h"
 #include "QGIViewDimension.h"
 #include "QGIViewBalloon.h"
@@ -104,11 +102,9 @@
 #include "QGIViewClip.h"
 #include "QGIViewSpreadsheet.h"
 #include "QGIViewImage.h"
-#include "QGIFace.h"
 #include "QGILeaderLine.h"
 #include "QGIRichAnno.h"
 #include "QGIWeldSymbol.h"
-#include "QGITile.h"
 
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
@@ -127,23 +123,18 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-QGSPage::QGSPage(ViewProviderPage *vp, QWidget *parent)
+QGSPage::QGSPage(ViewProviderPage *vpPage, QWidget *parent)
     : QGraphicsScene(parent),
       pageTemplate(nullptr),
       m_vpPage(nullptr)
 {
-    assert(vp);
-    m_vpPage = vp;
+    assert(vpPage);
+    m_vpPage = vpPage;
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);  //the default
 //    setItemIndexMethod(QGraphicsScene::NoIndex);    //sometimes faster
 }
 
-QGSPage::~QGSPage()
-{
-
-}
-
-void QGSPage::addChildrenToPage(void)
+void QGSPage::addChildrenToPage()
 {
 //    Base::Console().Message("QGSP::addChildrenToPage()\n");
      // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
@@ -238,17 +229,17 @@ void QGSPage::matchSceneRectToTemplate(void)
     }
 }
 
-void QGSPage::setPageTemplate(TechDraw::DrawTemplate *obj)
+void QGSPage::setPageTemplate(TechDraw::DrawTemplate *templateFeat)
 {
 //    Base::Console().Message("QGSP::setPageTemplate()\n");
     removeTemplate();
 
-    if(obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
+    if(templateFeat->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
         pageTemplate = new QGIDrawingTemplate(this);
-    } else if(obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
+    } else if(templateFeat->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         pageTemplate = new QGISVGTemplate(this);
     }
-    pageTemplate->setTemplate(obj);
+    pageTemplate->setTemplate(templateFeat);
     pageTemplate->updateView();
 }
 
@@ -428,32 +419,32 @@ bool QGSPage::attachView(App::DocumentObject *obj)
     return (qview != nullptr);
 }
 
-QGIView * QGSPage::addViewPart(TechDraw::DrawViewPart *part)
+QGIView * QGSPage::addViewPart(TechDraw::DrawViewPart *partFeat)
 {
 //    Base::Console().Message("QGSP::addViewPart(%s)\n", part->getNameInDocument());
     auto viewPart( new QGIViewPart );
 
-    viewPart->setViewPartFeature(part);
+    viewPart->setViewPartFeature(partFeat);
 
     addQView(viewPart);
     return viewPart;
 }
 
-QGIView * QGSPage::addViewSection(TechDraw::DrawViewPart *part)
+QGIView * QGSPage::addViewSection(DrawViewSection *sectionFeat)
 {
     auto viewSection( new QGIViewSection );
 
-    viewSection->setViewPartFeature(part);
+    viewSection->setViewPartFeature(sectionFeat);
 
     addQView(viewSection);
     return viewSection;
 }
 
-QGIView * QGSPage::addProjectionGroup(TechDraw::DrawProjGroup *view)
+QGIView * QGSPage::addProjectionGroup(TechDraw::DrawProjGroup *projGroupFeat)
 {
     auto qview( new QGIProjGroup );
 
-    qview->setViewFeature(view);
+    qview->setViewFeature(projGroupFeat);
     addQView(qview);
     return qview;
 }
@@ -467,30 +458,30 @@ QGIView * QGSPage::addDrawView(TechDraw::DrawView *view)
     return qview;
 }
 
-QGIView * QGSPage::addDrawViewCollection(TechDraw::DrawViewCollection *view)
+QGIView * QGSPage::addDrawViewCollection(TechDraw::DrawViewCollection *collectionFeat)
 {
     auto qview( new QGIViewCollection );
 
-    qview->setViewFeature(view);
+    qview->setViewFeature(collectionFeat);
     addQView(qview);
     return qview;
 }
 
-QGIView * QGSPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation *view)
+QGIView * QGSPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation *annoFeat)
 {
     auto qview( new QGIViewAnnotation );
 
-    qview->setViewAnnoFeature(view);
+    qview->setViewAnnoFeature(annoFeat);
 
     addQView(qview);
     return qview;
 }
 
-QGIView * QGSPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *view)
+QGIView * QGSPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *symbolFeat)
 {
     auto qview( new QGIViewSymbol );
 
-    qview->setViewFeature(view);
+    qview->setViewFeature(symbolFeat);
 
     addQView(qview);
     return qview;
@@ -507,35 +498,34 @@ QGIView * QGSPage::addDrawViewClip(TechDraw::DrawViewClip *view)
     return qview;
 }
 
-QGIView * QGSPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
+QGIView * QGSPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *sheetFeat)
 {
     auto qview( new QGIViewSpreadsheet );
 
-    qview->setViewFeature(view);
+    qview->setViewFeature(sheetFeat);
 
     addQView(qview);
     return qview;
 }
 
-QGIView * QGSPage::addDrawViewImage(TechDraw::DrawViewImage *view)
+QGIView * QGSPage::addDrawViewImage(TechDraw::DrawViewImage *imageFeat)
 {
     auto qview( new QGIViewImage );
 
-    qview->setViewFeature(view);
+    qview->setViewFeature(imageFeat);
 
     addQView(qview);
     return qview;
 }
 
-QGIView * QGSPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
+QGIView * QGSPage::addViewBalloon(TechDraw::DrawViewBalloon *balloonFeat)
 {
 //    Base::Console().Message("QGSP::addViewBalloon(%s)\n", balloon->getNameInDocument());
     auto vBalloon( new QGIViewBalloon );
 
     addItem(vBalloon);
 
-    vBalloon->setViewPartFeature(balloon);
-    vBalloon->dvBalloon = balloon;
+    vBalloon->setViewPartFeature(balloonFeat);
 
     QGIView *parent = nullptr;
     parent = findParent(vBalloon);
@@ -596,14 +586,13 @@ void QGSPage::createBalloon(QPointF origin, DrawViewPart *parent)
     Gui::Command::commitCommand();
 }
 
-QGIView * QGSPage::addViewDimension(TechDraw::DrawViewDimension *dim)
+QGIView * QGSPage::addViewDimension(TechDraw::DrawViewDimension *dimFeat)
 {
     auto dimGroup( new QGIViewDimension );
 
     addItem(dimGroup);
 
-    dimGroup->setViewPartFeature(dim);
-    dimGroup->dvDimension = dim;
+    dimGroup->setViewPartFeature(dimFeat);
 
     // Find if it belongs to a parent
     QGIView *parent = nullptr;
@@ -628,13 +617,13 @@ void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
     dim->setZValue(ZVALUE::DIMENSION);
 }
 
-QGIView * QGSPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
+QGIView * QGSPage::addViewLeader(TechDraw::DrawLeaderLine *leaderFeat)
 {
 //    Base::Console().Message("QGSP::addViewLeader(%s)\n", leader->getNameInDocument());
     QGILeaderLine* leaderGroup = new QGILeaderLine();
     addItem(leaderGroup);
 
-    leaderGroup->setLeaderFeature(leader);
+    leaderGroup->setLeaderFeature(leaderFeat);
 
     QGIView *parent = nullptr;
     parent = findParent(leaderGroup);
@@ -655,11 +644,11 @@ void QGSPage::addLeaderToParent(QGILeaderLine* lead, QGIView* parent)
     lead->setZValue(ZVALUE::DIMENSION);
 }
 
-QGIView * QGSPage::addRichAnno(TechDraw::DrawRichAnno* anno)
+QGIView * QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
 {
     QGIRichAnno* annoGroup = new QGIRichAnno();
     addItem(annoGroup);
-    annoGroup->setViewFeature(anno);
+    annoGroup->setViewFeature(richFeat);
 
     QGIView *parent = findParent(annoGroup);
     if (parent != nullptr) {
@@ -679,13 +668,13 @@ void QGSPage::addAnnoToParent(QGIRichAnno* anno, QGIView* parent)
 }
 
 
-QGIView * QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
+QGIView * QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weldFeat)
 {
 //    Base::Console().Message("QGSP::addWeldSymbol()\n");
     QGIWeldSymbol* weldGroup = nullptr;
     TechDraw::DrawView*  parentDV = nullptr;
 
-    App::DocumentObject* parentObj = weld->Leader.getValue();
+    App::DocumentObject* parentObj = weldFeat->Leader.getValue();
     if (parentObj) {
         parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
     } else {
@@ -696,8 +685,8 @@ QGIView * QGSPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
         QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
         if (leadParent) {
             weldGroup = new QGIWeldSymbol(leadParent);
-            weldGroup->setFeature(weld);       //for QGIWS
-            weldGroup->setViewFeature(weld);   //for QGIV
+            weldGroup->setFeature(weldFeat);       //for QGIWS
+            weldGroup->setViewFeature(weldFeat);   //for QGIV
             weldGroup->updateView(true);
         }
     }
@@ -1065,9 +1054,9 @@ void QGSPage::redrawAllViews()
 }
 
 //NOTE: this doesn't add missing views.   see fixOrphans()
-void QGSPage::redraw1View(TechDraw::DrawView* dv)
+void QGSPage::redraw1View(TechDraw::DrawView* dView)
 {
-    std::string dvName = dv->getNameInDocument();
+    std::string dvName = dView->getNameInDocument();
     const std::vector<QGIView *> &upviews = getViews();
     for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         std::string qgivName = (*it)->getViewName();

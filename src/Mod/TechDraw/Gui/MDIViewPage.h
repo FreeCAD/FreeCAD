@@ -72,7 +72,7 @@ public:
     void preSelectionChanged(const QPoint &pos);
 
     /// QGraphicsScene selection routines
-    void selectQGIView(App::DocumentObject *obj, bool state);
+    void selectQGIView(App::DocumentObject *obj, bool isSelected);
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
@@ -97,7 +97,7 @@ public:
 
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
-    void setTabText(std::string t);
+    void setTabText(std::string tabText);
 
     static MDIViewPage *getFromScene(const QGSPage *scene);
     void contextMenuEvent(QContextMenuEvent *event) override;
@@ -111,30 +111,28 @@ public Q_SLOTS:
     void savePDF();
     void toggleFrame();
     void toggleKeepUpdated();
-//    void testAction(void);
     void sceneSelectionChanged();
 
 protected:
-    void closeEvent(QCloseEvent*) override;
+    void closeEvent(QCloseEvent* event) override;
 
-    void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
+    void showStatusMsg(const char* string1, const char* string2, const char* string3) const;
 
     void onDeleteObject(const App::DocumentObject& obj);
-
-    typedef boost::signals2::connection Connection;
-    Connection connectDeletedObject;
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
     void setTreeToSceneSelect();
     void sceneSelectionManager();
 
 private:
+    using Connection = boost::signals2::connection;
+    Connection connectDeletedObject;
+
     QAction *m_toggleFrameAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;
     QAction *m_exportPDFAction;
-//    QAction* m_testAction;
 
     std::string m_objectName;
     std::string m_documentName;
@@ -146,7 +144,7 @@ private:
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
 
-    void getPaperAttributes(void);
+    void getPaperAttributes();
     QPageLayout::Orientation m_orientation;
     QPageSize::PageSizeId m_paperSize;
     double m_pagewidth, m_pageheight;
@@ -163,7 +161,7 @@ public:
     ~MDIViewPagePy() override;
 
     Py::Object repr() override;
-    Py::Object getattr(const char *) override;
+    Py::Object getattr(const char * attrName) override;
     Py::Object getPage(const Py::Tuple&);
     Py::Object cast_to_base(const Py::Tuple&);
 

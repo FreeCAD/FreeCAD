@@ -350,10 +350,10 @@ void MRichTextEdit::textStrikeout() {
     mergeFormatOnWordOrSelection(fmt);
 }
 
-void MRichTextEdit::textSize(const QString &p) {
+void MRichTextEdit::textSize(const QString &pointsAsString) {
 //    qDebug() << "MRTE::textSize(" << p << ")";
-    qreal pointSize = p.toFloat();
-    if (p.toFloat() > 0) {
+    qreal pointSize = pointsAsString.toFloat();
+    if (pointsAsString.toFloat() > 0) {
         QTextCharFormat fmt;
         fmt.setFontPointSize(pointSize);
         mergeFormatOnWordOrSelection(fmt);
@@ -563,24 +563,24 @@ void MRichTextEdit::slotCursorPositionChanged() {
         }
 }
 
-void MRichTextEdit::fontChanged(const QFont &f) {
+void MRichTextEdit::fontChanged(const QFont &font) {
 //    qDebug() << "MRTE::fontChanged()";
     //TODO: change this to real font selector
-    f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(f.pointSize())));
-    f_bold->setChecked(f.bold());
-    f_italic->setChecked(f.italic());
-    f_underline->setChecked(f.underline());
-    f_strikeout->setChecked(f.strikeOut());
-    if (f.pointSize() == m_fontsize_h1) {
+    f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(font.pointSize())));
+    f_bold->setChecked(font.bold());
+    f_italic->setChecked(font.italic());
+    f_underline->setChecked(font.underline());
+    f_strikeout->setChecked(font.strikeOut());
+    if (font.pointSize() == m_fontsize_h1) {
         f_paragraph->setCurrentIndex(ParagraphHeading1);
-      } else if (f.pointSize() == m_fontsize_h2) {
+      } else if (font.pointSize() == m_fontsize_h2) {
         f_paragraph->setCurrentIndex(ParagraphHeading2);
-      } else if (f.pointSize() == m_fontsize_h3) {
+      } else if (font.pointSize() == m_fontsize_h3) {
         f_paragraph->setCurrentIndex(ParagraphHeading3);
-      } else if (f.pointSize() == m_fontsize_h4) {
+      } else if (font.pointSize() == m_fontsize_h4) {
         f_paragraph->setCurrentIndex(ParagraphHeading4);
       } else {
-        if (f.fixedPitch() && f.family() == QString::fromUtf8("Monospace")) {
+        if (font.fixedPitch() && font.family() == QString::fromUtf8("Monospace")) {
             f_paragraph->setCurrentIndex(ParagraphMonospace);
           } else {
             f_paragraph->setCurrentIndex(ParagraphStandard);
@@ -604,25 +604,25 @@ void MRichTextEdit::fontChanged(const QFont &f) {
       }
 }
 
-void MRichTextEdit::fgColorChanged(const QColor &c) {
+void MRichTextEdit::fgColorChanged(const QColor &color) {
     QSize iconSize(16, 16);
     QIcon fgIcon = f_fgcolor->icon();
     QPixmap fgPix = fgIcon.pixmap(iconSize, QIcon::Mode::Normal, QIcon::State::On);
     QPixmap filler(iconSize);
-    if (c.isValid() ) {
-        filler.fill(c);
+    if (color.isValid() ) {
+        filler.fill(color);
         filler.setMask(fgPix.createMaskFromColor(Qt::transparent, Qt::MaskInColor) );
         f_fgcolor->setIcon(filler);
     }
 }
 
-void MRichTextEdit::bgColorChanged(const QColor &c) {
+void MRichTextEdit::bgColorChanged(const QColor &color) {
     QSize iconSize(16, 16);
     QIcon bgIcon = f_bgcolor->icon();
     QPixmap bgPix = bgIcon.pixmap(iconSize, QIcon::Mode::Normal, QIcon::State::On);
     QPixmap filler(iconSize);
-    if (c.isValid() ) {
-        filler.fill(c);
+    if (color.isValid() ) {
+        filler.fill(color);
         filler.setMask(bgPix.createMaskFromColor(Qt::transparent, Qt::MaskOutColor) );
         f_bgcolor->setIcon(filler);
     }
@@ -705,18 +705,18 @@ void MRichTextEdit::insertImage() {
                 QFileInfo(file).suffix().toUpper());
 }
 
-void MRichTextEdit::onSave(void)
+void MRichTextEdit::onSave()
 {
     QString result = toHtml();
     Q_EMIT saveText(result);
 }
 
-void MRichTextEdit::onExit(void)
+void MRichTextEdit::onExit()
 {
     Q_EMIT editorFinished();
 }
 
-void MRichTextEdit::onSelectionChanged(void)
+void MRichTextEdit::onSelectionChanged()
 {
 //    qDebug() << "MRTE::onSelectionChanged()";
     if (hasMultipleSizes()) {
@@ -732,7 +732,7 @@ void MRichTextEdit::onSelectionChanged(void)
 }
 
 //does selection have multiple sizes?
-bool MRichTextEdit::hasMultipleSizes(void)
+bool MRichTextEdit::hasMultipleSizes()
 {
 //    qDebug() << "MRTE::hasMultipleSizes()";
     bool result = false;
@@ -761,16 +761,16 @@ bool MRichTextEdit::hasMultipleSizes(void)
     return result;
 }
 
-void MRichTextEdit::setDefFontSize(int fs)
+void MRichTextEdit::setDefFontSize(int fontSize)
 {
 //    Base::Console().Message("MRTE::setDefFontSize(%d)\n", fs);
-    m_defFontSize = fs;
-    m_fontsize_h1 = fs + 8;
-    m_fontsize_h2 = fs + 6;
-    m_fontsize_h3 = fs + 4;
-    m_fontsize_h4 = fs + 2;
+    m_defFontSize = fontSize;
+    m_fontsize_h1 = fontSize + 8;
+    m_fontsize_h2 = fontSize + 6;
+    m_fontsize_h3 = fontSize + 4;
+    m_fontsize_h4 = fontSize + 2;
 
-    QString newSize = QString::number(fs);
+    QString newSize = QString::number(fontSize);
     f_fontsize->findText(newSize);
     int idx = f_fontsize->findText(newSize);
     if (idx > -1) {
@@ -781,7 +781,7 @@ void MRichTextEdit::setDefFontSize(int fs)
     textSize(newSize);
 }
 
-int MRichTextEdit::getDefFontSizeNum(void)
+int MRichTextEdit::getDefFontSizeNum()
 {
 //    Base::Console().Message("MRTE::getDefFontSizeNum()\n");
     double fontSize = TechDraw::Preferences::dimFontSizeMM();
@@ -794,7 +794,7 @@ int MRichTextEdit::getDefFontSizeNum(void)
     return ptsSize;
 }
 
-QString MRichTextEdit::getDefFontSize(void)
+QString MRichTextEdit::getDefFontSize()
 {
 //    Base::Console().Message("MRTE::getDefFontSize()\n");
     QString result = QString::number(getDefFontSizeNum());
@@ -802,12 +802,12 @@ QString MRichTextEdit::getDefFontSize(void)
 }
 
 //not used.
-void MRichTextEdit::setDefFont(QString f)
+void MRichTextEdit::setDefFont(QString fontName)
 {
-    m_defFont = f;
+    m_defFont = fontName;
 }
 
-QFont MRichTextEdit::getDefFont(void)
+QFont MRichTextEdit::getDefFont()
 {
     QString family = Base::Tools::fromStdString(Preferences::labelFont());
     m_defFont = family;
@@ -819,11 +819,11 @@ QFont MRichTextEdit::getDefFont(void)
 // add a new fontSize to the list
 // this seems like massive overkill for integer point<->mm conversion factor
 // if the conversion factor is float, will generate non-standard sizes
-void MRichTextEdit::addFontSize(QString fs)
+void MRichTextEdit::addFontSize(QString fontSize)
 {
 //    Base::Console().Message("MRTE::addFontSize(%s)\n", qPrintable(fs));
     QStringList newList;
-    int fsVal = fs.toInt();
+    int fsVal = fontSize.toInt();
     int size = f_fontsize->count();
     bool added = false;
     for (int i = 0; i < size; i++) {
@@ -839,13 +839,13 @@ void MRichTextEdit::addFontSize(QString fs)
             newList << item;
             added = true;
         } else {             //item > fs, add both
-            newList << fs;
+            newList << fontSize;
             newList << item;
             added = true;
         }
     }
     if (!added) {   //bigger than all choices, add to end of list
-        newList << fs;
+        newList << fontSize;
     }
     f_fontsize->clear();
     f_fontsize->addItems(newList);

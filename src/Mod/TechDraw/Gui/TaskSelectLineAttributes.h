@@ -96,14 +96,9 @@ public:
     explicit TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskSelectLineAttributes() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-
-protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -133,7 +128,6 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();

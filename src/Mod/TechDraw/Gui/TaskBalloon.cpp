@@ -63,13 +63,13 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     ui->setupUi(this);
 
-    ui->qsbShapeScale->setValue(parent->dvBalloon->ShapeScale.getValue());
+    ui->qsbShapeScale->setValue(parent->getBalloonFeat()->ShapeScale.getValue());
     connect(ui->qsbShapeScale, SIGNAL(valueChanged(double)), this, SLOT(onShapeScaleChanged()));
 
-    ui->qsbSymbolScale->setValue(parent->dvBalloon->EndTypeScale.getValue());
+    ui->qsbSymbolScale->setValue(parent->getBalloonFeat()->EndTypeScale.getValue());
     connect(ui->qsbSymbolScale, SIGNAL(valueChanged(double)), this, SLOT(onEndSymbolScaleChanged()));
 
-    std::string value = parent->dvBalloon->Text.getValue();
+    std::string value = parent->getBalloonFeat()->Text.getValue();
     QString qs = QString::fromUtf8(value.data(), value.size());
     ui->leText->setText(qs);
     ui->leText->selectAll();
@@ -77,11 +77,11 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     QTimer::singleShot(0, ui->leText, SLOT(setFocus()));
 
     DrawGuiUtil::loadArrowBox(ui->comboEndSymbol);
-    i = parent->dvBalloon->EndType.getValue();
+    i = parent->getBalloonFeat()->EndType.getValue();
     ui->comboEndSymbol->setCurrentIndex(i);
     connect(ui->comboEndSymbol, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
 
-    i = parent->dvBalloon->BubbleShape.getValue();
+    i = parent->getBalloonFeat()->BubbleShape.getValue();
     ui->comboBubbleShape->setCurrentIndex(i);
     connect(ui->comboBubbleShape, SIGNAL(currentIndexChanged(int)), this, SLOT(onBubbleShapeChanged()));
 
@@ -103,7 +103,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
         ui->qsbLineWidth->setValue(balloonVP->LineWidth.getValue());
     }
     // new balloons have already the preferences BalloonKink length
-    ui->qsbKinkLength->setValue(parent->dvBalloon->KinkLength.getValue());
+    ui->qsbKinkLength->setValue(parent->getBalloonFeat()->KinkLength.getValue());
 
     connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
     connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
@@ -146,7 +146,7 @@ void TaskBalloon::recomputeFeature()
 
 void TaskBalloon::onTextChanged()
 {
-    m_parent->dvBalloon->Text.setValue(ui->leText->text().toUtf8().constData());
+    m_parent->getBalloonFeat()->Text.setValue(ui->leText->text().toUtf8().constData());
     recomputeFeature();
 }
 
@@ -166,25 +166,25 @@ void TaskBalloon::onFontsizeChanged()
 
 void TaskBalloon::onBubbleShapeChanged()
 {
-    m_parent->dvBalloon->BubbleShape.setValue(ui->comboBubbleShape->currentIndex());
+    m_parent->getBalloonFeat()->BubbleShape.setValue(ui->comboBubbleShape->currentIndex());
     recomputeFeature();
 }
 
 void TaskBalloon::onShapeScaleChanged()
 {
-    m_parent->dvBalloon->ShapeScale.setValue(ui->qsbShapeScale->value().getValue());
+    m_parent->getBalloonFeat()->ShapeScale.setValue(ui->qsbShapeScale->value().getValue());
     recomputeFeature();
 }
 
 void TaskBalloon::onEndSymbolChanged()
 {
-    m_parent->dvBalloon->EndType.setValue(ui->comboEndSymbol->currentIndex());
+    m_parent->getBalloonFeat()->EndType.setValue(ui->comboEndSymbol->currentIndex());
     recomputeFeature();
 }
 
 void TaskBalloon::onEndSymbolScaleChanged()
 {
-    m_parent->dvBalloon->EndTypeScale.setValue(ui->qsbSymbolScale->value().getValue());
+    m_parent->getBalloonFeat()->EndTypeScale.setValue(ui->qsbSymbolScale->value().getValue());
     recomputeFeature();
 }
 
@@ -202,7 +202,7 @@ void TaskBalloon::onLineWidthChanged()
 
 void TaskBalloon::onKinkLengthChanged()
 {
-    m_parent->dvBalloon->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
+    m_parent->getBalloonFeat()->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
     recomputeFeature();
 }
 

@@ -61,7 +61,7 @@ Q_OBJECT
 
 public:
     QGIBalloonLabel();
-    ~QGIBalloonLabel() override = default;
+    ~QGIBalloonLabel() = default;
 
     enum {Type = QGraphicsItem::UserType + 141};
     int type() const override { return Type;}
@@ -76,27 +76,28 @@ public:
     double X() const { return posX; }
     double Y() const { return posY; }              //minus posY?
 
-    void setFont(QFont f);
+    void setFont(QFont font);
     QFont getFont() { return m_labelText->font(); }
-    void setDimString(QString t);
-    void setDimString(QString t, qreal maxWidth);
+    void setDimString(QString text);
+    void setDimString(QString text, qreal maxWidth);
     void setPrettySel();
     void setPrettyPre();
     void setPrettyNormal();
-    void setColor(QColor c);
+    void setColor(QColor color);
 
-    bool verticalSep;
-    std::vector<int> seps;
+    void setQBalloon(QGIViewBalloon* qBalloon) { parent = qBalloon;}
+
 
     QGCustomText* getDimText() { return m_labelText; }
+
     void setDimText(QGCustomText* newText) { m_labelText = newText; }
-
-    bool hasHover;
-
-    QGIViewBalloon *parent;
+    bool getVerticalSep() const { return verticalSep; }
+    void setVerticalSep(bool sep) { verticalSep = sep; }
+    std::vector<int> getSeps() const { return seps; }
+    void setSeps(std::vector<int> newSeps) { seps = newSeps; }
 
 Q_SIGNALS:
-    void dragging(bool);
+    void dragging(bool state);
     void hover(bool state);
     void selected(bool state);
     void dragFinished();
@@ -108,6 +109,13 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
+private:
+    bool hasHover;
+
+    QGIViewBalloon *parent;
+    bool verticalSep;
+    std::vector<int> seps;
+
     QGCustomText* m_labelText;
     QColor m_colNormal;
 
@@ -116,7 +124,6 @@ protected:
     bool m_ctrl;
     bool m_drag;
 
-private:
 };
 
 //*******************************************************************
@@ -129,9 +136,9 @@ public:
     enum {Type = QGraphicsItem::UserType + 140};
 
     explicit QGIViewBalloon();
-    ~QGIViewBalloon() override = default;
+    ~QGIViewBalloon() = default;
 
-    void setViewPartFeature(TechDraw::DrawViewBalloon *obj);
+    void setViewPartFeature(TechDraw::DrawViewBalloon *balloonFeat);
     int type() const override { return Type;}
 
     void drawBorder() override;
@@ -142,18 +149,17 @@ public:
 
     QString getLabelText();
     void placeBalloon(QPointF pos);
-    TechDraw::DrawViewBalloon *dvBalloon;
     void setPrettyPre();
     void setPrettySel();
     void setPrettyNormal();
 
-    void setGroupSelection(bool b) override;
+    void setGroupSelection(bool isSelected) override;
     virtual QGIBalloonLabel* getBalloonLabel() { return balloonLabel; }
 
-    QColor getNormalColor() override;
+    QColor prefNormalColor();
     int prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
-
+    TechDraw::DrawViewBalloon* getBalloonFeat() { return dvBalloon; }
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
@@ -170,8 +176,11 @@ protected:
     virtual void setSvgPens();
     virtual void setPens();
     QString getPrecision();
+    void parentViewMousePressed(QGIView *view, QPointF pos);
+    TechDraw::DrawView* getSourceView() const;
 
-protected:
+private:
+    TechDraw::DrawViewBalloon *dvBalloon;
     bool hasHover;
     QGIBalloonLabel* balloonLabel;
     QGIDimLines* balloonLines;
@@ -179,16 +188,12 @@ protected:
     QGIArrow* arrow;
     double m_lineWidth;
     bool m_obtuse;
-    void parentViewMousePressed(QGIView *view, QPointF pos);
     QGIView *parent;           //used to create edit dialog
 
-    TechDraw::DrawView* getSourceView() const;
     bool m_dragInProgress;
     bool m_originDragged = false;
     bool m_ctrl;
     Base::Vector3d m_saveOffset;
-
-
 };
 
 } // namespace

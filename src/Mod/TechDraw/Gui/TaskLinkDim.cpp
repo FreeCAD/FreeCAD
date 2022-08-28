@@ -254,9 +254,9 @@ bool TaskLinkDim::reject()
     return true;
 }
 
-void TaskLinkDim::changeEvent(QEvent *e)
+void TaskLinkDim::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }

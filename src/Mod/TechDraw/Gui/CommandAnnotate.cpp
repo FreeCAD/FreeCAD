@@ -60,7 +60,6 @@
 #include <Mod/TechDraw/App/Cosmetic.h>
 
 #include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
 #include "TaskLeaderLine.h"
 #include "TaskRichAnno.h"
 #include "TaskCosVertex.h"
@@ -68,10 +67,8 @@
 #include "TaskLineDecor.h"
 #include "TaskWeldingSymbol.h"
 #include "TaskCosmeticLine.h"
-#include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
 #include "QGIView.h"
-#include "QGVPage.h"
 #include "TaskSurfaceFinishSymbols.h"
 
 using namespace TechDrawGui;

@@ -36,11 +36,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-
-#include <Inventor/SbVec3f.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -54,7 +50,6 @@
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderProjGroup.h"
-#include "ViewProviderProjGroupItem.h"
 
 #include "TaskProjGroup.h"
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
@@ -101,15 +96,15 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     // Rotation buttons
     // Note we don't do the custom one here, as it's handled by [a different function that's held up in customs]
-    connect(ui->butTopRotate,   SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
-    connect(ui->butCWRotate,    SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
-    connect(ui->butRightRotate, SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
-    connect(ui->butDownRotate,  SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
-    connect(ui->butLeftRotate,  SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
-    connect(ui->butCCWRotate,   SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
+    connect(ui->butTopRotate,   SIGNAL(clicked()), this, SLOT(rotateButtonClicked()));
+    connect(ui->butCWRotate,    SIGNAL(clicked()), this, SLOT(rotateButtonClicked()));
+    connect(ui->butRightRotate, SIGNAL(clicked()), this, SLOT(rotateButtonClicked()));
+    connect(ui->butDownRotate,  SIGNAL(clicked()), this, SLOT(rotateButtonClicked()));
+    connect(ui->butLeftRotate,  SIGNAL(clicked()), this, SLOT(rotateButtonClicked()));
+    connect(ui->butCCWRotate,   SIGNAL(clicked()), this, SLOT(rotateButtonClicked()));
 
 //    //Reset button
-//    connect(ui->butReset,   SIGNAL(clicked()), this, SLOT(onResetClicked(void)));
+//    connect(ui->butReset,   SIGNAL(clicked()), this, SLOT(onResetClicked()));
 
     // Slot for Scale Type
     connect(ui->cmbScaleType, SIGNAL(currentIndexChanged(int)), this, SLOT(scaleTypeChanged(int)));
@@ -117,13 +112,12 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     connect(ui->sbScaleDen,   SIGNAL(valueChanged(int)), this, SLOT(scaleManuallyChanged(int)));
 
     // Slot for Projection Type (layout)
-//    connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
     connect(ui->projection, SIGNAL(currentIndexChanged(QString)), this, SLOT(projectionTypeChanged(QString)));
 
     // Spacing
     connect(ui->cbAutoDistribute, SIGNAL(clicked(bool)), this, SLOT(AutoDistributeClicked(bool)));
-    connect(ui->sbXSpacing, SIGNAL(valueChanged(double)), this, SLOT(spacingChanged(void)));
-    connect(ui->sbYSpacing, SIGNAL(valueChanged(double)), this, SLOT(spacingChanged(void)));
+    connect(ui->sbXSpacing, SIGNAL(valueChanged(double)), this, SLOT(spacingChanged()));
+    connect(ui->sbYSpacing, SIGNAL(valueChanged(double)), this, SLOT(spacingChanged()));
     ui->sbXSpacing->setUnit(Base::Unit::Length);
     ui->sbYSpacing->setUnit(Base::Unit::Length);
 
@@ -135,10 +129,6 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     setUiPrimary();
     saveGroupState();
-}
-
-TaskProjGroup::~TaskProjGroup()
-{
 }
 
 void TaskProjGroup::saveGroupState()
@@ -286,12 +276,12 @@ void TaskProjGroup::scaleTypeChanged(int index)
     }
 }
 
-void TaskProjGroup::AutoDistributeClicked(bool b)
+void TaskProjGroup::AutoDistributeClicked(bool clicked)
 {
     if (blockUpdate) {
         return;
     }
-    multiView->AutoDistribute.setValue(b);
+    multiView->AutoDistribute.setValue(clicked);
     multiView->recomputeFeature();
 }
 
@@ -404,9 +394,9 @@ void TaskProjGroup::setFractionalScale(double newScale)
     blockUpdate = false;
 }
 
-void TaskProjGroup::scaleManuallyChanged(int i)
+void TaskProjGroup::scaleManuallyChanged(int unused)
 {
-    Q_UNUSED(i);
+    Q_UNUSED(unused);
     if(blockUpdate)
         return;
     if (!multiView->ScaleType.isValue("Custom")) {                               //ignore if not custom!
@@ -423,9 +413,9 @@ void TaskProjGroup::scaleManuallyChanged(int i)
     multiView->recomputeFeature();
 }
 
-void TaskProjGroup::changeEvent(QEvent *e)
+void TaskProjGroup::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -495,12 +485,12 @@ void TaskProjGroup::setUiPrimary()
     ui->lePrimary->setText(formatVector(frontDir));
 }
 
-QString TaskProjGroup::formatVector(Base::Vector3d v)
+QString TaskProjGroup::formatVector(Base::Vector3d vec)
 {
     QString data = QString::fromLatin1("[%1 %2 %3]")
-        .arg(QLocale().toString(v.x, 'f', 2),
-             QLocale().toString(v.y, 'f', 2),
-             QLocale().toString(v.z, 'f', 2));
+        .arg(QLocale().toString(vec.x, 'f', 2),
+             QLocale().toString(vec.y, 'f', 2),
+             QLocale().toString(vec.z, 'f', 2));
     return data;
 }
 
@@ -595,9 +585,9 @@ void TaskDlgProjGroup::update()
     widget->updateTask();
 }
 
-void TaskDlgProjGroup::setCreateMode(bool b)
+void TaskDlgProjGroup::setCreateMode(bool mode)
 {
-    widget->setCreateMode(b);
+    widget->setCreateMode(mode);
 }
 
 void TaskDlgProjGroup::modifyStandardButtons(QDialogButtonBox* box)

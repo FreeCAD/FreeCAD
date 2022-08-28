@@ -65,9 +65,6 @@ public:
     explicit TaskCustomizeFormat(App::DocumentObject * object);
     ~TaskCustomizeFormat() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
@@ -75,8 +72,6 @@ public:
 private Q_SLOTS:
     void onSymbolClicked();
     void onFormatChanged();
-
-protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
