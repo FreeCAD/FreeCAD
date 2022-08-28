@@ -443,17 +443,16 @@ void Document::exportGraphviz(std::ostream& out) const
                     setGraphAttributes(obj);
                 }
 
-                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                auto i = expressions.begin();
-                while (i != expressions.end()) {
-                    std::map<ObjectIdentifier,bool> deps;
+                // Create subgraphs for all document objects that it depends on; it will depend on some property there
+                for (const auto &expr : expressions) {
+                    std::map<ObjectIdentifier, bool> deps;
 
-                    i->second->getIdentifiers(deps);
+                    expr.second->getIdentifiers(deps);
 
-                    for(auto j=deps.begin(); j!=deps.end(); ++j) {
-                        if(j->second)
+                    for (const auto &dep : deps) {
+                        if (dep.second)
                             continue;
-                        DocumentObject * o = j->first.getDocumentObject();
+                        DocumentObject * o = dep.first.getDocumentObject();
 
                         // Doesn't exist already?
                         if (o && !GraphList[o]) {
@@ -470,10 +469,8 @@ void Document::exportGraphviz(std::ostream& out) const
                                 GraphList[o] = &graph->create_subgraph();
                                 setGraphAttributes(o);
                             }
-
                         }
                     }
-                    ++i;
                 }
             }
         }
@@ -689,27 +686,23 @@ void Document::exportGraphviz(std::ostream& out) const
             std::set<std::pair<const DocumentObject*, const DocumentObject*> > existingEdges;
 
             // Add edges between properties
-            std::set<const DocumentObject*>::const_iterator j = objects.begin();
-            while (j != objects.end()) {
-                const DocumentObject * docObj = *j;
+            for (const auto &docObj : objects) {
 
                 // Add expressions and its dependencies
                 auto expressions = docObj->ExpressionEngine.getExpressions();
-                auto i = expressions.begin();
-
-                while (i != expressions.end()) {
-                    std::map<ObjectIdentifier,bool> deps;
-                    i->second->getIdentifiers(deps);
+                for (const auto &expr : expressions) {
+                    std::map<ObjectIdentifier, bool> deps;
+                    expr.second->getIdentifiers(deps);
 
                     // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                    for(auto k=deps.begin(); k!=deps.end(); ++k) {
-                        if(k->second)
+                    for (const auto &dep : deps) {
+                        if (dep.second)
                             continue;
-                        DocumentObject * depObjDoc = k->first.getDocumentObject();
+                        DocumentObject * depObjDoc = dep.first.getDocumentObject();
                         Edge edge;
                         bool inserted;
 
-                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(k->first)], DepList);
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(expr.first)], GlobalVertexList[getId(dep.first)], DepList);
 
                         // Add this edge to the set of all expression generated edges
                         existingEdges.insert(std::make_pair(docObj, depObjDoc));
@@ -718,9 +711,7 @@ void Document::exportGraphviz(std::ostream& out) const
                         edgeAttrMap[edge]["arrowsize"] = "0.5";
                         edgeAttrMap[edge]["style"] = "dashed";
                     }
-                    ++i;
                 }
-                ++j;
             }
 
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
