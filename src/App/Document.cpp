@@ -134,7 +134,7 @@ using namespace zipios;
 namespace fs = boost::filesystem;
 
 // typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
-typedef boost::adjacency_list <
+using DependencyList = boost::adjacency_list <
 boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
 boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
 boost::directedS,      // class DirectedS     : This is a directed graph
@@ -142,25 +142,25 @@ boost::no_property,    // class VertexProperty:
 boost::no_property,    // class EdgeProperty:
 boost::no_property,    // class GraphProperty:
 boost::listS           // class EdgeListS:
-> DependencyList;
-typedef boost::graph_traits<DependencyList> Traits;
-typedef Traits::vertex_descriptor Vertex;
-typedef Traits::edge_descriptor Edge;
-typedef std::vector <size_t> Node;
-typedef std::vector <size_t> Path;
+>;
+using Traits = boost::graph_traits<DependencyList>;
+using Vertex = Traits::vertex_descriptor;
+using Edge =  Traits::edge_descriptor;
+using Node =  std::vector <size_t>;
+using Path =  std::vector <size_t>;
 
 namespace App {
 
-static bool _IsRestoring;
-static bool _IsRelabeling;
+static bool globalIsRestoring;
+static bool globalIsRelabeling;
 // Pimpl class
 struct DocumentP
 {
     // Array to preserve the creation order of created objects
     std::vector<DocumentObject*> objectArray;
     std::unordered_set<App::DocumentObject*> touchedObjs;
-    std::unordered_map<std::string,DocumentObject*> objectMap;
-    std::unordered_map<long,DocumentObject*> objectIdMap;
+    std::unordered_map<std::string, DocumentObject*> objectMap;
+    std::unordered_map<long, DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
     long lastObjectId;
@@ -180,8 +180,8 @@ struct DocumentP
     std::string programVersion;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
-    std::map<Vertex,DocumentObject*> vertexMap;
+    std::map<DocumentObject*, Vertex> VertexObjectList;
+    std::map<Vertex, DocumentObject*> vertexMap;
 #endif //USE_OLD_DAG
     std::multimap<const App::DocumentObject*,
         std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
@@ -189,7 +189,7 @@ struct DocumentP
     DocumentP() {
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
-        static std::uniform_int_distribution<> _RDIST(0,5000);
+        static std::uniform_int_distribution<> _RDIST(0, 5000);
         // Set some random offset to reduce likelihood of ID collision when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
@@ -210,11 +210,11 @@ struct DocumentP
     }
 
     void addRecomputeLog(const char *why, App::DocumentObject *obj) {
-        addRecomputeLog(new DocumentObjectExecReturn(why,obj));
+        addRecomputeLog(new DocumentObjectExecReturn(why, obj));
     }
 
     void addRecomputeLog(const std::string &why, App::DocumentObject *obj) {
-        addRecomputeLog(new DocumentObjectExecReturn(why,obj));
+        addRecomputeLog(new DocumentObjectExecReturn(why, obj));
     }
 
     void addRecomputeLog(DocumentObjectExecReturn *returnCode) {
@@ -223,7 +223,7 @@ struct DocumentP
             return;
         }
         _RecomputeLog.emplace(returnCode->Which, std::unique_ptr<DocumentObjectExecReturn>(returnCode));
-        returnCode->Which->setStatus(ObjectStatus::Error,true);
+        returnCode->Which->setStatus(ObjectStatus::Error, true);
     }
 
     void clearRecomputeLog(const App::DocumentObject *obj=nullptr) {
@@ -281,16 +281,16 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     //for(std::map<DocumentObject*,Vertex>::const_iterator It1= _DepConMap.begin();It1 != _DepConMap.end(); ++It1)
     //  VertexMap[It1->second] = It1->first;
 
-    out << "digraph G {" << endl;
-    out << "\tordering=out;" << endl;
-    out << "\tnode [shape = box];" << endl;
+    out << "digraph G {" << std::endl;
+    out << "\tordering=out;" << std::endl;
+    out << "\tnode [shape = box];" << std::endl;
 
-    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        out << "\t" << It->first << ";" <<endl;
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-            if (*It2)
-                out << "\t" << It->first << "->" << (*It2)->getNameInDocument() << ";" <<endl;
+    for (const auto &It : d->objectMap) {
+        out << "\t" << It.first << ";" << std::endl;
+        std::vector<DocumentObject*> OutList = It.second->getOutList();
+        for (const auto &It2 : OutList)
+            if (It2)
+                out << "\t" << It.first << "->" << It2->getNameInDocument() << ";" << std::endl;
     }
 
     /*
@@ -1324,7 +1324,7 @@ void Document::clearDocument()
         GetApplication().signalNewDocument(*this,false);
     }
 
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
 
     setStatus(Document::PartialDoc,false);
 
@@ -1451,7 +1451,7 @@ void Document::onChanged(const Property* prop)
 
     // the Name property is a label for display purposes
     if (prop == &Label) {
-        Base::FlagToggler<> flag(_IsRelabeling);
+        Base::FlagToggler<> flag(globalIsRelabeling);
         App::GetApplication().signalRelabelDocument(*this);
     } else if(prop == &ShowHidden) {
         App::GetApplication().signalShowHidden(*this);
@@ -1493,10 +1493,10 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-    if(!d->rollback && !_IsRelabeling) {
-        _checkTransaction(nullptr,What,__LINE__);
+    if(!d->rollback && !globalIsRelabeling) {
+        _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction)
-            d->activeUndoTransaction->addObjectChange(Who,What);
+            d->activeUndoTransaction->addObjectChange(Who, What);
     }
 }
 
@@ -2151,7 +2151,7 @@ void Document::addRecomputeObject(DocumentObject *obj) {
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     ExpressionParser::ExpressionImporter expImporter(reader);
@@ -2705,7 +2705,7 @@ bool Document::saveToFile(const char* filename) const
 }
 
 bool Document::isAnyRestoring() {
-    return _IsRestoring;
+    return globalIsRestoring;
 }
 
 // Open the document
@@ -2723,7 +2723,7 @@ void Document::restore (const char *filename,
         d->clearDocument();
     }
 
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
 
     setStatus(Document::PartialDoc,false);
 
@@ -2788,7 +2788,7 @@ void Document::restore (const char *filename,
 }
 
 bool Document::afterRestore(bool checkPartial) {
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
     if(!afterRestore(d->objectArray,checkPartial)) {
         FC_WARN("Reload partial document " << getName());
         GetApplication().signalPendingReloadDocument(*this);
