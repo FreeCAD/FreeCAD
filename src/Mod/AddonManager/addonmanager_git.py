@@ -194,7 +194,7 @@ class GitManager:
             # This only works with git 2.22 and later (June 2019)
             # branch = self._synchronous_call_git(["branch", "--show-current"]).strip()
 
-            # This is more universal:
+            # This is more universal (albeit more opaque to the reader):
             branch = self._synchronous_call_git(["rev-parse", "--abbrev-ref", "HEAD"]).strip()
         except GitFailed as e:
             os.chdir(old_dir)
