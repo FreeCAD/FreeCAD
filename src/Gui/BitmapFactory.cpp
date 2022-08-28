@@ -136,8 +136,8 @@ void BitmapFactoryInst::restoreCustomPaths()
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Bitmaps");
     std::vector<std::string> paths = group->GetASCIIs("CustomPath");
-    for (std::vector<std::string>::iterator it = paths.begin(); it != paths.end(); ++it) {
-        addPath(QString::fromUtf8(it->c_str()));
+    for (const auto & path : paths) {
+        addPath(QString::fromUtf8(path.c_str()));
     }
 }
 
@@ -469,12 +469,12 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, bool vert
     QBitmap mask2 = p2.mask();
     mask.fill( Qt::color0 );
 
-    QPainter* pt1 = new QPainter(&res);
+    auto *pt1 = new QPainter(&res);
     pt1->drawPixmap(0, 0, p1);
     pt1->drawPixmap(x, y, p2);
     delete pt1;
 
-    QPainter* pt2 = new QPainter(&mask);
+    auto *pt2 = new QPainter(&mask);
     pt2->drawPixmap(0, 0, mask1);
     pt2->drawPixmap(x, y, mask2);
     delete pt2;

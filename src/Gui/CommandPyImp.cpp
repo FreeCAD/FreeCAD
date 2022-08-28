@@ -52,7 +52,7 @@ PyObject* CommandPy::get(PyObject *args)
 
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
-        CommandPy* cmdPy = new CommandPy(cmd);
+        auto *cmdPy = new CommandPy(cmd);
         return cmdPy;
     }
 
@@ -76,8 +76,8 @@ PyObject* CommandPy::listAll(PyObject *args)
     std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
     PyObject* pyList = PyList_New(cmds.size());
     int i=0;
-    for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
-        PyObject* str = PyUnicode_FromString((*it)->getName());
+    for (const auto & cmd : cmds) {
+        PyObject* str = PyUnicode_FromString(cmd->getName());
         PyList_SetItem(pyList, i++, str);
     }
     return pyList;
@@ -92,26 +92,26 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
 
     std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
     std::vector <std::string> matches;
-    for (Command* c : cmds) {
-        Action* action = c->getAction();
+    for (Command*cmd : cmds) {
+        Action* action = cmd->getAction();
         if (action) {
             QString spc = QString::fromLatin1(" ");
             if (Base::asBoolean(bIsRegularExp)) {
-               QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
-               re.setCaseSensitivity(Qt::CaseInsensitive);
-               if (!re.isValid()) {
+               QRegExp qRegExp = QRegExp(QString::fromLatin1(shortcut_to_find));
+               qRegExp.setCaseSensitivity(Qt::CaseInsensitive);
+               if (!qRegExp.isValid()) {
                    std::stringstream str;
                    str << "Invalid regular expression:" << ' ' << shortcut_to_find;
                    throw Py::RuntimeError(str.str());
                }
 
-               if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1) {
-                   matches.emplace_back(c->getName());
+               if (qRegExp.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1) {
+                   matches.emplace_back(cmd->getName());
                }
             }
             else if (action->shortcut().toString().remove(spc).toUpper() ==
                      QString::fromLatin1(shortcut_to_find).remove(spc).toUpper()) {
-                matches.emplace_back(c->getName());
+                matches.emplace_back(cmd->getName());
             }
         }
     }
@@ -294,15 +294,15 @@ PyObject* CommandPy::getInfo(PyObject *args)
     }
 }
 
-PyObject* CommandPy::getAction(PyObject *args)
+PyObject *CommandPy::getAction(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    Command* cmd = this->getCommandPtr();
+    Command *cmd = this->getCommandPtr();
     if (cmd) {
-        Action* action = cmd->getAction();
-        ActionGroup* group = qobject_cast<ActionGroup*>(action);
+        Action *action = cmd->getAction();
+        auto *group = qobject_cast<ActionGroup *>(action);
 
         PythonWrapper wrap;
         wrap.loadWidgetsModule();
@@ -310,8 +310,9 @@ PyObject* CommandPy::getAction(PyObject *args)
         Py::List list;
         if (group) {
             const auto actions = group->actions();
-            for (auto a : actions)
-                list.append(wrap.fromQObject(a));
+            for (auto *pAction : actions) {
+                list.append(wrap.fromQObject(pAction));
+            }
         }
         else if (action) {
             list.append(wrap.fromQObject(action->action()));
@@ -319,10 +320,8 @@ PyObject* CommandPy::getAction(PyObject *args)
 
         return Py::new_reference_to(list);
     }
-    else {
-        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
-        return nullptr;
-    }
+    PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
+    return nullptr;
 }
 
 
@@ -342,7 +341,7 @@ PyObject* CommandPy::createCustomCommand(PyObject* args, PyObject* kw)
 
     auto name = Application::Instance->commandManager().newMacroName();
     CommandManager& commandManager = Application::Instance->commandManager();
-    MacroCommand* macro = new MacroCommand(name.c_str(), false);
+    auto *macro = new MacroCommand(name.c_str(), false);
     commandManager.addCommand(macro);
 
     macro->setScriptName(macroFile); 

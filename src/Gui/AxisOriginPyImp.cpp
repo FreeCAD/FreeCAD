@@ -63,7 +63,7 @@ PyObject* AxisOriginPy::getElementPicked(PyObject* args)
         return nullptr;
     }
 
-    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
+    auto *pp = static_cast<SoPickedPoint*>(ptr);
     std::string name;
     if (!getAxisOriginPtr()->getElementPicked(pp,name))
         Py_Return;
@@ -85,7 +85,7 @@ PyObject* AxisOriginPy::getDetailPath(PyObject* args)
         return nullptr;
     }
 
-    SoPath *pPath = static_cast<SoPath*>(ptr);
+    auto *pPath = static_cast<SoPath*>(ptr);
     SoDetail *det = nullptr;
     if (!getAxisOriginPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), det)) {
         delete det;

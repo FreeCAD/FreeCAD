@@ -331,7 +331,7 @@ private:
 
 void Command::setupCheckable(int iMsg) {
     QAction *action = nullptr;
-    Gui::ActionGroup* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto *pcActionGroup = qobject_cast<Gui::ActionGroup *>(_pcAction);
     if(pcActionGroup) {
         QList<QAction*> a = pcActionGroup->actions();
         assert(iMsg < a.size());
@@ -495,11 +495,11 @@ void Command::testActive()
         }
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto *pcAction = qobject_cast<Gui::ActionGroup *>(_pcAction);
     if(pcAction) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         const auto actions = pcAction->actions();
-        for(auto action : actions) {
+        for(auto *action : actions) {
             auto name = action->property("CommandName").toByteArray();
             if(!name.size())
                 continue;
@@ -802,11 +802,11 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
 std::string Command::getPythonTuple(const std::string& name, const std::vector<std::string>& subnames)
 {
     std::stringstream str;
-    std::vector<std::string>::const_iterator last = --subnames.end();
+    auto last = --subnames.end();
     str << "(App.ActiveDocument." << name << ",[";
-    for (std::vector<std::string>::const_iterator it = subnames.begin();it!=subnames.end();++it){
-        str << "\"" << *it << "\"";
-        if (it != last)
+    for (auto subName = subnames.cbegin(); subName !=subnames.cend();++subName){
+        str << "\"" << *subName << "\"";
+        if (subName != last)
             str << ",";
     }
     str << "])";
@@ -836,11 +836,11 @@ bool Command::isActiveObjectValid()
 }
 
 /// Updates the (all or listed) documents (propagate changes)
-void Command::updateAll(std::list<Gui::Document*> cList)
+void Command::updateAll(std::list<Gui::Document*> docs)
 {
-    if (!cList.empty()) {
-        for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();++It)
-            (*It)->onUpdate();
+    if (!docs.empty()) {
+        for (auto &doc : docs)
+            doc->onUpdate();
     }
     else {
         Gui::Application::Instance->onUpdate();
@@ -917,29 +917,29 @@ void Command::applyCommandData(const char* context, Action* action)
         context, getWhatsThis()));
 }
 
-const char* Command::keySequenceToAccel(int sk) const
+const char* Command::keySequenceToAccel(int accSeq) const
 {
     /* Local class to ensure free()'ing the strings allocated below */
     typedef std::map<int, std::string> StringMap;
     static StringMap strings;
-    StringMap::iterator i = strings.find(sk);
+    auto found = strings.find(accSeq);
 
-    if (i != strings.end())
-        return i->second.c_str();
+    if (found != strings.end())
+        return found->second.c_str();
 
-    QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
-    QKeySequence ks(type);
-    QString qs = ks.toString();
-    QByteArray data = qs.toLatin1();
+    auto type = (QKeySequence::StandardKey)accSeq;
+    QKeySequence seq(type);
+    QString qseq = seq.toString();
+    QByteArray data = qseq.toLatin1();
 
-    return (strings[sk] = static_cast<const char*>(data)).c_str();
+    return (strings[accSeq] = static_cast<const char*>(data)).c_str();
 }
 
 void Command::adjustCameraPosition()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        auto *view = static_cast<Gui::View3DInventor *>(doc->getActiveView());
         Gui::View3DInventorViewer* viewer = view->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
@@ -1024,25 +1024,25 @@ int GroupCommand::addCommand(Command *cmd, bool reg) {
 }
 
 Command *GroupCommand::addCommand(const char *name) {
-    auto cmd = Application::Instance->commandManager().getCommandByName(name);
+    auto *cmd = Application::Instance->commandManager().getCommandByName(name);
     if(cmd)
         addCommand(cmd,false);
     return cmd;
 }
 
 Action * GroupCommand::createAction() {
-    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    auto *pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);
     pcAction->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
-    for(auto &v : cmds) {
-        if(!v.first)
+    for(auto &cmd : cmds) {
+        if(!cmd.first)
             pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
         else
-            v.first->addToGroup(pcAction);
+            cmd.first->addToGroup(pcAction);
     }
 
     pcAction->setProperty("defaultAction", QVariant(0));
@@ -1190,18 +1190,18 @@ void MacroCommand::load()
     if (hGrp->HasGroup("Macros")) {
         hGrp = hGrp->GetGroup("Macros");
         std::vector<Base::Reference<ParameterGrp> > macros = hGrp->GetGroups();
-        for (std::vector<Base::Reference<ParameterGrp> >::iterator it = macros.begin(); it!=macros.end(); ++it ) {
-            MacroCommand* macro = new MacroCommand((*it)->GetGroupName());
-            macro->setScriptName  ( (*it)->GetASCII( "Script"     ).c_str() );
-            macro->setMenuText    ( (*it)->GetASCII( "Menu"       ).c_str() );
-            macro->setToolTipText ( (*it)->GetASCII( "Tooltip"    ).c_str() );
-            macro->setWhatsThis   ( (*it)->GetASCII( "WhatsThis"  ).c_str() );
-            macro->setStatusTip   ( (*it)->GetASCII( "Statustip"  ).c_str() );
-            if ((*it)->GetASCII("Pixmap", "nix") != "nix")
-                macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
-            macro->setAccel       ( (*it)->GetASCII( "Accel",nullptr    ).c_str() );
-            macro->systemMacro = (*it)->GetBool("System", false);
-            Application::Instance->commandManager().addCommand( macro );
+        for (const auto &macro : macros) {
+            auto *pMacroCommand = new MacroCommand(macro->GetGroupName());
+            pMacroCommand->setScriptName  (macro->GetASCII( "Script"     ).c_str() );
+            pMacroCommand->setMenuText    (macro->GetASCII( "Menu"       ).c_str() );
+            pMacroCommand->setToolTipText (macro->GetASCII( "Tooltip"    ).c_str() );
+            pMacroCommand->setWhatsThis   (macro->GetASCII( "WhatsThis"  ).c_str() );
+            pMacroCommand->setStatusTip   (macro->GetASCII( "Statustip"  ).c_str() );
+            if (macro->GetASCII("Pixmap", "nix") != "nix")
+                pMacroCommand->setPixmap    (macro->GetASCII( "Pixmap"     ).c_str() );
+            pMacroCommand->setAccel       (macro->GetASCII( "Accel",nullptr    ).c_str() );
+            pMacroCommand->systemMacro = macro->GetBool("System", false);
+            Application::Instance->commandManager().addCommand(pMacroCommand);
         }
     }
 }
@@ -1213,17 +1213,17 @@ void MacroCommand::save()
 
     std::vector<Command*> macros = Application::Instance->commandManager().getGroupCommands("Macros");
     if ( !macros.empty() ) {
-        for (std::vector<Command*>::iterator it = macros.begin(); it!=macros.end(); ++it ) {
-            MacroCommand* macro = (MacroCommand*)(*it);
-            ParameterGrp::handle hMacro = hGrp->GetGroup(macro->getName());
-            hMacro->SetASCII( "Script",    macro->getScriptName () );
-            hMacro->SetASCII( "Menu",      macro->getMenuText   () );
-            hMacro->SetASCII( "Tooltip",   macro->getToolTipText() );
-            hMacro->SetASCII( "WhatsThis", macro->getWhatsThis  () );
-            hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
-            hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
-            hMacro->SetASCII( "Accel",     macro->getAccel      () );
-            hMacro->SetBool( "System",     macro->systemMacro );
+        for (auto &macro : macros) {
+            auto *pMacroCommand = (MacroCommand *)macro;
+            ParameterGrp::handle hMacro = hGrp->GetGroup(pMacroCommand->getName());
+            hMacro->SetASCII( "Script", pMacroCommand->getScriptName () );
+            hMacro->SetASCII( "Menu", pMacroCommand->getMenuText   () );
+            hMacro->SetASCII( "Tooltip", pMacroCommand->getToolTipText() );
+            hMacro->SetASCII( "WhatsThis", pMacroCommand->getWhatsThis  () );
+            hMacro->SetASCII( "Statustip", pMacroCommand->getStatusTip  () );
+            hMacro->SetASCII( "Pixmap", pMacroCommand->getPixmap     () );
+            hMacro->SetASCII( "Accel", pMacroCommand->getAccel      () );
+            hMacro->SetBool( "System", pMacroCommand->systemMacro );
         }
     }
 }
@@ -1358,7 +1358,7 @@ const char* PythonCommand::getHelpUrl() const
 
 Action * PythonCommand::createAction()
 {
-    QAction* qtAction = new QAction(nullptr);
+    auto *qtAction = new QAction(nullptr);
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
@@ -1489,10 +1489,10 @@ PythonGroupCommand::~PythonGroupCommand()
 void PythonGroupCommand::activated(int iMsg)
 {
     try {
-        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-        QList<QAction*> a = pcAction->actions();
-        assert(iMsg < a.size());
-        QAction* act = a[iMsg];
+        auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+        QList<QAction*> actions = pcAction->actions();
+        assert(iMsg < actions.size());
+        QAction* act = actions[iMsg];
 
         setupCheckable(iMsg);
 
@@ -1507,10 +1507,10 @@ void PythonGroupCommand::activated(int iMsg)
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
         else {
             Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-            auto cmd = rcCmdMgr.getCommandByName(act->property("CommandName").toByteArray());
-            if(cmd) {
+            auto *pCommand = rcCmdMgr.getCommandByName(act->property("CommandName").toByteArray());
+            if(pCommand) {
                 bool checked = act->isCheckable() && act->isChecked();
-                cmd->invoke(checked?1:0,TriggerAction);
+                pCommand->invoke(checked?1:0,TriggerAction);
             }
         }
 
@@ -1549,7 +1549,7 @@ bool PythonGroupCommand::isActive()
 
 Action * PythonGroupCommand::createAction()
 {
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    auto *pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(hasDropDownMenu());
     pcAction->setExclusive(isExclusive());
 
@@ -1636,7 +1636,7 @@ void PythonGroupCommand::languageChange()
     applyCommandData(this->getName(), _pcAction);
 
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto *pcAction = qobject_cast<Gui::ActionGroup *>(_pcAction);
     QList<QAction*> a = pcAction->actions();
     for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
         Gui::Command* cmd = rcCmdMgr.getCommandByName((*it)->property("CommandName").toByteArray());
@@ -1764,10 +1764,10 @@ void CommandManager::addCommand(Command* pCom)
 
 void CommandManager::removeCommand(Command* pCom)
 {
-    std::map <std::string,Command*>::iterator It = _sCommands.find(pCom->getName());
-    if (It != _sCommands.end()) {
-        delete It->second;
-        _sCommands.erase(It);
+    auto cmd = _sCommands.find(pCom->getName());
+    if (cmd != _sCommands.end()) {
+        delete cmd->second;
+        _sCommands.erase(cmd);
     }
 }
 
@@ -1799,8 +1799,8 @@ std::string CommandManager::newMacroName() const
 
 void CommandManager::clearCommands()
 {
-    for ( std::map<std::string,Command*>::iterator it = _sCommands.begin(); it != _sCommands.end(); ++it )
-        delete it->second;
+    for (auto & _sCommand : _sCommands)
+        delete _sCommand.second;
     _sCommands.clear();
 }
 
@@ -1826,9 +1826,9 @@ std::vector <Command*> CommandManager::getModuleCommands(const char *sModName) c
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
-        if ( strcmp(It->second->getAppModuleName(),sModName) == 0)
-            vCmds.push_back(It->second);
+    for (const auto & _sCommand : _sCommands) {
+        if ( strcmp(_sCommand.second->getAppModuleName(),sModName) == 0)
+            vCmds.push_back(_sCommand.second);
     }
 
     return vCmds;
@@ -1838,8 +1838,8 @@ std::vector <Command*> CommandManager::getAllCommands() const
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
-        vCmds.push_back(It->second);
+    for (const auto & _sCommand : _sCommands) {
+        vCmds.push_back(_sCommand.second);
     }
 
     return vCmds;
@@ -1849,9 +1849,9 @@ std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) co
 {
     std::vector <Command*> vCmds;
 
-    for ( std::map<std::string, Command*>::const_iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
-        if ( strcmp(It->second->getGroupName(),sGrpName) == 0)
-            vCmds.push_back(It->second);
+    for (const auto & _sCommand : _sCommands) {
+        if ( strcmp(_sCommand.second->getGroupName(),sGrpName) == 0)
+            vCmds.push_back(_sCommand.second);
     }
 
     return vCmds;
@@ -1859,8 +1859,8 @@ std::vector <Command*> CommandManager::getGroupCommands(const char *sGrpName) co
 
 Command* CommandManager::getCommandByName(const char* sName) const
 {
-    std::map<std::string,Command*>::const_iterator it = _sCommands.find( sName );
-    return ( it != _sCommands.end() ) ? it->second : 0;
+    auto cmd = _sCommands.find( sName );
+    return (cmd != _sCommands.end() ) ? cmd->second : 0;
 }
 
 void CommandManager::runCommandByName (const char* sName) const
@@ -1873,8 +1873,8 @@ void CommandManager::runCommandByName (const char* sName) const
 
 void CommandManager::testActive()
 {
-    for ( std::map<std::string, Command*>::iterator It= _sCommands.begin();It!=_sCommands.end();++It) {
-        It->second->testActive();
+    for (const auto & _sCommand : _sCommands) {
+        _sCommand.second->testActive();
     }
 }
 
@@ -1883,12 +1883,12 @@ void CommandManager::addCommandMode(const char* sContext, const char* sName)
     _sCommandModes[sContext].push_back(sName);
 }
 
-void CommandManager::updateCommands(const char* sContext, int mode)
+void CommandManager::updateCommands(const char *sContext, int mode)
 {
-    std::map<std::string, std::list<std::string> >::iterator it = _sCommandModes.find(sContext);
-    if (it != _sCommandModes.end()) {
-        for (std::list<std::string>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            Command* cmd = getCommandByName(jt->c_str());
+    auto commandMode = _sCommandModes.find(sContext);
+    if (commandMode != _sCommandModes.end()) {
+        for (auto &commandName : commandMode->second) {
+            Command *cmd = getCommandByName(commandName.c_str());
             if (cmd) {
                 cmd->updateAction(mode);
             }

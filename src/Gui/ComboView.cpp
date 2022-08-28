@@ -48,7 +48,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
 {
     setWindowTitle(tr("Combo View"));
 
-    QGridLayout* pLayout = new QGridLayout(this);
+    auto *pLayout = new QGridLayout(this);
     pLayout->setSpacing( 0 );
     pLayout->setMargin ( 0 );
 
@@ -61,7 +61,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
     if (showModel) {
         // splitter between tree and property view
-        QSplitter *splitter = new QSplitter();
+        auto *splitter = new QSplitter();
         splitter->setOrientation(Qt::Vertical);
 
         tree =  new TreePanel("ComboView", this);

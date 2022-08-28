@@ -88,24 +88,25 @@ void StdCmdRandomColor::activated(int iMsg)
 
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        float fMax = (float)RAND_MAX;
-        float fRed = (float)rand()/fMax;
-        float fGrn = (float)rand()/fMax;
-        float fBlu = (float)rand()/fMax;
+    for (auto &selObj : sel) {
+        auto fMax = (float)RAND_MAX;
+        auto fRed = (float)rand()/fMax;
+        auto fGrn = (float)rand()/fMax;
+        auto fBlu = (float)rand()/fMax;
 
-        ViewProvider* view = Application::Instance->getDocument(it->pDoc)->getViewProvider(it->pObject);
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        ViewProvider* view = Application::Instance->getDocument(selObj.pDoc)->getViewProvider(selObj.pObject);
+        auto *vpLink = dynamic_cast<ViewProviderLink*>(view);
         if(vpLink) {
-            if(!vpLink->OverrideMaterial.getValue())
-                cmdGuiObjectArgs(it->pObject, "OverrideMaterial = True");
-            cmdGuiObjectArgs(it->pObject, "ShapeMaterial.DiffuseColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
+            if (!vpLink->OverrideMaterial.getValue()) {
+                cmdGuiObjectArgs(selObj.pObject, "OverrideMaterial = True");
+            }
+            cmdGuiObjectArgs(selObj.pObject, "ShapeMaterial.DiffuseColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
             continue;
         }
-        auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
+        auto *color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
         if (color) {
             // get the view provider of the selected object and set the shape color
-            cmdGuiObjectArgs(it->pObject, "ShapeColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
+            cmdGuiObjectArgs(selObj.pObject, "ShapeColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
         }
     }
 }
@@ -165,14 +166,14 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             cmd = QString::fromLatin1("obj = lnk.getLinkedObject()");
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-            const App::Link* link = static_cast<const App::Link*>(obj);
+            const auto *link = static_cast<const App::Link *>(obj);
             obj = link->getLinkedObject();
         } else {
             cmd = QString::fromLatin1("obj = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         }
         if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            const App::GeoFeature* geoObj = static_cast<const App::GeoFeature*>(obj);
+            const auto *geoObj = static_cast<const App::GeoFeature *>(obj);
             const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
             if (geo){
                 cmd = QString::fromLatin1("shp = obj.") + QLatin1String(geo->getName()); //"Shape", "Mesh", "Points", etc.
@@ -185,8 +186,8 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
                     if (subnames.size() > 1) {
                         std::ostringstream strm;
                         strm << "subs = [";
-                        for (std::vector<std::string>::iterator it = subnames.begin(); it != subnames.end(); ++it) {
-                            strm << "obj.getSubObject(\"" << *it << "\"),";
+                        for (const auto & subname : subnames) {
+                            strm << "obj.getSubObject(\"" << subname << "\"),";
                         }
                         strm << "]";
                         Gui::Command::runCommand(Gui::Command::Gui, strm.str().c_str());
@@ -196,7 +197,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         }
         //show the python console if it's not already visible, and set the keyboard focus to it
         QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-        PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
+        auto *pcPython = qobject_cast<PythonConsole*>(pc);
         if (pcPython) {
             DockWindowManager::instance()->activate(pcPython);
             pcPython->setFocus();

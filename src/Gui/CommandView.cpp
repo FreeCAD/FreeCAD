@@ -106,7 +106,7 @@ StdOrthographicCamera::StdOrthographicCamera()
 void StdOrthographicCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
-        View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
         SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
         if (!cam || cam->getTypeId() != SoOrthographicCamera::getClassTypeId())
 
@@ -116,7 +116,7 @@ void StdOrthographicCamera::activated(int iMsg)
 
 bool StdOrthographicCamera::isActive()
 {
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
     if (view) {
         // update the action group if needed
         bool check = _pcAction->isChecked();
@@ -156,7 +156,7 @@ StdPerspectiveCamera::StdPerspectiveCamera()
 void StdPerspectiveCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
-        View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
         SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
         if (!cam || cam->getTypeId() != SoPerspectiveCamera::getClassTypeId())
 
@@ -166,7 +166,7 @@ void StdPerspectiveCamera::activated(int iMsg)
 
 bool StdPerspectiveCamera::isActive()
 {
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
     if (view) {
         // update the action group if needed
         bool check = _pcAction->isChecked();
@@ -215,7 +215,7 @@ void StdCmdViewSaveCamera::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    auto *view = qobject_cast<Gui::View3DInventor *>(Gui::getMainWindow()->activeWindow());
     if (view) {
         view->getViewer()->saveHomePosition();
     }
@@ -241,7 +241,7 @@ void StdCmdViewRestoreCamera::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    auto *view = qobject_cast<Gui::View3DInventor *>(Gui::getMainWindow()->activeWindow());
     if (view) {
         view->getViewer()->resetToHomePosition();
     }
@@ -299,7 +299,7 @@ StdCmdFreezeViews::StdCmdFreezeViews()
 
 Action * StdCmdFreezeViews::createAction()
 {
-    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    auto *pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
@@ -327,7 +327,7 @@ Action * StdCmdFreezeViews::createAction()
 
 void StdCmdFreezeViews::activated(int iMsg)
 {
-    ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+    auto *pcAction = qobject_cast<ActionGroup *>(_pcAction);
 
     if (iMsg == 0) {
         onSaveViews();
@@ -382,7 +382,7 @@ void StdCmdFreezeViews::onSaveViews()
     if (file.open(QFile::WriteOnly))
     {
         QTextStream str(&file);
-        ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+        auto *pcAction = qobject_cast<ActionGroup *>(_pcAction);
         QList<QAction*> acts = pcAction->actions();
         str << "<?xml version='1.0' encoding='utf-8'?>\n"
             << "<FrozenViews SchemaVersion=\"1\">\n";
@@ -474,7 +474,7 @@ void StdCmdFreezeViews::onRestoreViews()
         // use this rather than the attribute 'Count' because it could be
         // changed from outside
         int ct = cameras.count();
-        ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+        auto *pcAction = qobject_cast<ActionGroup *>(_pcAction);
         QList<QAction*> acts = pcAction->actions();
 
         int numRestoredViews = std::min<int>(ct, acts.size()-offset);
@@ -501,7 +501,7 @@ void StdCmdFreezeViews::onRestoreViews()
 
 bool StdCmdFreezeViews::isActive()
 {
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
     if (view) {
         saveView->setEnabled(savedViews > 0);
         freezeView->setEnabled(savedViews < maxViews);
@@ -522,7 +522,7 @@ void StdCmdFreezeViews::languageChange()
 
     if (!_pcAction)
         return;
-    ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+    auto *pcAction = qobject_cast<ActionGroup *>(_pcAction);
     QList<QAction*> acts = pcAction->actions();
     acts[0]->setText(QObject::tr("Save views..."));
     acts[1]->setText(QObject::tr("Load views..."));
@@ -558,7 +558,7 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
 
 Action * StdCmdToggleClipPlane::createAction()
 {
-    Action *pcAction = (Action*)Command::createAction();
+    auto *pcAction = (Action*)Command::createAction();
     return pcAction;
 }
 
@@ -567,7 +567,7 @@ void StdCmdToggleClipPlane::activated(int iMsg)
     Q_UNUSED(iMsg);
     static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
     if (!clipping) {
-        View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
         if (view) {
             clipping = Gui::Dialog::Clipping::makeDockWidget(view);
         }
@@ -576,7 +576,7 @@ void StdCmdToggleClipPlane::activated(int iMsg)
 
 bool StdCmdToggleClipPlane::isActive()
 {
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto *view = qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
     return view ? true : false;
 }
 
@@ -613,7 +613,7 @@ StdCmdDrawStyle::StdCmdDrawStyle()
 
 Gui::Action * StdCmdDrawStyle::createAction()
 {
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    auto *pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
     pcAction->setIsMode(true);
     applyCommandData(this->className(), pcAction);
@@ -675,7 +675,7 @@ void StdCmdDrawStyle::languageChange()
 
     if (!_pcAction)
         return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto *pcAction = qobject_cast<Gui::ActionGroup *>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
     a[0]->setText(QCoreApplication::translate(
@@ -716,14 +716,14 @@ void StdCmdDrawStyle::languageChange()
 
 void StdCmdDrawStyle::updateIcon(const MDIView *view)
 {
-    const Gui::View3DInventor *view3d = dynamic_cast<const Gui::View3DInventor *>(view);
+    const auto *view3d = dynamic_cast<const Gui::View3DInventor *>(view);
     if (!view3d)
         return;
     Gui::View3DInventorViewer *viewer = view3d->getViewer();
     if (!viewer)
         return;
     std::string mode(viewer->getOverrideMode());
-    Gui::ActionGroup *actionGroup = dynamic_cast<Gui::ActionGroup *>(_pcAction);
+    auto *actionGroup = dynamic_cast<Gui::ActionGroup *>(_pcAction);
     if (!actionGroup)
         return;
 
@@ -768,7 +768,7 @@ void StdCmdDrawStyle::activated(int iMsg)
     bool oneChangedSignal(false);
     for (viewIt = views.begin(); viewIt != views.end(); ++viewIt)
     {
-        View3DInventor* view = qobject_cast<View3DInventor*>(*viewIt);
+        auto *view = qobject_cast<View3DInventor *>(*viewIt);
         if (view)
         {
             View3DInventorViewer* viewer;
@@ -861,22 +861,31 @@ void StdCmdToggleSelectability::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // go through all documents
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
-        Document *pcDoc = Application::Instance->getDocument(*it);
-        std::vector<App::DocumentObject*> sel = Selection().getObjectsOfType
-            (App::DocumentObject::getClassTypeId(), (*it)->getName());
+    const std::vector<App::Document *> docs =
+        App::GetApplication().getDocuments();
+    for (const auto &doc : docs) {
+        Document *pcDoc = Application::Instance->getDocument(doc);
+        std::vector<App::DocumentObject *> objs = Selection().getObjectsOfType(
+            App::DocumentObject::getClassTypeId(), doc->getName());
 
-
-        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
-            ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
-            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
-                if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
-                    doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
-                                 , (*it)->getName(), (*ft)->getNameInDocument());
-                else
-                    doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
-                                 , (*it)->getName(), (*ft)->getNameInDocument());
+        for (const auto &obj : objs) {
+            ViewProvider *pViewProvider =
+                pcDoc->getViewProviderByName(obj->getNameInDocument());
+            if (pViewProvider
+                && pViewProvider->isDerivedFrom(
+                    ViewProviderGeometryObject::getClassTypeId())) {
+                if (static_cast<ViewProviderGeometryObject *>(pViewProvider)
+                        ->Selectable.getValue()) {
+                    doCommand(Gui,
+                              "Gui.getDocument(\"%s\").getObject(\"%s\")."
+                              "Selectable=False",
+                              doc->getName(), obj->getNameInDocument());
+                } else {
+                    doCommand(Gui,
+                              "Gui.getDocument(\"%s\").getObject(\"%s\")."
+                              "Selectable=True",
+                              doc->getName(), obj->getNameInDocument());
+}
             }
         }
     }
@@ -966,18 +975,18 @@ void StdCmdSelectVisibleObjects::activated(int iMsg)
     // go through active document
     Gui::Document* doc = Application::Instance->activeDocument();
     App::Document* app = doc->getDocument();
-    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType
+    const std::vector<App::DocumentObject*> objs = app->getObjectsOfType
         (App::DocumentObject::getClassTypeId());
 
-    std::vector<App::DocumentObject*> visible;
-    visible.reserve(obj.size());
-    for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
-        if (doc->isShow((*it)->getNameInDocument()))
-            visible.push_back(*it);
+    std::vector<App::DocumentObject*> visibleObjs {};
+    visibleObjs.reserve(objs.size());
+    for (const auto &obj : objs) {
+        if (doc->isShow(obj->getNameInDocument()))
+            visibleObjs.push_back(obj);
     }
 
     SelectionSingleton& rSel = Selection();
-    rSel.setSelection(app->getName(), visible);
+    rSel.setSelection(app->getName(), visibleObjs);
 }
 
 bool StdCmdSelectVisibleObjects::isActive()
@@ -1006,18 +1015,24 @@ void StdCmdToggleObjects::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // go through active document
-    Gui::Document* doc = Application::Instance->activeDocument();
-    App::Document* app = doc->getDocument();
-    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType
-        (App::DocumentObject::getClassTypeId());
+    Gui::Document *doc = Application::Instance->activeDocument();
+    App::Document *app = doc->getDocument();
+    const std::vector<App::DocumentObject *> objs =
+        app->getObjectsOfType(App::DocumentObject::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
-        if (doc->isShow((*it)->getNameInDocument()))
-            doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
-                         , app->getName(), (*it)->getNameInDocument());
-        else
-            doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
-                         , app->getName(), (*it)->getNameInDocument());
+    for (const auto &obj : objs) {
+        if (doc->isShow(obj->getNameInDocument())) {
+            doCommand(
+                Gui,
+                "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
+                app->getName(), obj->getNameInDocument());
+        }
+        else {
+            doCommand(
+                Gui,
+                "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True",
+                app->getName(), obj->getNameInDocument());
+        }
     }
 }
 
@@ -1047,14 +1062,15 @@ void StdCmdShowObjects::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // go through active document
-    Gui::Document* doc = Application::Instance->activeDocument();
-    App::Document* app = doc->getDocument();
-    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType
-        (App::DocumentObject::getClassTypeId());
+    Gui::Document *doc = Application::Instance->activeDocument();
+    App::Document *app = doc->getDocument();
+    const std::vector<App::DocumentObject *> objs =
+        app->getObjectsOfType(App::DocumentObject::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
-        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
-                     , app->getName(), (*it)->getNameInDocument());
+    for (const auto &obj : objs) {
+        doCommand(Gui,
+                  "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True",
+                  app->getName(), obj->getNameInDocument());
     }
 }
 
@@ -1084,14 +1100,15 @@ void StdCmdHideObjects::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // go through active document
-    Gui::Document* doc = Application::Instance->activeDocument();
-    App::Document* app = doc->getDocument();
-    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType
-        (App::DocumentObject::getClassTypeId());
+    Gui::Document *doc = Application::Instance->activeDocument();
+    App::Document *app = doc->getDocument();
+    const std::vector<App::DocumentObject *> obj =
+        app->getObjectsOfType(App::DocumentObject::getClassTypeId());
 
-    for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
-        doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
-                     , app->getName(), (*it)->getNameInDocument());
+    for (const auto &it : obj) {
+        doCommand(Gui,
+                  "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
+                  app->getName(), it->getNameInDocument());
     }
 }
 
@@ -1644,45 +1661,40 @@ Action * StdViewDockUndockFullscreen::createAction()
 void StdViewDockUndockFullscreen::activated(int iMsg)
 {
     // Check if main window is in fullscreen mode.
-    if (getMainWindow()->isFullScreen())
-        getMainWindow()->showNormal();
+    if (getMainWindow()->isFullScreen()) getMainWindow()->showNormal();
 
-    MDIView* view = getMainWindow()->activeWindow();
-    if (!view) // no active view
+    MDIView *view = getMainWindow()->activeWindow();
+    if (!view)// no active view
         return;
 
     // nothing to do when the view is docked and 'Docked' is pressed
-    if (iMsg == 0 && view->currentViewMode() == MDIView::Child)
-        return;
+    if (iMsg == 0 && view->currentViewMode() == MDIView::Child) return;
     // Change the view mode after an mdi view was already visible doesn't
     // work well with Qt5 any more because of some strange OpenGL behaviour.
     // A workaround is to clone the mdi view, set its view mode and delete
     // the original view.
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    Gui::Document *doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::MDIView* clone = doc->cloneView(view);
-        if (!clone)
-            return;
+        Gui::MDIView *clone = doc->cloneView(view);
+        if (!clone) { return; }
 
-        const char* ppReturn = nullptr;
+        const char *ppReturn = nullptr;
         if (view->onMsg("GetCamera", &ppReturn)) {
             std::string sMsg = "SetCamera ";
             sMsg += ppReturn;
 
-            const char** pReturnIgnore=nullptr;
+            const char **pReturnIgnore = nullptr;
             clone->onMsg(sMsg.c_str(), pReturnIgnore);
         }
 
-        if (iMsg==0) {
-            getMainWindow()->addWindow(clone);
-        }
-        else if (iMsg==1) {
+        if (iMsg == 0) { getMainWindow()->addWindow(clone); }
+        else if (iMsg == 1) {
             if (view->currentViewMode() == MDIView::TopLevel)
                 getMainWindow()->addWindow(clone);
             else
                 clone->setCurrentViewMode(MDIView::TopLevel);
         }
-        else if (iMsg==2) {
+        else if (iMsg == 2) {
             if (view->currentViewMode() == MDIView::FullScreen)
                 getMainWindow()->addWindow(clone);
             else
@@ -1764,148 +1776,169 @@ StdViewScreenShot::StdViewScreenShot()
 void StdViewScreenShot::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        QStringList formats;
-        SbViewportRegion vp(view->getViewer()->getSoRenderManager()->getViewportRegion());
-        {
-            SoQtOffscreenRenderer rd(vp);
-            formats = rd.getWriteImageFiletypeInfo();
+    auto *view =
+        qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
+    if (!view) {
+        return;
+    }
+    QStringList coin3dFormats;
+    SbViewportRegion viewportRegion(
+        view->getViewer()->getSoRenderManager()->getViewportRegion());
+    {
+        SoQtOffscreenRenderer renderer(viewportRegion);
+        coin3dFormats = renderer.getWriteImageFiletypeInfo();
+    }
+
+    Base::Reference<ParameterGrp> hExt = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("General");
+    QString ext =
+        QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
+    int backtype =
+        static_cast<int>(hExt->GetInt("OffscreenImageBackground",0));
+
+    Base::Reference<ParameterGrp> methodGrp =
+        App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View");
+    QByteArray method = methodGrp->GetASCII("SavePicture").c_str();
+
+    QStringList filter;
+    QString selFilter;
+
+    for (const auto &coin3dFormat : coin3dFormats) {
+        filter << QString::fromLatin1("%1 %2 (*.%3)")
+                      .arg(coin3dFormat.toUpper(), QObject::tr("files"),
+                           coin3dFormat.toLower());
+        if (ext == coin3dFormat) { selFilter = filter.last(); }
+    }
+
+    FileOptionsDialog dialog(getMainWindow(), Qt::WindowFlags());
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setWindowTitle(QObject::tr("Save picture"));
+    dialog.setNameFilters(filter);
+    if (!selFilter.isEmpty()) { dialog.selectNameFilter(selFilter); }
+
+    // create the image options widget
+    auto *opt = new DlgSettingsImageImp(&dialog);
+    SbVec2s windowSize = viewportRegion.getWindowSize();
+    opt->setImageSize((int)windowSize[0], (int)windowSize[1]);
+    opt->setBackgroundType(backtype);
+    opt->setMethod(method);
+
+    dialog.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
+    dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
+    opt->onSelectedFilter(dialog.selectedNameFilter());
+    QObject::connect(&dialog, SIGNAL(filterSelected(const QString &)), opt,
+                     SLOT(onSelectedFilter(const QString &)));
+
+    if (dialog.exec() != QDialog::Accepted) { return; }
+    selFilter = dialog.selectedNameFilter();
+    QString firstName = dialog.selectedFiles().constFirst();
+    // We must convert '\' path separators to '/' before otherwise
+    // Python would interpret them as escape sequences.
+    firstName.replace(QLatin1Char('\\'), QLatin1Char('/'));
+
+    Gui::WaitCursor waitCursor;
+
+    // get the defined values
+    int width = opt->imageWidth();
+    int height = opt->imageHeight();
+
+    // search for the matching format
+    QString format = coin3dFormats.front();// take the first as default
+    for (const auto &coin3DFormat : coin3dFormats) {
+        if (selFilter.startsWith(coin3DFormat.toUpper())) {
+            format = coin3DFormat;
+            break;
         }
+    }
 
-        Base::Reference<ParameterGrp> hExt = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                                   ->GetGroup("Preferences")->GetGroup("General");
-        QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
-        int backtype = hExt->GetInt("OffscreenImageBackground", 0);
+    hExt->SetASCII("OffscreenImageFormat", (const char *)format.toLatin1());
 
-        Base::Reference<ParameterGrp> methodGrp = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/View");
-        QByteArray method = methodGrp->GetASCII("SavePicture").c_str();
+    method = opt->method();
+    methodGrp->SetASCII("SavePicture", method.constData());
 
-        QStringList filter;
-        QString selFilter;
-        for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QString::fromLatin1("%1 %2 (*.%3)").arg((*it).toUpper(),
-                QObject::tr("files"), (*it).toLower());
-            if (ext == *it)
-                selFilter = filter.last();
-        }
+    // which background chosen
+    const char *background{};
+    switch (opt->backgroundType()) {
+        case 0: background = "Current"; break;
+        case 1: background = "White"; break;
+        case 2: background = "Black"; break;
+        case 3: background = "Transparent"; break;
+        default: background = "Current"; break;
+    }
+    hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
 
-        FileOptionsDialog fd(getMainWindow(), Qt::WindowFlags());
-        fd.setFileMode(QFileDialog::AnyFile);
-        fd.setAcceptMode(QFileDialog::AcceptSave);
-        fd.setWindowTitle(QObject::tr("Save picture"));
-        fd.setNameFilters(filter);
-        if (!selFilter.isEmpty())
-            fd.selectNameFilter(selFilter);
-
-        // create the image options widget
-        DlgSettingsImageImp* opt = new DlgSettingsImageImp(&fd);
-        SbVec2s sz = vp.getWindowSize();
-        opt->setImageSize((int)sz[0], (int)sz[1]);
-        opt->setBackgroundType(backtype);
-        opt->setMethod(method);
-
-        fd.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
-        fd.setOption(QFileDialog::DontConfirmOverwrite, false);
-        opt->onSelectedFilter(fd.selectedNameFilter());
-        QObject::connect(&fd, SIGNAL(filterSelected(const QString&)),
-                         opt, SLOT(onSelectedFilter(const QString&)));
-
-        if (fd.exec() == QDialog::Accepted) {
-            selFilter = fd.selectedNameFilter();
-            QString fn = fd.selectedFiles().constFirst();
-            // We must convert '\' path separators to '/' before otherwise
-            // Python would interpret them as escape sequences.
-            fn.replace(QLatin1Char('\\'), QLatin1Char('/'));
-
-            Gui::WaitCursor wc;
-
-            // get the defined values
-            int w = opt->imageWidth();
-            int h = opt->imageHeight();
-
-            // search for the matching format
-            QString format = formats.front(); // take the first as default
-            for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-                if (selFilter.startsWith((*it).toUpper())) {
-                    format = *it;
-                    break;
-                }
-            }
-
-            hExt->SetASCII("OffscreenImageFormat", (const char*)format.toLatin1());
-
-            method = opt->method();
-            methodGrp->SetASCII("SavePicture", method.constData());
-
-            // which background chosen
-            const char* background;
-            switch (opt->backgroundType()) {
-            case 0:  background = "Current"; break;
-            case 1:  background = "White"; break;
-            case 2:  background = "Black"; break;
-            case 3:  background = "Transparent"; break;
-            default: background = "Current"; break;
-            }
-            hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
-
-            QString comment = opt->comment();
-            if (!comment.isEmpty()) {
-                // Replace newline escape sequence through '\\n' string to build one big string,
-                // otherwise Python would interpret it as an invalid command.
-                // Python does the decoding for us.
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
+    QString comment = opt->comment();
+    if (!comment.isEmpty()) {
+        // Replace newline escape sequence through '\\n' string to build one big string,
+        // otherwise Python would interpret it as an invalid command.
+        // Python does the decoding for us.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+        QStringList lines =
+            comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
 #else
-                QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts);
+        QStringList lines =
+            comment.split(QLatin1String("\n"), QString::KeepEmptyParts);
 #endif
-                comment = lines.join(QLatin1String("\\n"));
-                doCommand(Gui, "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
-                          fn.toUtf8().constData(), w, h, background, comment.toUtf8().constData());
-            }
-            else {
-                doCommand(Gui, "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
-                          fn.toUtf8().constData(), w, h, background);
-            }
+        comment = lines.join(QLatin1String("\\n"));
+        doCommand(Gui,
+                  "Gui.activeDocument().activeView().saveImage('%s',%d,"
+                  "%d,'%s','%s')",
+                  firstName.toUtf8().constData(), width, height, background,
+                  comment.toUtf8().constData());
+    }
+    else {
+        doCommand(Gui,
+                  "Gui.activeDocument().activeView().saveImage('%s',%d,"
+                  "%d,'%s')",
+                  firstName.toUtf8().constData(), width, height, background);
+    }
 
-            // When adding a watermark check if the image could be created
-            if (opt->addWatermark()) {
-                QFileInfo fi(fn);
-                QPixmap pixmap;
-                if (fi.exists() && pixmap.load(fn)) {
-                    QString name = qApp->applicationName();
-                    std::map<std::string, std::string>& config = App::Application::Config();
-                    QString url = QString::fromLatin1(config["MaintainerUrl"].c_str());
-                    url = QUrl(url).host();
+    // When adding a watermark check if the image could be created
+    if (opt->addWatermark()) {
+        QFileInfo qFileInfo(firstName);
+        QPixmap pixmap;
+        if (qFileInfo.exists() && pixmap.load(firstName)) {
+            QString name = qApp->applicationName();
+            std::map<std::string, std::string> &config =
+                App::Application::Config();
+            QString url = QString::fromLatin1(config["MaintainerUrl"].c_str());
+            url = QUrl(url).host();
 
-                    QPixmap appicon = Gui::BitmapFactory().pixmap(config["AppIcon"].c_str());
+            QPixmap appicon =
+                Gui::BitmapFactory().pixmap(config["AppIcon"].c_str());
 
-                    QPainter painter;
-                    painter.begin(&pixmap);
+            QPainter painter;
+            painter.begin(&pixmap);
 
-                    painter.drawPixmap(8, h - 15 - appicon.height(), appicon);
+            painter.drawPixmap(8, height - 15 - appicon.height(), appicon);
 
-                    QFont font = painter.font();
-                    font.setPointSize(20);
+            QFont font = painter.font();
+            font.setPointSize(20);
 
-                    QFontMetrics fm(font);
-                    int n = QtTools::horizontalAdvance(fm, name);
-                    int h = pixmap.height();
+            QFontMetrics fontMetrics{font};
+            int horizontalAdvance =
+                QtTools::horizontalAdvance(fontMetrics, name);
+            int pheight = pixmap.height();
 
-                    painter.setFont(font);
-                    painter.drawText(8 + appicon.width(), h - 24, name);
+            painter.setFont(font);
+            painter.drawText(8 + appicon.width(), pheight - 24, name);
 
-                    font.setPointSize(12);
-                    QFontMetrics fm2(font);
-                    int u = QtTools::horizontalAdvance(fm2, url);
-                    painter.setFont(font);
-                    painter.drawText(8 + appicon.width() + n - u, h - 6, url);
+            font.setPointSize(12);
+            QFontMetrics fontMetrics2(font);
+            int horizontalAdvance2 =
+                QtTools::horizontalAdvance(fontMetrics2, url);
+            painter.setFont(font);
+            painter.drawText(8 + appicon.width() + horizontalAdvance
+                                 - horizontalAdvance2,
+                             pheight - 6, url);
 
-                    painter.end();
-                    pixmap.save(fn);
-                }
-            }
+            painter.end();
+            pixmap.save(firstName);
         }
     }
 }
@@ -2014,30 +2047,31 @@ StdCmdAxisCross::StdCmdAxisCross()
 void StdCmdAxisCross::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    auto *view =
+        qobject_cast<View3DInventor *>(Gui::getMainWindow()->activeWindow());
     if (view) {
-        if (!view->getViewer()->hasAxisCross())
-            doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");
-        else
-            doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(False)");
+        if (!view->getViewer()->hasAxisCross()) {
+            doCommand(Command::Gui,
+                      "Gui.ActiveDocument.ActiveView.setAxisCross(True)");
+        }
+        else {
+            doCommand(Command::Gui,
+                      "Gui.ActiveDocument.ActiveView.setAxisCross(False)");
+        }
     }
 }
 
 bool StdCmdAxisCross::isActive()
 {
-    Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    auto *view =
+        qobject_cast<View3DInventor *>(Gui::getMainWindow()->activeWindow());
     if (view && view->getViewer()->hasAxisCross()) {
-        if (!_pcAction->isChecked())
-            _pcAction->setChecked(true);
+        if (!_pcAction->isChecked()) { _pcAction->setChecked(true); }
     }
     else {
-        if (_pcAction->isChecked())
-            _pcAction->setChecked(false);
+        if (_pcAction->isChecked()) { _pcAction->setChecked(false); }
     }
-    if (view)
-        return true;
-    return false;
-
+    return view != nullptr;
 }
 
 //===========================================================================
@@ -2338,9 +2372,10 @@ StdViewZoomIn::StdViewZoomIn()
 void StdViewZoomIn::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if ( view ) {
-        View3DInventorViewer* viewer = view->getViewer();
+    auto *view =
+        qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
+    if (view) {
+        View3DInventorViewer *viewer = view->getViewer();
         viewer->navigationStyle()->zoomIn();
     }
 }
@@ -2371,57 +2406,64 @@ StdViewZoomOut::StdViewZoomOut()
 void StdViewZoomOut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto *view =
+        qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
     if (view) {
-        View3DInventorViewer* viewer = view->getViewer();
+        View3DInventorViewer *viewer = view->getViewer();
         viewer->navigationStyle()->zoomOut();
     }
 }
 
 bool StdViewZoomOut::isActive()
 {
-    return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
+    return (qobject_cast<View3DInventor *>(getMainWindow()->activeWindow()));
 }
 
-namespace {
-class SelectionCallbackHandler {
+namespace
+{
+class SelectionCallbackHandler
+{
 
 private:
     static std::unique_ptr<SelectionCallbackHandler> currentSelectionHandler;
     QCursor prevSelectionCursor;
-    typedef void (*FnCb)(void * userdata, SoEventCallback * node);
-    FnCb fnCb;
-    void* userData;
-    bool prevSelectionEn;
+    using FnCb = void (*)(void *, SoEventCallback *);
+    FnCb fnCb{};
+    void *userData{};
+    bool prevSelectionEn{};
 
 public:
-    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection. 
+    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection.
     // Takes the viewer, a selection mode, a cursor, a function pointer to be called on success and a void pointer for user data to be passed to the given function.
-    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.    
+    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.
     // If there is still a selection handler active, this call will generate a message and returns.
-    static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode,
-                       const QCursor& cursor, FnCb doFunction= nullptr, void* ud=nullptr)
+    static void Create(View3DInventorViewer *viewer,
+                       View3DInventorViewer::SelectionMode selectionMode,
+                       const QCursor &cursor, FnCb doFunction = nullptr,
+                       void *userData = nullptr)
     {
-        if (currentSelectionHandler)
-        {
-            Base::Console().Message("SelectionCallbackHandler: A selection handler already active.");
+        if (currentSelectionHandler) {
+            Base::Console().Message("SelectionCallbackHandler: A selection "
+                                    "handler already active.");
             return;
         }
 
-        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
-        if (viewer)
-        {
-            currentSelectionHandler->userData = ud;
-            currentSelectionHandler->fnCb = doFunction;
-            currentSelectionHandler->prevSelectionCursor = viewer->cursor();
-            viewer->setEditingCursor(cursor);
-            viewer->addEventCallback(SoEvent::getClassTypeId(),
-                SelectionCallbackHandler::selectionCallback, currentSelectionHandler.get());
-            currentSelectionHandler->prevSelectionEn = viewer->isSelectionEnabled();
-            viewer->setSelectionEnabled(false);
-            viewer->startSelection(selectionMode);
-        }
+        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(
+            new SelectionCallbackHandler());
+        if (!viewer) { return; }
+        currentSelectionHandler->userData = userData;
+        currentSelectionHandler->fnCb = doFunction;
+        currentSelectionHandler->prevSelectionCursor = viewer->cursor();
+        viewer->setEditingCursor(cursor);
+        viewer->addEventCallback(SoEvent::getClassTypeId(),
+                                 SelectionCallbackHandler::selectionCallback,
+                                 currentSelectionHandler.get());
+        currentSelectionHandler->prevSelectionEn =
+            (viewer->isSelectionEnabled() != 0);
+        viewer->setSelectionEnabled(0);
+        viewer->startSelection(selectionMode);
     }
+
 
     void* getUserData() const {
         return userData;
@@ -2431,15 +2473,15 @@ public:
     // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
     static void selectionCallback(void * ud, SoEventCallback * n)
     {
-        SelectionCallbackHandler* selectionHandler = static_cast<SelectionCallbackHandler*>(ud);
-        Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+        auto* selectionHandler = static_cast<SelectionCallbackHandler*>(ud);
+        auto* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
         const SoEvent* ev = n->getEvent();
         if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
 
             n->setHandled();
             n->getAction()->setHandled();
 
-            const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
+            const auto * ke = static_cast<const SoKeyboardEvent*>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
 
@@ -2450,7 +2492,7 @@ public:
             }
         }
         else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-            const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(ev);
+            const auto *mbe = static_cast<const SoMouseButtonEvent *>(ev);
 
             // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
             n->getAction()->setHandled();
@@ -2541,12 +2583,14 @@ StdViewBoxZoom::StdViewBoxZoom()
 void StdViewBoxZoom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if ( view ) {
-        View3DInventorViewer* viewer = view->getViewer();
-        if (!viewer->isSelecting()) {
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, QCursor(QPixmap(cursor_box_zoom), 7, 7));
-		}
+    auto *view =
+        qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
+    if (!view) { return; }
+    View3DInventorViewer *viewer = view->getViewer();
+    if (!viewer->isSelecting()) {
+        SelectionCallbackHandler::Create(
+            viewer, View3DInventorViewer::BoxZoom,
+            QCursor(QPixmap(cursor_box_zoom), 7, 7));
     }
 }
 
@@ -2733,20 +2777,20 @@ static std::vector<std::string> getBoxSelection(
     return ret;
 }
 
-static void doSelect(void* ud, SoEventCallback * cb)
+static void doSelect(void *ud, SoEventCallback *cb)
 {
-    bool selectElement = ud ? true : false;
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    bool selectElement = ud != nullptr;
+    auto *viewer = static_cast<Gui::View3DInventorViewer *>(cb->getUserData());
 
-    SoNode* root = viewer->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+    SoNode *root = viewer->getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection *>(root)->selectionRole.setValue(
+        true);
 
     SelectionMode selectionMode = CENTER;
 
     std::vector<SbVec2f> picked = viewer->getGLPolygon();
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
+    SoCamera *cam = viewer->getSoRenderManager()->getCamera();
+    Gui::ViewVolumeProjection proj(cam->getViewVolume());
     Base::Polygon2d polygon;
     if (picked.size() == 2) {
         SbVec2f pt1 = picked[0];
@@ -2758,34 +2802,38 @@ static void doSelect(void* ud, SoEventCallback * cb)
 
         // when selecting from right to left then select by intersection
         // otherwise if the center is inside the rectangle
-        if (picked[0][0] > picked[1][0])
-            selectionMode = INTERSECT;
+        if (picked[0][0] > picked[1][0]) { selectionMode = INTERSECT; }
     }
     else {
-        for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-            polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
+        for (const auto &pick : picked) {
+            polygon.Add(Base::Vector2d(pick[0], pick[1]));
+        }
     }
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
+    App::Document *doc = App::GetApplication().getActiveDocument();
     if (doc) {
         cb->setHandled();
 
-        const SoEvent* ev = cb->getEvent();
+        const SoEvent *ev = cb->getEvent();
         if (ev && !ev->wasCtrlDown()) {
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        for(auto obj : doc->getObjects()) {
-            if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
+        for (auto *obj : doc->getObjects()) {
+            if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
                 continue;
+            }
 
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-            if (!vp || !vp->isVisible())
-                continue;
+            auto *vp = dynamic_cast<ViewProviderDocumentObject *>(
+                Application::Instance->getViewProvider(obj));
+            if (!vp || !vp->isVisible()) { continue; }
 
             Base::Matrix4D mat;
-            for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat))
-                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
+            for (auto &sub : getBoxSelection(vp, selectionMode, selectElement,
+                                             proj, polygon, mat)) {
+                Gui::Selection().addSelection(
+                    doc->getName(), obj->getNameInDocument(), sub.c_str());
+            }
         }
     }
 }
@@ -2793,21 +2841,26 @@ static void doSelect(void* ud, SoEventCallback * cb)
 void StdBoxSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        View3DInventorViewer* viewer = view->getViewer();
-        if (!viewer->isSelecting()) {
-            // #0002931: Box select misbehaves with touchpad navigation style
-            // Notify the navigation style to cleanup internal states
-            int mode = viewer->navigationStyle()->getViewingMode();
-            if (mode != Gui::NavigationStyle::IDLE) {
-                SoKeyboardEvent ev;
-                viewer->navigationStyle()->processEvent(&ev);
-            }
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, nullptr);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+    auto *view =
+        qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
+    if (!view) {
+        return;
+    }
+    View3DInventorViewer *viewer = view->getViewer();
+    if (!viewer->isSelecting()) {
+        // #0002931: Box select misbehaves with touchpad navigation style
+        // Notify the navigation style to cleanup internal states
+        int mode = viewer->navigationStyle()->getViewingMode();
+        if (mode != Gui::NavigationStyle::IDLE) {
+            SoKeyboardEvent ev;
+            viewer->navigationStyle()->processEvent(&ev);
         }
+        SelectionCallbackHandler::Create(
+            viewer, View3DInventorViewer::Rubberband,
+            QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, nullptr);
+        SoNode *root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection *>(root)->selectionRole.setValue(
+            0);
     }
 }
 
@@ -2874,9 +2927,10 @@ StdBoxElementSelection::StdBoxElementSelection()
 void StdBoxElementSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    auto *view =
+        qobject_cast<View3DInventor *>(getMainWindow()->activeWindow());
     if (view) {
-        View3DInventorViewer* viewer = view->getViewer();
+        View3DInventorViewer *viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             // #0002931: Box select misbehaves with touchpad navigation style
             // Notify the navigation style to cleanup internal states
@@ -2885,9 +2939,13 @@ void StdBoxElementSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_element_select), 7, 7), doSelect, this);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+            SelectionCallbackHandler::Create(
+                viewer, View3DInventorViewer::Rubberband,
+                QCursor(QPixmap(cursor_box_element_select), 7, 7), doSelect,
+                this);
+            SoNode *root = viewer->getSceneGraph();
+            static_cast<Gui::SoFCUnifiedSelection *>(root)
+                ->selectionRole.setValue(0);
         }
     }
 }
@@ -3079,19 +3137,21 @@ static const char * cursor_ruler[] = {
 void StdCmdMeasureDistance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-    if (view) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        viewer->setEditing(true);
-        viewer->setEditingCursor(QCursor(QPixmap(cursor_ruler), 7, 7));
+    Gui::Document *doc = Gui::Application::Instance->activeDocument();
+    auto *view = static_cast<Gui::View3DInventor *>(doc->getActiveView());
+    if (!view) {
+        return;
+    }
+    Gui::View3DInventorViewer *viewer = view->getViewer();
+    viewer->setEditing(1);
+    viewer->setEditingCursor(QCursor(QPixmap(cursor_ruler), 7, 7));
 
-        // Derives from QObject and we have a parent object, so we don't
-        // require a delete.
-        PointMarker* marker = new PointMarker(viewer);
-        viewer->addEventCallback(SoEvent::getClassTypeId(),
-            ViewProviderMeasureDistance::measureDistanceCallback, marker);
-     }
+    // Derives from QObject and we have a parent object, so we don't
+    // require a delete.
+    auto *marker = new PointMarker(viewer);
+    viewer->addEventCallback(
+        SoEvent::getClassTypeId(),
+        ViewProviderMeasureDistance::measureDistanceCallback, marker);
 }
 
 bool StdCmdMeasureDistance::isActive()
@@ -3218,7 +3278,7 @@ CmdViewMeasureClearAll::CmdViewMeasureClearAll()
 void CmdViewMeasureClearAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
+    auto *view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->
         activeDocument()->getActiveView());
     if (!view)
         return;

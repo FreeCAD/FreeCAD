@@ -87,14 +87,14 @@ SoGroup *AxisOrigin::getNode() {
     pCoords->point.setNum(3);
     pCoords->point.setValues(0, 13, verts);
 
-    SoAutoZoomTranslation *zoom = new SoAutoZoomTranslation;
+    auto *zoom = new SoAutoZoomTranslation;
     zoom->scaleFactor = scale;
 
-    SoDrawStyle* style = new SoDrawStyle();
+    auto* style = new SoDrawStyle();
     style->lineWidth = lineSize;
     style->pointSize = pointSize;
 
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
+    auto* matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
 
     node->addChild(zoom);

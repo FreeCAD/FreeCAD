@@ -88,7 +88,7 @@ bool StdCmdLinkMakeGroup::isActive() {
 
 Action * StdCmdLinkMakeGroup::createAction()
 {
-    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    auto *pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
@@ -109,7 +109,7 @@ void StdCmdLinkMakeGroup::languageChange()
 
     if (!_pcAction)
         return;
-    ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+    auto *pcAction = qobject_cast<ActionGroup *>(_pcAction);
     QList<QAction*> acts = pcAction->actions();
     acts[0]->setText(QObject::tr("Simple group"));
     acts[1]->setText(QObject::tr("Group with links"));
@@ -122,7 +122,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
     std::vector<App::DocumentObject*> objs;
     std::set<App::DocumentObject*> objset;
 
-    auto doc = App::GetApplication().getActiveDocument();
+    auto *doc = App::GetApplication().getActiveDocument();
     if(!doc) {
         FC_ERR("no active document");
         return;

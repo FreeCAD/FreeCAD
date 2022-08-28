@@ -578,14 +578,11 @@ void Model::updateSlot()
         int currentParentIndex = (*theGraph)[target].topoSortIndex;
         if (currentParentIndex < farthestParentIndex)
         {
-          Path::const_iterator start = sorted.begin() + currentParentIndex + 1; // 1 after
-          Path::const_iterator end = sorted.begin() + (*theGraph)[currentVertex].topoSortIndex; // 1 before
-          Path::const_iterator it;
-          for (it = start; it != end; ++it)
-          {
-//             std::cout << "    parent: " << findRecord(*it, *graphLink).DObject->Label.getValue() << std::endl;
-            
-            columnMask |= (*theGraph)[*it].column;
+          auto start = sorted.begin() + currentParentIndex + 1; // 1 after
+          auto end = sorted.begin() + (*theGraph)[currentVertex].topoSortIndex; // 1 before
+          Path::const_iterator iter;
+          for (iter = start; iter != end; ++iter) {
+              columnMask |= (*theGraph)[*iter].column;
           }
           farthestParentIndex = currentParentIndex;
         }
@@ -931,7 +928,7 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
     for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
     {
-      RectItem *rect = dynamic_cast<RectItem *>(*currentItem);
+      auto *rect = dynamic_cast<RectItem *>(*currentItem);
       if (!rect) continue;
       const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),
@@ -959,7 +956,7 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
         
         //don't like that I am doing this again here after getRectFromPosition call.
         QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
-        QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
+        auto *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
         if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
         {
           //get all selections, but for now just the current pick.
@@ -1053,7 +1050,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     
     //don't like that I am doing this again here after getRectFromPosition call.
     QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
-    QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
+    auto *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
     if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
     {
       visiblyIsolate(record.vertex);
@@ -1099,7 +1096,7 @@ void Model::onRenameSlot()
   std::vector<Gui::DAG::Vertex> selections = getAllSelected();
   assert(selections.size() == 1);
   
-  LineEdit *lineEdit = new LineEdit();
+  auto *lineEdit = new LineEdit();
   auto *text = (*theGraph)[selections.front()].text.get();
   lineEdit->setText(text->toPlainText());
   connect(lineEdit, SIGNAL(acceptedSignal()), this, SLOT(renameAcceptedSlot()));
@@ -1120,7 +1117,7 @@ void Model::renameAcceptedSlot()
   assert(selections.size() == 1);
   const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
   
-  LineEdit *lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
+  auto *lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
   assert(lineEdit);
   const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData()); //const hack
   
@@ -1143,7 +1140,7 @@ void Model::finishRename()
 
 void Model::editingStartSlot()
 {
-  QAction* action = qobject_cast<QAction*>(sender());
+  auto* action = qobject_cast<QAction*>(sender());
   if (action)
   {
     int edit = action->data().toInt();

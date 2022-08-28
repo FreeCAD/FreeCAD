@@ -88,7 +88,7 @@ public:
     static void moveCallback(void * data, SoSensor * sensor)
     {
         Q_UNUSED(sensor);
-        Private* self = static_cast<Private*>(data);
+        auto *self = static_cast<Private *>(data);
         if (self->view) {
             Gui::View3DInventorViewer* view = self->view->getViewer();
             SoClipPlane* clip = self->clipView;
@@ -187,11 +187,11 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
 Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
 {
     // embed this dialog into a QDockWidget
-    Clipping* clipping = new Clipping(view);
+    auto *clipping = new Clipping(view);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
-    QDockWidget* dw = pDockMgr->addDockWindow("Clipping", clipping, Qt::LeftDockWidgetArea);
-    dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
-    dw->show();
+    QDockWidget*dockWindow = pDockMgr->addDockWindow("Clipping", clipping, Qt::LeftDockWidgetArea);
+    dockWindow->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
+    dockWindow->show();
 
     return clipping;
 }
@@ -210,7 +210,7 @@ Clipping::~Clipping()
 void Clipping::reject()
 {
     QDialog::reject();
-    QDockWidget* dw = qobject_cast<QDockWidget*>(parent());
+    auto *dw = qobject_cast<QDockWidget *>(parent());
     if (dw) {
         dw->deleteLater();
     }

@@ -208,7 +208,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
     std::string vp = obj->getViewProviderName();
     SoNode* node = nullptr;
     try {
-        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
+        auto* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
             std::unique_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
             std::map<std::string, App::Property*> Map;
@@ -221,8 +221,8 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
                 static_cast<App::PropertyPythonObject*>(pyproxy)->setValue(Py::Long(1));
             }
 
-            for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-                vp->updateData(it->second);
+            for (const auto & it : Map) {
+                vp->updateData(it.second);
             }
 
             std::vector<std::string> modes = vp->getDisplayModes();
@@ -268,7 +268,7 @@ FreeCADGui_exportSubgraph(PyObject * /*self*/, PyObject *args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto* node = static_cast<SoNode*>(ptr);
         if (node) {
             std::string formatStr(format);
             std::string buffer;
@@ -695,10 +695,10 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             std::stringstream str;
             std::set<App::DocumentObject*> unique_objs;
             str << "__objs__=[]" << std::endl;
-            for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it) {
-                if (unique_objs.insert(*it).second) {
+            for (const auto &it : sel) {
+                if (unique_objs.insert(it).second) {
                     str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
-                        << (*it)->getNameInDocument() << "\"))" << std::endl;
+                        << it->getNameInDocument() << "\"))" << std::endl;
                 }
             }
 
@@ -760,7 +760,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
     assert(it==d->documents.end());
 #endif
-    Gui::Document* pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
+    auto* pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;
 
     // connect the signals to the application for the new document
@@ -779,7 +779,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 
 void Application::slotDeleteDocument(const App::Document& Doc)
 {
-    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+    auto doc = d->documents.find(&Doc);
     if (doc == d->documents.end()) {
         Base::Console().Log("GUI document '%s' already deleted\n", Doc.getName());
         return;
@@ -810,9 +810,9 @@ void Application::slotDeleteDocument(const App::Document& Doc)
 
 void Application::slotRelabelDocument(const App::Document& Doc)
 {
-    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+    auto doc = d->documents.find(&Doc);
 #ifdef FC_DEBUG
-    assert(doc!=d->documents.end());
+    assert(doc != d->documents.end());
 #endif
 
     signalRelabelDocument(*doc->second);
@@ -821,9 +821,9 @@ void Application::slotRelabelDocument(const App::Document& Doc)
 
 void Application::slotRenameDocument(const App::Document& Doc)
 {
-    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+    auto doc = d->documents.find(&Doc);
 #ifdef FC_DEBUG
-    assert(doc!=d->documents.end());
+    assert(doc != d->documents.end());
 #endif
 
     signalRenameDocument(*doc->second);
@@ -831,9 +831,9 @@ void Application::slotRenameDocument(const App::Document& Doc)
 
 void Application::slotShowHidden(const App::Document& Doc)
 {
-    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+    auto doc = d->documents.find(&Doc);
 #ifdef FC_DEBUG
-    assert(doc!=d->documents.end());
+    assert(doc != d->documents.end());
 #endif
 
     signalShowHidden(*doc->second);
@@ -841,7 +841,7 @@ void Application::slotShowHidden(const App::Document& Doc)
 
 void Application::slotActiveDocument(const App::Document& Doc)
 {
-    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+    auto doc = d->documents.find(&Doc);
     // this can happen when closing a document with two views opened
     if (doc != d->documents.end()) {
         // this can happen when calling App.setActiveDocument directly from Python
@@ -853,10 +853,10 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Object active(d->activeDocument->getPyObject(), true);
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),active);
 
-                auto view = getMainWindow()->activeWindow();
+                auto *view = getMainWindow()->activeWindow();
                 if(!view || view->getAppDocument()!=&Doc) {
-                    Gui::MDIView* view = d->activeDocument->getActiveView();
-                    getMainWindow()->setActiveWindow(view);
+                    Gui::MDIView* activeView = d->activeDocument->getActiveView();
+                    getMainWindow()->setActiveWindow(activeView);
                 }
             }
             else {
@@ -1117,27 +1117,25 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
 #endif
 
     // notify all views attached to the application (not views belong to a special document)
-    for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
-        (*It)->setDocument(pcDocument);
+    for(auto &iter : d->passive)
+        iter->setDocument(pcDocument);
 }
 
-Gui::Document* Application::getDocument(const char* name) const
+Gui::Document *Application::getDocument(const char *name) const
 {
-    App::Document* pDoc = App::GetApplication().getDocument( name );
-    std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(pDoc);
-    if ( it!=d->documents.end() )
-        return it->second;
-    else
-        return nullptr;
+    App::Document *pDoc = App::GetApplication().getDocument(name);
+    auto doc = d->documents.find(pDoc);
+    return doc == d->documents.end()
+        ? nullptr
+        : doc->second;
 }
 
-Gui::Document* Application::getDocument(const App::Document* pDoc) const
+Gui::Document *Application::getDocument(const App::Document *pDoc) const
 {
-    std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(pDoc);
-    if ( it!=d->documents.end() )
-        return it->second;
-    else
-        return nullptr;
+    auto doc = std::as_const(d->documents).find(pDoc);
+    return doc == d->documents.end()
+        ? nullptr
+        : doc->second;
 }
 
 void Application::showViewProvider(const App::DocumentObject* obj)
@@ -1170,12 +1168,12 @@ void Application::detachView(Gui::BaseView* pcView)
 void Application::onUpdate()
 {
     // update all documents
-    std::map<const App::Document*, Gui::Document*>::iterator It;
-    for (It = d->documents.begin();It != d->documents.end();++It)
-        It->second->onUpdate();
+    std::map<const App::Document *, Gui::Document *>::iterator it;
+    for (it = d->documents.begin(); it != d->documents.end(); ++it)
+        it->second->onUpdate();
     // update all the independent views
-    for (std::list<Gui::BaseView*>::iterator It2 = d->passive.begin();It2 != d->passive.end();++It2)
-        (*It2)->onUpdate();
+    for (auto &it2 : d->passive)
+        it2->onUpdate();
 }
 
 /// Gets called if a view gets activated, this manages the whole activation scheme
@@ -1207,15 +1205,15 @@ void Application::updateActions(bool delay)
     getMainWindow()->updateActions(delay);
 }
 
-void Application::tryClose(QCloseEvent * e)
+void Application::tryClose(QCloseEvent *e)
 {
     e->setAccepted(getMainWindow()->closeAllDocuments(false));
-    if(!e->isAccepted())
+    if (!e->isAccepted())
         return;
 
     // ask all passive views if closable
-    for (std::list<Gui::BaseView*>::iterator It = d->passive.begin();It!=d->passive.end();++It) {
-        e->setAccepted((*It)->canClose());
+    for (auto &it : d->passive) {
+        e->setAccepted(it->canClose());
         if (!e->isAccepted())
             return;
     }
@@ -1223,11 +1221,11 @@ void Application::tryClose(QCloseEvent * e)
     if (e->isAccepted()) {
         d->isClosing = true;
 
-        std::map<const App::Document*, Gui::Document*>::iterator It;
+        std::map<const App::Document *, Gui::Document *>::iterator It;
 
         //detach the passive views
         //SetActiveDocument(0);
-        std::list<Gui::BaseView*>::iterator itp = d->passive.begin();
+        auto itp = d->passive.begin();
         while (itp != d->passive.end()) {
             (*itp)->onClose();
             itp = d->passive.begin();
@@ -1551,15 +1549,16 @@ QString Application::workbenchMenuText(const QString& wb) const
 QStringList Application::workbenches() const
 {
     // If neither 'HiddenWorkbench' nor 'ExtraWorkbench' is set then all workbenches are returned.
-    const std::map<std::string,std::string>& config = App::Application::Config();
-    std::map<std::string, std::string>::const_iterator ht = config.find("HiddenWorkbench");
-    std::map<std::string, std::string>::const_iterator et = config.find("ExtraWorkbench");
-    std::map<std::string, std::string>::const_iterator st = config.find("StartWorkbench");
-    const char* start = (st != config.end() ? st->second.c_str() : "<none>");
-    QStringList hidden, extra;
+    const std::map<std::string, std::string> &config = App::Application::Config();
+    auto ht = config.find("HiddenWorkbench");
+    auto et = config.find("ExtraWorkbench");
+    auto st = config.find("StartWorkbench");
+    const char *start = (st != config.end() ? st->second.c_str() : "<none>");
+    QStringList hidden;
+    QStringList extra;
     if (ht != config.end()) {
         QString items = QString::fromLatin1(ht->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         hidden = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
 #else
         hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
@@ -1569,7 +1568,7 @@ QStringList Application::workbenches() const
     }
     if (et != config.end()) {
         QString items = QString::fromLatin1(et->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         extra = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
 #else
         extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
@@ -1578,19 +1577,20 @@ QStringList Application::workbenches() const
             extra.push_back(QLatin1String(""));
     }
 
-    PyObject *key, *value;
-    Py_ssize_t pos = 0;
-    QStringList wb;
+    PyObject *key{};
+    PyObject *value{};
+    Py_ssize_t pos{0};
+    QStringList wb{};
     // insert all items
     while (PyDict_Next(_pcWorkbenchDictionary, &pos, &key, &value)) {
         /* do something interesting with the values... */
-        const char* wbName = PyUnicode_AsUTF8(key);
+        const char *wbName = PyUnicode_AsUTF8(key);
         // add only allowed workbenches
         bool ok = true;
-        if (!extra.isEmpty()&&ok) {
+        if (!extra.isEmpty() && ok) {
             ok = (extra.indexOf(QString::fromLatin1(wbName)) != -1);
         }
-        if (!hidden.isEmpty()&&ok) {
+        if (!hidden.isEmpty() && ok) {
             ok = (hidden.indexOf(QString::fromLatin1(wbName)) == -1);
         }
 
@@ -1842,8 +1842,8 @@ void Application::runInitGuiScript()
 
 void Application::runApplication()
 {
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
+    const std::map<std::string, std::string> &cfg = App::Application::Config();
+    std::map<std::string, std::string>::const_iterator it;
 
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
@@ -1856,14 +1856,14 @@ void Application::runApplication()
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
 #ifdef FC_OS_WIN32
-        SetProcessDPIAware(); // call before the main event loop
+        SetProcessDPIAware();// call before the main event loop
 #endif
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     }
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
@@ -1878,19 +1878,19 @@ void Application::runApplication()
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
 
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-        // By default (on platforms that support it, see docs for
-        // Qt::AA_CompressHighFrequencyEvents) QT applies compression
-        // for high frequency events (mouse move, touch, window resizes)
-        // to keep things smooth even when handling the event takes a
-        // while (e.g. to calculate snapping).
-        // However, tablet pen move events (and mouse move events
-        // synthesised from those) are not compressed by default (to
-        // allow maximum precision when e.g. hand-drawing curves),
-        // leading to unacceptable slowdowns using a tablet pen. Enable
-        // compression for tablet events here to solve that.
-        QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
-    #endif
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    // By default (on platforms that support it, see docs for
+    // Qt::AA_CompressHighFrequencyEvents) QT applies compression
+    // for high frequency events (mouse move, touch, window resizes)
+    // to keep things smooth even when handling the event takes a
+    // while (e.g. to calculate snapping).
+    // However, tablet pen move events (and mouse move events
+    // synthesised from those) are not compressed by default (to
+    // allow maximum precision when e.g. hand-drawing curves),
+    // leading to unacceptable slowdowns using a tablet pen. Enable
+    // compression for tablet events here to solve that.
+    QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
+#endif
 
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
@@ -1914,8 +1914,8 @@ void Application::runApplication()
         // opens them
         QDir cwd = QDir::current();
         std::list<std::string> files = App::Application::getCmdLineFiles();
-        for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
-            QString fn = QString::fromUtf8(jt->c_str(), static_cast<int>(jt->size()));
+        for (const auto &file : files) {
+            QString fn = QString::fromUtf8(file.c_str(), static_cast<int>(file.size()));
             QFileInfo fi(fn);
             // if path name is relative make it absolute because the running instance
             // cannot determine the full path when trying to load the file
@@ -1974,7 +1974,7 @@ void Application::runApplication()
 #else
     // Option to opt-out from using a Linux desktop icon theme.
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=35624
-    bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
+    bool themePaths = hTheme->GetBool("ThemeSearchPaths", true);
     if (!themePaths) {
         QStringList searchPaths;
         searchPaths.prepend(QString::fromUtf8(":/icons"));
@@ -2005,21 +2005,22 @@ void Application::runApplication()
 #endif
 
     Application app(true);
-    MainWindow mw;
+    MainWindow mw {};
     mw.setProperty("QuitOnClosed", true);
 
     // allow to disable version number
     ParameterGrp::handle hGen = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
-    bool showVersion = hGen->GetBool("ShowVersionInTitle",true);
+    bool showVersion = hGen->GetBool("ShowVersionInTitle", true);
 
     if (showVersion) {
         // set main window title with FreeCAD Version
-        std::map<std::string, std::string>& config = App::Application::Config();
-        QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
-        QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+        std::map<std::string, std::string> &config = App::Application::Config();
+        QString major = QString::fromLatin1(config["BuildVersionMajor"].c_str());
+        QString minor = QString::fromLatin1(config["BuildVersionMinor"].c_str());
         QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName(), major, minor);
         mw.setWindowTitle(title);
-    } else {
+    }
+    else {
         mw.setWindowTitle(mainApp.applicationName());
     }
 
@@ -2027,7 +2028,7 @@ void Application::runApplication()
                      &mw, SLOT(processMessages(const QList<QByteArray> &)));
 
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15); // 15 min
+    int timeout = hDocGrp->GetInt("AutoSaveTimeout", 15);// 15 min
     if (!hDocGrp->GetBool("AutoSaveEnabled", true))
         timeout = 0;
     AutoSaver::instance()->setTimeout(timeout * 60000);
@@ -2035,19 +2036,19 @@ void Application::runApplication()
 
     // set toolbar icon size
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    int size = hGrp->GetInt("ToolbarIconSize", 0);
-    if (size >= 16) // must not be lower than this
-        mw.setIconSize(QSize(size,size));
+    int size = static_cast<int>(hGrp->GetInt("ToolbarIconSize", 0));
+    if (size >= 16)// must not be lower than this
+        mw.setIconSize(QSize(size, size));
 
     // filter wheel events for combo boxes
     if (hGrp->GetBool("ComboBoxWheelEventFilter", false)) {
-        WheelEventFilter* filter = new WheelEventFilter(&mainApp);
+        auto *filter = new WheelEventFilter(&mainApp);
         mainApp.installEventFilter(filter);
     }
-    
+
     //filter keyboard events to substitute decimal separator
     if (hGrp->GetBool("SubstituteDecimalSeparator", false)) {
-        KeyboardFilter* filter = new KeyboardFilter(&mainApp);
+        auto *filter = new KeyboardFilter(&mainApp);
         mainApp.installEventFilter(filter);
     }
 
@@ -2081,7 +2082,7 @@ void Application::runApplication()
 
             int major = context.format().majorVersion();
             int minor = context.format().minorVersion();
-            const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            const char *glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
             Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
         }
     }
@@ -2112,7 +2113,7 @@ void Application::runApplication()
         }
         QPixmap px(path);
         if (!px.isNull()) {
-            QLabel* logo = new QLabel();
+            auto *logo = new QLabel();
             logo->setPixmap(px.scaledToHeight(32));
             mw.statusBar()->addPermanentWidget(logo, 0);
             logo->setFrameShape(QFrame::NoFrame);
@@ -2133,7 +2134,7 @@ void Application::runApplication()
         Base::Console().Log("Run Gui init script\n");
         runInitGuiScript();
     }
-    catch (const Base::Exception& e) {
+    catch (const Base::Exception &e) {
         Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
         mw.stopSplasher();
         throw;
@@ -2147,12 +2148,11 @@ void Application::runApplication()
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
-    std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                           GetASCII("AutoloadModule", start.c_str());
+    std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->GetASCII("AutoloadModule", start.c_str());
     if ("$LastModule" == autoload) {
-        start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                               GetASCII("LastModule", start.c_str());
-    } else {
+        start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->GetASCII("LastModule", start.c_str());
+    }
+    else {
         start = autoload;
     }
     // if the auto workbench is not visible then force to use the default workbech
@@ -2161,11 +2161,10 @@ void Application::runApplication()
     if (!wb.contains(QString::fromLatin1(start.c_str()))) {
         start = App::Application::Config()["StartWorkbench"];
         if ("$LastModule" == autoload) {
-            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                  SetASCII("LastModule", start.c_str());
-        } else {
-            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                  SetASCII("AutoloadModule", start.c_str());
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->SetASCII("LastModule", start.c_str());
+        }
+        else {
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->SetASCII("AutoloadModule", start.c_str());
         }
     }
 
@@ -2184,7 +2183,7 @@ void Application::runApplication()
     std::string style = hGrp->GetASCII("StyleSheet");
     if (style.empty()) {
         // check the branding settings
-        const auto& config = App::Application::Config();
+        const auto &config = App::Application::Config();
         auto it = config.find("StyleSheet");
         if (it != config.end())
             style = it->second;
@@ -2195,14 +2194,13 @@ void Application::runApplication()
     //initialize spaceball.
     mainApp.initSpaceball(&mw);
 
-#ifdef FC_DEBUG // redirect Coin messages to FreeCAD
-    SoDebugError::setHandlerCallback( messageHandlerCoin, 0 );
+#ifdef FC_DEBUG// redirect Coin messages to FreeCAD
+    SoDebugError::setHandlerCallback(messageHandlerCoin, 0);
 #endif
 
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately
-    std::string autoloadCSV = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        GetASCII("BackgroundAutoloadModules", "");
+    std::string autoloadCSV = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->GetASCII("BackgroundAutoloadModules", "");
 
     // Tokenize the comma-separated list and load the requested workbenches if they exist in this installation
     std::vector<std::string> backgroundAutoloadedModules;
@@ -2247,7 +2245,7 @@ void Application::runApplication()
             flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
             flock->lock();
         }
-        catch (const boost::interprocess::interprocess_exception& e) {
+        catch (const boost::interprocess::interprocess_exception &e) {
             QString msg = QString::fromLocal8Bit(e.what());
             Base::Console().Warning("Failed to create a file lock for the IPC: %s\n", msg.toUtf8().constData());
         }
@@ -2267,11 +2265,11 @@ void Application::runApplication()
         lock.close();
         fi.deleteFile();
     }
-    catch (const Base::SystemExitException&) {
+    catch (const Base::SystemExitException &) {
         Base::Console().Message("System exit\n");
         throw;
     }
-    catch (const std::exception& e) {
+    catch (const std::exception &e) {
         // catching nasty stuff coming out of the event loop
         Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
         App::Application::destructObserver();
@@ -2290,7 +2288,7 @@ void Application::runApplication()
 void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 {
     Gui::MainWindow* mw = getMainWindow();
-    QMdiArea* mdi = mw->findChild<QMdiArea*>();
+    auto* mdi = mw->findChild<QMdiArea*>();
     mdi->setProperty("showImage", tiledBackground);
 
     // Qt's style sheet doesn't support it to define the link color of a QLabel

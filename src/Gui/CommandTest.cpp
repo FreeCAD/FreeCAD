@@ -70,16 +70,18 @@ void Std_TestQM::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList files = QFileDialog::getOpenFileNames(getMainWindow(),
-        QString::fromLatin1("Test translation"), QString(),
-        QString::fromLatin1("Translation (*.qm)"));
+                                                      QString::fromLatin1("Test translation"),
+                                                      QString(),
+                                                      QString::fromLatin1("Translation (*.qm)"));
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
-        QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();
-        for (QList<QTranslator*>::Iterator it = i18n.begin(); it != i18n.end(); ++it)
-            qApp->removeTranslator(*it);
-        for (QStringList::Iterator it = files.begin(); it != files.end(); ++it) {
-            QTranslator* translator = new QTranslator(qApp);
-            if (translator->load(*it)) {
+        QList<QTranslator *> translators = qApp->findChildren<QTranslator *>();
+        for (auto &pQTranslator : translators) {
+            qApp->removeTranslator(pQTranslator);
+        }
+        for (const auto &file : files) {
+            auto *translator = new QTranslator(qApp);
+            if (translator->load(file)) {
                 qApp->installTranslator(translator);
             }
             else {
@@ -515,7 +517,7 @@ void CmdTestProgress4::activated(int iMsg)
     try
     {
         unsigned long steps = 50;
-        Base::SequencerLauncher* seq = new Base::SequencerLauncher("Starting progress bar", steps);
+        auto *seq = new Base::SequencerLauncher("Starting progress bar", steps);
 
         for (unsigned long i=0; i<steps;i++)
         {
@@ -602,12 +604,12 @@ void CmdTestProgress5::activated(int iMsg)
     Q_UNUSED(iMsg);
     QEventLoop loop;
 
-    BarThread* thr1 = new BarThread(2000);
+    auto *thr1 = new BarThread(2000);
     QObject::connect(thr1, SIGNAL(finished()), &loop, SLOT(quit()));
     thr1->start();
     loop.exec();
 
-    BarThread* thr2 = new BarThread(1500);
+    auto *thr2 = new BarThread(1500);
 
     QTimer timer;
     timer.setSingleShot(true);
@@ -616,7 +618,7 @@ void CmdTestProgress5::activated(int iMsg)
     timer.start(2000); // 2s timeout
     loop.exec();
 
-    BarThread* thr3 = new BarThread(1000);
+    auto *thr3 = new BarThread(1000);
     thr3->start();
 }
 
@@ -667,7 +669,7 @@ CmdTestMDI2::CmdTestMDI2()
 void CmdTestMDI2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QMdiArea* area = getMainWindow()->findChild<QMdiArea*>();
+    auto *area = getMainWindow()->findChild<QMdiArea *>();
     if (area) {
         MDIView* mdi = getMainWindow()->activeWindow();
         area->removeSubWindow(mdi->parentWidget());

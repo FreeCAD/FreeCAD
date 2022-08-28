@@ -645,9 +645,9 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
         else if (ext == QLatin1String("py") ||
                  ext == QLatin1String("fcmacro") ||
                  ext == QLatin1String("fcscript")) {
-            PythonEditor* editor = new PythonEditor();
+            auto *editor = new PythonEditor();
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+            auto *edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fileName);
             edit->resize(400, 300);
             getMainWindow()->addWindow( edit );
@@ -661,17 +661,18 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
+PyObject *Application::sInsert(PyObject * /*self*/, PyObject *args)
 {
-    char* Name;
-    char* DocName = nullptr;
-    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
+    char *Name{};
+    char *DocName = nullptr;
+    if (!PyArg_ParseTuple(args, "et|s", "utf-8", &Name, &DocName))
         return nullptr;
 
     std::string Utf8Name = std::string(Name);
     PyMem_Free(Name);
 
-    PY_TRY {
+    PY_TRY
+    {
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
@@ -685,16 +686,14 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
             if (!doc)
                 doc = App::GetApplication().newDocument(DocName);
 
-            App::DocumentObject* obj = doc->addObject("App::InventorObject",
-                (const char*)fi.baseName().toUtf8());
-            obj->Label.setValue((const char*)fi.baseName().toUtf8());
-            static_cast<App::PropertyString*>(obj->getPropertyByName("FileName"))
-                ->setValue((const char*)fi.absoluteFilePath().toUtf8());
+            App::DocumentObject *obj = doc->addObject("App::InventorObject",
+                                                      (const char *)fi.baseName().toUtf8());
+            obj->Label.setValue((const char *)fi.baseName().toUtf8());
+            static_cast<App::PropertyString *>(obj->getPropertyByName("FileName"))
+                ->setValue((const char *)fi.absoluteFilePath().toUtf8());
             doc->recompute();
         }
-        else if (ext == QLatin1String("wrl") ||
-                 ext == QLatin1String("vrml") ||
-                 ext == QLatin1String("wrz")) {
+        else if (ext == QLatin1String("wrl") || ext == QLatin1String("vrml") || ext == QLatin1String("wrz")) {
             App::Document *doc = nullptr;
             if (DocName)
                 doc = App::GetApplication().getDocument(DocName);
@@ -707,29 +706,28 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args)
             QByteArray path = fi.absolutePath().toUtf8();
             SoInput::addDirectoryFirst(path.constData());
 
-            App::DocumentObject* obj = doc->addObject("App::VRMLObject",
-                (const char*)fi.baseName().toUtf8());
-            obj->Label.setValue((const char*)fi.baseName().toUtf8());
-            static_cast<App::PropertyFileIncluded*>(obj->getPropertyByName("VrmlFile"))
-                ->setValue((const char*)fi.absoluteFilePath().toUtf8());
+            App::DocumentObject *obj = doc->addObject("App::VRMLObject",
+                                                      (const char *)fi.baseName().toUtf8());
+            obj->Label.setValue((const char *)fi.baseName().toUtf8());
+            static_cast<App::PropertyFileIncluded *>(obj->getPropertyByName("VrmlFile"))
+                ->setValue((const char *)fi.absoluteFilePath().toUtf8());
             doc->recompute();
 
             SoInput::removeDirectory(path.constData());
         }
-        else if (ext == QLatin1String("py") ||
-                 ext == QLatin1String("fcmacro") ||
-                 ext == QLatin1String("fcscript")) {
-            PythonEditor* editor = new PythonEditor();
+        else if (ext == QLatin1String("py") || ext == QLatin1String("fcmacro") || ext == QLatin1String("fcscript")) {
+            auto *editor = new PythonEditor();
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+            auto *edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fileName);
             edit->resize(400, 300);
-            getMainWindow()->addWindow( edit );
+            getMainWindow()->addWindow(edit);
         }
         else {
             Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
-    } PY_CATCH;
+    }
+    PY_CATCH;
 
     Py_Return;
 }
@@ -769,7 +767,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
             ext == QLatin1String("xhtml")) {
 
             // build up the graph
-            SoSeparator* sep = new SoSeparator();
+            auto* sep = new SoSeparator();
             sep->ref();
 
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -786,13 +784,11 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
 
 
             SoGetPrimitiveCountAction action;
-            action.setCanApproximate(true);
+            action.setCanApproximate(1);
             action.apply(sep);
 
             bool binary = false;
-            if (action.getTriangleCount() > 100000 ||
-                action.getPointCount() > 30000 ||
-                action.getLineCount() > 10000)
+            if (action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000)
                 binary = true;
 
             SoFCDB::writeToFile(sep, Utf8Name.c_str(), binary);
@@ -804,7 +800,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
             if (gui_doc) {
                 Gui::MDIView* view = gui_doc->getActiveView();
                 if (view) {
-                    View3DInventor* view3d = qobject_cast<View3DInventor*>(view);
+                    auto* view3d = qobject_cast<View3DInventor*>(view);
                     if (view3d)
                         view3d->viewAll();
                     QPrinter printer(QPrinter::ScreenResolution);
@@ -1482,10 +1478,10 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
+PyObject *Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
 {
     int num_of_views = 1;
-    char* title = nullptr;
+    char *title = nullptr;
     // if one argument (int) is given
     if (!PyArg_ParseTuple(args, "|is", &num_of_views, &title))
         return nullptr;
@@ -1494,20 +1490,18 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
         PyErr_Format(PyExc_ValueError, "views must be > 0");
         return nullptr;
     }
-    else if (num_of_views == 1) {
-        View3DInventor* viewer = new View3DInventor(nullptr, nullptr);
+    if (num_of_views == 1) {
+        auto *viewer = new View3DInventor(nullptr, nullptr);
         if (title)
             viewer->setWindowTitle(QString::fromUtf8(title));
         Gui::getMainWindow()->addWindow(viewer);
         return viewer->getPyObject();
     }
-    else {
-        SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, nullptr, nullptr);
-        if (title)
-            viewer->setWindowTitle(QString::fromUtf8(title));
-        Gui::getMainWindow()->addWindow(viewer);
-        return viewer->getPyObject();
-    }
+    auto *viewer = new SplitView3DInventor(num_of_views, nullptr, nullptr);
+    if (title)
+        viewer->setWindowTitle(QString::fromUtf8(title));
+    Gui::getMainWindow()->addWindow(viewer);
+    return viewer->getPyObject();
 }
 
 PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)

@@ -41,7 +41,7 @@ namespace bp = boost::placeholders;
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {
   dagView = new View(this);
-  QVBoxLayout *layout = new QVBoxLayout();
+  auto *layout = new QVBoxLayout();
   layout->addWidget(dagView);
   this->setLayout(layout);
 }
@@ -63,31 +63,29 @@ View::~View()
 
 void View::slotActiveDocument(const Document &documentIn)
 {
-  if (Gui::Selection().hasSelection())
-      return;
-  ModelMap::const_iterator it = modelMap.find(&documentIn);
-  if (it == modelMap.end())
-  {
-    ModelMap::value_type entry(std::make_pair(&documentIn, std::make_shared<Model>(this, documentIn)));
-    modelMap.insert(entry);
-    this->setScene(entry.second.get());
-  }
-  else
-  {
-    this->setScene(it->second.get());
-  }
+    if (Gui::Selection().hasSelection())
+        return;
+    auto found = modelMap.find(&documentIn);
+    if (found == modelMap.end()) {
+        ModelMap::value_type entry(std::make_pair(&documentIn, std::make_shared<Model>(this, documentIn)));
+        modelMap.insert(entry);
+        this->setScene(entry.second.get());
+    }
+    else {
+        this->setScene(found->second.get());
+    }
 }
 
 void View::slotDeleteDocument(const Document &documentIn)
 {
-  ModelMap::iterator it = modelMap.find(&documentIn);
+  auto it = modelMap.find(&documentIn);
   if (it != modelMap.end())
     modelMap.erase(it);
 }
 
 void View::awakeSlot()
 {
-  Model *model = dynamic_cast<Model *>(this->scene());
+  auto *model = dynamic_cast<Model *>(this->scene());
   if (model)
     model->awake();
 }

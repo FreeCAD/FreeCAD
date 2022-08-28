@@ -235,8 +235,8 @@ void StdCmdImport::activated(int iMsg)
         if (emptyDoc) {
             // only do a view fit if the document was empty before. See also parameter 'AutoFitToView' in importFrom()
             std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
-            for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-                (*it)->viewAll();
+            for (auto & view : views) {
+                view->viewAll();
             }
         }
     }
@@ -571,7 +571,7 @@ void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
+    auto *view = new Gui::GraphvizView(*doc);
     view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
     getMainWindow()->addWindow(view);
 }
@@ -1495,7 +1495,7 @@ void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    Gui::Dialog::TaskPlacement* plm = new Gui::Dialog::TaskPlacement();
+    auto *plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
         App::Property* prop = sel.front()->getPropertyByName("Placement");
         if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId())
@@ -1582,15 +1582,17 @@ void StdCmdAlignment::activated(int iMsg)
     model.addGroups(groupMap);
     align->setModel(model);
     Base::Type style = Base::Type::fromName("Gui::CADNavigationStyle");
-    Base::Vector3d upDir(0,1,0), viewDir(0,0,-1);
+    Base::Vector3d upDir(0,1,0);
+    Base::Vector3d viewDir(0,0,-1);
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
-        View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
+        auto *mdi = qobject_cast<View3DInventor *>(doc->getActiveView());
         if (mdi) {
             View3DInventorViewer* viewer = mdi->getViewer();
             SoCamera* camera = viewer->getSoRenderManager()->getCamera();
             if (camera) {
-                SbVec3f up(0,1,0), dir(0,0,-1);
+                SbVec3f up(0,1,0);
+                SbVec3f dir(0,0,-1);
                 camera->orientation.getValue().multVec(dir, dir);
                 viewDir.Set(dir[0],dir[1],dir[2]);
                 camera->orientation.getValue().multVec(up, up);
@@ -1706,7 +1708,7 @@ protected:
     }
 
     Gui::Action * createAction() override {
-        ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+        auto *pcAction = new ActionGroup(this, getMainWindow());
         pcAction->setDropDownMenu(true);
         applyCommandData(this->className(), pcAction);
 
@@ -1718,40 +1720,46 @@ protected:
         return pcAction;
     }
 
-    void copyExpressions(const std::map<App::Document*, std::set<App::DocumentObject*> > &objs) {
-        std::ostringstream ss;
-        std::vector<App::Property*> props;
-        for(auto &v : objs) {
-            for(auto obj : v.second) {
+    void copyExpressions(const std::map<App::Document *, std::set<App::DocumentObject *>> &docsObjs)
+    {
+        std::ostringstream oss;
+        std::vector<App::Property *> props;
+        for (const auto &docObjs : docsObjs) {
+            for (auto *docObj : docObjs.second) {
                 props.clear();
-                obj->getPropertyList(props);
-                for(auto prop : props) {
-                    auto p = dynamic_cast<App::PropertyExpressionContainer*>(prop);
-                    if(!p) continue;
-                    for(auto &v : p->getExpressions()) {
-                        ss << "##@@ " << v.first.toString() << ' '
-                           << obj->getFullName() << '.' << p->getName()
-                           << " (" << obj->Label.getValue() << ')' << std::endl;
-                        ss << "##@@";
-                        if(!v.second->comment.empty()) {
-                            if(v.second->comment[0] == '&'
-                                    || v.second->comment.find('\n') != std::string::npos
-                                    || v.second->comment.find('\r') != std::string::npos)
-                            {
-                                std::string comment = v.second->comment;
-                                boost::replace_all(comment,"&","&amp;");
-                                boost::replace_all(comment,"\n","&#10;");
-                                boost::replace_all(comment,"\r","&#13;");
-                                ss << '&' << comment;
-                            }else
-                                ss << v.second->comment;
+                docObj->getPropertyList(props);
+                for (auto *prop : props) {
+                    auto *pec = dynamic_cast<App::PropertyExpressionContainer *>(prop);
+                    if (!pec) {
+                        continue;
+                    }
+                    for (const auto &expr : pec->getExpressions()) {
+                        oss << "##@@ " << expr.first.toString() << ' '
+                            << docObj->getFullName() << '.' << pec->getName()
+                            << " (" << docObj->Label.getValue() << ')' << std::endl
+                            << "##@@";
+                        if (!expr.second->comment.empty()) {
+                            if (expr.second->comment[0] == '&'
+                                || expr.second->comment.find('\n') != std::string::npos
+                                || expr.second->comment.find('\r') != std::string::npos) {
+                                std::string comment = expr.second->comment;
+                                boost::replace_all(comment, "&", "&amp;");
+                                boost::replace_all(comment, "\n", "&#10;");
+                                boost::replace_all(comment, "\r", "&#13;");
+                                oss << '&' << comment;
+                            }
+                            else {
+                                oss << expr.second->comment;
+                            }
                         }
-                        ss << std::endl << v.second->toString(true) << std::endl << std::endl;
+                        oss << std::endl
+                            << expr.second->toString(true) << std::endl
+                            << std::endl;
                     }
                 }
             }
         }
-        QApplication::clipboard()->setText(QString::fromUtf8(ss.str().c_str()));
+        QApplication::clipboard()->setText(QString::fromUtf8(oss.str().c_str()));
     }
 
     void pasteExpressions() {

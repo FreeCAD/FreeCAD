@@ -247,7 +247,7 @@ void ActionGroup::addTo(QWidget *w)
     // and adding this action to the widget doesn't work.
     if (_dropDown) {
         if (w->inherits("QMenu")) {
-            QMenu *menu = new QMenu(w);
+            auto *menu = new QMenu(w);
             QAction* action = qobject_cast<QMenu*>(w)->addMenu(menu);
             action->setMenuRole(_action->menuRole());
             menu->setTitle(_action->text());
@@ -259,7 +259,7 @@ void ActionGroup::addTo(QWidget *w)
             tb->setPopupMode(QToolButton::MenuButtonPopup);
             tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
             QList<QAction*> acts = _group->actions();
-            QMenu* menu = new QMenu(tb);
+            auto* menu = new QMenu(tb);
             menu->addActions(acts);
             tb->setMenu(menu);
             //tb->addActions(_group->actions());
@@ -468,7 +468,7 @@ void WorkbenchComboBox::onActivated(int i)
 {
     // Send the event to the workbench group to delay the destruction of the emitting widget.
     int index = itemData(i).toInt();
-    WorkbenchActionEvent* ev = new WorkbenchActionEvent(this->actions().at(index));
+    auto *ev = new WorkbenchActionEvent(this->actions().at(index));
     QApplication::postEvent(this->group, ev);
     // TODO: Test if we can use this instead
     //QTimer::singleShot(20, this->actions()[i], SLOT(trigger()));
@@ -529,18 +529,18 @@ void WorkbenchGroup::addTo(QWidget *w)
 {
     refreshWorkbenchList();
     if (w->inherits("QToolBar")) {
-        QToolBar* bar = qobject_cast<QToolBar*>(w);
-        QComboBox* box = new WorkbenchComboBox(this, w);
+        auto *bar = qobject_cast<QToolBar *>(w);
+        QComboBox *box = new WorkbenchComboBox(this, w);
         box->setIconSize(QSize(16, 16));
         box->setToolTip(_action->toolTip());
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
         box->addActions(_group->actions());
-        connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated (QAction*)));
+        connect(_group, SIGNAL(triggered(QAction *)), box, SLOT(onActivated(QAction *)));
         bar->addWidget(box);
     }
     else if (w->inherits("QMenu")) {
-        QMenu* menu = qobject_cast<QMenu*>(w);
+        auto *menu = qobject_cast<QMenu *>(w);
         menu = menu->addMenu(_action->text());
         menu->addActions(_group->actions());
     }
@@ -613,7 +613,7 @@ void WorkbenchGroup::refreshWorkbenchList()
 void WorkbenchGroup::customEvent( QEvent* e )
 {
     if (e->type() == QEvent::User) {
-        Gui::WorkbenchActionEvent* ce = (Gui::WorkbenchActionEvent*)e;
+        auto* ce = (Gui::WorkbenchActionEvent*)e;
         ce->action()->trigger();
     }
 }
@@ -826,8 +826,8 @@ void RecentFilesAction::restore()
         _group->addAction(QLatin1String(""))->setVisible(false);
     std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
     QStringList files;
-    for (std::vector<std::string>::iterator it = MRU.begin(); it!=MRU.end();++it)
-        files.append(QString::fromUtf8(it->c_str()));
+    for (auto & it : MRU)
+        files.append(QString::fromUtf8(it.c_str()));
     setFiles(files);
 }
 
@@ -969,9 +969,9 @@ void RecentMacrosAction::activateFile(int id)
     }
     else {
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //open for editing on Shift+click
-            PythonEditor* editor = new PythonEditor();
+            auto* editor = new PythonEditor();
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-            PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+            auto* edit = new PythonEditorView(editor, getMainWindow());
             edit->setDisplayName(PythonEditorView::FileName);
             edit->open(filename);
             edit->resize(400, 300);
@@ -1212,7 +1212,7 @@ WindowAction::~WindowAction()
 
 void WindowAction::addTo ( QWidget * w )
 {
-    QMenu* menu = qobject_cast<QMenu*>(w);
+    auto* menu = qobject_cast<QMenu*>(w);
     if (!menu) {
         if (!_menu) {
             _menu = new QMenu();
