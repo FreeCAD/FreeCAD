@@ -55,17 +55,13 @@
 
 #include "PreferencesGui.h"
 #include "QGSPage.h"
-#include "QGVPage.h"
 #include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 #include "QGMText.h"
 #include "QGIRichAnno.h"
 #include "Rez.h"
 #include "mrichtextedit.h"
-#include "mtextedit.h"
 
 #include "TaskRichAnno.h"
 
@@ -171,10 +167,6 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
                 this, SLOT(onEditorClicked(bool)));
 }
 
-TaskRichAnno::~TaskRichAnno()
-{
-}
-
 void TaskRichAnno::updateTask()
 {
 //    blockUpdate = true;
@@ -182,9 +174,9 @@ void TaskRichAnno::updateTask()
 //    blockUpdate = false;
 }
 
-void TaskRichAnno::changeEvent(QEvent *e)
+void TaskRichAnno::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -211,17 +203,17 @@ void TaskRichAnno::setUiPrimary()
     ui->teAnnoText->setPlaceholderText(tr("Input the annotation text directly or start the rich text editor"));
 }
 
-void TaskRichAnno::enableTextUi(bool b)
+void TaskRichAnno::enableTextUi(bool enable)
 {
-    ui->pbEditor->setEnabled(b);
-    ui->teAnnoText->setEnabled(b);
+    ui->pbEditor->setEnabled(enable);
+    ui->teAnnoText->setEnabled(enable);
 }
 
 //switch widgets related to ViewProvider on/off
 //there is no ViewProvider until some time after feature is created.
-void TaskRichAnno::enableVPUi(bool b)
+void TaskRichAnno::enableVPUi(bool enable)
 {
-    Q_UNUSED(b);
+    Q_UNUSED(enable);
 //    ui->cpLineColor->setEnabled(b);
 //    ui->dsbWeight->setEnabled(b);
 //    ui->cboxStyle->setEnabled(b);
@@ -253,21 +245,18 @@ void TaskRichAnno::setUiEdit()
     }
 }
 
-void TaskRichAnno::onEditorClicked(bool b)
+void TaskRichAnno::onEditorClicked(bool clicked)
 {
 //    Base::Console().Message("TL::onEditorClicked(%d)\n", b);
-    Q_UNUSED(b);
+    Q_UNUSED(clicked);
     m_textDialog = new QDialog(nullptr);
     QString leadText = ui->teAnnoText->toHtml();
     QString plainText = ui->teAnnoText->toPlainText();
-//    Base::Console().Message("TRA::onEditorClicked - leadText: %s**  plainText: %s**\n",
-//                            qPrintable(leadText), qPrintable(plainText));
     if (plainText.isEmpty()) {
         m_rte = new MRichTextEdit(m_textDialog);
     } else {
         m_rte = new MRichTextEdit(m_textDialog, leadText);
     }
-    //m_rte->setTextWidth(m_annoVP->MaxWidth);
     QGridLayout* gl = new QGridLayout(m_textDialog);
     gl->addWidget(m_rte, 0,0, 1,1);
     m_textDialog->setWindowTitle(QObject::tr("Rich text editor"));
@@ -487,10 +476,10 @@ void TaskRichAnno::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskRichAnno::enableTaskButtons(bool b)
+void TaskRichAnno::enableTaskButtons(bool enable)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(enable);
+    m_btnCancel->setEnabled(enable);
 }
 
 //******************************************************************************
@@ -558,10 +547,10 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
     Content.push_back(taskbox);
 }
 
-TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP)
+TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP)
     : TaskDialog()
 {
-    widget  = new TaskRichAnno(leadVP);
+    widget  = new TaskRichAnno(annoVP);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

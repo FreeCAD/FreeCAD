@@ -66,23 +66,23 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     ui->setupUi(this);
 
     // Tolerancing
-    ui->cbTheoreticallyExact->setChecked(parent->dvDimension->TheoreticalExact.getValue());
+    ui->cbTheoreticallyExact->setChecked(parent->getDimFeat()->TheoreticalExact.getValue());
     connect(ui->cbTheoreticallyExact, SIGNAL(stateChanged(int)), this, SLOT(onTheoreticallyExactChanged()));
     // if TheoreticalExact disable tolerances
-    if (parent->dvDimension->TheoreticalExact.getValue()) {
+    if (parent->getDimFeat()->TheoreticalExact.getValue()) {
         ui->cbEqualTolerance->setDisabled(true);
         ui->qsbOvertolerance->setDisabled(true);
         ui->qsbUndertolerance->setDisabled(true);
         ui->leFormatSpecifierOverTolerance->setDisabled(true);
         ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
-    ui->cbEqualTolerance->setChecked(parent->dvDimension->EqualTolerance.getValue());
+    ui->cbEqualTolerance->setChecked(parent->getDimFeat()->EqualTolerance.getValue());
     connect(ui->cbEqualTolerance, SIGNAL(stateChanged(int)), this, SLOT(onEqualToleranceChanged()));
     // if EqualTolerance overtolernace must not be negative
-    if (parent->dvDimension->EqualTolerance.getValue())
+    if (parent->getDimFeat()->EqualTolerance.getValue())
         ui->qsbOvertolerance->setMinimum(0.0);
-    if ((parent->dvDimension->Type.isValue("Angle")) ||
-        (parent->dvDimension->Type.isValue("Angle3Pt"))) {
+    if ((parent->getDimFeat()->Type.isValue("Angle")) ||
+        (parent->getDimFeat()->Type.isValue("Angle3Pt"))) {
         ui->qsbOvertolerance->setUnit(Base::Unit::Angle);
         ui->qsbUndertolerance->setUnit(Base::Unit::Angle);
     }
@@ -90,8 +90,8 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         ui->qsbOvertolerance->setUnit(Base::Unit::Length);
         ui->qsbUndertolerance->setUnit(Base::Unit::Length);
     }
-    ui->qsbOvertolerance->setValue(parent->dvDimension->OverTolerance.getValue());
-    ui->qsbUndertolerance->setValue(parent->dvDimension->UnderTolerance.getValue());
+    ui->qsbOvertolerance->setValue(parent->getDimFeat()->OverTolerance.getValue());
+    ui->qsbUndertolerance->setValue(parent->getDimFeat()->UnderTolerance.getValue());
     connect(ui->qsbOvertolerance, SIGNAL(valueChanged(double)), this, SLOT(onOvertoleranceChanged()));
     connect(ui->qsbUndertolerance, SIGNAL(valueChanged(double)), this, SLOT(onUndertoleranceChanged()));
     // undertolerance is disabled when EqualTolerance is true
@@ -101,21 +101,21 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     }
 
     // Formatting
-    std::string StringValue = parent->dvDimension->FormatSpec.getValue();
+    std::string StringValue = parent->getDimFeat()->FormatSpec.getValue();
     QString qs = QString::fromUtf8(StringValue.data(), StringValue.size());
     ui->leFormatSpecifier->setText(qs);
     connect(ui->leFormatSpecifier, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierChanged()));
-    ui->cbArbitrary->setChecked(parent->dvDimension->Arbitrary.getValue());
+    ui->cbArbitrary->setChecked(parent->getDimFeat()->Arbitrary.getValue());
     connect(ui->cbArbitrary, SIGNAL(stateChanged(int)), this, SLOT(onArbitraryChanged()));
-    StringValue = parent->dvDimension->FormatSpecOverTolerance.getValue();
+    StringValue = parent->getDimFeat()->FormatSpecOverTolerance.getValue();
     qs = QString::fromUtf8(StringValue.data(), StringValue.size());
     ui->leFormatSpecifierOverTolerance->setText(qs);
-    StringValue = parent->dvDimension->FormatSpecUnderTolerance.getValue();
+    StringValue = parent->getDimFeat()->FormatSpecUnderTolerance.getValue();
     qs = QString::fromUtf8(StringValue.data(), StringValue.size());
     ui->leFormatSpecifierUnderTolerance->setText(qs);
     connect(ui->leFormatSpecifierOverTolerance, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierOverToleranceChanged()));
     connect(ui->leFormatSpecifierUnderTolerance, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierUnderToleranceChanged()));
-    ui->cbArbitraryTolerances->setChecked(parent->dvDimension->ArbitraryTolerances.getValue());
+    ui->cbArbitraryTolerances->setChecked(parent->getDimFeat()->ArbitraryTolerances.getValue());
     connect(ui->cbArbitraryTolerances, SIGNAL(stateChanged(int)), this, SLOT(onArbitraryTolerancesChanged()));
 
     // Display Style
@@ -133,11 +133,11 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     }
 
     // Lines
-    ui->rbOverride->setChecked(parent->dvDimension->AngleOverride.getValue());
+    ui->rbOverride->setChecked(parent->getDimFeat()->AngleOverride.getValue());
     connect(ui->rbOverride, SIGNAL(toggled(bool)), this, SLOT(onOverrideToggled()));
-    ui->dsbDimAngle->setValue(parent->dvDimension->LineAngle.getValue());
+    ui->dsbDimAngle->setValue(parent->getDimFeat()->LineAngle.getValue());
     connect(ui->dsbDimAngle, SIGNAL(valueChanged(double)), this, SLOT(onDimAngleChanged()));
-    ui->dsbExtAngle->setValue(parent->dvDimension->ExtensionAngle.getValue());
+    ui->dsbExtAngle->setValue(parent->getDimFeat()->ExtensionAngle.getValue());
     connect(ui->dsbExtAngle, SIGNAL(valueChanged(double)), this, SLOT(onExtAngleChanged()));
     connect(ui->pbDimUseDefault, SIGNAL(clicked()), this, SLOT(onDimUseDefaultClicked()));
     connect(ui->pbDimUseSelection, SIGNAL(clicked()), this, SLOT(onDimUseSelectionClicked()));
@@ -183,7 +183,7 @@ void TaskDimension::recomputeFeature()
 
 void TaskDimension::onTheoreticallyExactChanged()
 {
-    m_parent->dvDimension->TheoreticalExact.setValue(ui->cbTheoreticallyExact->isChecked());
+    m_parent->getDimFeat()->TheoreticalExact.setValue(ui->cbTheoreticallyExact->isChecked());
     // if TheoreticalExact disable tolerances and set them to zero
     if (ui->cbTheoreticallyExact->isChecked()) {
         ui->qsbOvertolerance->setValue(0.0);
@@ -211,7 +211,7 @@ void TaskDimension::onTheoreticallyExactChanged()
 
 void TaskDimension::onEqualToleranceChanged()
 {
-    m_parent->dvDimension->EqualTolerance.setValue(ui->cbEqualTolerance->isChecked());
+    m_parent->getDimFeat()->EqualTolerance.setValue(ui->cbEqualTolerance->isChecked());
     // if EqualTolerance set negated overtolerance for untertolerance
     // then also the OverTolerance must be positive
     if (ui->cbEqualTolerance->isChecked()) {
@@ -236,7 +236,7 @@ void TaskDimension::onEqualToleranceChanged()
 
 void TaskDimension::onOvertoleranceChanged()
 {
-    m_parent->dvDimension->OverTolerance.setValue(ui->qsbOvertolerance->value().getValue());
+    m_parent->getDimFeat()->OverTolerance.setValue(ui->qsbOvertolerance->value().getValue());
     // if EqualTolerance set negated overtolerance for untertolerance
     if (ui->cbEqualTolerance->isChecked()) {
         ui->qsbUndertolerance->setValue(-1.0 * ui->qsbOvertolerance->value().getValue());
@@ -247,45 +247,45 @@ void TaskDimension::onOvertoleranceChanged()
 
 void TaskDimension::onUndertoleranceChanged()
 {
-    m_parent->dvDimension->UnderTolerance.setValue(ui->qsbUndertolerance->value().getValue());
+    m_parent->getDimFeat()->UnderTolerance.setValue(ui->qsbUndertolerance->value().getValue());
     recomputeFeature();
 }
 
 void TaskDimension::onFormatSpecifierChanged()
 {
-    m_parent->dvDimension->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
+    m_parent->getDimFeat()->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
     recomputeFeature();
 }
 
 void TaskDimension::onArbitraryChanged()
 {
-    m_parent->dvDimension->Arbitrary.setValue(ui->cbArbitrary->isChecked());
+    m_parent->getDimFeat()->Arbitrary.setValue(ui->cbArbitrary->isChecked());
     recomputeFeature();
 }
 
 void TaskDimension::onFormatSpecifierOverToleranceChanged()
 {
-    m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
+    m_parent->getDimFeat()->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
     if (!ui->cbArbitraryTolerances->isChecked()) {
         ui->leFormatSpecifierUnderTolerance->setText(ui->leFormatSpecifierOverTolerance->text());
-        m_parent->dvDimension->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
+        m_parent->getDimFeat()->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
     }
     recomputeFeature();
 }
 
 void TaskDimension::onFormatSpecifierUnderToleranceChanged()
 {
-    m_parent->dvDimension->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
+    m_parent->getDimFeat()->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
     if (!ui->cbArbitraryTolerances->isChecked()) {
         ui->leFormatSpecifierOverTolerance->setText(ui->leFormatSpecifierUnderTolerance->text());
-        m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
+        m_parent->getDimFeat()->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
     }
     recomputeFeature();
 }
 
 void TaskDimension::onArbitraryTolerancesChanged()
 {
-    m_parent->dvDimension->ArbitraryTolerances.setValue(ui->cbArbitraryTolerances->isChecked());
+    m_parent->getDimFeat()->ArbitraryTolerances.setValue(ui->cbArbitraryTolerances->isChecked());
     recomputeFeature();
 }
 
@@ -317,26 +317,26 @@ void TaskDimension::onDrawingStyleChanged()
 
 void TaskDimension::onOverrideToggled()
 {
-    m_parent->dvDimension->AngleOverride.setValue(ui->rbOverride->isChecked());
+    m_parent->getDimFeat()->AngleOverride.setValue(ui->rbOverride->isChecked());
     recomputeFeature();
 
 }
 
 void TaskDimension::onDimAngleChanged()
 {
-    m_parent->dvDimension->LineAngle.setValue(ui->dsbDimAngle->value());
+    m_parent->getDimFeat()->LineAngle.setValue(ui->dsbDimAngle->value());
     recomputeFeature();
 }
 
 void TaskDimension::onExtAngleChanged()
 {
-    m_parent->dvDimension->ExtensionAngle.setValue(ui->dsbExtAngle->value());
+    m_parent->getDimFeat()->ExtensionAngle.setValue(ui->dsbExtAngle->value());
     recomputeFeature();
 }
 
 void TaskDimension::onDimUseDefaultClicked()
 {
-    pointPair points = m_parent->dvDimension->getLinearPoints();
+    pointPair points = m_parent->getDimFeat()->getLinearPoints();
     //duplicate coordinate conversion logic from QGIViewDimension
     Base::Vector2d first2(points.first.x, -points.first.y);
     Base::Vector2d second2(points.second.x, -points.second.y);
@@ -354,7 +354,7 @@ void TaskDimension::onDimUseSelectionClicked()
 
 void TaskDimension::onExtUseDefaultClicked()
 {
-    pointPair points = m_parent->dvDimension->getLinearPoints();
+    pointPair points = m_parent->getDimFeat()->getLinearPoints();
     //duplicate coordinate conversion logic from QGIViewDimension
     Base::Vector2d first2(points.first.x, -points.first.y);
     Base::Vector2d second2(points.second.x, -points.second.y);

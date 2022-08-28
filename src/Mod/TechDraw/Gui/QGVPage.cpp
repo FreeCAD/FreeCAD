@@ -227,24 +227,24 @@ public:
     }
 };
 
-QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
+QGVPage::QGVPage(ViewProviderPage *vpPage, QGSPage* scenePage, QWidget *parent)
     : QGraphicsView(parent),
       m_renderer(Native),
       drawBkg(true),
       m_vpPage(nullptr),
-      m_scene(s),
+      m_scene(scenePage),
       balloonPlacing(false),
       panningActive(false),
       m_showGrid(false),
       m_navStyle(nullptr),
       d(new Private(this))
 {
-    assert(vp);
-    m_vpPage = vp;
-    const char* name = vp->getDrawPage()->getNameInDocument();
+    assert(vpPage);
+    m_vpPage = vpPage;
+    const char* name = vpPage->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
 
-    setScene(s);
+    setScene(scenePage);
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
 
@@ -358,7 +358,7 @@ void QGVPage::cancelBalloonPlacing()
     resetCursor();
 }
 
-void QGVPage::drawBackground(QPainter *p, const QRectF &)
+void QGVPage::drawBackground(QPainter *painter, const QRectF &)
 {
 //Note: Background is not part of scene()
     if(!drawBkg)
@@ -373,11 +373,11 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
         return;
     }
 
-    p->save();
-    p->resetTransform();
+    painter->save();
+    painter->resetTransform();
 
-    p->setBrush(*bkgBrush);
-    p->drawRect(viewport()->rect().adjusted(-2, -2, 2,2));   //just bigger than viewport to prevent artifacts
+    painter->setBrush(*bkgBrush);
+    painter->drawRect(viewport()->rect().adjusted(-2, -2, 2,2));   //just bigger than viewport to prevent artifacts
 
     // Default to A3 landscape, though this is currently relevant
     // only for opening corrupt docs, etc.
@@ -394,11 +394,11 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     QPolygon poly = mapFromScene(paperRect);
 
     QBrush pageBrush(Qt::white);
-    p->setBrush(pageBrush);
+    painter->setBrush(pageBrush);
 
-    p->drawRect(poly.boundingRect());
+    painter->drawRect(poly.boundingRect());
 
-    p->restore();
+    painter->restore();
 }
 
 void QGVPage::setRenderer(RendererType type)

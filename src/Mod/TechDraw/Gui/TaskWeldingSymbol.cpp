@@ -62,15 +62,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 #include "PreferencesGui.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "QGILeaderLine.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderViewPart.h"
 #include "SymbolChooser.h"
-#include "Rez.h"
 
 #include "TaskWeldingSymbol.h"
 #include "ui_TaskWeldingSymbol.h"
@@ -80,9 +72,9 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 //ctor for creation
-TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
+TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat) :
     ui(new Ui_TaskWeldingSymbol),
-    m_leadFeat(leader),
+    m_leadFeat(leadFeat),
     m_weldFeat(nullptr),
     m_arrowFeat(nullptr),
     m_otherFeat(nullptr),
@@ -91,7 +83,6 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     m_createMode(true),
     m_otherDirty(false)
 {
-//TODO: why does DWS need DLL as parent?
 
     //existence of leader is guaranteed by CmdTechDrawWeldSymbol (CommandAnnotate.cpp)
     ui->setupUi(this);
@@ -106,8 +97,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
             this, SLOT(onOtherEraseCreateClicked()));
     connect(ui->pbFlipSides, SIGNAL(clicked(bool)),
             this, SLOT(onFlipSidesCreateClicked()));
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
-            this, SLOT(onDirectorySelected(const QString&)));
+    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(QString)),
+            this, SLOT(onDirectorySelected(QString)));
 }
 
 //ctor for edit
@@ -185,9 +176,9 @@ void TaskWeldingSymbol::updateTask()
 //    blockUpdate = false;
 }
 
-void TaskWeldingSymbol::changeEvent(QEvent *e)
+void TaskWeldingSymbol::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -618,10 +609,10 @@ void TaskWeldingSymbol::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskWeldingSymbol::enableTaskButtons(bool b)
+void TaskWeldingSymbol::enableTaskButtons(bool enable)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(enable);
+    m_btnCancel->setEnabled(enable);
 }
 
 //******************************************************************************

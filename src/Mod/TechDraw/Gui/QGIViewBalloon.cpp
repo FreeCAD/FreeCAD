@@ -59,7 +59,6 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -68,12 +67,7 @@
 #include "QGIDimLines.h"
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
-#include "DrawGuiUtil.h"
-#include "QGIViewPart.h"
 #include "ViewProviderViewPart.h"
-#include "QGIViewDimension.h"
-#include "QGVPage.h"
-#include "MDIViewPage.h"
 
 //TODO: hide the Qt coord system (+y down).
 
@@ -219,42 +213,42 @@ void QGIBalloonLabel::setLabelCenter()
     posY = y() + m_labelText->boundingRect().height() / 2.;
 }
 
-void QGIBalloonLabel::setFont(QFont f)
+void QGIBalloonLabel::setFont(QFont font)
 {
-    m_labelText->setFont(f);
+    m_labelText->setFont(font);
 }
 
-void QGIBalloonLabel::setDimString(QString t)
+void QGIBalloonLabel::setDimString(QString text)
 {
     prepareGeometryChange();
-    m_labelText->setPlainText(t);
+    m_labelText->setPlainText(text);
 }
 
-void QGIBalloonLabel::setDimString(QString t, qreal maxWidth)
+void QGIBalloonLabel::setDimString(QString text, qreal maxWidth)
 {
     prepareGeometryChange();
-    m_labelText->setPlainText(t);
+    m_labelText->setPlainText(text);
     m_labelText->setTextWidth(maxWidth);
 }
 
-void QGIBalloonLabel::setPrettySel(void)
+void QGIBalloonLabel::setPrettySel()
 {
     m_labelText->setPrettySel();
 }
 
-void QGIBalloonLabel::setPrettyPre(void)
+void QGIBalloonLabel::setPrettyPre()
 {
     m_labelText->setPrettyPre();
 }
 
-void QGIBalloonLabel::setPrettyNormal(void)
+void QGIBalloonLabel::setPrettyNormal()
 {
     m_labelText->setPrettyNormal();
 }
 
-void QGIBalloonLabel::setColor(QColor c)
+void QGIBalloonLabel::setColor(QColor color)
 {
-    m_colNormal = c;
+    m_colNormal = color;
     m_labelText->setColor(m_colNormal);
 }
 
@@ -274,28 +268,28 @@ QGIViewBalloon::QGIViewBalloon() :
     setCacheMode(QGraphicsItem::NoCache);
 
     balloonLabel = new QGIBalloonLabel();
-    balloonLabel->parent = this;
+    balloonLabel->setQBalloon(this);
 
     addToGroup(balloonLabel);
-    balloonLabel->setColor(getNormalColor());
+    balloonLabel->setColor(prefNormalColor());
     balloonLabel->setPrettyNormal();
 
     balloonLines = new QGIDimLines();
     addToGroup(balloonLines);
-    balloonLines->setNormalColor(getNormalColor());
+    balloonLines->setNormalColor(prefNormalColor());
     balloonLines->setPrettyNormal();
 
     balloonShape = new QGIDimLines();
     addToGroup(balloonShape);
-    balloonShape->setNormalColor(getNormalColor());
+    balloonShape->setNormalColor(prefNormalColor());
     balloonShape->setFill(Qt::white, Qt::SolidPattern);
     balloonShape->setFillOverride(true);
     balloonShape->setPrettyNormal();
 
     arrow = new QGIArrow();
     addToGroup(arrow);
-    arrow->setNormalColor(getNormalColor());
-    arrow->setFillColor(getNormalColor());
+    arrow->setNormalColor(prefNormalColor());
+    arrow->setFillColor(prefNormalColor());
     arrow->setPrettyNormal();
     arrow->setStyle(prefDefaultArrow());
 
@@ -344,13 +338,13 @@ QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant &v
 }
 
 //Set selection state for this and it's children
-void QGIViewBalloon::setGroupSelection(bool b)
+void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
 //    Base::Console().Message("QGIVB::setGroupSelection(%d)\n", b);
-    setSelected(b);
-    balloonLabel->setSelected(b);
-    balloonLines->setSelected(b);
-    arrow->setSelected(b);
+    setSelected(isSelected);
+    balloonLabel->setSelected(isSelected);
+    balloonLines->setSelected(isSelected);
+    arrow->setSelected(isSelected);
 }
 
 void QGIViewBalloon::select(bool state)
@@ -366,31 +360,32 @@ void QGIViewBalloon::hover(bool state)
     draw();
 }
 
-void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
+void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloonFeat)
 {
 //    Base::Console().Message("QGIVB::setViewPartFeature()\n");
-    if (!balloon)
+    if (!balloonFeat)
         return;
 
-    setViewFeature(static_cast<TechDraw::DrawView *>(balloon));
+    setViewFeature(static_cast<TechDraw::DrawView *>(balloonFeat));
+    dvBalloon = balloonFeat;
 
     DrawView* balloonParent = nullptr;
     double scale = 1.0;
-    App::DocumentObject* docObj = balloon->SourceView.getValue();
+    App::DocumentObject* docObj = balloonFeat->SourceView.getValue();
     if (docObj) {
         balloonParent = dynamic_cast<DrawView*>(docObj);
         if (balloonParent)
             scale = balloonParent->getScale();
     }
 
-    float x = Rez::guiX(balloon->X.getValue() * scale) ;
-    float y = Rez::guiX(-balloon->Y.getValue() * scale);
+    float x = Rez::guiX(balloonFeat->X.getValue() * scale) ;
+    float y = Rez::guiX(-balloonFeat->Y.getValue() * scale);
 
-    balloonLabel->setColor(getNormalColor());
+    balloonLabel->setColor(prefNormalColor());
     balloonLabel->setPosFromCenter(x, y);
 
-    QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
-    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+    QString labelText = QString::fromUtf8(balloonFeat->Text.getStrValue().data());
+    balloonLabel->setDimString(labelText, Rez::guiX(balloonFeat->TextWrapLen.getValue()));
 
     updateBalloon();
 
@@ -448,17 +443,19 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     balloonLabel->setFont(font);
 
     QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
-    balloonLabel->verticalSep = false;
-    balloonLabel->seps.clear();
+    balloonLabel->setVerticalSep(false);
+    balloonLabel->setSeps(std::vector<int>());
 
     if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
+        std::vector<int> newSeps;
         while (labelText.contains(QString::fromUtf8("|"))) {
             int pos = labelText.indexOf(QString::fromUtf8("|"));
             labelText.replace(pos, 1, QString::fromUtf8("   "));
             QFontMetrics fm(balloonLabel->getFont());
-            balloonLabel->seps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
-            balloonLabel->verticalSep = true;
+            newSeps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
+            balloonLabel->setVerticalSep(true);
         }
+        balloonLabel->setSeps(newSeps);
     }
 
     balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
@@ -685,10 +682,10 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         //Add some room
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
         // we add some textWidth later because we first need to handle the text separators
-        if (balloonLabel->verticalSep) {
-            for (std::vector<int>::iterator it = balloonLabel->seps.begin() ; it != balloonLabel->seps.end(); ++it) {
-                balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y - (textHeight / 2.0));
-                balloonPath.lineTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y + (textHeight / 2.0));
+        if (balloonLabel->getVerticalSep()) {
+            for (auto& sep : balloonLabel->getSeps()) {
+                balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + sep, lblCenter.y - (textHeight / 2.0));
+                balloonPath.lineTo(lblCenter.x - (textWidth / 2.0) + sep, lblCenter.y + (textHeight / 2.0));
             }
         }
         textWidth = (textWidth * scale) + Rez::guiX(2.0);
@@ -910,21 +907,20 @@ void QGIViewBalloon::setPens(void)
     arrow->setWidth(m_lineWidth);
 }
 
-QColor QGIViewBalloon::getNormalColor()
+QColor QGIViewBalloon::prefNormalColor()
 {
-    m_colNormal = PreferencesGui::dimQColor();
+    setNormalColor(PreferencesGui::dimQColor());
 
-    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if(!balloon)
-        return m_colNormal;
-
-    auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if (!vp) {
-        return m_colNormal;
+    ViewProviderBalloon* vpBalloon = nullptr;
+    Gui::ViewProvider* vp = getViewProvider(getBalloonFeat());
+    if (vp) {
+        vpBalloon = dynamic_cast<ViewProviderBalloon*>(vp);
+        if (vpBalloon) {
+            App::Color fcColor = vpBalloon->Color.getValue();
+            setNormalColor(fcColor.asValue<QColor>());
+        }
     }
-
-    m_colNormal = vp->Color.getValue().asValue<QColor>();
-    return m_colNormal;
+    return getNormalColor();
 }
 
 int QGIViewBalloon::prefDefaultArrow() const

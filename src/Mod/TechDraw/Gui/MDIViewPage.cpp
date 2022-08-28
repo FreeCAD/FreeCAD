@@ -160,11 +160,11 @@ void MDIViewPage::setDocumentName(const std::string& name)
     m_documentName = name;
 }
 
-void MDIViewPage::closeEvent(QCloseEvent* ev)
+void MDIViewPage::closeEvent(QCloseEvent* event)
 {
 //    Base::Console().Message("MDIVP::closeEvent()\n");
-    MDIView::closeEvent(ev);
-    if (!ev->isAccepted())
+    MDIView::closeEvent(event);
+    if (!event->isAccepted())
         return;
     detachSelection();
 
@@ -242,18 +242,18 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
 }
 
 //called by ViewProvider when Page feature Label changes
-void MDIViewPage::setTabText(std::string t)
+void MDIViewPage::setTabText(std::string tabText)
 {
-    if (!isPassive() && !t.empty()) {
+    if (!isPassive() && !tabText.empty()) {
         QString cap = QString::fromLatin1("%1 [*]")
-            .arg(QString::fromUtf8(t.c_str()));
+            .arg(QString::fromUtf8(tabText.c_str()));
         setWindowTitle(cap);
     }
 }
 
 //**** printing routines
 
-void MDIViewPage::getPaperAttributes(void)
+void MDIViewPage::getPaperAttributes()
 {
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
@@ -603,9 +603,9 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
 }
 
 //flag to prevent selection activity within mdivp
-void MDIViewPage::blockSceneSelection(const bool state)
+void MDIViewPage::blockSceneSelection(const bool isBlocked)
 {
-    isSelectionBlocked = state;
+    isSelectionBlocked = isBlocked;
 }
 
 
@@ -990,13 +990,13 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
 
 ///////////////////end Selection Routines //////////////////////
 
-void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) const
+void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const char* string3) const
 {
     QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
             .arg(tr("Selected:"),
-                 QString::fromUtf8(s1),
-                 QString::fromUtf8(s2),
-                 QString::fromUtf8(s3));
+                 QString::fromUtf8(string1),
+                 QString::fromUtf8(string2),
+                 QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {
         Gui::getMainWindow()->showMessage(msg, 3000);
     }
@@ -1050,14 +1050,14 @@ Py::Object MDIViewPagePy::repr()
 // a trick is to use MDIViewPy as class member and override getattr() to
 // join the attributes of both classes. This way all methods of MDIViewPy
 // appear for SheetViewPy, too.
-Py::Object MDIViewPagePy::getattr(const char * attr)
+Py::Object MDIViewPagePy::getattr(const char * attrName)
 {
     if (!getMDIViewPagePtr()) {
         std::ostringstream s_out;
-        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        s_out << "Cannot access attribute '" << attrName << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
-    std::string name( attr );
+    std::string name( attrName );
     if (name == "__dict__" || name == "__class__") {
         Py::Dict dict_self(BaseType::getattr("__dict__"));
         Py::Dict dict_base(base.getattr("__dict__"));
@@ -1068,11 +1068,11 @@ Py::Object MDIViewPagePy::getattr(const char * attr)
     }
 
     try {
-        return BaseType::getattr(attr);
+        return BaseType::getattr(attrName);
     }
     catch (Py::AttributeError& e) {
         e.clear();
-        return base.getattr(attr);
+        return base.getattr(attrName);
     }
 }
 

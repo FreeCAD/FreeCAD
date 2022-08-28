@@ -46,27 +46,13 @@ class TaskSectionView : public QWidget
 public:
     explicit TaskSectionView(TechDraw::DrawViewPart* base);
     explicit TaskSectionView(TechDraw::DrawViewSection* section);
-    ~TaskSectionView() override;
+    ~TaskSectionView() = default;
 
-public:
     virtual bool accept();
     virtual bool reject();
 
-protected Q_SLOTS:
-    void onUpClicked();
-    void onDownClicked();
-    void onLeftClicked();
-    void onRightClicked();
-    void onIdentifierChanged();
-    void onScaleChanged();
-    void onXChanged();
-    void onYChanged();
-    void onZChanged();
-    void scaleTypeChanged(int index);
-
-
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void saveSectionState();
     void restoreSectionState();
 
@@ -80,12 +66,24 @@ protected:
     void setUiPrimary();
     void setUiEdit();
 
-    void checkAll(bool b);
-    void enableAll(bool b);
+    void checkAll(bool check);
+    void enableAll(bool enable);
 
-    void failNoObject(std::string objName);
+    void failNoObject(std::string objectName);
     bool isBaseValid();
     bool isSectionValid();
+
+protected Q_SLOTS:
+    void onUpClicked();
+    void onDownClicked();
+    void onLeftClicked();
+    void onRightClicked();
+    void onIdentifierChanged();
+    void onScaleChanged();
+    void onXChanged();
+    void onYChanged();
+    void onZChanged();
+    void scaleTypeChanged(int index);
 
 private:
     std::unique_ptr<Ui_TaskSectionView> ui;
@@ -128,7 +126,6 @@ public:
     explicit TaskDlgSectionView(TechDraw::DrawViewSection* section);
     ~TaskDlgSectionView() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -137,12 +134,9 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-/*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
 
     void update();
 
@@ -150,8 +144,6 @@ public:
     { return false; }
     bool isAllowedAlterDocument() const override
     { return false; }
-
-protected:
 
 private:
     TaskSectionView * widget;

@@ -198,10 +198,6 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
 
 }
 
-TaskLeaderLine::~TaskLeaderLine()
-{
-}
-
 void TaskLeaderLine::saveState()
 {
     if (m_lineFeat) {
@@ -227,9 +223,9 @@ void TaskLeaderLine::updateTask()
 //    blockUpdate = false;
 }
 
-void TaskLeaderLine::changeEvent(QEvent *e)
+void TaskLeaderLine::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -270,11 +266,11 @@ void TaskLeaderLine::setUiPrimary()
 
 //switch widgets related to ViewProvider on/off
 //there is no ViewProvider until some time after feature is created.
-void TaskLeaderLine::enableVPUi(bool b)
+void TaskLeaderLine::enableVPUi(bool enable)
 {
-    ui->cpLineColor->setEnabled(b);
-    ui->dsbWeight->setEnabled(b);
-    ui->cboxStyle->setEnabled(b);
+    ui->cpLineColor->setEnabled(enable);
+    ui->dsbWeight->setEnabled(enable);
+    ui->cboxStyle->setEnabled(enable);
 }
 
 void TaskLeaderLine::setUiEdit()
@@ -474,9 +470,9 @@ void TaskLeaderLine::removeFeature()
 }
 
 //********** Tracker routines *******************************************************************
-void TaskLeaderLine::onTrackerClicked(bool b)
+void TaskLeaderLine::onTrackerClicked(bool clicked)
 {
-    Q_UNUSED(b);
+    Q_UNUSED(clicked);
 //    Base::Console().Message("TTL::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
     if (m_vpp->getMDIViewPage() == nullptr) {
@@ -647,9 +643,9 @@ void TaskLeaderLine::removeTracker()
     }
 }
 
-void TaskLeaderLine::onCancelEditClicked(bool b)
+void TaskLeaderLine::onCancelEditClicked(bool clicked)
 {
-    Q_UNUSED(b);
+    Q_UNUSED(clicked);
 //    Base::Console().Message("TTL::onCancelEditClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
     abandonEditSession();
@@ -679,14 +675,14 @@ QGIView* TaskLeaderLine::findParentQGIV()
     return vpdv->getQView();;
 }
 
-void TaskLeaderLine::setEditCursor(QCursor c)
+void TaskLeaderLine::setEditCursor(QCursor cursor)
 {
     if (!m_vpp->getQGSPage()) {
         return;
     }
     if (m_baseFeat) {
         QGIView* qgivBase = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
-        qgivBase->setCursor(c);
+        qgivBase->setCursor(cursor);
     }
 }
 
@@ -742,10 +738,10 @@ void TaskLeaderLine::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskLeaderLine::enableTaskButtons(bool b)
+void TaskLeaderLine::enableTaskButtons(bool enable)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(enable);
+    m_btnCancel->setEnabled(enable);
 }
 
 int TaskLeaderLine::getPrefArrowStyle()

@@ -67,11 +67,6 @@ TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::View
     initUi();
 }
 
-TaskGeomHatch::~TaskGeomHatch()
-{
-}
-
-
 void TaskGeomHatch::initUi()
 {
     ui->fcFile->setFileName(QString::fromUtf8(m_file.data(), m_file.size()));
@@ -200,19 +195,19 @@ void TaskGeomHatch::updateValues()
     m_Vp->WeightPattern.setValue(m_weight);
 }
 
-QStringList TaskGeomHatch::listToQ(std::vector<std::string> in)
+QStringList TaskGeomHatch::listToQ(std::vector<std::string> inList)
 {
     QStringList result;
-    for (auto& s: in) {
+    for (auto& s: inList) {
         QString qs = QString::fromUtf8(s.data(), s.size());
         result.append(qs);
     }
     return result;
 }
 
-void TaskGeomHatch::changeEvent(QEvent *e)
+void TaskGeomHatch::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -233,9 +228,9 @@ TaskDlgGeomHatch::~TaskDlgGeomHatch()
 {
 }
 
-void TaskDlgGeomHatch::setCreateMode(bool b)
+void TaskDlgGeomHatch::setCreateMode(bool mode)
 {
-    widget->setCreateMode(b);
+    widget->setCreateMode(mode);
 }
 
 void TaskDlgGeomHatch::update()

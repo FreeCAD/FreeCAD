@@ -311,29 +311,29 @@ void QGIDatumLabel::setLabelCenter()
     posY = y() + m_dimText->boundingRect().height() / 2.;
 }
 
-void QGIDatumLabel::setFont(QFont f)
+void QGIDatumLabel::setFont(QFont font)
 {
     prepareGeometryChange();
-    m_dimText->setFont(f);
-    m_unitText->setFont(f);
-    QFont tFont(f);
-    double fontSize = f.pixelSize();
+    m_dimText->setFont(font);
+    m_unitText->setFont(font);
+    QFont tFont(font);
+    double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
     tFont.setPixelSize((int) (fontSize * tolAdj));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
 }
 
-void QGIDatumLabel::setDimString(QString t)
+void QGIDatumLabel::setDimString(QString text)
 {
     prepareGeometryChange();
-    m_dimText->setPlainText(t);
+    m_dimText->setPlainText(text);
 }
 
-void QGIDatumLabel::setDimString(QString t, qreal maxWidth)
+void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
 {
     prepareGeometryChange();
-    m_dimText->setPlainText(t);
+    m_dimText->setPlainText(text);
     m_dimText->setTextWidth(maxWidth);
 }
 
@@ -390,13 +390,13 @@ void QGIDatumLabel::setToleranceString()
     return;
 }
 
-void QGIDatumLabel::setUnitString(QString t)
+void QGIDatumLabel::setUnitString(QString text)
 {
     prepareGeometryChange();
-    if (t.isEmpty()) {
+    if (text.isEmpty()) {
         m_unitText->hide();
     } else {
-        m_unitText->setPlainText(t);
+        m_unitText->setPlainText(text);
         m_unitText->show();
     }
 }
@@ -458,10 +458,10 @@ void QGIDatumLabel::setPrettyNormal()
     Q_EMIT setPretty(NORMAL);
 }
 
-void QGIDatumLabel::setColor(QColor c)
+void QGIDatumLabel::setColor(QColor color)
 {
 //    Base::Console().Message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
-    m_colNormal = c;
+    m_colNormal = color;
     m_dimText->setColor(m_colNormal);
     m_tolTextOver->setColor(m_colNormal);
     m_tolTextUnder->setColor(m_colNormal);
@@ -481,7 +481,7 @@ QGIViewDimension::QGIViewDimension() :
     setCacheMode(QGraphicsItem::NoCache);
 
     datumLabel = new QGIDatumLabel();
-//    datumLabel->m_parent = this;         //for dialog setup eventually
+    datumLabel->setQDim(this);
 
     addToGroup(datumLabel);
 
@@ -523,8 +523,7 @@ QGIViewDimension::QGIViewDimension() :
 
     setZValue(ZVALUE::DIMENSION);         //note: this won't paint dimensions over another View if it stacks
                                           //above this Dimension's parent view.   need Layers?
-    m_border->hide();
-    m_label->hide();
+    hideFrame();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -542,14 +541,14 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
 }
 
 //Set selection state for this and it's children
-void QGIViewDimension::setGroupSelection(bool b)
+void QGIViewDimension::setGroupSelection(bool isSelected)
 {
 //    Base::Console().Message("QGIVD::setGroupSelection(%d)\n", b);
-    setSelected(b);
-    datumLabel->setSelected(b);
-    dimLines->setSelected(b);
-    aHead1->setSelected(b);
-    aHead2->setSelected(b);
+    setSelected(isSelected);
+    datumLabel->setSelected(isSelected);
+    dimLines->setSelected(isSelected);
+    aHead1->setSelected(isSelected);
+    aHead2->setSelected(isSelected);
 }
 
 void QGIViewDimension::select(bool state)
@@ -573,6 +572,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
         return;
 
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
+    dvDimension = obj;
 
     // Set the QGIGroup Properties based on the DrawView
     float x = Rez::guiX(obj->X.getValue());
@@ -2365,32 +2365,18 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
 
 QColor QGIViewDimension::prefNormalColor()
 {
-    m_colNormal = PreferencesGui::dimQColor();
-
-//    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    TechDraw::DrawViewDimension* dim = nullptr;
-    TechDraw::DrawView* dv = getViewObject();
-    if (dv) {
-        dim = dynamic_cast<TechDraw::DrawViewDimension*>(dv);
-        if (!dim)
-            return m_colNormal;
-    } else {
-        return m_colNormal;
-    }
+    setNormalColor(PreferencesGui::dimQColor());
 
     ViewProviderDimension* vpDim = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dim);
+    Gui::ViewProvider* vp = getViewProvider(getDimFeat());
     if (vp) {
         vpDim = dynamic_cast<ViewProviderDimension*>(vp);
-        if (!vpDim)
-            return m_colNormal;
-    } else {
-        return m_colNormal;
+        if (vpDim) {
+            App::Color fcColor = vpDim->Color.getValue();
+            setNormalColor(fcColor.asValue<QColor>());
+        }
     }
-
-    App::Color fcColor = vpDim->Color.getValue();
-    m_colNormal = fcColor.asValue<QColor>();
-    return m_colNormal;
+    return getNormalColor();
 }
 
 //! find the closest isometric axis given an ortho vector
@@ -2567,30 +2553,30 @@ void QGIViewDimension::setPens()
     aHead2->setWidth(m_lineWidth);
 }
 
-double QGIViewDimension::toDeg(double a)
+double QGIViewDimension::toDeg(double angle)
 {
-    return a*180/M_PI;
+    return angle*180/M_PI;
 }
 
-double QGIViewDimension::toQtRad(double a)
+double QGIViewDimension::toQtRad(double angle)
 {
-    return -a;
+    return -angle;
 }
 
-double QGIViewDimension::toQtDeg(double a)
+double QGIViewDimension::toQtDeg(double angle)
 {
-    return -a*180.0/M_PI;
+    return -angle*180.0/M_PI;
 }
 
-void QGIViewDimension::makeMarkC(double x, double y, QColor c) const
+void QGIViewDimension::makeMarkC(double xPos, double yPos, QColor color) const
 {
     QGIVertex* vItem = new QGIVertex(-1);
     vItem->setParentItem(const_cast<QGIViewDimension*>(this));
-    vItem->setPos(x, y);
+    vItem->setPos(xPos, yPos);
     vItem->setWidth(2.0);
     vItem->setRadius(20.0);
-    vItem->setNormalColor(c);
-    vItem->setFillColor(c);
+    vItem->setNormalColor(color);
+    vItem->setFillColor(color);
     vItem->setPrettyNormal();
     vItem->setZValue(ZVALUE::VERTEX);
 }

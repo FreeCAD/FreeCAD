@@ -113,14 +113,14 @@ void QGMarker::keyPressEvent(QKeyEvent * event)
     QGIVertex::keyPressEvent(event);
 }
 
-void QGMarker::setRadius(float r)
+void QGMarker::setRadius(float radius)
 {
     //TODO:: implement different marker shapes. circle, square, triangle, ???
     //if (m_markerShape == Circle) { ...
     //setRect(QRectF) for rectangular markers
-    m_radius = r;
+    m_radius = radius;
     QPainterPath p;
-    p.addRect(-r/2.0, -r/2.0, r, r);
+    p.addRect(-radius/2.0, -radius/2.0, radius, radius);
     setPath(p);
 }
 

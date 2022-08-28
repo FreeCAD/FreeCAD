@@ -61,9 +61,6 @@
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "ViewProviderLeader.h"
-#include "MDIViewPage.h"
-#include "DrawGuiUtil.h"
-#include "QGVPage.h"
 #include "QGIPrimPath.h"
 #include "QGEPath.h"
 
@@ -577,23 +574,16 @@ double QGILeaderLine::getEdgeFuzz() const
     return PreferencesGui::edgeFuzz();
 }
 
-QColor QGILeaderLine::getNormalColor()
+QColor QGILeaderLine::prefNormalColor()
 {
 //    Base::Console().Message("QGILL::getNormalColor()\n");
-    m_colNormal = PreferencesGui::leaderQColor();
+    setNormalColor(PreferencesGui::leaderQColor());
 
-    auto lead( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    if (!lead)
-//        Base::Console().Message("QGILL::getNormalColor - no feature\n");
-        return m_colNormal;
-
-    auto vp = static_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
-    if (!vp)
-//        Base::Console().Message("QGILL::getNormalColor - no viewProvider\n");
-        return m_colNormal;
-
-    m_colNormal = vp->Color.getValue().asValue<QColor>();
-    return m_colNormal;
+    auto vp = dynamic_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
+    if (vp) {
+        setNormalColor(vp->Color.getValue().asValue<QColor>());
+    }
+    return getNormalColor();
 }
 
 QRectF QGILeaderLine::boundingRect() const

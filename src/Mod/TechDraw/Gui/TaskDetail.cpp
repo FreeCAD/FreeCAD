@@ -56,12 +56,9 @@
 
 #include "QGSPage.h"
 #include "QGIView.h"
-#include "QGIPrimPath.h"
 #include "QGIGhostHighlight.h"
-#include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "Rez.h"
-#include "QGIViewPart.h"
 
 #include "TaskDetail.h"
 
@@ -69,8 +66,8 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace Gui;
 
-#define CREATEMODE 0
-#define EDITMODE   1
+static constexpr int CREATEMODE(0);
+static constexpr int EDITMODE(1);
 
 //creation constructor
 TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
@@ -222,10 +219,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
             this, SLOT(onHighlightMoved(QPointF)));
 }
 
-TaskDetail::~TaskDetail()
-{
-}
-
 void TaskDetail::updateTask()
 {
 //    blockUpdate = true;
@@ -304,20 +297,20 @@ void TaskDetail::setUiFromFeat()
 }
 
 //update ui point fields after tracker finishes
-void TaskDetail::updateUi(QPointF p)
+void TaskDetail::updateUi(QPointF pos)
 {
-    ui->qsbX->setValue(p.x());
-    ui->qsbY->setValue(- p.y());
+    ui->qsbX->setValue(pos.x());
+    ui->qsbY->setValue(- pos.y());
 }
 
-void TaskDetail::enableInputFields(bool b)
+void TaskDetail::enableInputFields(bool isEnabled)
 {
-    ui->qsbX->setEnabled(b);
-    ui->qsbY->setEnabled(b);
+    ui->qsbX->setEnabled(isEnabled);
+    ui->qsbY->setEnabled(isEnabled);
     if (ui->cbScaleType->currentIndex() == 2) // only if custom scale
-        ui->qsbScale->setEnabled(b);
-    ui->qsbRadius->setEnabled(b);
-    ui->leReference->setEnabled(b);
+        ui->qsbScale->setEnabled(isEnabled);
+    ui->qsbRadius->setEnabled(isEnabled);
+    ui->leReference->setEnabled(isEnabled);
 }
 
 void TaskDetail::onXEdit()
@@ -377,9 +370,9 @@ void TaskDetail::onReferenceEdit()
     updateDetail();
 }
 
-void TaskDetail::onDraggerClicked(bool b)
+void TaskDetail::onDraggerClicked(bool clicked)
 {
-    Q_UNUSED(b);
+    Q_UNUSED(clicked);
     ui->pbDragger->setEnabled(false);
     enableInputFields(false);
     editByHighlight();
@@ -445,10 +438,10 @@ void TaskDetail::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskDetail::enableTaskButtons(bool b)
+void TaskDetail::enableTaskButtons(bool button)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(button);
+    m_btnCancel->setEnabled(button);
 }
 
 //***** Feature create & edit stuff *******************************************

@@ -31,14 +31,6 @@
 
 #include "QGTracker.h"
 
-//TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
-#define TRACKERFINISHED 4
-#define TRACKERSAVE 5
-
 namespace TechDraw
 {
 class DrawPage;
@@ -66,31 +58,26 @@ public:
     TaskLeaderLine(TechDraw::DrawView* baseFeat,
                    TechDraw::DrawPage* page);
     explicit TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
-    ~TaskLeaderLine() override;
+    ~TaskLeaderLine() = default;
 
-public Q_SLOTS:
-    void onTrackerClicked(bool b);
-    void onCancelEditClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
-
-public:
     virtual bool accept();
     virtual bool reject();
-    virtual void setCreateMode(bool b) { m_createMode = b; }
+    virtual void setCreateMode(bool mode) { m_createMode = mode; }
     virtual bool getCreateMode() { return m_createMode; }
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
+    void enableTaskButtons(bool enable);
     void recomputeFeature();
 
-
-protected Q_SLOTS:
-    void onPointEditComplete();
+public Q_SLOTS:
+    void onTrackerClicked(bool clicked);
+    void onCancelEditClicked(bool clicked);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 protected:
     void trackerPointsFromQPoints(std::vector<QPointF> pts);
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void startTracker();
     void removeTracker();
     void abandonEditSession();
@@ -100,12 +87,10 @@ protected:
     void commonFeatureUpdate();
     void removeFeature();
 
-    void blockButtons(bool b);
     void setUiPrimary();
     void setUiEdit();
-    void enableTextUi(bool b);
-    void enableVPUi(bool b);
-    void setEditCursor(QCursor c);
+    void enableVPUi(bool enable);
+    void setEditCursor(QCursor cursor);
 
     QGIView* findParentQGIV();
     int getPrefArrowStyle();
@@ -115,12 +100,8 @@ protected:
    void saveState();
    void restoreState();
 
-private Q_SLOTS:
-    void onStartSymbolChanged();
-    void onEndSymbolChanged();
-    void onColorChanged();
-    void onLineWidthChanged();
-    void onLineStyleChanged();
+protected Q_SLOTS:
+    void onPointEditComplete();
 
 private:
     std::unique_ptr<Ui_TaskLeaderLine> ui;
@@ -159,6 +140,13 @@ private:
     double m_saveY;
 
     bool m_haveMdi;
+
+private Q_SLOTS:
+    void onStartSymbolChanged();
+    void onEndSymbolChanged();
+    void onColorChanged();
+    void onLineWidthChanged();
+    void onLineStyleChanged();
 };
 
 class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog
@@ -171,7 +159,6 @@ public:
     explicit TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP);
     ~TaskDlgLeaderLine() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -181,14 +168,11 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
-
-protected:
 
 private:
     TaskLeaderLine * widget;

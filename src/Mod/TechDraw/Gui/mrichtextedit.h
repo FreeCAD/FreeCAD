@@ -40,31 +40,52 @@
  */
 class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     Q_OBJECT
-  public:
+
+public:
     MRichTextEdit(QWidget *parent = nullptr, QString textIn = QString() );
+    ~MRichTextEdit() = default;
 
     QString toPlainText() const { return f_textedit->toPlainText(); }
     QString toHtml() const;
     QTextDocument *document() { return f_textedit->document(); }
     QTextCursor    textCursor() const { return f_textedit->textCursor(); }
     void           setTextCursor(const QTextCursor& cursor) { f_textedit->setTextCursor(cursor); }
-    void setMaxWidth(double w);
-    void setDefFontSize(int fs);
-    void setDefFont(QString f);
-    QString getDefFontSize(void);
-    int getDefFontSizeNum(void);
-    QFont getDefFont(void);
+    void setDefFontSize(int fontSize);
+    void setDefFont(QString fontName);
+    QString getDefFontSize();
+    int getDefFontSizeNum();
+    QFont getDefFont();
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void setText(const QString &text);
 
 Q_SIGNALS:
     void saveText(QString revText);
     void editorFinished();
 
-  protected Q_SLOTS:
-    void onSave(void);
-    void onExit(void);
+protected:
+  void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
+  void fontChanged(const QFont &font);
+  void fgColorChanged(const QColor &color);
+  void bgColorChanged(const QColor &color);
+  void list(bool checked, QTextListFormat::Style style);
+  void indent(int delta);
+  void focusInEvent(QFocusEvent *event);
+  void keyPressEvent(QKeyEvent *event);
+  bool hasMultipleSizes();
+
+  void addFontSize(QString fontSize);
+
+  enum ParagraphItems { ParagraphStandard = 0,
+                        ParagraphHeading1,
+                        ParagraphHeading2,
+                        ParagraphHeading3,
+                        ParagraphHeading4,
+                        ParagraphMonospace };
+
+protected Q_SLOTS:
+    void onSave();
+    void onExit();
     void setPlainText(const QString &text) { f_textedit->setPlainText(text); }
     void setHtml(const QString &text)      { f_textedit->setHtml(text); }
     void textRemoveFormat();
@@ -73,7 +94,7 @@ Q_SIGNALS:
     void textUnderline();
     void textStrikeout();
     void textItalic();
-    void textSize(const QString &p);
+    void textSize(const QString &pointsAsString);
     void textLink(bool checked);
     void textStyle(int index);
     void textFgColor();
@@ -89,35 +110,17 @@ Q_SIGNALS:
     void textSource();
     void onSelectionChanged();
 
-  protected:
-    void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
-    void fontChanged(const QFont &f);
-    void fgColorChanged(const QColor &c);
-    void bgColorChanged(const QColor &c);
-    void list(bool checked, QTextListFormat::Style style);
-    void indent(int delta);
-    void focusInEvent(QFocusEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    bool hasMultipleSizes(void);
-
-    void addFontSize(QString fs);
-
+private:
     QStringList m_paragraphItems;
     int m_fontsize_h1;
     int m_fontsize_h2;
     int m_fontsize_h3;
     int m_fontsize_h4;
 
-    enum ParagraphItems { ParagraphStandard = 0,
-                          ParagraphHeading1,
-                          ParagraphHeading2,
-                          ParagraphHeading3,
-                          ParagraphHeading4,
-                          ParagraphMonospace };
-
     QPointer<QTextList> m_lastBlockList;
     int m_defFontSize;
     QString m_defFont;
+
 };
 
 #endif

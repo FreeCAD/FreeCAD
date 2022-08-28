@@ -44,6 +44,14 @@ namespace TechDrawGui
 class QGSPage;
 class QGIView;
 
+//TODO: make this a proper enum
+static constexpr int TRACKERPICK(0);
+static constexpr int TRACKEREDIT(1);
+static constexpr int TRACKERCANCEL(2);
+static constexpr int TRACKERCANCELEDIT(3);
+static constexpr int TRACKERFINISHED(4);
+static constexpr int TRACKERSAVE(5);
+
 class TechDrawGuiExport QGTracker : public QObject, public QGIPrimPath
 {
     Q_OBJECT

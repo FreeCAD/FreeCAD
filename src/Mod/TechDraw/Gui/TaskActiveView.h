@@ -64,8 +64,6 @@ public:
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
 
-protected Q_SLOTS:
-
 protected:
     void changeEvent(QEvent *e);
 
