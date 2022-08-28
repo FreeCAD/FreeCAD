@@ -79,12 +79,12 @@ Builder3D::~Builder3D() = default;
  * @param color_g green part of the point color (0.0 - 1.0).
  * @param color_b blue part of the point color (0.0 - 1.0).
  */
-void Builder3D::startPoints(short pointSize, float color_r,float color_g,float color_b)
+void Builder3D::startPoints(short pointSize, float color_r, float color_g, float color_b)
 {
   bStartEndOpen = true;
   result << "Separator { ";
   result <<   "Material { ";
-  result <<     "diffuseColor " << color_r << " "<< color_g << " "<< color_b  ;
+  result <<     "diffuseColor " << color_r << " "<< color_g << " " << color_b;
   result <<   "} ";
   result <<   "MaterialBinding { value PER_PART } ";
   result <<   "DrawStyle { pointSize " << pointSize << "} ";
@@ -102,7 +102,7 @@ void Builder3D::addPoint(float x, float y, float z)
 /// add a vector to a point set
 void Builder3D::addPoint(const Vector3f &vec)
 {
-  addPoint(vec.x,vec.y,vec.z);
+  addPoint(vec.x, vec.y, vec.z);
 }
 /**
  * Ends the point set operations and write the resulting inventor string.
@@ -117,14 +117,14 @@ void Builder3D::endPoints()
   bStartEndOpen = false;
 }
 
-void Builder3D::addSinglePoint(float x, float y, float z,short pointSize, float color_r,float color_g,float color_b)
+void Builder3D::addSinglePoint(float x, float y, float z, short pointSize, float color_r, float color_g, float color_b)
 {
   // addSinglePoint() not between startXXX() and endXXX() allowed
   assert(!bStartEndOpen);
 
   result << "Separator { ";
   result <<   "Material { ";
-  result <<     "diffuseColor " << color_r << " "<< color_g << " "<< color_b  ;
+  result <<     "diffuseColor " << color_r << " "<< color_g << " "<< color_b;
   result <<   "} ";
   result <<   "MaterialBinding { value PER_PART } ";
   result <<   "DrawStyle { pointSize " << pointSize << "} ";
@@ -138,7 +138,7 @@ void Builder3D::addSinglePoint(float x, float y, float z,short pointSize, float 
 
 }
 
-void Builder3D::addSinglePoint(const Base::Vector3f &vec, short pointSize, float color_r,float color_g,float color_b)
+void Builder3D::addSinglePoint(const Base::Vector3f &vec, short pointSize, float color_r, float color_g, float color_b)
 {
   addSinglePoint(vec.x, vec.y , vec.z, pointSize, color_r, color_g, color_b);
 }
@@ -156,7 +156,7 @@ void Builder3D::addSinglePoint(const Base::Vector3f &vec, short pointSize, float
  * @param color_g green part of the text color (0.0 - 1.0).
  * @param color_b blue part of the text color (0.0 - 1.0).
  */
-void Builder3D::addText(float pos_x, float pos_y , float pos_z,const char * text, float color_r,float color_g,float color_b)
+void Builder3D::addText(float pos_x, float pos_y , float pos_z, const char * text, float color_r, float color_g, float color_b)
 {
   // addSinglePoint() not between startXXX() and endXXX() allowed
   assert(!bStartEndOpen);
@@ -169,9 +169,9 @@ void Builder3D::addText(float pos_x, float pos_y , float pos_z,const char * text
 
 }
 
-void Builder3D::addText(const Base::Vector3f &vec,const char * text, float color_r,float color_g,float color_b)
+void Builder3D::addText(const Base::Vector3f &vec, const char * text, float color_r, float color_g, float color_b)
 {
-  addText(vec.x, vec.y , vec.z,text, color_r,color_g,color_b);
+  addText(vec.x, vec.y, vec.z, text, color_r, color_g, color_b);
 }
 
 void Builder3D::clear ()
@@ -186,7 +186,7 @@ void Builder3D::clear ()
 //**************************************************************************
 // line/arrow handling
 
-void Builder3D::addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize, float color_r,float color_g,float color_b, unsigned short linePattern)
+void Builder3D::addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize, float color_r, float color_g, float color_b, unsigned short linePattern)
 {
   char lp[20];
   sprintf(lp, "0x%x", linePattern);
@@ -207,7 +207,7 @@ void Builder3D::addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short li
          << "} ";
 }
 
-void Builder3D::addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize, float color_r,float color_g,float color_b, unsigned short /*linePattern*/)
+void Builder3D::addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize, float color_r, float color_g, float color_b, unsigned short /*linePattern*/)
 {
     float l = (pt2 - pt1).Length();
     float cl = l / 10.0f;
@@ -268,7 +268,6 @@ void Builder3D::addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1, cons
          <<   "LineSet { } "
          <<   fs
          << "} ";
-
 }
 
 void Builder3D::addTransformation(const Base::Matrix4D& transform)
@@ -382,7 +381,7 @@ void InventorBuilder::addLabel(const char* text)
     result << Base::blanks(indent) << "} " << std::endl;
 }
 
-void InventorBuilder::addBaseColor(float color_r,float color_g,float color_b)
+void InventorBuilder::addBaseColor(float color_r, float color_g, float color_b)
 {
     result << Base::blanks(indent) << "BaseColor { " << std::endl;
     result << Base::blanks(indent) << "  rgb "
@@ -390,7 +389,7 @@ void InventorBuilder::addBaseColor(float color_r,float color_g,float color_b)
     result << Base::blanks(indent) << "} " << std::endl;
 }
 
-void InventorBuilder::addMaterial(float color_r,float color_g,float color_b,float color_a)
+void InventorBuilder::addMaterial(float color_r, float color_g, float color_b, float color_a)
 {
     result << Base::blanks(indent) << "Material { " << std::endl;
     result << Base::blanks(indent) << "  diffuseColor "
@@ -416,7 +415,7 @@ void InventorBuilder::endMaterial()
     result << Base::blanks(indent) << "}" << std::endl;
 }
 
-void InventorBuilder::addColor(float color_r,float color_g,float color_b)
+void InventorBuilder::addColor(float color_r, float color_g, float color_b)
 {
     result << color_r << " " << color_g << " " << color_b << std::endl;
 }
@@ -539,7 +538,7 @@ void InventorBuilder::addLineSet()
  * @param color_g green part of the text color (0.0 - 1.0).
  * @param color_b blue part of the text color (0.0 - 1.0).
  */
-void InventorBuilder::addText(float pos_x, float pos_y , float pos_z,const char * text, float color_r,float color_g,float color_b)
+void InventorBuilder::addText(float pos_x, float pos_y, float pos_z, const char * text, float color_r, float color_g, float color_b)
 {
   result << Base::blanks(indent) << "Separator { "   << std::endl
          << Base::blanks(indent) << "  Material { diffuseColor "
@@ -551,7 +550,7 @@ void InventorBuilder::addText(float pos_x, float pos_y , float pos_z,const char 
 
 }
 
-void InventorBuilder::addText(const Vector3f &vec,const char * text, float color_r,float color_g,float color_b)
+void InventorBuilder::addText(const Vector3f &vec, const char * text, float color_r, float color_g, float color_b)
 {
     addText(vec.x, vec.y , vec.z,text, color_r,color_g,color_b);
 }
@@ -560,7 +559,7 @@ void InventorBuilder::addText(const Vector3f &vec,const char * text, float color
 // line/arrow handling
 
 void InventorBuilder::addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize,
-                                    float color_r,float color_g,float color_b, unsigned short linePattern)
+                                    float color_r, float color_g, float color_b, unsigned short linePattern)
 {
   char lp[20];
   sprintf(lp, "0x%x", linePattern);
@@ -582,7 +581,7 @@ void InventorBuilder::addSingleLine(const Vector3f& pt1, const Vector3f& pt2, sh
 }
 
 void InventorBuilder::addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize,
-                                     float color_r,float color_g,float color_b, unsigned short /*linePattern*/)
+                                     float color_r, float color_g, float color_b, unsigned short /*linePattern*/)
 {
     float l = (pt2 - pt1).Length();
     float cl = l / 10.0f;
@@ -626,7 +625,7 @@ void InventorBuilder::addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, s
  * The size of the list must then be even.
  */
 void InventorBuilder::addLineSet(const std::vector<Vector3f>& points, short lineSize,
-                                 float color_r,float color_g,float color_b, unsigned short linePattern)
+                                 float color_r, float color_g, float color_b, unsigned short linePattern)
 {
   char lp[20];
   sprintf(lp, "0x%x", linePattern);
@@ -767,7 +766,7 @@ void InventorBuilder::addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1
 
 void InventorBuilder::addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY,
                                      float length, float width, bool filled, short lineSize,
-                                     float color_r,float color_g,float color_b)
+                                     float color_r, float color_g, float color_b)
 {
     Vector3f pt0 = base;
     Vector3f pt1 = base + length * eX;
@@ -867,7 +866,7 @@ void InventorBuilder::addSphere(float radius)
 }
 
 void InventorBuilder::addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, short lineWidth,
-                                     float color_r,float color_g,float color_b)
+                                     float color_r, float color_g, float color_b)
 {
     Base::Vector3f pt[8];
     pt[0].Set(pt1.x, pt1.y, pt1.z);
