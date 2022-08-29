@@ -246,7 +246,7 @@ public:
     }
 };
 
-typedef std::shared_ptr<Converter> ConverterPtr;
+using ConverterPtr = std::shared_ptr<Converter>;
 
 class DataStreambuf : public std::streambuf
 {

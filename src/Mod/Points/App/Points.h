@@ -48,10 +48,10 @@ class PointsExport PointKernel : public Data::ComplexGeoData
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    typedef float float_type;
-    typedef Base::Vector3<float_type> value_type;
-    typedef std::vector<value_type>::difference_type difference_type;
-    typedef std::vector<value_type>::size_type size_type;
+    using float_type = float;
+    using value_type = Base::Vector3<float_type>;
+    using difference_type = std::vector<value_type>::difference_type;
+    using size_type = std::vector<value_type>::size_type;
 
     PointKernel()
     {
@@ -144,13 +144,13 @@ public:
     class PointsExport const_point_iterator
     {
     public:
-        typedef PointKernel::value_type kernel_type;
-        typedef Base::Vector3d value_type;
-        typedef std::vector<kernel_type>::const_iterator iter_type;
-        typedef iter_type::difference_type difference_type;
-        typedef iter_type::iterator_category iterator_category;
-        typedef const value_type* pointer;
-        typedef const value_type& reference;
+        using kernel_type = PointKernel::value_type;
+        using value_type = Base::Vector3d;
+        using iter_type = std::vector<kernel_type>::const_iterator;
+        using difference_type = iter_type::difference_type;
+        using iterator_category = iter_type::iterator_category;
+        using pointer = const value_type*;
+        using reference = const value_type&;
 
         const_point_iterator(const PointKernel*, std::vector<kernel_type>::const_iterator index);
         const_point_iterator(const const_point_iterator& pi);
@@ -177,8 +177,8 @@ public:
         std::vector<kernel_type>::const_iterator _p_it;
     };
 
-    typedef const_point_iterator const_iterator;
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    using const_iterator = const_point_iterator;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     /** @name Iterator */
     //@{
