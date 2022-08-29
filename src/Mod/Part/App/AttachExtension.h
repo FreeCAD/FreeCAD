@@ -130,7 +130,7 @@ private:
 };
 
 
-typedef App::ExtensionPythonT<AttachExtension> AttachExtensionPython;
+using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
 } // namespace Part
 

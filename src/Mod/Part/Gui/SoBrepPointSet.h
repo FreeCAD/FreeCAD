@@ -43,7 +43,7 @@ class SoTextureCoordinateBundle;
 namespace PartGui {
 
 class PartGuiExport SoBrepPointSet : public SoPointSet {
-    typedef SoPointSet inherited;
+    using inherited = SoPointSet;
 
     SO_NODE_HEADER(SoBrepPointSet);
 
@@ -52,7 +52,7 @@ public:
     SoBrepPointSet();
 
 protected:
-    ~SoBrepPointSet() override {};
+    ~SoBrepPointSet() override {}
     void GLRender(SoGLRenderAction *action) override;
     void GLRenderBelowPath(SoGLRenderAction * action) override;
     void doAction(SoAction* action) override;
@@ -60,8 +60,8 @@ protected:
     void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 private:
-    typedef Gui::SoFCSelectionContext SelContext;
-    typedef Gui::SoFCSelectionContextPtr SelContextPtr;
+    using SelContext = Gui::SoFCSelectionContext;
+    using SelContextPtr = Gui::SoFCSelectionContextPtr;
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 

@@ -53,8 +53,8 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
     Q_OBJECT
 
 public:
-    typedef std::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
-                                App::DocumentObject *, const std::string&)>  VisibilityFunction;
+    using VisibilityFunction =  std::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
+                                App::DocumentObject *, const std::string&)>;
 
     explicit TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = nullptr,
                  QString picture = QString(),
@@ -140,7 +140,7 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
 };

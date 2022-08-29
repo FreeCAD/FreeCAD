@@ -27,7 +27,7 @@
 
 namespace PartGui {
 class Ui_DlgPartBox;
-typedef std::shared_ptr<Ui_DlgPartBox> Ui_DlgPartBoxPtr;
+using Ui_DlgPartBoxPtr = std::shared_ptr<Ui_DlgPartBox>;
 
 class DlgPartBoxImp : public Gui::LocationDialogUiImp
 {

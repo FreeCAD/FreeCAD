@@ -44,10 +44,10 @@
 
 namespace ModelRefine
 {
-    typedef std::vector<TopoDS_Face>  FaceVectorType;
-    typedef std::vector<TopoDS_Edge>  EdgeVectorType;
-    typedef std::vector<TopoDS_Shape> ShapeVectorType;
-    typedef std::pair<TopoDS_Shape, TopoDS_Shape> ShapePairType;
+    using FaceVectorType = std::vector<TopoDS_Face>;
+    using EdgeVectorType = std::vector<TopoDS_Edge>;
+    using ShapeVectorType = std::vector<TopoDS_Shape>;
+    using ShapePairType = std::pair<TopoDS_Shape, TopoDS_Shape>;
 
     void getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges);
     void boundaryEdges(const FaceVectorType &faces, EdgeVectorType &edgesOut);
@@ -112,7 +112,7 @@ namespace ModelRefine
 
     class FaceTypeSplitter
     {
-        typedef std::map<GeomAbs_SurfaceType, FaceVectorType> SplitMapType;
+        using SplitMapType = std::map<GeomAbs_SurfaceType, FaceVectorType>;
     public:
         FaceTypeSplitter(){}
         void addShell(const TopoDS_Shell &shellIn);

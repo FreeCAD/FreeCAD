@@ -145,8 +145,8 @@ enum eRefType {
 };
 
 
-typedef std::vector<eRefType> refTypeString; //a sequence of ref types, according to Support contents for example
-typedef std::vector<refTypeString> refTypeStringList; //a set of type strings, defines which selection sets are supported by a certain mode
+using refTypeString = std::vector<eRefType>; //a sequence of ref types, according to Support contents for example
+using refTypeStringList = std::vector<refTypeString>; //a set of type strings, defines which selection sets are supported by a certain mode
 
 
 /**

@@ -69,7 +69,7 @@ private:
     ViewProviderSplineExtension extension;
 };
 
-typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension> ViewProviderSplineExtensionPython;
+using ViewProviderSplineExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
 
 } //namespace PartGui
 

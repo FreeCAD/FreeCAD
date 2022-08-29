@@ -48,7 +48,7 @@ private:
     void showAttachmentEditor();
 };
 
-typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension> ViewProviderAttachExtensionPython;
+using ViewProviderAttachExtensionPython = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension>;
 
 } //namespace Part::Gui
 

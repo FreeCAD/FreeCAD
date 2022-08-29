@@ -74,8 +74,8 @@ void goSetupResultInvalidCurveSurface(ResultEntry *entry);
 void goSetupResultInvalidSameParameterFlag(ResultEntry *entry);
 void goSetupResultUnorientableShapeFace(ResultEntry *entry);
 
-typedef std::function<void (ResultEntry *entry)> ResultFunction;
-typedef std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction> FunctionMapType;
+using ResultFunction = std::function<void (ResultEntry *entry)>;
+using FunctionMapType = std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction>;
 
 class ResultModel : public QAbstractItemModel
 {

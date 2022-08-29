@@ -77,7 +77,7 @@ namespace PartGui {
  * As an example how to use the class correctly see ViewProviderPartExt::updateVisual().
  */
 class PartGuiExport SoBrepFaceSet : public SoIndexedFaceSet {
-    typedef SoIndexedFaceSet inherited;
+    using inherited = SoIndexedFaceSet;
 
     SO_NODE_HEADER(SoBrepFaceSet);
 
@@ -131,8 +131,8 @@ private:
                      const int mbind,
                      SbBool texture);
 
-    typedef Gui::SoFCSelectionContextEx SelContext;
-    typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
+    using SelContext = Gui::SoFCSelectionContextEx;
+    using SelContextPtr = Gui::SoFCSelectionContextExPtr;
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);

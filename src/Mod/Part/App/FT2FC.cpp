@@ -77,7 +77,7 @@
 
 using namespace Part;
 
-typedef unsigned long UNICHAR;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
+using UNICHAR = unsigned long;           // ul is FT2's codepoint type <=> Py_UNICODE2/4
 
 // Private function prototypes
 PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale,int charNum, double tracking);

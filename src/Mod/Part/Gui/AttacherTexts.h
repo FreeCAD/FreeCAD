@@ -36,7 +36,7 @@
 
 namespace AttacherGui {
 
-typedef std::vector<QString> TextSet;
+using TextSet = std::vector<QString>;
 
 /**
  * @brief getUIStrings

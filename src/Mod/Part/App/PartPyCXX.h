@@ -29,7 +29,7 @@
 
 
 namespace Py {
-    typedef ExtensionObject<Part::TopoShapePy> TopoShape;
+    using TopoShape = ExtensionObject<Part::TopoShapePy>;
     template<>
     bool TopoShape::accepts (PyObject *pyob) const;
 }

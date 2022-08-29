@@ -199,7 +199,7 @@ public:
   void setIconDone(const uint &index);
   
 protected:
-  typedef std::pair<QPushButton *, QLabel *> ButtonIconPairType;
+  using ButtonIconPairType = std::pair<QPushButton *, QLabel *>;
   std::vector<ButtonIconPairType> buttons;
   QPixmap *stepActive;
   QPixmap *stepDone;

@@ -98,7 +98,7 @@ private:
     float MaxY;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProvider2DObject> ViewProvider2DObjectPython;
+using ViewProvider2DObjectPython = Gui::ViewProviderPythonFeatureT<ViewProvider2DObject>;
 
 } // namespace PartGui
 

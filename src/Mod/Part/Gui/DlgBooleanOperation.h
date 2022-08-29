@@ -35,7 +35,7 @@ class Property;
 }
 namespace PartGui {
 
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 class Ui_DlgBooleanOperation;
 class DlgBooleanOperation : public QWidget
 {

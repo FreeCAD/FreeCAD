@@ -27,7 +27,7 @@
 
 namespace PartGui {
 class Ui_DlgPartCylinder;
-typedef std::shared_ptr<Ui_DlgPartCylinder> Ui_DlgPartCylinderPtr;
+using Ui_DlgPartCylinderPtr = std::shared_ptr<Ui_DlgPartCylinder>;
 
 class DlgPartCylinderImp : public Gui::LocationDialogUiImp
 {
