@@ -61,7 +61,7 @@ public:
     PyObject *getPyObject() override;
 };
 
-typedef App::FeaturePythonT<FemResultObject> FemResultObjectPython;
+using FemResultObjectPython = App::FeaturePythonT<FemResultObject>;
 
 
 } //namespace Fem

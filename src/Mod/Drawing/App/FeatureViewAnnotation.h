@@ -64,7 +64,7 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<FeatureViewAnnotation> FeatureViewAnnotationPython;
+using FeatureViewAnnotationPython = App::FeaturePythonT<FeatureViewAnnotation>;
 
 
 } //namespace Drawing

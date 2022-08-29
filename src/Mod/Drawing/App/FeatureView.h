@@ -67,7 +67,7 @@ protected:
     //@}
 };
 
-typedef App::FeaturePythonT<FeatureView> FeatureViewPython;
+using FeatureViewPython = App::FeaturePythonT<FeatureView>;
 
 } //namespace Drawing
 

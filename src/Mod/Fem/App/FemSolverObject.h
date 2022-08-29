@@ -54,7 +54,7 @@ public:
 
 };
 
-typedef App::FeaturePythonT<FemSolverObject> FemSolverObjectPython;
+using FemSolverObjectPython = App::FeaturePythonT<FemSolverObject>;
 
 } //namespace Fem
 

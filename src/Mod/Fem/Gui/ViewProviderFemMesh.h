@@ -166,7 +166,7 @@ private:
     class Private;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh> ViewProviderFemMeshPython;
+using ViewProviderFemMeshPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh>;
 
 
 } //namespace FemGui

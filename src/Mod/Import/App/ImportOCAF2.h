@@ -170,8 +170,8 @@ private:
 class ImportExport ExportOCAF2
 {
 public:
-    typedef std::function<std::map<std::string,App::Color>(
-            App::DocumentObject*, const char*)> GetShapeColorsFunc;
+    using GetShapeColorsFunc = std::function<std::map<std::string,App::Color>(
+            App::DocumentObject*, const char*)>;
     explicit ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func=GetShapeColorsFunc());
 
     void setExportHiddenObject(bool enable) {exportHidden=enable;}

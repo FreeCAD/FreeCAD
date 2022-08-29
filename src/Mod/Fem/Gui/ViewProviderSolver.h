@@ -64,7 +64,7 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderSolver> ViewProviderSolverPython;
+using ViewProviderSolverPython = Gui::ViewProviderPythonFeatureT<ViewProviderSolver>;
 
 } //namespace FemGui
 

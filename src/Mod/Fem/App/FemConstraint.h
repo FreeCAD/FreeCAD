@@ -243,7 +243,7 @@ protected:
     const Base::Vector3d getDirection(const App::PropertyLinkSub &direction);
 };
 
-typedef App::FeaturePythonT<Constraint> ConstraintPython;
+using ConstraintPython = App::FeaturePythonT<Constraint>;
 
 
 } //namespace Fem

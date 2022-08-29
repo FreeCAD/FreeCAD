@@ -61,7 +61,7 @@ public:
     //@}
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderDrawingView> ViewProviderDrawingViewPython;
+using ViewProviderDrawingViewPython = Gui::ViewProviderPythonFeatureT<ViewProviderDrawingView>;
 
 class DrawingGuiExport ViewProviderDrawingClip : public Gui::ViewProviderDocumentObjectGroup
 {

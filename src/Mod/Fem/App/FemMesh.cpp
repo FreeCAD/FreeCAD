@@ -1166,7 +1166,7 @@ protected:
     std::vector<int> elements;
 };
 
-typedef std::shared_ptr<NastranElement> NastranElementPtr;
+using NastranElementPtr = std::shared_ptr<NastranElement>;
 
 class GRIDElement : public NastranElement {
     void addToMesh(SMESHDS_Mesh* meshds) override {
@@ -2018,9 +2018,9 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // get all data --> Extract Nodes and Elements of the current SMESH datastructure
-    typedef std::map<int, Base::Vector3d> VertexMap;
-    typedef std::map<int, std::vector<int> > NodesMap;
-    typedef std::map<std::string, NodesMap> ElementsMap;
+    using VertexMap = std::map<int, Base::Vector3d>;
+    using NodesMap = std::map<int, std::vector<int> >;
+    using ElementsMap = std::map<std::string, NodesMap>;
 
     // get nodes
     VertexMap vertexMap;  // empty nodes map
@@ -2660,7 +2660,7 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
 {
     // define mapping between typestring and ElementType
     // TODO: remove code doubling by providing mappings for all FemMesh functions
-    typedef std::map<std::string, SMDSAbs_ElementType> string_eltype_map;
+    using string_eltype_map = std::map<std::string, SMDSAbs_ElementType>;
     string_eltype_map mapping;
     mapping["All"] = SMDSAbs_All;
     mapping["Node"] = SMDSAbs_Node;

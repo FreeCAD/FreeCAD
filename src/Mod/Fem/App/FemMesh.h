@@ -45,7 +45,7 @@ class TopoDS_Solid;
 namespace Fem
 {
 
-typedef std::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
+using SMESH_HypothesisPtr = std::shared_ptr<SMESH_Hypothesis>;
 
 /** The representation of a FemMesh
  */

@@ -108,7 +108,7 @@ private:
     ViewProviderFemHighlighter extension;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemAnalysis> ViewProviderFemAnalysisPython;
+using ViewProviderFemAnalysisPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemAnalysis>;
 
 } //namespace FemGui
 

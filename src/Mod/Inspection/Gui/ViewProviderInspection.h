@@ -47,7 +47,7 @@ namespace InspectionGui {
  */
 class ViewProviderInspection : public Gui::ViewProviderDocumentObject,
                                public Base::Observer<int>{
-    typedef ViewProviderDocumentObject inherited;
+    using inherited = ViewProviderDocumentObject;
 
     PROPERTY_HEADER_WITH_OVERRIDE(InspectionGui::ViewProviderInspection);
 
