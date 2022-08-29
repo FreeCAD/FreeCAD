@@ -83,7 +83,7 @@ private:
     void updatePlacement(bool transaction);
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder> ViewProviderSubShapeBinderPython;
+using ViewProviderSubShapeBinderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
 
 } // namespace PartDesignGui
 

@@ -57,7 +57,7 @@ protected:
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 };
 
-typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;
+using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;
 
 class FeatureAdditivePython : public FeatureAddSubPython
 {

@@ -342,9 +342,9 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
 void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
                               TopoDS_Compound &compoundOut) const
 {
-    typedef std::pair<TopoDS_Shape, Bnd_Box> ShapeBoundPair;
-    typedef std::list<ShapeBoundPair> PairList;
-    typedef std::vector<ShapeBoundPair> PairVector;
+    using ShapeBoundPair = std::pair<TopoDS_Shape, Bnd_Box>;
+    using PairList = std::list<ShapeBoundPair>;
+    using PairVector = std::vector<ShapeBoundPair>;
 
     PairList pairList;
 

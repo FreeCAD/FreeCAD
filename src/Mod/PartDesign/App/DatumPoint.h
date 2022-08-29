@@ -45,7 +45,7 @@ public:
 
     Base::Vector3d getPoint();
 
-    typedef Part::Datum Superclass;
+    using Superclass = Part::Datum;
 
 protected:
     void onChanged(const App::Property* prop) override;

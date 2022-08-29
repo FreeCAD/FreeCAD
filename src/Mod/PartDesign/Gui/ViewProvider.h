@@ -39,7 +39,7 @@ class TaskDlgFeatureParameters;
  */
 class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart, PartGui::ViewProviderAttachExtension
 {
-    typedef PartGui::ViewProviderPart inherited;
+    using inherited = PartGui::ViewProviderPart;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
 
 public:
@@ -90,7 +90,7 @@ protected:
     bool isSetTipIcon;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
+using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProvider>;
 
 } // namespace PartDesignGui
 

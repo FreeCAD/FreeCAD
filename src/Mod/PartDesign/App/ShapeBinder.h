@@ -71,14 +71,14 @@ private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     void onSettingDocument() override;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectDocumentChangedObject;
 };
 
 class PartDesignExport SubShapeBinder : public Part::Feature {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubShapeBinder);
 public:
-    typedef Part::Feature inherited;
+    using inherited = Part::Feature;
 
     SubShapeBinder();
     ~SubShapeBinder() override;
@@ -140,7 +140,7 @@ protected:
 
     void slotRecomputedObject(const App::DocumentObject& Obj);
 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connRecomputedObj;
     App::Document *contextDoc = nullptr;
 
@@ -151,7 +151,7 @@ protected:
     std::vector<App::DocumentObjectT> _CopiedObjs;
 };
 
-typedef App::FeaturePythonT<SubShapeBinder> SubShapeBinderPython;
+using SubShapeBinderPython = App::FeaturePythonT<SubShapeBinder>;
 
 } //namespace PartDesign
 
