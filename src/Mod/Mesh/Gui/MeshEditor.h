@@ -138,8 +138,8 @@ private Q_SLOTS:
     void closeBridge();
 
 private:
-    typedef std::vector<Mesh::PointIndex> TBoundary;
-    typedef boost::signals2::connection Connection;
+    using TBoundary = std::vector<Mesh::PointIndex>;
+    using Connection = boost::signals2::connection;
 
     static void fileHoleCallback(void * ud, SoEventCallback * n);
     void createPolygons();

@@ -514,7 +514,7 @@ protected:
                 return false;
         }
     };
-    typedef std::pair<FacetIndex, FacetIndex> MeshFacetPair;
+    using MeshFacetPair = std::pair<FacetIndex, FacetIndex>;
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */
     std::map<MeshEdge, MeshFacetPair, EdgeOrder> _map;
 };

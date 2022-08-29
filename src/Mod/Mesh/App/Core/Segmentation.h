@@ -35,7 +35,7 @@ class PlaneFit;
 class CylinderFit;
 class SphereFit;
 class MeshFacet;
-typedef std::vector<FacetIndex> MeshSegment;
+using MeshSegment = std::vector<FacetIndex>;
 
 class MeshExport MeshSurfaceSegment
 {
@@ -56,7 +56,7 @@ protected:
     std::vector<MeshSegment> segments;
     unsigned long minFacets;
 };
-typedef std::shared_ptr<MeshSurfaceSegment> MeshSurfaceSegmentPtr;
+using MeshSurfaceSegmentPtr = std::shared_ptr<MeshSurfaceSegment>;
 
 // --------------------------------------------------------
 

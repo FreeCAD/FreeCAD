@@ -32,9 +32,9 @@
 namespace MeshGui {
 
 class MeshGuiExport SoSFMeshPointArray : public SoSField {
-  typedef SoSField inherited;
+  using inherited = SoSField;
 
-  SO_SFIELD_HEADER(SoSFMeshPointArray, MeshCore::MeshPointArray*, MeshCore::MeshPointArray*);
+  SO_SFIELD_HEADER(SoSFMeshPointArray, MeshCore::MeshPointArray*, MeshCore::MeshPointArray*)
 
 public:
   static void initClass(void);
@@ -51,7 +51,7 @@ protected:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshVertexElement : public SoReplacedElement {
-  typedef SoReplacedElement inherited;
+  using inherited = SoReplacedElement;
 
   SO_ELEMENT_HEADER(SoFCMeshVertexElement);
 
@@ -72,7 +72,7 @@ protected:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshVertex : public SoNode {
-  typedef SoSField inherited;
+  using inherited = SoSField;
 
   SO_NODE_HEADER(SoFCMeshVertex);
 

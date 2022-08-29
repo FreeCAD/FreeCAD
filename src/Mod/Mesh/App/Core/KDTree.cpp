@@ -35,7 +35,7 @@ using namespace MeshCore;
 
 struct Point3d 
 {
-   typedef float value_type;
+   using value_type = float;
 
    Point3d(const Base::Vector3f& f, PointIndex i) : p(f), i(i)
    {
@@ -84,7 +84,7 @@ struct Point3d
    PointIndex i;
 };
 
-typedef KDTree::KDTree<3, Point3d> MyKDTree;
+using MyKDTree = KDTree::KDTree<3, Point3d>;
 
 class MeshKDTree::Private
 {

@@ -17,7 +17,7 @@
 #define _USE_MATH_DEFINES
 #endif
 
-typedef Base::Vector3f vec3f;
+using vec3f = Base::Vector3f;
 
 class SymmetricMatrix { 
 

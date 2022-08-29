@@ -95,7 +95,7 @@ bool MeshFixInvalids::Fixup()
 
 namespace MeshCore {
 
-typedef MeshPointArray::_TConstIterator VertexIterator;
+using VertexIterator = MeshPointArray::_TConstIterator;
 /*
  * When building up a mesh then usually the class MeshBuilder is used. This
  * class uses internally a std::set<MeshPoint> which uses the '<' operator of
@@ -271,7 +271,7 @@ bool MeshFixNaNPoints::Fixup()
 
 namespace MeshCore {
 
-typedef MeshFacetArray::_TConstIterator FaceIterator;
+using FaceIterator = MeshFacetArray::_TConstIterator;
 /*
  * The facet with the lowset index is regarded as 'less'.
  */
@@ -509,8 +509,8 @@ bool MeshFixDegeneratedFacets::Fixup()
 
 bool MeshRemoveNeedles::Fixup()
 {
-    typedef std::pair<unsigned long, int> FaceEdge; // (face, edge) pair
-    typedef std::pair<float, FaceEdge> FaceEdgePriority;
+    using FaceEdge = std::pair<unsigned long, int>; // (face, edge) pair
+    using FaceEdgePriority = std::pair<float, FaceEdge>;
 
     MeshTopoAlgorithm topAlg(_rclMesh);
     MeshRefPointToFacets vf_it(_rclMesh);
@@ -609,8 +609,8 @@ bool MeshRemoveNeedles::Fixup()
 
 bool MeshFixCaps::Fixup()
 {
-    typedef std::pair<unsigned long, int> FaceVertex; // (face, vertex) pair
-    typedef std::pair<float, FaceVertex> FaceVertexPriority;
+    using FaceVertex = std::pair<unsigned long, int>; // (face, vertex) pair
+    using FaceVertexPriority = std::pair<float, FaceVertex>;
 
     MeshTopoAlgorithm topAlg(_rclMesh);
     const MeshFacetArray &rclFAry = _rclMesh.GetFacets();

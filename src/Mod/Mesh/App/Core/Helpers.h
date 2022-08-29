@@ -89,7 +89,7 @@ struct MeshExport MeshHelpBuilderEdge
  */
 struct MeshEdgeBuilder: public std::vector<MeshHelpBuilderEdge>
 {
-  typedef std::vector<MeshHelpBuilderEdge>::iterator  _TIterator;
+  using _TIterator = std::vector<MeshHelpBuilderEdge>::iterator;
   inline void Add (PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd);
 };
 

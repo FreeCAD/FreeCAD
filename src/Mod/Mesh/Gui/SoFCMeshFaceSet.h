@@ -43,9 +43,9 @@ class Feature;
 namespace MeshGui {
 
 class MeshGuiExport SoSFMeshFacetArray : public SoSField {
-  typedef SoSField inherited;
+  using inherited = SoSField;
 
-  SO_SFIELD_HEADER(SoSFMeshFacetArray, MeshCore::MeshFacetArray*, MeshCore::MeshFacetArray*);
+  SO_SFIELD_HEADER(SoSFMeshFacetArray, MeshCore::MeshFacetArray*, MeshCore::MeshFacetArray*)
 
 public:
   static void initClass(void);
@@ -62,7 +62,7 @@ protected:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshFacetElement : public SoReplacedElement {
-  typedef SoReplacedElement inherited;
+  using inherited = SoReplacedElement;
 
   SO_ELEMENT_HEADER(SoFCMeshFacetElement);
 
@@ -83,7 +83,7 @@ protected:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshFacet : public SoNode {
-  typedef SoSField inherited;
+  using inherited = SoSField;
 
   SO_NODE_HEADER(SoFCMeshFacet);
 
@@ -119,7 +119,7 @@ protected:
  * @author Werner Mayer
  */
 class MeshGuiExport SoFCMeshFaceSet : public SoShape {
-  typedef SoShape inherited;
+  using inherited = SoShape;
 
   SO_NODE_HEADER(SoFCMeshFaceSet);
     
@@ -151,7 +151,7 @@ private:
 
 private:
   // Force using the reference count mechanism.
-  virtual ~SoFCMeshFaceSet() {};
+  virtual ~SoFCMeshFaceSet() {}
   virtual void notify(SoNotList * list);
   Binding findMaterialBinding(SoState * const state) const;
   // Draw faces
@@ -170,7 +170,7 @@ private:
 // ------------------------------------------------------------
 
 class MeshGuiExport SoFCMeshOpenEdgeSet : public SoShape {
-  typedef SoShape inherited;
+  using inherited = SoShape;
 
   SO_NODE_HEADER(SoFCMeshOpenEdgeSet);
     
@@ -185,7 +185,7 @@ protected:
   virtual void generatePrimitives(SoAction *action);
 private:
   // Force using the reference count mechanism.
-  virtual ~SoFCMeshOpenEdgeSet() {};
+  virtual ~SoFCMeshOpenEdgeSet() {}
   void drawLines(const MeshCore::MeshPointArray *, const MeshCore::MeshFacetArray*) const ;
 };
 

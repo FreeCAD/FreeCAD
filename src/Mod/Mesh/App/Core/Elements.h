@@ -69,7 +69,7 @@ public:
 };
 
 /** MeshEdge just a pair of two point indices */
-typedef std::pair<PointIndex, PointIndex> MeshEdge;
+using MeshEdge = std::pair<PointIndex, PointIndex>;
 
 struct MeshExport EdgeCollapse
 {
@@ -567,7 +567,7 @@ public:
   unsigned long _ulProp; /**< Free usable property. */
 };
 
-typedef  std::vector<MeshPoint>  TMeshPointArray;
+using TMeshPointArray = std::vector<MeshPoint>;
 /**
  * Stores all data points of the mesh structure.
  */
@@ -575,8 +575,8 @@ class MeshExport MeshPointArray: public TMeshPointArray
 {
 public:
   // Iterator interface
-  typedef std::vector<MeshPoint>::iterator        _TIterator;
-  typedef std::vector<MeshPoint>::const_iterator  _TConstIterator;
+  using _TIterator = std::vector<MeshPoint>::iterator;
+  using _TConstIterator = std::vector<MeshPoint>::const_iterator;
 
   /** @name Construction */
   //@{
@@ -620,7 +620,7 @@ public:
   PointIndex GetOrAddIndex (const MeshPoint &rclPoint);
 };
 
-typedef std::vector<MeshFacet>  TMeshFacetArray;
+using TMeshFacetArray = std::vector<MeshFacet>;
 
 /**
  * Stores all facets of the mesh data-structure.
@@ -629,8 +629,8 @@ class MeshExport MeshFacetArray: public TMeshFacetArray
 {
 public:
     // Iterator interface
-    typedef std::vector<MeshFacet>::iterator        _TIterator;
-    typedef std::vector<MeshFacet>::const_iterator  _TConstIterator;
+    using _TIterator = std::vector<MeshFacet>::iterator;
+    using _TConstIterator = std::vector<MeshFacet>::const_iterator;
 
     /** @name Construction */
     //@{
@@ -1118,9 +1118,9 @@ template <class TCLASS>
 class MeshIsFlag
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
+    using first_argument_type = TCLASS;
+    using second_argument_type = typename TCLASS::TFlagType;
+    using result_type = bool;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { return rclElem.IsFlag(tFlag); }
 };
@@ -1132,9 +1132,9 @@ template <class TCLASS>
 class MeshIsNotFlag
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
+    using first_argument_type = TCLASS;
+    using second_argument_type = typename TCLASS::TFlagType;
+    using result_type = bool;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { return !rclElem.IsFlag(tFlag); }
 };
@@ -1146,9 +1146,9 @@ template <class TCLASS>
 class MeshSetFlag
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
+    using first_argument_type = TCLASS;
+    using second_argument_type = typename TCLASS::TFlagType;
+    using result_type = bool;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { rclElem.SetFlag(tFlag); return true; }
 };
@@ -1160,9 +1160,9 @@ template <class TCLASS>
 class MeshResetFlag
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
+    using first_argument_type = TCLASS;
+    using second_argument_type = typename TCLASS::TFlagType;
+    using result_type = bool;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { rclElem.ResetFlag(tFlag); return true; }
 };

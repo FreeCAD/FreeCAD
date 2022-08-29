@@ -328,7 +328,7 @@ void MeshFastBuilder::AddFacet (const MeshGeomFacet& facetPoints)
 
 void MeshFastBuilder::Finish ()
 {
-    typedef QVector<Private::Vertex>::size_type size_type;
+    using size_type = QVector<Private::Vertex>::size_type;
     QVector<Private::Vertex>& verts = p->verts;
     size_type ulCtPts = verts.size();
     for (size_type i=0; i < ulCtPts; ++i) {

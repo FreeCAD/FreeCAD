@@ -321,7 +321,7 @@ private:
     };
 
     // cache
-    typedef std::map<Base::Vector3f,PointIndex,Vertex_Less> tCache;
+    using tCache = std::map<Base::Vector3f,PointIndex,Vertex_Less>;
     tCache* _cache;
 };
 

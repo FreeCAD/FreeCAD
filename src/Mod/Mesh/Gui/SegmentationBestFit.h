@@ -49,7 +49,7 @@ public:
     virtual std::vector<float> getParameter(Points) const = 0;
 };
 
-typedef std::list<std::pair<QString, float> > ParameterList;
+using ParameterList = std::list<std::pair<QString, float> >;
 class ParametersDialog : public QDialog
 {
     Q_OBJECT

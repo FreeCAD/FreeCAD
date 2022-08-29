@@ -787,9 +787,9 @@ namespace MeshCore {
         };
         struct Property
         {
-            typedef std::pair<std::string, int> first_argument_type;
-            typedef std::string second_argument_type;
-            typedef bool result_type;
+            using first_argument_type = std::pair<std::string, int>;
+            using second_argument_type = std::string;
+            using result_type = bool;
 
             bool operator()(const std::pair<std::string, int>& x,
                             const std::string& y) const

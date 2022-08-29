@@ -91,7 +91,7 @@ public:
     using TFacePair = std::pair<FacetIndex, FacetIndex>;
     using TFacePairs = std::vector<TFacePair>;
 
-    // typedef needed for cross-section
+    // type def needed for cross-section
     using TPlane =  std::pair<Base::Vector3f, Base::Vector3f>;
     using TPolylines = std::list<std::vector<Base::Vector3f>>;
     using TRay = std::pair<Base::Vector3d, Base::Vector3d>;
@@ -406,7 +406,7 @@ public:
     const_facet_iterator facets_end() const
     { return const_facet_iterator(this, countFacets()); }
 
-    typedef std::vector<Segment>::const_iterator const_segment_iterator;
+    using const_segment_iterator = std::vector<Segment>::const_iterator;
     const_segment_iterator segments_begin() const
     { return _segments.begin(); }
     const_segment_iterator segments_end() const

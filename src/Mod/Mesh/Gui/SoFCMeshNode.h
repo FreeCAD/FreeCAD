@@ -35,7 +35,7 @@ class MeshObject;
 namespace MeshGui {
 
 class MeshGuiExport SoFCMeshNode : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCMeshNode);
 
@@ -62,7 +62,7 @@ protected:
 
 private:
     // Force using the reference count mechanism.
-    virtual ~SoFCMeshNode() {};
+    virtual ~SoFCMeshNode() {}
     virtual void notify(SoNotList * list);
     // Draw faces
     void drawFaces(SbBool needNormals) const;
@@ -80,7 +80,7 @@ private:
 // ------------------------------------------------------------
 
 class MeshGuiExport SoFCMeshOpenEdge : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCMeshOpenEdge);
     
@@ -96,7 +96,7 @@ protected:
     virtual void generatePrimitives(SoAction *action);
 private:
     // Force using the reference count mechanism.
-    virtual ~SoFCMeshOpenEdge() {};
+    virtual ~SoFCMeshOpenEdge() {}
     void drawLines() const ;
 
 private:

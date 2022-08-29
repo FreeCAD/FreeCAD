@@ -105,7 +105,7 @@ private:
     Base::SequencerLauncher* _seq;
 
     // keep an array of iterators pointing to the vertex inside the set to save memory
-    typedef std::pair<std::set<MeshPoint>::iterator, bool> MeshPointIterator;
+    using MeshPointIterator = std::pair<std::set<MeshPoint>::iterator, bool>;
     std::vector<MeshPointIterator> _pointsIterator;
     size_t _ptIdx;
 
@@ -189,7 +189,7 @@ private:
     MeshKernel& _meshKernel;
 
 public:
-    typedef int size_type;
+    using size_type = int;
     explicit MeshFastBuilder(MeshKernel &rclM);
     ~MeshFastBuilder();
 

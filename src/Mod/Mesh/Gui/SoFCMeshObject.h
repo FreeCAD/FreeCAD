@@ -34,16 +34,16 @@
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Mesh.h>
 
-typedef unsigned int GLuint;
-typedef int GLint;
-typedef float GLfloat;
+using GLuint = unsigned int;
+using GLint = int;
+using GLfloat = float;
 
 namespace MeshCore { class MeshFacetGrid; }
 
 namespace MeshGui {
 
 class MeshGuiExport SoSFMeshObject : public SoSField {
-    typedef SoSField inherited;
+    using inherited = SoSField;
 
     SO_SFIELD_HEADER(SoSFMeshObject, Base::Reference<const Mesh::MeshObject>, Base::Reference<const Mesh::MeshObject>)
 
@@ -57,7 +57,7 @@ private:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshObjectElement : public SoReplacedElement {
-    typedef SoReplacedElement inherited;
+    using inherited = SoReplacedElement;
 
     SO_ELEMENT_HEADER(SoFCMeshObjectElement);
 
@@ -78,7 +78,7 @@ protected:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshPickNode : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoFCMeshPickNode);
 
@@ -102,7 +102,7 @@ private:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshGridNode : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoFCMeshGridNode);
 
@@ -122,7 +122,7 @@ protected:
 // -------------------------------------------------------
 
 class MeshGuiExport SoFCMeshObjectNode : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoFCMeshObjectNode);
 
@@ -164,7 +164,7 @@ protected:
  * @author Werner Mayer
  */
 class MeshGuiExport SoFCMeshObjectShape : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCMeshObjectShape);
 
@@ -225,7 +225,7 @@ private:
 };
 
 class MeshGuiExport SoFCMeshSegmentShape : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCMeshSegmentShape);
 
@@ -252,7 +252,7 @@ private:
 
 private:
     // Force using the reference count mechanism.
-    ~SoFCMeshSegmentShape() override {};
+    ~SoFCMeshSegmentShape() override {}
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
     void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
@@ -261,7 +261,7 @@ private:
 };
 
 class MeshGuiExport SoFCMeshObjectBoundary : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCMeshObjectBoundary);
 
@@ -276,7 +276,7 @@ protected:
     void generatePrimitives(SoAction *action) override;
 private:
     // Force using the reference count mechanism.
-    ~SoFCMeshObjectBoundary() override {};
+    ~SoFCMeshObjectBoundary() override {}
     void drawLines(const Mesh::MeshObject *) const ;
 };
 

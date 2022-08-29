@@ -492,7 +492,7 @@ public:
     /**
      * WildMagic library uses function with this interface
      */
-    typedef double (*Function)(double,double,double);
+    using Function = double (*)(double,double,double);
     /**
      * The constructor expects an array of quadric coefficients.
      * @param pKoef Pointer to the quadric coefficients
