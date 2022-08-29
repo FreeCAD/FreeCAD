@@ -80,7 +80,7 @@ private:
     QPointer<SheetView> view;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderSheet> ViewProviderSheetPython;
+using ViewProviderSheetPython = Gui::ViewProviderPythonFeatureT<ViewProviderSheet>;
 
 } //namespace Spreadsheet
 
