@@ -49,7 +49,7 @@ public:
     PyObject *getPyObject() override;
 };
 
-typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;
+using DocumentObjectGroupPython = App::FeaturePythonT<DocumentObjectGroup>;
 
 
 } //namespace App

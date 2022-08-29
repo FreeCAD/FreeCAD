@@ -561,7 +561,7 @@ public:
     }
 
     App::Document* _document;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
 };
 
@@ -642,7 +642,7 @@ public:
 
     App::DocumentObject* object;
     bool indocument;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;

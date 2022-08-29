@@ -98,7 +98,7 @@ public:
     PyObject *getPyObject() override;
 };
 
-//typedef App::FeaturePythonT<Part> PartPython;
+//using PartPython = App::FeaturePythonT<Part>;
 
 } //namespace App
 

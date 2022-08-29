@@ -33,8 +33,8 @@
 #include <Base/Parameter.h>
 
 // forward declarations
-typedef struct _object PyObject;
-typedef struct PyMethodDef PyMethodDef;
+using PyObject = struct _object;
+using PyMethodDef = struct PyMethodDef;
 
 namespace Base
 {

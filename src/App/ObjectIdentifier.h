@@ -346,7 +346,7 @@ public:
     const std::string &getSubObjectName(bool newStyle) const;
     const std::string &getSubObjectName() const;
 
-    typedef std::map<std::pair<App::DocumentObject*,std::string>,std::string> SubNameMap;
+    using SubNameMap = std::map<std::pair<App::DocumentObject*,std::string>,std::string>;
     void importSubNames(const SubNameMap &subNameMap);
 
     bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
@@ -363,7 +363,7 @@ public:
      * the property may not exist at the time this ObjectIdentifier is
      * constructed.
      */
-    typedef std::map<App::DocumentObject *, std::set<std::string> > Dependencies;
+    using Dependencies = std::map<App::DocumentObject *, std::set<std::string> >;
 
     /** Get dependencies of this object identifier
      *
@@ -516,8 +516,8 @@ namespace std {
 
 template<>
 struct hash<App::ObjectIdentifier> {
-    typedef App::ObjectIdentifier argument_type;
-    typedef std::size_t result_type;
+    using argument_type = App::ObjectIdentifier;
+    using result_type = std::size_t;
     inline result_type operator()(argument_type const& s) const {
         return s.hash();
     }

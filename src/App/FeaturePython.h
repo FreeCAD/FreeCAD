@@ -150,7 +150,7 @@ private:
         FlagMax,
     };
 
-    typedef std::bitset<FlagMax> Flags;
+    using Flags = std::bitset<FlagMax>;
     mutable Flags _Flags;
 
 public:
@@ -355,8 +355,8 @@ private:
 };
 
 // Special Feature-Python classes
-typedef FeaturePythonT<DocumentObject> FeaturePython;
-typedef FeaturePythonT<GeoFeature    > GeometryPython;
+using FeaturePython  = FeaturePythonT<DocumentObject>;
+using GeometryPython = FeaturePythonT<GeoFeature    >;
 
 } //namespace App
 

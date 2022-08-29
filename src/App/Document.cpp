@@ -133,7 +133,7 @@ using namespace zipios;
 
 namespace fs = boost::filesystem;
 
-// typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
+// using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
 using DependencyList = boost::adjacency_list <
 boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
 boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
@@ -307,16 +307,16 @@ void Document::writeDependencyGraphViz(std::ostream &out)
 
 void Document::exportGraphviz(std::ostream& out) const
 {
-    /* Typedefs for a graph with graphviz attributes */
-    typedef std::map<std::string, std::string> GraphvizAttributes;
-    typedef boost::subgraph< adjacency_list<vecS, vecS, directedS,
-            property<vertex_attribute_t, GraphvizAttributes>,
-            property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
-            property<graph_name_t, std::string,
-            property<graph_graph_attribute_t,  GraphvizAttributes,
-            property<graph_vertex_attribute_t, GraphvizAttributes,
-            property<graph_edge_attribute_t,   GraphvizAttributes>
-            > > > > > Graph;
+    /* Type defs for a graph with graphviz attributes */
+    using GraphvizAttributes = std::map<std::string, std::string>;
+    using Graph = boost::subgraph< adjacency_list<vecS, vecS, directedS,
+                  property<vertex_attribute_t, GraphvizAttributes>,
+                  property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
+                  property<graph_name_t, std::string,
+                  property<graph_graph_attribute_t,  GraphvizAttributes,
+                  property<graph_vertex_attribute_t, GraphvizAttributes,
+                  property<graph_edge_attribute_t,   GraphvizAttributes>
+                  > > > > >;
 
     /**
      * @brief The GraphCreator class
@@ -774,7 +774,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
         }
 
-        typedef std::unordered_multimap<Vertex, Edge> EdgeMap;
+        using EdgeMap = std::unordered_multimap<Vertex, Edge>;
 
         void removeEdges(EdgeMap & in_edges,
                          EdgeMap & out_edges,

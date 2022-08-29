@@ -38,7 +38,7 @@ namespace App {
 class Branding
 {
 public:
-    typedef QMap<std::string, std::string> XmlConfig;
+    using XmlConfig = QMap<std::string, std::string>;
     Branding();
 
     bool readFile(const QString& fn);

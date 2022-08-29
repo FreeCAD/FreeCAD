@@ -51,7 +51,7 @@ namespace App
 class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
-    typedef App::DocumentObjectExtension inherited;
+    using inherited = App::DocumentObjectExtension;
 
 public:
     LinkBaseExtension();
@@ -217,7 +217,7 @@ public:
 
     virtual const std::vector<PropInfo> &getPropertyInfo() const;
 
-    typedef std::map<std::string, PropInfo> PropInfoMap;
+    using PropInfoMap = std::map<std::string, PropInfo>;
     virtual const PropInfoMap &getPropertyInfoMap() const;
 
     enum LinkCopyOnChangeType {
@@ -313,7 +313,7 @@ public:
     DocumentObject *getTrueLinkedObject(bool recurse,
             Base::Matrix4D *mat=nullptr,int depth=0, bool noElement=false) const;
 
-    typedef std::map<const Property*,std::pair<LinkBaseExtension*,int> > LinkPropMap;
+    using LinkPropMap = std::map<const Property*,std::pair<LinkBaseExtension*,int> >;
 
     bool hasPlacement() const {
         return getLinkPlacementProperty() || getPlacementProperty();
@@ -398,14 +398,14 @@ protected:
 
 ///////////////////////////////////////////////////////////////////////////
 
-typedef ExtensionPythonT<LinkBaseExtension> LinkBaseExtensionPython;
+using LinkBaseExtensionPython = ExtensionPythonT<LinkBaseExtension>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkExtension : public LinkBaseExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
-    typedef LinkBaseExtension inherited;
+    using inherited = LinkBaseExtension;
 
 public:
     LinkExtension();
@@ -509,14 +509,14 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////
 
-typedef ExtensionPythonT<LinkExtension> LinkExtensionPython;
+using LinkExtensionPython = ExtensionPythonT<LinkExtension>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport Link : public App::DocumentObject, public App::LinkExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::Link);
-    typedef App::DocumentObject inherited;
+    using inherited = App::DocumentObject;
 public:
 
 #define LINK_PARAMS_LINK \
@@ -556,13 +556,13 @@ public:
     bool canLinkProperties() const override;
 };
 
-typedef App::FeaturePythonT<Link> LinkPython;
+using LinkPython = App::FeaturePythonT<Link>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkElement : public App::DocumentObject, public App::LinkBaseExtension {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkElement);
-    typedef App::DocumentObject inherited;
+    using inherited = App::DocumentObject;
 public:
 
 #define LINK_PARAMS_ELEMENT \
@@ -599,13 +599,13 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<LinkElement> LinkElementPython;
+using LinkElementPython = App::FeaturePythonT<LinkElement>;
 
 ///////////////////////////////////////////////////////////////////////////
 
 class AppExport LinkGroup : public App::DocumentObject, public App::LinkBaseExtension {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkGroup);
-    typedef App::DocumentObject inherited;
+    using inherited = App::DocumentObject;
 public:
 
 #define LINK_PARAMS_GROUP \
@@ -630,7 +630,7 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
+using LinkGroupPython = App::FeaturePythonT<LinkGroup>;
 
 } //namespace App
 

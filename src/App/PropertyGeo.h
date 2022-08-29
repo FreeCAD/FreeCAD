@@ -199,7 +199,7 @@ class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-    typedef PropertyListsT<Base::Vector3d> inherited;
+    using inherited = PropertyListsT<Base::Vector3d>;
 
 public:
     /**

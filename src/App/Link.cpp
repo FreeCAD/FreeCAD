@@ -49,7 +49,7 @@ using namespace App;
 using namespace Base;
 namespace bp = boost::placeholders;
 
-typedef boost::iterator_range<const char*> CharRange;
+using CharRange = boost::iterator_range<const char*>;
 
 ////////////////////////////////////////////////////////////////////////
 

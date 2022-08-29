@@ -798,7 +798,7 @@ public:
 class AppExport PropertyStringList: public PropertyListsT<std::string>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    typedef PropertyListsT<std::string> inherited;
+    using inherited = PropertyListsT<std::string>;
 
 public:
 
@@ -891,7 +891,7 @@ private:
 class AppExport PropertyBoolList : public PropertyListsT<bool,boost::dynamic_bitset<> >
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    typedef PropertyListsT<bool,boost::dynamic_bitset<> > inherited;
+    using inherited = PropertyListsT<bool, boost::dynamic_bitset<> >;
 
 public:
     PropertyBoolList();
@@ -1105,7 +1105,7 @@ protected:
  */
 class AppExport PropertyPersistentObject: public PropertyString {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    typedef PropertyString inherited;
+    using inherited = PropertyString;
 public:
     PyObject *getPyObject() override;
     void setValue(const char* type) override;

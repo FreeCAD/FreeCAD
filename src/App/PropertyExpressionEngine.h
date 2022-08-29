@@ -77,7 +77,7 @@ public:
     Property *CopyOnLinkReplace(const App::DocumentObject *parent,
                         App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    typedef std::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
+    using ValidatorFunc = std::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)>;
 
     /**
      * @brief The ExpressionInfo struct encapsulates an expression.
@@ -176,13 +176,13 @@ protected:
 
 private:
 
-    typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS > DiGraph;
-    typedef std::pair<int, int> Edge;
+    using DiGraph = boost::adjacency_list< boost::listS, boost::vecS, boost::directedS >;
+    using Edge = std::pair<int, int>;
     // Note: use std::map instead of unordered_map to keep the binding order stable
     #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    typedef std::map<App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    using ExpressionMap = std::map<App::ObjectIdentifier, ExpressionInfo>;
     #else
-    typedef std::map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    using ExpressionMap = std::map<const App::ObjectIdentifier, ExpressionInfo>;
     #endif
 
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);

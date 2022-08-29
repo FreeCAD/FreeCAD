@@ -378,7 +378,7 @@ static inline bool essentiallyInteger(double a, long &l) {
 // without holding Python global lock
 struct PyObjectWrapper {
 public:
-    typedef std::shared_ptr<PyObjectWrapper> Pointer;
+    using Pointer = std::shared_ptr<PyObjectWrapper>;
 
     explicit PyObjectWrapper(PyObject *obj):pyobj(obj) {
         Py::_XINCREF(pyobj);

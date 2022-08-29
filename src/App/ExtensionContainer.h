@@ -114,7 +114,7 @@ class AppExport ExtensionContainer : public App::PropertyContainer
 
 public:
 
-    typedef std::map<Base::Type, App::Extension*>::iterator ExtensionIterator;
+    using ExtensionIterator = std::map<Base::Type, App::Extension*>::iterator;
 
     ExtensionContainer();
     ~ExtensionContainer() override;

@@ -40,7 +40,7 @@ class DocumentObject;
 class Document;
 
 class DocInfo;
-typedef std::shared_ptr<DocInfo> DocInfoPtr;
+using DocInfoPtr = std::shared_ptr<DocInfo>;
 
 class PropertyXLink;
 
@@ -99,7 +99,7 @@ class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    typedef std::pair<std::string,std::string> ShadowSub;
+    using ShadowSub = std::pair<std::string,std::string>;
 
     PropertyLinkBase();
     ~PropertyLinkBase() override;
@@ -674,7 +674,7 @@ class AppExport PropertyLinkList :
     public PropertyListsT<DocumentObject*,std::vector<DocumentObject*>, PropertyLinkListBase>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    typedef PropertyListsT<DocumentObject*,std::vector<DocumentObject*>,PropertyLinkListBase> inherited;
+    using inherited = PropertyListsT<DocumentObject*,std::vector<DocumentObject*>,PropertyLinkListBase>;
 
 public:
     /**
@@ -899,7 +899,7 @@ class AppExport PropertyLinkSubList : public PropertyLinkBase
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    typedef std::pair<DocumentObject*, std::vector<std::string> > SubSet;
+    using SubSet = std::pair<DocumentObject*, std::vector<std::string> >;
     /**
      * A constructor.
      * A more elaborate description of the constructor.
@@ -1198,7 +1198,7 @@ class AppExport PropertyXLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-    typedef typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange atomic_change;
+    using atomic_change = typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange;
     friend atomic_change;
 
 public:

@@ -50,7 +50,7 @@ namespace App
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
-    typedef App::GroupExtension inherited;
+    using inherited = App::GroupExtension;
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeatureGroupExtension);
 
 public:
@@ -138,7 +138,7 @@ private:
  
 };
 
-typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
+using GeoFeatureGroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>>;
 
 
 } //namespace App

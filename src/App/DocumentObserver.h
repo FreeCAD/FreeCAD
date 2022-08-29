@@ -28,6 +28,7 @@
 #include <boost_signals2.hpp>
 #include <memory>
 #include <set>
+#include <FCGlobal.h>
 
 
 namespace App
@@ -501,7 +502,7 @@ protected:
 
 private:
     App::Document* _document;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectApplicationActivateDocument;
@@ -522,7 +523,7 @@ class AppExport DocumentObjectObserver : public DocumentObserver
 {
 
 public:
-    typedef std::set<App::DocumentObject*>::const_iterator const_iterator;
+    using const_iterator = std::set<App::DocumentObject*>::const_iterator;
 
     /// Constructor
     DocumentObjectObserver();

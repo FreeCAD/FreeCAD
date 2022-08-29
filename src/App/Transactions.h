@@ -89,7 +89,7 @@ public:
 
 private:
     int transID;
-    typedef std::pair<const TransactionalObject*, TransactionObject*> Info;
+    using Info = std::pair<const TransactionalObject*, TransactionObject*>;
     bmi::multi_index_container<
         Info,
         bmi::indexed_by<

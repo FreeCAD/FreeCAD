@@ -45,13 +45,13 @@ class DocumentObject;
 class Expression;
 class Document;
 
-typedef std::unique_ptr<Expression> ExpressionPtr;
+using ExpressionPtr = std::unique_ptr<Expression>;
 
 AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
 AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = nullptr);
 
 // Map of depending objects to a map of depending property name to the full referencing object identifier
-typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > > ExpressionDeps;
+using ExpressionDeps = std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > >;
 
 class AppExport ExpressionVisitor {
 public:
@@ -172,7 +172,7 @@ public:
 
     virtual void addComponent(Component* component);
 
-    typedef std::vector<Component*> ComponentList;
+    using ComponentList = std::vector<Component*>;
 
     static Component *createComponent(const std::string &n);
     static Component *createComponent(Expression *e1, Expression *e2=nullptr,
