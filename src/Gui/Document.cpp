@@ -102,7 +102,7 @@ struct DocumentP
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectCngObject;
@@ -127,7 +127,7 @@ struct DocumentP
     Connection connectChangePropertyEditor;
     Connection connectChangeDocument;
 
-    typedef boost::signals2::shared_connection_block ConnectionBlock;
+    using ConnectionBlock = boost::signals2::shared_connection_block;
     ConnectionBlock connectActObjectBlocker;
     ConnectionBlock connectChangeDocumentBlocker;
 };

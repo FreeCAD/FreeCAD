@@ -42,7 +42,7 @@
 using namespace Gui::Dialog;
 
 namespace Gui { namespace Dialog {
-typedef std::vector< std::pair<QLatin1String, QString> > GroupMap;
+using GroupMap = std::vector< std::pair<QLatin1String, QString> >;
 
 struct GroupMap_find {
     const QLatin1String& item;

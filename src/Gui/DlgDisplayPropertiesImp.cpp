@@ -53,7 +53,7 @@ namespace bp = boost::placeholders;
 
 class DlgDisplayPropertiesImp::Private
 {
-    typedef boost::signals2::connection DlgDisplayPropertiesImp_Connection;
+    using DlgDisplayPropertiesImp_Connection = boost::signals2::connection;
 public:
     Ui::DlgDisplayProperties ui;
     bool floating;

@@ -38,7 +38,7 @@
 
 
 class GuiExport SmSwitchboard : public SoGroup {
-  typedef SoGroup inherited;
+  using inherited = SoGroup;
   SO_NODE_HEADER(SmSwitchboard);
 
 public:

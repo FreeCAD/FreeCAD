@@ -41,7 +41,7 @@ private:
     static void createBitmap(const std::string&, int px, int width, int height, const char* marker);
 
 private:
-    typedef std::pair<std::string, int> Marker;
+    using Marker = std::pair<std::string, int>;
     static std::map<Marker, int> markerIndex;
 };
 

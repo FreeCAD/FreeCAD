@@ -43,7 +43,7 @@ class PropertyModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    typedef std::vector< std::pair< std::string, std::vector<App::Property*> > > PropertyList;
+    using PropertyList = std::vector< std::pair< std::string, std::vector<App::Property*> > >;
 
     PropertyModel(QObject* parent);
     ~PropertyModel() override;

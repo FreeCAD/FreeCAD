@@ -289,7 +289,7 @@ public:
 };
 
 class GuiExport InventorNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -304,7 +304,7 @@ protected:
 };
 
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -321,7 +321,7 @@ private:
 };
 
 class GuiExport RevitNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -338,7 +338,7 @@ private:
 };
 
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -355,7 +355,7 @@ private:
 };
 
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -379,7 +379,7 @@ protected:
 };
 
 class GuiExport TouchpadNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -393,7 +393,7 @@ protected:
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -407,7 +407,7 @@ protected:
 };
 
 class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -421,7 +421,7 @@ protected:
 };
 
 class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
+    using inherited = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

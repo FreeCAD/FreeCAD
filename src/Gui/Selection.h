@@ -260,7 +260,7 @@ private:
     void _onSelectionChanged(const SelectionChanges& msg);
 
 private:
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectSelection;
     std::string filterDocName;
     std::string filterObjName;
@@ -721,7 +721,7 @@ protected:
     mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
 
-    typedef std::set<App::SubObjectT> SelStackItem;
+    using SelStackItem = std::set<App::SubObjectT>;
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 

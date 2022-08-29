@@ -46,7 +46,7 @@
 #include "SpaceballEvent.h"
 
 
-typedef std::vector<Base::Reference<ParameterGrp> > GroupVector;
+using GroupVector = std::vector<Base::Reference<ParameterGrp> >;
 
 using namespace Gui::Dialog;
 

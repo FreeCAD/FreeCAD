@@ -42,7 +42,7 @@ namespace Gui {
  * @author Werner Mayer
  */
 class GuiExport SoTextLabel : public SoText2 {
-    typedef SoText2 inherited;
+    using inherited = SoText2;
 
     SO_NODE_HEADER(SoTextLabel);
 
@@ -64,7 +64,7 @@ protected:
  * @author Werner Mayer
  */
 class GuiExport SoColorBarLabel : public SoText2 {
-    typedef SoText2 inherited;
+    using inherited = SoText2;
 
     SO_NODE_HEADER(SoColorBarLabel);
 
@@ -77,7 +77,7 @@ protected:
 };
 
 class GuiExport SoStringLabel : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoStringLabel);
 
@@ -91,12 +91,12 @@ public:
     SoSFInt32  size;
 
 protected:
-    ~SoStringLabel() override {};
+    ~SoStringLabel() override {}
     void GLRender(SoGLRenderAction *action) override;
 };
 
 class GuiExport SoFrameLabel : public SoImage {
-    typedef SoImage inherited;
+    using inherited = SoImage;
 
     SO_NODE_HEADER(SoFrameLabel);
 
@@ -118,7 +118,7 @@ public:
   //SoSFImage  image;
 
 protected:
-    ~SoFrameLabel() override {};
+    ~SoFrameLabel() override {}
     void notify(SoNotList * list) override;
     void GLRender(SoGLRenderAction *action) override;
 

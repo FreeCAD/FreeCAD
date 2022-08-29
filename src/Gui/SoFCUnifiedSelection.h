@@ -55,7 +55,7 @@ class ViewProviderDocumentObject;
  *  \author Jürgen Riegel
  */
 class GuiExport SoFCUnifiedSelection : public SoSeparator {
-    typedef SoSeparator inherited;
+    using inherited = SoSeparator;
 
     SO_NODE_HEADER(Gui::SoFCUnifiedSelection);
 
@@ -131,7 +131,7 @@ private:
 };
 
 class GuiExport SoFCPathAnnotation : public SoSeparator {
-    typedef SoSeparator inherited;
+    using inherited = SoSeparator;
 
     SO_NODE_HEADER(Gui::SoFCPathAnnotation);
 public:
@@ -160,7 +160,7 @@ protected:
 };
 
 class GuiExport SoFCSeparator : public SoSeparator {
-    typedef SoSeparator inherited;
+    using inherited = SoSeparator;
 
     SO_NODE_HEADER(Gui::SoFCSeparator);
 
@@ -184,7 +184,7 @@ private:
 };
 
 class GuiExport SoFCSelectionRoot : public SoFCSeparator {
-    typedef SoFCSeparator inherited;
+    using inherited = SoFCSeparator;
 
     SO_NODE_HEADER(Gui::SoFCSelectionRoot);
 
@@ -350,7 +350,7 @@ protected:
         bool operator()(const Stack &a, const Stack &b) const;
     };
 
-    typedef std::map<Stack,SoFCSelectionContextBasePtr,StackComp> ContextMap;
+    using ContextMap = std::map<Stack,SoFCSelectionContextBasePtr,StackComp>;
     ContextMap contextMap;
     ContextMap contextMap2;//holding secondary context
 
@@ -363,8 +363,8 @@ protected:
         bool hideAll = false;
         static MergeFunc merge;
     };
-    typedef std::shared_ptr<SelContext> SelContextPtr;
-    typedef std::vector<SbColor> ColorStack;
+    using SelContextPtr = std::shared_ptr<SelContext>;
+    using ColorStack = std::vector<SbColor>;
     static ColorStack SelColorStack;
     static ColorStack HlColorStack;
     static SoFCSelectionRoot *ShapeColorNode;

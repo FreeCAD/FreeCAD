@@ -38,7 +38,7 @@ class SoMaterialBinding;
 namespace Gui {
 
 class LinkInfo;
-typedef boost::intrusive_ptr<LinkInfo> LinkInfoPtr;
+using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
 
 class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
     EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -181,7 +181,7 @@ protected:
 class GuiExport ViewProviderLink : public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLink);
-    typedef ViewProviderDocumentObject inherited;
+    using inherited = ViewProviderDocumentObject;
 
 public:
     App::PropertyBool OverrideMaterial;
@@ -333,7 +333,7 @@ protected:
     mutable qint64 overlayCacheKey;
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;
+using ViewProviderLinkPython = ViewProviderPythonFeatureT<ViewProviderLink>;
 
 } //namespace Gui
 

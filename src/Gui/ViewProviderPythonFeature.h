@@ -185,7 +185,7 @@ private:
         FC_PY_VIEW_OBJECT
         FlagMax,
     };
-    typedef std::bitset<FlagMax> Flags;
+    using Flags = std::bitset<FlagMax>;
     mutable Flags _Flags;
 
 public:
@@ -623,8 +623,8 @@ private:
 };
 
 // Special Feature-Python classes
-typedef ViewProviderPythonFeatureT<ViewProviderDocumentObject> ViewProviderPythonFeature;
-typedef ViewProviderPythonFeatureT<ViewProviderGeometryObject> ViewProviderPythonGeometry;
+using ViewProviderPythonFeature  = ViewProviderPythonFeatureT<ViewProviderDocumentObject>;
+using ViewProviderPythonGeometry = ViewProviderPythonFeatureT<ViewProviderGeometryObject>;
 
 } // namespace Gui
 

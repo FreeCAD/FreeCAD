@@ -37,7 +37,7 @@ namespace Gui {
  * @author Werner Mayer
  */
 class GuiExport SoFCInteractiveElement : public SoReplacedElement {
-  typedef SoReplacedElement inherited;
+  using inherited = SoReplacedElement;
 
   SO_ELEMENT_HEADER(SoFCInteractiveElement);
 
@@ -58,7 +58,7 @@ private:
 };
 
 class GuiExport SoGLWidgetElement : public SoElement {
-  typedef SoElement inherited;
+  using inherited = SoElement;
 
   SO_ELEMENT_HEADER(SoGLWidgetElement);
 
@@ -83,7 +83,7 @@ protected:
 };
 
 class GuiExport SoGLRenderActionElement : public SoElement {
-  typedef SoElement inherited;
+  using inherited = SoElement;
 
   SO_ELEMENT_HEADER(SoGLRenderActionElement);
 
@@ -108,7 +108,7 @@ protected:
 };
 
 class GuiExport SoGLWidgetNode : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(SoGLWidgetNode);
 
@@ -126,7 +126,7 @@ protected:
 };
 
 class GuiExport SoGLVBOActivatedElement : public SoElement {
-  typedef SoElement inherited;
+  using inherited = SoElement;
 
   SO_ELEMENT_HEADER(SoGLVBOActivatedElement);
 

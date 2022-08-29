@@ -242,7 +242,7 @@ struct TimingInfo {
 
 // ---------------------------------------------------------------------------
 
-typedef std::set<DocumentObjectItem*> DocumentObjectItems;
+using DocumentObjectItems = std::set<DocumentObjectItem*>;
 
 class Gui::DocumentObjectData {
 public:
@@ -257,7 +257,7 @@ public:
     std::string label;
     std::string label2;
 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;

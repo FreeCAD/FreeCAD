@@ -193,7 +193,7 @@
 class QWidget;
 class QByteArray;
 
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 namespace App
 {

@@ -244,7 +244,7 @@ class GuiExport SelectModule : public QDialog
     Q_OBJECT
 
 public:
-    typedef QMap<QString, QString> Dict;
+    using Dict = QMap<QString, QString>;
 
     SelectModule (const QString& type, const Dict&, QWidget* parent);
     ~SelectModule() override;

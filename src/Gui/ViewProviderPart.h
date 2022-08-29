@@ -56,7 +56,7 @@ protected:
 
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
+using ViewProviderPartPython = ViewProviderPythonFeatureT<ViewProviderPart>;
 
 } // namespace Gui
 

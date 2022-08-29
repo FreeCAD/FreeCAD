@@ -30,7 +30,7 @@
 namespace Gui {
 
 class GuiExport SoAutoZoomTranslation : public SoTransformation  {
-    typedef SoTransformation  inherited;
+    using inherited = SoTransformation;
 
     SO_NODE_HEADER(SoAutoZoomTranslation);
 

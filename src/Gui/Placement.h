@@ -87,8 +87,8 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationUi<Ui_Placement> Ui_PlacementComp;
-    typedef boost::signals2::connection Connection;
+    using Ui_PlacementComp = Gui::LocationUi<Ui_Placement>;
+    using Connection = boost::signals2::connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
     Connection connectAct;

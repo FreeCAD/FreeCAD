@@ -188,7 +188,7 @@ private:
 
 // ------------------------------------------------------------------------------
 
-typedef QPair<QString, bool> CheckListItem;
+using CheckListItem = QPair<QString, bool>;
 class Ui_DlgTreeWidget;
 
 /**

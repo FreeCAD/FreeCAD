@@ -149,7 +149,7 @@ private:
     //@}
 
 private:
-    typedef std::pair<std::string, std::list<std::string>> TGroupPages;
+    using TGroupPages = std::pair<std::string, std::list<std::string>>;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
     struct Group {
         std::string iconName;

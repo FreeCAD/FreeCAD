@@ -220,7 +220,7 @@ public:
 class NS::NaviMachine : public sc::state_machine<NS::NaviMachine, NS::IdleState>
 {
 public:
-    typedef sc::state_machine<NS::NaviMachine, NS::IdleState> superclass;
+    using superclass = sc::state_machine<NS::NaviMachine, NS::IdleState>;
 
     explicit NaviMachine(NS& ns) : ns(ns) {}
     NS& ns;
@@ -236,7 +236,7 @@ public:
 class NS::IdleState : public sc::state<NS::IdleState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
     explicit IdleState(my_context ctx):my_base(ctx)
     {
@@ -339,7 +339,7 @@ public:
 class NS::AwaitingMoveState : public sc::state<NS::AwaitingMoveState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -480,7 +480,7 @@ public:
 class NS::RotateState : public sc::state<NS::RotateState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -522,7 +522,7 @@ public:
 class NS::PanState : public sc::state<NS::PanState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -569,7 +569,7 @@ public:
 class NS::StickyPanState : public sc::state<NS::StickyPanState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -616,7 +616,7 @@ public:
 class NS::TiltState : public sc::state<NS::TiltState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -664,7 +664,7 @@ public:
 class NS::GestureState : public sc::state<NS::GestureState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -750,7 +750,7 @@ public:
 class NS::AwaitingReleaseState : public sc::state<NS::AwaitingReleaseState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 public:
     explicit AwaitingReleaseState(my_context ctx):my_base(ctx)
@@ -800,7 +800,7 @@ public:
 class NS::InteractState : public sc::state<NS::InteractState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 public:
     explicit InteractState(my_context ctx):my_base(ctx)

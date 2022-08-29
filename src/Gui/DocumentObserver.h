@@ -355,7 +355,7 @@ private:
     virtual void slotDeleteDocument(const Document& Doc);
 
 private:
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;

@@ -572,7 +572,7 @@ PyObject* ViewProvider::getPyObject()
 #include <boost/graph/topological_sort.hpp>
 
 namespace Gui {
-typedef boost::adjacency_list <
+using Graph = boost::adjacency_list <
         boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
         boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
         boost::directedS,      // class DirectedS     : This is a directed graph
@@ -580,9 +580,9 @@ typedef boost::adjacency_list <
         boost::no_property,    // class EdgeProperty:
         boost::no_property,    // class GraphProperty:
         boost::listS           // class EdgeListS:
-> Graph;
-typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
-typedef boost::graph_traits<Graph>::edge_descriptor Edge;
+>;
+using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+using Edge = boost::graph_traits<Graph>::edge_descriptor;
 
 void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* node)
 {

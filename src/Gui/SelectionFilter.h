@@ -225,7 +225,7 @@ struct Node_Object
     Node_Slice  *Slice;
     std::string SubName;
 };
-typedef std::shared_ptr<Node_Object> Node_ObjectPtr;
+using Node_ObjectPtr = std::shared_ptr<Node_Object>;
 
 struct Node_Block
 {

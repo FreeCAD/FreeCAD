@@ -86,7 +86,7 @@ namespace Gui
     private:
       Model(){}
       //documentObject slots.
-      typedef boost::signals2::connection Connection;
+      using Connection = boost::signals2::connection;
       Connection connectNewObject;
       Connection connectDelObject;
       Connection connectChgObject;
@@ -162,7 +162,7 @@ namespace Gui
       
       //filters
       void setupFilters();
-      typedef std::vector<std::shared_ptr<FilterBase> > FilterContainer;
+      using FilterContainer = std::vector<std::shared_ptr<FilterBase> >;
       FilterContainer filters;
     };
   }

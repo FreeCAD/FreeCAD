@@ -38,7 +38,7 @@ class SbVec2s;
 
 namespace Gui {
 class GuiExport SoShapeScale : public SoBaseKit {
-    typedef SoBaseKit inherited;
+    using inherited = SoBaseKit;
 
     SO_KIT_HEADER(SoShapeScale);
 
@@ -59,7 +59,7 @@ protected:
 };
 
 class GuiExport SoAxisCrossKit : public SoBaseKit {
-    typedef SoBaseKit inherited;
+    using inherited = SoBaseKit;
 
     SO_KIT_HEADER(SoAxisCrossKit);
 
@@ -88,7 +88,7 @@ private:
 };
 
 class GuiExport SoRegPoint : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoRegPoint);
 

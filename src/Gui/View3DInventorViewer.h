@@ -79,7 +79,7 @@ class ViewerEventFilter;
  */
 class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
-    typedef Quarter::SoQTQuarterAdaptor inherited;
+    using inherited = Quarter::SoQTQuarterAdaptor;
     Q_OBJECT
 
 public:

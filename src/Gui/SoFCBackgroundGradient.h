@@ -34,7 +34,7 @@ class SoGLRenderAction;
 namespace Gui {
 
 class GuiExport SoFCBackgroundGradient : public SoNode {
-    typedef SoNode inherited;
+    using inherited = SoNode;
 
     SO_NODE_HEADER(Gui::SoFCBackgroundGradient);
 

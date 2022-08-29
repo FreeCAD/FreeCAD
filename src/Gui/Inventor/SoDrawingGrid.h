@@ -28,7 +28,7 @@
 namespace Gui { namespace Inventor {
 
 class GuiExport SoDrawingGrid : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoDrawingGrid);
 

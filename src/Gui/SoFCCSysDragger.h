@@ -82,7 +82,7 @@ private:
     void buildFirstInstance();
     SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
     SoGroup* buildGeometry();
-    typedef SoDragger inherited;
+    using inherited = SoDragger;
 };
 
 /*! @brief Rotation Dragger.
@@ -128,7 +128,7 @@ private:
     void buildFirstInstance();
     int roundIncrement(const float &radiansIn);
     SoGroup* buildGeometry();
-    typedef SoDragger inherited;
+    using inherited = SoDragger;
 };
 
 /*! @brief Coordinate System Dragger
@@ -267,7 +267,7 @@ private:
 
     void updateAxisScale();
 
-    typedef SoDragger inherited;
+    using inherited = SoDragger;
 };
 
 }

@@ -49,7 +49,7 @@ private:
  */
 class SoFCVectorizeSVGActionP;
 class GuiExport SoFCVectorizeSVGAction : public SoVectorizeAction {
-    typedef SoReplacedElement inherited;
+    using inherited = SoReplacedElement;
 
     SO_ACTION_HEADER(SoFCVectorizeSVGAction);
 

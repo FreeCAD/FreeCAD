@@ -45,22 +45,22 @@ namespace Gui
     public:
       explicit View(QWidget *parentIn = nullptr);
       ~View() override;
-      
+
     public Q_SLOTS:
       void awakeSlot(); //!< hooked up to event dispatcher for update when idle.
-      
+
     private:
       void onSelectionChanged(const SelectionChanges& msg) override;
-      
+
       void slotActiveDocument(const Gui::Document &documentIn);
       void slotDeleteDocument(const Gui::Document &documentIn);
-      
-      typedef std::map<const Gui::Document*, std::shared_ptr<Model> > ModelMap;
+
+      using ModelMap = std::map<const Gui::Document*, std::shared_ptr<Model> >;
       ModelMap modelMap;
       boost::signals2::scoped_connection conActive;
       boost::signals2::scoped_connection conDelete;
     };
-    
+
     //! @brief dock window for DAG viewer
     class DockWindow : public Gui::DockWindow
     {
