@@ -47,7 +47,7 @@ class PathSelectionObserver;
 class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER(PathGui::ViewProviderPath);
-    typedef ViewProviderGeometryObject inherited;
+    using inherited = ViewProviderGeometryObject;
 
 public:
     /// constructor.
@@ -117,7 +117,7 @@ protected:
 
  };
 
- typedef Gui::ViewProviderPythonFeatureT<ViewProviderPath> ViewProviderPathPython;
+ using ViewProviderPathPython = Gui::ViewProviderPythonFeatureT<ViewProviderPath>;
 
 } //namespace PathGui
 

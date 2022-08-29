@@ -107,7 +107,7 @@
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
 
-typedef bgi::linear<16> RParameters;
+using RParameters = bgi::linear<16>;
 
 BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
     gp_Pnt, double, bg::cs::cartesian, X, Y, Z, SetX, SetY, SetZ)
@@ -568,7 +568,7 @@ static inline void getEndPoints(const TopoDS_Wire& wire, gp_Pnt& p1, gp_Pnt& p2)
 
 struct WireJoiner {
 
-    typedef bg::model::box<gp_Pnt> Box;
+    using Box = bg::model::box<gp_Pnt>;
 
     static bool getBBox(const TopoDS_Edge& e, Box& box) {
         Bnd_Box bound;
@@ -616,7 +616,7 @@ struct WireJoiner {
         }
     };
 
-    typedef std::list<EdgeInfo> Edges;
+    using Edges = std::list<EdgeInfo>;
     Edges edges;
 
     struct VertexInfo {
@@ -638,7 +638,7 @@ struct WireJoiner {
 
     struct PntGetter
     {
-        typedef const gp_Pnt& result_type;
+        using result_type = const gp_Pnt&;
         result_type operator()(const VertexInfo& v) const {
             return v.pt();
         }
@@ -648,7 +648,7 @@ struct WireJoiner {
 
     struct BoxGetter
     {
-        typedef const Box& result_type;
+        using result_type = const Box&;
         result_type operator()(Edges::iterator it) const {
             return it->box;
         }
@@ -2343,15 +2343,15 @@ struct WireInfo {
     }
 };
 
-typedef std::list<WireInfo> Wires;
-typedef std::pair<Wires::iterator, size_t> RValue;
+using Wires = std::list<WireInfo>;
+using RValue = std::pair<Wires::iterator, size_t>;
 
 struct RGetter
 {
-    typedef const gp_Pnt& result_type;
+    using result_type = const gp_Pnt&;
     result_type operator()(const RValue& v) const { return v.first->points[v.second]; }
 };
-typedef bgi::rtree<RValue, RParameters, RGetter> RTree;
+using RTree = bgi::rtree<RValue, RParameters, RGetter>;
 
 struct ShapeParams {
     double abscissa;
@@ -2374,7 +2374,7 @@ struct ShapeParams {
 bool operator<(const Wires::iterator& a, const Wires::iterator& b) {
     return &(*a) < &(*b);
 }
-typedef std::map<Wires::iterator, size_t> RResults;
+using RResults = std::map<Wires::iterator, size_t>;
 
 struct GetWires {
     Wires& wires;

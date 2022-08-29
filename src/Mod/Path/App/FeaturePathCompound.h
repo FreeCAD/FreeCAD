@@ -64,7 +64,7 @@ public:
 
 };
 
-typedef App::FeaturePythonT<FeatureCompound> FeatureCompoundPython;
+using FeatureCompoundPython = App::FeaturePythonT<FeatureCompound>;
 
 } //namespace Path
 
