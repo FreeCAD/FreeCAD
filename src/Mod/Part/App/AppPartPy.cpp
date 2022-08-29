@@ -2029,7 +2029,14 @@ private:
 #if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(p);
 #else
+#ifdef FC_OS_WIN32
+            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
+            //will result in unknow glyph in even positions, and wrong characters in
+            //odd positions.
+            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
+#else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
+#endif
 #endif
         }
         else if (PyUnicode_Check(intext)) {
@@ -2038,7 +2045,14 @@ private:
 #if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(intext);
 #else
+#ifdef FC_OS_WIN32
+            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
+            //will result in unknow glyph in even positions, and wrong characters in
+            //odd positions.
+            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
+#else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
+#endif
 #endif
         }
         else {
