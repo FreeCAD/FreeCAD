@@ -69,7 +69,7 @@ public:
     }
   };
 
-  typedef std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> > result_type;
+  using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>,TopoDSLess<TopoDS_Edge> >;
 
 
   result_type &result() {return  mvEdgeSplitPoints;}

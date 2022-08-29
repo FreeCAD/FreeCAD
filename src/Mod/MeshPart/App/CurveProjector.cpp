@@ -932,9 +932,9 @@ void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Ba
         std::vector<Base::Vector3f> points;
         discretize(aEdge, points, 5);
 
-        typedef std::pair<Base::Vector3f, MeshCore::FacetIndex> HitPoint;
+        using HitPoint = std::pair<Base::Vector3f, MeshCore::FacetIndex>;
         std::vector<HitPoint> hitPoints;
-        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        using HitPoints = std::pair<HitPoint, HitPoint>;
         std::vector<HitPoints> hitPointPairs;
         for (auto it : points) {
             Base::Vector3f result;
@@ -977,9 +977,9 @@ void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges,
     for (const auto& it : aEdges) {
         std::vector<Base::Vector3f> points = it.points;
 
-        typedef std::pair<Base::Vector3f, MeshCore::FacetIndex> HitPoint;
+        using HitPoint = std::pair<Base::Vector3f, MeshCore::FacetIndex>;
         std::vector<HitPoint> hitPoints;
-        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        using HitPoints = std::pair<HitPoint, HitPoint>;
         std::vector<HitPoints> hitPointPairs;
         for (auto it : points) {
             Base::Vector3f result;

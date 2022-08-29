@@ -42,8 +42,8 @@
 #include <vector>
 
 
-typedef Eigen::Vector3d Vector3;
-typedef Eigen::Vector2d Vector2;
+using Vector3 = Eigen::Vector3d;
+using Vector2 = Eigen::Vector2d;
 
 template <typename type, unsigned int size>
 using ColMat = Eigen::Matrix<type, Eigen::Dynamic, size>;
@@ -52,8 +52,8 @@ template <typename type, unsigned int size>
 using RowMat = Eigen::Matrix<type, size, Eigen::Dynamic>;
 
 
-typedef Eigen::Triplet<double> trip;
-typedef Eigen::SparseMatrix<double> spMat;
+using trip = Eigen::Triplet<double>;
+using spMat = Eigen::SparseMatrix<double>;
 
 
 std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris);

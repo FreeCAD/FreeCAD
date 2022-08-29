@@ -47,8 +47,8 @@
 namespace lscmrelax
 {
 
-typedef Eigen::Triplet<double> trip;
-typedef Eigen::SparseMatrix<double> spMat;
+using trip = Eigen::Triplet<double>;
+using spMat = Eigen::SparseMatrix<double>;
 
 
 
