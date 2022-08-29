@@ -92,7 +92,7 @@ public:
   static void *createInstanceByName(const char* TypeName, bool bLoadModule=false);
   static void importModule(const char* TypeName);
 
-  typedef void * (*instantiationMethod)();
+  using instantiationMethod = void * (*)();
 
   static Type fromName(const char *name);
   static Type fromKey(unsigned int key);

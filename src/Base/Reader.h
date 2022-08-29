@@ -266,7 +266,7 @@ protected:
     unsigned int CharacterCount;
 
     std::map<std::string,std::string> AttrMap;
-    typedef std::map<std::string,std::string> AttrMapType;
+    using AttrMapType = std::map<std::string,std::string>;
 
     enum {
         None = 0,

@@ -38,7 +38,7 @@
 class QByteArray;
 class QIODevice;
 class QBuffer;
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 namespace Base {
 
@@ -255,11 +255,11 @@ protected:
 
 class BaseExport PyStreambuf : public std::streambuf
 {
-    typedef std::streambuf::int_type int_type;
-    typedef std::streambuf::pos_type pos_type;
-    typedef std::streambuf::off_type off_type;
-    typedef std::ios::seekdir        seekdir;
-    typedef std::ios::openmode       openmode;
+    using int_type = std::streambuf::int_type;
+    using pos_type = std::streambuf::pos_type;
+    using off_type = std::streambuf::off_type;
+    using seekdir  = std::ios::seekdir;
+    using openmode = std::ios::openmode;
 
 public:
     enum Type {

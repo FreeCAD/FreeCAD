@@ -135,7 +135,7 @@ PyObject* PersistencePy::restoreContent(PyObject *args)
 
     //check if it really is a buffer
     try {
-        typedef boost::iostreams::basic_array_source<char> Device;
+        using Device = boost::iostreams::basic_array_source<char>;
         boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
         getPersistencePtr()->restoreFromStream(stream);
     }

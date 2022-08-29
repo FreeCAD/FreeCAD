@@ -27,7 +27,7 @@
 #include "Type.h"
 
 // Python stuff
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 
 /// define for subclassing Base::BaseClass

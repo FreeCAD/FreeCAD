@@ -487,7 +487,7 @@ void Matrix4D::inverse ()
   (*this) = clInvRotMat * clInvTrlMat;
 }
 
-typedef  double * Matrix;
+using Matrix = double *;
 
 void Matrix_gauss(Matrix a, Matrix b)
 {

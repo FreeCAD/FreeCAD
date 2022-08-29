@@ -27,7 +27,7 @@
 #include <memory>
 #include <FCGlobal.h>
 
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 namespace Base
 {

@@ -229,8 +229,8 @@ private:
 // ----------------------------------------------------------------------------
 
 class ConnectionBlocker {
-    typedef boost::signals2::connection Connection;
-    typedef boost::signals2::shared_connection_block ConnectionBlock;
+    using Connection = boost::signals2::connection;
+    using ConnectionBlock = boost::signals2::shared_connection_block;
     ConnectionBlock blocker;
 
 public:

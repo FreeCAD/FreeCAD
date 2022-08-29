@@ -36,7 +36,7 @@ namespace Base
 {
 class Matrix4D;
 template <class _Precision> class Vector3;
-typedef Vector3<float>  Vector3f;
+using Vector3f = Vector3<float>;
 
 /** A Builder class for 3D representations on App level
  * On the application level nothing is known of the visual representation of data.

@@ -33,7 +33,7 @@
 #define BASE__PARAMETER_H
 
  // Python stuff
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 #ifdef FC_OS_MACOSX
 #undef toupper
@@ -118,7 +118,7 @@ public:
     /// test if a special sub group is in this group
     bool HasGroup(const char* Name) const;
     /// type of the handle
-    typedef Base::Reference<ParameterGrp> handle;
+    using handle = Base::Reference<ParameterGrp>;
     /// remove a sub group from this group
     void RemoveGrp(const char* Name);
     /// rename a sub group from this group

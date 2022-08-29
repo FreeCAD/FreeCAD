@@ -12,7 +12,7 @@
       Delete="true">
     <ForwardDeclarations>
 namespace Base {
-    typedef Type BaseType;
+    using BaseType = Type;
 }</ForwardDeclarations>
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

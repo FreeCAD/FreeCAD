@@ -29,7 +29,7 @@
 #include <typeinfo>
 
 // Python stuff
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 namespace Base
 {

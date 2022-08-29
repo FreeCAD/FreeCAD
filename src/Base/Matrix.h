@@ -47,7 +47,7 @@ enum class ScaleType {
  */
 class BaseExport Matrix4D
 {
-  typedef float_traits<double> traits_type;
+  using traits_type = float_traits<double>;
 
 public:
   /// Default constructor

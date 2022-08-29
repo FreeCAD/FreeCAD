@@ -29,11 +29,11 @@
 #include "UnitsSchema.h"
 #include "Quantity.h"
 
-typedef struct _object PyObject;
-typedef struct PyMethodDef PyMethodDef;
+using PyObject = struct _object;
+using PyMethodDef = struct PyMethodDef;
 
 namespace Base {
-typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
+using UnitsSchemaPtr = std::unique_ptr<UnitsSchema>;
 
 /**
  * The UnitsApi

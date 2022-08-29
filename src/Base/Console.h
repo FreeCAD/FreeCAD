@@ -36,8 +36,8 @@
 #include <FCGlobal.h>
 
 // Python stuff
-typedef struct _object PyObject;
-typedef struct PyMethodDef PyMethodDef;
+using PyObject = struct _object;
+using PyMethodDef = struct PyMethodDef;
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -454,7 +454,7 @@ namespace Base {
 } // namespace Base
 
 //TODO: Get rid of this typedef
-typedef unsigned int ConsoleMsgFlags;
+using ConsoleMsgFlags = unsigned int;
 
 namespace Base {
 
