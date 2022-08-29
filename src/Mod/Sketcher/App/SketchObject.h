@@ -725,7 +725,7 @@ const GeometryT * SketchObject::getGeometry(int GeoId) const
     return nullptr;
 }
 
-typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
+using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
 } //namespace Sketcher
 

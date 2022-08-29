@@ -29,7 +29,7 @@
 #include <boost_signals2.hpp>
 
 class Ui_TaskSketcherMessages;
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 
 namespace App {
 class Property;

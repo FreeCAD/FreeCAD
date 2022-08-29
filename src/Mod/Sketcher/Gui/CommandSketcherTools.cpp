@@ -872,7 +872,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
     const Part::Geometry *LastGeo;
-    typedef enum { invalid = -1, line = 0, point = 1 } GeoType;
+    using GeoType = enum { invalid = -1, line = 0, point = 1 };
 
     GeoType lastgeotype = invalid;
 

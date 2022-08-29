@@ -34,7 +34,7 @@
 #include "TaskSketcherSolverAdvanced.h"
 #include <boost_signals2.hpp>
 
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 
 namespace SketcherGui {
 

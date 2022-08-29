@@ -132,7 +132,7 @@ protected:
     void changeEvent(QEvent *e) override;
     void leaveEvent ( QEvent * event ) override;
     ViewProviderSketch *sketchView;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectionElementsChanged;
 
 private:

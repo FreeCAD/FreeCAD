@@ -31,7 +31,7 @@
 namespace SketcherGui {
 
 class SketcherGuiExport SoZoomTranslation : public SoTranslation {
-    typedef SoTranslation inherited;
+    using inherited = SoTranslation;
 
     SO_NODE_HEADER(SoZoomTranslation);
 
@@ -41,7 +41,7 @@ public:
     SoSFVec3f abPos;
 
 protected:
-    ~SoZoomTranslation() override {};
+    ~SoZoomTranslation() override {}
     void doAction(SoAction * action) override;
     void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
     void getMatrix(SoGetMatrixAction * action) override;

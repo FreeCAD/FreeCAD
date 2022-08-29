@@ -45,8 +45,8 @@ protected:
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderSketch> ViewProviderPython;
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderCustom> ViewProviderCustomPython;
+using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSketch>;
+using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
 
 } // namespace SketcherGui
 

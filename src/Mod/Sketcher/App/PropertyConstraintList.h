@@ -138,7 +138,7 @@ public:
 
     bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
 
-    typedef std::pair<int, const Constraint*> ConstraintInfo ;
+    using ConstraintInfo = std::pair<int, const Constraint*> ;
 
     boost::signals2::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
     boost::signals2::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;

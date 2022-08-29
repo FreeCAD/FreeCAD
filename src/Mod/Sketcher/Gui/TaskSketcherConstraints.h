@@ -127,7 +127,7 @@ public Q_SLOTS:
 protected:
     void changeEvent(QEvent *e) override;
     ViewProviderSketch *sketchView;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectionConstraintsChanged;
 
 private:
