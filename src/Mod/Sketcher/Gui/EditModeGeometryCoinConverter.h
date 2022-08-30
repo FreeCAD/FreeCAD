@@ -43,6 +43,7 @@ namespace Part {
 }
 
 namespace SketcherGui {
+    class ViewProviderSketch;
     struct GeometryLayerNodes;
     struct DrawingParameters;
     class GeometryLayerParameters;
@@ -95,7 +96,8 @@ public:
      *
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeGeometryCoinConverter(  GeometryLayerNodes & geometrylayernodes,
+    EditModeGeometryCoinConverter(  ViewProviderSketch & vp,
+                                    GeometryLayerNodes & geometrylayernodes,
                                     DrawingParameters & drawingparameters,
                                     GeometryLayerParameters& geometryLayerParams,
                                     CoinMapping & coinMap );
@@ -129,6 +131,9 @@ private:
     void convert(const Sketcher::GeometryFacade * geometryfacade, [[maybe_unused]] int geoId);
 
 private:
+    /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
+    ViewProviderSketch & viewProvider;
+
     GeometryLayerNodes & geometryLayerNodes;
 
     std::vector<std::vector<Base::Vector3d>> Coords;

@@ -113,6 +113,7 @@ private:
     friend class EditModeConstraintCoinManager;
     friend class EditModeGeometryCoinManager;
     friend class EditModeInformationOverlayCoinConverter;
+    friend class EditModeGeometryCoinConverter;
 };
 
 inline bool ViewProviderSketchCoinAttorney::constraintHasExpression(const ViewProviderSketch & vp, int constrid)

@@ -51,10 +51,12 @@
 
 using namespace SketcherGui;
 
-EditModeGeometryCoinConverter::EditModeGeometryCoinConverter(   GeometryLayerNodes & geometrylayernodes,
+EditModeGeometryCoinConverter::EditModeGeometryCoinConverter(   ViewProviderSketch & vp,
+                                                                GeometryLayerNodes & geometrylayernodes,
                                                                 DrawingParameters & drawingparameters,
                                                                 GeometryLayerParameters& geometryLayerParams,
                                                                 CoinMapping & coinMap ):
+    viewProvider(vp),
     geometryLayerNodes(geometrylayernodes),
     drawingParameters(drawingparameters),
     geometryLayerParameters(geometryLayerParams),
