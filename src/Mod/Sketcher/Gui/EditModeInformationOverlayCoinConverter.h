@@ -26,6 +26,8 @@
 
 #include <vector>
 
+#include "ViewProviderSketch.h"
+
 namespace Base {
     template< typename T >
     class Vector3;

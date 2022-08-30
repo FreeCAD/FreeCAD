@@ -422,7 +422,8 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d> &Edi
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditMarkers.begin(); it != EditMarkers.end(); ++it,i++) {
-        verts[i].setValue(it->x, it->y, drawingParameters.zEdit);
+        verts[i].setValue(it->x, it->y,
+                          ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zEdit);
         color[i] = drawingParameters.InformationColor;
     }
 
@@ -442,7 +443,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++) {
-        verts[i].setValue(it->x,it->y, drawingParameters.zEdit);
+        verts[i].setValue(it->x,it->y,
+                          ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zEdit);
         color[i] = drawingParameters.CreateCurveColor;
     }
 
@@ -470,7 +472,8 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>> 
     int indexindex=0;
     for(const auto & v : list) {
         for (const auto & p : v) {
-            verts[coordindex].setValue(p.x, p.y, drawingParameters.zEdit);
+            verts[coordindex].setValue(p.x, p.y,
+                                       ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zEdit);
             color[coordindex] = drawingParameters.CreateCurveColor;
             coordindex++;
         }
@@ -487,7 +490,8 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>> 
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
     editModeScenegraphNodes.textX->string = text;
-    editModeScenegraphNodes.textPos->translation = SbVec3f(Pos.x, Pos.y, drawingParameters.zText);
+    editModeScenegraphNodes.textPos->translation = SbVec3f(Pos.x, Pos.y,
+                                                           ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zText);
 }
 
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos)
@@ -633,10 +637,11 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade 
 
 void EditModeCoinManager::updateAxesLength()
 {
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(0,SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, drawingParameters.zCross));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1,SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, drawingParameters.zCross));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, drawingParameters.zCross));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, drawingParameters.zCross));
+    auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zCross;
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(0,SbVec3f(-analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1,SbVec3f(analysisResults.boundingBoxMagnitudeOrder, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -analysisResults.boundingBoxMagnitudeOrder, zCrossH));
+    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, analysisResults.boundingBoxMagnitudeOrder, zCrossH));
 }
 
 void EditModeCoinManager::updateGridExtent()

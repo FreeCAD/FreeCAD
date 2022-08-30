@@ -200,6 +200,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
     // Update Colors
 
     SbColor *crosscolor = editModeScenegraphNodes.RootCrossMaterials->diffuseColor.startEditing();
+    auto viewOrientationFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
     for(int l=0; l<geometryLayerParameters.CoinLayers; l++) {
 
@@ -276,7 +277,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
 
         for (int  i=0; i < PtNum; i++) { // 0 is the origin
             if( i == 0 && l == 0 ) { // reset root point to lowest
-                pverts[i].setValue(0, 0, drawingParameters.zRootPoint);
+                pverts[i].setValue(0, 0, viewOrientationFactor * drawingParameters.zRootPoint);
             }
             else {
                 pverts[i].getValue(x,y,z);
@@ -284,9 +285,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
 
                 if(geom) {
                     if(geom->getConstruction())
-                        pverts[i].setValue(x,y,zConstrPoint);
+                        pverts[i].setValue(x,y,viewOrientationFactor * zConstrPoint);
                     else
-                        pverts[i].setValue(x,y,zNormPoint);
+                        pverts[i].setValue(x,y,viewOrientationFactor * zNormPoint);
                 }
             }
         }
@@ -352,35 +353,35 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
                 color[i] = drawingParameters.PreselectSelectedColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,drawingParameters.zHighLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
             else if (selected){
                 color[i] = drawingParameters.SelectColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,drawingParameters.zHighLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
             else if (preselected){
                 color[i] = drawingParameters.PreselectColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,drawingParameters.zHighLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * drawingParameters.zHighLine);
                 }
             }
             else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
                 color[i] = drawingParameters.CurveExternalColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zExtLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zExtLine);
                 }
             }
             else if ( issketchinvalid ) {
                 color[i] = drawingParameters.InvalidSketchColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
             else if (isConstructionGeom(GeoId)) {
@@ -399,28 +400,28 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
 
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zConstrLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zConstrLine);
                 }
             }
             else if (ViewProviderSketchCoinAttorney::isSketchFullyConstrained(viewProvider)) {
                 color[i] = drawingParameters.FullyConstrainedColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
             else if (isFullyConstraintElement(GeoId)) {
                 color[i] = drawingParameters.FullyConstraintElementColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
             else {
                 color[i] = drawingParameters.CurveColor;
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
-                    verts[j] = SbVec3f(x,y,zNormLine);
+                    verts[j] = SbVec3f(x,y,viewOrientationFactor * zNormLine);
                 }
             }
         }

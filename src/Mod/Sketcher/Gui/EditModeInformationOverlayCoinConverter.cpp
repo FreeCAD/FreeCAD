@@ -45,6 +45,7 @@
 #include "EditModeCoinManagerParameters.h"
 
 #include "EditModeInformationOverlayCoinConverter.h"
+#include "ViewProviderSketchCoinAttorney.h"
 
 
 using namespace SketcherGui;
@@ -203,16 +204,18 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         curvatureComb.coordinates.reserve(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
         curvatureComb.indices.reserve(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
 
+        auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo;
+
         for(int i = 0; i < ndiv; i++) {
             // note emplace emplaces on the position BEFORE the iterator given.
-            curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x, pointatcurvelist[i].y, drawingParameters.zInfo); // radials
-            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, drawingParameters.zInfo); // radials
+            curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfoH); // radials
+            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // radials
 
             curvatureComb.indices.emplace_back(2); // line
         }
 
         for(int i = 0; i < ndiv; i++)
-            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, drawingParameters.zInfo); // // comb endpoint closing segment
+            curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // // comb endpoint closing segment
 
         curvatureComb.indices.emplace_back(ndiv); // Comb line
     }
@@ -286,7 +289,8 @@ void EditModeInformationOverlayCoinConverter::setPolygon(const Result & result, 
     SbVec3f *vts = polygoncoords->point.startEditing();
 
     for(size_t i = 0; i < result.coordinates.size(); i++)
-        vts[i].setValue(result.coordinates[i].x, result.coordinates[i].y, drawingParameters.zInfo);
+        vts[i].setValue(result.coordinates[i].x, result.coordinates[i].y,
+                        ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo);
 
     for(size_t i = 0; i < result.indices.size(); i++)
         index[i] = result.indices[i];
@@ -348,7 +352,8 @@ void EditModeInformationOverlayCoinConverter::addNode(const Result & result) {
 
             SoTranslation *translate = new SoTranslation;
 
-            translate->translation.setValue(result.positions[i].x, result.positions[i].y, drawingParameters.zInfo);
+            translate->translation.setValue(result.positions[i].x, result.positions[i].y,
+                                            ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo);
 
             SoFont *font = new SoFont;
             font->name.setValue("Helvetica");
@@ -425,7 +430,7 @@ void EditModeInformationOverlayCoinConverter::updateNode(const Result & result) 
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
-            static_cast<SoTranslation *>(sep->getChild(static_cast<int>(TextNodePosition::TextCoordinates)))->translation.setValue(result.positions[i].x, result.positions[i].y, drawingParameters.zInfo);
+            static_cast<SoTranslation *>(sep->getChild(static_cast<int>(TextNodePosition::TextCoordinates)))->translation.setValue(result.positions[i].x, result.positions[i].y, ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo);
 
             // since the first and last control point of a spline is also treated as knot and thus
             // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
