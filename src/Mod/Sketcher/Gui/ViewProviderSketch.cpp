@@ -283,7 +283,8 @@ ViewProviderSketch::ViewProviderSketch()
     listener(nullptr),
     editCoinManager(nullptr),
     pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this)),
-    sketchHandler(nullptr)
+    sketchHandler(nullptr),
+    viewOrientationFactor(1)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 
@@ -311,6 +312,8 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = std::make_unique<Gui::Rubberband>();
+
+    cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
 
 }
 
@@ -3112,14 +3115,41 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     rubberband->setViewer(viewer);
 
     viewer->setupEditingRoot();
+
+    cameraSensor.setData(new VPCam{this, viewer->getSoRenderManager()->getCamera()});
+    cameraSensor.attach(&viewer->getSoRenderManager()->getCamera()->orientation);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    delete static_cast<VPCam*>(cameraSensor.getData());
+    cameraSensor.detach();
+
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+}
+
+void ViewProviderSketch::camSensCB(void *data, SoSensor *)
+{
+    VPCam *proxyVPCam = static_cast<VPCam*>(data);
+    auto vp = proxyVPCam->vp;
+    auto cam = proxyVPCam->cam;
+
+    auto rotSk = Base::Rotation(vp->getDocument()->getEditingTransform()); //sketch orientation
+    auto rotc = cam->orientation.getValue().getValue();
+    auto rotCam = Base::Rotation(rotc[0], rotc[1], rotc[2], rotc[3]); // camera orientation (needed because float to double conversion)
+
+    // Is camera in the same hemisphere as positive sketch normal ?
+    auto orientation = (rotCam.invert()*rotSk).multVec(Base::Vector3d(0,0,1));
+    auto tmpFactor = orientation.z<0?-1:1;
+
+    if (tmpFactor != vp->viewOrientationFactor) { // redraw only if viewing side changed
+        Base::Console().Log("Switching side, now %s, redrawing\n", tmpFactor < 0 ? "back" : "front");
+        vp->viewOrientationFactor = tmpFactor;
+        vp->draw();
+    }
 }
 
 int ViewProviderSketch::getPreselectPoint() const
