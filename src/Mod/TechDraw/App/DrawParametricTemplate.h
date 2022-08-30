@@ -90,7 +90,7 @@ private:
     static const char* OrientationEnums[];
 };
 
-typedef App::FeaturePythonT<DrawParametricTemplate> DrawParametricTemplatePython;
+using DrawParametricTemplatePython = App::FeaturePythonT<DrawParametricTemplate>;
 
 } //namespace TechDraw
 

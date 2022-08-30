@@ -72,7 +72,7 @@ protected:
     Base::BoundBox3d bbox;
 };
 
-typedef App::FeaturePythonT<DrawViewImage> DrawViewImagePython;
+using DrawViewImagePython = App::FeaturePythonT<DrawViewImage>;
 
 
 } //namespace TechDraw

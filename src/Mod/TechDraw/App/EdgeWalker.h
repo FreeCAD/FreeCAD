@@ -45,32 +45,28 @@
 namespace TechDraw {
 //using namespace boost;
 
-typedef
+using graph =
     boost::adjacency_list
         < boost::vecS,
           boost::vecS,
           boost::undirectedS,
           boost::property<boost::vertex_index_t, int>,
           boost::property<boost::edge_index_t, int>
-        >
-        graph;
+        >;
 
-typedef
-    boost::graph_traits < graph >::vertex_descriptor
-        vertex_t;
-typedef
-    boost::graph_traits < graph >::edge_descriptor
-        edge_t;
+using vertex_t =
+    boost::graph_traits < graph >::vertex_descriptor;
 
-typedef
-    std::vector< std::vector<edge_t> >
-        planar_embedding_storage_t;
+using edge_t =
+    boost::graph_traits < graph >::edge_descriptor;
 
-typedef
+using planar_embedding_storage_t =
+    std::vector< std::vector<edge_t> >;
+
+using planar_embedding_t =
     boost::iterator_property_map< planar_embedding_storage_t::iterator,
                                   boost::property_map<graph, boost::vertex_index_t>::type
-                                >
-        planar_embedding_t;
+                                >;
 
 class TechDrawExport WalkerEdge
 {

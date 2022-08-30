@@ -95,7 +95,7 @@ private:
 
 };
 
-typedef App::ExtensionPythonT<CosmeticExtension> CosmeticExtensionPython;
+using CosmeticExtensionPython = App::ExtensionPythonT<CosmeticExtension>;
 
 } //end namespace TechDraw
 

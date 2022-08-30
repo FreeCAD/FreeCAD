@@ -113,7 +113,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawGeomHatch> DrawGeomHatchPython;
+using DrawGeomHatchPython = App::FeaturePythonT<DrawGeomHatch>;
 
 
 

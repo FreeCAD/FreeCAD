@@ -97,7 +97,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawProjectSplit> DrawProjectSplitPython;
+using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
 
 } //namespace TechDraw
 

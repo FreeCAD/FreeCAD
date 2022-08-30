@@ -82,7 +82,7 @@ public:
 
     //slots & connections
     void onGuiRepaint(const TechDraw::DrawPage* dp); 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectGuiRepaint;
 
     void unsetEdit(int ModNum) override;

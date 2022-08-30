@@ -132,7 +132,7 @@ private:
     bool m_overrideKeepUpdated;
 };
 
-typedef App::FeaturePythonT<DrawView> DrawViewPython;
+using DrawViewPython = App::FeaturePythonT<DrawView>;
 
 } //namespace TechDraw
 

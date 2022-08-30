@@ -77,7 +77,7 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-typedef App::FeaturePythonT<DrawViewClip> DrawViewClipPython;
+using DrawViewClipPython = App::FeaturePythonT<DrawViewClip>;
 
 } //namespace TechDraw
 

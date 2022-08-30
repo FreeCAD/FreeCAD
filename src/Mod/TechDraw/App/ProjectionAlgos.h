@@ -53,7 +53,7 @@ public:
         WithHidden = 1,
         WithSmooth = 2
     };
-    typedef std::map<std::string,std::string> XmlAttributes;
+    using XmlAttributes = std::map<std::string,std::string>;
 
     std::string getSVG(ExtractionType type, double tolerance=0.05,
                        XmlAttributes V_style=XmlAttributes(),

@@ -80,7 +80,7 @@ protected:
 //    void getParameters(void);
 };
 
-typedef App::FeaturePythonT<DrawViewMulti> DrawViewMultiPython;
+using DrawViewMultiPython = App::FeaturePythonT<DrawViewMulti>;
 
 } //namespace TechDraw
 

@@ -166,7 +166,7 @@ protected:
 
 };
 
-typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;
+using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;
 
 } //namespace TechDraw
 

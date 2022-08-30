@@ -64,7 +64,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawRichAnno> DrawRichAnnoPython;
+using DrawRichAnnoPython = App::FeaturePythonT<DrawRichAnno>;
 
 } //namespace TechDraw
 #endif

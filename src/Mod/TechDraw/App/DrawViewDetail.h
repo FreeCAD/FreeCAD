@@ -110,7 +110,7 @@ protected:
     DrawViewSection* m_saveDvs;
 };
 
-typedef App::FeaturePythonT<DrawViewDetail> DrawViewDetailPython;
+using DrawViewDetailPython = App::FeaturePythonT<DrawViewDetail>;
 
 } //namespace TechDraw
 

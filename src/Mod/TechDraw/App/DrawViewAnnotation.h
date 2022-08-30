@@ -75,7 +75,7 @@ private:
     static const char* TextStyleEnums[];
 };
 
-typedef App::FeaturePythonT<DrawViewAnnotation> DrawViewAnnotationPython;
+using DrawViewAnnotationPython = App::FeaturePythonT<DrawViewAnnotation>;
 
 
 } //namespace TechDraw

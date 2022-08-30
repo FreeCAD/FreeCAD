@@ -86,7 +86,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawTemplate> DrawTemplatePython;
+using DrawTemplatePython = App::FeaturePythonT<DrawTemplate>;
 
 } //namespace TechDraw
 

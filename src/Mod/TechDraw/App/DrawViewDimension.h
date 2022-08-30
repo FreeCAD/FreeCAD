@@ -48,7 +48,7 @@ struct DimRef {
     std::string   sub;
 };
 
-typedef std::pair<Base::Vector3d,Base::Vector3d> pointPair;
+using pointPair = std::pair<Base::Vector3d,Base::Vector3d>;
 
 struct anglePoints
 {

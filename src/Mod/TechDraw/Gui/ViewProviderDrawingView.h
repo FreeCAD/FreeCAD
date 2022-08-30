@@ -82,7 +82,7 @@ public:
     void onProgressMessage(const TechDraw::DrawView* dv,
                          const std::string featureName,
                          const std::string text);
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectGuiRepaint;
     Connection connectProgressMessage;
 

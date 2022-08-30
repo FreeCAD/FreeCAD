@@ -73,7 +73,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawTileWeld> DrawTileWeldPython;
+using DrawTileWeldPython = App::FeaturePythonT<DrawTileWeld>;
 
 } //namespace TechDraw
 #endif

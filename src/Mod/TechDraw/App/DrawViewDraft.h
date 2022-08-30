@@ -74,7 +74,7 @@ protected:
     std::string getSVGTail();
 };
 
-typedef App::FeaturePythonT<DrawViewDraft> DrawViewDraftPython;
+using DrawViewDraftPython = App::FeaturePythonT<DrawViewDraft>;
 
 
 } //namespace TechDraw

@@ -62,7 +62,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawTile> DrawTilePython;
+using DrawTilePython = App::FeaturePythonT<DrawTile>;
 
 } //namespace TechDraw
 #endif

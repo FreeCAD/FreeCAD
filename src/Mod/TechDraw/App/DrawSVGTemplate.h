@@ -77,7 +77,7 @@ protected:
 
 };
 
-typedef App::FeaturePythonT<DrawSVGTemplate> DrawSVGTemplatePython;
+using DrawSVGTemplatePython = App::FeaturePythonT<DrawSVGTemplate>;
 
 } //namespace TechDraw
 

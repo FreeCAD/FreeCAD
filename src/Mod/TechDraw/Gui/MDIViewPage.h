@@ -121,7 +121,7 @@ protected:
     
     void onDeleteObject(const App::DocumentObject& obj);
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectDeletedObject;
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel,QList<QGraphicsItem*> sceneSel);

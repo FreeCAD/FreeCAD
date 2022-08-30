@@ -77,7 +77,7 @@ protected:
     bool loadQDomDocument(QDomDocument& symbolDocument);
 };
 
-typedef App::FeaturePythonT<DrawViewSymbol> DrawViewSymbolPython;
+using DrawViewSymbolPython = App::FeaturePythonT<DrawViewSymbol>;
 
 
 } //namespace TechDraw

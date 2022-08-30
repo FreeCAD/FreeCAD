@@ -122,7 +122,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawPage> DrawPagePython;
+using DrawPagePython = App::FeaturePythonT<DrawPage>;
 
 } //namespace TechDraw
 

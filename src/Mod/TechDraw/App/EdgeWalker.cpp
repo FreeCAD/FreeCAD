@@ -177,9 +177,9 @@ bool EdgeWalker::perform()
     }
 
     // Test for planarity
-    typedef std::vector< graph_traits<TechDraw::graph>::edge_descriptor > vec_t;
+    using vec_t = std::vector< graph_traits<TechDraw::graph>::edge_descriptor >;
     std::vector<vec_t> embedding(num_vertices(m_g));
-    typedef std::vector< graph_traits<TechDraw::graph>::edge_descriptor > kura_edges_t;
+    using kura_edges_t = std::vector< graph_traits<TechDraw::graph>::edge_descriptor >;
     kura_edges_t kEdges;
     kura_edges_t::iterator ki, ki_end;
     graph_traits<TechDraw::graph>::edge_descriptor e1;

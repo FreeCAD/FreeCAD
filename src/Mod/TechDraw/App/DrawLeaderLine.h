@@ -87,7 +87,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawLeaderLine> DrawLeaderLinePython;
+using DrawLeaderLinePython = App::FeaturePythonT<DrawLeaderLine>;
 
 } //namespace TechDraw
 #endif

@@ -70,7 +70,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawViewSpreadsheet> DrawViewSpreadsheetPython;
+using DrawViewSpreadsheetPython = App::FeaturePythonT<DrawViewSpreadsheet>;
 
 
 } //namespace TechDraw

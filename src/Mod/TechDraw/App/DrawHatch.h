@@ -84,7 +84,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawHatch> DrawHatchPython;
+using DrawHatchPython = App::FeaturePythonT<DrawHatch>;
 
 } //namespace TechDraw
 #endif

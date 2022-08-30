@@ -269,7 +269,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawViewPart> DrawViewPartPython;
+using DrawViewPartPython = App::FeaturePythonT<DrawViewPart>;
 
 } //namespace TechDraw
 

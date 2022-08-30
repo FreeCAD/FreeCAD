@@ -69,7 +69,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawWeldSymbol> DrawWeldSymbolPython;
+using DrawWeldSymbolPython = App::FeaturePythonT<DrawWeldSymbol>;
 
 } //namespace TechDraw
 #endif
