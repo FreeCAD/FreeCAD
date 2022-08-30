@@ -100,6 +100,8 @@ SET(Core_SRCS
     Core/CylinderFit.h
     Core/SphereFit.cpp
     Core/SphereFit.h
+    Core/IO/Writer3MF.cpp
+    Core/IO/Writer3MF.h
 )
 SOURCE_GROUP("Core" FILES ${Core_SRCS})
 

@@ -228,9 +228,6 @@ public:
 protected:
     /** Writes an X3D file. */
     bool SaveX3DContent (std::ostream &rstrOut, bool exportViewpoints) const;
-    bool Save3MFModel(std::ostream &str) const;
-    bool Save3MFRels(std::ostream &str) const;
-    bool Save3MFContent(std::ostream &str) const;
 
 protected:
     const MeshKernel &_rclMesh;   /**< reference to mesh data structure */
