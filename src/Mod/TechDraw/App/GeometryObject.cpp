@@ -163,17 +163,21 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
 {
     clear();
 
-
     Handle(HLRBRep_Algo) brep_hlr;
     try {
         brep_hlr = new HLRBRep_Algo();
 //        brep_hlr->Debug(true);
         brep_hlr->Add(inShape);
-        HLRAlgo_Projector projector( viewAxis );
-        brep_hlr->Projector(projector);
+        if (m_isPersp) {
+            double fLength = std::max(Precision::Confusion(), m_focus);
+            HLRAlgo_Projector projector( viewAxis, fLength );
+            brep_hlr->Projector(projector);
+        } else {
+            HLRAlgo_Projector projector( viewAxis );
+            brep_hlr->Projector(projector);
+        }
         brep_hlr->Update();
         brep_hlr->Hide();
-
     }
     catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
