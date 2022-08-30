@@ -3581,6 +3581,10 @@ int ViewProviderSketch::getApplicationLogicalDPIX() const {
     return QApplication::desktop()->logicalDpiX();
 }
 
+int ViewProviderSketch::getViewOrientationFactor() const {
+    return viewOrientationFactor;
+}
+
 double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
 {
     double x0,y0,x1,y1;
