@@ -38,6 +38,7 @@ namespace Part {
 }
 
 namespace SketcherGui {
+    class ViewProviderSketch;
     struct OverlayParameters;
     struct DrawingParameters;
 
@@ -139,7 +140,8 @@ public:
      * @param overlayparameters: Parameters for controlling the overlay
      * @param drawingparameters: Parameters for drawing the overlay information
      */
-    EditModeInformationOverlayCoinConverter(    SoGroup * infogroup,
+    EditModeInformationOverlayCoinConverter(    ViewProviderSketch &vp,
+                                                SoGroup * infogroup,
                                                 OverlayParameters & overlayparameters,
                                                 DrawingParameters & drawingparameters);
 
@@ -179,6 +181,9 @@ private:
     void updateNode(const Result & result);
 
 private:
+    /// Reference to ViewProviderSketch in order to access the public and the Attorney Interface
+    ViewProviderSketch & viewProvider;
+
     SoGroup * infoGroup;
     OverlayParameters & overlayParameters;
     DrawingParameters & drawingParameters;

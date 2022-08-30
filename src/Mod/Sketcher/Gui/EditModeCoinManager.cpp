@@ -619,7 +619,7 @@ void EditModeCoinManager::processGeometryInformationOverlay(const GeoListFacade 
         Gui::coinRemoveAllChildren(editModeScenegraphNodes.infoGroup);
     }
 
-    auto ioconv = EditModeInformationOverlayCoinConverter(editModeScenegraphNodes.infoGroup, overlayParameters, drawingParameters);
+    auto ioconv = EditModeInformationOverlayCoinConverter(viewProvider, editModeScenegraphNodes.infoGroup, overlayParameters, drawingParameters);
 
     // geometry information layer for bsplines, as they need a second round now that max curvature is known
     for (auto geoid : analysisResults.bsplineGeoIds) {

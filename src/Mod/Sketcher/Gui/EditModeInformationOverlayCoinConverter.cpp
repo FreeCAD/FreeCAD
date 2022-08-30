@@ -50,9 +50,11 @@
 using namespace SketcherGui;
 
 EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter(
+                                    ViewProviderSketch & vp,
                                     SoGroup * infogroup,
                                     OverlayParameters & overlayparameters,
-                                    DrawingParameters & drawingparameters): infoGroup(infogroup),
+                                    DrawingParameters & drawingparameters): viewProvider(vp),
+                                                                            infoGroup(infogroup),
                                                                             overlayParameters(overlayparameters),
                                                                             drawingParameters(drawingparameters),
                                                                             nodeId(0){
