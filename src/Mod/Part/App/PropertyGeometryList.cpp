@@ -36,6 +36,7 @@
 
 #include "Geometry.h"
 #include "GeometryPy.h"
+#include "GeometryMigrationExtension.h"
 
 #include "PropertyGeometryList.h"
 #include "Part2DObject.h"
@@ -96,26 +97,43 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
     auto copy = lValue;
-    for(auto &geo : copy) // copy of the individual geometry pointers
-        geo = geo->clone();
-
-    setValues(std::move(copy));
+    aboutToSetValue();
+    std::sort(_lValueList.begin(), _lValueList.end());
+    for (auto &v : copy) {
+        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), v);
+        // clone if the new entry does not exist in the original value list, or
+        // else, simply reuse it (i.e. erase it so that it won't get deleted below).
+        if (range.first == range.second)
+            v = v->clone();
+        else
+            _lValueList.erase(range.first, range.second);
+    }
+    for (auto v : _lValueList)
+        delete v;
+    _lValueList = std::move(copy);
+    hasSetValue();
 }
 
 void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
 {
+    // Unlike above, the moved version of setValues() indicates the caller want
+    // us to manager the memory of the passed in values. So no need clone.
     aboutToSetValue();
-    std::set<Geometry*> valueSet(_lValueList.begin(),_lValueList.end());
-    for(auto v : lValue)
-        valueSet.erase(v);
-    _lValueList = std::move(lValue);
-    for(auto v : valueSet)
+    std::sort(_lValueList.begin(), _lValueList.end());
+    for (auto v : lValue) {
+        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), v);
+        _lValueList.erase(range.first, range.second);
+    }
+    for (auto v : _lValueList)
         delete v;
+    _lValueList = std::move(lValue);
     hasSetValue();
 }
 
 void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue)
 {
+    if (!lValue)
+        return;
     if(idx>=(int)_lValueList.size())
         throw Base::IndexError("Index out of bound");
     aboutToSetValue();
@@ -179,8 +197,9 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() << "<Geometry  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
+        writer.Stream() << writer.ind() << "<Geometry type=\"" 
+                                        << _lValueList[i]->getTypeId().getName() << "\"";
+        writer.Stream() << " migrated=\"1\">\n";
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
@@ -203,6 +222,18 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
+        
+        if (!reader.getAttributeAsInteger("migrated","0") && reader.hasAttribute("id")) {
+            auto ext = std::make_unique<GeometryMigrationExtension>();
+            ext->setId(reader.getAttributeAsInteger("id"));
+            if(reader.hasAttribute("ref")) {
+                const char *ref = reader.getAttribute("ref");
+                int index = reader.getAttributeAsInteger("refIndex", "-1");
+                unsigned long flags = (unsigned long)reader.getAttributeAsUnsigned("flags", "0");
+                ext->setReference(ref, index, flags);
+            }
+            newG->setExtension(std::move(ext));
+        }
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
@@ -248,4 +279,14 @@ unsigned int PropertyGeometryList::getMemSize(void) const
     for (int i = 0; i < getSize(); i++)
         size += _lValueList[i]->getMemSize();
     return size;
+}
+
+bool PropertyGeometryList::isSame(const Property &_other) const
+{
+    return isSameContent(_other);
+}
+
+void PropertyGeometryList::moveValues(PropertyGeometryList &&other)
+{
+    setValues(std::move(other._lValueList));
 }

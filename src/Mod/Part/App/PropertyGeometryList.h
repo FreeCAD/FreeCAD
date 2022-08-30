@@ -60,14 +60,18 @@ public:
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
 
+    virtual bool isSame(const App::Property &other) const;
+
     /** Sets the property
      */
     void setValue(const Geometry*);
     void setValues(const std::vector<Geometry*>&);
     void setValues(std::vector<Geometry*>&&);
 
+    void moveValues(PropertyGeometryList &&other);
+
     /// index operator
-    const Geometry *operator[] (const int idx) const {
+    Geometry *operator[] (const int idx) const {
         return _lValueList[idx];
     }
 
