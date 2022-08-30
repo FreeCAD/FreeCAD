@@ -144,7 +144,7 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade & geolistf
     };
 
     // process geometry layers
-    EditModeGeometryCoinConverter gcconv(geometrylayernodes, drawingParameters, geometryLayerParameters, coinMapping);
+    EditModeGeometryCoinConverter gcconv(viewProvider, geometrylayernodes, drawingParameters, geometryLayerParameters, coinMapping);
 
     gcconv.convert(geolistfacade);
 
