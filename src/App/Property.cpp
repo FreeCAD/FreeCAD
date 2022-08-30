@@ -322,13 +322,20 @@ void Property::setStatus(Status pos, bool on) {
 }
 
 bool Property::isSame(const Property &other) const {
+    return isSameContent(other);
+}
+
+bool Property::isSameContent(const Property &other) const {
     if(&other == this)
         return true;
+
     if(other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize())
         return false;
 
-    Base::StringWriter writer,writer2;
+    FC_STATIC Base::StringWriter writer,writer2;
+    writer.clear();
     Save(writer);
+    writer2.clear();
     other.Save(writer2);
     return writer.getString() == writer2.getString();
 }
