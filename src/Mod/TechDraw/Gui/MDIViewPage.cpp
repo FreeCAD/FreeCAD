@@ -258,8 +258,8 @@ void MDIViewPage::getPaperAttributes(void)
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate ) {
-      m_pagewidth  =  Rez::guiX(pageTemplate->Width.getValue());
-      m_pageheight =  Rez::guiX(pageTemplate->Height.getValue());
+      m_pagewidth  =  pageTemplate->Width.getValue();
+      m_pageheight =  pageTemplate->Height.getValue();
     }
     m_paperSize = QPageSize::id(QSizeF(m_pagewidth, m_pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
     if (m_pagewidth > m_pageheight) {
@@ -344,8 +344,8 @@ void MDIViewPage::printPreview()
     printer.setPageOrientation(m_orientation);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, SIGNAL(paintRequested(QPrinter*)),
+            this, SLOT(print(QPrinter*)));
     dlg.exec();
 }
 
