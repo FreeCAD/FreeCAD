@@ -685,6 +685,8 @@ private:
 
     int getApplicationLogicalDPIX() const;
 
+    int getViewOrientationFactor() const;
+
     double getRotation(SbVec3f pos0, SbVec3f pos1) const;
 
     bool isSketchInvalid() const;
