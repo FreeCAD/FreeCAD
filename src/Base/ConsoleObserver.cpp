@@ -266,7 +266,13 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         PyFrameObject* frame = PyEval_GetFrame();
         if (frame) {
             line = PyFrame_GetLineNumber(frame);
+#if PY_VERSION_HEX < 0x030b0000
             src = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+            PyCodeObject* code = PyFrame_GetCode(frame);
+            src = PyUnicode_AsUTF8(code->co_filename);
+            Py_DECREF(code);
+#endif
         }
     }
     if (print_src && src && src[0]) {

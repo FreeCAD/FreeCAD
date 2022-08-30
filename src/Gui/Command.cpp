@@ -657,8 +657,15 @@ void Command::printPyCaller() {
     if(!frame)
         return;
     int line = PyFrame_GetLineNumber(frame);
+#if PY_VERSION_HEX < 0x030b0000
     const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
     printCaller(file?file:"<no file>",line);
+#else
+    PyCodeObject* code = PyFrame_GetCode(frame);
+    const char* file = PyUnicode_AsUTF8(code->co_filename);
+    printCaller(file?file:"<no file>",line);
+    Py_DECREF(code);
+#endif
 }
 
 void Command::printCaller(const char *file, int line) {
