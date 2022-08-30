@@ -32,6 +32,10 @@
 #include <string>
 #include <FCGlobal.h>
 
+// NOTE! define this to static thread_local if FreeCAD ever decides to use
+// multi-threading recomputation.
+#define FC_STATIC static
+
 namespace Py {
 class Object;
 }
@@ -265,6 +269,9 @@ public:
      * cause hard to debug problem if use pointer as key. 
      */
     int64_t getID() const {return _id;}
+
+    /// Compare property by comparing their XML content
+    bool isSameContent(const Property &other) const;
 
     virtual void beforeSave() const {}
 
