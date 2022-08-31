@@ -48,91 +48,81 @@ namespace Mesh
  */
 class Exporter
 {
-    public:
-        Exporter();
-        virtual ~Exporter() = default;
+public:
+    Exporter();
+    virtual ~Exporter() = default;
 
-        /// Add object and all subobjects and links etc. Returns the number of stuff added.
-        /*!
-         * @param obj The object to export. If this is a group like object, its
-         *            sub-objects will be added.
-         * @param tol The tolerance/accuracy with which to generate the triangle mesh
-         * @return The number of objects/subobjects that was exported from the document.
-                   See the parameter `accuracy` of ComplexGeoData::getFaces
-         */
-        int addObject(App::DocumentObject *obj, float tol);
+    /// Add object and all subobjects and links etc. Returns the number of stuff added.
+    /*!
+     * @param obj The object to export. If this is a group like object, its
+     *            sub-objects will be added.
+     * @param tol The tolerance/accuracy with which to generate the triangle mesh
+     * @return The number of objects/subobjects that was exported from the document.
+               See the parameter `accuracy` of ComplexGeoData::getFaces
+     */
+    int addObject(App::DocumentObject *obj, float tol);
 
-        virtual bool addMesh(const char *name, const MeshObject & mesh) = 0;
+    virtual bool addMesh(const char *name, const MeshObject & mesh) = 0;
 
-    protected:
-        /// Does some simple escaping of characters for XML-type exports
-        static std::string xmlEscape(const std::string &input);
+protected:
+    /// Does some simple escaping of characters for XML-type exports
+    static std::string xmlEscape(const std::string &input);
 
-        std::map<const App::DocumentObject *, std::vector<std::string> > subObjectNameCache;
-        std::map<const App::DocumentObject *, MeshObject> meshCache;
+    std::map<const App::DocumentObject *, std::vector<std::string> > subObjectNameCache;
+    std::map<const App::DocumentObject *, MeshObject> meshCache;
 };
 
 /// Creates a single mesh, in a file, from one or more objects
 class MergeExporter : public Exporter
 {
-    public:
-        MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
-        ~MergeExporter() override;
+public:
+    MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
+    ~MergeExporter() override;
 
-        bool addMesh(const char *name, const MeshObject & mesh) override;
+    bool addMesh(const char *name, const MeshObject & mesh) override;
 
-    protected:
-        MeshObject mergingMesh;
-        std::string fName;
+private:
+    /// Write the meshes of the added objects to the output file
+    void write();
+
+protected:
+    MeshObject mergingMesh;
+    std::string fName;
 };
 
 /// Used for exporting to Additive Manufacturing File (AMF) format
 /*!
  * The constructor and destructor write the beginning and end of the AMF,
- * add____() is used to add geometry
+ * addObject() is used to add geometry
  */
-class AmfExporter : public Exporter
+class ExporterAMF : public Exporter
 {
-    public:
-        /// Writes AMF header
-        /*!
-         * meta information passed in is applied at the <amf> tag level
-         */
-        AmfExporter(std::string fileName,
-                    const std::map<std::string, std::string> &meta,
-                    bool compress = true);
+public:
+    /// Writes AMF header
+    /*!
+     * meta information passed in is applied at the <amf> tag level
+     */
+    ExporterAMF(std::string fileName,
+                const std::map<std::string, std::string> &meta,
+                bool compress = true);
 
-        /// Writes AMF footer
-        ~AmfExporter() override;
+    /// Writes AMF footer
+    ~ExporterAMF() override;
 
-        bool addMesh(const char *name, const MeshObject & mesh) override;
+    bool addMesh(const char *name, const MeshObject & mesh) override;
 
-    private:
-        std::ostream *outputStreamPtr;
-        int nextObjectIndex;
+private:
+    /// Write the meshes of the added objects to the output file
+    void write();
+
+private:
+    std::ostream *outputStreamPtr;
+    int nextObjectIndex;
 
     /// Helper for putting Base::Vector3f objects into a std::map in addMesh()
-    class VertLess
-    {
-        public:
-        bool operator()(const Base::Vector3f &a, const Base::Vector3f &b) const
-        {
-            if (a.x == b.x) {
-                if (a.y == b.y) {
-                    if (a.z == b.z) {
-                        return false;
-                    } else {
-                        return a.z < b.z;
-                    }
-                } else {
-                    return a.y < b.y;
-                }
-            } else {
-                return a.x < b.x;
-            }
-        }
-    };
-};  // class AmfExporter
+    class VertLess;
+};  // class ExporterAMF
 
 } // namespace Mesh
+
 #endif // MESH_EXPORTER_H

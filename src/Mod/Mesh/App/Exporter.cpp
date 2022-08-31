@@ -141,12 +141,19 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
     return count;
 }
 
+// ----------------------------------------------------------------------------
+
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
     :fName(fileName)
 {
 }
 
 MergeExporter::~MergeExporter()
+{
+    write();
+}
+
+void MergeExporter::write()
 {
     // if we have more than one segment set the 'save' flag
     if (mergingMesh.countSegments() > 1) {
@@ -162,7 +169,6 @@ MergeExporter::~MergeExporter()
         std::cerr << "Saving mesh failed: " << e.what() << std::endl;
     }
 }
-
 
 bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 {
@@ -209,7 +215,9 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
     return true;
 }
 
-AmfExporter::AmfExporter( std::string fileName,
+// ----------------------------------------------------------------------------
+
+ExporterAMF::ExporterAMF( std::string fileName,
                           const std::map<std::string, std::string> &meta,
                           bool compress ) :
     outputStreamPtr(nullptr), nextObjectIndex(0)
@@ -246,7 +254,12 @@ AmfExporter::AmfExporter( std::string fileName,
     }
 }
 
-AmfExporter::~AmfExporter()
+ExporterAMF::~ExporterAMF()
+{
+    write();
+}
+
+void ExporterAMF::write()
 {
     if (outputStreamPtr) {
         *outputStreamPtr << "\t<constellation id=\"0\">\n";
@@ -263,7 +276,28 @@ AmfExporter::~AmfExporter()
     }
 }
 
-bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
+class ExporterAMF::VertLess
+{
+public:
+    bool operator()(const Base::Vector3f &a, const Base::Vector3f &b) const
+    {
+        if (a.x == b.x) {
+            if (a.y == b.y) {
+                if (a.z == b.z) {
+                    return false;
+                } else {
+                    return a.z < b.z;
+                }
+            } else {
+                return a.y < b.y;
+            }
+        } else {
+            return a.x < b.x;
+        }
+    }
+};
+
+bool ExporterAMF::addMesh(const char *name, const MeshObject & mesh)
 {
     const auto & kernel = mesh.getKernel();
 
@@ -292,8 +326,8 @@ bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
     // Iterate through all facets of the mesh, and construct a:
     //   * Cache (map) of used vertices, outputting each new unique vertex to
     //     the output stream as we find it
-    //   * Vector of the vertices, referred to by the indices from 1 
-    std::map<Base::Vector3f, unsigned long, AmfExporter::VertLess> vertices;
+    //   * Vector of the vertices, referred to by the indices from 1
+    std::map<Base::Vector3f, unsigned long, ExporterAMF::VertLess> vertices;
     auto vertItr(vertices.begin());
     auto vertexCount(0UL);
 
@@ -354,4 +388,3 @@ bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
     ++nextObjectIndex;
     return true;
 }
-
