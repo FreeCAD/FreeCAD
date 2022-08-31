@@ -65,6 +65,10 @@ public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
+
+    //return true if this schema uses multiple units for length (ex. Ft/In)
+    bool isMultiUnitLength() override {return true;}
+
 };
 
 /** The schema class for Civil Engineering in the imperial unit system
@@ -77,6 +81,9 @@ public:
     //virtual void setSchemaUnits(void);
     //virtual void resetSchemaUnits(void);
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
+
+    //return true if this schema uses multiple units for angles (ex. DMS)
+    bool isMultiUnitAngle() override {return true;}
 };
 
 
