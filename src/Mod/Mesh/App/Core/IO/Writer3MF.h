@@ -27,6 +27,7 @@
 #include <iosfwd>
 
 #include "Core/Elements.h"
+#include <zipios++/zipoutputstream.h>
 
 namespace MeshCore
 {
@@ -36,21 +37,48 @@ class MeshKernel;
 class MeshExport Writer3MF
 {
 public:
-    Writer3MF(const MeshKernel &mesh):
-        kernel(mesh) {}
+    /*!
+     * \brief Writer3MF
+     * Passes an output stream to the constructor.
+     * \param str
+     */
+    Writer3MF(std::ostream &str);
 
-    void SetTransform(const Base::Matrix4D&);
-    bool Save(std::ostream &str) const;
+    /*!
+     * \brief Writer3MF
+     * Passes a file name to the constructor
+     * \param filename
+     */
+    Writer3MF(const std::string &filename);
+
+    /*!
+     * \brief Add a mesh object resource to the 3MF file.
+     * \param mesh The mesh object to be written
+     * \param mat The placement of the mesh object
+     * \return true if the added mesh could be written successfully, false otherwise.
+     */
+    bool AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat);
+    /*!
+     * \brief After having added the mesh objects with \ref AddMesh save the meta-information
+     * to the 3MF file.
+     * \return true if the data could be written successfully, false otherwise.
+     */
+    bool Save();
 
 private:
-    bool SaveModel(std::ostream &str) const;
+    void Initialize(std::ostream &str);
+    void Finish(std::ostream &str);
+    std::string GetType(const MeshKernel& mesh) const;
+    void SaveBuildItem(int id, const Base::Matrix4D& mat);
+    std::string DumpMatrix(const Base::Matrix4D& mat) const;
+    bool SaveObject(std::ostream &str, int id, const MeshKernel& mesh) const;
     bool SaveRels(std::ostream &str) const;
     bool SaveContent(std::ostream &str) const;
 
 private:
-    bool applyTransform = false;
-    Base::Matrix4D transform;
-    const MeshKernel &kernel;
+    zipios::ZipOutputStream zip;
+    int objectIndex;
+    std::vector<std::string> items;
 };
 
 } // namespace MeshCore

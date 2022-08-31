@@ -24,31 +24,61 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <ostream>
+# include <sstream>
 #endif
 
 
 #include "Writer3MF.h"
+#include "Core/Evaluation.h"
 #include "Core/MeshKernel.h"
 #include <Base/Tools.h>
-#include <zipios++/gzipoutputstream.h>
-#include <zipios++/zipoutputstream.h>
 
 using namespace MeshCore;
 
-
-void  Writer3MF::SetTransform(const Base::Matrix4D& mat)
+Writer3MF::Writer3MF(std::ostream &str)
+  : zip(str)
+  , objectIndex(0)
 {
-    transform = mat;
-    if (mat != Base::Matrix4D())
-        applyTransform = true;
+    zip.putNextEntry("3D/3dmodel.model");
+    Initialize(zip);
 }
 
-bool Writer3MF::Save(std::ostream &str) const
+Writer3MF::Writer3MF(const std::string &filename)
+  : zip(filename)
+  , objectIndex(0)
 {
-    zipios::ZipOutputStream zip(str);
     zip.putNextEntry("3D/3dmodel.model");
-    if (!SaveModel(zip))
-        return false;
+    Initialize(zip);
+}
+
+void Writer3MF::Initialize(std::ostream &str)
+{
+    str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+           "<model unit=\"millimeter\" xml:lang=\"en-US\" xmlns=\"http://schemas.microsoft.com/3dmanufacturing/core/2015/02\">\n"
+           " <metadata name=\"Application\">FreeCAD</metadata>\n";
+    str << Base::blanks(1) << "<resources>\n";
+}
+
+void Writer3MF::Finish(std::ostream &str)
+{
+    str << Base::blanks(1) << "</resources>\n";
+    str << Base::blanks(1) << "<build>\n";
+    for (const auto& it : items)
+        str << Base::blanks(2) << it;
+    str << Base::blanks(1) << "</build>\n";
+    str << "</model>\n";
+}
+
+bool Writer3MF::AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat)
+{
+    int id = ++objectIndex;
+    SaveBuildItem(id, mat);
+    return SaveObject(zip, id, mesh);
+}
+
+bool Writer3MF::Save()
+{
+    Finish(zip);
     zip.closeEntry();
 
     zip.putNextEntry("_rels/.rels");
@@ -63,57 +93,72 @@ bool Writer3MF::Save(std::ostream &str) const
     return true;
 }
 
-bool Writer3MF::SaveModel(std::ostream &str) const
+bool Writer3MF::SaveObject(std::ostream &str, int id, const MeshKernel& mesh) const
 {
-    const MeshPointArray& rPoints = kernel.GetPoints();
-    const MeshFacetArray& rFacets = kernel.GetFacets();
+    const MeshPointArray& rPoints = mesh.GetPoints();
+    const MeshFacetArray& rFacets = mesh.GetFacets();
 
     if (!str || str.bad())
         return false;
 
-    str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        << "<model unit=\"millimeter\"\n"
-        << "       xml:lang=\"en-US\"\n"
-        << "       xmlns=\"http://schemas.microsoft.com/3dmanufacturing/core/2015/02\">\n"
-        << "<metadata name=\"Application\">FreeCAD</metadata>\n";
-    str << Base::blanks(2) << "<resources>\n";
-    str << Base::blanks(4) << "<object id=\"1\" type=\"model\">\n";
-    str << Base::blanks(6) << "<mesh>\n";
+    str << Base::blanks(2) << "<object id=\"" << id << "\" type=\"" << GetType(mesh) << "\">\n";
+    str << Base::blanks(3) << "<mesh>\n";
 
     // vertices
-    str << Base::blanks(8) << "<vertices>\n";
-    Base::Vector3f pt;
+    str << Base::blanks(4) << "<vertices>\n";
     std::size_t index = 0;
     for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
-        pt.Set(it->x, it->y, it->z);
-        if (this->applyTransform) {
-            this->transform.multVec(pt, pt);
-        }
-        str << Base::blanks(10) << "<vertex x=\"" << pt.x
-                                     << "\" y=\"" << pt.y
-                                     << "\" z=\"" << pt.z
-                                     << "\" />\n";
+        str << Base::blanks(5) << "<vertex x=\"" << it->x
+                                    << "\" y=\"" << it->y
+                                    << "\" z=\"" << it->z
+                                    << "\" />\n";
     }
-    str << Base::blanks(8) << "</vertices>\n";
+    str << Base::blanks(4) << "</vertices>\n";
 
     // facet indices
-    str << Base::blanks(8) << "<triangles>\n";
+    str << Base::blanks(4) << "<triangles>\n";
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        str << Base::blanks(10) << "<triangle v1=\"" << it->_aulPoints[0]
-                                       << "\" v2=\"" << it->_aulPoints[1]
-                                       << "\" v3=\"" << it->_aulPoints[2]
-                                       << "\" />\n";
+        str << Base::blanks(5) << "<triangle v1=\"" << it->_aulPoints[0]
+                                      << "\" v2=\"" << it->_aulPoints[1]
+                                      << "\" v3=\"" << it->_aulPoints[2]
+                                      << "\" />\n";
     }
-    str << Base::blanks(8) << "</triangles>\n";
+    str << Base::blanks(4) << "</triangles>\n";
 
-    str << Base::blanks(6) << "</mesh>\n";
-    str << Base::blanks(4) << "</object>\n";
-    str << Base::blanks(2) << "</resources>\n";
-    str << Base::blanks(2) << "<build>\n";
-    str << Base::blanks(4) << "<item objectid=\"1\" />\n";
-    str << Base::blanks(2) << "</build>\n";
-    str << "</model>\n";
+    str << Base::blanks(3) << "</mesh>\n";
+    str << Base::blanks(2) << "</object>\n";
+
     return true;
+}
+
+std::string Writer3MF::GetType(const MeshKernel& mesh) const
+{
+    if (MeshEvalSolid(mesh).Evaluate())
+        return "model";
+    else
+        return "surface";
+}
+
+void Writer3MF::SaveBuildItem(int id, const Base::Matrix4D& mat)
+{
+    std::stringstream str;
+    str << "<item objectid=\"" << id << "\" transform=\"" << DumpMatrix(mat) << "\" />\n";
+    items.push_back(str.str());
+}
+
+std::string Writer3MF::DumpMatrix(const Base::Matrix4D& mat) const
+{
+    // The matrix representation in the specs is the transposed version of Matrix4D
+    // This means that for the 3x3 sub-matrix the indices must be swapped
+    //
+    // 3D Manufacturing Format / Core Specification & Reference Guide v1.2.3
+    // Chapter: 3.3 3D Matrices (page 9)
+    std::stringstream str;
+    str << mat[0][0] << " " << mat[1][0] << " " << mat[2][0] << " "
+        << mat[0][1] << " " << mat[1][1] << " " << mat[2][1] << " "
+        << mat[0][2] << " " << mat[1][2] << " " << mat[2][2] << " "
+        << mat[0][3] << " " << mat[1][3] << " " << mat[2][3];
+    return str.str();
 }
 
 bool Writer3MF::SaveRels(std::ostream &str) const

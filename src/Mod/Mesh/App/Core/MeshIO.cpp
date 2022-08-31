@@ -2883,9 +2883,9 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
 /** Saves the mesh object into a 3MF file. */
 bool MeshOutput::Save3MF(std::ostream &str) const
 {
-    Writer3MF writer(_rclMesh);
-    writer.SetTransform(_transform);
-    return writer.Save(str);
+    Writer3MF writer(str);
+    writer.AddMesh(_rclMesh, _transform);
+    return writer.Save();
 }
 
 /** Writes an IDTF file. */
