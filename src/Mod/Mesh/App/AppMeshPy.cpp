@@ -267,11 +267,12 @@ private:
                           App::Application::Config()["BuildRevisionHash"];
 
             exporter.reset( new ExporterAMF(outputFileName, meta, exportAmfCompressed) );
-
+        }
+        else if (exportFormat == MeshIO::ThreeMF) {
+            exporter.reset( new Exporter3MF(outputFileName) );
         }
         else if (exportFormat != MeshIO::Undefined) {
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
-
         }
         else {
             std::string exStr("Can't determine mesh format from file name: '");

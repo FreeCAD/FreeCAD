@@ -27,9 +27,10 @@
 #include <vector>
 #include <ostream>
 
-#include "Base/Type.h"
+#include <Base/Stream.h>
+#include <Base/Type.h>
 
-#include "App/Property.h"
+#include <App/Property.h>
 
 #include "MeshFeature.h"
 #include "Core/MeshIO.h"
@@ -67,6 +68,7 @@ public:
 protected:
     /// Does some simple escaping of characters for XML-type exports
     static std::string xmlEscape(const std::string &input);
+    void throwIfNoPermission(const std::string&);
 
     std::map<const App::DocumentObject *, std::vector<std::string> > subObjectNameCache;
     std::map<const App::DocumentObject *, MeshObject> meshCache;
@@ -88,6 +90,28 @@ private:
 protected:
     MeshObject mergingMesh;
     std::string fName;
+};
+
+/// Used for exporting to 3D Manufacturing Format (3MF)
+/*!
+ * The constructor and destructor write the beginning and end of the 3MF,
+ * addObject() is used to add geometry
+ */
+class Exporter3MF : public Exporter
+{
+public:
+    Exporter3MF(std::string fileName);
+    ~Exporter3MF() override;
+
+    bool addMesh(const char *name, const MeshObject & mesh) override;
+
+private:
+    /// Write the meshes of the added objects to the output file
+    void write();
+
+private:
+    class Private;
+    std::unique_ptr<Private> d;
 };
 
 /// Used for exporting to Additive Manufacturing File (AMF) format

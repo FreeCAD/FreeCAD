@@ -22,28 +22,29 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-    #include <algorithm>
-    #include <vector>
-    #include <boost/algorithm/string/replace.hpp>
-#endif  //  #ifndef _PreComp_
+# include <algorithm>
+# include <vector>
+# include <boost/algorithm/string/replace.hpp>
+# include <boost/core/ignore_unused.hpp>
+#endif
 
 #include "Exporter.h"
 #include "MeshFeature.h"
 
 #include "Core/Iterator.h"
+#include "Core/IO/Writer3MF.h"
 
-#include "Base/Console.h"
-#include "Base/Exception.h"
-#include "Base/FileInfo.h"
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-#include "Base/Sequencer.h"
-#include "Base/Stream.h"
-#include "Base/Tools.h"
+#include <Base/Sequencer.h>
+#include <Base/Tools.h>
 
-#include "App/Application.h"
-#include "App/ComplexGeoData.h"
-#include "App/ComplexGeoDataPy.h"
-#include "App/DocumentObject.h"
+#include <App/Application.h>
+#include <App/ComplexGeoData.h>
+#include <App/ComplexGeoDataPy.h>
+#include <App/DocumentObject.h>
 
 #include <zipios++/zipoutputstream.h>
 
@@ -141,6 +142,16 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
     return count;
 }
 
+void Exporter::throwIfNoPermission(const std::string& filename)
+{
+    // ask for write permission
+    Base::FileInfo fi(filename);
+    Base::FileInfo di(fi.dirPath());
+    if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable()) {
+        throw Base::FileException("No write permission for file", filename);
+    }
+}
+
 // ----------------------------------------------------------------------------
 
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
@@ -217,18 +228,47 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 
 // ----------------------------------------------------------------------------
 
+class Exporter3MF::Private {
+public:
+    Private(const std::string& filename)
+      : writer3mf(filename) {
+    }
+    MeshCore::Writer3MF writer3mf;
+};
+
+Exporter3MF::Exporter3MF(std::string fileName)
+{
+    throwIfNoPermission(fileName);
+    d.reset(new Private(fileName));
+}
+
+Exporter3MF::~Exporter3MF()
+{
+    write();
+}
+
+bool Exporter3MF::addMesh(const char *name, const MeshObject & mesh)
+{
+    boost::ignore_unused(name);
+    return d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform());
+}
+
+void Exporter3MF::write()
+{
+    d->writer3mf.Save();
+}
+
+// ----------------------------------------------------------------------------
+
 ExporterAMF::ExporterAMF( std::string fileName,
                           const std::map<std::string, std::string> &meta,
                           bool compress ) :
     outputStreamPtr(nullptr), nextObjectIndex(0)
 {
     // ask for write permission
-    Base::FileInfo fi(fileName.c_str());
-    Base::FileInfo di(fi.dirPath().c_str());
-    if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable()) {
-        throw Base::FileException("No write permission for file", fileName);
-    }
+    throwIfNoPermission(fileName);
 
+    Base::FileInfo fi(fileName);
     if (compress) {
         auto *zipStreamPtr( new zipios::ZipOutputStream(fi.filePath()) );
 
