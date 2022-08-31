@@ -7,11 +7,12 @@ SET(AddonManager_SRCS
     Addon.py
     AddonManager.py
     AddonManager.ui
+    addonmanager_devmode.py
     addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py
-    addonmanager_workers_startup.py
     addonmanager_workers_installation.py
+    addonmanager_workers_startup.py
     addonmanager_workers_utility.py
     AddonManagerOptions.ui
     ALLOWED_PYTHON_PACKAGES.txt
@@ -19,6 +20,10 @@ SET(AddonManager_SRCS
     change_branch.ui
     compact_view.py
     dependency_resolution_dialog.ui
+    developer_mode.ui
+    developer_mode_add_workbench.ui
+    developer_mode_dependencies.ui
+    developer_mode_select_from_list.ui
     expanded_view.py
     first_run.ui
     Init.py

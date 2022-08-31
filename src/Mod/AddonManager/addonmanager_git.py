@@ -256,6 +256,65 @@ class GitManager:
         os.chdir(old_dir)
         return result
 
+    def get_branches(self, local_path) -> List[str]:
+        """ Get a list of all available branches (local and remote) """
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            stdout = self._synchronous_call_git(["branch", "-a", "--format=%(refname:lstrip=2)"])
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+        os.chdir(old_dir)
+        branches = []
+        for branch in stdout.split("\n"):
+            branches.append(branch)
+        return branches
+
+    def get_last_committers(self, local_path, n=10):
+        """ Examine the last n entries of the commit history, and return a list of all of the
+        committers, their email addresses, and how many commits each one is responsible for. """
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        authors = self._synchronous_call_git(["log", f"-{n}", "--format=%cN"])
+        emails = self._synchronous_call_git(["log", f"-{n}", "--format=%cE"])
+        os.chdir(old_dir)
+
+        result_dict = {}
+        for author,email in zip(authors,emails):
+            if author not in result_dict:
+                result_dict[author]["email"] = [email]
+                result_dict[author]["count"] = 1
+            else:
+                if email not in result_dict[author]["email"]:
+                    # Same author name, new email address -- treat it as the same
+                    # person with a second email, instead of as a whole new person
+                    result_dict[author]["email"].append(email)
+                result_dict[author]["count"] += 1
+        return result_dict
+
+    def get_last_authors(self, local_path, n=10):
+        """ Examine the last n entries of the commit history, and return a list of all of the
+        authors, their email addresses, and how many commits each one is responsible for. """
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        authors = self._synchronous_call_git(["log", f"-{n}", "--format=%aN"])
+        emails = self._synchronous_call_git(["log", f"-{n}", "--format=%aE"])
+        os.chdir(old_dir)
+
+        result_dict = {}
+        for author,email in zip(authors,emails):
+            if author not in result_dict:
+                result_dict[author]["email"] = [email]
+                result_dict[author]["count"] = 1
+            else:
+                if email not in result_dict[author]["email"]:
+                    # Same author name, new email address -- treat it as the same
+                    # person with a second email, instead of as a whole new person
+                    result_dict[author]["email"].append(email)
+                result_dict[author]["count"] += 1
+        return result_dict
+
     def _find_git(self):
         # Find git. In preference order
         #   A) The value of the GitExecutable user preference

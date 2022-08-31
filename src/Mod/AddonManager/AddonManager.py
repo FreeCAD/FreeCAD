@@ -32,6 +32,7 @@ import tempfile
 import hashlib
 import threading
 import json
+import re # Needed for py 3.6 and earlier, can remove later, search for "re."
 from datetime import date, timedelta
 from typing import Dict, List
 
@@ -69,10 +70,13 @@ from manage_python_dependencies import (
     CheckForPythonPackageUpdatesWorker,
     PythonPackageManager,
 )
+from addonmanager_devmode import DeveloperMode
 
 import NetworkManager
 
 translate = FreeCAD.Qt.translate
+def QT_TRANSLATE_NOOP(_, txt):
+    return txt
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
@@ -97,12 +101,6 @@ installed.
 #  \brief The Addon Manager allows users to install workbenches and macros made by other users
 #  @{
 
-
-def QT_TRANSLATE_NOOP(ctx, txt):
-    return txt
-
-
-ADDON_MANAGER_DEVELOPER_MODE = False
 
 
 class CommandAddonManager:
@@ -156,6 +154,7 @@ class CommandAddonManager:
         self.check_for_python_package_updates_worker = None
         self.install_worker = None
         self.update_all_worker = None
+        self.developer_mode = None
 
     def GetResources(self) -> Dict[str, str]:
         return {
@@ -176,8 +175,7 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         readWarning = pref.GetBool("readWarning2022", False)
 
-        global ADDON_MANAGER_DEVELOPER_MODE
-        ADDON_MANAGER_DEVELOPER_MODE = pref.GetBool("developerMode", False)
+        dev_mode_active = pref.GetBool("developerMode", False)
 
         if not readWarning:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
@@ -263,7 +261,7 @@ class CommandAddonManager:
             )
             self.connection_check_message.show()
 
-    def cancel_network_check(self, button):
+    def cancel_network_check(self, _):
         if not self.connection_checker.isFinished():
             self.connection_checker.success.disconnect(self.launch)
             self.connection_checker.failure.disconnect(self.network_connection_failed)
@@ -275,7 +273,7 @@ class CommandAddonManager:
         # This must run on the main GUI thread
         if hasattr(self, "connection_check_message") and self.connection_check_message:
             self.connection_check_message.close()
-        if HAVE_QTNETWORK:
+        if NetworkManager.HAVE_QTNETWORK:
             QtWidgets.QMessageBox.critical(
                 None, translate("AddonsInstaller", "Connection failed"), message
             )
@@ -349,6 +347,9 @@ class CommandAddonManager:
             )
         )
 
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        dev_mode_active = pref.GetBool("developerMode", False)
+
         # enable/disable stuff
         self.dialog.buttonUpdateAll.setEnabled(False)
         self.hide_progress_widgets()
@@ -356,6 +357,10 @@ class CommandAddonManager:
         self.dialog.buttonUpdateCache.setText(
             translate("AddonsInstaller", "Starting up...")
         )
+        if dev_mode_active:
+            self.dialog.buttonDevTools.show()
+        else:
+            self.dialog.buttonDevTools.hide()
 
         # Only shown if there are available Python package updates
         self.dialog.buttonUpdateDependencies.hide()
@@ -371,6 +376,9 @@ class CommandAddonManager:
         )
         self.dialog.buttonUpdateDependencies.clicked.connect(
             self.show_python_updates_dialog
+        )
+        self.dialog.buttonDevTools.clicked.connect(
+            self.show_developer_tools
         )
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
@@ -404,7 +412,7 @@ class CommandAddonManager:
         # rock 'n roll!!!
         self.dialog.exec_()
 
-    def cleanup_workers(self, wait=False) -> None:
+    def cleanup_workers(self) -> None:
         """Ensure that no workers are running by explicitly asking them to stop and waiting for them until they do"""
         for worker in self.workers:
             if hasattr(self, worker):
@@ -614,8 +622,9 @@ class CommandAddonManager:
         if selection:
             self.startup_sequence.insert(2, functools.partial(self.select_addon, selection))
             pref.SetString("SelectedAddon", "")
-        if ADDON_MANAGER_DEVELOPER_MODE:
-            self.startup_sequence.append(self.validate)
+        # TODO: migrate this to the developer mode tools
+        #if ADDON_MANAGER_DEVELOPER_MODE:
+        #    self.startup_sequence.append(self.validate)
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
         self.do_next_startup_phase()
@@ -650,7 +659,7 @@ class CommandAddonManager:
                         from_json = json.loads(data)
                         if len(from_json) == 0:
                             use_cache = False
-                    except Exception as e:
+                    except json.JSONDecodeError:
                         use_cache = False
             else:
                 use_cache = False
@@ -915,6 +924,12 @@ class CommandAddonManager:
         if not hasattr(self, "manage_python_packages_dialog"):
             self.manage_python_packages_dialog = PythonPackageManager()
         self.manage_python_packages_dialog.show()
+
+    def show_developer_tools(self) -> None:
+        """ Display the developer tools dialog """
+        if not self.developer_mode:
+            self.developer_mode = DeveloperMode()
+        self.developer_mode.show()
 
     def add_addon_repo(self, addon_repo: Addon) -> None:
         """adds a workbench to the list"""
