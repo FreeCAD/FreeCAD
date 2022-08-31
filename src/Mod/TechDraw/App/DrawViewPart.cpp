@@ -442,7 +442,6 @@ void DrawViewPart::postHlrTasks(void)
     //add geometry that doesn't come from HLR
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
     addReferencesToGeom();
     addShapes2d();
 
@@ -615,6 +614,9 @@ void DrawViewPart::onFacesFinished(void)
     waitingForFaces(false);
     QObject::disconnect(connectFaceWatcher);
     showProgressMessage(getNameInDocument(), "has finished extracting faces");
+
+    //some centerlines depend on faces so we could not add CL geometry before now
+    addCenterLinesToGeom();
     requestPaint();
 }
 
