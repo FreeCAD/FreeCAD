@@ -500,6 +500,8 @@ public:
     void centerSelection();
     /// returns the scale factor
     float getScaleFactor() const;
+    /// returns view orientation factor
+    int getViewOrientationFactor() const;
     //@}
 
     /** @name constraint Virtual Space visibility management */
@@ -684,8 +686,6 @@ private:
     int defaultFontSizePixels() const;
 
     int getApplicationLogicalDPIX() const;
-
-    int getViewOrientationFactor() const;
 
     double getRotation(SbVec3f pos0, SbVec3f pos1) const;
 
