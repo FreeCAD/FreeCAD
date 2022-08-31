@@ -3149,6 +3149,11 @@ void ViewProviderSketch::camSensCB(void *data, SoSensor *)
         Base::Console().Log("Switching side, now %s, redrawing\n", tmpFactor < 0 ? "back" : "front");
         vp->viewOrientationFactor = tmpFactor;
         vp->draw();
+
+        QString cmdStr = QStringLiteral(
+            "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
+            .arg(tmpFactor<0?QLatin1String("True"):QLatin1String("False"));
+        Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
 }
 

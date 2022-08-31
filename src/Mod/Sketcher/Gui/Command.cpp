@@ -964,7 +964,17 @@ CmdSketcherViewSection::CmdSketcherViewSection()
 void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Doc,"ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch)");
+    QString cmdStr = QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
+    Gui::Document *doc = getActiveGuiDocument();
+    bool revert = false;
+    if(doc) {
+        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp) {
+            revert = vp->getViewOrientationFactor() < 0?true:false;
+        }
+    }
+    cmdStr = cmdStr.arg(revert?QLatin1String("True"):QLatin1String("False"));
+    doCommand(Doc, cmdStr.toLatin1());
 }
 
 bool CmdSketcherViewSection::isActive()
