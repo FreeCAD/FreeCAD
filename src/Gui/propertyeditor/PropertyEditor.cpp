@@ -747,6 +747,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     case MA_Expression:
         if(contextIndex == currentIndex()) {
             Base::FlagToggler<> flag(binding);
+            closeEditor();
             openEditor(contextIndex);
         }
         break;
