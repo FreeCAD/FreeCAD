@@ -24,7 +24,9 @@
 #ifndef SKETCHERGUI_Recompute_H
 #define SKETCHERGUI_Recompute_H
 
+#include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include "AutoConstraint.h"
 
@@ -34,8 +36,12 @@ namespace App {
 
 namespace Gui {
     class DocumentObject;
+    class Document;
 }
 
+namespace Part {
+    class Geometry;
+}
 namespace Sketcher {
     enum class PointPos : int;
     class SketchObject;
@@ -123,6 +129,13 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj);
 
+//convenience functions for cursor coodinates
+bool        hideUnits();
+bool        showCursorCoords();
+bool        useSystemDecimals();
+std::string lengthToDisplayFormat(double value, int digits);
+std::string angleToDisplayFormat(double value, int digits);
+
 }
 
 /// converts a 2D vector into a 3D vector in the XY plane
@@ -139,5 +152,6 @@ auto toPointerVector(const std::vector<std::unique_ptr<T>> & vector) {
 
     return vp;
 }
+
 #endif // SKETCHERGUI_Recompute_H
 

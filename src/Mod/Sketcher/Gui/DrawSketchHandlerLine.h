@@ -55,9 +55,13 @@ public:
         else if (Mode==STATUS_SEEK_Second){
             float length = (onSketchPos - EditCurve[0]).Length();
             float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
-            SbString text;
-            text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string lengthString = lengthToDisplayFormat(length, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             EditCurve[1] = onSketchPos;
             drawEdit(EditCurve);

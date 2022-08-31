@@ -81,9 +81,13 @@ public:
             float radius = (onSketchPos - EditCurve[0]).Length();
             float angle = atan2f(dy_ , dx_);
 
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fdeg)", radius, angle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -106,9 +110,13 @@ public:
             // Display radius and arc angle
             float radius = (onSketchPos - EditCurve[0]).Length();
 
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fdeg)", radius, arcAngle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
+                text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0))) {
@@ -283,9 +291,13 @@ public:
 
             // Display radius and start angle
             // This lineAngle will report counter-clockwise from +X, not relatively
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                std::string angleString = angleToDisplayFormat(lineAngle * 180.0 / M_PI, 1);
+                text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -353,9 +365,13 @@ public:
                                                 CenterPoint.y + radius*sin(angle));
                 }
 
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) arcAngle * 180 / M_PI);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string radiusString = lengthToDisplayFormat(radius, 1);
+                    std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
+                    text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 drawEdit(EditCurve);
                 if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),

@@ -75,9 +75,12 @@ public:
             // Display radius for user
             float radius = (onSketchPos - EditCurve[0]).Length();
 
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fR)", radius,radius);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                text.sprintf(" (R%s, R%s)", radiusString.c_str(), radiusString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centerPoint,
@@ -106,9 +109,13 @@ public:
             EditCurve[17] = EditCurve[16];
 
             // Display radius for user
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fR)", a, b);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string aString = lengthToDisplayFormat(a, 1);
+                std::string bString = lengthToDisplayFormat(b, 1);
+                text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -145,9 +152,14 @@ public:
 //             EditCurve[17] = EditCurve[16];
 
             // Display radii and angle for user
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fR,%.1fdeg)", a, b, arcAngle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string aString = lengthToDisplayFormat(a, 1);
+                std::string bString = lengthToDisplayFormat(b, 1);
+                std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
+                text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
