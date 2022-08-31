@@ -64,6 +64,16 @@
         <file>icons/yaml-workspace_workbench_icon.svg</file>
         <file>icons/expanded_view.svg</file>
         <file>icons/compact_view.svg</file>
+		<file>licenses/Apache-2.0.txt</file>
+		<file>licenses/BSD-2-Clause.txt</file>
+		<file>licenses/BSD-3-Clause.txt</file>
+		<file>licenses/CC0v1.txt</file>
+		<file>licenses/GPLv2.txt</file>
+		<file>licenses/GPLv3.txt</file>
+		<file>licenses/LGPLv2.1.txt</file>
+		<file>licenses/LGPLv3.txt</file>
+		<file>licenses/MIT.txt</file>
+		<file>licenses/MPL-2.0.txt</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>

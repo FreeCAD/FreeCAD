@@ -23,19 +23,21 @@
 """ Classes to manage "Developer Mode" """
 
 import os
+from typing import Optional
 
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import QFileDialog, QTableWidgetItem
-from PySide2.QtGui import QIcon, QValidator, QRegularExpressionValidator, QPixmap
-from PySide2.QtCore import QRegularExpression
+from PySide2.QtWidgets import QFileDialog, QTableWidgetItem, QDialog
+from PySide2.QtGui import QIcon, QValidator, QRegularExpressionValidator, QPixmap, QDesktopServices
+from PySide2.QtCore import QRegularExpression, QUrl, QFile, QIODevice
 from addonmanager_git import GitManager
+
+from addonmanager_devmode_license_selector import LicenseSelector
 
 translate = FreeCAD.Qt.translate
 
 # pylint: disable=too-few-public-methods
-
 
 class AddonGitInterface:
     """Wrapper to handle the git calls needed by this class"""
@@ -155,7 +157,7 @@ class DeveloperMode:
             os.path.join(os.path.dirname(__file__), "developer_mode.ui")
         )
         self.pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        self.current_mod:str = ""
+        self.current_mod: str = ""
         self.git_interface = None
         self.has_toplevel_icon = False
         self._setup_dialog_signals()
@@ -278,18 +280,7 @@ class DeveloperMode:
         for lic in metadata.License:
             name = lic["name"]
             path = lic["file"]
-            self.dialog.licensesTableWidget.insertRow(row)
-            self.dialog.licensesTableWidget.setItem(row, 0, QTableWidgetItem(name))
-            self.dialog.licensesTableWidget.setItem(row, 1, QTableWidgetItem(path))
-            full_path = os.path.join(self.current_mod, path)
-            if not os.path.isfile(full_path):
-                FreeCAD.Console.PrintError(
-                    translate(
-                        "AddonsInstaller",
-                        "ERROR: Could not locate license file at {}",
-                    ).format(full_path)
-                    + "\n"
-                )
+            self._add_license_row(row, name, path)
             row += 1
         if row == 0:
             FreeCAD.Console.PrintWarning(
@@ -297,6 +288,20 @@ class DeveloperMode:
                     "AddonsInstaller",
                     "WARNING: No license data found in metadata file",
                 )
+                + "\n"
+            )
+
+    def _add_license_row(self, row: int, name: str, path: str):
+        self.dialog.licensesTableWidget.insertRow(row)
+        self.dialog.licensesTableWidget.setItem(row, 0, QTableWidgetItem(name))
+        self.dialog.licensesTableWidget.setItem(row, 1, QTableWidgetItem(path))
+        full_path = os.path.join(self.current_mod, path)
+        if not os.path.isfile(full_path):
+            FreeCAD.Console.PrintError(
+                translate(
+                    "AddonsInstaller",
+                    "ERROR: Could not locate license file at {}",
+                ).format(full_path)
                 + "\n"
             )
 
@@ -415,6 +420,8 @@ class DeveloperMode:
         self.dialog.documentationURLLineEdit.clear()
         self.dialog.iconDisplayLabel.setPixmap(QPixmap())
         self.dialog.iconPathLineEdit.clear()
+        self.dialog.licensesTableWidget.setRowCount(0)
+        self.dialog.peopleTableWidget.setRowCount(0)
 
     def _setup_dialog_signals(self):
         """Set up the signal and slot connections for the main dialog."""
@@ -425,11 +432,20 @@ class DeveloperMode:
         self.dialog.pathToAddonComboBox.editTextChanged.connect(
             self._addon_combo_text_changed
         )
+        self.dialog.addLicenseToolButton.clicked.connect(self._add_license_clicked)
+        self.dialog.removeLicenseToolButton.clicked.connect(self._remove_license_clicked)
+        self.dialog.addPersonToolButton.clicked.connect(self._add_person_clicked)
+        self.dialog.removePersonToolButton.clicked.connect(self._remove_person_clicked)
+        self.dialog.peopleTableWidget.itemSelectionChanged.connect(self._person_selection_changed)
+        self.dialog.licensesTableWidget.itemSelectionChanged.connect(self._license_selection_changed)
 
         # Finally, populate the combo boxes, etc.
         self._populate_combo()
         if self.dialog.pathToAddonComboBox.currentIndex() != -1:
             self._populate_dialog(self.dialog.pathToAddonComboBox.currentText())
+
+        self.dialog.removeLicenseToolButton.setDisabled(True)
+        self.dialog.removePersonToolButton.setDisabled(True)
 
     ###############################################################################################
     #                                         DIALOG SLOTS
@@ -506,3 +522,43 @@ class DeveloperMode:
             for i, mod in zip(range(10), recent_mod_paths):
                 entry_name = f"Mod{i}"
                 recent_mods_group.SetString(entry_name, mod)
+
+    def _person_selection_changed(self):
+        items = self.dialog.peopleTableWidget.selectedItems()
+        if items:
+            self.dialog.removePersonToolButton.setDisabled(False)
+        else:
+            self.dialog.removePersonToolButton.setDisabled(True)
+
+    def _license_selection_changed(self):
+        items = self.dialog.licensesTableWidget.selectedItems()
+        if items:
+            self.dialog.removeLicenseToolButton.setDisabled(False)
+        else:
+            self.dialog.removeLicenseToolButton.setDisabled(True)
+
+    def _add_license_clicked(self):
+        license_selector = LicenseSelector(self.current_mod)
+        short_code, path = license_selector.exec()
+        if short_code:
+            self._add_license_row(
+                self.dialog.licensesTableWidget.rowCount(), short_code, path
+            )
+
+    def _remove_license_clicked(self):
+        items = self.dialog.licensesTableWidget.selectedIndexes()
+        if items:
+            # We only support single-selection, so can just pull the row # from
+            # the first entry
+            self.dialog.licensesTableWidget.removeRow(items[0].row())
+
+    def _add_person_clicked(self):
+        pass
+
+    def _remove_person_clicked(self):
+        items = self.dialog.peopleTableWidget.selectedIndexes()
+        if items:
+            # We only support single-selection, so can just pull the row # from
+            # the first entry
+            self.dialog.peopleTableWidget.removeRow(items[0].row())
+
