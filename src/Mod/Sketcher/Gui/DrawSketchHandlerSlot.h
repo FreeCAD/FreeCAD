@@ -119,9 +119,13 @@ public:
             }
             EditCurve[34] = EditCurve[0];
 
-            SbString text;
-            text.sprintf(" (%.1fR %.1fL)", r, sqrt(dx * dx + dy * dy));
-            setPositionText(onSketchPos, text);
+             if (showCursorCoords()) {
+                SbString text;
+                std::string rString = lengthToDisplayFormat(r, 1);
+                std::string sqrtString = lengthToDisplayFormat(sqrt(dx * dx + dy * dy), 1);
+                text.sprintf("  (R%s L%s))", rString.c_str(), sqrtString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(dx, dy), AutoConstraint::VERTEX_NO_TANGENCY)) {

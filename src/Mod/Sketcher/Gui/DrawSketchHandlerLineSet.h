@@ -194,9 +194,13 @@ public:
                 float length = (EditCurve[1] - EditCurve[0]).Length();
                 float angle = (EditCurve[1] - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
 
-                SbString text;
-                text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
-                setPositionText(EditCurve[1], text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string lengthString = lengthToDisplayFormat(length, 1);
+                    std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                    text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+                    setPositionText(EditCurve[1], text);
+                }
 
                 if (TransitionMode == TRANSITION_MODE_Free) {
                     if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
@@ -272,9 +276,13 @@ public:
 
                 drawEdit(EditCurve);
 
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fdeg)", std::abs(arcRadius), arcAngle * 180 / M_PI);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string radiusString = lengthToDisplayFormat(std::abs(arcRadius), 1);
+                    std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
+                    text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                     renderSuggestConstraintsCursor(sugConstr2);

@@ -68,10 +68,12 @@ public:
 
             // Display radius for user
             float radius = (onSketchPos - focusPoint).Length();
-
-            SbString text;
-            text.sprintf(" (F%.1f)", radius);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                text.sprintf(" (F%s)", radiusString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -101,9 +103,12 @@ public:
             }
 
             // Display radius for user
-            SbString text;
-            text.sprintf(" (F%.1f)", focal);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string focalString = lengthToDisplayFormat(focal, 1);
+                text.sprintf(" (F%s)", focalString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
 
@@ -143,9 +148,12 @@ public:
                     EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
                 }
 
-                SbString text;
-                text.sprintf(" (F%.1f)", focal);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string focalString = lengthToDisplayFormat(focal, 1);
+                    text.sprintf(" (F%s)", focalString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
             }
             else {
                 arcAngle=0.;

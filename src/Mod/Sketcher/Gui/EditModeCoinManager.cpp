@@ -98,6 +98,8 @@
 
 #include "EditModeCoinManager.h"
 
+#include "Utils.h"
+
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -492,9 +494,13 @@ void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos, const SbStr
 
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos)
 {
-    SbString text;
-    text.sprintf(" (%.1f,%.1f)", Pos.x, Pos.y);
-    setPositionText(Pos,text);
+    if (showCursorCoords()) {
+        SbString text;
+        std::string xString = lengthToDisplayFormat(Pos.x, 1);
+        std::string yString = lengthToDisplayFormat(Pos.y, 1);
+        text.sprintf(" (%s, %s)", xString.c_str(), yString.c_str());
+        setPositionText(Pos,text);
+    }
 }
 
 void EditModeCoinManager::resetPositionText()

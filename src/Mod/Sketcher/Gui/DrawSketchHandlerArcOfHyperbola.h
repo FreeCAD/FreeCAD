@@ -65,10 +65,12 @@ public:
 
             // Display radius for user
             float radius = (onSketchPos - centerPoint).Length();
-
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fR)", radius,radius);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                text.sprintf(" (R%s, R%s)", radiusString.c_str(), radiusString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
@@ -97,15 +99,19 @@ public:
                 }
 
                 // Display radius for user
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fR)", a, b);
-                setPositionText(onSketchPos, text);
-            }
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string aString = lengthToDisplayFormat(a, 1);
+                    std::string bString = lengthToDisplayFormat(b, 1);
+                    text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
-            drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstr3);
-                return;
+                drawEdit(EditCurve);
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
+                }
             }
         }
         else if (Mode==STATUS_SEEK_Fourth) {
@@ -144,9 +150,13 @@ public:
                 }
 
                 // Display radius for user
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fR)", a, b);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string aString = lengthToDisplayFormat(a, 1);
+                    std::string bString = lengthToDisplayFormat(b, 1);
+                    text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
             }
             else {
                 arcAngle=0.;

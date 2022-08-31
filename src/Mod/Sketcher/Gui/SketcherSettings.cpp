@@ -151,6 +151,8 @@ void SketcherSettingsDisplay::saveSettings()
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxHideUnits->onSave();
+    ui->checkBoxShowCursorCoords->onSave();
+    ui->checkBoxUseSystemDecimals->onSave();
     ui->checkBoxShowDimensionalName->onSave();
     ui->prefDimensionalStringFormat->onSave();
     ui->checkBoxTVHideDependent->onSave();
@@ -175,6 +177,8 @@ void SketcherSettingsDisplay::loadSettings()
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxHideUnits->onRestore();
+    ui->checkBoxShowCursorCoords->onRestore();
+    ui->checkBoxUseSystemDecimals->onRestore();
     ui->checkBoxShowDimensionalName->onRestore();
     ui->prefDimensionalStringFormat->onRestore();
     ui->checkBoxTVHideDependent->onRestore();

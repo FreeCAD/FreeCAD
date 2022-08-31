@@ -53,6 +53,7 @@
 #include "DrawSketchHandler.h"
 #include "ViewProviderSketch.h"
 #include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace SketcherGui;
 using namespace Sketcher;
@@ -957,9 +958,13 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d & position, c
     float length = (position - origin).Length();
     float angle = (position - origin).GetAngle(Base::Vector2d(1.f,0.f));
 
-    SbString text;
-    text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
-    setPositionText(position, text);
+    if (showCursorCoords()) {
+        SbString text;
+        std::string lengthString = lengthToDisplayFormat(length, 1);
+        std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+        text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+        setPositionText(position, text);
+    }
 }
 
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
