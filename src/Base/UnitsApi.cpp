@@ -151,6 +151,18 @@ QString UnitsApi::toNumber(double d, const QuantityFormat& f)
     return number;
 }
 
+//return true if the current user schema uses multiple units for length (ex. Ft/In)
+bool UnitsApi::isMultiUnitLength()
+{
+    return UserPrefSystem->isMultiUnitLength();
+}
+
+//return true if the current user schema uses multiple units for angles (ex. DMS)
+bool UnitsApi::isMultiUnitAngle()
+{
+    return UserPrefSystem->isMultiUnitAngle();
+}
+
 // === static translation methods ==========================================
 
 QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
