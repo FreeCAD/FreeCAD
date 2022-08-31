@@ -111,7 +111,7 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
             if (linked->isDerivedFrom(Mesh::Feature::getClassTypeId())) {
                 it = meshCache.emplace(linked,
                         static_cast<Mesh::Feature*>(linked)->Mesh.getValue()).first;
-                it->second.setTransform(Base::Matrix4D());
+                it->second.setTransform(matrix);
             }
             else {
                 Base::PyGILStateLocker lock;
@@ -126,6 +126,7 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
                     geoData->getFaces(aPoints, aTopo, tol);
                     it = meshCache.emplace(linked, MeshObject()).first;
                     it->second.setFacets(aTopo, aPoints);
+                    it->second.setTransform(matrix);
                 }
                 Py_DECREF(pyobj);
             }
@@ -133,9 +134,7 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
 
         // Add a new mesh
         if (it != meshCache.end()) {
-            MeshObject mesh(it->second);
-            mesh.transformGeometry(matrix);
-            if (addMesh(sobj->Label.getValue(), mesh))
+            if (addMesh(sobj->Label.getValue(), it->second))
                 ++count;
         }
     }
@@ -183,7 +182,8 @@ void MergeExporter::write()
 
 bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 {
-    const auto & kernel = mesh.getKernel();
+    auto kernel = mesh.getKernel();
+    kernel.Transform(mesh.getTransform());
     auto countFacets( mergingMesh.countFacets() );
     if (countFacets == 0) {
         mergingMesh.setKernel(kernel);
@@ -339,7 +339,8 @@ public:
 
 bool ExporterAMF::addMesh(const char *name, const MeshObject & mesh)
 {
-    const auto & kernel = mesh.getKernel();
+    auto kernel = mesh.getKernel();
+    kernel.Transform(mesh.getTransform());
 
     if (!outputStreamPtr || outputStreamPtr->bad()) {
         return false;
