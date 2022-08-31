@@ -107,7 +107,9 @@ def findIntersection(edge1, edge2,
     # First, check bound boxes
     if (isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
             and (not infinite1) and (not infinite2)):
-        if not edge1.BoundBox.intersect(edge2.BoundBox):
+        bb1 = edge1.BoundBox
+        bb1.enlarge(pow(10, -precision()))  # enlarge one box to account for rounding errors
+        if not bb1.intersect(edge2.BoundBox):
             return []  # bound boxes don't intersect
 
     # First, try to use distToShape if possible
@@ -117,7 +119,7 @@ def findIntersection(edge1, edge2,
         sol = []
         if round(dist, precision()) == 0:
             for p in pts:
-                if p not in sol:
+                if p[0] not in sol:
                     sol.append(p[0])
         return sol
 
