@@ -27,7 +27,6 @@
 #include <vector>
 #include <ostream>
 
-#include <Base/Stream.h>
 #include <Base/Type.h>
 
 #include <App/Property.h>
