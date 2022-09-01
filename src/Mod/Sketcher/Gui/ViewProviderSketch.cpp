@@ -458,12 +458,6 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             return false;
         }
         break;
-    case SoKeyboardEvent::LEFT_SHIFT:
-        if (Mode < STATUS_SKETCH_UseHandler) {
-            editCoinManager->setConstraintSelectability(!pressed);
-            return true;
-        }
-        [[fallthrough]];
     default:
         {
             if (isInEditMode() && sketchHandler)
@@ -1027,6 +1021,16 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
 {
     // maximum radius for mouse moves when selecting a geometry before switching to drag mode
     const int dragIgnoredDistance = 3;
+
+    static bool selectableConstraints = true;
+
+    if (Mode < STATUS_SKETCH_UseHandler) {
+        bool tmpSelCons = QApplication::keyboardModifiers() & Qt::ShiftModifier;
+        if (tmpSelCons != !selectableConstraints) {
+            selectableConstraints = !tmpSelCons;
+            editCoinManager->setConstraintSelectability(selectableConstraints);
+        }
+    }
 
     if (!isInEditMode())
         return false;
