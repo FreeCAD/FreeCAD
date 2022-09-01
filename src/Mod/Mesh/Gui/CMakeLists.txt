@@ -144,6 +144,8 @@ SET(MeshGui_SRCS
     MeshSelection.h
     PropertyEditorMesh.cpp
     PropertyEditorMesh.h
+    ThumbnailExtension.cpp
+    ThumbnailExtension.h
     Workbench.cpp
     Workbench.h
 )

@@ -142,10 +142,15 @@ void ViewProviderMeshBuilder::createMesh(const App::Property* prop, SoCoordinate
 {
     const Mesh::PropertyMeshKernel* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop);
     const MeshCore::MeshKernel& rcMesh = mesh->getValue().getKernel();
+    createMesh(rcMesh, coords, faces);
+}
+
+void ViewProviderMeshBuilder::createMesh(const MeshCore::MeshKernel& kernal, SoCoordinate3* coords, SoIndexedFaceSet* faces) const
+{
 
     // set the point coordinates
-    const MeshCore::MeshPointArray& cP = rcMesh.GetPoints();
-    coords->point.setNum(rcMesh.CountPoints());
+    const MeshCore::MeshPointArray& cP = kernal.GetPoints();
+    coords->point.setNum(kernal.CountPoints());
     SbVec3f* verts = coords->point.startEditing();
     int i=0;
     for (MeshCore::MeshPointArray::_TConstIterator it = cP.begin(); it != cP.end(); ++it, i++) {
@@ -155,8 +160,8 @@ void ViewProviderMeshBuilder::createMesh(const App::Property* prop, SoCoordinate
 
     // set the face indices
     int j=0;
-    const MeshCore::MeshFacetArray& cF = rcMesh.GetFacets();
-    faces->coordIndex.setNum(4*rcMesh.CountFacets());
+    const MeshCore::MeshFacetArray& cF = kernal.GetFacets();
+    faces->coordIndex.setNum(4*kernal.CountFacets());
     int32_t* indices = faces->coordIndex.startEditing();
     for (MeshCore::MeshFacetArray::_TConstIterator it = cF.begin(); it != cF.end(); ++it, j++) {
         for (int i=0; i<3; i++) {

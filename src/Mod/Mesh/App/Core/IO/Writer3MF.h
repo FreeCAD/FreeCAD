@@ -25,13 +25,25 @@
 #define MESH_IO_WRITER_3MF_H
 
 #include <iosfwd>
-
-#include "Core/Elements.h"
 #include <zipios++/zipoutputstream.h>
+#include <Mod/Mesh/MeshGlobal.h>
+
+namespace Base {
+class Matrix4D;
+}
 
 namespace MeshCore
 {
 class MeshKernel;
+
+struct Resource3MF {
+    std::string extension;
+    std::string contentType;
+    std::string relationshipTarget;
+    std::string relationshipType;
+    std::string fileNameInZip;
+    std::string fileContent;
+};
 
 /** Saves the mesh object into 3MF format. */
 class MeshExport Writer3MF
@@ -59,6 +71,11 @@ public:
      */
     bool AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat);
     /*!
+     * \brief AddResource
+     * Add an additional resource to the 3MF file.
+     */
+    void AddResource(const Resource3MF&);
+    /*!
      * \brief After having added the mesh objects with \ref AddMesh save the meta-information
      * to the 3MF file.
      * \return true if the data could be written successfully, false otherwise.
@@ -79,6 +96,7 @@ private:
     zipios::ZipOutputStream zip;
     int objectIndex;
     std::vector<std::string> items;
+    std::vector<Resource3MF> resources;
 };
 
 } // namespace MeshCore

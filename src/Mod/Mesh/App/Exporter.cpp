@@ -229,12 +229,29 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 
 // ----------------------------------------------------------------------------
 
+void Extension3MFFactory::addProducer(AbstractExtensionProducer* ext)
+{
+    producer.emplace_back(ext);
+}
+
+std::vector<Extension3MFPtr> Extension3MFFactory::create()
+{
+    std::vector<Extension3MFPtr> ext;
+    for (const auto& it : producer)
+        ext.emplace_back(it->create());
+    return ext;
+}
+
+std::vector<AbstractExtensionProducerPtr> Extension3MFFactory::producer;
+
 class Exporter3MF::Private {
 public:
     Private(const std::string& filename)
       : writer3mf(filename) {
+        ext = Extension3MFFactory::create();
     }
     MeshCore::Writer3MF writer3mf;
+    std::vector<Extension3MFPtr> ext;
 };
 
 Exporter3MF::Exporter3MF(std::string fileName)
@@ -251,7 +268,14 @@ Exporter3MF::~Exporter3MF()
 bool Exporter3MF::addMesh(const char *name, const MeshObject & mesh)
 {
     boost::ignore_unused(name);
-    return d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform());
+    bool ok = d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform());
+    if (ok) {
+        for (const auto& it : d->ext) {
+            d->writer3mf.AddResource(it->addMesh(mesh));
+        }
+    }
+
+    return ok;
 }
 
 void Exporter3MF::write()
@@ -410,7 +434,7 @@ bool ExporterAMF::addMesh(const char *name, const MeshObject & mesh)
 
     *outputStreamPtr << "\t\t\t</vertices>\n"
                      << "\t\t\t<volume>\n";
-    
+
     // Now that we've output all the vertices, we can
     // output the facets that refer to them!
     for (auto triItr(facets.begin()); triItr != facets.end(); ) {

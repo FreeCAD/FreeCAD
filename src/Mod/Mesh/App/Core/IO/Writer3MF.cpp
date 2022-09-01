@@ -76,6 +76,11 @@ bool Writer3MF::AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat)
     return SaveObject(zip, id, mesh);
 }
 
+void Writer3MF::AddResource(const Resource3MF& res)
+{
+    resources.emplace_back(res);
+}
+
 bool Writer3MF::Save()
 {
     Finish(zip);
@@ -90,6 +95,12 @@ bool Writer3MF::Save()
     if (!SaveContent(zip))
         return false;
     zip.closeEntry();
+    for (const auto& it : resources) {
+        zip.putNextEntry(it.fileNameInZip);
+        zip.write(it.fileContent.data(), it.fileContent.size());
+        zip.closeEntry();
+    }
+
     return true;
 }
 
@@ -163,19 +174,24 @@ std::string Writer3MF::DumpMatrix(const Base::Matrix4D& mat) const
 
 bool Writer3MF::SaveRels(std::ostream &str) const
 {
+    int ids = 1;
     str << "<?xml version='1.0' encoding='UTF-8'?>\n"
-        << "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">"
-           "<Relationship Id=\"rel0\" Target=\"/3D/3dmodel.model\" Type=\"http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel\" />"
-           "</Relationships>";
+        << "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">\n"
+        << " <Relationship Target=\"/3D/3dmodel.model\" Id=\"rel0\" Type=\"http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel\" />\n";
+    for (const auto& it : resources)
+        str << " <Relationship Target=\"" << it.relationshipTarget << "\" Id=\"rel" << ++ids << "\" Type=\"" << it.relationshipType << "\" />\n";
+    str << "</Relationships>\n";
     return true;
 }
 
 bool Writer3MF::SaveContent(std::ostream &str) const
 {
     str << "<?xml version='1.0' encoding='UTF-8'?>\n"
-        << "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">"
-           "<Default ContentType=\"application/vnd.openxmlformats-package.relationships+xml\" Extension=\"rels\" />"
-           "<Default ContentType=\"application/vnd.ms-package.3dmanufacturing-3dmodel+xml\" Extension=\"model\" />"
-           "</Types>";
+        << "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">\n"
+        << " <Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>\n"
+        << " <Default Extension=\"model\" ContentType=\"application/vnd.ms-package.3dmanufacturing-3dmodel+xml\"/>\n";
+    for (const auto& it : resources)
+        str << " <Default Extension=\"" << it.extension << "\" ContentType=\"" << it.contentType << "\"/>\n";
+    str << "</Types>";
     return true;
 }

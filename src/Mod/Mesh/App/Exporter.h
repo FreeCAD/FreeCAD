@@ -34,6 +34,7 @@
 #include "MeshFeature.h"
 #include "Core/MeshIO.h"
 #include "Core/MeshKernel.h"
+#include "Core/IO/Writer3MF.h"
 
 namespace Mesh
 {
@@ -89,6 +90,50 @@ private:
 protected:
     MeshObject mergingMesh;
     std::string fName;
+};
+
+/*!
+ * \brief The Extension3MF class
+ * Abstract base class for 3MF extensions
+ */
+class MeshExport Extension3MF
+{
+public:
+    using Resource = MeshCore::Resource3MF;
+    Extension3MF() = default;
+    virtual ~Extension3MF() = default;
+
+    virtual Resource addMesh(const MeshObject & mesh) = 0;
+};
+
+using Extension3MFPtr = std::shared_ptr<Extension3MF>;
+
+/*!
+ * \brief The AbstractExtensionProducer class
+ * Abstract base class to create an instance of an Extension3MF.
+ */
+class MeshExport AbstractExtensionProducer
+{
+public:
+    AbstractExtensionProducer() = default;
+    virtual ~AbstractExtensionProducer() = default;
+    virtual Extension3MFPtr create() const = 0;
+};
+
+using AbstractExtensionProducerPtr = std::shared_ptr<AbstractExtensionProducer>;
+
+/*!
+ * \brief The Extension3MFFactory class
+ * Factor class to manage the producers of Extension3MF
+ */
+class MeshExport Extension3MFFactory
+{
+public:
+    static void addProducer(AbstractExtensionProducer* ext);
+    static std::vector<Extension3MFPtr> create();
+
+private:
+    static std::vector<AbstractExtensionProducerPtr> producer;
 };
 
 /// Used for exporting to 3D Manufacturing Format (3MF)
