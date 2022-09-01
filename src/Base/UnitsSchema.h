@@ -67,10 +67,10 @@ public:
     QString toLocale(const Base::Quantity& quant, double factor, const QString& unitString) const;
 
     //return true if this schema uses multiple units for length (ex. Ft/In)
-    virtual bool isMultiUnitLength() {return false;}
+    virtual bool isMultiUnitLength() const {return false;}
 
     //return true if this schema uses multiple units for angles (ex. DMS)
-    virtual bool isMultiUnitAngle() {return false;}
+    virtual bool isMultiUnitAngle() const {return false;}
 };
 
 

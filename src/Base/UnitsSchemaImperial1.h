@@ -67,7 +67,7 @@ public:
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
 
     //return true if this schema uses multiple units for length (ex. Ft/In)
-    bool isMultiUnitLength() override {return true;}
+    bool isMultiUnitLength() const override {return true;}
 
 };
 
@@ -83,7 +83,7 @@ public:
     QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString) override;
 
     //return true if this schema uses multiple units for angles (ex. DMS)
-    bool isMultiUnitAngle() override {return true;}
+    bool isMultiUnitAngle() const override {return true;}
 };
 
 
