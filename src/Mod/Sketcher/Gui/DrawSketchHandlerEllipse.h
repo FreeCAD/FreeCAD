@@ -123,7 +123,7 @@ public:
                 if (showCursorCoords()) {
                     SbString text;
                     std::string majorString = lengthToDisplayFormat(semiMajorRadius, 1);
-                    text.sprintf(" (R%s, R%s)", majorString.c_str(), majorString);
+                    text.sprintf(" (R%s, R%s)", majorString.c_str(), majorString.c_str());
                     setPositionText(onSketchPos, text);
                 }
 
