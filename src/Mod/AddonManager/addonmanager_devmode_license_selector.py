@@ -114,15 +114,14 @@ class LicenseSelector:
         short_code = self.pref.GetString("devModeLastSelectedLicense", "LGPLv2.1")
         self.set_license(short_code)
 
-    def exec(self, short_code: str = None, license_path: str = None) -> Optional[str]:
+    def exec(self, short_code: str = None, license_path: str = "") -> Optional[str]:
         """The main method for executing this dialog, as a modal that returns a tuple of the
         license's "short code" and optionally the path to the license file. Returns a tuple
         of None,None if the user cancels the operation."""
 
         if short_code:
             self.set_license(short_code)
-        if license_path:
-            self.dialog.pathLineEdit.setText(license_path)
+        self.dialog.pathLineEdit.setText(license_path)
         result = self.dialog.exec()
         if result == QDialog.Accepted:
             new_short_code = self.dialog.comboBox.currentData()
@@ -188,17 +187,20 @@ class LicenseSelector:
             dir=start_dir,
         )
         if license_path:
-            self._set_path(start_dir, license_path)
+            self._set_path(self.path_to_addon, license_path)
 
     def _set_path(self, start_dir: str, license_path: str):
         """Sets the value displayed in the path widget to the relative path from
         start_dir to license_path"""
         license_path = license_path.replace("/", os.path.sep)
-        if not license_path.startswith(start_dir.replace("/", os.path.sep)):
+        base_dir = start_dir.replace("/", os.path.sep)
+        if base_dir[-1] != os.path.sep:
+            base_dir += os.path.sep
+        if not license_path.startswith(base_dir):
             FreeCAD.Console.PrintError("Selected file not in Addon\n")
-            # Eventually offer to copy it...
+            # Eventually offer to copy it?
             return
-        relative_path = license_path[len(start_dir) :]
+        relative_path = license_path[len(base_dir) :]
         relative_path = relative_path.replace(os.path.sep, "/")
         self.dialog.pathLineEdit.setText(relative_path)
 

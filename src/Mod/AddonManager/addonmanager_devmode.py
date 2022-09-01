@@ -23,21 +23,27 @@
 """ Classes to manage "Developer Mode" """
 
 import os
-from typing import Optional
 
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import QFileDialog, QTableWidgetItem, QDialog
-from PySide2.QtGui import QIcon, QValidator, QRegularExpressionValidator, QPixmap, QDesktopServices
-from PySide2.QtCore import QRegularExpression, QUrl, QFile, QIODevice
+from PySide2.QtWidgets import QFileDialog, QTableWidgetItem
+from PySide2.QtGui import (
+    QIcon,
+    QValidator,
+    QRegularExpressionValidator,
+    QPixmap,
+)
+from PySide2.QtCore import QRegularExpression, Qt
 from addonmanager_git import GitManager
 
 from addonmanager_devmode_license_selector import LicenseSelector
+from addonmanager_devmode_person_editor import PersonEditor
 
 translate = FreeCAD.Qt.translate
 
 # pylint: disable=too-few-public-methods
+
 
 class AddonGitInterface:
     """Wrapper to handle the git calls needed by this class"""
@@ -153,6 +159,13 @@ class DeveloperMode:
     """The main Developer Mode dialog, for editing package.xml metadata graphically."""
 
     def __init__(self):
+
+        # In the UI we want to show a translated string for the person type, but the underlying
+        # string must be the one expected by the metadata parser, in English
+        self.person_type_translation = {
+            "maintainer": translate("AddonsInstaller", "Maintainer"),
+            "author": translate("AddonsInstaller", "Author"),
+        }
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "developer_mode.ui")
         )
@@ -246,22 +259,12 @@ class DeveloperMode:
         for maintainer in metadata.Maintainer:
             name = maintainer["name"]
             email = maintainer["email"]
-            self.dialog.peopleTableWidget.insertRow(row)
-            self.dialog.peopleTableWidget.setItem(
-                row, 0, QTableWidgetItem(translate("AddonsInstaller", "Maintainer"))
-            )
-            self.dialog.peopleTableWidget.setItem(row, 1, QTableWidgetItem(name))
-            self.dialog.peopleTableWidget.setItem(row, 2, QTableWidgetItem(email))
+            self._add_person_row(row, "maintainer", name, email)
             row += 1
         for author in metadata.Author:
             name = author["name"]
             email = author["email"]
-            self.dialog.peopleTableWidget.insertRow(row)
-            self.dialog.peopleTableWidget.setItem(
-                row, 0, QTableWidgetItem(translate("AddonsInstaller", "Author"))
-            )
-            self.dialog.peopleTableWidget.setItem(row, 1, QTableWidgetItem(name))
-            self.dialog.peopleTableWidget.setItem(row, 2, QTableWidgetItem(email))
+            self._add_person_row(row, "author", name, email)
             row += 1
 
         if row == 0:
@@ -272,6 +275,15 @@ class DeveloperMode:
                 )
                 + "\n"
             )
+
+    def _add_person_row(self, row, person_type, name, email):
+        """Add this person to the peopleTableWidget at row given"""
+        self.dialog.peopleTableWidget.insertRow(row)
+        item = QTableWidgetItem(self.person_type_translation[person_type])
+        item.setData(Qt.UserRole, person_type)
+        self.dialog.peopleTableWidget.setItem(row, 0, item)
+        self.dialog.peopleTableWidget.setItem(row, 1, QTableWidgetItem(name))
+        self.dialog.peopleTableWidget.setItem(row, 2, QTableWidgetItem(email))
 
     def _populate_licenses_from_metadata(self, metadata):
         """Use the passed metadata object to populate the licenses"""
@@ -432,12 +444,22 @@ class DeveloperMode:
         self.dialog.pathToAddonComboBox.editTextChanged.connect(
             self._addon_combo_text_changed
         )
+
         self.dialog.addLicenseToolButton.clicked.connect(self._add_license_clicked)
-        self.dialog.removeLicenseToolButton.clicked.connect(self._remove_license_clicked)
+        self.dialog.removeLicenseToolButton.clicked.connect(
+            self._remove_license_clicked
+        )
+        self.dialog.licensesTableWidget.itemSelectionChanged.connect(
+            self._license_selection_changed
+        )
+        self.dialog.licensesTableWidget.itemDoubleClicked.connect(self._edit_license)
+
         self.dialog.addPersonToolButton.clicked.connect(self._add_person_clicked)
         self.dialog.removePersonToolButton.clicked.connect(self._remove_person_clicked)
-        self.dialog.peopleTableWidget.itemSelectionChanged.connect(self._person_selection_changed)
-        self.dialog.licensesTableWidget.itemSelectionChanged.connect(self._license_selection_changed)
+        self.dialog.peopleTableWidget.itemSelectionChanged.connect(
+            self._person_selection_changed
+        )
+        self.dialog.peopleTableWidget.itemDoubleClicked.connect(self._edit_person)
 
         # Finally, populate the combo boxes, etc.
         self._populate_combo()
@@ -552,8 +574,21 @@ class DeveloperMode:
             # the first entry
             self.dialog.licensesTableWidget.removeRow(items[0].row())
 
+    def _edit_license(self, item):
+        row = item.row()
+        short_code = self.dialog.licensesTableWidget.item(row, 0).text()
+        path = self.dialog.licensesTableWidget.item(row, 1).text()
+        license_selector = LicenseSelector(self.current_mod)
+        short_code, path = license_selector.exec(short_code, path)
+        if short_code:
+            self.dialog.licensesTableWidget.removeRow(row)
+            self._add_license_row(row, short_code, path)
+
     def _add_person_clicked(self):
-        pass
+        dlg = PersonEditor()
+        person_type, name, email = dlg.exec()
+        if person_type and name:
+            self._add_person_row(row, person_type, name, email)
 
     def _remove_person_clicked(self):
         items = self.dialog.peopleTableWidget.selectedIndexes()
@@ -562,3 +597,17 @@ class DeveloperMode:
             # the first entry
             self.dialog.peopleTableWidget.removeRow(items[0].row())
 
+    def _edit_person(self, item):
+        row = item.row()
+        person_type = self.dialog.peopleTableWidget.item(row, 0).data(Qt.UserRole)
+        name = self.dialog.peopleTableWidget.item(row, 1).text()
+        email = self.dialog.peopleTableWidget.item(row, 2).text()
+
+        dlg = PersonEditor()
+        dlg.setup(person_type, name, email)
+        person_type, name, email = dlg.exec()
+
+        if person_type and name:
+            self.dialog.peopleTableWidget.removeRow(row)
+            self._add_person_row(row, person_type, name, email)
+            self.dialog.peopleTableWidget.selectRow(row)

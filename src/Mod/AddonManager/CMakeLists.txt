@@ -11,6 +11,7 @@ SET(AddonManager_SRCS
     addonmanager_devmode_add_content.py
     addonmanager_devmode_license_selector.py
     addonmanager_devmode_dependencies.py
+    addonmanager_devmode_person_editor.py
     addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py
@@ -28,6 +29,7 @@ SET(AddonManager_SRCS
     developer_mode_copyright_info.ui
     developer_mode_dependencies.ui
     developer_mode_license.ui
+    developer_mode_people.ui
     developer_mode_select_from_list.ui
     expanded_view.py
     first_run.ui
