@@ -119,15 +119,6 @@ struct DrawingParameters {
     static SbColor DeactivatedConstrDimColor;                   // Color used for deactivated dimensional constraints
     //@}
 
-    /** @name Rendering Icon colors **/
-    //@{
-    static QColor constrIcoColor;                               // Icon color for constraints
-    static QColor nonDrivingConstrIcoColor;                     // Icon color for references (non-driving constraints)
-    static QColor constrIconSelColor;                           // Icon color for selected constraints
-    static QColor constrIconPreselColor;                        // Icon color for preselected constraints
-    static QColor constrIconDisabledColor;                      // Icon color for disabled constraints
-    //@}
-
     /** @name Rendering sizes (also to support HDPI monitors) **/
     //@{
     double pixelScalingFactor = 1.0;    // Scaling factor to be used for pixels
