@@ -734,9 +734,9 @@ bool DocumentObject::removeDynamicProperty(const char* name)
 
 App::Property* DocumentObject::addDynamicProperty(
     const char* type, const char* name, const char* group, const char* doc,
-    short attr, bool ro, bool hidden)
+    short attr, bool readonly, bool hidden)
 {
-    auto prop = TransactionalObject::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    auto prop = TransactionalObject::addDynamicProperty(type,name,group,doc,attr,readonly,hidden);
     if(prop && _pDoc)
         _pDoc->addOrRemovePropertyOfObject(this, prop, true);
     return prop;

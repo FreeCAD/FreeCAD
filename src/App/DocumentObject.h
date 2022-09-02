@@ -459,7 +459,7 @@ public:
     virtual App::Property* addDynamicProperty(
             const char* type, const char* name=nullptr,
             const char* group=nullptr, const char* doc=nullptr,
-            short attr=0, bool ro=false, bool hidden=false) override;
+            short attr=0, bool readonly=false, bool hidden=false) override;
 
     /** Resolve the last document object referenced in the subname
      *

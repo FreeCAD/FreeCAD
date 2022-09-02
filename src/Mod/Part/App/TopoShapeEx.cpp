@@ -3182,7 +3182,7 @@ TopoShape &TopoShape::makEBoolean(const char *maker,
     return makEBoolean(maker,std::vector<TopoShape>(1,shape),op,tol);
 }
 
-// topo naming conterpart of TopoShape::makeShell()
+// topo naming counterpart of TopoShape::makeShell()
 TopoShape &TopoShape::makEShell(bool silent, const char *op) {
     if(silent) {
         if (isNull())
@@ -4409,7 +4409,7 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
     } else {
         bound = findBoundary(shapes);
         if (bound.isNull()) {
-            // If no boundry is found, then try to build one.
+            // If no boundary is found, then try to build one.
             std::vector<TopoShape> edges;
             for(auto it=shapes.begin(); it!=shapes.end();) {
                 if (it->shapeType(true) == TopAbs_EDGE) {

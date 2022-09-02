@@ -36,7 +36,7 @@ class Shape(IntEnum):
     '''
     Provides information about the continuity of a curve.
 
-    Cooresponds to OCCT type GeomAbs_Shape, with the following values,
+    Corresponds to OCCT type GeomAbs_Shape, with the following values,
 
     C0: only geometric continuity.
 

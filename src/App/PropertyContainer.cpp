@@ -69,9 +69,9 @@ unsigned int PropertyContainer::getMemSize (void) const
 
 App::Property* PropertyContainer::addDynamicProperty(
     const char* type, const char* name, const char* group, const char* doc,
-    short attr, bool ro, bool hidden)
+    short attr, bool readonly, bool hidden)
 {
-    return dynamicProps.addDynamicProperty(*this,type,name,group,doc,attr,ro,hidden);
+    return dynamicProps.addDynamicProperty(*this,type,name,group,doc,attr,readonly,hidden);
 }
 
 Property *PropertyContainer::getPropertyByName(const char* name) const

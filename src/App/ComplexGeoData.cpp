@@ -2261,7 +2261,7 @@ void ComplexGeoData::traceElement(const MappedName &name, TraceCallback cb) cons
 
     // TODO: element tracing without object is inheriently unsafe, because of
     // possible external linking object which means the element may be encoded
-    // using external string table. Looking up the wrong table may accidently
+    // using external string table. Looking up the wrong table may accidentally
     // cause circular mapping, and is actually quite easy to reproduce. See
     //
     // https://github.com/realthunder/FreeCAD_assembly3/issues/968

@@ -325,7 +325,7 @@ public:
     /** Transform shape
      * 
      * @param mat: transformation matrix
-     * @param copy: whether to copy the shape before trasnformation
+     * @param copy: whether to copy the shape before transformation
      * @param checkScale: whether to check for non-uniform scaling. If not and
      * there is non-uniform scaling, exception will be raised. If non-uniform
      * scaling is detected, it will call makEGTransform() to do the
@@ -667,7 +667,7 @@ public:
     struct BRepFillingParams;
 
     /** Provides information about the continuity of a curve.
-     *  Cooresponds to OCCT type GeomAbs_Shape
+     *  Corresponds to OCCT type GeomAbs_Shape
      */
     enum class Continuity {
         /// Only geometric continuity
@@ -701,11 +701,11 @@ public:
 
     /** Make a non-planar filled face with boundary and/or constraint edge/wire 
      *
-     * @param shapes: input shapes of any type. The funciton will automatically
+     * @param shapes: input shapes of any type. The function will automatically
      *                discover connected and closed edges to be used as the
      *                boundary of the the new face. Any other vertex, edge,
      *                and/or face will be used as constraints to fine tune the
-     *                suface generation.
+     *                surface generation.
      * @param params: @sa BRepFillingParams
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -962,7 +962,7 @@ public:
      * abstraction, and create various derived classes to deal with the glitches.
      */
     struct PartExport Mapper {
-        /// Helper vector for temporary storge of both generated and modified shapes
+        /// Helper vector for temporary storage of both generated and modified shapes
         mutable std::vector<TopoDS_Shape> _res;
         virtual ~Mapper() {}
         /// Return a list of shape generated from the given input shape
@@ -991,7 +991,7 @@ public:
     TopoShape &makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper, 
             const std::vector<TopoShape> &sources, const char *op=nullptr);
 
-    /** Generilized shape making with mapped element name from shape history
+    /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from OpCodes
      * @param sources: list of source shapes.
@@ -1007,7 +1007,7 @@ public:
      */
     TopoShape &makEBoolean(const char *maker, const std::vector<TopoShape> &sources,
             const char *op=nullptr, double tol = 0.0);
-    /** Generilized shape making with mapped element name from shape history
+    /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from TopoShapeOpCodes
      * @param source: source shape.
@@ -1024,7 +1024,7 @@ public:
     TopoShape &makEBoolean(const char *maker, const TopoShape &source,
             const char *op=nullptr, double tol = 0.0);
 
-    /** Generilized shape making with mapped element name from shape history
+    /** Generalized shape making with mapped element name from shape history
      *
      * @param maker: op code from TopoShapeOpCodes
      * @param op: optional string to be encoded into topo naming for indicating
@@ -1463,7 +1463,7 @@ public:
      *
      * @param base: the base shape
      * @param profile: profile shape used for sweeping to make the prism
-     * @param supportFace: optional face serves to determing the type of
+     * @param supportFace: optional face serves to determining the type of
      *                     operation. If it is inside the basis shape, a local
      *                     operation such as glueing can be performed.
      * @param upToFace: sweep the profile up until this give face.
@@ -1492,7 +1492,7 @@ public:
     /** Make a prism based on this shape that is either depression or protrusion of a profile shape up to a given face
      *
      * @param profile: profile shape used for sweeping to make the prism
-     * @param supportFace: optional face serves to determing the type of
+     * @param supportFace: optional face serves to determining the type of
      *                     operation. If it is inside the basis shape, a local
      *                     operation such as glueing can be performed.
      * @param upToFace: sweep the profile up until this give face.
@@ -1581,7 +1581,7 @@ public:
      * @param intersection: if true, then offset all non-compound shape
      *                      together to deal with possible intersection after
      *                      expanding the shape.  If false, then offset each
-     *                      shape separatly.
+     *                      shape separately.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      *
@@ -1601,7 +1601,7 @@ public:
      * @param intersection: if true, then offset all non-compound shape
      *                      together to deal with possible intersection after
      *                      expanding the shape.  If false, then offset each
-     *                      shape separatly.
+     *                      shape separately.
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      *
@@ -1881,7 +1881,7 @@ public:
      *
      * @param source: the source shape
      * @param edges: the edges of the source shape where to make fillets
-     * @param radius1: the radius of the begining of the fillet
+     * @param radius1: the radius of the beginning of the fillet
      * @param radius2: the radius of the ending of the fillet
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -1897,7 +1897,7 @@ public:
      *
      * @param source: the source shape
      * @param edges: the edges of the source shape where to make fillets
-     * @param radius1: the radius of the begining of the fillet
+     * @param radius1: the radius of the beginning of the fillet
      * @param radius2: the radius of the ending of the fillet
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -1913,7 +1913,7 @@ public:
      *
      * @param source: the source shape
      * @param edges: the edges of the source shape where to make chamfers
-     * @param radius1: the radius of the begining of the chamfer
+     * @param radius1: the radius of the beginning of the chamfer
      * @param radius2: the radius of the ending of the chamfer
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -1929,7 +1929,7 @@ public:
      *
      * @param source: the source shape
      * @param edges: the edges of the source shape where to make chamfers
-     * @param radius1: the radius of the begining of the chamfer
+     * @param radius1: the radius of the beginning of the chamfer
      * @param radius2: the radius of the ending of the chamfer
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -2061,7 +2061,7 @@ public:
 
     /** Make shape using generalized fusion and return the modified sub shapes
      *
-     * @param souces: the source shapes
+     * @param sources: the source shapes
      * @param modified: return the modified sub shapes
      * @param tol: tolerance
      * @param op: optional string to be encoded into topo naming for indicating
@@ -2251,7 +2251,7 @@ private:
 
     /** Helper class to ensure synchronization of element map and cache
      *
-     * It exposes constant mehtod of OCCT TopoDS_Shape unchanged, and wrap all
+     * It exposes constant method of OCCT TopoDS_Shape unchanged, and wrap all
      * non-constant method to auto clear the element names in the owner TopoShape
      */
     class ShapeProtector
