@@ -97,7 +97,7 @@ bool Writer3MF::Save()
     zip.closeEntry();
     for (const auto& it : resources) {
         zip.putNextEntry(it.fileNameInZip);
-        zip.write(it.fileContent.data(), it.fileContent.size());
+        zip.write(it.fileContent.data(), static_cast<std::streamsize>(it.fileContent.size()));
         zip.closeEntry();
     }
 

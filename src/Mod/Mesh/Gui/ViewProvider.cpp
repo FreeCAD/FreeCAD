@@ -145,12 +145,12 @@ void ViewProviderMeshBuilder::createMesh(const App::Property* prop, SoCoordinate
     createMesh(rcMesh, coords, faces);
 }
 
-void ViewProviderMeshBuilder::createMesh(const MeshCore::MeshKernel& kernal, SoCoordinate3* coords, SoIndexedFaceSet* faces) const
+void ViewProviderMeshBuilder::createMesh(const MeshCore::MeshKernel& kernel, SoCoordinate3* coords, SoIndexedFaceSet* faces) const
 {
 
     // set the point coordinates
-    const MeshCore::MeshPointArray& cP = kernal.GetPoints();
-    coords->point.setNum(kernal.CountPoints());
+    const MeshCore::MeshPointArray& cP = kernel.GetPoints();
+    coords->point.setNum(kernel.CountPoints());
     SbVec3f* verts = coords->point.startEditing();
     int i=0;
     for (MeshCore::MeshPointArray::_TConstIterator it = cP.begin(); it != cP.end(); ++it, i++) {
@@ -160,8 +160,8 @@ void ViewProviderMeshBuilder::createMesh(const MeshCore::MeshKernel& kernal, SoC
 
     // set the face indices
     int j=0;
-    const MeshCore::MeshFacetArray& cF = kernal.GetFacets();
-    faces->coordIndex.setNum(4*kernal.CountFacets());
+    const MeshCore::MeshFacetArray& cF = kernel.GetFacets();
+    faces->coordIndex.setNum(4*kernel.CountFacets());
     int32_t* indices = faces->coordIndex.startEditing();
     for (MeshCore::MeshFacetArray::_TConstIterator it = cF.begin(); it != cF.end(); ++it, j++) {
         for (int i=0; i<3; i++) {
@@ -232,10 +232,10 @@ QIcon ViewProviderExport::getIcon() const
 
 // ------------------------------------------------------
 
-App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0f,64.0f,1.0f};
-App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0f,180.0f,1.0f};
-App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0,100,1};
-const char* ViewProviderMesh::LightingEnums[]= {"One side","Two side",nullptr};
+App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0f, 64.0f, 1.0f};
+App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0f, 180.0f, 1.0f};
+App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0, 100, 1};
+const char* ViewProviderMesh::LightingEnums[]= {"One side", "Two side", nullptr};
 
 PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
 
@@ -418,9 +418,9 @@ SoNode* ViewProviderMesh::getCoordNode() const
     return nullptr;
 }
 
-/** 
+/**
  * Extracts the mesh data from the feature \a pcFeature and creates
- * an Inventor node \a SoNode with these data. 
+ * an Inventor node \a SoNode with these data.
  */
 void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
 {
@@ -507,35 +507,8 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 
 QIcon ViewProviderMesh::getIcon() const
 {
-#if 1
     static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
-#else
-    static const char * const Mesh_Feature_xpm[] = {
-        "16 16 4 1",
-        ".	c None",
-        "#	c #000000",
-        "s	c #BEC2FC",
-        "g	c #00FF00",
-        ".......##.......",
-        "....#######.....",
-        "..##ggg#ggg#....",
-        "##ggggg#gggg##..",
-        "#g#ggg#gggggg##.",
-        "#gg#gg#gggg###s.",
-        "#gg#gg#gg##gg#s.",
-        "#ggg#####ggg#ss.",
-        "#gggg##gggg#ss..",
-        ".#g##g#gggg#s...",
-        ".##ggg#ggg#ss...",
-        ".##gggg#g#ss....",
-        "..s#####g#s.....",
-        "....sss##ss.....",
-        "........ss......",
-        "................"};
-    QPixmap px(Mesh_Feature_xpm);
-    return px;
-#endif
 }
 
 App::PropertyColorList* ViewProviderMesh::getColorProperty() const
@@ -600,7 +573,7 @@ void ViewProviderMesh::setColorPerFace(const App::PropertyColorList* prop)
 {
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
     const std::vector<App::Color>& val = prop->getValues();
-    
+
     pcShapeMaterial->diffuseColor.setNum(val.size());
     SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
 
@@ -833,7 +806,7 @@ bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const
     MeshCore::EarClippingTriangulator cTria;
     cTria.SetPolygon(polygon);
     bool ok = cTria.TriangulatePolygon();
-  
+
     std::vector<MeshFacet> faces = cTria.GetFacets();
     for (std::vector<MeshFacet>::iterator itF = faces.begin(); itF != faces.end(); ++itF) {
         MeshGeomFacet topFacet;
@@ -1061,8 +1034,8 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     SbVec3f b,n;
     view->getNearPlane(b, n);
     Base::Vector3f cNormal(n[0],n[1],n[2]);
-    SoCamera* pCam = view->getSoRenderManager()->getCamera();  
-    SbViewVolume  vol = pCam->getViewVolume(); 
+    SoCamera* pCam = view->getSoRenderManager()->getCamera();
+    SbViewVolume  vol = pCam->getViewVolume();
 
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
@@ -1125,8 +1098,8 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     SbVec3f b,n;
     view->getNearPlane(b, n);
     Base::Vector3f cNormal(n[0],n[1],n[2]);
-    SoCamera* pCam = view->getSoRenderManager()->getCamera();  
-    SbViewVolume  vol = pCam->getViewVolume(); 
+    SoCamera* pCam = view->getSoRenderManager()->getCamera();
+    SbViewVolume  vol = pCam->getViewVolume();
 
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
@@ -1301,7 +1274,7 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion & vp, 
 
     // The bbox must not be empty i.e. width and length is zero, but it is possible that
     // either width or length is zero
-    if (sizeX == 0 && sizeY == 0) 
+    if (sizeX == 0 && sizeY == 0)
         return;
 
     // Get the new center in normalized pixel coordinates

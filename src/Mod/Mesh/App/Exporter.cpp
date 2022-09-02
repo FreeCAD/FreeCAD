@@ -246,7 +246,7 @@ std::vector<AbstractExtensionProducerPtr> Extension3MFFactory::producer;
 
 class Exporter3MF::Private {
 public:
-    Private(const std::string& filename)
+    explicit Private(const std::string& filename)
       : writer3mf(filename) {
         ext = Extension3MFFactory::create();
     }
