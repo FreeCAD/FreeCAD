@@ -101,7 +101,7 @@ installed.
 #  \brief The Addon Manager allows users to install workbenches and macros made by other users
 #  @{
 
-
+INSTANCE = None
 
 class CommandAddonManager:
     """The main Addon Manager class and FreeCAD command"""
@@ -155,6 +155,10 @@ class CommandAddonManager:
         self.install_worker = None
         self.update_all_worker = None
         self.developer_mode = None
+
+        # Give other parts of the AM access to the current instance
+        global INSTANCE
+        INSTANCE = self
 
     def GetResources(self) -> Dict[str, str]:
         return {
@@ -918,6 +922,7 @@ class CommandAddonManager:
         self.check_for_python_package_updates_worker.finished.connect(
             self.do_next_startup_phase
         )
+        self.update_allowed_packages_list() # Not really the best place for it...
         self.check_for_python_package_updates_worker.start()
 
     def show_python_updates_dialog(self) -> None:
@@ -1118,7 +1123,7 @@ class CommandAddonManager:
         False."""
 
         bad_packages = []
-        self.update_allowed_packages_list()
+        #self.update_allowed_packages_list()
         for dep in python_required:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)

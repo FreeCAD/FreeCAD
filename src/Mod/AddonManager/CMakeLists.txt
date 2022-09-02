@@ -26,11 +26,15 @@ SET(AddonManager_SRCS
     dependency_resolution_dialog.ui
     developer_mode.ui
     developer_mode_add_content.ui
+    developer_mode_advanced_freecad_versions.ui
     developer_mode_copyright_info.ui
     developer_mode_dependencies.ui
+    developer_mode_edit_dependency.ui
+    developer_mode_freecad_versions.ui
     developer_mode_license.ui
     developer_mode_people.ui
     developer_mode_select_from_list.ui
+    developer_mode_tags.ui
     expanded_view.py
     first_run.ui
     Init.py

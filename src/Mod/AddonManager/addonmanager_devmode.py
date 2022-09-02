@@ -39,6 +39,7 @@ from addonmanager_git import GitManager
 
 from addonmanager_devmode_license_selector import LicenseSelector
 from addonmanager_devmode_person_editor import PersonEditor
+from addonmanager_devmode_add_content import AddContent
 
 translate = FreeCAD.Qt.translate
 
@@ -217,7 +218,7 @@ class DeveloperMode:
         metadata = None
         if os.path.exists(metadata_path):
             try:
-                metadata = FreeCAD.Metadata(metadata_path)
+                self.metadata = FreeCAD.Metadata(metadata_path)
             except FreeCAD.Base.XMLBaseException as e:
                 FreeCAD.Console.PrintError(
                     translate(
@@ -238,17 +239,17 @@ class DeveloperMode:
                     + "\n\n"
                 )
 
-        if metadata:
-            self.dialog.displayNameLineEdit.setText(metadata.Name)
-            self.dialog.descriptionTextEdit.setPlainText(metadata.Description)
-            self.dialog.versionLineEdit.setText(metadata.Version)
+        if self.metadata:
+            self.dialog.displayNameLineEdit.setText(self.metadata.Name)
+            self.dialog.descriptionTextEdit.setPlainText(self.metadata.Description)
+            self.dialog.versionLineEdit.setText(self.metadata.Version)
 
-            self._populate_people_from_metadata(metadata)
-            self._populate_licenses_from_metadata(metadata)
-            self._populate_urls_from_metadata(metadata)
-            self._populate_contents_from_metadata(metadata)
+            self._populate_people_from_metadata(self.metadata)
+            self._populate_licenses_from_metadata(self.metadata)
+            self._populate_urls_from_metadata(self.metadata)
+            self._populate_contents_from_metadata(self.metadata)
 
-            self._populate_icon_from_metadata(metadata)
+            self._populate_icon_from_metadata(self.metadata)
         else:
             self._populate_without_metadata()
 
@@ -461,6 +462,12 @@ class DeveloperMode:
         )
         self.dialog.peopleTableWidget.itemDoubleClicked.connect(self._edit_person)
 
+        self.dialog.addContentItemToolButton.clicked.connect(self._add_content_clicked)
+        self.dialog.removeContentItemToolButton.clicked.connect(self._remove_content_clicked)
+        self.dialog.contentsListWidget.itemSelectionChanged.connect(self._content_selection_changed)
+        self.dialog.contentsListWidget.itemDoubleClicked.connect(self._edit_content)
+
+
         # Finally, populate the combo boxes, etc.
         self._populate_combo()
         if self.dialog.pathToAddonComboBox.currentIndex() != -1:
@@ -611,3 +618,17 @@ class DeveloperMode:
             self.dialog.peopleTableWidget.removeRow(row)
             self._add_person_row(row, person_type, name, email)
             self.dialog.peopleTableWidget.selectRow(row)
+
+    
+    def _add_content_clicked(self):
+        dlg = AddContent(self.current_mod, self.metadata)
+        dlg.exec()
+
+    def _remove_content_clicked(self):
+        pass
+
+    def _content_selection_changed(self):
+        pass
+
+    def _edit_content(self, item):
+        pass
