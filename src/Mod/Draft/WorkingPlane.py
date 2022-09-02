@@ -345,13 +345,15 @@ class Plane:
             self.u = Vector(0, -1, 0)
             self.v = Vector(0, 0, 1)
         elif upvec:
-            self.v = upvec
+            self.u = upvec.cross(self.axis)
+            self.u.normalize()
+            self.v = self.axis.cross(self.u)
             self.v.normalize()
-            self.u = self.v.cross(self.axis)
         else:
             self.v = axis.cross(Vector(1, 0, 0))
             self.v.normalize()
             self.u = DraftVecUtils.rotate(self.v, -math.pi/2, self.axis)
+            self.u.normalize()
         offsetVector = Vector(axis)
         offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
