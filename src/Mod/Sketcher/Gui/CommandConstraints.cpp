@@ -1445,9 +1445,9 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
         lastconstraintindex+=2;
 
-        if (edgeisblocked || GeoId[0] <= Sketcher::GeoEnum::RefExt
-                || isBsplineKnot(Obj,GeoId[0])
-                || constraintCreationMode==Reference) {
+        if (edgeisblocked
+            || GeoId[0] <= Sketcher::GeoEnum::RefExt
+            || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
 
             Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
@@ -2287,7 +2287,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             // it is a constraint on a external line, make it non-driving
             if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt ||
-                isBsplineKnot(Obj,GeoId1) || constraintCreationMode==Reference) {
+                constraintCreationMode==Reference) {
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
@@ -2379,9 +2379,8 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
                 GeoId1,ActLength);
 
             if (arebothpointsorsegmentsfixed
-                    || GeoId1 <= Sketcher::GeoEnum::RefExt
-                    || isBsplineKnot(Obj,GeoId1)
-                    || constraintCreationMode==Reference) {
+                || GeoId1 <= Sketcher::GeoEnum::RefExt
+                || constraintCreationMode==Reference) {
                 // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
@@ -3104,8 +3103,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             GeoId1,static_cast<int>(PosId1),ActY);
 
         if (GeoId1 <= Sketcher::GeoEnum::RefExt
-                || isBsplineKnot(Obj,GeoId1)
-                || constraintCreationMode==Reference) {
+            || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
