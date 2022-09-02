@@ -50,14 +50,9 @@ public :
   // -----------------------------------------------------------------------
   //  Implementation of the input stream interface
   // -----------------------------------------------------------------------
-#if (XERCES_VERSION_MAJOR == 2)
-  virtual unsigned int curPos() const;
-  virtual unsigned int readBytes( XMLByte* const toFill, const unsigned int maxToRead );
-#else
   XMLFilePos curPos() const override;
   XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead ) override;
   const XMLCh* getContentType() const override {return nullptr;}
-#endif
 
 private :
   // -----------------------------------------------------------------------
