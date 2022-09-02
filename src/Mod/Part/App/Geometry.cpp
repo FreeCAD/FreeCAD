@@ -30,6 +30,17 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <gce_MakeParab.hxx>
+# include <GC_MakeArcOfCircle.hxx>
+# include <GC_MakeCircle.hxx>
+# include <GC_MakeArcOfEllipse.hxx>
+# include <GC_MakeEllipse.hxx>
+# include <GC_MakeArcOfParabola.hxx>
+# include <GC_MakeHyperbola.hxx>
+# include <GC_MakeArcOfHyperbola.hxx>
+# include <GC_MakeLine.hxx>
+# include <GC_MakeSegment.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Curve.hxx>
@@ -50,16 +61,23 @@
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Geom_OffsetSurface.hxx>
-# include <GeomPlate_Surface.hxx>
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# if OCC_VERSION_HEX < 0x070600
+#   include <GeomAdaptor_HSurface.hxx>
+#   include <GeomAdaptor_HCurve.hxx>
+# endif
+# include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <GeomAPI_Interpolate.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <GeomPlate_Surface.hxx>
 # include <gp.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
@@ -74,9 +92,14 @@
 # include <gp_Cone.hxx>
 # include <gp_Sphere.hxx>
 # include <gp_Torus.hxx>
+# include <gp.hxx>
+# include <gp_Lin.hxx>
+# include <LProp_NotDefined.hxx>
+# include <Precision.hxx>
+# include <ShapeConstruct_Curve.hxx>
+# include <Standard_ConstructionError.hxx>
 # include <Standard_Real.hxx>
 # include <Standard_Version.hxx>
-# include <Standard_ConstructionError.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
 # include <TColgp_Array1OfVec.hxx>
@@ -84,77 +107,52 @@
 # include <TColStd_HArray1OfBoolean.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <gp.hxx>
-# include <gp_Lin.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GC_MakeArcOfCircle.hxx>
-# include <GC_MakeCircle.hxx>
-# include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeEllipse.hxx>
-# include <gce_MakeParab.hxx>
-# include <GC_MakeArcOfParabola.hxx>
-# include <GC_MakeHyperbola.hxx>
-# include <GC_MakeArcOfHyperbola.hxx>
-# include <GC_MakeLine.hxx>
-# include <GC_MakeSegment.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <Precision.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
-# include <ShapeConstruct_Curve.hxx>
-# include <LProp_NotDefined.hxx>
-# if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HCurve.hxx>
-# endif
 # include <TopoDS.hxx>
 
-# include <ctime>
 # include <cmath>
+# include <ctime>
 # include <memory>
 #endif //_PreComp_
 
 #include <atomic>
-#include <Base/VectorPy.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/CirclePy.h>
-#include <Mod/Part/App/EllipsePy.h>
-#include <Mod/Part/App/ArcPy.h>
-#include <Mod/Part/App/ArcOfCirclePy.h>
-#include <Mod/Part/App/ArcOfEllipsePy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.h>
-#include <Mod/Part/App/BezierCurvePy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
-#include <Mod/Part/App/HyperbolaPy.h>
-#include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/OffsetCurvePy.h>
-#include <Mod/Part/App/ParabolaPy.h>
-#include <Mod/Part/App/BezierSurfacePy.h>
-#include <Mod/Part/App/BSplineCurveBiArcs.h>
-#include <Mod/Part/App/BSplineSurfacePy.h>
-#include <Mod/Part/App/ConePy.h>
-#include <Mod/Part/App/CylinderPy.h>
-#include <Mod/Part/App/OffsetSurfacePy.h>
-#include <Mod/Part/App/PointPy.h>
-#include <Mod/Part/App/PlateSurfacePy.h>
-#include <Mod/Part/App/PlanePy.h>
-#include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
-#include <Mod/Part/App/SpherePy.h>
-#include <Mod/Part/App/SurfaceOfExtrusionPy.h>
-#include <Mod/Part/App/SurfaceOfRevolutionPy.h>
-#include <Mod/Part/App/ToroidPy.h>
-#include <Mod/Part/App/TopoShape.h>
 
 #include <Base/Exception.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-
-#include "GeometryMigrationExtension.h"
+#include <Base/VectorPy.h>
+#include <Base/Writer.h>
 
 #include "Geometry.h"
+#include "ArcOfCirclePy.h"
+#include "ArcOfEllipsePy.h"
+#include "ArcOfHyperbolaPy.h"
+#include "ArcOfParabolaPy.h"
+#include "BezierCurvePy.h"
+#include "BezierSurfacePy.h"
+#include "BSplineCurveBiArcs.h"
+#include "BSplineCurvePy.h"
+#include "BSplineSurfacePy.h"
+#include "CirclePy.h"
+#include "ConePy.h"
+#include "CylinderPy.h"
+#include "EllipsePy.h"
+#include "GeometryMigrationExtension.h"
+#include "HyperbolaPy.h"
+#include "LinePy.h"
+#include "LineSegmentPy.h"
+#include "OffsetCurvePy.h"
+#include "OffsetSurfacePy.h"
+#include "ParabolaPy.h"
+#include "PlanePy.h"
+#include "PlateSurfacePy.h"
+#include "PointPy.h"
+#include "RectangularTrimmedSurfacePy.h"
+#include "SpherePy.h"
+#include "SurfaceOfExtrusionPy.h"
+#include "SurfaceOfRevolutionPy.h"
 #include "Tools.h"
+#include "ToroidPy.h"
+#include "TopoShape.h"
 
 #if OCC_VERSION_HEX >= 0x070600
 using GeomAdaptor_HCurve = GeomAdaptor_Curve;
@@ -4624,39 +4622,39 @@ GeomSurface::~GeomSurface()
 // Copied from OCC BRepBndLib_1.cxx
 //=======================================================================
 // Function : IsPlanar
-// purpose : Returns TRUE if theS is plane-like.
+// purpose : Returns TRUE if theSurfaceurface is plane-like.
 //=======================================================================
-static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theS)
+static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theSurface)
 {
-    const GeomAbs_SurfaceType aST = theS.GetType();
+    const GeomAbs_SurfaceType aST = theSurface.GetType();
     if(aST == GeomAbs_OffsetSurface)
     {
 # if OCC_VERSION_HEX < 0x070600
-        return IsPlanar(theS.BasisSurface()->Surface());
+        return IsPlanar(theSurface.BasisSurface()->Surface());
 #else
-        return IsPlanar(*theS.BasisSurface());
+        return IsPlanar(*theSurface.BasisSurface());
 #endif
     }
 
     if(aST == GeomAbs_SurfaceOfExtrusion)
     {
 # if OCC_VERSION_HEX < 0x070600
-        return IsLinear(theS.BasisCurve()->Curve());
+        return IsLinear(theSurface.BasisCurve()->Curve());
 #else
-        return IsLinear(*theS.BasisCurve());
+        return IsLinear(*theSurface.BasisCurve());
 #endif
     }
 
     if((aST == GeomAbs_BSplineSurface) || (aST == GeomAbs_BezierSurface))
     {
-        if((theS.UDegree() != 1) || (theS.VDegree() != 1))
+        if((theSurface.UDegree() != 1) || (theSurface.VDegree() != 1))
             return Standard_False;
 
         // Indeed, surfaces with C0-continuity and degree==1, may be 
         // represented with set of points. It will be possible made
         // in the future.
 
-        return ((theS.UContinuity() != GeomAbs_C0) && (theS.VContinuity() != GeomAbs_C0));
+        return ((theSurface.UContinuity() != GeomAbs_C0) && (theSurface.VContinuity() != GeomAbs_C0));
     }
 
     if(aST == GeomAbs_Plane)
