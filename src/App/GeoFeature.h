@@ -92,7 +92,7 @@ public:
      *
      * This function is made virtual, so that inherited class can do something
      * unusual, such as Sketcher::SketcherObject, which uses this to expose its
-     * private geometries without a correpsonding TopoShape, and yet being
+     * private geometries without a corresponding TopoShape, and yet being
      * source code compatible.
      */
     virtual std::pair<std::string,std::string> getElementName(
