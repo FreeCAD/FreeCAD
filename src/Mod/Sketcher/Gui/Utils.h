@@ -72,8 +72,6 @@ void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj, 
 
 bool checkBothExternal(int GeoId1, int GeoId2);
 
-bool checkBothExternalOrBSplinePoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
-
 bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
 
 bool areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2);
