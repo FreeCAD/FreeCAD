@@ -85,9 +85,6 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#if (XERCES_VERSION_MAJOR == 2)
-#include <xercesc/dom/DOMWriter.hpp>
-#endif
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMElement.hpp>
 #include <xercesc/dom/DOMText.hpp>
