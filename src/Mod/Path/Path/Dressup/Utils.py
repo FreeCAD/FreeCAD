@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathJob as PathJob
+import Path.Main.Job as PathJob
 
 
 def selection():

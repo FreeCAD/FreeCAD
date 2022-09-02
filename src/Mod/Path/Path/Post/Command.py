@@ -28,7 +28,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
-import PathScripts.PathJob as PathJob
+import Path.Main.Job as PathJob
 import PathScripts.PathUtils as PathUtils
 import os
 import re

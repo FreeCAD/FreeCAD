@@ -27,10 +27,10 @@ import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
+import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
 import PathGui
-import PathScripts.PathJob as PathJob
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP

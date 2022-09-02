@@ -322,7 +322,7 @@ class CommandCamoticsSimulate:
             return False
         try:
             job = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(job.Proxy, PathScripts.PathJob.ObjectJob)
+            return isinstance(job.Proxy, Path.Main.Job.ObjectJob)
         except:
             return False
 

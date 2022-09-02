@@ -25,7 +25,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Dressup.PathBoundary as PathDressupPathBoundary
+import Path.Dressup.Boundary as PathDressupPathBoundary
 import PathGui
 
 if False:
@@ -112,8 +112,8 @@ class TaskPanel(object):
         self.setClean()
 
     def updateStockEditor(self, index, force=False):
-        import PathScripts.PathJobGui as PathJobGui
-        import PathScripts.PathStock as PathStock
+        import Path.Main.Gui.Job as PathJobGui
+        import Path.Main.Stock as PathStock
 
         def setupFromBaseEdit():
             Path.Log.track(index, force)
@@ -289,9 +289,9 @@ class CommandPathDressupPathBoundary:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Path Boundary Dress-up")
-        FreeCADGui.addModule("Path.Dressup.Gui.PathBoundary")
+        FreeCADGui.addModule("Path.Dressup.Gui.Boundary")
         FreeCADGui.doCommand(
-            "Path.Dressup.Gui.PathBoundary.Create(App.ActiveDocument.%s)"
+            "Path.Dressup.Gui.Boundary.Create(App.ActiveDocument.%s)"
             % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

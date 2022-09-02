@@ -44,10 +44,16 @@ def Startup():
         from Path.Dressup.Gui import Dogbone
         from Path.Dressup.Gui import Dragknife
         from Path.Dressup.Gui import LeadInOut
-        from Path.Dressup.Gui import PathBoundary
+        from Path.Dressup.Gui import Boundary
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
         from Path.Dressup.Gui import ZCorrect
+
+        from Path.Main.Gui import Fixture
+        from Path.Main.Gui import Inspect
+        from Path.Main.Gui import Sanity
+        from Path.Main.Gui import Simulator
+
         from Path.Op.Gui import Adaptive
         from Path.Op.Gui import Array
         from Path.Op.Gui import Comment
@@ -71,10 +77,6 @@ def Startup():
         from Path.Tool import Controller
         from Path.Tool.Gui import Controller
 
-        from PathScripts import PathFixture
-        from PathScripts import PathInspect
-        from PathScripts import PathSanity
-        from PathScripts import PathSimulatorGui
         from PathScripts import PathUtilsGui
 
         from packaging.version import Version, parse
@@ -91,7 +93,7 @@ def Startup():
 
             v = parse(r.decode("utf-8"))
             if v >= Version("1.2.2"):
-                from PathScripts import PathCamoticsGui
+                from Path.Main.Gui import Camotics
         except (FileNotFoundError, ModuleNotFoundError):
             pass
 

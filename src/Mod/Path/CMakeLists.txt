@@ -58,7 +58,7 @@ SET(PathPythonBaseGui_SRCS
 SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
-    Path/Dressup/PathBoundary.py
+    Path/Dressup/Boundary.py
     Path/Dressup/Tags.py
 )
 
@@ -68,12 +68,31 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/Dogbone.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
-    Path/Dressup/Gui/PathBoundary.py
+    Path/Dressup/Gui/Boundary.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
     Path/Dressup/Gui/Tags.py
     Path/Dressup/Gui/TagPreferences.py
     Path/Dressup/Gui/ZCorrect.py
+)
+
+SET(PathPythonMain_SRCS
+    Path/Main/__init__.py
+    Path/Main/Job.py
+    Path/Main/Stock.py
+)
+
+SET(PathPythonMainGui_SRCS
+    Path/Main/Gui/__init__.py
+    Path/Main/Gui/Camotics.py
+    Path/Main/Gui/Fixture.py
+    Path/Main/Gui/Inspect.py
+    Path/Main/Gui/Job.py
+    Path/Main/Gui/JobCmd.py
+    Path/Main/Gui/JobDlg.py
+    Path/Main/Gui/PreferencesJob.py
+    Path/Main/Gui/Sanity.py
+    Path/Main/Gui/Simulator.py
 )
 
 SET(PathPythonTools_SRCS
@@ -195,17 +214,6 @@ SET(PathPythonOpGui_SRCS
 )
 
 SET(PathScripts_SRCS
-    PathScripts/PathCamoticsGui.py
-    PathScripts/PathFixture.py
-    PathScripts/PathInspect.py
-    PathScripts/PathJob.py
-    PathScripts/PathJobCmd.py
-    PathScripts/PathJobDlg.py
-    PathScripts/PathJobGui.py
-    PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathSanity.py
-    PathScripts/PathSimulatorGui.py
-    PathScripts/PathStock.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
     PathScripts/__init__.py
@@ -347,6 +355,8 @@ SET(all_files
     ${PathPythonBaseGenerator_SRCS}
     ${PathPythonDressup_SRCS}
     ${PathPythonDressupGui_SRCS}
+    ${PathPythonMain_SRCS}
+    ${PathPythonMainGui_SRCS}
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
     ${PathPythonPost_SRCS}
@@ -425,6 +435,19 @@ INSTALL(
         ${PathPythonDressupGui_SRCS}
     DESTINATION
         Mod/Path/Path/Dressup/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonMain_SRCS}
+    DESTINATION
+        Mod/Path/Path/Main
+)
+INSTALL(
+    FILES
+        ${PathPythonMainGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Main/Gui
 )
 
 INSTALL(

@@ -25,7 +25,7 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathStock as PathStock
+import Path.Main.Stock as PathStock
 import PathScripts.PathUtils as PathUtils
 
 if False:

@@ -31,12 +31,12 @@ import Path
 import Path.Base.Gui.SetupSheet as PathSetupSheetGui
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
+import Path.Main.Gui.JobCmd as PathJobCmd
+import Path.Main.Gui.JobDlg as PathJobDlg
+import Path.Main.Job as PathJob
+import Path.Main.Stock as PathStock
 import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
-import PathScripts.PathJob as PathJob
-import PathScripts.PathJobCmd as PathJobCmd
-import PathScripts.PathJobDlg as PathJobDlg
-import PathScripts.PathStock as PathStock
 import PathScripts.PathUtils as PathUtils
 import json
 import math
@@ -1627,7 +1627,7 @@ class TaskPanel:
 def Create(base, template=None, openTaskPanel=True):
     """Create(base, template) ... creates a job instance for the given base object
     using template to configure it."""
-    FreeCADGui.addModule("PathScripts.PathJob")
+    FreeCADGui.addModule("Path.Main.Job")
     FreeCAD.ActiveDocument.openTransaction("Create Job")
     try:
         obj = PathJob.Create("Job", base, template)

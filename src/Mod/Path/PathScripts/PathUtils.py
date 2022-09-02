@@ -25,7 +25,7 @@ import FreeCAD
 from FreeCAD import Vector
 from PySide import QtCore
 import Path
-import PathScripts.PathJob as PathJob
+import Path.Main.Job as PathJob
 import math
 from numpy import linspace
 

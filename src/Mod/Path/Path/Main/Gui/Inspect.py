@@ -285,9 +285,9 @@ class CommandPathInspect:
             return
 
         # if everything is ok, execute
-        FreeCADGui.addModule("PathScripts.PathInspect")
+        FreeCADGui.addModule("Path.Main.Gui.Inspect")
         FreeCADGui.doCommand(
-            "PathScripts.PathInspect.show(FreeCAD.ActiveDocument."
+            "Path.Main.Gui.Inspect.show(FreeCAD.ActiveDocument."
             + selection[0].Name
             + ")"
         )

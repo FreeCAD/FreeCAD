@@ -110,7 +110,7 @@ class CommandPathSanity:
 
     def IsActive(self):
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        return isinstance(obj.Proxy, PathScripts.PathJob.ObjectJob)
+        return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
 
     def Activated(self):
         # if everything is ok, execute
@@ -551,7 +551,7 @@ class CommandPathSanity:
             m = 0
             for i in obj.Document.Objects:
                 if hasattr(i, "Proxy"):
-                    if isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
+                    if isinstance(i.Proxy, Path.Main.Job.ObjectJob):
                         m += 1
                         if i is obj:
                             n = m

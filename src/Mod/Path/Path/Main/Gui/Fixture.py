@@ -165,16 +165,16 @@ class CommandPathFixture:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create a Fixture Offset")
-        FreeCADGui.addModule("PathScripts.PathFixture")
+        FreeCADGui.addModule("Path.Main.Gui.Fixture")
         snippet = """
 import Path
 import PathScripts
 from PathScripts import PathUtils
 prjexists = False
 obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Fixture")
-PathScripts.PathFixture.Fixture(obj)
+Path.Main.Gui.Fixture.Fixture(obj)
 obj.Active = True
-PathScripts.PathFixture._ViewProviderFixture(obj.ViewObject)
+Path.Main.Gui.Fixture._ViewProviderFixture(obj.ViewObject)
 
 PathUtils.addToJob(obj)
 

@@ -26,9 +26,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Util as PathUtil
-import PathScripts.PathJob as PathJob
-import PathScripts.PathJobDlg as PathJobDlg
-import PathScripts.PathStock as PathStock
+import Path.Main.Gui.JobDlg as PathJobDlg
+import Path.Main.Job as PathJob
+import Path.Main.Stock as PathStock
 import json
 import os
 
@@ -75,13 +75,13 @@ class CommandJobCreate:
 
     @classmethod
     def Execute(cls, base, template):
-        FreeCADGui.addModule("PathScripts.PathJobGui")
+        FreeCADGui.addModule("Path.Main.Gui.Job")
         if template:
             template = "'%s'" % template
         else:
             template = "None"
         FreeCADGui.doCommand(
-            "PathScripts.PathJobGui.Create(%s, %s)" % ([o.Name for o in base], template)
+            "Path.Main.Gui.Job.Create(%s, %s)" % ([o.Name for o in base], template)
         )
 
 

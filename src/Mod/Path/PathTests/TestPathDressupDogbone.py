@@ -23,7 +23,7 @@
 import FreeCAD
 import Path
 import Path.Dressup.Gui.Dogbone as PathDressupDogbone
-import PathScripts.PathJob as PathJob
+import Path.Main.Job as PathJob
 import Path.Op.Profile as PathProfile
 
 from PathTests.PathTestUtils import PathTestBase

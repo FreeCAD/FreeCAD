@@ -23,8 +23,8 @@
 import Draft
 import FreeCAD
 import Path
+import Path.Main.Job as PathJob
 import Path.Op.Helix as PathHelix
-import PathScripts.PathJob as PathJob
 import PathTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
