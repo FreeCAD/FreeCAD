@@ -40,7 +40,7 @@ import addonmanager_utilities as utils
 from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
-from addonmanager_git import initialize_git
+from addonmanager_git import initialize_git, GitFailed
 
 translate = FreeCAD.Qt.translate
 
