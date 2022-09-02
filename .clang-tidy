@@ -283,7 +283,7 @@ CheckOptions:
   - key:             readability-identifier-naming.AggressiveDependentMemberLookup
     value:           'false'
   - key:             readability-identifier-length.MinimumParameterNameLength
-    value:           '3'
+    value:           '2'
   - key:             modernize-use-emplace.TupleTypes
     value:           '::std::pair;::std::tuple'
   - key:             modernize-use-emplace.TupleMakeFunctions
@@ -417,7 +417,7 @@ CheckOptions:
   - key:             cppcoreguidelines-narrowing-conversions.WarnWithinTemplateInstantiation
     value:           'false'
   - key:             readability-identifier-length.MinimumVariableNameLength
-    value:           '3'
+    value:           '2'
   - key:             cppcoreguidelines-narrowing-conversions.WarnOnEquivalentBitWidth
     value:           'true'
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnorePublicMemberVariables
