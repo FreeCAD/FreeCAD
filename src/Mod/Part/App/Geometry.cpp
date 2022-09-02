@@ -4622,7 +4622,7 @@ GeomSurface::~GeomSurface()
 // Copied from OCC BRepBndLib_1.cxx
 //=======================================================================
 // Function : IsPlanar
-// purpose : Returns TRUE if theSurfaceurface is plane-like.
+// purpose : Returns TRUE if theSurface is plane-like.
 //=======================================================================
 static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theSurface)
 {
