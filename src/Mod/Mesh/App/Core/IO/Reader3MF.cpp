@@ -85,7 +85,6 @@ bool Reader3MF::Load()
     try {
         // The first file might already be 3dmodel.model but unfortunately the
         // zipios++ API doesn't have a function to check it. So, try it blindly.
-        zip.rdbuf();
         if (!LoadModel(zip)) {
             entry = zip.getNextEntry();
             while (entry && entry->isValid()) {
