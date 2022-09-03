@@ -142,7 +142,7 @@ Feature::getElementName(const char *name, ElementNameType type) const
     if (type != ElementNameType::Export)
         return App::GeoFeature::getElementName(name, type);
 
-    // This function is overriden to provide higher level shape topo names that
+    // This function is overridden to provide higher level shape topo names that
     // are generated on demand, e.g. Wire, Shell, Solid, etc.
 
     auto prop = Base::freecad_dynamic_cast<PropertyPartShape>(getPropertyOfGeometry());
@@ -164,12 +164,12 @@ Feature::getElementName(const char *name, ElementNameType type) const
         //
         // In theory, all it takes to find one lower element that only appear
         // in the given higher element. To make the algorithm more robust
-        // agains model changes, we shall take minimum MinLowerTopoNames lower
+        // against model changes, we shall take minimum MinLowerTopoNames lower
         // elements.
         //
         // On the other hand, it may be possible to take too many elements for
         // disambiguation. We shall limit to maximum MaxLowerTopoNames. If the
-        // choosen elements are not enough to disambiguate the higher element,
+        // chosen elements are not enough to disambiguate the higher element,
         // we'll include an index for disambiguation.
 
         auto subshape = shape.getSubTopoShape(res.first, res.second, true);
@@ -248,7 +248,7 @@ Feature::getElementName(const char *name, ElementNameType type) const
                         // disambiguation.
                         auto it = std::find(ancestors.begin(), ancestors.end(), res.second);
                         if (it == ancestors.end())
-                            assert(0 && "ancestor not found"); // this shouldn't happend
+                            assert(0 && "ancestor not found"); // this shouldn't happened
                         else
                             op = Data::ComplexGeoData::indexPostfix() + std::to_string(it - ancestors.begin());
                     }
@@ -476,10 +476,10 @@ getElementSource(App::DocumentObject *owner,
                 && !tagSet.insert(std::make_pair(doc,tag)).second) {
             // Because an object might be deleted, which may be a link/binder
             // that points to an external object that contain element name
-            // using external hash table. We shall prepare for cicular element
+            // using external hash table. We shall prepare for circular element
             // map due to looking up in the wrong table.
             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                FC_WARN("circular elelement mapping");
+                FC_WARN("circular element mapping");
             break;
         }
         ret.emplace_back(tag,original);

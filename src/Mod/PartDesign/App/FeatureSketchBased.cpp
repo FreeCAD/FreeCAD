@@ -668,7 +668,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
     BRepBuilderAPI_MakeEdge mkEdge(line);
     if (!mkEdge.IsDone())
-        throw Base::RuntimeError("Revolve: Unexpected OCE failure");
+        throw Base::RuntimeError("Revolve: Unexpected OCC failure");
     BRepAdaptor_Curve axis(TopoDS::Edge(mkEdge.Shape()));
 
     TopExp_Explorer ex;
