@@ -68,8 +68,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "ReturnLevel": [
-                (translate("Path_Drilling", "G99"), "G99"),
                 (translate("Path_Drilling", "G98"), "G98"),
+                (translate("Path_Drilling", "G99"), "G99"),
             ],  # How high to retract after a drilling move
             "ExtraOffset": [
                 (translate("Path_Drilling", "None"), "None"),
@@ -141,7 +141,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "ReturnLevel",
             "Drill",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Controls how tool retracts Default=G99"
+                "App::Property", "Controls how tool retracts Default=G98"
             ),
         )
         obj.addProperty(
