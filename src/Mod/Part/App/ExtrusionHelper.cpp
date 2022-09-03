@@ -35,6 +35,7 @@
 # include <gp_Ax1.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Trsf.hxx>
+# include <gp_Pln.hxx>
 # include <GProp_GProps.hxx>
 # include <Precision.hxx>
 # include <ShapeFix_Wire.hxx> 
