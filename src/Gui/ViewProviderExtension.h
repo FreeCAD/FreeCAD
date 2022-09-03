@@ -100,7 +100,7 @@ public:
     virtual void extensionGetDisplayModes(std::vector<std::string> &) const {}
     virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) {}
 
-    //update data of extended opject
+    //update data of extended object
     virtual void extensionUpdateData(const App::Property*);
     virtual PyObject* getExtensionPyObject();
 

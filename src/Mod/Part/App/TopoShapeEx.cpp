@@ -4747,10 +4747,10 @@ struct MapperPrism: MapperMaker {
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> vertexMap;
     ShapeMapper::ShapeMap edgeMap;
 
-    MapperPrism(BRepFeat_MakePrism &maker, const TopoShape &upto)
+    MapperPrism(BRepFeat_MakePrism &maker, const TopoShape &upTo)
         :MapperMaker(maker)
     {
-        (void)upto;
+        (void)upTo;
 
         std::vector<TopoShape> shapes;
         for(TopTools_ListIteratorOfListOfShape it(maker.FirstShape());it.More();it.Next())
@@ -4842,11 +4842,11 @@ struct MapperPrism: MapperMaker {
 
 TopoShape &TopoShape::makEShape(BRepFeat_MakePrism &mkShape,
                                 const std::vector<TopoShape> &sources,
-                                const TopoShape &upto,
+                                const TopoShape &upTo,
                                 const char *op)
 {
     if(!op) op = Part::OpCodes::Prism;
-    MapperPrism mapper(mkShape, upto);
+    MapperPrism mapper(mkShape, upTo);
     makESHAPE(mkShape.Shape(),mapper,sources,op);
     return *this;
 }
