@@ -68,6 +68,8 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/core/ignore_unused.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
 
 #endif //_PreComp_
 

@@ -125,6 +125,8 @@ public:
     bool LoadPLY (std::istream &rstrIn);
     /** Loads the mesh object from an XML file. */
     void LoadXML (Base::XMLReader &reader);
+    /** Loads the mesh object from a 3MF file. */
+    bool Load3MF (std::istream &str);
     /** Loads a node from an OpenInventor file. */
     bool LoadMeshNode (std::istream &rstrIn);
     /** Loads an OpenInventor file. */

@@ -10,6 +10,7 @@ FreeCAD.addImportType("Alias Mesh (*.obj)", "Mesh")
 FreeCAD.addImportType("Object File Format Mesh (*.off)", "Mesh")
 FreeCAD.addImportType("Stanford Triangle Mesh (*.ply)", "Mesh")
 FreeCAD.addImportType("Simple Model Format (*.smf)", "Mesh")
+FreeCAD.addImportType("3D Manufacturing Format (*.3mf)", "Mesh")
 
 FreeCAD.addExportType("STL Mesh (*.stl *.ast)", "Mesh")
 FreeCAD.addExportType("Binary Mesh (*.bms)", "Mesh")

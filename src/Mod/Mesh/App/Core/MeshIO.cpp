@@ -30,6 +30,7 @@
 #include "Algorithm.h"
 #include "Builder.h"
 #include "Degeneration.h"
+#include "IO/Reader3MF.h"
 #include "IO/Writer3MF.h"
 
 #include <Base/Builder3D.h>
@@ -189,6 +190,9 @@ bool MeshInput::LoadAny(const char* FileName)
         else if (fi.hasExtension("smf")) {
             ok = LoadSMF( str );
         }
+        else if (fi.hasExtension("3mf")) {
+            ok = Load3MF( str );
+        }
         else if (fi.hasExtension("off")) {
             ok = LoadOFF( str );
         }
@@ -222,6 +226,8 @@ bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
         return LoadOBJ(str);
     case MeshIO::SMF:
         return LoadSMF(str);
+    case MeshIO::ThreeMF:
+        return Load3MF(str);
     case MeshIO::OFF:
         return LoadOFF(str);
     case MeshIO::IV:
@@ -1484,6 +1490,29 @@ void MeshInput::LoadXML (Base::XMLReader &reader)
     reader.readEndElement("Mesh");
 
     _rclMesh.Adopt(cPoints, cFacets);
+}
+
+/** Loads a 3MF file. */
+bool MeshInput::Load3MF(std::istream &inp)
+{
+    Reader3MF reader(inp);
+    reader.Load();
+    std::vector<int> ids = reader.GetMeshIds();
+    if (!ids.empty()) {
+        MeshKernel compound = reader.GetMesh(ids[0]);
+        compound.Transform(reader.GetTransform(ids[0]));
+
+        for (std::size_t index = 1; index < ids.size(); index++) {
+            MeshKernel mesh = reader.GetMesh(ids[index]);
+            mesh.Transform(reader.GetTransform(ids[index]));
+            compound.Merge(mesh);
+        }
+
+        _rclMesh = compound;
+        return true;
+    }
+
+    return false;
 }
 
 /** Loads an OpenInventor file. */
