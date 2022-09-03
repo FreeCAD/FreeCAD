@@ -105,7 +105,7 @@ public:
     bool LoadAny(const char* FileName);
     /// Loads from a stream and the given format
     bool LoadFormat(std::istream &str, MeshIO::Format fmt);
-    /** Loads an STL file either in binary or ASCII format. 
+    /** Loads an STL file either in binary or ASCII format.
      * Therefore the file header gets checked to decide if the file is binary or not.
      */
     bool LoadSTL (std::istream &rstrIn);

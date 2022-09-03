@@ -49,7 +49,7 @@ public:
      *
      * Passes an input stream to the constructor.
      */
-    Reader3MF(std::istream &str);
+    explicit Reader3MF(std::istream &str);
 
     /*!
      * \brief Reader3MF
@@ -57,7 +57,7 @@ public:
      *
      * Passes a file name to the constructor
      */
-    Reader3MF(const std::string &filename);
+    explicit Reader3MF(const std::string &filename);
     /*!
      * \brief Load the mesh from the input stream or file
      * \return true on success and false otherwise

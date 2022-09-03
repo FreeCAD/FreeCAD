@@ -151,7 +151,7 @@ MeshIO::Format MeshInput::getFormat(const char* FileName)
          return MeshIO::Format::SMF;
      }
      else {
-         throw Base::FileException("File extension not supported",FileName);
+         throw Base::FileException("File extension not supported", FileName);
      }
 }
 
@@ -160,9 +160,9 @@ bool MeshInput::LoadAny(const char* FileName)
     // ask for read permission
     Base::FileInfo fi(FileName);
     if (!fi.exists() || !fi.isFile())
-        throw Base::FileException("File does not exist",FileName);
+        throw Base::FileException("File does not exist", FileName);
     if (!fi.isReadable())
-        throw Base::FileException("No permission on the file",FileName);
+        throw Base::FileException("No permission on the file", FileName);
 
     Base::ifstream str(fi, std::ios::in | std::ios::binary);
 
@@ -200,7 +200,7 @@ bool MeshInput::LoadAny(const char* FileName)
             ok = LoadPLY( str );
         }
         else {
-            throw Base::FileException("File extension not supported",FileName);
+            throw Base::FileException("File extension not supported", FileName);
         }
 
         return ok;
@@ -336,7 +336,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 
     std::string line;
     float fX, fY, fZ;
-    int  i1=1,i2=1,i3=1,i4=1;
+    int  i1=1, i2=1, i3=1, i4=1;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad())
@@ -363,9 +363,9 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
-            float r = std::min<int>(std::atof(what[10].first),255) / 255.0f;
-            float g = std::min<int>(std::atof(what[11].first),255) / 255.0f;
-            float b = std::min<int>(std::atof(what[12].first),255) / 255.0f;
+            float r = std::min<int>(std::atof(what[10].first), 255) / 255.0f;
+            float g = std::min<int>(std::atof(what[11].first), 255) / 255.0f;
+            float b = std::min<int>(std::atof(what[12].first), 255) / 255.0f;
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
             App::Color c(r,g,b);

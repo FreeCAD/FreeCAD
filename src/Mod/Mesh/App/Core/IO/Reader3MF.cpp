@@ -176,6 +176,7 @@ bool Reader3MF::LoadBuild(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList* nodes)
 
 bool Reader3MF::LoadItems(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList* nodes)
 {
+    const std::size_t numEntries = 12;
     if (!nodes)
         return false;
 
@@ -193,8 +194,8 @@ bool Reader3MF::LoadItems(XERCES_CPP_NAMESPACE_QUALIFIER DOMNodeList* nodes)
                 boost::char_separator<char> sep(" ,");
                 boost::tokenizer<boost::char_separator<char> > tokens(transform, sep);
                 std::vector<std::string> token_results;
-                token_results.assign(tokens.begin(),tokens.end());
-                if (token_results.size() == 12) {
+                token_results.assign(tokens.begin(), tokens.end());
+                if (token_results.size() == numEntries) {
                     mat[0][0] = std::stod(token_results[0]);
                     mat[1][0] = std::stod(token_results[1]);
                     mat[2][0] = std::stod(token_results[2]);

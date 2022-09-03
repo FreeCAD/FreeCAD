@@ -54,14 +54,14 @@ public:
      * Passes an output stream to the constructor.
      * \param str
      */
-    Writer3MF(std::ostream &str);
+    explicit Writer3MF(std::ostream &str);
 
     /*!
      * \brief Writer3MF
      * Passes a file name to the constructor
      * \param filename
      */
-    Writer3MF(const std::string &filename);
+    explicit Writer3MF(const std::string &filename);
 
     /*!
      * \brief Add a mesh object resource to the 3MF file.
