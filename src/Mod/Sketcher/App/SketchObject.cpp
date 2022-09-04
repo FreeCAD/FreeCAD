@@ -410,51 +410,6 @@ int SketchObject::getDriving(int ConstrId, bool &isdriving)
     return 0;
 }
 
-int SketchObject::toggleDriving(int ConstrId)
-{
-    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
-
-    const std::vector<Constraint *> &vals = this->Constraints.getValues();
-
-    int ret = testDrivingChange(ConstrId,!vals[ConstrId]->isDriving);
-
-    if(ret<0)
-        return ret;
-
-    const auto geof1 = getGeometryFacade(vals[ConstrId]->First);
-    const auto geof2 = getGeometryFacade(vals[ConstrId]->Second);
-    const auto geof3 = getGeometryFacade(vals[ConstrId]->Third);
-
-    bool extorconstructionpoint1 =  (vals[ConstrId]->First == GeoEnum::GeoUndef) ||
-                                    (vals[ConstrId]->First < 0)                     ||
-                                    (geof1 && geof1->isGeoType(Part::GeomPoint::getClassTypeId()) && geof1->getConstruction());
-    bool extorconstructionpoint2 =  (vals[ConstrId]->Second == GeoEnum::GeoUndef)||
-                                    (vals[ConstrId]->Second < 0)                    ||
-                                    (geof2 && geof2->isGeoType(Part::GeomPoint::getClassTypeId()) && geof2->getConstruction());
-    bool extorconstructionpoint3 =  (vals[ConstrId]->Third == GeoEnum::GeoUndef) ||
-                                    (vals[ConstrId]->Third < 0)                     ||
-                                    (geof3 && geof3->isGeoType(Part::GeomPoint::getClassTypeId()) && geof3->getConstruction());
-
-    if (extorconstructionpoint1 && extorconstructionpoint2 && extorconstructionpoint3 && !vals[ConstrId]->isDriving)
-        return -4;
-
-    // copy the list
-    std::vector<Constraint *> newVals(vals);
-    // clone the changed Constraint
-    Constraint *constNew = vals[ConstrId]->clone();
-    constNew->isDriving = !constNew->isDriving;
-    newVals[ConstrId] = constNew;
-    this->Constraints.setValues(std::move(newVals));
-    if (!constNew->isDriving)
-        setExpression(Constraints.createPath(ConstrId), std::shared_ptr<App::Expression>());
-
-
-    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-        solve();
-
-    return 0;
-}
-
 int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();

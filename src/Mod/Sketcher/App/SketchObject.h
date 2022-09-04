@@ -229,7 +229,7 @@ public:
     /// get the driving status of this constraint
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
-    int toggleDriving(int ConstrId);
+    int toggleDriving(int ConstrId) {return setDriving(ConstrId, !Constraints.getValues()[ConstrId]->isDriving);}
 
     /// set the driving status of this constraint and solve
     int setActive(int ConstrId, bool isactive);
