@@ -129,18 +129,18 @@ public:
     }
 
     /** Lower operator, needed for sorting in maps and sets */
-    bool operator<(const Reference<T>& p) const {
-        return _toHandle < p._toHandle;
-    }
+    // bool operator<(const Reference<T>& p) const {
+    //     return _toHandle < p._toHandle;
+    // }
 
     /** Equal operator */
-    bool operator==(const Reference<T>& p) const {
-        return _toHandle == p._toHandle;
-    }
-
-    bool operator!=(const Reference<T>& p) const {
-        return _toHandle != p._toHandle;
-    }
+    // bool operator==(const Reference<T>& p) const {
+    //     return _toHandle == p._toHandle;
+    // }
+    //
+    // bool operator!=(const Reference<T>& p) const {
+    //     return _toHandle != p._toHandle;
+    // }
 
 
     //**************************************************************************
