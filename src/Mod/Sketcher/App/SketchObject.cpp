@@ -5191,10 +5191,6 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
                 kp->setPoint(bsp->pointAtParameter(knots[index]));
 
-                // a construction point, for now on, is a point that is not handled by the solver and does not contribute to the dofs
-                // This is done so as to avoid having to add another data member to GeomPoint that is specific for the sketcher.
-                GeometryFacade::setConstruction(kp, true);
-
                 igeo.push_back(kp);
 
                 Sketcher::Constraint *newConstr = new Sketcher::Constraint();
