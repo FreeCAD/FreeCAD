@@ -39,6 +39,9 @@ class ViewProviderBezCurve(ViewProviderWire):
     def __init__(self, vobj):
         super(ViewProviderBezCurve, self).__init__(vobj)
 
+    def setupContextMenu(self, vobj, menu):
+        return
+
 
 # Alias for compatibility with v0.18 and earlier
 _ViewProviderBezCurve = ViewProviderBezCurve
