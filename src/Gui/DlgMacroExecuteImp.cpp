@@ -409,7 +409,7 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
     MacroItem * mitem = static_cast<MacroItem *>(item);
 
     if (mitem->systemWide) {
-        QMessageBox::critical(qApp->activeWindow(), QObject::tr("Delete macro"),
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Delete macro"),
             QObject::tr("Not allowed to delete system-wide macros"));
         return;
     }

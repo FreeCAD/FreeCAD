@@ -77,7 +77,7 @@ void EditDatumDialog::exec(bool atCursor)
     if (Constr->isDimensional()) {
 
         if (sketch->hasConflicts()) {
-            QMessageBox::critical(qApp->activeWindow(), QObject::tr("Distance constraint"),
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Distance constraint"),
                                   QObject::tr("Not allowed to edit the datum because the sketch contains conflicting constraints"));
             return;
         }
@@ -216,7 +216,7 @@ void EditDatumDialog::accepted()
             tryAutoRecompute(sketch);
         }
         catch (const Base::Exception& e) {
-            QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
             Gui::Command::abortCommand();
 
             if(sketch->noRecomputes) // if setdatum failed, it is highly likely that solver information is invalid.
