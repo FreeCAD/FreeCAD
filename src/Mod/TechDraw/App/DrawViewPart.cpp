@@ -41,6 +41,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <HLRAlgo_Projector.hxx>
+#include <ShapeAnalysis.hxx>
 #include <TopExp.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
@@ -414,8 +415,7 @@ void DrawViewPart::onHlrFinished(void)
 
     //start face finding in a separate thread.  We don't find faces when using the polygon
     //HLR method.
-    if (handleFaces() && !CoarseView.getValue() &&
-        !waitingForFaces() && !waitingForHlr()) {
+    if (handleFaces() && !CoarseView.getValue() ) {
         try {
             //note that &m_faceWatcher in the third parameter is not strictly required, but using the
             //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
@@ -481,127 +481,180 @@ void DrawViewPart::extractFaces()
 
     showProgressMessage(getNameInDocument(), "is extracting faces");
 
-    //make a copy of the input edges so the loose tolerances of face finding are
-    //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
     const std::vector<TechDraw::BaseGeomPtr>& goEdges =
-                       geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(), SeamVisible.getValue());
+                       geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 
     if (goEdges.empty()) {
         Base::Console().Message("DVP::extractFaces - %s - no face edges available!\n", getNameInDocument());
         return;
     }
 
-    std::vector<TopoDS_Edge> copyEdges;
-    for (auto& tdEdge: goEdges) {
-        BRepBuilderAPI_Copy copier(tdEdge->occEdge, true, true);  //copy occEdge with its geometry (TShape) and mesh info
-        copyEdges.push_back(TopoDS::Edge(copier.Shape()));
-    }
+    if (newFaceFinder()) {
+        std::vector<TopoDS_Edge> closedEdges;
+        std::vector<TopoDS_Edge> cleanEdges = DrawProjectSplit::scrubEdges(goEdges, closedEdges);
 
-    std::vector<TopoDS_Edge> nonZero;
-    for (auto& e:copyEdges) {                            //drop any zero edges (shouldn't be any by now!!!)
-        if (!DrawUtil::isZeroEdge(e)) {
-            nonZero.push_back(e);
+        //use EdgeWalker to make wires from edges
+        EdgeWalker eWalker;
+        std::vector<TopoDS_Wire> sortedWires;
+        try {
+            if (!cleanEdges.empty()) {
+                sortedWires = eWalker.execute(cleanEdges, true); //include outer wire
+            }
         }
-    }
-    geometryObject->clearFaceGeom();
+        catch (Base::Exception &e) {
+            throw Base::RuntimeError(e.what());
+        }
+        geometryObject->clearFaceGeom();
 
-    //HLR algo does not provide all edge intersections for edge endpoints.
-    //need to split long edges touched by Vertex of another edge
-    std::vector<splitPoint> splits;
-    std::vector<TopoDS_Edge>::iterator itOuter = nonZero.begin();
-    int iOuter = 0;
-    for (; itOuter != nonZero.end(); ++itOuter, iOuter++) {
-        TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
-        TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
-        Bnd_Box sOuter;
-        BRepBndLib::AddOptimal(*itOuter, sOuter);
-        sOuter.SetGap(0.1);
-        if (sOuter.IsVoid()) {
-            continue;
+        std::vector<TopoDS_Wire> closedWires;
+        for (auto& e: closedEdges) {
+            BRepBuilderAPI_MakeWire mkWire(e);
+            TopoDS_Wire w = mkWire.Wire();
+            closedWires.push_back(w);
         }
-        if (DrawUtil::isZeroEdge(*itOuter)) {
-            continue;  //skip zero length edges. shouldn't happen ;)
+        if (!closedWires.empty()) {
+            sortedWires.insert(sortedWires.end(), closedWires.begin(), closedWires.end());
+            //inserting the closedWires that did not go through EdgeWalker into
+            //sortedWires ruins EdgeWalker's sort by size, so we have to do it again.
+            sortedWires = eWalker.sortWiresBySize(sortedWires);
         }
-        int iInner = 0;
-        std::vector<TopoDS_Edge>::iterator itInner = nonZero.begin();   //***sb itOuter + 1;
-        for (; itInner != nonZero.end(); ++itInner, iInner++) {
-            if (iInner == iOuter) {
+
+        if (sortedWires.empty()) {
+            Base::Console().Warning("DVP::extractFaces - %s - Can't make faces from projected edges\n", getNameInDocument());
+        } else {
+            BRepTools::Write(DrawUtil::vectorToCompound(sortedWires), "DVPSortedWires.brep");            //debug
+            double minWireArea = 0.000001;  //arbitrary very small face size
+            std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
+            for (; itWire != sortedWires.end(); itWire++) {
+                if (!BRep_Tool::IsClosed(*itWire)) {
+                    continue;       //can not make a face from open wire
+                } else {
+                    double area = ShapeAnalysis::ContourArea(*itWire);
+                    if (area <= minWireArea) {
+                        continue;   //can not make a face from wire with no area
+                    }
+                }
+                TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
+                const TopoDS_Wire& wire = (*itWire);
+                TechDraw::Wire* w = new TechDraw::Wire(wire);
+                f->wires.push_back(w);
+                if (geometryObject) {
+                    geometryObject->addFaceGeom(f);
+                }
+            }
+        }
+    } else { //use original method
+        //make a copy of the input edges so the loose tolerances of face finding are
+        //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
+        std::vector<TopoDS_Edge> copyEdges;
+        bool copyGeometry = true;
+        bool copyMesh = false;
+        for (const auto& e: goEdges) {
+            BRepBuilderAPI_Copy copier(e->occEdge, copyGeometry, copyMesh);
+            copyEdges.push_back(TopoDS::Edge(copier.Shape()));
+        }
+        std::vector<TopoDS_Edge> nonZero;
+        for (auto& e: copyEdges) {                            //drop any zero edges (shouldn't be any by now!!!)
+            if (!DrawUtil::isZeroEdge(e)) {
+                nonZero.push_back(e);
+            } else {
+                Base::Console().Log("INFO - DVP::extractFaces for %s found ZeroEdge!\n",getNameInDocument());
+            }
+        }
+
+        //HLR algo does not provide all edge intersections for edge endpoints.
+        //need to split long edges touched by Vertex of another edge
+        std::vector<splitPoint> splits;
+        std::vector<TopoDS_Edge>::iterator itOuter = nonZero.begin();
+        int iOuter = 0;
+        for (; itOuter != nonZero.end(); ++itOuter, iOuter++) {    //*** itOuter != nonZero.end() - 1
+            TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
+            TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
+            Bnd_Box sOuter;
+            BRepBndLib::AddOptimal(*itOuter, sOuter);
+            sOuter.SetGap(0.1);
+            if (sOuter.IsVoid()) {
+                Base::Console().Log("DVP::Extract Faces - outer Bnd_Box is void for %s\n",getNameInDocument());
                 continue;
             }
-            if (DrawUtil::isZeroEdge((*itInner))) {
+            if (DrawUtil::isZeroEdge(*itOuter)) {
+                Base::Console().Log("DVP::extractFaces - outerEdge: %d is ZeroEdge\n",iOuter);   //this is not finding ZeroEdges
                 continue;  //skip zero length edges. shouldn't happen ;)
             }
+            int iInner = 0;
+            std::vector<TopoDS_Edge>::iterator itInner = nonZero.begin();   //***sb itOuter + 1;
+            for (; itInner != nonZero.end(); ++itInner,iInner++) {
+                if (iInner == iOuter) {
+                    continue;
+                }
+                if (DrawUtil::isZeroEdge((*itInner))) {
+                    continue;  //skip zero length edges. shouldn't happen ;)
+                }
 
-            Bnd_Box sInner;
-            BRepBndLib::AddOptimal(*itInner, sInner);
-            sInner.SetGap(0.1);
-            if (sInner.IsVoid()) {
-                continue;
+                Bnd_Box sInner;
+                BRepBndLib::AddOptimal(*itInner, sInner);
+                sInner.SetGap(0.1);
+                if (sInner.IsVoid()) {
+                    Base::Console().Log("INFO - DVP::Extract Faces - inner Bnd_Box is void for %s\n",getNameInDocument());
+                    continue;
+                }
+                if (sOuter.IsOut(sInner)) {      //bboxes of edges don't intersect, don't bother
+                    continue;
+                }
+
+                double param = -1;
+                if (DrawProjectSplit::isOnEdge((*itInner),v1,param,false)) {
+                    gp_Pnt pnt1 = BRep_Tool::Pnt(v1);
+                    splitPoint s1;
+                    s1.i = iInner;
+                    s1.v = Base::Vector3d(pnt1.X(),pnt1.Y(),pnt1.Z());
+                    s1.param = param;
+                    splits.push_back(s1);
+                }
+                if (DrawProjectSplit::isOnEdge((*itInner),v2,param,false)) {
+                    gp_Pnt pnt2 = BRep_Tool::Pnt(v2);
+                    splitPoint s2;
+                    s2.i = iInner;
+                    s2.v = Base::Vector3d(pnt2.X(),pnt2.Y(),pnt2.Z());
+                    s2.param = param;
+                    splits.push_back(s2);
+                }
+            } //inner loop
+        }   //outer loop
+
+        std::vector<splitPoint> sorted = DrawProjectSplit::sortSplits(splits,true);
+        auto last = std::unique(sorted.begin(), sorted.end(), DrawProjectSplit::splitEqual);  //duplicates to back
+        sorted.erase(last, sorted.end());                         //remove dupl splits
+        std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(nonZero,sorted);
+
+        if (newEdges.empty()) {
+            Base::Console().Log("DVP::extractFaces - no newEdges\n");
+            return;
+        }
+
+        newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
+
+        geometryObject->clearFaceGeom();
+
+        //find all the wires in the pile of faceEdges
+        std::vector<TopoDS_Wire> sortedWires;
+        EdgeWalker eWalker;
+        sortedWires = eWalker.execute(newEdges);
+        if (sortedWires.empty()) {
+            Base::Console().Warning("DVP::extractFaces - %s -Can't make faces from projected edges\n", getNameInDocument());
+            return;
+        } else {
+            std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
+            for (; itWire != sortedWires.end(); itWire++) {
+                //version 1: 1 wire/face - no voids in face
+                TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
+                const TopoDS_Wire& wire = (*itWire);
+                TechDraw::Wire* w = new TechDraw::Wire(wire);
+                f->wires.push_back(w);
+                if (geometryObject) {
+                    geometryObject->addFaceGeom(f);
+                }
             }
-            if (sOuter.IsOut(sInner)) {      //bboxes of edges don't intersect, don't bother
-                continue;
-            }
-
-            double param = -1;      //parametric point on edge where the vertex touches
-            if (DrawProjectSplit::isOnEdge((*itInner), v1, param, false)) {
-                gp_Pnt pnt1 = BRep_Tool::Pnt(v1);
-                splitPoint s1;
-                s1.i = iInner;
-                s1.v = Base::Vector3d(pnt1.X(), pnt1.Y(), pnt1.Z());
-                s1.param = param;
-                splits.push_back(s1);
-            }
-            if (DrawProjectSplit::isOnEdge((*itInner), v2, param, false)) {
-                gp_Pnt pnt2 = BRep_Tool::Pnt(v2);
-                splitPoint s2;
-                s2.i = iInner;
-                s2.v = Base::Vector3d(pnt2.X(), pnt2.Y(), pnt2.Z());
-                s2.param = param;
-                splits.push_back(s2);
-            }
-        } //inner loop
-    }   //outer loop
-
-    //if edge A was touched at the same point by multiple edges B, we only want to split A once
-    std::vector<splitPoint> sorted = DrawProjectSplit::sortSplits(splits, true);
-    auto last = std::unique(sorted.begin(), sorted.end(), DrawProjectSplit::splitEqual);  //duplicates to back
-    sorted.erase(last, sorted.end());                         //remove duplicate splits
-
-    std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(nonZero, sorted);
-
-    if (newEdges.empty()) {
-        Base::Console().Log("DVP::extractFaces - no edges return by splitting process\n");
-        waitingForFaces(false);
-        return;
-    }
-
-    //try to remove any duplicated edges since they will confuse the edgeWalker
-    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
-
-//find all the wires in the pile of faceEdges
-    EdgeWalker ew;
-    ew.loadEdges(newEdges);
-    bool success = ew.perform();
-    if (!success) {
-        Base::Console().Warning("DVP::extractFaces - %s - Can't make faces from projected edges\n", getNameInDocument());
-        waitingForFaces(false);
-        return;
-    }
-    std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
-
-    std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw, true);
-
-    std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
-    for (; itWire != sortedWires.end(); itWire++) {
-        //version 1: 1 wire/face - no voids in face
-        TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
-        const TopoDS_Wire& wire = (*itWire);
-        TechDraw::Wire* w = new TechDraw::Wire(wire);
-        f->wires.push_back(w);
-        if (geometryObject) {
-            //it can happen that a new hlr cycle deletes geometryObject while we are
-            //extracting faces. if it does happen, a new cycle should fix it.
-            geometryObject->addFaceGeom(f);
         }
     }
 }
@@ -609,7 +662,7 @@ void DrawViewPart::extractFaces()
 //continue processing after extractFaces thread completes
 void DrawViewPart::onFacesFinished(void)
 {
-//    Base::Console().Message("DVP::onFacesFinished()\n");
+//    Base::Console().Message("DVP::onFacesFinished() - %s\n", getNameInDocument());
     waitingForFaces(false);
     QObject::disconnect(connectFaceWatcher);
     showProgressMessage(getNameInDocument(), "has finished extracting faces");
@@ -978,6 +1031,14 @@ bool DrawViewPart::handleFaces()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     return hGrp->GetBool("HandleFaces", 1l);
+}
+
+bool DrawViewPart::newFaceFinder(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool result = hGrp->GetBool("NewFaceFinder", 0l);
+    return result;
 }
 
 //! remove features that are useless without this DVP

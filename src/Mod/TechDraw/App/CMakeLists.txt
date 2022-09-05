@@ -166,6 +166,7 @@ SET(TechDraw_SRCS
     TechDrawExport.h
     ProjectionAlgos.cpp
     ProjectionAlgos.h
+    EWTOLERANCE.h
 )
 
 SET(Geometry_SRCS

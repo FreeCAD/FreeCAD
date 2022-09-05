@@ -159,6 +159,7 @@ public:
 
 
     bool handleFaces();
+    bool newFaceFinder();
 
     bool isUnsetting() { return nowUnsetting; }
 
