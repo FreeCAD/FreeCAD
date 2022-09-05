@@ -53,19 +53,27 @@
 #include "Core/MeshIO.h"
 #include <Base/InputSource.h>
 #include <Base/XMLTools.h>
+#include <Base/ZipHeader.h>
+#include <zipios++/zipfile.h>
 
 
 using namespace MeshCore;
 XERCES_CPP_NAMESPACE_USE
 
 Reader3MF::Reader3MF(std::istream &str)
-  : zip(str)
 {
+    zipios::ZipHeader zipHeader(str);
+    if (zipHeader.isValid()) {
+        zip.reset(zipHeader.getInputStream("3D/3dmodel.model"));
+    }
 }
 
 Reader3MF::Reader3MF(const std::string &filename)
-  : zip(filename)
 {
+    zipios::ZipFile zipFile(filename);
+    if (zipFile.isValid()) {
+        zip.reset(zipFile.getInputStream("3D/3dmodel.model"));
+    }
 }
 
 std::vector<int> Reader3MF::GetMeshIds() const
@@ -81,23 +89,10 @@ std::vector<int> Reader3MF::GetMeshIds() const
 
 bool Reader3MF::Load()
 {
-    zipios::ConstEntryPointer entry;
     try {
-        // The first file might already be 3dmodel.model but unfortunately the
-        // zipios++ API doesn't have a function to check it. So, try it blindly.
-        if (!LoadModel(zip)) {
-            entry = zip.getNextEntry();
-            while (entry && entry->isValid()) {
-                if (entry->getName() == "3D/3dmodel.model") {
-                    return LoadModel(zip);
-                }
-
-                // Note: this throws an exception if there is no further file in the zip
-                entry = zip.getNextEntry();
-            }
+        if (!zip)
             return false;
-        }
-        return true;
+        return LoadModel(*zip);
     }
     catch (const std::exception&) {
         return false;

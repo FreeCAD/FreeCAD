@@ -25,8 +25,8 @@
 #define MESH_IO_READER_3MF_H
 
 #include <iosfwd>
+#include <memory>
 #include <unordered_map>
-#include <zipios++/zipinputstream.h>
 #include <xercesc/util/XercesDefs.hpp>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/MeshGlobal.h>
@@ -85,7 +85,7 @@ private:
 private:
     using MeshKernelAndTransform = std::pair<MeshKernel, Base::Matrix4D>;
     std::unordered_map<int, MeshKernelAndTransform> meshes;
-    zipios::ZipInputStream zip;
+    std::unique_ptr<std::istream> zip;
 };
 
 } // namespace MeshCore
