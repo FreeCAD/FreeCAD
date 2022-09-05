@@ -331,6 +331,7 @@ class CreateAddonListWorker(QtCore.QThread):
                 + "\n"
             )
             try:
+                os.chdir(os.path.join(macro_cache_location,"..")) # Make sure we are not IN this directory
                 shutil.rmtree(macro_cache_location, onerror=self._remove_readonly)
                 self.git_manager.clone(
                     "https://github.com/FreeCAD/FreeCAD-macros.git",
