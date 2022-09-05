@@ -247,7 +247,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         hidIso = invertGeometry(hidIso);
 
     }
-    catch (const Standard_Failure& e) {
+    catch (const Standard_Failure&) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while extracting edges\n",
                               e.GetMessageString());
     }
