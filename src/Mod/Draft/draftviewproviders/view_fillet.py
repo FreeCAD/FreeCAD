@@ -39,4 +39,8 @@ class ViewProviderFillet(ViewProviderWire):
     def __init__(self, vobj):
         super(ViewProviderFillet, self).__init__(vobj)
 
+    def setupContextMenu(self, vobj, menu):
+        return
+
+
 ## @}
