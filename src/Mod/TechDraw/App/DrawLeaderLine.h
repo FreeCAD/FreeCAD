@@ -80,9 +80,6 @@ protected:
     void onChanged(const App::Property* prop) override;
 
 private:
-/*    static const char* ArrowTypeEnums[];*/
-/*    static const int   ArrowCount;*/
-/*    static const std::vector<std::string> ArrowTypeIcons;*/
 
 
 };

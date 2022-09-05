@@ -75,10 +75,6 @@ DrawViewAnnotation::DrawViewAnnotation()
     ScaleType.setStatus(App::Property::Hidden, true);
 }
 
-DrawViewAnnotation::~DrawViewAnnotation()
-{
-}
-
 void DrawViewAnnotation::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
