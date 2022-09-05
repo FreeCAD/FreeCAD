@@ -474,6 +474,8 @@ def handle():
             wn = "FCGear"
         elif wn == "frame_":
             wn = "frame"
+        elif wn == "ReverseEngineering":
+            wn = "Reverse_Engineering"
         elif wn == "None":
             continue
         wblist.append(wn.lower())
@@ -499,7 +501,7 @@ def handle():
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
         UL_WORKBENCHES += '<img src="file:///'+img.replace('\\','/')+'" alt="'+wn+'">&nbsp;'
-        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
+        UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("Reverse_Engineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
     HTML = HTML.replace("UL_WORKBENCHES", UL_WORKBENCHES)
