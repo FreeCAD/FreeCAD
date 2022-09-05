@@ -33,6 +33,7 @@
 #include <gp_Vec.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepTools.hxx>
 #endif
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -264,25 +265,27 @@ private:
 
         Py::List result;
 
+        std::vector<TopoDS_Edge> closedEdges;
+        edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+
+        std::vector<TopoDS_Wire> sortedWires;
         try {
             EdgeWalker eWalker;
-            eWalker.loadEdges(edgeList);
-            bool success = eWalker.perform();
-            if (success) {
-                std::vector<TopoDS_Wire> rWires = eWalker.getResultNoDups();
-                std::vector<TopoDS_Wire> sortedWires = eWalker.sortStrip(rWires, biggie);   //false==>do not include biggest wires
-                for (auto& w:sortedWires) {
-                    PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
-                    result.append(Py::asObject(wire));
-                }
-            }
-            else {
-                Base::Console().Warning("edgeWalker: input is not planar graph. Wire detection not done\n");
-            }
+            sortedWires = eWalker.execute(edgeList, biggie);
         }
         catch (Base::Exception &e) {
             e.setPyException();
             throw Py::Exception();
+        }
+
+        if(sortedWires.empty()) {
+            Base::Console().Warning("ATDP::edgeWalker: Wire detection failed\n");
+            return Py::None();
+        } else {
+            for (auto& w:sortedWires) {
+                PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
+                result.append(Py::asObject(wire));
+            }
         }
         return result;
     }
@@ -313,30 +316,29 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - findOuterWire: input is empty\n");
+            Base::Console().Message("ATDP::findOuterWire: input is empty\n");
             return Py::None();
         }
 
+        std::vector<TopoDS_Edge> closedEdges;
+        edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+
         PyObject* outerWire = nullptr;
-        bool success = false;
+        std::vector<TopoDS_Wire> sortedWires;
         try {
             EdgeWalker eWalker;
-            eWalker.loadEdges(edgeList);
-            success = eWalker.perform();
-            if (success) {
-                std::vector<TopoDS_Wire> rWires = eWalker.getResultNoDups();
-                std::vector<TopoDS_Wire> sortedWires = eWalker.sortStrip(rWires, true);
-                outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
-            } else {
-                Base::Console().Warning("findOuterWire: input is not planar graph. Wire detection not done\n");
-            }
+            sortedWires = eWalker.execute(edgeList);
         }
         catch (Base::Exception &e) {
             e.setPyException();
             throw Py::Exception();
         }
-        if (!success) {
+
+        if(sortedWires.empty()) {
+            Base::Console().Warning("ATDP::findOuterWire: Outline wire detection failed\n");
             return Py::None();
+        } else {
+            outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
         }
         return Py::asObject(outerWire);
     }
@@ -382,28 +384,25 @@ private:
             return Py::None();
         }
 
+        std::vector<TopoDS_Edge> closedEdges;
+        edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+
         PyObject* outerWire = nullptr;
-        bool success = false;
+        std::vector<TopoDS_Wire> sortedWires;
         try {
             EdgeWalker eWalker;
-            eWalker.loadEdges(edgeList);
-            if(eWalker.perform()) {
-                std::vector<TopoDS_Wire> rWires = eWalker.getResultNoDups();
-                std::vector<TopoDS_Wire> sortedWires = eWalker.sortStrip(rWires, true);
-                if(!sortedWires.empty()) {
-                    outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
-                    success = true;
-                }
-            } else {
-                Base::Console().Warning("ATDP::findShapeOutline: input is not planar graph. Wire detection not done\n");
-            }
+            sortedWires = eWalker.execute(edgeList);
         }
         catch (Base::Exception &e) {
             e.setPyException();
             throw Py::Exception();
         }
-        if (!success) {
+
+        if(sortedWires.empty()) {
+            Base::Console().Warning("ATDP::findShapeOutline: Outline wire detection failed\n");
             return Py::None();
+        } else {
+            outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
         }
         return Py::asObject(outerWire);
     }

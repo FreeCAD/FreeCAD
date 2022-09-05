@@ -75,6 +75,9 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
+
+#include "EWTOLERANCE.h"
+#include "GeometryObject.h"
 #include "DrawUtil.h"
 
 using namespace TechDraw;
@@ -155,9 +158,8 @@ bool DrawUtil::isZeroEdge(TopoDS_Edge e, double tolerance)
     TopoDS_Vertex vEnd = TopExp::LastVertex(e);
     if (isSamePoint(vStart, vEnd, tolerance)) {
         //closed edge will have same V's but non-zero length
-        GProp_GProps props;
-        BRepGProp::LinearProperties(e, props);
-        double len = props.Mass();
+        BRepAdaptor_Curve adapt(e);
+        double len = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
         if (len > tolerance) {
             return false;
         }
@@ -206,47 +208,61 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     double param = 0;
 
-    //find tangent @ v
-    double adjust = 1.0;            //occ tangent points in direction of curve. at lastVert we need to reverse it.
     BRepAdaptor_Curve adapt(e);
     if (isFirstVert(e, v,tolerance)) {
         param = adapt.FirstParameter();
     } else if (isLastVert(e, v,tolerance)) {
         param = adapt.LastParameter();
-        adjust = -1;
     } else {
         //TARFU
         Base::Console().Message("Error: DU::angleWithX - v is neither first nor last \n");
-        //must be able to get non-terminal point parm from curve/
+    }
+    gp_Pnt paramPoint;
+    gp_Vec derivative;
+    const Handle(Geom_Curve) c = adapt.Curve().Curve();
+    c->D1(param, paramPoint, derivative);
+    double angle = atan2(derivative.Y(), derivative.X());
+    if (angle < 0) {                               //map from [-PI:PI] to [0:2PI]
+         angle += 2.0 * M_PI;
+    }
+    return angle;
+}
+
+//! find angle of incidence at First/LastVertex
+double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
+{
+    double incidenceAngle = 0;
+
+    BRepAdaptor_Curve adapt(e);
+    double paramRange = adapt.LastParameter() - adapt.FirstParameter();
+    double paramOffset = paramRange / 100.0;
+    double vertexParam;
+    Base::Vector3d anglePoint = DrawUtil::vertex2Vector(v);
+    Base::Vector3d offsetPoint, incidenceVec;
+    int noTangents = 0;
+    if (isFirstVert(e,v,tolerance)) {
+        vertexParam = adapt.FirstParameter();
+        BRepLProp_CLProps prop(adapt, vertexParam + paramOffset, noTangents, Precision::Confusion());
+        const gp_Pnt& gOffsetPoint = prop.Value();
+        offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
+    } else if (isLastVert(e,v,tolerance)) {
+        vertexParam = adapt.LastParameter();
+        BRepLProp_CLProps prop(adapt, vertexParam - paramOffset, noTangents, Precision::Confusion());
+        const gp_Pnt& gOffsetPoint = prop.Value();
+        offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
+    } else {
+        //TARFU
+//        Base::Console().Message("DU::incidenceAngle - v is neither first nor last \n");
+    }
+    incidenceVec = anglePoint - offsetPoint;
+    incidenceAngle = atan2(incidenceVec.y, incidenceVec.x);
+
+    //map to [0:2PI]
+    if (incidenceAngle < 0.0) {
+        incidenceAngle = M_2PI + incidenceAngle;
     }
 
-    Base::Vector3d uVec(0.0, 0.0, 0.0);
-    gp_Dir uDir;
-    BRepLProp_CLProps prop(adapt, param, 2,tolerance);
-    if (prop.IsTangentDefined()) {
-        prop.Tangent(uDir);
-        uVec = Base::Vector3d(uDir.X(), uDir.Y(), uDir.Z()) * adjust;
-    } else {
-        //this bit is a little sketchy
-        gp_Pnt gstart  = BRep_Tool::Pnt(TopExp::FirstVertex(e));
-        Base::Vector3d start(gstart.X(), gstart.Y(), gstart.Z());
-        gp_Pnt gend    = BRep_Tool::Pnt(TopExp::LastVertex(e));
-        Base::Vector3d end(gend.X(), gend.Y(), gend.Z());
-        if (isFirstVert(e, v,tolerance)) {
-            uVec = end - start;
-        } else if (isLastVert(e, v,tolerance)) {
-            uVec = end - start;
-        } else {
-          gp_Pnt errPnt = BRep_Tool::Pnt(v);
-          Base::Console().Warning("angleWithX: Tangent not defined at (%.3f, %.3f, %.3f)\n", errPnt.X(), errPnt.Y(), errPnt.Z());
-          //throw ??????
-        }
-    }
-    double result = atan2(uVec.y, uVec.x);
-    if (result < 0) {                               //map from [-PI:PI] to [0:2PI]
-         result += 2.0 * M_PI;
-    }
-    return result;
+    return incidenceAngle;
 }
 
 bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
@@ -399,18 +415,75 @@ std::string DrawUtil::formatVector(const QPointF& v)
 }
 
 //! compare 2 vectors for sorting - true if v1 < v2
+//! precision::Confusion() is too strict for vertex - vertex comparisons
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 {
-    if ((v1 - v2).Length() > Precision::Confusion()) {      //ie v1 != v2
-        if (!DrawUtil::fpCompare(v1.x, v2.x)) {
-            return v1.x < v2.x;
-        } else if (!DrawUtil::fpCompare(v1.y, v2.y)) {
-            return v1.y < v2.y;
+    if ((v1 - v2).Length() > EWTOLERANCE) {      //ie v1 != v2
+        if (!DrawUtil::fpCompare(v1.x, v2.x, 2.0 * EWTOLERANCE)) {
+            return (v1.x < v2.x);
+        } else if (!DrawUtil::fpCompare(v1.y, v2.y, 2.0 * EWTOLERANCE)) {
+            return (v1.y < v2.y);
         } else {
-            return v1.z < v2.z;
+            return (v1.z < v2.z);
         }
     }
     return false;
+}
+
+//! test for equality of two vertexes using the vectorLess comparator as used
+//! in sorts and containers
+bool DrawUtil::vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2)
+{
+    gp_Pnt gv1 = BRep_Tool::Pnt(v1);
+    gp_Pnt gv2 = BRep_Tool::Pnt(v2);
+    Base::Vector3d vv1(gv1.X(), gv1.Y(), gv1.Z());
+    Base::Vector3d vv2(gv2.X(), gv2.Y(), gv2.Z());
+    return vectorEqual(vv1, vv2);
+}
+
+//! test for equality of two vectors using the vectorLess comparator as used
+//! in sorts and containers
+bool DrawUtil::vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2)
+{
+        bool less1 = vectorLess(v1, v2);
+        bool less2 = vectorLess(v2, v1);
+        return !less1 && !less2;
+}
+
+//TODO: the next 2 could be templated
+//construct a compound shape from a list of edges
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compOut;
+    builder.MakeCompound(compOut);
+    for (auto& v : vecIn) {
+        builder.Add(compOut, v);
+    }
+    return TechDraw::mirrorShape(compOut);
+}
+
+//construct a compound shape from a list of wires
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compOut;
+    builder.MakeCompound(compOut);
+    for (auto& v : vecIn) {
+        builder.Add(compOut, v);
+    }
+    return TechDraw::mirrorShape(compOut);
+}
+
+//constructs a list of edges from a shape
+std::vector<TopoDS_Edge> DrawUtil::shapeToVector(TopoDS_Shape shapeIn)
+{
+    std::vector<TopoDS_Edge> vectorOut;
+    TopExp_Explorer expl(shapeIn, TopAbs_EDGE);
+    for ( ; expl.More(); expl.Next()) {
+        vectorOut.push_back(TopoDS::Edge(expl.Current()));
+    }
+    return vectorOut;
 }
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
@@ -742,17 +815,6 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
     return false;
 }
 
-//construct a compound shape from a list of edges
-TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
-{
-    BRep_Builder builder;
-    TopoDS_Compound compOut;
-    builder.MakeCompound(compOut);
-    for (auto& v : vecIn) {
-        builder.Add(compOut, v);
-    }
-    return TopoDS_Compound(std::move(compOut));
-}
 //get 3d position of a face's center
 Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
 {
@@ -1220,7 +1282,7 @@ void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
-    Base::Console().Message("DUMP - dump1Vertex - %s\n", text);
+//    Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
     gp_Pnt pnt = BRep_Tool::Pnt(v);
     Base::Console().Message("%s: (%.3f, %.3f, %.3f)\n", text, pnt.X(), pnt.Y(), pnt.Z());
 }
