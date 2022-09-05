@@ -132,7 +132,7 @@ PyObject *BlendPointPy::setSize(PyObject *args)
         getBlendPointPtr()->setSize(size);
         Py_Return;
     }
-    catch (Standard_Failure &e) {
+    catch (Standard_Failure &) {
         PyErr_SetString(Base::PyExc_FC_CADKernelError, "Failed to set size");
         return nullptr;
     }

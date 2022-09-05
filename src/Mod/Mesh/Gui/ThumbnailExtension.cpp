@@ -56,7 +56,7 @@ Mesh::Extension3MF::Resource ThumbnailExtension3MF::addMesh(const Mesh::MeshObje
 
     ViewProviderMeshBuilder().createMesh(mesh.getKernel(), coord, faces);
 
-    SbRotation rot(-0.353553, -0.146447, -0.353553, -0.853553);
+    SbRotation rot(-0.35355f, -0.14644f, -0.35355f, -0.85355f);
     cam->orientation.setValue(rot);
     SbViewportRegion vpr(256, 256);
     cam->viewAll(root, vpr);

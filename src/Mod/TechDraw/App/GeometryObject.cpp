@@ -252,7 +252,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
             hidIso = invertGeometry(hidIso);
         }
     }
-    catch (const Standard_Failure& e) {
+    catch (const Standard_Failure&) {
         throw Base::RuntimeError("GeometryObject::projectShape - OCC error occurred while extracting edges");
     }
     catch (...) {
