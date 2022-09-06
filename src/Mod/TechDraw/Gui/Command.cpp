@@ -82,12 +82,12 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
-#include "PreferencesGui.h"
 #include "QGIViewPart.h"
 #include "Rez.h"
 #include "TaskProjGroup.h"
@@ -283,6 +283,35 @@ bool CmdTechDrawRedrawPage::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_PrintAll
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawPrintAll)
+
+CmdTechDrawPrintAll::CmdTechDrawPrintAll()
+  : Command("TechDraw_PrintAll")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Print All Pages");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_PrintAll";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/TechDraw_PrintAll";
+}
+
+void CmdTechDrawPrintAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    MDIViewPage::printAllPages();
+}
+
+bool CmdTechDrawPrintAll::isActive()
+{
+    return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
@@ -1494,6 +1523,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawPageDefault());
     rcCmdMgr.addCommand(new CmdTechDrawPageTemplate());
     rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
+    rcCmdMgr.addCommand(new CmdTechDrawPrintAll());
     rcCmdMgr.addCommand(new CmdTechDrawView());
     rcCmdMgr.addCommand(new CmdTechDrawActiveView());
     rcCmdMgr.addCommand(new CmdTechDrawSectionView());

@@ -30,7 +30,6 @@
     #include <QApplication>
     #include <QContextMenuEvent>
     #include <QFileDialog>
-    #include <QGraphicsScene>
     #include <QGridLayout>
     #include <QGroupBox>
     #include <QListWidget>
@@ -123,6 +122,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
     connect(m_exportPDFAction, SIGNAL(triggered()), this, SLOT(savePDF()));
+
+    m_printAllAction = new QAction(tr("Print All Pages"), this);
+    connect(m_printAllAction, SIGNAL(triggered()), this, SLOT(printAll()));
 
     isSelectionBlocked = false;
 
@@ -236,7 +238,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
         return true;
     else if (strcmp("PrintPreview", pMsg) == 0)
         return true;
-    else if (strcmp("PrintPdf", pMsg) == 0)
+    else if (strcmp("PrintPdf",pMsg) == 0)
+        return true;
+    else if (strcmp("PrintAll",pMsg) == 0)
         return true;
     return false;
 }
@@ -440,6 +444,63 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockSelection(false));
 }
 
+//static routine to print all pages in a document
+void MDIViewPage::printAll(QPrinter* printer,
+                           App::Document* doc)
+{
+//    Base::Console().Message("MDIVP::printAll(printer, doc)\n");
+
+    std::vector<App::DocumentObject*> docObjs = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    bool firstTime = true;
+    for (auto& obj: docObjs) {
+        if (firstTime) {
+            firstTime = false;
+        } else {
+            printer->newPage();
+        }
+        TechDraw::DrawPage* dp = static_cast<TechDraw::DrawPage*>(obj);
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;   // can't print this one
+        }
+        TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+        if (!vpp) {
+            continue;   // can't print this one
+        }
+        bool saveState = vpp->getFrameState();
+        vpp->setFrameState(false);
+        vpp->setTemplateMarkers(false);
+        vpp->getQGSPage()->refreshViews();
+
+        App::DocumentObject* objTemplate = dp->Template.getValue();
+        auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(objTemplate) );
+        double width  =  0.0;
+        double height =  0.0;
+        if( pageTemplate ) {
+          width  =  pageTemplate->Width.getValue();
+          height =  pageTemplate->Height.getValue();
+        }
+        QPageSize paperSize(QSizeF(width, height), QPageSize::Millimeter);
+        printer->setPageSize(paperSize);
+        QPageLayout::Orientation orientation = QPageLayout::Portrait;
+        if (width > height) {
+            orientation = QPageLayout::Landscape;
+        }
+        printer->setPageOrientation(orientation);
+
+        QRectF sourceRect(0.0,-height,width,height);
+        QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
+        QPainter p(printer);
+        vpp->getQGSPage()->render(&p, targetRect,sourceRect);
+
+        // Reset
+        vpp->setFrameState(saveState);
+        vpp->setTemplateMarkers(saveState);
+        vpp->getQGSPage()->refreshViews();
+    }
+}
+
+
 PyObject* MDIViewPage::getPyObject()
 {
     if (!pythonObject)
@@ -537,6 +598,28 @@ void MDIViewPage::savePDF()
 void MDIViewPage::savePDF(std::string file)
 {
     printPdf(file);
+}
+
+//mdiviewpage method for printAll action
+void MDIViewPage::printAll()
+{
+//    Base::Console().Message("MDIVP::printAll()\n");
+    printAllPages();
+}
+
+//static routine for PrintAll command
+void MDIViewPage::printAllPages()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setFullPage(true);
+
+    QPrintDialog dlg(&printer, Gui::getMainWindow());
+    if (dlg.exec() == QDialog::Accepted) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            printAll(&printer, doc);
+        }
+    }
 }
 
 /////////////// Selection Routines ///////////////////
