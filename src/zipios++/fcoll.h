@@ -27,18 +27,14 @@ public:
       _valid   ( false ) {}
 
   /** Copy constructor. */
-  FileCollection( const FileCollection &src ) ;
+  inline FileCollection( const FileCollection &src ) ;
 
   /** Copy assignment operator. */
-  const FileCollection &operator= ( const FileCollection &src ) ;
+  inline const FileCollection &operator= ( const FileCollection &src ) ;
   
   /** Closes the FileCollection. */
   virtual void close() = 0 ;
 
-  enum MatchPath { 
-    IGN, 
-    MATCH 
-  } ;
   /** \anchor fcoll_entries_anchor
       Returns a vector of const pointers to the entries in the
       FileCollection.  
@@ -47,6 +43,7 @@ public:
       @throw InvalidStateException Thrown if the collection is invalid. */
   virtual ConstEntries entries() const ;
 
+  enum MatchPath { IGNORE, MATCH } ;
 
   /** \anchor fcoll_getentry_anchor
       Returns a ConstEntryPointer to a FileEntry object for the entry 
@@ -119,6 +116,30 @@ protected:
 // Inline methods
 //
 
+FileCollection::FileCollection( const FileCollection &src )
+  : _filename( src._filename ),
+    _valid   ( src._valid    )
+{
+  _entries.reserve( src._entries.size() ) ;
+  Entries::const_iterator it ;
+  for ( it = src._entries.begin() ; it != src._entries.end() ; ++it )
+    _entries.push_back( (*it)->clone() ) ;
+}
+
+const FileCollection &FileCollection::operator= ( const FileCollection &src ) {
+  if ( this != &src ) {
+    _filename = src._filename ;
+    _valid    = src._valid    ;
+    _entries.clear() ;
+    _entries.reserve( src._entries.size() ) ;
+
+    Entries::const_iterator it ;
+    for ( it = src._entries.begin() ; it != src._entries.end() ; ++it )
+      _entries.push_back( (*it)->clone() ) ;
+  }
+  return *this ;
+}
+
 inline ostream & operator<< (ostream &os, const FileCollection& collection) {
 	os << "collection '" << collection.getName() << "' {" ;
 	ConstEntries entries = collection.entries();
@@ -133,6 +154,7 @@ inline ostream & operator<< (ostream &os, const FileCollection& collection) {
 	os << "}";
 	return os;
 }
+
 
 } // namespace
 

@@ -54,36 +54,6 @@ bool operator== ( const ZipLocalEntry &zlh, const ZipCDirEntry &ze ) {
 const uint32 ZipLocalEntry::signature = 0x04034b50 ;
 
 
-// Commented because same as default...
-//ZipCDirEntry &ZipCDirEntry::operator=( const class ZipCDirEntry &src ) {
-  //writer_version      = src.writer_version      ;
-  //extract_version     = src.extract_version     ;
-  //gp_bitfield         = src.gp_bitfield         ;
-  //compress_method     = src.compress_method     ;
-  //last_mod_ftime      = src.last_mod_ftime      ;
-  //last_mod_fdate      = src.last_mod_fdate      ;
-  //crc_32              = src.crc_32              ;
-  //compress_size       = src.compress_size       ; 
-  //uncompress_size     = src.uncompress_size     ;
-  //filename_len        = src.filename_len        ;
-  //extra_field_len     = src.extra_field_len     ;
-  //file_comment_len    = src.file_comment_len    ; 
-  //disk_num_start      = src.disk_num_start      ;
-  //intern_file_attr    = src.intern_file_attr    ;
-  //extern_file_attr    = src.extern_file_attr    ;
-  //rel_offset_loc_head = src.rel_offset_loc_head ;
-
-  //filename     = src.filename     ;
-  //extra_field  = src.extra_field  ; 
-  //file_comment = src.file_comment ;
-
-  //return *this ;
-//}
-
-bool EndOfCentralDirectory::checkSignature ( uint32 sig ) const {
-  return signature == sig ;
-}
-
 void ZipLocalEntry::setDefaultExtract() {
   extract_version = 20 ; // version number
 }
