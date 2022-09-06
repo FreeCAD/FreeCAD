@@ -123,25 +123,21 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     DrawViewDimExtent* extDim = dynamic_cast<DrawViewDimExtent*>(distDim);
     extDim->Source.setValue(dvp, edgeNames);
 
-    std::vector<std::string> subElements      = extDim->References2D.getSubValues();
-    std::vector<std::string> cvTags;
-    std::string tag0;
-    std::string tag1;
-    TechDraw::VertexPtr v0;
-    TechDraw::VertexPtr v1;
+    std::vector<std::string> subElements = extDim->References2D.getSubValues();
     if (subElements.size() > 1) {
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-        v0 = dvp->getProjVertexByIndex(idx0);
-        v1 = dvp->getProjVertexByIndex(idx1);
+        TechDraw::VertexPtr v0 = dvp->getProjVertexByIndex(idx0);
+        TechDraw::VertexPtr v1 = dvp->getProjVertexByIndex(idx1);
+        std::string tag0;
+        std::string tag1;
         if (v0 && !v0->cosmeticTag.empty()) {
             tag0 = v0->cosmeticTag;
         }
         if (v1 && !v1->cosmeticTag.empty()) {
             tag1 = v1->cosmeticTag;
         }
-        cvTags.push_back(tag0);
-        cvTags.push_back(tag1);
+        std::vector<std::string> cvTags = {tag0, tag1};
         extDim->CosmeticTags.setValues(cvTags);
     }
 
@@ -168,14 +164,16 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     BaseGeomPtrVector bgList;
     if (!edgeNames.empty()) {
         for (auto& n: edgeNames) {
-            if (!n.empty()) {
-                std::string geomType = DrawUtil::getGeomTypeFromName(n);
-                if (!n.empty() && (geomType == "Edge")) {
-                    int i = DrawUtil::getIndexFromName(n);
-                    BaseGeomPtr bg = dvp->getGeomByIndex(i);
-                    if (bg) {
-                        bgList.push_back(bg);
-                    }
+            if (n.empty()) {
+                continue;
+            }
+
+            std::string geomType = DrawUtil::getGeomTypeFromName(n);
+            if (!n.empty() && (geomType == "Edge")) {
+                int i = DrawUtil::getIndexFromName(n);
+                BaseGeomPtr bg = dvp->getGeomByIndex(i);
+                if (bg) {
+                    bgList.push_back(bg);
                 }
             }
         }
