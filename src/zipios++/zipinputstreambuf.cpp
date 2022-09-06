@@ -20,7 +20,7 @@ ZipInputStreambuf::ZipInputStreambuf( streambuf *inbuf, int s_pos, bool del_inbu
     _open_entry( false                   ) 
 {
   ConstEntryPointer entry = getNextEntry() ;
-  
+
   if ( ! entry->isValid() ) {
     ; // FIXME: throw something?
   }
@@ -51,11 +51,11 @@ ConstEntryPointer ZipInputStreambuf::getNextEntry() {
   is.exceptions(istream::eofbit | istream::failbit | istream::badbit);
   is >> _curr_entry ;
   if ( _curr_entry.isValid() ) {
-    _data_start = _inbuf->pubseekoff(0, ios::cur, 
+    _data_start = _inbuf->pubseekoff(0, ios::cur,
 				     ios::in);
     if ( _curr_entry.getMethod() == DEFLATED ) {
       _open_entry = true ;
-      reset() ; // reset inflatestream data structures 
+      reset() ; // reset inflatestream data structures
 //        cerr << "deflated" << endl ;
     } else if ( _curr_entry.getMethod() == STORED ) {
       _open_entry = true ;
