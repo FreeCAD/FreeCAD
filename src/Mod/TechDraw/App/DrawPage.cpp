@@ -168,14 +168,12 @@ App::DocumentObjectExecReturn *DrawPage::execute(void)
 // this is now irrelevant, b/c DP::execute doesn't do anything.
 short DrawPage::mustExecute() const
 {
-    short result = 0;
     if (!isRestoring()) {
-        result  =  (Views.isTouched()  ||
-                    Scale.isTouched()  ||
-                    ProjectionType.isTouched() ||
-                    Template.isTouched());
-        if (result) {
-            return result;
+        if (Views.isTouched() ||
+            Scale.isTouched() ||
+            ProjectionType.isTouched() ||
+            Template.isTouched()) {
+                return 1;
         }
     }
     return App::DocumentObject::mustExecute();
@@ -193,8 +191,7 @@ PyObject *DrawPage::getPyObject(void)
 
 bool DrawPage::hasValidTemplate() const
 {
-    App::DocumentObject *obj = nullptr;
-    obj = Template.getValue();
+    App::DocumentObject *obj = Template.getValue();
 
     if(obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
         TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
@@ -209,8 +206,7 @@ bool DrawPage::hasValidTemplate() const
 
 double DrawPage::getPageWidth() const
 {
-    App::DocumentObject *obj = nullptr;
-    obj = Template.getValue();
+    App::DocumentObject *obj = Template.getValue();
 
     if( obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId()) ) {
         TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
@@ -222,14 +218,11 @@ double DrawPage::getPageWidth() const
 
 double DrawPage::getPageHeight() const
 {
-    App::DocumentObject *obj = nullptr;
-    obj = Template.getValue();
+    App::DocumentObject *obj = Template.getValue();
 
-    if(obj) {
-        if(obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-            TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
-            return templ->getHeight();
-        }
+    if(obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+        TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
+        return templ->getHeight();
     }
 
     throw Base::RuntimeError("Template not set for Page");
@@ -237,15 +230,11 @@ double DrawPage::getPageHeight() const
 
 const char * DrawPage::getPageOrientation() const
 {
-    App::DocumentObject *obj;
-    obj = Template.getValue();
+    App::DocumentObject *obj = Template.getValue();
 
-    if(obj) {
-        if(obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-          TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
-
-          return templ->Orientation.getValueAsString();
-        }
+    if(obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+        TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
+        return templ->Orientation.getValueAsString();
     }
     throw Base::RuntimeError("Template not set for Page");
 }
@@ -371,12 +360,14 @@ std::vector<App::DocumentObject*> DrawPage::getAllViews(void)
     std::vector<App::DocumentObject*> allViews;
     for (auto& v: views) {
         allViews.push_back(v);
-        if (v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
-            TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
-            if (dpg) {                                              //can't really happen!
-              std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
-              allViews.insert(allViews.end(), pgViews.begin(), pgViews.end());
-            }
+        if (!v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
+            continue;
+        }
+        
+        TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
+        if (dpg) {                                              //can't really happen!
+            std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
+            allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
         }
     }
     return allViews;
@@ -454,16 +445,15 @@ void DrawPage::handleChangedPropertyType(
 
 bool DrawPage::canUpdate() const
 {
-    bool result = false;
     if (GlobalUpdateDrawings() &&
         KeepUpdated.getValue())  {
-        result = true;
+        return true;
     } else if (!GlobalUpdateDrawings() &&
                 AllowPageOverride()    &&
                 KeepUpdated.getValue()) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 //allow/prevent drawing updates for all Pages
@@ -471,7 +461,7 @@ bool DrawPage::GlobalUpdateDrawings(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("GlobalUpdateDrawings", true);
+    bool result = hGrp->GetBool("GlobalUpdateDrawings", true); 
     return result;
 }
 
@@ -480,7 +470,7 @@ bool DrawPage::AllowPageOverride(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("AllowPageOverride", true);
+    bool result = hGrp->GetBool("AllowPageOverride", true); 
     return result;
 }
 
