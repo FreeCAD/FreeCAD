@@ -67,7 +67,7 @@ def setFeedRate(commandlist, ToolController):
             else currentposition.z
         )
         endpoint = FreeCAD.Vector(x, y, z)
-        if currentposition == endpoint:
+        if PathGeom.pointsCoincide(currentposition, endpoint):
             return True
         return PathGeom.isVertical(Part.makeLine(currentposition, endpoint))
 
