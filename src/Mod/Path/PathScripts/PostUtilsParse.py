@@ -94,130 +94,125 @@ def drill_translate(values, outstring, cmd, params):
 
     # get the other parameters
     drill_feedrate = Units.Quantity(params["F"], FreeCAD.Units.Velocity)
-    if cmd == "G83":
+    if cmd in ("G73", "G83"):
         drill_Step = Units.Quantity(params["Q"], FreeCAD.Units.Length)
-        a_bit = (
-            drill_Step * 0.05
-        )  # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
+        # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
+        a_bit = drill_Step * 0.05
     elif cmd == "G82":
         drill_DwellTime = params["P"]
 
-    # wrap this block to ensure machine's values["MOTION_MODE"] is restored
-    # in case of error
-    try:
-        if values["MOTION_MODE"] == "G91":
-            trBuff += (
-                linenumber(values) + "G90\n"
-            )  # force absolute coordinates during cycles
+    # wrap this block to ensure machine's values["MOTION_MODE"] is restored in case of error
+    # try:
+    if values["MOTION_MODE"] == "G91":
+        # force absolute coordinates during cycles
+        trBuff += linenumber(values) + "G90\n"
 
-        strG0_RETRACT_Z = (
-            "G0 Z"
-            + format(
-                float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
-                axis_precision_string,
-            )
-            + "\n"
+    strG0_RETRACT_Z = (
+        "G0 Z"
+        + format(float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+        + "\n"
+    )
+    strF_Feedrate = (
+        " F"
+        + format(
+            float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])), feed_precision_string
         )
-        strF_Feedrate = (
-            " F"
-            + format(
-                float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])),
-                feed_precision_string,
-            )
-            + "\n"
-        )
-        # print(strF_Feedrate)
+        + "\n"
+    )
+    # print(strF_Feedrate)
 
-        # preliminary movement(s)
-        if values["CURRENT_Z"] < RETRACT_Z:
-            trBuff += linenumber(values) + strG0_RETRACT_Z
+    # preliminary movement(s)
+    if values["CURRENT_Z"] < RETRACT_Z:
+        trBuff += linenumber(values) + strG0_RETRACT_Z
+    trBuff += (
+        linenumber(values)
+        + "G0 X"
+        + format(float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+        + " Y"
+        + format(float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+        + "\n"
+    )
+    if values["CURRENT_Z"] > RETRACT_Z:
+        # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z
+        # Here use G1 since retract height may be below surface !
         trBuff += (
             linenumber(values)
-            + "G0 X"
-            + format(
-                float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
-            )
-            + " Y"
-            + format(
-                float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
-            )
-            + "\n"
+            + "G1 Z"
+            + format(float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + strF_Feedrate
         )
-        if values["CURRENT_Z"] > RETRACT_Z:
-            # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z
-            # Here use G1 since retract height may be below surface !
-            trBuff += (
-                linenumber(values)
-                + "G1 Z"
-                + format(
-                    float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
-                    axis_precision_string,
-                )
-                + strF_Feedrate
-            )
-        last_Stop_Z = RETRACT_Z
+    last_Stop_Z = RETRACT_Z
 
-        # drill moves
-        if cmd in ("G81", "G82"):
-            trBuff += (
-                linenumber(values)
-                + "G1 Z"
-                + format(
-                    float(drill_Z.getValueAs(values["UNIT_FORMAT"])),
-                    axis_precision_string,
-                )
-                + strF_Feedrate
-            )
-            # pause where applicable
-            if cmd == "G82":
-                trBuff += linenumber(values) + "G4 P" + str(drill_DwellTime) + "\n"
-            trBuff += linenumber(values) + strG0_RETRACT_Z
-        else:  # 'G83'
-            if params["Q"] != 0:
-                while 1:
-                    if last_Stop_Z != RETRACT_Z:
-                        clearance_depth = (
-                            last_Stop_Z + a_bit
-                        )  # rapid move to just short of last drilling depth
+    # drill moves
+    if cmd in ("G81", "G82"):
+        trBuff += (
+            linenumber(values)
+            + "G1 Z"
+            + format(float(drill_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + strF_Feedrate
+        )
+        # pause where applicable
+        if cmd == "G82":
+            trBuff += linenumber(values) + "G4 P" + str(drill_DwellTime) + "\n"
+        trBuff += linenumber(values) + strG0_RETRACT_Z
+    else:  # "G73" or "G83"
+        if params["Q"] != 0:
+            while 1:
+                if last_Stop_Z != RETRACT_Z:
+                    # rapid move to just short of last drilling depth
+                    clearance_depth = last_Stop_Z + a_bit
+                    trBuff += (
+                        linenumber(values)
+                        + "G0 Z"
+                        + format(
+                            float(clearance_depth.getValueAs(values["UNIT_FORMAT"])),
+                            axis_precision_string,
+                        )
+                        + "\n"
+                    )
+                next_Stop_Z = last_Stop_Z - drill_Step
+                if next_Stop_Z > drill_Z:
+                    trBuff += (
+                        linenumber(values)
+                        + "G1 Z"
+                        + format(
+                            float(next_Stop_Z.getValueAs(values["UNIT_FORMAT"])),
+                            axis_precision_string,
+                        )
+                        + strF_Feedrate
+                    )
+                    if cmd == "G73":
+                        # Rapid up "a small amount".
+                        chip_breaker_height = next_Stop_Z + values["CHIPBREAKING_AMOUNT"]
                         trBuff += (
                             linenumber(values)
                             + "G0 Z"
                             + format(
-                                float(
-                                    clearance_depth.getValueAs(values["UNIT_FORMAT"])
-                                ),
+                                float(chip_breaker_height.getValueAs(values["UNIT_FORMAT"])),
                                 axis_precision_string,
                             )
                             + "\n"
                         )
-                    next_Stop_Z = last_Stop_Z - drill_Step
-                    if next_Stop_Z > drill_Z:
-                        trBuff += (
-                            linenumber(values)
-                            + "G1 Z"
-                            + format(
-                                float(next_Stop_Z.getValueAs(values["UNIT_FORMAT"])),
-                                axis_precision_string,
-                            )
-                            + strF_Feedrate
-                        )
+                    else:  # "G83"
+                        # Rapid up to the retract height
                         trBuff += linenumber(values) + strG0_RETRACT_Z
-                        last_Stop_Z = next_Stop_Z
-                    else:
-                        trBuff += (
-                            linenumber(values)
-                            + "G1 Z"
-                            + format(
-                                float(drill_Z.getValueAs(values["UNIT_FORMAT"])),
-                                axis_precision_string,
-                            )
-                            + strF_Feedrate
+                    last_Stop_Z = next_Stop_Z
+                else:
+                    trBuff += (
+                        linenumber(values)
+                        + "G1 Z"
+                        + format(
+                            float(drill_Z.getValueAs(values["UNIT_FORMAT"])),
+                            axis_precision_string,
                         )
-                        trBuff += linenumber(values) + strG0_RETRACT_Z
-                        break
+                        + strF_Feedrate
+                    )
+                    trBuff += linenumber(values) + strG0_RETRACT_Z
+                    break
 
-    except Exception:
-        pass
+    # except Exception:
+        # print("exception occurred")
+        # pass
 
     if values["MOTION_MODE"] == "G91":
         trBuff += linenumber(values) + "G91\n"  # Restore if changed
@@ -365,12 +360,21 @@ def parse(values, pathobj):
                                 )
                         else:
                             continue
-                    elif param in ["H", "L", "T"]:
+                    elif param in ("H", "L", "T"):
                         outstring.append(param + str(int(c.Parameters[param])))
                     elif param == "D":
-                        if command in ["G41", "G42"]:
+                        if command in ("G41", "G42"):
                             outstring.append(param + str(int(c.Parameters[param])))
-                        elif command in ["G96", "G97"]:
+                        elif command in ("G41.1", "G42.1"):
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            outstring.append(
+                                param
+                                + format(
+                                    float(pos.getValueAs(values["UNIT_FORMAT"])),
+                                    axis_precision_string,
+                                )
+                            )
+                        elif command in ("G96", "G97"):
                             outstring.append(
                                 param
                                 + PostUtils.fmt(
@@ -379,25 +383,25 @@ def parse(values, pathobj):
                                     "G21",
                                 )
                             )
-                        else:  # anything else that is supported (G41.1?, G42.1?)
+                        else:  # anything else that is supported
                             outstring.append(param + str(float(c.Parameters[param])))
                     elif param == "P":
-                        if command in ["G2", "G02", "G3", "G03", "G5.2", "G5.3", "G10"]:
+                        if command in (
+                            "G2",
+                            "G02",
+                            "G3",
+                            "G03",
+                            "G5.2",
+                            "G5.3",
+                            "G10",
+                            "G54.1",
+                            "G59",
+                        ):
                             outstring.append(param + str(int(c.Parameters[param])))
-                        elif command in [
-                            "G4",
-                            "G04",
-                            "G64",
-                            "G76",
-                            "G82",
-                            "G86",
-                            "G89",
-                        ]:
+                        elif command in ("G4", "G04", "G76", "G82", "G86", "G89"):
                             outstring.append(param + str(float(c.Parameters[param])))
-                        elif command in ["G5", "G05"]:
-                            pos = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
+                        elif command in ("G5", "G05", "G64"):
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
                                 param
                                 + format(
@@ -407,6 +411,18 @@ def parse(values, pathobj):
                             )
                         else:  # anything else that is supported
                             outstring.append(param + str(c.Parameters[param]))
+                    elif param == "Q":
+                        if command == "G10":
+                            outstring.append(param + str(int(c.Parameters[param])))
+                        elif command in ("G64", "G73", "G83"):
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            outstring.append(
+                                param
+                                + format(
+                                    float(pos.getValueAs(values["UNIT_FORMAT"])),
+                                    axis_precision_string,
+                                )
+                            )
                     elif param == "S":
                         outstring.append(
                             param
