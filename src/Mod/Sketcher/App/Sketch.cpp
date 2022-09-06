@@ -623,35 +623,43 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         else {
             return addPoint(*point, fixed);
         }
-    } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
+    }
+    else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
-    } else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
+    }
+    else if (geo->getTypeId() == GeomCircle::getClassTypeId()) { // add a circle
         const GeomCircle *circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
-    } else if (geo->getTypeId() == GeomEllipse::getClassTypeId()) { // add a ellipse
+    }
+    else if (geo->getTypeId() == GeomEllipse::getClassTypeId()) { // add a ellipse
         const GeomEllipse *ellipse = static_cast<const GeomEllipse*>(geo);
         // create the definition struct for that geom
         return addEllipse(*ellipse, fixed);
-    } else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) { // add an arc
+    }
+    else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) { // add an arc
         const GeomArcOfCircle *aoc = static_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
-    } else if (geo->getTypeId() == GeomArcOfEllipse::getClassTypeId()) { // add an arc
+    }
+    else if (geo->getTypeId() == GeomArcOfEllipse::getClassTypeId()) { // add an arc
         const GeomArcOfEllipse *aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
-    } else if (geo->getTypeId() == GeomArcOfHyperbola::getClassTypeId()) { // add an arc of hyperbola
+    }
+    else if (geo->getTypeId() == GeomArcOfHyperbola::getClassTypeId()) { // add an arc of hyperbola
         const GeomArcOfHyperbola *aoh = static_cast<const GeomArcOfHyperbola*>(geo);
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
-    } else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) { // add an arc of parabola
+    }
+    else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) { // add an arc of parabola
         const GeomArcOfParabola *aop = static_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
-    } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
+    }
+    else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
         const GeomBSplineCurve *bsp = static_cast<const GeomBSplineCurve*>(geo);
 
         // Current B-Spline implementation relies on OCCT calculations, so a second solve
@@ -1485,31 +1493,40 @@ Py::Tuple Sketch::getPyGeometry() const
         if (it->type == Point) {
             Base::Vector3d temp(*(Points[it->startPointId].x),*(Points[it->startPointId].y),0);
             tuple[i] = Py::asObject(new VectorPy(temp));
-        } else if (it->type == Line) {
+        }
+        else if (it->type == Line) {
             GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
             tuple[i] = Py::asObject(new LineSegmentPy(lineSeg));
-        } else if (it->type == Arc) {
+        }
+        else if (it->type == Arc) {
             GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfCirclePy(aoc));
-        } else if (it->type == Circle) {
+        }
+        else if (it->type == Circle) {
             GeomCircle *circle = static_cast<GeomCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new CirclePy(circle));
-        } else if (it->type == Ellipse) {
+        }
+        else if (it->type == Ellipse) {
             GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new EllipsePy(ellipse));
-        } else if (it->type == ArcOfEllipse) {
+        }
+        else if (it->type == ArcOfEllipse) {
             GeomArcOfEllipse *ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
-        } else if (it->type == ArcOfHyperbola) {
+        }
+        else if (it->type == ArcOfHyperbola) {
             GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
-        } else if (it->type == ArcOfParabola) {
+        }
+        else if (it->type == ArcOfParabola) {
             GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
-        } else if (it->type == BSpline) {
+        }
+        else if (it->type == BSpline) {
             GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo->clone());
             tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
-        } else {
+        }
+        else {
             // not implemented type in the sketch!
         }
     }
@@ -1679,7 +1696,8 @@ int Sketch::addConstraint(const Constraint *constraint)
                 constraint->Third == GeoEnum::GeoUndef){
             //simple perpendicularity
             rtn = addPerpendicularConstraint(constraint->First,constraint->Second);
-        } else {
+        }
+        else {
             //any other point-wise perpendicularity
             c.value = new double(constraint->getValue());
             if(c.driving)
@@ -1702,7 +1720,8 @@ int Sketch::addConstraint(const Constraint *constraint)
                 constraint->Third == GeoEnum::GeoUndef){
             //simple tangency
             rtn = addTangentConstraint(constraint->First,constraint->Second);
-        } else {
+        }
+        else {
             //any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint, tangent-via-point)
             c.value = new double(constraint->getValue());
             if(c.driving)
@@ -1772,7 +1791,8 @@ int Sketch::addConstraint(const Constraint *constraint)
                         constraint->Second, constraint->SecondPos,
                         constraint->Third, constraint->ThirdPos,
                         c.value, constraint->Type,c.driving);
-        } else if (constraint->SecondPos != PointPos::none){ // angle between two lines (with explicit start points)
+        }
+        else if (constraint->SecondPos != PointPos::none){ // angle between two lines (with explicit start points)
             c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
@@ -2338,30 +2358,35 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(l, a, tag);
             return ConstraintsCounter;
-        } else if (Geoms[geoId2].type == Circle) {
+        }
+        else if (Geoms[geoId2].type == Circle) {
             GCS::Circle &c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(l, c, tag);
             return ConstraintsCounter;
-        } else if (Geoms[geoId2].type == Ellipse) {
+        }
+        else if (Geoms[geoId2].type == Ellipse) {
             GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(l, e, tag);
             return ConstraintsCounter;
-        } else if (Geoms[geoId2].type == ArcOfEllipse) {
+        }
+        else if (Geoms[geoId2].type == ArcOfEllipse) {
             GCS::ArcOfEllipse &a = ArcsOfEllipse[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(l, a, tag);
             return ConstraintsCounter;
         }
-    } else if (Geoms[geoId1].type == Circle) {
+    }
+    else if (Geoms[geoId1].type == Circle) {
         GCS::Circle &c = Circles[Geoms[geoId1].index];
         if (Geoms[geoId2].type == Circle) {
             GCS::Circle &c2 = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(c, c2, tag);
             return ConstraintsCounter;
-        } else if (Geoms[geoId2].type == Ellipse) {
+        }
+        else if (Geoms[geoId2].type == Ellipse) {
             Base::Console().Error("Direct tangency constraint between circle and ellipse is not supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2371,25 +2396,30 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintTangent(c, a, tag);
             return ConstraintsCounter;
         }
-    } else if (Geoms[geoId1].type == Ellipse) {
+    }
+    else if (Geoms[geoId1].type == Ellipse) {
         if (Geoms[geoId2].type == Circle) {
             Base::Console().Error("Direct tangency constraint between circle and ellipse is not supported. Use tangent-via-point instead.");
             return -1;
-        } else if (Geoms[geoId2].type == Arc) {
+        }
+        else if (Geoms[geoId2].type == Arc) {
             Base::Console().Error("Direct tangency constraint between arc and ellipse is not supported. Use tangent-via-point instead.");
             return -1;
         }
-    } else if (Geoms[geoId1].type == Arc) {
+    }
+    else if (Geoms[geoId1].type == Arc) {
         GCS::Arc &a = Arcs[Geoms[geoId1].index];
         if (Geoms[geoId2].type == Circle) {
             GCS::Circle &c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(c, a, tag);
             return ConstraintsCounter;
-        } else if (Geoms[geoId2].type == Ellipse) {
+        }
+        else if (Geoms[geoId2].type == Ellipse) {
             Base::Console().Error("Direct tangency constraint between arc and ellipse is not supported. Use tangent-via-point instead.");
             return -1;
-        } else if (Geoms[geoId2].type == Arc) {
+        }
+        else if (Geoms[geoId2].type == Arc) {
             GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(a, a2, tag);
@@ -2495,7 +2525,8 @@ int Sketch::addAngleAtPointConstraint(
                 angleDesire += M_PI;
 
             *angle = angleDesire;
-        } else
+        }
+        else
             *angle = *value-angleOffset;
     }
 
@@ -2663,7 +2694,8 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
     if (pos1 == PointPos::start) {
         l1p1 = &Points[Geoms[geoId1].startPointId];
         l1p2 = &Points[Geoms[geoId1].endPointId];
-    } else if (pos1 == PointPos::end) {
+    }
+    else if (pos1 == PointPos::end) {
         l1p1 = &Points[Geoms[geoId1].endPointId];
         l1p2 = &Points[Geoms[geoId1].startPointId];
     }
@@ -2672,7 +2704,8 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
     if (pos2 == PointPos::start) {
         l2p1 = &Points[Geoms[geoId2].startPointId];
         l2p2 = &Points[Geoms[geoId2].endPointId];
-    } else if (pos2 == PointPos::end) {
+    }
+    else if (pos2 == PointPos::end) {
         l2p1 = &Points[Geoms[geoId2].endPointId];
         l2p2 = &Points[Geoms[geoId2].startPointId];
     }
@@ -2941,7 +2974,8 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     if ( fabs(n2divn1) >= 1.0 ){
         *n2 = n2divn1;
         *n1 = 1.0;
-    } else {
+    }
+    else {
         *n2 = 1.0;
         *n1 = 1/n2divn1;
     }
@@ -3346,7 +3380,8 @@ bool Sketch::updateGeometry()
                                          0.0)
                                );
                 }
-            } else if (it->type == Line) {
+            }
+            else if (it->type == Line) {
                 GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo);
                 lineSeg->setPoints(Vector3d(*Lines[it->index].p1.x,
                                             *Lines[it->index].p1.y,
@@ -3355,7 +3390,8 @@ bool Sketch::updateGeometry()
                                             *Lines[it->index].p2.y,
                                             0.0)
                                   );
-            } else if (it->type == Arc) {
+            }
+            else if (it->type == Arc) {
                 GCS::Arc &myArc = Arcs[it->index];
                 // the following 4 lines are redundant since these equations are already included in the arc constraints
 //                *myArc.start.x = *myArc.center.x + *myArc.rad * cos(*myArc.startAngle);
@@ -3369,7 +3405,8 @@ bool Sketch::updateGeometry()
                               );
                 aoc->setRadius(*myArc.rad);
                 aoc->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
-            } else if (it->type == ArcOfEllipse) {
+            }
+            else if (it->type == ArcOfEllipse) {
                 GCS::ArcOfEllipse &myArc = ArcsOfEllipse[it->index];
 
                 GeomArcOfEllipse *aoe = static_cast<GeomArcOfEllipse*>(it->geo);
@@ -3391,14 +3428,16 @@ bool Sketch::updateGeometry()
                 }
                 aoe->setMajorAxisDir(fd);
                 aoe->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
-            } else if (it->type == Circle) {
+            }
+            else if (it->type == Circle) {
                 GeomCircle *circ = static_cast<GeomCircle*>(it->geo);
                 circ->setCenter(Vector3d(*Points[it->midPointId].x,
                                          *Points[it->midPointId].y,
                                          0.0)
                                );
                 circ->setRadius(*Circles[it->index].rad);
-            } else if (it->type == Ellipse) {
+            }
+            else if (it->type == Ellipse) {
 
                 GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo);
 
@@ -3418,7 +3457,8 @@ bool Sketch::updateGeometry()
                     ellipse->setMajorRadius(radmaj);
                 }
                 ellipse->setMajorAxisDir(fd);
-            } else if (it->type == ArcOfHyperbola) {
+            }
+            else if (it->type == ArcOfHyperbola) {
                 GCS::ArcOfHyperbola &myArc = ArcsOfHyperbola[it->index];
 
                 GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo);
@@ -3440,7 +3480,8 @@ bool Sketch::updateGeometry()
                 }
                 aoh->setMajorAxisDir(fd);
                 aoh->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
-            } else if (it->type == ArcOfParabola) {
+            }
+            else if (it->type == ArcOfParabola) {
                 GCS::ArcOfParabola &myArc = ArcsOfParabola[it->index];
 
                 GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo);
@@ -3454,7 +3495,8 @@ bool Sketch::updateGeometry()
                 aop->setCenter(vertex);
                 aop->setFocal(fd.Length());
                 aop->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
-            } else if (it->type == BSpline) {
+            }
+            else if (it->type == BSpline) {
                 GCS::BSpline &mybsp = BSplines[it->index];
 
                 GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(it->geo);
@@ -3700,7 +3742,8 @@ int Sketch::internalSolve(std::string & solvername, int level)
                 {
                     updateNonDrivingConstraints();
                 }
-            } else {
+            }
+            else {
                 valid_solution = false;
                 if(debugMode==GCS::Minimal || debugMode==GCS::IterationLevel){
 
@@ -3762,7 +3805,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *point.y;
             GCSsys.addConstraintP2PCoincident(p0,point,GCS::DefaultTemporaryConstraint);
         }
-    } else if (Geoms[geoId].type == Line) {
+    }
+    else if (Geoms[geoId].type == Line) {
         if (pos == PointPos::start || pos == PointPos::end) {
             MoveParameters.resize(2); // x,y
             GCS::Point p0;
@@ -3773,13 +3817,15 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
-            } else if (pos == PointPos::end) {
+            }
+            else if (pos == PointPos::end) {
                 GCS::Point &p = Points[Geoms[geoId].endPointId];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
             }
-        } else if (pos == PointPos::none || pos == PointPos::mid) {
+        }
+        else if (pos == PointPos::none || pos == PointPos::mid) {
             MoveParameters.resize(4); // x1,y1,x2,y2
             GCS::Point p1, p2;
             p1.x = &MoveParameters[0];
@@ -3794,7 +3840,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.addConstraintP2PCoincident(p1,l.p1,GCS::DefaultTemporaryConstraint);
             GCSsys.addConstraintP2PCoincident(p2,l.p2,GCS::DefaultTemporaryConstraint);
         }
-    } else if (Geoms[geoId].type == Circle) {
+    }
+    else if (Geoms[geoId].type == Circle) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == PointPos::mid) {
@@ -3804,7 +3851,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
-        } else if (pos == PointPos::none) {
+        }
+        else if (pos == PointPos::none) {
             //bool pole = GeometryFacade::isInternalType(Geoms[geoId].geo, InternalType::BSplineControlPoint);
             MoveParameters.resize(4); // x,y,cx,cy - For poles blocking the center
             GCS::Circle &c = Circles[Geoms[geoId].index];
@@ -3821,7 +3869,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
         }
-    } else if (Geoms[geoId].type == Ellipse) {
+    }
+    else if (Geoms[geoId].type == Ellipse) {
 
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
@@ -3834,7 +3883,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
             GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
         }
-    } else if (Geoms[geoId].type == ArcOfEllipse) {
+    }
+    else if (Geoms[geoId].type == ArcOfEllipse) {
 
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
@@ -3846,7 +3896,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
 
-        } else if (pos == PointPos::start || pos == PointPos::end) {
+        }
+        else if (pos == PointPos::start || pos == PointPos::end) {
 
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == PointPos::start || pos == PointPos::end) {
@@ -3869,7 +3920,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
         }
-    } else if (Geoms[geoId].type == ArcOfHyperbola) {
+    }
+    else if (Geoms[geoId].type == ArcOfHyperbola) {
 
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
@@ -3881,7 +3933,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *center.y;
 
             GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
-        } else if (pos == PointPos::start || pos == PointPos::end) {
+        }
+        else if (pos == PointPos::start || pos == PointPos::end) {
 
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == PointPos::start || pos == PointPos::end) {
@@ -3904,7 +3957,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
 
         }
-    } else if (Geoms[geoId].type == ArcOfParabola) {
+    }
+    else if (Geoms[geoId].type == ArcOfParabola) {
 
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
@@ -3916,7 +3970,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *center.y;
 
             GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
-        } else if (pos == PointPos::start || pos == PointPos::end) {
+        }
+        else if (pos == PointPos::start || pos == PointPos::end) {
 
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == PointPos::start || pos == PointPos::end) {
@@ -3939,7 +3994,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
 
         }
-    } else if (Geoms[geoId].type == BSpline) {
+    }
+    else if (Geoms[geoId].type == BSpline) {
         if (pos == PointPos::start || pos == PointPos::end) {
             MoveParameters.resize(2); // x,y
             GCS::Point p0;
@@ -3950,13 +4006,15 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
-            } else if (pos == PointPos::end) {
+            }
+            else if (pos == PointPos::end) {
                 GCS::Point &p = Points[Geoms[geoId].endPointId];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
             }
-        } else if (pos == PointPos::none || pos == PointPos::mid) {
+        }
+        else if (pos == PointPos::none || pos == PointPos::mid) {
             GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
             MoveParameters.resize(bsp.poles.size()*2); // x0,y0,x1,y1,....xp,yp
 
@@ -3974,7 +4032,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             }
 
         }
-    } else if (Geoms[geoId].type == Arc) {
+    }
+    else if (Geoms[geoId].type == Arc) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == PointPos::mid) {
@@ -3984,7 +4043,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
-        } else if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::none) {
+        }
+        else if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::none) {
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == PointPos::start || pos == PointPos::end) {
                 GCS::Point &p = (pos == PointPos::start) ? Points[Geoms[geoId].startPointId]
@@ -3994,7 +4054,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
-            } else if (pos == PointPos::none) {
+            }
+            else if (pos == PointPos::none) {
                 GCS::Arc &a = Arcs[Geoms[geoId].index];
                 p0.x = &MoveParameters[0];
                 p0.y = &MoveParameters[1];
@@ -4120,16 +4181,19 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
             MoveParameters[i] = InitParameters[i] + toPoint.x;
             MoveParameters[i+1] = InitParameters[i+1] + toPoint.y;
         }
-    } else if (Geoms[geoId].type == Point) {
+    }
+    else if (Geoms[geoId].type == Point) {
         if (pos == PointPos::start) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == Line) {
+    }
+    else if (Geoms[geoId].type == Line) {
         if (pos == PointPos::start || pos == PointPos::end) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
-        } else if (pos == PointPos::none || pos == PointPos::mid) {
+        }
+        else if (pos == PointPos::none || pos == PointPos::mid) {
             double dx = (InitParameters[2]-InitParameters[0])/2;
             double dy = (InitParameters[3]-InitParameters[1])/2;
             MoveParameters[0] = toPoint.x - dx;
@@ -4137,41 +4201,49 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
             MoveParameters[2] = toPoint.x + dx;
             MoveParameters[3] = toPoint.y + dy;
         }
-    } else if (Geoms[geoId].type == Circle) {
+    }
+    else if (Geoms[geoId].type == Circle) {
         if (pos == PointPos::mid || pos == PointPos::none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == Arc) {
+    }
+    else if (Geoms[geoId].type == Arc) {
         if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid || pos == PointPos::none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == Ellipse) {
+    }
+    else if (Geoms[geoId].type == Ellipse) {
         if (pos == PointPos::mid || pos == PointPos::none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == ArcOfEllipse) {
+    }
+    else if (Geoms[geoId].type == ArcOfEllipse) {
         if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid || pos == PointPos::none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == ArcOfHyperbola) {
+    }
+    else if (Geoms[geoId].type == ArcOfHyperbola) {
         if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid || pos == PointPos::none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == ArcOfParabola) {
+    }
+    else if (Geoms[geoId].type == ArcOfParabola) {
         if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid || pos == PointPos::none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    } else if (Geoms[geoId].type == BSpline) {
+    }
+    else if (Geoms[geoId].type == BSpline) {
         if (pos == PointPos::start || pos == PointPos::end) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
-        } else if (pos == PointPos::none || pos == PointPos::mid) {
+        }
+        else if (pos == PointPos::none || pos == PointPos::mid) {
             GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
 
             double cx = 0, cy = 0; // geometric center
@@ -4242,7 +4314,8 @@ TopoShape Sketch::toShape() const
             if (first) {
                 first = false;
                 result.setShape(sh);
-            } else {
+            }
+            else {
                 result.setShape(result.fuse(sh));
             }
         }
