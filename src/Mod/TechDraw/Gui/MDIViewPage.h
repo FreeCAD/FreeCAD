@@ -84,6 +84,9 @@ public:
     void printPdf() override;
     void printPdf(std::string file);
     void printPreview() override;
+    static void printAllPages();
+    static void printAll(QPrinter* printer,
+                         App::Document* doc);
 
     void saveSVG(std::string file);
     void saveDXF(std::string file);
@@ -112,6 +115,7 @@ public Q_SLOTS:
     void toggleFrame();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
+    void printAll();
 
 protected:
     void closeEvent(QCloseEvent* event) override;
@@ -133,6 +137,7 @@ private:
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;
     QAction *m_exportPDFAction;
+    QAction *m_printAllAction;
 
     std::string m_objectName;
     std::string m_documentName;
