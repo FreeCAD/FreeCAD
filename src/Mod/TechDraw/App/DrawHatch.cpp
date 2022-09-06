@@ -126,38 +126,29 @@ PyObject *DrawHatch::getPyObject(void)
 
 bool DrawHatch::faceIsHatched(int i, std::vector<TechDraw::DrawHatch*> hatchObjs)
 {
-    bool result = false;
-    bool found = false;
     for (auto& h:hatchObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
         for (auto& s : sourceNames) {
             int fdx = TechDraw::DrawUtil::getIndexFromName(s);
             if (fdx == i) {
-                result = true;
-                found = true;
-                break;
+                return true;
             }
         }
-        if (found) {
-            break;
-        }
     }
-    return result;
+    return false;
 }
 
 //does this hatch affect face i
 bool DrawHatch::affectsFace(int i)
 {
-    bool result = false;
     const std::vector<std::string> &sourceNames = Source.getSubValues();
     for (auto& s : sourceNames) {
         int fdx = TechDraw::DrawUtil::getIndexFromName(s);
-            if (fdx == i) {
-                result = true;
-                break;
-            }
+        if (fdx == i) {
+            return true;
+        }
     }
-    return result;
+    return false;
 }
 
 //remove a subElement(Face) from Source PropertyLinkSub
@@ -213,15 +204,11 @@ void DrawHatch::onDocumentRestored()
 // if it is, set it up from hatchPattern,
 // else, don't do anything
 //    Base::Console().Message("DH::onDocumentRestored()\n");
-    if (SvgIncluded.isEmpty()) {
-        if (!HatchPattern.isEmpty()) {
-            std::string svgFileName = HatchPattern.getValue();
-            Base::FileInfo tfi(svgFileName);
-            if (tfi.isReadable()) {
-                if (SvgIncluded.isEmpty()) {
-                    setupFileIncluded();
-                }
-            }
+    if (SvgIncluded.isEmpty() && !HatchPattern.isEmpty()) {
+        std::string svgFileName = HatchPattern.getValue();
+        Base::FileInfo tfi(svgFileName);
+        if (tfi.isReadable() && SvgIncluded.isEmpty()) {
+            setupFileIncluded();
         }
     }
 
@@ -270,18 +257,16 @@ void DrawHatch::unsetupObject(void)
 
 bool DrawHatch::isSvgHatch(void) const
 {
-    bool result = false;
     Base::FileInfo fi(HatchPattern.getValue());
     if ((fi.extension() == "svg") ||
         (fi.extension() == "SVG")) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 bool DrawHatch::isBitmapHatch(void) const
 {
-    bool result = false;
     Base::FileInfo fi(HatchPattern.getValue());
     if ((fi.extension() == "bmp") ||
         (fi.extension() == "BMP") ||
@@ -291,9 +276,9 @@ bool DrawHatch::isBitmapHatch(void) const
         (fi.extension() == "JPG") ||
         (fi.extension() == "jpeg") ||
         (fi.extension() == "JPEG") ) {
-        result = true;
+        return true;
     }
-    return result;
+    return false;
 }
 
 //standard preference getters
