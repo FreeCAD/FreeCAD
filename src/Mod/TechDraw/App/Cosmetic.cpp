@@ -74,6 +74,14 @@ using namespace std;
 #define COSMETICEDGE 1
 #define CENTERLINE   2
 
+LineFormat::LineFormat()
+{
+    m_style = getDefEdgeStyle();
+    m_weight = getDefEdgeWidth();
+    m_color= getDefEdgeColor();
+    m_visible = true;
+}
+
 LineFormat::LineFormat(int style,
                double weight,
                App::Color color,
