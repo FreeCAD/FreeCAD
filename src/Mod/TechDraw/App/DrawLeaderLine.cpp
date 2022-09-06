@@ -168,12 +168,11 @@ App::DocumentObject* DrawLeaderLine::getBaseObject() const
 
 bool DrawLeaderLine::keepUpdated()
 {
-    bool result = false;
     DrawView* view = getBaseView();
     if (view) {
-        result = view->keepUpdated();
+        return view->keepUpdated();
     }
-    return result;
+    return false;
 }
 
 //need separate getParentScale()???
@@ -181,39 +180,36 @@ bool DrawLeaderLine::keepUpdated()
 double DrawLeaderLine::getBaseScale() const
 {
 //    Base::Console().Message("DLL::getBaseScale()\n");
-    double result = 1.0;
     DrawView* parent = getBaseView();
     if (parent) {
-        result = parent->getScale();
-    } else {
-        //TARFU
-        Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+        return parent->getScale();
     }
-    return result;
+
+    //TARFU
+    Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+    return 1.0;
 }
 
 double DrawLeaderLine::getScale() const
 {
 //    Base::Console().Message("DLL::getScale()\n");
-    double result = 1.0;
     if (Scalable.getValue()) {
         DrawView* parent = getBaseView();
         if (parent) {
-            result = parent->getScale();
+            return parent->getScale();
         } else {
             //TARFU
             Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
         }
     }
-    return result;
+    return 1.0;
 }
 
 Base::Vector3d DrawLeaderLine::getAttachPoint()
 {
-    Base::Vector3d result(X.getValue(),
+    return Base::Vector3d(X.getValue(),
                           Y.getValue(),
                           0.0);
-    return result;
 }
 
 void DrawLeaderLine::adjustLastSegment()
@@ -221,15 +217,13 @@ void DrawLeaderLine::adjustLastSegment()
 //    Base::Console().Message("DLL::adjustLastSegment()\n");
     bool adjust = AutoHorizontal.getValue();
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
-    if (adjust) {
-        if (wp.size() > 1) {
-            int iLast = wp.size() - 1;
-            int iPen  = wp.size() - 2;
-            Base::Vector3d last = wp.at(iLast);
-            Base::Vector3d penUlt = wp.at(iPen);
-            last.y = penUlt.y;
-            wp.at(iLast) = last;
-        }
+    if (adjust && wp.size() > 1) {
+        int iLast = wp.size() - 1;
+        int iPen  = wp.size() - 2;
+        Base::Vector3d last = wp.at(iLast);
+        Base::Vector3d penUlt = wp.at(iPen);
+        last.y = penUlt.y;
+        wp.at(iLast) = last;
     }
     WayPoints.setValues(wp);
 }
@@ -237,46 +231,41 @@ void DrawLeaderLine::adjustLastSegment()
 //middle of last line segment
 Base::Vector3d DrawLeaderLine::getTileOrigin() const
 {
-    Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (wp.size() > 1) {
         Base::Vector3d last = wp.rbegin()[0];
         Base::Vector3d second = wp.rbegin()[1];
-        result = (last + second) / 2.0;
-    } else {
-        Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
+        return (last + second) / 2.0;
     }
-    return result;
+
+    Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
+    return Base::Vector3d();
 }
 
 //start of last line segment
 Base::Vector3d DrawLeaderLine::getKinkPoint() const
 {
-    Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (wp.size() > 1) {
         Base::Vector3d second = wp.rbegin()[1];
-        result = second;
-    } else {
-        Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
+        return second;
     }
 
-    return result;
+    Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
+    return Base::Vector3d;
 }
 
 //end of last line segment
 Base::Vector3d DrawLeaderLine::getTailPoint() const
 {
-    Base::Vector3d result;
     std::vector<Base::Vector3d> wp = WayPoints.getValues();
     if (!wp.empty()) {
         Base::Vector3d last = wp.rbegin()[0];
-        result = last;
-    } else {
-        Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
+        return last;
     }
 
-    return result;
+    Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
+    return Base::Vector3d();
 }
 
 
@@ -284,8 +273,7 @@ bool DrawLeaderLine::getDefAuto() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
-    bool result = hGrp->GetBool("AutoHorizontal", true);
-    return result;
+    return hGrp->GetBool("AutoHorizontal",true);
 }
 
 
