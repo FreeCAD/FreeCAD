@@ -3,6 +3,11 @@
 
 #include <FCConfig.h>
 
+// undef IGNORE that is pulled in by Windows.h
+#ifdef IGNORE
+#undef IGNORE
+#endif
+
 #ifdef _MSC_VER
 
 // This is fine for VC++ 5.0 sp 3
