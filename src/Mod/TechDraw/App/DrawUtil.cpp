@@ -156,15 +156,18 @@ bool DrawUtil::isZeroEdge(TopoDS_Edge e, double tolerance)
 {
     TopoDS_Vertex vStart = TopExp::FirstVertex(e);
     TopoDS_Vertex vEnd = TopExp::LastVertex(e);
-    if (isSamePoint(vStart, vEnd, tolerance)) {
-        //closed edge will have same V's but non-zero length
-        BRepAdaptor_Curve adapt(e);
-        double len = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
-        if (len > tolerance) {
-            return false;
-        }
+    if (!isSamePoint(vStart, vEnd, tolerance)) {
+        return false;
     }
-    return false;
+
+    //closed edge will have same V's but non-zero length
+    BRepAdaptor_Curve adapt(e);
+    double len = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
+    if (len > tolerance) {
+        return false;
+    }
+
+    return true;
 }
 double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
 {
