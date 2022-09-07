@@ -52,6 +52,7 @@ public:
     ~ViewProviderDrawingView() override;
 
     App::PropertyBool  KeepLabel;
+    App::PropertyInteger StackOrder;
 
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel() const override {return false;}
@@ -85,6 +86,12 @@ public:
     using Connection = boost::signals2::scoped_connection;
     Connection connectGuiRepaint;
     Connection connectProgressMessage;
+
+    virtual void stackUp();
+    virtual void stackDown();
+    virtual void stackTop();
+    virtual void stackBottom();
+    virtual int getZ() {return StackOrder.getValue();}
 
 private:
     void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);

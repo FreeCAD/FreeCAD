@@ -57,6 +57,7 @@ ViewProviderDrawingView::ViewProviderDrawingView()
     static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(KeepLabel ,(false), group, App::Prop_None, "Keep Label on Page even if toggled off");
+    ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
@@ -101,6 +102,13 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
+        }
+    }
+
+    if (prop == &StackOrder) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->setStack(StackOrder.getValue());
         }
     }
 
@@ -312,6 +320,66 @@ void ViewProviderDrawingView::showProgressMessage(const std::string featureName,
         //Temporary implementation. This works, but the messages are queued up and
         //not displayed in the report window in real time??
         Base::Console().Message("%s\n", qPrintable(msg));
+    }
+}
+
+void ViewProviderDrawingView::stackUp()
+{
+    QGIView* v = getQView();
+    if (v) {
+        int z = StackOrder.getValue();
+        z++;
+        StackOrder.setValue(z);
+        v->setStack(z);
+    }
+}
+
+void ViewProviderDrawingView::stackDown()
+{
+    QGIView* v = getQView();
+    if (v) {
+        int z = StackOrder.getValue();
+        z--;
+        StackOrder.setValue(z);
+        v->setStack(z);
+    }
+}
+
+void ViewProviderDrawingView::stackTop()
+{
+    Gui::Document* gDoc = getDocument();
+    std::vector<ViewProvider*> vps = gDoc->getViewProvidersOfType(TechDrawGui::ViewProviderDrawingView::getClassTypeId());
+    int maxZ = 0;
+    for (auto& vp: vps) {
+        ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>(vp);
+        int z = vpdv->StackOrder.getValue();
+        if (z > maxZ) {
+            maxZ = z;
+        }
+    }
+    StackOrder.setValue(maxZ + 1);
+    QGIView* v = getQView();
+    if (v) {
+        v->setStack(maxZ + 1);
+    }
+}
+
+void ViewProviderDrawingView::stackBottom()
+{
+    Gui::Document* gDoc = getDocument();
+    std::vector<ViewProvider*> vps = gDoc->getViewProvidersOfType(TechDrawGui::ViewProviderDrawingView::getClassTypeId());
+    int minZ = 0;
+    for (auto& vp: vps) {
+        ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>(vp);
+        int z = vpdv->StackOrder.getValue();
+        if (z < minZ) {
+            minZ = z;
+        }
+    }
+    StackOrder.setValue(minZ - 1);
+    QGIView* v = getQView();
+    if (v) {
+        v->setStack(minZ - 1);
     }
 }
 

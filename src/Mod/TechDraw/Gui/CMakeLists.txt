@@ -116,6 +116,7 @@ SET(TechDrawGui_SRCS
     CommandAnnotate.cpp
     CommandExtensionDims.cpp
     CommandExtensionPack.cpp
+    CommandStack.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h

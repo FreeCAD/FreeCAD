@@ -707,6 +707,22 @@ void QGIView::addArbitraryItem(QGraphicsItem* qgi)
     }
 }
 
+void QGIView::setStack(int z)
+{
+    m_zOrder = z;
+    setZValue(z);
+    draw();
+}
+
+void QGIView::setStackFromVP()
+{
+    TechDraw::DrawView* feature = getViewObject();
+    ViewProviderDrawingView* vpdv = static_cast<ViewProviderDrawingView*>
+                                    (getViewProvider(feature));
+    int z = vpdv->getZ();
+    setStack(z);
+}
+
 QColor QGIView::prefNormalColor()
 {
     return PreferencesGui::normalQColor();
