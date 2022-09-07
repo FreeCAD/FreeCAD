@@ -1120,17 +1120,17 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         # Calculate small chords to make arrows look better
         if vobj.ArrowSize.Value !=0 \
                 and hasattr(vobj, "ScaleMultiplier") \
-                and vobj.ScaleMultiplier != 0:
+                and vobj.ScaleMultiplier != 0 \
+                and hasattr(vobj, "FlipArrows"):
             halfarrowlength = 2 * vobj.ArrowSize.Value * vobj.ScaleMultiplier
             arrowangle = 2 * math.asin(halfarrowlength / radius)
+            if vobj.FlipArrows:
+                arrowangle = -arrowangle
 
             u1 = (self.circle.valueAt(first + arrowangle)
                   - self.circle.valueAt(first)).normalize()
             u2 = (self.circle.valueAt(last)
                   - self.circle.valueAt(last - arrowangle)).normalize()
-            if hasattr(vobj, "FlipArrows") and vobj.FlipArrows:
-                u1 = u1.negative()
-                u2 = u2.negative()
 
             w2 = self.circle.Curve.Axis
             w1 = w2.negative()
