@@ -24,6 +24,7 @@
 #define TechDraw_DrawGeomHatch_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/HatchLine.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>

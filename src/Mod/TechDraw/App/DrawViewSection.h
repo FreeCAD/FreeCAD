@@ -40,6 +40,7 @@
 #include <gp_Ax2.hxx>
 
 #include "DrawViewPart.h"
+#include "HatchLine.h"
 
 
 class Bnd_Box;
