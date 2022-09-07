@@ -64,6 +64,9 @@ ViewProviderBalloon::ViewProviderBalloon()
     ADD_PROPERTY_TYPE(LineWidth, (weight), group, (App::PropertyType)(App::Prop_None), "Leader line width");
     ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
     ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
+
+    //Dimensions take their stacking order from the parent View
+    StackOrder.setStatus(App::Property::Hidden,true);
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()

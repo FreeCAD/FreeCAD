@@ -85,6 +85,9 @@ ViewProviderDimension::ViewProviderDimension()
                       "Adjusts the gap between dimension point and extension line");
     ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::GapASME()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
+
+    //Dimensions take their stacking order from the parent View
+    StackOrder.setStatus(App::Property::Hidden,true);
 }
 
 ViewProviderDimension::~ViewProviderDimension()
