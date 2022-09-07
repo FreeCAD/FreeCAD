@@ -523,21 +523,21 @@ void DrawViewPart::extractFaces()
             Base::Console().Warning("DVP::extractFaces - %s - Can't make faces from projected edges\n", getNameInDocument());
         } else {
             BRepTools::Write(DrawUtil::vectorToCompound(sortedWires), "DVPSortedWires.brep");            //debug
-            double minWireArea = 0.000001;  //arbitrary very small face size
+            constexpr double minWireArea = 0.000001;  //arbitrary very small face size
             std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
             for (; itWire != sortedWires.end(); itWire++) {
                 if (!BRep_Tool::IsClosed(*itWire)) {
                     continue;       //can not make a face from open wire
-                } else {
-                    double area = ShapeAnalysis::ContourArea(*itWire);
-                    if (area <= minWireArea) {
-                        continue;   //can not make a face from wire with no area
-                    }
                 }
+
+                double area = ShapeAnalysis::ContourArea(*itWire);
+                if (area <= minWireArea) {
+                    continue;   //can not make a face from wire with no area
+                }
+
                 TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
                 const TopoDS_Wire& wire = (*itWire);
-                TechDraw::Wire* w = new TechDraw::Wire(wire);
-                f->wires.push_back(w);
+                f->wires.push_back(new TechDraw::Wire(wire));
                 if (geometryObject) {
                     geometryObject->addFaceGeom(f);
                 }
