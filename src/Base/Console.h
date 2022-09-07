@@ -564,7 +564,6 @@ public:
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
     /// Enables or disables message types of a certain console observer
-    bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
     void SetConnectionMode(ConnectionMode mode);
 
     int *GetLogLevel(const char *tag, bool create=true);
