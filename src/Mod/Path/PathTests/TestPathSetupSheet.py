@@ -23,9 +23,11 @@
 import FreeCAD
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathLog as PathLog
+import json
 import sys
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -35,6 +37,22 @@ def refstring(string):
         return string
     return string.replace(" u'", " '")
 
+class SomeOp (object):
+    def __init__(self, obj):
+        PathLog.track(obj, type(obj))
+        obj.addProperty('App::PropertyPercent', 'StepOver', 'Base', 'Some help you are')
+
+    @classmethod
+    def SetupProperties(cls):
+        return ['StepOver']
+
+    @classmethod
+    def Create(cls, name, obj=None, parentJob=None):
+        PathLog.track(name, obj)
+        if obj is None:
+            obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+        obj.Proxy = SomeOp(obj)
+        return obj
 
 class TestPathSetupSheet(PathTestBase):
     def setUp(self):
@@ -302,3 +320,32 @@ class TestPathSetupSheet(PathTestBase):
         dec = s2.decodeTemplateAttributes(encoded)
         # pick one
         self.assertEqual(dec["01"][0]["11"], "SetupSheet001.y")
+
+    def test20(self):
+        """Verify SetupSheet template op attributes roundtrip."""
+
+        opname = 'whoop'
+
+        o1 = PathSetupSheet.Create()
+
+        PathSetupSheet.RegisterOperation(opname, SomeOp.Create, SomeOp.SetupProperties)
+        ptt = PathSetupSheet._RegisteredOps[opname].prototype('whoopsy')
+        pptt = ptt.getProperty('StepOver')
+        pptt.setupProperty(o1, PathSetupSheet.OpPropertyName(opname, pptt.name), PathSetupSheet.OpPropertyGroup(opname), 75)
+
+        # save setup sheet in json "file"
+        attrs = o1.Proxy.templateAttributes(False, False, False, False, [opname])
+        encdd = o1.Proxy.encodeTemplateAttributes(attrs)
+        j1 = json.dumps({'SetupSheet' : encdd}, sort_keys=True, indent=2)
+
+        # restore setup sheet from json "file"
+        j2 = json.loads(j1)
+
+        o2 = PathSetupSheet.Create()
+        o2.Proxy.setFromTemplate(j2['SetupSheet'])
+
+        op = SomeOp.Create(opname)
+        self.assertEqual(op.StepOver, 0)
+        o2.Proxy.setOperationProperties(op, opname)
+        self.assertEqual(op.StepOver, 75)
+
