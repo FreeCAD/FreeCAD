@@ -118,7 +118,6 @@ private:
     std::vector<QPointF> m_pathPoints;
     QGraphicsItem* m_parentItem;
     QGIPrimPath* m_line;               //actual leader line
-    double m_lineWidth;
     QColor m_lineColor;
     Qt::PenStyle m_lineStyle;
     QGIArrow* m_arrow1;
@@ -126,7 +125,6 @@ private:
 
     QGEPath* m_editPath;               //line editor
     QColor m_editPathColor;
-    Qt::PenStyle m_editPathStyle;
 
     bool m_hasHover;
 

@@ -72,10 +72,8 @@ using namespace TechDraw;
 //**************************************************************
 QGILeaderLine::QGILeaderLine() :
     m_parentItem(nullptr),
-    m_lineWidth(1.0),
     m_lineColor(Qt::black),
     m_lineStyle(Qt::SolidLine),
-    m_editPathStyle(Qt::SolidLine),
     m_hasHover(false),
     m_saveX(0.0),
     m_saveY(0.0),

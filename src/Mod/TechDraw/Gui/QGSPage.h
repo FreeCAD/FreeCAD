@@ -148,11 +148,6 @@ protected:
 private:
     QGITemplate *pageTemplate;
     ViewProviderPage *m_vpPage;
-
-    QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
-    qreal pagewidth, pageheight;
-
 };
 
 } // namespace

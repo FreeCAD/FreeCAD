@@ -75,7 +75,6 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     ui(new Ui_TaskLeaderLine),
-    blockUpdate(false),
     m_tracker(nullptr),
     m_lineVP(leadVP),
     m_baseFeat(nullptr),
@@ -83,7 +82,6 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_lineFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(false),
-    m_leadLine(nullptr),
     m_trackerMode(QGTracker::None),
     m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
@@ -151,7 +149,6 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
 TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskLeaderLine),
-    blockUpdate(false),
     m_tracker(nullptr),
     m_lineVP(nullptr),
     m_baseFeat(baseFeat),
@@ -159,7 +156,6 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_lineFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(true),
-    m_leadLine(nullptr),
     m_trackerMode(QGTracker::None),
     m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
