@@ -57,8 +57,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
-#include "QGVPage.h"
-#include "QGIView.h"
 #include "Grabber3d.h"
 #include "Rez.h"
 
@@ -142,7 +140,9 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     }
 
 
-    QImage image;
+//    QImage image;
+    QImage image(100, 100, QImage::Format_RGB32);
+    image.fill(QColor(Qt::transparent));
     Grabber3d:: quickView(appDoc,
                           Rez::guiX(ui->qsbWidth->rawValue()),      //mm to scene units
                           Rez::guiX(ui->qsbHeight->rawValue()),     //mm to scene units

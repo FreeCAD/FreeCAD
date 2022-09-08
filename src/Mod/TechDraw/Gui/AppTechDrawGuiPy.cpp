@@ -303,12 +303,12 @@ private:
                    App::Color c = TechDraw::DrawUtil::pyTupleToColor(colorObj);
                    bgColor = c.asValue<QColor>();
                }
-               result =
-               Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,
-                                         outWidth, outHeight,
-                                         paintBackground, bgColor,
-                                         lineWidth, border,
-                                         mode);                         //TODO: add svg scale factor?
+//               result =
+//               Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,
+//                                         outWidth, outHeight,
+//                                         paintBackground, bgColor,
+//                                         lineWidth, border,
+//                                         mode);                         //TODO: add svg scale factor?
            }
         }
         catch (Base::Exception &e) {

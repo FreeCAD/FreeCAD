@@ -59,7 +59,10 @@ DrawViewImage::DrawViewImage()
                                             "Embedded image file. System use only.");   // n/a to end users
     ADD_PROPERTY_TYPE(Width      ,(100), vgroup, App::Prop_None, "The width of cropped image");
     ADD_PROPERTY_TYPE(Height     ,(100), vgroup, App::Prop_None, "The height of cropped image");
+
     ScaleType.setValue("Custom");
+    Scale.setStatus(App::Property::Hidden, false);
+    Scale.setStatus(App::Property::ReadOnly, false);
 
     std::string imgFilter("Image files (*.jpg *.jpeg *.png);;All files (*)");
     ImageFile.setFilter(imgFilter);
@@ -68,12 +71,15 @@ DrawViewImage::DrawViewImage()
 void DrawViewImage::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
-    if ((prop == &ImageFile) &&
-        (doc) ) {
-        if (!ImageFile.isEmpty()) {
-            replaceImageIncluded(ImageFile.getValue());
+    if (!isRestoring()) {
+        if ((prop == &ImageFile) && doc) {
+            if (!ImageFile.isEmpty()) {
+                replaceImageIncluded(ImageFile.getValue());
+            }
+            requestPaint();
+        } else if (prop == &Scale) {
+            requestPaint();
         }
-        requestPaint();
     }
 
     TechDraw::DrawView::onChanged(prop);
@@ -129,14 +135,18 @@ void DrawViewImage::setupImageIncluded()
     DrawUtil::copyFile(std::string(), imageName);
     ImageIncluded.setValue(imageName.c_str());
 
-    if (!ImageFile.isEmpty()) {
-        Base::FileInfo fi(ImageFile.getValue());
-        if (fi.isReadable()) {
-            std::string exchName = ImageIncluded.getExchangeTempFile();
-            DrawUtil::copyFile(ImageFile.getValue(), exchName);
-            ImageIncluded.setValue(exchName.c_str(), special.c_str());
-        }
+    if (ImageFile.isEmpty()) {
+        return;
     }
+
+    Base::FileInfo fi(ImageFile.getValue());
+    if (!fi.isReadable()) {
+        return;
+    }
+
+    std::string exchName = ImageIncluded.getExchangeTempFile();
+    DrawUtil::copyFile(ImageFile.getValue(), exchName);
+    ImageIncluded.setValue(exchName.c_str(), special.c_str());
 }
 
 // Python Drawing feature ---------------------------------------------------------
