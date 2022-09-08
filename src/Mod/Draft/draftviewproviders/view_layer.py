@@ -37,6 +37,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 
+import draftutils.utils as utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
 from draftobjects.layer import Layer
@@ -297,7 +298,21 @@ class ViewProviderLayer:
             vobj.signalChangeIcon()
 
     def canDragObject(self, obj):
-        """Return True to allow dragging one object from the Layer."""
+        """Return True to allow dragging one object from the Layer.
+
+        Also store parent group data for update_groups_after_drag_drop and
+        trigger that function.
+        """
+        if not hasattr(self, "old_parent_data"):
+            self.old_parent_data = {}
+        old_data = []
+        for parent in obj.InList:
+            if hasattr(parent, "Group"):
+                old_data.append([parent, parent.Group])
+        if old_data:
+            self.old_parent_data.setdefault(obj, old_data)
+            QtCore.QTimer.singleShot(0, self.update_groups_after_drag_drop)
+
         return True
 
     def canDragObjects(self):
@@ -317,9 +332,23 @@ class ViewProviderLayer:
 
         If the object being dropped is itself a `'Layer'`, return `False`
         to prevent dropping a layer inside a layer, at least for now.
+
+        Also store parent group data for update_groups_after_drag_drop and
+        trigger that function.
         """
-        if hasattr(obj, "Proxy") and isinstance(obj.Proxy, Layer):
+        if utils.get_type(obj) == "Layer":
             return False
+
+        if not hasattr(self, "old_parent_data"):
+            self.old_parent_data = {}
+        old_data = []
+        for parent in obj.InList:
+            if hasattr(parent, "Group"):
+                old_data.append([parent, parent.Group])
+        if old_data:
+            self.old_parent_data.setdefault(obj, old_data)
+            QtCore.QTimer.singleShot(0, self.update_groups_after_drag_drop)
+
         return True
 
     def canDropObjects(self):
@@ -333,7 +362,7 @@ class ViewProviderLayer:
         return immediately to prevent dropping a layer inside a layer,
         at least for now.
         """
-        if hasattr(otherobj, "Proxy") and isinstance(otherobj.Proxy, Layer):
+        if utils.get_type(otherobj) == "Layer":
             return
 
         obj = vobj.Object
@@ -345,15 +374,93 @@ class ViewProviderLayer:
 
             # Remove from all other layers (not automatic)
             for parent in otherobj.InList:
-                if (hasattr(parent, "Proxy")
-                        and isinstance(parent.Proxy, Layer)
-                        and otherobj in parent.Group
-                        and parent != obj):
+                if (parent != obj
+                        and utils.get_type(parent) == "Layer"
+                        and otherobj in parent.Group):
                     p_group = parent.Group
                     p_group.remove(otherobj)
                     parent.Group = p_group
 
             App.ActiveDocument.recompute()
+
+    def update_groups_after_drag_drop(self):
+        """Workaround function to improve the drag and drop behavior of Layer
+        objects.
+
+        The function processes the parent group data stored in the
+        old_parent_data dictionary by canDragObject and canDropObject.
+        """
+
+        # The function can be called multiple times, old_parent_data will be
+        # empty after the first call.
+        if (not hasattr(self, "old_parent_data")) or (not self.old_parent_data):
+            return
+
+        # List to collect parents whose Group must be updated.
+        # This has to happen later in a separate loop as we need the unmodified
+        # InList properties of the children in the main loop.
+        parents_to_update = []
+
+        # Main loop:
+        for child, old_data in self.old_parent_data.items():
+
+            # We assume a single old and a single new layer...
+
+            old_layer = None
+            for old_parent, old_parent_group in old_data:
+                if utils.get_type(old_parent) == "Layer":
+                    old_layer = old_parent
+                    break
+
+            new_layer = None
+            for new_parent in child.InList:
+                if utils.get_type(new_parent) == "Layer":
+                    new_layer = new_parent
+                    break
+
+            if new_layer == old_layer:
+                continue
+
+            elif new_layer is None:
+                # An object was dragged out of a layer.
+                # We need to check if it was put in a new group that is not the
+                # Draft_Construction group. If that is the case the content of
+                # old_layer should be restored.
+                # If the object was not put in a new group it was dropped on
+                # the document node, in that case we do nothing.
+                old_parents = [sub[0] for sub in old_data]
+                for new_parent in child.InList:
+                    if (hasattr(new_parent, "Group")
+                            and new_parent not in old_parents): # New group check.
+                        if new_parent.Name == "Draft_Construction": # We don't want an object in a layer and the construction group.
+                            break
+                        else:
+                            for old_parent, old_parent_group in old_data:
+                                if old_parent == old_layer:
+                                    parents_to_update.append([old_parent, old_parent_group])
+                                    break
+                            break
+
+            else:
+                # A new layer was assigned.
+                # The content of all `non-layer` groups, with the exception of
+                # the Draft_Construction group, should be restored.
+                for old_parent, old_parent_group in old_data:
+                    if (old_parent.Name != "Draft_Construction"
+                            and utils.get_type(old_parent) != "Layer"):
+                        parents_to_update.append([old_parent, old_parent_group])
+
+        # Update parents:
+        if parents_to_update:
+            for old_parent, old_parent_group in parents_to_update:
+                old_parent.Group = old_parent_group
+            App.ActiveDocument.recompute()
+
+        self.old_parent_data = {}
+
+    def replaceObject(self, old_obj, new_obj):
+        """Return immediately to prevent replacement of children."""
+        return
 
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
@@ -423,7 +530,7 @@ class ViewProviderLayerContainer:
         layer_container = self.Object
         layers = []
         for obj in layer_container.Group:
-            if hasattr(obj, "Proxy") and isinstance(obj.Proxy, Layer):
+            if utils.get_type(obj) == "Layer":
                 layers.append(obj)
 
         to_delete = []
@@ -480,6 +587,10 @@ class ViewProviderLayerContainer:
     def __setstate__(self, state):
         """Set the internal properties from the restored state."""
         return None
+
+    def replaceObject(self, old_obj, new_obj):
+        """Return immediately to prevent replacement of children."""
+        return
 
 
 # Alias for compatibility with v0.18 and earlier
