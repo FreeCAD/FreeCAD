@@ -60,7 +60,7 @@ class LicenseSelector:
             "https://creativecommons.org/choose/zero/",
         ),
         "GPLv2": (
-            "GNU Lesser General Public License version 2",
+            "GNU General Public License version 2",
             "https://opensource.org/licenses/GPL-2.0",
         ),
         "GPLv3": (

@@ -9,9 +9,11 @@ SET(AddonManager_SRCS
     AddonManager.ui
     addonmanager_devmode.py
     addonmanager_devmode_add_content.py
-    addonmanager_devmode_license_selector.py
     addonmanager_devmode_dependencies.py
+    addonmanager_devmode_license_selector.py
     addonmanager_devmode_person_editor.py
+    addonmanager_devmode_predictor.py
+    addonmanager_devmode_validators.py
     addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py

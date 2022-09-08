@@ -207,7 +207,7 @@ std::string Metadata::classname() const
     return _classname;
 }
 
-boost::filesystem::path App::Metadata::subdirectory() const
+boost::filesystem::path Metadata::subdirectory() const
 {
     return _subdirectory;
 }
@@ -217,12 +217,12 @@ std::vector<fs::path> Metadata::file() const
     return _file;
 }
 
-Meta::Version App::Metadata::freecadmin() const
+Meta::Version Metadata::freecadmin() const
 {
     return _freecadmin;
 }
 
-Meta::Version App::Metadata::freecadmax() const
+Meta::Version Metadata::freecadmax() const
 {
     return _freecadmax;
 }
@@ -315,7 +315,7 @@ void Metadata::setClassname(const std::string& name)
     _classname = name;
 }
 
-void App::Metadata::setSubdirectory(const boost::filesystem::path& path)
+void Metadata::setSubdirectory(const boost::filesystem::path& path)
 {
     _subdirectory = path;
 }
@@ -330,28 +330,141 @@ void Metadata::addContentItem(const std::string& tag, const Metadata& item)
     _content.insert(std::make_pair(tag, item));
 }
 
-void App::Metadata::setFreeCADMin(const Meta::Version& version)
+void Metadata::setFreeCADMin(const Meta::Version& version)
 {
     _freecadmin = version;
 }
 
-void App::Metadata::setFreeCADMax(const Meta::Version& version)
+void Metadata::setFreeCADMax(const Meta::Version& version)
 {
     _freecadmax = version;
 }
 
-void App::Metadata::addGenericMetadata(const std::string& tag, const Meta::GenericMetadata& genericMetadata)
+void Metadata::addGenericMetadata(const std::string& tag, const Meta::GenericMetadata& genericMetadata)
 {
     _genericMetadata.insert(std::make_pair(tag, genericMetadata));
 }
 
-void App::Metadata::removeContentItem(const std::string& tag, const std::string& itemName)
+void Metadata::removeContentItem(const std::string& tag, const std::string& itemName)
 {
     auto tagRange = _content.equal_range(tag);
     auto foundItem = std::find_if(tagRange.first, tagRange.second, [&itemName](const auto& check) -> bool { return itemName == check.second.name(); });
     if (foundItem != tagRange.second)
         _content.erase(foundItem);
 }
+
+void Metadata::removeMaintainer(const Meta::Contact &maintainer)
+{
+    auto new_end = std::remove(_maintainer.begin(), _maintainer.end(), maintainer);
+    _maintainer.erase(new_end, _maintainer.end());
+}
+
+void Metadata::removeLicense(const Meta::License &license)
+{
+    auto new_end = std::remove(_license.begin(), _license.end(), license);
+    _license.erase(new_end, _license.end());
+}
+
+void Metadata::removeUrl(const Meta::Url &url)
+{
+    auto new_end = std::remove(_url.begin(), _url.end(), url);
+    _url.erase(new_end, _url.end());
+}
+
+void Metadata::removeAuthor(const Meta::Contact &author)
+{
+    auto new_end = std::remove(_author.begin(), _author.end(), author);
+    _author.erase(new_end, _author.end());
+}
+
+void Metadata::removeDepend(const Meta::Dependency &dep)
+{
+    bool found = false;
+    for (const auto& check : _depend) {
+        if (dep == check)
+            found = true;
+    }
+    if (!found)
+        throw Base::RuntimeError("No match found for dependency to remove");
+    auto new_end = std::remove(_depend.begin(), _depend.end(), dep);
+    _depend.erase(new_end, _depend.end());
+}
+
+void Metadata::removeConflict(const Meta::Dependency &dep)
+{
+    auto new_end = std::remove(_conflict.begin(), _conflict.end(), dep);
+    _conflict.erase(new_end, _conflict.end());
+}
+
+void Metadata::removeReplace(const Meta::Dependency &dep)
+{
+    auto new_end = std::remove(_replace.begin(), _replace.end(), dep);
+    _replace.erase(new_end, _replace.end());
+}
+
+void Metadata::removeTag(const std::string &tag)
+{
+    auto new_end = std::remove(_tag.begin(), _tag.end(), tag);
+    _tag.erase(new_end, _tag.end());
+}
+
+void Metadata::removeFile(const boost::filesystem::path &path)
+{
+    auto new_end = std::remove(_file.begin(), _file.end(), path);
+    _file.erase(new_end, _file.end());
+}
+
+
+void Metadata::clearContent() 
+{
+    _content.clear();
+}
+
+void Metadata::clearMaintainer()
+{
+    _maintainer.clear();
+}
+
+void Metadata::clearLicense()
+{
+    _license.clear();
+}
+
+void Metadata::clearUrl()
+{
+    _url.clear();
+}
+
+void Metadata::clearAuthor()
+{
+    _author.clear();
+}
+
+void Metadata::clearDepend()
+{
+    _depend.clear();
+}
+
+void Metadata::clearConflict()
+{
+    _conflict.clear();
+}
+
+void Metadata::clearReplace()
+{
+    _replace.clear();
+}
+
+void Metadata::clearTag()
+{
+    _tag.clear();
+}
+
+void Metadata::clearFile()
+{
+    _file.clear();
+}
+
 
 
 DOMElement* appendSimpleXMLNode(DOMElement* baseNode, const std::string& nodeName, const std::string& nodeContents)
@@ -376,6 +489,36 @@ void addAttribute(DOMElement* node, const std::string& key, const std::string& v
     node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str(value.c_str()).unicodeForm());
 }
 
+void addAttribute(DOMElement *node, const std::string &key, bool value)
+{
+    if (value)
+        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str("True").unicodeForm());
+    else
+        node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str("False").unicodeForm());
+}
+
+void addAttribute(DOMElement *node, const std::string &key, Meta::DependencyType value)
+{
+    // Someday we should be able to change this to use reflection, but it's not yet
+    // available (using C++17)
+    std::string stringified("automatic");
+    switch (value) {
+        case Meta::DependencyType::automatic:
+            stringified = "automatic";
+            break;
+        case Meta::DependencyType::internal:
+            stringified = "internal";
+            break;
+        case Meta::DependencyType::addon:
+            stringified = "addon";
+            break;
+        case Meta::DependencyType::python:
+            stringified = "python";
+            break;
+    }
+    node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str(stringified.c_str()).unicodeForm());
+}
+
 void addDependencyNode(DOMElement* root, const std::string& name, const Meta::Dependency& depend)
 {
     auto element = appendSimpleXMLNode(root, name, depend.package);
@@ -386,6 +529,8 @@ void addDependencyNode(DOMElement* root, const std::string& name, const Meta::De
         addAttribute(element, "version_gte", depend.version_gte);
         addAttribute(element, "version_gt", depend.version_gt);
         addAttribute(element, "condition", depend.condition);
+        addAttribute(element, "optional", depend.optional);
+        addAttribute(element, "type", depend.dependencyType);
     }
 }
 
@@ -489,7 +634,7 @@ bool Metadata::satisfies(const Meta::Dependency& dep)
     return true;
 }
 
-bool App::Metadata::supportsCurrentFreeCAD() const
+bool Metadata::supportsCurrentFreeCAD() const
 {
     static auto fcVersion = Meta::Version();
     if (fcVersion == Meta::Version()) {
@@ -683,6 +828,11 @@ Meta::Contact::Contact(const XERCES_CPP_NAMESPACE::DOMElement* e)
     email = StrXUTF8(emailAttribute).str;
 }
 
+bool App::Meta::Contact::operator==(const Contact &rhs) const
+{
+    return name==rhs.name && email==rhs.email;
+}
+
 Meta::License::License(const std::string& name, fs::path file) :
     name(name),
     file(file)
@@ -699,7 +849,16 @@ Meta::License::License(const XERCES_CPP_NAMESPACE::DOMElement* e)
     name = StrXUTF8(e->getTextContent()).str;
 }
 
-Meta::Url::Url(const std::string& location, UrlType type) :
+bool App::Meta::License::operator==(const License &rhs) const
+{
+    return name==rhs.name && file==rhs.file;
+}
+
+App::Meta::Url::Url() : location(""), type(App::Meta::UrlType::website)
+{
+}
+
+Meta::Url::Url(const std::string &location, UrlType type) :
     location(location),
     type(type)
 {
@@ -728,7 +887,22 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* e)
     location = StrXUTF8(e->getTextContent()).str;
 }
 
-Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement* e)
+bool App::Meta::Url::operator==(const Url &rhs) const
+{
+    if (type == UrlType::repository && branch != rhs.branch)
+        return false;
+    return type==rhs.type && location==rhs.location;
+}
+
+App::Meta::Dependency::Dependency() : optional(false), dependencyType(App::Meta::DependencyType::automatic)
+{
+}
+
+App::Meta::Dependency::Dependency(const std::string &pkg) : package(pkg), optional(false), dependencyType(App::Meta::DependencyType::automatic)
+{
+}
+
+Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement *e)
 {
     version_lt = StrXUTF8(e->getAttribute(XUTF8Str("version_lt").unicodeForm())).str;
     version_lte = StrXUTF8(e->getAttribute(XUTF8Str("version_lte").unicodeForm())).str;
@@ -736,8 +910,39 @@ Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement* e)
     version_gte = StrXUTF8(e->getAttribute(XUTF8Str("version_gte").unicodeForm())).str;
     version_gt = StrXUTF8(e->getAttribute(XUTF8Str("version_gt").unicodeForm())).str;
     condition = StrXUTF8(e->getAttribute(XUTF8Str("condition").unicodeForm())).str;
+    std::string opt_string = StrXUTF8(e->getAttribute(XUTF8Str("optional").unicodeForm())).str;
+    if (opt_string == "true" || opt_string == "True") // Support Python capitalization in this one case...
+        optional = true;
+    else
+        optional = false;
+    std::string type_string = StrXUTF8(e->getAttribute(XUTF8Str("type").unicodeForm())).str;
+    if (type_string == "automatic" || type_string == "")
+        dependencyType = Meta::DependencyType::automatic;
+    else if (type_string == "addon")
+        dependencyType = Meta::DependencyType::addon;
+    else if (type_string == "internal")
+        dependencyType = Meta::DependencyType::internal;
+    else if (type_string == "python")
+        dependencyType = Meta::DependencyType::python;
+    else {
+        auto message = std::string("Invalid dependency type \"") + type_string + "\"";
+        throw Base::XMLBaseException(message);
+    }
 
     package = StrXUTF8(e->getTextContent()).str;
+}
+
+bool App::Meta::Dependency::operator==(const Dependency &rhs) const
+{
+    return package == rhs.package && 
+        version_lt == rhs.version_lt && 
+        version_lte == rhs.version_lte && 
+        version_eq == rhs.version_eq && 
+        version_gte == rhs.version_gte && 
+        version_gt == rhs.version_gt && 
+        condition == rhs.condition && 
+        optional == rhs.optional &&
+        dependencyType == rhs.dependencyType;
 }
 
 Meta::Version::Version() :

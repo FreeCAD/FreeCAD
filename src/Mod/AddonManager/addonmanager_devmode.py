@@ -27,24 +27,25 @@ import os
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import QFileDialog, QTableWidgetItem
+from PySide2.QtWidgets import QFileDialog, QTableWidgetItem, QListWidgetItem, QDialog
 from PySide2.QtGui import (
     QIcon,
-    QValidator,
-    QRegularExpressionValidator,
     QPixmap,
 )
-from PySide2.QtCore import QRegularExpression, Qt
+from PySide2.QtCore import Qt
 from addonmanager_git import GitManager
 
 from addonmanager_devmode_license_selector import LicenseSelector
 from addonmanager_devmode_person_editor import PersonEditor
 from addonmanager_devmode_add_content import AddContent
+from addonmanager_devmode_validators import NameValidator, VersionValidator
 
 translate = FreeCAD.Qt.translate
 
 # pylint: disable=too-few-public-methods
 
+ContentTypeRole = Qt.UserRole
+ContentIndexRole = Qt.UserRole + 1
 
 class AddonGitInterface:
     """Wrapper to handle the git calls needed by this class"""
@@ -66,94 +67,20 @@ class AddonGitInterface:
             return AddonGitInterface.git_manager.get_branches(self.path)
         return []
 
+    @property
+    def committers(self):
+        """The commiters to this repo, in the last ten commits"""
+        if self.git_exists:
+            return AddonGitInterface.git_manager.get_last_committers(self.path, 10)
+        return []
 
-class NameValidator(QValidator):
-    """Simple validator to exclude characters that are not valid in filenames."""
+    @property
+    def authors(self):
+        """The commiters to this repo, in the last ten commits"""
+        if self.git_exists:
+            return AddonGitInterface.git_manager.get_last_authors(self.path, 10)
+        return []
 
-    invalid = '/\\?%*:|"<>'
-
-    def validate(self, value: str, _: int):
-        """Check the value against the validator"""
-        for char in value:
-            if char in NameValidator.invalid:
-                return QValidator.Invalid
-        return QValidator.Acceptable
-
-    def fixup(self, value: str) -> str:
-        """Remove invalid characters from value"""
-        result = ""
-        for char in value:
-            if char not in NameValidator.invalid:
-                result += char
-        return result
-
-
-class SemVerValidator(QRegularExpressionValidator):
-    """Implements the officially-recommended regex validator for Semantic version numbers."""
-
-    # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-    semver_re = QRegularExpression(
-        r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)"
-        + r"(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)"
-        + r"(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?"
-        + r"(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
-    )
-
-    def __init__(self):
-        super().__init__()
-        self.setRegularExpression(SemVerValidator.semver_re)
-
-    @classmethod
-    def check(cls, value: str) -> bool:
-        """Returns true if value validates, and false if not"""
-        return cls.semver_re.match(value).hasMatch()
-
-
-class CalVerValidator(QRegularExpressionValidator):
-    """Implements a basic regular expression validator that makes sure an entry corresponds
-    to a CalVer version numbering standard."""
-
-    calver_re = QRegularExpression(
-        r"^(?P<major>[1-9]\d{3})\.(?P<minor>[0-9]{1,2})\.(?P<patch>0|[0-9]{0,2})"
-        + r"(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)"
-        + r"(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?"
-        + r"(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
-    )
-
-    def __init__(self):
-        super().__init__()
-        self.setRegularExpression(CalVerValidator.calver_re)
-
-    @classmethod
-    def check(cls, value: str) -> bool:
-        """Returns true if value validates, and false if not"""
-        return cls.calver_re.match(value).hasMatch()
-
-
-class VersionValidator(QValidator):
-    """Implements the officially-recommended regex validator for Semantic version numbers, and a
-    decent approximation of the same thing for CalVer-style version numbers."""
-
-    def __init__(self):
-        super().__init__()
-        self.semver = SemVerValidator()
-        self.calver = CalVerValidator()
-
-    def validate(self, value: str, position: int):
-        """Called for validation, returns a tuple of the validation state, the value, and the
-        position."""
-        semver_result = self.semver.validate(value, position)
-        calver_result = self.calver.validate(value, position)
-
-        if semver_result[0] == QValidator.Acceptable:
-            return semver_result
-        if calver_result[0] == QValidator.Acceptable:
-            return calver_result
-        if semver_result[0] == QValidator.Intermediate:
-            return semver_result
-        if calver_result[0] == QValidator.Intermediate:
-            return calver_result
-        return (QValidator.Invalid, value, position)
 
 
 class DeveloperMode:
@@ -174,6 +101,8 @@ class DeveloperMode:
         self.current_mod: str = ""
         self.git_interface = None
         self.has_toplevel_icon = False
+        self.metadata = None
+
         self._setup_dialog_signals()
 
         self.dialog.displayNameLineEdit.setValidator(NameValidator())
@@ -202,7 +131,9 @@ class DeveloperMode:
         """Show the main dev mode dialog"""
         if parent:
             self.dialog.setParent(parent)
-        self.dialog.exec()
+        result = self.dialog.exec()
+        if result == QDialog.Accepted:
+            self._sync_metadata_to_ui()
 
     def _populate_dialog(self, path_to_repo):
         """Populate this dialog using the best available parsing of the contents of the repo at
@@ -215,7 +146,6 @@ class DeveloperMode:
         self._scan_for_git_info(self.current_mod)
 
         metadata_path = os.path.join(path_to_repo, "package.xml")
-        metadata = None
         if os.path.exists(metadata_path):
             try:
                 self.metadata = FreeCAD.Metadata(metadata_path)
@@ -239,19 +169,21 @@ class DeveloperMode:
                     + "\n\n"
                 )
 
-        if self.metadata:
-            self.dialog.displayNameLineEdit.setText(self.metadata.Name)
-            self.dialog.descriptionTextEdit.setPlainText(self.metadata.Description)
-            self.dialog.versionLineEdit.setText(self.metadata.Version)
+        self._clear_all_fields()
 
-            self._populate_people_from_metadata(self.metadata)
-            self._populate_licenses_from_metadata(self.metadata)
-            self._populate_urls_from_metadata(self.metadata)
-            self._populate_contents_from_metadata(self.metadata)
+        if not self.metadata:
+            self._predict_metadata()
 
-            self._populate_icon_from_metadata(self.metadata)
-        else:
-            self._populate_without_metadata()
+        self.dialog.displayNameLineEdit.setText(self.metadata.Name)
+        self.dialog.descriptionTextEdit.setPlainText(self.metadata.Description)
+        self.dialog.versionLineEdit.setText(self.metadata.Version)
+
+        self._populate_people_from_metadata(self.metadata)
+        self._populate_licenses_from_metadata(self.metadata)
+        self._populate_urls_from_metadata(self.metadata)
+        self._populate_contents_from_metadata(self.metadata)
+
+        self._populate_icon_from_metadata(self.metadata)
 
     def _populate_people_from_metadata(self, metadata):
         """Use the passed metadata object to populate the maintainers and authors"""
@@ -305,6 +237,7 @@ class DeveloperMode:
             )
 
     def _add_license_row(self, row: int, name: str, path: str):
+        """ Add a row to the table of licenses """
         self.dialog.licensesTableWidget.insertRow(row)
         self.dialog.licensesTableWidget.setItem(row, 0, QTableWidgetItem(name))
         self.dialog.licensesTableWidget.setItem(row, 1, QTableWidgetItem(path))
@@ -349,6 +282,7 @@ class DeveloperMode:
         contents = metadata.Content
         self.dialog.contentsListWidget.clear()
         for content_type in contents:
+            counter = 0
             for item in contents[content_type]:
                 contents_string = f"[{content_type}] "
                 info = []
@@ -378,7 +312,11 @@ class DeveloperMode:
                     )
                 contents_string += ", ".join(info)
 
-                self.dialog.contentsListWidget.addItem(contents_string)
+                item = QListWidgetItem (contents_string)
+                item.setData(ContentTypeRole, content_type)
+                item.setData(ContentIndexRole, counter)
+                self.dialog.contentsListWidget.addItem(item)
+                counter += 1
 
     def _populate_icon_from_metadata(self, metadata):
         """Use the passed metadata object to populate the icon fields"""
@@ -407,9 +345,16 @@ class DeveloperMode:
                 self.dialog.iconDisplayLabel.setPixmap(icon_data.pixmap(32, 32))
         self.dialog.iconPathLineEdit.setText(icon)
 
-    def _populate_without_metadata(self):
+    def _predict_metadata(self):
         """If there is no metadata, try to guess at values for it"""
-        self._clear_all_fields()
+        self.metadata = FreeCAD.Metadata()
+        self._predict_author_info()
+        self._predict_name()
+        self._predict_description()
+        self._predict_contents()
+        self._predict_icon()
+        self._predict_urls()
+        self._predict_license()
 
     def _scan_for_git_info(self, path):
         """Look for branch availability"""
@@ -435,6 +380,57 @@ class DeveloperMode:
         self.dialog.iconPathLineEdit.clear()
         self.dialog.licensesTableWidget.setRowCount(0)
         self.dialog.peopleTableWidget.setRowCount(0)
+
+    def _predict_author_info(self):
+        """ Look at the git commit history and attempt to discern maintainer and author 
+        information."""
+        
+        self.git_interface = AddonGitInterface(path)
+        if self.git_interface.git_exists:
+            committers = self.git_interface.get_last_committers()
+        else:
+            return
+
+        # This is a dictionary keyed to the author's name (which can be many different 
+        # things, depending on the author) containing two fields, "email" and "count". It
+        # is common for there to be multiple entries representing the same human being,
+        # so a passing attempt is made to reconcile:
+        for key in committers:
+            emails = committers[key]["email"]
+            if "GitHub" in key:
+                # Robotic merge commit (or other similar), ignore
+                continue
+            # Does any other committer share any of these emails?
+            for other_key in committers:
+                if other_key == key:
+                    continue
+                other_emails = committers[other_key]["email"]
+                for other_email in other_emails:
+                    if other_email in emails:
+                        # There is overlap in the two email lists, so this is probably the
+                        # same author, with a different name (username, pseudonym, etc.)
+                        if not committers[key]["aka"]:
+                            committers[key]["aka"] = set()
+                        committers[key]["aka"].add(other_key)
+                        committers[key]["count"] += committers[other_key]["count"]
+                        committers[key]["email"].combine(committers[other_key]["email"])
+                        committers.remove(other_key)
+                        break
+        maintainers = []
+        for name,info in committers.items():
+            if info["aka"]:
+                for other_name in info["aka"]:
+                    # Heuristic: the longer name is more likely to be the actual legal name
+                    if len(other_name) > len(name):
+                        name = other_name
+            # There is no logical basis to choose one email address over another, so just
+            # take the first one
+            email = info["email"][0]
+            commit_count = info["count"]
+            maintainers.append( {"name":name,"email":email,"count":commit_count} )
+
+        # Sort by count of commits
+        maintainers.sort(lambda i:i["count"],reverse=True)
 
     def _setup_dialog_signals(self):
         """Set up the signal and slot connections for the main dialog."""
@@ -467,14 +463,54 @@ class DeveloperMode:
         self.dialog.contentsListWidget.itemSelectionChanged.connect(self._content_selection_changed)
         self.dialog.contentsListWidget.itemDoubleClicked.connect(self._edit_content)
 
-
         # Finally, populate the combo boxes, etc.
         self._populate_combo()
         if self.dialog.pathToAddonComboBox.currentIndex() != -1:
             self._populate_dialog(self.dialog.pathToAddonComboBox.currentText())
 
+        # Disable all of the "Remove" buttons until something is selected
         self.dialog.removeLicenseToolButton.setDisabled(True)
         self.dialog.removePersonToolButton.setDisabled(True)
+        self.dialog.removeContentItemToolButton.setDisabled(True)
+
+    def _sync_metadata_to_ui(self):
+        """ Take the data from the UI fields and put it into the stored metadata
+        object. Only overwrites known data fields: unknown metadata will be retained. """
+        self.metadata.Name = self.dialog.displayNameLineEdit.text()
+        self.metadata.Description = self.descriptionTextEdit.text()
+        self.metadata.Version = self.dialog.versionLineEdit.text()
+        self.metadata.Icon = self.dialog.iconPathLineEdit.text()
+        
+        url = {}
+        url["website"] = self.dialog.websiteURLLineEdit.text()
+        url["repository"] = self.dialog.repositoryURLLineEdit.text()
+        url["bugtracker"] = self.dialog.bugtrackerURLLineEdit.text()
+        url["readme"] = self.dialog.readmeURLLineEdit.text()
+        url["documentation"] = self.dialog.documentationURLLineEdit.text()
+        self.metadata.setUrl(url)
+
+        # Licenses:
+        licenses = []
+        for row in range(self.dialog.licensesTableWidget.rowCount()):
+            license = {}
+            license["name"] = self.dialog.licensesTableWidget.item(row,0).text()
+            license["file"] = self.dialog.licensesTableWidget.item(row,1).text()
+            licenses.append(license)
+        self.metadata.setLicense(licenses)
+
+        # Maintainers:
+        maintainers = []
+        authors = []
+        for row in range(self.dialog.peopleTableWidget.rowCount()):
+            person = {}
+            person["name"] = self.dialog.peopleTableWidget.item(row,1).text()
+            person["email"] = self.dialog.peopleTableWidget.item(row,2).text()
+            if self.dialog.peopleTableWidget.item(row,0).data(Qt.UserRole) == "maintainer":
+                maintainers.append(person)
+            elif self.dialog.peopleTableWidget.item(row,0).data(Qt.UserRole) == "author":
+                authors.append(person)
+
+        # Content:
 
     ###############################################################################################
     #                                         DIALOG SLOTS
@@ -553,6 +589,7 @@ class DeveloperMode:
                 recent_mods_group.SetString(entry_name, mod)
 
     def _person_selection_changed(self):
+        """ Callback: the current selection in the peopleTableWidget changed """
         items = self.dialog.peopleTableWidget.selectedItems()
         if items:
             self.dialog.removePersonToolButton.setDisabled(False)
@@ -560,6 +597,7 @@ class DeveloperMode:
             self.dialog.removePersonToolButton.setDisabled(True)
 
     def _license_selection_changed(self):
+        """ Callback: the current selection in the licensesTableWidget changed """
         items = self.dialog.licensesTableWidget.selectedItems()
         if items:
             self.dialog.removeLicenseToolButton.setDisabled(False)
@@ -567,6 +605,7 @@ class DeveloperMode:
             self.dialog.removeLicenseToolButton.setDisabled(True)
 
     def _add_license_clicked(self):
+        """ Callback: The Add License button was clicked """
         license_selector = LicenseSelector(self.current_mod)
         short_code, path = license_selector.exec()
         if short_code:
@@ -575,6 +614,7 @@ class DeveloperMode:
             )
 
     def _remove_license_clicked(self):
+        """ Callback: the Remove License button was clicked """
         items = self.dialog.licensesTableWidget.selectedIndexes()
         if items:
             # We only support single-selection, so can just pull the row # from
@@ -582,6 +622,7 @@ class DeveloperMode:
             self.dialog.licensesTableWidget.removeRow(items[0].row())
 
     def _edit_license(self, item):
+        """ Callback: a license row was double-clicked """
         row = item.row()
         short_code = self.dialog.licensesTableWidget.item(row, 0).text()
         path = self.dialog.licensesTableWidget.item(row, 1).text()
@@ -592,12 +633,14 @@ class DeveloperMode:
             self._add_license_row(row, short_code, path)
 
     def _add_person_clicked(self):
+        """ Callback: the Add Person button was clicked """
         dlg = PersonEditor()
         person_type, name, email = dlg.exec()
         if person_type and name:
             self._add_person_row(row, person_type, name, email)
 
     def _remove_person_clicked(self):
+        """ Callback: the Remove Person button was clicked """
         items = self.dialog.peopleTableWidget.selectedIndexes()
         if items:
             # We only support single-selection, so can just pull the row # from
@@ -605,6 +648,7 @@ class DeveloperMode:
             self.dialog.peopleTableWidget.removeRow(items[0].row())
 
     def _edit_person(self, item):
+        """ Callback: a row in the peopleTableWidget was double-clicked """
         row = item.row()
         person_type = self.dialog.peopleTableWidget.item(row, 0).data(Qt.UserRole)
         name = self.dialog.peopleTableWidget.item(row, 1).text()
@@ -621,14 +665,51 @@ class DeveloperMode:
 
     
     def _add_content_clicked(self):
+        """ Callback: The Add Content button was clicked """
         dlg = AddContent(self.current_mod, self.metadata)
-        dlg.exec()
+        singleton = False
+        if self.dialog.contentsListWidget.count() == 0:
+            singleton = True
+        content_type,new_metadata = dlg.exec(singleton=singleton)
+        if content_type and new_metadata:
+            self.metadata.addContentItem(content_type, new_metadata)
+            self._populate_contents_from_metadata(self.metadata)
 
     def _remove_content_clicked(self):
-        pass
+        """ Callback: the remove content button was clicked """
+        
+        item = self.dialog.contentsListWidget.currentItem()
+        if not item:
+            return
+        content_type = item.data(ContentTypeRole)
+        content_index = item.data(ContentIndexRole)
+        if self.metadata.Content[content_type] and content_index < len(self.metadata.Content[content_type]):
+            content_name = self.metadata.Content[content_type][content_index].Name
+            self.metadata.removeContentItem(content_type,content_name)
+            self._populate_contents_from_metadata(self.metadata)
 
     def _content_selection_changed(self):
-        pass
+        """ Callback: the selected content item changed """
+        items = self.dialog.contentsListWidget.selectedItems()
+        if items:
+            self.dialog.removeContentItemToolButton.setDisabled(False)
+        else:
+            self.dialog.removeContentItemToolButton.setDisabled(True)
 
     def _edit_content(self, item):
-        pass
+        """ Callback: a content row was double-clicked """
+        dlg = AddContent(self.current_mod, self.metadata)
+
+        content_type = item.data(ContentTypeRole)
+        content_index = item.data(ContentIndexRole)
+
+        content = self.metadata.Content
+        metadata = content[content_type][content_index]
+        old_name = metadata.Name
+        new_type, new_metadata = dlg.exec(content_type, metadata, len(content) == 1)
+        if new_type and new_metadata:
+            self.metadata.removeContentItem(content_type, old_name)
+            self.metadata.addContentItem(new_type, new_metadata)
+            self._populate_contents_from_metadata(self.metadata)
+
+

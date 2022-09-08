@@ -35,6 +35,8 @@ from PySide2.QtWidgets import QDialog, QLayout, QFileDialog, QTableWidgetItem
 from PySide2.QtGui import QIcon
 from PySide2.QtCore import Qt
 
+from addonmanager_devmode_validators import VersionValidator, NameValidator, PythonIdentifierValidator
+
 # pylint: disable=too-few-public-methods
 
 translate = FreeCAD.Qt.translate
@@ -77,6 +79,24 @@ class AddContent:
             self._freecad_versions_clicked
         )
 
+        self.dialog.versionLineEdit.setValidator(VersionValidator())
+        self.dialog.prefPackNameLineEdit.setValidator(NameValidator())
+        self.dialog.displayNameLineEdit.setValidator(NameValidator())
+        self.dialog.workbenchClassnameLineEdit.setValidator(PythonIdentifierValidator())
+        
+        self.dialog.addPersonToolButton.setIcon(
+            QIcon.fromTheme("add", QIcon(":/icons/list-add.svg"))
+        )
+        self.dialog.removePersonToolButton.setIcon(
+            QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
+        )
+        self.dialog.addLicenseToolButton.setIcon(
+            QIcon.fromTheme("add", QIcon(":/icons/list-add.svg"))
+        )
+        self.dialog.removeLicenseToolButton.setIcon(
+            QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
+        )
+
     def exec(
         self,
         content_kind: str = "workbench",
@@ -87,7 +107,8 @@ class AddContent:
         is accepted, or None if it is rejected. This metadata object represents a single
         new content item. It's returned as a tuple with the object type as the first component,
         and the metadata object itself as the second."""
-        self.metadata = metadata
+        if metadata:
+            self.metadata = FreeCAD.Metadata(metadata) # Deep copy
         self.dialog.singletonCheckBox.setChecked(singleton)
         if singleton:
             # This doesn't happen automatically the first time
@@ -104,12 +125,15 @@ class AddContent:
         self.dialog.addonKindComboBox.setCurrentIndex(index)
         if metadata:
             self._populate_dialog(metadata)
+        
+        self.dialog.removeLicenseToolButton.setDisabled(True)
+        self.dialog.removePersonToolButton.setDisabled(True)
 
         self.dialog.layout().setSizeConstraint(QLayout.SetFixedSize)
         result = self.dialog.exec()
         if result == QDialog.Accepted:
             return self._generate_metadata()
-        return None
+        return None, None
 
     def _populate_dialog(self, metadata: FreeCAD.Metadata) -> None:
         """Fill in the dialog with the details from the passed metadata object"""
@@ -117,9 +141,11 @@ class AddContent:
         if addon_kind == "workbench":
             self.dialog.workbenchClassnameLineEdit.setText(metadata.Classname)
         elif addon_kind == "macro":
-            pass
+            files = self.metadata.File
+            if files:
+                self.dialog.macroFileLineEdit.setText(files[0])
         elif addon_kind == "preferencepack":
-            pass
+            self.dialog.prefPackNameLineEdit.setText(self.metadata.Name)
         else:
             raise RuntimeError("Invalid data found for selection")
 
@@ -139,6 +165,12 @@ class AddContent:
             self.dialog.subdirectoryLineEdit.setText(metadata.Subdirectory)
         else:
             self.dialog.subdirectoryLineEdit.setText("")
+
+        self.dialog.displayNameLineEdit.setText(metadata.Name)
+        self.dialog.descriptionTextEdit.setPlainText(metadata.Description)
+        self.dialog.versionLineEdit.setText(metadata.Version)
+
+        #TODO: Add people and licenses
 
     def _set_icon(self, icon_relative_path):
         """Load the icon and display it, and its path, in the dialog."""
@@ -161,7 +193,56 @@ class AddContent:
 
     def _generate_metadata(self) -> Tuple[str, FreeCAD.Metadata]:
         """Create and return a new metadata object based on the contents of the dialog."""
-        return ("workbench", FreeCAD.Metadata())
+
+        if not self.metadata:
+            self.metadata = FreeCAD.Metadata()
+
+        ##########################################################################################
+        # Required data:
+        current_data:str = self.dialog.addonKindComboBox.currentData()
+        if current_data == "preferencepack":
+            self.metadata.Name = self.dialog.prefPackNameLineEdit.text()
+        elif self.dialog.displayNameLineEdit.text():
+            self.metadata.Name = self.dialog.displayNameLineEdit.text()
+
+        if current_data == "workbench":
+            self.metadata.Classname = self.dialog.workbenchClassnameLineEdit.text()
+        elif current_data == "macro":
+           self.metadata.File = [self.dialog.macroFileLineEdit.text()]
+        ##########################################################################################
+
+        # Early return if this is the only addon
+        if self.dialog.singletonCheckBox.isChecked():
+            return (current_data, self.metadata)
+
+        self.metadata.Icon = self.dialog.iconLineEdit.text()
+
+        # Otherwise, process the rest of the metadata (display name is already done)
+        self.metadata.Description = self.dialog.descriptionTextEdit.document().toPlainText()
+        self.metadata.Version = self.dialog.versionLineEdit.text()
+
+        maintainers = []
+        authors = []
+        for row in range(self.dialog.peopleTableWidget.rowCount()):
+            person_type = self.dialog.peopleTableWidget.item(row, 0).data()
+            name = self.dialog.peopleTableWidget.item(row, 1).text()
+            email = self.dialog.peopleTableWidget.item(row, 2).text()
+            if person_type == "maintainer":
+                maintainers.append({"name":name,"email":email})
+            elif person_type == "author":
+                authors.append({"name":name,"email":email})
+        self.metadata.Maintainer = maintainers
+        self.metadata.Author = authors
+
+        licenses = []
+        for row in range(self.dialog.licensesTableWidget.rowCount()):
+            license = {}
+            license["name"] = self.dialog.licensesTableWidget.item(row, 0).text
+            license["file"] = self.dialog.licensesTableWidget.item(row, 1).text()
+            licenses.append(license)
+        self.metadata.License = licenses
+        
+        return (self.dialog.addonKindComboBox.currentData(), self.metadata)
 
     ###############################################################################################
     #                                         DIALOG SLOTS
@@ -180,6 +261,9 @@ class AddContent:
             dir=start_dir,
         )
 
+        if not new_icon_path:
+            return
+
         base_path = self.path_to_addon.replace("/", os.path.sep)
         icon_path = new_icon_path.replace("/", os.path.sep)
 
@@ -192,6 +276,7 @@ class AddContent:
             )
             return
         self._set_icon(new_icon_path[len(base_path) :])
+        self.metadata.Icon = new_icon_path[len(base_path) :]
 
     def _browse_for_subdirectory_clicked(self):
         """Callback: when the "Browse..." button for the subdirectory field is clicked"""
@@ -205,6 +290,8 @@ class AddContent:
             ),
             dir=start_dir,
         )
+        if not new_subdir_path:
+            return
         if new_subdir_path[-1] != "/":
             new_subdir_path += "/"
 
@@ -238,20 +325,27 @@ class AddContent:
     def _tags_clicked(self):
         """Show the tag editor"""
         tags = []
+        if not self.metadata:
+            self.metadata = FreeCAD.Metadata()
         if self.metadata:
             tags = self.metadata.Tag
         dlg = EditTags(tags)
         new_tags = dlg.exec()
+        self.metadata.Tag = new_tags
 
     def _freecad_versions_clicked(self):
         """Show the FreeCAD version editor"""
+        if not self.metadata:
+            self.metadata = FreeCAD.Metadata()
         dlg = EditFreeCADVersions()
-        dlg.exec()
+        dlg.exec(self.metadata)
 
     def _dependencies_clicked(self):
         """Show the dependencies editor"""
+        if not self.metadata:
+            self.metadata = FreeCAD.Metadata()
         dlg = EditDependencies()
-        dlg.exec()
+        result = dlg.exec(self.metadata)
 
 
 class EditTags:
@@ -304,20 +398,34 @@ class EditDependencies:
 
         self.dialog.removeDependencyToolButton.setDisabled(True)
 
-    def exec(self):
+    def exec(self, metadata:FreeCAD.Metadata):
         """Execute the dialog"""
-        self.dialog.exec()
+        self.metadata = FreeCAD.Metadata(metadata) # Make a copy, in case we cancel
+        row = 0
+        for dep in self.metadata.Depend:
+            dep_type = dep["type"]
+            dep_name = dep["package"]
+            dep_optional = dep["optional"]
+            self._add_row(row, dep_type, dep_name, dep_optional)
+            row += 1
+        result = self.dialog.exec()
+        if result == QDialog.Accepted:
+            metadata.Depend = self.metadata.Depend
 
     def _add_dependency_clicked(self):
         """Callback: The add button was clicked"""
         dlg = EditDependency()
         dep_type, dep_name, dep_optional = dlg.exec()
-        row = self.dialog.tableWidget.rowCount()
-        self._add_row(row, dep_type, dep_name, dep_optional)
+        if dep_name:
+            row = self.dialog.tableWidget.rowCount()
+            self._add_row(row, dep_type, dep_name, dep_optional)
+            self.metadata.addDepend({"package":dep_name, "type":dep_type, "optional":dep_optional})
+
 
     def _add_row(self, row, dep_type, dep_name, dep_optional):
         """Utility function to add a row to the table."""
         translations = {
+            "automatic": translate("AddonsInstaller", "Automatic"),
             "workbench": translate("AddonsInstaller", "Workbench"),
             "addon": translate("AddonsInstaller", "Addon"),
             "python": translate("AddonsInstaller", "Python"),
@@ -338,6 +446,10 @@ class EditDependencies:
         items = self.dialog.tableWidget.selectedItems()
         if items:
             row = items[0].row()
+            dep_type = self.dialog.tableWidget.item(row, 0).data(Qt.UserRole)
+            dep_name = self.dialog.tableWidget.item(row, 1).text()
+            dep_optional = bool(self.dialog.tableWidget.item(row, 2))
+            self.metadata.removeDepend({"package":dep_name, "type":dep_type, "optional":dep_optional})
             self.dialog.tableWidget.removeRow(row)
 
     def _edit_dependency(self, item):
@@ -347,8 +459,10 @@ class EditDependencies:
         dep_type = self.dialog.tableWidget.item(row, 0).data(Qt.UserRole)
         dep_name = self.dialog.tableWidget.item(row, 1).text()
         dep_optional = bool(self.dialog.tableWidget.item(row, 2))
-        dep_type, dep_name, dep_optional = dlg.exec(dep_type, dep_name, dep_optional)
+        new_dep_type, new_dep_name, new_dep_optional = dlg.exec(dep_type, dep_name, dep_optional)
         if dep_type and dep_name:
+            self.metadata.removeDepend({"package":dep_name, "type":dep_type, "optional":dep_optional})
+            self.metadata.addDepend({"package":new_dep_name, "type":new_dep_type, "optional":new_dep_optional})
             self.dialog.tableWidget.removeRow(row)
             self._add_row(row, dep_type, dep_name, dep_optional)
 
@@ -384,9 +498,8 @@ class EditDependency:
             self._dependency_selection_changed
         )
 
-        self.dialog.typeComboBox.setCurrentIndex(
-            2
-        )  # Expect mostly Python dependencies...
+        # Expect mostly Python dependencies...
+        self.dialog.typeComboBox.setCurrentIndex(2)  
 
     def exec(
         self, dep_type="", dep_name="", dep_optional=False
@@ -488,9 +601,22 @@ class EditFreeCADVersions:
             )
         )
 
-    def exec(self):
+    def exec(self, metadata:FreeCAD.Metadata):
         """Execute the dialog"""
-        self.dialog.exec()
+        if metadata.FreeCADMin != "0.0.0":
+            self.dialog.minVersionLineEdit.setText(metadata.FreeCADMin)
+        if metadata.FreeCADMax != "0.0.0":
+            self.dialog.maxVersionLineEdit.setText(metadata.FreeCADMax)
+        result = self.dialog.exec()
+        if result == QDialog.Accepted:
+            if self.dialog.minVersionLineEdit.text():
+                metadata.FreeCADMin = self.dialog.minVersionLineEdit.text()
+            else:
+                metadata.FreeCADMin = None
+            if self.dialog.maxVersionLineEdit.text():
+                metadata.FreeCADMax = self.dialog.maxVersionLineEdit.text()
+            else:
+                metadata.FreeCADMax = None
 
 
 class EditAdvancedVersions:

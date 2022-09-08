@@ -73,7 +73,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Macro">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -263,7 +263,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QPlainTextEdit" name="plainTextEdit">
+       <widget class="QPlainTextEdit" name="descriptionTextEdit">
         <property name="tabChangesFocus">
          <bool>true</bool>
         </property>
