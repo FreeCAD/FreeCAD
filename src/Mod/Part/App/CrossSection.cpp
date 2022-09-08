@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
@@ -68,7 +69,41 @@ std::list<TopoDS_Wire> CrossSection::slice(double d) const
         sliceNonSolid(d, xp.Current(), wires);
     }
 
-    return wires;
+    return removeDuplicates(wires);
+}
+
+std::list<TopoDS_Wire> CrossSection::removeDuplicates(const std::list<TopoDS_Wire>& wires) const
+{
+    std::list<TopoDS_Wire> wires_reduce;
+    for (const auto& wire : wires) {
+        TopTools_IndexedMapOfShape mapOfEdges1;
+        TopExp::MapShapes(wire, TopAbs_EDGE, mapOfEdges1);
+
+        // The wires are independent shapes but their edges might be shared
+        auto it = std::find_if(wires_reduce.begin(), wires_reduce.end(), [&mapOfEdges1](const TopoDS_Wire& w) {
+            // same TShape and same placement but different orientation
+            TopTools_IndexedMapOfShape mapOfEdges2;
+            TopExp::MapShapes(w, TopAbs_EDGE, mapOfEdges2);
+            int numEdges1 = mapOfEdges1.Extent();
+            int numEdges2 = mapOfEdges2.Extent();
+            if (numEdges1 != numEdges2)
+                return false;
+
+            TopTools_IndexedMapOfShape::Iterator it1(mapOfEdges1);
+            TopTools_IndexedMapOfShape::Iterator it2(mapOfEdges2);
+            for (; it1.More() && it2.More(); it1.Next(), it2.Next()) {
+                if (!it1.Value().IsSame(it2.Value()))
+                    return false;
+            }
+
+            return true;
+        });
+
+        if (it == wires_reduce.end()) {
+            wires_reduce.push_back(wire);
+        }
+    }
+    return wires_reduce;
 }
 
 void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
@@ -164,13 +199,7 @@ void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<
         while (found);
 
         // Fix any topological issues of the wire
-        ShapeFix_Wire aFix;
-        aFix.SetPrecision(Precision::Confusion());
-        aFix.Load(new_wire);
-        aFix.FixReorder();
-        aFix.FixConnected();
-        aFix.FixClosed();
-        wires.push_back(aFix.Wire());
+        wires.push_back(fixWire(new_wire));
     }
 }
 
@@ -188,12 +217,18 @@ void CrossSection::connectWires (const TopTools_IndexedMapOfShape& wireMap, std:
     for (int i=1; i<=hSorted->Length(); i++) {
         const TopoDS_Wire& new_wire = TopoDS::Wire(hSorted->Value(i));
         // Fix any topological issues of the wire
-        ShapeFix_Wire aFix;
-        aFix.SetPrecision(Precision::Confusion());
-        aFix.Load(new_wire);
-        aFix.FixReorder();
-        aFix.FixConnected();
-        aFix.FixClosed();
-        wires.push_back(aFix.Wire());
+        wires.push_back(fixWire(new_wire));
     }
+}
+
+TopoDS_Wire CrossSection::fixWire(const TopoDS_Wire& wire) const
+{
+    // Fix any topological issues of the wire
+    ShapeFix_Wire aFix;
+    aFix.SetPrecision(Precision::Confusion());
+    aFix.Load(wire);
+    aFix.FixReorder();
+    aFix.FixConnected();
+    aFix.FixClosed();
+    return aFix.Wire();
 }
