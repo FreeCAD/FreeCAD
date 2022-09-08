@@ -30,6 +30,7 @@ from PySide2.QtGui import (
 )
 from PySide2.QtCore import QRegularExpression
 
+
 def isidentifier(ident: str) -> bool:
 
     if not ident.isidentifier():
@@ -39,6 +40,7 @@ def isidentifier(ident: str) -> bool:
         return False
 
     return True
+
 
 class NameValidator(QValidator):
     """Simple validator to exclude characters that are not valid in filenames."""
@@ -62,18 +64,20 @@ class NameValidator(QValidator):
 
 
 class PythonIdentifierValidator(QValidator):
-    """ Validates whether input is a valid Python identifier. """
+    """Validates whether input is a valid Python identifier."""
 
     def validate(self, value: str, _: int):
         if not value:
             return QValidator.Intermediate
 
         if not value.isidentifier():
-            return QValidator.Invalid # Includes an illegal character of some sort
+            return QValidator.Invalid  # Includes an illegal character of some sort
 
         if keyword.iskeyword(value):
-            return QValidator.Intermediate # They can keep typing and it might become valid
-        
+            return (
+                QValidator.Intermediate
+            )  # They can keep typing and it might become valid
+
         return QValidator.Acceptable
 
 

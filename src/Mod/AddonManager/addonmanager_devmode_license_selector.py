@@ -24,7 +24,7 @@
 
 import os
 from datetime import date
-from typing import Optional
+from typing import Optional, Tuple
 
 import FreeCAD
 import FreeCADGui
@@ -114,7 +114,9 @@ class LicenseSelector:
         short_code = self.pref.GetString("devModeLastSelectedLicense", "LGPLv2.1")
         self.set_license(short_code)
 
-    def exec(self, short_code: str = None, license_path: str = "") -> Optional[str]:
+    def exec(
+        self, short_code: str = None, license_path: str = ""
+    ) -> Optional[Tuple[str, str]]:
         """The main method for executing this dialog, as a modal that returns a tuple of the
         license's "short code" and optionally the path to the license file. Returns a tuple
         of None,None if the user cancels the operation."""

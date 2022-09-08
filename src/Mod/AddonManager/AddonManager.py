@@ -32,7 +32,7 @@ import tempfile
 import hashlib
 import threading
 import json
-import re # Needed for py 3.6 and earlier, can remove later, search for "re."
+import re  # Needed for py 3.6 and earlier, can remove later, search for "re."
 from datetime import date, timedelta
 from typing import Dict, List
 
@@ -75,8 +75,11 @@ from addonmanager_devmode import DeveloperMode
 import NetworkManager
 
 translate = FreeCAD.Qt.translate
+
+
 def QT_TRANSLATE_NOOP(_, txt):
     return txt
+
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
@@ -102,6 +105,7 @@ installed.
 #  @{
 
 INSTANCE = None
+
 
 class CommandAddonManager:
     """The main Addon Manager class and FreeCAD command"""
@@ -381,9 +385,7 @@ class CommandAddonManager:
         self.dialog.buttonUpdateDependencies.clicked.connect(
             self.show_python_updates_dialog
         )
-        self.dialog.buttonDevTools.clicked.connect(
-            self.show_developer_tools
-        )
+        self.dialog.buttonDevTools.clicked.connect(self.show_developer_tools)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -624,10 +626,12 @@ class CommandAddonManager:
             self.startup_sequence.append(self.load_macro_metadata)
         selection = pref.GetString("SelectedAddon", "")
         if selection:
-            self.startup_sequence.insert(2, functools.partial(self.select_addon, selection))
+            self.startup_sequence.insert(
+                2, functools.partial(self.select_addon, selection)
+            )
             pref.SetString("SelectedAddon", "")
         # TODO: migrate this to the developer mode tools
-        #if ADDON_MANAGER_DEVELOPER_MODE:
+        # if ADDON_MANAGER_DEVELOPER_MODE:
         #    self.startup_sequence.append(self.validate)
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
@@ -922,7 +926,7 @@ class CommandAddonManager:
         self.check_for_python_package_updates_worker.finished.connect(
             self.do_next_startup_phase
         )
-        self.update_allowed_packages_list() # Not really the best place for it...
+        self.update_allowed_packages_list()  # Not really the best place for it...
         self.check_for_python_package_updates_worker.start()
 
     def show_python_updates_dialog(self) -> None:
@@ -931,7 +935,7 @@ class CommandAddonManager:
         self.manage_python_packages_dialog.show()
 
     def show_developer_tools(self) -> None:
-        """ Display the developer tools dialog """
+        """Display the developer tools dialog"""
         if not self.developer_mode:
             self.developer_mode = DeveloperMode()
         self.developer_mode.show()
@@ -1123,7 +1127,7 @@ class CommandAddonManager:
         False."""
 
         bad_packages = []
-        #self.update_allowed_packages_list()
+        # self.update_allowed_packages_list()
         for dep in python_required:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)
@@ -1227,7 +1231,9 @@ class CommandAddonManager:
         ).clicked.connect(functools.partial(self.dependency_dialog_yes_clicked, repo))
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Ignore
-        ).clicked.connect(functools.partial(self.dependency_dialog_ignore_clicked, repo))
+        ).clicked.connect(
+            functools.partial(self.dependency_dialog_ignore_clicked, repo)
+        )
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Cancel
         ).setDefault(True)
@@ -1302,7 +1308,9 @@ class CommandAddonManager:
         self.dependency_installation_worker.failure.connect(
             self.dependency_installation_failure
         )
-        self.dependency_installation_worker.success.connect(functools.partial(self.install,installing_repo))
+        self.dependency_installation_worker.success.connect(
+            functools.partial(self.install, installing_repo)
+        )
         self.dependency_installation_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Information,
             translate("AddonsInstaller", "Installing dependencies"),
@@ -1465,12 +1473,8 @@ class CommandAddonManager:
         self.update_all_worker = UpdateAllWorker(self.packages_with_updates)
         self.update_all_worker.progress_made.connect(self.update_progress_bar)
         self.update_all_worker.status_message.connect(self.show_information)
-        self.update_all_worker.success.connect(
-            self.subupdates_succeeded.append
-        )
-        self.update_all_worker.failure.connect(
-            self.subupdates_failed.append
-        )
+        self.update_all_worker.success.connect(self.subupdates_succeeded.append)
+        self.update_all_worker.failure.connect(self.subupdates_failed.append)
         self.update_all_worker.finished.connect(self.on_update_all_completed)
         self.update_all_worker.start()
 

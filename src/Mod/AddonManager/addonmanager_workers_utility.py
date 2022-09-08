@@ -27,6 +27,8 @@ import FreeCAD
 from PySide2 import QtCore
 import NetworkManager
 
+translate = FreeCAD.Qt.translate
+
 
 class ConnectionChecker(QtCore.QThread):
     """A worker thread for checking the connection to GitHub as a proxy for overall
