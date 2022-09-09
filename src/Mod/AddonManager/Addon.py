@@ -521,7 +521,7 @@ class Addon:
     def disable(self):
         """Disable this addon from loading when FreeCAD starts up by creating a stopfile"""
 
-        stopfile = os.path.join(mod_directory, self.name, "ADDON_DISABLED")
+        stopfile = os.path.join(self.mod_directory, self.name, "ADDON_DISABLED")
         with open(stopfile, "w", encoding="utf-8") as f:
             f.write(
                 "The existence of this file prevents FreeCAD from loading this Addon. To re-enable, delete the file."
