@@ -6,11 +6,11 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg129"
-   viewBox="0 0 297 210"
-   height="210mm"
+   version="1.1"
    width="297mm"
-   version="1.1">
+   height="210mm"
+   viewBox="0 0 297 210"
+   id="svg129">
   <metadata
      id="metadata135">
     <rdf:RDF>
@@ -19,281 +19,282 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs133" />
   <g
-     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4"
-     id="drawing-border">
+     id="drawing-border"
+     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
     <rect
-       id="rect2"
-       y="15"
-       x="7"
+       width="283"
        height="188"
-       width="283" />
+       x="7"
+       y="15"
+       id="rect2" />
   </g>
   <g
-     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4"
-     id="titleblock-structure">
+     id="titleblock-structure"
+     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
     <rect
-       id="rect5"
-       y="169"
-       x="150"
+       width="140"
        height="34"
-       width="140" />
+       x="150"
+       y="169"
+       id="rect5" />
     <path
-       id="path7"
-       d="m 150,177 h 140" />
+       d="m 150,177 h 140"
+       id="path7" />
     <!-- upper horizontal Separator Titleblock -->
     <path
-       id="path9"
-       d="m 150,195 h 87" />
+       d="m 150,195 h 87"
+       id="path9" />
     <!-- lower horizontal Separator Document-Type -->
     <path
-       id="path11"
-       d="m 150,199 h 140" />
+       d="m 150,199 h 140"
+       id="path11" />
     <!-- lower horizontal Separator Copyright -->
     <path
-       id="path13"
-       d="m 195,169 v 8" />
+       d="m 195,169 v 8"
+       id="path13" />
     <!-- Separator Author / Owner -->
     <path
-       id="path15"
-       d="m 237,169 v 30" />
+       d="m 237,169 v 30"
+       id="path15" />
     <!-- Separator Title / Liste RH -->
     <path
-       id="path17"
-       d="m 267,169 v 8" />
+       d="m 267,169 v 8"
+       id="path17" />
     <!-- Separator Scale / Sheet -->
     <path
-       id="path19"
-       d="m 237,185 h 53" />
+       d="m 237,185 h 53"
+       id="path19" />
     <!-- Separator Part / Drawing-Nr -->
     <path
-       id="path21"
-       d="m 237,191 h 53" />
+       d="m 237,191 h 53"
+       id="path21" />
     <!-- Separator DRW-Info / Revision -->
     <path
-       id="path23"
-       d="m 267,191 v 8" />
+       d="m 267,191 v 8"
+       id="path23" />
     <!-- Separator Date / Revision -->
   </g>
   <g
-     style="font-size:3px;text-anchor:start;fill:#000000;font-family:tahoma"
-     id="titleblock-text-non-editable">
+     id="titleblock-text-non-editable"
+     style="font-size:3px;text-anchor:start;fill:#000000;font-family:tahoma">
     <text
-       id="text26"
+       x="151"
        y="172"
-       x="151">Author:</text>
+       id="text26">Author:</text>
     <text
-       id="text28"
+       x="151"
        y="176"
-       x="151">Appr.:</text>
+       id="text28">Appr.:</text>
     <text
-       id="text30"
+       x="196"
        y="172"
-       x="196">Legal owner:</text>
+       id="text30">Legal owner:</text>
     <text
-       id="text32"
+       x="151"
        y="181"
-       x="151">TITLE:</text>
+       id="text32">TITLE:</text>
     <text
-       id="text34"
+       x="151"
        y="198"
-       x="151">Document type:</text>
+       id="text34">Document type:</text>
     <text
-       id="text36"
+       x="268"
        y="172"
-       x="268">Sheet:</text>
+       id="text36">Sheet:</text>
     <text
-       id="text38"
+       x="268"
        y="176"
-       x="268">Size:</text>
+       id="text38">Size:</text>
     <text
-       id="text40"
+       x="238"
        y="172"
-       x="238">Scale:</text>
+       id="text40">Scale:</text>
     <text
-       id="text42"
+       x="238"
        y="176"
-       x="238">Toler.:</text>
+       id="text42">Toler.:</text>
     <text
-       id="text44"
+       x="238"
        y="180"
-       x="238">Part material:</text>
+       id="text44">Part material:</text>
     <text
-       id="text46"
+       x="238"
        y="184"
-       x="238">Part number:</text>
+       id="text46">Part number:</text>
     <text
-       id="text48"
+       x="238"
        y="189"
-       x="238">Drawing no.:</text>
+       id="text48">Drawing no.:</text>
     <text
-       id="text50"
+       x="238"
        y="194"
-       x="238">Date:</text>
+       id="text50">Date:</text>
     <text
-       id="text52"
+       x="268"
        y="194"
-       x="268">Revision:</text>
+       id="text52">Revision:</text>
   </g>
   <g
-     style="font-size:3px;text-anchor:start;fill:#000000;font-family:tahoma"
-     id="titleblock-text-editable">
+     id="titleblock-text-editable"
+     style="font-size:3px;text-anchor:start;fill:#000000;font-family:tahoma">
     <text
-       id="text57"
-       y="172"
+       freecad:editable="AUTHOR_NAME"
        x="162"
-       freecad:editable="AUTHOR_NAME">
+       y="172"
+       id="text57">
       <tspan
          id="tspan55">AUTHOR NAME</tspan>
     </text>
     <text
-       id="text61"
-       y="176"
+       freecad:editable="APPROVER_NAME"
        x="162"
-       freecad:editable="APPROVER_NAME">
+       y="176"
+       id="text61">
       <tspan
          id="tspan59">APPROVER NAME</tspan>
     </text>
     <text
-       id="text65"
-       y="176"
+       freecad:editable="OWNER_NAME"
        x="197"
-       freecad:editable="OWNER_NAME">
+       y="176"
+       id="text65">
       <tspan
          id="tspan63">OWNER NAME</tspan>
     </text>
     <text
-       id="text69"
-       y="185"
+       freecad:editable="TITLELINE-1"
        x="152"
-       freecad:editable="TITLELINE-1">
+       y="185"
+       id="text69">
       <tspan
          id="tspan67">FreeCAD</tspan>
     </text>
     <text
-       id="text73"
-       y="189"
+       freecad:editable="TITLELINE-2"
        x="152"
-       freecad:editable="TITLELINE-2">
+       y="189"
+       id="text73">
       <tspan
          id="tspan71" />
     </text>
     <text
-       id="text77"
-       y="193"
+       freecad:editable="TITLELINE-3"
        x="152"
-       freecad:editable="TITLELINE-3">
+       y="193"
+       id="text77">
       <tspan
          id="tspan75" />
     </text>
     <text
-       id="text81"
-       y="198"
+       freecad:editable="DOCUMENT_TYPE"
        x="174"
-       freecad:editable="DOCUMENT_TYPE"><tspan
-   id="tspan79">Mechanical assembly drawing</tspan>
-</text>
+       y="198"
+       id="text81">
+      <tspan
+         id="tspan79">Mechanical assembly drawing</tspan>
+    </text>
     <text
-       id="text85"
-       y="172"
+       freecad:editable="SHEET"
        x="277"
-       freecad:editable="SHEET">
+       y="172"
+       id="text85">
       <tspan
          id="tspan83">99 of 99</tspan>
     </text>
     <text
-       id="text89"
-       y="172"
+       freecad:editable="SCALE"
        x="247"
-       freecad:editable="SCALE">
+       y="172"
+       id="text89">
       <tspan
          id="tspan87">M x:x</tspan>
     </text>
     <text
-       id="text93"
-       y="176"
+       freecad:editable="TOLERANCE"
        x="247"
-       freecad:editable="TOLERANCE">
+       y="176"
+       id="text93">
       <tspan
          id="tspan91">+/- ?</tspan>
     </text>
     <text
-       id="text97"
-       y="180"
+       freecad:editable="PM"
        x="257"
-       freecad:editable="PM">
+       y="180"
+       id="text97">
       <tspan
          id="tspan95">PM</tspan>
     </text>
     <text
-       id="text101"
-       y="184"
+       freecad:editable="PN"
        x="257"
-       freecad:editable="PN">
+       y="184"
+       id="text101">
       <tspan
          id="tspan99">PN</tspan>
     </text>
     <text
-       id="text105"
-       y="189"
+       freecad:editable="DN"
        x="257"
-       freecad:editable="DN">
+       y="189"
+       id="text105">
       <tspan
          id="tspan103">DN</tspan>
     </text>
     <text
-       id="text109"
-       y="198"
+       freecad:editable="DATE"
        x="239"
-       freecad:editable="DATE">
+       y="198"
+       id="text109">
       <tspan
          id="tspan107">YYYY-MM-DD</tspan>
     </text>
     <text
-       id="text113"
-       y="198"
+       freecad:editable="REVISION"
        x="269"
-       freecad:editable="REVISION">
+       y="198"
+       id="text113">
       <tspan
          id="tspan111">REV A</tspan>
     </text>
     <text
-       id="text117"
-       y="176"
+       freecad:editable="SIZE"
        x="277"
-       freecad:editable="SIZE">
+       y="176"
+       id="text117">
       <tspan
          id="tspan115">A4</tspan>
     </text>
     <text
-       id="text121"
-       y="202"
+       freecad:editable="RIGHTS"
        x="151"
-       freecad:editable="RIGHTS">
+       y="202"
+       id="text121">
       <tspan
          id="tspan119">(R) DO NOT DUPLICATE THIS DRAWING TO THIRD PARTIES WITHOUT OWNER'S PERMISSION !</tspan>
     </text>
   </g>
   <!-- Set display:none to hide FreeCAD Logo or remove this and next 4 lines from this code -->
   <g
-     fill="none"
-     stroke-width="0.35"
-     stroke="#000"
-     fill-rule="evenodd"
-     transform="translate(138,192)"
+     style="display:inline"
      id="freecad-logo"
-     style="display:inline">
+     transform="translate(138,192)"
+     fill-rule="evenodd"
+     stroke="#000"
+     stroke-width="0.35"
+     fill="none">
     <path
-       id="path124"
-       d="m0.1524 0.15254v8.8549h1.9744v-3.4652h1.396v-1.3661h-1.396v-1.4745h3.4391v-2.5441l-5.4135-0.005z" />
+       d="m0.1524 0.15254v8.8549h1.9744v-3.4652h1.396v-1.3661h-1.396v-1.4745h3.4391v-2.5441l-5.4135-0.005z"
+       id="path124" />
     <path
-       id="path126"
-       d="m7.7927 3.4504-0.50715-0.176-0.48387-1.2366-0.76115 0.04-0.34718 1.2787-0.4859 0.23269-1.2119-0.53015-0.51188 0.56882 0.65892 1.1485-0.18006 0.50567-1.2366 0.48387 0.044064 0.76263 1.2787 0.34718 0.23269 0.4859-0.53421 1.2104 0.56882 0.51188 1.1485-0.65891 0.50973 0.18155 0.4798 1.2351 0.7667-0.04258 0.34311-1.2802 0.4859-0.23269 1.2145 0.5357 0.51188-0.56882-0.65891-1.1485 0.17748-0.51122 1.2351-0.4798-0.03851-0.76521-1.2802-0.34311-0.23269-0.4859 0.53163-1.216-0.56881-0.51184zm-0.5715 1.2244 0.23576 0.13679 0.20426 0.18519 0.16353 0.22101 0.11763 0.24572 0.06916 0.26489 0.01146 0.27146-0.03921 0.27139-0.08948 0.25764-0.14234 0.23834-0.17964 0.20167-0.22101 0.16353-0.24572 0.11763-0.26489 0.06916-0.27295 0.01553-0.2719-0.04-0.2576-0.089-0.2383-0.143-0.2002-0.183-0.165-0.217-0.1177-0.246-0.0676-0.269-0.0156-0.273 0.039206-0.2714 0.089484-0.25764 0.14085-0.23427 0.18113-0.20574 0.22101-0.16352 0.24572-0.11763 0.26895-0.06768 0.27147-0.01146 0.27139 0.03921 0.25764 0.08948z" />
+       d="m7.7927 3.4504-0.50715-0.176-0.48387-1.2366-0.76115 0.04-0.34718 1.2787-0.4859 0.23269-1.2119-0.53015-0.51188 0.56882 0.65892 1.1485-0.18006 0.50567-1.2366 0.48387 0.044064 0.76263 1.2787 0.34718 0.23269 0.4859-0.53421 1.2104 0.56882 0.51188 1.1485-0.65891 0.50973 0.18155 0.4798 1.2351 0.7667-0.04258 0.34311-1.2802 0.4859-0.23269 1.2145 0.5357 0.51188-0.56882-0.65891-1.1485 0.17748-0.51122 1.2351-0.4798-0.03851-0.76521-1.2802-0.34311-0.23269-0.4859 0.53163-1.216-0.56881-0.51184zm-0.5715 1.2244 0.23576 0.13679 0.20426 0.18519 0.16353 0.22101 0.11763 0.24572 0.06916 0.26489 0.01146 0.27146-0.03921 0.27139-0.08948 0.25764-0.14234 0.23834-0.17964 0.20167-0.22101 0.16353-0.24572 0.11763-0.26489 0.06916-0.27295 0.01553-0.2719-0.04-0.2576-0.089-0.2383-0.143-0.2002-0.183-0.165-0.217-0.1177-0.246-0.0676-0.269-0.0156-0.273 0.039206-0.2714 0.089484-0.25764 0.14085-0.23427 0.18113-0.20574 0.22101-0.16352 0.24572-0.11763 0.26895-0.06768 0.27147-0.01146 0.27139 0.03921 0.25764 0.08948z"
+       id="path126" />
   </g>
 </svg>
