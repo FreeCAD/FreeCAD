@@ -411,11 +411,43 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
     FreeCAD.Console.PrintLog("Added standard principal stresses and max shear values.\n")
+
+    # add critical strain ratio
+    MatMechNon = FreeCAD.ActiveDocument.getObject('MaterialMechanicalNonlinear')
+    if MatMechNon:
+        stress_strain = MatMechNon.YieldPoints
+        if stress_strain:
+            i = -1
+            while stress_strain[i] == "": i -= 1
+            eps_cr_uni = float(stress_strain[i].split(",")[1])
+            alpha = 1.65 * eps_cr_uni
+            beta = 1.5
+            if res_obj.Peeq:
+                res_obj.CriticalStrainRatio = calculate_csr(prinstress1, prinstress2, prinstress3, alpha, beta,
+                                                            res_obj)
+
     return res_obj
 
 
-def get_concrete_nodes(res_obj):
+def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
+    #
+    # HarryvL: calculate critical strain ratio
+    #
+    csr = []  # critical strain ratio
+    nsr = len(ps1)  # number of stress results
+    for i in range(nsr):
+        p = (ps1[i] + ps2[i] + ps3[i]) / 3.0
+        svm = np.sqrt(1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (ps3[i] - p) ** 2)
+        if svm != 0.:
+            T = p / svm  # stress triaxiality
+        else:
+            T = 0.
+        eps_cr = alpha * np.exp(-beta * T)  # critical strain
+        csr.append(abs(res_obj.Peeq[i]) / eps_cr)
+    return csr
 
+
+def get_concrete_nodes(res_obj):
     #
     # HarryvL: determine concrete / non-concrete nodes
     #
@@ -460,7 +492,6 @@ def get_concrete_nodes(res_obj):
 
 
 def add_principal_stress_reinforced(res_obj):
-
     #
     # HarryvL: determine concrete / non-concrete nodes
     #
@@ -610,13 +641,12 @@ def calculate_von_mises(stress_tensor):
     normal = stress_tensor[:3]
     shear = stress_tensor[3:]
     pressure = np.average(normal)
-    return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
+    return np.sqrt(1.5 * np.linalg.norm(normal - pressure) ** 2 + 3.0 * np.linalg.norm(shear) ** 2)
 
 
 def calculate_principal_stress_std(
-    stress_tensor
+        stress_tensor
 ):
-
     # if NaN is inside the array, which can happen on Calculix frd result files return NaN
     # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649#p274291
@@ -690,7 +720,6 @@ def calculate_principal_stress_reinforced(stress_tensor):
 
 
 def calculate_rho(stress_tensor, fy):
-
     #
     #   HarryvL - Calculation of Reinforcement Ratios and
     #   Concrete Stresses according to http://heronjournal.nl/53-4/3.pdf
@@ -715,29 +744,29 @@ def calculate_rho(stress_tensor, fy):
 
     #    i1=sxx+syy+szz NOT USED
     #    i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
-    i3 = (sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz**2
-          - syy * sxz**2 - szz * sxy**2)
+    i3 = (sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz ** 2
+          - syy * sxz ** 2 - szz * sxy ** 2)
 
     #    Solution (5)
-    d = (sxx * syy - sxy**2)
+    d = (sxx * syy - sxy ** 2)
     if d != 0.:
         rhoz[0] = i3 / d / fy
 
     #    Solution (6)
-    d = (sxx * szz - sxz**2)
+    d = (sxx * szz - sxz ** 2)
     if d != 0.:
         rhoy[1] = i3 / d / fy
 
     #    Solution (7)
-    d = (syy * szz - syz**2)
+    d = (syy * szz - syz ** 2)
     if d != 0.:
         rhox[2] = i3 / d / fy
 
     #    Solution (9)
     if sxx != 0.:
         fc = sxz * sxy / sxx - syz
-        fxy = sxy**2 / sxx
-        fxz = sxz**2 / sxx
+        fxy = sxy ** 2 / sxx
+        fxz = sxz ** 2 / sxx
 
         #    Solution (9+)
         rhoy[3] = syy - fxy + fc
@@ -754,8 +783,8 @@ def calculate_rho(stress_tensor, fy):
     #   Solution (10)
     if syy != 0.:
         fc = syz * sxy / syy - sxz
-        fxy = sxy**2 / syy
-        fyz = syz**2 / syy
+        fxy = sxy ** 2 / syy
+        fyz = syz ** 2 / syy
 
         # Solution (10+)
         rhox[5] = sxx - fxy + fc
@@ -773,8 +802,8 @@ def calculate_rho(stress_tensor, fy):
     # Solution (11)
     if szz != 0.:
         fc = sxz * syz / szz - sxy
-        fxz = sxz**2 / szz
-        fyz = syz**2 / szz
+        fxz = sxz ** 2 / szz
+        fyz = syz ** 2 / szz
 
         # Solution (11+)
         rhox[7] = sxx - fxz + fc
@@ -825,10 +854,10 @@ def calculate_rho(stress_tensor, fy):
             scyy = syy - rhoy[ir] * fy
             sczz = szz - rhoz[ir] * fy
             ic1 = (scxx + scyy + sczz)
-            ic2 = (scxx * scyy + scyy * sczz + sczz * scxx - sxy**2
-                   - sxz**2 - syz**2)
-            ic3 = (scxx * scyy * sczz + 2 * sxy * sxz * syz - scxx * syz**2
-                   - scyy * sxz**2 - sczz * sxy**2)
+            ic2 = (scxx * scyy + scyy * sczz + sczz * scxx - sxy ** 2
+                   - sxz ** 2 - syz ** 2)
+            ic3 = (scxx * scyy * sczz + 2 * sxy * sxz * syz - scxx * syz ** 2
+                   - scyy * sxz ** 2 - sczz * sxy ** 2)
 
             if ic1 <= 1.e-6 and ic2 >= -1.e-6 and ic3 <= 1.0e-6:
 
