@@ -440,6 +440,7 @@ class Macro:
 
     def _copy_other_files(self, macro_dir, warnings) -> bool:
         """Copy any specified "other files" into the install directory"""
+        base_dir = os.path.dirname(self.src_filename)
         for other_file in self.other_files:
             if not other_file:
                 continue
