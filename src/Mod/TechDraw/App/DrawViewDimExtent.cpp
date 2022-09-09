@@ -122,13 +122,16 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
     if (cTags.size() <= 1) {
-        return DrawViewDimension::execute();
+        //not ready yet.
+        return DrawView::execute();
     }
 
     TechDraw::VertexPtr v0 = dvp->getProjVertexByCosTag(cTags[0]);
     TechDraw::VertexPtr v1 = dvp->getProjVertexByCosTag(cTags[1]);
-    if (!v0 || !v1)
-        return DrawViewDimension::execute();
+    if (!v0 || !v1) {
+        //either not ready yet or something has gone wrong
+        return DrawView::execute();
+    }
 
     double length00 = (v0->pnt - refMin).Length();
     double length11 = (v1->pnt - refMax).Length();
@@ -158,8 +161,9 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 std::vector<std::string> DrawViewDimExtent::getSubNames(void)
 {
     std::vector<std::string> edgeNames = Source.getSubValues();
+//    Base::Console().Message("DVDE::getSubNames - edgeNames: %d\n", edgeNames.size());
     if (edgeNames.empty() ||
-        !edgeNames[0].empty()) {
+        edgeNames[0].empty()) {
         return std::vector<std::string>(); //garbage first entry - nop
     }
     return edgeNames;
@@ -179,7 +183,8 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.empty()) {
+    if (cTags.size() < 2) {
+//        Base::Console().Message("DVDE::getPointsTwoVerts - not enough tags!\n");
         return errorValue;
     }
 
@@ -201,8 +206,9 @@ bool DrawViewDimExtent::checkReferences2D() const
     }
 
     std::vector<std::string> cTags = CosmeticTags.getValues();
-    if (cTags.empty()) {
-        return false;
+    if (cTags.size() < 2) {
+        //still building this dimension, so treat as valid?
+        return true;
     }
 
     CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);

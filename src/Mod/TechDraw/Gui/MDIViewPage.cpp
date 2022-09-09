@@ -840,6 +840,7 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect()
 {
+//    Base::Console().Message("MDIVP::setTreeToSceneSelect()\n");
     bool saveBlock = blockSelection(true); // block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
     Gui::Selection().clearSelection();
@@ -1003,15 +1004,12 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
 
     int treeCount = 0;
     int sceneCount = 0;
-    int subCount = 0;
     int ppCount = 0;
     std::vector<std::string> treeNames;
     std::vector<std::string> sceneNames;
 
     for (auto tn: treeSel) {
         if (tn.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-            int treeSubs = tn.getSubNames().size();
-            subCount += treeSubs;
             std::string s = tn.getObject()->getNameInDocument();
             treeNames.push_back(s);
         }
@@ -1081,18 +1079,8 @@ void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const 
                  QString::fromUtf8(string2),
                  QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {
-        Gui::getMainWindow()->showMessage(msg, 3000);
+        Gui::getMainWindow()->showMessage(msg, 6000);
     }
-}
-
-//return the MDIViewPage that owns the scene
-MDIViewPage *MDIViewPage::getFromScene(const QGSPage *scene)
-{
-    if (scene && scene->parent()) {
-        return dynamic_cast<MDIViewPage *>(scene->parent());
-    }
-
-    return nullptr;
 }
 
 // ----------------------------------------------------------------------------
