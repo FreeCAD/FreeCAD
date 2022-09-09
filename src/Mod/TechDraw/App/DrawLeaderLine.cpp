@@ -30,9 +30,7 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 
-#include "DrawPage.h"
 #include "DrawView.h"
-#include "DrawUtil.h"
 
 #include <Mod/TechDraw/App/DrawLeaderLinePy.h>  // generated from DrawLeaderLinePy.xml
 #include "DrawLeaderLine.h"
@@ -283,7 +281,7 @@ Base::Vector3d DrawLeaderLine::getTailPoint() const
 bool DrawLeaderLine::getDefAuto() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLine");
     bool result = hGrp->GetBool("AutoHorizontal", true);
     return result;
 }
