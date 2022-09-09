@@ -59,23 +59,13 @@ ConsoleObserverFile::~ConsoleObserverFile()
 
 void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
 {
-    std::string prefix;
-    switch(level){
-        case LogStyle::Warning:
-            prefix = "Wrn: ";
-            break;
-        case LogStyle::Message:
-            prefix = "Msg: ";
-            break;
-        case LogStyle::Error:
-            prefix = "Err: ";
-            break;
-        case LogStyle::Log:
-            prefix = "Log: ";
-            break;
-    }
+    std::map<LogStyle, std::string> prefixes{
+        {LogStyle::Warning, "Wrn: "},
+        {LogStyle::Message, "Msg: "},
+        {LogStyle::Error, "Err: "},
+        {LogStyle::Log, "Log: "}};
 
-    cFileStream << prefix << msg;
+    cFileStream << prefixes[level] << msg;
     cFileStream.flush();
 }
 
@@ -93,90 +83,46 @@ ConsoleObserverStd::ConsoleObserverStd() :
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::SendLog(const std::string& msg, LogStyle level)
+template<typename T>
+auto colorize(T msgType, const char *msg, FILE* dest)
 {
-    switch(level){
-        case LogStyle::Warning:
-            this->Warning(msg.c_str());
-            break;
-        case LogStyle::Message:
-            this->Message(msg.c_str());
-            break;
-        case LogStyle::Error:
-            this->Error(msg.c_str());
-            break;
-        case LogStyle::Log:
-            this->Log(msg.c_str());
-            break;
+    if constexpr (sysType == SysTypes::Windows) {
+        std::map<LogStyle, int> formats{
+            {LogStyle::Warning, fGreen | fBlue},
+            {LogStyle::Error, fRed | fIntensity},
+            {LogStyle::Log, fRed | fGreen}};
+        setConsoleTextAttr(formats[msgType]);
+        fprintf(dest, "%s", msg);
+        setConsoleTextAttr(fRed | fGreen | fBlue);
+    }
+    else {
+        if constexpr (isLinuxBased) {
+            std::map<LogStyle, char *> formats{
+                {LogStyle::Warning, "\033[1;33m"},
+                {LogStyle::Error, "\033[1;31m"},
+                {LogStyle::Log, "\033[1;36m"},
+            };
+            fprintf(dest, "%s", formats[msgType]);
+            fprintf(dest, "%s", msg);
+            fprintf(dest, "%s", "\033[0m");
+        }
+        else {
+            fprintf(dest, "%s", msg);
+        }
     }
 }
 
-void ConsoleObserverStd::Message(const char *sMsg)
+void ConsoleObserverStd::SendLog(const std::string &msg, LogStyle level)
 {
-    printf("%s",sMsg);
-}
-
-void ConsoleObserverStd::Warning(const char *sWarn)
-{
-    if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_GREEN| FOREGROUND_BLUE);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        fprintf(stderr, "\033[1;33m");
-#   endif
+    if (level == LogStyle::Message) {
+        printf("%s", msg.c_str());
+        return;
     }
-
-    fprintf(stderr, "%s", sWarn);
-
-    if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        fprintf(stderr, "\033[0m");
-#   endif
+    if( ! useColorStderr){
+        fprintf(stderr, "%s", msg.c_str());
+        return;
     }
-}
-
-void ConsoleObserverStd::Error  (const char *sErr)
-{
-    if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED|FOREGROUND_INTENSITY );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        fprintf(stderr, "\033[1;31m");
-#   endif
-    }
-
-    fprintf(stderr, "%s", sErr);
-
-    if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        fprintf(stderr, "\033[0m");
-#   endif
-    }
-}
-
-void ConsoleObserverStd::Log    (const char *sErr)
-{
-    if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), FOREGROUND_RED |FOREGROUND_GREEN);
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        fprintf(stderr, "\033[1;36m");
-#   endif
-    }
-
-    fprintf(stderr, "%s", sErr);
-
-    if (useColorStderr) {
-#   if defined(FC_OS_WIN32)
-        ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-#   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-        fprintf(stderr, "\033[0m");
-#   endif
-    }
+    colorize(level, msg.c_str(), stderr);
 }
 
 RedirectStdOutput::RedirectStdOutput()

@@ -27,8 +27,56 @@
 #include <Base/Console.h>
 #include <Base/Stream.h>
 
+namespace{
+
+enum class SysTypes
+{
+    Windows,
+    Linux,
+    MacOS,
+    BSD,
+    Other
+};
+
+#if defined(FC_OS_WIN32)
+constexpr auto sysType = sysTypes::Windows;
+#elif defined(FC_OS_LINUX)
+constexpr auto sysType = SysTypes::Linux;
+#elif defined(FC_OS_MACOSX)
+constexpr auto sysType = SysTypes::MacOS;
+#elif defined(FC_OS_BSD)
+constexpr auto sysType = SysTypes::BSD;
+#else
+constexpr auto sysType = SysTypes::Other;
+#endif
+
+#if defined(FC_OS_WIN32)
+constexpr auto fRed{FOREGROUND_RED};
+constexpr auto fGreen{FOREGROUND_GREEN};
+constexpr auto fBlue{FOREGROUND_BLUE};
+constexpr auto fIntensity{FOREGROUND_INTENSITY};
+auto setConsoleTextAttr = [](auto format) {
+    ::SetConsoleTextAttribute(::GetStdHandle(STD_ERROR_HANDLE), format);
+};
+#else
+constexpr auto fRed{0};
+constexpr auto fGreen{0};
+constexpr auto fBlue{0};
+constexpr auto fIntensity{0};
+auto setConsoleTextAttr = [](auto format) {};
+#endif
+
+constexpr bool isLinuxBased =
+    sysType == SysTypes::Linux
+     || sysType == SysTypes::MacOS
+     || sysType == SysTypes::BSD;
+
+}//namespace
 
 namespace Base {
+
+constexpr unsigned int bufferSize {80};
+
 
 //=========================================================================
 // some special observers
