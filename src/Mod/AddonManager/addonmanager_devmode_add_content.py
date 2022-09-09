@@ -532,6 +532,9 @@ class EditDependency:
         # Expect mostly Python dependencies...
         self.dialog.typeComboBox.setCurrentIndex(2)
 
+        self.dialog.layout().setSizeConstraint(QLayout.SetFixedSize)
+
+
     def exec(
         self, dep_type="", dep_name="", dep_optional=False
     ) -> Tuple[str, str, bool]:
@@ -618,8 +621,10 @@ class EditDependency:
         selection = self.dialog.dependencyComboBox.currentData()
         if selection == "other":
             self.dialog.lineEdit.show()
+            self.dialog.otherNote.show()
         else:
             self.dialog.lineEdit.hide()
+            self.dialog.otherNote.hide()
 
 
 class EditFreeCADVersions:

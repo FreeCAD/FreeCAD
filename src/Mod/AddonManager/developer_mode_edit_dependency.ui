@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>347</width>
-    <height>142</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,6 +40,24 @@
       <widget class="QLineEdit" name="lineEdit">
        <property name="placeholderText">
         <string>Package name, if &quot;Other...&quot;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="otherNote">
+       <property name="font">
+        <font>
+         <italic>true</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
