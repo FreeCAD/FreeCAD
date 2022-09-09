@@ -191,9 +191,7 @@ G21
 
         Empty path.  Outputs all arguments.
         """
-        self.single_compare(
-            [],
-            """Arguments that are shared with all postprocessors:
+        expected = """Arguments that are shared with all postprocessors:
   --metric              Convert output for Metric mode (G21) (default)
   --inches              Convert output for US imperial mode (G20)
   --axis-modal          Don't output axis values if they are the same as the
@@ -253,9 +251,17 @@ G21
                         movements (default)
   --wait-for-spindle WAIT_FOR_SPINDLE
                         Time to wait (in seconds) after M3, M4 (default = 0.0)
-""",
-            "--output_all_arguments",
-        )
+"""
+        self.docobj.Path = Path.Path([])
+        postables = [self.docobj]
+        gcode: str = postprocessor.export(postables, "gcode.tmp", "--output_all_arguments")
+        # The argparse help routine turns out to be sensitive to the
+        # number of columns in the terminal window that the tests
+        # are run from.  This affects the indenting in the output.
+        # The next couple of lines remove all of the white space.
+        gcode = "".join(gcode.split())
+        expected = "".join(expected.split())
+        self.assertEqual(gcode, expected)
 
     def test00020(self):
         """Test Outputting visible arguments.
