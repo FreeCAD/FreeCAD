@@ -649,9 +649,10 @@ class ProcessSelectedFaces:
         """_isReady(module)... Internal method.
         Checks if required attributes are available for processing obj.Base (the Base Geometry)."""
         Path.Log.debug("ProcessSelectedFaces _isReady({})".format(module))
-        if hasattr(self, module):
+        modMethodName = module.replace("Op.", "Path")
+        if hasattr(self, modMethodName):
             self.module = module
-            modMethod = getattr(self, module)  # gets the attribute only
+            modMethod = getattr(self, modMethodName)  # gets the attribute only
             modMethod()  # executes as method
         else:
             Path.Log.error('PSF._isReady() no "{}" method.'.format(module))
