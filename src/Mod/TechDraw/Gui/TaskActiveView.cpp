@@ -58,8 +58,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
 #include "Grabber3d.h"
-#include "Rez.h"
-
+#include "ViewProviderImage.h"
 #include "TaskActiveView.h"
 
 using namespace Gui;
@@ -139,13 +138,10 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         bg = QColor(Qt::transparent);
     }
 
-
-//    QImage image;
-    QImage image(100, 100, QImage::Format_RGB32);
+    QImage image(100, 100, QImage::Format_RGB32);  //arbitrary initial image size. quickView will use
+                                                   //MdiView size in pixels
     image.fill(QColor(Qt::transparent));
     Grabber3d:: quickView(appDoc,
-                          Rez::guiX(ui->qsbWidth->rawValue()),      //mm to scene units
-                          Rez::guiX(ui->qsbHeight->rawValue()),     //mm to scene units
                           bg,
                           image);
     bool success = image.save(Base::Tools::fromStdString(fileSpec));
@@ -154,6 +150,8 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
     }
     Command::doCommand(Command::Doc,"App.activeDocument().%s.ImageFile = '%s'",imageName.c_str(), fileSpec.c_str());
+    Command::doCommand(Command::Doc,"App.activeDocument().%s.Width = %.5f",imageName.c_str(), ui->qsbWidth->rawValue());
+    Command::doCommand(Command::Doc,"App.activeDocument().%s.Height = %.5f",imageName.c_str(), ui->qsbHeight->rawValue());
 
     App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(imageName.c_str());
     TechDraw::DrawViewImage* newImg = dynamic_cast<TechDraw::DrawViewImage*>(newObj);
@@ -161,6 +159,17 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
          (newImg == nullptr) ) {
         throw Base::RuntimeError("TaskActiveView - new image object not found");
     }
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(newImg->getDocument());
+    if (guiDoc) {
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(newImg);
+        if (vp) {
+            auto vpImage = dynamic_cast<ViewProviderImage*>(vp);
+            if (vpImage) {
+                vpImage->Crop.setValue(ui->cbCrop->isChecked());
+            }
+        }
+    }
+
 
     return newImg;
 }

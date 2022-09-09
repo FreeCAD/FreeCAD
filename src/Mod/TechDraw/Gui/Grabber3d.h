@@ -30,11 +30,6 @@
 
 namespace App {
 class Document;
-class DocumentObject;
-}
-namespace Gui {
-class Document;
-class View3DInventorViewer;
 }
 
 namespace TechDrawGui
@@ -44,7 +39,6 @@ namespace TechDrawGui
 class TechDrawGuiExport Grabber3d {
 public:
     static void quickView(App::Document* appDoc,
-                          int outWidth, int outHeight,
                           const QColor bgColor,
                           QImage &image);
 };

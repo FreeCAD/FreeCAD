@@ -26,6 +26,7 @@
 
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -35,12 +36,10 @@
 
 #include "Grabber3d.h"
 
-
 using namespace TechDrawGui;
 using namespace Gui;
 
 void Grabber3d::quickView(App::Document* appDoc,
-                          int outWidth, int outHeight,
                           const QColor bgColor,
                           QImage &image)
 {
@@ -64,6 +63,7 @@ void Grabber3d::quickView(App::Document* appDoc,
         Base::Console().Warning("G3d::quickView - could not create viewer - returning\n");
         return;
     }
+    //figure out the size of the active MdiView
     SbViewportRegion vport(viewer->getSoRenderManager()->getViewportRegion());
     SbVec2s vpSize = vport.getViewportSizePixels();
     short width;
