@@ -292,6 +292,13 @@ class ResultMechanical(base_fempythonobject.BaseFemPythonObject):
             "",
             True
         )
+        obj.addProperty(
+            "App::PropertyFloatList",
+            "CriticalStrainRatio",
+            "NodeData",
+            "",
+            True
+        )
 
         # initialize the Stats with the appropriate count of items
         # see fill_femresult_stats in femresult/resulttools.py

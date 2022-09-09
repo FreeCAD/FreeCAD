@@ -718,6 +718,8 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainXZ"] = "Strain xz component";
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
+    resFCScalProp["CriticalStrainRatio"] = "Critical Strain Ratio";
+
     // the following three are filled in all cases
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
     // it might be these can be generated in paraview from stress tensor values as
