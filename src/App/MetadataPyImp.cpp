@@ -139,7 +139,7 @@ void MetadataPy::setVersion(Py::Object args)
     const char *name = nullptr;
     if (!PyArg_Parse(args.ptr(), "z", &name))
         throw Py::Exception();
-    if (name) 
+    if (name && name[0] != '\0') 
         getMetadataPtr()->setVersion(App::Meta::Version(std::string(name)));
     else
         getMetadataPtr()->setVersion(App::Meta::Version());
@@ -933,6 +933,18 @@ PyObject *MetadataPy::removeContentItem(PyObject *arg)
     Py_INCREF(Py_None);
     return Py_None;
 }
+
+PyObject* MetadataPy::write(PyObject* args)
+{
+    char *filename = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &filename))
+        return nullptr;
+    getMetadataPtr()->write(filename);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 
 PyObject *MetadataPy::getCustomAttributes(const char * /*attr*/) const
 {

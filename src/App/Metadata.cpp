@@ -655,7 +655,9 @@ void Metadata::appendToElement(DOMElement* root) const
 {
     appendSimpleXMLNode(root, "name", _name);
     appendSimpleXMLNode(root, "description", _description);
-    appendSimpleXMLNode(root, "version", _version.str());
+    if (_version != Meta::Version())
+        // Only append version if it's not 0.0.0
+        appendSimpleXMLNode(root, "version", _version.str());
 
     for (const auto& maintainer : _maintainer) {
         auto element = appendSimpleXMLNode(root, "maintainer", maintainer.name);
@@ -977,6 +979,8 @@ Meta::Version::Version(const std::string& versionString) :
 
 std::string Meta::Version::str() const
 {
+    if (*this == Meta::Version())
+        return "";
     std::ostringstream stream;
     stream << major << "." << minor << "." << patch << suffix;
     return stream.str();

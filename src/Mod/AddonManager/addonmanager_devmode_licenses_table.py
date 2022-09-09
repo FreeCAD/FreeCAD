@@ -26,7 +26,6 @@ import os
 
 from PySide2.QtWidgets import QTableWidgetItem
 from PySide2.QtGui import QIcon
-from PySide2.QtCore import Qt
 
 import FreeCAD
 import FreeCADGui
@@ -35,6 +34,7 @@ from addonmanager_devmode_license_selector import LicenseSelector
 
 translate = FreeCAD.Qt.translate
 
+#pylint: disable=too-few-public-methods
 
 class LicensesTable:
     """A QTableWidget and associated buttons for managing the list of authors and maintainers."""
@@ -55,6 +55,8 @@ class LicensesTable:
         self.widget.removeButton.clicked.connect(self._remove_clicked)
         self.widget.tableWidget.itemSelectionChanged.connect(self._selection_changed)
         self.widget.tableWidget.itemDoubleClicked.connect(self._edit)
+        self.metadata = None
+        self.path_to_addon = ""
 
     def show(self, metadata, path_to_addon):
         """Set up the widget based on incoming metadata"""
@@ -68,9 +70,9 @@ class LicensesTable:
         """Use the passed metadata object to populate the maintainers and authors"""
         self.widget.tableWidget.setRowCount(0)
         row = 0
-        for license in self.metadata.License:
-            shortcode = license["name"]
-            path = license["file"]
+        for l in self.metadata.License:
+            shortcode = l["name"]
+            path = l["file"]
             self._add_row(row, shortcode, path)
             row += 1
 

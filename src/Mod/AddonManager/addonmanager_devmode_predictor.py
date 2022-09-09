@@ -32,10 +32,12 @@ import datetime
 import os
 
 import FreeCAD
-from addonmanager_git import initialize_git, GitFailed, GitManager
+from addonmanager_git import initialize_git, GitManager
 from addonmanager_utilities import get_readme_url
 
 translate = FreeCAD.Qt.translate
+
+#pylint: disable=too-few-public-methods
 
 
 class AddonSlice:
@@ -54,6 +56,7 @@ class Predictor:
         self.path = None
         self.metadata = FreeCAD.Metadata()
         self.license_data = None
+        self.readme_data = None
         self.license_file = ""
         self.git_manager: GitManager = initialize_git()
         if not self.git_manager:
@@ -86,28 +89,26 @@ class Predictor:
         # is common for there to be multiple entries representing the same human being,
         # so a passing attempt is made to reconcile:
         filtered_committers = {}
-        for key in committers:
-            emails = committers[key]["email"]
+        for key,committer in committers.items():
             if "github" in key.lower():
                 # Robotic merge commit (or other similar), ignore
                 continue
             # Does any other committer share any of these emails?
-            for other_key in committers:
+            for other_key,other_committer in committers.items():
                 if other_key == key:
                     continue
-                other_emails = committers[other_key]["email"]
-                for other_email in other_emails:
-                    if other_email in emails:
+                for other_email in other_committer["email"]:
+                    if other_email in committer["email"]:
                         # There is overlap in the two email lists, so this is probably the
                         # same author, with a different name (username, pseudonym, etc.)
-                        if not committers[key]["aka"]:
-                            committers[key]["aka"] = set()
-                        committers[key]["aka"].add(other_key)
-                        committers[key]["count"] += committers[other_key]["count"]
-                        committers[key]["email"].combine(committers[other_key]["email"])
-                        committers.remove(other_key)
+                        if not committer["aka"]:
+                            committer["aka"] = set()
+                        committer["aka"].add(other_key)
+                        committer["count"] += other_committer["count"]
+                        committer["email"].combine(other_committer["email"])
+                        committers.pop(other_key)
                         break
-            filtered_committers[key] = committers[key]
+            filtered_committers[key] = committer
         maintainers = []
         for name, info in filtered_committers.items():
             if "aka" in info:
@@ -181,8 +182,8 @@ class Predictor:
     def _predict_license(self):
         """Predict the license based on any existing license file."""
 
-        # These are processed in order, so the BSD 3 clause must come before the 2, for example, because
-        # the only difference between them is the additional clause.
+        # These are processed in order, so the BSD 3 clause must come before the 2, for example,
+        # because the only difference between them is the additional clause.
         known_strings = {
             "Apache-2.0": (
                 "Apache License, Version 2.0",
@@ -190,15 +191,20 @@ class Predictor:
             ),
             "BSD-3-Clause": (
                 "The 3-Clause BSD License",
-                "3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.",
+                "3. Neither the name of the copyright holder nor the names of its contributors \
+                may be used to endorse or promote products derived from this software without \
+                specific prior written permission.",
             ),
             "BSD-2-Clause": (
                 "The 2-Clause BSD License",
-                "2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.",
+                "2. Redistributions in binary form must reproduce the above copyright notice, \
+                this list of conditions and the following disclaimer in the documentation and/or \
+                other materials provided with the distribution.",
             ),
             "CC0v1": (
                 "CC0 1.0 Universal",
-                "voluntarily elects to apply CC0 to the Work and publicly distribute the Work under its terms",
+                "voluntarily elects to apply CC0 to the Work and publicly distribute the Work \
+                under its terms",
             ),
             "GPLv2": (
                 "GNU General Public License version 2",
@@ -206,7 +212,8 @@ class Predictor:
             ),
             "GPLv3": (
                 "GNU General Public License version 3",
-                "The GNU General Public License is a free, copyleft license for software and other kinds of works.",
+                "The GNU General Public License is a free, copyleft license for software and \
+                other kinds of works.",
             ),
             "LGPLv2.1": (
                 "GNU Lesser General Public License version 2.1",
@@ -218,7 +225,8 @@ class Predictor:
             ),
             "MIT": (
                 "The MIT License",
-                "including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software",
+                "including without limitation the rights to use, copy, modify, merge, publish, \
+                distribute, sublicense, and/or sell copies of the Software",
             ),
             "MPL-2.0": (
                 "Mozilla Public License 2.0",
@@ -227,9 +235,9 @@ class Predictor:
         }
         self._load_license()
         if self.license_data:
-            for license, test_data in known_strings.items():
-                if license.lower() in self.license_data.lower():
-                    self.metadata.addLicense(license, self.license_file)
+            for shortcode, test_data in known_strings.items():
+                if shortcode.lower() in self.license_data.lower():
+                    self.metadata.addLicense(shortcode, self.license_file)
                     return
                 for test_text in test_data:
                     # Do the comparison without regard to whitespace or capitalization
@@ -237,7 +245,7 @@ class Predictor:
                         "".join(test_text.split()).lower()
                         in "".join(self.license_data.split()).lower()
                     ):
-                        self.metadata.addLicense(license, self.license_file)
+                        self.metadata.addLicense(shortcode, self.license_file)
                         return
 
     def _predict_version(self):

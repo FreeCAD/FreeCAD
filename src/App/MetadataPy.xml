@@ -365,6 +365,13 @@ Add a new File. </UserDocu>
 Remove the File. </UserDocu>
 			</Documentation>
 		</Methode>
+		
+		<Methode Name="write">
+			<Documentation>
+				<UserDocu>write(filename)\n
+Write the metadata to the given file as XML data.</UserDocu>
+			</Documentation>
+		</Methode>
 
 		<ClassDeclarations>
 			public:

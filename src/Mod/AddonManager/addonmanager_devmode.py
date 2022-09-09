@@ -30,7 +30,6 @@ import FreeCADGui
 
 from PySide2.QtWidgets import (
     QFileDialog,
-    QTableWidgetItem,
     QListWidgetItem,
     QDialog,
     QSizePolicy,
@@ -90,11 +89,13 @@ class AddonGitInterface:
             return AddonGitInterface.git_manager.get_last_authors(self.path, 10)
         return []
 
+#pylint: disable=too-many-instance-attributes
 
 class DeveloperMode:
     """The main Developer Mode dialog, for editing package.xml metadata graphically."""
 
     def __init__(self):
+
 
         # In the UI we want to show a translated string for the person type, but the underlying
         # string must be the one expected by the metadata parser, in English

@@ -41,18 +41,10 @@ from PySide2.QtWidgets import (
 from PySide2.QtGui import QIcon
 from PySide2.QtCore import Qt
 
-from addonmanager_devmode_license_selector import LicenseSelector
-from addonmanager_devmode_person_editor import PersonEditor
 from addonmanager_devmode_validators import (
     VersionValidator,
     NameValidator,
     PythonIdentifierValidator,
-)
-from addonmanager_devmode_utilities import (
-    populate_people_from_metadata,
-    populate_licenses_from_metadata,
-    add_license_row,
-    add_person_row,
 )
 from addonmanager_devmode_people_table import PeopleTable
 from addonmanager_devmode_licenses_table import LicensesTable
@@ -261,10 +253,10 @@ class AddContent:
 
         licenses = []
         for row in range(self.dialog.licensesTableWidget.rowCount()):
-            license = {}
-            license["name"] = self.dialog.licensesTableWidget.item(row, 0).text
-            license["file"] = self.dialog.licensesTableWidget.item(row, 1).text()
-            licenses.append(license)
+            new_license = {}
+            new_license["name"] = self.dialog.licensesTableWidget.item(row, 0).text
+            new_license["file"] = self.dialog.licensesTableWidget.item(row, 1).text()
+            licenses.append(new_license)
         self.metadata.License = licenses
 
         return (self.dialog.addonKindComboBox.currentData(), self.metadata)
@@ -370,98 +362,7 @@ class AddContent:
         if not self.metadata:
             self.metadata = FreeCAD.Metadata()
         dlg = EditDependencies()
-        result = dlg.exec(self.metadata)
-
-    def _person_selection_changed(self):
-        """Callback: the current selection in the peopleTableWidget changed"""
-        items = self.dialog.peopleTableWidget.selectedItems()
-        if items:
-            self.dialog.removePersonToolButton.setDisabled(False)
-        else:
-            self.dialog.removePersonToolButton.setDisabled(True)
-
-    def _license_selection_changed(self):
-        """Callback: the current selection in the licensesTableWidget changed"""
-        items = self.dialog.licensesTableWidget.selectedItems()
-        if items:
-            self.dialog.removeLicenseToolButton.setDisabled(False)
-        else:
-            self.dialog.removeLicenseToolButton.setDisabled(True)
-
-    def _add_license_clicked(self):
-        """Callback: The Add License button was clicked"""
-        license_selector = LicenseSelector(self.current_mod)
-        short_code, path = license_selector.exec()
-        if short_code:
-            add_license_row(
-                self.dialog.licensesTableWidget.rowCount(),
-                short_code,
-                path,
-                self.path_to_addon,
-                self.dialog.licensesTableWidget,
-            )
-
-    def _remove_license_clicked(self):
-        """Callback: the Remove License button was clicked"""
-        items = self.dialog.licensesTableWidget.selectedIndexes()
-        if items:
-            # We only support single-selection, so can just pull the row # from
-            # the first entry
-            self.dialog.licensesTableWidget.removeRow(items[0].row())
-
-    def _edit_license(self, item):
-        """Callback: a license row was double-clicked"""
-        row = item.row()
-        short_code = self.dialog.licensesTableWidget.item(row, 0).text()
-        path = self.dialog.licensesTableWidget.item(row, 1).text()
-        license_selector = LicenseSelector(self.current_mod)
-        short_code, path = license_selector.exec(short_code, path)
-        if short_code:
-            self.dialog.licensesTableWidget.removeRow(row)
-            add_license_row(
-                row,
-                short_code,
-                path,
-                self.path_to_addon,
-                self.dialog.licensesTableWidget,
-            )
-
-    def _add_person_clicked(self):
-        """Callback: the Add Person button was clicked"""
-        dlg = PersonEditor()
-        person_type, name, email = dlg.exec()
-        if person_type and name:
-            add_person_row(
-                self.dialog.peopleTableWidget.rowCount(),
-                person_type,
-                name,
-                email,
-                self.dialog.peopleTableWidget,
-            )
-
-    def _remove_person_clicked(self):
-        """Callback: the Remove Person button was clicked"""
-        items = self.dialog.peopleTableWidget.selectedIndexes()
-        if items:
-            # We only support single-selection, so can just pull the row # from
-            # the first entry
-            self.dialog.peopleTableWidget.removeRow(items[0].row())
-
-    def _edit_person(self, item):
-        """Callback: a row in the peopleTableWidget was double-clicked"""
-        row = item.row()
-        person_type = self.dialog.peopleTableWidget.item(row, 0).data(Qt.UserRole)
-        name = self.dialog.peopleTableWidget.item(row, 1).text()
-        email = self.dialog.peopleTableWidget.item(row, 2).text()
-
-        dlg = PersonEditor()
-        dlg.setup(person_type, name, email)
-        person_type, name, email = dlg.exec()
-
-        if person_type and name:
-            self.dialog.peopleTableWidget.removeRow(row)
-            add_person_row(row, person_type, name, email, self.dialog.peopleTableWidget)
-            self.dialog.peopleTableWidget.selectRow(row)
+        dlg.exec(self.metadata) # Modifies metadata directly
 
 
 class EditTags:
@@ -513,6 +414,7 @@ class EditDependencies:
         )
 
         self.dialog.removeDependencyToolButton.setDisabled(True)
+        self.metadata = None
 
     def exec(self, metadata: FreeCAD.Metadata):
         """Execute the dialog"""

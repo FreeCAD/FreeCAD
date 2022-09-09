@@ -35,6 +35,8 @@ from addonmanager_devmode_person_editor import PersonEditor
 
 translate = FreeCAD.Qt.translate
 
+#pylint: disable=too-few-public-methods
+
 
 class PeopleTable:
     """A QTableWidget and associated buttons for managing the list of authors and maintainers."""
@@ -55,6 +57,7 @@ class PeopleTable:
         self.widget.removeButton.clicked.connect(self._remove_clicked)
         self.widget.tableWidget.itemSelectionChanged.connect(self._selection_changed)
         self.widget.tableWidget.itemDoubleClicked.connect(self._edit)
+        self.metadata = None
 
     def show(self, metadata):
         """Set up the widget based on incoming metadata"""

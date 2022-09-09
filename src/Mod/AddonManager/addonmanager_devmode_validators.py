@@ -30,17 +30,7 @@ from PySide2.QtGui import (
 )
 from PySide2.QtCore import QRegularExpression
 
-
-def isidentifier(ident: str) -> bool:
-
-    if not ident.isidentifier():
-        return False
-
-    if keyword.iskeyword(ident):
-        return False
-
-    return True
-
+#pylint: disable=too-few-public-methods
 
 class NameValidator(QValidator):
     """Simple validator to exclude characters that are not valid in filenames."""
@@ -67,6 +57,7 @@ class PythonIdentifierValidator(QValidator):
     """Validates whether input is a valid Python identifier."""
 
     def validate(self, value: str, _: int):
+        """ The function that does the validation. """
         if not value:
             return QValidator.Intermediate
 
