@@ -102,7 +102,6 @@ public:
 
     void setTabText(std::string tabText);
 
-    static MDIViewPage *getFromScene(const QGSPage *scene);
     void contextMenuEvent(QContextMenuEvent *event) override;
 
     void setScene(QGSPage* scene, QGVPage* view);

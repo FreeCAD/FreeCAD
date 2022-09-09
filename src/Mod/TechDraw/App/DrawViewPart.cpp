@@ -1263,10 +1263,10 @@ void DrawViewPart::addCosmeticVertexesToGeom()
 
 int DrawViewPart::add1CVToGV(std::string tag)
 {
-//    Base::Console().Message("DVP::add1CVToGV(%s) 2\n", tag.c_str());
+//    Base::Console().Message("DVP::add1CVToGV(%s)\n", tag.c_str());
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
     if (!cv) {
-        Base::Console().Message("DVP::add1CVToGV 2 - cv %s not found\n", tag.c_str());
+        Base::Console().Message("DVP::add1CVToGV - cv %s not found\n", tag.c_str());
         return 0;
     }
     int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()),
