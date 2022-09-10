@@ -1,10 +1,6 @@
 macro(SetupSalomeSMESH)
 # -------------------------------- Salome SMESH --------------------------
 
-    # Allow using external SMESH
-    if (FREECAD_USE_EXTERNAL_SMESH)
-        find_package(SMESH REQUIRED)
-    endif(FREECAD_USE_EXTERNAL_SMESH)
     # Salome SMESH sources are under src/3rdParty now
     if(BUILD_SMESH)
         # set the internal smesh version:
@@ -123,13 +119,17 @@ macro(SetupSalomeSMESH)
 
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(SMESH CONFIG)
+            if(NOT SMESH_FOUND)
+                find_package(SMESH REQUIRED)
+                if(NOT SMESH_FOUND)
+                    message(ERROR "================\n"
+                                "SMESH not found.\n"
+                                "================\n")
+                endif()
+            endif()
             set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
             set(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
-            if(NOT SMESH_FOUND)
-                message(ERROR "================\n"
-                              "SMESH not found.\n"
-                              "================\n")
-            endif()
+
             include_directories(${SMESH_INCLUDE_DIR})
         endif()
 
