@@ -72,6 +72,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         This method is called prior to each `test()` method.  Add code and
         objects here that are needed for multiple `test()` methods.
         """
+        self.maxDiff = None
         self.doc = FreeCAD.ActiveDocument
         self.con = FreeCAD.Console
         self.docobj = FreeCAD.ActiveDocument.addObject("Path::Feature", "testpath")
