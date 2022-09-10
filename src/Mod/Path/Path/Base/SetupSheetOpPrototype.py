@@ -65,11 +65,11 @@ class Property(object):
     def setupProperty(self, obj, name, category, value):
         created = False
         if not hasattr(obj, name):
-            PathLog.track('add', obj.Name, name, self.propType)
+            Path.Log.track('add', obj.Name, name, self.propType)
             obj.addProperty(self.propType, name, category, self.info)
             self.initProperty(obj, name)
             created = True
-        PathLog.track('set', obj.Name, name, value, type(value))
+        Path.Log.track('set', obj.Name, name, value, type(value))
         setattr(obj, name, value)
         return created
 
