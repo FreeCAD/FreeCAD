@@ -50,6 +50,7 @@ namespace App {
             explicit Contact(const XERCES_CPP_NAMESPACE::DOMElement* e);
             std::string name; //< Contact name - required
             std::string email; //< Contact email - may be optional
+            bool operator==(const Contact &rhs) const;
         };
 
         /**
@@ -65,6 +66,7 @@ namespace App {
             explicit License(const XERCES_CPP_NAMESPACE::DOMElement* e);
             std::string name; //< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
             boost::filesystem::path file; //< Optional path to the license file, relative to the XML file's location
+            bool operator==(const License &rhs) const;
         };
 
         enum class UrlType {
@@ -80,12 +82,13 @@ namespace App {
          * \brief A URL, including type information (e.g. website, repository, or bugtracker, in package.xml)
          */
         struct AppExport Url {
-            Url() = default;
+            Url();
             Url(const std::string& location, UrlType type);
             explicit Url(const XERCES_CPP_NAMESPACE::DOMElement* e);
             std::string location; //< The actual URL, including protocol
             UrlType type; //< What kind of URL this is
             std::string branch; //< If it's a repository, which branch to use
+            bool operator==(const Url &rhs) const;
         };
 
         /**
@@ -113,11 +116,24 @@ namespace App {
         };
 
         /**
+         * \enum DependencyType
+         * The type of dependency.
+         */
+        enum class DependencyType
+        {
+            automatic,
+            internal,
+            addon,
+            python
+        };
+
+        /**
          * \struct Dependency
          * \brief Another package that this package depends on, conflicts with, or replaces
          */
         struct AppExport Dependency {
-            Dependency() = default;
+            Dependency();
+            explicit Dependency(const std::string &pkg);
             explicit Dependency(const XERCES_CPP_NAMESPACE::DOMElement* e);
             std::string package; //< Required: must exactly match the contents of the "name" element in the referenced package's package.xml file.
             std::string version_lt; //< Optional: The dependency to the package is restricted to versions less than the stated version number.
@@ -126,6 +142,9 @@ namespace App {
             std::string version_gte; //< Optional: The dependency to the package is restricted to versions greater or equal than the stated version number.
             std::string version_gt; //< Optional: The dependency to the package is restricted to versions greater than the stated version number.
             std::string condition; //< Optional: Conditional expression as documented in REP149.
+            bool optional;//< Optional: Whether this dependency is considered "optional"
+            DependencyType dependencyType; //< Optional: defaults to "automatic"
+            bool operator==(const Dependency &rhs) const;
         };
 
         /**
@@ -238,25 +257,46 @@ namespace App {
         void setName(const std::string& name);
         void setVersion(const Meta::Version& version);
         void setDescription(const std::string& description);
-        void addMaintainer(const Meta::Contact& maintainer);
-        void addLicense(const Meta::License& license);
-        void addUrl(const Meta::Url& url);
-        void addAuthor(const Meta::Contact& author);
-        void addDepend(const Meta::Dependency& dep);
-        void addConflict(const Meta::Dependency& dep);
-        void addReplace(const Meta::Dependency& dep);
-        void addTag(const std::string& tag);
+        void addMaintainer(const Meta::Contact &maintainer);
+        void addLicense(const Meta::License &license);
+        void addUrl(const Meta::Url &url);
+        void addAuthor(const Meta::Contact &author);
+        void addDepend(const Meta::Dependency &dep);
+        void addConflict(const Meta::Dependency &dep);
+        void addReplace(const Meta::Dependency &dep);
+        void addTag(const std::string &tag);
         void setIcon(const boost::filesystem::path& path);
         void setClassname(const std::string& name);
         void setSubdirectory(const boost::filesystem::path& path);
-        void addFile(const boost::filesystem::path& path);
-        void addContentItem(const std::string& tag, const Metadata& item);
+        void addFile(const boost::filesystem::path &path);
+        void addContentItem(const std::string &tag, const Metadata &item);
         void setFreeCADMin(const Meta::Version& version);
         void setFreeCADMax(const Meta::Version& version);
-        void addGenericMetadata(const std::string& tag, const Meta::GenericMetadata& genericMetadata);
+        void addGenericMetadata(const std::string &tag, const Meta::GenericMetadata &genericMetadata);
 
-        // Deleters (work in progress...)
-        void removeContentItem(const std::string& tag, const std::string& itemName);
+        // Deleters
+        void removeContentItem(const std::string &tag, const std::string &itemName);
+        void removeMaintainer(const Meta::Contact &maintainer);
+        void removeLicense(const Meta::License &license);
+        void removeUrl(const Meta::Url &url);
+        void removeAuthor(const Meta::Contact &author);
+        void removeDepend(const Meta::Dependency &dep);
+        void removeConflict(const Meta::Dependency &dep);
+        void removeReplace(const Meta::Dependency &dep);
+        void removeTag(const std::string &tag);
+        void removeFile(const boost::filesystem::path &path);
+
+        // Utility functions to clear lists
+        void clearContent();
+        void clearMaintainer();
+        void clearLicense();
+        void clearUrl();
+        void clearAuthor();
+        void clearDepend();
+        void clearConflict();
+        void clearReplace();
+        void clearTag();
+        void clearFile();
 
         /**
          * Write the metadata to an XML file

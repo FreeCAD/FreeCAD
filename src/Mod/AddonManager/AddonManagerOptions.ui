@@ -342,9 +342,31 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="Gui::PrefCheckBox" name="guiprefcheckboxDisableGit">
         <property name="text">
          <string>Disable git (fall back to ZIP downloads only)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>disableGit</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Addons</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="guiprefcheckboxDeveloperMode">
+        <property name="toolTip">
+         <string>Activate Addon Manager options intended for developers of new Addons.</string>
+        </property>
+        <property name="text">
+         <string>Addon developer mode</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Addons</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>developerMode</string>
         </property>
        </widget>
       </item>

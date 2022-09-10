@@ -199,7 +199,7 @@ public:
     void setAll3DMeasurement();
     void clear3DMeasurements();
     virtual bool checkReferences2D() const;
-    pointPair getLinearPoints() {return m_linearPoints; }
+    virtual pointPair getLinearPoints() {return m_linearPoints; }
     arcPoints getArcPoints() {return m_arcPoints; }
     anglePoints getAnglePoints() {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);

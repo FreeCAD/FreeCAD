@@ -1196,11 +1196,7 @@ void execHExtent(Gui::Command* cmd)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
- //           baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
-            if (SubNames.empty() || SubNames[0].empty()) {
-                SubNames.clear();
-            }
         }
     }
 

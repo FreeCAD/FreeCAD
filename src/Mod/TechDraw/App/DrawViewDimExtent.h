@@ -55,6 +55,8 @@ public:
     void unsetupObject() override;
 
     bool checkReferences2D() const override;
+    int getRefType() const override { return twoVertex; }
+    pointPair getLinearPoints() override { return getPointsTwoVerts(); }
 
     //return PyObject as DrawViewDimExtentPy
     PyObject *getPyObject() override;

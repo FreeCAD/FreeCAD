@@ -1183,7 +1183,7 @@ double DrawViewDimension::getDimValue()
         if ( Type.isValue("Distance")  ||
              Type.isValue("DistanceX") ||
              Type.isValue("DistanceY") )  {
-            pointPair pts = m_linearPoints;
+            pointPair pts = getLinearPoints();
             Base::Vector3d dimVec = pts.first - pts.second;
             if (Type.isValue("Distance")) {
                 result = dimVec.Length() / getViewPart()->getScale();

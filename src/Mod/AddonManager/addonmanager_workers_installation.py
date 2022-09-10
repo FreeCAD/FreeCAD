@@ -464,6 +464,7 @@ class DependencyInstallationWorker(QtCore.QThread):
     def _install_required(self, vendor_path: os.PathLike):
         """Install the required Python package dependencies. If any fail a failure signal is
         emitted and the function exits without proceeding with any additional installs."""
+        python_exe = utils.get_python_exe()
         for pymod in self.python_required:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
@@ -496,6 +497,7 @@ class DependencyInstallationWorker(QtCore.QThread):
     def _install_optional(self, vendor_path: os.PathLike):
         """Install the optional Python package dependencies. If any fail a message is printed to
         the console, but installation of the others continues."""
+        python_exe = utils.get_python_exe()
         for pymod in self.python_optional:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
