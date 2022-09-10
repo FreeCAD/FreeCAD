@@ -431,7 +431,7 @@ def add_principal_stress_std(res_obj):
 
 def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
     #
-    # HarryvL: calculate critical strain ratio
+    # calculate critical strain ratio
     #
     csr = []  # critical strain ratio
     nsr = len(ps1)  # number of stress results
@@ -449,7 +449,7 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
 
 def get_concrete_nodes(res_obj):
     #
-    # HarryvL: determine concrete / non-concrete nodes
+    # determine concrete / non-concrete nodes
     #
 
     from femmesh.meshtools import get_femnodes_by_refshape
@@ -493,7 +493,7 @@ def get_concrete_nodes(res_obj):
 
 def add_principal_stress_reinforced(res_obj):
     #
-    # HarryvL: determine concrete / non-concrete nodes
+    # determine concrete / non-concrete nodes
     #
     ic = get_concrete_nodes(res_obj)
 
@@ -512,7 +512,7 @@ def add_principal_stress_reinforced(res_obj):
     ps2v = []
     ps3v = []
     #
-    # HarryvL: additional arrays to hold reinforcement ratios
+    # additional arrays to hold reinforcement ratios
     # and mohr coulomb stress
     #
     rhx = []
@@ -553,7 +553,7 @@ def add_principal_stress_reinforced(res_obj):
 
         if ic[isv] == 1:
             #
-            # HarryvL: for concrete scxx etc. are affected by
+            # for concrete scxx etc. are affected by
             # reinforcement (see calculate_rho(stress_tensor)). for all other
             # materials scxx etc. are the original stresses
             #
@@ -589,7 +589,7 @@ def add_principal_stress_reinforced(res_obj):
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
     #
-    # HarryvL: additional concrete and principal stress plot
+    # additional concrete and principal stress plot
     # results for use in _ViewProviderFemResultMechanical
     #
     res_obj.ReinforcementRatio_x = rhx
@@ -675,7 +675,7 @@ def calculate_principal_stress_std(
 
 def calculate_principal_stress_reinforced(stress_tensor):
     #
-    #   HarryvL - calculate principal stress vectors and values
+    #           - calculate principal stress vectors and values
     #           - for total stresses use stress_tensor[0], stress_tensor[1], stress_tensor[2]
     #             on the diagonal of the stress tensor
     #
@@ -698,7 +698,7 @@ def calculate_principal_stress_reinforced(stress_tensor):
     eigenvalues, eigenvectors = np.linalg.eig(sigma)
 
     #
-    #   HarryvL: suppress complex eigenvalue and vectors that may occur for
+    #   suppress complex eigenvalue and vectors that may occur for
     #   near-zero (numerical noise) stress fields
     #
 
@@ -721,7 +721,7 @@ def calculate_principal_stress_reinforced(stress_tensor):
 
 def calculate_rho(stress_tensor, fy):
     #
-    #   HarryvL - Calculation of Reinforcement Ratios and
+    #   Calculation of Reinforcement Ratios and
     #   Concrete Stresses according to http://heronjournal.nl/53-4/3.pdf
     #           - See post:
     #             https://forum.freecadweb.org/viewtopic.php?f=18&t=28821
@@ -872,7 +872,7 @@ def calculate_rho(stress_tensor, fy):
 
 def calculate_mohr_coulomb(prin1, prin3, phi, fck):
     #
-    #   HarryvL - Calculation of Mohr Coulomb yield criterion to judge
+    #             Calculation of Mohr Coulomb yield criterion to judge
     #             concrete curshing and shear failure
     #                   phi: angle of internal friction
     #                   fck: factored compressive strength of the matrix material (usually concrete)
