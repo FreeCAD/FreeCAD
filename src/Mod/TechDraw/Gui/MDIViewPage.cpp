@@ -72,23 +72,16 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
 #include "Rez.h"
-#include "QGIDrawingTemplate.h"
 #include "QGIView.h"
-#include "QGIViewPart.h"
 #include "QGIViewDimension.h"
 #include "QGIViewBalloon.h"
-#include "QGIViewClip.h"
 #include "QGIVertex.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "ViewProviderPage.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "QGILeaderLine.h"
-#include "QGIRichAnno.h"
 #include "QGMText.h"
-#include "QGIWeldSymbol.h"
-#include "QGITile.h"
 
 
 using namespace TechDrawGui;
@@ -519,6 +512,7 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
     menu.addAction(m_exportSVGAction);
     menu.addAction(m_exportDXFAction);
     menu.addAction(m_exportPDFAction);
+    menu.addAction(m_printAllAction);
     menu.exec(event->globalPos());
 }
 

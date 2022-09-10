@@ -189,6 +189,11 @@ protected:
     gp_Dir vec2dir(Base::Vector3d v);
 
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+
+    double getMaxRowHeight(std::array<int, 3> list,
+                           std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
+    double getMaxColWidth(std::array<int, 3> list,
+                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
 };
 
 } //namespace TechDraw

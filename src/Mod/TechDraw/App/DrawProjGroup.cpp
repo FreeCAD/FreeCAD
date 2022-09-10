@@ -653,6 +653,13 @@ gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
 Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 {
 //    Base::Console().Message("DPG::getXYPosition(%s)\n", Label.getValue());
+    //   Third Angle:  FTL  T  FTRight          0  1  2
+    //                  L   F   Right   Rear    3  4  5  6
+    //                 FBL  B  FBRight          7  8  9
+    //
+    //   First Angle:  FBRight  B  FBL          0  1  2
+    //                  Right   F   L  Rear     3  4  5  6
+    //                 FTRight  T  FTL          7  8  9
 
     Base::Vector3d result(0.0, 0.0, 0.0);
     //Front view position is always (0, 0)
@@ -683,28 +690,23 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         double xSpacing = spacingX.getValue();    //in mm, no scale
         double ySpacing = spacingY.getValue();    //in mm, no scale
 
-        double bigRow    = 0.0;
-        double bigCol    = 0.0;
-        int ibbx = 0;
-        for (auto& b: bboxes) {          //space based on width/height of biggest view
-            if (!b.IsValid()) {
-                Base::Console().Message("DVP::getXYPos - bbox %d is not valid!\n", ibbx);
-                continue;
-            }
-            if (b.LengthX() > bigCol) {
-                bigCol = b.LengthX();
-            }
-            if (b.LengthY() > bigRow) {
-                bigRow = b.LengthY();
-            }
-            ibbx++;
+        std::array<int, 3> topRowBoxes {0, 1, 2};
+        std::array<int, 3> middleRowBoxes {3, 4, 5};
+        std::array<int, 3> bottomRowBoxes {7, 8, 9};
+        std::array<int, 3> leftColBoxes {0, 3, 7};
+        std::array<int, 3> middleColBoxes {1, 4, 8};
+        std::array<int, 3> rightColBoxes {2, 5, 9};
+        double bigHeightTop      = getMaxRowHeight(topRowBoxes, bboxes);
+        double bigHeightMiddle   = getMaxRowHeight(middleRowBoxes, bboxes);
+        double bigHeightBottom   = getMaxRowHeight(bottomRowBoxes, bboxes);
+        double bigWidthLeft     = getMaxColWidth(leftColBoxes, bboxes);
+        double bigWidthMiddle   = getMaxColWidth(middleColBoxes, bboxes);
+        double bigWidthRight    = getMaxColWidth(rightColBoxes, bboxes);
+        double bigWidthFarRight = 0.0;
+        if (bboxes[6].IsValid()) {
+            bigWidthFarRight = bboxes[6].LengthX();
         }
 
-        //if we have iso's, make sure they fit the grid.
-        if (viewPtrs[0] || viewPtrs[2]  || viewPtrs[7] ||  viewPtrs[9]) {
-            bigCol = std::max(bigCol, bigRow);
-            bigRow = bigCol;
-        }
 
         if (viewPtrs[4] &&                       //Front
             bboxes[4].IsValid()) {
@@ -712,71 +714,85 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
             position[4].y = 0.0;
         }
 
-        if (viewPtrs[3] &&                        // L/R  (third/first)
+        if (viewPtrs[3] &&                        // L/R  (third/first) middle/left
             bboxes[3].IsValid() &&
             bboxes[4].IsValid()) {
-            position[3].x = -(xSpacing + bigCol);
+            position[3].x = -(0.5 * bigWidthMiddle + xSpacing +
+                              0.5 * bigWidthLeft);
             position[3].y = 0.0;
         }
 
-        if (viewPtrs[5] &&                        // R/L (third/first)
+        if (viewPtrs[5] &&                        // R/L (third/first) middle/right
             bboxes[5].IsValid() &&
             bboxes[4].IsValid()) {
-            position[5].x = xSpacing + bigCol;
+            position[5].x = 0.5 * bigWidthMiddle + xSpacing +
+                            0.5 * bigWidthRight;
             position[5].y = 0.0;
         }
 
         if (viewPtrs[6] &&
-            bboxes[6].IsValid()) {    //"Rear"
+            bboxes[6].IsValid()) {    //"Rear"  middle/far right
             if (viewPtrs[5] &&
                 bboxes[5].IsValid()) {
                 //there is a view between Front and Rear
-                position[6].x = 2.0 * (xSpacing + bigCol);
+                position[6].x = 0.5 * bigWidthMiddle + xSpacing +
+                                bigWidthRight + xSpacing +
+                                0.5 * bigWidthFarRight;
                 position[6].y = 0.0;
             } else if (viewPtrs[4] &&
                 bboxes[4].IsValid()) {
                 // there is no view between Front and Rear
-                position[6].x = xSpacing + bigCol;
+                position[6].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
                 position[6].y = 0.0;
             }
         }
 
-        if (viewPtrs[1] &&                        // T/B (third/first)
+        if (viewPtrs[1] &&                        // T/B (third/first) top/middle
             bboxes[1].IsValid() &&
             bboxes[4].IsValid()) {
             position[1].x = 0.0;
-            position[1].y = ySpacing + bigRow;
+            position[1].y = 0.5 * bigHeightMiddle + ySpacing +
+                            0.5 * bigHeightTop;
         }
 
-        if (viewPtrs[8] &&                        // B/T (third/first)
+        if (viewPtrs[8] &&                        // B/T (third/first) bottom/middle
             bboxes[8].IsValid() &&
             bboxes[4].IsValid()) {
             position[8].x = 0.0;
-            position[8].y = -(ySpacing + bigRow);
+            position[8].y = -(0.5 * bigHeightMiddle + ySpacing +
+                              0.5 * bigHeightBottom);
         }
 
         if (viewPtrs[0] &&                      // iso top left
             bboxes[0].IsValid()) {
-            position[0].x = -(xSpacing + bigCol);
-            position[0].y = ySpacing + bigRow;
+            position[0].x = -(0.5 * bigWidthMiddle + xSpacing +
+                              0.5 * bigWidthLeft);
+            position[0].y = 0.5 * bigHeightMiddle + ySpacing +
+                            0.5 * bigHeightTop;
         }
 
         if (viewPtrs[2] &&                      // iso top right
             bboxes[2].IsValid()) {
-            position[2].x = xSpacing + bigCol;
-            position[2].y = ySpacing + bigRow;
+            position[2].x = 0.5 * bigWidthMiddle + xSpacing +
+                            0.5 * bigWidthRight;
+            position[2].y = 0.5 * bigHeightMiddle + ySpacing +
+                            0.5 * bigHeightTop;
         }
 
         if (viewPtrs[7] &&                      // iso bottom left
             bboxes[7].IsValid()) {
-            position[7].x = -(xSpacing + bigCol);
-            position[7].y = -(ySpacing + bigRow);
+            position[7].x = -(0.5 * bigWidthMiddle + xSpacing +
+                              0.5 * bigWidthLeft);
+            position[7].y = -(0.5 * bigHeightMiddle + ySpacing +
+                              0.5 * bigHeightBottom);
         }
 
         if (viewPtrs[9] &&                      // iso bottom right
             bboxes[9].IsValid()) {
-            position[9].x = xSpacing + bigCol;;
-            position[9].y = -(ySpacing + bigRow);
+            position[9].x = 0.5 * bigWidthMiddle + xSpacing +
+                            0.5 * bigWidthRight;
+            position[9].y = -(0.5 * bigHeightMiddle + ySpacing +
+                              0.5 * bigHeightBottom);
         }
 
         result.x = position[viewIndex].x;
@@ -786,6 +802,32 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         result.y = viewPtrs[viewIndex]->Y.getValue();
     }
     return result;
+}
+
+double DrawProjGroup::getMaxRowHeight(std::array<int, 3> list,
+                                      std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes)
+{
+    double bigHeight = 0.0;
+    for (auto index : list) {
+        if (!bboxes.at(index).IsValid()) {
+            continue;
+        }
+        bigHeight = std::max(bigHeight, bboxes.at(index).LengthY());
+    }
+    return bigHeight;
+}
+
+double DrawProjGroup::getMaxColWidth(std::array<int, 3> list,
+                                      std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes)
+{
+    double bigWidth = 0.0;
+    for (auto index : list) {
+        if (!bboxes.at(index).IsValid()) {
+            continue;
+        }
+        bigWidth = std::max(bigWidth, bboxes.at(index).LengthX());
+    }
+    return bigWidth;
 }
 
 int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
