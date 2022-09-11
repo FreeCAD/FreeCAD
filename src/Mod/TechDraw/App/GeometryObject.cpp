@@ -167,7 +167,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
     try {
         brep_hlr = new HLRBRep_Algo();
 //        brep_hlr->Debug(true);
-        brep_hlr->Add(inShape);
+        brep_hlr->Add(inShape, m_isoCount);
         if (m_isPersp) {
             double fLength = std::max(Precision::Confusion(), m_focus);
             HLRAlgo_Projector projector( viewAxis, fLength );
