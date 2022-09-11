@@ -26,7 +26,6 @@ import keyword
 
 from PySide2.QtGui import (
     QValidator,
-    QRegularExpressionValidator,
 )
 
 # QRegularExpressionValidator was only added at the very end of the PySide2
