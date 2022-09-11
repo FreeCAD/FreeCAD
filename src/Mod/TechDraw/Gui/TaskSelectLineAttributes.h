@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 #define TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -91,17 +93,12 @@ class TaskSelectLineAttributes : public QWidget
     Q_OBJECT
 
 public:
-    TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    explicit TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskSelectLineAttributes() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-
-protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -118,7 +115,7 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    explicit TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskDlgSelectLineAttributes() override;
 
 public:
@@ -131,7 +128,6 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();

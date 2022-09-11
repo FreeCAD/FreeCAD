@@ -46,7 +46,7 @@ class CrossSections : public QDialog
     enum Plane { XY, XZ, YZ };
 
 public:
-    CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~CrossSections() override;
     void accept() override;
     void apply();
@@ -84,7 +84,7 @@ class TaskCrossSections : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskCrossSections(const Base::BoundBox3d& bb);
+    explicit TaskCrossSections(const Base::BoundBox3d& bb);
     ~TaskCrossSections() override;
 
 public:

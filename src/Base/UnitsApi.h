@@ -29,11 +29,11 @@
 #include "UnitsSchema.h"
 #include "Quantity.h"
 
-typedef struct _object PyObject;
-typedef struct PyMethodDef PyMethodDef;
+using PyObject = struct _object;
+using PyMethodDef = struct PyMethodDef;
 
 namespace Base {
-typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
+using UnitsSchemaPtr = std::unique_ptr<UnitsSchema>;
 
 /**
  * The UnitsApi
@@ -92,6 +92,12 @@ public:
 
     //double Result;
 
+    //return true if the current user schema uses multiple units for length (ex. Ft/In)
+    static bool isMultiUnitLength();
+
+    //return true if the current user schema uses multiple units for angles (ex. DMS)
+    static bool isMultiUnitAngle();
+
     // Python interface
     static PyMethodDef    Methods[];
 
@@ -99,7 +105,6 @@ public:
     static UnitsSchemaPtr createSchema(UnitSystem s);
 
 protected:
-    // not used at the moment
     static UnitsSchemaPtr UserPrefSystem;
     static UnitSystem currentSystem;
     /// number of decimals for floats

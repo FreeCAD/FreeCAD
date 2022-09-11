@@ -21,15 +21,19 @@
 ** $QT_END_LICENSE$
 */
 // clazy:excludeall=qstring-arg
-#include "PreCompiled.h"
 
-#include "mtextedit.h"
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <cstdlib>
+
 #include <QTextDocument>
 #include <QTextCursor>
 #include <QImage>
 #include <QByteArray>
 #include <QBuffer>
-#include <cstdlib>
+#endif
+
+#include "mtextedit.h"
 
 
 MTextEdit::MTextEdit(QWidget *parent) : QTextEdit(parent) {
@@ -92,7 +96,7 @@ void MTextEdit::dropImage(const QImage& image, const QString& format) {
     QTextImageFormat imageFormat;
     imageFormat.setWidth  ( image.width() );
     imageFormat.setHeight ( image.height() );
-    imageFormat.setName   ( QString::fromLatin1("data:image/%1;base64,%2")
+    imageFormat.setName   ( QString::fromLatin1("data:image/%1;base64, %2")
                                 .arg(QString::fromLatin1("%1.%2").arg(rand()).arg(format))
                                 .arg(QString::fromLatin1(base64l.data()))
                                 );

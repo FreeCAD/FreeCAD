@@ -21,12 +21,14 @@
 # *                                                                         *
 # ***************************************************************************
 
+""" Utilities to work across different platforms, providers and python versions """
+
 import os
 import platform
 import shutil
 import re
 import ctypes
-from typing import Union, Optional, Any
+from typing import Optional, Any
 
 from urllib.parse import urlparse
 
@@ -46,7 +48,8 @@ translate = FreeCAD.Qt.translate
 
 
 def symlink(source, link_name):
-    """Creates a symlink of a file, if possible. Note that it fails on most modern Windows installations"""
+    """Creates a symlink of a file, if possible. Note that it fails on most modern Windows
+    installations"""
 
     if os.path.exists(link_name) or os.path.lexists(link_name):
         pass
@@ -55,14 +58,15 @@ def symlink(source, link_name):
         if callable(os_symlink):
             os_symlink(source, link_name)
         else:
-            # NOTE: This does not work on most normal Windows 10 and later installations, unless developer
-            # mode is turned on. Make sure to catch any exception thrown and have a fallback plan.
+            # NOTE: This does not work on most normal Windows 10 and later installations, unless
+            # developer mode is turned on. Make sure to catch any exception thrown and have a
+            # fallback plan.
             csl = ctypes.windll.kernel32.CreateSymbolicLinkW
             csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
             csl.restype = ctypes.c_ubyte
             flags = 1 if os.path.isdir(source) else 0
             # set the SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE flag
-            # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#joC5tFKhdXs2gGml.97)
+            # (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10)
             flags += 2
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
@@ -78,9 +82,7 @@ def update_macro_details(old_macro, new_macro):
 
     if old_macro.on_git and new_macro.on_git:
         FreeCAD.Console.PrintLog(
-            'The macro "{}" is present twice in github, please report'.format(
-                old_macro.name
-            )
+            f'The macro "{old_macro.name}" is present twice in github, please report'
         )
     # We don't report macros present twice on the wiki because a link to a
     # macro is considered as a macro. For example, 'Perpendicular To Wire'
@@ -91,16 +93,14 @@ def update_macro_details(old_macro, new_macro):
             setattr(old_macro, attr, getattr(new_macro, attr))
 
 
-def remove_directory_if_empty(dir):
-    """Remove the directory if it is empty
+def remove_directory_if_empty(dir_to_remove):
+    """Remove the directory if it is empty, with one exception: the directory returned by
+    FreeCAD.getUserMacroDir(True) will not be removed even if it is empty."""
 
-    Directory FreeCAD.getUserMacroDir(True) will not be removed even if empty.
-    """
-
-    if dir == FreeCAD.getUserMacroDir(True):
+    if dir_to_remove == FreeCAD.getUserMacroDir(True):
         return
-    if not os.listdir(dir):
-        os.rmdir(dir)
+    if not os.listdir(dir_to_remove):
+        os.rmdir(dir_to_remove)
 
 
 def restart_freecad():
@@ -119,30 +119,27 @@ def get_zip_url(repo):
     parsed_url = urlparse(repo.url)
     if parsed_url.netloc == "github.com":
         return f"{repo.url}/archive/{repo.branch}.zip"
-    elif parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
+    if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
-    else:
-        FreeCAD.Console.PrintLog(
-            "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:",
-            parsed_url.netloc,
-            "\n",
-        )
-        return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
+    FreeCAD.Console.PrintLog(
+        "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:",
+        parsed_url.netloc,
+        "\n",
+    )
+    return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
 
 
 def recognized_git_location(repo) -> bool:
-    """Returns whether this repo is based at a known git repo location: works with github, gitlab, framagit, and salsa.debian.org"""
+    """Returns whether this repo is based at a known git repo location: works with github, gitlab,
+    framagit, and salsa.debian.org"""
 
     parsed_url = urlparse(repo.url)
-    if parsed_url.netloc in [
+    return parsed_url.netloc in [
         "github.com",
         "gitlab.com",
         "framagit.org",
         "salsa.debian.org",
-    ]:
-        return True
-    else:
-        return False
+    ]
 
 
 def construct_git_url(repo, filename):
@@ -151,16 +148,15 @@ def construct_git_url(repo, filename):
     parsed_url = urlparse(repo.url)
     if parsed_url.netloc == "github.com":
         return f"{repo.url}/raw/{repo.branch}/{filename}"
-    elif parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
+    if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/raw/{repo.branch}/{filename}"
-    else:
-        FreeCAD.Console.PrintLog(
-            "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
-            + parsed_url.netloc
-            + f" for file {filename}\n"
-        )
-        # Assume it's some kind of local GitLab instance...
-        return f"{repo.url}/-/raw/{repo.branch}/{filename}"
+    FreeCAD.Console.PrintLog(
+        "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
+        + parsed_url.netloc
+        + f" for file {filename}\n"
+    )
+    # Assume it's some kind of local GitLab instance...
+    return f"{repo.url}/-/raw/{repo.branch}/{filename}"
 
 
 def get_readme_url(repo):
@@ -182,15 +178,14 @@ def get_desc_regex(repo):
     parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
-    elif parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+    if parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
-    else:
-        FreeCAD.Console.PrintLog(
-            "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
-            repo.url,
-            "\n",
-        )
-        return r'<meta.*?content="(.*?)".*?og:description.*?>'
+    FreeCAD.Console.PrintLog(
+        "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
+        repo.url,
+        "\n",
+    )
+    return r'<meta.*?content="(.*?)".*?og:description.*?>'
 
 
 def get_readme_html_url(repo):
@@ -199,62 +194,12 @@ def get_readme_html_url(repo):
     parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return f"{repo.url}/blob/{repo.branch}/README.md"
-    elif parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
+    if parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
-    else:
-        FreeCAD.Console.PrintLog(
-            "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
-        )
-        return f"{repo.url}/-/blob/{repo.branch}/README.md"
-
-
-def repair_git_repo(repo_url: str, clone_dir: str) -> None:
-    # Repair addon installed with raw download by adding the .git
-    # directory to it
-
-    try:
-        import git
-
-        # If GitPython is not installed, but the user has a directory named "git" in their Python path, they
-        # may have the import succeed, but it will not be a real GitPython installation
-        have_git = hasattr(git, "Repo")
-        if not have_git:
-            return
-    except ImportError:
-        return
-
-    try:
-        bare_repo = git.Repo.clone_from(
-            repo_url, clone_dir + os.sep + ".git", bare=True
-        )
-        with bare_repo.config_writer() as cw:
-            cw.set("core", "bare", False)
-    except AttributeError:
-        FreeCAD.Console.PrintLog(
-            translate(
-                "AddonsInstaller",
-                "Outdated GitPython detected, consider upgrading with pip.",
-            )
-            + "\n"
-        )
-        cw = bare_repo.config_writer()
-        cw.set("core", "bare", False)
-        del cw
-    except Exception as e:
-        FreeCAD.Console.PrintWarning(
-            translate("AddonsInstaller", "Failed to repair missing .git directory")
-            + "\n"
-        )
-        FreeCAD.Console.PrintWarning(
-            translate("AddonsInstaller", "Repository URL") + f": {repo_url}\n"
-        )
-        FreeCAD.Console.PrintWarning(
-            translate("AddonsInstaller", "Clone directory") + f": {clone_dir}\n"
-        )
-        FreeCAD.Console.PrintWarning(e)
-        return
-    repo = git.Repo(clone_dir)
-    repo.head.reset("--hard")
+    FreeCAD.Console.PrintLog(
+        "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
+    )
+    return f"{repo.url}/-/blob/{repo.branch}/README.md"
 
 
 def is_darkmode() -> bool:
@@ -294,11 +239,11 @@ def get_assigned_string_literal(line: str) -> Optional[str]:
 
 
 def get_macro_version_from_file(filename: str) -> str:
-    """Get the version of the macro from a local macro file. Supports strings, ints, and floats, as
-    well as a reference to __date__"""
+    """Get the version of the macro from a local macro file. Supports strings, ints, and floats,
+    as well as a reference to __date__"""
 
     date = ""
-    with open(filename, "r", errors="ignore") as f:
+    with open(filename, "r", errors="ignore", encoding="utf-8") as f:
         line_counter = 0
         max_lines_to_scan = 200
         while line_counter < max_lines_to_scan:
@@ -310,9 +255,20 @@ def get_macro_version_from_file(filename: str) -> str:
                 match = get_assigned_string_literal(line)
                 if match:
                     return match
-                elif "__date__" in line.lower():
-                    # Don't do any real syntax checking, just assume the line is something like __version__ = __date__
-                    return date
+                if "__date__" in line.lower():
+                    # Don't do any real syntax checking, just assume the line is something
+                    # like __version__ = __date__
+                    if date:
+                        return date
+                    # pylint: disable=line-too-long,consider-using-f-string
+                    FreeCAD.Console.PrintWarning(
+                        translate(
+                            "AddonsInstaller",
+                            "Macro {} specified '__version__ = __date__' prior to setting a value for __date__".format(
+                                filename
+                            ),
+                        )
+                    )
             elif line.lower().startswith("__date__"):
                 match = get_assigned_string_literal(line)
                 if match:
@@ -321,8 +277,10 @@ def get_macro_version_from_file(filename: str) -> str:
 
 
 def update_macro_installation_details(repo) -> None:
+    """Determine if a given macro is installed, either in its plain name,
+    or prefixed with "Macro_" """
     if repo is None or not hasattr(repo, "macro") or repo.macro is None:
-        FreeCAD.Console.PrintLog(f"Requested macro details for non-macro object\n")
+        FreeCAD.Console.PrintLog("Requested macro details for non-macro object\n")
         return
     test_file_one = os.path.join(FreeCAD.getUserMacroDir(True), repo.macro.filename)
     test_file_two = os.path.join(
@@ -338,8 +296,10 @@ def update_macro_installation_details(repo) -> None:
         return
 
 
-# Borrowed from Stack Overflow: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python
+# Borrowed from Stack Overflow:
+# https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float
 def is_float(element: Any) -> bool:
+    """Determine whether a given item can be converted to a floating-point number"""
     try:
         float(element)
         return True
@@ -351,12 +311,12 @@ def is_float(element: Any) -> bool:
 
 
 def get_python_exe() -> str:
-    # Find Python. In preference order
-    #   A) The value of the PythonExecutableForPip user preference
-    #   B) The executable located in the same bin directory as FreeCAD and called "python3"
-    #   C) The executable located in the same bin directory as FreeCAD and called "python"
-    #   D) The result of an shutil search for your system's "python3" executable
-    #   E) The result of an shutil search for your system's "python" executable
+    """Find Python. In preference order
+    A) The value of the PythonExecutableForPip user preference
+    B) The executable located in the same bin directory as FreeCAD and called "python3"
+    C) The executable located in the same bin directory as FreeCAD and called "python"
+    D) The result of an shutil search for your system's "python3" executable
+    E) The result of an shutil search for your system's "python" executable"""
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
     python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
     if not python_exe or python_exe == "Not set" or not os.path.exists(python_exe):
@@ -382,7 +342,9 @@ def get_python_exe() -> str:
     prefs.SetString("PythonExecutableForPip", python_exe)
     return python_exe
 
+
 def get_cache_file_name(file: str) -> str:
+    """Get the full path to a cache file with a given name."""
     cache_path = FreeCAD.getUserCachePath()
     am_path = os.path.join(cache_path, "AddonManager")
     os.makedirs(am_path, exist_ok=True)

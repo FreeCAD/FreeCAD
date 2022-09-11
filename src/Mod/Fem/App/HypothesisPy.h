@@ -35,8 +35,8 @@ namespace Fem {
 class HypothesisPy : public Py::PythonExtension<HypothesisPy>
 {
 public:
-    typedef Py::PythonExtension<HypothesisPy> HypothesisPyBase;
-    HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
+    using HypothesisPyBase = Py::PythonExtension<HypothesisPy>;
+    explicit HypothesisPy(std::shared_ptr<SMESH_Hypothesis>);
     ~HypothesisPy() override;
     std::shared_ptr<SMESH_Hypothesis> getHypothesis() const
     { return hyp; }
@@ -45,16 +45,16 @@ private:
     std::shared_ptr<SMESH_Hypothesis> hyp;
 };
 
-typedef Py::ExtensionObject<HypothesisPy> Hypothesis;
+using Hypothesis = Py::ExtensionObject<HypothesisPy>;
 
 template <class T>
 class SMESH_HypothesisPy : public Py::PythonExtension<T>
 {
 public:
-    typedef SMESH_HypothesisPy<T> SMESH_HypothesisPyBase;
+    using SMESH_HypothesisPyBase = SMESH_HypothesisPy<T>;
     static void init_type(PyObject*);    // announce properties and methods
 
-    SMESH_HypothesisPy(SMESH_Hypothesis*);
+    explicit SMESH_HypothesisPy(SMESH_Hypothesis*);
     ~SMESH_HypothesisPy() override;
 
     Py::Object getattr(const char *name) override;

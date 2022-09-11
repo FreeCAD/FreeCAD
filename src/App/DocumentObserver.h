@@ -28,6 +28,7 @@
 #include <boost_signals2.hpp>
 #include <memory>
 #include <set>
+#include <FCGlobal.h>
 
 
 namespace App
@@ -49,9 +50,9 @@ public:
     /*! Constructor */
     DocumentT();
     /*! Constructor */
-    DocumentT(Document*);
+    DocumentT(Document*); // explicit bombs
     /*! Constructor */
-    DocumentT(const std::string&);
+    explicit DocumentT(const std::string&);
     /*! Constructor */
     DocumentT(const DocumentT&);
     /*! Destructor */
@@ -99,13 +100,13 @@ public:
     /*! Constructor */
     DocumentObjectT(DocumentObjectT &&);
     /*! Constructor */
-    DocumentObjectT(const DocumentObject*);
+    explicit DocumentObjectT(const DocumentObject*);
     /*! Constructor */
     DocumentObjectT(const Document*, const std::string& objName);
     /*! Constructor */
     DocumentObjectT(const char *docName, const char *objName);
     /*! Constructor */
-    DocumentObjectT(const Property*);
+    explicit DocumentObjectT(const Property*);
     /*! Destructor */
     ~DocumentObjectT();
     /*! Assignment operator */
@@ -177,7 +178,7 @@ public:
     SubObjectT(const DocumentObject*, const char *subname);
 
     /*! Constructor */
-    SubObjectT(const DocumentObject*);
+    SubObjectT(const DocumentObject*);// explicit bombs
 
     /*! Constructor */
     SubObjectT(const char *docName, const char *objName, const char *subname);
@@ -257,13 +258,13 @@ public:
     PropertyLinkT();
 
     /*! Constructor */
-    PropertyLinkT(DocumentObject *obj);
+    explicit PropertyLinkT(DocumentObject *obj);
 
     /*! Constructor */
     PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames);
 
     /*! Constructor */
-    PropertyLinkT(const std::vector<DocumentObject*>& objs);
+    explicit PropertyLinkT(const std::vector<DocumentObject*>& objs);
 
     /*! Constructor */
     PropertyLinkT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames);
@@ -281,7 +282,7 @@ private:
 class AppExport DocumentWeakPtrT
 {
 public:
-    DocumentWeakPtrT(App::Document*) noexcept;
+    explicit DocumentWeakPtrT(App::Document*) noexcept;
     ~DocumentWeakPtrT();
 
     /*!
@@ -320,7 +321,7 @@ private:
 class AppExport DocumentObjectWeakPtrT
 {
 public:
-    DocumentObjectWeakPtrT(App::DocumentObject*);
+    explicit DocumentObjectWeakPtrT(App::DocumentObject*);
     ~DocumentObjectWeakPtrT();
 
     /*!
@@ -383,7 +384,7 @@ template <class T>
 class WeakPtrT
 {
 public:
-    WeakPtrT(T* t) : ptr(t) {
+    explicit WeakPtrT(T* t) : ptr(t) {
     }
     ~WeakPtrT() = default;
 
@@ -466,7 +467,7 @@ class AppExport DocumentObserver
 public:
     /// Constructor
     DocumentObserver();
-    DocumentObserver(Document*);
+    explicit DocumentObserver(Document*);
     virtual ~DocumentObserver();
 
     /** Attaches to another document, the old document
@@ -501,7 +502,7 @@ protected:
 
 private:
     App::Document* _document;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectApplicationActivateDocument;
@@ -522,7 +523,7 @@ class AppExport DocumentObjectObserver : public DocumentObserver
 {
 
 public:
-    typedef std::set<App::DocumentObject*>::const_iterator const_iterator;
+    using const_iterator = std::set<App::DocumentObject*>::const_iterator;
 
     /// Constructor
     DocumentObjectObserver();

@@ -42,7 +42,7 @@ class DlgSettingsMeshView : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsMeshView(QWidget* parent = nullptr);
+    explicit DlgSettingsMeshView(QWidget* parent = nullptr);
     ~DlgSettingsMeshView() override;
 
 protected:

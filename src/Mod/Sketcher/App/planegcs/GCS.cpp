@@ -101,12 +101,12 @@
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
-typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
+using MatrixIndexType = Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType;
 
 #ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
 namespace Eigen {
 
-    typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
+    using MatrixdType = Matrix<double,-1,-1,0,-1,-1>;
 
     template<>
     FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
@@ -429,7 +429,7 @@ void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType ma
 #endif
 
 
-typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Graph;
+using Graph = boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS>;
 
 ///////////////////////////////////////
 // Solver

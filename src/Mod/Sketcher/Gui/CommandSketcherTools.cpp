@@ -872,7 +872,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
     const Part::Geometry *LastGeo;
-    typedef enum { invalid = -1, line = 0, point = 1 } GeoType;
+    using GeoType = enum { invalid = -1, line = 0, point = 1 };
 
     GeoType lastgeotype = invalid;
 
@@ -1032,7 +1032,7 @@ public:
         Clone,
         Move
     };
-    SketcherCopy(const char* name);
+    explicit SketcherCopy(const char* name);
     void activate(SketcherCopy::Op op);
     virtual void activate() = 0;
 };
@@ -1125,9 +1125,13 @@ public:
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle),sin(angle));
             }
 
-            SbString text;
-            text.sprintf(" (%.1f, %.1fdeg)", length, angle * 180 / M_PI);
-            setPositionText(endpoint, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string lengthString = lengthToDisplayFormat(length, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                text.sprintf(" (%s, %.s°)", lengthString.c_str(), angleString.c_str());
+                setPositionText(endpoint, text);
+            }
 
             EditCurve[1] = endpoint;
             drawEdit(EditCurve);
@@ -1674,9 +1678,13 @@ public:
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle),sin(angle));
             }
 
-            SbString text;
-            text.sprintf(" (%.1f, %.1fdeg)", length, angle * 180 / M_PI);
-            setPositionText(endpoint, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string lengthString = lengthToDisplayFormat(length, 1);
+                std::string angleString = angleToDisplayFormat(angle *180.0 / M_PI, 1);
+                text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+                setPositionText(endpoint, text);
+            }
 
             EditCurve[1] = endpoint;
             drawEdit(EditCurve);

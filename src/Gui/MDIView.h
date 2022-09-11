@@ -181,7 +181,7 @@ private:
     Qt::WindowStates wstate;
     // list of active objects of this view
     ActiveObjectList ActiveObjects;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectDelObject; //remove active object upon delete.
 
     friend class MainWindow;

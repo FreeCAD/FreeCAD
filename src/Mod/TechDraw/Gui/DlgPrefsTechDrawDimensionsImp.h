@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,7 +38,7 @@ class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawDimensionsImp() override;
 
 protected:

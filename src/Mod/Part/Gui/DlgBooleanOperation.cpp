@@ -52,7 +52,7 @@ namespace PartGui {
     class BooleanOperationItem : public QTreeWidgetItem
     {
     public:
-        BooleanOperationItem(int type = Type)
+        explicit BooleanOperationItem(int type = Type)
             : QTreeWidgetItem(type)
         {
         }

@@ -24,7 +24,7 @@
 # FreeCAD init module
 #
 # Gathering all the information to start FreeCAD.
-# This is the second of of three init scripts.
+# This is the second of three init scripts.
 # The third one runs when the gui is up,
 
 # imports the one and only
@@ -908,6 +908,13 @@ class Scheme(IntEnum):
     FemMilliMeterNewton = 8
 
 App.Units.Scheme = Scheme
+
+class NumberFormat(IntEnum):
+    Default = 0
+    Fixed = 1
+    Scientific = 2
+
+App.Units.NumberFormat = NumberFormat
 
 class ScaleType(IntEnum):
     Other = -1

@@ -34,7 +34,7 @@
 #include "TaskSketcherSolverAdvanced.h"
 #include <boost_signals2.hpp>
 
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 
 namespace SketcherGui {
 
@@ -45,7 +45,7 @@ class SketcherGuiExport TaskDlgEditSketch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgEditSketch(ViewProviderSketch *sketchView);
+    explicit TaskDlgEditSketch(ViewProviderSketch *sketchView);
     ~TaskDlgEditSketch() override;
     ViewProviderSketch* getSketchView() const
     { return sketchView; }

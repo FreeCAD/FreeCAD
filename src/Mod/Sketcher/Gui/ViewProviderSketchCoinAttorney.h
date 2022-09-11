@@ -88,6 +88,7 @@ private:
     static inline double getRotation(const ViewProviderSketch & vp, SbVec3f pos0, SbVec3f pos1);
     static inline int defaultApplicationFontSizePixels(const ViewProviderSketch & vp);
     static inline int getApplicationLogicalDPIX(const ViewProviderSketch & vp);
+    static inline int getViewOrientationFactor(const ViewProviderSketch & vp);
 
     static inline bool isSketchInvalid(const ViewProviderSketch & vp);
     static inline bool isSketchFullyConstrained(const ViewProviderSketch & vp);
@@ -111,6 +112,8 @@ private:
     friend class EditModeCoinManager;
     friend class EditModeConstraintCoinManager;
     friend class EditModeGeometryCoinManager;
+    friend class EditModeInformationOverlayCoinConverter;
+    friend class EditModeGeometryCoinConverter;
 };
 
 inline bool ViewProviderSketchCoinAttorney::constraintHasExpression(const ViewProviderSketch & vp, int constrid)
@@ -181,6 +184,11 @@ inline int ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(cons
 inline int ViewProviderSketchCoinAttorney::getApplicationLogicalDPIX(const ViewProviderSketch & vp)
 {
     return vp.getApplicationLogicalDPIX();
+}
+
+inline int ViewProviderSketchCoinAttorney::getViewOrientationFactor(const ViewProviderSketch & vp)
+{
+    return vp.getViewOrientationFactor();
 }
 
 inline bool ViewProviderSketchCoinAttorney::isSketchInvalid(const ViewProviderSketch & vp)

@@ -26,8 +26,10 @@
 #ifndef _PreComp_
 #endif
 
+#include <Base/FileInfo.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
 
 #include "kdl_cp/chain.hpp"
 #include "kdl_cp/chainfksolver.hpp"
@@ -136,7 +138,8 @@ void split(std::string const& string, const char delimiter, std::vector<std::str
 void Robot6Axis::readKinematic(const char * FileName)
 {
     char buf[120];
-    std::ifstream in(FileName);
+    Base::FileInfo fi(FileName);
+    Base::ifstream in(fi);
     if (!in)
         return;
 

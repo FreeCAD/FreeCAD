@@ -326,7 +326,7 @@ public:
         return StatusBits.test(NoTrack);
     }
 
-    typedef void* PointerType;
+    using PointerType = void*;
 
 private:
     void setAttributeOf(const char* attr, PyObject* par);

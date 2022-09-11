@@ -66,7 +66,7 @@ protected:
 
 private:
     std::map<std::string, std::string>& nameMap;
-    typedef std::pair<std::string, std::string> PropertyTag;
+    using PropertyTag = std::pair<std::string, std::string>;
     std::stack<PropertyTag> propertyStack;
 };
 }

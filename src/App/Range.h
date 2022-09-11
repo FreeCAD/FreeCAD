@@ -49,15 +49,15 @@ struct AppExport CellAddress {
         ShowFull = Absolute | ShowRow | ShowColumn
     };
 
-    CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false) 
+    explicit CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false)
         : _row(row), _col(col), _absRow(absRow), _absCol(absCol) 
     { }
 
-    CellAddress(const char * address) {
+    explicit CellAddress(const char * address) {
         *this = stringToAddress(address);
     }
 
-    CellAddress(const std::string & address) {
+    explicit CellAddress(const std::string & address) {
         *this = stringToAddress(address.c_str());
     }
 
@@ -117,7 +117,7 @@ protected:
 
 class AppExport Range {
 public:
-    Range(const char *range, bool normalize=false);
+    explicit Range(const char *range, bool normalize=false);
 
     Range(int _row_begin, int _col_begin, int _row_end, int _col_end, bool normalize=false);
 

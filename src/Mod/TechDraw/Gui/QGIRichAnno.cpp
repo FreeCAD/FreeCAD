@@ -76,7 +76,6 @@
 #include "QGIPrimPath.h"
 #include "QGEPath.h"
 #include "QGMText.h"
-#include "QGIView.h"
 #include "QGCustomText.h"
 #include "QGCustomRect.h"
 
@@ -88,8 +87,7 @@ using namespace TechDrawGui;
 
 
 //**************************************************************
-QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
-                         TechDraw::DrawRichAnno* anno) :
+QGIRichAnno::QGIRichAnno() :
     m_isExporting(false), m_hasHover(false)
 {
     setHandlesChildEvents(false);
@@ -97,13 +95,7 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
-
-    if (myParent) {
-        setParentItem(myParent);
-    }
-
-    setViewFeature(anno);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     m_text = new QGCustomText();
     m_text->setTextInteractionFlags(Qt::NoTextInteraction);
@@ -115,7 +107,7 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
     addToGroup(m_rect);
     m_rect->setZValue(ZVALUE::DIMENSION - 1);
     m_rect->centerAt(0.0, 0.0);
-    
+
     setZValue(ZVALUE::DIMENSION);
 
 }
@@ -165,7 +157,7 @@ void QGIRichAnno::drawBorder()
 
 void QGIRichAnno::draw()
 {
-//    Base::Console().Log("QGIRA::draw() - %s - parent: %X\n",getFeature()->getNameInDocument(), parentItem());
+//    Base::Console().Log("QGIRA::draw() - %s - parent: %X\n", getFeature()->getNameInDocument(), parentItem());
     if (!isVisible())
 //        Base::Console().Message("QGIRA::draw - not visible\n");
         return;
@@ -176,27 +168,26 @@ void QGIRichAnno::draw()
         return;
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getFeature()));
-    if (!vp)
+    if (!vp) {
 //        Base::Console().Message("QGIRA::draw - no viewprovider\n");
         return;
-//    double appX = Rez::guiX(annoFeat->X.getValue());
-//    double appY = Rez::guiX(annoFeat->Y.getValue());
-
-    QGIView::draw();
+    }
 
     setTextItem();
+
+    QGIView::draw();
 }
 
 void QGIRichAnno::setTextItem()
 {
-//    Base::Console().Message("QGIRA::setTextItem() - %s\n",getViewName());
+//    Base::Console().Message("QGIRA::setTextItem() - %s\n", getViewName());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
     QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
 
-    //don't do this multiplication if exporting to SVG as other apps interpret 
+    //don't do this multiplication if exporting to SVG as other apps interpret
     //font sizes differently from QGraphicsTextItem (?)
     if (!getExporting()) {
-        //convert point font sizes to (Rez,mm) font sizes
+        //convert point font sizes to (Rez, mm) font sizes
         QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
         double mmPerPoint = 0.353;
         double sizeConvert = Rez::getRezFactor() * mmPerPoint;
@@ -206,13 +197,13 @@ void QGIRichAnno::setTextItem()
         while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
             QString found = rxFontSize.cap(0);
             findList << found;
-            QString qsOldSize = rxFontSize.cap(1); 
+            QString qsOldSize = rxFontSize.cap(1);
 
             QString repl = found;
             double newSize = qsOldSize.toDouble();
             newSize = newSize * sizeConvert;
             QString qsNewSize = QString::number(newSize, 'f', 2);
-            repl.replace(qsOldSize,qsNewSize);
+            repl.replace(qsOldSize, qsNewSize);
             replList << repl;
             pos += rxFontSize.matchedLength();
         }
@@ -229,7 +220,7 @@ void QGIRichAnno::setTextItem()
 //        m_text->update();
 
         if (annoFeat->ShowFrame.getValue()) {
-            QRectF r = m_text->boundingRect().adjusted(1,1,-1,-1);
+            QRectF r = m_text->boundingRect().adjusted(1, 1,-1, -1);
             m_rect->setPen(rectPen());
             m_rect->setBrush(Qt::NoBrush);
             m_rect->setRect(r);
@@ -282,15 +273,15 @@ void QGIRichAnno::setLineSpacing(int lineSpacing)
 
 TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 {
-    TechDraw::DrawRichAnno* result = 
+    TechDraw::DrawRichAnno* result =
          static_cast<TechDraw::DrawRichAnno*>(getViewObject());
     return result;
 }
 
 QRectF QGIRichAnno::boundingRect() const
 {
-    QRectF rect = mapFromItem(m_text,m_text->boundingRect()).boundingRect();
-    return rect.adjusted(-10.,-10.,10.,10.);
+    QRectF rect = mapFromItem(m_text, m_text->boundingRect()).boundingRect();
+    return rect.adjusted(-10., -10., 10., 10.);
 }
 
 void QGIRichAnno::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
@@ -315,7 +306,7 @@ QPen QGIRichAnno::rectPen() const
     double rectWeight = Rez::guiX(vp->LineWidth.getValue());
     Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
     App::Color temp = vp->LineColor.getValue();
-    QColor rectColor = temp.asValue<QColor>(); 
+    QColor rectColor = temp.asValue<QColor>();
 
     pen = QPen(rectStyle);
     pen.setWidthF(rectWeight);
@@ -335,7 +326,7 @@ double QGIRichAnno::prefPointSize()
     //this conversion is only approximate. the factor changes for different fonts.
 //    double mmToPts = 2.83;  //theoretical value
     double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
-    
+
     double ptsSize = round(fontSize * mmToPts);
     return ptsSize;
 }

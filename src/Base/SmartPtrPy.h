@@ -27,7 +27,7 @@
 #include <FCGlobal.h>
 
 // forward declarations
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 namespace Py {
 class Object;

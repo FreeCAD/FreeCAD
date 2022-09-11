@@ -53,20 +53,16 @@ DrawWeldSymbol::DrawWeldSymbol()
 {
     static const char *group = "Weld Symbol";
 
-    ADD_PROPERTY_TYPE(Leader,(nullptr),group,(App::PropertyType)(App::Prop_None), "Parent Leader");
+    ADD_PROPERTY_TYPE(Leader, (nullptr), group, (App::PropertyType)(App::Prop_None), "Parent Leader");
     ADD_PROPERTY_TYPE(AllAround, (false), group, App::Prop_None, "All Around Symbol on/off");
     ADD_PROPERTY_TYPE(FieldWeld, (false), group, App::Prop_None, "Field Weld Symbol on/off");
     ADD_PROPERTY_TYPE(AlternatingWeld, (false), group, App::Prop_None, "Alternating Weld true/false");
     ADD_PROPERTY_TYPE(TailText, (""), group, App::Prop_None, "Text at tail of symbol");
 
-    Caption.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+    Caption.setStatus(App::Property::Hidden, true);
+    Scale.setStatus(App::Property::Hidden, true);
+    ScaleType.setStatus(App::Property::Hidden, true);
     Rotation.setStatus(App::Property::Hidden, true);
-}
-
-DrawWeldSymbol::~DrawWeldSymbol()
-{
 }
 
 //DWS always has exactly 2 child tiles - ArrowSide and OtherSide.
@@ -120,9 +116,10 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute()
 {
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
+        return DrawView::execute();
     }
 
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
@@ -165,7 +162,7 @@ PyObject *DrawWeldSymbol::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DrawWeldSymbolPy(this),true);
+        PythonObject = Py::Object(new DrawWeldSymbolPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }

@@ -48,7 +48,7 @@ public:
         Standard = 3
     };
 
-    Mesher(const TopoDS_Shape&);
+    explicit Mesher(const TopoDS_Shape&);
     ~Mesher();
 
     void setMethod(Method m)

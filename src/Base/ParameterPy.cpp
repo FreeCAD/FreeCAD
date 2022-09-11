@@ -85,7 +85,7 @@ private:
     Py::Object inst;
 };
 
-typedef std::list<ParameterGrpObserver*> ParameterGrpObserverList;
+using ParameterGrpObserverList = std::list<ParameterGrpObserver*>;
 
 class ParameterGrpPy : public Py::PythonExtension<ParameterGrpPy>
 {

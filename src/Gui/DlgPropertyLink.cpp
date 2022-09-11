@@ -52,7 +52,7 @@ using namespace Gui::Dialog;
 
 class ItemDelegate: public QStyledItemDelegate {
 public:
-    ItemDelegate(QObject* parent=nullptr): QStyledItemDelegate(parent) {}
+    explicit ItemDelegate(QObject* parent=nullptr): QStyledItemDelegate(parent) {}
 
     QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &option, const QModelIndex &index) const override

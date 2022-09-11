@@ -40,7 +40,7 @@ class ExtensionPythonT : public ExtensionT
     EXTENSION_PROPERTY_HEADER(App::ExtensionPythonT<ExtensionT>);
 
 public:
-    typedef ExtensionT Inherited;
+    using Inherited = ExtensionT;
 
     ExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
@@ -54,7 +54,7 @@ public:
     ExtensionPythonT& operator= (ExtensionPythonT&&) = delete;
 };
 
-typedef ExtensionPythonT<App::Extension> ExtensionPython;
+using ExtensionPython = ExtensionPythonT<App::Extension>;
 
 // Helper macros to define python extensions
 #define EXTENSION_PROXY_FIRST(function) \

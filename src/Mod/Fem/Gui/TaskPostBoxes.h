@@ -179,7 +179,7 @@ class TaskDlgPost : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgPost(Gui::ViewProviderDocumentObject *view);
+    explicit TaskDlgPost(Gui::ViewProviderDocumentObject *view);
     ~TaskDlgPost() override;
     void connectSlots();
 
@@ -219,7 +219,7 @@ class TaskPostDisplay : public TaskPostBox
     Q_OBJECT
 
 public:
-    TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = nullptr);
+    explicit TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = nullptr);
     ~TaskPostDisplay() override;
 
     void applyPythonCode() override;
@@ -243,7 +243,7 @@ class TaskPostFunction : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostFunction() override;
 
     void applyPythonCode() override;
@@ -284,7 +284,7 @@ class TaskPostDataAlongLine: public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostDataAlongLine() override;
 
     void applyPythonCode() override;
@@ -315,7 +315,7 @@ class TaskPostDataAtPoint: public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostDataAtPoint() override;
 
     void applyPythonCode() override;
@@ -344,7 +344,7 @@ class TaskPostScalarClip : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostScalarClip() override;
 
     void applyPythonCode() override;
@@ -366,7 +366,7 @@ class TaskPostWarpVector : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     ~TaskPostWarpVector() override;
 
     void applyPythonCode() override;

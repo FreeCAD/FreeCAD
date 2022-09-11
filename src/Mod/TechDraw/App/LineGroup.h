@@ -22,8 +22,10 @@
 
 //! LineGroup - Classes related to processing LineGroup definition CSV files
 
-#ifndef _TechDraw_LINEGROUP_H_
-#define _TechDraw_LINEGROUP_H_
+#ifndef TechDraw_LINEGROUP_H_
+#define TechDraw_LINEGROUP_H_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>
 

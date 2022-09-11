@@ -33,7 +33,7 @@ namespace Gui {
 
 class GestureNavigationStyle: public UserNavigationStyle
 {
-    typedef UserNavigationStyle superclass;
+    using superclass = UserNavigationStyle;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

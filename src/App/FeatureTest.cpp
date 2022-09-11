@@ -24,10 +24,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
+#include <sstream>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Base/Unit.h>
+#include <CXX/Objects.hxx>
 
 #include "FeatureTest.h"
 #include "Material.h"
@@ -234,4 +238,57 @@ DocumentObjectExecReturn *FeatureTestPlacement::execute()
     MultLeft.setValue(p1.multLeft(p2));
     MultRight.setValue(q1.multRight(p2));
     return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestAttribute, App::DocumentObject)
+
+
+FeatureTestAttribute::FeatureTestAttribute()
+{
+    ADD_PROPERTY(Object, (Py::Object()));
+    ADD_PROPERTY(Attribute, ("Name"));
+}
+
+FeatureTestAttribute::~FeatureTestAttribute()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Object.getValue().getAttr("Name");
+#if PYCXX_VERSION_MAJOR >= 7
+        Py::ifPyErrorThrowCxxException();
+#else
+        if (PyErr_Occurred())
+            throw Py::RuntimeError();
+#endif
+    }
+    catch (Py::RuntimeError& e) {
+        e.clear();
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        Base::Console().Error("Unexpected exception in ~FeatureTestRemoval()\n");
+    }
+}
+
+DocumentObjectExecReturn *FeatureTestAttribute::execute()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Object.getValue().getAttr(Attribute.getValue());
+#if PYCXX_VERSION_MAJOR >= 7
+        Py::ifPyErrorThrowCxxException();
+#else
+        if (PyErr_Occurred())
+            throw Py::AttributeError();
+#endif
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        std::stringstream str;
+        str << "No such attribute '" << Attribute.getValue() << "'";
+        throw Base::AttributeError(str.str());
+    }
+    return StdReturn;
 }

@@ -46,8 +46,8 @@ class PartExport AttachEngineException : public Base::Exception
 public:
    /// Construction
    AttachEngineException();
-   AttachEngineException(const char * sMessage);
-   AttachEngineException(const std::string& sMessage);
+   explicit AttachEngineException(const char * sMessage);
+   explicit AttachEngineException(const std::string& sMessage);
    /// Destruction
    ~AttachEngineException() throw() override {}
 };
@@ -130,7 +130,7 @@ private:
 };
 
 
-typedef App::ExtensionPythonT<AttachExtension> AttachExtensionPython;
+using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
 } // namespace Part
 

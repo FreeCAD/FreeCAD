@@ -24,8 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <string>
+#include <sstream>
 #include <QDialogButtonBox>
 #include <QGraphicsScene>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsItem>
@@ -36,18 +39,14 @@
 #include <QString>
 #include <QTextOption>
 #include <QVBoxLayout>
-#include <sstream>
-#endif
-
-#include <string>
-#include <regex>
-
-#include <qmath.h>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextBlockFormat>
 #include <QTextFrame>
 #include <QSizeF>
+#endif
+
+#include <regex>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -75,9 +74,9 @@ QGIViewAnnotation::QGIViewAnnotation()
     m_textItem->setTextInteractionFlags(Qt::NoTextInteraction);
     //To allow on screen editing of text:
     //m_textItem->setTextInteractionFlags(Qt::TextEditorInteraction);   //this works
-    //QObject::connect(QGraphicsTextItem::document(), SIGNAL(contentsChanged()),m_textItem, SLOT(updateText()));  //not tested
+    //QObject::connect(QGraphicsTextItem::document(), SIGNAL(contentsChanged()), m_textItem, SLOT(updateText()));  //not tested
     addToGroup(m_textItem);
-    m_textItem->setPos(0.,0.);
+    m_textItem->setPos(0., 0.);
 
 }
 
@@ -128,14 +127,14 @@ void QGIViewAnnotation::drawAnnotation()
     }
 
     const std::vector<std::string>& annoText = viewAnno->Text.getValues();
-    int fontSize = calculateFontPixelSize(viewAnno->TextSize.getValue());
+    int scaledSize = exactFontSize(viewAnno->Font.getValue(), viewAnno->TextSize.getValue());
 
     //build HTML/CSS formatting around Text lines
     std::stringstream ss;
     ss << "<html>\n<head>\n<style>\n";
     ss << "p {";
     ss << "font-family:" << viewAnno->Font.getValue() << "; ";
-    ss << "font-size:" << fontSize << "px; ";
+    ss << "font-size:" << scaledSize << "px; ";
     if (viewAnno->TextStyle.isValue("Normal")) {
         ss << "font-weight:normal; font-style:normal; ";
     } else if (viewAnno->TextStyle.isValue("Bold")) {
@@ -145,7 +144,7 @@ void QGIViewAnnotation::drawAnnotation()
     } else if (viewAnno->TextStyle.isValue("Bold-Italic")) {
         ss << "font-weight:bold; font-style:italic; ";
     } else {
-        Base::Console().Warning("%s has invalid TextStyle\n",viewAnno->getNameInDocument());
+        Base::Console().Warning("%s has invalid TextStyle\n", viewAnno->getNameInDocument());
         ss << "font-weight:normal; font-style:normal; ";
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
@@ -161,13 +160,13 @@ void QGIViewAnnotation::drawAnnotation()
         std::string lt   = std::regex_replace((*it), std::regex("<"), "&lt;");
         ss << lt;
     }
-    ss << "<br></p>\n</body>\n</html> ";
+    ss << "</p>\n</body>\n</html> ";
 
     prepareGeometryChange();
     m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));
     QString qs = QString::fromUtf8(ss.str().c_str());
     m_textItem->setHtml(qs);
-    m_textItem->centerAt(0.,0.);
+    m_textItem->centerAt(0., 0.);
 }
 
 void QGIViewAnnotation::rotateView()

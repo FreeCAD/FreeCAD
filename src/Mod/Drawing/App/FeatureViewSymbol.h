@@ -66,7 +66,7 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
-typedef App::FeaturePythonT<FeatureViewSymbol> FeatureViewSymbolPython;
+using FeatureViewSymbolPython = App::FeaturePythonT<FeatureViewSymbol>;
 
 
 } //namespace Drawing

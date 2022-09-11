@@ -40,28 +40,13 @@ import addonmanager_utilities as utils
 from addonmanager_macro import Macro
 from Addon import Addon
 import NetworkManager
-
-have_git = False
-try:
-    import git
-
-    # Some types of Python installation will fall back to finding a directory called "git"
-    # in certain locations instead of a Python package called git: that directory is unlikely
-    # to have the "Repo" attribute unless it is a real installation, however, so this check
-    # should catch that. (Bug #4072)
-    have_git = hasattr(git, "Repo")
-    if not have_git:
-        FreeCAD.Console.PrintMessage(
-            "Unable to locate a viable GitPython installation: falling back to ZIP installation."
-        )
-except ImportError:
-    pass
-NOGIT = False  # for debugging purposes, set this to True to always use http downloads
+from addonmanager_git import initialize_git, GitFailed
 
 translate = FreeCAD.Qt.translate
 
 # Workers only have one public method by design
 # pylint: disable=too-few-public-methods
+
 
 class CreateAddonListWorker(QtCore.QThread):
     """This worker updates the list of available workbenches, emitting an "addon_repo"
@@ -86,6 +71,8 @@ class CreateAddonListWorker(QtCore.QThread):
         self.package_names = []
         self.moddir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod")
         self.current_thread = None
+
+        self.git_manager = initialize_git()
 
     def run(self):
         "populates the list of addons"
@@ -133,7 +120,7 @@ class CreateAddonListWorker(QtCore.QThread):
             raise ConnectionError
 
     def _process_deprecated(self, deprecated_addons):
-        """ Parse the section on deprecated addons """
+        """Parse the section on deprecated addons"""
 
         fc_major = int(FreeCAD.Version()[0])
         fc_minor = int(FreeCAD.Version()[1])
@@ -146,9 +133,7 @@ class CreateAddonListWorker(QtCore.QThread):
                         minor = int(version_components[1])
                     else:
                         minor = 0
-                    if major < fc_major or (
-                        major == fc_major and minor <= fc_minor
-                    ):
+                    if major < fc_major or (major == fc_major and minor <= fc_minor):
                         if "kind" not in item or item["kind"] == "mod":
                             self.obsolete.append(item["name"])
                         elif item["kind"] == "macro":
@@ -268,12 +253,12 @@ class CreateAddonListWorker(QtCore.QThread):
 
         macro_cache_location = utils.get_cache_file_name("Macros")
 
-        if not have_git or NOGIT:
+        if not self.git_manager:
             message = translate(
                 "AddonsInstaller",
-                "Failed to execute Git Python command: check installation of GitPython and/or git",
+                "Git is disabled, skipping git macros",
             )
-            self.status_message_signal.emit(message)
+            self.status_message.emit(message)
             FreeCAD.Console.PrintWarning(message + "\n")
             return
 
@@ -296,6 +281,12 @@ class CreateAddonListWorker(QtCore.QThread):
                     return
                 if filename.lower().endswith(".fcmacro"):
                     macro = Macro(filename[:-8])  # Remove ".FCMacro".
+                    if macro.name in self.package_names:
+                        FreeCAD.Console.PrintLog(
+                            f"Ignoring second macro named {macro.name} (found on git)\n"
+                        )
+                        continue  # We already have a macro with this name
+                    self.package_names.append(macro.name)
                     macro.on_git = True
                     macro.src_filename = os.path.join(dirpath, filename)
                     macro.fill_details_from_file(macro.src_filename)
@@ -316,16 +307,17 @@ class CreateAddonListWorker(QtCore.QThread):
                             "Attempting to change non-git Macro setup to use git\n",
                         )
                     )
-                    utils.repair_git_repo(
-                        "https://github.com/FreeCAD/FreeCAD-macros.git", macro_cache_location
+                    self.git_manager.repair(
+                        "https://github.com/FreeCAD/FreeCAD-macros.git",
+                        macro_cache_location,
                     )
-                gitrepo = git.Git(macro_cache_location)
-                gitrepo.pull("--ff-only")
+                self.git_manager.update(macro_cache_location)
             else:
-                git.Repo.clone_from(
-                    "https://github.com/FreeCAD/FreeCAD-macros.git", macro_cache_location
+                self.git_manager.clone(
+                    "https://github.com/FreeCAD/FreeCAD-macros.git",
+                    macro_cache_location,
                 )
-        except git.exc.GitError as e:
+        except GitFailed as e:
             FreeCAD.Console.PrintMessage(
                 translate(
                     "AddonsInstaller",
@@ -339,14 +331,16 @@ class CreateAddonListWorker(QtCore.QThread):
                 + "\n"
             )
             try:
+                os.chdir(os.path.join(macro_cache_location,"..")) # Make sure we are not IN this directory
                 shutil.rmtree(macro_cache_location, onerror=self._remove_readonly)
-                git.Repo.clone_from(
-                    "https://github.com/FreeCAD/FreeCAD-macros.git", macro_cache_location
+                self.git_manager.clone(
+                    "https://github.com/FreeCAD/FreeCAD-macros.git",
+                    macro_cache_location,
                 )
                 FreeCAD.Console.PrintMessage(
                     translate("AddonsInstaller", "Clean checkout succeeded") + "\n"
                 )
-            except git.exc.GitError as e2:
+            except GitFailed as e2:
                 # The Qt Python translation extractor doesn't support splitting this string (yet)
                 # pylint: disable=line-too-long
                 FreeCAD.Console.PrintWarning(
@@ -398,6 +392,12 @@ class CreateAddonListWorker(QtCore.QThread):
             ):
                 macro_names.append(macname)
                 macro = Macro(macname)
+                if macro.name in self.package_names:
+                    FreeCAD.Console.PrintLog(
+                        f"Ignoring second macro named {macro.name} (found on wiki)\n"
+                    )
+                    continue  # We already have a macro with this name
+                self.package_names.append(macro.name)
                 macro.on_wiki = True
                 macro.parsed = False
                 repo = Addon.from_macro(macro)
@@ -413,7 +413,8 @@ class CreateAddonListWorker(QtCore.QThread):
 
 
 class LoadPackagesFromCacheWorker(QtCore.QThread):
-    """ A subthread worker that loads package information from its cache file. """
+    """A subthread worker that loads package information from its cache file."""
+
     addon_repo = QtCore.Signal(object)
 
     def __init__(self, cache_file: str):
@@ -424,12 +425,12 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
         )
 
     def override_metadata_cache_path(self, path):
-        """ For testing purposes, override the location to fetch the package metadata from. """
+        """For testing purposes, override the location to fetch the package metadata from."""
         self.metadata_cache_path = path
 
     def run(self):
-        """ Rarely called directly: create an instance and call start() on it instead to
-        launch in a new thread """
+        """Rarely called directly: create an instance and call start() on it instead to
+        launch in a new thread"""
         with open(self.cache_file, "r", encoding="utf-8") as f:
             data = f.read()
             if data:
@@ -456,7 +457,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
 
 
 class LoadMacrosFromCacheWorker(QtCore.QThread):
-    """ A worker object to load macros from a cache file """
+    """A worker object to load macros from a cache file"""
 
     add_macro_signal = QtCore.Signal(object)
 
@@ -465,8 +466,8 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
         self.cache_file = cache_file
 
     def run(self):
-        """ Rarely called directly: create an instance and call start() on it instead to
-        launch in a new thread """
+        """Rarely called directly: create an instance and call start() on it instead to
+        launch in a new thread"""
 
         with open(self.cache_file, "r", encoding="utf-8") as f:
             data = f.read()
@@ -491,8 +492,8 @@ class CheckSingleUpdateWorker(QtCore.QObject):
         self.repo = repo
 
     def do_work(self):
-        """ Use the UpdateChecker class to do the work of this function, depending on the
-        type of Addon """
+        """Use the UpdateChecker class to do the work of this function, depending on the
+        type of Addon"""
 
         checker = UpdateChecker()
         if self.repo.repo_type == Addon.Kind.WORKBENCH:
@@ -520,8 +521,8 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         self.moddir = os.path.join(self.basedir, "Mod")
 
     def run(self):
-        """ Rarely called directly: create an instance and call start() on it instead to
-        launch in a new thread """
+        """Rarely called directly: create an instance and call start() on it instead to
+        launch in a new thread"""
 
         self.current_thread = QtCore.QThread.currentThread()
         checker = UpdateChecker()
@@ -544,22 +545,23 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
 
 
 class UpdateChecker:
-    """ A utility class used by the CheckWorkbenchesForUpdatesWorker class. Each function is
+    """A utility class used by the CheckWorkbenchesForUpdatesWorker class. Each function is
     designed for a specific Addon type, and modifies the passed-in Addon with the determined
-    update status. """
+    update status."""
 
     def __init__(self):
         self.basedir = FreeCAD.getUserAppDataDir()
         self.moddir = os.path.join(self.basedir, "Mod")
+        self.git_manager = initialize_git()
 
     def override_mod_directory(self, moddir):
-        """ Primarily for use when testing, sets an alternate directory to use for mods """
+        """Primarily for use when testing, sets an alternate directory to use for mods"""
         self.moddir = moddir
 
     def check_workbench(self, wb):
-        """ Given a workbench Addon wb, check it for updates using git. If git is not
-        available, does nothing. """
-        if not have_git or NOGIT:
+        """Given a workbench Addon wb, check it for updates using git. If git is not
+        available, does nothing."""
+        if not self.git_manager:
             wb.set_status(Addon.Status.CANNOT_CHECK)
             return
         clonedir = os.path.join(self.moddir, wb.name)
@@ -567,21 +569,17 @@ class UpdateChecker:
             # mark as already installed AND already checked for updates
             if not os.path.exists(os.path.join(clonedir, ".git")):
                 with wb.git_lock:
-                    utils.repair_git_repo(wb.url, clonedir)
+                    self.git_manager.repair(wb.url, clonedir)
             with wb.git_lock:
-                gitrepo = git.Repo(clonedir)
                 try:
-                    if gitrepo.head.is_detached:
+                    status = self.git_manager.status(clonedir)
+                    if "(no branch)" in self.git_manager.status(clonedir):
                         # By definition, in a detached-head state we cannot
                         # update, so don't even bother checking.
                         wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
-                        if hasattr(gitrepo.head, "ref"):
-                            wb.branch = gitrepo.head.ref.name
-                        else:
-                            wb.branch = gitrepo.head.name
+                        wb.branch = self.git_manager.current_branch(clonedir)
                         return
-                    gitrepo.git.fetch()
-                except git.exc.GitError as e:
+                except GitFailed as e:
                     FreeCAD.Console.PrintWarning(
                         "AddonManager: "
                         + translate(
@@ -594,11 +592,11 @@ class UpdateChecker:
                     wb.set_status(Addon.Status.CANNOT_CHECK)
                 else:
                     try:
-                        if "git pull" in gitrepo.git.status():
+                        if self.git_manager.update_available(clonedir):
                             wb.set_status(Addon.Status.UPDATE_AVAILABLE)
                         else:
                             wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
-                    except git.exc.GitError:
+                    except GitFailed:
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "AddonsInstaller", "git status failed for {}"
@@ -608,7 +606,7 @@ class UpdateChecker:
                         wb.set_status(Addon.Status.CANNOT_CHECK)
 
     def check_package(self, package: Addon) -> None:
-        """ Given a packaged Addon package, check it for updates. If git is available that is
+        """Given a packaged Addon package, check it for updates. If git is available that is
         used. If not, the package's metadata is examined, and if the metadata file has changed
         compared to the installed copy, an update is flagged."""
 
@@ -616,7 +614,7 @@ class UpdateChecker:
         if os.path.exists(clonedir):
 
             # First, try to just do a git-based update, which will give the most accurate results:
-            if have_git and not NOGIT:
+            if self.git_manager:
                 self.check_workbench(package)
                 if package.status() != Addon.Status.CANNOT_CHECK:
                     # It worked, just exit now
@@ -653,7 +651,7 @@ class UpdateChecker:
                 package.set_status(Addon.Status.CANNOT_CHECK)
 
     def check_macro(self, macro_wrapper: Addon) -> None:
-        """ Check to see if the online copy of the macro's code differs from the local copy. """
+        """Check to see if the online copy of the macro's code differs from the local copy."""
 
         # Make sure this macro has its code downloaded:
         try:
@@ -724,8 +722,8 @@ class CacheMacroCodeWorker(QtCore.QThread):
         self.repo_queue = None
 
     def run(self):
-        """ Rarely called directly: create an instance and call start() on it instead to
-        launch in a new thread """
+        """Rarely called directly: create an instance and call start() on it instead to
+        launch in a new thread"""
 
         self.status_message.emit(translate("AddonsInstaller", "Caching macro code..."))
 
@@ -769,8 +767,8 @@ class CacheMacroCodeWorker(QtCore.QThread):
             )
 
     def _process_queue(self, num_macros) -> bool:
-        """ Spools up six network connections and downloads the macro code. Returns True if
-       it was interrupted by user request, or False if it ran to completion. """
+        """Spools up six network connections and downloads the macro code. Returns True if
+        it was interrupted by user request, or False if it ran to completion."""
 
         # Emulate QNetworkAccessManager and spool up six connections:
         for _ in range(6):
@@ -800,7 +798,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
         return False
 
     def update_and_advance(self, repo: Addon) -> None:
-        """ Emit the updated signal and launch the next item from the queue. """
+        """Emit the updated signal and launch the next item from the queue."""
         if repo is not None:
             if repo.macro.name not in self.failed:
                 self.update_macro.emit(repo)
@@ -835,7 +833,7 @@ class CacheMacroCodeWorker(QtCore.QThread):
             pass
 
     def terminate(self, worker) -> None:
-        """ Shut down all running workers and exit the thread """
+        """Shut down all running workers and exit the thread"""
         if not worker.isFinished():
             macro_name = worker.macro.name
             FreeCAD.Console.PrintWarning(
@@ -871,8 +869,8 @@ class GetMacroDetailsWorker(QtCore.QThread):
         self.macro = repo.macro
 
     def run(self):
-        """ Rarely called directly: create an instance and call start() on it instead to
-        launch in a new thread """
+        """Rarely called directly: create an instance and call start() on it instead to
+        launch in a new thread"""
 
         self.status_message.emit(
             translate("AddonsInstaller", "Retrieving macro description...")

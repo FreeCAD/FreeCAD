@@ -36,7 +36,7 @@ namespace Base
 {
 class Matrix4D;
 template <class _Precision> class Vector3;
-typedef Vector3<float>  Vector3f;
+using Vector3f = Vector3<float>;
 
 /** A Builder class for 3D representations on App level
  * On the application level nothing is known of the visual representation of data.
@@ -338,6 +338,69 @@ private:
 private:
     std::ostream& result;
     int indent;
+};
+
+/**
+ * Loads an OpenInventor file.
+ * @author Werner Mayer
+ */
+class BaseExport InventorLoader {
+public:
+    struct Face {
+        Face(int32_t p1, int32_t p2, int32_t p3)
+            : p1(p1), p2(p2), p3(p3) {}
+        int32_t p1, p2, p3;
+    };
+
+    explicit InventorLoader(std::istream &inp) : inp(inp) {
+    }
+
+    /// Start the read process. Returns true if successful and false otherwise.
+    /// The obtained data can be accessed with the appropriate getter functions.
+    bool read();
+
+    /// Checks if the loaded data are valid
+    bool isValid() const;
+
+    /// Returns true if the data come from a non-indexed node as SoFaceSet.
+    /// This means that the read points contain duplicates.
+    bool isNonIndexed() const {
+        return isnonindexed;
+    }
+
+    /// Return the vectors of an SoNormal node
+    const std::vector<Vector3f>& getVector() {
+        return vector;
+    }
+
+    /// Return the points of an SoCoordinate3 node
+    const std::vector<Vector3f>& getPoints() {
+        return points;
+    }
+
+    /// Return the faces of an SoIndexedFaceSet node
+    const std::vector<Face>& getFaces() {
+        return faces;
+    }
+
+private:
+    void readNormals();
+    void readCoords();
+    void readIndexedFaceSet();
+    void readFaceSet();
+    template<typename T>
+    std::vector<T> readData(const char*) const;
+    std::vector<Vector3f> convert(const std::vector<float>&) const;
+    std::vector<Face> convert(const std::vector<int32_t>&) const;
+    std::vector<Face> convert(const std::vector<std::vector<int32_t>>&) const;
+    static std::vector<std::vector<int32_t>> split(const std::vector<int32_t>&);
+
+private:
+    bool isnonindexed = false;
+    std::vector<Vector3f> vector;
+    std::vector<Vector3f> points;
+    std::vector<Face> faces;
+    std::istream &inp;
 };
 
 } //namespace Base

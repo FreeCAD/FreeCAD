@@ -59,7 +59,7 @@ private:
     boost::signals2::connection connectChangedObjectGui;
 };
 
-typedef ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension> ViewProviderOriginGroupExtensionPython;
+using ViewProviderOriginGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;
 
 } //namespace Gui
 

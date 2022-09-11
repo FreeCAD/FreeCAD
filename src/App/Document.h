@@ -361,7 +361,7 @@ public:
      * transactions, meaning that there are other transactions before the given
      * ID. The Gui component shall ask user if they want to undo multiple steps.
      * And if the user agrees, call undo(id) to unroll all transaction before
-     * and including the the one with the give ID. Same applies for redo.
+     * and including the one with the given ID. Same applies for redo.
      *
      * The new transaction ID describe here is fully backward compatible.
      * Calling the APIs with a default id=0 gives the original behavior.
@@ -510,7 +510,7 @@ public:
 
 protected:
     /// Construction
-    Document(const char *name = "");
+    explicit Document(const char *name = "");
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

@@ -34,7 +34,7 @@ namespace StartGui {
         Q_OBJECT
 
     public:
-        DlgStartPreferencesImp( QWidget* parent = nullptr );
+        explicit DlgStartPreferencesImp( QWidget* parent = nullptr );
         ~DlgStartPreferencesImp() override;
 
     protected:

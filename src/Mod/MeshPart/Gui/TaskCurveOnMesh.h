@@ -42,7 +42,7 @@ class CurveOnMeshWidget : public QWidget
     Q_OBJECT
 
 public:
-    CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent=nullptr);
+    explicit CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent=nullptr);
     ~CurveOnMeshWidget() override;
 
     void reject();
@@ -65,7 +65,7 @@ class TaskCurveOnMesh : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskCurveOnMesh(Gui::View3DInventor* view);
+    explicit TaskCurveOnMesh(Gui::View3DInventor* view);
     ~TaskCurveOnMesh() override;
 
 public:

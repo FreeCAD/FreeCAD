@@ -44,7 +44,7 @@ class DlgSettingsNavigation : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsNavigation(QWidget* parent = nullptr);
+    explicit DlgSettingsNavigation(QWidget* parent = nullptr);
     ~DlgSettingsNavigation() override;
 
     void saveSettings() override;
@@ -68,7 +68,7 @@ class CameraDialog : public QDialog
     Q_OBJECT
 
 public:
-    CameraDialog(QWidget* parent=nullptr);
+    explicit CameraDialog(QWidget* parent=nullptr);
     ~CameraDialog() override;
     void setValues(double q0, double q1, double q2, double q3);
     void getValues(double& q0, double& q1, double& q2, double& q3) const;

@@ -41,7 +41,7 @@ class TaskFemConstraintTransform : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintTransform() override;
     const std::string getReferences() const override;
     double get_X_rot()const;
@@ -75,7 +75,7 @@ class TaskDlgFemConstraintTransform : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView);
+    explicit TaskDlgFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

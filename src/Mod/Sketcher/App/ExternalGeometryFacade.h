@@ -54,7 +54,7 @@ class SketcherExport ExternalGeometryFacade : public Base::BaseClass, private IS
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 private:
-    ExternalGeometryFacade(const Part::Geometry * geometry);
+    explicit ExternalGeometryFacade(const Part::Geometry * geometry);
     ExternalGeometryFacade(); // As TYPESYSTEM requirement
 
     friend class ExternalGeometryFacadePy;

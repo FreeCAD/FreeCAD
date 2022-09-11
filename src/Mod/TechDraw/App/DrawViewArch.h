@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewArch_h_
-#define _DrawViewArch_h_
+#ifndef DrawViewArch_h_
+#define DrawViewArch_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -40,11 +42,11 @@ class TechDrawExport DrawViewArch : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewArch();
-    ~DrawViewArch() override;
+    ~DrawViewArch() = default;
 
     App::PropertyLink         Source;
     App::PropertyBool         AllOn;
-    App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
+    App::PropertyEnumeration  RenderMode; // "Wireframe", "Solid"
     App::PropertyBool         FillSpaces;
     App::PropertyBool         ShowHidden;
     App::PropertyBool         ShowFill;

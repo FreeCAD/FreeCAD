@@ -40,7 +40,7 @@ class Selection : public QWidget
     Q_OBJECT
 
 public:
-    Selection(QWidget* parent = nullptr);
+    explicit Selection(QWidget* parent = nullptr);
     ~Selection() override;
     void setObjects(const std::vector<Gui::SelectionObject>&);
     std::vector<App::DocumentObject*> getObjects() const;

@@ -45,8 +45,8 @@ protected:
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPython;
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderCustom> ViewProviderCustomPython;
+using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderPart>;
+using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
 
 } // namespace PartGui
 

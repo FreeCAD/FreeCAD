@@ -544,7 +544,7 @@ std::string PropertyLinkT::getPropertyPython() const
 
 class DocumentWeakPtrT::Private {
 public:
-    Private(App::Document* doc) : _document(doc) {
+    explicit Private(App::Document* doc) : _document(doc) {
         if (doc) {
             connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
                 (&Private::deletedDocument, this, sp::_1));
@@ -561,7 +561,7 @@ public:
     }
 
     App::Document* _document;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
 };
 
@@ -596,7 +596,7 @@ App::Document* DocumentWeakPtrT::operator->() const noexcept
 
 class DocumentObjectWeakPtrT::Private {
 public:
-    Private(App::DocumentObject* obj) : object(obj), indocument(false) {
+    explicit Private(App::DocumentObject* obj) : object(obj), indocument(false) {
         set(obj);
     }
     void deletedDocument(const App::Document& doc) {
@@ -642,7 +642,7 @@ public:
 
     App::DocumentObject* object;
     bool indocument;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;

@@ -50,7 +50,7 @@ public:
 
 };
 
-typedef App::FeaturePythonT<MaterialObject> MaterialObjectPython;
+using MaterialObjectPython = App::FeaturePythonT<MaterialObject>;
 
 
 } //namespace App

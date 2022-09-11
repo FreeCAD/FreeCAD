@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMCMARK_H
 #define DRAWINGGUI_QGRAPHICSITEMCMARK_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 # include "QGIVertex.h"
 
 namespace TechDrawGui

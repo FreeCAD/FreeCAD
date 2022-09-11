@@ -628,15 +628,24 @@ void  QuantityPy::setFormat(Py::Dict arg)
     }
 
     if (arg.hasKey("NumberFormat")) {
-        Py::Char form(arg.getItem("NumberFormat"));
-        std::string fmtstr = static_cast<std::string>(Py::String(form));
-        if (fmtstr.size() != 1)
-            throw Py::ValueError("Invalid format character");
+        Py::Object item = arg.getItem("NumberFormat");
+        if (item.isNumeric()) {
+            int format = static_cast<int>(Py::Int(item));
+            if (format < 0 || format > QuantityFormat::Scientific)
+                throw Py::ValueError("Invalid format value");
+            fmt.format = static_cast<QuantityFormat::NumberFormat>(format);
+        }
+        else {
+            Py::Char form(item);
+            std::string fmtstr = static_cast<std::string>(Py::String(form));
+            if (fmtstr.size() != 1)
+                throw Py::ValueError("Invalid format character");
 
-        bool ok;
-        fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
-        if (!ok)
-            throw Py::ValueError("Invalid format character");
+            bool ok;
+            fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
+            if (!ok)
+                throw Py::ValueError("Invalid format character");
+        }
     }
 
     if (arg.hasKey("Denominator")) {

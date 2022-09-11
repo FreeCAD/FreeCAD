@@ -27,14 +27,14 @@
 
 namespace PartGui {
 class Ui_DlgPartCylinder;
-typedef std::shared_ptr<Ui_DlgPartCylinder> Ui_DlgPartCylinderPtr;
+using Ui_DlgPartCylinderPtr = std::shared_ptr<Ui_DlgPartCylinder>;
 
 class DlgPartCylinderImp : public Gui::LocationDialogUiImp
 {
     Q_OBJECT
 
 public:
-    DlgPartCylinderImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgPartCylinderImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPartCylinderImp() override;
 
     double getRadius() const;

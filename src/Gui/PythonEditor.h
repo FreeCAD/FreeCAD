@@ -41,7 +41,7 @@ class GuiExport PythonEditor : public TextEditor
     Q_OBJECT
 
 public:
-    PythonEditor(QWidget *parent = nullptr);
+    explicit PythonEditor(QWidget *parent = nullptr);
     ~PythonEditor() override;
 
     void toggleBreakpoint();
@@ -79,7 +79,7 @@ private:
 class GuiExport PythonSyntaxHighlighter : public SyntaxHighlighter
 {
 public:
-    PythonSyntaxHighlighter(QObject* parent);
+    explicit PythonSyntaxHighlighter(QObject* parent);
     virtual ~PythonSyntaxHighlighter();
 
     void highlightBlock (const QString & text);

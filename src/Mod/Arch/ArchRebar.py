@@ -468,28 +468,18 @@ class _Rebar(ArchComponent.Component):
             elif round(influenceArea) < round(reqInfluenceArea):
                 FreeCAD.Console.PrintWarning("Last span is greater that end offset.\n")
             for i in range(len(spacinglist)):
-                if i == 0:
-                    barplacement = CustomSpacingPlacement(spacinglist, 1, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
-                    placementlist.append(barplacement)
-                else:
-                    barplacement = CustomSpacingPlacement(spacinglist, i+1, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
-                    placementlist.append(barplacement)
+                barplacement = CustomSpacingPlacement(spacinglist, i+1, axis, father.Placement.Rotation, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+                placementlist.append(barplacement)
             obj.Amount = len(spacinglist)
             obj.Spacing = 0
         obj.PlacementList = placementlist
         for i in range(len(obj.PlacementList)):
-            if i == 0:
-                bar.Placement = obj.PlacementList[i]
-                shapes.append(bar)
-                basewire.Placement = obj.PlacementList[i]
-                self.wires.append(basewire)
-            else:
-                bar = bar.copy()
-                bar.Placement = obj.PlacementList[i]
-                shapes.append(bar)
-                w = basewire.copy()
-                w.Placement = obj.PlacementList[i]
-                self.wires.append(w)
+            bar = bar.copy()
+            bar.Placement = obj.PlacementList[i]
+            shapes.append(bar)
+            w = basewire.copy()
+            w.Placement = obj.PlacementList[i]
+            self.wires.append(w)
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
             obj.Placement = pl

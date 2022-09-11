@@ -52,13 +52,13 @@ QGIViewClip::QGIViewClip()
 
     m_cliparea = new QGCustomClip();
     addToGroup(m_cliparea);
-    m_cliparea->setPos(0.,0.);
-    m_cliparea->setRect(0.,0.,Rez::guiX(5.),Rez::guiX(5.));
+    m_cliparea->setPos(0., 0.);
+    m_cliparea->setRect(0., 0., Rez::guiX(5.), Rez::guiX(5.));
 
     m_frame = new QGCustomRect();
     addToGroup(m_frame);
-    m_frame->setPos(0.,0.);
-    m_frame->setRect(0.,0.,Rez::guiX(5.),Rez::guiX(5.));
+    m_frame->setPos(0., 0.);
+    m_frame->setRect(0., 0., Rez::guiX(5.), Rez::guiX(5.));
 }
 
 void QGIViewClip::updateView(bool update)
@@ -102,9 +102,9 @@ void QGIViewClip::drawClip()
     prepareGeometryChange();
     double h = viewClip->Height.getValue();
     double w = viewClip->Width.getValue();
-    QRectF r = QRectF(-Rez::guiX(w)/2.0,-Rez::guiX(h)/2.0,Rez::guiX(w),Rez::guiX(h));
-    m_frame->setRect(r);                    // (-50,-50) -> (50,50)
-    m_frame->setPos(0.,0.);
+    QRectF r = QRectF(-Rez::guiX(w)/2.0, -Rez::guiX(h)/2.0, Rez::guiX(w), Rez::guiX(h));
+    m_frame->setRect(r);                    // (-50, -50) -> (50, 50)
+    m_frame->setPos(0., 0.);
     if (viewClip->ShowFrame.getValue()) {
         m_frame->show();
     } else {
@@ -113,10 +113,10 @@ void QGIViewClip::drawClip()
 
     //probably a slicker way to do this?
     QPointF midFrame   = m_frame->boundingRect().center();
-    QPointF midMapped  = mapFromItem(m_frame,midFrame);
-    QPointF clipOrigin = mapToItem(m_cliparea,midMapped);
+    QPointF midMapped  = mapFromItem(m_frame, midFrame);
+    QPointF clipOrigin = mapToItem(m_cliparea, midMapped);
 
-    m_cliparea->setRect(r.adjusted(-1,-1,1,1));
+    m_cliparea->setRect(r.adjusted(-1, -1, 1,1));
 
     std::vector<std::string> childNames = viewClip->getChildViewNames();
     //for all child Views in Clip, add the graphics representation of the View to the Clip group
@@ -140,7 +140,7 @@ void QGIViewClip::drawClip()
                 qgiv->show();
             }
         } else {
-            Base::Console().Warning("Logic error? - drawClip() - qgiv for %s not found\n",(*it).c_str());   //gview for feature !exist
+            Base::Console().Warning("Logic error? - drawClip() - qgiv for %s not found\n", (*it).c_str());   //gview for feature !exist
         }
     }
 
@@ -151,7 +151,7 @@ void QGIViewClip::drawClip()
         QGIView* qv = dynamic_cast<QGIView*>((*it));
         if (qv) {
             std::string qvName = std::string(qv->getViewName());
-            if (std::find(childNames.begin(),childNames.end(),qvName) == childNames.end()) {
+            if (std::find(childNames.begin(), childNames.end(), qvName) == childNames.end()) {
                 m_cliparea->removeFromGroup(qv);
                 removeFromGroup(qv);
                 qv->isInnerView(false);

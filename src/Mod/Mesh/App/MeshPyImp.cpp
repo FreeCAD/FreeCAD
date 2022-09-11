@@ -54,7 +54,7 @@ using namespace Mesh;
 
 
 struct MeshPropertyLock {
-    MeshPropertyLock(PropertyMeshKernel* p) : prop(p)
+    explicit MeshPropertyLock(PropertyMeshKernel* p) : prop(p)
     { if (prop) prop->startEditing(); }
     ~MeshPropertyLock()
     { if (prop) prop->finishEditing(); }

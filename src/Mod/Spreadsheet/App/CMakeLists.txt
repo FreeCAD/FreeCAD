@@ -8,6 +8,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(Spreadsheet_LIBS

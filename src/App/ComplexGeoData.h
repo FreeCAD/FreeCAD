@@ -39,7 +39,7 @@ namespace Base
 class Placement;
 class Rotation;
 template <class _Precision> class BoundBox3;
-typedef BoundBox3<double> BoundBox3d;
+using BoundBox3d = BoundBox3<double>;
 }
 
 namespace Data

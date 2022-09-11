@@ -40,7 +40,7 @@ class DlgSettingsImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsImp( QWidget* parent = nullptr );
+    explicit DlgSettingsImp( QWidget* parent = nullptr );
     ~DlgSettingsImp() override;
 
 protected:

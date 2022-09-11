@@ -23,9 +23,12 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost/uuid/uuid.hpp>
 
 #include <App/FeaturePython.h>
+#include <App/Material.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -41,10 +44,11 @@ class DrawViewPart;
 class TechDrawExport LineFormat
 {
 public:
-    LineFormat(int style = getDefEdgeStyle(),
-               double weight = getDefEdgeWidth(),
-               App::Color color = getDefEdgeColor(),
-               bool visible = true);
+    LineFormat();
+    LineFormat(int style,
+               double weight,
+               App::Color color,
+               bool visible);
     ~LineFormat() = default;
 
     int m_style;
@@ -146,7 +150,7 @@ public:
     CosmeticEdge* clone() const;
 
     Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
-    Base::Vector3d permaEnd; 
+    Base::Vector3d permaEnd;
     double permaRadius;
 //    void unscaleEnds(double scale);
     TechDraw::BaseGeomPtr m_geometry;
@@ -189,13 +193,13 @@ public:
     CenterLine(CenterLine* cl);
     //set m_faces after using next 3 ctors
     CenterLine(TechDraw::BaseGeomPtr bg,
-               int m = CLMODE::VERTICAL, 
+               int m = CLMODE::VERTICAL,
                double h = 0.0,
                double v = 0.0,
                double r = 0.0,
                double x = 0.0);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2,
-               int m = CLMODE::VERTICAL, 
+               int m = CLMODE::VERTICAL,
                double h = 0.0,
                double v = 0.0,
                double r = 0.0,
@@ -286,7 +290,7 @@ public:
 
 protected:
     void initialize();
-    
+
     void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);
 
@@ -305,7 +309,7 @@ class TechDrawExport GeomFormat: public Base::Persistence
 
 public:
     GeomFormat();
-    GeomFormat(TechDraw::GeomFormat* gf);
+    explicit GeomFormat(TechDraw::GeomFormat* gf);
     GeomFormat(int idx,
                LineFormat fmt);
     ~GeomFormat() override;

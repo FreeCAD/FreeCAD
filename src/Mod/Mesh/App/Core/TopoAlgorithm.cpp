@@ -287,8 +287,8 @@ float MeshTopoAlgorithm::SwapEdgeBenefit(FacetIndex f, int e) const
                         vertices[v1], vertices[v4]);
 }
 
-typedef std::pair<FacetIndex,int> FaceEdge; // (face, edge) pair
-typedef std::pair<float, FaceEdge> FaceEdgePriority;
+using FaceEdge = std::pair<FacetIndex,int>; // (face, edge) pair
+using FaceEdgePriority = std::pair<float, FaceEdge>;
 
 void MeshTopoAlgorithm::OptimizeTopology()
 {

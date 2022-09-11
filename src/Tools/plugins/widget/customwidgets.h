@@ -68,7 +68,7 @@ namespace Base {
             Scientific = 2
         };
 
-        typedef int NumberOptions;
+        using NumberOptions = int;
         NumberOptions option;
         NumberFormat format;
         int precision;

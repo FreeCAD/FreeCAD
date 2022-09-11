@@ -98,7 +98,7 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationUi<Ui_Placement> Ui_TransformComp;
+    using Ui_TransformComp = Gui::LocationUi<Ui_Placement>;
     Ui_TransformComp* ui;
     Base::Placement pm;
     std::set<App::DocumentObject*> selection;

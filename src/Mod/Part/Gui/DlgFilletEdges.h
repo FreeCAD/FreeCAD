@@ -47,7 +47,7 @@ class FilletRadiusDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    FilletRadiusDelegate(QObject *parent = nullptr);
+    explicit FilletRadiusDelegate(QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const override;
@@ -65,7 +65,7 @@ class FilletRadiusModel : public QStandardItemModel
     Q_OBJECT
 
 public:
-    FilletRadiusModel(QObject * parent = nullptr);
+    explicit FilletRadiusModel(QObject * parent = nullptr);
 
     Qt::ItemFlags flags (const QModelIndex & index) const override;
     bool setData (const QModelIndex & index, const QVariant & value,
@@ -137,7 +137,7 @@ class DlgChamferEdges : public DlgFilletEdges
     Q_OBJECT
 
 public:
-    DlgChamferEdges(Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgChamferEdges(Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgChamferEdges() override;
 
 protected:
@@ -149,7 +149,7 @@ class TaskFilletEdges : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskFilletEdges(Part::Fillet*);
+    explicit TaskFilletEdges(Part::Fillet*);
     ~TaskFilletEdges() override;
 
 public:
@@ -173,7 +173,7 @@ class TaskChamferEdges : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskChamferEdges(Part::Chamfer*);
+    explicit TaskChamferEdges(Part::Chamfer*);
     ~TaskChamferEdges() override;
 
 public:

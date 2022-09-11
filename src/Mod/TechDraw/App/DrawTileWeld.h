@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawTileWeld_h_
-#define _TechDraw_DrawTileWeld_h_
+#ifndef TechDraw_DrawTileWeld_h_
+#define TechDraw_DrawTileWeld_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -57,7 +59,7 @@ public:
         return "TechDrawGui::ViewProviderTile";
     }
     PyObject *getPyObject() override;
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}
+    virtual QRectF getRect() const { return { 0, 0, 1, 1}; }
 
     void replaceSymbolIncluded(std::string newSymbolFile);
     void setupSymbolIncluded();
@@ -71,7 +73,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawTileWeld> DrawTileWeldPython;
+using DrawTileWeldPython = App::FeaturePythonT<DrawTileWeld>;
 
 } //namespace TechDraw
 #endif

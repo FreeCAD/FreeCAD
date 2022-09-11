@@ -54,7 +54,7 @@ public:
     }
 };
 
-typedef App::FeaturePythonT<CustomFeature> CustomFeaturePython;
+using CustomFeaturePython = App::FeaturePythonT<CustomFeature>;
 
 } //namespace Part
 

@@ -31,21 +31,19 @@
 #include <string>
 # include <exception>
 
+#include <limits>
+
 #include <Precision.hxx>
 #include <Bnd_Box2d.hxx>
 #include <BndLib_Add2dCurve.hxx>
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include "BRepBuilderAPI_MakeShape.hxx"
 #include <BRepBndLib.hxx>
-#include <Extrema_ExtCC2d.hxx>
-#include <Geom2dAdaptor_Curve.hxx>
-#include <Geom2d_Curve.hxx>
-#include <Geom2d_Line.hxx>
-#include <Geom2dAPI_ProjectPointOnCurve.hxx>
-#include <GeomAPI.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <Geom_Line.hxx>
 #include <Geom_Curve.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <gp_Pnt2d.hxx>
 #include <gp_Pln.hxx>
 #include <TopoDS_Edge.hxx>
 #endif
@@ -75,16 +73,6 @@
 #define LENGTH 2
 
 using namespace TechDraw;
-
-hTrimCurve::hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
-                        double parm1,
-                        double parm2) :
-    hCurve(hCurveIn),
-    first(parm1),
-    last(parm2)
-{
-    //just a convenient struct for now.
-}
 
 //All this OCC math is being done on edges(&vertices) that have been through the center/scale/mirror process.
 
@@ -187,56 +175,54 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     }
 
     Bnd_Box edgeBbx;
-    edgeBbx.SetGap(0.0);
+    edgeBbx.SetGap(1.0);     //make the box a bit bigger
 
-    std::vector<Handle(Geom_Curve)> selCurves;
-    std::vector<hTrimCurve> hTCurve2dList;
+    std::vector<TopoDS_Edge> inEdges;
     for (auto& bg: selEdges) {
-        TopoDS_Edge e = bg->occEdge;
-        BRepBndLib::AddOptimal(e, edgeBbx);
-        double first = 0.0;
-        double last = 0.0;
-        Handle(Geom_Curve) hCurve = BRep_Tool::Curve(e, first, last);
-        Handle(Geom2d_Curve) hCurve2 = GeomAPI::To2d (hCurve, projPlane);
-        hTrimCurve temp(hCurve2, first, last);
-        hTCurve2dList.push_back(temp);
+        inEdges.push_back(bg->occEdge);
+        BRepBndLib::Add(bg->occEdge, edgeBbx);
     }
 
-    //can't use Bnd_Box2d here as BndLib_Add2dCurve::Add adds the poles of splines to the box.
-    //poles are not necessarily on the curve! 3d Bnd_Box does it properly. 
-    //this has to be the bbx of the selected edges, not the dvp!!!
     double minX, minY, minZ, maxX, maxY, maxZ;
     edgeBbx.Get(minX, minY, minZ, maxX, maxY, maxZ);
     double xMid = (maxX + minX) / 2.0;
     double yMid = (maxY + minY) / 2.0;
 
-    gp_Pnt2d rightMid(maxX, yMid);
-    gp_Pnt2d leftMid(minX, yMid);
-    gp_Pnt2d topMid(xMid, maxY);
-    gp_Pnt2d bottomMid(xMid, minY);
+    gp_Pnt rightMid(maxX, yMid, 0.0);
+    gp_Pnt leftMid(minX, yMid, 0.0);
+    gp_Pnt topMid(xMid, maxY, 0.0);
+    gp_Pnt bottomMid(xMid, minY, 0.0);
 
-    gp_Dir2d xDir(1.0, 0.0);
-    gp_Dir2d yDir(0.0, 1.0);
+    gp_Dir xDir(1.0, 0.0, 0.0);
+    gp_Dir yDir(0.0, 1.0, 0.0);
 
     if (direction == HORIZONTAL) {
-        Handle(Geom2d_Line) boundaryLeft  = new Geom2d_Line(leftMid, yDir);
-        gp_Pnt2d leftPoint = findClosestPoint(hTCurve2dList,
-                                              boundaryLeft);
-        Handle(Geom2d_Line) boundaryRight  = new Geom2d_Line(rightMid, yDir);
-        gp_Pnt2d rightPoint = findClosestPoint(hTCurve2dList,
-                                               boundaryRight);
+        Handle(Geom_Line) lineLeft = new Geom_Line(leftMid, yDir);
+        BRepBuilderAPI_MakeEdge mkEdgeLeft(lineLeft);
+        TopoDS_Edge edgeLeft = mkEdgeLeft.Edge();
+        gp_Pnt leftPoint = findClosestPoint(inEdges,
+                                            edgeLeft);
+        Handle(Geom_Line) lineRight = new Geom_Line(rightMid, yDir);
+        BRepBuilderAPI_MakeEdge mkEdgeRight(lineRight);
+        TopoDS_Edge edgeRight = mkEdgeRight.Edge();
+        gp_Pnt rightPoint = findClosestPoint(inEdges,
+                                             edgeRight);
 
         refMin = Base::Vector3d(leftPoint.X(), leftPoint.Y(), 0.0);
         refMax = Base::Vector3d(rightPoint.X(), rightPoint.Y(), 0.0);
 
     } else if (direction == VERTICAL) {
-        Handle(Geom2d_Line) boundaryBottom = new Geom2d_Line(bottomMid, xDir);
-        gp_Pnt2d bottomPoint = findClosestPoint(hTCurve2dList,
-                                                boundaryBottom);
-        Handle(Geom2d_Line) boundaryTop = new Geom2d_Line(topMid, xDir);
-        gp_Pnt2d topPoint = findClosestPoint(hTCurve2dList,
-                                             boundaryTop);
-        refMin = Base::Vector3d(bottomPoint.X(),bottomPoint.Y(), 0.0);
+        Handle(Geom_Line) lineBottom = new Geom_Line(bottomMid, xDir);
+        BRepBuilderAPI_MakeEdge mkEdgeBottom(lineBottom);
+        TopoDS_Edge edgeBottom = mkEdgeBottom.Edge();
+        gp_Pnt bottomPoint = findClosestPoint(inEdges,
+                                              edgeBottom);
+        Handle(Geom_Line) lineTop = new Geom_Line(topMid, xDir);
+        BRepBuilderAPI_MakeEdge mkEdgeTop(lineTop);
+        TopoDS_Edge edgeTop = mkEdgeTop.Edge();
+        gp_Pnt topPoint = findClosestPoint(inEdges,
+                                           edgeTop);
+        refMin = Base::Vector3d(bottomPoint.X(), bottomPoint.Y(), 0.0);
         refMax = Base::Vector3d(topPoint.X(), topPoint.Y(), 0.0);
     }
 
@@ -247,87 +233,30 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
 
 //given list of curves, find the closest point from any curve to a boundary
 //computation intensive for a cosmetic result.
-gp_Pnt2d DrawDimHelper::findClosestPoint(std::vector<hTrimCurve> hTCurve2dList,
-                                         Handle(Geom2d_Curve) boundary)
+gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges,
+                                       TopoDS_Edge& boundary)
 {
-//    Base::Console().Message("DDH::findClosestPoint() - curves: %d\n", hTCurve2dList.size());
+//    Base::Console().Message("DDH::findClosestPoint() - edges: %d\n", inEdges.size());
 //
 //find an extent point that is actually on one of the curves
-    gp_Pnt2d result(-1.0, -1.0);
-    Geom2dAdaptor_Curve aBoundary(boundary);
-
-    double globalNearDist = FLT_MAX;
-    gp_Pnt2d globalNearPoint;
-    bool found = false;
-    for (auto& hCurve2d : hTCurve2dList) {
-        Geom2dAdaptor_Curve aCurve(hCurve2d.hCurve,
-                                   hCurve2d.first,
-                                   hCurve2d.last);
-        Extrema_ExtCC2d mkExtr(aBoundary, aCurve);
-        if (mkExtr.IsDone()) {
-            double nearDist = FLT_MAX;
-            int nearIdx = 0;
-            gp_Pnt2d nearPoint;
-            if (mkExtr.NbExt() > 0) {
-                int stop = mkExtr.NbExt();
-                int i = 1;                      //this is OCC start (1) not conventional start (0)
-                for ( ; i <= stop; i++) {
-                    double dist = mkExtr.SquareDistance(i);
-                    if (dist < nearDist) {
-                        found = true;
-                        nearDist = dist;
-                        nearIdx = i;
-                        Extrema_POnCurv2d p1, p2;
-                        mkExtr.Points(nearIdx, p1, p2);
-                        nearPoint = p2.Value();
-                    }
-                }
-            } else {                             //no extrema? - might be a line parallel to boundary
-                if (mkExtr.IsParallel()) {
-                    //get midpoint of aCurve
-                    double mid   = (hCurve2d.first + hCurve2d.last) / 2.0;
-                    gp_Pnt2d midPoint = hCurve2d.hCurve->Value(mid);
-                    //get distance midpoint to boundary => nearDist
-                    Geom2dAPI_ProjectPointOnCurve mkProj(midPoint, boundary);
-                    double dist = mkProj.LowerDistance() * mkProj.LowerDistance();
-                    if (dist < nearDist) {
-                        found = true;
-                        nearDist = dist;
-                        nearPoint = mkProj.NearestPoint();
-                    }
-                } else {  //skew and no extrema?
-                    gp_Pnt2d pFirst = hCurve2d.hCurve->Value(hCurve2d.first);
-                    Geom2dAPI_ProjectPointOnCurve mkFirst(pFirst, boundary);
-                    double dist1 = mkFirst.LowerDistance() * mkFirst.LowerDistance();
-                    gp_Pnt2d pLast  = hCurve2d.hCurve->Value(hCurve2d.last);
-                    Geom2dAPI_ProjectPointOnCurve mkLast(pLast, boundary);
-                    double dist2 = mkLast.LowerDistance() * mkLast.LowerDistance();
-                    if (dist1 < dist2) {
-                        if (dist1 < nearDist) {
-                            found = true;
-                            nearDist = dist1;
-                            nearPoint = mkFirst.NearestPoint();
-                        }
-                    } else {
-                        if (dist2 < nearDist) {
-                            found = true;
-                            nearDist = dist2;
-                            nearPoint = mkLast.NearestPoint();
-                        }
-                    }
-                }
-            }
-            if (nearDist < globalNearDist) {
-                globalNearDist = nearDist;
-                globalNearPoint = nearPoint;
-            }
+    double minDistance(std::numeric_limits<float>::max());
+    gp_Pnt nearPoint;
+    for (auto& edge : inEdges) {
+        BRepExtrema_DistShapeShape extss(edge, boundary);
+        if (!extss.IsDone()) {
+            Base::Console().Warning("DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 1\n");
+            continue;
+        }
+        if (extss.NbSolution() == 0) {
+            Base::Console().Warning("DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 2\n");
+            continue;
+        }
+        if (extss.Value() < minDistance) {
+            minDistance = extss.Value();
+            nearPoint = extss.PointOnShape1(1);
         }
     }
-    if (found) {
-        result = globalNearPoint;
-    }
-
-    return result;
+    return nearPoint;
 }
 
 DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
@@ -349,14 +278,17 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
         dimName = doc->getUniqueObjectName("DimExtent");
     }
 
+    std::vector<TechDraw::VertexPtr> gVerts = dvp->getVertexGeometry();
+
     Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
     std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
-    
+
     Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 
+    gVerts = dvp->getVertexGeometry();
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
@@ -374,29 +306,27 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     if (extent) {
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent','%s')",
+        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')",
                                          dimName.c_str());
     } else {
 
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",
+        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')",
                                          dimName.c_str());
     }
 
     Base::Interpreter().runStringArg("App.activeDocument().%s.Type = '%s'",
                                      dimName.c_str(), dimType.c_str());
 
-    Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
-                                     pageName.c_str(),dimName.c_str());
-
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(doc->getObject(dimName.c_str()));
     if (!dim) {
         throw Base::TypeError("DDH::makeDistDim - dim not found\n");
     }
-
     dim->References2D.setValues(objs, subs);
 
-    dvp->requestPaint();
-    dim->recomputeFeature();
+    Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
+                                     pageName.c_str(), dimName.c_str());
 
+
+    dvp->requestPaint();
     return dim;
 }

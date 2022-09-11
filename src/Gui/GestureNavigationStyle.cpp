@@ -220,9 +220,9 @@ public:
 class NS::NaviMachine : public sc::state_machine<NS::NaviMachine, NS::IdleState>
 {
 public:
-    typedef sc::state_machine<NS::NaviMachine, NS::IdleState> superclass;
+    using superclass = sc::state_machine<NS::NaviMachine, NS::IdleState>;
 
-    NaviMachine(NS& ns) : ns(ns) {}
+    explicit NaviMachine(NS& ns) : ns(ns) {}
     NS& ns;
 
 public:
@@ -236,9 +236,9 @@ public:
 class NS::IdleState : public sc::state<NS::IdleState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
-    IdleState(my_context ctx):my_base(ctx)
+    explicit IdleState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::IDLE);
@@ -339,7 +339,7 @@ public:
 class NS::AwaitingMoveState : public sc::state<NS::AwaitingMoveState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -347,7 +347,7 @@ private:
     int hold_timeout; //in milliseconds
 
 public:
-    AwaitingMoveState(my_context ctx):my_base(ctx)
+    explicit AwaitingMoveState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         if (ns.logging)
@@ -480,13 +480,13 @@ public:
 class NS::RotateState : public sc::state<NS::RotateState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
 
 public:
-    RotateState(my_context ctx):my_base(ctx)
+    explicit RotateState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::DRAGGING);
@@ -522,14 +522,14 @@ public:
 class NS::PanState : public sc::state<NS::PanState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
     float ratio;
 
 public:
-    PanState(my_context ctx):my_base(ctx)
+    explicit PanState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
@@ -569,14 +569,14 @@ public:
 class NS::StickyPanState : public sc::state<NS::StickyPanState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
     float ratio;
 
 public:
-    StickyPanState(my_context ctx):my_base(ctx)
+    explicit StickyPanState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
@@ -616,13 +616,13 @@ public:
 class NS::TiltState : public sc::state<NS::TiltState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
 
 public:
-    TiltState(my_context ctx):my_base(ctx)
+    explicit TiltState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::DRAGGING);
@@ -664,7 +664,7 @@ public:
 class NS::GestureState : public sc::state<NS::GestureState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 private:
     SbVec2s base_pos;
@@ -672,7 +672,7 @@ private:
     bool enableTilt = false;
 
 public:
-    GestureState(my_context ctx):my_base(ctx)
+    explicit GestureState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::PANNING);
@@ -750,10 +750,10 @@ public:
 class NS::AwaitingReleaseState : public sc::state<NS::AwaitingReleaseState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 public:
-    AwaitingReleaseState(my_context ctx):my_base(ctx)
+    explicit AwaitingReleaseState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         if (ns.logging)
@@ -800,10 +800,10 @@ public:
 class NS::InteractState : public sc::state<NS::InteractState, NS::NaviMachine>
 {
 public:
-    typedef sc::custom_reaction<NS::Event> reactions;
+    using reactions = sc::custom_reaction<NS::Event>;
 
 public:
-    InteractState(my_context ctx):my_base(ctx)
+    explicit InteractState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
         ns.setViewingMode(NavigationStyle::INTERACT);

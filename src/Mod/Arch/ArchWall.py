@@ -1351,7 +1351,7 @@ class _Wall(ArchComponent.Component):
 
                             if not DraftVecUtils.isNull(dvec):
                                 dvec.normalize()
-                            sh = None
+                            face = None
 
                             curAligns = aligns[0]
                             off = obj.Offset.Value
@@ -1399,7 +1399,7 @@ class _Wall(ArchComponent.Component):
                                                                normal=normal,
                                                                basewireOffset=off)
 
-                                sh = DraftGeomUtils.bind(w1,w2)
+                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
 
                             elif curAligns == "Right":
                                 dvec = dvec.negative()
@@ -1440,7 +1440,7 @@ class _Wall(ArchComponent.Component):
                                                                normal=normal,
                                                                basewireOffset=off)
 
-                                sh = DraftGeomUtils.bind(w1,w2)
+                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
 
                             #elif obj.Align == "Center":
                             elif curAligns == "Center":
@@ -1473,18 +1473,16 @@ class _Wall(ArchComponent.Component):
                                                                    alignList=aligns,
                                                                    normal=normal,
                                                                    basewireOffset=off)
-                                sh = DraftGeomUtils.bind(w1,w2)
+                                face = DraftGeomUtils.bind(w1, w2, per_segment=True)
 
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]
-                            if sh:
+                            if face:
 
                                 if layers and (layers[i] < 0):
                                     # layers with negative values are not drawn
                                     continue
 
-                                sh.fix(0.1,0,1) # fixes self-intersecting wires
-                                f = Part.Face(sh)
                                 if baseface:
 
                                     # To allow exportIFC.py to work properly on
@@ -1505,14 +1503,14 @@ class _Wall(ArchComponent.Component):
                                     # - 1st finding : if a rectangle + 1 line, can't removesSplitter properly...
                                     # - 2nd finding : if 2 faces do not touch, can't form a shell; then, subsequently for remaining faces even though touch each faces, can't form a shell
 
-                                    baseface.append(f)
+                                    baseface.append(face)
                                     # The above make Refine methods below (in else) useless, regardless removeSpitters yet to be improved for cases do not work well
-                                    '''  Whether layers or not, all baseface.append(f) '''
+                                    '''  Whether layers or not, all baseface.append(face) '''
 
                                 else:
-                                    baseface = [f]
+                                    baseface = [face]
 
-                                    '''  Whether layers or not, all baseface = [f] '''
+                                    '''  Whether layers or not, all baseface = [face] '''
 
                         if baseface:
                             base,placement = self.rebase(baseface)

@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_QGISECTIONLINE_H
 #define TECHDRAWGUI_QGISECTIONLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QPointF>
@@ -30,12 +32,13 @@
 #include <Base/Vector3D.h>
 
 #include "QGCustomText.h"
-#include "QGIArrow.h"
 #include "QGIDecoration.h"
-
 
 namespace TechDrawGui
 {
+
+class QGIArrow;
+class QGCustomText;
 
 class TechDrawGuiExport QGISectionLine : public QGIDecoration
 {
@@ -49,9 +52,9 @@ public:
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
 
     void setEnds(Base::Vector3d l1, Base::Vector3d l2);
-    void setBounds(double x1,double y1,double x2,double y2);
+    void setBounds(double x1, double y1, double x2, double y2);
     void setSymbol(char* sym);
-    void setDirection(double xDir,double yDir);
+    void setDirection(double xDir, double yDir);
     void setDirection(Base::Vector3d dir);
     void setFont(QFont f, double fsize);
     void setSectionStyle(int style);

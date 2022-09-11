@@ -91,8 +91,8 @@ class FemExport DocumentObject : public App::DocumentObject
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::DocumentObject);
 };
 
-typedef App::FeaturePythonT<FemAnalysis> FemAnalysisPython;
-typedef App::FeaturePythonT<DocumentObject> FeaturePython;
+using FemAnalysisPython = App::FeaturePythonT<FemAnalysis>;
+using FeaturePython = App::FeaturePythonT<DocumentObject>;
 
 
 } //namespace Fem

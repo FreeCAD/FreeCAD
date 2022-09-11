@@ -51,7 +51,7 @@ class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
+    explicit TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
     ~TaskShapeBinder() override;
 
     void accept();
@@ -91,7 +91,7 @@ class TaskDlgShapeBinder : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
+    explicit TaskDlgShapeBinder(ViewProviderShapeBinder *view,bool newObj=false);
     ~TaskDlgShapeBinder() override;
 
 public:

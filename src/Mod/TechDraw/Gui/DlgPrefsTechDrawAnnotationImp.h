@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,7 +38,7 @@ class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawAnnotationImp() override;
 
 public Q_SLOTS:

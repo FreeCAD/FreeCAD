@@ -37,7 +37,7 @@
 namespace MeshGui {
 
 class MeshGuiExport SoPolygon : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(SoPolygon);
 

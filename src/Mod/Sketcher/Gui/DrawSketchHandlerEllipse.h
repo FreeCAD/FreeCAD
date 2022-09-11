@@ -75,7 +75,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerEllipse(int constructionMethod)
+    explicit DrawSketchHandlerEllipse(int constructionMethod)
       : mode(STATUS_Close)
       , method(CENTER_PERIAPSIS_B)
       , constrMethod(constructionMethod)
@@ -120,9 +120,12 @@ public:
 
                 // Display radius for user
                 float semiMajorRadius = a * 2;
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fR)", semiMajorRadius,semiMajorRadius);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string majorString = lengthToDisplayFormat(semiMajorRadius, 1);
+                    text.sprintf(" (R%s, R%s)", majorString.c_str(), majorString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
@@ -137,9 +140,13 @@ public:
                 approximateEllipse();
 
                 // Display radius for user
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fR)", a, b);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string aString = lengthToDisplayFormat(a, 1);
+                    std::string bString = lengthToDisplayFormat(b, 1);
+                    text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 drawEdit(editCurve);
                 if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
@@ -161,9 +168,12 @@ public:
 
                 // Display radius for user
                 float semiMajorRadius = a * 2;
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fR)", semiMajorRadius,semiMajorRadius);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string majorString = lengthToDisplayFormat(semiMajorRadius, 1);
+                    text.sprintf(" (R%s, R%s)", majorString.c_str(), majorString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 drawEdit(editCurve);
                 if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centroid,
@@ -176,9 +186,13 @@ public:
                 approximateEllipse();
 
                 // Display radius for user
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fR)", a, b);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string aString = lengthToDisplayFormat(a, 1);
+                    std::string bString = lengthToDisplayFormat(b, 1);
+                    text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 drawEdit(editCurve);
                 if (seekAutoConstraint(sugConstr3, onSketchPos, onSketchPos - centroid,

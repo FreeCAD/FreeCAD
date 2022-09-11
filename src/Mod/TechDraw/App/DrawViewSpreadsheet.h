@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewSpreadsheet_h_
-#define _DrawViewSpreadsheet_h_
+#ifndef DrawViewSpreadsheet_h_
+#define DrawViewSpreadsheet_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -68,7 +70,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawViewSpreadsheet> DrawViewSpreadsheetPython;
+using DrawViewSpreadsheetPython = App::FeaturePythonT<DrawViewSpreadsheet>;
 
 
 } //namespace TechDraw

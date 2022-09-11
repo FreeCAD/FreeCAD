@@ -53,7 +53,7 @@ template <class Real>
 class PolynomialSurface : public ImplicitSurface<Real>
 {
 public:
-  PolynomialSurface (const Real afCoeff[6])
+  explicit PolynomialSurface (const Real afCoeff[6])
   { for (int i=0; i<6; i++) m_afCoeff[i] = afCoeff[i]; }
 
   virtual ~PolynomialSurface () {}
@@ -492,13 +492,13 @@ public:
     /**
      * WildMagic library uses function with this interface
      */
-    typedef double (*Function)(double,double,double);
+    using Function = double (*)(double,double,double);
     /**
      * The constructor expects an array of quadric coefficients.
      * @param pKoef Pointer to the quadric coefficients
      *        (double [10])
      */
-    FunctionContainer(const double *pKoef)
+    explicit FunctionContainer(const double *pKoef)
     {
         Assign( pKoef );
         pImplSurf = new Wm4::QuadricSurface<double>( dKoeff );

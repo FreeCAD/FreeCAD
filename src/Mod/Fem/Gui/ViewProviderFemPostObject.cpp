@@ -115,7 +115,7 @@ private:
 
 private:
     std::set<ViewProviderFemPostObject*> views;
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectSelection;
 };
 

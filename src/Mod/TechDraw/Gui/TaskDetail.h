@@ -23,16 +23,19 @@
 #ifndef TECHDRAWGUI_TASKDETAIL_H
 #define TECHDRAWGUI_TASKDETAIL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
 
 //TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
+static constexpr int TRACKERPICK(0);
+static constexpr int TRACKEREDIT(1);
+static constexpr int TRACKERCANCEL(2);
+static constexpr int TRACKERCANCELEDIT(3);
+
 
 namespace TechDraw
 {
@@ -45,14 +48,12 @@ class DrawViewPart;
 namespace TechDrawGui
 {
 class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGEPath;
 class QGIDetail;
 class QGIGhostHighlight;
-class ViewProviderLeader;
+class ViewProviderPage;
 class Ui_TaskDetail;
 
 class TaskDetail : public QWidget
@@ -60,41 +61,40 @@ class TaskDetail : public QWidget
     Q_OBJECT
 
 public:
-    TaskDetail(TechDraw::DrawViewPart* baseFeat);
-    TaskDetail(TechDraw::DrawViewDetail* detailFeat);
-    ~TaskDetail() override;
+    explicit TaskDetail(TechDraw::DrawViewPart* baseFeat);
+    explicit TaskDetail(TechDraw::DrawViewDetail* detailFeat);
+    ~TaskDetail() = default;
 
-public Q_SLOTS:
-    void onDraggerClicked(bool b);
-    void onHighlightMoved(QPointF newPos);
-    void onXEdit();
-    void onYEdit();
-    void onRadiusEdit();
-    void onScaleTypeEdit();
-    void onScaleEdit();
-    void onReferenceEdit();
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
-    
+    void enableTaskButtons(bool button);
+
+public Q_SLOTS:
+        void onDraggerClicked(bool clicked);
+        void onHighlightMoved(QPointF dragEnd);
+        void onXEdit();
+        void onYEdit();
+        void onRadiusEdit();
+        void onScaleTypeEdit();
+        void onScaleEdit();
+        void onReferenceEdit();
+
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void startDragger();
 
     void createDetail();
     void updateDetail();
-    
+
     void editByHighlight();
 
-    void blockButtons(bool b);
+    void blockButtons(bool isBlocked);
     void setUiFromFeat();
-    void updateUi(QPointF p);
-    void enableInputFields(bool b);
+    void updateUi(QPointF pos);
+    void enableInputFields(bool isEnabled);
 
     void saveDetailState();
     void restoreDetailState();
@@ -109,9 +109,7 @@ private:
 
     QGIGhostHighlight* m_ghost;
 
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+    ViewProviderPage* m_vpp;
     TechDraw::DrawViewDetail* m_detailFeat;
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
@@ -142,11 +140,10 @@ class TaskDlgDetail : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgDetail(TechDraw::DrawViewPart* baseFeat);
-    TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat);
+    explicit TaskDlgDetail(TechDraw::DrawViewPart* baseFeat);
+    explicit TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat);
     ~TaskDlgDetail() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -156,14 +153,11 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
-
-protected:
 
 private:
     TaskDetail * widget;

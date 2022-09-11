@@ -105,7 +105,7 @@ public:
         if (typeName)
             TypeName = typeName;
         pTypeName = TypeName.c_str();
-    }
+    }//explicit bombs
 
     SelectionChanges(MsgType type,
                      const std::string &docName,
@@ -230,7 +230,7 @@ public:
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      */
-    SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
     /** Constructor
      *
      * @param vp: filtering view object.
@@ -243,7 +243,7 @@ public:
      * Constructs an selection observer that receives only selection event of
      * objects within the same document as the input view object.
      */
-    SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, ResolveMode resolve = ResolveMode::OldStyleElement);
 
     virtual ~SelectionObserver();
     bool blockSelection(bool block);
@@ -260,7 +260,7 @@ private:
     void _onSelectionChanged(const SelectionChanges& msg);
 
 private:
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectSelection;
     std::string filterDocName;
     std::string filterObjName;
@@ -280,7 +280,7 @@ class GuiExport SelectionObserverPython : public SelectionObserver
 
 public:
     /// Constructor
-    SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
     ~SelectionObserverPython() override;
 
     static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
@@ -342,7 +342,7 @@ public:
 class GuiExport SelectionGateFilterExternal: public SelectionGate
 {
 public:
-    SelectionGateFilterExternal(const char *docName, const char *objName=nullptr);
+    explicit SelectionGateFilterExternal(const char *docName, const char *objName=nullptr);
     bool allow(App::Document*,App::DocumentObject*, const char*) override;
 private:
     std::string DocName;
@@ -721,7 +721,7 @@ protected:
     mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
 
-    typedef std::set<App::SubObjectT> SelStackItem;
+    using SelStackItem = std::set<App::SubObjectT>;
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 
@@ -771,7 +771,7 @@ inline SelectionSingleton& Selection()
  */
 class GuiExport SelectionLogDisabler {
 public:
-    SelectionLogDisabler(bool silent=false) :silent(silent) {
+    explicit SelectionLogDisabler(bool silent=false) :silent(silent) {
         Selection().disableCommandLog();
     }
     ~SelectionLogDisabler() {

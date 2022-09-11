@@ -36,7 +36,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerRegularPolygon( size_t nof_corners ):
+    explicit DrawSketchHandlerRegularPolygon( size_t nof_corners ):
         Corners( nof_corners ),
         AngleOfSeparation( 2.0*M_PI/static_cast<double>(Corners) ),
         cos_v( cos( AngleOfSeparation ) ),
@@ -81,9 +81,13 @@ public:
             const float radius = dV.Length();
             const float angle = ( 180.0 / M_PI ) * atan2( dV.y, dV.x );
 
-            SbString text;
-            text.sprintf(" (%.1fR %.1fdeg)", radius, angle );
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                std::string angleString = angleToDisplayFormat(angle, 1);
+                 text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                 setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {

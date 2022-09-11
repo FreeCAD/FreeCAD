@@ -41,7 +41,7 @@ class TaskDlgAnalysis : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgAnalysis(Fem::FemAnalysis *);
+    explicit TaskDlgAnalysis(Fem::FemAnalysis *);
     ~TaskDlgAnalysis() override;
 
 public:

@@ -36,7 +36,7 @@ class ExternalSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    ExternalSelection(App::DocumentObject* obj)
+    explicit ExternalSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 

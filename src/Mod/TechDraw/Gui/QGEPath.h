@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_EDITABLEPATH_H
 #define TECHDRAWGUI_EDITABLEPATH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QObject>
@@ -30,43 +32,38 @@
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 
-
 namespace TechDrawGui
 {
 
 class QGIPrimPath;
 class QGIVertex;
 class QGIView;
+class QGILeaderLine;
 
 class TechDrawGuiExport QGMarker : public QObject, public QGIVertex
 {
     Q_OBJECT
 public:
     explicit QGMarker(int idx);
-    virtual ~QGMarker(void) {}
+    ~QGMarker() = default;
 
     enum {Type = QGraphicsItem::UserType + 302};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void keyPressEvent(QKeyEvent * event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent * event) override;
 
-    virtual void setRadius(float r) override;
+    void setRadius(float radius) override;
 
 Q_SIGNALS:
     void dragging(QPointF pos, int idx);
     void dragFinished(QPointF pos, int idx);
     void doubleClick(QPointF pos, int idx);
-    void endEdit(void);
+    void endEdit();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
     bool m_dragging;
@@ -78,32 +75,32 @@ private:
 class TechDrawGuiExport QGEPath : public QObject, public QGIPrimPath
 {
     Q_OBJECT
+
 public:
     explicit QGEPath(QGILeaderLine* leader);
-    virtual ~QGEPath() {}
+    ~QGEPath() = default;
 
     enum {Type = QGraphicsItem::UserType + 301};
     int type() const override { return Type;}
-    virtual QRectF boundingRect() const override;
-    virtual QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
-    void inEdit(bool b) { m_inEdit = b; }
-    bool inEdit(void)   { return m_inEdit; }
+    void inEdit(bool isInEdit) { m_inEdit = isInEdit; }
+    bool inEdit() const { return m_inEdit; }
     void startPathEdit(std::vector<QPointF> pathPoints);
 
     void showMarkers(std::vector<QPointF> points);
     void clearMarkers();
 
-    std::vector<QPointF> getDeltasFromLeader(void);
+    std::vector<QPointF> getDeltasFromLeader();
 
-    void setScale(double s) { m_scale = s; }
-    double getScale(void)   { return m_scale; }
+    void setScale(double scale) { m_scale = scale; }
+    double getScale() const { return m_scale; }
 
-    void setPoints(std::vector<QPointF> pts) { m_ghostPoints = pts; }
+    void setPoints(std::vector<QPointF>& pts) { m_ghostPoints = pts; }
 
     void updateParent();
-    void drawGhost(void);
+    void drawGhost();
 
     void dumpGhostPoints(const char* text);
     void dumpMarkerPos(const char* text);
@@ -114,7 +111,7 @@ public Q_SLOTS:
     void onDragFinished(QPointF pos, int index);
     void onDragging(QPointF pos, int index);
     void onDoubleClick(QPointF pos, int markerIndex);
-    void onEndEdit(void);
+    void onEndEdit();
 
 Q_SIGNALS:
     void pointsUpdated(QPointF attach, std::vector<QPointF> deltas);
@@ -123,11 +120,12 @@ Q_SIGNALS:
     void selected(bool state);
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    double getEdgeFuzz(void) const;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    double getEdgeFuzz() const;
 
+private:
     std::vector<QPointF> m_ghostPoints;
     std::vector<QGMarker*> m_markers;
 

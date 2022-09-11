@@ -600,7 +600,7 @@ namespace SketcherGui {
     {
         App::DocumentObject* object;
     public:
-        GenericConstraintSelection(App::DocumentObject* obj)
+        explicit GenericConstraintSelection(App::DocumentObject* obj)
             : Gui::SelectionFilterGate(nullPointer())
             , object(obj), allowedSelTypes(0)
         {}
@@ -641,7 +641,7 @@ class CmdSketcherConstraint : public Gui::Command
 {
     friend class DrawSketchHandlerGenConstraint;
 public:
-    CmdSketcherConstraint(const char* name)
+    explicit CmdSketcherConstraint(const char* name)
             : Command(name) {}
 
     ~CmdSketcherConstraint() override{}
@@ -675,7 +675,7 @@ protected:
 class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
+    explicit DrawSketchHandlerGenConstraint(CmdSketcherConstraint *_cmd)
         : cmd(_cmd), seqIndex(0) {}
     ~DrawSketchHandlerGenConstraint() override
     {
@@ -5281,7 +5281,7 @@ CmdSketcherConstrainRadiam::CmdSketcherConstrainRadiam()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain auto radius/diameter");
-    sToolTipText    = QT_TR_NOOP("Fix automatically diameter on circle and radius on arc/pole");
+    sToolTipText    = QT_TR_NOOP("Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen");
     sWhatsThis      = "Sketcher_ConstrainRadiam";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Radiam";

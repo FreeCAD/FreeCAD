@@ -182,13 +182,13 @@ void TaskHatch::createHatch()
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
 
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawHatch', '%s')", FeatName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
 
     m_hatch = static_cast<TechDraw::DrawHatch *>(doc->getObject(FeatName.c_str()));
     m_hatch->Source.setValue(m_dvp, m_subs);
 
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.HatchPattern = '%s'",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
                        Base::Tools::toStdString(ui->fcFile->fileName()).c_str());
 
@@ -213,7 +213,7 @@ void TaskHatch::updateHatch()
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
 
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.HatchPattern = '%s'",
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
                        Base::Tools::toStdString(ui->fcFile->fileName()).c_str());
 

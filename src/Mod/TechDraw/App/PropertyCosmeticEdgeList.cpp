@@ -27,7 +27,7 @@
 #   include <cassert>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+/// Here the FreeCAD includes sorted by Base, App, Gui......
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -169,7 +169,7 @@ void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().Error("CosmeticEdge \"%s\" within a PropertyCosmeticEdgeList was subject to a partial restore.\n",reader.localName());
+            Base::Console().Error("CosmeticEdge \"%s\" within a PropertyCosmeticEdgeList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CosmeticEdge class
                 values.push_back(newG);

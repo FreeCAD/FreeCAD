@@ -35,14 +35,14 @@ class Property;
 }
 namespace PartGui {
 
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 class Ui_DlgBooleanOperation;
 class DlgBooleanOperation : public QWidget
 {
     Q_OBJECT
 
 public:
-    DlgBooleanOperation(QWidget* parent = nullptr);
+    explicit DlgBooleanOperation(QWidget* parent = nullptr);
     ~DlgBooleanOperation() override;
     void accept();
 

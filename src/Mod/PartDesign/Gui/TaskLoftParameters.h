@@ -46,7 +46,7 @@ class TaskLoftParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = nullptr);
+    explicit TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = nullptr);
     ~TaskLoftParameters() override;
 
 private Q_SLOTS:
@@ -84,7 +84,7 @@ class TaskDlgLoftParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
+    explicit TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
     ~TaskDlgLoftParameters() override;
 
     ViewProviderLoft* getLoftView() const

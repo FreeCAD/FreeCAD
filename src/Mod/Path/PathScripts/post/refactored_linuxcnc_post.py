@@ -162,6 +162,14 @@ parser = init_arguments(values, argument_defaults, arguments_visible)
 # The TOOLTIP_ARGS value is created from the help information about the arguments.
 #
 TOOLTIP_ARGS = parser.format_help()
+#
+# Create another parser just to get a list of all possible arguments
+# that may be output using --output_all_arguments.
+#
+all_arguments_visible = {}
+for k in iter(arguments_visible):
+    all_arguments_visible[k] = True
+all_visible = init_arguments(values, argument_defaults, all_arguments_visible)
 
 
 def export(objectslist, filename, argstring):
@@ -173,9 +181,11 @@ def export(objectslist, filename, argstring):
 
     # print(parser.format_help())
 
-    (flag, args) = PostUtilsArguments.process_shared_arguments(values, parser, argstring)
+    (flag, args) = PostUtilsArguments.process_shared_arguments(
+        values, parser, argstring, all_visible, filename
+    )
     if not flag:
-        return None
+        return args
     #
     # Process any additional arguments here
     #

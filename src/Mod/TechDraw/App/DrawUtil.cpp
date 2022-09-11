@@ -23,16 +23,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <cstring>
-# include <cstdlib>
+#include <sstream>
+#include <cstring>
+#include <cstdlib>
 #include <cmath>
 #include <string>
-# include <exception>
-# include <boost/regex.hpp>
-# include <QString>
-# include <QStringList>
-# include <QRegExp>
+#include <exception>
+#include <boost/regex.hpp>
+#include <QString>
+#include <QStringList>
+#include <QRegExp>
 #include <QChar>
 #include <QPointF>
 
@@ -67,13 +67,16 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#include "Preferences.h"
+
+#include "EWTOLERANCE.h"
 #include "GeometryObject.h"
 #include "DrawUtil.h"
 
@@ -94,7 +97,7 @@ using namespace TechDraw;
     std::stringstream ErrorMsg;
 
     if (geomName.empty()) {
-        Base::Console().Log("DU::getIndexFromName(%s) - empty geometry name\n",geomName.c_str());
+        Base::Console().Log("DU::getIndexFromName(%s) - empty geometry name\n", geomName.c_str());
         throw Base::ValueError("getIndexFromName - empty geometry name");
     }
 
@@ -143,7 +146,7 @@ bool DrawUtil::isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance)
 {
     gp_Pnt p1 = BRep_Tool::Pnt(v1);
     gp_Pnt p2 = BRep_Tool::Pnt(v2);
-    if (p1.IsEqual(p2,tolerance)) {
+    if (p1.IsEqual(p2, tolerance)) {
         return true;
     }
     return false;
@@ -153,16 +156,18 @@ bool DrawUtil::isZeroEdge(TopoDS_Edge e, double tolerance)
 {
     TopoDS_Vertex vStart = TopExp::FirstVertex(e);
     TopoDS_Vertex vEnd = TopExp::LastVertex(e);
-    if (isSamePoint(vStart,vEnd, tolerance)) {
-        //closed edge will have same V's but non-zero length
-        GProp_GProps props;
-        BRepGProp::LinearProperties(e, props);
-        double len = props.Mass();
-        if (len > tolerance) {
-            return false;
-        }
+    if (!isSamePoint(vStart, vEnd, tolerance)) {
+        return false;
     }
-    return false;
+
+    //closed edge will have same V's but non-zero length
+    BRepAdaptor_Curve adapt(e);
+    double len = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
+    if (len > tolerance) {
+        return false;
+    }
+
+    return true;
 }
 double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
 {
@@ -184,16 +189,16 @@ double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
 double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
 {
     gp_Pnt gstart  = BRep_Tool::Pnt(TopExp::FirstVertex(e));
-    Base::Vector3d start(gstart.X(),gstart.Y(),gstart.Z());
+    Base::Vector3d start(gstart.X(), gstart.Y(), gstart.Z());
     gp_Pnt gend    = BRep_Tool::Pnt(TopExp::LastVertex(e));
-    Base::Vector3d end(gend.X(),gend.Y(),gend.Z());
+    Base::Vector3d end(gend.X(), gend.Y(), gend.Z());
     Base::Vector3d u;
     if (reverse) {
         u = start - end;
     } else {
         u = end - start;
     }
-    double result = atan2(u.y,u.x);
+    double result = atan2(u.y, u.x);
     if (result < 0) {
          result += 2.0 * M_PI;
     }
@@ -206,53 +211,67 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     double param = 0;
 
-    //find tangent @ v
-    double adjust = 1.0;            //occ tangent points in direction of curve. at lastVert we need to reverse it.
     BRepAdaptor_Curve adapt(e);
-    if (isFirstVert(e,v,tolerance)) {
+    if (isFirstVert(e, v,tolerance)) {
         param = adapt.FirstParameter();
-    } else if (isLastVert(e,v,tolerance)) {
+    } else if (isLastVert(e, v,tolerance)) {
         param = adapt.LastParameter();
-        adjust = -1;
     } else {
         //TARFU
         Base::Console().Message("Error: DU::angleWithX - v is neither first nor last \n");
-        //must be able to get non-terminal point parm from curve/
+    }
+    gp_Pnt paramPoint;
+    gp_Vec derivative;
+    const Handle(Geom_Curve) c = adapt.Curve().Curve();
+    c->D1(param, paramPoint, derivative);
+    double angle = atan2(derivative.Y(), derivative.X());
+    if (angle < 0) {                               //map from [-PI:PI] to [0:2PI]
+         angle += 2.0 * M_PI;
+    }
+    return angle;
+}
+
+//! find angle of incidence at First/LastVertex
+double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
+{
+    double incidenceAngle = 0;
+
+    BRepAdaptor_Curve adapt(e);
+    double paramRange = adapt.LastParameter() - adapt.FirstParameter();
+    double paramOffset = paramRange / 100.0;
+    double vertexParam;
+    Base::Vector3d anglePoint = DrawUtil::vertex2Vector(v);
+    Base::Vector3d offsetPoint, incidenceVec;
+    int noTangents = 0;
+    if (isFirstVert(e,v,tolerance)) {
+        vertexParam = adapt.FirstParameter();
+        BRepLProp_CLProps prop(adapt, vertexParam + paramOffset, noTangents, Precision::Confusion());
+        const gp_Pnt& gOffsetPoint = prop.Value();
+        offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
+    } else if (isLastVert(e,v,tolerance)) {
+        vertexParam = adapt.LastParameter();
+        BRepLProp_CLProps prop(adapt, vertexParam - paramOffset, noTangents, Precision::Confusion());
+        const gp_Pnt& gOffsetPoint = prop.Value();
+        offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
+    } else {
+        //TARFU
+//        Base::Console().Message("DU::incidenceAngle - v is neither first nor last \n");
+    }
+    incidenceVec = anglePoint - offsetPoint;
+    incidenceAngle = atan2(incidenceVec.y, incidenceVec.x);
+
+    //map to [0:2PI]
+    if (incidenceAngle < 0.0) {
+        incidenceAngle = M_2PI + incidenceAngle;
     }
 
-    Base::Vector3d uVec(0.0,0.0,0.0);
-    gp_Dir uDir;
-    BRepLProp_CLProps prop(adapt,param,2,tolerance);
-    if (prop.IsTangentDefined()) {
-        prop.Tangent(uDir);
-        uVec = Base::Vector3d(uDir.X(),uDir.Y(),uDir.Z()) * adjust;
-    } else {
-        //this bit is a little sketchy
-        gp_Pnt gstart  = BRep_Tool::Pnt(TopExp::FirstVertex(e));
-        Base::Vector3d start(gstart.X(),gstart.Y(),gstart.Z());
-        gp_Pnt gend    = BRep_Tool::Pnt(TopExp::LastVertex(e));
-        Base::Vector3d end(gend.X(),gend.Y(),gend.Z());
-        if (isFirstVert(e,v,tolerance)) {
-            uVec = end - start;
-        } else if (isLastVert(e,v,tolerance)) {
-            uVec = end - start;
-        } else {
-          gp_Pnt errPnt = BRep_Tool::Pnt(v);
-          Base::Console().Warning("angleWithX: Tangent not defined at (%.3f,%.3f,%.3f)\n",errPnt.X(),errPnt.Y(),errPnt.Z());
-          //throw ??????
-        }
-    }
-    double result = atan2(uVec.y,uVec.x);
-    if (result < 0) {                               //map from [-PI:PI] to [0:2PI]
-         result += 2.0 * M_PI;
-    }
-    return result;
+    return incidenceAngle;
 }
 
 bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     TopoDS_Vertex first = TopExp::FirstVertex(e);
-    if (isSamePoint(first,v, tolerance)) {
+    if (isSamePoint(first, v, tolerance)) {
         return true;
     }
     return false;
@@ -261,7 +280,7 @@ bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     TopoDS_Vertex last = TopExp::LastVertex(e);
-    if (isSamePoint(last,v, tolerance)) {
+    if (isSamePoint(last, v, tolerance)) {
         return true;
     }
     return false;
@@ -279,7 +298,7 @@ bool DrawUtil::fpCompare(const double& d1, const double& d2, double tolerance)
 std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3d point,
                                                                    Base::Vector3d dirIn,
                                                                    double xRange,
-                                                                   double yRange) 
+                                                                   double yRange)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d p1, p2;
@@ -339,15 +358,15 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3
 Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
 {
     gp_Pnt gp  = BRep_Tool::Pnt(v);
-    return Base::Vector3d(gp.X(),gp.Y(),gp.Z());
+    return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
 }
 
 std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.x  << "," << v.y << "," << v.z << ") ";
-//    builder << " (" << setw(6) << v.x  << "," << setw(6) << v.y << "," << setw(6) << v.z << ") ";
+    builder << " (" << v.x  << ", " << v.y << ", " << v.z << ") ";
+//    builder << " (" << setw(6) << v.x  << ", " << setw(6) << v.y << ", " << setw(6) << v.z << ") ";
     return builder.str();
 }
 
@@ -355,7 +374,7 @@ std::string DrawUtil::formatVector(const gp_Dir& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
 
@@ -363,14 +382,14 @@ std::string DrawUtil::formatVector(const gp_Dir2d& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.X()  << "," << v.Y() <<  ") ";
+    builder << " (" << v.X()  << ", " << v.Y() <<  ") ";
     return builder.str();
 }
 std::string DrawUtil::formatVector(const gp_Vec& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
 
@@ -378,7 +397,7 @@ std::string DrawUtil::formatVector(const gp_Pnt& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
 
@@ -386,7 +405,7 @@ std::string DrawUtil::formatVector(const gp_Pnt2d& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.X()  << "," << v.Y() << ") ";
+    builder << " (" << v.X()  << ", " << v.Y() << ") ";
     return builder.str();
 }
 
@@ -394,35 +413,92 @@ std::string DrawUtil::formatVector(const QPointF& v)
 {
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
-    builder << " (" << v.x()  << "," << v.y() << ") ";
+    builder << " (" << v.x()  << ", " << v.y() << ") ";
     return builder.str();
 }
 
 //! compare 2 vectors for sorting - true if v1 < v2
+//! precision::Confusion() is too strict for vertex - vertex comparisons
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 {
-    if ((v1 - v2).Length() > Precision::Confusion()) {      //ie v1 != v2
-        if (!DrawUtil::fpCompare(v1.x,v2.x)) {
-            return v1.x < v2.x;
-        } else if (!DrawUtil::fpCompare(v1.y,v2.y)) {
-            return v1.y < v2.y;
+    if ((v1 - v2).Length() > EWTOLERANCE) {      //ie v1 != v2
+        if (!DrawUtil::fpCompare(v1.x, v2.x, 2.0 * EWTOLERANCE)) {
+            return (v1.x < v2.x);
+        } else if (!DrawUtil::fpCompare(v1.y, v2.y, 2.0 * EWTOLERANCE)) {
+            return (v1.y < v2.y);
         } else {
-            return v1.z < v2.z;
+            return (v1.z < v2.z);
         }
     }
     return false;
 }
 
+//! test for equality of two vertexes using the vectorLess comparator as used
+//! in sorts and containers
+bool DrawUtil::vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2)
+{
+    gp_Pnt gv1 = BRep_Tool::Pnt(v1);
+    gp_Pnt gv2 = BRep_Tool::Pnt(v2);
+    Base::Vector3d vv1(gv1.X(), gv1.Y(), gv1.Z());
+    Base::Vector3d vv2(gv2.X(), gv2.Y(), gv2.Z());
+    return vectorEqual(vv1, vv2);
+}
+
+//! test for equality of two vectors using the vectorLess comparator as used
+//! in sorts and containers
+bool DrawUtil::vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2)
+{
+        bool less1 = vectorLess(v1, v2);
+        bool less2 = vectorLess(v2, v1);
+        return !less1 && !less2;
+}
+
+//TODO: the next 2 could be templated
+//construct a compound shape from a list of edges
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compOut;
+    builder.MakeCompound(compOut);
+    for (auto& v : vecIn) {
+        builder.Add(compOut, v);
+    }
+    return TechDraw::mirrorShape(compOut);
+}
+
+//construct a compound shape from a list of wires
+TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Wire> vecIn)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compOut;
+    builder.MakeCompound(compOut);
+    for (auto& v : vecIn) {
+        builder.Add(compOut, v);
+    }
+    return TechDraw::mirrorShape(compOut);
+}
+
+//constructs a list of edges from a shape
+std::vector<TopoDS_Edge> DrawUtil::shapeToVector(TopoDS_Shape shapeIn)
+{
+    std::vector<TopoDS_Edge> vectorOut;
+    TopExp_Explorer expl(shapeIn, TopAbs_EDGE);
+    for ( ; expl.More(); expl.Next()) {
+        vectorOut.push_back(TopoDS::Edge(expl.Current()));
+    }
+    return vectorOut;
+}
+
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
 Base::Vector3d DrawUtil::toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint)
 {
-    gp_Pnt gFromPoint(fromPoint.x,fromPoint.y,fromPoint.z);
+    gp_Pnt gFromPoint(fromPoint.x, fromPoint.y, fromPoint.z);
     gp_Trsf T;
     gp_Ax3 gRef;
     gp_Ax3 gFrom(fromSystem);
     T.SetTransformation (gFrom, gRef);
     gp_Pnt gToPoint = gFromPoint.Transformed(T);
-    Base::Vector3d toPoint(gToPoint.X(),gToPoint.Y(),gToPoint.Z());
+    Base::Vector3d toPoint(gToPoint.X(), gToPoint.Y(), gToPoint.Z());
     return toPoint;
 }
 
@@ -431,7 +507,7 @@ bool DrawUtil::checkParallel(const Base::Vector3d v1, Base::Vector3d v2, double 
 {
     double dot = fabs(v1.Dot(v2));
     double mag = v1.Length() * v2.Length();
-    if (DrawUtil::fpCompare(dot,mag,tolerance)) {
+    if (DrawUtil::fpCompare(dot, mag, tolerance)) {
         return true;
     }
     return false;
@@ -444,29 +520,29 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec,
                                    Base::Vector3d org)
 {
     Base::Matrix4D xForm;
-    xForm.rotLine(org,axis,angle);
+    xForm.rotLine(org, axis, angle);
     return Base::Vector3d(xForm * (vec));
 }
 
 Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
 {
-    Base::Vector3d result(0.0,-1,0);
-    Base::Vector3d  stdX(1.0,0.0,0.0);
-    Base::Vector3d  stdY(0.0,1.0,0.0);
-    Base::Vector3d  stdZ(0.0,0.0,1.0);
-    Base::Vector3d  stdXr(-1.0,0.0,0.0);
-    Base::Vector3d  stdYr(0.0,-1.0,0.0);
-    Base::Vector3d  stdZr(0.0,0.0,-1.0);
+    Base::Vector3d result(0.0, -1, 0);
+    Base::Vector3d  stdX(1.0, 0.0, 0.0);
+    Base::Vector3d  stdY(0.0, 1.0, 0.0);
+    Base::Vector3d  stdZ(0.0, 0.0, 1.0);
+    Base::Vector3d  stdXr(-1.0, 0.0, 0.0);
+    Base::Vector3d  stdYr(0.0, -1.0, 0.0);
+    Base::Vector3d  stdZr(0.0, 0.0, -1.0);
 
     //first check if already a basis
-    if (checkParallel(v,stdZ) ||
-        checkParallel(v,stdY) ||
-        checkParallel(v,stdX)) {
+    if (checkParallel(v, stdZ) ||
+        checkParallel(v, stdY) ||
+        checkParallel(v, stdX)) {
         return v;
     }
 
     //not a basis. find smallest angle with a basis.
-    double angleX,angleY,angleZ,angleXr,angleYr,angleZr, angleMin;
+    double angleX, angleY, angleZ, angleXr, angleYr, angleZr, angleMin;
     angleX = stdX.GetAngle(v);
     angleY = stdY.GetAngle(v);
     angleZ = stdZ.GetAngle(v);
@@ -530,7 +606,7 @@ bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, con
     double segLength = (end2 - end1).Length();
     double l1        = (pt - end1).Length();
     double l2        = (pt - end2).Length();
-    if (fpCompare(segLength,l1 + l2)) {
+    if (fpCompare(segLength, l1 + l2)) {
         return true;
     }
     return false;
@@ -615,12 +691,12 @@ QPointF DrawUtil::invertY(QPointF v)
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
-//    Base::Console().Message("DU::split - csvLine: %s\n",csvLine.c_str());
+//    Base::Console().Message("DU::split - csvLine: %s\n", csvLine.c_str());
     std::vector<std::string>  result;
     std::stringstream     lineStream(csvLine);
     std::string           cell;
 
-    while(std::getline(lineStream,cell, ','))
+    while(std::getline(lineStream, cell, ','))
     {
         result.push_back(cell);
     }
@@ -630,7 +706,7 @@ std::vector<std::string> DrawUtil::split(std::string csvLine)
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string delimiter)
 {
-//    Base::Console().Message("DU::tokenize - csvLine: %s delimit: %s\n",csvLine.c_str(), delimiter.c_str());
+//    Base::Console().Message("DU::tokenize - csvLine: %s delimit: %s\n", csvLine.c_str(), delimiter.c_str());
     std::string s(csvLine);
     size_t pos = 0;
     std::vector<std::string> tokens;
@@ -654,15 +730,15 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 
     int tSize = (int) PyTuple_Size(pColor);
     if (tSize > 2) {
-        PyObject* pRed = PyTuple_GetItem(pColor,0);
+        PyObject* pRed = PyTuple_GetItem(pColor, 0);
         red = PyFloat_AsDouble(pRed);
-        PyObject* pGreen = PyTuple_GetItem(pColor,1);
+        PyObject* pGreen = PyTuple_GetItem(pColor, 1);
         green = PyFloat_AsDouble(pGreen);
-        PyObject* pBlue = PyTuple_GetItem(pColor,2);
+        PyObject* pBlue = PyTuple_GetItem(pColor, 2);
         blue = PyFloat_AsDouble(pBlue);
     }
     if (tSize > 3) {
-        PyObject* pAlpha = PyTuple_GetItem(pColor,3);
+        PyObject* pAlpha = PyTuple_GetItem(pColor, 3);
         alpha = PyFloat_AsDouble(pAlpha);
     }
     return App::Color(red, green, blue, alpha);
@@ -677,10 +753,10 @@ PyObject* DrawUtil::colorToPyTuple(App::Color color)
     PyObject* pBlue = PyFloat_FromDouble(color.b);
     PyObject* pAlpha = PyFloat_FromDouble(color.a);
 
-    PyTuple_SET_ITEM(pTuple, 0,pRed);
-    PyTuple_SET_ITEM(pTuple, 1,pGreen);
-    PyTuple_SET_ITEM(pTuple, 2,pBlue);
-    PyTuple_SET_ITEM(pTuple, 3,pAlpha);
+    PyTuple_SET_ITEM(pTuple, 0, pRed);
+    PyTuple_SET_ITEM(pTuple, 1, pGreen);
+    PyTuple_SET_ITEM(pTuple, 2, pBlue);
+    PyTuple_SET_ITEM(pTuple, 3, pAlpha);
 
     return pTuple;
 }
@@ -707,24 +783,24 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
         Base::Console().Log("DU::isCrazy - edge crazy short: %.7f\n", edgeLength);
         return true;
     }
-    if (edgeLength > 9999.9) { //edge is scaled. this is 10 m on paper.  can't be right? 
+    if (edgeLength > 9999.9) { //edge is scaled. this is 10 m on paper.  can't be right?
         Base::Console().Log("DU::isCrazy - edge crazy long: %.3f\n", edgeLength);
         return true;
     }
 
     double start = BRepLProp_CurveTool::FirstParameter(adapt);
     double end = BRepLProp_CurveTool::LastParameter(adapt);
-    BRepLProp_CLProps propStart(adapt,start,0,Precision::Confusion());
+    BRepLProp_CLProps propStart(adapt, start, 0,Precision::Confusion());
     const gp_Pnt& vStart = propStart.Value();
-    BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
+    BRepLProp_CLProps propEnd(adapt, end, 0,Precision::Confusion());
     const gp_Pnt& vEnd = propEnd.Value();
     double distance = vStart.Distance(vEnd);
     double ratio = edgeLength / distance;
     if (adapt.GetType() == GeomAbs_BSplineCurve &&
         distance > 0.001 &&                  // not a closed loop
-        ratio > 9999.9) {                    // 10,000x
+        ratio > 9999.9) {                    // 10, 000x
         return true;                         //this is crazy edge
-    } 
+    }
     else if (adapt.GetType() == GeomAbs_Ellipse) {
         gp_Elips ellp = adapt.Ellipse();
         double major = ellp.MajorRadius();
@@ -740,19 +816,8 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
 
 //    Base::Console().Message("DU::isCrazy - returns: %d ratio: %.3f\n", false, ratio);
     return false;
-} 
-
-//construct a compound shape from a list of edges
-TopoDS_Shape DrawUtil::vectorToCompound(std::vector<TopoDS_Edge> vecIn)
-{
-    BRep_Builder builder;
-    TopoDS_Compound compOut;
-    builder.MakeCompound(compOut);
-    for (auto& v : vecIn) {
-        builder.Add(compOut, v);
-    }
-    return TopoDS_Compound(std::move(compOut));
 }
+
 //get 3d position of a face's center
 Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
 {
@@ -763,13 +828,13 @@ Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
     double v1 = adapt.FirstVParameter();
     double v2 = adapt.LastVParameter();
     double mv = (v1 + v2) / 2.0;
-    BRepLProp_SLProps prop(adapt,mu,mv,0,Precision::Confusion());
+    BRepLProp_SLProps prop(adapt, mu, mv, 0,Precision::Confusion());
     const gp_Pnt gv = prop.Value();
     return Base::Vector3d(gv.X(), gv.Y(), gv.Z());
 }
 
 // test the circulation of the triangle A-B-C
-bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C) 
+bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
 {
     if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0)
         return true;
@@ -1154,7 +1219,9 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
 {
 //    Base::Console().Message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
     if (inSpec.empty()) {
-        std::ofstream output(outSpec);
+        // create an empty file
+        Base::FileInfo fi(outSpec);
+        Base::ofstream output(fi);
         return;
     }
     Base::FileInfo fi(inSpec);
@@ -1172,12 +1239,12 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)
 {
-    Base::Console().Message("DUMP - %s\n",text);
+    Base::Console().Message("DUMP - %s\n", text);
     TopExp_Explorer expl(s, TopAbs_VERTEX);
-    for (int i = 1 ; expl.More(); expl.Next(),i++) {
+    for (int i = 1 ; expl.More(); expl.Next(), i++) {
         const TopoDS_Vertex& v = TopoDS::Vertex(expl.Current());
         gp_Pnt pnt = BRep_Tool::Pnt(v);
-        Base::Console().Message("v%d: (%.3f,%.3f,%.3f)\n",i,pnt.X(),pnt.Y(),pnt.Z());
+        Base::Console().Message("v%d: (%.3f, %.3f, %.3f)\n", i,pnt.X(), pnt.Y(), pnt.Z());
     }
 }
 
@@ -1186,7 +1253,7 @@ void DrawUtil::countFaces(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfFaces;
     TopExp::MapShapes(s, TopAbs_FACE, mapOfFaces);
     int num = mapOfFaces.Extent();
-    Base::Console().Message("COUNT - %s has %d Faces\n",text,num);
+    Base::Console().Message("COUNT - %s has %d Faces\n", text, num);
 }
 
 //count # of unique Wires in shape.
@@ -1195,7 +1262,7 @@ void DrawUtil::countWires(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfWires;
     TopExp::MapShapes(s, TopAbs_WIRE, mapOfWires);
     int num = mapOfWires.Extent();
-    Base::Console().Message("COUNT - %s has %d wires\n",text,num);
+    Base::Console().Message("COUNT - %s has %d wires\n", text, num);
 }
 
 void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
@@ -1203,14 +1270,14 @@ void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfEdges;
     TopExp::MapShapes(s, TopAbs_EDGE, mapOfEdges);
     int num = mapOfEdges.Extent();
-    Base::Console().Message("COUNT - %s has %d edges\n",text,num);
+    Base::Console().Message("COUNT - %s has %d edges\n", text, num);
 }
 
 void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 {
-    Base::Console().Message("DUMP - %s\n",text);
+    Base::Console().Message("DUMP - %s\n", text);
     TopExp_Explorer expl(s, TopAbs_EDGE);
-    for (int i = 1 ; expl.More(); expl.Next(),i++) {
+    for (int i = 1 ; expl.More(); expl.Next(), i++) {
         const TopoDS_Edge& e = TopoDS::Edge(expl.Current());
         dumpEdge("dumpEdges", i, e);
     }
@@ -1218,9 +1285,9 @@ void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
-    Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
+//    Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
     gp_Pnt pnt = BRep_Tool::Pnt(v);
-    Base::Console().Message("%s: (%.3f,%.3f,%.3f)\n",text,pnt.X(),pnt.Y(),pnt.Z());
+    Base::Console().Message("%s: (%.3f, %.3f, %.3f)\n", text, pnt.X(), pnt.Y(), pnt.Z());
 }
 
 void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
@@ -1228,14 +1295,14 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     BRepAdaptor_Curve adapt(e);
     double start = BRepLProp_CurveTool::FirstParameter(adapt);
     double end = BRepLProp_CurveTool::LastParameter(adapt);
-    BRepLProp_CLProps propStart(adapt,start,0,Precision::Confusion());
+    BRepLProp_CLProps propStart(adapt, start, 0,Precision::Confusion());
     const gp_Pnt& vStart = propStart.Value();
-    BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
+    BRepLProp_CLProps propEnd(adapt, end, 0,Precision::Confusion());
     const gp_Pnt& vEnd = propEnd.Value();
-    //Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
-    //                        vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
-    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f) Orient: %d\n",label,i,
-                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z(), e.Orientation());
+    //Base::Console().Message("%s edge:%d start:(%.3f, %.3f, %.3f)/%0.3f end:(%.2f, %.3f, %.3f)/%.3f\n", label, i,
+    //                        vStart.X(), vStart.Y(), vStart.Z(), start, vEnd.X(), vEnd.Y(), vEnd.Z(), end);
+    Base::Console().Message("%s edge:%d start:(%.3f, %.3f, %.3f)  end:(%.2f, %.3f, %.3f) Orient: %d\n", label, i,
+                            vStart.X(), vStart.Y(), vStart.Z(), vEnd.X(), vEnd.Y(), vEnd.Z(), e.Orientation());
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
     Base::Console().Message(">>>>>>> length: %.3f  distance: %.3f ration: %.3f type: %d\n", edgeLength,
                             vStart.Distance(vEnd), edgeLength / vStart.Distance(vEnd), adapt.GetType());

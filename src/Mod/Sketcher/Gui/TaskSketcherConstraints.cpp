@@ -382,7 +382,7 @@ public:
 class ExpressionDelegate : public QStyledItemDelegate
 {
 public:
-    ExpressionDelegate(QListWidget * _view) : QStyledItemDelegate(_view), view(_view) { }
+    explicit ExpressionDelegate(QListWidget * _view) : QStyledItemDelegate(_view), view(_view) { }
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {

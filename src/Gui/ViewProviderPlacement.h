@@ -67,7 +67,7 @@ protected:
 
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderPlacement> ViewProviderPlacementPython;
+using ViewProviderPlacementPython = ViewProviderPythonFeatureT<ViewProviderPlacement>;
 
 } //namespace Gui
 

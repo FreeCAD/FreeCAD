@@ -42,7 +42,7 @@ class Ui_Sections;
 class ViewProviderSections : public PartGui::ViewProviderSpline
 {
     PROPERTY_HEADER_WITH_OVERRIDE(SurfaceGui::ViewProviderSections);
-    typedef std::vector<App::PropertyLinkSubList::SubSet> References;
+    using References = std::vector<App::PropertyLinkSubList::SubSet>;
 
 public:
     enum ShapeType {Vertex, Edge, Face};

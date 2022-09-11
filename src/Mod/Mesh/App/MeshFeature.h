@@ -85,8 +85,8 @@ public:
     PyObject* getPyObject() override;
 };
 
-typedef App::FeatureCustomT<Feature> FeatureCustom;
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeatureCustom = App::FeatureCustomT<Feature>;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 } //namespace Mesh
 

@@ -55,7 +55,7 @@ public:
      * transactions from different document, so that they can be undo/redo
      * together.
      */
-    Transaction(int id = 0);
+    explicit Transaction(int id = 0);
     /// Construction
     ~Transaction() override;
 
@@ -89,7 +89,7 @@ public:
 
 private:
     int transID;
-    typedef std::pair<const TransactionalObject*, TransactionObject*> Info;
+    using Info = std::pair<const TransactionalObject*, TransactionObject*>;
     bmi::multi_index_container<
         Info,
         bmi::indexed_by<
@@ -176,7 +176,7 @@ template <class CLASS>
 class TransactionProducer : public Base::AbstractProducer
 {
 public:
-    TransactionProducer (const Base::Type& type)
+    explicit TransactionProducer (const Base::Type& type)
     {
         TransactionFactory::instance().addProducer(type, this);
     }

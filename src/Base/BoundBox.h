@@ -43,8 +43,8 @@ class BoundBox3
     static bool isOnRayS(_Precision, _Precision, _Precision);
 
 public:
-    typedef _Precision num_type;
-    typedef float_traits<num_type> traits_type;
+    using num_type = _Precision;
+    using traits_type = float_traits<num_type>;
 
     /**  Public attributes */
     //@{
@@ -982,8 +982,8 @@ inline void BoundBox3<_Precision>::ScaleZ (_Precision f)
     MinZ *= f; MaxZ *= f;
 }
 
-typedef BoundBox3<float> BoundBox3f;
-typedef BoundBox3<double> BoundBox3d;
+using BoundBox3f = BoundBox3<float>;
+using BoundBox3d = BoundBox3<double>;
 
 } // namespace Base
 

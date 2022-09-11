@@ -43,7 +43,7 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Placement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Placement() override;
     void accept() override;
     void reject() override;
@@ -87,8 +87,8 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationUi<Ui_Placement> Ui_PlacementComp;
-    typedef boost::signals2::connection Connection;
+    using Ui_PlacementComp = Gui::LocationUi<Ui_Placement>;
+    using Connection = boost::signals2::connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
     Connection connectAct;
@@ -114,7 +114,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DockablePlacement(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DockablePlacement() override;
 
     void accept() override;

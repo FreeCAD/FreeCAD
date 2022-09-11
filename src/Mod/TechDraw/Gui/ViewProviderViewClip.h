@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
 #define DRAWINGGUI_VIEWPROVIDERCLIP_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
 #include "ViewProviderDrawingView.h"

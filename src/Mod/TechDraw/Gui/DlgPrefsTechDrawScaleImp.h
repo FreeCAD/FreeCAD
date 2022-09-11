@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPSCALE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,7 +38,7 @@ class DlgPrefsTechDrawScaleImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawScaleImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawScaleImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawScaleImp() override;
 
 protected Q_SLOTS:

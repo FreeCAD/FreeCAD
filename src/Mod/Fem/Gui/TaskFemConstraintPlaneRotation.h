@@ -40,7 +40,7 @@ class TaskFemConstraintPlaneRotation : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintPlaneRotation() override;
     const std::string getReferences() const override;
 
@@ -64,7 +64,7 @@ class TaskDlgFemConstraintPlaneRotation : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView);
+    explicit TaskDlgFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

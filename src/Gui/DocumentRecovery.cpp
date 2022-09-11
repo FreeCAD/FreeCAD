@@ -142,7 +142,7 @@ namespace Gui { namespace Dialog {
 class DocumentRecoveryPrivate
 {
 public:
-    typedef QMap<QString, QString> XmlConfig;
+    using XmlConfig = QMap<QString, QString>;
 
     enum Status {
         Unknown = 0, /*!< The file is not available */

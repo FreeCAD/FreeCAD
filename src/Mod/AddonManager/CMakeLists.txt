@@ -7,10 +7,19 @@ SET(AddonManager_SRCS
     Addon.py
     AddonManager.py
     AddonManager.ui
+    addonmanager_devmode.py
+    addonmanager_devmode_add_content.py
+    addonmanager_devmode_license_selector.py
+    addonmanager_devmode_licenses_table.py
+    addonmanager_devmode_person_editor.py
+    addonmanager_devmode_people_table.py
+    addonmanager_devmode_predictor.py
+    addonmanager_devmode_validators.py
+    addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py
-    addonmanager_workers_startup.py
     addonmanager_workers_installation.py
+    addonmanager_workers_startup.py
     addonmanager_workers_utility.py
     AddonManagerOptions.ui
     ALLOWED_PYTHON_PACKAGES.txt
@@ -18,6 +27,19 @@ SET(AddonManager_SRCS
     change_branch.ui
     compact_view.py
     dependency_resolution_dialog.ui
+    developer_mode.ui
+    developer_mode_add_content.ui
+    developer_mode_advanced_freecad_versions.ui
+    developer_mode_copyright_info.ui
+    developer_mode_dependencies.ui
+    developer_mode_edit_dependency.ui
+    developer_mode_freecad_versions.ui
+    developer_mode_license.ui
+    developer_mode_licenses_table.ui
+    developer_mode_people.ui
+    developer_mode_people_table.ui
+    developer_mode_select_from_list.ui
+    developer_mode_tags.ui
     expanded_view.py
     first_run.ui
     Init.py
@@ -46,6 +68,7 @@ SET(AddonManagerTests_SRCS
 SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
     AddonManagerTest/app/test_addon.py
+    AddonManagerTest/app/test_git.py
     AddonManagerTest/app/test_macro.py
     AddonManagerTest/app/test_utilities.py
 )
@@ -70,6 +93,8 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/macro_template.FCStd
     AddonManagerTest/data/missing_macro_metadata.FCStd
     AddonManagerTest/data/prefpack_only.xml
+    AddonManagerTest/data/test_repo.zip
+    AddonManagerTest/data/TestWorkbench.zip
     AddonManagerTest/data/test_version_detection.xml
     AddonManagerTest/data/workbench_only.xml
 )

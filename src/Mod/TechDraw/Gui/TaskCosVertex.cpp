@@ -54,13 +54,10 @@
 #include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
 
 #include "QGSPage.h"
-#include "QGVPage.h"
 #include "QGIView.h"
-#include "QGIPrimPath.h"
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "QGTracker.h"
-#include "QGEPath.h"
 #include "Rez.h"
 
 #include "TaskCosVertex.h"
@@ -74,9 +71,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     ui(new Ui_TaskCosVertex),
     blockUpdate(false),
     m_tracker(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_qgParent(nullptr),
@@ -94,10 +88,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->getQGSPage();
-    m_view = m_mdi->getQGVPage();
+    m_vpp = static_cast<ViewProviderPage*>(vp);
 
     setUiPrimary();
 
@@ -107,10 +98,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_trackerMode = QGTracker::TrackerMode::Point;
 }
 
-TaskCosVertex::~TaskCosVertex()
-{
-}
-
 void TaskCosVertex::updateTask()
 {
     //    blockUpdate = true;
@@ -118,9 +105,9 @@ void TaskCosVertex::updateTask()
     //    blockUpdate = false;
 }
 
-void TaskCosVertex::changeEvent(QEvent* e)
+void TaskCosVertex::changeEvent(QEvent* event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -168,9 +155,9 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 
 
 //********** Tracker routines *******************************************************************
-void TaskCosVertex::onTrackerClicked(bool b)
+void TaskCosVertex::onTrackerClicked(bool clicked)
 {
-    Q_UNUSED(b);
+    Q_UNUSED(clicked);
 //    Base::Console().Message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
 
@@ -186,8 +173,8 @@ void TaskCosVertex::onTrackerClicked(bool b)
     }
 
     m_inProgressLock = true;
-    m_saveContextPolicy = m_mdi->contextMenuPolicy();
-    m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
+    m_saveContextPolicy = m_vpp->getMDIViewPage()->contextMenuPolicy();
+    m_vpp->getMDIViewPage()->setContextMenuPolicy(Qt::PreventContextMenu);
     m_trackerMode = QGTracker::TrackerMode::Point;
     setEditCursor(Qt::CrossCursor);
     startTracker();
@@ -209,7 +196,7 @@ void TaskCosVertex::startTracker()
     }
 
     if (!m_tracker) {
-        m_tracker = new QGTracker(m_scene, m_trackerMode);
+        m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
         QObject::connect(
             m_tracker, &QGTracker::drawingFinished,
             this, &TaskCosVertex::onTrackerFinished
@@ -252,7 +239,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
         x += Rez::guiX(dpg->X.getValue());
         y += Rez::guiX(dpg->Y.getValue());
     }
-    //x,y are scene pos of dvp/dpgi
+    //x, y are scene pos of dvp/dpgi
 
     QPointF basePosScene(x, -y);                 //base position in scene coords
     QPointF displace = dragEnd - basePosScene;
@@ -268,7 +255,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
 
 }
 
@@ -276,17 +263,17 @@ void TaskCosVertex::removeTracker()
 {
 //    Base::Console().Message("TCV::removeTracker()\n");
     if (m_tracker && m_tracker->scene()) {
-        m_scene->removeItem(m_tracker);
+        m_vpp->getQGSPage()->removeItem(m_tracker);
         delete m_tracker;
         m_tracker = nullptr;
     }
 }
 
-void TaskCosVertex::setEditCursor(QCursor c)
+void TaskCosVertex::setEditCursor(QCursor cursor)
 {
     if (m_baseFeat) {
-        QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
-        qgivBase->setCursor(c);
+        QGIView* qgivBase = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
+        qgivBase->setCursor(cursor);
     }
 }
 
@@ -308,10 +295,10 @@ void TaskCosVertex::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskCosVertex::enableTaskButtons(bool b)
+void TaskCosVertex::enableTaskButtons(bool button)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(button);
+    m_btnCancel->setEnabled(button);
 }
 
 //******************************************************************************
@@ -329,7 +316,7 @@ bool TaskCosVertex::accept()
 
     m_baseFeat->recomputeFeature();
     m_baseFeat->requestPaint();
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
     m_trackerMode = QGTracker::TrackerMode::None;
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
@@ -344,8 +331,8 @@ bool TaskCosVertex::reject()
 
     removeTracker();
     m_trackerMode = QGTracker::TrackerMode::None;
-    if (m_mdi) {
-        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    if (m_vpp->getMDIViewPage()) {
+        m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
     }
 
     //make sure any dangling objects are cleaned up

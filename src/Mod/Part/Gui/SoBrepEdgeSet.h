@@ -43,7 +43,7 @@ class SoTextureCoordinateBundle;
 namespace PartGui {
 
 class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
-    typedef SoIndexedLineSet inherited;
+    using inherited = SoIndexedLineSet;
 
     SO_NODE_HEADER(SoBrepEdgeSet);
 
@@ -52,7 +52,7 @@ public:
     SoBrepEdgeSet();
 
 protected:
-    ~SoBrepEdgeSet() override {};
+    ~SoBrepEdgeSet() override {}
     void GLRender(SoGLRenderAction *action) override;
     void GLRenderBelowPath(SoGLRenderAction * action) override;
     void doAction(SoAction* action) override;
@@ -66,7 +66,7 @@ protected:
 
 private:
     struct SelContext;
-    typedef std::shared_ptr<SelContext> SelContextPtr;
+    using SelContextPtr = std::shared_ptr<SelContext>;
 
     void renderShape(const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices, int num_vertexindices);

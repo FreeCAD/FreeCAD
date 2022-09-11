@@ -37,6 +37,8 @@
 
 #include <App/Document.h>
 
+#include <Base/FileInfo.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -51,14 +53,12 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/DrawViewImage.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
-#include "QGVPage.h"
-#include "QGIView.h"
 #include "Grabber3d.h"
-#include "Rez.h"
-
+#include "ViewProviderImage.h"
 #include "TaskActiveView.h"
 
 using namespace Gui;
@@ -69,7 +69,7 @@ using namespace TechDrawGui;
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
     ui(new Ui_TaskActiveView),
     m_pageFeat(pageFeat),
-    m_symbolFeat(nullptr),
+    m_imageFeat(nullptr),
     m_btnOK(nullptr),
     m_btnCancel(nullptr)
 {
@@ -77,7 +77,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
 
     ui->qsbWidth->setUnit(Base::Unit::Length);
     ui->qsbHeight->setUnit(Base::Unit::Length);
-    ui->qsbBorder->setUnit(Base::Unit::Length);
 
     setUiPrimary();
 }
@@ -111,55 +110,68 @@ void TaskActiveView::blockButtons(bool b)
     Q_UNUSED(b);
 }
 
-//******************************************************************************
-TechDraw::DrawViewSymbol* TaskActiveView::createActiveView()
+TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 {
 //    Base::Console().Message("TAV::createActiveView()\n");
 
-    std::string symbolName = m_pageFeat->getDocument()->getUniqueObjectName("ActiveView");
-    std::string symbolType = "TechDraw::DrawViewSymbol";
+    std::string imageName = m_pageFeat->getDocument()->getUniqueObjectName("ActiveView");
+    std::string imageType = "TechDraw::DrawViewImage";
 
     std::string pageName = m_pageFeat->getNameInDocument();
 
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       symbolType.c_str(),symbolName.c_str());
+                       imageType.c_str(),imageName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       pageName.c_str(), symbolName.c_str());
+                       pageName.c_str(), imageName.c_str());
 
     App::Document* appDoc = m_pageFeat->getDocument();
-    QTemporaryFile tempFile;
-    if (!tempFile.open()) {                 //open() creates temp file
-        Base::Console().Error("TAV::createActiveView - could not open temp file\n");
-        return nullptr;
-    }
-    tempFile.close();
 
-    std::string fileSpec = Base::Tools::toStdString(tempFile.fileName());
-    fileSpec = Base::Tools::escapeEncodeFilename(fileSpec);
+    App::Document* doc = m_pageFeat->getDocument();
+    std::string special = "/" + imageName + "image.png";
+    std::string dir = doc->TransientDir.getValue();
+    std::string fileSpec = dir + special;
 
-    //double estScale =
-    Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,
-                                        ui->qsbWidth->rawValue(),
-                                        ui->qsbHeight->rawValue(),
-                                        ui->cbbg->isChecked(),
-                                        ui->ccBgColor->color(),
-                                        ui->qsbWeight->rawValue(),
-                                        ui->qsbBorder->rawValue(),
-                                        ui->cbMode->currentIndex());
-    Command::doCommand(Command::Doc,"f = open(\"%s\",'r')",(const char*)fileSpec.c_str());
-    Command::doCommand(Command::Doc,"svg = f.read()");
-//    Command::doCommand(Command::Doc,"print('length of svg: {}'.format(len(svg)))");
-
-    Command::doCommand(Command::Doc,"f.close()");
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.Symbol = svg",symbolName.c_str());
-
-    App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(symbolName.c_str());
-    TechDraw::DrawViewSymbol* newSym = dynamic_cast<TechDraw::DrawViewSymbol*>(newObj);
-    if (!newObj || !newSym) {
-        throw Base::RuntimeError("TaskActiveView - new symbol object not found");
+    QColor bg = ui->ccBgColor->color();
+    if (ui->cbUse3d->isChecked()) {
+        bg = QColor();
+    } else if (ui->cbNoBG->isChecked()) {
+        bg = QColor(Qt::transparent);
     }
 
-    return newSym;
+    QImage image(100, 100, QImage::Format_RGB32);  //arbitrary initial image size. quickView will use
+                                                   //MdiView size in pixels
+    image.fill(QColor(Qt::transparent));
+    Grabber3d:: quickView(appDoc,
+                          bg,
+                          image);
+    bool success = image.save(Base::Tools::fromStdString(fileSpec));
+
+    if (!success) {
+        Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
+    }
+    Command::doCommand(Command::Doc,"App.activeDocument().%s.ImageFile = '%s'",imageName.c_str(), fileSpec.c_str());
+    Command::doCommand(Command::Doc,"App.activeDocument().%s.Width = %.5f",imageName.c_str(), ui->qsbWidth->rawValue());
+    Command::doCommand(Command::Doc,"App.activeDocument().%s.Height = %.5f",imageName.c_str(), ui->qsbHeight->rawValue());
+
+    App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(imageName.c_str());
+    TechDraw::DrawViewImage* newImg = dynamic_cast<TechDraw::DrawViewImage*>(newObj);
+    if ( (newObj == nullptr) ||
+         (newImg == nullptr) ) {
+        throw Base::RuntimeError("TaskActiveView - new image object not found");
+    }
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(newImg->getDocument());
+    if (guiDoc) {
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(newImg);
+        if (vp) {
+            auto vpImage = dynamic_cast<ViewProviderImage*>(vp);
+            if (vpImage) {
+                vpImage->Crop.setValue(ui->cbCrop->isChecked());
+            }
+        }
+    }
+
+
+    return newImg;
 }
 
 //******************************************************************************
@@ -183,13 +195,13 @@ bool TaskActiveView::accept()
 {
 //    Base::Console().Message("TAV::accept()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
-    m_symbolFeat = createActiveView();
-//    m_symbolFeat->requestPaint();
-    m_symbolFeat->recomputeFeature();
+    m_imageFeat = createActiveView();
+//    m_imageFeat->requestPaint();
+    m_imageFeat->recomputeFeature();
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -199,8 +211,8 @@ bool TaskActiveView::reject()
 //    Base::Console().Message("TAV::reject()\n");
       //nothing to remove.
 
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }

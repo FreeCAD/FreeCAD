@@ -35,12 +35,12 @@ class PlaneFit;
 class CylinderFit;
 class SphereFit;
 class MeshFacet;
-typedef std::vector<FacetIndex> MeshSegment;
+using MeshSegment = std::vector<FacetIndex>;
 
 class MeshExport MeshSurfaceSegment
 {
 public:
-    MeshSurfaceSegment(unsigned long minFacets)
+    explicit MeshSurfaceSegment(unsigned long minFacets)
         : minFacets(minFacets) {}
     virtual ~MeshSurfaceSegment() {}
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
@@ -56,7 +56,7 @@ protected:
     std::vector<MeshSegment> segments;
     unsigned long minFacets;
 };
-typedef std::shared_ptr<MeshSurfaceSegment> MeshSurfaceSegmentPtr;
+using MeshSurfaceSegmentPtr = std::shared_ptr<MeshSurfaceSegment>;
 
 // --------------------------------------------------------
 
@@ -269,7 +269,7 @@ protected:
 class MeshExport MeshSegmentAlgorithm
 {
 public:
-    MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
+    explicit MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
     void FindSegments(std::vector<MeshSurfaceSegmentPtr>&);
 
 private:

@@ -58,9 +58,9 @@ ViewProviderGeomHatch::ViewProviderGeomHatch()
 
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(ColorPattern,(TechDraw::DrawGeomHatch::prefGeomHatchColor()),
-                        vgroup,App::Prop_None,"Color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeometricHatch pattern line thickness");
+    ADD_PROPERTY_TYPE(ColorPattern, (TechDraw::DrawGeomHatch::prefGeomHatchColor()),
+                        vgroup, App::Prop_None, "Color of the pattern");
+    ADD_PROPERTY_TYPE(WeightPattern, (0), vgroup, App::Prop_None, "GeometricHatch pattern line thickness");
 
     getParameters();
 
@@ -86,7 +86,7 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
         projDlg->setCreateMode(false);
         Gui::Control().showDialog(projDlg);
     } else {
-        Gui::Control().showDialog(new TaskDlgGeomHatch(getViewObject(),this,false));
+        Gui::Control().showDialog(new TaskDlgGeomHatch(getViewObject(), this, false));
     }
 
     return true;

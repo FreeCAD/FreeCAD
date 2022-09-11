@@ -1,5 +1,7 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,concurrency-*,-modernize-use-trailing-return-type'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
+performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,
+concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -283,7 +285,7 @@ CheckOptions:
   - key:             readability-identifier-naming.AggressiveDependentMemberLookup
     value:           'false'
   - key:             readability-identifier-length.MinimumParameterNameLength
-    value:           '3'
+    value:           '2'
   - key:             modernize-use-emplace.TupleTypes
     value:           '::std::pair;::std::tuple'
   - key:             modernize-use-emplace.TupleMakeFunctions
@@ -405,7 +407,7 @@ CheckOptions:
   - key:             portability-restrict-system-includes.Includes
     value:           '*'
   - key:             readability-implicit-bool-conversion.AllowPointerConditions
-    value:           'false'
+    value:           'true'
   - key:             modernize-make-unique.MakeSmartPtrFunctionHeader
     value:           '<memory>'
   - key:             bugprone-signal-handler.AsyncSafeFunctionSet
@@ -417,7 +419,7 @@ CheckOptions:
   - key:             cppcoreguidelines-narrowing-conversions.WarnWithinTemplateInstantiation
     value:           'false'
   - key:             readability-identifier-length.MinimumVariableNameLength
-    value:           '3'
+    value:           '2'
   - key:             cppcoreguidelines-narrowing-conversions.WarnOnEquivalentBitWidth
     value:           'true'
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnorePublicMemberVariables

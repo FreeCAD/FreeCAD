@@ -50,7 +50,7 @@ class TaskHoleParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = nullptr);
+    explicit TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = nullptr);
     ~TaskHoleParameters() override;
 
     void apply() override;
@@ -128,7 +128,7 @@ private:
 
 private:
 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connectPropChanged;
 
     std::unique_ptr<Observer> observer;
@@ -143,7 +143,7 @@ class TaskDlgHoleParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgHoleParameters(ViewProviderHole *HoleView);
+    explicit TaskDlgHoleParameters(ViewProviderHole *HoleView);
     ~TaskDlgHoleParameters() override;
 
     ViewProviderHole* getHoleView() const { return static_cast<ViewProviderHole*>(vp); }

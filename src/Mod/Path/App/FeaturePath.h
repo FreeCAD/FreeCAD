@@ -64,7 +64,7 @@ protected:
 
 };
 
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 } //namespace Path
 

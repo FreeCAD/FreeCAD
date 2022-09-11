@@ -37,7 +37,7 @@ class ViewProvider;
 
 namespace TaskView {
 
-typedef boost::signals2::connection TaskAppearance_Connection;
+using TaskAppearance_Connection = boost::signals2::connection;
 class Ui_TaskAppearance;
 
 class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverType
@@ -45,7 +45,7 @@ class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverT
     Q_OBJECT
 
 public:
-    TaskAppearance(QWidget *parent = nullptr);
+    explicit TaskAppearance(QWidget *parent = nullptr);
     ~TaskAppearance() override;
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

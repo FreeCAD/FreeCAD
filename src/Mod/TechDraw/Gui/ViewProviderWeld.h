@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERWELD_H
 #define DRAWINGGUI_VIEWPROVIDERWELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderFeature.h>
 
 #include "ViewProviderDrawingView.h"
@@ -60,7 +62,7 @@ public:
     double prefTileTextAdjust();
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
-    
+
 };
 
 } // namespace TechDrawGui

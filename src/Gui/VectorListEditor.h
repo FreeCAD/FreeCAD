@@ -39,7 +39,7 @@ class VectorTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    VectorTableModel(int decimals, QObject *parent = nullptr);
+    explicit VectorTableModel(int decimals, QObject *parent = nullptr);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -63,7 +63,7 @@ class VectorTableDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    VectorTableDelegate(int decimals, QObject *parent = nullptr);
+    explicit VectorTableDelegate(int decimals, QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const override;
@@ -85,7 +85,7 @@ class VectorListEditor : public QDialog
     Q_OBJECT
 
 public:
-    VectorListEditor(int decimals, QWidget* parent = nullptr);
+    explicit VectorListEditor(int decimals, QWidget* parent = nullptr);
     ~VectorListEditor() override;
 
     void setValues(const QList<Base::Vector3d>&);

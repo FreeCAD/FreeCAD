@@ -44,7 +44,7 @@
 #include <Eigen/Geometry>
 #include <Eigen/IterativeLinearSolvers>
 
-typedef Eigen::SparseMatrix<double> spMat;
+using spMat = Eigen::SparseMatrix<double>;
 
 namespace lscmrelax
 {
@@ -57,18 +57,18 @@ class NullSpaceProjector: public Eigen::IdentityPreconditioner
     
     template<typename Rhs>
     inline Rhs solve(Rhs& b) const { 
-	return b - this->null_space_1 * (this->null_space_2 * b);
+        return b - this->null_space_1 * (this->null_space_2 * b);
     }
 
     void setNullSpace(Eigen::MatrixXd null_space) {
-	// normalize + orthogonalize the nullspace
-	this->null_space_1 = null_space * ((null_space.transpose() * null_space).inverse());
-	this->null_space_2 = null_space.transpose();
+        // normalize + orthogonalize the nullspace
+        this->null_space_1 = null_space * ((null_space.transpose() * null_space).inverse());
+        this->null_space_2 = null_space.transpose();
     }
 };
     
-typedef Eigen::Vector3d Vector3;
-typedef Eigen::Vector2d Vector2;
+using Vector3 = Eigen::Vector3d;
+using Vector2 = Eigen::Vector2d;
 
 class LscmRelax{
 private:

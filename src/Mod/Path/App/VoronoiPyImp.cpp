@@ -167,8 +167,8 @@ Py::List VoronoiPy::getCells() const {
   return list;
 }
 
-typedef std::map<uintptr_t,bool> exterior_map_t;
-typedef std::map<int32_t, std::set<int32_t> > coordinate_map_t;
+using exterior_map_t = std::map<uintptr_t,bool>;
+using coordinate_map_t = std::map<int32_t, std::set<int32_t> >;
 
 #define VORONOI_USE_EXTERIOR_CACHE 1
 

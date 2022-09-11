@@ -49,7 +49,7 @@ public:
 
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderMaterialObject> ViewProviderMaterialObjectPython;
+using ViewProviderMaterialObjectPython = ViewProviderPythonFeatureT<ViewProviderMaterialObject>;
 
 } // namespace Gui
 

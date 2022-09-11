@@ -39,7 +39,7 @@ class ViewProviderExtensionPythonT : public ExtensionT
     EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
 
 public:
-    typedef ExtensionT Inherited;
+    using Inherited = ExtensionT;
 
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
@@ -54,7 +54,7 @@ public:
     ViewProviderExtensionPythonT& operator= (ViewProviderExtensionPythonT&&) = delete;
 };
 
-typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;
+using ViewProviderExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderExtension>;
 
 } //Gui
 

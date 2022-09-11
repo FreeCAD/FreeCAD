@@ -64,7 +64,7 @@ void DlgPrefsTechDrawScaleImp::saveSettings()
     ui->pdsbPageScale->onSave();
     ui->cbViewScaleType->onSave();
     ui->pdsbViewScale->onSave();
-    ui->pdsbVertexScale->onSave(); 
+    ui->pdsbVertexScale->onSave();
     ui->pdsbCenterScale->onSave();
     ui->pdsbTemplateMark->onSave();
     ui->pdsbSymbolScale->onSave();

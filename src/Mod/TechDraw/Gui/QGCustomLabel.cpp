@@ -25,10 +25,12 @@
 #include <cassert>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
+#include <qmath.h>
 #include <QMouseEvent>
 #include <QPaintDevice>
 #include <QPainter>
 #include <QPrinter>
+#include <QRectF>
 #include <QSvgGenerator>
 #include <QStyleOptionGraphicsItem>
 #endif
@@ -38,8 +40,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <qmath.h>
-#include <QRectF>
 #include "Rez.h"
 #include "QGCustomLabel.h"
 
@@ -65,7 +65,7 @@ void QGCustomLabel::centerAt(double cX, double cY)
     double height = box.height();
     double newX = cX - width/2.;
     double newY = cY - height/2.;
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 void QGCustomLabel::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

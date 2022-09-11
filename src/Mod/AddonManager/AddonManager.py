@@ -25,12 +25,14 @@
 # ***************************************************************************
 
 import os
+import functools
 import shutil
 import stat
 import tempfile
 import hashlib
 import threading
 import json
+import re  # Needed for py 3.6 and earlier, can remove later, search for "re."
 from datetime import date, timedelta
 from typing import Dict, List
 
@@ -68,10 +70,16 @@ from manage_python_dependencies import (
     CheckForPythonPackageUpdatesWorker,
     PythonPackageManager,
 )
+from addonmanager_devmode import DeveloperMode
 
 import NetworkManager
 
 translate = FreeCAD.Qt.translate
+
+
+def QT_TRANSLATE_NOOP(_, txt):
+    return txt
+
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
@@ -96,12 +104,7 @@ installed.
 #  \brief The Addon Manager allows users to install workbenches and macros made by other users
 #  @{
 
-
-def QT_TRANSLATE_NOOP(ctx, txt):
-    return txt
-
-
-ADDON_MANAGER_DEVELOPER_MODE = False
+INSTANCE = None
 
 
 class CommandAddonManager:
@@ -155,6 +158,11 @@ class CommandAddonManager:
         self.check_for_python_package_updates_worker = None
         self.install_worker = None
         self.update_all_worker = None
+        self.developer_mode = None
+
+        # Give other parts of the AM access to the current instance
+        global INSTANCE
+        INSTANCE = self
 
     def GetResources(self) -> Dict[str, str]:
         return {
@@ -175,8 +183,7 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         readWarning = pref.GetBool("readWarning2022", False)
 
-        global ADDON_MANAGER_DEVELOPER_MODE
-        ADDON_MANAGER_DEVELOPER_MODE = pref.GetBool("developerMode", False)
+        dev_mode_active = pref.GetBool("developerMode", False)
 
         if not readWarning:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
@@ -262,7 +269,7 @@ class CommandAddonManager:
             )
             self.connection_check_message.show()
 
-    def cancel_network_check(self, button):
+    def cancel_network_check(self, _):
         if not self.connection_checker.isFinished():
             self.connection_checker.success.disconnect(self.launch)
             self.connection_checker.failure.disconnect(self.network_connection_failed)
@@ -274,7 +281,7 @@ class CommandAddonManager:
         # This must run on the main GUI thread
         if hasattr(self, "connection_check_message") and self.connection_check_message:
             self.connection_check_message.close()
-        if HAVE_QTNETWORK:
+        if NetworkManager.HAVE_QTNETWORK:
             QtWidgets.QMessageBox.critical(
                 None, translate("AddonsInstaller", "Connection failed"), message
             )
@@ -348,6 +355,9 @@ class CommandAddonManager:
             )
         )
 
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        dev_mode_active = pref.GetBool("developerMode", False)
+
         # enable/disable stuff
         self.dialog.buttonUpdateAll.setEnabled(False)
         self.hide_progress_widgets()
@@ -355,6 +365,10 @@ class CommandAddonManager:
         self.dialog.buttonUpdateCache.setText(
             translate("AddonsInstaller", "Starting up...")
         )
+        if dev_mode_active:
+            self.dialog.buttonDevTools.show()
+        else:
+            self.dialog.buttonDevTools.hide()
 
         # Only shown if there are available Python package updates
         self.dialog.buttonUpdateDependencies.hide()
@@ -371,6 +385,7 @@ class CommandAddonManager:
         self.dialog.buttonUpdateDependencies.clicked.connect(
             self.show_python_updates_dialog
         )
+        self.dialog.buttonDevTools.clicked.connect(self.show_developer_tools)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
@@ -403,7 +418,7 @@ class CommandAddonManager:
         # rock 'n roll!!!
         self.dialog.exec_()
 
-    def cleanup_workers(self, wait=False) -> None:
+    def cleanup_workers(self) -> None:
         """Ensure that no workers are running by explicitly asking them to stop and waiting for them until they do"""
         for worker in self.workers:
             if hasattr(self, worker):
@@ -611,10 +626,13 @@ class CommandAddonManager:
             self.startup_sequence.append(self.load_macro_metadata)
         selection = pref.GetString("SelectedAddon", "")
         if selection:
-            self.startup_sequence.insert(2, lambda: self.select_addon(selection))
+            self.startup_sequence.insert(
+                2, functools.partial(self.select_addon, selection)
+            )
             pref.SetString("SelectedAddon", "")
-        if ADDON_MANAGER_DEVELOPER_MODE:
-            self.startup_sequence.append(self.validate)
+        # TODO: migrate this to the developer mode tools
+        # if ADDON_MANAGER_DEVELOPER_MODE:
+        #    self.startup_sequence.append(self.validate)
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
         self.do_next_startup_phase()
@@ -649,7 +667,7 @@ class CommandAddonManager:
                         from_json = json.loads(data)
                         if len(from_json) == 0:
                             use_cache = False
-                    except Exception as e:
+                    except json.JSONDecodeError:
                         use_cache = False
             else:
                 use_cache = False
@@ -702,7 +720,9 @@ class CommandAddonManager:
             if not self.update_cache:
                 self.update_cache = True  # Make sure to trigger the other cache updates, if the json file was missing
                 self.create_addon_list_worker = CreateAddonListWorker()
-                self.create_addon_list_worker.status_message.connect(self.show_information)
+                self.create_addon_list_worker.status_message.connect(
+                    self.show_information
+                )
                 self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
                 self.update_progress_bar(10, 100)
                 self.create_addon_list_worker.finished.connect(
@@ -906,12 +926,19 @@ class CommandAddonManager:
         self.check_for_python_package_updates_worker.finished.connect(
             self.do_next_startup_phase
         )
+        self.update_allowed_packages_list()  # Not really the best place for it...
         self.check_for_python_package_updates_worker.start()
 
     def show_python_updates_dialog(self) -> None:
         if not hasattr(self, "manage_python_packages_dialog"):
             self.manage_python_packages_dialog = PythonPackageManager()
         self.manage_python_packages_dialog.show()
+
+    def show_developer_tools(self) -> None:
+        """Display the developer tools dialog"""
+        if not self.developer_mode:
+            self.developer_mode = DeveloperMode()
+        self.developer_mode.show()
 
     def add_addon_repo(self, addon_repo: Addon) -> None:
         """adds a workbench to the list"""
@@ -1017,16 +1044,17 @@ class CommandAddonManager:
         def __init__(self, repo: Addon, all_repos: List[Addon]):
 
             deps = Addon.Dependencies()
-            repo_name_dict = dict()
+            repo_name_dict = {}
             for r in all_repos:
-                repo_name_dict[repo.name] = r
-                repo_name_dict[repo.display_name] = r
+                repo_name_dict[r.name] = r
+                repo_name_dict[r.display_name] = r
+
             repo.walk_dependency_tree(repo_name_dict, deps)
 
             self.external_addons = []
             for dep in deps.required_external_addons:
                 if dep.status() == Addon.Status.NOT_INSTALLED:
-                    self.external_addons.append(dep)
+                    self.external_addons.append(dep.name)
 
             # Now check the loaded addons to see if we are missing an internal workbench:
             wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
@@ -1099,7 +1127,7 @@ class CommandAddonManager:
         False."""
 
         bad_packages = []
-        self.update_allowed_packages_list()
+        # self.update_allowed_packages_list()
         for dep in python_required:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)
@@ -1200,10 +1228,12 @@ class CommandAddonManager:
 
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Yes
-        ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
+        ).clicked.connect(functools.partial(self.dependency_dialog_yes_clicked, repo))
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Ignore
-        ).clicked.connect(lambda: self.dependency_dialog_ignore_clicked(repo))
+        ).clicked.connect(
+            functools.partial(self.dependency_dialog_ignore_clicked, repo)
+        )
         self.dependency_dialog.buttonBox.button(
             QtWidgets.QDialogButtonBox.Cancel
         ).setDefault(True)
@@ -1245,7 +1275,7 @@ class CommandAddonManager:
             # No missing deps, just install
             self.install(repo)
 
-    def dependency_dialog_yes_clicked(self, repo: Addon) -> None:
+    def dependency_dialog_yes_clicked(self, installing_repo: Addon) -> None:
         # Get the lists out of the dialog:
         addons = []
         for row in range(self.dependency_dialog.listWidgetAddons.count()):
@@ -1270,15 +1300,17 @@ class CommandAddonManager:
             addons, python_required, python_optional
         )
         self.dependency_installation_worker.no_python_exe.connect(
-            lambda: self.no_python_exe(repo)
+            functools.partial(self.no_python_exe, installing_repo)
         )
         self.dependency_installation_worker.no_pip.connect(
-            lambda command: self.no_pip(command, repo)
+            functools.partial(self.no_pip, repo=installing_repo)
         )
         self.dependency_installation_worker.failure.connect(
             self.dependency_installation_failure
         )
-        self.dependency_installation_worker.success.connect(lambda: self.install(repo))
+        self.dependency_installation_worker.success.connect(
+            functools.partial(self.install, installing_repo)
+        )
         self.dependency_installation_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Information,
             translate("AddonsInstaller", "Installing dependencies"),
@@ -1441,12 +1473,8 @@ class CommandAddonManager:
         self.update_all_worker = UpdateAllWorker(self.packages_with_updates)
         self.update_all_worker.progress_made.connect(self.update_progress_bar)
         self.update_all_worker.status_message.connect(self.show_information)
-        self.update_all_worker.success.connect(
-            lambda repo: self.subupdates_succeeded.append(repo)
-        )
-        self.update_all_worker.failure.connect(
-            lambda repo: self.subupdates_failed.append(repo)
-        )
+        self.update_all_worker.success.connect(self.subupdates_succeeded.append)
+        self.update_all_worker.failure.connect(self.subupdates_failed.append)
         self.update_all_worker.finished.connect(self.on_update_all_completed)
         self.update_all_worker.start()
 

@@ -108,7 +108,7 @@ class SketcherExport GeometryFacade : public Base::BaseClass, private ISketchGeo
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 protected:
-    GeometryFacade(const Part::Geometry * geometry, bool owner = false);
+    explicit GeometryFacade(const Part::Geometry * geometry, bool owner = false);
     GeometryFacade(); // As TYPESYSTEM requirement
 
     friend class GeometryFacadePy;
@@ -266,7 +266,7 @@ class SketcherExport GeometryTypedFacade : public GeometryFacade
     static_assert(  std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value &&
                     !std::is_same<Part::Geometry, typename std::decay<GeometryT>::type>::value, "Only for classes derived from Geometry!");
     private:
-    GeometryTypedFacade(const Part::Geometry * geometry, bool owner = false):GeometryFacade(geometry, owner) {}
+    explicit GeometryTypedFacade(const Part::Geometry * geometry, bool owner = false):GeometryFacade(geometry, owner) {}
     GeometryTypedFacade():GeometryFacade() {}
 
 public: // Factory methods

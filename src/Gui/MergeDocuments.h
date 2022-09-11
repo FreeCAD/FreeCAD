@@ -25,6 +25,8 @@
 #define GUI_MERGEDOCUMENTS_H
 
 #include <Base/Persistence.h>
+#include <map>
+#include <vector>
 
 namespace zipios {
 class ZipInputStream;
@@ -39,7 +41,7 @@ class Document;
 class GuiExport MergeDocuments : public Base::Persistence
 {
 public:
-    MergeDocuments(App::Document* doc);
+    explicit MergeDocuments(App::Document* doc);
     ~MergeDocuments() override;
     unsigned int getMemSize () const override;
     std::vector<App::DocumentObject*> importObjects(std::istream&);
@@ -56,7 +58,7 @@ private:
     Gui::Document* document;
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectExport;
     Connection connectImport;
 };

@@ -40,8 +40,8 @@ std::string LinkBaseExtensionPy::representation() const
     return str.str();
 }
 
-typedef std::map<std::string, std::pair<int,Property*> > PropTmpMap;
-typedef std::map<std::string, Property*> PropMap;
+using PropTmpMap = std::map<std::string, std::pair<int,Property*> >;
+using PropMap = std::map<std::string, Property*>;
 
 static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap &infoMap,
         const PropMap &propMap, PyObject *key, PyObject *value)

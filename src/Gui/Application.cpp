@@ -160,7 +160,7 @@ public:
 // Pimpl class
 struct ApplicationP
 {
-    ApplicationP(bool GUIenabled) :
+    explicit ApplicationP(bool GUIenabled) :
     activeDocument(nullptr),
     editDocument(nullptr),
     isClosing(false),
@@ -1662,7 +1662,7 @@ Gui::PreferencePackManager* Application::prefPackManager()
 //**************************************************************************
 // Init, Destruct and singleton
 
-typedef void (*_qt_msg_handler_old)(QtMsgType, const QMessageLogContext &, const QString &);
+using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext &, const QString &);
 _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)

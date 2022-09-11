@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPGENERAL_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,7 +38,7 @@ class DlgPrefsTechDrawGeneralImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawGeneralImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawGeneralImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawGeneralImp() override;
 
 protected:

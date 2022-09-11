@@ -70,7 +70,7 @@ namespace PartGui {
     {
         const App::DocumentObject* object;
     public:
-        FaceSelection(const App::DocumentObject* obj)
+        explicit FaceSelection(const App::DocumentObject* obj)
             : Gui::SelectionFilterGate(), object(obj)
         {
         }
@@ -89,7 +89,7 @@ namespace PartGui {
 class FaceColors::Private
 {
 public:
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Ui_TaskFaceColors* ui;
     QPointer<Gui::View3DInventorViewer> view;
     ViewProviderPartExt* vp;
@@ -102,7 +102,7 @@ public:
     Connection connectDelObj;
     Connection connectUndoDoc;
 
-    Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
+    explicit Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
     {
         obj = vp->getObject();
         doc = Gui::Application::Instance->getDocument(obj->getDocument());

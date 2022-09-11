@@ -28,6 +28,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
 #include <QGraphicsPathItem>
+#include <QPen>
+#include <QBrush>
 
 
 QT_BEGIN_NAMESPACE
@@ -59,21 +61,14 @@ public:
 protected:
     double m_height;
     double m_width;
-    //int    m_holeStyle;    //round or rect
     double m_radius;
     int getHoleStyle();
 
-    QGraphicsPathItem* m_mat;
     QGraphicsPathItem* m_border;
-
-//    QPainterPath m_perimeter;
-//    QPainterPath m_cutout;
 
 private:
     QPen m_pen;
     QBrush m_brush;
-    QPen m_penB;
-    QBrush m_brushB;
 
 };
 

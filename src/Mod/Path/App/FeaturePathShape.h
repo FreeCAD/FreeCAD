@@ -72,7 +72,7 @@ protected:
 
 };
 
-typedef App::FeaturePythonT<FeatureShape> FeatureShapePython;
+using FeatureShapePython = App::FeaturePythonT<FeatureShape>;
 
 } //namespace Path
 

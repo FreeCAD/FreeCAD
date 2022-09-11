@@ -40,7 +40,7 @@ class FaceColors : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    FaceColors(ViewProviderPartExt* vp, QWidget* parent = nullptr);
+    explicit FaceColors(ViewProviderPartExt* vp, QWidget* parent = nullptr);
     ~FaceColors() override;
 
     void open();
@@ -70,7 +70,7 @@ class TaskFaceColors : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskFaceColors(ViewProviderPartExt* vp);
+    explicit TaskFaceColors(ViewProviderPartExt* vp);
     ~TaskFaceColors() override;
 
 public:

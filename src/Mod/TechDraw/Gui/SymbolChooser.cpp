@@ -21,7 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QListWidget>
+#endif
 
 #include <App/Application.h>
 #include <Mod/TechDraw/Gui/ui_SymbolChooser.h>

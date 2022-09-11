@@ -105,7 +105,7 @@ private:
     Base::SequencerLauncher* _seq;
 
     // keep an array of iterators pointing to the vertex inside the set to save memory
-    typedef std::pair<std::set<MeshPoint>::iterator, bool> MeshPointIterator;
+    using MeshPointIterator = std::pair<std::set<MeshPoint>::iterator, bool>;
     std::vector<MeshPointIterator> _pointsIterator;
     size_t _ptIdx;
 
@@ -114,7 +114,7 @@ private:
     void RemoveUnreferencedPoints();
 
 public:
-    MeshBuilder(MeshKernel &rclM);
+    explicit MeshBuilder(MeshKernel &rclM);
     ~MeshBuilder();
 
     /**
@@ -189,8 +189,8 @@ private:
     MeshKernel& _meshKernel;
 
 public:
-    typedef int size_type;
-    MeshFastBuilder(MeshKernel &rclM);
+    using size_type = int;
+    explicit MeshFastBuilder(MeshKernel &rclM);
     ~MeshFastBuilder();
 
     /** Initializes the class. Must be done before adding facets 

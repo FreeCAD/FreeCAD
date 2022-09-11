@@ -310,7 +310,7 @@ class SoBoxSelectionRenderActionP;
  * @author Werner Mayer
  */
 class GuiExport SoBoxSelectionRenderAction : public SoGLRenderAction {
-    typedef SoGLRenderAction inherited;
+    using inherited = SoGLRenderAction;
 
     SO_ACTION_HEADER(SoBoxSelectionRenderAction);
 

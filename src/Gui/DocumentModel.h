@@ -38,7 +38,7 @@ class ViewProviderDocumentObject;
 class DocumentModel : public QAbstractItemModel
 {
 public:
-    DocumentModel(QObject* parent);
+    explicit DocumentModel(QObject* parent);
     ~DocumentModel() override;
 
     int columnCount (const QModelIndex & parent = QModelIndex()) const override;

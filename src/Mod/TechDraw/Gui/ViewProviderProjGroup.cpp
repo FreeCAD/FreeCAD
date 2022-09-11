@@ -93,7 +93,7 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
         projDlg->setCreateMode(false);
         Gui::Control().showDialog(projDlg);
     } else {
-        Gui::Control().showDialog(new TaskDlgProjGroup(getObject(),false));
+        Gui::Control().showDialog(new TaskDlgProjGroup(getObject(), false));
     }
 
     return true;

@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_DrawTemplate_h_
-#define _TECHDRAW_DrawTemplate_h_
+#ifndef TECHDRAW_DrawTemplate_h_
+#define TECHDRAW_DrawTemplate_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -84,10 +86,10 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawTemplate> DrawTemplatePython;
+using DrawTemplatePython = App::FeaturePythonT<DrawTemplate>;
 
 } //namespace TechDraw
 
 
 
-#endif //_TECHDRAW_DrawTemplate_h_
+#endif //TECHDRAW_DrawTemplate_h_

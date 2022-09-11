@@ -41,7 +41,7 @@ class GuiExport DlgRunExternal : public QDialog
     Q_OBJECT
 
 public:
-    DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgRunExternal() override;
 
     int Do();

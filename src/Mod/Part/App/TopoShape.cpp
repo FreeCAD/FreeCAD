@@ -2015,10 +2015,13 @@ TopoDS_Shape TopoShape::makePipeShell(const TopTools_ListOfShape& profiles,
         mkPipeShell.Add(TopoDS_Shape(it.Value()));
     }
 
-    if (!mkPipeShell.IsReady()) Standard_Failure::Raise("shape is not ready to build");
-    else mkPipeShell.Build();
+    if (!mkPipeShell.IsReady())
+        throw Standard_Failure("shape is not ready to build");
 
-    if (make_solid)	mkPipeShell.MakeSolid();
+    mkPipeShell.Build();
+
+    if (make_solid)
+        mkPipeShell.MakeSolid();
 
     return mkPipeShell.Shape();
 }
@@ -3378,7 +3381,7 @@ struct MeshVertex
         : x(X),y(Y),z(Z),i(0)
     {
     }
-    MeshVertex(const Base::Vector3d& p)
+    explicit MeshVertex(const Base::Vector3d& p)
         : x(p.x),y(p.y),z(p.z),i(0)
     {
     }

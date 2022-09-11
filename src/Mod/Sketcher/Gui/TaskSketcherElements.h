@@ -95,7 +95,7 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
     class MultIcon {
 
     public:
-        MultIcon(const char*);
+        explicit MultIcon(const char*);
 
         QIcon Normal;
         QIcon Construction;
@@ -105,7 +105,7 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
     };
 
 public:
-    TaskSketcherElements(ViewProviderSketch *sketchView);
+    explicit TaskSketcherElements(ViewProviderSketch *sketchView);
     ~TaskSketcherElements() override;
 
     /// Observer message from the Selection
@@ -132,7 +132,7 @@ protected:
     void changeEvent(QEvent *e) override;
     void leaveEvent ( QEvent * event ) override;
     ViewProviderSketch *sketchView;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectionElementsChanged;
 
 private:

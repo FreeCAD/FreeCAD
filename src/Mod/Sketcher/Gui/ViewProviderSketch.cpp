@@ -283,20 +283,21 @@ ViewProviderSketch::ViewProviderSketch()
     listener(nullptr),
     editCoinManager(nullptr),
     pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this)),
-    sketchHandler(nullptr)
+    sketchHandler(nullptr),
+    viewOrientationFactor(1)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Avoid redundant autoconstraint");
-    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
-    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects that depend on the sketch are hidden when opening editing.");
-    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
-    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
-    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
-    ADD_PROPERTY_TYPE(ForceOrtho,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera type will be forced to orthographic view when entering editing mode.");
-    ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, only objects (or part of) located behind the sketch plane are visible.");
-    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
+    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"Object that handles hiding and showing other objects when entering/leaving sketch.");
+    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, all objects that depend on the sketch are hidden when opening editing.");
+    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, all objects used in links to external geometry are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, all objects this sketch is attached to are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, camera position before entering sketch is remembered, and restored after closing it.");
+    ADD_PROPERTY_TYPE(ForceOrtho,(false),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, camera type will be forced to orthographic view when entering editing mode.");
+    ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"If true, only objects (or part of) located behind the sketch plane are visible.");
+    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_ReadOnly),"Name of the workbench to activate when editing this sketch.");
 
     // Default values that will be overridden by preferences (if existing)
     PointSize.setValue(4);
@@ -311,6 +312,8 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = std::make_unique<Gui::Rubberband>();
+
+    cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
 
 }
 
@@ -3112,14 +3115,46 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     rubberband->setViewer(viewer);
 
     viewer->setupEditingRoot();
+
+    cameraSensor.setData(new VPCam{this, viewer->getSoRenderManager()->getCamera()});
+    cameraSensor.attach(&viewer->getSoRenderManager()->getCamera()->orientation);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    delete static_cast<VPCam*>(cameraSensor.getData());
+    cameraSensor.detach();
+
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+}
+
+void ViewProviderSketch::camSensCB(void *data, SoSensor *)
+{
+    VPCam *proxyVPCam = static_cast<VPCam*>(data);
+    auto vp = proxyVPCam->vp;
+    auto cam = proxyVPCam->cam;
+
+    auto rotSk = Base::Rotation(vp->getDocument()->getEditingTransform()); //sketch orientation
+    auto rotc = cam->orientation.getValue().getValue();
+    auto rotCam = Base::Rotation(rotc[0], rotc[1], rotc[2], rotc[3]); // camera orientation (needed because float to double conversion)
+
+    // Is camera in the same hemisphere as positive sketch normal ?
+    auto orientation = (rotCam.invert()*rotSk).multVec(Base::Vector3d(0,0,1));
+    auto tmpFactor = orientation.z<0?-1:1;
+
+    if (tmpFactor != vp->viewOrientationFactor) { // redraw only if viewing side changed
+        Base::Console().Log("Switching side, now %s, redrawing\n", tmpFactor < 0 ? "back" : "front");
+        vp->viewOrientationFactor = tmpFactor;
+        vp->draw();
+
+        QString cmdStr = QStringLiteral(
+            "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
+            .arg(tmpFactor<0?QLatin1String("True"):QLatin1String("False"));
+        Base::Interpreter().runStringObject(cmdStr.toLatin1());
+    }
 }
 
 int ViewProviderSketch::getPreselectPoint() const
@@ -3549,6 +3584,10 @@ int ViewProviderSketch::defaultFontSizePixels() const
 
 int ViewProviderSketch::getApplicationLogicalDPIX() const {
     return QApplication::desktop()->logicalDpiX();
+}
+
+int ViewProviderSketch::getViewOrientationFactor() const {
+    return viewOrientationFactor;
 }
 
 double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const

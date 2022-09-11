@@ -52,7 +52,7 @@ class TaskCreateNodeSet : public Gui::TaskView::TaskBox, public Gui::SelectionOb
     Q_OBJECT
 
 public:
-    TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent = nullptr);
     ~TaskCreateNodeSet() override;
 
     std::set<long> tempSet;

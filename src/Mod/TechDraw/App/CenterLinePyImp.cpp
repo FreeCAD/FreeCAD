@@ -27,19 +27,20 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <Base/Console.h>
+
 #include "DrawUtil.h"
 #include "Cosmetic.h"
 #include "CenterLinePy.h"
-#include "CenterLinePy.cpp"
 
 using namespace TechDraw;
 
 // returns a string which represents the object e.g. when printed in python
 std::string CenterLinePy::representation() const
 {
-    std::stringstream ss;
-    ss << "<CenterLine object> at " << std::hex << this;
-    return ss.str();
+    std::stringstream sStream;
+    sStream << "<CenterLine object> at " << std::hex << this;
+    return sStream.str();
 }
 
 PyObject *CenterLinePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -112,12 +113,12 @@ PyObject* CenterLinePy::copy(PyObject *args)
 
 Py::Object CenterLinePy::getFormat() const
 {
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
 
-    PyObject* pStyle = PyLong_FromLong((long) cl->m_format.m_style);
-    PyObject* pWeight = PyFloat_FromDouble(cl->m_format.m_weight);
-    PyObject* pColor = DrawUtil::colorToPyTuple(cl->m_format.m_color);
-    PyObject* pVisible = PyBool_FromLong((long) cl->m_format.m_visible);
+    PyObject* pStyle = PyLong_FromLong((long) cLine->m_format.m_style);
+    PyObject* pWeight = PyFloat_FromDouble(cLine->m_format.m_weight);
+    PyObject* pColor = DrawUtil::colorToPyTuple(cLine->m_format.m_color);
+    PyObject* pVisible = PyBool_FromLong((long) cLine->m_format.m_visible);
 
     PyObject* result = PyTuple_New(4);
 
@@ -135,25 +136,25 @@ void CenterLinePy::setFormat(Py::Object arg)
     int style = 1;
     double weight = 0.50;
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, blue, green, alpha);
-    bool visible = 1; 
-    
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+    App::Color color(red, blue, green, alpha);
+    bool visible = 1;
+
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
     if (PyTuple_Check(pTuple)) {
         int tSize = (int) PyTuple_Size(pTuple);
         if (tSize > 3) {
-            PyObject* pStyle = PyTuple_GetItem(pTuple,0);
+            PyObject* pStyle = PyTuple_GetItem(pTuple, 0);
             style = (int) PyLong_AsLong(pStyle);
-            PyObject* pWeight = PyTuple_GetItem(pTuple,1);
+            PyObject* pWeight = PyTuple_GetItem(pTuple, 1);
             weight = PyFloat_AsDouble(pWeight);
-            PyObject* pColor = PyTuple_GetItem(pTuple,2);
-            c = DrawUtil::pyTupleToColor(pColor);
-            PyObject* pVisible = PyTuple_GetItem(pTuple,3);
+            PyObject* pColor = PyTuple_GetItem(pTuple, 2);
+            color = DrawUtil::pyTupleToColor(pColor);
+            PyObject* pVisible = PyTuple_GetItem(pTuple, 3);
             visible = (bool) PyLong_AsLong(pVisible);
-            cl->m_format.m_style = style;
-            cl->m_format.m_weight = weight;
-            cl->m_format.m_color = c;
-            cl->m_format.m_visible = visible;
+            cLine->m_format.m_style = style;
+            cLine->m_format.m_weight = weight;
+            cLine->m_format.m_color = color;
+            cLine->m_format.m_visible = visible;
         }
     } else {
         Base::Console().Error("CLPI::setFormat - not a tuple!\n");
@@ -181,13 +182,13 @@ Py::Long CenterLinePy::getMode() const
 
 void CenterLinePy::setMode(Py::Long arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyLong_Check(p)) {
-        long int temp =  PyLong_AsLong(p);
+    PyObject* pObj = arg.ptr();
+    if (PyLong_Check(pObj)) {
+        long int temp =  PyLong_AsLong(pObj);
         getCenterLinePtr()->m_mode = (int) temp;
     } else {
         std::string error = std::string("type must be 'Integer', not ");
-        error += p->ob_type->tp_name;
+        error += pObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
@@ -200,14 +201,14 @@ Py::Float CenterLinePy::getHorizShift() const
 
 void CenterLinePy::setHorizShift(Py::Float arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyFloat_Check(p)) {
-        double hshift =  PyFloat_AsDouble(p);
+    PyObject* pObj = arg.ptr();
+    if (PyFloat_Check(pObj)) {
+        double hshift =  PyFloat_AsDouble(pObj);
         double vshift = getCenterLinePtr()->getVShift();
         getCenterLinePtr()->setShifts(hshift, vshift);
     } else {
         std::string error = std::string("type must be 'Float', not ");
-        error += p->ob_type->tp_name;
+        error += pObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
@@ -220,14 +221,14 @@ Py::Float CenterLinePy::getVertShift() const
 
 void CenterLinePy::setVertShift(Py::Float arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyFloat_Check(p)) {
-        double vshift =  PyFloat_AsDouble(p);
+    PyObject* pObj = arg.ptr();
+    if (PyFloat_Check(pObj)) {
+        double vshift =  PyFloat_AsDouble(pObj);
         double hshift = getCenterLinePtr()->getHShift();
         getCenterLinePtr()->setShifts(hshift, vshift);
     } else {
         std::string error = std::string("type must be 'Float', not ");
-        error += p->ob_type->tp_name;
+        error += pObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
@@ -240,13 +241,13 @@ Py::Float CenterLinePy::getRotation() const
 
 void CenterLinePy::setRotation(Py::Float arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyFloat_Check(p)) {
-        double rot =  PyFloat_AsDouble(p);
+    PyObject* pObj = arg.ptr();
+    if (PyFloat_Check(pObj)) {
+        double rot =  PyFloat_AsDouble(pObj);
         getCenterLinePtr()->setRotate(rot);
     } else {
         std::string error = std::string("type must be 'Float', not ");
-        error += p->ob_type->tp_name;
+        error += pObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
@@ -259,13 +260,13 @@ Py::Float CenterLinePy::getExtension() const
 
 void CenterLinePy::setExtension(Py::Float arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyFloat_Check(p)) {
-        double ext =  PyFloat_AsDouble(p);
+    PyObject* pObj = arg.ptr();
+    if (PyFloat_Check(pObj)) {
+        double ext =  PyFloat_AsDouble(pObj);
         getCenterLinePtr()->setExtend(ext);
     } else {
         std::string error = std::string("type must be 'Float', not ");
-        error += p->ob_type->tp_name;
+        error += pObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
@@ -278,16 +279,16 @@ Py::Boolean CenterLinePy::getFlip() const
 
 void CenterLinePy::setFlip(Py::Boolean arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyBool_Check(p)) {
-        if (p == Py_True) {
+    PyObject* pObj = arg.ptr();
+    if (PyBool_Check(pObj)) {
+        if (pObj == Py_True) {
             getCenterLinePtr()->setFlip(true);
         } else {
             getCenterLinePtr()->setFlip(false);
         }
     } else {
         std::string error = std::string("type must be 'Boolean', not ");
-        error += p->ob_type->tp_name;
+        error += pObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
@@ -295,15 +296,15 @@ void CenterLinePy::setFlip(Py::Boolean arg)
 Py::Object CenterLinePy::getEdges() const
 {
 //    Base::Console().Message("CLP::getEdges()\n");
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
 
-    std::vector<std::string> edges = cl->m_edges;
+    std::vector<std::string> edges = cLine->m_edges;
     int size = edges.size();
 
     Py::List result(size);
 
-    for (auto& e: edges) {
-        result.append(Py::asObject(PyUnicode_FromString(e.c_str())));
+    for (auto& eName : edges) {
+        result.append(Py::asObject(PyUnicode_FromString(eName.c_str())));
     }
 
     return result;
@@ -313,8 +314,8 @@ void CenterLinePy::setEdges(Py::Object arg)
 {
 //    Base::Console().Message("CLP::setEdges()\n");
     PyObject* pList = arg.ptr();
-    
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
     std::vector<std::string> temp;
     if (PyList_Check(pList)) {
         int tSize = (int) PyList_Size(pList);
@@ -322,11 +323,10 @@ void CenterLinePy::setEdges(Py::Object arg)
         for ( ; i < tSize; i++) {
             PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
             if (PyUnicode_Check(item)) {
-                std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
-                temp.push_back(s);
+                temp.push_back(PyUnicode_AsUTF8(item));
             }
         }
-        cl->m_edges = temp;
+        cLine->m_edges = temp;
     } else {
         Base::Console().Error("CLPI::setEdges - input not a list!\n");
     }
@@ -334,9 +334,9 @@ void CenterLinePy::setEdges(Py::Object arg)
 Py::Object CenterLinePy::getFaces() const
 {
 //    Base::Console().Message("CLP::getFaces()\n");
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
 
-    std::vector<std::string> faces = cl->m_faces;
+    std::vector<std::string> faces = cLine->m_faces;
     int size = faces.size();
 
     Py::List result(size);
@@ -352,8 +352,8 @@ void CenterLinePy::setFaces(Py::Object arg)
 {
 //    Base::Console().Message("CLP::setFaces()\n");
     PyObject* pList = arg.ptr();
-    
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
     std::vector<std::string> temp;
     if (PyList_Check(pList)) {
         int tSize = (int) PyList_Size(pList);
@@ -361,11 +361,10 @@ void CenterLinePy::setFaces(Py::Object arg)
         for ( ; i < tSize; i++) {
             PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
             if (PyUnicode_Check(item)) {
-                std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
-                temp.push_back(s);
+                temp.push_back(PyUnicode_AsUTF8(item));
             }
         }
-        cl->m_faces = temp;
+        cLine->m_faces = temp;
     } else {
         Base::Console().Error("CLPI::setFaces - input not a list!\n");
     }
@@ -374,9 +373,9 @@ void CenterLinePy::setFaces(Py::Object arg)
 Py::Object CenterLinePy::getPoints() const
 {
 //    Base::Console().Message("CLP::getPoints()\n");
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
 
-    std::vector<std::string> points = cl->m_verts;
+    std::vector<std::string> points = cLine->m_verts;
     int size = points.size();
 
     Py::List result(size);
@@ -392,8 +391,8 @@ void CenterLinePy::setPoints(Py::Object arg)
 {
 //    Base::Console().Message("CLP::setPoints()\n");
     PyObject* pList = arg.ptr();
-    
-    TechDraw::CenterLine* cl = this->getCenterLinePtr();
+
+    TechDraw::CenterLine* cLine= this->getCenterLinePtr();
     std::vector<std::string> temp;
     if (PyList_Check(pList)) {
         int tSize = (int) PyList_Size(pList);
@@ -401,11 +400,10 @@ void CenterLinePy::setPoints(Py::Object arg)
         for ( ; i < tSize; i++) {
              PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
             if (PyUnicode_Check(item)) {
-                std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
-                temp.push_back(s);
+                temp.push_back(PyUnicode_AsUTF8(item));
             }
         }
-        cl->m_verts = temp;
+        cLine->m_verts = temp;
     } else {
         Base::Console().Error("CLPI::setPoints - input not a list!\n");
     }
@@ -420,3 +418,5 @@ int CenterLinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
+
+#include "CenterLinePy.cpp"

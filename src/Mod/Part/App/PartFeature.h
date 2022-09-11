@@ -138,7 +138,7 @@ public:
     short mustExecute() const override;
 };
 
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 
 /** Base class of all shape feature classes in FreeCAD

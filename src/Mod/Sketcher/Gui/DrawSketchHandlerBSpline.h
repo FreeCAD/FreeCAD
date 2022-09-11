@@ -35,7 +35,7 @@ extern GeometryCreationMode geometryCreationMode; // defined in CommandCreateGeo
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerBSpline(int constructionMethod)
+    explicit DrawSketchHandlerBSpline(int constructionMethod)
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
       , MousePressMode(MOUSE_NOT_PRESSED)
       , ConstrMethod(constructionMethod)
@@ -357,9 +357,13 @@ private:
             float length = (position - BSplinePoles.back()).Length();
             float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f,0.f));
 
-            SbString text;
-            text.sprintf(" (%.1f,%.1fdeg)", length, (angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0);
-            setPositionText(position, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string lengthString = lengthToDisplayFormat(length, 1);
+                std::string angleString = angleToDisplayFormat((angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0, 1);
+                text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+                setPositionText(position, text);
+            }
         }
     }
 

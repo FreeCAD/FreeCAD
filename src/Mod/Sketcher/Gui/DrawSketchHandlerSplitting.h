@@ -37,7 +37,7 @@ class SplittingSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    SplittingSelection(App::DocumentObject* obj)
+    explicit SplittingSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 

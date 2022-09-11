@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
 #define DRAWINGGUI_QGRAPHICSITEMARROW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Base/Vector3D.h>
 
 # include "QGIPrimPath.h"
@@ -36,13 +38,13 @@ namespace TechDrawGui
 {
 
 /*enum ArrowType {*/
-/*    FILLED_TRIANGLE = 0,*/
-/*    OPEN_ARROW,*/
-/*    HASH_MARK,*/
-/*    DOT,*/
-/*    OPEN_CIRCLE,*/
-/*    FORK,*/
-/*    PYRAMID,*/
+/*    FILLED_TRIANGLE = 0, */
+/*    OPEN_ARROW, */
+/*    HASH_MARK, */
+/*    DOT, */
+/*    OPEN_CIRCLE, */
+/*    FORK, */
+/*    PYRAMID, */
 /*    NONE*/
 /*};*/
 
@@ -73,17 +75,15 @@ public:
     static double getPrefArrowSize();
     static double getOverlapAdjust(int style, double size);
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-
 protected:
     QPainterPath makeFilledTriangle(double length, double width, bool flipped);
     QPainterPath makeFilledTriangle(Base::Vector3d dir, double length, double width);
     QPainterPath makeOpenArrow(double length, double width, bool flipped);
     QPainterPath makeOpenArrow(Base::Vector3d dir, double length, double width);
-    QPainterPath makeHashMark(double length, double width, bool flipped); 
-    QPainterPath makeHashMark(Base::Vector3d dir, double length, double width); 
-    QPainterPath makeDot(double length, double width, bool flipped); 
-    QPainterPath makeOpenDot(double length, double width, bool flipped); 
+    QPainterPath makeHashMark(double length, double width, bool flipped);
+    QPainterPath makeHashMark(Base::Vector3d dir, double length, double width);
+    QPainterPath makeDot(double length, double width, bool flipped);
+    QPainterPath makeOpenDot(double length, double width, bool flipped);
     QPainterPath makeForkArrow(double length, double width, bool flipped);
     QPainterPath makeForkArrow(Base::Vector3d dir, double length, double width);
     QPainterPath makePyramid(double length, bool flipped);

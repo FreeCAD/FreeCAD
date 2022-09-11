@@ -215,7 +215,7 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
 
 class StringGuard {
 public:
-    StringGuard(char *c)
+    explicit StringGuard(char *c)
         :c(c)
     {
         v1 = c[0];
@@ -2519,14 +2519,14 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 // has now been changed to simply use the absoluteFilePath(), and rely on user
 // to be aware of possible duplicated file location. The reason being that
 // some user (especially Linux user) use symlink to organize file tree.
-typedef std::map<QString,DocInfoPtr> DocInfoMap;
+using DocInfoMap = std::map<QString, DocInfoPtr>;
 DocInfoMap _DocInfoMap;
 
 class App::DocInfo :
     public std::enable_shared_from_this<App::DocInfo>
 {
 public:
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connFinishRestoreDocument;
     Connection connPendingReloadDocument;
     Connection connDeleteDocument;

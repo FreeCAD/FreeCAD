@@ -37,7 +37,7 @@ namespace GCS
         double *y;
     };
 
-    typedef std::vector<Point> VEC_P;
+    using VEC_P = std::vector<Point>;
 
     ///Class DeriVector2 holds a vector value and its derivative on the
     ///parameter that the derivatives are being calculated for now. x,y is the

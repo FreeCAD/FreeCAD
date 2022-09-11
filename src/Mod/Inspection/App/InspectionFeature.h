@@ -59,7 +59,7 @@ public:
 class InspectionExport InspectActualMesh : public InspectActualGeometry
 {
 public:
-    InspectActualMesh(const Mesh::MeshObject& rMesh);
+    explicit InspectActualMesh(const Mesh::MeshObject& rMesh);
     ~InspectActualMesh() override;
     unsigned long countPoints() const override;
     Base::Vector3f getPoint(unsigned long) const override;
@@ -73,7 +73,7 @@ private:
 class InspectionExport InspectActualPoints : public InspectActualGeometry
 {
 public:
-    InspectActualPoints(const Points::PointKernel&);
+    explicit InspectActualPoints(const Points::PointKernel&);
     unsigned long countPoints() const override;
     Base::Vector3f getPoint(unsigned long) const override;
 
@@ -84,7 +84,7 @@ private:
 class InspectionExport InspectActualShape : public InspectActualGeometry
 {
 public:
-    InspectActualShape(const Part::TopoShape&);
+    explicit InspectActualShape(const Part::TopoShape&);
     unsigned long countPoints() const override;
     Base::Vector3f getPoint(unsigned long) const override;
 

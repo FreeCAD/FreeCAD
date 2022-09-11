@@ -170,7 +170,7 @@ namespace PartGui {
         bool allowEdge;
         App::DocumentObject*& object;
     public:
-        EdgeFaceSelection(App::DocumentObject*& obj)
+        explicit EdgeFaceSelection(App::DocumentObject*& obj)
             : Gui::SelectionFilterGate(nullPointer()), allowEdge(true), object(obj)
         {
         }
@@ -206,7 +206,7 @@ namespace PartGui {
         std::vector<int> edge_ids;
         TopTools_IndexedMapOfShape all_edges;
         TopTools_IndexedMapOfShape all_faces;
-        typedef boost::signals2::connection Connection;
+        using Connection = boost::signals2::connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
 
@@ -214,7 +214,7 @@ namespace PartGui {
         {
         public:
             App::DocumentObject* obj;
-            SelectionObjectCompare(App::DocumentObject* obj) : obj(obj)
+            explicit SelectionObjectCompare(App::DocumentObject* obj) : obj(obj)
             {
             }
             bool operator()(const Gui::SelectionObject& sel) const

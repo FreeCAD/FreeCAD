@@ -32,7 +32,6 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-import FreeCAD as App
 
 from draftgeoutils.general import geomType, vec, precision
 from draftgeoutils.geometry import get_normal
@@ -157,26 +156,27 @@ def findWiresOld(edges):
     return result[1]
 
 
-def flattenWire(wire):
-    """Force a wire to get completely flat along its normal."""
-    n = get_normal(wire)
-    # for backward compatibility with previous getNormal implementation
-    if n is None:
-        n = App.Vector(0, 0, 1)
+def flattenWire(wire, origin=None, normal=None):
+    """Force a wire to be flat on a plane defined by an origin and a normal.
 
-    o = wire.Vertexes[0].Point
+    If origin or normal are None they are derived from the wire.
+    """
+    if normal is None:
+        normal = get_normal(wire)
+        # for backward compatibility with previous getNormal implementation
+        if normal is None:
+            normal = App.Vector(0, 0, 1)
+    if origin is None:
+        origin = wire.Vertexes[0].Point
+
     plane = WorkingPlane.plane()
-    plane.alignToPointAndAxis(o, n, 0)
-    verts = [o]
-
-    for v in wire.Vertexes[1:]:
-        verts.append(plane.projectPoint(v.Point))
-
+    plane.alignToPointAndAxis(origin, normal, 0)
+    points = [plane.projectPoint(vert.Point) for vert in wire.Vertexes]
     if wire.isClosed():
-        verts.append(o)
-    w = Part.makePolygon(verts)
+        points.append(points[0])
+    new_wire = Part.makePolygon(points)
 
-    return w
+    return new_wire
 
 
 def superWire(edgeslist, closed=False):
@@ -432,8 +432,8 @@ def get_placement_perpendicular_to_wire(wire):
 
 
 def get_extended_wire(wire, offset_start, offset_end):
-    """Return a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends. 
-    
+    """Return a wire trimmed (negative offset) or extended (positive offset) at its first vertex, last vertex or both ends.
+
     get_extended_wire(wire, -100.0, 0.0) -> returns a copy of the wire with its first 100 mm removed
     get_extended_wire(wire, 0.0, 100.0) -> returns a copy of the wire extended by 100 mm after it's last vertex
     """

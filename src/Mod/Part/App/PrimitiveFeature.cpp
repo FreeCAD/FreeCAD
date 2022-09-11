@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn* Primitive::execute() {
 namespace Part {
     PYTHON_TYPE_DEF(PrimitivePy, PartFeaturePy)
     PYTHON_TYPE_IMP(PrimitivePy, PartFeaturePy)
-}
+}//explicit bombs
 
 #if defined(__clang__)
 # pragma clang diagnostic pop

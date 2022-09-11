@@ -37,7 +37,7 @@ class DocumentObject;
 class AppExport MergeDocuments : public Base::Persistence
 {
 public:
-    MergeDocuments(App::Document* doc);
+    explicit MergeDocuments(App::Document* doc);
     ~MergeDocuments() override;
     bool isVerbose() const { return verbose; }
     void setVerbose(bool on) { verbose = on; }
@@ -59,7 +59,7 @@ private:
     App::Document* appdoc;
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectExport;
     Connection connectImport;
 };

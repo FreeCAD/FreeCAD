@@ -34,6 +34,14 @@ import argparse
 import os
 import shlex
 
+import FreeCAD
+
+from FreeCAD import Units
+
+# to distinguish python built-in open function from the one declared below
+if open.__module__ in ["__builtin__", "io"]:
+    pythonopen = open
+
 
 def add_flag_type_arguments(
     argument_group,
@@ -64,6 +72,8 @@ def init_argument_defaults(argument_defaults):
     argument_defaults["line-numbers"] = False
     argument_defaults["metric_inches"] = True
     argument_defaults["modal"] = False
+    argument_defaults["output_all_arguments"] = False
+    argument_defaults["output_visible_arguments"] = False
     argument_defaults["show-editor"] = True
     argument_defaults["tlo"] = True
     argument_defaults["tool_change"] = True
@@ -81,6 +91,8 @@ def init_arguments_visible(arguments_visible):
     arguments_visible["line-numbers"] = True
     arguments_visible["metric_inches"] = True
     arguments_visible["modal"] = True
+    arguments_visible["output_all_arguments"] = True
+    arguments_visible["output_visible_arguments"] = True
     arguments_visible["postamble"] = True
     arguments_visible["preamble"] = True
     arguments_visible["precision"] = True
@@ -188,6 +200,24 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         "Output the G-command name even if it is the same as the previous line",
         arguments_visible["modal"],
     )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["output_all_arguments"],
+        "--output_all_arguments",
+        "--no-output_all_arguments",
+        "Output all of the available arguments",
+        "Don't output all of the available arguments",
+        arguments_visible["output_all_arguments"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["output_visible_arguments"],
+        "--output_visible_arguments",
+        "--no-output_visible_arguments",
+        "Output all of the visible arguments",
+        "Don't output the visible arguments",
+        arguments_visible["output_visible_arguments"],
+    )
     if arguments_visible["postamble"]:
         help_message = (
             'Set commands to be issued after the last command, default is "'
@@ -284,6 +314,11 @@ def init_shared_values(values):
     #
     values["AXIS_PRECISION"] = 3
     #
+    # How far to move up (in millimeters) in the Z axis when chipbreaking with a G73 command.
+    #
+    values["CHIPBREAKING_AMOUNT"] = Units.Quantity(0.25, FreeCAD.Units.Length)
+
+    #
     # If this is set to "", all spaces are removed from between commands and parameters.
     #
     values["COMMAND_SPACE"] = " "
@@ -319,7 +354,7 @@ def init_shared_values(values):
     # If TRANSLATE_DRILL_CYCLES is True, these are the drill cycles
     # that get translated to G0 and G1 commands.
     #
-    values["DRILL_CYCLES_TO_TRANSLATE"] = ("G81", "G82", "G83")
+    values["DRILL_CYCLES_TO_TRANSLATE"] = ("G73", "G81", "G82", "G83")
     #
     # The default value of drill retractations (CURRENT_Z).
     # The other possible value is G99.
@@ -352,10 +387,6 @@ def init_shared_values(values):
     #
     values["FINISH_LABEL"] = "Finish"
     #
-    # The name of the machine the postprocessor is for
-    #
-    values["MACHINE_NAME"] = "unknown machine"
-    #
     # The line number increment value
     #
     values["LINE_INCREMENT"] = 10
@@ -368,6 +399,10 @@ def init_shared_values(values):
     # with their labels are output just before the preamble.
     #
     values["LIST_TOOLS_IN_PREAMBLE"] = False
+    #
+    # The name of the machine the postprocessor is for
+    #
+    values["MACHINE_NAME"] = "unknown machine"
     #
     # If this value is true G-code commands are suppressed if they are
     # the same as the previous line.
@@ -441,6 +476,9 @@ def init_shared_values(values):
     # This list controls the order of parameters in a line during output.
     #
     values["PARAMETER_ORDER"] = [
+        "D",
+        "H",
+        "L",
         "X",
         "Y",
         "Z",
@@ -453,13 +491,13 @@ def init_shared_values(values):
         "I",
         "J",
         "K",
+        "R",
+        "P",
+        "E",
+        "Q",
         "F",
         "S",
         "T",
-        "Q",
-        "R",
-        "L",
-        "P",
     ]
     #
     # Any commands in this value will be output as the last commands
@@ -557,10 +595,26 @@ def init_shared_values(values):
     values["USE_TLO"] = True
 
 
-def process_shared_arguments(values, parser, argstring):
+def process_shared_arguments(values, parser, argstring, all_visible, filename):
     """Process the arguments to the postprocessor."""
     try:
         args = parser.parse_args(shlex.split(argstring))
+        if args.output_all_arguments:
+            argument_text = all_visible.format_help()
+            if not filename == "-":
+                gfile = pythonopen(filename, "w", newline=values["END_OF_LINE_CHARACTERS"])
+                gfile.write(argument_text)
+                gfile.close()
+            return (False, argument_text)
+        if args.output_visible_arguments:
+            argument_text = parser.format_help()
+            if not filename == "-":
+                gfile = pythonopen(filename, "w", newline=values["END_OF_LINE_CHARACTERS"])
+                gfile.write(argument_text)
+                gfile.close()
+            return (False, argument_text)
+        # Default to metric unless an argument overrides it
+        values["UNITS"] = "G21"
         if args.metric:
             values["UNITS"] = "G21"
         if args.inches:
@@ -650,6 +704,81 @@ def process_shared_arguments(values, parser, argstring):
             values["SPINDLE_WAIT"] = args.wait_for_spindle
 
     except Exception:
-        return (False, None)
+        return (False, "")
 
     return (True, args)
+
+#
+# LinuxCNC (and GRBL) G-Code Parameter/word Patterns
+# __________________________________________________
+#
+# LinuxCNC words (called parameters in this code in many places) may be
+# reordered in any way without changing the meaning of the line.
+# However, the documentation shows the examples with the parameters/words
+# in a certain order that people might be used to and want to see.
+#
+#   axes    one or more of "X Y Z A B C U V W", usually in that order
+#
+# default parameter order     D H L axes I J K R P E Q F S T $
+#
+# G10                         L P axes R I J Q
+#
+# G33.1                       X Y Z K I $
+#
+# G53 G00|G01 or G00|G01 G53  X Y Z
+#
+# G73, G74, G81 to G86, G89   (X Y Z) or (U V W) R Q L P F K $
+#
+# G76                         P Z I J R K Q H E L $
+#
+# M19                         R Q P $
+#
+# M66                         P|E L Q
+#
+# M98                         P Q L
+#
+# N and O are associated with line numbers
+#
+#
+#
+# Tormach PathPilot (based on LinuxCNC, mostly) G-Code Patterns
+# _____________________________________________________________
+#
+# (Just the exceptions to the LinuxCNC patterns shown above)
+#
+# G47                         Z R X Y P Q D
+#
+#
+# Mach4 G-Code Patterns
+# _____________________
+#
+# (Just the exceptions to the LinuxCNC patterns shown above)
+#
+# G10                        L1 P Z W D R X U Y V Q
+#
+# G30                        P axes
+#
+# G41, G42                   D|P X Y F
+#
+# G65, G66                   P A B C
+#
+# G73, G74, G76, G81-9       X Y Z Q R I J P L F
+#
+# G84.2, G84.3               X Y Z R P L F J
+#
+#
+#
+# Centroid G-Code Patterns
+# ________________________
+#
+# (Just the exceptions to the LinuxCNC patterns shown above)
+#
+# E1-E6 are equivalent to G54-G59
+#
+# G10                       P D H R
+#
+# G65                       P L arguments (arguments are A-Z excluding G, L, N, O, and P)
+# G65                       "program.cnc" L arguments
+#
+# G117, G118, G119          P X Y Z I J K P Q
+#

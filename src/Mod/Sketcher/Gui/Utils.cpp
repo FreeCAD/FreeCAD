@@ -29,8 +29,11 @@
 # include <QPainter>
 #endif
 
+#include <Base/Quantity.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
+#include <Base/UnitsApi.h>
+#include <Base/UnitsSchema.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -50,8 +53,6 @@
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
-#include "ui_InsertDatum.h"
-#include "EditDatumDialog.h"
 #include "Utils.h"
 
 using namespace std;
@@ -422,4 +423,149 @@ void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element, Sketche
                 element.GeoId, element.posIdAsInt(), distance);
         }
     }
+}
+
+
+//convenience functions for cursor display
+bool SketcherGui::hideUnits()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/Sketcher");
+    return hGrp->GetBool("HideUnits", false);
+}
+
+bool SketcherGui::showCursorCoords()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/Sketcher");
+    return hGrp->GetBool("ShowCursorCoords", true);  //true for testing. set to false for prod.
+}
+
+bool SketcherGui::useSystemDecimals()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/Sketcher");
+    return hGrp->GetBool("UseSystemDecimals", true);
+}
+
+//convert value to display format %0.[digits]f. Units are displayed if
+//preference "ShowUnits" is true, or if the unit schema in effect uses
+//multiple units (ex. Ft/In). Digits parameter is ignored for multi-unit
+//schemata
+//TODO:: if the user string is delivered in 1.23e45 format, this might not work
+//       correctly.
+std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
+{
+    Base::Quantity asQuantity;
+    asQuantity.setValue(value);
+    asQuantity.setUnit(Base::Unit::Length);
+    QString qUserString = asQuantity.getUserString();
+    if ( Base::UnitsApi::isMultiUnitLength() ||
+         (!hideUnits() && useSystemDecimals()) ) {
+        //just return the user string
+        return Base::Tools::toStdString(qUserString);
+    }
+
+    //find the unit of measure
+    double factor = 1.0;
+    QString qUnitString;
+    QString qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
+    QString unitPart = QString::fromUtf8(" ") + qUnitString;
+
+    //get the numeric part of the user string
+    QRegularExpression rxNoUnits(QString::fromUtf8("(.*) \\D*$")); // text before space + any non digits at end of string
+    QRegularExpressionMatch match = rxNoUnits.match(qUserString);
+    if (!match.hasMatch()) {
+        //no units in userString?
+        return Base::Tools::toStdString(qUserString);
+    }
+    QString matched = match.captured(1);    //matched is the numeric part of user string
+    int dpPos = matched.indexOf(QLocale().decimalPoint());
+    if (dpPos < 0) {
+        //no decimal separator (ie an integer), return all the digits
+        if (hideUnits()) {
+            return Base::Tools::toStdString(matched);
+        } else {
+            return Base::Tools::toStdString(matched + unitPart);
+        }
+    }
+
+    //real number
+    if (useSystemDecimals() &&
+        hideUnits() ) {
+        //return just the numeric part of the user string
+        return Base::Tools::toStdString(matched);
+    }
+
+    //real number and not using system decimals
+    int requiredLength = dpPos + digits + 1;
+    if (requiredLength > matched.size()) {
+        //just take the whole thing
+        requiredLength = matched.size();
+    }
+    QString numericPart = matched.left(requiredLength);
+    if (hideUnits()) {
+        return Base::Tools::toStdString(numericPart);
+    }
+    return Base::Tools::toStdString(numericPart + unitPart);
+}
+
+//convert value to display format %0.[digits]f. Units are always displayed for
+//angles - 123.456° or 12°34'56". Digits parameter is ignored for multi-unit
+//schemata. Note small differences between this method and lengthToDisplyFormat
+//TODO:: if the user string is delivered in 1.23e45 format, this might not work
+//       correctly.
+std::string SketcherGui::angleToDisplayFormat(double value, int digits)
+{
+    Base::Quantity asQuantity;
+    asQuantity.setValue(value);
+    asQuantity.setUnit(Base::Unit::Angle);
+    QString qUserString = asQuantity.getUserString();
+    if ( Base::UnitsApi::isMultiUnitAngle() ) {
+        //just return the user string
+        //Coin SbString doesn't handle utf8 well, so we convert to ascii
+        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");      //prime symbol
+        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");      //double prime symbol
+        QString escapeMinute = QString::fromLatin1("\'");   //substitute ascii single quote
+        QString escapeSecond = QString::fromLatin1("\"");   //substitute ascii double quote
+        QString displayString = qUserString.replace(schemeMinute, escapeMinute);
+        displayString = displayString.replace(schemeSecond, escapeSecond);
+        return Base::Tools::toStdString(displayString);
+    }
+
+    //we always use use U+00B0 (°) as the unit of measure for angles in
+    //single unit schema.  Will need a change to support rads or grads.
+    QString qUnitString = QString::fromUtf8("°");
+
+    //get the numeric part of the user string
+    QRegularExpression rxNoUnits(QString::fromUtf8("(.*)\\D*$")); // text before any non digits at end of string
+    QRegularExpressionMatch match = rxNoUnits.match(qUserString);
+    if (!match.hasMatch()) {
+        //no units in userString?
+        return Base::Tools::toStdString(qUserString);
+    }
+    QString matched = match.captured(1);    //matched is the numeric part of user string
+    int dpPos = matched.indexOf(QLocale().decimalPoint());
+    if (dpPos < 0) {
+        //no decimal separator (ie an integer), return all the digits
+        return Base::Tools::toStdString(matched + qUnitString);
+    }
+
+    //real number
+    if (useSystemDecimals() ) {
+        //return just the numeric part of the user string + degree symbol
+        return Base::Tools::toStdString(matched + qUnitString);
+    }
+
+    //real number and not using system decimals
+    int requiredLength = dpPos + digits + 1;
+    if (requiredLength > matched.size()) {
+        //just take the whole thing
+        requiredLength = matched.size();
+    }
+    QString numericPart = matched.left(requiredLength);
+    return Base::Tools::toStdString(numericPart + qUnitString);
 }

@@ -42,7 +42,7 @@ class TaskDlgMeshShapeNetgen : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *);
+    explicit TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *);
     ~TaskDlgMeshShapeNetgen() override;
 
 public:

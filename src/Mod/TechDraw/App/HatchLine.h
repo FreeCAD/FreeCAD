@@ -22,8 +22,8 @@
 
 //! HatchLine - Classes related to processing PAT files
 
-#ifndef _TechDraw_HATCHLINE_H_
-#define _TechDraw_HATCHLINE_H_
+#ifndef TechDraw_HATCHLINE_H_
+#define TechDraw_HATCHLINE_H_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -52,8 +52,8 @@ class TechDrawExport DashSpec
 {
 public:
       DashSpec() {}
-      DashSpec(std::vector<double> p) { m_parms = p; }
-      ~DashSpec() {}
+      explicit DashSpec(std::vector<double> p) { m_parms = p; }
+      ~DashSpec() = default;
 
       double              get(int i)  {return m_parms.at(i); }
       std::vector<double> get()   {return m_parms;}
@@ -72,7 +72,7 @@ class TechDrawExport PATLineSpec
 {
 public:
     PATLineSpec();
-    PATLineSpec(std::string& lineSpec);
+    explicit PATLineSpec(std::string& lineSpec);
     ~PATLineSpec();
 
     void load(std::string& lineSpec);
@@ -112,7 +112,7 @@ class TechDrawExport LineSet
 {
 public:
     LineSet() {}
-    ~LineSet() {}
+    ~LineSet() = default;
 
     void setPATLineSpec(const PATLineSpec& s) { m_hatchLine = s; }
     void setEdges(std::vector<TopoDS_Edge> e) {m_edges = e;}

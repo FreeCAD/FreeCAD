@@ -734,7 +734,7 @@ void CmdFemConstraintPressure::activated(int)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint pressure on face"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Pressure = 1000.0", FeatName.c_str()); //OvG: set default not equal to 0
+    doCommand(Doc, "App.activeDocument().%s.Pressure = 0.1", FeatName.c_str()); //OvG: set default not equal to 0
     doCommand(Doc, "App.activeDocument().%s.Reversed = False", FeatName.c_str()); //OvG: set default to False
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",

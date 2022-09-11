@@ -35,7 +35,7 @@ class FilletSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    FilletSelection(App::DocumentObject* obj)
+    explicit FilletSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 
@@ -80,7 +80,7 @@ public:
         ConstraintPreservingFillet
     };
 
-    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
+    explicit DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();

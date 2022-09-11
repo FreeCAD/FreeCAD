@@ -92,7 +92,7 @@ struct MeshExport Group
 class MeshExport MeshInput
 {
 public:
-    MeshInput (MeshKernel &rclM)
+    explicit MeshInput (MeshKernel &rclM)
         : _rclMesh(rclM), _material(nullptr){}
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
@@ -105,7 +105,7 @@ public:
     bool LoadAny(const char* FileName);
     /// Loads from a stream and the given format
     bool LoadFormat(std::istream &str, MeshIO::Format fmt);
-    /** Loads an STL file either in binary or ASCII format. 
+    /** Loads an STL file either in binary or ASCII format.
      * Therefore the file header gets checked to decide if the file is binary or not.
      */
     bool LoadSTL (std::istream &rstrIn);
@@ -125,6 +125,8 @@ public:
     bool LoadPLY (std::istream &rstrIn);
     /** Loads the mesh object from an XML file. */
     void LoadXML (Base::XMLReader &reader);
+    /** Loads the mesh object from a 3MF file. */
+    bool Load3MF (std::istream &str);
     /** Loads a node from an OpenInventor file. */
     bool LoadMeshNode (std::istream &rstrIn);
     /** Loads an OpenInventor file. */
@@ -151,7 +153,7 @@ protected:
 class MeshExport MeshOutput
 {
 public:
-    MeshOutput (const MeshKernel &rclM)
+    explicit MeshOutput (const MeshKernel &rclM)
         : _rclMesh(rclM), _material(nullptr), apply_transform(false){}
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}
@@ -228,9 +230,6 @@ public:
 protected:
     /** Writes an X3D file. */
     bool SaveX3DContent (std::ostream &rstrOut, bool exportViewpoints) const;
-    bool Save3MFModel(std::ostream &str) const;
-    bool Save3MFRels(std::ostream &str) const;
-    bool Save3MFContent(std::ostream &str) const;
 
 protected:
     const MeshKernel &_rclMesh;   /**< reference to mesh data structure */

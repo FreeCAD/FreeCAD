@@ -80,7 +80,7 @@ FC_LOG_LEVEL_INIT("App::Link", true, true)
 using namespace Gui;
 using namespace Base;
 
-typedef boost::iterator_range<const char*> CharRange;
+using CharRange = boost::iterator_range<const char*>;
 ////////////////////////////////////////////////////////////////////////////
 
 static inline bool appendPathSafe(SoPath *path, SoNode *node) {
@@ -110,13 +110,13 @@ class Gui::LinkInfo {
 public:
     std::atomic<int> ref;
 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection connChangeIcon;
 
     ViewProviderDocumentObject *pcLinked;
     std::unordered_set<Gui::LinkOwner*> links;
 
-    typedef LinkInfoPtr Pointer;
+    using Pointer = LinkInfoPtr;
 
     SoNodeSensor sensor;
     SoNodeSensor switchSensor;
@@ -129,7 +129,7 @@ public:
 
     // for group type view providers
     CoinPtr<SoGroup> pcChildGroup;
-    typedef std::unordered_map<SoNode *, Pointer> NodeMap;
+    using NodeMap = std::unordered_map<SoNode *, Pointer>;
     NodeMap nodeMap;
 
     std::map<qint64, QIcon> iconMap;

@@ -61,17 +61,17 @@ DrawViewSpreadsheet::DrawViewSpreadsheet()
 {
     static const char *vgroup = "Spreadsheet";
 
-    ADD_PROPERTY_TYPE(Source ,(nullptr),vgroup,App::Prop_None,"Spreadsheet to view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr), vgroup, App::Prop_None, "Spreadsheet to view");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(CellStart ,("A1"),vgroup,App::Prop_None,"The top left cell of the range to display");
-    ADD_PROPERTY_TYPE(CellEnd ,("B2"),vgroup,App::Prop_None,"The bottom right cell of the range to display");
+    ADD_PROPERTY_TYPE(CellStart ,("A1"), vgroup, App::Prop_None, "The top left cell of the range to display");
+    ADD_PROPERTY_TYPE(CellEnd ,("B2"), vgroup, App::Prop_None, "The bottom right cell of the range to display");
     ADD_PROPERTY_TYPE(Font ,(Preferences::labelFont().c_str()),
-                                                         vgroup,App::Prop_None,"The name of the font to use");
-    ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The default color of the text and lines");
-    ADD_PROPERTY_TYPE(TextSize,(12.0),vgroup,App::Prop_None,"The size of the text");
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),vgroup,App::Prop_None,"The thickness of the cell lines");
+                                                         vgroup, App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(TextColor, (0.0f, 0.0f, 0.0f), vgroup, App::Prop_None, "The default color of the text and lines");
+    ADD_PROPERTY_TYPE(TextSize, (12.0), vgroup, App::Prop_None, "The size of the text");
+    ADD_PROPERTY_TYPE(LineWidth, (0.35), vgroup, App::Prop_None, "The thickness of the cell lines");
 
-    EditableTexts.setStatus(App::Property::Hidden,true);
+    EditableTexts.setStatus(App::Property::Hidden, true);
 
 }
 
@@ -117,6 +117,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute()
 
     Symbol.setValue(getSheetImage());
 
+    overrideKeepUpdated(false);
     return TechDraw::DrawView::execute();
 }
 
@@ -160,10 +161,10 @@ std::string DrawViewSpreadsheet::getSheetImage()
     std::string scellstart = CellStart.getValue();
     std::string scellend = CellEnd.getValue();
 
-    //s/s columns are A,B,C, ... ZX,ZY,ZZ 
+    //s/s columns are A, B,C, ... ZX, ZY, ZZ
     //lower case characters are not valid
-    transform(scellstart.begin(), scellstart.end(), scellstart.begin(), ::toupper); 
-    transform(scellend.begin(), scellend.end(), scellend.begin(), ::toupper); 
+    transform(scellstart.begin(), scellstart.end(), scellstart.begin(), ::toupper);
+    transform(scellend.begin(), scellend.end(), scellend.begin(), ::toupper);
 
     std::string colPart;
     std::string rowPart;
@@ -173,7 +174,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     std::string sColStart, sColEnd;
     if (boost::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {
-            Base::Console().Error("%s - start cell (%s) is invalid\n",getNameInDocument(),CellStart.getValue());
+            Base::Console().Error("%s - start cell (%s) is invalid\n", getNameInDocument(), CellStart.getValue());
             return std::string();
         }
 
@@ -192,7 +193,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
 
     if (boost::regex_search(scellend, what, re)) {
         if (what.size() < 3) {
-            Base::Console().Error("%s - end cell (%s) is invalid\n",getNameInDocument(),CellEnd.getValue());
+            Base::Console().Error("%s - end cell (%s) is invalid\n", getNameInDocument(), CellEnd.getValue());
         } else {
             colPart = what[1];
             sColEnd = colPart;
@@ -219,7 +220,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     }
 
     //validate range end column in sheet's available columns
-    int iAvailColEnd = colInList(availcolumns,sColEnd);
+    int iAvailColEnd = colInList(availcolumns, sColEnd);
     if (iAvailColEnd < 0) {
         Base::Console().Error("DVS - %s - end Column (%s) is invalid\n",
                               getNameInDocument(), sColEnd.c_str());
@@ -229,7 +230,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     //check for logical range
     if ( (iAvailColStart > iAvailColEnd) ||
          (iRowStart > iRowEnd) ) {
-        Base::Console().Error("%s - cell range is illogical\n",getNameInDocument());
+        Base::Console().Error("%s - cell range is illogical\n", getNameInDocument());
         return std::string();
     }
 
@@ -241,7 +242,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     for (; iCol <= iAvailColEnd; iCol++) {
         validColNames.push_back(availcolumns.at(iCol));
     }
-    
+
     int iRow = iRowStart;
     for ( ; iRow <= iRowEnd ; iRow++) {
         validRowNumbers.push_back(iRow);
@@ -300,7 +301,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
             std::string fcolor = c.asHexString();
             std::string textstyle;
             if (cell) {
-                App::Color f,b;
+                App::Color f, b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {
@@ -319,10 +320,10 @@ std::string DrawViewSpreadsheet::getSheetImage()
                             textstyle = textstyle + "text-decoration: underline; ";
                     }
                 }
-                if (cell->getSpans(rowspan,colspan)) {
+                if (cell->getSpans(rowspan, colspan)) {
                     for (int i=0; i<colspan; ++i) {
                         for (int j=0; j<rowspan; ++j) {
-                            App::CellAddress nextcell(address.row()+j,address.col()+i);
+                            App::CellAddress nextcell(address.row()+j, address.col()+i);
                             if (i > 0)
                                 cellwidth = cellwidth + sheet->getColumnWidth(nextcell.col());
                             if (j > 0)

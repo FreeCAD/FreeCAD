@@ -48,7 +48,7 @@ class TaskBooleanParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
     Q_OBJECT
 
 public:
-    TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=nullptr);
+    explicit TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=nullptr);
     ~TaskBooleanParameters() override;
 
     const std::vector<std::string> getBodies() const;
@@ -83,7 +83,7 @@ class TaskDlgBooleanParameters : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgBooleanParameters(ViewProviderBoolean *BooleanView);
+    explicit TaskDlgBooleanParameters(ViewProviderBoolean *BooleanView);
     ~TaskDlgBooleanParameters() override;
 
     ViewProviderBoolean* getBooleanView() const

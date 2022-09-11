@@ -203,7 +203,7 @@ struct TimingInfo {
     bool timed = false;
     FC_TIME_POINT t;
     FC_DURATION& d;
-    TimingInfo(FC_DURATION& d)
+    explicit TimingInfo(FC_DURATION& d)
         :d(d)
     {
         _FC_TIME_INIT(t);
@@ -242,7 +242,7 @@ struct TimingInfo {
 
 // ---------------------------------------------------------------------------
 
-typedef std::set<DocumentObjectItem*> DocumentObjectItems;
+using DocumentObjectItems = std::set<DocumentObjectItem*>;
 
 class Gui::DocumentObjectData {
 public:
@@ -257,7 +257,7 @@ public:
     std::string label;
     std::string label2;
 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;

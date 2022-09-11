@@ -33,8 +33,8 @@ class QDir;
 
 namespace Gui {
 
-typedef std::list<std::string> TStringList;
-typedef std::map<std::string, std::string> TStringMap;
+using TStringList = std::list<std::string>;
+using TStringMap = std::map<std::string, std::string>;
 
 /**
  * The Translator class uses Qt's QTranslator objects to change the language of the application

@@ -38,7 +38,7 @@
 class QByteArray;
 class QIODevice;
 class QBuffer;
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 namespace Base {
 
@@ -255,11 +255,11 @@ protected:
 
 class BaseExport PyStreambuf : public std::streambuf
 {
-    typedef std::streambuf::int_type int_type;
-    typedef std::streambuf::pos_type pos_type;
-    typedef std::streambuf::off_type off_type;
-    typedef std::ios::seekdir        seekdir;
-    typedef std::ios::openmode       openmode;
+    using int_type = std::streambuf::int_type;
+    using pos_type = std::streambuf::pos_type;
+    using off_type = std::streambuf::off_type;
+    using seekdir  = std::ios::seekdir;
+    using openmode = std::ios::openmode;
 
 public:
     enum Type {
@@ -339,16 +339,23 @@ class FileInfo;
 class ofstream : public std::ofstream
 {
 public:
+    ofstream() = default;
     ofstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::out | std::ios::trunc)
 #ifdef _MSC_VER
-    : std::ofstream(fi.toStdWString().c_str(), mode)
+    : std::ofstream(fi.toStdWString().c_str(), mode) {}
 #else
-    : std::ofstream(fi.filePath().c_str(), mode)
+    : std::ofstream(fi.filePath().c_str(), mode) {}
 #endif
-    {
-    }
     ~ofstream() override = default;
+    void open(const FileInfo& fi, ios_base::openmode mode =
+                                  std::ios::out | std::ios::trunc) {
+#ifdef _MSC_VER
+        std::ofstream::open(fi.toStdWString().c_str(), mode);
+#else
+        std::ofstream::open(fi.filePath().c_str(), mode);
+#endif
+    }
 };
 
 /**
@@ -360,16 +367,23 @@ public:
 class ifstream : public std::ifstream
 {
 public:
+    ifstream() = default;
     ifstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::in)
 #ifdef _MSC_VER
-    : std::ifstream(fi.toStdWString().c_str(), mode)
+    : std::ifstream(fi.toStdWString().c_str(), mode) {}
 #else
-    : std::ifstream(fi.filePath().c_str(), mode)
+    : std::ifstream(fi.filePath().c_str(), mode) {}
 #endif
-    {
-    }
     ~ifstream() override = default;
+    void open(const FileInfo& fi, ios_base::openmode mode =
+                                  std::ios::in) {
+#ifdef _MSC_VER
+        std::ifstream::open(fi.toStdWString().c_str(), mode);
+#else
+        std::ifstream::open(fi.filePath().c_str(), mode);
+#endif
+    }
 };
 
 } // namespace Base

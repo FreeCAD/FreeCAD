@@ -133,8 +133,8 @@ using namespace zipios;
 
 namespace fs = boost::filesystem;
 
-// typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
-typedef boost::adjacency_list <
+// using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
+using DependencyList = boost::adjacency_list <
 boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
 boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
 boost::directedS,      // class DirectedS     : This is a directed graph
@@ -142,25 +142,25 @@ boost::no_property,    // class VertexProperty:
 boost::no_property,    // class EdgeProperty:
 boost::no_property,    // class GraphProperty:
 boost::listS           // class EdgeListS:
-> DependencyList;
-typedef boost::graph_traits<DependencyList> Traits;
-typedef Traits::vertex_descriptor Vertex;
-typedef Traits::edge_descriptor Edge;
-typedef std::vector <size_t> Node;
-typedef std::vector <size_t> Path;
+>;
+using Traits = boost::graph_traits<DependencyList>;
+using Vertex = Traits::vertex_descriptor;
+using Edge =  Traits::edge_descriptor;
+using Node =  std::vector <size_t>;
+using Path =  std::vector <size_t>;
 
 namespace App {
 
-static bool _IsRestoring;
-static bool _IsRelabeling;
+static bool globalIsRestoring;
+static bool globalIsRelabeling;
 // Pimpl class
 struct DocumentP
 {
     // Array to preserve the creation order of created objects
     std::vector<DocumentObject*> objectArray;
     std::unordered_set<App::DocumentObject*> touchedObjs;
-    std::unordered_map<std::string,DocumentObject*> objectMap;
-    std::unordered_map<long,DocumentObject*> objectIdMap;
+    std::unordered_map<std::string, DocumentObject*> objectMap;
+    std::unordered_map<long, DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
     long lastObjectId;
@@ -180,8 +180,8 @@ struct DocumentP
     std::string programVersion;
 #ifdef USE_OLD_DAG
     DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
-    std::map<Vertex,DocumentObject*> vertexMap;
+    std::map<DocumentObject*, Vertex> VertexObjectList;
+    std::map<Vertex, DocumentObject*> vertexMap;
 #endif //USE_OLD_DAG
     std::multimap<const App::DocumentObject*,
         std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
@@ -189,7 +189,7 @@ struct DocumentP
     DocumentP() {
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
-        static std::uniform_int_distribution<> _RDIST(0,5000);
+        static std::uniform_int_distribution<> _RDIST(0, 5000);
         // Set some random offset to reduce likelihood of ID collision when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
@@ -210,11 +210,11 @@ struct DocumentP
     }
 
     void addRecomputeLog(const char *why, App::DocumentObject *obj) {
-        addRecomputeLog(new DocumentObjectExecReturn(why,obj));
+        addRecomputeLog(new DocumentObjectExecReturn(why, obj));
     }
 
     void addRecomputeLog(const std::string &why, App::DocumentObject *obj) {
-        addRecomputeLog(new DocumentObjectExecReturn(why,obj));
+        addRecomputeLog(new DocumentObjectExecReturn(why, obj));
     }
 
     void addRecomputeLog(DocumentObjectExecReturn *returnCode) {
@@ -223,7 +223,7 @@ struct DocumentP
             return;
         }
         _RecomputeLog.emplace(returnCode->Which, std::unique_ptr<DocumentObjectExecReturn>(returnCode));
-        returnCode->Which->setStatus(ObjectStatus::Error,true);
+        returnCode->Which->setStatus(ObjectStatus::Error, true);
     }
 
     void clearRecomputeLog(const App::DocumentObject *obj=nullptr) {
@@ -281,16 +281,16 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     //for(std::map<DocumentObject*,Vertex>::const_iterator It1= _DepConMap.begin();It1 != _DepConMap.end(); ++It1)
     //  VertexMap[It1->second] = It1->first;
 
-    out << "digraph G {" << endl;
-    out << "\tordering=out;" << endl;
-    out << "\tnode [shape = box];" << endl;
+    out << "digraph G {" << std::endl;
+    out << "\tordering=out;" << std::endl;
+    out << "\tnode [shape = box];" << std::endl;
 
-    for (auto It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        out << "\t" << It->first << ";" <<endl;
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2)
-            if (*It2)
-                out << "\t" << It->first << "->" << (*It2)->getNameInDocument() << ";" <<endl;
+    for (const auto &It : d->objectMap) {
+        out << "\t" << It.first << ";" << std::endl;
+        std::vector<DocumentObject*> OutList = It.second->getOutList();
+        for (const auto &It2 : OutList)
+            if (It2)
+                out << "\t" << It.first << "->" << It2->getNameInDocument() << ";" << std::endl;
     }
 
     /*
@@ -307,16 +307,16 @@ void Document::writeDependencyGraphViz(std::ostream &out)
 
 void Document::exportGraphviz(std::ostream& out) const
 {
-    /* Typedefs for a graph with graphviz attributes */
-    typedef std::map<std::string, std::string> GraphvizAttributes;
-    typedef boost::subgraph< adjacency_list<vecS, vecS, directedS,
-            property<vertex_attribute_t, GraphvizAttributes>,
-            property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
-            property<graph_name_t, std::string,
-            property<graph_graph_attribute_t,  GraphvizAttributes,
-            property<graph_vertex_attribute_t, GraphvizAttributes,
-            property<graph_edge_attribute_t,   GraphvizAttributes>
-            > > > > > Graph;
+    /* Type defs for a graph with graphviz attributes */
+    using GraphvizAttributes = std::map<std::string, std::string>;
+    using Graph = boost::subgraph< adjacency_list<vecS, vecS, directedS,
+                  property<vertex_attribute_t, GraphvizAttributes>,
+                  property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
+                  property<graph_name_t, std::string,
+                  property<graph_graph_attribute_t,  GraphvizAttributes,
+                  property<graph_vertex_attribute_t, GraphvizAttributes,
+                  property<graph_edge_attribute_t,   GraphvizAttributes>
+                  > > > > >;
 
     /**
      * @brief The GraphCreator class
@@ -328,7 +328,7 @@ void Document::exportGraphviz(std::ostream& out) const
     class GraphCreator {
     public:
 
-        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
+        explicit GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
             build();
         }
 
@@ -443,17 +443,16 @@ void Document::exportGraphviz(std::ostream& out) const
                     setGraphAttributes(obj);
                 }
 
-                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                auto i = expressions.begin();
-                while (i != expressions.end()) {
-                    std::map<ObjectIdentifier,bool> deps;
+                // Create subgraphs for all document objects that it depends on; it will depend on some property there
+                for (const auto &expr : expressions) {
+                    std::map<ObjectIdentifier, bool> deps;
 
-                    i->second->getIdentifiers(deps);
+                    expr.second->getIdentifiers(deps);
 
-                    for(auto j=deps.begin(); j!=deps.end(); ++j) {
-                        if(j->second)
+                    for (const auto &dep : deps) {
+                        if (dep.second)
                             continue;
-                        DocumentObject * o = j->first.getDocumentObject();
+                        DocumentObject * o = dep.first.getDocumentObject();
 
                         // Doesn't exist already?
                         if (o && !GraphList[o]) {
@@ -470,10 +469,8 @@ void Document::exportGraphviz(std::ostream& out) const
                                 GraphList[o] = &graph->create_subgraph();
                                 setGraphAttributes(o);
                             }
-
                         }
                     }
-                    ++i;
                 }
             }
         }
@@ -484,31 +481,32 @@ void Document::exportGraphviz(std::ostream& out) const
          * @param name Name of node.
          */
 
-        void add(DocumentObject * docObj, const std::string & name, const std::string & label, bool CSSubgraphs) {
+        void add(DocumentObject *docObj, const std::string &name, const std::string &label, bool CSSubgraphs)
+        {
 
             //don't add objects twice
-            if(std::find(objects.begin(), objects.end(), docObj) != objects.end())
+            if (std::find(objects.begin(), objects.end(), docObj) != objects.end())
                 return;
 
             //find the correct graph to add the vertex to. Check first expression graphs, afterwards
             //the parent CS and origin graphs
-            Graph * sgraph = GraphList[docObj];
-            if(CSSubgraphs) {
-                if(!sgraph) {
+            Graph *sgraph = GraphList[docObj];
+            if (CSSubgraphs) {
+                if (!sgraph) {
                     auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
-                    if(group) {
-                        if(docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                    if (group) {
+                        if (docObj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                             sgraph = GraphList[group->getExtensionByType<OriginGroupExtension>()->Origin.getValue()];
                         else
                             sgraph = GraphList[group];
                     }
                 }
-                if(!sgraph) {
-                    if(docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
-                        sgraph = GraphList[static_cast<OriginFeature*>(docObj)->getOrigin()];
+                if (!sgraph) {
+                    if (docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
+                        sgraph = GraphList[static_cast<OriginFeature *>(docObj)->getOrigin()];
                 }
             }
-            if(!sgraph)
+            if (!sgraph)
                 sgraph = &DepList;
 
             // Keep a list of all added document objects.
@@ -536,45 +534,38 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Add expressions and its dependencies
-            auto expressions = docObj->ExpressionEngine.getExpressions();
-            auto i = expressions.begin();
-
-            // Add nodes for each property that has an expression attached to it
-            while (i != expressions.end()) {
-                std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(i->first));
-                if (k == GlobalVertexList.end()) {
-                    int vid = LocalVertexList[getId(i->first)] = add_vertex(*sgraph);
-                    GlobalVertexList[getId(i->first)] = vertex_no++;
-                    setPropertyVertexAttributes(*sgraph, vid, i->first.toString());
+            auto expressions{docObj->ExpressionEngine.getExpressions()};
+            for (const auto &expr : expressions) {
+                auto found = std::as_const(GlobalVertexList).find(getId(expr.first));
+                if (found == GlobalVertexList.end()) {
+                    int vid = LocalVertexList[getId(expr.first)] = add_vertex(*sgraph);
+                    GlobalVertexList[getId(expr.first)] = vertex_no++;
+                    setPropertyVertexAttributes(*sgraph, vid, expr.first.toString());
                 }
-
-                ++i;
             }
 
             // Add all dependencies
-            i = expressions.begin();
-            while (i != expressions.end()) {
-
+            for (const auto &expression : expressions) {
                 // Get dependencies
-                std::map<ObjectIdentifier,bool> deps;
-                i->second->getIdentifiers(deps);
+                std::map<ObjectIdentifier, bool> deps;
+                expression.second->getIdentifiers(deps);
 
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                for(auto j=deps.begin(); j!=deps.end(); ++j) {
-                    if(j->second)
+                for (const auto &dep : deps) {
+                    if (dep.second) {
                         continue;
-                    DocumentObject * depObjDoc = j->first.getDocumentObject();
-                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(j->first));
+                    }
+                    DocumentObject *depObjDoc = dep.first.getDocumentObject();
+                    auto found = GlobalVertexList.find(getId(dep.first));
 
-                    if (k == GlobalVertexList.end()) {
-                        Graph * depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
+                    if (found == GlobalVertexList.end()) {
+                        Graph *depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
 
-                        LocalVertexList[getId(j->first)] = add_vertex(*depSgraph);
-                        GlobalVertexList[getId(j->first)] = vertex_no++;
-                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(j->first)], j->first.getPropertyName() + j->first.getSubPathStr());
+                        LocalVertexList[getId(dep.first)] = add_vertex(*depSgraph);
+                        GlobalVertexList[getId(dep.first)] = vertex_no++;
+                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(dep.first)], dep.first.getPropertyName() + dep.first.getSubPathStr());
                     }
                 }
-                ++i;
             }
         }
 
@@ -695,27 +686,23 @@ void Document::exportGraphviz(std::ostream& out) const
             std::set<std::pair<const DocumentObject*, const DocumentObject*> > existingEdges;
 
             // Add edges between properties
-            std::set<const DocumentObject*>::const_iterator j = objects.begin();
-            while (j != objects.end()) {
-                const DocumentObject * docObj = *j;
+            for (const auto &docObj : objects) {
 
                 // Add expressions and its dependencies
                 auto expressions = docObj->ExpressionEngine.getExpressions();
-                auto i = expressions.begin();
-
-                while (i != expressions.end()) {
-                    std::map<ObjectIdentifier,bool> deps;
-                    i->second->getIdentifiers(deps);
+                for (const auto &expr : expressions) {
+                    std::map<ObjectIdentifier, bool> deps;
+                    expr.second->getIdentifiers(deps);
 
                     // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                    for(auto k=deps.begin(); k!=deps.end(); ++k) {
-                        if(k->second)
+                    for (const auto &dep : deps) {
+                        if (dep.second)
                             continue;
-                        DocumentObject * depObjDoc = k->first.getDocumentObject();
+                        DocumentObject * depObjDoc = dep.first.getDocumentObject();
                         Edge edge;
                         bool inserted;
 
-                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(k->first)], DepList);
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(expr.first)], GlobalVertexList[getId(dep.first)], DepList);
 
                         // Add this edge to the set of all expression generated edges
                         existingEdges.insert(std::make_pair(docObj, depObjDoc));
@@ -724,9 +711,7 @@ void Document::exportGraphviz(std::ostream& out) const
                         edgeAttrMap[edge]["arrowsize"] = "0.5";
                         edgeAttrMap[edge]["style"] = "dashed";
                     }
-                    ++i;
                 }
-                ++j;
             }
 
             ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DependencyGraph");
@@ -789,7 +774,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
         }
 
-        typedef std::unordered_multimap<Vertex, Edge> EdgeMap;
+        using EdgeMap = std::unordered_multimap<Vertex, Edge>;
 
         void removeEdges(EdgeMap & in_edges,
                          EdgeMap & out_edges,
@@ -1339,7 +1324,7 @@ void Document::clearDocument()
         GetApplication().signalNewDocument(*this,false);
     }
 
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
 
     setStatus(Document::PartialDoc,false);
 
@@ -1466,7 +1451,7 @@ void Document::onChanged(const Property* prop)
 
     // the Name property is a label for display purposes
     if (prop == &Label) {
-        Base::FlagToggler<> flag(_IsRelabeling);
+        Base::FlagToggler<> flag(globalIsRelabeling);
         App::GetApplication().signalRelabelDocument(*this);
     } else if(prop == &ShowHidden) {
         App::GetApplication().signalShowHidden(*this);
@@ -1508,10 +1493,10 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-    if(!d->rollback && !_IsRelabeling) {
-        _checkTransaction(nullptr,What,__LINE__);
+    if(!d->rollback && !globalIsRelabeling) {
+        _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction)
-            d->activeUndoTransaction->addObjectChange(Who,What);
+            d->activeUndoTransaction->addObjectChange(Who, What);
     }
 }
 
@@ -1793,7 +1778,7 @@ static DocExportStatus _ExportStatus;
 // Exception-safe exporting status setter
 class DocumentExporting {
 public:
-    DocumentExporting(const std::vector<App::DocumentObject*> &objs) {
+    explicit DocumentExporting(const std::vector<App::DocumentObject*> &objs) {
         _ExportStatus.status = Document::Exporting;
         _ExportStatus.objs.insert(objs.begin(),objs.end());
     }
@@ -2166,7 +2151,7 @@ void Document::addRecomputeObject(DocumentObject *obj) {
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     ExpressionParser::ExpressionImporter expImporter(reader);
@@ -2720,7 +2705,7 @@ bool Document::saveToFile(const char* filename) const
 }
 
 bool Document::isAnyRestoring() {
-    return _IsRestoring;
+    return globalIsRestoring;
 }
 
 // Open the document
@@ -2738,7 +2723,7 @@ void Document::restore (const char *filename,
         d->clearDocument();
     }
 
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
 
     setStatus(Document::PartialDoc,false);
 
@@ -2803,7 +2788,7 @@ void Document::restore (const char *filename,
 }
 
 bool Document::afterRestore(bool checkPartial) {
-    Base::FlagToggler<> flag(_IsRestoring,false);
+    Base::FlagToggler<> flag(globalIsRestoring, false);
     if(!afterRestore(d->objectArray,checkPartial)) {
         FC_WARN("Reload partial document " << getName());
         GetApplication().signalPendingReloadDocument(*this);
@@ -4215,6 +4200,10 @@ void Document::removeObject(const char* sName)
         }
     }
 
+    // In case the object gets deleted the pointer must be nullified
+    if (tobedestroyed) {
+        tobedestroyed->pcNameInDocument = nullptr;
+    }
     d->objectMap.erase(pos);
 }
 

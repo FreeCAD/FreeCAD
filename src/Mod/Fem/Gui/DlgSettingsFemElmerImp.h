@@ -36,7 +36,7 @@ class DlgSettingsFemElmerImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemElmerImp( QWidget* parent = nullptr );
+    explicit DlgSettingsFemElmerImp( QWidget* parent = nullptr );
     ~DlgSettingsFemElmerImp() override;
 
 protected Q_SLOTS:

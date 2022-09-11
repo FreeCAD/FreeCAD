@@ -64,11 +64,11 @@ QGIViewSymbol::QGIViewSymbol()
 
     m_displayArea = new QGDisplayArea();
     addToGroup(m_displayArea);
-    m_displayArea->centerAt(0.,0.);
+    m_displayArea->centerAt(0., 0.);
 
     m_svgItem = new QGCustomSvg();
     m_displayArea->addToGroup(m_svgItem);
-    m_svgItem->centerAt(0.,0.);
+    m_svgItem->centerAt(0., 0.);
 }
 
 QGIViewSymbol::~QGIViewSymbol()
@@ -131,7 +131,7 @@ void QGIViewSymbol::drawSvg()
     }
     m_svgItem->setScale(scaling);
 
-    QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
+    QByteArray qba(viewSymbol->Symbol.getValue(), strlen(viewSymbol->Symbol.getValue()));
     symbolToSvg(qba);
     rotateView();
 }
@@ -146,7 +146,7 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
     if (!m_svgItem->load(&qba)) {
         Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewName());
     }
-    m_svgItem->centerAt(0.,0.);
+    m_svgItem->centerAt(0., 0.);
 }
 
 void QGIViewSymbol::rotateView()

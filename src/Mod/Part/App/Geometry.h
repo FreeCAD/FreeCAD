@@ -317,6 +317,7 @@ public:
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
 
     void Trim(double u, double v);
+    void scaleKnotsToBounds(double u0, double u1);
 
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
@@ -844,7 +845,7 @@ public:
     ~GeomBSplineSurface() override;
     Geometry *copy() const override;
 
-    void setBounds(double u0, double u1, double v0, double v1);
+    void scaleKnotsToBounds(double u0, double u1, double v0, double v1);
     // Persistence implementer ---------------------
     unsigned int getMemSize() const override;
     void Save(Base::Writer &/*writer*/) const override;
@@ -1079,7 +1080,7 @@ class PartExport GeomSurfaceOfExtrusion : public GeomSurface
 public:
     GeomSurfaceOfExtrusion();
     GeomSurfaceOfExtrusion(const Handle(Geom_Curve)&, const gp_Dir&);
-    GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinearExtrusion)&);
+    explicit GeomSurfaceOfExtrusion(const Handle(Geom_SurfaceOfLinearExtrusion)&);
     ~GeomSurfaceOfExtrusion() override;
     Geometry *copy() const override;
 

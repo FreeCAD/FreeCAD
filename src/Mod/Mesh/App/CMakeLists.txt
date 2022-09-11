@@ -8,6 +8,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
 )
@@ -99,6 +100,10 @@ SET(Core_SRCS
     Core/CylinderFit.h
     Core/SphereFit.cpp
     Core/SphereFit.h
+    Core/IO/Reader3MF.cpp
+    Core/IO/Reader3MF.h
+    Core/IO/Writer3MF.cpp
+    Core/IO/Writer3MF.h
 )
 SOURCE_GROUP("Core" FILES ${Core_SRCS})
 

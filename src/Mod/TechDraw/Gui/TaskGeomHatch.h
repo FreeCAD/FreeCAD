@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TASKGEOMHATCH_H
 #define GUI_TASKVIEW_TASKGEOMHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -48,31 +50,23 @@ class TaskGeomHatch : public QWidget
     Q_OBJECT
 
 public:
-    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
-    ~TaskGeomHatch() override;
+    TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
+    ~TaskGeomHatch() = default;
 
-public:
     virtual bool accept();
     virtual bool reject();
-    void setCreateMode(bool b) { m_createMode = b;}
-    bool getCreateMode() { return m_createMode; }
+    void setCreateMode(bool mode) { m_createMode = mode;}
+    bool getCreateMode() const { return m_createMode; }
+
+protected:
+    void changeEvent(QEvent *event) override;
+    void initUi();
+    void updateValues();
+    void getParameters();
+    QStringList listToQ(std::vector<std::string> inList);
 
 protected Q_SLOTS:
     void onFileChanged();
-
-protected:
-    void changeEvent(QEvent *e) override;
-    void initUi();
-//    bool resetUi();
-    void updateValues();
-    void getParameters();
-    QStringList listToQ(std::vector<std::string> in);
-
-private Q_SLOTS:
-    void onNameChanged();
-    void onScaleChanged();
-    void onLineWeightChanged();
-    void onColorChanged();
 
 private:
     std::unique_ptr<Ui_TaskGeomHatch> ui;
@@ -92,6 +86,12 @@ private:
 
     bool m_createMode;
 
+private Q_SLOTS:
+        void onNameChanged();
+        void onScaleChanged();
+        void onLineWeightChanged();
+        void onColorChanged();
+
 };
 
 class TaskDlgGeomHatch : public Gui::TaskView::TaskDialog
@@ -99,11 +99,10 @@ class TaskDlgGeomHatch : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
+    TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode);
     ~TaskDlgGeomHatch() override;
     const ViewProviderGeomHatch * getViewProvider() const { return viewProvider; }
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -112,18 +111,14 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
     { return false; }
-    void setCreateMode(bool b);
+    void setCreateMode(bool mode);
 
     void update();
 
-protected:
-    const ViewProviderGeomHatch *viewProvider;
-
 private:
+    const ViewProviderGeomHatch *viewProvider;
     TaskGeomHatch * widget;
     Gui::TaskView::TaskBox* taskbox;
 };

@@ -15,14 +15,26 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
+)
+
+set(TechDrawLIBS
+    Measure
+    Part
+    Spreadsheet
+    Import
 )
 
 if(BUILD_QT5)
     include_directories(
         ${Qt5XmlPatterns_INCLUDE_DIRS}
+        ${Qt5Concurrent_INCLUDE_DIRS}
     )
     set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
+    list(APPEND TechDrawLIBS
+        ${Qt5Concurrent_LIBRARIES}
+    )
 else(BUILD_QT5)
     include_directories(
         ${QT_QTXMLPATTERNS_INCLUDE_DIR}
@@ -31,13 +43,6 @@ else(BUILD_QT5)
 endif(BUILD_QT5)
 
 link_directories(${OCC_LIBRARY_DIR})
-
-set(TechDrawLIBS
-    Measure
-    Part
-    Spreadsheet
-    Import
-)
 
 generate_from_xml(DrawPagePy)
 generate_from_xml(DrawViewPy)
@@ -161,6 +166,7 @@ SET(TechDraw_SRCS
     TechDrawExport.h
     ProjectionAlgos.cpp
     ProjectionAlgos.h
+    EWTOLERANCE.h
 )
 
 SET(Geometry_SRCS
@@ -258,7 +264,7 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Patterns
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Patterns
-)   
+)
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
@@ -272,7 +278,7 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Symbols
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Symbols
-)   
+)
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)

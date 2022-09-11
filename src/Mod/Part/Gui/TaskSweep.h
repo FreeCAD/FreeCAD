@@ -40,7 +40,7 @@ class SweepWidget : public QWidget
     Q_OBJECT
 
 public:
-    SweepWidget(QWidget* parent = nullptr);
+    explicit SweepWidget(QWidget* parent = nullptr);
     ~SweepWidget() override;
 
     bool accept();

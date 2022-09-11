@@ -23,8 +23,9 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
-#include <memory>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <memory>
 
 #include <QGraphicsView>
 #include <QLabel>
@@ -76,11 +77,11 @@ class TechDrawGuiExport QGVPage : public QGraphicsView
 public:
     enum RendererType { Native, OpenGL, Image };
 
-    QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent = nullptr);
-    ~QGVPage() override;
+    QGVPage(ViewProviderPage *vpPage, QGSPage* scenePage, QWidget *parent = nullptr);
+    ~QGVPage();
 
     void setRenderer(RendererType type = Native);
-    void drawBackground(QPainter *p, const QRectF &rect) override;
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
 
     QGSPage* getScene() {return m_scene; }
 
@@ -95,15 +96,15 @@ public:
     void showGrid(bool state) {m_showGrid = state;}
     void updateViewport() {viewport()->repaint();}
 
-    bool isBalloonPlacing() {return balloonPlacing; }
-    void setBalloonPlacing(bool s) {balloonPlacing = s;}
+    bool isBalloonPlacing() const {return balloonPlacing; }
+    void setBalloonPlacing(bool isPlacing) {balloonPlacing = isPlacing;}
 
-    QLabel* getBalloonCursor() {return balloonCursor;}
-    void setBalloonCursor(QLabel* l) {balloonCursor = l;}
+    QLabel* getBalloonCursor() const {return balloonCursor;}
+    void setBalloonCursor(QLabel* label) {balloonCursor = label;}
 
     void kbPanScroll(int xMove = 1, int yMove = 1);
-    QPointF getBalloonCursorPos() {return balloonCursorPos;}
-    void setBalloonCursorPos(QPoint p) { balloonCursorPos = p;}
+    QPointF getBalloonCursorPos() const {return balloonCursorPos;}
+    void setBalloonCursorPos(QPoint pos) { balloonCursorPos = pos;}
 
     void activateCursor(QCursor cursor);
     void resetCursor();
@@ -111,6 +112,8 @@ public:
     void setZoomCursor();
 
     void pseudoContextEvent();
+
+    void centerOnPage();
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -128,15 +131,13 @@ protected:
     void keyReleaseEvent(QKeyEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
 
-    static QColor SelectColor;
-    static QColor PreselectColor;
     QColor getBackgroundColor();
 
     double getDevicePixelRatio() const;
     QPixmap prepareCursorPixmap(const char *iconName, QPoint &hotspot);
 
     void drawForeground(QPainter *painter, const QRectF &rect) override;
-    
+
     std::string getNavStyleParameter();
     Base::Type getStyleType(std::string model);
 
@@ -152,7 +153,7 @@ private:
     QBrush* bkgBrush;
     QImage m_image;
     ViewProviderPage *m_vpPage;
-    
+
     bool m_atCursor;
     bool m_invertZoom;
     double m_zoomIncrement;
@@ -183,6 +184,6 @@ private:
     QContextMenuEvent* m_saveContextEvent;
 };
 
-} // namespace 
+} // namespace
 
 #endif // TECHDRAWGUI_QGVIEW_H

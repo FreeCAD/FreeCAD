@@ -45,7 +45,7 @@ def stefan_boltzmann():
 def vacuum_permittivity():
     # https://forum.freecadweb.org/viewtopic.php?f=18&p=400959#p400959
     # https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity
-    return "8.85419e-12 s^4*A^2 / (m^3*kg)"
+    return "8.85419e-12 F/m"
 
 
 def boltzmann_constant():

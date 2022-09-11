@@ -46,7 +46,7 @@ class TaskRevolutionParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
+    explicit TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
     ~TaskRevolutionParameters() override;
 
     void apply() override;
@@ -108,7 +108,7 @@ class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
+    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
 
     ViewProvider* getRevolutionView() const
     { return vp; }

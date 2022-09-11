@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_LandmarkDimension_h_
-#define _TechDraw_LandmarkDimension_h_
+#ifndef TechDraw_LandmarkDimension_h_
+#define TechDraw_LandmarkDimension_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 # include <App/DocumentObject.h>
 # include <App/PropertyStandard.h>
@@ -49,7 +51,7 @@ public:
     ~LandmarkDimension() override;
 
     App::PropertyStringList  ReferenceTags;     //tags of 2d vertices in DVP
-    
+
     App::DocumentObjectExecReturn *execute() override;
     short mustExecute() const override;
     void unsetupObject() override;

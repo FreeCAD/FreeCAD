@@ -36,7 +36,7 @@ class gp_Pln;
 namespace PartDesign
 {
 
-typedef Part::TopoShape TopoShape;
+using TopoShape = Part::TopoShape;
 
 class Body;
 
@@ -96,7 +96,7 @@ protected:
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
 };
 
-typedef App::FeaturePythonT<Feature> FeaturePython;
+using FeaturePython = App::FeaturePythonT<Feature>;
 
 } //namespace PartDesign
 

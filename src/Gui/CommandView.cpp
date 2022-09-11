@@ -2389,7 +2389,7 @@ class SelectionCallbackHandler {
 private:
     static std::unique_ptr<SelectionCallbackHandler> currentSelectionHandler;
     QCursor prevSelectionCursor;
-    typedef void (*FnCb)(void * userdata, SoEventCallback * node);
+    using FnCb = void (*)(void * userdata, SoEventCallback * node);
     FnCb fnCb;
     void* userData;
     bool prevSelectionEn;
@@ -2608,7 +2608,7 @@ StdBoxSelection::StdBoxSelection()
     eType         = AlterSelection;
 }
 
-typedef enum { CENTER, INTERSECT } SelectionMode;
+using SelectionMode = enum { CENTER, INTERSECT };
 
 static std::vector<std::string> getBoxSelection(
         ViewProviderDocumentObject *vp, SelectionMode mode, bool selectElement,

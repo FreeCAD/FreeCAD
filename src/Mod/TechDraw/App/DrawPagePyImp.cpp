@@ -29,7 +29,7 @@ std::string DrawPagePy::representation() const
 PyObject* DrawPagePy::addView(PyObject* args)
 {
     //this implements iRC = pyPage.addView(pyView)  -or-
-    //doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
@@ -50,7 +50,7 @@ PyObject* DrawPagePy::addView(PyObject* args)
 PyObject* DrawPagePy::removeView(PyObject* args)
 {
     //this implements iRC = pyPage.removeView(pyView)  -or-
-    //doCommand(Doc,"App.activeDocument().%s.removeView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    //doCommand(Doc, "App.activeDocument().%s.removeView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     PyObject *pcDocObj;
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {

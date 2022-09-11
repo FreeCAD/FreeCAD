@@ -93,14 +93,14 @@ class CoinPtr: public boost::intrusive_ptr<T> {
 public:
     // Too bad, VC2013 does not support constructor inheritance
     //using boost::intrusive_ptr<T>::intrusive_ptr;
-    typedef boost::intrusive_ptr<T> inherited;
+    using inherited = boost::intrusive_ptr<T>;
     CoinPtr() {}
     CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
     template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
 
     operator T *() const {
         return this->get();
-    }
+    }//explicit bombs
 };
 
 /** Helper function to deal with bug in SoNode::removeAllChildren()
@@ -187,7 +187,7 @@ public:
     /** partial rendering setup
      *
      * @param subelements: a list of dot separated string refer to the sub element
-     * @param clear: if true, remove the the subelement from partial rendering.
+     * @param clear: if true, remove the subelement from partial rendering.
      * If else, add the subelement for rendering.
      *
      * @return Return the number of subelement found

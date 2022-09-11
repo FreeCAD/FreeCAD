@@ -63,7 +63,7 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(Spreadsheet::Sheet, App::DocumentObject)
 
-typedef boost::adjacency_list <
+using DependencyList = boost::adjacency_list <
 boost::vecS,           // class OutEdgeListS  : a Sequence or an AssociativeContainer
 boost::vecS,           // class VertexListS   : a Sequence or a RandomAccessContainer
 boost::directedS,      // class DirectedS     : This is a directed graph
@@ -71,10 +71,10 @@ boost::no_property,    // class VertexProperty:
 boost::no_property,    // class EdgeProperty:
 boost::no_property,    // class GraphProperty:
 boost::listS           // class EdgeListS:
-> DependencyList;
-typedef boost::graph_traits<DependencyList> Traits;
-typedef Traits::vertex_descriptor Vertex;
-typedef Traits::edge_descriptor Edge;
+>;
+using Traits = boost::graph_traits<DependencyList>;
+using Vertex = Traits::vertex_descriptor;
+using Edge = Traits::edge_descriptor;
 
 /**
   * Construct a new Sheet object.
@@ -266,10 +266,11 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
 
 bool Sheet::exportToFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar) const
 {
-    std::ofstream file;
+    Base::ofstream file;
     int prevRow = -1, prevCol = -1;
 
-    file.open(filename.c_str(), std::ios::out | std::ios::ate | std::ios::binary);
+    Base::FileInfo fi(filename);
+    file.open(fi, std::ios::out | std::ios::ate | std::ios::binary);
 
     if (!file.is_open())
         return false;

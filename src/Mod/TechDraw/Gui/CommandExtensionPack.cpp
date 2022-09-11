@@ -1885,10 +1885,10 @@ namespace TechDrawGui {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
         ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
         if (pageVP) {
-            QGSPage* scenePage = pageVP->getGraphicsScene();
+            QGSPage* scenePage = pageVP->getQGSPage();
             featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
             std::string pageName = scenePage->getDrawPage()->getNameInDocument();
-            cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
+            cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
                            featName.c_str());
             cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                            pageName.c_str(), featName.c_str());
@@ -1908,7 +1908,7 @@ namespace TechDrawGui {
                 QObject::tr("Selection is empty"));
             return false;
         }
-        
+
         objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
         if (!objFeat) {
             QMessageBox::warning(Gui::getMainWindow(),

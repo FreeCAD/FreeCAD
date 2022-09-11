@@ -83,7 +83,7 @@ class ProgressDialog : public QProgressDialog
 
 public:
     /** Construction */
-    ProgressDialog (SequencerDialog* s, QWidget * parent=nullptr);
+    explicit ProgressDialog (SequencerDialog* s, QWidget * parent=nullptr);
     /** Destruction */
     ~ProgressDialog () override;
 

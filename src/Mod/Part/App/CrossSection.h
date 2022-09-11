@@ -44,6 +44,8 @@ private:
     void sliceSolid(double d, const TopoDS_Shape&, std::list<TopoDS_Wire>& wires) const;
     void connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const;
     void connectWires (const TopTools_IndexedMapOfShape& wireMap, std::list<TopoDS_Wire>& wires) const;
+    TopoDS_Wire fixWire(const TopoDS_Wire& wire) const;
+    std::list<TopoDS_Wire> removeDuplicates(const std::list<TopoDS_Wire>& wires) const;
 
 private:
     double a,b,c;

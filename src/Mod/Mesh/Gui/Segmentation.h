@@ -40,7 +40,7 @@ class Ui_Segmentation;
 class MeshGuiExport Segmentation : public QWidget
 {
 public:
-    Segmentation(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit Segmentation(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Segmentation() override;
     void accept();
 
@@ -58,7 +58,7 @@ private:
 class TaskSegmentation : public Gui::TaskView::TaskDialog
 {
 public:
-    TaskSegmentation(Mesh::Feature* mesh);
+    explicit TaskSegmentation(Mesh::Feature* mesh);
     ~TaskSegmentation() override;
 
 public:

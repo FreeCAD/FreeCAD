@@ -277,6 +277,7 @@ SET(FreeCADBase_CPP_SRCS
     ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
+    ZipHeader.cpp
 )
 
 SET(SWIG_HEADERS
@@ -339,6 +340,7 @@ SET(FreeCADBase_HPP_SRCS
     ViewProj.h
     Writer.h
     XMLTools.h
+    ZipHeader.h
 )
 
 SET(FreeCADBase_SRCS

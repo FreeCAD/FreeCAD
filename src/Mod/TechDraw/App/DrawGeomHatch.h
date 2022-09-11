@@ -20,8 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawGeomHatch_h_
-#define _TechDraw_DrawGeomHatch_h_
+#ifndef TechDraw_DrawGeomHatch_h_
+#define TechDraw_DrawGeomHatch_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/HatchLine.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -52,7 +55,7 @@ class TechDrawExport DrawGeomHatch : public App::DocumentObject
 
 public:
     DrawGeomHatch();
-    virtual ~DrawGeomHatch();
+    ~DrawGeomHatch() = default;
 
     App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
@@ -91,7 +94,7 @@ public:
     static std::string prefGeomHatchFile(void);
     static std::string prefGeomHatchName();
     static App::Color prefGeomHatchColor();
-
+    static std::vector<LineSet> makeLineSets(std::string fileSpec, std::string myPattern);
 
 protected:
     virtual void onDocumentRestored() override;
@@ -111,7 +114,7 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawGeomHatch> DrawGeomHatchPython;
+using DrawGeomHatchPython = App::FeaturePythonT<DrawGeomHatch>;
 
 
 

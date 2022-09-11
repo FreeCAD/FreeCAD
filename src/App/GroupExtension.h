@@ -38,7 +38,7 @@ class GroupExtensionPy;
 class AppExport GroupExtension : public DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GroupExtension);
-    typedef DocumentObjectExtension inherited;
+    using inherited = DocumentObjectExtension;
 
 public:
     /// Constructor
@@ -160,7 +160,7 @@ public:
     };
 };
 
-typedef ExtensionPythonT<GroupExtensionPythonT<GroupExtension>> GroupExtensionPython;
+using GroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 
 } //namespace App
 

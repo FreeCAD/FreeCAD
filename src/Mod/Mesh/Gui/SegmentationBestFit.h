@@ -49,7 +49,7 @@ public:
     virtual std::vector<float> getParameter(Points) const = 0;
 };
 
-typedef std::list<std::pair<QString, float> > ParameterList;
+using ParameterList = std::list<std::pair<QString, float> >;
 class ParametersDialog : public QDialog
 {
     Q_OBJECT
@@ -82,7 +82,7 @@ class MeshGuiExport SegmentationBestFit : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SegmentationBestFit() override;
     void accept();
 
@@ -109,7 +109,7 @@ private:
 class TaskSegmentationBestFit : public Gui::TaskView::TaskDialog
 {
 public:
-    TaskSegmentationBestFit(Mesh::Feature* mesh);
+    explicit TaskSegmentationBestFit(Mesh::Feature* mesh);
     ~TaskSegmentationBestFit() override;
 
 public:

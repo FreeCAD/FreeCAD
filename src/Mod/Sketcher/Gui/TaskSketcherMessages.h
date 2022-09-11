@@ -29,7 +29,7 @@
 #include <boost_signals2.hpp>
 
 class Ui_TaskSketcherMessages;
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 
 namespace App {
 class Property;
@@ -44,7 +44,7 @@ class TaskSketcherMessages : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskSketcherMessages(ViewProviderSketch *sketchView);
+    explicit TaskSketcherMessages(ViewProviderSketch *sketchView);
     ~TaskSketcherMessages() override;
 
     void slotSetUp(const QString &state, const QString &msg, const QString& link, const QString& linkText);

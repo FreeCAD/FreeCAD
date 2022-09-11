@@ -68,7 +68,7 @@ class CurveOnMeshHandler : public QObject
     Q_OBJECT
 
 public:
-    CurveOnMeshHandler(QObject* parent = nullptr);
+    explicit CurveOnMeshHandler(QObject* parent = nullptr);
     ~CurveOnMeshHandler() override;
     void enableApproximation(bool);
     void setParameters(int maxDegree, GeomAbs_Shape cont, double tol3d, double angle);

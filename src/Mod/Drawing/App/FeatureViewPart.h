@@ -72,7 +72,7 @@ private:
     static App::PropertyFloatConstraint::Constraints floatRange;
 };
 
-typedef App::FeaturePythonT<FeatureViewPart> FeatureViewPartPython;
+using FeatureViewPartPython = App::FeaturePythonT<FeatureViewPart>;
 
 
 } //namespace Drawing

@@ -54,7 +54,7 @@ public:
 private:
     void slotNewObject(const App::DocumentObject&);
     void slotChangePropertyData(const App::Property&);
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection documentNew;
     Connection documentMod;
 };

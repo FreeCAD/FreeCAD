@@ -80,7 +80,7 @@ struct NavigationStyleP {
 }
 
 class FCSphereSheetProjector : public SbSphereSheetProjector {
-    typedef SbSphereSheetProjector inherited;
+    using inherited = SbSphereSheetProjector;
 
 public:
     enum OrbitStyle {

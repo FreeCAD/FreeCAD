@@ -31,6 +31,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -79,7 +80,7 @@ void QGIHighlight::draw()
 
 void QGIHighlight::makeHighlight()
 {
-    QRectF r(m_start,m_end);
+    QRectF r(m_start, m_end);
     m_circle->setRect(r);
     m_rect->setRect(r);
     if (getHoleStyle() == 0) {
@@ -94,15 +95,17 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    m_refFont.setPixelSize(QGIView::calculateFontPixelSize(m_refSize));
+    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_refFont.family()),
+                                          m_refSize);
+    m_refFont .setPixelSize(fontSize);
     m_reference->setFont(m_refFont);
     m_reference->setPlainText(m_refText);
     double fudge = Rez::guiX(1.0);
     QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
-    m_reference->setPos(newPos);   
+    m_reference->setPos(newPos);
 
     double highRot = rotation();
-    if (!TechDraw::DrawUtil::fpCompare(highRot,0.0)) {
+    if (!TechDraw::DrawUtil::fpCompare(highRot, 0.0)) {
         QRectF refBR = m_reference->boundingRect();
         QPointF refCenter = refBR.center();
         m_reference->setTransformOriginPoint(refCenter);
@@ -119,10 +122,10 @@ void QGIHighlight::setInteractive(bool state)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, state);
 }
 
-void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
+void QGIHighlight::setBounds(double x1, double y1, double x2, double y2)
 {
-    m_start = QPointF(Rez::guiX(x1),Rez::guiX(-y1));
-    m_end = QPointF(Rez::guiX(x2),Rez::guiX(-y2));
+    m_start = QPointF(Rez::guiX(x1), Rez::guiX(-y1));
+    m_end = QPointF(Rez::guiX(x2), Rez::guiX(-y2));
 }
 
 void QGIHighlight::setReference(const char* ref)

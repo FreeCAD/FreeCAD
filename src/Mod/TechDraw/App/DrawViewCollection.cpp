@@ -47,7 +47,7 @@ DrawViewCollection::DrawViewCollection()
 {
     nowUnsetting = false;
     static const char *group = "Collection";
-    ADD_PROPERTY_TYPE(Views     ,(nullptr), group, App::Prop_None,"Collection Views");
+    ADD_PROPERTY_TYPE(Views     ,(nullptr), group, App::Prop_None, "Collection Views");
     Views.setScope(App::LinkScope::Global);
 }
 
@@ -77,6 +77,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute()
 
     lockChildren();
 
+    overrideKeepUpdated(false);
     return DrawView::execute();
 }
 
@@ -195,7 +196,7 @@ QRectF DrawViewCollection::getRect() const
             throw Base::ValueError("DrawViewCollection::getRect bad View\n");
         }
 
-        result = result.united(view->getRect().translated(view->X.getValue(),view->Y.getValue()));
+        result = result.united(view->getRect().translated(view->X.getValue(), view->Y.getValue()));
     }
-    return QRectF(0,0,getScale() * result.width(),getScale() * result.height());
+    return { 0, 0, getScale() * result.width(), getScale() * result.height()};
 }

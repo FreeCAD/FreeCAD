@@ -44,7 +44,7 @@ public:
         Rejected = 2  // handled and rejected
     };
 
-    FeaturePythonImp(App::DocumentObject*);
+    explicit FeaturePythonImp(App::DocumentObject*);
     ~FeaturePythonImp();
 
     bool execute();
@@ -56,12 +56,12 @@ public:
     std::string getViewProviderName();
     PyObject *getPyObject();
 
-    bool getSubObject(App::DocumentObject *&ret, const char *subname, PyObject **pyObj, 
+    bool getSubObject(App::DocumentObject *&ret, const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const;
 
     bool getSubObjects(std::vector<std::string> &ret, int reason) const;
 
-    bool getLinkedObject(App::DocumentObject *&ret, bool recurse, 
+    bool getLinkedObject(App::DocumentObject *&ret, bool recurse,
                          Base::Matrix4D *mat, bool transform, int depth) const;
 
     ValueT canLinkProperties() const;
@@ -150,7 +150,7 @@ private:
         FlagMax,
     };
 
-    typedef std::bitset<FlagMax> Flags;
+    using Flags = std::bitset<FlagMax>;
     mutable Flags _Flags;
 
 public:
@@ -355,8 +355,8 @@ private:
 };
 
 // Special Feature-Python classes
-typedef FeaturePythonT<DocumentObject> FeaturePython;
-typedef FeaturePythonT<GeoFeature    > GeometryPython;
+using FeaturePython  = FeaturePythonT<DocumentObject>;
+using GeometryPython = FeaturePythonT<GeoFeature    >;
 
 } //namespace App
 

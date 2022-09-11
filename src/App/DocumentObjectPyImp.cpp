@@ -135,7 +135,7 @@ PyObject*  DocumentObjectPy::touch(PyObject * args)
             Py_Return;
         }
         auto prop = getDocumentObjectPtr()->getPropertyByName(propName);
-        if(!prop) 
+        if(!prop)
             throw Py::RuntimeError("Property not found");
         prop->touch();
         Py_Return;
@@ -267,12 +267,11 @@ Py::List DocumentObjectPy::getInListRecursive() const
 
         for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
             ret.append(Py::Object((*It)->getPyObject(), true));
- 
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
     }
-    return ret;    
+    return ret;
 }
 
 Py::List DocumentObjectPy::getOutList() const
@@ -476,7 +475,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         Py::Object obj;
         Py::Object pyObj;
         Base::Matrix4D mat;
-        SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
+        explicit SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
     };
 
     Base::Matrix4D mat;

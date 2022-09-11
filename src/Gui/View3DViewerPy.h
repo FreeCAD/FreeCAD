@@ -44,7 +44,7 @@ class View3DInventorViewerPy : public Py::PythonExtension<View3DInventorViewerPy
 public:
     static void init_type();    // announce properties and methods
 
-    View3DInventorViewerPy(View3DInventorViewer *vi);
+    explicit View3DInventorViewerPy(View3DInventorViewer *vi);
     ~View3DInventorViewerPy() override;
 
     Py::Object repr() override;
@@ -78,7 +78,7 @@ public:
 
 
 private:
-    typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
+    using method_varargs_handler = PyObject* (*)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
 

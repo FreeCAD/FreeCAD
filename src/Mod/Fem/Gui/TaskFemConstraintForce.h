@@ -48,7 +48,7 @@ class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintForce() override;
     double getForce() const;
     const std::string getReferences() const override;
@@ -83,7 +83,7 @@ class TaskDlgFemConstraintForce : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView);
+    explicit TaskDlgFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     void open() override;

@@ -59,7 +59,7 @@ public:
     using BaseType = Py::PythonExtension<View3DInventorPy>;
     static void init_type();    // announce properties and methods
 
-    View3DInventorPy(View3DInventor *vi);
+    explicit View3DInventorPy(View3DInventor *vi);
     ~View3DInventorPy() override;
 
     View3DInventor* getView3DIventorPtr();
@@ -151,7 +151,7 @@ private:
     static void draggerCallback(void * ud, SoDragger* dragger);
 
 private:
-    typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
+    using method_varargs_handler = PyObject* (*)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
     Py::Object getattribute(const char *);

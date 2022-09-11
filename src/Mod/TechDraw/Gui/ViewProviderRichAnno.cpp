@@ -21,11 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include <App/DocumentObject.h>
 #include <Gui/Control.h>
@@ -37,6 +33,8 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskRichAnno.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
@@ -61,7 +59,7 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
     static const char *group = "Frame Format";
 
-    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group,(App::PropertyType)(App::Prop_None), "Frame line width");
+    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group, (App::PropertyType)(App::Prop_None), "Frame line width");
     LineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Frame line style");
     ADD_PROPERTY_TYPE(LineColor, (getDefLineColor()), group, App::Prop_None, "The color of the frame");
@@ -70,20 +68,6 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
 {
-}
-
-bool ViewProviderRichAnno::setEdit(int ModNum)
-{
-//    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
-    if (ModNum != ViewProvider::Default ) {
-        return ViewProviderDrawingView::setEdit(ModNum);
-    }
-    if (Gui::Control().activeDialog()) { //TaskPanel already open!
-        return false;
-    }
-    Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskDlgRichAnno(this));
-    return true;
 }
 
 bool ViewProviderRichAnno::doubleClicked()
@@ -108,6 +92,15 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
             LineColor.setStatus(App::Property::ReadOnly, true);
         }
     }
+
+    if (p == &(getViewObject()->AnnoParent)) {
+//        Base::Console().Message("VPRA::updateData(AnnoParent) - vpp: %X\n", getViewProviderPage());
+        if (getViewProviderPage() &&
+            getViewProviderPage()->getQGSPage()) {
+            getViewProviderPage()->getQGSPage()->setRichAnnoGroups();
+        }
+    }
+
     ViewProviderDrawingView::updateData(p);
 }
 

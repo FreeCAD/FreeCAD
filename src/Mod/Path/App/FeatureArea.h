@@ -70,7 +70,7 @@ private:
     bool myInited;
 };
 
-typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;
+using FeatureAreaPython = App::FeaturePythonT<FeatureArea>;
 
 class PathExport FeatureAreaView : public Part::Feature
 {
@@ -92,7 +92,7 @@ public:
     App::PropertyInteger    SectionCount;
 };
 
-typedef App::FeaturePythonT<FeatureAreaView> FeatureAreaViewPython;
+using FeatureAreaViewPython = App::FeaturePythonT<FeatureAreaView>;
 
 } //namespace Path
 

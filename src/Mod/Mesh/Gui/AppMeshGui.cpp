@@ -43,6 +43,7 @@
 #include <Gui/Language/Translator.h>
 
 #include <Mod/Mesh/App/MeshProperties.h>
+#include <Mod/Mesh/App/Exporter.h>
 
 #include "images.h"
 #include "DlgEvaluateMeshImp.h"
@@ -52,6 +53,7 @@
 #include "SoFCMeshObject.h"
 #include "SoFCIndexedFaceSet.h"
 #include "SoPolygon.h"
+#include "ThumbnailExtension.h"
 #include "ViewProvider.h"
 #include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
@@ -162,6 +164,8 @@ PyMOD_INIT_FUNC(MeshGui)
     // register preferences pages
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsImportExport>     ( QT_TRANSLATE_NOOP("QObject", "Import-Export") );
+
+    Mesh::Extension3MFFactory::addProducer(new MeshGui::ThumbnailExtensionProducer);
 
     MeshGui::SoFCMeshObjectElement              ::initClass();
     MeshGui::SoSFMeshObject                     ::initClass();

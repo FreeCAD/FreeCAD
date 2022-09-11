@@ -23,11 +23,12 @@
 #ifndef TECHDRAWGUI_QGICENTERLINE_H
 #define TECHDRAWGUI_QGICENTERLINE_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QPointF>
 
 #include "QGIDecoration.h"
-
 
 namespace TechDrawGui
 {
@@ -43,7 +44,7 @@ public:
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
 
-    void setBounds(double x1,double y1,double x2,double y2);
+    void setBounds(double x1, double y1, double x2, double y2);
     virtual void draw();
 
     void setIntersection(bool isIntersecting);

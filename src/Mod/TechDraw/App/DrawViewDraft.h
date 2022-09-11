@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewDraft_h_
-#define _DrawViewDraft_h_
+#ifndef DrawViewDraft_h_
+#define DrawViewDraft_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -41,7 +43,7 @@ class TechDrawExport DrawViewDraft : public TechDraw::DrawViewSymbol
 public:
     /// Constructor
     DrawViewDraft();
-    ~DrawViewDraft() override;
+    ~DrawViewDraft() = default;
 
     App::PropertyLink         Source;
     App::PropertyFloat        LineWidth;
@@ -72,7 +74,7 @@ protected:
     std::string getSVGTail();
 };
 
-typedef App::FeaturePythonT<DrawViewDraft> DrawViewDraftPython;
+using DrawViewDraftPython = App::FeaturePythonT<DrawViewDraft>;
 
 
 } //namespace TechDraw

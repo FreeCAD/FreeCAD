@@ -25,8 +25,6 @@
 #ifndef _PreComp_
 #include <string>
 #include <QString>
-//#include <QFont>
-//#include <QColor>
 #endif
 
 #include <App/Application.h>
@@ -137,7 +135,7 @@ double Preferences::vertexScale()
 
 
 
-//lightgray #D3D3D3 
+//lightgray #D3D3D3
 
 bool Preferences::keepPagesUpToDate()
 {
@@ -192,7 +190,7 @@ QString Preferences::defaultTemplate()
                                          GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Templates/";
     std::string defaultFileName = defaultDir + "A4_LandscapeTD.svg";
-    std::string prefFileName = hGrp->GetASCII("TemplateFile",defaultFileName.c_str());
+    std::string prefFileName = hGrp->GetASCII("TemplateFile", defaultFileName.c_str());
     if (prefFileName.empty()) {
         prefFileName = defaultFileName;
     }
@@ -231,7 +229,7 @@ std::string Preferences::lineGroupFile()
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
     std::string defaultFileName = defaultDir + "LineGroup.csv";
-    std::string lgFileName = hGrp->GetASCII("LineGroupFile",defaultFileName.c_str());
+    std::string lgFileName = hGrp->GetASCII("LineGroupFile", defaultFileName.c_str());
     if (lgFileName.empty()) {
         lgFileName = defaultFileName;
     }
@@ -247,7 +245,7 @@ std::string Preferences::formatSpec()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    return hGrp->GetASCII("formatSpec","%.2w");
+    return hGrp->GetASCII("formatSpec", "%.2w");
 }
 
 int Preferences::altDecimals()
@@ -273,17 +271,16 @@ std::string Preferences::svgFile()
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    std::string prefHatchFile = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    std::string prefHatchFile = hGrp->GetASCII("FileHatch", defaultFileName.c_str());
     if (prefHatchFile.empty()) {
         prefHatchFile = defaultFileName;
     }
-    std::string result = prefHatchFile;
-    Base::FileInfo fi(result);
+    Base::FileInfo fi(prefHatchFile);
     if (!fi.isReadable()) {
-        result = defaultFileName;
         Base::Console().Warning("Svg Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        prefHatchFile = defaultFileName;
     }
-    return result;
+    return prefHatchFile;
 }
 
 std::string Preferences::patFile()
@@ -294,13 +291,16 @@ std::string Preferences::patFile()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
     std::string defaultFileName = defaultDir + "FCPAT.pat";
     std::string prefHatchFile = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
-    std::string result = prefHatchFile;
-    Base::FileInfo fi(result);
-    if (!fi.isReadable()) {
-        result = defaultFileName;
-        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+    if (prefHatchFile.empty()) {
+        prefHatchFile = defaultFileName;
     }
-    return result;
+    Base::FileInfo fi(prefHatchFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Pat Hatch File: %s is not readable\n", prefHatchFile.c_str());
+        prefHatchFile = defaultFileName;
+    }
+
+    return prefHatchFile;
 }
 
 std::string Preferences::bitmapFill()
@@ -311,13 +311,15 @@ std::string Preferences::bitmapFill()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "default.png";
     std::string prefBitmapFile = hGrp->GetASCII("BitmapFill", defaultFileName.c_str());
-    std::string result = prefBitmapFile;
-    Base::FileInfo fi(result);
-    if (!fi.isReadable()) {
-        result = defaultFileName;
-        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+    if (prefBitmapFile.empty()) {
+        prefBitmapFile = defaultFileName;
     }
-    return result;
+    Base::FileInfo fi(prefBitmapFile);
+    if (!fi.isReadable()) {
+        Base::Console().Warning("Bitmap Fill File: %s is not readable\n", prefBitmapFile.c_str());
+        prefBitmapFile = defaultFileName;
+    }
+    return prefBitmapFile;
 }
 
 double Preferences::GapISO()
@@ -336,4 +338,13 @@ double Preferences::GapASME()
                                          GetGroup("Mod/TechDraw/Dimensions");
     double factor = hGrp->GetFloat("GapASME", 6.0);
     return factor;
+}
+
+bool Preferences::reportProgress()
+{
+    Base::Reference<ParameterGrp>  hGrp = App::GetApplication().GetUserParameter().
+                                          GetGroup("BaseApp")->GetGroup("Preferences")->
+                                          GetGroup("Mod/TechDraw/General");
+    bool report = hGrp->GetBool("ReportProgress", false);
+    return report;
 }

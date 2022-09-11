@@ -37,6 +37,8 @@
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
+#include <Mod/TechDraw/App/Preferences.h>
+
 #include "Rez.h"
 #include "PreferencesGui.h"
 
@@ -169,7 +171,7 @@ double PreferencesGui::edgeFuzz()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("EdgeFuzz",10.0);
+    double result = hGrp->GetFloat("EdgeFuzz", 10.0);
     return result;
 }
 
@@ -188,7 +190,7 @@ QString PreferencesGui::weldingDirectory()
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/AWS/";
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-                                    
+
     std::string symbolDir = hGrp->GetASCII("WeldingDir", defaultDir.c_str());
     if (symbolDir.empty()) {
         symbolDir = defaultDir;

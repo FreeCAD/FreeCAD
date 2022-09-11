@@ -218,7 +218,7 @@ void TaskLineDecor::applyDecorations()
                                              m_visible);
                     TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(num,
                                                                            fmt);
-//                    int idx = 
+//                    int idx =
                     m_partFeat->addGeomFormat(newGF);
                }
             }
@@ -240,7 +240,7 @@ bool TaskLineDecor::accept()
     m_partFeat->requestPaint();
 
     //Gui::Command::updateActive();     //no chain of updates here
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -252,7 +252,7 @@ bool TaskLineDecor::reject()
     if (!doc)
         return false;
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
 }
 
@@ -349,7 +349,7 @@ int TaskRestoreLines::countInvisibleCosmetics()
     int iCosmos = 0;
     const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
     for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) { 
+        if (!c->m_format.m_visible) {
             iCosmos++;
         }
     }
@@ -361,7 +361,7 @@ int TaskRestoreLines::countInvisibleCenters()
     int iCenter = 0;
     const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
     for (auto& c : centers) {
-        if (!c->m_format.m_visible) { 
+        if (!c->m_format.m_visible) {
             iCenter++;
         }
     }
@@ -391,7 +391,7 @@ void TaskRestoreLines::restoreInvisibleCosmetics()
 {
     const std::vector<TechDraw::CosmeticEdge*> cosmos = m_partFeat->CosmeticEdges.getValues();
     for (auto& c : cosmos) {
-        if (!c->m_format.m_visible) { 
+        if (!c->m_format.m_visible) {
             c->m_format.m_visible = true;
         }
     }
@@ -403,7 +403,7 @@ void TaskRestoreLines::restoreInvisibleCenters()
 {
     const std::vector<TechDraw::CenterLine*> centers = m_partFeat->CenterLines.getValues();
     for (auto& c : centers) {
-        if (!c->m_format.m_visible) { 
+        if (!c->m_format.m_visible) {
             c->m_format.m_visible = true;
         }
     }

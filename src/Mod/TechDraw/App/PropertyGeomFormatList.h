@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_PropertyGeomFormatList_H
 #define TECHDRAW_PropertyGeomFormatList_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <App/Property.h>
 

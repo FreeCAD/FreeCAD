@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawViewBalloon_h_
-#define _TechDraw_DrawViewBalloon_h_
+#ifndef TechDraw_DrawViewBalloon_h_
+#define TechDraw_DrawViewBalloon_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -88,10 +90,10 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     void handleChangedPropertyType(Base::XMLReader &reader,
-                                           const char *TypeName, 
+                                           const char *TypeName,
                                            App::Property * prop) override;
     void handleChangedPropertyName(Base::XMLReader &reader,
-                                           const char * TypeName, 
+                                           const char * TypeName,
                                            const char *PropName) override;
 
 private:

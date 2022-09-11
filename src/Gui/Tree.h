@@ -44,7 +44,7 @@ namespace Gui {
 class ViewProviderDocumentObject;
 class DocumentObjectItem;
 class DocumentObjectData;
-typedef std::shared_ptr<DocumentObjectData> DocumentObjectDataPtr;
+using DocumentObjectDataPtr = std::shared_ptr<DocumentObjectData>;
 
 class DocumentItem;
 
@@ -56,7 +56,7 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
     Q_OBJECT
 
 public:
-    TreeWidget(const char *name, QWidget* parent=nullptr);
+    explicit TreeWidget(const char *name, QWidget* parent=nullptr);
     ~TreeWidget() override;
 
     static void scrollItemToTop();
@@ -240,7 +240,7 @@ private:
     friend class DocumentItem;
     friend class DocumentObjectItem;
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectNewDocument;
     Connection connectDelDocument;
     Connection connectRenDocument;
@@ -297,7 +297,7 @@ public:
     void Restore(Base::XMLReader &) override;
 
     class ExpandInfo;
-    typedef std::shared_ptr<ExpandInfo> ExpandInfoPtr;
+    using ExpandInfoPtr = std::shared_ptr<ExpandInfo>;
 
 protected:
     /** Adds a view provider to the document item.
@@ -332,7 +332,7 @@ protected:
 
     App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
 
-    typedef std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
+    using ViewParentMap = std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> >;
     void populateParents(const ViewProvider *vp, ViewParentMap &);
 
 private:
@@ -345,7 +345,7 @@ private:
     ExpandInfoPtr _ExpandInfo;
     void restoreItemExpansion(const ExpandInfoPtr &, DocumentObjectItem *);
 
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
@@ -432,7 +432,7 @@ private:
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
     std::vector<std::string> mySubs;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     int previousStatus;
     int selected;
     bool populated;
@@ -446,7 +446,7 @@ class TreePanel : public QWidget
     Q_OBJECT
 
 public:
-    TreePanel(const char *name, QWidget* parent=nullptr);
+    explicit TreePanel(const char *name, QWidget* parent=nullptr);
     ~TreePanel() override;
 
     bool eventFilter(QObject *obj, QEvent *ev) override;
@@ -471,7 +471,7 @@ class TreeDockWidget : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
+    explicit TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
     ~TreeDockWidget() override;
 };
 
@@ -482,7 +482,7 @@ public:
 class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
-    TreeWidgetEditDelegate(QObject* parent=nullptr);
+    explicit TreeWidgetEditDelegate(QObject* parent=nullptr);
     QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const override;
 };

@@ -1454,7 +1454,7 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
 bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines,
                                   std::list<std::vector<Base::Vector3f> > &rclPolylines, float fMinEps) const
 {
-    typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
+    using TCIter = std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator;
 
     // square search radius
     // const float fMinEps = 1.0e-2f; // := 10 micrometer distance
@@ -1552,7 +1552,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
     }
 
     // remove all polylines with too few length
-    typedef std::list<std::vector<Base::Vector3f> >::iterator TPIter;
+    using TPIter = std::list<std::vector<Base::Vector3f> >::iterator;
     std::list<TPIter> _clPolyToDelete;
     for (TPIter pJ = rclPolylines.begin(); pJ != rclPolylines.end(); ++pJ) {
         if (pJ->size() == 2) { // only one line segment

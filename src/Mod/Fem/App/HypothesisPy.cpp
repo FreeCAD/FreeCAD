@@ -318,8 +318,8 @@ Py::Object StdMeshers_AutomaticLengthPy::getFineness(const Py::Tuple& args)
 }
 
 namespace Py {
-    typedef ExtensionObject<Fem::FemMeshPy>         FemMesh;
-    typedef ExtensionObject<Part::TopoShapePy>      TopoShape;
+    using FemMesh = ExtensionObject<Fem::FemMeshPy>;
+    using TopoShape = ExtensionObject<Part::TopoShapePy>;
     template<> bool FemMesh::accepts (PyObject *pyob) const
     {
         return (pyob && PyObject_TypeCheck(pyob, &(Fem::FemMeshPy::Type)));

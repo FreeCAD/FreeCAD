@@ -58,7 +58,7 @@ protected:
   /** @name Construction */
   //@{
   /// Construction
-  MeshGrid (const MeshKernel &rclM);
+  explicit MeshGrid (const MeshKernel &rclM);
   /// Construction
   MeshGrid ();
   //@}
@@ -184,7 +184,7 @@ public:
   /** @name Construction */
   //@{
   /// Construction
-  MeshFacetGrid (const MeshKernel &rclM);
+  explicit MeshFacetGrid (const MeshKernel &rclM);
   /// Construction
   MeshFacetGrid () : MeshGrid() { }
   /// Construction
@@ -247,7 +247,7 @@ public:
   /// Construction
   MeshPointGrid ();
   /// Construction
-  MeshPointGrid (const MeshKernel &rclM);
+  explicit MeshPointGrid (const MeshKernel &rclM);
   /// Construction
   MeshPointGrid (const MeshKernel &rclM, int   iCtGridPerAxis);
   /// Construction
@@ -288,7 +288,7 @@ class MeshExport MeshGridIterator
 {
 public:
   /// Construction
-  MeshGridIterator (const MeshGrid &rclG);
+  explicit MeshGridIterator (const MeshGrid &rclG);
   /** Returns the bounding box of the current grid element. */
   Base::BoundBox3f GetBoundBox () const
   { return _rclGrid.GetBoundBox(_ulX, _ulY, _ulZ); }

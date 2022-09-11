@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_GEOMETRYOBJECT_H
-#define _TECHDRAW_GEOMETRYOBJECT_H
+#ifndef TECHDRAW_GEOMETRYOBJECT_H
+#define TECHDRAW_GEOMETRYOBJECT_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -29,6 +29,7 @@
 #include <vector>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Compound.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 
@@ -61,7 +62,7 @@ TopoDS_Shape TechDrawExport mirrorShapeVec(const TopoDS_Shape &input,
                              double scale = 1.0);
 
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
-                        const gp_Pnt& inputCenter = gp_Pnt(0.0,0.0,0.0),
+                        const gp_Pnt& inputCenter = gp_Pnt(0.0, 0.0, 0.0),
                         double scale = 1.0);
 
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
@@ -110,7 +111,7 @@ public:
     const BaseGeomPtrVector & getEdgeGeometry() const { return edgeGeom; }
     const BaseGeomPtrVector getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<FacePtr>     & getFaceGeometry() const { return faceGeom; }
-    
+
     void setVertexGeometry(std::vector<VertexPtr> newVerts) {vertexGeom = newVerts; }
     void setEdgeGeometry(BaseGeomPtrVector newGeoms) {edgeGeom = newGeoms; }
 
@@ -121,6 +122,7 @@ public:
     TopoDS_Shape projectFace(const TopoDS_Shape &face,
                              const gp_Ax2 &CS);
 
+    void makeTDGeometry();
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(FacePtr f);
     void clearFaceGeom();
@@ -168,7 +170,6 @@ public:
 
     int addCenterLine(TechDraw::BaseGeomPtr bg,
                       std::string tag);
-/*                       int s = 0, int si = -1);*/
 
 protected:
     //HLR output

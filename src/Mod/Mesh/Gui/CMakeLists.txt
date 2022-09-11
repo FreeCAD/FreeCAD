@@ -5,6 +5,7 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}/Inventor/annex
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 if(MSVC)
@@ -143,6 +144,8 @@ SET(MeshGui_SRCS
     MeshSelection.h
     PropertyEditorMesh.cpp
     PropertyEditorMesh.h
+    ThumbnailExtension.cpp
+    ThumbnailExtension.h
     Workbench.cpp
     Workbench.h
 )

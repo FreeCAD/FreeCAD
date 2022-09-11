@@ -24,8 +24,10 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  * Used under BSD license 2.0 *
 
-#ifndef _QDOMNODEMODEL_H_
-#define _QDOMNODEMODEL_H_
+#ifndef QDOMNODEMODEL_H_
+#define QDOMNODEMODEL_H_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QAbstractXmlNodeModel>
 #include <QDomDocument>
@@ -65,4 +67,4 @@ private:
     bool m_ReadOnly;
 };
 
-#endif // _QDOMNODEMODEL_H_
+#endif // QDOMNODEMODEL_H_

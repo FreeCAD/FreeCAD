@@ -88,7 +88,7 @@ class WheelEventFilter : public QObject
     Q_OBJECT
 
 public:
-    WheelEventFilter(QObject* parent);
+    explicit WheelEventFilter(QObject* parent);
     bool eventFilter(QObject* obj, QEvent* ev) override;
 };
 
@@ -97,7 +97,7 @@ class KeyboardFilter : public QObject
     Q_OBJECT
 
 public:
-    KeyboardFilter(QObject* parent);
+    explicit KeyboardFilter(QObject* parent);
     bool eventFilter(QObject* obj, QEvent* ev) override;
 };
 

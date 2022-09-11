@@ -35,9 +35,9 @@
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-typedef unsigned int GLuint;
-typedef int GLint;
-typedef float GLfloat;
+using GLuint = unsigned int;
+using GLint = int;
+using GLfloat = float;
 
 namespace MeshGui {
 
@@ -93,7 +93,7 @@ private:
  * @author Werner Mayer
  */
 class MeshGuiExport SoFCIndexedFaceSet : public SoIndexedFaceSet {
-    typedef SoIndexedFaceSet inherited;
+    using inherited = SoIndexedFaceSet;
 
     SO_NODE_HEADER(SoFCIndexedFaceSet);
 

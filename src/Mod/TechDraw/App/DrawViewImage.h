@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewImage_h_
-#define _DrawViewImage_h_
+#ifndef DrawViewImage_h_
+#define DrawViewImage_h_
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -43,7 +43,7 @@ class TechDrawExport DrawViewImage : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewImage();
-    ~DrawViewImage() override;
+    ~DrawViewImage() = default;
 
     App::PropertyFile         ImageFile;
     App::PropertyFileIncluded ImageIncluded;
@@ -72,7 +72,7 @@ protected:
     Base::BoundBox3d bbox;
 };
 
-typedef App::FeaturePythonT<DrawViewImage> DrawViewImagePython;
+using DrawViewImagePython = App::FeaturePythonT<DrawViewImage>;
 
 
 } //namespace TechDraw

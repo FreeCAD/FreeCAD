@@ -100,9 +100,9 @@ class Subject
 {
 public:
 
-  typedef  Observer<_MessageType> ObserverType;
-  typedef  _MessageType             MessageType;
-  typedef  Subject<_MessageType>  SubjectType;
+  using ObserverType = Observer<_MessageType>;
+  using MessageType  = _MessageType;
+  using SubjectType  = Subject<_MessageType>;
 
   /**
    * A constructor.

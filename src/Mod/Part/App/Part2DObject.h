@@ -100,7 +100,7 @@ protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 };
 
-typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;
+using Part2DObjectPython = App::FeaturePythonT<Part2DObject>;
 
 } //namespace Part
 

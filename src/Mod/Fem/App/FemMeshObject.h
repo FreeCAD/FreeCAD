@@ -59,7 +59,7 @@ protected:
     void onChanged (const App::Property* prop) override;
 };
 
-typedef App::FeaturePythonT<FemMeshObject> FemMeshObjectPython;
+using FemMeshObjectPython = App::FeaturePythonT<FemMeshObject>;
 
 
 } //namespace Fem

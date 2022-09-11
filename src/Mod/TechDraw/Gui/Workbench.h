@@ -24,6 +24,8 @@
 #ifndef TECHDRAW_WORKBENCH_H
 #define TECHDRAW_WORKBENCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/Workbench.h>
 
 namespace TechDrawGui {
@@ -48,4 +50,4 @@ protected:
 } // namespace TechDrawGui
 
 
-#endif // TECHDRAW_WORKBENCH_H 
+#endif // TECHDRAW_WORKBENCH_H

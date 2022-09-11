@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGCUSTOMBORDER_H
 #define DRAWINGGUI_QGCUSTOMBORDER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>

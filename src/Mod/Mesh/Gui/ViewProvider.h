@@ -82,6 +82,7 @@ public:
     ~ViewProviderMeshBuilder() override{}
     void buildNodes(const App::Property*, std::vector<SoNode*>&) const override;
     void createMesh(const App::Property*, SoCoordinate3*, SoIndexedFaceSet*) const;
+    void createMesh(const MeshCore::MeshKernel&, SoCoordinate3*, SoIndexedFaceSet*) const;
 };
 
 /**

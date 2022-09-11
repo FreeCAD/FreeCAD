@@ -36,7 +36,7 @@ class VisualInspection : public QDialog
     Q_OBJECT
 
 public:
-    VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
   ~ VisualInspection() override;
 
     void accept() override;

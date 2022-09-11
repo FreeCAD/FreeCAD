@@ -394,7 +394,7 @@ namespace InspectionGui {
 class ViewProviderProxyObject : public QObject
 {
 public:
-    ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
+    explicit ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
     ~ViewProviderProxyObject() override {}
     void customEvent(QEvent *) override
     {

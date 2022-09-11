@@ -27,14 +27,14 @@
 
 namespace PartGui {
 class Ui_DlgPartBox;
-typedef std::shared_ptr<Ui_DlgPartBox> Ui_DlgPartBoxPtr;
+using Ui_DlgPartBoxPtr = std::shared_ptr<Ui_DlgPartBox>;
 
 class DlgPartBoxImp : public Gui::LocationDialogUiImp
 {
     Q_OBJECT
 
 public:
-    DlgPartBoxImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgPartBoxImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPartBoxImp() override;
 };
 

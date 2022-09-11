@@ -24,6 +24,8 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 #define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 
@@ -53,7 +55,6 @@ public:
     bool useNewSelectionModel() const override {return false;}
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* p) override;
-    bool setEdit(int ModNum) override;
     bool doubleClicked() override;
     bool canDelete(App::DocumentObject* obj) const override;
 
@@ -67,7 +68,9 @@ protected:
     std::string getDefFont();
     double getDefFontSize();
     double getDefLineWeight();
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader,
+                                   const char *TypeName,
+                                   App::Property * prop) override;
 
 private:
     static App::PropertyIntegerConstraint::Constraints LineStyleRange;

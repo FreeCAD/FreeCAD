@@ -35,7 +35,7 @@ namespace Part {
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
     public:
         inline GeometryDefaultExtension();
-        GeometryDefaultExtension(const T& val, std::string name = std::string());
+        explicit GeometryDefaultExtension(const T& val, std::string name = std::string());
         ~GeometryDefaultExtension() override = default;
 
         inline void setValue(const T& val) {value = val;};

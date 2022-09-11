@@ -23,6 +23,8 @@
 #ifndef GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 #define GUI_VIEWPROVIDERCOSMETICEXTENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/ViewProviderExtensionPython.h>
 
 namespace TechDrawGui
@@ -40,7 +42,7 @@ public:
     virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
 };
 
-typedef Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension> ViewProviderCosmeticExtensionPython;
+using ViewProviderCosmeticExtensionPython = Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderCosmeticExtension>;
 
 } //namespace TechDrawGui
 

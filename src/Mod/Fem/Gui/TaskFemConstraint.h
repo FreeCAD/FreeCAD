@@ -44,7 +44,7 @@ class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionOb
     Q_OBJECT
 
 public:
-    TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,const char* pixmapname = "");
+    explicit TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,const char* pixmapname = "");
     ~TaskFemConstraint() override {}
 
     virtual const std::string getReferences() const {return std::string();}

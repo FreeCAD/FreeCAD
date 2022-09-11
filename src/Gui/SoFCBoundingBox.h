@@ -45,7 +45,7 @@ namespace Gui {
  * @author Josh Grant
  */
 class GuiExport SoFCBoundingBox : public SoShape {
-    typedef SoShape inherited;
+    using inherited = SoShape;
 
     SO_NODE_HEADER(Gui::SoFCBoundingBox);
 
@@ -78,7 +78,7 @@ private:
  * @author Werner Mayer
  */
 class GuiExport SoSkipBoundingGroup : public SoGroup {
-    typedef SoGroup inherited;
+    using inherited = SoGroup;
 
     SO_NODE_HEADER(Gui::SoSkipBoundingGroup);
 

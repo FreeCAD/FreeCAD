@@ -64,6 +64,9 @@ ViewProviderBalloon::ViewProviderBalloon()
     ADD_PROPERTY_TYPE(LineWidth, (weight), group, (App::PropertyType)(App::Prop_None), "Leader line width");
     ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
     ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
+
+    //Dimensions take their stacking order from the parent View
+    StackOrder.setStatus(App::Property::Hidden,true);
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
@@ -105,7 +108,7 @@ bool ViewProviderBalloon::setEdit(int ModNum)
 
 void ViewProviderBalloon::updateData(const App::Property* p)
 {
-    //Balloon handles X,Y updates differently that other QGIView
+    //Balloon handles X, Y updates differently that other QGIView
     //call QGIViewBalloon::updateView
     if (p == &(getViewObject()->X)  ||
         p == &(getViewObject()->Y) ){
@@ -115,7 +118,7 @@ void ViewProviderBalloon::updateData(const App::Property* p)
         }
     }
 
-    //Skip QGIView X,Y processing - do not call ViewProviderDrawingView
+    //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
     Gui::ViewProviderDocumentObject::updateData(p);
 }
 

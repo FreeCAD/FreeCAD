@@ -276,7 +276,7 @@ protected:
     PropertyRowHeights rowHeights;
 
     /* Document observers to track changes to external properties */
-    typedef std::map<std::string, SheetObserver* > ObserverMap;
+    using ObserverMap = std::map<std::string, SheetObserver* >;
     ObserverMap observers;
 
     int currentRow = -1;
@@ -292,7 +292,7 @@ protected:
     friend class PropertySheet;
 };
 
-typedef App::FeaturePythonT<Sheet> SheetPython;
+using SheetPython = App::FeaturePythonT<Sheet>;
 
 } //namespace Spreadsheet
 

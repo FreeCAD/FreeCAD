@@ -59,7 +59,7 @@ struct float_traits { };
 
 template <>
 struct float_traits<float> {
-    typedef float float_type;
+    using float_type = float;
     static inline float_type pi() { return F_PI; }
     static inline float_type epsilon() { return FLT_EPSILON; }
     static inline float_type maximum() { return FLT_MAX; }
@@ -67,7 +67,7 @@ struct float_traits<float> {
 
 template <>
 struct float_traits<double> {
-    typedef double float_type;
+    using float_type = double;
     static inline float_type pi() { return D_PI; }
     static inline float_type epsilon() { return DBL_EPSILON; }
     static inline float_type maximum() { return DBL_MAX; }
@@ -78,8 +78,8 @@ template <class _Precision>
 class Vector3
 {
 public:
-    typedef _Precision num_type;
-    typedef float_traits<num_type> traits_type;
+    using num_type = _Precision;
+    using traits_type = float_traits<num_type>;
     static inline num_type epsilon() { return traits_type::epsilon(); }
 
     /** @name Public data members */
@@ -248,8 +248,8 @@ inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
     return Vector3<_Pr1>(static_cast<_Pr1>(v.x),static_cast<_Pr1>(v.y),static_cast<_Pr1>(v.z));
 }
 
-typedef Vector3<float>  Vector3f;
-typedef Vector3<double> Vector3d;
+using Vector3f = Vector3<float>;
+using Vector3d = Vector3<double>;
 
 } // namespace Base
 

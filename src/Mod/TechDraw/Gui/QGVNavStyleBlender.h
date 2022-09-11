@@ -35,7 +35,7 @@ class QGVPage;
 class TechDrawGuiExport QGVNavStyleBlender : public QGVNavStyle
 {
 public:
-    QGVNavStyleBlender(QGVPage* qgvp);
+    explicit QGVNavStyleBlender(QGVPage* qgvp);
     ~QGVNavStyleBlender() override;
 
     void handleKeyReleaseEvent(QKeyEvent *event) override;

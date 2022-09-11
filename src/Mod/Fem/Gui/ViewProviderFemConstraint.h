@@ -125,7 +125,7 @@ protected:
     static QObject* findChildByName(const QObject* parent, const QString& name);
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint> ViewProviderFemConstraintPython;
+using ViewProviderFemConstraintPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
 
 
 } //namespace FemGui

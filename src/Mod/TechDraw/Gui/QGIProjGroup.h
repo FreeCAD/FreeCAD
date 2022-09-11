@@ -23,9 +23,11 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
-#include "QGIViewCollection.h"
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QObject>
 
+#include "QGIViewCollection.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;

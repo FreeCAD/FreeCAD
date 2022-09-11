@@ -43,7 +43,7 @@ class ComboView;
 }
 namespace TaskView {
 
-typedef boost::signals2::connection Connection;
+using Connection = boost::signals2::connection;
 class TaskEditControl;
 class TaskDialog;
 
@@ -128,7 +128,7 @@ class GuiExport TaskWidget : public QWidget, public TaskContent
     Q_OBJECT
 
 public:
-    TaskWidget(QWidget *parent=nullptr);
+    explicit TaskWidget(QWidget *parent=nullptr);
     ~TaskWidget() override;
 };
 
@@ -142,7 +142,7 @@ class GuiExport TaskView : public QScrollArea, public Gui::SelectionSingleton::O
     Q_OBJECT
 
 public:
-    TaskView(QWidget *parent = nullptr);
+    explicit TaskView(QWidget *parent = nullptr);
     ~TaskView() override;
 
     /// Observer message from the Selection

@@ -29,7 +29,7 @@
 
 namespace MeshGui {
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderMeshFaceSet> ViewProviderPython;
+using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderMeshFaceSet>;
 
 } // namespace MeshGui
 

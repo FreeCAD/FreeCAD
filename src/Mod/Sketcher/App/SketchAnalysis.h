@@ -63,7 +63,7 @@ public:
     /// They may also apply a variaty of types of Constraints.
     ///
     /// A third type of routines do not relate to autoconstraining at all, and include validation methods for sketches.
-    SketchAnalysis(Sketcher::SketchObject * Obj);
+    explicit SketchAnalysis(Sketcher::SketchObject * Obj);
     ~SketchAnalysis();
 
     // Simple routines (see constructor)

@@ -42,7 +42,7 @@ class SketcherValidation : public QWidget
     Q_OBJECT
 
 public:
-    SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent = nullptr);
+    explicit SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent = nullptr);
     ~SketcherValidation() override;
 
 protected:
@@ -78,7 +78,7 @@ class TaskSketcherValidation : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskSketcherValidation(Sketcher::SketchObject* Obj);
+    explicit TaskSketcherValidation(Sketcher::SketchObject* Obj);
     ~TaskSketcherValidation() override;
     QDialogButtonBox::StandardButtons getStandardButtons(void) const override
     { return QDialogButtonBox::Close; }

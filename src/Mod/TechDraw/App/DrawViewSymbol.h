@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewSymbol_h_
-#define _DrawViewSymbol_h_
+#ifndef DrawViewSymbol_h_
+#define DrawViewSymbol_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -75,7 +77,7 @@ protected:
     bool loadQDomDocument(QDomDocument& symbolDocument);
 };
 
-typedef App::FeaturePythonT<DrawViewSymbol> DrawViewSymbolPython;
+using DrawViewSymbolPython = App::FeaturePythonT<DrawViewSymbol>;
 
 
 } //namespace TechDraw

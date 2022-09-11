@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TECHDRAW_FEATUREVIEWGROUP_H_
-#define _TECHDRAW_FEATUREVIEWGROUP_H_
+#ifndef TECHDRAW_FEATUREVIEWGROUP_H_
+#define TECHDRAW_FEATUREVIEWGROUP_H_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>
 # include <QRectF>
@@ -39,6 +41,7 @@ class gp_Pnt;
 
 namespace TechDraw
 {
+const int MAXPROJECTIONCOUNT = 10;
 
 class DrawProjGroupItem;
 
@@ -53,7 +56,7 @@ class TechDrawExport DrawProjGroup : public TechDraw::DrawViewCollection
 public:
     /// Constructor
     DrawProjGroup();
-    ~DrawProjGroup() override;
+    ~DrawProjGroup() = default;
 
     App::PropertyLinkList   Source;
     App::PropertyXLinkList  XSource;
@@ -69,9 +72,11 @@ public:
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
 
-    Base::BoundBox3d getBoundingBox() const;
-    double calculateAutomaticScale() const;
-    QRectF getRect() const override;
+    double autoScale() const override;
+    double autoScale(double w, double h) const override;
+    QRectF getRect() const override;   //always scaled
+    QRectF getRect(bool scaled) const;     //scaled or unscaled
+
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -117,14 +122,14 @@ public:
     void setAnchorDirection(Base::Vector3d dir);
     Base::Vector3d getAnchorDirection();
     TechDraw::DrawProjGroupItem* getAnchor();
-    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
-    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(std::string viewType);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
 
     void updateSecondaryDirs();
 
     void rotate(const std::string &rotationdirection);
     void spin(const std::string &spindirection);
-    
+
     void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 
@@ -134,7 +139,13 @@ public:
     void updateChildrenEnforce();
 
     std::vector<App::DocumentObject*> getAllSources() const;
+    bool checkFit() const override;
+    bool checkFit(DrawPage* p) const override;
 
+    bool waitingForChildren() const;
+    void reportReady();
+
+    void dumpTouchedProps();
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -146,41 +157,45 @@ protected:
      */
     bool checkViewProjType(const char *in);
 
-    void arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const;
+    void arrangeViewPointers(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT>& viewPtrs) const;
 
     /// Populates array of 10 BoundBox3d's given DrawProjGroupItem *s
     /*!
      * If documentScale is set, then returned bounding boxes are scaled as in
      * the Drawing.  Otherwise, the dimensions are as in object space.
      */
-    void makeViewBbs(DrawProjGroupItem *viewPtrs[10],
-                     Base::BoundBox3d bboxes[10],
-                     bool documentScale = true) const;
+    void makeViewBbs(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT>& viewPtrs,
+                     std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT>& bboxes,
+                     bool scaled = true) const;
 
     /// Helper for calculateAutomaticScale
     /*!
      * Returns a width and height in object-space scale, for the enabled views
      * without accounting for their actual X and Y positions or borders.
      */
-    void minimumBbViews(DrawProjGroupItem *viewPtrs[10],
-                       double &width, double &height) const;
+    void getViewArea(std::array<TechDraw::DrawProjGroupItem *, MAXPROJECTIONCOUNT>& viewPtrs,
+                        double &width, double &height,
+                        bool scaled = true) const;
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage() const;
 
     void updateChildrenSource();
     void updateChildrenLock();
-    void updateViews();
+
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv() const;
     Base::Vector3d dir2vec(gp_Dir d);
     gp_Dir vec2dir(Base::Vector3d v);
 
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-    
-    bool m_lockScale;
+
+    double getMaxRowHeight(std::array<int, 3> list,
+                           std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
+    double getMaxColWidth(std::array<int, 3> list,
+                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes);
 };
 
 } //namespace TechDraw
 
-#endif // _TECHDRAW_FEATUREVIEWGROUP_H_
+#endif // TECHDRAW_FEATUREVIEWGROUP_H_

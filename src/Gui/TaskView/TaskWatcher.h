@@ -41,7 +41,7 @@ class GuiExport TaskWatcher : public QObject, public Gui::SelectionFilter
     Q_OBJECT
 
 public:
-    TaskWatcher(const char* Filter);
+    explicit TaskWatcher(const char* Filter);
     ~TaskWatcher() override;
 
     std::vector<QWidget*> &getWatcherContent();

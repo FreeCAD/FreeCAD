@@ -23,17 +23,12 @@
 #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
 #define TECHDRAWGUI_TASKCOSVERTEX_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
 #include "QGTracker.h"
-
-
-//TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
 
 namespace TechDraw
 {
@@ -46,14 +41,13 @@ class DrawCosVertex;
 namespace TechDrawGui
 {
 class QGSPage;
-class QGVPage;
 class QGIView;
 class QGIPrimPath;
-class MDIViewPage;
 class QGTracker;
 class QGEPath;
 class QGMText;
 class QGICosVertex;
+class ViewProviderPage;
 class ViewProviderLeader;
 class Ui_TaskCosVertex;
 
@@ -64,32 +58,30 @@ class TaskCosVertex : public QWidget
 public:
     TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                   TechDraw::DrawPage* page);
-    ~TaskCosVertex() override;
+    ~TaskCosVertex() = default;
 
-public Q_SLOTS:
-    void onTrackerClicked(bool b);
-    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
-    void enableTaskButtons(bool b);
+    void enableTaskButtons(bool button);
+
+public Q_SLOTS:
+    void onTrackerClicked(bool clicked);
+    void onTrackerFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void startTracker();
     void removeTracker();
     void abandonEditSession();
 
     void addCosVertex(QPointF qPos);
 
-    void blockButtons(bool b);
     void setUiPrimary();
     void updateUi();
-    void setEditCursor(QCursor c);
+    void setEditCursor(QCursor cursor);
 
    QGIView* findParentQGIV();
 
@@ -98,10 +90,7 @@ private:
     bool blockUpdate;
 
     QGTracker* m_tracker;
-    
-    MDIViewPage* m_mdi;
-    QGSPage* m_scene;
-    QGVPage* m_view;
+
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
     QGIView* m_qgParent;
@@ -113,10 +102,12 @@ private:
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
-    
+
     int m_pbTrackerState;
     QPointF m_savePoint;
     bool pointFromTracker;
+
+    ViewProviderPage* m_vpp;
 };
 
 class TaskDlgCosVertex : public Gui::TaskView::TaskDialog
@@ -138,7 +129,6 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
     /// is called by the framework if the user presses the help button
-    void helpRequested() override { return;}
     bool isAllowedAlterDocument() const override
                         { return false; }
     void update();

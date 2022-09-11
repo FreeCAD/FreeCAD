@@ -1007,7 +1007,7 @@ namespace Reen {
 class ScalarProduct
 {
 public:
-    ScalarProduct(const math_Matrix& mat) : mat(mat)
+    explicit ScalarProduct(const math_Matrix& mat) : mat(mat)
     {
     }
     std::vector<double> multiply(int col) const

@@ -38,7 +38,7 @@ namespace WebGui {
         Q_OBJECT
 
     public:
-        FcCookieJar(QObject* parent = nullptr);
+        explicit FcCookieJar(QObject* parent = nullptr);
         ~FcCookieJar() override;
         bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&) override;
 

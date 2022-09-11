@@ -52,7 +52,7 @@ namespace bp = boost::placeholders;
 class ElementColors::Private: public Gui::SelectionGate
 {
 public:
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     std::unique_ptr<Ui_TaskElementColors> ui;
     ViewProviderDocumentObject *vp;
     ViewProviderDocumentObject *vpParent;
@@ -72,7 +72,7 @@ public:
     std::string editSub;
     std::string editElement;
 
-    Private(ViewProviderDocumentObject* vp, const char *element="")
+    explicit Private(ViewProviderDocumentObject* vp, const char *element="")
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
         vpDoc = vp->getDocument();

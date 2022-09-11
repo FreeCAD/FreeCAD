@@ -29,14 +29,14 @@
 
 namespace GCS
 {
-    typedef std::vector<double *> VEC_pD;
-    typedef std::vector<double> VEC_D;
-    typedef std::vector<int> VEC_I;
-    typedef std::map<double *, double *> MAP_pD_pD;
-    typedef std::map<double *, double> MAP_pD_D;
-    typedef std::map<double *, int> MAP_pD_I;
-    typedef std::set<double *> SET_pD;
-    typedef std::set<int> SET_I;
+    using VEC_pD = std::vector<double *>;
+    using VEC_D = std::vector<double>;
+    using VEC_I = std::vector<int>;
+    using MAP_pD_pD = std::map<double *, double *>;
+    using MAP_pD_D = std::map<double *, double>;
+    using MAP_pD_I = std::map<double *, int>;
+    using SET_pD = std::set<double *>;
+    using SET_I = std::set<int>;
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846

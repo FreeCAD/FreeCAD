@@ -24,15 +24,16 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
-#include "Workbench.h"
-#include "TaskGeomFillSurface.h"
+#include "Blending/ViewProviderBlendCurve.h"
 #include "TaskFilling.h"
+#include "TaskGeomFillSurface.h"
 #include "TaskSections.h"
 #include "ViewProviderExtend.h"
+#include "Workbench.h"
 
 
 // use a different name to CreateCommand()
@@ -45,7 +46,7 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("SurfaceGui")
     {
-        initialize("This module is the SurfaceGui module."); // register with Python
+        initialize("This module is the SurfaceGui module.");// register with Python
     }
 
     ~Module() override {}
@@ -53,12 +54,11 @@ public:
 private:
 };
 
-PyObject* initModule()
-{
+PyObject *initModule() {
     return Base::Interpreter().addModule(new Module);
 }
 
-} // namespace SurfaceGui
+}// namespace SurfaceGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(SurfaceGui)
@@ -78,10 +78,11 @@ PyMOD_INIT_FUNC(SurfaceGui)
     SurfaceGui::ViewProviderGeomFillSurface ::init();
     SurfaceGui::ViewProviderFilling         ::init();
     SurfaceGui::ViewProviderSections        ::init();
-    SurfaceGui::ViewProviderExtend::init();
+    SurfaceGui::ViewProviderExtend          ::init();
+    SurfaceGui::ViewProviderBlendCurve      ::init();
     // SurfaceGui::ViewProviderCut::init();
 
-    PyObject* mod = SurfaceGui::initModule();
+    PyObject *mod = SurfaceGui::initModule();
     Base::Console().Log("Loading GUI of Surface module... done\n");
     PyMOD_Return(mod);
 }

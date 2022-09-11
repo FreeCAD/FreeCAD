@@ -40,7 +40,7 @@ class DlgSettingsUnitsImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsUnitsImp(QWidget* parent = nullptr);
+    explicit DlgSettingsUnitsImp(QWidget* parent = nullptr);
     ~DlgSettingsUnitsImp() override;
 
     void saveSettings() override;

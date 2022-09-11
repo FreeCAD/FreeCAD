@@ -50,7 +50,7 @@ public:
      * Does basically the same as the constructor above unless that (R,G,B,A) is
      * encoded as an unsigned int.
      */
-    Color(uint32_t rgba)
+    explicit Color(uint32_t rgba)
     { setPackedValue( rgba ); }
     /** Copy constructor. */
     Color(const Color& c)
@@ -222,9 +222,9 @@ public:
     /** Defines the colors and shininess for the material \a MatName. If \a MatName isn't defined then USER_DEFINED is
      * set and the user must define the colors itself.
      */
-    Material(const char* MatName);
+    explicit Material(const char* MatName);
     /** Does basically the same as the constructor above unless that it accepts a MaterialType as argument. */
-    Material(const MaterialType MatType);
+    explicit Material(const MaterialType MatType);
     //@}
     ~Material();
 

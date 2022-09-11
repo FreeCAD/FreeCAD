@@ -44,7 +44,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            ButtonView(QWidget *parent = nullptr);
+            explicit ButtonView(QWidget *parent = nullptr);
             void selectButton(int number);
         Q_SIGNALS:
             void changeCommandSelection(const QString& commandName);
@@ -59,7 +59,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            ButtonModel(QObject *parent);
+            explicit ButtonModel(QObject *parent);
             int rowCount(const QModelIndex &parent = QModelIndex()) const override;
             QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
             void insertButtonRows(int number);
@@ -79,7 +79,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            CommandView(QWidget *parent = nullptr);
+            explicit CommandView(QWidget *parent = nullptr);
         public Q_SLOTS:
             void goChangeCommandSelection(const QString& commandName);
         private Q_SLOTS:
@@ -93,7 +93,7 @@ namespace Gui
         public:
             enum NodeType {RootType, GroupType, CommandType};
 
-            CommandNode(NodeType typeIn);
+            explicit CommandNode(NodeType typeIn);
             ~CommandNode();
 
             NodeType nodeType;
@@ -107,7 +107,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            CommandModel(QObject *parent = nullptr);
+            explicit CommandModel(QObject *parent = nullptr);
             ~CommandModel() override;
             QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
             QModelIndex parent(const QModelIndex &index) const override;
@@ -144,7 +144,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            DlgCustomizeSpaceball(QWidget *parent = nullptr);
+            explicit DlgCustomizeSpaceball(QWidget *parent = nullptr);
             ~DlgCustomizeSpaceball() override;
         protected:
             void changeEvent(QEvent *e) override;

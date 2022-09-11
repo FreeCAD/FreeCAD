@@ -50,7 +50,7 @@ QGCustomClip::QGCustomClip()
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
 //    setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);   //good for debugging
-    m_rect = QRectF(0.,0.,10.,10.);
+    m_rect = QRectF(0., 0., 10., 10.);
 }
 
 void QGCustomClip::centerAt(QPointF centerPos)
@@ -65,7 +65,7 @@ void QGCustomClip::centerAt(double cX, double cY)
     double height = box.height();
     double newX = cX - width/2.;
     double newY = cY - height/2.;
-    setPos(newX,newY);
+    setPos(newX, newY);
 }
 
 void QGCustomClip::setRect(QRectF r)
@@ -76,7 +76,7 @@ void QGCustomClip::setRect(QRectF r)
 
 void QGCustomClip::setRect(double x, double y, double w, double h)
 {
-    QRectF r(x,y,w,h);
+    QRectF r(x, y,w, h);
     setRect(r);
 }
 
@@ -103,7 +103,7 @@ void QGCustomClip::makeMark(double x, double y)
 {
     QGICMark* cmItem = new QGICMark(-1);
     cmItem->setParentItem(this);
-    cmItem->setPos(x,y);
+    cmItem->setPos(x, y);
     cmItem->setThick(1.0);
     cmItem->setSize(40.0);
     cmItem->setZValue(ZVALUE::VERTEX);
@@ -111,7 +111,7 @@ void QGCustomClip::makeMark(double x, double y)
 
 void QGCustomClip::makeMark(Base::Vector3d v)
 {
-    makeMark(v.x,v.y);
+    makeMark(v.x, v.y);
 }
 
 

@@ -130,14 +130,14 @@ namespace Gui {
         friend class ViewProviderIndex;
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
         static QIcon* documentIcon;
-        typedef boost::unordered_set<ViewProviderIndex*> IndexSet;
+        using IndexSet = boost::unordered_set<ViewProviderIndex*>;
         std::map<const ViewProviderDocumentObject*, IndexSet> vp_nodes;
         void addToDocument(ViewProviderIndex*);
         void removeFromDocument(ViewProviderIndex*);
 
     public:
         const Gui::Document& d;
-        DocumentIndex(const Gui::Document& d) : d(d)
+        explicit DocumentIndex(const Gui::Document& d) : d(d)
         {
             if (!documentIcon)
                 documentIcon = new QIcon(Gui::BitmapFactory().pixmap("Document"));

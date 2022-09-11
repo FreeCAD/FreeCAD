@@ -79,7 +79,7 @@ class ViewerEventFilter;
  */
 class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public SelectionObserver
 {
-    typedef Quarter::SoQTQuarterAdaptor inherited;
+    using inherited = Quarter::SoQTQuarterAdaptor;
     Q_OBJECT
 
 public:
@@ -131,7 +131,7 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    explicit View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     ~View3DInventorViewer() override;
 

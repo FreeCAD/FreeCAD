@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawUtil_h_
-#define _DrawUtil_h_
+#ifndef DrawUtil_h_
+#define DrawUtil_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>
 
@@ -40,6 +42,7 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -52,6 +55,7 @@
 #endif
 
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
+#define VECTORTOLERANCE (Precision::Confusion())
 
 #define SVG_NS_URI         "http://www.w3.org/2000/svg"
 #define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
@@ -71,6 +75,8 @@ class TechDrawExport DrawUtil {
         static double sensibleScale(double working_scale);
         static double angleWithX(TopoDS_Edge e, bool reverse);
         static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+        static double incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double tolerance);
+
         static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
         static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
         static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
@@ -79,8 +85,6 @@ class TechDrawExport DrawUtil {
                                                                         double xRange,
                                                                         double yRange) ;
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
-
-        static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn);
 
         static std::string formatVector(const Base::Vector3d& v);
         static std::string formatVector(const gp_Dir& v);
@@ -91,17 +95,30 @@ class TechDrawExport DrawUtil {
         static std::string formatVector(const QPointF& v);
 
         static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
+        //!std::map require comparator to be a type not a function
+        struct vectorLessType {
+            bool operator()(const Base::Vector3d& a, const Base::Vector3d& b) const {
+                return DrawUtil::vectorLess(a, b);
+            }
+        };
+        static bool vertexEqual(TopoDS_Vertex& v1, TopoDS_Vertex& v2);
+        static bool vectorEqual(Base::Vector3d& v1, Base::Vector3d& v2);
+
+        static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Edge> vecIn);
+        static TopoDS_Shape vectorToCompound(std::vector<TopoDS_Wire> vecIn);
+        static std::vector<TopoDS_Edge> shapeToVector(TopoDS_Shape shapeIn);
+
         static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
         static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2, double tolerance = FLT_EPSILON);
         //! rotate vector by angle radians around axis through org
         static Base::Vector3d vecRotate(Base::Vector3d vec,
                                         double angle,
                                         Base::Vector3d axis,
-                                        Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
+                                        Base::Vector3d org = Base::Vector3d(0.0, 0.0, 0.0));
         static Base::Vector3d closestBasis(Base::Vector3d v);
         static double getDefaultLineWeight(std::string s);
-/*        static Base::Vector3d vector23(const Base::Vector3d& v2) { return Base::Vector3d(v2.x,v2.y,0.0); }*/
-/*        static Base::Vector3d vector32(const Base::Vector3d& v3) { return Base::Vector3d(v3.x,v3.y); }*/
+/*        static Base::Vector3d vector23(const Base::Vector3d& v2) { return Base::Vector3d(v2.x, v2.y, 0.0); }*/
+/*        static Base::Vector3d vector32(const Base::Vector3d& v3) { return Base::Vector3d(v3.x, v3.y); }*/
         //! is pt between end1 and end2?
         static bool isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2);
         //! find intersection in 2d for 2 lines in point+direction form
@@ -109,14 +126,14 @@ class TechDrawExport DrawUtil {
                                    Base::Vector3d p2, Base::Vector3d d2);
         static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
                                    Base::Vector2d p2, Base::Vector2d d2);
-        static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(),gp.Y(),gp.Z()); }
-        static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x,v.y,v.z); }
+        static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
+        static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x, v.y, v.z); }
         static std::string shapeToString(TopoDS_Shape s);
         static TopoDS_Shape shapeFromString(std::string s);
         static Base::Vector3d invertY(Base::Vector3d v);
         static QPointF invertY(QPointF p);
         static std::vector<std::string> split(std::string csvLine);
-        static std::vector<std::string> tokenize(std::string csvLine, std::string delimiter = ",$$$,");
+        static std::vector<std::string> tokenize(std::string csvLine, std::string delimiter = ", $$$, ");
         static App::Color pyTupleToColor(PyObject* pColor);
         static PyObject* colorToPyTuple(App::Color color);
         static bool isCrazy(TopoDS_Edge e);

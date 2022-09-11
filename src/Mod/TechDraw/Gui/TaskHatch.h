@@ -24,6 +24,8 @@
 #ifndef GUI_TASKVIEW_TASKHATCH_H
 #define GUI_TASKVIEW_TASKHATCH_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <App/Material.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -49,10 +51,9 @@ class TaskHatch : public QWidget
 
 public:
     TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
-    TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
+    explicit TaskHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskHatch() override;
 
-public:
     virtual bool accept();
     virtual bool reject();
 
@@ -98,10 +99,9 @@ class TaskDlgHatch : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> subs);
-    TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
+    explicit TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp);
     ~TaskDlgHatch() override;
 
-public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
@@ -116,8 +116,6 @@ public:
     { return false; }
 
     void update();
-
-protected:
 
 private:
     TaskHatch * widget;

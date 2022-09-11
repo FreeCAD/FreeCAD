@@ -83,7 +83,7 @@ class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::Selec
     };
 
 public:
-    TaskSketcherConstraints(ViewProviderSketch *sketchView);
+    explicit TaskSketcherConstraints(ViewProviderSketch *sketchView);
     ~TaskSketcherConstraints() override;
 
     /// Observer message from the Selection
@@ -127,7 +127,7 @@ public Q_SLOTS:
 protected:
     void changeEvent(QEvent *e) override;
     ViewProviderSketch *sketchView;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectionConstraintsChanged;
 
 private:

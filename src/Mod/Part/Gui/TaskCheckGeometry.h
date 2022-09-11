@@ -74,14 +74,14 @@ void goSetupResultInvalidCurveSurface(ResultEntry *entry);
 void goSetupResultInvalidSameParameterFlag(ResultEntry *entry);
 void goSetupResultUnorientableShapeFace(ResultEntry *entry);
 
-typedef std::function<void (ResultEntry *entry)> ResultFunction;
-typedef std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction> FunctionMapType;
+using ResultFunction = std::function<void (ResultEntry *entry)>;
+using FunctionMapType = std::tuple<TopAbs_ShapeEnum, BRepCheck_Status, ResultFunction>;
 
 class ResultModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ResultModel(QObject *parent = nullptr);
+    explicit ResultModel(QObject *parent = nullptr);
     ~ResultModel() override;
     QModelIndex index(int row, int column, const QModelIndex &parent) const override;
     QModelIndex parent(const QModelIndex &child) const override;
@@ -102,7 +102,7 @@ class TaskCheckGeometryResults : public QWidget
 {
     Q_OBJECT
 public:
-    TaskCheckGeometryResults(QWidget *parent = nullptr);
+    explicit TaskCheckGeometryResults(QWidget *parent = nullptr);
     ~TaskCheckGeometryResults() override;
     QString getShapeContentString();
     void goCheck();

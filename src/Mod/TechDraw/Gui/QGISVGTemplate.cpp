@@ -29,11 +29,11 @@
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
 #include <QDomDocument>
-#endif // #ifndef _PreComp_
-
 #include <QFile>
 #include <QXmlQuery>
 #include <QXmlResultItems>
+#endif // #ifndef _PreComp_
+
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -214,7 +214,7 @@ void QGISVGTemplate::createClickHandles()
         myPen.setWidth(0);  // 0 means "cosmetic pen" - always 1px
         item->setPen(myPen);
 
-        QBrush myBrush(editClickBoxColor,Qt::SolidPattern);
+        QBrush myBrush(editClickBoxColor, Qt::SolidPattern);
         item->setBrush(myBrush);
 
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);

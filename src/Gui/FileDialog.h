@@ -76,7 +76,7 @@ public:
     static QString restoreLocation();
     static void saveLocation(const QString&);
 
-    FileDialog(QWidget * parent = nullptr);
+    explicit FileDialog(QWidget * parent = nullptr);
     ~FileDialog() override;
 
     void accept() override;
@@ -166,7 +166,7 @@ public:
     Q_PROPERTY(QString buttonText READ buttonText WRITE setButtonText NOTIFY buttonTextChanged)
 
 public:
-    FileChooser ( QWidget * parent = nullptr );
+    explicit FileChooser ( QWidget * parent = nullptr );
     ~FileChooser() override;
 
     /**
@@ -244,7 +244,7 @@ class GuiExport SelectModule : public QDialog
     Q_OBJECT
 
 public:
-    typedef QMap<QString, QString> Dict;
+    using Dict = QMap<QString, QString>;
 
     SelectModule (const QString& type, const Dict&, QWidget* parent);
     ~SelectModule() override;

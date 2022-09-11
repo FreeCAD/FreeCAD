@@ -65,9 +65,11 @@ class Property(object):
     def setupProperty(self, obj, name, category, value):
         created = False
         if not hasattr(obj, name):
+            PathLog.track('add', obj.Name, name, self.propType)
             obj.addProperty(self.propType, name, category, self.info)
             self.initProperty(obj, name)
             created = True
+        PathLog.track('set', obj.Name, name, value, type(value))
         setattr(obj, name, value)
         return created
 
@@ -120,11 +122,6 @@ class PropertyLength(PropertyQuantity):
         return "Length"
 
 
-class PropertyPercent(Property):
-    def typeString(self):
-        return "Percent"
-
-
 class PropertyFloat(Property):
     def typeString(self):
         return "Float"
@@ -139,6 +136,11 @@ class PropertyInteger(Property):
 
     def valueFromString(self, string):
         return int(string)
+
+
+class PropertyPercent(PropertyInteger):
+    def typeString(self):
+        return "Percent"
 
 
 class PropertyBool(Property):

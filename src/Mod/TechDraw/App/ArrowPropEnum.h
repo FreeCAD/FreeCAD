@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _ARROWENUMS_H_
-#define _ARROWENUMS_H_
+#ifndef ARROWENUMS_H_
+#define ARROWENUMS_H_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <vector>
 #include <string>

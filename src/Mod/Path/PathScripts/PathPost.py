@@ -115,7 +115,7 @@ def processFileNameSubstitutions(
         j = job.Label
         filename = filename.replace("%j", j)
 
-    # Use the sequnce number if explicitly called
+    # Use the sequence number if explicitly called
     if "%S" in filename:
         j = job.Label
         filename = filename.replace("%S", str(sequencenumber))
@@ -238,19 +238,21 @@ def resolveFileName(job, subpartname, sequencenumber):
 
     if openDialog:
         foo = QtGui.QFileDialog.getSaveFileName(
-            QtGui.QApplication.activeWindow(), "Output File", filename
+            QtGui.QApplication.activeWindow(), "Output File", fullPath
         )
         if foo[0]:
             fullPath = foo[0]
         else:
             fullPath = None
 
-    # remove any unused substitution strings:
-    for s in validPathSubstitutions + validFilenameSubstitutions:
-        fullPath = fullPath.replace(f"%{s}", "")
+    if fullPath:
+        # remove any unused substitution strings:
+        for s in validPathSubstitutions + validFilenameSubstitutions:
+            fullPath = fullPath.replace(f"%{s}", "")
 
-    fullPath = os.path.normpath(fullPath)
-    PathLog.track(fullPath)
+        fullPath = os.path.normpath(fullPath)
+        PathLog.track(fullPath)
+
     return fullPath
 
 
@@ -591,7 +593,7 @@ class CommandPathPost:
             filenames.append(name)
             PathLog.track(result, gcode, name)
 
-            if result is None:
+            if name is None:
                 success = False
             else:
                 finalgcode += gcode

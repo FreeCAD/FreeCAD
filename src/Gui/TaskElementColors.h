@@ -38,7 +38,7 @@ class GuiExport ElementColors : public QWidget, public SelectionObserver
     Q_OBJECT
 
 public:
-    ElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
+    explicit ElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
     ~ElementColors() override;
 
     bool accept();
@@ -72,7 +72,7 @@ class GuiExport TaskElementColors : public TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
+    explicit TaskElementColors(ViewProviderDocumentObject* vp, bool noHide=false);
     ~TaskElementColors() override;
 
 public:

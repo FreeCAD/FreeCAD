@@ -2128,7 +2128,7 @@ class ComponentTaskPanel:
             "New Property".
         ptype: str, optional
             The name of the property type the new property will be set as. If
-            not specified, the the property's type will be determined using the
+            not specified, the property's type will be determined using the
             idx parameter.
         """
 

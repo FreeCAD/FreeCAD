@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
 #define TECHDRAWGUI_QGIHIGHLIGHT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsEllipseItem>
@@ -48,10 +50,10 @@ public:
     int type() const override { return Type;}
 
     virtual void paint(QPainter * painter,
-                       const QStyleOptionGraphicsItem * option, 
+                       const QStyleOptionGraphicsItem * option,
                        QWidget * widget = nullptr ) override;
 
-    void setBounds(double x1,double y1,double x2,double y2);
+    void setBounds(double x1, double y1, double x2, double y2);
     void setReference(const char* sym);
     void setFont(QFont f, double fsize);
     virtual void draw() override;

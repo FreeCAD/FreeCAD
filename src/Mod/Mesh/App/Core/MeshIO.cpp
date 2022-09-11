@@ -29,6 +29,9 @@
 #include "MeshIO.h"
 #include "Algorithm.h"
 #include "Builder.h"
+#include "Degeneration.h"
+#include "IO/Reader3MF.h"
+#include "IO/Writer3MF.h"
 
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
@@ -148,7 +151,7 @@ MeshIO::Format MeshInput::getFormat(const char* FileName)
          return MeshIO::Format::SMF;
      }
      else {
-         throw Base::FileException("File extension not supported",FileName);
+         throw Base::FileException("File extension not supported", FileName);
      }
 }
 
@@ -157,9 +160,9 @@ bool MeshInput::LoadAny(const char* FileName)
     // ask for read permission
     Base::FileInfo fi(FileName);
     if (!fi.exists() || !fi.isFile())
-        throw Base::FileException("File does not exist",FileName);
+        throw Base::FileException("File does not exist", FileName);
     if (!fi.isReadable())
-        throw Base::FileException("No permission on the file",FileName);
+        throw Base::FileException("No permission on the file", FileName);
 
     Base::ifstream str(fi, std::ios::in | std::ios::binary);
 
@@ -187,6 +190,9 @@ bool MeshInput::LoadAny(const char* FileName)
         else if (fi.hasExtension("smf")) {
             ok = LoadSMF( str );
         }
+        else if (fi.hasExtension("3mf")) {
+            ok = Load3MF( str );
+        }
         else if (fi.hasExtension("off")) {
             ok = LoadOFF( str );
         }
@@ -194,7 +200,7 @@ bool MeshInput::LoadAny(const char* FileName)
             ok = LoadPLY( str );
         }
         else {
-            throw Base::FileException("File extension not supported",FileName);
+            throw Base::FileException("File extension not supported", FileName);
         }
 
         return ok;
@@ -220,6 +226,8 @@ bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
         return LoadOBJ(str);
     case MeshIO::SMF:
         return LoadSMF(str);
+    case MeshIO::ThreeMF:
+        return Load3MF(str);
     case MeshIO::OFF:
         return LoadOFF(str);
     case MeshIO::IV:
@@ -328,7 +336,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 
     std::string line;
     float fX, fY, fZ;
-    int  i1=1,i2=1,i3=1,i4=1;
+    int  i1=1, i2=1, i3=1, i4=1;
     MeshFacet item;
 
     if (!rstrIn || rstrIn.bad())
@@ -355,9 +363,9 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
-            float r = std::min<int>(std::atof(what[10].first),255) / 255.0f;
-            float g = std::min<int>(std::atof(what[11].first),255) / 255.0f;
-            float b = std::min<int>(std::atof(what[12].first),255) / 255.0f;
+            float r = std::min<int>(std::atof(what[10].first), 255) / 255.0f;
+            float g = std::min<int>(std::atof(what[11].first), 255) / 255.0f;
+            float b = std::min<int>(std::atof(what[12].first), 255) / 255.0f;
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
             App::Color c(r,g,b);
@@ -786,9 +794,9 @@ namespace MeshCore {
         };
         struct Property
         {
-            typedef std::pair<std::string, int> first_argument_type;
-            typedef std::string second_argument_type;
-            typedef bool result_type;
+            using first_argument_type = std::pair<std::string, int>;
+            using second_argument_type = std::string;
+            using result_type = bool;
 
             bool operator()(const std::pair<std::string, int>& x,
                             const std::string& y) const
@@ -1484,146 +1492,69 @@ void MeshInput::LoadXML (Base::XMLReader &reader)
     _rclMesh.Adopt(cPoints, cFacets);
 }
 
-/** Loads an OpenInventor file. */
-bool MeshInput::LoadInventor (std::istream &rstrIn)
+/** Loads a 3MF file. */
+bool MeshInput::Load3MF(std::istream &inp)
 {
-    if (!rstrIn || rstrIn.bad())
+    Reader3MF reader(inp);
+    reader.Load();
+    std::vector<int> ids = reader.GetMeshIds();
+    if (!ids.empty()) {
+        MeshKernel compound = reader.GetMesh(ids[0]);
+        compound.Transform(reader.GetTransform(ids[0]));
+
+        for (std::size_t index = 1; index < ids.size(); index++) {
+            MeshKernel mesh = reader.GetMesh(ids[index]);
+            mesh.Transform(reader.GetTransform(ids[index]));
+            compound.Merge(mesh);
+        }
+
+        _rclMesh = compound;
+        return true;
+    }
+
+    return false;
+}
+
+/** Loads an OpenInventor file. */
+bool MeshInput::LoadInventor (std::istream &inp)
+{
+    Base::InventorLoader loader(inp);
+    if (!loader.read())
         return false;
 
-    boost::regex rx_p("\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                      "\\s*[\\,\\]]\\s*");
-    boost::regex rx_f("\\s*([0-9]+)\\s*\\,\\s*"
-                      "\\s+([0-9]+)\\s*\\,\\s*"
-                      "\\s+([0-9]+)\\s*\\,\\s*");
-    boost::cmatch what;
-
-    // get file size and estimate the number of lines
-    std::streamoff ulSize = 0;
-    std::streambuf* buf = rstrIn.rdbuf();
-    if (!buf)
+    if (!loader.isValid())
         return false;
 
-    std::streamoff ulCurr;
-    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
-    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
-    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
+    const auto& points = loader.getPoints();
+    const auto& faces = loader.getFaces();
 
-    std::string line;
-    MeshGeomFacet clFacet;
-    std::vector<MeshGeomFacet> clFacetAry;
-    std::vector<Base::Vector3f> aclPoints;
+    MeshPointArray meshPoints;
+    meshPoints.reserve(points.size());
+    std::transform(points.begin(), points.end(), std::back_inserter(meshPoints),
+                   [](const Base::Vector3f& v) {
+        return MeshPoint(v);
+    });
 
-    // We have approx. 30 characters per line
-    Base::SequencerLauncher seq("Loading...", ulSize/30);
-    bool flag = false;
-    bool normals = false;
-    bool points = false;
-    bool facets = false;
-    while (std::getline(rstrIn, line) && !facets) {
-        boost::algorithm::to_upper(line);
+    MeshFacetArray meshFacets;
+    meshFacets.reserve(faces.size());
+    std::transform(faces.begin(), faces.end(), std::back_inserter(meshFacets),
+                   [](const Base::InventorLoader::Face& f) {
+        return MeshFacet(f.p1, f.p2, f.p3);
+    });
 
-        // read the normals if they are defined
-        if (!normals && line.find("NORMAL {") != std::string::npos) {
-            float fX, fY, fZ;
-            normals = true; // okay, the normals are set by an SoNormal node
-            flag = true;
-            // Get the next line and check for the normal field which might begin
-            // with the first vector already i.e. it's of the form 'vector [ 0.0 0.0 1.0,'
-            // This is a special case to support also file formats directly written by
-            // Inventor 2.1 classes.
-            std::getline(rstrIn, line);
-            boost::algorithm::to_upper(line);
-            std::string::size_type pos = line.find("VECTOR [");
-            if (pos != std::string::npos)
-                line = line.substr(pos+8); // 8 = length of 'VECTOR ['
-            do {
-                if (boost::regex_match(line.c_str(), what, rx_p)) {
-                    fX = (float)std::atof(what[1].first);
-                    fY = (float)std::atof(what[4].first);
-                    fZ = (float)std::atof(what[7].first);
-                    clFacet.SetNormal(Base::Vector3f(fX, fY, fZ));
-                    clFacetAry.push_back(clFacet);
-                    seq.next(true); // allow to cancel
-                } else
-                    flag = false;
-            } while (std::getline(rstrIn, line) && flag);
-        }
-        // read the coordinates
-        else if (!points && line.find("COORDINATE3 {") != std::string::npos) {
-            Base::Vector3f clPoint;
-            points = true; // the SoCoordinate3 node
-            flag = true;
-            // Get the next line and check for the points field which might begin
-            // with the first point already i.e. it's of the form 'point [ 0.0 0.0 0.0,'
-            // This is a special case to support also file formats directly written by
-            // Inventor 2.1 classes.
-            std::getline(rstrIn, line);
-            boost::algorithm::to_upper(line);
-            std::string::size_type pos = line.find("POINT [");
-            if (pos != std::string::npos)
-                line = line.substr(pos+7); // 7 = length of 'POINT ['
-            do {
-                if (boost::regex_match(line.c_str(), what, rx_p)) {
-                    clPoint.x = (float)std::atof(what[1].first);
-                    clPoint.y = (float)std::atof(what[4].first);
-                    clPoint.z = (float)std::atof(what[7].first);
-                    aclPoints.push_back(clPoint);
-                    seq.next(true); // allow to cancel
-                } else
-                    flag = false;
-            } while (std::getline(rstrIn, line) && flag);
-        }
-        // read the point indices of the facets
-        else if (points && line.find("INDEXEDFACESET {") != std::string::npos) {
-            PointIndex ulPoints[3];
-            facets = true;
-            unsigned long ulCt = 0;
-            // Get the next line and check for the index field which might begin
-            // with the first index already.
-            // This is a special case to support also file formats directly written by
-            // Inventor 2.1 classes.
-            // Furthermore we must check whether more than one triple is given per line, which
-            // is handled in the while-loop.
-            std::getline(rstrIn, line);
-            boost::algorithm::to_upper(line);
-            std::string::size_type pos = line.find("COORDINDEX [");
-            if (pos != std::string::npos)
-                line = line.substr(pos+12); // 12 = length of 'COORDINDEX ['
-            do {
-                flag = false;
-                std::string::size_type pos = line.find("-1");
-                while (pos != std::string::npos) {
-                    std::string part = line.substr(0, pos);
-                    pos = line.find_first_of(",]", pos);
-                    line = line.substr(pos+1);
-                    pos = line.find("-1");
-                    if (boost::regex_match(part.c_str(), what, rx_f)) {
-                        flag = true;
-                        ulPoints[0] = std::atol(what[1].first);
-                        ulPoints[1] = std::atol(what[2].first);
-                        ulPoints[2] = std::atol(what[3].first);
-                        if (normals) {
-                            // get a reference to the facet with defined normal
-                            MeshGeomFacet& rclFacet = clFacetAry[ulCt++];
-                            for (int i = 0; i < 3; i++)
-                                rclFacet._aclPoints[i] = aclPoints[ulPoints[i]];
-                        }
-                        else {
-                            for (int i = 0; i < 3; i++)
-                                clFacet._aclPoints[i] = aclPoints[ulPoints[i]];
-                            clFacetAry.push_back(clFacet);
-                        }
-                        seq.next(true); // allow to cancel
-                    }
-                }
-            } while (std::getline(rstrIn, line) && flag);
+    MeshCleanup meshCleanup(meshPoints, meshFacets);
+    meshCleanup.RemoveInvalids();
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(), meshFacets);
+    meshAdj.SetFacetNeighbourhood();
+    this->_rclMesh.Adopt(meshPoints, meshFacets);
+
+    if (loader.isNonIndexed()) {
+        if (!MeshEvalDuplicatePoints(this->_rclMesh).Evaluate()) {
+            MeshFixDuplicatePoints(this->_rclMesh).Fixup();
         }
     }
 
-    _rclMesh = clFacetAry;
-    return (rstrIn?true:false);
+    return true;
 }
 
 /** Loads a Nastran file. */
@@ -2981,94 +2912,9 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
 /** Saves the mesh object into a 3MF file. */
 bool MeshOutput::Save3MF(std::ostream &str) const
 {
-    zipios::ZipOutputStream zip(str);
-    zip.putNextEntry("3D/3dmodel.model");
-    if (!Save3MFModel(zip))
-        return false;
-    zip.closeEntry();
-
-    zip.putNextEntry("_rels/.rels");
-    if (!Save3MFRels(zip))
-        return false;
-    zip.closeEntry();
-
-    zip.putNextEntry("[Content_Types].xml");
-    if (!Save3MFContent(zip))
-        return false;
-    zip.closeEntry();
-    return true;
-}
-
-bool MeshOutput::Save3MFRels(std::ostream &str) const
-{
-    str << "<?xml version='1.0' encoding='UTF-8'?>\n"
-        << "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">"
-           "<Relationship Id=\"rel0\" Target=\"/3D/3dmodel.model\" Type=\"http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel\" />"
-           "</Relationships>";
-    return true;
-}
-
-bool MeshOutput::Save3MFContent(std::ostream &str) const
-{
-    str << "<?xml version='1.0' encoding='UTF-8'?>\n"
-        << "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">"
-           "<Default ContentType=\"application/vnd.openxmlformats-package.relationships+xml\" Extension=\"rels\" />"
-           "<Default ContentType=\"application/vnd.ms-package.3dmanufacturing-3dmodel+xml\" Extension=\"model\" />"
-           "</Types>";
-    return true;
-}
-
-bool MeshOutput::Save3MFModel (std::ostream &str) const
-{
-    const MeshPointArray& rPoints = _rclMesh.GetPoints();
-    const MeshFacetArray& rFacets = _rclMesh.GetFacets();
-
-    if (!str || str.bad())
-        return false;
-
-    str << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        << "<model unit=\"millimeter\"\n"
-        << "       xml:lang=\"en-US\"\n"
-        << "       xmlns=\"http://schemas.microsoft.com/3dmanufacturing/core/2015/02\">\n"
-        << "<metadata name=\"Application\">FreeCAD</metadata>\n";
-    str << Base::blanks(2) << "<resources>\n";
-    str << Base::blanks(4) << "<object id=\"1\" type=\"model\">\n";
-    str << Base::blanks(6) << "<mesh>\n";
-
-    // vertices
-    str << Base::blanks(8) << "<vertices>\n";
-    Base::Vector3f pt;
-    std::size_t index = 0;
-    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
-        pt.Set(it->x, it->y, it->z);
-        if (this->apply_transform) {
-            this->_transform.multVec(pt, pt);
-        }
-        str << Base::blanks(10) << "<vertex x=\"" << pt.x
-                                     << "\" y=\"" << pt.y
-                                     << "\" z=\"" << pt.z
-                                     << "\" />\n";
-    }
-    str << Base::blanks(8) << "</vertices>\n";
-
-    // facet indices
-    str << Base::blanks(8) << "<triangles>\n";
-    for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
-        str << Base::blanks(10) << "<triangle v1=\"" << it->_aulPoints[0]
-                                       << "\" v2=\"" << it->_aulPoints[1]
-                                       << "\" v3=\"" << it->_aulPoints[2]
-                                       << "\" />\n";
-    }
-    str << Base::blanks(8) << "</triangles>\n";
-
-    str << Base::blanks(6) << "</mesh>\n";
-    str << Base::blanks(4) << "</object>\n";
-    str << Base::blanks(2) << "</resources>\n";
-    str << Base::blanks(2) << "<build>\n";
-    str << Base::blanks(4) << "<item objectid=\"1\" />\n";
-    str << Base::blanks(2) << "</build>\n";
-    str << "</model>\n";
-    return true;
+    Writer3MF writer(str);
+    writer.AddMesh(_rclMesh, _transform);
+    return writer.Save();
 }
 
 /** Writes an IDTF file. */

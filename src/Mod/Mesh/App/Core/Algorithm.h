@@ -56,7 +56,7 @@ class MeshExport MeshAlgorithm
 {
 public:
   /// Construction
-  MeshAlgorithm (const MeshKernel &rclM) : _rclMesh(rclM) { }
+  explicit MeshAlgorithm (const MeshKernel &rclM) : _rclMesh(rclM) { }
   /// Destruction
   ~MeshAlgorithm () { }
 
@@ -353,7 +353,7 @@ public:
 class MeshExport PointCollector : public MeshCollector
 {
 public:
-    PointCollector(std::vector<PointIndex>& ind) : indices(ind){}
+    explicit PointCollector(std::vector<PointIndex>& ind) : indices(ind){}
     ~PointCollector() override{}
     void Append(const MeshCore::MeshKernel& kernel, FacetIndex index) override
     {
@@ -371,7 +371,7 @@ private:
 class MeshExport FacetCollector : public MeshCollector
 {
 public:
-    FacetCollector(std::vector<FacetIndex>& ind) : indices(ind){}
+    explicit FacetCollector(std::vector<FacetIndex>& ind) : indices(ind){}
     ~FacetCollector() override{}
     void Append(const MeshCore::MeshKernel&, FacetIndex index) override
     {
@@ -392,7 +392,7 @@ class MeshExport MeshRefPointToFacets
 {
 public:
     /// Construction
-    MeshRefPointToFacets (const MeshKernel &rclM) : _rclMesh(rclM) 
+    explicit MeshRefPointToFacets (const MeshKernel &rclM) : _rclMesh(rclM)
     { Rebuild(); }
     /// Destruction
     ~MeshRefPointToFacets ()
@@ -431,7 +431,7 @@ class MeshExport MeshRefFacetToFacets
 {
 public:
     /// Construction
-    MeshRefFacetToFacets (const MeshKernel &rclM) : _rclMesh(rclM)
+    explicit MeshRefFacetToFacets (const MeshKernel &rclM) : _rclMesh(rclM)
     { Rebuild(); }
     /// Destruction
     ~MeshRefFacetToFacets ()
@@ -460,7 +460,7 @@ class MeshExport MeshRefPointToPoints
 {
 public:
     /// Construction
-    MeshRefPointToPoints (const MeshKernel &rclM) : _rclMesh(rclM) 
+    explicit MeshRefPointToPoints (const MeshKernel &rclM) : _rclMesh(rclM)
     { Rebuild(); }
     /// Destruction
     ~MeshRefPointToPoints ()
@@ -489,7 +489,7 @@ class MeshExport MeshRefEdgeToFacets
 {
 public:
     /// Construction
-    MeshRefEdgeToFacets (const MeshKernel &rclM) : _rclMesh(rclM) 
+    explicit MeshRefEdgeToFacets (const MeshKernel &rclM) : _rclMesh(rclM)
     { Rebuild(); }
     /// Destruction
     ~MeshRefEdgeToFacets ()
@@ -514,7 +514,7 @@ protected:
                 return false;
         }
     };
-    typedef std::pair<FacetIndex, FacetIndex> MeshFacetPair;
+    using MeshFacetPair = std::pair<FacetIndex, FacetIndex>;
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */
     std::map<MeshEdge, MeshFacetPair, EdgeOrder> _map;
 };
@@ -528,7 +528,7 @@ class MeshExport MeshRefNormalToPoints
 {
 public:
     /// Construction
-    MeshRefNormalToPoints (const MeshKernel &rclM) : _rclMesh(rclM) 
+    explicit MeshRefNormalToPoints (const MeshKernel &rclM) : _rclMesh(rclM)
     { Rebuild(); }
     /// Destruction
     ~MeshRefNormalToPoints ()

@@ -105,71 +105,71 @@ boundBox2 : Base.BoundBox
 base : Base.Vector, tuple
 dir : Base.Vector, tuple</UserDocu>
       </Documentation>
-	</Methode>
+    </Methode>
     <Methode Name="intersected">
       <Documentation>
         <UserDocu>intersected(boundBox2) -> Base.BoundBox\n
 Returns the intersection of this and the given bounding box.\n
 boundBox2 : Base.BoundBox</UserDocu>
       </Documentation>
-	</Methode>
+    </Methode>
     <Methode Name="united">
       <Documentation>
         <UserDocu>united(boundBox2) -> Base.BoundBox\n
 Returns the union of this and the given bounding box.\n
 boundBox2 : Base.BoundBox</UserDocu>
       </Documentation>
-	</Methode>
-	<Methode Name="enlarge">
-		<Documentation>
-			<UserDocu>enlarge(variation) -> None\n
+    </Methode>
+    <Methode Name="enlarge">
+        <Documentation>
+            <UserDocu>enlarge(variation) -> None\n
 Decrease the minimum values and increase the maximum values by the given value.
 A negative value shrinks the bounding box.\n
 variation : float</UserDocu>
-		</Documentation>
-	</Methode>
+        </Documentation>
+    </Methode>
 
-	  <Methode Name="getIntersectionPoint">
-		  <Documentation>
-			  <UserDocu>getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector\n
+      <Methode Name="getIntersectionPoint">
+          <Documentation>
+              <UserDocu>getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector\n
 Calculate the intersection point of a line with the bounding box.
 The base point must lie inside the bounding box, if not an exception is thrown.\n
 base : Base.Vector\n    Base point of the line.
 dir : Base.Vector\n    Direction of the line.
 epsilon : float\n    Bounding box size tolerance.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="move">
-		  <Documentation>
-			  <UserDocu>move(displacement) -> None
+          </Documentation>
+      </Methode>
+      <Methode Name="move">
+          <Documentation>
+              <UserDocu>move(displacement) -> None
 move(x, y, z) -> None\n
 Move the bounding box by the given values.\n
 displacement : Base.Vector, tuple\n    Displacement at each direction.
 x : float\n    Displacement at x-direction.
 y : float\n    Displacement at y-direction.
 z : float\n    Displacement at z-direction.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="scale">
-		  <Documentation>
-			  <UserDocu>scale(factor) -> None
+          </Documentation>
+      </Methode>
+      <Methode Name="scale">
+          <Documentation>
+              <UserDocu>scale(factor) -> None
 scale(x, y, z) -> None\n
 Scale the bounding box by the given values.\n
 factor : Base.Vector, tuple\n    Factor scale at each direction.
 x : float\n    Scale at x-direction.
 y : float\n    Scale at y-direction.
 z : float\n    Scale at z-direction.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="transformed">
-		  <Documentation>
-			  <UserDocu>transformed(matrix) -> Base.BoundBox\n
+          </Documentation>
+      </Methode>
+      <Methode Name="transformed">
+          <Documentation>
+              <UserDocu>transformed(matrix) -> Base.BoundBox\n
 Returns a new BoundBox containing the transformed rectangular cuboid
 represented by this BoundBox.\n
 matrix : Base.Matrix\n    Transformation matrix.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="isCutPlane">
+          </Documentation>
+      </Methode>
+      <Methode Name="isCutPlane">
       <Documentation>
         <UserDocu>isCutPlane(base, normal) -> bool\n
 Check if the plane specified by base and normal intersects (cuts) this bounding
@@ -178,82 +178,82 @@ base : Base.Vector
 normal : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
-		<Methode Name="isInside">
-			<Documentation>
-				<UserDocu>isInside(object) -> bool
+        <Methode Name="isInside">
+            <Documentation>
+                <UserDocu>isInside(object) -> bool
 isInside(x, y, z) -> bool\n
 Check if a point or a bounding box is inside this bounding box.\n
 object : Base.Vector, Base.BoundBox\n    Object to check if it is inside this bounding box.
 x : float\n    X-coordinate of the point to check.
 y : float\n    Y-coordinate of the point to check.
 z : float\n    Z-coordinate of the point to check.</UserDocu>
-			</Documentation>
-		</Methode>
-		<Attribute Name="Center" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Center point of the bounding box.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="Center" Type="Object" />
-	  </Attribute>
-	  <Attribute Name="XMax" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The maximum x boundary position.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="XMax" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="YMax" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The maximum y boundary position.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="YMax" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="ZMax" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The maximum z boundary position.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ZMax" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="XMin" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The minimum x boundary position.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="XMin" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="YMin" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The minimum y boundary position.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="YMin" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="ZMin" ReadOnly="false">
-		  <Documentation>
-			  <UserDocu>The minimum z boundary position.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ZMin" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="XLength" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Length of the bounding box in x direction.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="XLength" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="YLength" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Length of the bounding box in y direction.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="YLength" Type="Float" />
-	  </Attribute>
-	  <Attribute Name="ZLength" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Length of the bounding box in z direction.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="ZLength" Type="Float" />
-	  </Attribute>
- 	  <Attribute Name="DiagonalLength" ReadOnly="true">
-		  <Documentation>
-			  <UserDocu>Diagonal length of the bounding box.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="DiagonalLength" Type="Float" />
-	  </Attribute>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Center" ReadOnly="true">
+          <Documentation>
+              <UserDocu>Center point of the bounding box.</UserDocu>
+          </Documentation>
+          <Parameter Name="Center" Type="Object" />
+      </Attribute>
+      <Attribute Name="XMax" ReadOnly="false">
+          <Documentation>
+              <UserDocu>The maximum x boundary position.</UserDocu>
+          </Documentation>
+          <Parameter Name="XMax" Type="Float" />
+      </Attribute>
+      <Attribute Name="YMax" ReadOnly="false">
+          <Documentation>
+              <UserDocu>The maximum y boundary position.</UserDocu>
+          </Documentation>
+          <Parameter Name="YMax" Type="Float" />
+      </Attribute>
+      <Attribute Name="ZMax" ReadOnly="false">
+          <Documentation>
+              <UserDocu>The maximum z boundary position.</UserDocu>
+          </Documentation>
+          <Parameter Name="ZMax" Type="Float" />
+      </Attribute>
+      <Attribute Name="XMin" ReadOnly="false">
+          <Documentation>
+              <UserDocu>The minimum x boundary position.</UserDocu>
+          </Documentation>
+          <Parameter Name="XMin" Type="Float" />
+      </Attribute>
+      <Attribute Name="YMin" ReadOnly="false">
+          <Documentation>
+              <UserDocu>The minimum y boundary position.</UserDocu>
+          </Documentation>
+          <Parameter Name="YMin" Type="Float" />
+      </Attribute>
+      <Attribute Name="ZMin" ReadOnly="false">
+          <Documentation>
+              <UserDocu>The minimum z boundary position.</UserDocu>
+          </Documentation>
+          <Parameter Name="ZMin" Type="Float" />
+      </Attribute>
+      <Attribute Name="XLength" ReadOnly="true">
+          <Documentation>
+              <UserDocu>Length of the bounding box in x direction.</UserDocu>
+          </Documentation>
+          <Parameter Name="XLength" Type="Float" />
+      </Attribute>
+      <Attribute Name="YLength" ReadOnly="true">
+          <Documentation>
+              <UserDocu>Length of the bounding box in y direction.</UserDocu>
+          </Documentation>
+          <Parameter Name="YLength" Type="Float" />
+      </Attribute>
+      <Attribute Name="ZLength" ReadOnly="true">
+          <Documentation>
+              <UserDocu>Length of the bounding box in z direction.</UserDocu>
+          </Documentation>
+          <Parameter Name="ZLength" Type="Float" />
+      </Attribute>
+       <Attribute Name="DiagonalLength" ReadOnly="true">
+          <Documentation>
+              <UserDocu>Diagonal length of the bounding box.</UserDocu>
+          </Documentation>
+          <Parameter Name="DiagonalLength" Type="Float" />
+      </Attribute>
   </PythonExport>
 </GenerateModel>

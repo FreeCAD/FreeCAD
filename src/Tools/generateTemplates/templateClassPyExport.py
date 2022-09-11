@@ -90,7 +90,7 @@ public:
     int finalization();
 -
 
-    typedef @self.export.TwinPointer@* PointerType ;
+    using PointerType = @self.export.TwinPointer@*;
 
     virtual PyObject *_repr();        // the representation
     std::string representation() const;

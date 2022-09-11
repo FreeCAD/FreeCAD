@@ -42,7 +42,7 @@ class GuiExport GraphvizView : public MDIView
     Q_OBJECT
 
 public:
-    GraphvizView(App::Document &_doc, QWidget* parent=nullptr);
+    explicit GraphvizView(App::Document &_doc, QWidget* parent=nullptr);
     ~GraphvizView() override;
 
     QByteArray exportGraph(const QString& filter);
@@ -81,7 +81,7 @@ private:
     GraphvizWorker* thread;
     int nPending;
 
-    typedef boost::signals2::scoped_connection Connection;
+    using Connection = boost::signals2::scoped_connection;
     Connection recomputeConnection;
     Connection undoConnection;
     Connection redoConnection;

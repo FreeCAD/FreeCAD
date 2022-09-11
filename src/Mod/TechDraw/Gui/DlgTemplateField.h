@@ -24,6 +24,8 @@
 #ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
 #define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDialog>
 #include <QString>
 #include <memory>
@@ -36,7 +38,7 @@ class DlgTemplateField : public QDialog
     Q_OBJECT
 
 public:
-    DlgTemplateField( QWidget *parent = nullptr );
+    explicit DlgTemplateField( QWidget *parent = nullptr );
     ~DlgTemplateField() override = default;
 
     void setFieldName(std::string name);

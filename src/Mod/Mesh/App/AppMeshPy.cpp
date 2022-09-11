@@ -266,12 +266,15 @@ private:
             meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"] =
                           App::Application::Config()["BuildRevisionHash"];
 
-            exporter.reset( new AmfExporter(outputFileName, meta, exportAmfCompressed) );
-
-        } else if (exportFormat != MeshIO::Undefined) {
+            exporter.reset( new ExporterAMF(outputFileName, meta, exportAmfCompressed) );
+        }
+        else if (exportFormat == MeshIO::ThreeMF) {
+            exporter.reset( new Exporter3MF(outputFileName) );
+        }
+        else if (exportFormat != MeshIO::Undefined) {
             exporter.reset( new MergeExporter(outputFileName, exportFormat) );
-
-        } else {
+        }
+        else {
             std::string exStr("Can't determine mesh format from file name: '");
             exStr += outputFileName + "'";
             throw Py::ValueError(exStr.c_str());
@@ -280,6 +283,7 @@ private:
         for (auto it : objectList) {
             exporter->addObject(it, fTolerance);
         }
+
         exporter.reset();   // deletes Exporter, mesh file is written by destructor
 
         return Py::None();

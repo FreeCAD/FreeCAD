@@ -37,7 +37,7 @@ namespace Gui {
 
 class SoFCSelectionRoot;
 struct SoFCSelectionContextBase;
-typedef std::shared_ptr<SoFCSelectionContextBase> SoFCSelectionContextBasePtr;
+using SoFCSelectionContextBasePtr = std::shared_ptr<SoFCSelectionContextBase>;
 
 struct GuiExport SoFCSelectionContextBase {
     virtual ~SoFCSelectionContextBase() {}
@@ -46,7 +46,7 @@ struct GuiExport SoFCSelectionContextBase {
 };
 
 struct SoFCSelectionContext;
-typedef std::shared_ptr<SoFCSelectionContext> SoFCSelectionContextPtr;
+using SoFCSelectionContextPtr = std::shared_ptr<SoFCSelectionContext>;
 
 struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
 {
@@ -98,7 +98,7 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
 };
 
 struct SoFCSelectionContextEx;
-typedef std::shared_ptr<SoFCSelectionContextEx> SoFCSelectionContextExPtr;
+using SoFCSelectionContextExPtr = std::shared_ptr<SoFCSelectionContextEx>;
 
 struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
 {

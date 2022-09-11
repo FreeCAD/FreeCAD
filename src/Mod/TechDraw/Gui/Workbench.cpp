@@ -153,6 +153,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *annotations << "TechDraw_RichTextAnnotation";
     *annotations << "TechDraw_Balloon";
 
+    // stacking
+    Gui::MenuItem* stacking = new Gui::MenuItem;
+    stacking->setCommand("Stacking");
+    *stacking << "TechDraw_StackTop";
+    *stacking << "TechDraw_StackBottom";
+    *stacking << "TechDraw_StackUp";
+    *stacking << "TechDraw_StackDown";
+
     // lines
     Gui::MenuItem* lines = new Gui::MenuItem;
     lines->setCommand("Add Lines");
@@ -174,6 +182,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_PageDefault";
     *draw << "TechDraw_PageTemplate";
     *draw << "TechDraw_RedrawPage";
+    *draw << "TechDraw_PrintAll";
     *draw << "Separator";
     *draw << "TechDraw_View";
     *draw << "TechDraw_ActiveView";
@@ -191,6 +200,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "Separator";
     *draw << "TechDraw_MoveView";
     *draw << "TechDraw_ShareView";
+    *draw << "Separator";
+    *draw << stacking;
     *draw << dimensions;
     *draw << toolattrib;
     *draw << toolcenter;
@@ -226,6 +237,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
     *pages << "TechDraw_RedrawPage";
+    *pages << "TechDraw_PrintAll";
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("TechDraw Views");
@@ -246,6 +258,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *clips << "TechDraw_ClipGroup";
     *clips << "TechDraw_ClipGroupAdd";
     *clips << "TechDraw_ClipGroupRemove";
+
+    Gui::ToolBarItem *stacking = new Gui::ToolBarItem(root);
+    stacking->setCommand("TechDraw Stacking");
+    *stacking << "TechDraw_StackGroup";
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
@@ -365,6 +381,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
     *pages << "TechDraw_RedrawPage";
+    *pages << "TechDraw_PrintAll";
+
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("Views");
@@ -386,6 +404,10 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *clips << "TechDraw_ClipGroup";
     *clips << "TechDraw_ClipGroupAdd";
     *clips << "TechDraw_ClipGroupRemove";
+
+    Gui::ToolBarItem *stacking = new Gui::ToolBarItem(root);
+    stacking->setCommand("TechDraw Stacking");
+    *stacking << "TechDraw_StackGroup";
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");

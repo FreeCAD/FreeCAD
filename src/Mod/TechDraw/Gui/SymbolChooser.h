@@ -22,6 +22,8 @@
 #ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
 #define TECHDRAWGUI_SYMBOLCHOOSER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDialog>
 
 class QListWidgetItem;

@@ -30,7 +30,7 @@
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
 
-typedef Eigen::Matrix<double,4,4,Eigen::RowMajor> Matrix4x4;
+using Matrix4x4 = Eigen::Matrix<double,4,4,Eigen::RowMajor>;
 
 /**
  * Best-fit sphere for a given set of points. 

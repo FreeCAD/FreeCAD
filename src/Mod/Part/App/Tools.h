@@ -50,9 +50,9 @@ namespace Base {
 // Specialization for gp_Pnt
 template <>
 struct vec_traits<gp_Pnt> {
-    typedef gp_Pnt vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_Pnt;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -62,9 +62,9 @@ private:
 // Specialization for gp_Vec
 template <>
 struct vec_traits<gp_Vec> {
-    typedef gp_Vec vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_Vec;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -74,9 +74,9 @@ private:
 // Specialization for gp_Dir
 template <>
 struct vec_traits<gp_Dir> {
-    typedef gp_Dir vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_Dir;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }
@@ -86,9 +86,9 @@ private:
 // Specialization for gp_XYZ
 template <>
 struct vec_traits<gp_XYZ> {
-    typedef gp_XYZ vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
+    using vec_type = gp_XYZ;
+    using float_type = double;
+    explicit vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type> get() const {
         return std::make_tuple(v.X(), v.Y(), v.Z());
     }

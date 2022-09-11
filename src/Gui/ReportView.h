@@ -51,7 +51,7 @@ class ReportView : public QWidget
     Q_OBJECT
 
 public:
-    ReportView( QWidget* parent = nullptr);
+    explicit ReportView( QWidget* parent = nullptr);
     ~ReportView() override;
 
 protected:
@@ -77,7 +77,7 @@ public:
     };
 
 public:
-    ReportHighlighter(QTextEdit* );
+    explicit ReportHighlighter(QTextEdit* );
     ~ReportHighlighter() override;
 
     /** Parses the given text and highlight it in the right colors. */
@@ -128,7 +128,7 @@ class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public 
     Q_OBJECT
 
 public:
-    ReportOutput(QWidget* parent=nullptr);
+    explicit ReportOutput(QWidget* parent=nullptr);
     ~ReportOutput() override;
 
     /** Observes its parameter group. */
@@ -207,7 +207,7 @@ class ReportOutputObserver : public QObject
     Q_OBJECT
 
 public:
-    ReportOutputObserver (ReportOutput* view);
+    explicit ReportOutputObserver (ReportOutput* view);
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected:

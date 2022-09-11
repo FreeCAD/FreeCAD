@@ -58,7 +58,7 @@
     </Methode>
     <Methode Name="sense" Const="true">
       <Documentation>
-        <UserDocu>Returns the orientation of the curves in the the array returned by curves2d</UserDocu>
+        <UserDocu>Returns the orientation of the curves in the array returned by curves2d</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="order" Const="true">

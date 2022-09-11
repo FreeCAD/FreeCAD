@@ -22,27 +22,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QBitmap>
-# include <QContextMenuEvent>
-# include <QFileInfo>
-# include <QFileDialog>
-# include <QGLWidget>
-# include <QGraphicsEffect>
-# include <QMouseEvent>
-# include <QPainter>
-# include <QPaintEvent>
-# include <QSvgGenerator>
+#include <cmath>
+
+#include <QAction>
+#include <QApplication>
+#include <QBitmap>
+#include <QContextMenuEvent>
+#include <QFileInfo>
+#include <QFileDialog>
+#include <QGLWidget>
+#include <QGraphicsEffect>
+#include <QMouseEvent>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QSvgGenerator>
 #include <QScrollBar>
-# include <QWheelEvent>
+#include <QWheelEvent>
 #include <QTemporaryFile>
 #include <QDomDocument>
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
 #include <QTextCodec>
-#include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -89,6 +90,7 @@
 
 #include "Rez.h"
 #include "PreferencesGui.h"
+#include "DrawGuiUtil.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -152,9 +154,9 @@ static unsigned char pan_bitmap[PAN_BYTES] =
 
 static unsigned char pan_mask_bitmap[PAN_BYTES] =
 {
- 0xc0,0x03,0xe0,0x03,0xe0,0x07,0xf0,0x0f,0xe8,0x17,0xdc,0x3b,0xff,0xff,0xff,
- 0xff,0xff,0xff,0xff,0xff,0xdc,0x3b,0xe8,0x17,0xf0,0x0f,0xe0,0x07,0xc0,0x03,
- 0xc0,0x03
+ 0xc0, 0x03, 0xe0, 0x03, 0xe0, 0x07, 0xf0, 0x0f, 0xe8, 0x17, 0xdc, 0x3b, 0xff, 0xff, 0xff,
+ 0xff, 0xff, 0xff, 0xff, 0xff, 0xdc, 0x3b, 0xe8, 0x17, 0xf0, 0x0f, 0xe0, 0x07, 0xc0, 0x03,
+ 0xc0, 0x03
 };
 /*** zoom-style cursor ******/
 
@@ -174,9 +176,9 @@ static unsigned char zoom_bitmap[ZOOM_BYTES] =
 
 static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
 {
- 0x00,0x0f,0x80,0x1f,0xc0,0x3f,0xe0,0x7f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0x00,
- 0x0f,0x00,0x0f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0xe0,0x7f,0xc0,0x3f,0x80,0x1f,
- 0x00,0x0f
+ 0x00, 0x0f, 0x80, 0x1f, 0xc0, 0x3f, 0xe0, 0x7f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0x00,
+ 0x0f, 0x00, 0x0f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0xe0, 0x7f, 0xc0, 0x3f, 0x80, 0x1f,
+ 0x00, 0x0f
 };
 using namespace Gui;
 using namespace TechDraw;
@@ -187,7 +189,7 @@ public:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
     QGVPage* page;
-    Private(QGVPage* page) : page(page) {
+    explicit Private(QGVPage* page) : page(page) {
         // attach parameter Observer
         hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
         hGrp->Attach(this);
@@ -195,24 +197,24 @@ public:
     void init() {
         page->m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
         page->m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
-        page->m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
+        page->m_zoomIncrement = hGrp->GetFloat("ZoomStep", 0.02);
 
         auto hTDPref = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-        page->m_reversePan = hTDPref->GetInt("KbPan",1);
-        page->m_reverseScroll = hTDPref->GetInt("KbScroll",1);
+        page->m_reversePan = hTDPref->GetInt("KbPan", 1);
+        page->m_reverseScroll = hTDPref->GetInt("KbScroll", 1);
     }
     /// Observer message from the ParameterGrp
-    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override {
+    void OnChange(ParameterGrp::SubjectType &rCaller, ParameterGrp::MessageType Reason) override {
         const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-        if (strcmp(Reason,"NavigationStyle") == 0) {
-            std::string model = rGrp.GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
+        if (strcmp(Reason, "NavigationStyle") == 0) {
+            std::string model = rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
             page->setNavigationStyle(model);
-        } else if (strcmp(Reason,"InvertZoom") == 0) {
+        } else if (strcmp(Reason, "InvertZoom") == 0) {
             page->m_invertZoom = rGrp.GetBool("InvertZoom", true);
-        } else if (strcmp(Reason,"ZoomStep") == 0) {
+        } else if (strcmp(Reason, "ZoomStep") == 0) {
             page->m_zoomIncrement = rGrp.GetFloat("ZoomStep", 0.0f);
-        } else if (strcmp(Reason,"ZoomAtCursor") == 0) {
+        } else if (strcmp(Reason, "ZoomAtCursor") == 0) {
             page->m_atCursor = rGrp.GetBool("ZoomAtCursor", true);
             if (page->m_atCursor) {
                 page->setResizeAnchor(QGVPage::AnchorUnderMouse);
@@ -223,38 +225,41 @@ public:
             }
         }
     }
+    void detach() {
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Detach(this);
+
+    }
 };
 
-QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
+QGVPage::QGVPage(ViewProviderPage *vpPage, QGSPage* scenePage, QWidget *parent)
     : QGraphicsView(parent),
       m_renderer(Native),
       drawBkg(true),
       m_vpPage(nullptr),
-      m_scene(s),
+      m_scene(scenePage),
       balloonPlacing(false),
       panningActive(false),
       m_showGrid(false),
       m_navStyle(nullptr),
       d(new Private(this))
 {
-    assert(vp);
-    m_vpPage = vp;
-    const char* name = vp->getDrawPage()->getNameInDocument();
+    assert(vpPage);
+    m_vpPage = vpPage;
+    const char* name = vpPage->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
-    m_vpPage->setGraphicsView(this);
 
-    setScene(s);
+    setScene(scenePage);
     setMouseTracking(true);
     viewport()->setMouseTracking(true);
 
     m_parentMDI = static_cast<MDIViewPage*>(parent);
     m_saveContextEvent = nullptr;
 
-    setViewportUpdateMode(QGraphicsView::FullViewportUpdate); //this prevents crash when deleting dims.
-                                                          //scene(view?) indices of dirty regions gets
-                                                          //out of sync.  missing prepareGeometryChange
-                                                          //somewhere???? QTBUG-18021????
     setCacheMode(QGraphicsView::CacheBackground);
+    setRenderer(Native);
+//    setRenderer(OpenGL);  //gives rotten quality, don't use this
+    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     d->init();
     if (m_atCursor) {
@@ -269,15 +274,12 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGSPage* s, QWidget *parent)
 //    setDragMode(ScrollHandDrag);
     setDragMode(QGraphicsView::NoDrag);
     resetCursor();
-    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
     balloonCursor->setPixmap(prepareCursorPixmap("TechDraw_Balloon.svg", balloonHotspot = QPoint(8, 59)));
     balloonCursor->hide();
-
-    resetCachedContent();
 
     initNavigationStyle();
 
@@ -288,6 +290,12 @@ QGVPage::~QGVPage()
 {
     delete bkgBrush;
     delete m_navStyle;
+    d->detach();
+}
+
+void QGVPage::centerOnPage(void)
+{
+    centerOn(m_vpPage->getQGSPage()->getTemplateCenter());
 }
 
 void QGVPage::initNavigationStyle()
@@ -342,7 +350,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
 void QGVPage::startBalloonPlacing()
 {
     balloonPlacing = true;
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     activateCursor(QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
 #else
     activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
@@ -356,7 +364,7 @@ void QGVPage::cancelBalloonPlacing()
     resetCursor();
 }
 
-void QGVPage::drawBackground(QPainter *p, const QRectF &)
+void QGVPage::drawBackground(QPainter *painter, const QRectF &)
 {
 //Note: Background is not part of scene()
     if(!drawBkg)
@@ -367,16 +375,15 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     }
 
     if (!m_vpPage->getDrawPage()) {
-        //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
+//        Base::Console().Message("QGVP::drawBackground - no Page Feature!\n");
         return;
     }
 
-    p->save();
-    p->resetTransform();
+    painter->save();
+    painter->resetTransform();
 
-
-    p->setBrush(*bkgBrush);
-    p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
+    painter->setBrush(*bkgBrush);
+    painter->drawRect(viewport()->rect().adjusted(-2, -2, 2,2));   //just bigger than viewport to prevent artifacts
 
     // Default to A3 landscape, though this is currently relevant
     // only for opening corrupt docs, etc.
@@ -393,13 +400,12 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     QPolygon poly = mapFromScene(paperRect);
 
     QBrush pageBrush(Qt::white);
-    p->setBrush(pageBrush);
+    painter->setBrush(pageBrush);
 
-    p->drawRect(poly.boundingRect());
+    painter->drawRect(poly.boundingRect());
 
-    p->restore();
+    painter->restore();
 }
-
 
 void QGVPage::setRenderer(RendererType type)
 {
@@ -407,10 +413,13 @@ void QGVPage::setRenderer(RendererType type)
 
     if (m_renderer == OpenGL) {
 #ifndef QT_NO_OPENGL
-        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+//        setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers))); //QGLWidget is obsolete
+        setViewport(new QOpenGLWidget);
+        setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 #endif
     } else {
         setViewport(new QWidget);
+        setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     }
 }
 
@@ -493,7 +502,7 @@ void QGVPage::focusOutEvent(QFocusEvent *event) {
     m_navStyle->handleFocusOutEvent(event);
 }
 
-void QGVPage::kbPanScroll(int xMove, int yMove) 
+void QGVPage::kbPanScroll(int xMove, int yMove)
 {
     if (xMove != 0) {
         QScrollBar* hsb = horizontalScrollBar();

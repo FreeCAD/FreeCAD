@@ -20,8 +20,10 @@
 **
 ** $QT_END_LICENSE$
 */
-#ifndef _MTEXTEDIT_H_
-#define _MTEXTEDIT_H_
+#ifndef MTEXTEDIT_H_
+#define MTEXTEDIT_H_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QImage>
 #include <QMimeData>

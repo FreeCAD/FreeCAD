@@ -46,7 +46,7 @@ class SoFCColorGradient;
  * @author Werner Mayer
  */
 class GuiExport SoFCColorBarBase : public SoSeparator, public App::ValueFloatToRGB {
-  typedef SoSeparator inherited;
+  using inherited = SoSeparator;
 
   SO_NODE_ABSTRACT_HEADER(Gui::SoFCColorBarBase);
 
@@ -149,7 +149,7 @@ private:
  * @author Werner Mayer
  */
 class GuiExport SoFCColorBar : public SoFCColorBarBase, public Base::Subject<int> {
-  typedef SoFCColorBarBase inherited;
+  using inherited = SoFCColorBarBase;
 
   SO_NODE_HEADER(Gui::SoFCColorBar);
 

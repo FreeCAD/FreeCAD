@@ -39,7 +39,7 @@ class DlgSettingsMeasure : public Gui::Dialog::PreferencePage
   Q_OBJECT
 
 public:
-  DlgSettingsMeasure(QWidget* parent = nullptr);
+  explicit DlgSettingsMeasure(QWidget* parent = nullptr);
   ~DlgSettingsMeasure() override;
 
   void saveSettings() override;

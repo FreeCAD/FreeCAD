@@ -345,7 +345,7 @@ public:
          *                    hasn't been marked before, and calls its
          *                    aboutToSetValue().
          */
-        AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
+        explicit AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
             mProp.signalCounter++;
             if (markChange)
                 aboutToChange();
@@ -474,11 +474,11 @@ class PropertyListsT: public ParentT
                     , public AtomicPropertyChangeInterface<PropertyListsT<T,ListT,ParentT> >
 {
 public:
-    typedef typename ListT::const_reference const_reference;
-    typedef ListT list_type;
-    typedef ParentT parent_type;
-    typedef typename AtomicPropertyChangeInterface<
-        PropertyListsT<T,ListT,ParentT> >::AtomicPropertyChange atomic_change;
+    using const_reference = typename ListT::const_reference;
+    using list_type = ListT;
+    using parent_type = ParentT;
+    using atomic_change = typename AtomicPropertyChangeInterface<
+        PropertyListsT<T,ListT,ParentT> >::AtomicPropertyChange;
 
     friend atomic_change;
 

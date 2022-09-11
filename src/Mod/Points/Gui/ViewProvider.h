@@ -169,7 +169,7 @@ protected:
     SoIndexedPointSet   * pcPoints;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderScattered> ViewProviderPython;
+using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderScattered>;
 
 } // namespace PointsGui
 

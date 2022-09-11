@@ -101,8 +101,8 @@ PyObject * GeometryDefaultExtension<T>::getPyObject()
 namespace Part {
 // ----------------------------- Template specialisations----------------------------------------------------
 
-//typedef Part::GeometryDefaultExtension<long> GeometryIntExtension;
-//typedef Part::GeometryStringExtension<std::string> GeometryStringExtension;
+//using GeometryIntExtension = Part::GeometryDefaultExtension<long>;
+//using GeometryStringExtension = Part::GeometryStringExtension<std::string>;
 
 // ---------- GeometryIntExtension ----------
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryPersistenceExtension)

@@ -100,8 +100,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->plsb_LabelSize->onRestore();
 
     ui->cbProjAngle->onRestore();
-    ui->cbHiddenLineStyle->onRestore(); 
-    
+    ui->cbHiddenLineStyle->onRestore();
+
     ui->pfc_DefTemp->onRestore();
     ui->pfc_DefDir->onRestore();
     ui->pfc_HatchFile->onRestore();

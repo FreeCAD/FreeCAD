@@ -47,7 +47,7 @@ public:
     { return true; }
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPython;
+using ViewProviderResultPython = Gui::ViewProviderPythonFeatureT<ViewProviderResult>;
 
 } //namespace FemGui
 

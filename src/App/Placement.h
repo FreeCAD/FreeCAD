@@ -48,7 +48,7 @@ public:
 
 
 };
-typedef App::FeaturePythonT<App::Placement> PlacementPython;
+using PlacementPython = App::FeaturePythonT<App::Placement>;
 
 
 } //namespace App

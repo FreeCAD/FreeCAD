@@ -23,6 +23,8 @@
 #ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 #define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -60,12 +62,9 @@ class TaskCustomizeFormat : public QWidget
     Q_OBJECT
 
 public:
-    TaskCustomizeFormat(App::DocumentObject * object);
+    explicit TaskCustomizeFormat(App::DocumentObject * object);
     ~TaskCustomizeFormat() override;
 
-public Q_SLOTS:
-
-public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
@@ -73,8 +72,6 @@ public:
 private Q_SLOTS:
     void onSymbolClicked();
     void onFormatChanged();
-
-protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -93,7 +90,7 @@ class TaskDlgCustomizeFormat : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgCustomizeFormat(App::DocumentObject * object);
+    explicit TaskDlgCustomizeFormat(App::DocumentObject * object);
     ~TaskDlgCustomizeFormat() override;
 
 public:

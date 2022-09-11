@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QGraphicsView>
 # include <iostream>
 # include <string>
 # include <sstream>
@@ -31,7 +32,6 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -134,7 +134,7 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-//    bool result = _checkSelection(this,2);
+//    bool result = _checkSelection(this, 2);
 //    if (!result)
 //        return;
 //    result = _checkDrawViewPart(this);
@@ -214,8 +214,8 @@ void CmdTechDrawDimension::activated(int iMsg)
 //    }
 
 //    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-//    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-//    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+//    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+//    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
 //                                                       ,dimType.c_str());
 
 //    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -224,7 +224,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 //    }
 //    dim->References2D.setValues(objs, subs);
 
-//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+//    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 //    commitCommand();
 //    dim->recomputeFeature();
 
@@ -261,7 +261,7 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
 void CmdTechDrawRadiusDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,1);
+    bool result = _checkSelection(this, 1);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -328,8 +328,8 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        ,"Radius");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -338,7 +338,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
 
@@ -377,7 +377,7 @@ CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
 void CmdTechDrawDiameterDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,1);
+    bool result = _checkSelection(this, 1);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -440,8 +440,8 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     subs.push_back(SubNames[0]);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        ,"Diameter");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -450,7 +450,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -488,7 +488,7 @@ CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
 void CmdTechDrawLengthDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,2);
+    bool result = _checkSelection(this, 2);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -539,8 +539,8 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')", FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'", FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        , "Distance");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -548,7 +548,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -593,7 +593,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 void CmdTechDrawHorizontalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,2);
+    bool result = _checkSelection(this, 2);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -644,8 +644,8 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        ,"DistanceX");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -654,7 +654,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -698,7 +698,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
 void CmdTechDrawVerticalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,2);
+    bool result = _checkSelection(this, 2);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -731,7 +731,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
          (_isValidSingleEdge(this) == isDiagonal) ) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
+    } else if (  _isValidVertexes(this) ||
                 (_isValidEdgeToEdge(this) == isVertical)   ||
                 (_isValidEdgeToEdge(this) == isHorizontal) ||
                 (_isValidEdgeToEdge(this) == isDiagonal) ||
@@ -749,8 +749,8 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        ,"DistanceY");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -758,7 +758,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -801,7 +801,7 @@ CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
 void CmdTechDrawAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,2);
+    bool result = _checkSelection(this, 2);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -834,15 +834,15 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
                                                    QObject::tr("Need two straight edges to make an Angle Dimension"));
         return;
     }
-    
+
     objs.push_back(objFeat);
     objs.push_back(objFeat);
     subs.push_back(SubNames[0]);
     subs.push_back(SubNames[1]);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        ,"Angle");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -851,7 +851,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -889,7 +889,7 @@ CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
 void CmdTechDraw3PtAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,3);
+    bool result = _checkSelection(this, 3);
     if (!result)
         return;
     result = _checkDrawViewPart(this);
@@ -930,8 +930,8 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     subs.push_back(SubNames[2]);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        ,"Angle3Pt");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -940,7 +940,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     }
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -986,7 +986,7 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
         return;
     }
 
-    bool result = _checkSelection(this,2);
+    bool result = _checkSelection(this, 2);
     if (!result)
         return;
 
@@ -1021,7 +1021,7 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
 
     // dialog to select the Dimension to link
-    Gui::Control().showDialog(new TaskDlgLinkDim(parts,subs,page));
+    Gui::Control().showDialog(new TaskDlgLinkDim(parts, subs, page));
 
     page->getDocument()->recompute();                                  //still need to recompute in Gui. why?
 }
@@ -1075,7 +1075,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
             execVExtent(this);
             break;
         default:
-            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n",iMsg);
+            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1114,12 +1114,12 @@ void CmdTechDrawExtentGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawExtentGroup","Horizontal Extent"));
-    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalExtent","Insert Horizontal Extent Dimension"));
+    arc1->setText(QApplication::translate("CmdTechDrawExtentGroup", "Horizontal Extent"));
+    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalExtent", "Insert Horizontal Extent Dimension"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawExtentGroup","Vertical Extent"));
-    arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtentDimension","Insert Vertical Extent Dimension"));
+    arc2->setText(QApplication::translate("CmdTechDrawExtentGroup", "Vertical Extent"));
+    arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtentDimension", "Insert Vertical Extent Dimension"));
     arc2->setStatusTip(arc2->toolTip());
 }
 
@@ -1196,11 +1196,7 @@ void execHExtent(Gui::Command* cmd)
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
- //           baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
-            if (SubNames.empty() || SubNames[0].empty()) {
-                SubNames.clear();
-            }
         }
     }
 
@@ -1322,7 +1318,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
 void CmdTechDrawLandmarkDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,3);
+    bool result = _checkSelection(this, 3);
     if (!result)
         return;
 
@@ -1357,16 +1353,16 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("LandmarkDim");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::LandmarkDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('TechDraw::LandmarkDimension', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     if (objects.size() == 2) {
         //what about distanceX and distanceY??
-        doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Distance");
+        doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), "Distance");
         refs2d.push_back(dvp);
         refs2d.push_back(dvp);
     }
 //    } else if (objects.size() == 3) {             //not implemented yet
-//        doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Angle3Pt");
+//        doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), "Angle3Pt");
 //        refs2d.push_back(dvp);
 //        refs2d.push_back(dvp);
 //        refs2d.push_back(dvp);
@@ -1381,7 +1377,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     }
     dim->References2D.setValues(refs2d, subs);
     dim->References3D.setValues(objects, subs);
-    
+
     commitCommand();
     dim->recomputeFeature();
 
@@ -1496,7 +1492,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
     TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
     if (!geom) {
-        Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
+        Base::Console().Error("Logic Error: no geometry for GeoId: %d\n", GeoId);
         return isInvalid;
     }
 
@@ -1563,7 +1559,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     const std::vector<std::string> SubNames = selection[0].getSubNames();
 
     //there has to be 2
-    if(SubNames.size() != 2) {                                                   
+    if(SubNames.size() != 2) {
         return isInvalid;
     }
 
@@ -1579,7 +1575,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
     TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
     if (!geom0 || !geom1) {                                         // missing gometry
-        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
+        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n", GeoId0, GeoId1);
         return isInvalid;
     }
 
@@ -1611,13 +1607,13 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    
+
     //there has to be 2
     if(SubNames.size() != 2) {
         return false;
     }
 
-    int eId,vId;
+    int eId, vId;
     TechDraw::BaseGeomPtr e;
     TechDraw::VertexPtr v;
     if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
@@ -1634,7 +1630,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     e = objFeat0->getGeomByIndex(eId);
     v = objFeat0->getProjVertexByIndex(vId);
     if (!e || !v) {
-        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
+        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n", eId, vId);
         return false;
     }
 

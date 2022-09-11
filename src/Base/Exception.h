@@ -31,7 +31,7 @@
 #include "FileInfo.h"
 
 
-typedef struct _object PyObject;
+using PyObject = struct _object;
 
 /* MACROS FOR THROWING EXCEPTIONS */
 

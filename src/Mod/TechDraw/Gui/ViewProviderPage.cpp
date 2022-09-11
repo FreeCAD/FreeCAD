@@ -78,26 +78,32 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 ViewProviderPage::ViewProviderPage()
   : m_mdiView(nullptr),
-    m_docReady(true),
+    m_pageName(""),
     m_graphicsView(nullptr),
     m_graphicsScene(nullptr)
 {
     sPixmap = "TechDraw_TreePage";
     static const char *group = "Grid";
 
-    ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
-    ADD_PROPERTY_TYPE(ShowGrid ,(PreferencesGui::showGrid()),group,App::Prop_None,"Show or hide a grid on this Page");
+    ADD_PROPERTY_TYPE(ShowFrames ,(true), group, App::Prop_None, "Show or hide View frames and Labels on this Page");
+    ADD_PROPERTY_TYPE(ShowGrid ,(PreferencesGui::showGrid()), group, App::Prop_None, "Show or hide a grid on this Page");
     ADD_PROPERTY_TYPE(GridSpacing, (PreferencesGui::gridSpacing()), group, (App::PropertyType)(App::Prop_None),
                      "Grid line spacing in mm");
 
-    ShowFrames.setStatus(App::Property::Hidden,true);
-    Visibility.setStatus(App::Property::Hidden,true);
-    DisplayMode.setStatus(App::Property::Hidden,true);
+    ShowFrames.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::Property::Hidden, true);
+
+    m_graphicsScene = new QGSPage(this);
+    m_graphicsScene->setItemIndexMethod(QGraphicsScene::NoIndex); //this prevents crash when deleting dims.
+                                                          //scene(view?) indices of dirty regions gets
+                                                          //out of sync.  missing prepareGeometryChange
+                                                          //somewhere???? QTBUG-18021???
 }
 
 ViewProviderPage::~ViewProviderPage()
 {
     removeMDIView();                    //if the MDIViewPage is still in MainWindow, remove it.
+    m_graphicsScene->deleteLater();
 }
 
 void ViewProviderPage::attach(App::DocumentObject *pcFeat)
@@ -105,14 +111,14 @@ void ViewProviderPage::attach(App::DocumentObject *pcFeat)
     ViewProviderDocumentObject::attach(pcFeat);
 
     auto bnd = boost::bind(&ViewProviderPage::onGuiRepaint, this, bp::_1);
-    auto feature = getDrawPage();
+    TechDraw::DrawPage* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         m_pageName = feature->getNameInDocument();
+        m_graphicsScene->setObjectName(QString::fromLocal8Bit(m_pageName.c_str()));
     } else {
         Base::Console().Log("VPP::attach has no Feature!\n");
     }
-
 }
 
 void ViewProviderPage::setDisplayMode(const char* ModeName)
@@ -128,38 +134,17 @@ std::vector<std::string> ViewProviderPage::getDisplayModes() const
     return StrList;
 }
 
-void ViewProviderPage::show()
+void ViewProviderPage::onChanged(const App::Property *prop)
 {
-    Visibility.setValue(true);
-    showMDIViewPage();
-}
-
-void ViewProviderPage::hide()
-{
-    Visibility.setValue(false);
-    removeMDIView();
-    ViewProviderDocumentObject::hide();
-}
-
-void ViewProviderPage::removeMDIView()
-{
-    if (m_mdiView.isNull()) {
-        return;
+    if (prop == &(ShowGrid)) {
+        setGrid();
+    } else if (prop == &(GridSpacing)) {
+        setGrid();
+    } else if (prop == &Visibility) {
+        //Visibility changes are handled in VPDO::onChanged -> show() or hide()
     }
 
-    //m_mdiView is a QPointer
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
-    //Gui::getMainWindow()->activatePreviousWindow();
-    QList<QWidget*> wList= Gui::getMainWindow()->windows();
-    if (!wList.contains(m_mdiView))
-        return;
-    
-    Gui::getMainWindow()->removeWindow(m_mdiView);
-    Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
-    if (!aw) {
-        return;
-    }
-    aw->showMaximized();
+    Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
 void ViewProviderPage::updateData(const App::Property* prop)
@@ -178,10 +163,10 @@ void ViewProviderPage::updateData(const App::Property* prop)
        signalChangeIcon();
     //if the template is changed, rebuild the visual
     } else if (prop == &(page->Template)) {
-       if (m_mdiView &&
-          !page->isUnsetting()) {
-            m_mdiView->matchSceneRectToTemplate();
-            m_mdiView->updateTemplate();
+       if (!page->isUnsetting()) {
+           //check if a template has been added to scene first?
+            m_graphicsScene->matchSceneRectToTemplate();
+            m_graphicsScene->updateTemplate();
         }
     } else if (prop == &(page->Label)) {
        if (m_mdiView &&
@@ -189,8 +174,8 @@ void ViewProviderPage::updateData(const App::Property* prop)
            m_mdiView->setTabText(page->Label.getValue());
        }
     } else if (prop == &page->Views) {
-        if (m_mdiView && !page->isUnsetting())
-            m_mdiView->fixOrphans();
+        if (!page->isUnsetting())
+            m_graphicsScene->fixOrphans();
     }
 
     Gui::ViewProviderDocumentObject::updateData(prop);
@@ -254,7 +239,6 @@ void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 bool ViewProviderPage::setEdit(int ModNum)
 {
     if (ModNum == _SHOWDRAWING) {
-        Visibility.setValue(true);
         showMDIViewPage();   // show the drawing
         return false;  //finished editing
     } else if (ModNum == _TOGGLEUPDATE) {
@@ -269,45 +253,108 @@ bool ViewProviderPage::setEdit(int ModNum)
     }
 }
 
-bool ViewProviderPage::doubleClicked()
+void ViewProviderPage::unsetEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
+    return;
+}
+
+bool ViewProviderPage::doubleClicked(void)
 {
     show();
-    Gui::getMainWindow()->setActiveWindow(m_mdiView);
+    if (m_mdiView) {
+        Gui::getMainWindow()->setActiveWindow(m_mdiView);
+    }
     return true;
+}
+
+void ViewProviderPage::show(void)
+{
+    showMDIViewPage();
+    ViewProviderDocumentObject::show();
+}
+
+void ViewProviderPage::hide(void)
+{
+    if (getMDIView()) {
+        getMDIView()->hide();     //this doesn't remove the mdiViewPage from the mainWindow
+        removeMDIView();
+    }
+    ViewProviderDocumentObject::hide();
 }
 
 bool ViewProviderPage::showMDIViewPage()
 {
-   if (isRestoring() || !Visibility.getValue())
-       return true;
-
     if (m_mdiView.isNull()){
-        Gui::Document* doc = Gui::Application::Instance->getDocument
-            (pcObject->getDocument());
-        m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
-        QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
-
-        m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
-        m_mdiView->setDocumentName(pcObject->getDocument()->getName());
-
-        m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
-        m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
-        Gui::getMainWindow()->addWindow(m_mdiView);
-        m_mdiView->viewAll();
-        m_mdiView->showMaximized();
-        m_mdiView->addChildrenToPage();
-        m_mdiView->fixOrphans(true);
+        createMDIViewPage();
+        m_graphicsScene->addChildrenToPage();
+        m_graphicsScene->updateTemplate(true);
+        m_graphicsScene->redrawAllViews();
+        m_graphicsScene->fixOrphans(true);
     } else {
-        m_mdiView->updateTemplate(true);
-        m_mdiView->redrawAllViews();
-        m_mdiView->fixOrphans(true);
+        m_graphicsScene->redrawAllViews();
+        m_graphicsScene->fixOrphans(true);
     }
+    m_graphicsView->centerOnPage();
+
+    m_mdiView->viewAll();
+    m_mdiView->showMaximized();
+
     setGrid();
+
+    Visibility.setValue(true);
 
     return true;
 }
 
-std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
+void ViewProviderPage::createMDIViewPage()
+{
+    Gui::Document* doc = Gui::Application::Instance->getDocument
+        (pcObject->getDocument());
+    m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
+    if (m_graphicsView == nullptr) {
+        m_graphicsView = new QGVPage(this, m_graphicsScene, m_mdiView);
+        std::string objName = m_pageName + "View";
+        m_graphicsView->setObjectName(QString::fromLocal8Bit(objName.c_str()));
+    }
+    m_mdiView->setScene(m_graphicsScene, m_graphicsView);
+    QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
+
+    m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
+    m_mdiView->setDocumentName(pcObject->getDocument()->getName());
+
+    m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
+    m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
+    Gui::getMainWindow()->addWindow(m_mdiView);
+    Gui::getMainWindow()->setActiveWindow(m_mdiView);
+}
+
+//NOTE: removing MDIViewPage (parent) destroys QGVPage (eventually)
+void ViewProviderPage::removeMDIView(void)
+{
+    if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
+        QList<QWidget*> wList= Gui::getMainWindow()->windows();
+        if (wList.contains(m_mdiView)) {
+            Gui::getMainWindow()->removeWindow(m_mdiView);
+            m_mdiView = nullptr;            //m_mdiView will eventually be deleted and
+            m_graphicsView = nullptr;       //will take m_graphicsView with it
+            Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
+            if (aw != nullptr) {
+                aw->showMaximized();
+            }
+        }
+    }
+}
+
+MDIViewPage* ViewProviderPage::getMDIViewPage() const
+{
+    if (m_mdiView.isNull()) {
+        return nullptr;
+    }
+    return m_mdiView;
+}
+
+std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
 {
     std::vector<App::DocumentObject*> temp;
 
@@ -362,51 +409,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
     }
 }
 
-void ViewProviderPage::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    static_cast<void>(showMDIViewPage());
-    return;
-}
-
-
-MDIViewPage* ViewProviderPage::getMDIViewPage() const
-{
-    if (m_mdiView.isNull()) {
-        Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no m_mdiView!\n");
-        return nullptr;
-    }
-
-    return m_mdiView;
-}
-
-
-void ViewProviderPage::onChanged(const App::Property *prop)
-{
-    if (prop == &(ShowGrid) || prop == &(GridSpacing)) {
-        setGrid();
-    }
-    Gui::ViewProviderDocumentObject::onChanged(prop);
-}
-
-void ViewProviderPage::startRestoring()
-{
-    m_docReady = false;
-    Gui::ViewProviderDocumentObject::startRestoring();
-}
-
-void ViewProviderPage::finishRestoring()
-{
-    m_docReady = true;
-    //control drawing opening on restore based on Preference
-    //mantis #2967 ph2 - don't even show blank page
-    if (getDrawPage()->canUpdate()) {
-        static_cast<void>(showMDIViewPage());
-    }
-    Gui::ViewProviderDocumentObject::finishRestoring();
-}
-
-bool ViewProviderPage::isShow() const
+bool ViewProviderPage::isShow(void) const
 {
     return Visibility.getValue();
 }
@@ -433,7 +436,7 @@ void ViewProviderPage::toggleFrameState()
 
 void ViewProviderPage::setTemplateMarkers(bool state)
 {
-//    Base::Console().Message("VPP::setTemplateMarkers(%d)\n",state);
+//    Base::Console().Message("VPP::setTemplateMarkers(%d)\n", state);
     App::DocumentObject *templateFeat = nullptr;
     templateFeat = getDrawPage()->Template.getValue();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
@@ -446,16 +449,6 @@ void ViewProviderPage::setTemplateMarkers(bool state)
             t->updateView(true);
         }
     }
-}
-
-void ViewProviderPage::setGraphicsView(QGVPage* gv)
-{
-    m_graphicsView = gv;
-}
-
-void ViewProviderPage::setGraphicsScene(QGSPage* gs)
-{
-    m_graphicsScene = gs;
 }
 
 bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
@@ -472,9 +465,9 @@ bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
 void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp)
 {
     if (dp == getDrawPage()) {
-        if (!m_mdiView.isNull() &&
-           !getDrawPage()->isUnsetting()) {
-            m_mdiView->fixOrphans();
+        //this signal is for us
+        if (!getDrawPage()->isUnsetting()) {
+            m_graphicsScene->fixOrphans();
         }
     }
 }
@@ -483,7 +476,7 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
 {
     //during redo, pcObject can become invalid, but non-zero??
     if (!pcObject) {
-        Base::Console().Message("TROUBLE - VPPage::getDrawPage - no Page Object!\n");
+        Base::Console().Log("VPP::getDrawPage - no Page Object!\n");
         return nullptr;
     }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
@@ -491,7 +484,6 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
 
 Gui::MDIView *ViewProviderPage::getMDIView() const
 {
-    const_cast<ViewProviderPage*>(this)->showMDIViewPage();
     return m_mdiView.data();
 }
 
@@ -508,7 +500,7 @@ void  ViewProviderPage::setGrid()
         pageWidth = dp->getPageWidth();
         pageHeight = dp->getPageHeight();
     }
-    QGVPage* widget = getGraphicsView();
+    QGVPage* widget = getQGVPage();
     if (widget) {
         if (ShowGrid.getValue()) {
             widget->showGrid(true);

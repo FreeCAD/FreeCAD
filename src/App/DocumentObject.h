@@ -74,11 +74,11 @@ enum ObjectStatus {
 class AppExport DocumentObjectExecReturn
 {
 public:
-    DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=nullptr)
+    explicit DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=nullptr)
         : Why(sWhy), Which(WhichObject)
     {
     }
-    DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=nullptr)
+    explicit DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=nullptr)
         : Which(WhichObject)
     {
         if (sWhy)

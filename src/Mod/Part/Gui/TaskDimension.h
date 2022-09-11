@@ -193,13 +193,13 @@ class SteppedSelection : public QWidget
 {
   Q_OBJECT
 public:
-  SteppedSelection(const uint &buttonCountIn, QWidget *parent = nullptr);
+  explicit SteppedSelection(const uint &buttonCountIn, QWidget *parent = nullptr);
   ~SteppedSelection() override;
   QPushButton* getButton(const uint &index);
   void setIconDone(const uint &index);
   
 protected:
-  typedef std::pair<QPushButton *, QLabel *> ButtonIconPairType;
+  using ButtonIconPairType = std::pair<QPushButton *, QLabel *>;
   std::vector<ButtonIconPairType> buttons;
   QPixmap *stepActive;
   QPixmap *stepDone;
@@ -308,9 +308,9 @@ public:
   bool isValid() const {return status;}
   /*!get the calculated vector.
    * @return the vector. use isValid to ensure correct results.*/
-  operator gp_Vec() const {return vector;}
+  operator gp_Vec() const {return vector;}//explicit bombs
   /*!build occ line used for extrema calculation*/
-  operator gp_Lin() const;
+  operator gp_Lin() const;//explicit bombs
   gp_Vec getPickPoint() const {return origin;}
   
 private:

@@ -136,7 +136,7 @@ struct CCmdParam
 };
 
 // this class is actually a map of strings to vectors
-typedef map<StringType, CCmdParam> _CCmdLine;
+using _CCmdLine = map<StringType, CCmdParam>;
 
 // the command line parser class
 class CCmdLine : public _CCmdLine

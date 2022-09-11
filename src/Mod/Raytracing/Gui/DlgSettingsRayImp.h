@@ -40,7 +40,7 @@ class DlgSettingsRayImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsRayImp( QWidget* parent = nullptr );
+    explicit DlgSettingsRayImp( QWidget* parent = nullptr );
     ~DlgSettingsRayImp() override;
 
 protected:

@@ -117,7 +117,7 @@ private:
 
 namespace Py {
 
-typedef PythonClassObject<Base::Vector2dPy> Vector2d;
+using Vector2d = PythonClassObject<Base::Vector2dPy>;
 
 inline Base::Vector2d toVector2d(PyObject *py) {
     Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
@@ -246,14 +246,14 @@ private:
 };
 
 // PyCXX wrapper classes Py::Matrix, Py::Rotation, Py::Placement, ...
-typedef GeometryT<Base::BoundBox3d, Base::BoundBoxPy,
-                 &Base::BoundBoxPy::getBoundBoxPtr>     BoundingBox;
-typedef GeometryT<Base::Matrix4D, Base::MatrixPy,
-                 &Base::MatrixPy::getMatrixPtr>         Matrix;
-typedef GeometryT<Base::Rotation, Base::RotationPy,
-                 &Base::RotationPy::getRotationPtr>     Rotation;
-typedef GeometryT<Base::Placement, Base::PlacementPy,
-                 &Base::PlacementPy::getPlacementPtr>   Placement;
+using BoundingBox = GeometryT<Base::BoundBox3d, Base::BoundBoxPy,
+                             &Base::BoundBoxPy::getBoundBoxPtr>;
+using Matrix      = GeometryT<Base::Matrix4D, Base::MatrixPy,
+                             &Base::MatrixPy::getMatrixPtr>;
+using Rotation    = GeometryT<Base::Rotation, Base::RotationPy,
+                             &Base::RotationPy::getRotationPtr>;
+using Placement   = GeometryT<Base::Placement, Base::PlacementPy,
+                             &Base::PlacementPy::getPlacementPtr>;
 
 }
 

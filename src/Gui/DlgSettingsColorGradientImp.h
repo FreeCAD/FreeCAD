@@ -44,7 +44,7 @@ class DlgSettingsColorGradientImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgSettingsColorGradientImp(const App::ColorGradient& cg,
+    explicit DlgSettingsColorGradientImp(const App::ColorGradient& cg,
                                 QWidget* parent = nullptr,
                                 Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgSettingsColorGradientImp() override;

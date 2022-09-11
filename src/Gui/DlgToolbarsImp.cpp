@@ -45,11 +45,11 @@
 using namespace Gui::Dialog;
 
 namespace Gui { namespace Dialog {
-typedef std::vector< std::pair<QLatin1String, QString> > GroupMap;
+using GroupMap = std::vector< std::pair<QLatin1String, QString> >;
 
 struct GroupMap_find {
     const QLatin1String& item;
-    GroupMap_find(const QLatin1String& item) : item(item) {}
+    explicit GroupMap_find(const QLatin1String& item) : item(item) {}
     bool operator () (const std::pair<QLatin1String, QString>& elem) const
     {
         return elem.first == item;

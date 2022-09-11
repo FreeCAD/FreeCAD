@@ -36,7 +36,7 @@ class DlgProcessorChooser : public QDialog
     Q_OBJECT
 
 public:
-    DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
+    explicit DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
     ~DlgProcessorChooser() override;
 
     std::string getProcessor();

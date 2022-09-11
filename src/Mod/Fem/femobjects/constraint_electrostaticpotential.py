@@ -52,7 +52,9 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Electric Potential"
             )
-            obj.Potential = 0.0
+            # setting  1 V assures that the unit does not switch to mV
+            # and the constraint holds usually Volts
+            obj.Potential = "1 V"
 
         if not hasattr(obj, "PotentialEnabled"):
             obj.addProperty(
@@ -61,7 +63,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 "Parameter",
                 "Potential Enabled"
             )
-            obj.PotentialEnabled = False
+            obj.PotentialEnabled = True
 
         if not hasattr(obj, "PotentialConstant"):
             obj.addProperty(

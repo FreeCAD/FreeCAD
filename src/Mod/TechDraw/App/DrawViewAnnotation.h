@@ -21,8 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawViewAnnotation_h_
-#define _DrawViewAnnotation_h_
+#ifndef DrawViewAnnotation_h_
+#define DrawViewAnnotation_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -42,14 +44,14 @@ class TechDrawExport DrawViewAnnotation : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewAnnotation();
-    ~DrawViewAnnotation() override;
+    ~DrawViewAnnotation() = default;
 
     App::PropertyStringList   Text;
     App::PropertyFont         Font;
     App::PropertyColor        TextColor;
     App::PropertyLength       TextSize;
     App::PropertyPercent      LineSpace;
-    App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
+    App::PropertyEnumeration  TextStyle; // Plain, Bold, Italic, Bold-Italic
     App::PropertyLength       MaxWidth;
 
     QRectF getRect() const override;
@@ -67,13 +69,13 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-	void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 private:
     static const char* TextStyleEnums[];
 };
 
-typedef App::FeaturePythonT<DrawViewAnnotation> DrawViewAnnotationPython;
+using DrawViewAnnotationPython = App::FeaturePythonT<DrawViewAnnotation>;
 
 
 } //namespace TechDraw

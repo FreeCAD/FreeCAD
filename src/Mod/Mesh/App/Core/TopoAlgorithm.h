@@ -52,7 +52,7 @@ class MeshExport MeshTopoAlgorithm
 {
 public:
     // construction/destruction
-    MeshTopoAlgorithm (MeshKernel &rclM);
+    explicit MeshTopoAlgorithm (MeshKernel &rclM);
     virtual ~MeshTopoAlgorithm ();
 
 public:
@@ -321,7 +321,7 @@ private:
     };
 
     // cache
-    typedef std::map<Base::Vector3f,PointIndex,Vertex_Less> tCache;
+    using tCache = std::map<Base::Vector3f,PointIndex,Vertex_Less>;
     tCache* _cache;
 };
 
@@ -336,7 +336,7 @@ class MeshExport MeshComponents
 public:
     enum TMode {OverEdge, OverPoint};
 
-    MeshComponents( const MeshKernel& rclMesh );
+    explicit MeshComponents( const MeshKernel& rclMesh );
     ~MeshComponents();
 
     /**

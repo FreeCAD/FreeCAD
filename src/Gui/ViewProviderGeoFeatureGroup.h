@@ -44,7 +44,7 @@ public:
     ~ViewProviderGeoFeatureGroup() override;
 };
 
-typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoFeatureGroupPython;
+using ViewProviderGeoFeatureGroupPython = ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup>;
 
 } // namespace Gui
 

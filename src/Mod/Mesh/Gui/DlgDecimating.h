@@ -36,7 +36,7 @@ class DlgDecimating : public QWidget
     Q_OBJECT
 
 public:
-    DlgDecimating(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit DlgDecimating(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgDecimating() override;
     void setNumberOfTriangles(int);
     double tolerance() const;

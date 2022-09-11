@@ -72,7 +72,7 @@ public:
 
     class AppExport DocumentMapper {
     public:
-        DocumentMapper(const std::map<std::string,std::string> &);
+        explicit DocumentMapper(const std::map<std::string,std::string> &);
         ~DocumentMapper();
     };
 
@@ -81,14 +81,21 @@ public:
 
     public:
 
-        // Constructor
-        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false)
-            : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier)
-        { }
+        String(const std::string &s = "",
+               bool _isRealString = false,
+               bool _forceIdentifier = false)
+            : str(s),
+            isString(_isRealString),
+            forceIdentifier(_forceIdentifier)
+        {}//explicit bombs
 
-        String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false)
-            : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier)
-        { }
+        explicit String(std::string &&s,
+               bool _isRealString = false,
+               bool _forceIdentifier = false)
+            : str(std::move(s)),
+            isString(_isRealString),
+            forceIdentifier(_forceIdentifier)
+        {}
 
         FC_DEFAULT_CTORS(String) {
             str = std::move(other.str);
@@ -112,9 +119,9 @@ public:
 
         // Operators
 
-        operator std::string() const { return str; }
+        explicit operator std::string() const { return str; }
 
-        operator const char *() const { return str.c_str(); }
+        explicit operator const char *() const { return str.c_str(); }
 
         bool operator==(const String & other) const { return str == other.str; }
 
@@ -166,9 +173,9 @@ public:
         }
 
         Component(const String &_name = String(), typeEnum _type=SIMPLE,
-                int begin=INT_MAX, int end=INT_MAX, int step=1);
+                int begin=INT_MAX, int end=INT_MAX, int step=1);//explicit bombs
         Component(String &&_name, typeEnum _type=SIMPLE,
-                int begin=INT_MAX, int end=INT_MAX, int step=1);
+                int begin=INT_MAX, int end=INT_MAX, int step=1);//explicit bombs
 
         static Component SimpleComponent(const char * _component);
 
@@ -234,6 +241,9 @@ public:
     static Component SimpleComponent(String &&_component)
         {return Component::SimpleComponent(std::move(_component));}
 
+   static Component SimpleComponent(const std::string _component)
+        {return Component::SimpleComponent(_component.c_str());}
+
     static Component ArrayComponent(int _index)
         {return Component::ArrayComponent(_index); }
 
@@ -246,12 +256,12 @@ public:
     static Component MapComponent(String &&_key)
         {return Component::MapComponent(_key);}
 
-    ObjectIdentifier(const App::PropertyContainer * _owner = nullptr,
+    explicit ObjectIdentifier(const App::PropertyContainer * _owner = nullptr,
             const std::string & property = std::string(), int index=INT_MAX);
 
     ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
 
-    ObjectIdentifier(const App::Property & prop, int index=INT_MAX);
+    ObjectIdentifier(const App::Property & prop, int index=INT_MAX);//explicit bombs
 
     FC_DEFAULT_CTORS(ObjectIdentifier) {
         owner = other.owner;
@@ -336,7 +346,7 @@ public:
     const std::string &getSubObjectName(bool newStyle) const;
     const std::string &getSubObjectName() const;
 
-    typedef std::map<std::pair<App::DocumentObject*,std::string>,std::string> SubNameMap;
+    using SubNameMap = std::map<std::pair<App::DocumentObject*,std::string>,std::string>;
     void importSubNames(const SubNameMap &subNameMap);
 
     bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
@@ -353,7 +363,7 @@ public:
      * the property may not exist at the time this ObjectIdentifier is
      * constructed.
      */
-    typedef std::map<App::DocumentObject *, std::set<std::string> > Dependencies;
+    using Dependencies = std::map<App::DocumentObject *, std::set<std::string> >;
 
     /** Get dependencies of this object identifier
      *
@@ -436,7 +446,7 @@ protected:
 
     struct ResolveResults {
 
-        ResolveResults(const ObjectIdentifier & oi);
+        explicit ResolveResults(const ObjectIdentifier & oi);
 
         int propertyIndex;
         App::Document * resolvedDocument;
@@ -506,8 +516,8 @@ namespace std {
 
 template<>
 struct hash<App::ObjectIdentifier> {
-    typedef App::ObjectIdentifier argument_type;
-    typedef std::size_t result_type;
+    using argument_type = App::ObjectIdentifier;
+    using result_type = std::size_t;
     inline result_type operator()(argument_type const& s) const {
         return s.hash();
     }

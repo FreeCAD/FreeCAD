@@ -129,7 +129,7 @@ protected:
 class Writer
 {
 public:
-    Writer(const PointKernel&);
+    explicit Writer(const PointKernel&);
     virtual ~Writer();
     virtual void write(const std::string& filename) = 0;
 
@@ -152,7 +152,7 @@ protected:
 class AscWriter : public Writer
 {
 public:
-    AscWriter(const PointKernel&);
+    explicit AscWriter(const PointKernel&);
     ~AscWriter() override;
     void write(const std::string& filename) override;
 };
@@ -160,7 +160,7 @@ public:
 class PlyWriter : public Writer
 {
 public:
-    PlyWriter(const PointKernel&);
+    explicit PlyWriter(const PointKernel&);
     ~PlyWriter() override;
     void write(const std::string& filename) override;
 };
@@ -168,7 +168,7 @@ public:
 class PcdWriter : public Writer
 {
 public:
-    PcdWriter(const PointKernel&);
+    explicit PcdWriter(const PointKernel&);
     ~PcdWriter() override;
     void write(const std::string& filename) override;
 };

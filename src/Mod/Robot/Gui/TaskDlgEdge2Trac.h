@@ -44,7 +44,7 @@ class RobotGuiExport TaskDlgEdge2Trac : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgEdge2Trac(Robot::Edge2TracObject *);
+    explicit TaskDlgEdge2Trac(Robot::Edge2TracObject *);
     ~TaskDlgEdge2Trac() override;
 
 public:

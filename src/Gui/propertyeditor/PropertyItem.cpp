@@ -1349,7 +1349,7 @@ class VectorLineEdit : public Gui::ExpLineEdit
 {
     int decimals;
 public:
-    VectorLineEdit (int decimals, QWidget * parent=nullptr, bool expressionOnly=false)
+    explicit VectorLineEdit (int decimals, QWidget * parent=nullptr, bool expressionOnly=false)
         : Gui::ExpLineEdit(parent, expressionOnly)
         , decimals(decimals)
     {
@@ -2856,7 +2856,7 @@ struct EnumItem {
     QString text;
     QString fullText;
     std::shared_ptr<EnumItems> children;
-    EnumItem(const QString &t = QString(), const QString &f = QString())
+    explicit EnumItem(const QString &t = QString(), const QString &f = QString())
         :text(t), fullText(f)
     {}
     void populate(QMenu *menu);

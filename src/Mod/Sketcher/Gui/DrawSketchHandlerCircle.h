@@ -67,10 +67,12 @@ public:
 
             // Display radius for user
             float radius = (onSketchPos - EditCurve[0]).Length();
-
-            SbString text;
-            text.sprintf(" (%.1fR)", radius);
-            setPositionText(onSketchPos, text);
+            if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                text.sprintf(" (R%s)", radiusString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0],
@@ -212,9 +214,13 @@ public:
 
                 // Display radius and start angle
                 // This lineAngle will report counter-clockwise from +X, not relatively
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string radiusString = lengthToDisplayFormat(radius, 1);
+                    std::string angleString = angleToDisplayFormat( lineAngle * 180.0 / M_PI, 1);
+                    text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 drawEdit(EditCurve);
                 if (Mode == STATUS_SEEK_Second) {

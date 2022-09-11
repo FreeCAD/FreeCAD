@@ -227,13 +227,8 @@ protected:
     void endDocument() override;
     void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs) override;
     void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname) override;
-#if (XERCES_VERSION_MAJOR == 2)
-    virtual void characters         (const XMLCh* const chars, const unsigned int length);
-    virtual void ignorableWhitespace(const XMLCh* const chars, const unsigned int length);
-#else
     void characters         (const XMLCh* const chars, const XMLSize_t length) override;
     void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length) override;
-#endif
     //@}
 
     /** @name Lexical handler */
@@ -266,7 +261,7 @@ protected:
     unsigned int CharacterCount;
 
     std::map<std::string,std::string> AttrMap;
-    typedef std::map<std::string,std::string> AttrMapType;
+    using AttrMapType = std::map<std::string,std::string>;
 
     enum {
         None = 0,

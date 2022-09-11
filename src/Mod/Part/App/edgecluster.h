@@ -52,16 +52,16 @@ struct Edgesort_gp_Pnt_Less
 };
 
 
-typedef std::vector<TopoDS_Edge> tEdgeVector;
-typedef std::map<gp_Pnt,tEdgeVector,Edgesort_gp_Pnt_Less>  tMapPntEdge;
-typedef std::pair<gp_Pnt,tEdgeVector> tMapPntEdgePair;
-typedef std::vector<std::vector<TopoDS_Edge> > tEdgeClusterVector;
+using tEdgeVector = std::vector<TopoDS_Edge>;
+using tMapPntEdge = std::map<gp_Pnt,tEdgeVector,Edgesort_gp_Pnt_Less>;
+using tMapPntEdgePair = std::pair<gp_Pnt,tEdgeVector>;
+using tEdgeClusterVector = std::vector<std::vector<TopoDS_Edge> >;
 
 
 class PartExport Edgecluster
 {
 public:
-    Edgecluster(const std::vector<TopoDS_Edge>& usorted_edges);
+    explicit Edgecluster(const std::vector<TopoDS_Edge>& usorted_edges);
     virtual ~Edgecluster();
 
     tEdgeClusterVector GetClusters();

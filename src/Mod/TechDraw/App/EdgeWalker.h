@@ -28,7 +28,11 @@
 #ifndef TECHDRAW_EDGEWALKER_H
 #define TECHDRAW_EDGEWALKER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
+#include <boost_graph_adjacency_list.hpp>
+
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/planar_face_traversal.hpp>
 #include <boost/property_map/property_map.hpp>
@@ -43,32 +47,28 @@
 namespace TechDraw {
 //using namespace boost;
 
-typedef
+using graph =
     boost::adjacency_list
         < boost::vecS,
           boost::vecS,
-          boost::undirectedS,
+          boost::bidirectionalS,
           boost::property<boost::vertex_index_t, int>,
           boost::property<boost::edge_index_t, int>
-        >
-        graph;
+        >;
 
-typedef
-    boost::graph_traits < graph >::vertex_descriptor
-        vertex_t;
-typedef
-    boost::graph_traits < graph >::edge_descriptor
-        edge_t;
+using vertex_t =
+    boost::graph_traits < graph >::vertex_descriptor;
 
-typedef
-    std::vector< std::vector<edge_t> >
-        planar_embedding_storage_t;
+using edge_t =
+    boost::graph_traits < graph >::edge_descriptor;
 
-typedef
+using planar_embedding_storage_t =
+    std::vector< std::vector<edge_t> >;
+
+using planar_embedding_t =
     boost::iterator_property_map< planar_embedding_storage_t::iterator,
                                   boost::property_map<graph, boost::vertex_index_t>::type
-                                >
-        planar_embedding_t;
+                                >;
 
 class TechDrawExport WalkerEdge
 {
@@ -80,7 +80,7 @@ public:
     std::size_t v1;
     std::size_t v2;
     edge_t ed;
-    int idx;
+    std::size_t idx;
 };
 
 class TechDrawExport ewWire
@@ -91,7 +91,7 @@ public:
     std::vector<WalkerEdge>  wedges;      //[WE] representing 1 wire
     void push_back(WalkerEdge w);
     void clear() {wedges.clear();}
-    int size();
+    std::size_t size(void);
 };
 
 class TechDrawExport ewWireList
@@ -101,7 +101,7 @@ public:
 
     std::vector<ewWire> wires;
     void push_back(ewWire e);
-    int size();
+    std::size_t size(void);
 };
 
 
@@ -126,11 +126,11 @@ class TechDrawExport incidenceItem
 {
 public:
     incidenceItem() {iEdge = 0; angle = 0.0;}
-    incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
-    ~incidenceItem() {}
+    incidenceItem(std::size_t idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
+    ~incidenceItem()  = default;
     static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);
     static bool iiEqual(const incidenceItem& i1, const incidenceItem& i2);
-    int iEdge;
+    std::size_t iEdge;
     double angle;
     edge_t eDesc;
 };
@@ -139,11 +139,11 @@ class TechDrawExport embedItem
 {
 public:
     embedItem();
-    embedItem(int i,
+    embedItem(std::size_t i,
               std::vector<incidenceItem> list) { iVertex = i; incidenceList = list;}
-    ~embedItem() {}
+    ~embedItem()  = default;
 
-    int iVertex;
+    std::size_t iVertex;
     std::vector<incidenceItem> incidenceList;
     std::string dump();
     static std::vector<incidenceItem> sortIncidenceList (std::vector<incidenceItem> &list, bool ascend);
@@ -158,8 +158,9 @@ public:
 
     bool loadEdges(std::vector<TechDraw::WalkerEdge>& edges);
     bool loadEdges(std::vector<TopoDS_Edge> edges);
-    bool setSize(int size);
-    bool perform();
+    bool setSize(std::size_t size);
+    std::vector<TopoDS_Wire> execute(std::vector<TopoDS_Edge> edgeList, bool biggie = true);
+
     ewWireList getResult();
     std::vector<TopoDS_Wire> getResultWires();
     std::vector<TopoDS_Wire> getResultNoDups();
@@ -168,7 +169,7 @@ public:
     std::vector<WalkerEdge>    makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                std::vector<TopoDS_Vertex> verts);
 
-    int findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
+    size_t findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert);
     std::vector<TopoDS_Wire> sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest);
     std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
     static TopoDS_Wire makeCleanWire(std::vector<TopoDS_Edge> edges, double tol = 0.10);
@@ -179,6 +180,7 @@ public:
                                                  const std::vector<TopoDS_Vertex> uniqueVList);
 
 protected:
+    bool prepare();
     static bool wireCompare(const TopoDS_Wire& w1, const TopoDS_Wire& w2);
     std::vector<TechDraw::WalkerEdge> m_saveWalkerEdges;
     std::vector<TopoDS_Edge> m_saveInEdges;

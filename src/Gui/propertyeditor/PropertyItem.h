@@ -105,7 +105,7 @@ template <class CLASS>
 class PropertyItemProducer : public Base::AbstractProducer
 {
 public:
-    PropertyItemProducer(const char* className) {
+    explicit PropertyItemProducer(const char* className) {
         PropertyItemFactory::instance().AddProducer(className, this);
     }
     ~PropertyItemProducer() override {
@@ -499,7 +499,7 @@ class PropertyEditorWidget : public QWidget
     Q_OBJECT
 
 public:
-    PropertyEditorWidget (QWidget * parent = nullptr);
+    explicit PropertyEditorWidget (QWidget * parent = nullptr);
     ~PropertyEditorWidget() override;
 
     QVariant value() const;
@@ -526,7 +526,7 @@ class VectorListWidget : public PropertyEditorWidget
     Q_OBJECT
 
 public:
-    VectorListWidget (int decimals, QWidget * parent = nullptr);
+    explicit VectorListWidget (int decimals, QWidget * parent = nullptr);
 
 protected:
     void showValue(const QVariant& data) override;
@@ -762,7 +762,7 @@ class PlacementEditor : public Gui::LabelButton
     Q_OBJECT
 
 public:
-    PlacementEditor(const QString& name, QWidget * parent = nullptr);
+    explicit PlacementEditor(const QString& name, QWidget * parent = nullptr);
     ~PlacementEditor() override;
 
 private Q_SLOTS:
@@ -853,7 +853,7 @@ class PropertyEnumButton : public QPushButton
 {
     Q_OBJECT
 public:
-    PropertyEnumButton(QWidget *parent = nullptr)
+    explicit PropertyEnumButton(QWidget *parent = nullptr)
         :QPushButton(parent)
     {}
 
@@ -1123,7 +1123,7 @@ class LinkSelection : public QObject
     Q_OBJECT
 
 public:
-    LinkSelection(const App::SubObjectT &);
+    explicit LinkSelection(const App::SubObjectT &);
     ~LinkSelection() override;
 
 public Q_SLOTS:

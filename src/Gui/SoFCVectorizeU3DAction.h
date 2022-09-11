@@ -48,7 +48,7 @@ private:
  */
 class SoFCVectorizeU3DActionP;
 class GuiExport SoFCVectorizeU3DAction : public SoVectorizeAction {
-    typedef SoVectorizeAction inherited;
+    using inherited = SoVectorizeAction;
 
     SO_ACTION_HEADER(SoFCVectorizeU3DAction);
 

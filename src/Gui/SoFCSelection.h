@@ -57,7 +57,7 @@ namespace Gui {
  *  \author Jürgen Riegel
  */
 class GuiExport SoFCSelection : public SoGroup {
-    typedef SoGroup inherited;
+    using inherited = SoGroup;
 
     SO_NODE_HEADER(Gui::SoFCSelection);
 
@@ -110,8 +110,8 @@ public:
 protected:
     ~SoFCSelection() override;
 
-    typedef SoFCSelectionContext SelContext;
-    typedef std::shared_ptr<SelContext> SelContextPtr;
+    using SelContext = SoFCSelectionContext;
+    using SelContextPtr = std::shared_ptr<SelContext>;
     SelContextPtr selContext;
     SelContextPtr selContext2;
 

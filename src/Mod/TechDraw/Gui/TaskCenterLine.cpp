@@ -56,13 +56,8 @@
 #include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
 
 #include "PreferencesGui.h"
-#include "QGVPage.h"
 #include "QGIView.h"
-#include "QGIPrimPath.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
-#include "Rez.h"
 
 #include "TaskCenterLine.h"
 
@@ -154,9 +149,9 @@ void TaskCenterLine::updateTask()
 {
 }
 
-void TaskCenterLine::changeEvent(QEvent *e)
+void TaskCenterLine::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
@@ -207,7 +202,7 @@ void TaskCenterLine::setUiPrimary()
     qAngle.setUnit(Base::Unit::Angle);
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
-    ui->qsbRotate->setDecimals(precision); 
+    ui->qsbRotate->setDecimals(precision);
 }
 
 void TaskCenterLine::setUiEdit()
@@ -247,7 +242,7 @@ void TaskCenterLine::setUiEdit()
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
-    ui->qsbRotate->setValue(m_cl->m_rotate);  
+    ui->qsbRotate->setValue(m_cl->m_rotate);
 }
 
 void TaskCenterLine::onOrientationChanged()
@@ -418,10 +413,10 @@ void TaskCenterLine::saveButtons(QPushButton* btnOK,
     m_btnCancel = btnCancel;
 }
 
-void TaskCenterLine::enableTaskButtons(bool b)
+void TaskCenterLine::enableTaskButtons(bool isEnabled)
 {
-    m_btnOK->setEnabled(b);
-    m_btnCancel->setEnabled(b);
+    m_btnOK->setEnabled(isEnabled);
+    m_btnCancel->setEnabled(isEnabled);
 }
 
 double TaskCenterLine::getCenterWidth()
@@ -510,7 +505,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                      bool editMode)
     : TaskDialog()
 {
-    widget  = new TaskCenterLine(partFeat,page,subNames, editMode);
+    widget  = new TaskCenterLine(partFeat, page, subNames, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
@@ -524,7 +519,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                      bool editMode)
     : TaskDialog()
 {
-    widget  = new TaskCenterLine(partFeat,page, edgeName, editMode);
+    widget  = new TaskCenterLine(partFeat, page, edgeName, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

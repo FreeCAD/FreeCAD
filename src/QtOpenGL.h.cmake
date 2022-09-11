@@ -33,10 +33,10 @@
 #include <QOpenGLVersionProfile>
 #include <QOpenGLFunctions>
 
-typedef QOpenGLContext QtGLContext;
-typedef QSurfaceFormat QtGLFormat;
-typedef QOpenGLWidget QtGLWidget;
-typedef QOpenGLFramebufferObject QtGLFramebufferObject;
-typedef QOpenGLFramebufferObjectFormat QtGLFramebufferObjectFormat;
+using QtGLContext = QOpenGLContext;
+using QtGLFormat = QSurfaceFormat;
+using QtGLWidget = QOpenGLWidget;
+using QtGLFramebufferObject = QOpenGLFramebufferObject;
+using QtGLFramebufferObjectFormat = QOpenGLFramebufferObjectFormat;
 
 #endif //QUARTER_QTOPENGL_H

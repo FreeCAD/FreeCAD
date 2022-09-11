@@ -30,7 +30,7 @@
 // -------------------------------------------------------------------------------
 namespace MeshCoreFit {
 
-typedef Eigen::Matrix<double,5,5,Eigen::RowMajor> Matrix5x5;
+using Matrix5x5 = Eigen::Matrix<double,5,5,Eigen::RowMajor>;
 
 /**
  * Best-fit cylinder for a given set of points. 

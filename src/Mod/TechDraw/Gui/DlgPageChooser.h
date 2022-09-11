@@ -22,6 +22,8 @@
 #ifndef GUI_DLGPAGECHOOSER_H
 #define GUI_DLGPAGECHOOSER_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QDialog>
 
 namespace TechDrawGui {
@@ -46,7 +48,6 @@ private Q_SLOTS:
 private:
     void fillList(std::vector<std::string> labels, std::vector<std::string> names);
 
-private:
     Ui_DlgPageChooser* ui;
 };
 

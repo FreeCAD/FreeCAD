@@ -40,7 +40,7 @@ class TaskFemConstraintInitialTemperature : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintInitialTemperature() override;
     double get_temperature()const;
 
@@ -59,7 +59,7 @@ class TaskDlgFemConstraintInitialTemperature : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView);
+    explicit TaskDlgFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

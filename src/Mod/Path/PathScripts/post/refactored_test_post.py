@@ -82,32 +82,6 @@ def init_values(values):
     # which are then suppressed by default.
     #
     values["OUTPUT_TOOL_CHANGE"] = False
-    #
-    # Enable as many parameters as possible to be output by default
-    #
-    values["PARAMETER_ORDER"] = [
-        "X",
-        "Y",
-        "Z",
-        "A",
-        "B",
-        "C",
-        "U",
-        "V",
-        "W",
-        "I",
-        "J",
-        "K",
-        "F",
-        "S",
-        "T",
-        "Q",
-        "R",
-        "L",
-        "H",
-        "D",
-        "P",
-    ]
     values["POSTPROCESSOR_FILE_NAME"] = __name__
     #
     # Do not show the editor by default since we are testing.
@@ -189,20 +163,31 @@ parser = init_arguments(values, argument_defaults, arguments_visible)
 # The TOOLTIP_ARGS value is created from the help information about the arguments.
 #
 TOOLTIP_ARGS = parser.format_help()
+#
+# Create another parser just to get a list of all possible arguments
+# that may be output using --output_all_arguments.
+#
+all_arguments_visible = {}
+for k in iter(arguments_visible):
+    all_arguments_visible[k] = True
+all_visible = init_arguments(values, argument_defaults, all_arguments_visible)
 
 
 def export(objectslist, filename, argstring):
     """Postprocess the objects in objectslist to filename."""
     #
+    global all_visible
     global parser
     global UNITS
     global values
 
     # print(parser.format_help())
 
-    (flag, args) = PostUtilsArguments.process_shared_arguments(values, parser, argstring)
+    (flag, args) = PostUtilsArguments.process_shared_arguments(
+        values, parser, argstring, all_visible, filename
+    )
     if not flag:
-        return None
+        return args
     #
     # Process any additional arguments here
     #

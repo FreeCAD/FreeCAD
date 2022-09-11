@@ -32,13 +32,13 @@
 
 namespace nurbs{
 
-typedef Eigen::Triplet<double> trip;
-typedef Eigen::SparseMatrix<double> spMat;
+using trip = Eigen::Triplet<double>;
+using spMat = Eigen::SparseMatrix<double>;
 
 struct NurbsBase2D
 {
     //
-    NurbsBase2D(){;};
+    NurbsBase2D(){}
     NurbsBase2D(Eigen::VectorXd u_knots, Eigen::VectorXd v_knots,
               Eigen::VectorXd weights,
               int degree_u=3, int degree_v=3);
@@ -83,7 +83,7 @@ struct NurbsBase2D
 
 struct NurbsBase1D
 {
-    NurbsBase1D(){;};
+    NurbsBase1D(){}
     NurbsBase1D(Eigen::VectorXd u_knots, Eigen::VectorXd weights, int degree_u=3);
     int degree_u;
     Eigen::VectorXd u_knots;

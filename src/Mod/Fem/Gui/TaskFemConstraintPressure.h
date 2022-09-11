@@ -40,7 +40,7 @@ class TaskFemConstraintPressure : public TaskFemConstraintOnBoundary
     Q_OBJECT
 
 public:
-    TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintPressure() override;
     const std::string getReferences() const override;
     double get_Pressure()const;
@@ -68,7 +68,7 @@ class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
     Q_OBJECT
 
 public:
-    TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
+    explicit TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;

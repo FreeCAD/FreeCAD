@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Preferences_h_
-#define _Preferences_h_
+#ifndef Preferences_h_
+#define Preferences_h_
+
+#include <App/Material.h>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -79,6 +81,7 @@ static std::string bitmapFill();
 static double      GapISO();
 static double      GapASME();
 
+static bool        reportProgress();
 };
 
 } //end namespace TechDraw

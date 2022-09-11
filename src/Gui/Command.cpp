@@ -920,7 +920,7 @@ void Command::applyCommandData(const char* context, Action* action)
 const char* Command::keySequenceToAccel(int sk) const
 {
     /* Local class to ensure free()'ing the strings allocated below */
-    typedef std::map<int, std::string> StringMap;
+    using StringMap = std::map<int, std::string>;
     static StringMap strings;
     StringMap::iterator i = strings.find(sk);
 

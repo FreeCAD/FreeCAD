@@ -36,7 +36,7 @@ class TrimmingSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    TrimmingSelection(App::DocumentObject* obj)
+    explicit TrimmingSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer()), object(obj)
     {}
 

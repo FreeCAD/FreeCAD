@@ -56,7 +56,7 @@ class PropertyView : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    PropertyView(QWidget *parent=nullptr);
+    explicit PropertyView(QWidget *parent=nullptr);
     ~PropertyView() override;
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
@@ -94,7 +94,7 @@ private:
 private:
     struct PropInfo;
     struct PropFind;
-    typedef boost::signals2::connection Connection;
+    using Connection = boost::signals2::connection;
     Connection connectPropData;
     Connection connectPropView;
     Connection connectPropAppend;
@@ -120,7 +120,7 @@ class PropertyDockView : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
+    explicit PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
     ~PropertyDockView() override;
 };
 

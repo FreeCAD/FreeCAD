@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TASKLINEDECOR_H
 #define GUI_TASKVIEW_TASKLINEDECOR_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 

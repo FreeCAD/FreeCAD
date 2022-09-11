@@ -44,7 +44,7 @@ class RobotGuiExport TaskDlgTrajectoryDressUp : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObject *);
+    explicit TaskDlgTrajectoryDressUp(Robot::TrajectoryDressUpObject *);
     ~TaskDlgTrajectoryDressUp() override;
 
 public:

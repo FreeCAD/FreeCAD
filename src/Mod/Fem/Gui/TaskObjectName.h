@@ -48,7 +48,7 @@ class TaskObjectName : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskObjectName(App::DocumentObject *pcObject,QWidget *parent = nullptr);
     ~TaskObjectName() override;
 
 

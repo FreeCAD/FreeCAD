@@ -54,6 +54,13 @@
 
 #include <cassert>
 
+#if HAVE_CONFIG_H
+# include <config.h>
+# ifdef  HAVE_GL_GL_H
+#  include <GL/gl.h>
+# endif
+#endif
+
 #include <QAction>
 #include <QApplication>
 #include <QDebug>

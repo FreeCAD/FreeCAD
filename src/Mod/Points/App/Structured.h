@@ -57,7 +57,7 @@ public:
     //@}
 };
 
-typedef App::FeatureCustomT<Structured> StructuredCustom;
+using StructuredCustom = App::FeatureCustomT<Structured>;
 
 } //namespace Points
 

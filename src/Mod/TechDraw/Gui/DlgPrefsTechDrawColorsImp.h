@@ -25,6 +25,8 @@
 #ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPCOLORS_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <Gui/PropertyPage.h>
 #include <memory>
 
@@ -36,7 +38,7 @@ class DlgPrefsTechDrawColorsImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawColorsImp( QWidget* parent = nullptr );
+    explicit DlgPrefsTechDrawColorsImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawColorsImp() override;
 
 protected:

@@ -40,7 +40,7 @@ public:
         CenterAndCorner
     };
 
-    DrawSketchHandlerBox(ConstructionMethod constrMethod = Diagonal):   Mode(STATUS_SEEK_First),
+    explicit DrawSketchHandlerBox(ConstructionMethod constrMethod = Diagonal):   Mode(STATUS_SEEK_First),
                                                                         EditCurve(5),
                                                                         constructionMethod(constrMethod){}
     virtual ~DrawSketchHandlerBox(){}
@@ -68,9 +68,13 @@ public:
             if(constructionMethod == Diagonal) {
                 float dx = onSketchPos.x - EditCurve[0].x;
                 float dy = onSketchPos.y - EditCurve[0].y;
-                SbString text;
-                text.sprintf(" (%.1f x %.1f)", dx, dy);
-                setPositionText(onSketchPos, text);
+                if (showCursorCoords()) {
+                    SbString text;
+                    std::string dxString = lengthToDisplayFormat(dx, 1);
+                    std::string dyString = lengthToDisplayFormat(dy, 1);
+                    text.sprintf(" (%s x %s)", dxString.c_str(), dyString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 EditCurve[2] = onSketchPos;
                 EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
@@ -80,9 +84,13 @@ public:
             else if (constructionMethod == CenterAndCorner) {
                 float dx = onSketchPos.x - center.x;
                 float dy = onSketchPos.y - center.y;
-                SbString text;
-                text.sprintf(" (%.1f x %.1f)", dx, dy);
-                setPositionText(onSketchPos, text);
+                 if (showCursorCoords()) {
+                    SbString text;
+                    std::string dxString = lengthToDisplayFormat(dx, 1);
+                    std::string dyString = lengthToDisplayFormat(dy, 1);
+                    text.sprintf(" (%s x %s)", dxString.c_str(), dyString.c_str());
+                    setPositionText(onSketchPos, text);
+                }
 
                 EditCurve[0] = center - (onSketchPos - center);
                 EditCurve[1] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
@@ -341,7 +349,7 @@ public:
             // we draw the lines with 36 segments, 8 for each arc and 4 lines
             // draw the arcs
             for (int i = 0; i < 8; i++) {
-                // calculate the x,y positions forming the the arc
+                // calculate the x,y positions forming the arc
                 double angle = i * M_PI / 16.0;
                 double x_i = -radius * sin(angle);
                 double y_i = -radius * cos(angle);
@@ -375,9 +383,14 @@ public:
             // close the curve
             EditCurve[36] = EditCurve[0];
 
-            SbString text;
-            text.sprintf(" (%.1fR %.1fX %.1fY)", radius, lengthX, lengthY);
-            setPositionText(onSketchPos, text);
+             if (showCursorCoords()) {
+                SbString text;
+                std::string radiusString = lengthToDisplayFormat(radius, 1);
+                std::string xString = lengthToDisplayFormat(lengthX, 1);
+                std::string yString = lengthToDisplayFormat(lengthY, 1);
+                text.sprintf("  (R%s X%s Y%s)", radiusString.c_str(), xString.c_str(), yString.c_str());
+                setPositionText(onSketchPos, text);
+            }
 
             drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {

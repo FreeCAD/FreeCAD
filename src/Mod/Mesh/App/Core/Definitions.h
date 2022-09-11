@@ -71,8 +71,8 @@ public:
     MeshExport static const Prec PI;
 };
 
-typedef Math<float> Mathf;
-typedef Math<double> Mathd;
+using Mathf = Math<float>;
+using Mathd = Math<double>;
 
 /**
  * Global defined tolerances used to compare points

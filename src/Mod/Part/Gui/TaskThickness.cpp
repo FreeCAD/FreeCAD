@@ -70,7 +70,7 @@ public:
     {
         const App::DocumentObject* object;
     public:
-        FaceSelection(const App::DocumentObject* obj)
+        explicit FaceSelection(const App::DocumentObject* obj)
             : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {
         }

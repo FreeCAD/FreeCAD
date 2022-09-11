@@ -36,7 +36,7 @@ class SbVec2s;
 namespace Gui {
 
 class GuiExport SoFCColorLegend : public SoFCColorBarBase {
-  typedef SoFCColorBarBase inherited;
+  using inherited = SoFCColorBarBase;
 
   SO_NODE_HEADER(Gui::SoFCColorLegend);
 

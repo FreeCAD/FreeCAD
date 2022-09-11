@@ -36,7 +36,7 @@ class ExtendSelection : public Gui::SelectionFilterGate
 {
     App::DocumentObject* object;
 public:
-    ExtendSelection(App::DocumentObject* obj)
+    explicit ExtendSelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer())
         , object(obj)
         , disabled(false)

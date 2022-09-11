@@ -76,12 +76,15 @@
 
 
 // Qt Toolkit
-#ifndef __QtAll__
+#ifndef _QtAll__
 # include <Gui/QtAll.h>
 #endif
+#include <QGLWidget>
 #include <QPaintEngine>
 #include <QSvgGenerator>
-#include <QGLWidget>
+#include <QTextList>
+#include <QXmlQuery>
+#include <QXmlResultItems>
 
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>

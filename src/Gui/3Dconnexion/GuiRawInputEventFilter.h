@@ -30,7 +30,7 @@ namespace Gui
     class RawInputEventFilter : public QAbstractNativeEventFilter
     {
     public:
-        typedef bool (*EventFilter)(void *message, long *result);
+        using EventFilter = bool (*)(void *message, long *result);
         RawInputEventFilter(EventFilter filter) : eventFilter(filter) {
         }
         virtual ~RawInputEventFilter() {

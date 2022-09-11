@@ -50,6 +50,7 @@
 # include <Geom_Circle.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomFill_AppSurf.hxx>
+# include <GeomFill_Generator.hxx>
 # include <GeomFill_Line.hxx>
 # include <GeomFill_SectionGenerator.hxx>
 # include <Interface_Static.hxx>
@@ -444,6 +445,9 @@ public:
             "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.\n"
             "maker_class_name is a string like 'Part::FaceMakerSimple'."
         );
+        add_varargs_method("makeFilledSurface",&Module::makeFilledSurface,
+            "makeFilledSurface(list of curves, tolerance) -- Create a surface out of a list of curves."
+        );
         add_varargs_method("makeFilledFace",&Module::makeFilledFace,
             "makeFilledFace(list) -- Create a face out of a list of edges."
         );
@@ -608,7 +612,7 @@ public:
         );
         add_keyword_method("getShape",&Module::getShape,
             "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
-            "Obtain the the TopoShape of a given object with SubName reference\n\n"
+            "Obtain the TopoShape of a given object with SubName reference\n\n"
             "* obj: the input object\n"
             "* subname: dot separated sub-object reference\n"
             "* mat: the current transformation matrix\n"
@@ -1010,6 +1014,38 @@ private:
         } catch (Base::Exception &e){
             e.setPyException();
             throw Py::Exception();
+        }
+    }
+    Py::Object makeFilledSurface(const Py::Tuple &args)
+    {
+        PyObject *obj;
+        double tolerance;
+        if (!PyArg_ParseTuple(args.ptr(), "Od", &obj, &tolerance))
+            throw Py::Exception();
+
+        try {
+            GeomFill_Generator generator;
+            Py::Sequence list(obj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryCurvePy::Type))) {
+                    Handle(Geom_Curve) hCurve = Handle(Geom_Curve)::DownCast(static_cast<Part::GeometryCurvePy*>((*it).ptr())->getGeomCurvePtr()->handle());
+                    if (!hCurve.IsNull()) {
+                        generator.AddCurve(hCurve);
+                    }
+                }
+            }
+
+            generator.Perform(tolerance);
+            Handle(Geom_Surface) hSurface = generator.Surface();
+            if (!hSurface.IsNull()) {
+                return Py::asObject(makeFromSurface(hSurface)->getPyObject());
+            }
+            else {
+                throw Py::Exception(PartExceptionOCCError, "Failed to created surface by filling curves");
+            }
+        }
+        catch (Standard_Failure& e) {
+            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
         }
     }
     Py::Object makeFilledFace(const Py::Tuple& args)
@@ -1988,27 +2024,35 @@ private:
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
-#if PY_VERSION_HEX >= 0x03030000
+
             pysize = PyUnicode_GetLength(p);
-#else
-            pysize = PyUnicode_GetSize(p);
-#endif
 #if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(p);
 #else
+#ifdef FC_OS_WIN32
+            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
+            //will result in unknow glyph in even positions, and wrong characters in
+            //odd positions.
+            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
+#else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
+#endif
 #endif
         }
         else if (PyUnicode_Check(intext)) {
-#if PY_VERSION_HEX >= 0x03030000
             pysize = PyUnicode_GetLength(intext);
-#else
-            pysize = PyUnicode_GetSize(intext);
-#endif
+
 #if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(intext);
 #else
+#ifdef FC_OS_WIN32
+            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
+            //will result in unknow glyph in even positions, and wrong characters in
+            //odd positions.
+            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
+#else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
+#endif
 #endif
         }
         else {

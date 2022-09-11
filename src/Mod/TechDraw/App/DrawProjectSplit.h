@@ -20,8 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DrawProjectSplit_h_
-#define _DrawProjectSplit_h_
+#ifndef DrawProjectSplit_h_
+#define DrawProjectSplit_h_
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -29,6 +31,9 @@
 #include <App/FeaturePython.h>
 #include <Base/Vector3D.h>
 
+
+#include "DrawUtil.h"
+#include "Geometry.h"
 
 class gp_Pnt;
 class gp_Ax2;
@@ -42,6 +47,10 @@ class BaseGeom;
 
 namespace TechDraw
 {
+
+//magic number for finding parameter of point on curve
+#define PARAM_MAX_DIST 0.000001
+
 struct splitPoint {
     int i;
     Base::Vector3d v;
@@ -55,7 +64,7 @@ public:
         startAngle = endAngle = 0.0;
         idx = 0;
     }
-    ~edgeSortItem() {}
+    ~edgeSortItem()  = default;
 
     Base::Vector3d start;
     Base::Vector3d end;
@@ -67,6 +76,21 @@ public:
     static bool edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2);
     std::string dump();
 };
+
+using vertexMap = std::map<Base::Vector3d, int, DrawUtil::vectorLessType>;
+
+class edgeVectorEntry {
+public:
+    edgeVectorEntry(TopoDS_Edge e, bool flag) {
+        edge = e;
+        validFlag = flag;
+    }
+    ~edgeVectorEntry() = default;
+
+    TopoDS_Edge edge;
+    bool validFlag;
+};
+
 class TechDrawExport DrawProjectSplit
 {
 public:
@@ -87,6 +111,28 @@ public:
     static std::vector<TopoDS_Edge> removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges);
     static std::vector<edgeSortItem> sortEdges(std::vector<edgeSortItem>& e, bool ascend);
 
+
+    //routines for revised face finding approach
+    static std::vector<TopoDS_Edge> scrubEdges(const std::vector<BaseGeomPtr> &origEdges,
+                                               std::vector<TopoDS_Edge>& closedEdges);
+    static std::vector<TopoDS_Edge> scrubEdges(std::vector<TopoDS_Edge>& origEdges,
+                                               std::vector<TopoDS_Edge>& closedEdges);
+    static vertexMap                getUniqueVertexes(std::vector<TopoDS_Edge> inEdges);
+    static std::vector<TopoDS_Edge> pruneUnconnected(vertexMap verts,
+                                                     std::vector<TopoDS_Edge> edges);
+    static std::vector<TopoDS_Edge> removeOverlapEdges(std::vector<TopoDS_Edge> inEdges);
+    static std::vector<TopoDS_Edge> splitIntersectingEdges(std::vector<TopoDS_Edge>& inEdges);
+
+    static bool                     sameEndPoints(TopoDS_Edge& e1,
+                                                  TopoDS_Edge& e2);
+    static int                      isSubset(TopoDS_Edge &e0,
+                                             TopoDS_Edge &e1);
+    static std::vector<TopoDS_Edge> fuseEdges(TopoDS_Edge& e0,
+                                              TopoDS_Edge& e1);
+    static bool                     boxesIntersect(TopoDS_Edge& e0,
+                                                   TopoDS_Edge& e1);
+    static void dumpVertexMap(vertexMap verts);
+
 protected:
     static std::vector<TopoDS_Edge> getEdges(TechDraw::GeometryObject* geometryObject);
 
@@ -95,8 +141,8 @@ private:
 
 };
 
-typedef App::FeaturePythonT<DrawProjectSplit> DrawProjectSplitPython;
+using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
 
 } //namespace TechDraw
 
-#endif  // #ifndef _DrawProjectSplit_h_
+#endif  // #ifndef DrawProjectSplit_h_

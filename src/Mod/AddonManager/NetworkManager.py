@@ -156,7 +156,9 @@ if HAVE_QTNETWORK:
 
             # Make sure we exit nicely on quit
             if QtCore.QCoreApplication.instance() is not None:
-                QtCore.QCoreApplication.instance().aboutToQuit.connect(self.__aboutToQuit)
+                QtCore.QCoreApplication.instance().aboutToQuit.connect(
+                    self.__aboutToQuit
+                )
 
             # Create the QNAM on this thread:
             self.QNAM = QtNetwork.QNetworkAccessManager()

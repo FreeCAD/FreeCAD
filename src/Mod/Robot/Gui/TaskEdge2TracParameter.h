@@ -50,7 +50,7 @@ class TaskEdge2TracParameter : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,QWidget *parent = nullptr);
+    explicit TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,QWidget *parent = nullptr);
     ~TaskEdge2TracParameter() override;
 
     void setEdgeAndClusterNbr(int NbrEdges,int NbrClusters);

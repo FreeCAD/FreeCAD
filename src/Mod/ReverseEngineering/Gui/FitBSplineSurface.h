@@ -35,7 +35,7 @@ class FitBSplineSurfaceWidget : public QWidget
     Q_OBJECT
 
 public:
-    FitBSplineSurfaceWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
+    explicit FitBSplineSurfaceWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
     ~FitBSplineSurfaceWidget() override;
 
     bool accept();
@@ -58,7 +58,7 @@ class TaskFitBSplineSurface : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskFitBSplineSurface(const App::DocumentObjectT&);
+    explicit TaskFitBSplineSurface(const App::DocumentObjectT&);
     ~TaskFitBSplineSurface() override;
 
 public:

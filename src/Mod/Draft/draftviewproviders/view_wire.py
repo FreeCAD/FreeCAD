@@ -39,11 +39,13 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import DraftGeomUtils
+import draftgeoutils.wires as wires
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.messages import _msg
+from draftutils.translate import translate
+
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -146,32 +148,43 @@ class ViewProviderWire(ViewProviderDraft):
             return [self.Object.Base,self.Object.Tool]
         return []
 
-    def setupContextMenu(self,vobj,menu):
+    def setupContextMenu(self, vobj, menu):
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),
-                                "Flatten this wire",
+                                translate("draft", "Flatten"),
                                 menu)
         QtCore.QObject.connect(action1,
                                QtCore.SIGNAL("triggered()"),
                                self.flatten)
         menu.addAction(action1)
 
-    def flatten(self):
-        if hasattr(self,"Object"):
-            if len(self.Object.Shape.Wires) == 1:
-                fw = DraftGeomUtils.flattenWire(self.Object.Shape.Wires[0])
-                points = [v.Point for v in fw.Vertexes]
-                if len(points) == len(self.Object.Points):
-                    if points != self.Object.Points:
-                        App.ActiveDocument.openTransaction("Flatten wire")
-                        Gui.doCommand("FreeCAD.ActiveDocument." + 
-                                      self.Object.Name + 
-                                      ".Points=" + 
-                                      str(points).replace("Vector", "FreeCAD.Vector").replace(" " , ""))
-                        App.ActiveDocument.commitTransaction()
+    def flatten(self): # Only to be used for Draft_Wires.
+        if not hasattr(self, "Object"):
+            return
 
-                    else:
-                        _flat = "This Wire is already flat"
-                        _msg(QT_TRANSLATE_NOOP("Draft", _flat))
+        if hasattr(App, "DraftWorkingPlane"):
+            App.DraftWorkingPlane.setup()
+            origin = App.DraftWorkingPlane.position
+            normal = App.DraftWorkingPlane.axis
+            # Align the grid for visual feedback:
+            if hasattr(Gui, "Snapper"):
+                Gui.Snapper.setTrackers()
+        else:
+            origin = App.Vector(0, 0, 0)
+            normal = App.Vector(0, 0, 1)
+
+        flat_wire = wires.flattenWire(self.Object.Shape.Wires[0],
+                                      origin=origin,
+                                      normal=normal)
+
+        doc = App.ActiveDocument
+        doc.openTransaction(translate("draft", "Flatten"))
+
+        self.Object.Placement = App.Placement()
+        self.Object.Points = [vert.Point for vert in flat_wire.Vertexes]
+        self.Object.Closed = flat_wire.isClosed()
+
+        doc.recompute()
+        doc.commitTransaction()
 
 
 # Alias for compatibility with v0.18 and earlier

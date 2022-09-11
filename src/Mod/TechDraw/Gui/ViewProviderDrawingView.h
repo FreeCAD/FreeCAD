@@ -26,7 +26,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp> 
+#include <boost_signals2.hpp>
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -39,6 +39,7 @@ class DrawView;
 namespace TechDrawGui {
 class QGIView;
 class MDIViewPage;
+class ViewProviderPage;
 
 class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
@@ -51,6 +52,7 @@ public:
     ~ViewProviderDrawingView() override;
 
     App::PropertyBool  KeepLabel;
+    App::PropertyInteger StackOrder;
 
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel() const override {return false;}
@@ -66,6 +68,7 @@ public:
     QGIView* getQView();
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
+    ViewProviderPage* getViewProviderPage() const;
 
     /** @name Restoring view provider from document load */
     //@{
@@ -74,14 +77,26 @@ public:
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;
-    
-    void onGuiRepaint(const TechDraw::DrawView* dv); 
-    typedef boost::signals2::scoped_connection Connection;
+    void showProgressMessage(const std::string featureName, const std::string text) const;
+
+    void onGuiRepaint(const TechDraw::DrawView* dv);
+    void onProgressMessage(const TechDraw::DrawView* dv,
+                         const std::string featureName,
+                         const std::string text);
+    using Connection = boost::signals2::scoped_connection;
     Connection connectGuiRepaint;
-    
+    Connection connectProgressMessage;
+
+    virtual void stackUp();
+    virtual void stackDown();
+    virtual void stackTop();
+    virtual void stackBottom();
+    virtual int getZ() {return StackOrder.getValue();}
 
 private:
-    bool m_docReady;                                                   //sb MDI + QGraphicsScene ready
+    void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
+    void singleParentPaint(const TechDraw::DrawView* dv);
+
 
 };
 

@@ -42,7 +42,7 @@ public:
     static Py::Object type();
     static Py::ExtensionObject<MainWindowPy> create(MainWindow *mw);
 
-    MainWindowPy(MainWindow *mw);
+    explicit MainWindowPy(MainWindow *mw);
     ~MainWindowPy() override;
 
     Py::Object repr() override;
