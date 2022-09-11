@@ -28,7 +28,24 @@ from PySide2.QtGui import (
     QValidator,
     QRegularExpressionValidator,
 )
-from PySide2.QtCore import QRegularExpression
+
+# QRegularExpressionValidator was only added at the very end of the PySide2
+# development cycle, so make sure to support the older QRegExp version as well.
+try:
+    from PySide2.QtGui import (
+        QRegularExpressionValidator,
+    )
+    from PySide2.QtCore import QRegularExpression
+    RegexWrapper = QRegularExpression
+    RegexValidatorWrapper = QRegularExpressionValidator
+except ImportError:
+    from PySide2.QtGui import (
+        QRegExpValidator,
+    )
+    from PySide2.QtCore import QRegExp
+    RegexWrapper = QRegExp
+    RegexValidatorWrapper = QRegExpValidator
+
 
 #pylint: disable=too-few-public-methods
 
@@ -72,11 +89,11 @@ class PythonIdentifierValidator(QValidator):
         return QValidator.Acceptable
 
 
-class SemVerValidator(QRegularExpressionValidator):
+class SemVerValidator(RegexValidatorWrapper):
     """Implements the officially-recommended regex validator for Semantic version numbers."""
 
     # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-    semver_re = QRegularExpression(
+    semver_re = RegexWrapper(
         r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)"
         + r"(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)"
         + r"(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?"
@@ -85,7 +102,10 @@ class SemVerValidator(QRegularExpressionValidator):
 
     def __init__(self):
         super().__init__()
-        self.setRegularExpression(SemVerValidator.semver_re)
+        if hasattr(self, "setRegularExpression"):
+            self.setRegularExpression(SemVerValidator.semver_re)
+        else:
+            self.setRegExp(SemVerValidator.semver_re)
 
     @classmethod
     def check(cls, value: str) -> bool:
@@ -93,11 +113,11 @@ class SemVerValidator(QRegularExpressionValidator):
         return cls.semver_re.match(value).hasMatch()
 
 
-class CalVerValidator(QRegularExpressionValidator):
+class CalVerValidator(RegexValidatorWrapper):
     """Implements a basic regular expression validator that makes sure an entry corresponds
     to a CalVer version numbering standard."""
 
-    calver_re = QRegularExpression(
+    calver_re = RegexWrapper(
         r"^(?P<major>[1-9]\d{3})\.(?P<minor>[0-9]{1,2})\.(?P<patch>0|[0-9]{0,2})"
         + r"(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)"
         + r"(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?"
@@ -106,7 +126,11 @@ class CalVerValidator(QRegularExpressionValidator):
 
     def __init__(self):
         super().__init__()
-        self.setRegularExpression(CalVerValidator.calver_re)
+        if hasattr(self, "setRegularExpression"):
+            self.setRegularExpression(CalVerValidator.calver_re)
+        else:
+            self.setRegExp(CalVerValidator.calver_re)
+
 
     @classmethod
     def check(cls, value: str) -> bool:
