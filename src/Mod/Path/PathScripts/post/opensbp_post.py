@@ -299,6 +299,8 @@ def tool_change(command):
     txt += "\n"
     txt += "&Tool=" + str(int(command.Parameters["T"]))
     txt += "\n"
+    txt += "C9" # C9 is "tool change" command
+    txt += "\n"
     return txt
 
 
