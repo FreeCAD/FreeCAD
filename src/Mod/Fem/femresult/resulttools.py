@@ -412,16 +412,16 @@ def add_principal_stress_std(res_obj):
     res_obj.MaxShear = shearstress
     FreeCAD.Console.PrintLog("Added standard principal stresses and max shear values.\n")
 
-    # add critical strain ratio
+    # add critical strain ratio: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
     MatMechNon = FreeCAD.ActiveDocument.getObject('MaterialMechanicalNonlinear')
     if MatMechNon:
         stress_strain = MatMechNon.YieldPoints
         if stress_strain:
             i = -1
             while stress_strain[i] == "": i -= 1
-            eps_cr_uni = float(stress_strain[i].split(",")[1])
-            alpha = 1.65 * eps_cr_uni
-            beta = 1.5
+            critical_uniaxial_strain = float(stress_strain[i].split(",")[1])
+            alpha = 1.65 * critical_uniaxial_strain  # see: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p624323
+            beta = 1.5  # see: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
             if res_obj.Peeq:
                 res_obj.CriticalStrainRatio = calculate_csr(prinstress1, prinstress2, prinstress3, alpha, beta,
                                                             res_obj)
@@ -436,14 +436,15 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
     csr = []  # critical strain ratio
     nsr = len(ps1)  # number of stress results
     for i in range(nsr):
-        p = (ps1[i] + ps2[i] + ps3[i]) / 3.0
-        svm = np.sqrt(1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (ps3[i] - p) ** 2)
+        p = (ps1[i] + ps2[i] + ps3[i]) / 3.0  # pressure
+        svm = np.sqrt(1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (
+                    ps3[i] - p) ** 2)  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
         if svm != 0.:
-            T = p / svm  # stress triaxiality
+            T = p / svm  # stress triaxiality: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
         else:
             T = 0.
-        eps_cr = alpha * np.exp(-beta * T)  # critical strain
-        csr.append(abs(res_obj.Peeq[i]) / eps_cr)
+        critical_strain = alpha * np.exp(-beta * T)  # critical strain
+        csr.append(abs(res_obj.Peeq[i]) / critical_strain)
     return csr
 
 
@@ -645,7 +646,7 @@ def calculate_von_mises(stress_tensor):
 
 
 def calculate_principal_stress_std(
-        stress_tensor
+    stress_tensor
 ):
     # if NaN is inside the array, which can happen on Calculix frd result files return NaN
     # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
