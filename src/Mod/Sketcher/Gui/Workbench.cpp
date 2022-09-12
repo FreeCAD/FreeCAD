@@ -27,6 +27,7 @@
 # include <qobject.h>
 #endif
 
+#include <App/Application.h>
 #include "Workbench.h"
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
@@ -298,8 +299,11 @@ inline void SketcherAddWorkbenchConstraints(T& cons);
 template <>
 inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 {
-    cons    << "Sketcher_ConstrainCoincident"
-            << "Sketcher_ConstrainPointOnObject"
+    if (!App::GetApplication().GetParameterGroupByPath(   "User parameter:BaseApp/Preferences/Mod/Sketcher/General")->
+                                                                GetBool("MergePointOnObjectWithCoincident", false))
+        cons    << "Sketcher_ConstrainCoincident";
+
+    cons    << "Sketcher_ConstrainPointOnObject"
             << "Sketcher_ConstrainVertical"
             << "Sketcher_ConstrainHorizontal"
             << "Sketcher_ConstrainParallel"
@@ -314,7 +318,6 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
             << "Sketcher_ConstrainDistanceY"
             << "Sketcher_ConstrainDistance"
             << "Sketcher_ConstrainRadius"
-            << "Sketcher_ConstrainDiameter"
             << "Sketcher_ConstrainRadiam"
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
@@ -327,8 +330,11 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 template <>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
-    cons    << "Sketcher_ConstrainCoincident"
-            << "Sketcher_ConstrainPointOnObject"
+    if (!App::GetApplication().GetParameterGroupByPath(   "User parameter:BaseApp/Preferences/Mod/Sketcher/General")->
+                                                                GetBool("MergePointOnObjectWithCoincident", false))
+        cons    << "Sketcher_ConstrainCoincident";
+
+    cons    << "Sketcher_ConstrainPointOnObject"
             << "Sketcher_ConstrainVertical"
             << "Sketcher_ConstrainHorizontal"
             << "Sketcher_ConstrainParallel"

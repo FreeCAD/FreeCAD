@@ -1883,6 +1883,8 @@ protected:
     static bool substituteConstraintCombinations(SketchObject * Obj,
                                           int GeoId1, PointPos PosId1,
                                           int GeoId2, PointPos PosId2);
+
+    friend class CmdSketcherConstrainPointOnObject;
 };
 
 CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
@@ -2434,6 +2436,10 @@ protected:
     // returns true if a substitution took place
     static bool substituteConstraintCombinations(SketchObject * Obj,
                                           int GeoId1, PointPos PosId1, int GeoId2);
+    static bool mergeWithCoincident() {
+        return App::GetApplication().GetParameterGroupByPath(   "User parameter:BaseApp/Preferences/Mod/Sketcher/General")->
+                                                                GetBool("MergePointOnObjectWithCoincident", false);
+    }
 };
 
 CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
@@ -2453,6 +2459,11 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
                            {SelVertex, SelExternalEdge},
                            {SelEdge, SelVertexOrRoot}, {SelEdgeOrAxis, SelVertex},
                            {SelExternalEdge, SelVertex}};
+
+    if (mergeWithCoincident()) {
+        allowedSelSequences.emplace_back(SelVertex, SelVertexOrRoot);
+        allowedSelSequences.emplace_back(SelRoot, SelVertex);
+    }
 
 }
 
@@ -2526,11 +2537,27 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     }
 
     if ((points.size() == 1 && !curves.empty()) ||
-        (!points.empty() && curves.size() == 1)) {
+        (!points.empty() && curves.size() == 1) ||
+        (mergeWithCoincident() && points.size() > 1 && curves.empty())) {
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add point on object constraint"));
         int cnt = 0;
         for (std::size_t iPnt = 0;  iPnt < points.size();  iPnt++) {
+            if (mergeWithCoincident() && curves.empty() && iPnt > 0) {
+                if (areBothPointsOrSegmentsFixed(Obj, points[iPnt-1].GeoId, points[iPnt].GeoId)) {
+                    cnt=0;
+                    showNoConstraintBetweenFixedGeometry();
+                    break;
+                }
+                if (CmdSketcherConstrainCoincident::substituteConstraintCombinations(Obj, points[iPnt-1].GeoId, points[iPnt].PosId, points[iPnt-1].GeoId, points[iPnt].PosId)) {
+                    cnt++;
+                    continue;
+                }
+                Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                    points[iPnt-1].GeoId, static_cast<int>(points[iPnt-1].PosId), points[iPnt].GeoId, static_cast<int>(points[iPnt].PosId));
+                cnt++;
+                continue;
+            }
             for (std::size_t iCrv = 0;  iCrv < curves.size();  iCrv++) {
                 if (areBothPointsOrSegmentsFixed(Obj, points[iPnt].GeoId, curves[iCrv].GeoId)){
                     showNoConstraintBetweenFixedGeometry();
@@ -2592,7 +2619,9 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
     int GeoIdVt, GeoIdCrv;
-    Sketcher::PointPos PosIdVt;
+    Sketcher::PointPos PosIdVt, PosIdMrg = PointPos::none;
+
+    bool coincident = false;
 
     switch (seqIndex) {
     case 0: // {SelVertex, SelEdgeOrAxis}
@@ -2609,6 +2638,15 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
         PosIdVt = selSeq.at(1).PosId;
 
         break;
+    case 6: // {SelVertex, SelVertexOrRoot}
+    case 7: // {SelRoot, SelVertex}
+        if (mergeWithCoincident()) {
+            coincident = true;
+            GeoIdVt = selSeq.at(0).GeoId; GeoIdCrv = selSeq.at(1).GeoId;
+            PosIdVt = selSeq.at(0).PosId; PosIdMrg = selSeq.at(1).PosId;
+            break;
+        }
+        [[fallthrough]];
     default:
         return;
     }
@@ -2646,7 +2684,10 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     }
 
     if (allOK) {
-        if (!substituteConstraintCombinations(Obj, GeoIdVt, PosIdVt, GeoIdCrv))
+        if (coincident && !CmdSketcherConstrainCoincident::substituteConstraintCombinations(Obj, GeoIdVt, PosIdVt, GeoIdCrv, PosIdMrg))
+            Gui::cmdAppObjectArgs(  sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                                    GeoIdVt, static_cast<int>(PosIdVt), GeoIdCrv, static_cast<int>(PosIdMrg));
+        else if (!coincident && !substituteConstraintCombinations(Obj, GeoIdVt, PosIdVt, GeoIdCrv))
             Gui::cmdAppObjectArgs(  sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
                                     GeoIdVt, static_cast<int>(PosIdVt), GeoIdCrv);
 
