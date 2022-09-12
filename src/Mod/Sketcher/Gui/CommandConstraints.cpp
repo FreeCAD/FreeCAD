@@ -465,10 +465,10 @@ void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj,
             std::swap(PosId1,PosId2);
         }
         // GeoId1 is the B-spline now
-        } // end of code supports simple B-spline endpoint tangency
+    } // end of code supports simple B-spline endpoint tangency
 
-        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
-                GeoId1,static_cast<int>(PosId1),GeoId2,static_cast<int>(PosId2));
+    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
+            GeoId1,static_cast<int>(PosId1),GeoId2,static_cast<int>(PosId2));
 }
 
 void SketcherGui::doEndpointToEdgeTangency( Sketcher::SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2)
