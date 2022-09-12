@@ -38,8 +38,7 @@ namespace TechDrawGui
 /// Utility functions for obtaining 3d window image
 class TechDrawGuiExport Grabber3d {
 public:
-    static void quickView(App::Document* appDoc,
-                          const QColor bgColor,
+    static void quickView(const QColor bgColor,
                           QImage &image);
 };
 
