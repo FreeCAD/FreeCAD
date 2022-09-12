@@ -150,7 +150,7 @@ void SoFCSelection::doAction(SoAction *action)
 {
     if(useNewSelection.getValue() && action->getCurPathCode()!=SoAction::OFF_PATH) {
         if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
-            Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
+            auto hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
             if (!hlaction->isHighlighted()) {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
                 if (ctx && ctx->isHighlighted()) {
@@ -171,7 +171,7 @@ void SoFCSelection::doAction(SoAction *action)
             return;
         }
         else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
-            Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
+            auto selaction = static_cast<Gui::SoSelectionElementAction*>(action);
             if (selaction->getType() == Gui::SoSelectionElementAction::All ||
                 selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
@@ -196,12 +196,12 @@ void SoFCSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCDocumentAction::getClassTypeId()) {
-        SoFCDocumentAction *docaction = (SoFCDocumentAction*)action;
+        auto docaction = (SoFCDocumentAction*)action;
         this->documentName = docaction->documentName;
     }
 
     if (action->getTypeId() == SoFCDocumentObjectAction::getClassTypeId()) {
-        SoFCDocumentObjectAction* objaction = static_cast<SoFCDocumentObjectAction*>(action);
+        auto objaction = static_cast<SoFCDocumentObjectAction*>(action);
         objaction->documentName  = this->documentName.getValue();
         objaction->objectName    = this->objectName.getValue();
         objaction->componentName = this->subElementName.getValue();
@@ -211,7 +211,7 @@ void SoFCSelection::doAction(SoAction *action)
     if(!useNewSelection.getValue()) {
 
         if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-            SoFCEnableHighlightAction *preaction = (SoFCEnableHighlightAction*)action;
+            auto preaction = (SoFCEnableHighlightAction*)action;
             if (preaction->highlight) {
                 this->highlightMode = SoFCSelection::AUTO;
             }
@@ -221,7 +221,7 @@ void SoFCSelection::doAction(SoAction *action)
         }
 
         if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
-            SoFCEnableSelectionAction *selaction = (SoFCEnableSelectionAction*)action;
+            auto selaction = (SoFCEnableSelectionAction*)action;
             if (selaction->selection) {
                 this->selectionMode = SoFCSelection::SEL_ON;
             }
@@ -234,17 +234,17 @@ void SoFCSelection::doAction(SoAction *action)
         }
 
         if (action->getTypeId() == SoFCSelectionColorAction::getClassTypeId()) {
-            SoFCSelectionColorAction *colaction = (SoFCSelectionColorAction*)action;
+            auto colaction = (SoFCSelectionColorAction*)action;
             this->colorSelection = colaction->selectionColor;
         }
 
         if (action->getTypeId() == SoFCHighlightColorAction::getClassTypeId()) {
-            SoFCHighlightColorAction *colaction = (SoFCHighlightColorAction*)action;
+            auto colaction = (SoFCHighlightColorAction*)action;
             this->colorHighlight = colaction->highlightColor;
         }
 
         if (selectionMode.getValue() == SEL_ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
-            SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
+            auto selaction = static_cast<SoFCSelectionAction*>(action);
 
             if (selaction->SelChange.Type == SelectionChanges::AddSelection ||
                 selaction->SelChange.Type == SelectionChanges::RmvSelection) {
@@ -353,7 +353,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
     }
 
     static char buf[513];
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = (HighlightModes) this->highlightMode.getValue();
     const SoEvent * event = action->getEvent();
 #ifdef NO_FRONTBUFFER
     // mouse move events for preselection
@@ -406,7 +406,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
         }
     } // key press events
     else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
-        SoKeyboardEvent  * const e = (SoKeyboardEvent  *) event;
+        auto const e = (SoKeyboardEvent  *) event;
         if (SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::LEFT_SHIFT)     ||
             SoKeyboardEvent::isKeyPressEvent(e,SoKeyboardEvent::RIGHT_SHIFT)     )
             bShift = true;
@@ -421,7 +421,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
             bCtrl = false;
     } // mouse press events for (de)selection
     else if (event->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-        SoMouseButtonEvent * const e = (SoMouseButtonEvent *) event;
+        auto const e = (SoMouseButtonEvent *) event;
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             //FIXME: Shouldn't we remove the preselection for newly selected objects?
             //       Otherwise the tree signals that an object is preselected even though it is hidden. (Werner)
@@ -928,7 +928,7 @@ SoFCSelection::readInstance  (  SoInput *  in, unsigned short  flags )
 bool
 SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 {
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = (HighlightModes) this->highlightMode.getValue();
     bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
     if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected()))
         return false;
@@ -940,7 +940,7 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     auto oldId = this->uniqueId;
     this->uniqueId ^= std::hash<void*>()(ctx.get()) + 0x9e3779b9 + (oldId << 6) + (oldId >> 2);
 
-    Styles mystyle = (Styles) this->style.getValue();
+    auto mystyle = (Styles) this->style.getValue();
 
     if (mystyle == SoFCSelection::BOX) {
         if (ctx) {
@@ -1022,7 +1022,7 @@ SoFCSelection::isHighlighted(SoAction *action)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    SoFullPath *actionPath = (SoFullPath *) action->getCurPath();
+    auto actionPath = (SoFullPath *) action->getCurPath();
     return (currenthighlight != nullptr &&
         currenthighlight->getTail() == actionPath->getTail() && // nested SoHL!
         *currenthighlight == *actionPath);
@@ -1042,7 +1042,7 @@ void SoFCSelection::applySettings ()
     else {
         // Search for a user defined value with the current color as default
         SbColor highlightColor = this->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        auto highlight = (unsigned long)(highlightColor.getPackedValue());
         highlight = hGrp->GetUnsigned("HighlightColor", highlight);
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         this->colorHighlight.setValue(highlightColor);
@@ -1053,7 +1053,7 @@ void SoFCSelection::applySettings ()
     else {
         // Do the same with the selection color
         SbColor selectionColor = this->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        auto selection = (unsigned long)(selectionColor.getPackedValue());
         selection = hGrp->GetUnsigned("SelectionColor", selection);
         selectionColor.setPackedValue((uint32_t)selection, transparency);
         this->colorSelection.setValue(selectionColor);

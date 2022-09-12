@@ -139,12 +139,12 @@ RotTransDragger::RotTransDragger()
    // By calling 'setAnyPartAsDefault' instead of 'setAnyPart'
    // we ensure that they will not be written out, unless
    // they are changed later on.
-   SoRotation *XRot = new SoRotation;
+   auto XRot = new SoRotation;
    XRot->rotation.setValue(
      SbRotation(SbVec3f(0,1,0), SbVec3f(1,0,0)));
    setAnyPartAsDefault("XRotatorRot", XRot);
 
-   SoRotation *ZRot = new SoRotation;
+   auto ZRot = new SoRotation;
    ZRot->rotation.setValue(
      SbRotation(SbVec3f(0,1,0), SbVec3f(0,0,1)));
    setAnyPartAsDefault("ZRotatorRot", ZRot);
@@ -331,7 +331,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
 void
 RotTransDragger::valueChangedCB(void *, SoDragger *inDragger)
 {
-   RotTransDragger *myself = (RotTransDragger *) inDragger;
+    auto myself = (RotTransDragger *) inDragger;
 
    // Factor the motionMatrix into its parts
    SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
@@ -355,7 +355,7 @@ RotTransDragger::valueChangedCB(void *, SoDragger *inDragger)
 void
 RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 {
-   RotTransDragger *myself = (RotTransDragger *) inDragger;
+    auto myself = (RotTransDragger *) inDragger;
 
    SbMatrix motMat = myself->getMotionMatrix(); // clazy:exclude=rule-of-two-soft
    myself->workFieldsIntoTransform(motMat);
@@ -369,7 +369,7 @@ RotTransDragger::fieldSensorCB(void *inDragger, SoSensor *)
 void
 RotTransDragger::invalidateSurroundScaleCB(void *parent, SoDragger *)
 {
-   RotTransDragger *myParentDragger = (RotTransDragger *) parent;
+    auto myParentDragger = (RotTransDragger *) parent;
 
    // Invalidate the surroundScale, if it exists.
    SoSurroundScale *mySS = SO_CHECK_PART(

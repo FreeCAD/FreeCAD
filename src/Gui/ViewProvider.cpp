@@ -197,14 +197,14 @@ void highlight(const HighlightMode& high)
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 {
     const SoEvent * ev = node->getEvent();
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventorViewer*>(node->getUserData());
-    ViewProvider *self = static_cast<ViewProvider*>(ud);
+    auto viewer = static_cast<Gui::View3DInventorViewer*>(node->getUserData());
+    auto self = static_cast<ViewProvider*>(ud);
     assert(self);
 
     try {
         // Keyboard events
         if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-            SoKeyboardEvent * ke = (SoKeyboardEvent *)ev;
+            auto ke = (SoKeyboardEvent *)ev;
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
             case SoKeyboardEvent::ESCAPE:
@@ -221,7 +221,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                         // react only on key release
                         // Let first selection mode terminate
                         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-                        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+                        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
                         if (view)
                         {
                             Gui::View3DInventorViewer* viewer = view->getViewer();
@@ -231,7 +231,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                             }
                         }
 
-                        Gui::TimerFunction* func = new Gui::TimerFunction();
+                        auto func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
                         func->setFunction(std::bind(&Document::resetEdit, doc));
                         QTimer::singleShot(0, func, SLOT(timeout()));
@@ -251,7 +251,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
         // switching the mouse buttons
         else if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
 
-            const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+            const auto event = (const SoMouseButtonEvent *) ev;
             const int button = event->getButton();
             const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -260,7 +260,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                 node->setHandled();
         }
         else if (ev->getTypeId().isDerivedFrom(SoMouseWheelEvent::getClassTypeId())) {
-            const SoMouseWheelEvent * const event = (const SoMouseWheelEvent *) ev;
+            const auto event = (const SoMouseWheelEvent *) ev;
 
             if (self->mouseWheelEvent(event->getDelta(), event->getPosition(), viewer))
                 node->setHandled();
@@ -587,7 +587,7 @@ using Edge = boost::graph_traits<Graph>::edge_descriptor;
 void addNodes(Graph& graph, std::map<SoNode*, Vertex>& vertexNodeMap, SoNode* node)
 {
     if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
-        SoGroup* group = static_cast<SoGroup*>(node);
+        auto group = static_cast<SoGroup*>(node);
         Vertex groupV = vertexNodeMap[group];
 
         for (int i=0; i<group->getNumChildren(); i++) {
@@ -953,7 +953,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
         }
     }
     int count = 0;
-    SoFullPath *path = static_cast<SoFullPath*>(new SoPath);
+    auto path = static_cast<SoFullPath*>(new SoPath);
     path->ref();
     SoSelectionElementAction action;
     action.setSecondary(true);

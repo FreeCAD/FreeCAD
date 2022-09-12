@@ -481,7 +481,7 @@ TranslateManip::TranslateManip()
 {
     SO_NODE_CONSTRUCTOR(TranslateManip);
 
-    SoTranslate2Dragger *myDrag = new SoTranslate2Dragger;
+    auto myDrag = new SoTranslate2Dragger;
     setDragger(myDrag);
 }
 

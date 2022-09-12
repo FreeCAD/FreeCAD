@@ -114,11 +114,11 @@ PyObject*  ViewProviderPy::supportedProperties(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+    for (auto & it : ary) {
+        auto data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it->getName()));
+            res.append(Py::String(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -317,7 +317,7 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
     }
 
     PY_TRY {
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         getViewProviderPtr()->addDisplayMaskMode(node,mode);
         Py_Return;
     }
@@ -334,8 +334,8 @@ PyObject*  ViewProviderPy::listDisplayModes(PyObject *args)
         PyObject* pyList = PyList_New(modes.size());
         int i=0;
 
-        for ( std::vector<std::string>::iterator it = modes.begin(); it != modes.end(); ++it ) {
-            PyObject* str = PyUnicode_FromString(it->c_str());
+        for (const auto & mode : modes) {
+            PyObject* str = PyUnicode_FromString(mode.c_str());
             PyList_SetItem(pyList, i++, str);
         }
 
@@ -368,7 +368,7 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     PyErr_Clear();
 
     if (PyArg_ParseTuple(args, "O!",&(Base::PlacementPy::Type),&p)) {
-        Base::PlacementPy* plc = static_cast<Base::PlacementPy*>(p);
+        auto plc = static_cast<Base::PlacementPy*>(p);
         getViewProviderPtr()->setTransformation(plc->getPlacementPtr()->toMatrix());
         Py_Return;
     }
@@ -478,7 +478,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
 
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
-    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
+    auto pp = static_cast<SoPickedPoint*>(ptr);
     if(!pp)
         throw Base::TypeError("type must be coin.SoPickedPoint");
 
@@ -499,7 +499,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
 
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
-    SoPath *pPath = static_cast<SoPath*>(ptr);
+    auto pPath = static_cast<SoPath*>(ptr);
     if(!pPath)
         throw Base::TypeError("'path' must be a coin.SoPath");
     SoDetail *det = nullptr;

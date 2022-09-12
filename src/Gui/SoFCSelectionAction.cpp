@@ -1008,10 +1008,10 @@ SoBoxSelectionRenderActionP::initBoxGraph()
     this->drawstyle->style = SoDrawStyleElement::LINES;
     this->basecolor = new SoBaseColor;
 
-    SoLightModel * lightmodel = new SoLightModel;
+    auto lightmodel = new SoLightModel;
     lightmodel->model = SoLightModel::BASE_COLOR;
 
-    SoComplexity * complexity = new SoComplexity;
+    auto complexity = new SoComplexity;
     complexity->textureQuality = 0.0f;
     complexity->type = SoComplexityTypeElement::BOUNDING_BOX;
 
@@ -1164,7 +1164,7 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
             for (int i = 0; i < pathlist.getLength(); i++ ) {
                 SoPath * path = pathlist[i];
                 assert(path);
-                SoFCSelection * selection = (SoFCSelection *) path->getTail();
+                auto selection = (SoFCSelection *) path->getTail();
                 assert(selection->getTypeId().isDerivedFrom(SoFCSelection::getClassTypeId()));
                 if (selection->selected.getValue() && selection->style.getValue() == SoFCSelection::BOX) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
@@ -1219,7 +1219,7 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
     SoGLRenderAction::apply(path);
     SoNode* node = path->getTail();
     if (node && node->getTypeId() == SoFCSelection::getClassTypeId()) {
-        SoFCSelection * selection = (SoFCSelection *) node;
+        auto selection = (SoFCSelection *) node;
 
         // This happens when dehighlighting the current shape
         if (PRIVATE(this)->highlightPath == path) {
@@ -1321,7 +1321,7 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     thestate->push();
 
     for (i = 0; i < pathlist->getLength(); i++) {
-        SoFullPath * path = (SoFullPath *)(*pathlist)[i];
+        auto path = (SoFullPath *)(*pathlist)[i];
 
         for (int j = 0; j < path->getLength(); j++) {
             PRIVATE(this)->postprocpath->append(path->getNode(j));

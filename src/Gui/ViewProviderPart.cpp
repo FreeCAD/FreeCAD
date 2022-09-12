@@ -69,7 +69,7 @@ void ViewProviderPart::onChanged(const App::Property* prop) {
 
 void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    auto func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Toggle active part"));
     func->trigger(act, std::bind(&ViewProviderPart::doubleClicked, this));
 
@@ -111,7 +111,7 @@ bool ViewProviderPart::doubleClicked()
 QIcon ViewProviderPart::getIcon() const
 {
     // the original Part object for this ViewProviderPart
-    App::Part* part = static_cast<App::Part*>(this->getObject());
+    auto part = static_cast<App::Part*>(this->getObject());
     // the normal case for Std_Part
     const char* pixmap = sPixmap;
     // if it's flagged as an Assembly in its Type, it gets another icon

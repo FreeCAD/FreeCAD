@@ -69,7 +69,7 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
     buttonHelp->setText(tr("&Help"));
     layout->addWidget( buttonHelp );
 
-    QSpacerItem* spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    auto spacer = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
     layout->addItem(spacer);
 
     buttonClose = new QPushButton( this );

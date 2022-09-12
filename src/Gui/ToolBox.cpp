@@ -42,7 +42,7 @@ ToolBox::ToolBox( QWidget *parent )
   _pToolBox = new QToolBox( this );
   connect( _pToolBox, SIGNAL( currentChanged(int) ), this, SIGNAL( currentChanged(int) ) );
 
-  QGridLayout* pGrid = new QGridLayout(this);
+  auto pGrid = new QGridLayout(this);
   pGrid->addWidget(_pToolBox, 0, 0);
 }
 

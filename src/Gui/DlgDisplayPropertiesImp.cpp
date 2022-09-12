@@ -158,8 +158,9 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
     // This method gets called if a property of any view provider is changed.
     // We pick out all the properties for which we need to update this dialog.
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    std::vector<Gui::ViewProvider*>::const_iterator vp = std::find_if
-        (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
+    auto vp = std::find_if(Provider.begin(),
+                           Provider.end(),
+                           [&obj](Gui::ViewProvider* v) { return v == &obj; });
 
     if (vp != Provider.end()) {
         const char* name = obj.getPropertyName(&prop);
@@ -273,10 +274,10 @@ void DlgDisplayPropertiesImp::on_changeMaterial_activated(int index)
                                        (int)(diffuseColor.g*255.0f),
                                        (int)(diffuseColor.b*255.0f)));
 
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
+    for (auto It= Provider.begin(); It != Provider.end(); ++It) {
         App::Property* prop = (*It)->getPropertyByName("ShapeMaterial");
         if (prop && prop->getTypeId() == App::PropertyMaterial::getClassTypeId()) {
-            App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;
+            auto ShapeMaterial = (App::PropertyMaterial*)prop;
             ShapeMaterial->setValue(mat);
         }
     }
@@ -289,10 +290,10 @@ void DlgDisplayPropertiesImp::on_changeMode_activated(const QString& s)
 {
     Gui::WaitCursor wc;
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
+    for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
-            App::PropertyEnumeration* Display = (App::PropertyEnumeration*)prop;
+            auto Display = (App::PropertyEnumeration*)prop;
             Display->setValue((const char*)s.toLatin1());
         }
     }
@@ -311,10 +312,10 @@ void DlgDisplayPropertiesImp::on_buttonColor_changed()
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonColor->color();
     App::Color c(s.red()/255.0,s.green()/255.0,s.blue()/255.0);
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
+    for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("ShapeColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            App::PropertyColor* ShapeColor = (App::PropertyColor*)prop;
+            auto ShapeColor = (App::PropertyColor*)prop;
             ShapeColor->setValue(c);
         }
     }
@@ -326,10 +327,10 @@ void DlgDisplayPropertiesImp::on_buttonColor_changed()
 void DlgDisplayPropertiesImp::on_spinTransparency_valueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
+    for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("Transparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            App::PropertyInteger* Transparency = (App::PropertyInteger*)prop;
+            auto Transparency = (App::PropertyInteger*)prop;
             Transparency->setValue(transparency);
         }
     }
@@ -341,10 +342,10 @@ void DlgDisplayPropertiesImp::on_spinTransparency_valueChanged(int transparency)
 void DlgDisplayPropertiesImp::on_spinPointSize_valueChanged(int pointsize)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
-        App::Property* prop = (*It)->getPropertyByName("PointSize");
+    for (const auto & It : Provider) {
+        App::Property* prop = It->getPropertyByName("PointSize");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            App::PropertyFloat* PointSize = (App::PropertyFloat*)prop;
+            auto PointSize = (App::PropertyFloat*)prop;
             PointSize->setValue((double)pointsize);
         }
     }
@@ -356,10 +357,10 @@ void DlgDisplayPropertiesImp::on_spinPointSize_valueChanged(int pointsize)
 void DlgDisplayPropertiesImp::on_spinLineWidth_valueChanged(int linewidth)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
-        App::Property* prop = (*It)->getPropertyByName("LineWidth");
+    for (const auto & It : Provider) {
+        App::Property* prop = It->getPropertyByName("LineWidth");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            App::PropertyFloat* LineWidth = (App::PropertyFloat*)prop;
+            auto LineWidth = (App::PropertyFloat*)prop;
             LineWidth->setValue((double)linewidth);
         }
     }
@@ -370,10 +371,10 @@ void DlgDisplayPropertiesImp::on_buttonLineColor_changed()
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonLineColor->color();
     App::Color c(s.red()/255.0,s.green()/255.0,s.blue()/255.0);
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
-        App::Property* prop = (*It)->getPropertyByName("LineColor");
+    for (const auto & It : Provider) {
+        App::Property* prop = It->getPropertyByName("LineColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            App::PropertyColor* ShapeColor = (App::PropertyColor*)prop;
+            auto ShapeColor = (App::PropertyColor*)prop;
             ShapeColor->setValue(c);
         }
     }
@@ -382,10 +383,10 @@ void DlgDisplayPropertiesImp::on_buttonLineColor_changed()
 void DlgDisplayPropertiesImp::on_spinLineTransparency_valueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    for (std::vector<Gui::ViewProvider*>::iterator It= Provider.begin();It!=Provider.end();++It) {
-        App::Property* prop = (*It)->getPropertyByName("LineTransparency");
+    for (const auto & It : Provider) {
+        App::Property* prop = It->getPropertyByName("LineTransparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            App::PropertyInteger* Transparency = (App::PropertyInteger*)prop;
+            auto Transparency = (App::PropertyInteger*)prop;
             Transparency->setValue(transparency);
         }
     }
@@ -394,21 +395,21 @@ void DlgDisplayPropertiesImp::on_spinLineTransparency_valueChanged(int transpare
 void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvider*>& views)
 {
     QStringList commonModes, modes;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
+    for (auto it = views.begin(); it != views.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
-            App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
+            auto display = static_cast<App::PropertyEnumeration*>(prop);
             if (!display->hasEnums())
                 return;
             std::vector<std::string> value = display->getEnumVector();
             if (it == views.begin()) {
-                for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt)
-                    commonModes << QLatin1String(jt->c_str());
+                for (const auto & jt : value)
+                    commonModes << QLatin1String(jt.c_str());
             }
             else {
-                for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-                    if (commonModes.contains(QLatin1String(jt->c_str())))
-                        modes << QLatin1String(jt->c_str());
+                for (const auto & jt : value) {
+                    if (commonModes.contains(QLatin1String(jt.c_str())))
+                        modes << QLatin1String(jt.c_str());
                 }
 
                 commonModes = modes;
@@ -422,10 +423,10 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
     d->ui.changeMode->setDisabled(commonModes.isEmpty());
 
     // find the display mode to activate
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("DisplayMode");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
-            App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
+            auto display = static_cast<App::PropertyEnumeration*>(prop);
             QString activeMode = QString::fromLatin1(display->getValueAsString());
             int index = d->ui.changeMode->findText(activeMode);
             if (index != -1) {
@@ -440,8 +441,8 @@ void DlgDisplayPropertiesImp::setMaterial(const std::vector<Gui::ViewProvider*>&
 {
     bool material = false;
     App::Material::MaterialType matType = App::Material::DEFAULT;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("ShapeMaterial");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("ShapeMaterial");
         if (prop && prop->getTypeId() == App::PropertyMaterial::getClassTypeId()) {
             material = true;
             matType = static_cast<App::PropertyMaterial*>(prop)->getValue().getType();
@@ -460,8 +461,8 @@ void DlgDisplayPropertiesImp::setMaterial(const std::vector<Gui::ViewProvider*>&
 void DlgDisplayPropertiesImp::setColorPlot(const std::vector<Gui::ViewProvider*>& views)
 {
     bool material = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("TextureMaterial");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("TextureMaterial");
         if (prop && prop->getTypeId() == App::PropertyMaterial::getClassTypeId()) {
             material = true;
             break;
@@ -500,8 +501,8 @@ void DlgDisplayPropertiesImp::fillupMaterials()
 void DlgDisplayPropertiesImp::setShapeColor(const std::vector<Gui::ViewProvider*>& views)
 {
     bool shapeColor = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("ShapeColor");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("ShapeColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
             QColor shape;
@@ -520,8 +521,8 @@ void DlgDisplayPropertiesImp::setShapeColor(const std::vector<Gui::ViewProvider*
 void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>& views)
 {
     bool shapeColor = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("LineColor");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("LineColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
             QColor shape;
@@ -540,8 +541,8 @@ void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>
 void DlgDisplayPropertiesImp::setPointSize(const std::vector<Gui::ViewProvider*>& views)
 {
     bool pointSize = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("PointSize");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("PointSize");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             bool blocked = d->ui.spinPointSize->blockSignals(true);
             d->ui.spinPointSize->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
@@ -557,8 +558,8 @@ void DlgDisplayPropertiesImp::setPointSize(const std::vector<Gui::ViewProvider*>
 void DlgDisplayPropertiesImp::setLineWidth(const std::vector<Gui::ViewProvider*>& views)
 {
     bool lineWidth = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("LineWidth");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("LineWidth");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
             bool blocked = d->ui.spinLineWidth->blockSignals(true);
             d->ui.spinLineWidth->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
@@ -574,8 +575,8 @@ void DlgDisplayPropertiesImp::setLineWidth(const std::vector<Gui::ViewProvider*>
 void DlgDisplayPropertiesImp::setTransparency(const std::vector<Gui::ViewProvider*>& views)
 {
     bool transparency = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("Transparency");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("Transparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
             bool blocked = d->ui.spinTransparency->blockSignals(true);
             d->ui.spinTransparency->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
@@ -596,8 +597,8 @@ void DlgDisplayPropertiesImp::setTransparency(const std::vector<Gui::ViewProvide
 void DlgDisplayPropertiesImp::setLineTransparency(const std::vector<Gui::ViewProvider*>& views)
 {
     bool transparency = false;
-    for (std::vector<Gui::ViewProvider*>::const_iterator it = views.begin(); it != views.end(); ++it) {
-        App::Property* prop = (*it)->getPropertyByName("LineTransparency");
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("LineTransparency");
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
             bool blocked = d->ui.spinLineTransparency->blockSignals(true);
             d->ui.spinLineTransparency->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
@@ -621,8 +622,8 @@ std::vector<Gui::ViewProvider*> DlgDisplayPropertiesImp::getSelection() const
 
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        Gui::ViewProvider* view = Application::Instance->getDocument(it->pDoc)->getViewProvider(it->pObject);
+    for (const auto & it : sel) {
+        Gui::ViewProvider* view = Application::Instance->getDocument(it.pDoc)->getViewProvider(it.pObject);
         views.push_back(view);
     }
 

@@ -308,7 +308,7 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
         return true;
-    QAbstractSpinBox* sb = qobject_cast<QAbstractSpinBox*>(obj);
+    auto sb = qobject_cast<QAbstractSpinBox*>(obj);
     if (sb) {
         if (ev->type() == QEvent::Show) {
             sb->setFocusPolicy(Qt::StrongFocus);
@@ -328,7 +328,7 @@ KeyboardFilter::KeyboardFilter(QObject* parent)
 bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
-        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        auto kev = static_cast<QKeyEvent *>(ev);
         Qt::KeyboardModifiers mod = kev->modifiers();
         int key = kev->key();
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))

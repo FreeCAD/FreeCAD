@@ -161,7 +161,7 @@ void DownloadManager::handleUnsupportedContent(QNetworkReply *reply, bool reques
     if (ok && size == 0)
         return;
 
-    DownloadItem *item = new DownloadItem(reply, requestFileName, this);
+    auto item = new DownloadItem(reply, requestFileName, this);
     addItem(item);
 }
 
@@ -182,7 +182,7 @@ void DownloadManager::addItem(DownloadItem *item)
 
 void DownloadManager::updateRow()
 {
-    DownloadItem *item = qobject_cast<DownloadItem*>(sender());
+    auto item = qobject_cast<DownloadItem*>(sender());
     int row = m_downloads.indexOf(item);
     if (-1 == row)
         return;
@@ -264,7 +264,7 @@ void DownloadManager::load()
         QString fileName = settings.value(key + QLatin1String("location")).toString();
         bool done = settings.value(key + QLatin1String("done"), true).toBool();
         if (!url.isEmpty() && !fileName.isEmpty()) {
-            DownloadItem *item = new DownloadItem(nullptr, false, this);
+            auto item = new DownloadItem(nullptr, false, this);
             item->m_output.setFileName(fileName);
             item->fileNameLabel->setText(QFileInfo(item->m_output.fileName()).fileName());
             item->m_url = url;

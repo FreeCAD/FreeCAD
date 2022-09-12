@@ -401,7 +401,7 @@ Action * StdCmdStatusBar::createAction()
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
     pcAction->setChecked(false, true);
-    FilterStatusBar *fsb = new FilterStatusBar(pcAction);
+    auto fsb = new FilterStatusBar(pcAction);
     getMainWindow()->statusBar()->installEventFilter(fsb);
 
     return pcAction;

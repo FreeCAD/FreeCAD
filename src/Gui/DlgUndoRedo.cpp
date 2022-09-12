@@ -74,7 +74,7 @@ void UndoDialog::onFetchInfo()
 /** Closes the dialog and sends the message 'Undo' to the currently active MDI view. */
 void UndoDialog::onSelected()
 {
-    QAction* a = static_cast<QAction*>(sender());
+    auto a = static_cast<QAction*>(sender());
     QList<QAction*> acts = this->actions();
     for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Undo");
@@ -122,7 +122,7 @@ void RedoDialog::onFetchInfo()
 /** Closes the dialog and sends the message 'Redo' to the currently active MDI view. */
 void RedoDialog::onSelected()
 {
-    QAction* a = static_cast<QAction*>(sender());
+    auto a = static_cast<QAction*>(sender());
     QList<QAction*> acts = this->actions();
     for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it) {
         Gui::Application::Instance->sendMsgToActiveView("Redo");

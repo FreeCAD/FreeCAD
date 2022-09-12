@@ -208,7 +208,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
     std::string vp = obj->getViewProviderName();
     SoNode* node = nullptr;
     try {
-        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
+        auto base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
             std::unique_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
             std::map<std::string, App::Property*> Map;
@@ -221,8 +221,8 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
                 static_cast<App::PropertyPythonObject*>(pyproxy)->setValue(Py::Long(1));
             }
 
-            for (std::map<std::string, App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
-                vp->updateData(it->second);
+            for (const auto & it : Map){
+                vp->updateData(it.second);
             }
 
             std::vector<std::string> modes = vp->getDisplayModes();
@@ -268,7 +268,7 @@ FreeCADGui_exportSubgraph(PyObject * /*self*/, PyObject *args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         if (node) {
             std::string formatStr(format);
             std::string buffer;
@@ -695,7 +695,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             std::stringstream str;
             std::set<App::DocumentObject*> unique_objs;
             str << "__objs__=[]" << std::endl;
-            for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it) {
+            for (auto it = sel.begin(); it != sel.end(); ++it) {
                 if (unique_objs.insert(*it).second) {
                     str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
                         << (*it)->getNameInDocument() << "\"))" << std::endl;
@@ -760,7 +760,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
     assert(it==d->documents.end());
 #endif
-    Gui::Document* pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
+    auto pDoc = new Gui::Document(const_cast<App::Document*>(&Doc),this);
     d->documents[&Doc] = pDoc;
 
     // connect the signals to the application for the new document
@@ -1552,9 +1552,9 @@ QStringList Application::workbenches() const
 {
     // If neither 'HiddenWorkbench' nor 'ExtraWorkbench' is set then all workbenches are returned.
     const std::map<std::string,std::string>& config = App::Application::Config();
-    std::map<std::string, std::string>::const_iterator ht = config.find("HiddenWorkbench");
-    std::map<std::string, std::string>::const_iterator et = config.find("ExtraWorkbench");
-    std::map<std::string, std::string>::const_iterator st = config.find("StartWorkbench");
+    auto ht = config.find("HiddenWorkbench");
+    auto et = config.find("ExtraWorkbench");
+    auto st = config.find("StartWorkbench");
     const char* start = (st != config.end() ? st->second.c_str() : "<none>");
     QStringList hidden, extra;
     if (ht != config.end()) {
@@ -1914,8 +1914,8 @@ void Application::runApplication()
         // opens them
         QDir cwd = QDir::current();
         std::list<std::string> files = App::Application::getCmdLineFiles();
-        for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
-            QString fn = QString::fromUtf8(jt->c_str(), static_cast<int>(jt->size()));
+        for (const auto & file : files) {
+            QString fn = QString::fromUtf8(file.c_str(), static_cast<int>(file.size()));
             QFileInfo fi(fn);
             // if path name is relative make it absolute because the running instance
             // cannot determine the full path when trying to load the file
@@ -2041,13 +2041,13 @@ void Application::runApplication()
 
     // filter wheel events for combo boxes
     if (hGrp->GetBool("ComboBoxWheelEventFilter", false)) {
-        WheelEventFilter* filter = new WheelEventFilter(&mainApp);
+        auto filter = new WheelEventFilter(&mainApp);
         mainApp.installEventFilter(filter);
     }
     
     //filter keyboard events to substitute decimal separator
     if (hGrp->GetBool("SubstituteDecimalSeparator", false)) {
-        KeyboardFilter* filter = new KeyboardFilter(&mainApp);
+        auto filter = new KeyboardFilter(&mainApp);
         mainApp.installEventFilter(filter);
     }
 
@@ -2112,7 +2112,7 @@ void Application::runApplication()
         }
         QPixmap px(path);
         if (!px.isNull()) {
-            QLabel* logo = new QLabel();
+            auto logo = new QLabel();
             logo->setPixmap(px.scaledToHeight(32));
             mw.statusBar()->addPermanentWidget(logo, 0);
             logo->setFrameShape(QFrame::NoFrame);
@@ -2290,7 +2290,7 @@ void Application::runApplication()
 void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 {
     Gui::MainWindow* mw = getMainWindow();
-    QMdiArea* mdi = mw->findChild<QMdiArea*>();
+    auto mdi = mw->findChild<QMdiArea*>();
     mdi->setProperty("showImage", tiledBackground);
 
     // Qt's style sheet doesn't support it to define the link color of a QLabel

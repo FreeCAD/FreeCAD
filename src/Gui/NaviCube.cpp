@@ -420,7 +420,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 
 	paint.end();
 	Q_UNUSED(gl);
-	QOpenGLTexture* texture = new QOpenGLTexture(image.mirrored());
+    auto texture = new QOpenGLTexture(image.mirrored());
 	m_glTextures.push_back(texture);
 	texture->generateMipMaps();
 	texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
@@ -526,7 +526,7 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 	//image.save(str(enum2str(button))+str(".png"));
 
 	Q_UNUSED(gl);
-	QOpenGLTexture* texture = new QOpenGLTexture(image.mirrored());
+    auto texture = new QOpenGLTexture(image.mirrored());
 	m_glTextures.push_back(texture);
 	texture->generateMipMaps();
 	texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
@@ -599,7 +599,7 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 	}
 	painter.end();
 	Q_UNUSED(gl);
-	QOpenGLTexture* texture = new QOpenGLTexture(image.mirrored());
+    auto texture = new QOpenGLTexture(image.mirrored());
 	m_glTextures.push_back(texture);
 	texture->generateMipMaps();
 	texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
@@ -852,7 +852,7 @@ void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& c
 	CommandManager& rcCmdMgr = Application::Instance->commandManager();
 	m_Menu->clear();
 
-	for (vector<string>::const_iterator i = cmd.begin(); i != cmd.end(); i++) {
+	for (auto i = cmd.begin(); i != cmd.end(); i++) {
 		Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
 		if (cmd)
 			cmd->addTo(m_Menu);
@@ -902,7 +902,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	// initializes stuff here when we actually have a context
 	// FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
 	if (!m_NaviCubeInitialised) {
-		QtGLWidget* gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
+        auto gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
 		if (!gl)
 			return;
 		initNaviCube(gl);
@@ -1662,7 +1662,7 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 //    y += 4;
 //    x -= 2;
 	if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-		const SoMouseButtonEvent* mbev = static_cast<const SoMouseButtonEvent*>(ev);
+		const auto mbev = static_cast<const SoMouseButtonEvent*>(ev);
 		if (mbev->isButtonPressEvent(mbev, SoMouseButtonEvent::BUTTON1))
 			return mousePressed(x, y);
 		if (mbev->isButtonReleaseEvent(mbev, SoMouseButtonEvent::BUTTON1))
@@ -1774,7 +1774,7 @@ void ViewZoomToFitCmd::activated(int iMsg)
 
 
 QMenu* NaviCubeImplementation::createNaviCubeMenu() {
-	QMenu* menu = new QMenu(getMainWindow());
+    auto menu = new QMenu(getMainWindow());
 	menu->setObjectName(str("NaviCube_Menu"));
 
 	CommandManager& rcCmdMgr = Application::Instance->commandManager();
@@ -1796,7 +1796,7 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
 		commands.emplace_back("ViewZoomToFit");
 	}
 
-	for (vector<string>::iterator i = commands.begin(); i != commands.end(); ++i) {
+	for (auto i = commands.begin(); i != commands.end(); ++i) {
 		if (*i == "Separator") {
 			menu->addSeparator();
 		}

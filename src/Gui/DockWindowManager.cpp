@@ -131,7 +131,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 {
     // creates the dock widget as container to embed this widget
     MainWindow* mw = getMainWindow();
-    QDockWidget* dw = new QDockWidget(mw);
+    auto dw = new QDockWidget(mw);
     // Note: By default all dock widgets are hidden but the user can show them manually in the view menu.
     // First, hide immediately the dock widget to avoid flickering, after setting up the dock widgets
     // MainWindow::loadLayoutSettings() is called to restore the layout.

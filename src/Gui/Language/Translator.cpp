@@ -303,11 +303,11 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
     QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(locale));
     QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-    for (QStringList::Iterator it = fileNames.begin(); it != fileNames.end(); ++it){
+    for (const auto &it : fileNames){
         bool ok=false;
         for (std::list<QTranslator*>::const_iterator tt = d->translators.begin();
             tt != d->translators.end(); ++tt) {
-            if ((*tt)->objectName() == *it) {
+            if ((*tt)->objectName() == it) {
                 ok = true; // this file is already installed
                 break;
             }
@@ -315,9 +315,9 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 
         // okay, we need to install this file
         if (!ok) {
-            QTranslator* translator = new QTranslator;
-            translator->setObjectName(*it);
-            if (translator->load(dir.filePath(*it))) {
+            auto translator = new QTranslator;
+            translator->setObjectName(it);
+            if (translator->load(dir.filePath(it))) {
                 qApp->installTranslator(translator);
                 d->translators.push_back(translator);
             }

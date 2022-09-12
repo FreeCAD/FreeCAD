@@ -49,7 +49,7 @@ SoFCInteractiveElement::~SoFCInteractiveElement()
 
 void SoFCInteractiveElement::set(SoState * const state, SoNode * const node, SbBool mode)
 {
-  SoFCInteractiveElement * elem = (SoFCInteractiveElement *)
+    auto elem = (SoFCInteractiveElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   elem->setElt(mode);
 }
@@ -92,14 +92,14 @@ SoGLWidgetElement::~SoGLWidgetElement()
 
 void SoGLWidgetElement::set(SoState * state, QtGLWidget * window)
 {
-  SoGLWidgetElement * elem = static_cast<SoGLWidgetElement *>
+    auto elem = static_cast<SoGLWidgetElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->window = window;
 }
 
 void SoGLWidgetElement::get(SoState * state, QtGLWidget *& window)
 {
-    const SoGLWidgetElement* that =  static_cast<const SoGLWidgetElement *>
+    const auto that =  static_cast<const SoGLWidgetElement *>
         (SoElement::getConstElement(state, classStackIndex));
     window = that->window;
 }
@@ -147,14 +147,14 @@ SoGLRenderActionElement::~SoGLRenderActionElement()
 
 void SoGLRenderActionElement::set(SoState * state, SoGLRenderAction * action)
 {
-  SoGLRenderActionElement * elem = static_cast<SoGLRenderActionElement *>
+    auto elem = static_cast<SoGLRenderActionElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->glRenderAction = action;
 }
 
 void SoGLRenderActionElement::get(SoState * state, SoGLRenderAction * & action)
 {
-    const SoGLRenderActionElement* that =  static_cast<const SoGLRenderActionElement *>
+    const auto that =  static_cast<const SoGLRenderActionElement *>
         (SoElement::getConstElement(state, classStackIndex));
     action = that->glRenderAction;
 }
@@ -241,14 +241,14 @@ SoGLVBOActivatedElement::~SoGLVBOActivatedElement()
 
 void SoGLVBOActivatedElement::set(SoState * state, SbBool active)
 {
-  SoGLVBOActivatedElement * elem = static_cast<SoGLVBOActivatedElement *>
+    auto elem = static_cast<SoGLVBOActivatedElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->active = active;
 }
 
 void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
 {
-    const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
+    const auto self =  static_cast<const SoGLVBOActivatedElement *>
         (SoElement::getConstElement(state, classStackIndex));
     active = self->active;
     if(active) {

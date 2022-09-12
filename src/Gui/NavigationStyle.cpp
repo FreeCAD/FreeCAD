@@ -282,13 +282,13 @@ int NavigationStyle::getInteractiveCount() const
 
 void NavigationStyle::setOrbitStyle(NavigationStyle::OrbitStyle style)
 {
-    FCSphereSheetProjector* projector = static_cast<FCSphereSheetProjector*>(this->spinprojector);
+    auto projector = static_cast<FCSphereSheetProjector*>(this->spinprojector);
     projector->setOrbitStyle(FCSphereSheetProjector::OrbitStyle(style));
 }
 
 NavigationStyle::OrbitStyle NavigationStyle::getOrbitStyle() const
 {
-    FCSphereSheetProjector* projector = static_cast<FCSphereSheetProjector*>(this->spinprojector);
+    auto projector = static_cast<FCSphereSheetProjector*>(this->spinprojector);
     return NavigationStyle::OrbitStyle(projector->getOrbitStyle());
 }
 
@@ -477,7 +477,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
 void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
 {
     Q_UNUSED(sensor);
-    NavigationStyle* that = static_cast<NavigationStyle*>(data);
+    auto that = static_cast<NavigationStyle*>(data);
     if (PRIVATE(that)->animationsteps > 0) {
         // here the camera rotates from the current rotation to a given
         // rotation (e.g. the standard views). To get this movement animated
@@ -584,7 +584,7 @@ void NavigationStyle::viewAll()
     float aspect = cam->aspectRatio.getValue();
 
     if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        SoOrthographicCamera* ocam = (SoOrthographicCamera *)cam;  // safe downward cast, knows the type
+        auto ocam = (SoOrthographicCamera *)cam;  // safe downward cast, knows the type
         if (aspect < 1.0f)
             ocam->height = cam_height / aspect;
         else
@@ -684,7 +684,7 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
     SbName tname = t.getName();
 
     // This will be in the range of <0, ->>.
-    float multiplicator = float(exp(diffvalue));
+    auto multiplicator = float(exp(diffvalue));
 
     if (t.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
 
@@ -692,7 +692,7 @@ void NavigationStyle::zoom(SoCamera * cam, float diffvalue)
         // of the word won't have any visible effect. So we just increase
         // or decrease the field-of-view values of the camera instead, to
         // "shrink" the projection size of the model / scene.
-        SoOrthographicCamera * oc = (SoOrthographicCamera *)cam;
+        auto oc = (SoOrthographicCamera *)cam;
         oc->height = oc->height.getValue() * multiplicator;
 
     }
@@ -1072,8 +1072,8 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         SbViewVolume vv = cam->getViewVolume(ratio);
         vv.projectToScreen(boundingBoxCenter, boundingBoxCenter);
         SbVec2s size = vp.getViewportSizePixels();
-        short tox = static_cast<short>(boundingBoxCenter[0] * size[0]);
-        short toy = static_cast<short>(boundingBoxCenter[1] * size[1]);
+        auto tox = static_cast<short>(boundingBoxCenter[0] * size[0]);
+        auto toy = static_cast<short>(boundingBoxCenter[1] * size[1]);
         this->localPos.setValue(tox, toy);
     }
 }
@@ -1479,7 +1479,7 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE)
             && !processed) {
         if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-            SoMouseButtonEvent * const e = (SoMouseButtonEvent *) ev;
+            auto const e = (SoMouseButtonEvent *) ev;
             if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
                 Gui::Selection().clearSelection();
             }
@@ -1496,7 +1496,7 @@ SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //handle mouse wheel zoom
     if (ev->isOfType(SoMouseWheelEvent::getClassTypeId())) {
-        const SoMouseWheelEvent * const event = static_cast<const SoMouseWheelEvent *>(ev);
+        auto const event = static_cast<const SoMouseWheelEvent *>(ev);
         processed = processWheelEvent(event);
         viewer->processSoEventBase(ev);
         offeredtoViewerEventBase = true;
@@ -1526,7 +1526,7 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
+        auto const event = (const SoKeyboardEvent *) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::LEFT_CONTROL:
@@ -1548,7 +1548,7 @@ void NavigationStyle::syncWithEvent(const SoEvent * const ev)
 
     // Mouse Button / Spaceball Button handling
     if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
+        auto const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
@@ -1583,7 +1583,7 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event * const ev)
     SbVec3f dir = ev->getTranslation();
 
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())){
-        SoOrthographicCamera *oCam = static_cast<SoOrthographicCamera *>(camera);
+        auto oCam = static_cast<SoOrthographicCamera *>(camera);
         oCam->scaleHeight(1.0 + (dir[2] * 0.0001));
         dir[2] = 0.0;//don't move the cam for z translation.
     }
@@ -1713,7 +1713,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
     Q_UNUSED(position);
     // ask workbenches and view provider, ...
-    MenuItem* view = new MenuItem;
+    auto view = new MenuItem;
     Gui::Application::Instance->setupContextMenu("View", view);
 
     QMenu contextMenu(viewer->getGLWidget());
@@ -1727,14 +1727,14 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
     // add submenu at the end to select navigation style
     std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
-    for (std::map<Base::Type, std::string>::iterator it = styles.begin(); it != styles.end(); ++it) {
-        QByteArray data(it->first.getName());
-        QString name = QApplication::translate(it->first.getName(), it->second.c_str());
+    for (const auto & style : styles) {
+        QByteArray data(style.first.getName());
+        QString name = QApplication::translate(style.first.getName(), style.second.c_str());
 
         QAction* item = subMenuGroup.addAction(name);
         item->setData(data);
         item->setCheckable(true);
-        if (it->first == this->getTypeId())
+        if (style.first == this->getTypeId())
             item->setChecked(true);
         subMenu.addAction(item);
     }
@@ -1782,11 +1782,11 @@ std::map<Base::Type, std::string> UserNavigationStyle::getUserFriendlyNames()
     std::vector<Base::Type> types;
     Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
 
-    for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
-        if (*it != UserNavigationStyle::getClassTypeId()) {
-            std::unique_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(it->createInstance()));
-            if (inst.get()) {
-                names[*it] = inst->userFriendlyName();
+    for (auto & type : types) {
+        if (type != UserNavigationStyle::getClassTypeId()) {
+            std::unique_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(type.createInstance()));
+            if (inst) {
+                names[type] = inst->userFriendlyName();
             }
         }
     }

@@ -277,8 +277,8 @@ QStringList MDIView::undoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecUndos = doc->getUndoVector();
-        for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
-            actions << QCoreApplication::translate("Command", i->c_str());
+        for (const auto & vecUndo : vecUndos) {
+            actions << QCoreApplication::translate("Command", vecUndo.c_str());
         }
     }
 
@@ -291,8 +291,8 @@ QStringList MDIView::redoActions() const
     Gui::Document* doc = getGuiDocument();
     if (doc) {
         std::vector<std::string> vecRedos = doc->getRedoVector();
-        for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
-            actions << QCoreApplication::translate("Command", i->c_str());
+        for (const auto & vecRedo : vecRedos) {
+            actions << QCoreApplication::translate("Command", vecRedo.c_str());
         }
     }
 

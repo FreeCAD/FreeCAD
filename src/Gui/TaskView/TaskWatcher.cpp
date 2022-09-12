@@ -82,7 +82,7 @@ TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands
 {
     if (commands) {
         CommandManager &mgr = Gui::Application::Instance->commandManager();
-        Gui::TaskView::TaskBox *tb = new Gui::TaskView::TaskBox
+        auto tb = new Gui::TaskView::TaskBox
             (BitmapFactory().pixmap(pixmap), tr(name), true, nullptr);
 
         for (const char** i=commands;*i;i++) {

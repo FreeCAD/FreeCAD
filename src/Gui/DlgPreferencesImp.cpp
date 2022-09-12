@@ -137,11 +137,11 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
     QString tooltip;
     getGroupData(groupName, fileName, tooltip);
 
-    QTabWidget* tabWidget = new QTabWidget;
+    auto tabWidget = new QTabWidget;
     ui->tabWidgetStack->addWidget(tabWidget);
     tabWidget->setProperty("GroupName", QVariant(groupNameQString));
 
-    QListWidgetItem* item = new QListWidgetItem(ui->listBox);
+    auto item = new QListWidgetItem(ui->listBox);
     item->setData(GroupNameRole, QVariant(groupNameQString));
     item->setText(QObject::tr(groupNameQString.toLatin1()));
     item->setToolTip(tooltip);
@@ -205,7 +205,7 @@ void DlgPreferencesImp::changeGroup(QListWidgetItem *current, QListWidgetItem *p
 void DlgPreferencesImp::addPage(const std::string& className, const std::string& group)
 {
     std::list<TGroupPages>::iterator groupToAddTo = _pages.end();
-    for (std::list<TGroupPages>::iterator it = _pages.begin(); it != _pages.end(); ++it) {
+    for (auto it = _pages.begin(); it != _pages.end(); ++it) {
         if (it->first == group) {
             groupToAddTo = it;
             break;
@@ -239,7 +239,7 @@ void DlgPreferencesImp::removePage(const std::string& className, const std::stri
             }
             else {
                 std::list<std::string>& p = it->second;
-                for (std::list<std::string>::iterator jt = p.begin(); jt != p.end(); ++jt) {
+                for (auto jt = p.begin(); jt != p.end(); ++jt) {
                     if (*jt == className) {
                         p.erase(jt);
                         if (p.empty())
@@ -292,7 +292,7 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
         QListWidgetItem* item = ui->listBox->item(i);
         if (item->data(GroupNameRole).toString() == group) {
             ui->listBox->setCurrentItem(item);
-            QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+            auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             tabWidget->setCurrentIndex(index);
             break;
         }
@@ -376,7 +376,7 @@ void DlgPreferencesImp::reloadPages()
             QString pageName = QString::fromStdString(page);
             bool pageExists = false;
             for (int pageNumber = 0; pageNumber < tabWidget->count(); ++pageNumber) {
-                PreferencePage* prefPage = qobject_cast<PreferencePage*>(tabWidget->widget(pageNumber));
+                auto prefPage = qobject_cast<PreferencePage*>(tabWidget->widget(pageNumber));
                 if (prefPage && prefPage->property("PageName").toString() == pageName) {
                     pageExists = true;
                     break;
@@ -400,7 +400,7 @@ void DlgPreferencesImp::applyChanges()
     // cancel further operation in other methods (like in accept()).
     try {
         for (int i=0; i<ui->tabWidgetStack->count(); i++) {
-            QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+            auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
                 int index = page->metaObject()->indexOfMethod("checkSettings()");
@@ -425,9 +425,9 @@ void DlgPreferencesImp::applyChanges()
     // If everything is ok (i.e., no validation problem), call method
     // saveSettings() in every subpage (DlgSetting*) object.
     for (int i=0; i<ui->tabWidgetStack->count(); i++) {
-        QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
         for (int j=0; j<tabWidget->count(); j++) {
-            PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
+            auto page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
             if (page)
                 page->saveSettings();
         }
@@ -458,7 +458,7 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
         if (height() > maxHeight || width() > maxWidth) {
             canEmbedScrollArea = false;
             ui->hboxLayout->removeWidget(ui->tabWidgetStack);
-            QScrollArea* scrollArea = new QScrollArea(this);
+            auto scrollArea = new QScrollArea(this);
             scrollArea->setFrameShape(QFrame::NoFrame);
             scrollArea->setWidgetResizable(true);
             scrollArea->setWidget(ui->tabWidgetStack);
@@ -466,7 +466,7 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
 
             // if possible the minimum width should so that it doesn't show
             // a horizontal scroll bar.
-            QScrollBar* bar = scrollArea->verticalScrollBar();
+            auto bar = scrollArea->verticalScrollBar();
             if (bar) {
                 int newWidth = width() + bar->width();
                 newWidth = std::min<int>(newWidth, maxWidth);
@@ -495,7 +495,7 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
         ui->retranslateUi(this);
         // update the widgets' tabs
         for (int i=0; i<ui->tabWidgetStack->count(); i++) {
-            QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+            auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
                 tabWidget->setTabText(j, page->windowTitle());
@@ -515,9 +515,9 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
 void DlgPreferencesImp::reload()
 {
     for (int i = 0; i < ui->tabWidgetStack->count(); i++) {
-        QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        auto tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
         for (int j = 0; j < tabWidget->count(); j++) {
-            PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
+            auto page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
             if (page)
                 page->loadSettings();
         }

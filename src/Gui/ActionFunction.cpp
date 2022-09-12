@@ -65,7 +65,7 @@ void ActionFunction::triggered()
 {
     Q_D(ActionFunction);
 
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QMap<QAction*, std::function<void()> >::iterator it = d->triggerMap.find(a);
     if (it != d->triggerMap.end()) {
         // invoke the class function here
@@ -85,7 +85,7 @@ void ActionFunction::toggled(bool on)
 {
     Q_D(ActionFunction);
 
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QMap<QAction*, std::function<void(bool)> >::iterator it = d->toggleMap.find(a);
     if (it != d->toggleMap.end()) {
         // invoke the class function here
@@ -105,7 +105,7 @@ void ActionFunction::hovered()
 {
     Q_D(ActionFunction);
 
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QMap<QAction*, std::function<void()> >::iterator it = d->hoverMap.find(a);
     if (it != d->hoverMap.end()) {
         // invoke the class function here

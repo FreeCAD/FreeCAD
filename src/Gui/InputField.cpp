@@ -105,7 +105,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
 
-    PropertyQuantity * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    auto prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
 
     if (prop)
         actQuantity = Base::Quantity(prop->getValue());
@@ -189,7 +189,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu *editMenu = createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    QMenu* menu = new QMenu(QString::fromLatin1("InputFieldContextmenu"));
+    auto menu = new QMenu(QString::fromLatin1("InputFieldContextmenu"));
 
     menu->addMenu(editMenu);
     menu->addSeparator();
@@ -201,9 +201,9 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
     // add the history menu part...
     std::vector<QString> history = getHistory();
 
-    for(std::vector<QString>::const_iterator it = history.begin();it!= history.end();++it){
-        actions.push_back(menu->addAction(*it));
-        values.push_back(*it);
+    for(const auto & it : history){
+        actions.push_back(menu->addAction(it));
+        values.push_back(it);
     }
 
     // add the save value portion of the menu
@@ -211,9 +211,9 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
     QAction *SaveValueAction = menu->addAction(tr("Save value"));
     std::vector<QString> savedValues = getSavedValues();
 
-    for(std::vector<QString>::const_iterator it = savedValues.begin();it!= savedValues.end();++it){
-        actions.push_back(menu->addAction(*it));
-        values.push_back(*it);
+    for(const auto & savedValue : savedValues){
+        actions.push_back(menu->addAction(savedValue));
+        values.push_back(savedValue);
     }
 
     // call the menu and wait until its back
@@ -224,7 +224,7 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
         pushToSavedValues();
     else{
         int i=0;
-        for(std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++)
+        for(auto it = actions.begin();it!=actions.end();++it,i++)
             if(*it == saveAction)
                 this->setText(values[i]);
     }
@@ -246,7 +246,7 @@ void InputField::newInput(const QString & text)
 
             std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
+            auto value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
             if (value) {
                 res.setValue(value->getValue());
                 res.setUnit(value->getUnit());
@@ -311,8 +311,8 @@ void InputField::pushToHistory(const QString &valueq)
 
     // check if already in:
     std::vector<QString> hist = InputField::getHistory();
-    for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
-        if( *it == val)
+    for(const auto & it : hist)
+        if( it == val)
             return;
 
     std::string value(val.toUtf8());
@@ -600,16 +600,16 @@ void InputField::selectNumber()
     QChar n = locale().negativeSign();
     QChar e = locale().exponential();
 
-    for (QString::const_iterator it = str.cbegin(); it != str.cend(); ++it) {
-        if (it->isDigit())
+    for (const auto & it : str) {
+        if (it.isDigit())
             i++;
-        else if (*it == d)
+        else if (it == d)
             i++;
-        else if (*it == g)
+        else if (it == g)
             i++;
-        else if (*it == n)
+        else if (it == n)
             i++;
-        else if (*it == e && actQuantity.getFormat().format != Base::QuantityFormat::Fixed)
+        else if (it == e && actQuantity.getFormat().format != Base::QuantityFormat::Fixed)
             i++;
         else // any non-number character
             break;

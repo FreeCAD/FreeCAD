@@ -113,9 +113,9 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
 
     int id = 1;
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-        connect(*it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
-        signalMapper->setMapping(*it, id++);
+    for (const auto & it : sb) {
+        connect(it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
+        signalMapper->setMapping(it, id++);
     }
 
     connect(signalMapper, SIGNAL(mapped(int)),
@@ -178,33 +178,33 @@ void Placement::openTransaction()
 QWidget* Placement::getInvalidInput() const
 {
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-        if (!(*it)->hasValidInput())
-            return (*it);
+    for (const auto & it : sb) {
+        if (!it->hasValidInput())
+            return it;
     }
     return nullptr;
 }
 
 void Placement::revertTransformation()
 {
-    for (std::set<std::string>::iterator it = documents.begin(); it != documents.end(); ++it) {
-        Gui::Document* document = Application::Instance->getDocument(it->c_str());
+    for (const auto & it : documents) {
+        Gui::Document* document = Application::Instance->getDocument(it.c_str());
         if (!document) continue;
 
         if (!changeProperty) {
             std::vector<App::DocumentObject*> obj = document->getDocument()->
                 getObjectsOfType(App::DocumentObject::getClassTypeId());
             if (!obj.empty()) {
-                for (std::vector<App::DocumentObject*>::iterator it=obj.begin();it!=obj.end();++it) {
+                for (const auto & it : obj) {
                     std::map<std::string,App::Property*> props;
-                    (*it)->getPropertyMap(props);
+                    it->getPropertyMap(props);
                     // search for the placement property
                     std::map<std::string,App::Property*>::iterator jt;
                     jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
                     if (jt != props.end()) {
-                        App::PropertyPlacement* property = static_cast<App::PropertyPlacement*>(jt->second);
+                        auto property = static_cast<App::PropertyPlacement*>(jt->second);
                         Base::Placement cur = property->getValue();
-                        Gui::ViewProvider* vp = document->getViewProvider(*it);
+                        Gui::ViewProvider* vp = document->getViewProvider(it);
                         if (vp) vp->setTransformation(cur.toMatrix());
                     }
                 }
@@ -226,14 +226,14 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
         (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
     if (!sel.empty()) {
         // apply transformation only on view matrix not on placement property
-        for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
+        for (const auto & it : sel) {
             std::map<std::string,App::Property*> props;
-            (*it)->getPropertyMap(props);
+            it->getPropertyMap(props);
             // search for the placement property
             std::map<std::string,App::Property*>::iterator jt;
             jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
             if (jt != props.end()) {
-                App::PropertyPlacement* property = static_cast<App::PropertyPlacement*>(jt->second);
+                auto property = static_cast<App::PropertyPlacement*>(jt->second);
                 Base::Placement cur = property->getValue();
                 if (incremental)
                     cur = p * cur;
@@ -241,7 +241,7 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
                     cur = p;
 
                 if (!changeProperty) {
-                    Gui::ViewProvider* vp = document->getViewProvider(*it);
+                    Gui::ViewProvider* vp = document->getViewProvider(it);
                     if (vp) vp->setTransformation(cur.toMatrix());
                 }
                 else {
@@ -277,9 +277,9 @@ void Placement::applyPlacement(const QString& data, bool incremental)
             (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
         if (!sel.empty()) {
             document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
-            for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
+            for (const auto & it : sel) {
                 std::map<std::string,App::Property*> props;
-                (*it)->getPropertyMap(props);
+                it->getPropertyMap(props);
                 // search for the placement property
                 std::map<std::string,App::Property*>::iterator jt;
                 jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
@@ -288,15 +288,15 @@ void Placement::applyPlacement(const QString& data, bool incremental)
                     if (incremental)
                         cmd = QString::fromLatin1(
                             "App.getDocument(\"%1\").%2.%3=%4.multiply(App.getDocument(\"%1\").%2.%3)")
-                            .arg(QString::fromLatin1((*it)->getDocument()->getName()),
-                                 QString::fromLatin1((*it)->getNameInDocument()),
+                            .arg(QString::fromLatin1(it->getDocument()->getName()),
+                                 QString::fromLatin1(it->getNameInDocument()),
                                  QString::fromLatin1(this->propertyName.c_str()),
                                  data);
                     else {
                         cmd = QString::fromLatin1(
                             "App.getDocument(\"%1\").%2.%3=%4")
-                            .arg(QString::fromLatin1((*it)->getDocument()->getName()),
-                                 QString::fromLatin1((*it)->getNameInDocument()),
+                            .arg(QString::fromLatin1(it->getDocument()->getName()),
+                                 QString::fromLatin1(it->getNameInDocument()),
                                  QString::fromLatin1(this->propertyName.c_str()),
                                  data);
                     }
@@ -369,7 +369,7 @@ void Placement::on_selectedVertex_clicked()
     //combine all pickedpoints into single vector
     //even if points are from separate objects
     Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
-    for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
+    for (auto it=selection.begin(); it!=selection.end(); ++it){
         std::vector<Base::Vector3d> points = it->getPickedPoints();
         if (it==selection.begin() && !points.empty()){
             firstSelected=points[0];
@@ -615,10 +615,10 @@ bool Placement::onApply()
 
     if (ui->applyIncrementalPlacement->isChecked()) {
         QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-        for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-            (*it)->blockSignals(true);
-            (*it)->setValue(0);
-            (*it)->blockSignals(false);
+        for (auto & it : sb) {
+            it->blockSignals(true);
+            it->setValue(0);
+            it->blockSignals(false);
         }
     }
 
@@ -631,10 +631,10 @@ bool Placement::onApply()
 void Placement::on_resetButton_clicked()
 {
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-        (*it)->blockSignals(true);
-        (*it)->setValue(0);
-        (*it)->blockSignals(false);
+    for (auto & it : sb) {
+        it->blockSignals(true);
+        it->setValue(0);
+        it->blockSignals(false);
     }
 
     onPlacementChanged(0);

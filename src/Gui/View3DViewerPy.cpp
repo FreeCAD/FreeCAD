@@ -149,7 +149,7 @@ Py::Object View3DInventorViewerPy::getattr(const char * attr)
     else {
         Py::Object obj = Py::PythonExtension<View3DInventorViewerPy>::getattr(attr);
         if (PyCFunction_Check(obj.ptr())) {
-            PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+            auto op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
             if (!pycxx_handler)
                 pycxx_handler = op->m_ml->ml_meth;
             op->m_ml->ml_meth = method_varargs_ext_handler;
@@ -213,7 +213,7 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
-        SoNode* node = static_cast<SoNode*>(ptr);
+        auto node = static_cast<SoNode*>(ptr);
         _viewer->setSceneGraph(node);
         return Py::None();
     }

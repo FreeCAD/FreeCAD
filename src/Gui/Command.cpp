@@ -331,7 +331,7 @@ private:
 
 void Command::setupCheckable(int iMsg) {
     QAction *action = nullptr;
-    Gui::ActionGroup* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
     if(pcActionGroup) {
         QList<QAction*> a = pcActionGroup->actions();
         assert(iMsg < a.size());
@@ -495,7 +495,7 @@ void Command::testActive()
         }
     }
 
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     if(pcAction) {
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         const auto actions = pcAction->actions();
@@ -802,9 +802,9 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
 std::string Command::getPythonTuple(const std::string& name, const std::vector<std::string>& subnames)
 {
     std::stringstream str;
-    std::vector<std::string>::const_iterator last = --subnames.end();
+    auto last = --subnames.end();
     str << "(App.ActiveDocument." << name << ",[";
-    for (std::vector<std::string>::const_iterator it = subnames.begin();it!=subnames.end();++it){
+    for (auto it = subnames.cbegin(); it!=subnames.cend(); ++it){
         str << "\"" << *it << "\"";
         if (it != last)
             str << ",";
@@ -839,8 +839,8 @@ bool Command::isActiveObjectValid()
 void Command::updateAll(std::list<Gui::Document*> cList)
 {
     if (!cList.empty()) {
-        for (std::list<Gui::Document*>::iterator It= cList.begin();It!=cList.end();++It)
-            (*It)->onUpdate();
+        for (auto & it : cList)
+            it->onUpdate();
     }
     else {
         Gui::Application::Instance->onUpdate();
@@ -922,12 +922,12 @@ const char* Command::keySequenceToAccel(int sk) const
     /* Local class to ensure free()'ing the strings allocated below */
     using StringMap = std::map<int, std::string>;
     static StringMap strings;
-    StringMap::iterator i = strings.find(sk);
+    auto i = strings.find(sk);
 
     if (i != strings.end())
         return i->second.c_str();
 
-    QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
+    auto type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
     QByteArray data = qs.toLatin1();
@@ -939,7 +939,7 @@ void Command::adjustCameraPosition()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
         Gui::View3DInventorViewer* viewer = view->getViewer();
         SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
@@ -1031,7 +1031,7 @@ Command *GroupCommand::addCommand(const char *name) {
 }
 
 Action * GroupCommand::createAction() {
-    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    auto pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
@@ -1190,17 +1190,17 @@ void MacroCommand::load()
     if (hGrp->HasGroup("Macros")) {
         hGrp = hGrp->GetGroup("Macros");
         std::vector<Base::Reference<ParameterGrp> > macros = hGrp->GetGroups();
-        for (std::vector<Base::Reference<ParameterGrp> >::iterator it = macros.begin(); it!=macros.end(); ++it ) {
-            MacroCommand* macro = new MacroCommand((*it)->GetGroupName());
-            macro->setScriptName  ( (*it)->GetASCII( "Script"     ).c_str() );
-            macro->setMenuText    ( (*it)->GetASCII( "Menu"       ).c_str() );
-            macro->setToolTipText ( (*it)->GetASCII( "Tooltip"    ).c_str() );
-            macro->setWhatsThis   ( (*it)->GetASCII( "WhatsThis"  ).c_str() );
-            macro->setStatusTip   ( (*it)->GetASCII( "Statustip"  ).c_str() );
-            if ((*it)->GetASCII("Pixmap", "nix") != "nix")
-                macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
-            macro->setAccel       ( (*it)->GetASCII( "Accel",nullptr    ).c_str() );
-            macro->systemMacro = (*it)->GetBool("System", false);
+        for (const auto & it : macros) {
+            auto macro = new MacroCommand(it->GetGroupName());
+            macro->setScriptName  ( it->GetASCII( "Script"     ).c_str() );
+            macro->setMenuText    ( it->GetASCII( "Menu"       ).c_str() );
+            macro->setToolTipText ( it->GetASCII( "Tooltip"    ).c_str() );
+            macro->setWhatsThis   ( it->GetASCII( "WhatsThis"  ).c_str() );
+            macro->setStatusTip   ( it->GetASCII( "Statustip"  ).c_str() );
+            if (it->GetASCII("Pixmap", "nix") != "nix")
+                macro->setPixmap    ( it->GetASCII( "Pixmap"     ).c_str() );
+            macro->setAccel       ( it->GetASCII( "Accel",nullptr    ).c_str() );
+            macro->systemMacro = it->GetBool("System", false);
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -1213,8 +1213,8 @@ void MacroCommand::save()
 
     std::vector<Command*> macros = Application::Instance->commandManager().getGroupCommands("Macros");
     if ( !macros.empty() ) {
-        for (std::vector<Command*>::iterator it = macros.begin(); it!=macros.end(); ++it ) {
-            MacroCommand* macro = (MacroCommand*)(*it);
+        for (const auto & it : macros) {
+            auto macro = (MacroCommand*)it;
             ParameterGrp::handle hMacro = hGrp->GetGroup(macro->getName());
             hMacro->SetASCII( "Script",    macro->getScriptName () );
             hMacro->SetASCII( "Menu",      macro->getMenuText   () );
@@ -1358,7 +1358,7 @@ const char* PythonCommand::getHelpUrl() const
 
 Action * PythonCommand::createAction()
 {
-    QAction* qtAction = new QAction(nullptr);
+    auto qtAction = new QAction(nullptr);
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
@@ -1489,7 +1489,7 @@ PythonGroupCommand::~PythonGroupCommand()
 void PythonGroupCommand::activated(int iMsg)
 {
     try {
-        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+        auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
         QList<QAction*> a = pcAction->actions();
         assert(iMsg < a.size());
         QAction* act = a[iMsg];
@@ -1549,7 +1549,7 @@ bool PythonGroupCommand::isActive()
 
 Action * PythonGroupCommand::createAction()
 {
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(hasDropDownMenu());
     pcAction->setExclusive(isExclusive());
 
@@ -1636,10 +1636,10 @@ void PythonGroupCommand::languageChange()
     applyCommandData(this->getName(), _pcAction);
 
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
-    for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
-        Gui::Command* cmd = rcCmdMgr.getCommandByName((*it)->property("CommandName").toByteArray());
+    for (const auto & it : a) {
+        Gui::Command* cmd = rcCmdMgr.getCommandByName(it->property("CommandName").toByteArray());
         if (cmd) {
             // Python command use getName as context
             const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
@@ -1649,10 +1649,10 @@ void PythonGroupCommand::languageChange()
                 statustip = tooltip;
             }
 
-            (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
-            (*it)->setText(QApplication::translate(context, cmd->getMenuText()));
-            (*it)->setToolTip(QApplication::translate(context, tooltip));
-            (*it)->setStatusTip(QApplication::translate(context, statustip));
+            it->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
+            it->setText(QApplication::translate(context, cmd->getMenuText()));
+            it->setToolTip(QApplication::translate(context, tooltip));
+            it->setStatusTip(QApplication::translate(context, statustip));
         }
     }
 }
@@ -1887,8 +1887,8 @@ void CommandManager::updateCommands(const char* sContext, int mode)
 {
     std::map<std::string, std::list<std::string> >::iterator it = _sCommandModes.find(sContext);
     if (it != _sCommandModes.end()) {
-        for (std::list<std::string>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            Command* cmd = getCommandByName(jt->c_str());
+        for (const auto & jt : it->second) {
+            Command* cmd = getCommandByName(jt.c_str());
             if (cmd) {
                 cmd->updateAction(mode);
             }

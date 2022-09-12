@@ -52,7 +52,7 @@ unsigned char * generateTexture(int w, int h, int d)
   int val;
   float x,y,z;
 //  unsigned char pixval;
-  unsigned char * bitmap = new unsigned char[w*h*d];
+  auto bitmap = new unsigned char[w*h*d];
 
   for (int k = 0;k<d;k++) {
     z = k*360/d;
@@ -184,7 +184,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
 
 void draggerCB(void * /*data*/, SoDragger * dragger)
 {
-  SoTransformerDragger * drag = (SoTransformerDragger *)dragger;
+    auto drag = (SoTransformerDragger *)dragger;
   doClipping(drag->translation.getValue(), drag->rotation.getValue());
 }
 
@@ -202,11 +202,11 @@ void Texture3D(SoSeparator * root)
 //  SoSeparator * root = new SoSeparator;
 //  root->ref();
 
-  SoComplexity * comp = new SoComplexity;
+  auto comp = new SoComplexity;
   comp->textureQuality.setValue((float)0.9);
   root->addChild(comp);
 
-  SoTexture3 * texture = new SoTexture3;
+  auto texture = new SoTexture3;
   texture->wrapR.setValue(SoTexture3::CLAMP);
   texture->wrapS.setValue(SoTexture3::CLAMP);
   texture->wrapT.setValue(SoTexture3::CLAMP);
@@ -218,37 +218,37 @@ void Texture3D(SoSeparator * root)
   texture->images.setValue(SbVec3s(256,256,256), 1, img);
   root->addChild(texture);
 
-  SoMaterial * mat = new SoMaterial;
+  auto mat = new SoMaterial;
   mat->emissiveColor.setValue(1,1,1);
   root->addChild(mat);
 
-  SoTransformerDragger * dragger = new SoTransformerDragger;
+  auto dragger = new SoTransformerDragger;
   dragger->scaleFactor.setValue(5,5,5);
   dragger->addValueChangedCallback(draggerCB, nullptr);
   root->addChild(dragger);
 
-  SoCoordinate3 * clippedCoords = new SoCoordinate3;
+  auto clippedCoords = new SoCoordinate3;
   clippedCoords->point.connectFrom((SoMFVec3f *)
                                    SoDB::getGlobalField("globalVerts"));
   root->addChild(clippedCoords);
-  SoTextureCoordinate3 * clippedTCoords = new SoTextureCoordinate3;
+  auto clippedTCoords = new SoTextureCoordinate3;
   clippedTCoords->point.connectFrom((SoMFVec3f *)
                                     SoDB::getGlobalField("globalTVerts"));
   root->addChild(clippedTCoords);
-  SoFaceSet * clippedFS = new SoFaceSet;
+  auto clippedFS = new SoFaceSet;
   clippedFS->numVertices.connectFrom((SoMFInt32 *)
                                      SoDB::getGlobalField("globalnv"));
   root->addChild(clippedFS);
 
-  SoCoordinate3 * planeCoords = new SoCoordinate3;
+  auto planeCoords = new SoCoordinate3;
   planeCoords->point.connectFrom((SoMFVec3f *)
                                  SoDB::getGlobalField("planeVerts"));
   root->addChild(planeCoords);
-  SoTextureCoordinate3 * planeTCoords = new SoTextureCoordinate3;
+  auto planeTCoords = new SoTextureCoordinate3;
   planeTCoords->point.connectFrom((SoMFVec3f *)
                                   SoDB::getGlobalField("planeTVerts"));
   root->addChild(planeTCoords);
-  SoFaceSet * planeFS = new SoFaceSet;
+  auto planeFS = new SoFaceSet;
   root->addChild(planeFS);
 }
 
@@ -293,7 +293,7 @@ void LightManip(SoSeparator * root)
     if (!path) // Shouldn't happen.
         return;
 
-    SoPointLightManip * manip = new SoPointLightManip;
+    auto manip = new SoPointLightManip;
     manip->replaceNode( path );
   }
 
@@ -356,7 +356,7 @@ julia(double crr, double cii, float zoom, int width, int height, int mult,
 SoTexture2 *
 texture()
 {
-  SoTexture2 * texture = new SoTexture2;
+    auto texture = new SoTexture2;
   texture->image.setValue(SbVec2s(texturewidth, textureheight), 1, bitmap);
   texture->model = SoTexture2::MODULATE;
   texture->blendColor.setValue(1.0, 0.0, 0.0);
@@ -369,7 +369,7 @@ timersensorcallback(void * data, SoSensor *)
 {
   static SbBool direction = false;
 
-  SoTexture2 * texnode = (SoTexture2*) data;
+  auto texnode = (SoTexture2*) data;
 
   if (!direction) {
     global_cr -= 0.0005;
@@ -406,13 +406,13 @@ void AnimationTexture(SoSeparator * root)
   SoTexture2 * texnode = texture();
 
   // Enable backface culling
-  SoShapeHints * hints = new SoShapeHints;
+  auto hints = new SoShapeHints;
 
   hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   hints->shapeType = SoShapeHints::SOLID;
 
   // Timer sensor
-  SoTimerSensor * texturetimer = new SoTimerSensor(timersensorcallback, texnode);
+  auto texturetimer = new SoTimerSensor(timersensorcallback, texnode);
   texturetimer->setInterval(0.05);
   texturetimer->schedule();
 

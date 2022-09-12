@@ -58,7 +58,7 @@ ReportView::ReportView( QWidget* parent )
     setObjectName(QLatin1String("ReportOutput"));
 
     resize( 529, 162 );
-    QGridLayout* tabLayout = new QGridLayout( this );
+    auto tabLayout = new QGridLayout( this );
     tabLayout->setSpacing( 0 );
     tabLayout->setMargin( 0 );
 
@@ -141,7 +141,7 @@ void ReportHighlighter::highlightBlock (const QString & text)
 {
     if (text.isEmpty())
         return;
-    TextBlockData* ud = static_cast<TextBlockData*>(this->currentBlockUserData());
+    auto ud = static_cast<TextBlockData*>(this->currentBlockUserData());
     if (!ud) {
         ud = new TextBlockData;
         this->setCurrentBlockUserData(ud);
@@ -154,26 +154,26 @@ void ReportHighlighter::highlightBlock (const QString & text)
 
     QVector<TextBlockData::State> block = ud->block;
     int start = 0;
-    for (QVector<TextBlockData::State>::Iterator it = block.begin(); it != block.end(); ++it) {
-        switch (it->type)
+    for (const auto & it : block) {
+        switch (it.type)
         {
         case Message:
-            setFormat(start, it->length-start, txtCol);
+            setFormat(start, it.length-start, txtCol);
             break;
         case Warning:
-            setFormat(start, it->length-start, warnCol);
+            setFormat(start, it.length-start, warnCol);
             break;
         case Error:
-            setFormat(start, it->length-start, errCol);
+            setFormat(start, it.length-start, errCol);
             break;
         case LogText:
-            setFormat(start, it->length-start, logCol);
+            setFormat(start, it.length-start, logCol);
             break;
         default:
             break;
         }
 
-        start = it->length;
+        start = it.length;
     }
 }
 
@@ -305,7 +305,7 @@ void ReportOutputObserver::showReportView()
 bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::User && obj == reportView.data()) {
-        CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
+        auto cr = dynamic_cast<CustomReportEvent*>(event);
         if (cr) {
             ReportHighlighter::Paragraph msgType = cr->messageType();
             if (msgType == ReportHighlighter::Warning) {
@@ -478,7 +478,7 @@ void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
     }
 
     // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(style, qMsg);
+    auto ev = new CustomReportEvent(style, qMsg);
     QApplication::postEvent(this, ev);
 }
 
@@ -486,7 +486,7 @@ void ReportOutput::customEvent ( QEvent* ev )
 {
     // Appends the text stored in the event to the text view
     if ( ev->type() ==  QEvent::User ) {
-        CustomReportEvent* ce = (CustomReportEvent*)ev;
+        auto ce = (CustomReportEvent*)ev;
         reportHl->setParagraphType(ce->messageType());
 
         bool showTimecode = getWindowParameter()->GetBool("checkShowReportTimecode", true);
@@ -516,7 +516,7 @@ void ReportOutput::customEvent ( QEvent* ev )
 bool ReportOutput::event(QEvent* event)
 {
     if (event && event->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        auto kevent = static_cast<QKeyEvent*>(event);
         if (kevent == QKeySequence::Copy)
             kevent->accept();
     }
@@ -529,7 +529,7 @@ void ReportOutput::changeEvent(QEvent *ev)
         QPalette pal = palette();
         QColor color = pal.windowText().color();
         unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-        unsigned long value = static_cast<unsigned long>(text);
+        auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("colorText", value);
         getWindowParameter()->SetUnsigned("colorText", value);
@@ -544,13 +544,13 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     bool bShowOnWarn = ReportOutputParameter::showOnWarning();
     bool bShowOnError = ReportOutputParameter::showOnError();
 
-    QMenu* menu = new QMenu(this);
-    QMenu* optionMenu = new QMenu( menu );
+    auto menu = new QMenu(this);
+    auto optionMenu = new QMenu( menu );
     optionMenu->setTitle(tr("Options"));
     menu->addMenu(optionMenu);
     menu->addSeparator();
 
-    QMenu* displayMenu = new QMenu(optionMenu);
+    auto displayMenu = new QMenu(optionMenu);
     displayMenu->setTitle(tr("Display message types"));
     optionMenu->addMenu(displayMenu);
 
@@ -570,7 +570,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     errAct->setCheckable(true);
     errAct->setChecked(bErr);
 
-    QMenu* showOnMenu = new QMenu (optionMenu);
+    auto showOnMenu = new QMenu (optionMenu);
     showOnMenu->setTitle(tr("Show output window on"));
     optionMenu->addMenu(showOnMenu);
 

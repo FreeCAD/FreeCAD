@@ -511,7 +511,7 @@ void PythonConsole::OnChange(Base::Subject<const char*> &rCaller, const char* sR
         if (it != d->colormap.end()) {
             QColor color = it.value();
             unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-            unsigned long value = static_cast<unsigned long>(col);
+            auto value = static_cast<unsigned long>(col);
             value = rGrp.GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
@@ -897,11 +897,11 @@ void PythonConsole::printStatement( const QString& cmd )
 
     QTextCursor cursor = textCursor();
     QStringList statements = cmd.split(QLatin1String("\n"));
-    for (QStringList::Iterator it = statements.begin(); it != statements.end(); ++it) {
+    for (const auto & statement : statements) {
         // go to the end before inserting new text
         cursor.movePosition(QTextCursor::End);
-        cursor.insertText( *it );
-        d->history.append( *it );
+        cursor.insertText( statement );
+        d->history.append( statement );
         printPrompt(PythonConsole::Complete);
     }
 }
@@ -925,7 +925,7 @@ void PythonConsole::visibilityChanged (bool visible)
 void PythonConsole::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::ParentChange) {
-        QDockWidget* dw = qobject_cast<QDockWidget*>(this->parentWidget());
+        auto dw = qobject_cast<QDockWidget*>(this->parentWidget());
         if (dw) {
             connect(dw, SIGNAL(visibilityChanged(bool)),
                     this, SLOT(visibilityChanged(bool)));
@@ -935,7 +935,7 @@ void PythonConsole::changeEvent(QEvent *e)
         QPalette pal = palette();
         QColor color = pal.windowText().color();
         unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-        unsigned long value = static_cast<unsigned long>(text);
+        auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("Text", value);
         getWindowParameter()->SetUnsigned("Text", value);
@@ -1029,8 +1029,8 @@ bool PythonConsole::canInsertFromMimeData (const QMimeData * source) const
         return true;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
-        for (QList<QUrl>::Iterator it = uri.begin(); it != uri.end(); ++it) {
-            QFileInfo info((*it).toLocalFile());
+        for (const auto & it : uri) {
+            QFileInfo info(it.toLocalFile());
             if (info.exists() && info.isFile()) {
                 QString ext = info.suffix().toLower();
                 if (ext == QLatin1String("py") || ext == QLatin1String("fcmacro"))
@@ -1054,9 +1054,9 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     bool existingFile = false;
     if (source->hasUrls()) {
         QList<QUrl> uri = source->urls();
-        for (QList<QUrl>::Iterator it = uri.begin(); it != uri.end(); ++it) {
+        for (const auto & it : uri) {
             // get the file name and check the extension
-            QFileInfo info((*it).toLocalFile());
+            QFileInfo info(it.toLocalFile());
             QString ext = info.suffix().toLower();
             if (info.exists()) {
                 existingFile = true;
@@ -1098,7 +1098,7 @@ QTextCursor PythonConsole::inputBegin() const
 
 QMimeData * PythonConsole::createMimeDataFromSelection () const
 {
-    QMimeData* mime = new QMimeData();
+    auto mime = new QMimeData();
 
     switch (d->type) {
         case PythonConsoleP::Normal:
@@ -1321,8 +1321,8 @@ void PythonConsole::onSaveHistoryAs()
             if (f.open(QIODevice::WriteOnly)) {
                 QTextStream t (&f);
                 const QStringList& hist = d->history.values();
-                for (QStringList::ConstIterator it = hist.begin(); it != hist.end(); ++it)
-                    t << *it << "\n";
+                for (const auto & it : hist)
+                    t << it << "\n";
                 f.close();
             }
         }
@@ -1420,8 +1420,8 @@ void PythonConsole::saveHistory() const
         // only save last 100 entries so we don't inflate forever...
         if (hist.length() > 100)
             hist = hist.mid(hist.length()-100);
-        for (QStringList::ConstIterator it = hist.cbegin(); it != hist.cend(); ++it)
-            t << *it << "\n";
+        for (const auto & it : hist)
+            t << it << "\n";
         f.close();
     }
 }

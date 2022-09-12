@@ -178,7 +178,7 @@ namespace Gui {
         int child=0;
         QList<DocumentModelIndex*>::const_iterator it;
         for (it = childItems.begin(); it != childItems.end(); ++it, ++child) {
-            DocumentIndex* doc = static_cast<DocumentIndex*>(*it);
+            auto doc = static_cast<DocumentIndex*>(*it);
             if (&doc->d == &d)
                 return child;
         }
@@ -237,7 +237,7 @@ namespace Gui {
     {
         QList<DocumentModelIndex*>::const_iterator it;
         for (it = childItems.begin(); it != childItems.end(); ++it) {
-            ViewProviderIndex* v = static_cast<ViewProviderIndex*>(*it);
+            auto v = static_cast<ViewProviderIndex*>(*it);
             v->findViewProviders(vp, index);
         }
     }
@@ -247,7 +247,7 @@ namespace Gui {
         QList<DocumentModelIndex*>::const_iterator it;
         int index=0;
         for (it = childItems.begin(); it != childItems.end(); ++it, ++index) {
-            ViewProviderIndex* v = static_cast<ViewProviderIndex*>(*it);
+            auto v = static_cast<ViewProviderIndex*>(*it);
             if (&v->v == &vp)
                 return index;
         }
@@ -291,9 +291,9 @@ namespace Gui {
 
     ViewProviderIndex* ViewProviderIndex::clone() const
     {
-        ViewProviderIndex* copy = new ViewProviderIndex(this->v, this->d);
-        for (QList<DocumentModelIndex*>::const_iterator it = childItems.begin(); it != childItems.end(); ++it) {
-            ViewProviderIndex* c = static_cast<ViewProviderIndex*>(*it)->clone();
+        auto copy = new ViewProviderIndex(this->v, this->d);
+        for (const auto & childItem : childItems) {
+            ViewProviderIndex* c = static_cast<ViewProviderIndex*>(childItem)->clone();
             copy->appendChild(c);
         }
         return copy;
@@ -306,7 +306,7 @@ namespace Gui {
             index.push_back(const_cast<ViewProviderIndex*>(this));
         QList<DocumentModelIndex*>::const_iterator it;
         for (it = childItems.begin(); it != childItems.end(); ++it) {
-            ViewProviderIndex* v = static_cast<ViewProviderIndex*>(*it);
+            auto v = static_cast<ViewProviderIndex*>(*it);
             v->findViewProviders(vp, index);
         }
     }
@@ -448,7 +448,7 @@ void DocumentModel::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
     Gui::Document* gdc = Application::Instance->getDocument(doc);
     int row = d->rootItem->findChild(*gdc);
     if (row > -1) {
-        DocumentIndex* index = static_cast<DocumentIndex*>(d->rootItem->child(row));
+        auto index = static_cast<DocumentIndex*>(d->rootItem->child(row));
         QModelIndex parent = createIndex(index->row(),0,index);
         int count_obj = index->childCount();
         beginInsertRows(parent, count_obj, count_obj);
@@ -463,16 +463,16 @@ void DocumentModel::slotDeleteObject(const Gui::ViewProviderDocumentObject& obj)
     Gui::Document* gdc = Application::Instance->getDocument(doc);
     int row = d->rootItem->findChild(*gdc);
     if (row > -1) {
-        DocumentIndex* doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
+        auto doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
         QList<ViewProviderIndex*> views;
         doc_index->findViewProviders(obj, views);
-        for (QList<ViewProviderIndex*>::iterator it = views.begin(); it != views.end(); ++it) {
-            DocumentModelIndex* parentitem = (*it)->parent();
+        for (auto & view : views) {
+            DocumentModelIndex* parentitem = view->parent();
             QModelIndex parent = createIndex(doc_index->row(), 0, parentitem);
-            int row = (*it)->row();
+            int row = view->row();
             beginRemoveRows(parent, row, row);
             parentitem->removeChild(row);
-            delete *it;
+            delete view;
             endRemoveRows();
         }
     }
@@ -486,13 +486,13 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
         Gui::Document* gdc = Application::Instance->getDocument(doc);
         int row = d->rootItem->findChild(*gdc);
         if (row > -1) {
-            DocumentIndex* doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
+            auto doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
             QList<ViewProviderIndex*> views;
             doc_index->findViewProviders(obj, views);
-            for (QList<ViewProviderIndex*>::iterator it = views.begin(); it != views.end(); ++it) {
-                DocumentModelIndex* parentitem = (*it)->parent();
+            for (const auto & view : views) {
+                DocumentModelIndex* parentitem = view->parent();
                 QModelIndex parent = createIndex(0,0,parentitem);
-                int row = (*it)->row();
+                int row = view->row();
                 QModelIndex item = index (row, 0, parent);
                 Q_EMIT dataChanged(item, item);
             }
@@ -506,9 +506,9 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
         int row = d->rootItem->findChild(*gdc);
         if (row > -1) {
             QList<DocumentModelIndex*> del_items;
-            DocumentIndex* doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
-            for (std::vector<ViewProviderDocumentObject*>::iterator vp = views.begin(); vp != views.end(); ++vp) {
-                int row = doc_index->rowOfViewProvider(**vp);
+            auto doc_index = static_cast<DocumentIndex*>(d->rootItem->child(row));
+            for (const auto & view : views) {
+                int row = doc_index->rowOfViewProvider(*view);
                 // is it a top-level child in the document
                 if (row >= 0) {
                     DocumentModelIndex* child = doc_index->child(row);
@@ -523,18 +523,18 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
             // get all occurrences of the view provider in the tree structure
             QList<ViewProviderIndex*> obj_index;
             doc_index->findViewProviders(obj, obj_index);
-            for (QList<ViewProviderIndex*>::iterator it = obj_index.begin(); it != obj_index.end(); ++it) {
-                QModelIndex parent = createIndex((*it)->row(),0,*it);
-                int count_obj = (*it)->childCount();
+            for (const auto & it : obj_index) {
+                QModelIndex parent = createIndex(it->row(),0,it);
+                int count_obj = it->childCount();
                 beginRemoveRows(parent, 0, count_obj);
                 // remove all children but do not yet delete them
-                QList<DocumentModelIndex*> items = (*it)->removeAll();
+                QList<DocumentModelIndex*> items = it->removeAll();
                 endRemoveRows();
 
                 beginInsertRows(parent, 0, (int)views.size());
-                for (std::vector<ViewProviderDocumentObject*>::iterator vp = views.begin(); vp != views.end(); ++vp) {
-                    ViewProviderIndex* clone = doc_index->cloneViewProvider(**vp);
-                    (*it)->appendChild(clone);
+                for (const auto & view : views) {
+                    ViewProviderIndex* clone = doc_index->cloneViewProvider(*view);
+                    it->appendChild(clone);
                 }
                 endInsertRows();
 
@@ -591,8 +591,8 @@ DocumentModel::claimChildren(const Gui::Document& doc, const ViewProviderDocumen
 {
     std::vector<ViewProviderDocumentObject*> views;
     std::vector<App::DocumentObject*> childs = obj.claimChildren();
-    for (std::vector<App::DocumentObject*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-        ViewProvider* view = doc.getViewProvider(*it);
+    for (const auto & child : childs) {
+        ViewProvider* view = doc.getViewProvider(child);
         if (view && view->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
             views.push_back(static_cast<ViewProviderDocumentObject*>(view));
     }

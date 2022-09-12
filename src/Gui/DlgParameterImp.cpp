@@ -93,9 +93,9 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
 
     ParameterManager* sys = App::GetApplication().GetParameterSet("System parameter");
     const std::map<std::string,ParameterManager *>& rcList = App::GetApplication().GetParameterSetList();
-    for (std::map<std::string,ParameterManager *>::const_iterator it= rcList.begin();it!=rcList.end();++it) {
-        if (it->second != sys) // for now ignore system parameters because they are nowhere used
-            ui->parameterSet->addItem(tr(it->first.c_str()), QVariant(QByteArray(it->first.c_str())));
+    for (const auto & it : rcList) {
+        if (it.second != sys) // for now ignore system parameters because they are nowhere used
+            ui->parameterSet->addItem(tr(it.first.c_str()), QVariant(QByteArray(it.first.c_str())));
     }
 
     QByteArray cStr("User parameter");
@@ -307,38 +307,38 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 
         // filling up Text nodes
         std::vector<std::pair<std::string,std::string> > mcTextMap = _hcGrp->GetASCIIMap();
-        for(std::vector<std::pair<std::string,std::string> >::iterator It2=mcTextMap.begin();It2!=mcTextMap.end();++It2)
+        for(const auto & It2 : mcTextMap)
         {
-            (void)new ParameterText(paramValue,QString::fromUtf8(It2->first.c_str()),
-                It2->second.c_str(), _hcGrp);
+            (void)new ParameterText(paramValue,QString::fromUtf8(It2.first.c_str()),
+                It2.second.c_str(), _hcGrp);
         }
 
         // filling up Int nodes
         std::vector<std::pair<std::string,long> > mcIntMap = _hcGrp->GetIntMap();
-        for(std::vector<std::pair<std::string,long> >::iterator It3=mcIntMap.begin();It3!=mcIntMap.end();++It3)
+        for(const auto & It3 : mcIntMap)
         {
-            (void)new ParameterInt(paramValue,QString::fromUtf8(It3->first.c_str()),It3->second, _hcGrp);
+            (void)new ParameterInt(paramValue,QString::fromUtf8(It3.first.c_str()),It3.second, _hcGrp);
         }
 
         // filling up Float nodes
         std::vector<std::pair<std::string,double> > mcFloatMap = _hcGrp->GetFloatMap();
-        for(std::vector<std::pair<std::string,double> >::iterator It4=mcFloatMap.begin();It4!=mcFloatMap.end();++It4)
+        for(const auto & It4 : mcFloatMap)
         {
-            (void)new ParameterFloat(paramValue,QString::fromUtf8(It4->first.c_str()),It4->second, _hcGrp);
+            (void)new ParameterFloat(paramValue,QString::fromUtf8(It4.first.c_str()),It4.second, _hcGrp);
         }
 
         // filling up bool nodes
         std::vector<std::pair<std::string,bool> > mcBoolMap = _hcGrp->GetBoolMap();
-        for(std::vector<std::pair<std::string,bool> >::iterator It5=mcBoolMap.begin();It5!=mcBoolMap.end();++It5)
+        for(const auto & It5 : mcBoolMap)
         {
-            (void)new ParameterBool(paramValue,QString::fromUtf8(It5->first.c_str()),It5->second, _hcGrp);
+            (void)new ParameterBool(paramValue,QString::fromUtf8(It5.first.c_str()),It5.second, _hcGrp);
         }
 
         // filling up UInt nodes
         std::vector<std::pair<std::string,unsigned long> > mcUIntMap = _hcGrp->GetUnsignedMap();
-        for(std::vector<std::pair<std::string,unsigned long> >::iterator It6=mcUIntMap.begin();It6!=mcUIntMap.end();++It6)
+        for(const auto & It6 : mcUIntMap)
         {
-            (void)new ParameterUInt(paramValue,QString::fromUtf8(It6->first.c_str()),It6->second, _hcGrp);
+            (void)new ParameterUInt(paramValue,QString::fromUtf8(It6.first.c_str()),It6.second, _hcGrp);
         }
         paramValue->setSortingEnabled(sortingEnabled);
     }
@@ -370,8 +370,8 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
 
     // root labels
     std::vector<Base::Reference<ParameterGrp> > grps = rcParMngr->GetGroups();
-    for ( std::vector<Base::Reference<ParameterGrp> >::iterator it = grps.begin(); it != grps.end(); ++it ) {
-        QTreeWidgetItem* item = new ParameterGroupItem(paramGroup, *it);
+    for (const auto & grp : grps) {
+        auto item = new ParameterGroupItem(paramGroup, grp);
         paramGroup->expandItem(item);
         item->setIcon(0, QApplication::style()->standardPixmap(QStyle::SP_ComputerIcon));
     }
@@ -516,7 +516,7 @@ void ParameterGroup::onDeleteSelectedItem()
             // hold a reference to the parameter group
             delete sel;
 
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(parent);
+            auto para = static_cast<ParameterGroupItem*>(parent);
             para->_hcGrp->RemoveGrp(groupName.c_str());
         }
     }
@@ -545,7 +545,7 @@ void ParameterGroup::onCreateSubgroup()
         QTreeWidgetItem* item = currentItem();
         if (item && item->isSelected())
         {
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(item);
+            auto para = static_cast<ParameterGroupItem*>(item);
             Base::Reference<ParameterGrp> hGrp = para->_hcGrp;
 
             if ( hGrp->HasGroup( name.toLatin1() ) )
@@ -571,7 +571,7 @@ void ParameterGroup::onExportToFile()
         QTreeWidgetItem* item = currentItem();
         if (item && item->isSelected())
         {
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(item);
+            auto para = static_cast<ParameterGroupItem*>(item);
             Base::Reference<ParameterGrp> hGrp = para->_hcGrp;
             hGrp->exportTo( file.toUtf8() );
         }
@@ -587,23 +587,23 @@ void ParameterGroup::onImportFromFile()
         QTreeWidgetItem* item = currentItem();
         if (item && item->isSelected())
         {
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(item);
+            auto para = static_cast<ParameterGroupItem*>(item);
             Base::Reference<ParameterGrp> hGrp = para->_hcGrp;
 
             // remove the items and internal parameter values
             QList<QTreeWidgetItem*> childs = para->takeChildren();
-            for (QList<QTreeWidgetItem*>::iterator it = childs.begin(); it != childs.end(); ++it)
+            for (auto & child : childs)
             {
-                delete *it;
+                delete child;
             }
 
             try
             {
                 hGrp->importFrom( file.toUtf8() );
                 std::vector<Base::Reference<ParameterGrp> > cSubGrps = hGrp->GetGroups();
-                for ( std::vector<Base::Reference<ParameterGrp> >::iterator it = cSubGrps.begin(); it != cSubGrps.end(); ++it )
+                for (const auto & cSubGrp : cSubGrps)
                 {
-                    new ParameterGroupItem(para,*it);
+                    new ParameterGroupItem(para,cSubGrp);
                 }
 
                 para->setExpanded(para->childCount());
@@ -768,8 +768,8 @@ void ParameterValue::onCreateTextItem()
         return;
 
     std::vector<std::pair<std::string,std::string> > smap = _hcGrp->GetASCIIMap();
-    for (std::vector<std::pair<std::string,std::string> >::iterator it = smap.begin(); it != smap.end(); ++it) {
-        if (name == QLatin1String(it->first.c_str()))
+    for (const auto & it : smap) {
+        if (name == QLatin1String(it.first.c_str()))
         {
             QMessageBox::critical( this, tr("Existing item"),
                 tr("The item '%1' already exists.").arg( name ) );
@@ -797,8 +797,8 @@ void ParameterValue::onCreateIntItem()
         return;
 
     std::vector<std::pair<std::string,long> > lmap = _hcGrp->GetIntMap();
-    for (std::vector<std::pair<std::string,long> >::iterator it = lmap.begin(); it != lmap.end(); ++it) {
-        if (name == QLatin1String(it->first.c_str()))
+    for (const auto & it : lmap) {
+        if (name == QLatin1String(it.first.c_str()))
         {
             QMessageBox::critical( this, tr("Existing item"),
                 tr("The item '%1' already exists.").arg( name ) );
@@ -827,8 +827,8 @@ void ParameterValue::onCreateUIntItem()
         return;
 
     std::vector<std::pair<std::string,unsigned long> > lmap = _hcGrp->GetUnsignedMap();
-    for (std::vector<std::pair<std::string,unsigned long> >::iterator it = lmap.begin(); it != lmap.end(); ++it) {
-        if (name == QLatin1String(it->first.c_str()))
+    for (const auto & it : lmap) {
+        if (name == QLatin1String(it.first.c_str()))
         {
             QMessageBox::critical( this, tr("Existing item"),
                 tr("The item '%1' already exists.").arg( name ) );
@@ -863,8 +863,8 @@ void ParameterValue::onCreateFloatItem()
         return;
 
     std::vector<std::pair<std::string,double> > fmap = _hcGrp->GetFloatMap();
-    for (std::vector<std::pair<std::string,double> >::iterator it = fmap.begin(); it != fmap.end(); ++it) {
-        if (name == QLatin1String(it->first.c_str()))
+    for (const auto & it : fmap) {
+        if (name == QLatin1String(it.first.c_str()))
         {
             QMessageBox::critical( this, tr("Existing item"),
                 tr("The item '%1' already exists.").arg( name ) );
@@ -892,8 +892,8 @@ void ParameterValue::onCreateBoolItem()
         return;
 
     std::vector<std::pair<std::string,bool> > bmap = _hcGrp->GetBoolMap();
-    for (std::vector<std::pair<std::string,bool> >::iterator it = bmap.begin(); it != bmap.end(); ++it) {
-        if (name == QLatin1String(it->first.c_str()))
+    for (const auto & it : bmap) {
+        if (name == QLatin1String(it.first.c_str()))
         {
             QMessageBox::critical( this, tr("Existing item"),
                 tr("The item '%1' already exists.").arg( name ) );
@@ -943,8 +943,8 @@ void ParameterGroupItem::fillUp()
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();
 
     setText(0,QString::fromUtf8(_hcGrp->GetGroupName()));
-    for(std::vector<Base::Reference<ParameterGrp> >::iterator It=vhcParamGrp.begin();It!=vhcParamGrp.end();++It)
-        (void)new ParameterGroupItem(this,*It);
+    for(const auto & It : vhcParamGrp)
+        (void)new ParameterGroupItem(this,It);
 }
 
 void ParameterGroupItem::setData ( int column, int role, const QVariant & value )
@@ -959,7 +959,7 @@ void ParameterGroupItem::setData ( int column, int role, const QVariant & value 
             return;
 
         // first check if there is already a group with name "newName"
-        ParameterGroupItem* item = static_cast<ParameterGroupItem*>(parent());
+        auto item = static_cast<ParameterGroupItem*>(parent());
         if ( !item )
         {
             QMessageBox::critical( treeWidget(), QObject::tr("Rename group"),

@@ -403,7 +403,7 @@ public:
                     auto transform = pcLinked->getTransformNode();
                     const auto &scale = transform->scaleFactor.getValue();
                     if(scale[0]!=1.0 || scale[1]!=1.0 || scale[2]!=1.0) {
-                        SoTransform *trans = new SoTransform;
+                        auto trans = new SoTransform;
                         pcSnapshot->addChild(trans);
                         trans->scaleFactor.setValue(scale);
                         trans->scaleOrientation = transform->scaleOrientation;
@@ -896,7 +896,7 @@ PyObject *LinkView::getPyObject()
 
 void LinkView::setInvalid() {
     if (!PythonObject.is(Py::_None())){
-        Base::PyObjectBase* obj = (Base::PyObjectBase*)PythonObject.ptr();
+        auto obj = (Base::PyObjectBase*)PythonObject.ptr();
         obj->setInvalid();
         obj->DecRef();
     }else
@@ -2436,7 +2436,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     DlgObjectSelection dlg({src}, excludes, getMainWindow());
                     dlg.setMessage(QObject::tr(
                                 "Please select which objects to copy when the configuration is changed"));
-                    QCheckBox *box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
+                    auto box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
                     box->setToolTip(QObject::tr("Apply the setting to all links. Or, uncheck this\n"
                                                 "option to apply only to this link."));
                     box->setChecked(App::LinkParams::getCopyOnChangeApplyToAll());
@@ -2453,10 +2453,10 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
                     App::AutoTransaction guard("Setup configurable object");
                     auto sels = dlg.getSelections(DlgObjectSelection::SelectionOptions::InvertSort);
-                    for (auto it=excludes.begin(); it!=excludes.end(); ++it) {
-                        auto iter = std::lower_bound(sels.begin(), sels.end(), *it);
-                        if (iter == sels.end() || *iter != *it) {
-                            ext->setOnChangeCopyObject(*it, options);
+                    for (const auto & exclude : excludes) {
+                        auto iter = std::lower_bound(sels.begin(), sels.end(), exclude);
+                        if (iter == sels.end() || *iter != exclude) {
+                            ext->setOnChangeCopyObject(exclude, options);
                         } else
                             sels.erase(iter);
                     }
@@ -2818,15 +2818,15 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
 
     if (pcDragger && viewer)
     {
-        SoPickStyle *rootPickStyle = new SoPickStyle();
+        auto rootPickStyle = new SoPickStyle();
         rootPickStyle->style = SoPickStyle::UNPICKABLE;
         static_cast<SoFCUnifiedSelection*>(
                 viewer->getSceneGraph())->insertChild(rootPickStyle, 0);
 
         if(useCenterballDragger) {
             auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
-            SoSeparator *group = new SoAnnotation;
-            SoPickStyle *pickStyle = new SoPickStyle;
+            auto group = new SoAnnotation;
+            auto pickStyle = new SoPickStyle;
             pickStyle->setOverride(true);
             group->addChild(pickStyle);
             group->addChild(pcDragger);
@@ -2855,12 +2855,12 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
 
             viewer->setupEditingRoot(group,&dragCtx->preTransform);
         }else{
-            SoFCCSysDragger* dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
             dragger->draggerSize.setValue(0.05f);
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
 
-            TaskCSysDragger *task = new TaskCSysDragger(this, dragger);
+            auto task = new TaskCSysDragger(this, dragger);
             Gui::Control().showDialog(task);
         }
     }
@@ -2885,12 +2885,12 @@ Base::Placement ViewProviderLink::currentDraggingPlacement() const
     SbVec3f v;
     SbRotation r;
     if (useCenterballDragger) {
-        SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+        auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
         v = dragger->center.getValue();
         r = dragger->rotation.getValue();
     }
     else {
-        SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+        auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
         v = dragger->translation.getValue();
         r = dragger->rotation.getValue();
     }
@@ -2914,7 +2914,7 @@ void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool 
         const auto &rot = pla.getRotation();
         FC_LOG("updating dragger placement (" << pos.x << ", " << pos.y << ", " << pos.z << ')');
         if(useCenterballDragger) {
-            SoCenterballDragger *dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
+            auto dragger = static_cast<SoCenterballDragger*>(pcDragger.get());
             SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
             SbMatrix matrix;
             matrix = convert(pla.toMatrix());
@@ -2925,7 +2925,7 @@ void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool 
                 dragger->valueChanged();
             }
         }else{
-            SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
+            auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
             dragger->translation.setValue(SbVec3f(pos.x,pos.y,pos.z));
             dragger->rotation.setValue(rot[0],rot[1],rot[2],rot[3]);
         }

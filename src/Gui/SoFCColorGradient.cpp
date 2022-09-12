@@ -92,14 +92,14 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
         SbVec2f maxPt = _bbox.getMax();
         SbVec2f minPt = _bbox.getMin();
         float fStep = (maxPt[1] - minPt[1]) / ((float)num - 1);
-        SoTransform* trans = new SoTransform;
+        auto trans = new SoTransform;
         trans->translation.setValue(maxPt[0] + 0.1f, maxPt[1] - 0.05f + fStep, 0.0f);
         labels->addChild(trans);
 
         for (int i = 0; i < num; i++) {
-            SoTransform* trans = new SoTransform;
-            SoBaseColor* color = new SoBaseColor;
-            SoText2    * text2 = new SoColorBarLabel;
+            auto trans = new SoTransform;
+            auto color = new SoBaseColor;
+            auto text2 = new SoColorBarLabel;
 
             trans->translation.setValue(0, -fStep, 0);
             color->rgb.setValue(0, 0, 0);
@@ -253,7 +253,7 @@ void SoFCColorGradient::rebuildGradient()
 
     // for uCtColors colors we need 2*(uCtColors-1) facets and therefore an array with
     // 8*(uCtColors-1) face indices
-    SoIndexedFaceSet* faceset = new SoIndexedFaceSet;
+    auto faceset = new SoIndexedFaceSet;
     faceset->coordIndex.setNum(8 * (uCtColors - 1));
     for (int j = 0; j < uCtColors - 1; j++) {
         faceset->coordIndex.set1Value(8 * j, 2 * j);
@@ -267,9 +267,9 @@ void SoFCColorGradient::rebuildGradient()
     }
 
     // set an own transparency type for this color bar only
-    SoTransparencyType* ttype = new SoTransparencyType;
+    auto ttype = new SoTransparencyType;
     ttype->value = SoGLRenderAction::DELAYED_BLEND;
-    SoMaterial* mat = new SoMaterial;
+    auto mat = new SoMaterial;
     //mat->transparency = 0.3f;
     mat->diffuseColor.setNum(2 * uCtColors);
     for (int k = 0; k < uCtColors; k++) {
@@ -278,7 +278,7 @@ void SoFCColorGradient::rebuildGradient()
         mat->diffuseColor.set1Value(2 * k + 1, col.r, col.g, col.b);
     }
 
-    SoMaterialBinding* matBinding = new SoMaterialBinding;
+    auto matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
 
     // first clear the children

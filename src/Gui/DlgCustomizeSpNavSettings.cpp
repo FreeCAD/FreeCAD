@@ -35,7 +35,7 @@ DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
   , ui(new Ui_DlgCustomizeSpNavSettings)
   , init(false)
 {
-    GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
+    auto app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
 
     if (!app)
         return;
@@ -56,9 +56,9 @@ DlgCustomizeSpNavSettings::~DlgCustomizeSpNavSettings()
 
 void DlgCustomizeSpNavSettings::setMessage(const QString& message)
 {
-    QLabel *messageLabel = new QLabel(message,this);
-    QVBoxLayout *layout = new QVBoxLayout();
-    QHBoxLayout *layout2 = new QHBoxLayout();
+    auto messageLabel = new QLabel(message,this);
+    auto layout = new QVBoxLayout();
+    auto layout2 = new QHBoxLayout();
     layout2->addStretch();
     layout2->addWidget(messageLabel);
     layout2->addStretch();

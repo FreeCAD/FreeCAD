@@ -93,7 +93,7 @@ void ViewProviderOrigin::setDisplayMode(const char* ModeName)
 }
 
 void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
-    App::Origin* origin = static_cast<App::Origin*>( getObject() );
+    auto origin = static_cast<App::Origin*>( getObject() );
 
     bool saveState = tempVisMap.empty();
 
@@ -155,7 +155,7 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
         try {
             Gui::Application *app = Gui::Application::Instance;
             Base::Vector3d sz = Size.getValue ();
-            App::Origin* origin = static_cast<App::Origin*> ( getObject() );
+            auto origin = static_cast<App::Origin*> ( getObject() );
 
             // Calculate axes and planes sizes
             double szXY = std::max ( sz.x, sz.y );
@@ -199,7 +199,7 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
 }
 
 bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
-    App::Origin* origin = static_cast<App::Origin*>( getObject() );
+    auto origin = static_cast<App::Origin*>( getObject() );
 
     if ( !origin->getInList().empty() ) {
         return false;

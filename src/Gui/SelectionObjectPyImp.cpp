@@ -79,8 +79,8 @@ Py::Tuple SelectionObjectPy::getSubElementNames() const
 
     Py::Tuple temp(objs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<std::string>::const_iterator it= objs.begin();it!=objs.end();++it)
-        temp.setItem(index++, Py::String(*it));
+    for(const auto & obj : objs)
+        temp.setItem(index++, Py::String(obj));
 
     return temp;
 }
@@ -134,8 +134,8 @@ Py::Tuple SelectionObjectPy::getSubObjects() const
 
     Py::Tuple temp(subObjs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<PyObject *>::const_iterator it= subObjs.begin();it!=subObjs.end();++it)
-        temp.setItem(index++, Py::asObject(*it));
+    for(const auto & subObj : subObjs)
+        temp.setItem(index++, Py::asObject(subObj));
 
     return temp;
 }
@@ -151,8 +151,8 @@ Py::Tuple SelectionObjectPy::getPickedPoints() const
 
     Py::Tuple temp(points.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<Base::Vector3d>::const_iterator it= points.begin();it!=points.end();++it)
-        temp.setItem(index++, Py::Vector(*it));
+    for(const auto & point : points)
+        temp.setItem(index++, Py::Vector(point));
 
     return temp;
 }

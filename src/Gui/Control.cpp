@@ -61,7 +61,7 @@ ControlSingleton::~ControlSingleton()
 
 Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
     if (pcComboView)
@@ -76,7 +76,7 @@ Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
 
 void ControlSingleton::showTaskView()
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     if (pcComboView)
         pcComboView->showTaskView();
@@ -86,7 +86,7 @@ void ControlSingleton::showTaskView()
 
 void ControlSingleton::showModelView()
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     if (pcComboView)
         pcComboView->showTreeView();
@@ -116,13 +116,13 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
     // which may open a transaction but fails when auto transaction is still active.
     App::AutoTransaction::setEnable(false);
 
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
     if (pcComboView) {
         pcComboView->showDialog(dlg);
         // make sure that the combo view is shown
-        QDockWidget* dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
+        auto dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
         if (dw) {
             dw->setVisible(true);
             dw->toggleViewAction()->setVisible(true);
@@ -136,7 +136,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
     }
     // not all workbenches have the combo view enabled
     else if (!_taskPanel) {
-        QDockWidget* dw = new QDockWidget();
+        auto dw = new QDockWidget();
         dw->setWindowTitle(tr("Task panel"));
         dw->setFeatures(QDockWidget::DockWidgetMovable);
         _taskPanel = new Gui::TaskView::TaskView(dw);
@@ -175,7 +175,7 @@ Gui::TaskView::TaskDialog* ControlSingleton::activeDialog() const
 Gui::TaskView::TaskView* ControlSingleton::getTaskPanel()
 {
     // should return the pointer to combo view
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     if (pcComboView)
         return pcComboView->getTaskPanel();
@@ -205,7 +205,7 @@ void ControlSingleton::reject()
 
 void ControlSingleton::closeDialog()
 {
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
     if (pcComboView)
@@ -217,13 +217,13 @@ void ControlSingleton::closeDialog()
 void ControlSingleton::closedDialog()
 {
     ActiveDialog = nullptr;
-    Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
+    auto pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
     assert(pcComboView);
     pcComboView->closedDialog();
     // make sure that the combo view is shown
-    QDockWidget* dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
+    auto dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
     if (dw)
         dw->setFeatures(QDockWidget::DockWidgetClosable
                         | QDockWidget::DockWidgetMovable

@@ -103,7 +103,7 @@ MenuItem* MenuItem::findParentOf(const std::string& name)
 
 MenuItem* MenuItem::copy() const
 {
-    MenuItem* root = new MenuItem;
+    auto root = new MenuItem;
     root->setCommand(command());
 
     QList<MenuItem*> items = getItems();
@@ -161,7 +161,7 @@ void MenuItem::clear()
 
 MenuItem& MenuItem::operator << (const std::string& command)
 {
-    MenuItem* item = new MenuItem(this);
+    auto item = new MenuItem(this);
     item->setCommand(command);
     return *this;
 }

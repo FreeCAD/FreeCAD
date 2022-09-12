@@ -277,7 +277,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj) == 1) {
-            Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
+            auto baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
             validObject = baseobj->isValid();
         }
         else {
@@ -300,14 +300,14 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // names. So, we add these names to the list, too.
         PyObject* appdoctypeobj = Base::getTypeAsObject(&App::DocumentPy::Type);
         if (PyObject_IsSubclass(type.ptr(), appdoctypeobj) == 1) {
-            App::DocumentPy* docpy = (App::DocumentPy*)(inst.ptr());
-            App::Document* document = docpy->getDocumentPtr();
+            auto docpy = (App::DocumentPy*)(inst.ptr());
+            auto document = docpy->getDocumentPtr();
             // Make sure that the C++ object is alive
             if (document) {
                 std::vector<App::DocumentObject*> objects = document->getObjects();
                 Py::List list;
-                for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-                    list.append(Py::String((*it)->getNameInDocument()));
+                for (const auto & object : objects)
+                    list.append(Py::String(object->getNameInDocument()));
                 extractTipsFromObject(inst, list, tips);
             }
         }
@@ -316,15 +316,15 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // names. So, we add these names to the list, too.
         PyObject* guidoctypeobj = Base::getTypeAsObject(&Gui::DocumentPy::Type);
         if (PyObject_IsSubclass(type.ptr(), guidoctypeobj) == 1) {
-            Gui::DocumentPy* docpy = (Gui::DocumentPy*)(inst.ptr());
+            auto docpy = (Gui::DocumentPy*)(inst.ptr());
             if (docpy->getDocumentPtr()) {
                 App::Document* document = docpy->getDocumentPtr()->getDocument();
                 // Make sure that the C++ object is alive
                 if (document) {
                     std::vector<App::DocumentObject*> objects = document->getObjects();
                     Py::List list;
-                    for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
-                        list.append(Py::String((*it)->getNameInDocument()));
+                    for (const auto & object : objects)
+                        list.append(Py::String(object->getNameInDocument()));
                     extractTipsFromObject(inst, list, tips);
                 }
             }
@@ -426,7 +426,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
 void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, CallTip>& tips) const
 {
-    App::PropertyContainerPy* cont = (App::PropertyContainerPy*)(obj.ptr());
+    auto cont = (App::PropertyContainerPy*)(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
     if (!container)
@@ -434,15 +434,15 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
     std::map<std::string,App::Property*> Map;
     container->getPropertyMap(Map);
 
-    for (std::map<std::string,App::Property*>::const_iterator It=Map.begin();It!=Map.end();++It) {
+    for (const auto & It : Map) {
         CallTip tip;
-        QString str = QString::fromLatin1(It->first.c_str());
+        QString str = QString::fromLatin1(It.first.c_str());
         tip.name = str;
         tip.type = CallTip::Property;
-        QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It->second));
+        QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It.second));
         // a point, mesh or shape property
-        if (It->second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
-            Py::Object data(It->second->getPyObject(), true);
+        if (It.second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
+            Py::Object data(It.second->getPyObject(), true);
             if (data.hasAttr("__doc__")) {
                 Py::Object help = data.getAttr("__doc__");
                 if (help.isString()) {
@@ -594,7 +594,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     // This is a trick to avoid to hide the tooltip window after the defined time span
     // of 10 seconds. We just filter out all timer events to keep the label visible.
     if (watched->inherits("QLabel")) {
-        QLabel* label = qobject_cast<QLabel*>(watched);
+        auto label = qobject_cast<QLabel*>(watched);
         // Ignore the timer events to prevent from being closed
         if (label->windowFlags() & Qt::ToolTip && event->type() == QEvent::Timer)
             return true;
@@ -605,7 +605,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
     }
     else if (isVisible() && watched == textEdit) {
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent* ke = (QKeyEvent*)event;
+            auto ke = (QKeyEvent*)event;
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
                 keyPressEvent(ke);
                 return true;
@@ -648,7 +648,7 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
         }
         else if (event->type() == QEvent::KeyRelease) {
-            QKeyEvent* ke = (QKeyEvent*)event;
+            auto* ke = (QKeyEvent*)event;
             if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ||
                 ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
                 QList<QListWidgetItem *> items = selectedItems();
@@ -694,7 +694,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     cursor.insertText( text );
 
     // get CallTip from item's UserRole-data
-    CallTip callTip = item->data(Qt::UserRole).value<CallTip>();
+    auto callTip = item->data(Qt::UserRole).value<CallTip>();
 
     // if call completion enabled and we've something callable (method or class constructor) ...
     if (this->doCallCompletion

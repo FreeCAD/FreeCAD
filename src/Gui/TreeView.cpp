@@ -79,7 +79,7 @@ void TreeView::rowsInserted (const QModelIndex & parent, int start, int end)
 {
     QTreeView::rowsInserted(parent, start, end);
     if (parent.isValid()) {
-        Base::BaseClass* ptr = static_cast<Base::BaseClass*>(parent.internalPointer());
+        auto ptr = static_cast<Base::BaseClass*>(parent.internalPointer());
         // type is defined in DocumentModel.cpp
         if (ptr->getTypeId() == Base::Type::fromName("Gui::ApplicationIndex")) {
             for (int i=start; i<=end;i++) {
