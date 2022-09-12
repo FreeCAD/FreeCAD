@@ -235,6 +235,7 @@ double DrawPage::getPageHeight() const
     throw Base::RuntimeError("Template not set for Page");
 }
 
+//orientation as text
 const char * DrawPage::getPageOrientation() const
 {
     App::DocumentObject *obj;
@@ -245,6 +246,22 @@ const char * DrawPage::getPageOrientation() const
           TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
 
           return templ->Orientation.getValueAsString();
+        }
+    }
+    throw Base::RuntimeError("Template not set for Page");
+}
+
+//orientation as 0(Portrait) or 1(Landscape)
+int DrawPage::getOrientation() const
+{
+    App::DocumentObject *obj;
+    obj = Template.getValue();
+
+    if(obj) {
+        if(obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
+          TechDraw::DrawTemplate *templ = static_cast<TechDraw::DrawTemplate *>(obj);
+
+          return templ->Orientation.getValue();
         }
     }
     throw Base::RuntimeError("Template not set for Page");

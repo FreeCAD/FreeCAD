@@ -91,6 +91,7 @@ public:
      */
     double getPageHeight() const;
     const char* getPageOrientation() const;
+    int getOrientation() const;
     bool isUnsetting() { return nowUnsetting; }
     void requestPaint();
     std::vector<App::DocumentObject*> getAllViews() ;
