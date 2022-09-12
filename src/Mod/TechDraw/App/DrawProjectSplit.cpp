@@ -815,10 +815,10 @@ std::vector<TopoDS_Edge> DrawProjectSplit::splitIntersectingEdges(std::vector<To
                     //one edge is a subset of the other.
                     if (sameEndPoints(inEdges.at(iEdge0), intersectEdges.front())) {
                         //we got the outer edge back so mark the inner edge
-                        skipThisEdge.at(iEdge1);
+                        skipThisEdge.at(iEdge1) = true;
                     } else if (sameEndPoints(inEdges.at(iEdge1), intersectEdges.front())) {
                         //we got the inner edge back so mark the outer edge and go to the next outer edge
-                        skipThisEdge.at(iEdge0);
+                        skipThisEdge.at(iEdge0) = true;
                         break;          //next outer edge
                     } else {
                         //not sure what this means?  bad geometry?
