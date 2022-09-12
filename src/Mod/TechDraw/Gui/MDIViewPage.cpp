@@ -310,6 +310,7 @@ void MDIViewPage::printPdf(std::string file)
 
 void MDIViewPage::print()
 {
+//    Base::Console().Message("MDIVP::print()\n");
     getPaperAttributes();
 
     QPrinter printer(QPrinter::HighResolution);
@@ -349,6 +350,7 @@ void MDIViewPage::printPreview()
 
 void MDIViewPage::print(QPrinter* printer)
 {
+//    Base::Console().Message("MDIVP::print(printer)\n");
     getPaperAttributes();
 
     // As size of the render area paperRect() should be used. When performing a real
@@ -441,8 +443,7 @@ void MDIViewPage::print(QPrinter* printer)
 void MDIViewPage::printAll(QPrinter* printer,
                            App::Document* doc)
 {
-//    Base::Console().Message("MDIVP::printAll(printer, doc)\n");
-
+    QPainter painter;
     std::vector<App::DocumentObject*> docObjs = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     bool firstTime = true;
     for (auto& obj: docObjs) {
@@ -460,39 +461,34 @@ void MDIViewPage::printAll(QPrinter* printer,
         if (!vpp) {
             continue;   // can't print this one
         }
+
+        App::DocumentObject* objTemplate = dp->Template.getValue();
+        auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(objTemplate) );
+        double width  =  297.0;   //default to A4 Landscape 297 x 210
+        double height =  210.0;
+        if( pageTemplate ) {
+            width  =  pageTemplate->Width.getValue();
+            height =  pageTemplate->Height.getValue();
+        }
+
+        printer->setPageSize(QPageSize(QSizeF(width, height), QPageSize::Millimeter, QString(), QPageSize::FuzzyOrientationMatch));
+        printer->setOrientation((QPrinter::Orientation) dp->getOrientation());
+        QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
+        QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
+
         bool saveState = vpp->getFrameState();
         vpp->setFrameState(false);
         vpp->setTemplateMarkers(false);
         vpp->getQGSPage()->refreshViews();
-
-        App::DocumentObject* objTemplate = dp->Template.getValue();
-        auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(objTemplate) );
-        double width  =  0.0;
-        double height =  0.0;
-        if( pageTemplate ) {
-          width  =  pageTemplate->Width.getValue();
-          height =  pageTemplate->Height.getValue();
-        }
-        QPageSize paperSize(QSizeF(width, height), QPageSize::Millimeter);
-        printer->setPageSize(paperSize);
-        QPageLayout::Orientation orientation = QPageLayout::Portrait;
-        if (width > height) {
-            orientation = QPageLayout::Landscape;
-        }
-        printer->setPageOrientation(orientation);
-
-        QRectF sourceRect(0.0,-height,width,height);
-        QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
-        QPainter p(printer);
-        vpp->getQGSPage()->render(&p, targetRect,sourceRect);
-
+        painter.begin(printer);
+        vpp->getQGSPage()->render(&painter, targetRect, sourceRect);
+        painter.end();
         // Reset
         vpp->setFrameState(saveState);
         vpp->setTemplateMarkers(saveState);
         vpp->getQGSPage()->refreshViews();
     }
 }
-
 
 PyObject* MDIViewPage::getPyObject()
 {
