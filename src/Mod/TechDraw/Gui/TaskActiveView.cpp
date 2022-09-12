@@ -26,10 +26,11 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QStatusBar>
-#include <QGraphicsScene>
+#include <QMessageBox>
 #include <QTemporaryFile>
 #endif // #ifndef _PreComp_
 
+#include <regex>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -46,6 +47,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/View3DInventor.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
@@ -114,6 +116,30 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 {
 //    Base::Console().Message("TAV::createActiveView()\n");
 
+    //make sure there is an 3D MDI to grab!!
+    if (!Gui::getMainWindow()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Main Window"),
+                             QObject::tr("Can not find the main window"));
+        return nullptr;
+    }
+    View3DInventor* view3d = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (!view3d) {
+        //the active window is not a 3D view, so try to find one
+        auto mdiWindows = Gui::getMainWindow()->windows();
+        for (auto& mdi : mdiWindows) {
+            auto mdiView = qobject_cast<View3DInventor*>(mdi);
+            if (mdiView) {
+                view3d = mdiView;
+                break;
+            }
+        }
+    }
+    if (!view3d) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No 3D Viewer"),
+                             QObject::tr("Can not find a 3D viewer"));
+        return nullptr;
+    }
+
     std::string imageName = m_pageFeat->getDocument()->getUniqueObjectName("ActiveView");
     std::string imageType = "TechDraw::DrawViewImage";
 
@@ -123,8 +149,6 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
                        imageType.c_str(),imageName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), imageName.c_str());
-
-    App::Document* appDoc = m_pageFeat->getDocument();
 
     App::Document* doc = m_pageFeat->getDocument();
     std::string special = "/" + imageName + "image.png";
@@ -141,15 +165,16 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     QImage image(100, 100, QImage::Format_RGB32);  //arbitrary initial image size. quickView will use
                                                    //MdiView size in pixels
     image.fill(QColor(Qt::transparent));
-    Grabber3d:: quickView(appDoc,
-                          bg,
-                          image);
+    Grabber3d:: quickView(bg, image);
     bool success = image.save(Base::Tools::fromStdString(fileSpec));
 
     if (!success) {
         Base::Console().Error("ActiveView could not save file: %s\n", fileSpec.c_str());
     }
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.ImageFile = '%s'",imageName.c_str(), fileSpec.c_str());
+    //backslashes in windows fileSpec upsets python
+    std::regex rxBackslash("\\\\");
+    std::string noBackslash = std::regex_replace(fileSpec, rxBackslash, "/");
+    Command::doCommand(Command::Doc,"App.activeDocument().%s.ImageFile = '%s'",imageName.c_str(), noBackslash.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.Width = %.5f",imageName.c_str(), ui->qsbWidth->rawValue());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.Height = %.5f",imageName.c_str(), ui->qsbHeight->rawValue());
 
@@ -197,7 +222,9 @@ bool TaskActiveView::accept()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
     m_imageFeat = createActiveView();
 //    m_imageFeat->requestPaint();
-    m_imageFeat->recomputeFeature();
+    if (m_imageFeat) {
+        m_imageFeat->recomputeFeature();
+    }
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
 

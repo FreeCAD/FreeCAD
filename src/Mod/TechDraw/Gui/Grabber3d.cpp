@@ -30,6 +30,7 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -39,27 +40,37 @@
 using namespace TechDrawGui;
 using namespace Gui;
 
-void Grabber3d::quickView(App::Document* appDoc,
-                          const QColor bgColor,
+void Grabber3d::quickView(const QColor bgColor,
                           QImage &image)
 {
-//    Base::Console().Message("G3d::quickView() - %d x %d\n", outWidth, outHeight);
-    //get the active view
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(appDoc);
-    Gui::MDIView* mdiView = guiDoc->getActiveView();
-    if (mdiView == nullptr) {
-        Base::Console().Warning("G3d::quickView - no ActiveView - returning\n");
+//    Base::Console().Message("G3d::quickView());
+    //get a 3d view
+    if (!Gui::getMainWindow()) {
+        Base::Console().Warning("G3d::quickView - no Main Window - returning\n");
         return;
     }
-
+    Gui::MainWindow* mainWindow = Gui::getMainWindow();
+    Gui::MDIView* mdiView = Gui::getMainWindow()->activeWindow();
     View3DInventor* view3d = qobject_cast<View3DInventor*>(mdiView);
-    if (view3d == nullptr) {
-        Base::Console().Warning("G3d::quickView - no viewer for ActiveView - returning\n");
+    if (!view3d) {
+        //the active window is not a 3D view, so try to find one
+        auto mdiWindows = mainWindow->windows();
+        for (auto& mdi : mdiWindows) {
+            auto mdiView = qobject_cast<View3DInventor*>(mdi);
+            if (mdiView) {
+                view3d = mdiView;
+                break;
+            }
+        }
+    }
+
+    if (!view3d) {
+        Base::Console().Warning("G3d::quickView - no 3D view for ActiveView - returning\n");
         return;
     }
 
     View3DInventorViewer* viewer = view3d->getViewer();
-    if (viewer == nullptr) {
+    if (!viewer) {
         Base::Console().Warning("G3d::quickView - could not create viewer - returning\n");
         return;
     }
