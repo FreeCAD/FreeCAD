@@ -31,7 +31,7 @@ import FreeCADGui
 
 from PySide2.QtWidgets import QFileDialog, QDialog
 from PySide2.QtGui import QDesktopServices
-from PySide2.QtCore import QUrl, QFile, QRegularExpression, QIODevice
+from PySide2.QtCore import QUrl, QFile, QIODevice
 
 try:
     from PySide2.QtGui import (
