@@ -218,6 +218,14 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                     Base::BoundBox3d bbox = data->getBoundBox();
                     accuracy = (float)((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
                     data->getFaces(points, faces, accuracy);
+                    if (points.empty()) {
+                        std::vector<Base::Vector3d> normals_d;
+                        data->getPoints(points, normals_d, accuracy);
+                        normals.reserve(normals_d.size());
+                        std::transform(normals_d.cbegin(), normals_d.cend(), std::back_inserter(normals), [](const Base::Vector3d& p){
+                            return Base::toVector<float>(p);
+                        });
+                    }
                 }
             }
             else if (object->getTypeId().isDerivedFrom(pointId)) {

@@ -30,6 +30,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp_Face.hxx>
+#include <TopExp.hxx>
 #include <TopoDS.hxx>
 
 #include <QtConcurrentMap>
@@ -112,8 +113,20 @@ InspectActualShape::InspectActualShape(const Part::TopoShape& shape) : _rShape(s
     Base::BoundBox3d bbox = _rShape.getBoundBox();
     Standard_Real deflection = (bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation;
 
-    std::vector<Data::ComplexGeoData::Facet> f;
-    _rShape.getFaces(points, f, (float)deflection);
+    // get points from faces or sub-sampled edges
+    TopTools_IndexedMapOfShape mapOfShapes;
+    TopExp::MapShapes(_rShape.getShape(), TopAbs_FACE, mapOfShapes);
+    if (!mapOfShapes.IsEmpty()) {
+        std::vector<Data::ComplexGeoData::Facet> f;
+        _rShape.getFaces(points, f, (float)deflection);
+    }
+    else {
+        TopExp::MapShapes(_rShape.getShape(), TopAbs_EDGE, mapOfShapes);
+        if (!mapOfShapes.IsEmpty()) {
+            std::vector<Base::Vector3d> n;
+            _rShape.getPoints(points, n, (float)deflection);
+        }
+    }
 }
 
 unsigned long InspectActualShape::countPoints() const
@@ -483,7 +496,7 @@ float InspectNominalShape::getDistance(const Base::Vector3f& point) const
 
         }
         else if (fMinDist > 0) {
-            // check if the distance was compued from a face
+            // check if the distance was computed from a face
             for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
                 if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
                     TopoDS_Shape face = distss->SupportOnShape1(index);
@@ -700,6 +713,8 @@ public:
     }
     double getRMS()
     {
+        if (this->m_numv == 0)
+            return 0.0;
         return sqrt(this->m_sumsq / (double)this->m_numv);
     }
     int m_numv;
