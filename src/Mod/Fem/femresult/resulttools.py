@@ -412,7 +412,19 @@ def add_principal_stress_std(res_obj):
     res_obj.MaxShear = shearstress
     FreeCAD.Console.PrintLog("Added standard principal stresses and max shear values.\n")
 
-    # add critical strain ratio: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+    #
+    # Add critical strain ratio using the Stress Modified Critical Strain (SMCS) criterion
+    #   Forum Discussion: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+    #   Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
+    #
+    #   critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
+    #       peeq = equivalent plastic strain
+    #       critical strain = alpha * np.exp(-beta * T)
+    #           alpha and beta are material parameters, where alpha can be related to unixial test data (user input) and
+    #           beta is normally kept fixed at 1.5, unless available from extensive research experiments
+    #           T = pressure / von Mises stress (stress triaxiality)
+    #
+
     MatMechNon = FreeCAD.ActiveDocument.getObject('MaterialMechanicalNonlinear')
     if MatMechNon:
         stress_strain = MatMechNon.YieldPoints
@@ -420,8 +432,8 @@ def add_principal_stress_std(res_obj):
             i = -1
             while stress_strain[i] == "": i -= 1
             critical_uniaxial_strain = float(stress_strain[i].split(",")[1])
-            alpha = 1.65 * critical_uniaxial_strain  # see: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p624323
-            beta = 1.5  # see: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+            alpha = np.sqrt(np.e) * critical_uniaxial_strain  # stress triaxiality T = 1/3 for uniaxial test
+            beta = 1.5
             if res_obj.Peeq:
                 res_obj.CriticalStrainRatio = calculate_csr(prinstress1, prinstress2, prinstress3, alpha, beta,
                                                             res_obj)
@@ -432,6 +444,16 @@ def add_principal_stress_std(res_obj):
 def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
     #
     # calculate critical strain ratio
+    #   Forum Discussion: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+    #   Background: https://www.vtt.fi/inf/julkaisut/muut/2017/VTT-R-01177-17.pdf
+    #
+    #   critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
+    #       peeq = equivalent plastic strain
+    #       critical strain = alpha * np.exp(-beta * T)
+    #           alpha and beta are material parameters, where alpha can be related to unixial test data (user input) and
+    #           beta is normally kept fixed at 1.5, unless available from extensive research experiments
+    #           T = pressure / von Mises stress (stress triaxiality)
+    #
     #
     csr = []  # critical strain ratio
     nsr = len(ps1)  # number of stress results
@@ -440,13 +462,12 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
         svm = np.sqrt(1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (
                     ps3[i] - p) ** 2)  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
         if svm != 0.:
-            T = p / svm  # stress triaxiality: https://forum.freecadweb.org/viewtopic.php?f=18&t=35893#p303392
+            T = p / svm  # stress triaxiality
         else:
             T = 0.
         critical_strain = alpha * np.exp(-beta * T)  # critical strain
-        csr.append(abs(res_obj.Peeq[i]) / critical_strain)
+        csr.append(abs(res_obj.Peeq[i]) / critical_strain)  # critical strain ratio
     return csr
-
 
 def get_concrete_nodes(res_obj):
     #
