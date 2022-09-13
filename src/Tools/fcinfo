@@ -235,11 +235,11 @@ if __name__ == '__main__':
     doc = zfile.read("Document.xml")
     if gui and "GuiDocument.xml" in zfile.namelist():
         guidoc = zfile.read("GuiDocument.xml")
-        guidoc = re.sub(r"<\?xml.*?-->"," ",guidoc,flags=re.MULTILINE|re.DOTALL)
+        guidoc = re.sub(b"<\?xml.*?-->",b" ",guidoc,flags=re.MULTILINE|re.DOTALL)
         # a valid xml doc can have only one root element. So we need to insert
         # all the contents of the GUiDocument <document> tag into the main one
-        doc = re.sub(r"<\/Document>","",doc,flags=re.MULTILINE|re.DOTALL)
-        guidoc = re.sub(r"<Document.*?>"," ",guidoc,flags=re.MULTILINE|re.DOTALL)
+        doc = re.sub(b"<\/Document>",b"",doc,flags=re.MULTILINE|re.DOTALL)
+        guidoc = re.sub(b"<Document.*?>",b" ",guidoc,flags=re.MULTILINE|re.DOTALL)
         doc += guidoc
     s = os.path.getsize(sys.argv[-1])
     if s < 1024:
