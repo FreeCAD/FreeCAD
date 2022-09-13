@@ -2366,18 +2366,24 @@ void EditModeConstraintCoinManager::clearCoinImage(SoImage *soImagePtr)
 
 QColor EditModeConstraintCoinManager::constrColor(int constraintId)
 {
+    auto toQColor = [](auto sbcolor) -> QColor {
+        return QColor(  (int)(sbcolor[0] * 255.0f),
+                        (int)(sbcolor[1] * 255.0f),
+                        (int)(sbcolor[2] * 255.0f));
+    };
+
     const auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
     if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider,constraintId))
-        return drawingParameters.constrIconPreselColor;
+        return toQColor(drawingParameters.PreselectColor);
     else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId))
-        return drawingParameters.constrIconSelColor;
+        return toQColor(drawingParameters.SelectColor);
     else if (!constraints[constraintId]->isActive)
-        return drawingParameters.constrIconDisabledColor;
+        return toQColor(drawingParameters.DeactivatedConstrDimColor);
     else if (!constraints[constraintId]->isDriving)
-        return drawingParameters.nonDrivingConstrIcoColor;
+        return toQColor(drawingParameters.NonDrivingConstrDimColor);
     else
-        return drawingParameters.constrIcoColor;
+        return toQColor(drawingParameters.ConstrIcoColor);
 
 }
 

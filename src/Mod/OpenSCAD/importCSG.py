@@ -32,16 +32,23 @@ __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD
 import io
 import os
 
-import ply.lex as lex
-import ply.yacc as yacc
+import xml.sax
+
+import FreeCAD
 import Part
+import Draft
 
 from OpenSCADFeatures import *
 from OpenSCADUtils import *
+
+# Save the native open function to avoid collisions
+if open.__module__ in ['__builtin__', 'io']:
+   pythonopen = open
+import ply.lex as lex
+import ply.yacc as yacc
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose', False)
@@ -462,6 +469,7 @@ def p_offset_action(p):
         offset = float(p[3]['r'])
     if 'delta' in p[3]:
         offset = float(p[3]['delta'])
+    checkObjShape(subobj)
     if subobj.Shape.Volume == 0 :
        newobj=doc.addObject("Part::Offset2D",'Offset2D')
        newobj.Source = subobj
@@ -627,6 +635,14 @@ def fuse(lst,name):
            myfuse.Base.ViewObject.hide()
            myfuse.Tool.ViewObject.hide()
     return(myfuse)
+
+def p_empty_union_action(p):
+    'union_action : union LPAREN RPAREN SEMICOL'
+    if printverbose: print("empty union")
+    newpart = fuse([],p[1])
+    if printverbose: print("Push Union Result")
+    p[0] = [newpart]
+    if printverbose: print("End Union")
 
 def p_union_action(p):
     'union_action : union LPAREN RPAREN OBRACE block_list EBRACE'
@@ -862,9 +878,43 @@ def process_import_file(fname,ext,layer):
         obj=process_mesh_file(fname,ext)
     elif ext.lower() == 'dxf' :
         obj=processDXF(fname,layer)
+    elif ext.lower() == 'svg':
+        obj=processSVG(fname, ext)
     else:
         raise ValueError("Unsupported file extension %s" % ext)
     return(obj)
+
+def processSVG(fname, ext):
+     from importSVG import svgHandler
+     if printverbose: print("SVG Handler")
+     doc = FreeCAD.ActiveDocument
+     docSVG = FreeCAD.newDocument(fname+'_tmp')
+     FreeCAD.ActiveDocument = docSVG
+
+     # Set up the parser
+     parser = xml.sax.make_parser()
+     parser.setFeature(xml.sax.handler.feature_external_ges, False)
+     parser.setContentHandler(svgHandler())
+     parser._cont_handler.doc = docSVG
+
+     # pathName is a Global
+     filename = os.path.join(pathName,fname+'.'+ext)
+     # Use the native Python open which was saved as `pythonopen`
+     parser.parse(pythonopen(filename))
+
+     #combine SVG objects into one
+     shapes = []
+     for obj in FreeCAD.ActiveDocument.Objects:
+         if printverbose: print(obj.Name)
+         if printverbose: print(obj.Shape)
+         shapes.append(obj.Shape)
+     #compoundSVG = Part.makeCompound(shapes)
+     #compoundSVG = Draft.join(objects)
+     FreeCAD.closeDocument(docSVG.Name)
+     FreeCAD.ActiveDocument=doc
+     obj=doc.addObject('Part::Feature',fname)
+     obj.Shape=Part.Compound(shapes)
+     return obj
 
 def process_mesh_file(fname,ext):
     import Mesh,Part
@@ -1335,8 +1385,8 @@ def p_polyhedron_action(p) :
         pp =[v2(v[k]) for k in i]
         # Add first point to end of list to close polygon
         pp.append(pp[0])
-        w = Part.makePolygon(pp)
         try:
+           w = Part.makePolygon(pp)
            f = Part.Face(w)
         except Exception:
             secWireList = w.Edges[:]

@@ -119,13 +119,17 @@ macro(SetupSalomeSMESH)
 
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(SMESH CONFIG)
+            if(NOT SMESH_FOUND)
+                find_package(SMESH REQUIRED)
+                if(NOT SMESH_FOUND)
+                    message(ERROR "================\n"
+                                "SMESH not found.\n"
+                                "================\n")
+                endif()
+            endif()
             set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
             set(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
-            if(NOT SMESH_FOUND)
-                message(ERROR "================\n"
-                              "SMESH not found.\n"
-                              "================\n")
-            endif()
+
             include_directories(${SMESH_INCLUDE_DIR})
         endif()
 

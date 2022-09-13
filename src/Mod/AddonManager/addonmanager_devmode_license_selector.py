@@ -30,8 +30,23 @@ import FreeCAD
 import FreeCADGui
 
 from PySide2.QtWidgets import QFileDialog, QDialog
-from PySide2.QtGui import QDesktopServices, QRegularExpressionValidator
-from PySide2.QtCore import QUrl, QFile, QRegularExpression, QIODevice
+from PySide2.QtGui import QDesktopServices
+from PySide2.QtCore import QUrl, QFile, QIODevice
+
+try:
+    from PySide2.QtGui import (
+        QRegularExpressionValidator,
+    )
+    from PySide2.QtCore import QRegularExpression
+    RegexWrapper = QRegularExpression
+    RegexValidatorWrapper = QRegularExpressionValidator
+except ImportError:
+    from PySide2.QtGui import (
+        QRegExpValidator,
+    )
+    from PySide2.QtCore import QRegExp
+    RegexWrapper = QRegExp
+    RegexValidatorWrapper = QRegExpValidator
 
 translate = FreeCAD.Qt.translate
 
@@ -243,7 +258,7 @@ class LicenseSelector:
                         )
                     )
                     info_dlg.yearLineEdit.setValidator(
-                        QRegularExpressionValidator(QRegularExpression("^[12]\\d{3}$"))
+                        RegexValidatorWrapper(RegexWrapper("^[12]\\d{3}$"))
                     )
                     info_dlg.yearLineEdit.setText(str(date.today().year))
                     result = info_dlg.exec()
