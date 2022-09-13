@@ -113,18 +113,23 @@ InspectActualShape::InspectActualShape(const Part::TopoShape& shape) : _rShape(s
     Base::BoundBox3d bbox = _rShape.getBoundBox();
     Standard_Real deflection = (bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation;
 
+    fetchPoints(deflection);
+}
+
+void InspectActualShape::fetchPoints(double deflection)
+{
     // get points from faces or sub-sampled edges
     TopTools_IndexedMapOfShape mapOfShapes;
     TopExp::MapShapes(_rShape.getShape(), TopAbs_FACE, mapOfShapes);
     if (!mapOfShapes.IsEmpty()) {
         std::vector<Data::ComplexGeoData::Facet> f;
-        _rShape.getFaces(points, f, (float)deflection);
+        _rShape.getFaces(points, f, static_cast<float>(deflection));
     }
     else {
         TopExp::MapShapes(_rShape.getShape(), TopAbs_EDGE, mapOfShapes);
         if (!mapOfShapes.IsEmpty()) {
             std::vector<Base::Vector3d> n;
-            _rShape.getPoints(points, n, (float)deflection);
+            _rShape.getPoints(points, n, static_cast<float>(deflection));
         }
     }
 }
@@ -487,37 +492,49 @@ float InspectNominalShape::getDistance(const Base::Vector3f& point) const
         fMinDist = (float)distss->Value();
         // the shape is a solid, check if the vertex is inside
         if (isSolid) {
-            const Standard_Real tol = 0.001;
-            BRepClass3d_SolidClassifier classifier(_rShape);
-            classifier.Perform(pnt3d, tol);
-            if (classifier.State() == TopAbs_IN) {
+            if (isInsideSolid(pnt3d))
                 fMinDist = -fMinDist;
-            }
-
         }
         else if (fMinDist > 0) {
             // check if the distance was computed from a face
-            for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
-                if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
-                    TopoDS_Shape face = distss->SupportOnShape1(index);
-                    Standard_Real u, v;
-                    distss->ParOnFaceS1(index, u, v);
-                    //gp_Pnt pnt = distss->PointOnShape1(index);
-                    BRepGProp_Face props(TopoDS::Face(face));
-                    gp_Vec normal;
-                    gp_Pnt center;
-                    props.Normal(u, v, center, normal);
-                    gp_Vec dir(center, pnt3d);
-                    Standard_Real scalar = normal.Dot(dir);
-                    if (scalar < 0) {
-                        fMinDist = -fMinDist;
-                    }
-                    break;
-                }
-            }
+            if (isBelowFace(pnt3d))
+                fMinDist = -fMinDist;
         }
     }
     return fMinDist;
+}
+
+bool InspectNominalShape::isInsideSolid(const gp_Pnt& pnt3d) const
+{
+    const Standard_Real tol = 0.001;
+    BRepClass3d_SolidClassifier classifier(_rShape);
+    classifier.Perform(pnt3d, tol);
+    return (classifier.State() == TopAbs_IN);
+}
+
+bool InspectNominalShape::isBelowFace(const gp_Pnt& pnt3d) const
+{
+    // check if the distance was computed from a face
+    for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
+        if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
+            TopoDS_Shape face = distss->SupportOnShape1(index);
+            Standard_Real u, v;
+            distss->ParOnFaceS1(index, u, v);
+            //gp_Pnt pnt = distss->PointOnShape1(index);
+            BRepGProp_Face props(TopoDS::Face(face));
+            gp_Vec normal;
+            gp_Pnt center;
+            props.Normal(u, v, center, normal);
+            gp_Vec dir(center, pnt3d);
+            Standard_Real scalar = normal.Dot(dir);
+            if (scalar < 0) {
+                return true;
+            }
+            break;
+        }
+    }
+
+    return false;
 }
 
 // ----------------------------------------------------------------
