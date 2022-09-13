@@ -413,3 +413,92 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
 
     def test_import_offset(self):
         pass
+
+    def test_empty_union(self):
+        content = """union() {
+ color(c = [0.30, 0.50, 0.80, 0.50]) {
+  union() {
+   union() {
+    union() {
+     translate(v = [23.0, -9.50, 13.60]) {
+      union() {
+       difference() {
+        difference() {
+         difference() {
+          difference() {
+           difference() {
+            difference() {
+             difference() {
+              union() {
+               union() {
+                union() {
+                 union() {
+                  union() {
+                   union() {
+                    union() {
+                     union();
+                     translate(v = [2.50, 2.50, 9.50]) {
+                      cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                     }
+                    }
+                    translate(v = [11.50, 2.50, 9.50]) {
+                     cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                    }
+                   }
+                   translate(v = [11.50, 6.30, 9.50]) {
+                    cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                   }
+                  }
+                  translate(v = [2.50, 6.30, 9.50]) {
+                   cylinder(h = 19.0, r = 2.50, center = true, $fn = 100);
+                  }
+                 }
+                 translate(v = [2.50, 0.0, 0.0]) {
+                  cube(size = [9.0, 8.80, 19.0]);
+                 }
+                }
+                translate(v = [0.0, 2.50, 0.0]) {
+                 cube(size = [14.0, 3.80, 19.0]);
+                }
+               }
+              }
+              translate(v = [-1.0, 8.40, 3.50]) {
+               cube(size = [30.0, 10.0, 12.0]);
+              }
+             }
+             translate(v = [4.0, 4.0, -0.10]) {
+              cylinder($fn = 30, h = 20.0, r = 1.750, r1 = 1.80);
+             }
+            }
+            translate(v = [9.0, 4.40, -0.10]) {
+             cylinder($fn = 30, h = 20.0, r = 2.150, r1 = 2.20);
+            }
+           }
+           translate(v = [12.30, 2.10, -0.10]) {
+            cube(size = [5.0, 2.20, 20.0]);
+           }
+          }
+          translate(v = [1.90, 7.60, -0.10]) {
+           cube(size = [2.20, 5.0, 20.0]);
+          }
+         }
+         translate(v = [3.60, 7.20, 1.80]) {
+          cube(size = [30.0, 10.0, 2.0]);
+         }
+        }
+        translate(v = [0, 0, 13.40]) {
+         translate(v = [3.60, 7.20, 1.80]) {
+          cube(size = [30.0, 10.0, 2.0]);
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}"""
+        doc = self.utility_create_scad(content, "empty_union")
+        self.assertEqual (len(doc.RootObjects), 1)
+        FreeCAD.closeDocument(doc.Name)

@@ -374,7 +374,7 @@ void MetadataPy::setUrls(Py::Object args)
 App::Meta::Url urlFromStrings(const char* urlTypeCharStar, const char* link, const char* branch)
 {
     std::string urlTypeString(urlTypeCharStar);
-    App::Meta::UrlType urlType;
+    App::Meta::UrlType urlType{App::Meta::UrlType::documentation};
     if (urlTypeString == "repository")
         urlType = App::Meta::UrlType::repository;
     else if (urlTypeString == "bugtracker")
