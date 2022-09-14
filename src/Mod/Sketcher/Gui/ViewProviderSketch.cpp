@@ -499,9 +499,11 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
 {
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
 
-    short x,y; pnt.getValue(x,y);
-    SbVec2f siz = vp.getViewportSize();
-    float dX, dY; siz.getValue(dX, dY);
+    short x, y;
+    pnt.getValue(x,y);
+    SbVec2f VPsize = vp.getViewportSize();
+    float dX, dY;
+    VPsize.getValue(dX, dY);
 
     float fRatio = vp.getViewportAspectRatio();
     float pX = (float)x / float(vp.getViewportSizePixels()[0]);
@@ -510,10 +512,10 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     // now calculate the real points respecting aspect ratio information
     //
     if (fRatio > 1.0f) {
-        pX = (pX - 0.5f*dX) * fRatio + 0.5f*dX;
+        pX = (pX - 0.5f * dX) * fRatio + 0.5f * dX;
     }
     else if (fRatio < 1.0f) {
-        pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
+        pY = (pY - 0.5f * dY) / fRatio + 0.5f * dY;
     }
 
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
@@ -521,12 +523,12 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
         return;
     SbViewVolume  vol = pCam->getViewVolume();
 
-    vol.projectPointToLine(SbVec2f(pX,pY), line);
+    vol.projectPointToLine(SbVec2f(pX, pY), line);
 }
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const {
     auto doc = Gui::Application::Instance->editDocument();
-    if(!doc || doc->getInEdit()!=this)
+    if (!doc || doc->getInEdit() != this)
         return getSketchObject()->globalPlacement();
 
     // TODO: won't work if there is scale. Hmm... what to do...
@@ -536,26 +538,26 @@ Base::Placement ViewProviderSketch::getEditingPlacement() const {
 void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f &point, const SbVec3f &normal, double &u, double &v) const
 {
     // Plane form
-    Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
+    Base::Vector3d R0(0, 0, 0), RN(0, 0, 1), RX(1, 0, 0), RY(0, 1, 0);
 
     // move to position of Sketch
     Base::Placement Plz = getEditingPlacement();
-    R0 = Plz.getPosition() ;
+    R0 = Plz.getPosition();
     Base::Rotation tmp(Plz.getRotation());
-    tmp.multVec(RN,RN);
-    tmp.multVec(RX,RX);
-    tmp.multVec(RY,RY);
+    tmp.multVec(RN, RN);
+    tmp.multVec(RX, RX);
+    tmp.multVec(RY, RY);
     Plz.setRotation(tmp);
 
     // line
-    Base::Vector3d R1(point[0],point[1],point[2]),RA(normal[0],normal[1],normal[2]);
+    Base::Vector3d R1(point[0], point[1], point[2]), RA(normal[0], normal[1], normal[2]);
     if (fabs(RN*RA) < FLT_EPSILON)
         throw Base::ZeroDivisionError("View direction is parallel to sketch plane");
     // intersection point on plane
-    Base::Vector3d S = R1 + ((RN * (R0-R1))/(RN*RA))*RA;
+    Base::Vector3d S = R1 + ((RN * (R0 - R1)) / (RN * RA)) * RA;
 
     // distance to x Axle of the sketch
-    S.TransformToCoordinateSystem(R0,RX,RY);
+    S.TransformToCoordinateSystem(R0, RX, RY);
 
     u = S.x;
     v = S.y;
