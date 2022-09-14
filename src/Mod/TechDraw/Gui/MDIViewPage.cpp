@@ -35,8 +35,11 @@
     #include <QListWidget>
     #include <QMenu>
     #include <QMessageBox>
+    #include <QPageLayout>
+    #include <QPageSize>
     #include <QPaintEngine>
     #include <QPainter>
+    #include <QPdfWriter>
     #include <QPrinter>
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
@@ -70,6 +73,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "QGIView.h"
@@ -85,6 +89,7 @@
 
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 namespace bp = boost::placeholders;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
@@ -443,16 +448,12 @@ void MDIViewPage::print(QPrinter* printer)
 void MDIViewPage::printAll(QPrinter* printer,
                            App::Document* doc)
 {
-    QPainter painter;
-    std::vector<App::DocumentObject*> docObjs = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+//    Base::Console().Message("MDIVP::printAll()\n");
+    QPainter painter(printer);
+    QPageLayout pageLayout = printer->pageLayout();
     bool firstTime = true;
+    std::vector<App::DocumentObject*> docObjs = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     for (auto& obj: docObjs) {
-        if (firstTime) {
-            firstTime = false;
-        } else {
-            printer->newPage();
-        }
-        TechDraw::DrawPage* dp = static_cast<TechDraw::DrawPage*>(obj);
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
         if (!vp) {
             continue;   // can't print this one
@@ -462,32 +463,154 @@ void MDIViewPage::printAll(QPrinter* printer,
             continue;   // can't print this one
         }
 
-        App::DocumentObject* objTemplate = dp->Template.getValue();
-        auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(objTemplate) );
+        TechDraw::DrawPage* dp = static_cast<TechDraw::DrawPage*>(obj);
         double width  =  297.0;   //default to A4 Landscape 297 x 210
         double height =  210.0;
-        if( pageTemplate ) {
-            width  =  pageTemplate->Width.getValue();
-            height =  pageTemplate->Height.getValue();
+        setPageLayout(pageLayout, dp, width, height);
+        printer->setPageLayout(pageLayout);
+
+        //for some reason the first page doesn't obey the pageLayout, so we have to print
+        //a sacrificial blank page, but we make it a feature instead of a bug by printing a
+        //table of contents on the sacrificial page.
+        if (firstTime) {
+            firstTime = false;
+            printBannerPage(printer, painter, pageLayout, doc, docObjs);
         }
 
-        printer->setPageSize(QPageSize(QSizeF(width, height), QPageSize::Millimeter, QString(), QPageSize::FuzzyOrientationMatch));
-        printer->setOrientation((QPrinter::Orientation) dp->getOrientation());
+        printer->newPage();
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
 
+        renderPage(vpp, painter, sourceRect, targetRect);
+    }
+    painter.end();
+}
+
+//static routine to print all pages in a document to pdf
+void MDIViewPage::printAllPdf(QPrinter* printer,
+                              App::Document* doc)
+{
+//    Base::Console().Message("MDIVP::printAllPdf()\n");
+    QString outputFile = printer->outputFileName();
+    QString documentName = QString::fromUtf8(doc->getName());
+    QPdfWriter pdfWriter(outputFile);
+    pdfWriter.setTitle(documentName);
+    pdfWriter.setResolution(printer->resolution());
+    QPainter painter(&pdfWriter);
+    QPageLayout pageLayout = printer->pageLayout();
+
+    double dpmm = printer->resolution() / 25.4;
+    bool firstTime = true;
+    std::vector<App::DocumentObject*> docObjs = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    for (auto& obj: docObjs) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;   // can't print this one
+        }
+        TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+        if (!vpp) {
+            continue;   // can't print this one
+        }
+
+        TechDraw::DrawPage* dp = static_cast<TechDraw::DrawPage*>(obj);
+        double width  =  297.0;   //default to A4 Landscape 297 x 210
+        double height =  210.0;
+        setPageLayout(pageLayout, dp, width, height);
+        pdfWriter.setPageLayout(pageLayout);
+
+        //for some reason the first page doesn't obey the pageLayout, so we have to print
+        //a sacrificial blank page, but we make it a feature instead of a bug by printing a
+        //table of contents on the sacrificial page.
+        if (firstTime) {
+            firstTime = false;
+            printBannerPage(printer, painter, pageLayout, doc, docObjs);
+        }
+        pdfWriter.newPage();
+
+        QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
+        QRect targetRect(0, 0, width * dpmm, height * dpmm);
+
+        renderPage(vpp, painter, sourceRect, targetRect);
+    }
+    painter.end();
+}
+
+//static
+void MDIViewPage::printBannerPage(QPrinter* printer, QPainter& painter,
+                                  QPageLayout& pageLayout,
+                                  App::Document* doc,
+                                  std::vector<App::DocumentObject*>& docObjs)
+{
+    QFont savePainterFont = painter.font();
+    QFont painterFont;
+    painterFont.setFamily(Preferences::labelFontQString());
+    int fontSizeMM = Preferences::labelFontSizeMM();
+    double dpmm = printer->resolution() / 25.4;
+    int fontSizePx = fontSizeMM * dpmm;
+    painterFont.setPixelSize(fontSizePx);
+    painter.setFont(painterFont);
+
+    //print a header
+    QString docLine = QObject::tr("Document Name: ") + QString::fromUtf8(doc->getName());
+    int leftMargin = pageLayout.margins().left() * dpmm + 5 * dpmm;    //layout margin + 5mm
+    int verticalPos = pageLayout.margins().top() * dpmm + 20 * dpmm;   //layout margin + 20mm
+    int verticalSpacing = 2;    //double space
+    painter.drawText(leftMargin, verticalPos, docLine);
+
+    //leave some blank space between document name and page entries
+    verticalPos += 2 * verticalSpacing * fontSizePx;
+    for (auto& obj : docObjs) {
+        //print a line for each page
+        QString pageLine = QString::fromUtf8(obj->getNameInDocument()) +
+                           QString::fromUtf8(" / ") +
+                           QString::fromUtf8(obj->Label.getValue());
+        painter.drawText(leftMargin, verticalPos, pageLine);
+        verticalPos += verticalSpacing * fontSizePx;
+    }
+    painter.setFont(savePainterFont);       //restore the original font
+}
+
+//static
+void MDIViewPage::renderPage(ViewProviderPage* vpp,
+                             QPainter& painter,
+                             QRectF& sourceRect,
+                             QRect& targetRect)
+{
         bool saveState = vpp->getFrameState();
+        //turn off view frames for print
         vpp->setFrameState(false);
         vpp->setTemplateMarkers(false);
         vpp->getQGSPage()->refreshViews();
-        painter.begin(printer);
         vpp->getQGSPage()->render(&painter, targetRect, sourceRect);
-        painter.end();
         // Reset
         vpp->setFrameState(saveState);
         vpp->setTemplateMarkers(saveState);
         vpp->getQGSPage()->refreshViews();
+}
+
+//static
+void MDIViewPage::setPageLayout(QPageLayout& pageLayout,
+                                TechDraw::DrawPage* dPage,
+                                double& width, double& height)
+{
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(dPage->Template.getValue()) );
+    if( pageTemplate ) {
+        width  =  pageTemplate->Width.getValue();
+        height =  pageTemplate->Height.getValue();
     }
+    //Qt's page size determination assumes Portrait orientation. To get the right paper size
+    //we need to ask in the proper form.
+    QPageSize::PageSizeId paperSizeID =
+                        QPageSize::id(QSizeF(std::min(width, height), std::max(width, height)),
+                                      QPageSize::Millimeter,
+                                      QPageSize::FuzzyOrientationMatch);
+    if (paperSizeID == QPageSize::Custom) {
+        pageLayout.setPageSize(QPageSize(QSizeF(std::min(width, height), std::max(width, height)),
+                                         QPageSize::Millimeter));
+    } else {
+        pageLayout.setPageSize(QPageSize(paperSizeID));
+    }
+    pageLayout.setOrientation((QPageLayout::Orientation) dPage->getOrientation());
 }
 
 PyObject* MDIViewPage::getPyObject()
@@ -606,8 +729,13 @@ void MDIViewPage::printAllPages()
     QPrintDialog dlg(&printer, Gui::getMainWindow());
     if (dlg.exec() == QDialog::Accepted) {
         App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
+        if (!doc) {
+            return;
+        }
+        if (printer.outputFileName().isEmpty()) {
             printAll(&printer, doc);
+        } else {
+            printAllPdf(&printer, doc);
         }
     }
 }
