@@ -2513,7 +2513,7 @@ private:
                 &mat,&subObj,retType==2,PyObject_IsTrue(transform) ? true : false,
                 PyObject_IsTrue(noElementMap) ? true : false);
         if (PyObject_IsTrue(refine) ? true : false) {
-#ifndef FC_NO_ELMENT_MAP
+#ifndef FC_NO_ELEMENT_MAP
             shape = TopoShape(0,shape.Hasher).makERefine(shape);
 #else
             BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
