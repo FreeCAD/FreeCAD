@@ -852,8 +852,8 @@ void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& c
 	CommandManager& rcCmdMgr = Application::Instance->commandManager();
 	m_Menu->clear();
 
-	for (auto i = cmd.begin(); i != cmd.end(); i++) {
-		Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
+	for (const auto & i : cmd) {
+		Command* cmd = rcCmdMgr.getCommandByName(i.c_str());
 		if (cmd)
 			cmd->addTo(m_Menu);
 	}
@@ -1796,12 +1796,12 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
 		commands.emplace_back("ViewZoomToFit");
 	}
 
-	for (auto i = commands.begin(); i != commands.end(); ++i) {
-		if (*i == "Separator") {
+	for (const auto & command : commands) {
+		if (command == "Separator") {
 			menu->addSeparator();
 		}
 		else {
-			Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
+			Command* cmd = rcCmdMgr.getCommandByName(command.c_str());
 			if (cmd)
 				cmd->addTo(menu);
 		}

@@ -105,7 +105,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
 
-    auto prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    auto * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
 
     if (prop)
         actQuantity = Base::Quantity(prop->getValue());
@@ -246,7 +246,7 @@ void InputField::newInput(const QString & text)
 
             std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
-            auto value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
+            auto * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
             if (value) {
                 res.setValue(value->getValue());
                 res.setUnit(value->getUnit());

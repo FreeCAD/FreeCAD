@@ -83,7 +83,7 @@ void ExpressionSpinBox::showInvalidExpression(const QString& tip)
 void ExpressionSpinBox::showValidExpression(ExpressionSpinBox::Number number)
 {
     std::unique_ptr<Expression> result(getExpression()->eval());
-    auto value = freecad_dynamic_cast<NumberExpression>(result.get());
+    auto * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
     if (value) {
         switch (number) {
@@ -168,7 +168,7 @@ void ExpressionSpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    auto qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    auto * qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
     Unit unit;
 
     if (qprop)

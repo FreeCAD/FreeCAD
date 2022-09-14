@@ -156,7 +156,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
 
-            auto n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
+            auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();

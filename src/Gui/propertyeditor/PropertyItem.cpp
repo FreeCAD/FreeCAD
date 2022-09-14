@@ -151,7 +151,7 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
 
         try {
             // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an exception
-            auto docObj = Base::freecad_dynamic_cast<App::DocumentObject>(p.getContainer());
+            auto * docObj = Base::freecad_dynamic_cast<App::DocumentObject>(p.getContainer());
             if (docObj && !docObj->isReadOnly(&p)) {
                 App::ObjectIdentifier id(p);
                 std::vector<App::ObjectIdentifier> paths;

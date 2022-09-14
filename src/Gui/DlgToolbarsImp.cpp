@@ -117,15 +117,15 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     index = 1;
     ui->workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
     ui->workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
-    for (const auto & workbenche : workbenches) {
-        QPixmap px = Application::Instance->workbenchIcon(workbenche);
-        QString mt = Application::Instance->workbenchMenuText(workbenche);
+    for (const auto & workbench : workbenches) {
+        QPixmap px = Application::Instance->workbenchIcon(workbench);
+        QString mt = Application::Instance->workbenchMenuText(workbench);
         if (mt != QLatin1String("<none>")) {
             if (px.isNull())
                 ui->workbenchBox->addItem(mt);
             else
                 ui->workbenchBox->addItem(px, mt);
-            ui->workbenchBox->setItemData(index, QVariant(workbenche), Qt::UserRole);
+            ui->workbenchBox->setItemData(index, QVariant(workbench), Qt::UserRole);
             index++;
         }
     }

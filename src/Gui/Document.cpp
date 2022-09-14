@@ -1440,7 +1440,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
             try {
                 const char** pReturnIgnore=nullptr;
                 std::list<MDIView*> mdi = getMDIViews();
-                for (auto & it : mdi) {
+                for (const auto & it : mdi) {
                     if (it->onHasMsg("SetCamera"))
                         it->onMsg(cameraSettings.c_str(), pReturnIgnore);
                 }
