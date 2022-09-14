@@ -567,8 +567,8 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
 
     short x,y; pnt.getValue(x,y);
-    SbVec2f siz = vp.getViewportSize();
-    float dX, dY; siz.getValue(dX, dY);
+    SbVec2f size = vp.getViewportSize();
+    float dX, dY; size.getValue(dX, dY);
 
     float fRatio = vp.getViewportAspectRatio();
     float pX = (float)x / float(vp.getViewportSizePixels()[0]);
