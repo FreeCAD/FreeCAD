@@ -160,30 +160,30 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
 {
     ViewProviderDocumentObject::attach(pcObject);
 
-    SoPickStyle* ps = new SoPickStyle();
+    auto ps = new SoPickStyle();
     ps->style = SoPickStyle::UNPICKABLE;
 
-    SoSeparator *lineSep = new SoSeparator();
-    SoDrawStyle* style = new SoDrawStyle();
+    auto lineSep = new SoSeparator();
+    auto style = new SoDrawStyle();
     style->lineWidth = 2.0f;
     lineSep->addChild(ps);
     lineSep->addChild(style);
     lineSep->addChild(pColor);
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
-    SoMarkerSet* points = new SoMarkerSet();
+    auto points = new SoMarkerSet();
     points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
             ViewParams::instance()->getMarkerSize());
     points->numPoints=2;
     lineSep->addChild(points);
 
-    SoSeparator* textsep = new SoSeparator();
+    auto textsep = new SoSeparator();
     textsep->addChild(pTranslation);
     textsep->addChild(pTextColor);
     textsep->addChild(pFont);
     textsep->addChild(pLabel);
 
-    SoSeparator* sep = new SoAnnotation();
+    auto sep = new SoAnnotation();
     sep->addChild(lineSep);
     sep->addChild(textsep);
     addDisplayMaskMode(sep, "Base");
@@ -273,7 +273,7 @@ void PointMarker::customEvent(QEvent*)
     App::DocumentObject* obj = doc->getDocument()->addObject
         (App::MeasureDistance::getClassTypeId().getName(),"Distance");
 
-    App::MeasureDistance* md = static_cast<App::MeasureDistance*>(obj);
+    auto md = static_cast<App::MeasureDistance*>(obj);
     const SbVec3f& pt1 = vp->pCoords->point[0];
     const SbVec3f& pt2 = vp->pCoords->point[1];
     md->P1.setValue(Base::Vector3d(pt1[0],pt1[1],pt1[2]));
@@ -300,7 +300,7 @@ ViewProviderPointMarker::ViewProviderPointMarker()
     pMarker->numPoints=0;
     pMarker->ref();
 
-    SoGroup* grp = new SoGroup();
+    auto grp = new SoGroup();
     grp->addChild(pCoords);
     grp->addChild(pMarker);
     addDisplayMaskMode(grp, "Base");
@@ -315,11 +315,11 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
 
 void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCallback * n)
 {
-    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    PointMarker *pm = static_cast<PointMarker*>(ud);
+    auto view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    auto pm = static_cast<PointMarker*>(ud);
     const SoEvent* ev = n->getEvent();
     if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
+        const auto ke = static_cast<const SoKeyboardEvent*>(ev);
         const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
         if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
             n->setHandled();
@@ -330,7 +330,7 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
         }
     }
     else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-        const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(ev);
+        const auto mbe = static_cast<const SoMouseButtonEvent*>(ev);
 
         // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
         n->getAction()->setHandled();
@@ -345,7 +345,7 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
             n->setHandled();
             pm->addPoint(point->getPoint());
             if (pm->countPoints() == 2) {
-                QEvent *e = new QEvent(QEvent::User);
+                auto e = new QEvent(QEvent::User);
                 QApplication::postEvent(pm, e);
                 // leave mode
                 view->setEditing(false);

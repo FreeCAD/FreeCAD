@@ -72,7 +72,7 @@ void WidgetFactoryInst::destruct ()
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
 {
-    QWidget* w = (QWidget*)Produce(sName);
+    auto w = (QWidget*)Produce(sName);
 
     // this widget class is not registered
     if (!w) {
@@ -114,7 +114,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
  */
 Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
 {
-    Gui::Dialog::PreferencePage* w = (Gui::Dialog::PreferencePage*)Produce(sName);
+    auto w = (Gui::Dialog::PreferencePage*)Produce(sName);
 
     // this widget class is not registered
     if (!w) {
@@ -164,7 +164,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     w->setParent(parent);
 
     try {
-        PrefWidget* pw = dynamic_cast<PrefWidget*>(w);
+        auto pw = dynamic_cast<PrefWidget*>(w);
         if (pw) {
             pw->setEntryName(sPref);
             pw->restorePreferences();
@@ -285,7 +285,7 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
             QWidget* form = qobject_cast<QWidget*>(object);
             if (form) {
                 this->setWindowTitle(form->windowTitle());
-                QVBoxLayout *layout = new QVBoxLayout;
+                auto layout = new QVBoxLayout;
                 layout->addWidget(form);
                 setLayout(layout);
             }
@@ -361,7 +361,7 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     buttonOk->setDefault( true );
 
     MyDialogLayout->addWidget( buttonOk, 1, 0 );
-    QSpacerItem* spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    auto spacer = new QSpacerItem( 210, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
     MyDialogLayout->addItem( spacer, 1, 1 );
 
     buttonCancel = new QPushButton(this);
@@ -510,7 +510,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     }
 
     if (objS) {
-        SignalConnect* sc = new SignalConnect(this, cb);
+        auto sc = new SignalConnect(this, cb);
         mySignals.push_back(sc);
         return QObject::connect(objS, sigStr.toLatin1(), sc, SLOT ( onExecute() )  );
     }

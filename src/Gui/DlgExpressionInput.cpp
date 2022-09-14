@@ -156,7 +156,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             //set default palette as we may have read text right now
             ui->msg->setPalette(ui->okBtn->palette());
 
-            NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
+            auto * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();
@@ -252,7 +252,7 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
         // cursor is on this or an underlying widget or outside.
         if (!underMouse()) {
             // if the expression fields context-menu is open do not close the dialog
-            QMenu* menu = qobject_cast<QMenu*>(obj);
+            auto menu = qobject_cast<QMenu*>(obj);
             if (menu && menu->parentWidget() == ui->expression) {
                 return false;
             }

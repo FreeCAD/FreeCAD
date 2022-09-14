@@ -142,7 +142,7 @@ public:
         const char *marker = ViewProvider::hasHiddenMarker(sub);
         if(marker) {
             auto icon = BitmapFactory().pixmap("Invisible");
-            QListWidgetItem* item = new QListWidgetItem(icon,
+            auto item = new QListWidgetItem(icon,
                     QString::fromLatin1(std::string(sub,marker-sub).c_str()), ui->elementList);
             item->setData(Qt::UserRole,QColor());
             item->setData(Qt::UserRole+1,QString::fromLatin1(sub));
@@ -161,7 +161,7 @@ public:
             QColor c;
             c.setRgbF(color.r,color.g,color.b,1.0-color.a);
             px.fill(c);
-            QListWidgetItem* item = new QListWidgetItem(QIcon(px),
+            auto item = new QListWidgetItem(QIcon(px),
                     QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()),
                     ui->elementList);
             item->setData(Qt::UserRole,c);

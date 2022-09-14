@@ -62,9 +62,9 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     // sorted by their menu text
     QStringList work = Application::Instance->workbenches();
     QMap<QString, QString> menuText;
-    for (QStringList::Iterator it = work.begin(); it != work.end(); ++it) {
-        QString text = Application::Instance->workbenchMenuText(*it);
-        menuText[text] = *it;
+    for (const auto & it : work) {
+        QString text = Application::Instance->workbenchMenuText(it);
+        menuText[text] = it;
     }
 
     {   // add special workbench to selection
@@ -113,7 +113,8 @@ DlgGeneralImp::~DlgGeneralImp()
  */
 void DlgGeneralImp::setRecentFileSize()
 {
-    RecentFilesAction *recent = getMainWindow()->findChild<RecentFilesAction *>(QLatin1String("recentFiles"));
+    auto recent = getMainWindow()->findChild<RecentFilesAction *>
+        (QLatin1String("recentFiles"));
     if (recent) {
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentFiles");
         recent->resizeList(hGrp->GetInt("RecentFiles", 4));
@@ -236,7 +237,7 @@ void DlgGeneralImp::loadSettings()
     TStringMap list = Translator::instance()->supportedLocales();
     ui->Languages->clear();
     ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
-    for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
+    for (auto it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
 
@@ -300,12 +301,12 @@ void DlgGeneralImp::loadSettings()
 
     // read from user, resource and built-in directory
     QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
-    for (QStringList::iterator it = qssPaths.begin(); it != qssPaths.end(); ++it) {
-        dir.setPath(*it);
+    for (const auto & qssPath : qssPaths) {
+        dir.setPath(qssPath);
         fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-        for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
-            if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
-                cssFiles[jt->baseName()] = jt->fileName();
+        for (const auto & fileName : fileNames) {
+            if (cssFiles.find(fileName.baseName()) == cssFiles.end()) {
+                cssFiles[fileName.baseName()] = fileName.fileName();
             }
         }
     }
@@ -389,7 +390,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
             else
                 tagString.append(QStringLiteral(", ") + QString::fromStdString(tag));
         }
-        QTableWidgetItem* kind = new QTableWidgetItem(tagString);
+        auto kind = new QTableWidgetItem(tagString);
         ui->PreferencePacks->setItem(row, 1, kind);
         auto button = new QPushButton(icon, tr("Apply"));
         button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));

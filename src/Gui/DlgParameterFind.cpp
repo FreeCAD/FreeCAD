@@ -120,7 +120,7 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
     }
 
     if (opt.name || opt.value) {
-        ParameterGroupItem* group = static_cast<ParameterGroupItem*>(item);
+        auto group = static_cast<ParameterGroupItem*>(item);
         Base::Reference<ParameterGrp> hGrp = group->_hcGrp;
 
         auto boolMap = hGrp->GetBoolMap();
@@ -235,7 +235,7 @@ QTreeWidgetItem* DlgParameterFind::findItem(QTreeWidgetItem* root, const Options
 
 void DlgParameterFind::accept()
 {
-    ParameterGroup* groupTree = dialog->findChild<ParameterGroup*>();
+    auto groupTree = dialog->findChild<ParameterGroup*>();
     if (groupTree) {
         Options opt;
         opt.text = ui->lineEdit->text();

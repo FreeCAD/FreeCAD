@@ -68,7 +68,7 @@ static ParameterGrp::handle _GetParam() {
 PropertyView::PropertyView(QWidget *parent)
   : QWidget(parent), SelectionObserver(false, ResolveMode::NoResolve)
 {
-    QGridLayout* pLayout = new QGridLayout( this );
+    auto pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
 
@@ -412,7 +412,7 @@ void PropertyView::onTimer() {
                 nameType.propName = prop->getName();
                 nameType.propId = prop->getTypeId().getKey();
 
-                std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
+                auto pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
                 if (pi != propDataMap.end()) {
                     pi->propList.push_back(prop);
                 }
@@ -433,7 +433,7 @@ void PropertyView::onTimer() {
                 nameType.propName = pt->first;
                 nameType.propId = pt->second->getTypeId().getKey();
 
-                std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
+                auto pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
                 if (pi != propViewMap.end()) {
                     pi->propList.push_back(pt->second);
                 }
@@ -548,8 +548,8 @@ PropertyDockView::PropertyDockView(Gui::Document* pcDocument, QWidget *parent)
 {
     setWindowTitle(tr("Property View"));
 
-    PropertyView* view = new PropertyView(this);
-    QGridLayout* pLayout = new QGridLayout(this);
+    auto view = new PropertyView(this);
+    auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
     pLayout->addWidget(view, 0, 0);

@@ -78,7 +78,7 @@ SoFCBoundingBox::SoFCBoundingBox ()
     SO_NODE_ADD_FIELD(dimensionsOn, (true));
 
     root = new SoSeparator();
-    SoSeparator *bboxSep = new SoSeparator();
+    auto bboxSep = new SoSeparator();
 
     bboxCoords = new SoCoordinate3();
     bboxCoords->point.setNum(8);
@@ -95,10 +95,10 @@ SoFCBoundingBox::SoFCBoundingBox ()
     // create the text nodes, including a transform for each vertice offset
     textSep = new SoSeparator();
     for (int i = 0; i < 8; i++) {
-        SoSeparator *temp = new SoSeparator();
-        SoTransform *trans = new SoTransform();
+        auto temp = new SoSeparator();
+        auto trans = new SoTransform();
         temp->addChild(trans);
-        SoText2* text = new SoText2();
+        auto text = new SoText2();
         text->justification.setValue(SoText2::CENTER);
         temp->addChild(text);
         textSep->addChild(temp);
@@ -107,10 +107,10 @@ SoFCBoundingBox::SoFCBoundingBox ()
     // create the text nodes, including a transform for each dimension
     dimSep = new SoSeparator();
     for (int i = 0; i < 3; i++) {
-        SoSeparator *temp = new SoSeparator();
-        SoTransform *trans = new SoTransform();
+        auto temp = new SoSeparator();
+        auto trans = new SoTransform();
         temp->addChild(trans);
-        SoText2* text = new SoText2();
+        auto text = new SoText2();
         text->justification.setValue(SoText2::CENTER);
         temp->addChild(text);
         dimSep->addChild(temp);

@@ -175,7 +175,7 @@ void SoFCUnifiedSelection::applySettings()
     else {
         // Search for a user defined value with the current color as default
         SbColor highlightColor = this->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        auto highlight = (unsigned long)(highlightColor.getPackedValue());
         highlight = hGrp->GetUnsigned("HighlightColor", highlight);
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         this->colorHighlight.setValue(highlightColor);
@@ -187,7 +187,7 @@ void SoFCUnifiedSelection::applySettings()
     else {
         // Do the same with the selection color
         SbColor selectionColor = this->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        auto selection = (unsigned long)(selectionColor.getPackedValue());
         selection = hGrp->GetUnsigned("SelectionColor", selection);
         selectionColor.setPackedValue((uint32_t)selection, transparency);
         this->colorSelection.setValue(selectionColor);
@@ -239,7 +239,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         info.pp = points[i];
         info.vpd = nullptr;
         ViewProvider *vp = nullptr;
-        SoFullPath *path = static_cast<SoFullPath *>(info.pp->getPath());
+        auto path = static_cast<SoFullPath *>(info.pp->getPath());
         if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
             if(singlePick && last_vp && last_vp!=vp)
@@ -306,7 +306,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
 void SoFCUnifiedSelection::doAction(SoAction *action)
 {
     if (action->getTypeId() == SoFCEnableHighlightAction::getClassTypeId()) {
-        SoFCEnableHighlightAction *preaction = (SoFCEnableHighlightAction*)action;
+        auto preaction = (SoFCEnableHighlightAction*)action;
         if (preaction->highlight) {
             this->highlightMode = SoFCUnifiedSelection::AUTO;
         }
@@ -316,7 +316,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCEnableSelectionAction::getClassTypeId()) {
-        SoFCEnableSelectionAction *selaction = (SoFCEnableSelectionAction*)action;
+        auto selaction = (SoFCEnableSelectionAction*)action;
         if (selaction->selection) {
             this->selectionMode = SoFCUnifiedSelection::ON;
         }
@@ -326,17 +326,17 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionColorAction::getClassTypeId()) {
-        SoFCSelectionColorAction *colaction = (SoFCSelectionColorAction*)action;
+        auto colaction = (SoFCSelectionColorAction*)action;
         this->colorSelection = colaction->selectionColor;
     }
 
     if (action->getTypeId() == SoFCHighlightColorAction::getClassTypeId()) {
-        SoFCHighlightColorAction *colaction = (SoFCHighlightColorAction*)action;
+        auto colaction = (SoFCHighlightColorAction*)action;
         this->colorHighlight = colaction->highlightColor;
     }
 
     if (action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
-        SoFCHighlightAction *hilaction = static_cast<SoFCHighlightAction*>(action);
+        auto hilaction = static_cast<SoFCHighlightAction*>(action);
         // Do not clear currently highlighted object when setting new pre-selection
         if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
             if (currenthighlight) {
@@ -379,7 +379,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     }
 
     if (action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
-        SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
+        auto selaction = static_cast<SoFCSelectionAction*>(action);
         if(selectionMode.getValue() == ON
             && (selaction->SelChange.Type == SelectionChanges::AddSelection
                 || selaction->SelChange.Type == SelectionChanges::RmvSelection))
@@ -430,8 +430,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
                 vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
-            for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
-                ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(*it);
+            for (const auto & vp : vps) {
+                auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
                 if (useNewSelection.getValue() || vpd->useNewSelectionModel()) {
                     SoSelectionElementAction::Type type;
                     if(Selection().isSelected(vpd->getObject()) && vpd->isSelectable())
@@ -577,10 +577,10 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     const SoPickedPoint * pp = info.pp;
     const SoDetail *det = pp->getDetail();
     SoDetail *detNext = nullptr;
-    SoFullPath *pPath = static_cast<SoFullPath*>(pp->getPath());
+    auto pPath = static_cast<SoFullPath*>(pp->getPath());
     const auto &pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = (HighlightModes) this->highlightMode.getValue();
     static char buf[513];
 
     if (ctrlDown) {
@@ -700,7 +700,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         return;
     }
 
-    HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
+    auto mymode = (HighlightModes) this->highlightMode.getValue();
     const SoEvent * event = action->getEvent();
 
     // If we don't need to pick for locate highlighting,
@@ -739,7 +739,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     // mouse press events for (de)selection
     else if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
              selectionMode.getValue() == SoFCUnifiedSelection::ON) {
-        const SoMouseButtonEvent* e = static_cast<const SoMouseButtonEvent *>(event);
+        const auto e = static_cast<const SoMouseButtonEvent *>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
@@ -959,9 +959,9 @@ SbBool SoVRMLAction::isOverrideMode() const
 void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
 {
     if (node->getTypeId().isDerivedFrom(SoNormalBinding::getClassTypeId()) && action->isOfType(SoVRMLAction::getClassTypeId())) {
-        SoVRMLAction* vrmlAction = static_cast<SoVRMLAction*>(action);
+        auto vrmlAction = static_cast<SoVRMLAction*>(action);
         if (vrmlAction->overrideMode) {
-            SoNormalBinding* bind = static_cast<SoNormalBinding*>(node);
+            auto bind = static_cast<SoNormalBinding*>(node);
             vrmlAction->bindList.push_back(bind->value.getValue());
             // this normal binding causes some problems for the part view provider
             // See also #0002222: Number of normals in exported VRML is wrong
@@ -1038,7 +1038,7 @@ typedef struct {
 
 static void so_bbox_construct_data(void * closure)
 {
-    SoFCBBoxRenderInfo * data = (SoFCBBoxRenderInfo*) closure;
+    auto data = (SoFCBBoxRenderInfo*) closure;
     data->bboxaction = nullptr;
     data->cube = nullptr;
     data->packer = nullptr;
@@ -1046,7 +1046,7 @@ static void so_bbox_construct_data(void * closure)
 
 static void so_bbox_destruct_data(void * closure)
 {
-    SoFCBBoxRenderInfo * data = (SoFCBBoxRenderInfo*) closure;
+    auto data = (SoFCBBoxRenderInfo*) closure;
     delete data->bboxaction;
     if(data->cube)
         data->cube->unref();
@@ -1769,7 +1769,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
     } else {
         SoCacheElement::invalidate(action->getState());
         auto curPath = action->getCurPath();
-        SoPath *newPath = new SoPath(curPath->getLength()+path->getLength());
+        auto newPath = new SoPath(curPath->getLength()+path->getLength());
         newPath->append(curPath);
         newPath->append(path);
         action->addDelayedPath(newPath);

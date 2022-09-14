@@ -186,7 +186,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
         if (info.status == DocumentRecoveryPrivate::Created) {
             d_ptr->recoveryInfo << info;
 
-            QTreeWidgetItem* item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
+            auto item = new QTreeWidgetItem(d_ptr->ui.treeWidget);
             item->setText(0, info.label);
             item->setToolTip(0, info.tooltip);
             item->setText(1, tr("Not yet recovered"));

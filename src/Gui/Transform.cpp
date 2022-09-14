@@ -74,10 +74,10 @@ Base::Vector3d TransformStrategy::getRotationCenter() const
     if (!objects.empty()) {
         Base::BoundBox3d bbox;
         bool first=true;
-        for (std::set<App::DocumentObject*>::const_iterator it=objects.begin();it!=objects.end();++it) {
-            if ((*it)->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        for (const auto & object : objects) {
+            if (object->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
                 // search for a data property
-                const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
+                const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(object)->getPropertyOfGeometry();
                 if (geo) {
                     if (first)
                         bbox = geo->getBoundingBox();
@@ -102,8 +102,8 @@ void TransformStrategy::commitTransform(const Base::Matrix4D& mat)
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
-        for (std::set<App::DocumentObject*>::iterator it=objects.begin();it!=objects.end();++it) {
-            acceptDataTransform(mat, *it);
+        for (const auto & object : objects) {
+            acceptDataTransform(mat, object);
         }
         doc->commitCommand();
     }
@@ -141,16 +141,16 @@ void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::Docu
 void TransformStrategy::applyTransform(const Base::Placement& plm)
 {
     std::set<App::DocumentObject*> objects = transformObjects();
-    for (std::set<App::DocumentObject*>::iterator it=objects.begin();it!=objects.end();++it) {
-        applyViewTransform(plm, *it);
+    for (const auto & object : objects) {
+        applyViewTransform(plm, object);
     }
 }
 
 void TransformStrategy::resetTransform()
 {
     std::set<App::DocumentObject*> objects = transformObjects();
-    for (std::set<App::DocumentObject*>::iterator it=objects.begin();it!=objects.end();++it) {
-        resetViewTransform(*it);
+    for (const auto & object : objects) {
+        resetViewTransform(object);
     }
 }
 
@@ -220,9 +220,8 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
         return; // nothing to do
     if (msg.Type == SelectionChanges::ClrSelection) {
         widget->setDisabled(true);
-        for (std::set<App::DocumentObject*>::iterator it = selection.begin();
-             it != selection.end(); ++it)
-             resetViewTransform(*it);
+        for (const auto & it : selection)
+             resetViewTransform(it);
         selection.clear();
         return;
     }
@@ -230,12 +229,12 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
     std::set<App::DocumentObject*> update_selection;
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
-        if ((*it)->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    for (const auto & it : sel) {
+        if (it->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
             // search for a data property
-            const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
+            const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
             if (geo) {
-                update_selection.insert(*it);
+                update_selection.insert(it);
             }
         }
     }
@@ -245,8 +244,7 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
     // it is touched and thus a recompute later would overwrite the
     // changes here anyway
     std::set<App::DocumentObject*> filter;
-    for (std::set<App::DocumentObject*>::iterator it=update_selection.begin();
-        it!=update_selection.end();++it) {
+    for (auto it = update_selection.begin(); it != update_selection.end(); ++it) {
         std::vector<App::DocumentObject*> deps = (*it)->getOutList();
         std::vector<App::DocumentObject*>::iterator jt;
         for (jt = deps.begin(); jt != deps.end(); ++jt) {
@@ -270,8 +268,8 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
     std::back_insert_iterator< std::vector<App::DocumentObject*> > biit(diff);
     std::set_difference(selection.begin(), selection.end(),
         update_selection.begin(), update_selection.end(), biit);
-    for (std::vector<App::DocumentObject*>::iterator it = diff.begin(); it != diff.end(); ++it)
-         resetViewTransform(*it);
+    for (const auto & it : diff)
+         resetViewTransform(it);
     selection = update_selection;
 
     widget->setDisabled(selection.empty());
@@ -292,15 +290,15 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
     this->setWindowTitle(tr("Transform"));
 
     // create a signal mapper in order to have one slot to perform the change
-    QSignalMapper* signalMapper = new QSignalMapper(this);
+    auto signalMapper = new QSignalMapper(this);
     connect(this, SIGNAL(directionChanged()), signalMapper, SLOT(map()));
     signalMapper->setMapping(this, 0);
 
     int id = 1;
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-        connect(*it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
-        signalMapper->setMapping(*it, id++);
+    for (const auto & it : sb) {
+        connect(it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
+        signalMapper->setMapping(it, id++);
     }
 
     connect(signalMapper, SIGNAL(mapped(int)),
@@ -363,10 +361,10 @@ void Transform::on_applyButton_clicked()
 
     // nullify the values
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
-    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-        (*it)->blockSignals(true);
-        (*it)->setValue(0.0);
-        (*it)->blockSignals(false);
+    for (auto & it : sb) {
+        it->blockSignals(true);
+        it->setValue(0.0);
+        it->blockSignals(false);
     }
 
     Base::Vector3d cnt = strategy->getRotationCenter();

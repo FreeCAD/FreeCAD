@@ -531,14 +531,14 @@ void PythonDebugger::showDebugMarker(const QString& fn, int line)
 {
     PythonEditorView* edit = nullptr;
     QList<QWidget*> mdis = getMainWindow()->windows();
-    for (QList<QWidget*>::iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        edit = qobject_cast<PythonEditorView*>(*it);
+    for (const auto & mdi : mdis) {
+        edit = qobject_cast<PythonEditorView*>(mdi);
         if (edit && edit->fileName() == fn)
             break;
     }
 
     if (!edit) {
-        PythonEditor* editor = new PythonEditor();
+        auto editor = new PythonEditor();
         editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
         edit = new PythonEditorView(editor, getMainWindow());
         edit->open(fn);
@@ -554,8 +554,8 @@ void PythonDebugger::hideDebugMarker(const QString& fn)
 {
     PythonEditorView* edit = nullptr;
     QList<QWidget*> mdis = getMainWindow()->windows();
-    for (QList<QWidget*>::iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        edit = qobject_cast<PythonEditorView*>(*it);
+    for (const auto & mdi : mdis) {
+        edit = qobject_cast<PythonEditorView*>(mdi);
         if (edit && edit->fileName() == fn) {
             edit->hideDebugMarker();
             break;
@@ -577,7 +577,7 @@ static PyCodeObject* PyFrame_GetCode(PyFrameObject *frame)
 // http://stuff.mit.edu/afs/sipb/project/python/src/python2.2-2.2.2/Modules/_hotshot.c
 int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject * /*arg*/)
 {
-    PythonDebuggerPy* self = static_cast<PythonDebuggerPy*>(obj);
+    auto self = static_cast<PythonDebuggerPy*>(obj);
     PythonDebugger* dbg = self->dbg;
     if (dbg->d->trystop)
         PyErr_SetInterrupt();

@@ -83,7 +83,7 @@ ToolBarItem* ToolBarItem::findItem(const std::string& name)
 
 ToolBarItem* ToolBarItem::copy() const
 {
-    ToolBarItem* root = new ToolBarItem;
+    auto root = new ToolBarItem;
     root->setCommand( command() );
 
     QList<ToolBarItem*> items = getItems();
@@ -138,7 +138,7 @@ ToolBarItem& ToolBarItem::operator << (ToolBarItem* item)
 
 ToolBarItem& ToolBarItem::operator << (const std::string& command)
 {
-    ToolBarItem* item = new ToolBarItem(this);
+    auto item = new ToolBarItem(this);
     item->setCommand(command);
     return *this;
 }

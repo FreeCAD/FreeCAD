@@ -406,7 +406,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                     currentObj.getObject(), path);
 
             std::vector<std::string> sl = p.getStringList();
-            std::vector<std::string>::const_iterator sli = sl.begin();
+            auto sli = sl.begin();
             if(retry && !sl.empty())
                 sl.pop_back();
             if(!trim.empty() && boost::ends_with(sl.back(),trim))
@@ -779,7 +779,7 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
 
 ExpressionParameter* ExpressionParameter::instance()
 {
-    static ExpressionParameter* inst = new ExpressionParameter();
+    static auto inst = new ExpressionParameter();
     return inst;
 }
 

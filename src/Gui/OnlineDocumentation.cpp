@@ -287,7 +287,7 @@ void HttpServer::incomingConnection(qintptr socket)
     // communication with the client is done over this QTcpSocket. QTcpSocket
     // works asynchronously, this means that all the communication is done
     // in the two slots readClient() and discardClient().
-    QTcpSocket* s = new QTcpSocket(this);
+    auto s = new QTcpSocket(this);
     connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
     connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
     s->setSocketDescriptor(socket);
@@ -311,7 +311,7 @@ void HttpServer::readClient()
     // This slot is called when the client sent data to the server. The
     // server looks if it was a GET request and  sends back the
     // corresponding HTML document from the ZIP file.
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    auto socket = (QTcpSocket*)sender();
     if (socket->canReadLine()) {
         QString httpRequestHeader = QString::fromLatin1(socket->readLine());
         QStringList lst = httpRequestHeader.simplified().split(QLatin1String(" "));
@@ -345,7 +345,7 @@ void HttpServer::readClient()
 
 void HttpServer::discardClient()
 {
-    QTcpSocket* socket = (QTcpSocket*)sender();
+    auto socket = (QTcpSocket*)sender();
     socket->deleteLater();
 }
 

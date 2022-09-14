@@ -118,7 +118,7 @@ Py::Object ControlPy::showDialog(const Py::Tuple& args)
     Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog();
     if (act)
         throw Py::RuntimeError("Active task dialog found");
-    TaskDialogPython* dlg = new TaskDialogPython(Py::Object(arg0));
+    auto dlg = new TaskDialogPython(Py::Object(arg0));
     Gui::Control().showDialog(dlg);
     return Py::None();
 }
@@ -148,7 +148,7 @@ Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
     std::vector<Gui::TaskView::TaskWatcher*> watcher;
     Py::Sequence list(arg0);
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-        TaskWatcherPython* w = new TaskWatcherPython(*it);
+        auto w = new TaskWatcherPython(*it);
         watcher.push_back(w);
     }
 
@@ -322,7 +322,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
             form = loader.load(&file, nullptr);
         file.close();
         if (form) {
-            Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
+            auto taskbox = new Gui::TaskView::TaskBox(
                 QPixmap(icon), form->windowTitle(), true, nullptr);
             taskbox->groupLayout()->addWidget(form);
             Content.push_back(taskbox);
@@ -349,7 +349,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
                 if (object) {
                     QWidget* form = qobject_cast<QWidget*>(object);
                     if (form) {
-                        Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
+                        auto taskbox = new Gui::TaskView::TaskBox(
                             form->windowIcon().pixmap(32), form->windowTitle(), true, nullptr);
                         taskbox->groupLayout()->addWidget(form);
                         Content.push_back(taskbox);

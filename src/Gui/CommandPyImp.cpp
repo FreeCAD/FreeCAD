@@ -52,7 +52,7 @@ PyObject* CommandPy::get(PyObject *args)
 
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
-        CommandPy* cmdPy = new CommandPy(cmd);
+        auto cmdPy = new CommandPy(cmd);
         return cmdPy;
     }
 
@@ -76,8 +76,8 @@ PyObject* CommandPy::listAll(PyObject *args)
     std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
     PyObject* pyList = PyList_New(cmds.size());
     int i=0;
-    for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
-        PyObject* str = PyUnicode_FromString((*it)->getName());
+    for (const auto & cmd : cmds) {
+        PyObject* str = PyUnicode_FromString(cmd->getName());
         PyList_SetItem(pyList, i++, str);
     }
     return pyList;
@@ -302,7 +302,7 @@ PyObject* CommandPy::getAction(PyObject *args)
     Command* cmd = this->getCommandPtr();
     if (cmd) {
         Action* action = cmd->getAction();
-        ActionGroup* group = qobject_cast<ActionGroup*>(action);
+        auto* group = qobject_cast<ActionGroup*>(action);
 
         PythonWrapper wrap;
         wrap.loadWidgetsModule();
@@ -342,7 +342,7 @@ PyObject* CommandPy::createCustomCommand(PyObject* args, PyObject* kw)
 
     auto name = Application::Instance->commandManager().newMacroName();
     CommandManager& commandManager = Application::Instance->commandManager();
-    MacroCommand* macro = new MacroCommand(name.c_str(), false);
+    auto macro = new MacroCommand(name.c_str(), false);
     commandManager.addCommand(macro);
 
     macro->setScriptName(macroFile); 

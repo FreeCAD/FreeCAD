@@ -95,10 +95,10 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
         dataStream << (*it)->text();
     }
 
-    QMimeData *mimeData = new QMimeData;
+    auto mimeData = new QMimeData;
     mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
 
-    QDrag *drag = new QDrag(this);
+    auto drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
@@ -573,9 +573,9 @@ CheckListDialog::~CheckListDialog()
  */
 void CheckListDialog::setCheckableItems( const QStringList& items )
 {
-    for ( QStringList::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, *it);
+    for (const auto & it : items) {
+        auto item = new QTreeWidgetItem(ui->treeWidget);
+        item->setText(0, it);
         item->setCheckState(0, Qt::Unchecked);
     }
 }
@@ -586,10 +586,10 @@ void CheckListDialog::setCheckableItems( const QStringList& items )
  */
 void CheckListDialog::setCheckableItems( const QList<CheckListItem>& items )
 {
-    for ( QList<CheckListItem>::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
-        item->setText(0, (*it).first);
-        item->setCheckState(0, ( (*it).second ? Qt::Checked : Qt::Unchecked));
+    for (const auto & it : items) {
+        auto item = new QTreeWidgetItem(ui->treeWidget);
+        item->setText(0, it.first);
+        item->setCheckState(0, ( it.second ? Qt::Checked : Qt::Unchecked));
     }
 }
 
@@ -1037,7 +1037,7 @@ void StatefulLabel::setState(QString state)
 LabelButton::LabelButton (QWidget * parent)
   : QWidget(parent)
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    auto layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(1);
 
@@ -1165,7 +1165,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
     // after it gets visible. We just filter out all timer events to keep the
     // label visible.
     if (o->inherits("QLabel")) {
-        QLabel* label = qobject_cast<QLabel*>(o);
+        auto label = qobject_cast<QLabel*>(o);
         // Ignore the timer events to prevent from being closed
         if (label->windowFlags() & Qt::ToolTip) {
             if (e->type() == QEvent::Show) {
@@ -1192,7 +1192,7 @@ StatusWidget::StatusWidget(QWidget* parent)
     label = new QLabel(this);
     label->setAlignment(Qt::AlignCenter);
 
-    QGridLayout* gridLayout = new QGridLayout(this);
+    auto gridLayout = new QGridLayout(this);
     gridLayout->setSpacing(6);
     gridLayout->setMargin(9);
     gridLayout->addWidget(label, 0, 0, 1, 1);
@@ -1361,7 +1361,7 @@ public:
 
     void accept() override
     {
-        PropertyListEditor* edit = this->findChild<PropertyListEditor*>();
+        auto edit = this->findChild<PropertyListEditor*>();
         QStringList lines;
         if (edit) {
             QString inputText = edit->toPlainText();
@@ -1402,7 +1402,7 @@ LabelEditor::LabelEditor (QWidget * parent)
   : QWidget(parent)
 {
     type = String;
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    auto layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(2);
 
@@ -1450,11 +1450,11 @@ void LabelEditor::changeText()
 {
     PropertyListDialog dlg(static_cast<int>(type), this);
     dlg.setWindowTitle(tr("List"));
-    QVBoxLayout* hboxLayout = new QVBoxLayout(&dlg);
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(&dlg);
+    auto hboxLayout = new QVBoxLayout(&dlg);
+    auto buttonBox = new QDialogButtonBox(&dlg);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-    PropertyListEditor *edit = new PropertyListEditor(&dlg);
+    auto edit = new PropertyListEditor(&dlg);
     edit->setPlainText(this->plainText);
 
     hboxLayout->addWidget(edit);
@@ -1625,7 +1625,7 @@ void ExpLineEdit::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(
+    auto box = new Gui::Dialog::DlgExpressionInput(
             getPath(), getExpression(),Unit(), this);
     connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
     box->show();
@@ -1637,7 +1637,7 @@ void ExpLineEdit::openFormulaDialog()
 
 void ExpLineEdit::finishFormulaDialog()
 {
-    Gui::Dialog::DlgExpressionInput* box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
+    auto box = qobject_cast<Gui::Dialog::DlgExpressionInput*>(sender());
     if (!box) {
         qWarning() << "Sender is not a Gui::Dialog::DlgExpressionInput";
         return;

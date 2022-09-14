@@ -91,9 +91,9 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     groupMap.push_back(std::make_pair(QLatin1String("Help"), QString()));
     groupMap.push_back(std::make_pair(QLatin1String("Macros"), qApp->translate("Gui::MacroCommand", "Macros")));
 
-    for (std::map<std::string,Command*>::iterator it = sCommands.begin(); it != sCommands.end(); ++it) {
-        QLatin1String group(it->second->getGroupName());
-        QString text = it->second->translatedGroupName();
+    for (const auto & sCommand : sCommands) {
+        QLatin1String group(sCommand.second->getGroupName());
+        QString text = sCommand.second->translatedGroupName();
         GroupMap::iterator jt;
         jt = std::find_if(groupMap.begin(), groupMap.end(), GroupMap_find(group));
         if (jt != groupMap.end()) {
@@ -106,7 +106,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     }
 
     int index = 0;
-    for (GroupMap::iterator it = groupMap.begin(); it != groupMap.end(); ++it, ++index) {
+    for (auto it = groupMap.begin(); it != groupMap.end(); ++it, ++index) {
         ui->categoryBox->addItem(it->second);
         ui->categoryBox->setItemData(index, QVariant(it->first), Qt::UserRole);
     }
@@ -117,15 +117,15 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     index = 1;
     ui->workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
     ui->workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
-    for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
-        QPixmap px = Application::Instance->workbenchIcon(*it);
-        QString mt = Application::Instance->workbenchMenuText(*it);
+    for (const auto & workbench : workbenches) {
+        QPixmap px = Application::Instance->workbenchIcon(workbench);
+        QString mt = Application::Instance->workbenchMenuText(workbench);
         if (mt != QLatin1String("<none>")) {
             if (px.isNull())
                 ui->workbenchBox->addItem(mt);
             else
                 ui->workbenchBox->addItem(px, mt);
-            ui->workbenchBox->setItemData(index, QVariant(*it), Qt::UserRole);
+            ui->workbenchBox->setItemData(index, QVariant(workbench), Qt::UserRole);
             index++;
         }
     }
@@ -203,31 +203,31 @@ void DlgCustomToolbars::on_categoryBox_activated(int index)
     std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(group.toLatin1());
 
     // Create a separator item
-    QTreeWidgetItem* sepitem = new QTreeWidgetItem(ui->commandTreeWidget);
+    auto sepitem = new QTreeWidgetItem(ui->commandTreeWidget);
     sepitem->setText(1, tr("<Separator>"));
     sepitem->setData(1, Qt::UserRole, QByteArray("Separator"));
     sepitem->setSizeHint(0, QSize(32, 32));
 
     if (group == QLatin1String("Macros")) {
-        for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
-            item->setText(1, QString::fromUtf8((*it)->getMenuText()));
-            item->setToolTip(1, QString::fromUtf8((*it)->getToolTipText()));
-            item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+        for (const auto & aCmd : aCmds) {
+            auto item = new QTreeWidgetItem(ui->commandTreeWidget);
+            item->setText(1, QString::fromUtf8(aCmd->getMenuText()));
+            item->setToolTip(1, QString::fromUtf8(aCmd->getToolTipText()));
+            item->setData(1, Qt::UserRole, QByteArray(aCmd->getName()));
             item->setSizeHint(0, QSize(32, 32));
-            if ((*it)->getPixmap())
-                item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+            if (aCmd->getPixmap())
+                item->setIcon(0, BitmapFactory().iconFromTheme(aCmd->getPixmap()));
         }
     }
     else {
-        for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
-            item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
-            item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
-            item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
+        for (const auto & aCmd : aCmds) {
+            auto item = new QTreeWidgetItem(ui->commandTreeWidget);
+            item->setText(1, qApp->translate(aCmd->className(), aCmd->getMenuText()));
+            item->setToolTip(1, qApp->translate(aCmd->className(), aCmd->getToolTipText()));
+            item->setData(1, Qt::UserRole, QByteArray(aCmd->getName()));
             item->setSizeHint(0, QSize(32, 32));
-            if ((*it)->getPixmap())
-                item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
+            if (aCmd->getPixmap())
+                item->setIcon(0, BitmapFactory().iconFromTheme(aCmd->getPixmap()));
         }
     }
 }
@@ -256,45 +256,45 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
 
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
-    for (std::vector<Base::Reference<ParameterGrp> >::iterator it = hGrps.begin(); it != hGrps.end(); ++it) {
+    for (const auto & hGrp : hGrps) {
         // create a toplevel item
-        QTreeWidgetItem* toplevel = new QTreeWidgetItem(ui->toolbarTreeWidget);
-        bool active = (*it)->GetBool("Active", true);
+        auto toplevel = new QTreeWidgetItem(ui->toolbarTreeWidget);
+        bool active = hGrp->GetBool("Active", true);
         toplevel->setCheckState(0, (active ? Qt::Checked : Qt::Unchecked));
 
         // get the elements of the subgroups
-        std::vector<std::pair<std::string,std::string> > items = (*it)->GetASCIIMap();
-        for (std::vector<std::pair<std::string,std::string> >::iterator it2 = items.begin(); it2 != items.end(); ++it2) {
+        std::vector<std::pair<std::string,std::string> > items = hGrp->GetASCIIMap();
+        for (const auto & it2 : items) {
             // since we have stored the separators to the user parameters as (key, pair) we had to
             // make sure to use a unique key because otherwise we cannot store more than
             // one.
-            if (it2->first.substr(0, separator.size()) == separator) {
-                QTreeWidgetItem* item = new QTreeWidgetItem(toplevel);
+            if (it2.first.substr(0, separator.size()) == separator) {
+                auto item = new QTreeWidgetItem(toplevel);
                 item->setText(0, tr("<Separator>"));
                 item->setData(0, Qt::UserRole, QByteArray("Separator"));
                 item->setSizeHint(0, QSize(32, 32));
             }
-            else if (it2->first == "Name") {
-                QString toolbarName = QString::fromUtf8(it2->second.c_str());
+            else if (it2.first == "Name") {
+                QString toolbarName = QString::fromUtf8(it2.second.c_str());
                 toplevel->setText(0, toolbarName);
             }
             else {
-                Command* pCmd = rMgr.getCommandByName(it2->first.c_str());
+                Command* pCmd = rMgr.getCommandByName(it2.first.c_str());
                 if (pCmd) {
                     // command name
-                    QTreeWidgetItem* item = new QTreeWidgetItem(toplevel);
+                    auto item = new QTreeWidgetItem(toplevel);
                     item->setText(0, qApp->translate(pCmd->className(), pCmd->getMenuText()));
-                    item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
+                    item->setData(0, Qt::UserRole, QByteArray(it2.first.c_str()));
                     if (pCmd->getPixmap())
                         item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                     item->setSizeHint(0, QSize(32, 32));
                 }
                 else {
                     // If corresponding module is not yet loaded do not lose the entry
-                    QTreeWidgetItem* item = new QTreeWidgetItem(toplevel);
-                    item->setText(0, tr("%1 module not loaded").arg(QString::fromStdString(it2->second)));
-                    item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
-                    item->setData(0, Qt::WhatsThisPropertyRole, QByteArray(it2->second.c_str()));
+                    auto item = new QTreeWidgetItem(toplevel);
+                    item->setText(0, tr("%1 module not loaded").arg(QString::fromStdString(it2.second)));
+                    item->setData(0, Qt::UserRole, QByteArray(it2.first.c_str()));
+                    item->setData(0, Qt::WhatsThisPropertyRole, QByteArray(it2.second.c_str()));
                     item->setSizeHint(0, QSize(32, 32));
                 }
             }
@@ -355,7 +355,7 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
         else if (current->parent())
             current = current->parent();
         if (current && !current->parent()) {
-            QTreeWidgetItem* copy = new QTreeWidgetItem(current);
+            auto copy = new QTreeWidgetItem(current);
             copy->setText(0, item->text(1));
             copy->setIcon(0, item->icon(0));
             QByteArray data = item->data(1, Qt::UserRole).toByteArray();
@@ -496,7 +496,7 @@ void DlgCustomToolbars::on_newButton_clicked()
             }
         }
 
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->toolbarTreeWidget);
+        auto item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
         item->setCheckState(0, Qt::Checked);
         item->setExpanded(true);
@@ -565,7 +565,7 @@ void DlgCustomToolbars::onAddMacroAction(const QByteArray& macro)
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         Command* pCmd = cCmdMgr.getCommandByName(macro);
 
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
+        auto item = new QTreeWidgetItem(ui->commandTreeWidget);
         item->setText(1, QString::fromUtf8(pCmd->getMenuText()));
         item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
         item->setData(1, Qt::UserRole, macro);
@@ -716,8 +716,8 @@ QList<QAction*> DlgCustomToolbarsImp::getActionGroup(QAction* action)
 {
     QList<QAction*> group;
     QList<QWidget*> widgets = action->associatedWidgets();
-    for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-        QToolButton* tb = qobject_cast<QToolButton*>(*it);
+    for (const auto & widget : widgets) {
+        auto tb = qobject_cast<QToolButton*>(widget);
         if (tb) {
             QMenu* menu = tb->menu();
             if (menu) {
@@ -733,14 +733,14 @@ void DlgCustomToolbarsImp::setActionGroup(QAction* action, const QList<QAction*>
 {
     // See also ActionGroup::addTo()
     QList<QWidget*> widgets = action->associatedWidgets();
-    for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-        QToolButton* tb = qobject_cast<QToolButton*>(*it);
+    for (const auto & widget : widgets) {
+        auto tb = qobject_cast<QToolButton*>(widget);
         if (tb) {
             QMenu* menu = tb->menu();
             if (!menu) {
                 tb->setPopupMode(QToolButton::MenuButtonPopup);
                 tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
-                QMenu* menu = new QMenu(tb);
+                auto menu = new QMenu(tb);
                 menu->addActions(group);
                 tb->setMenu(menu);
             }
@@ -791,14 +791,14 @@ void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteA
             cmd = "Separator";
         }
         QList<QAction*> actions = bars.front()->actions();
-        for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
-            if ((*it)->data().toByteArray() == cmd) {
+        for (const auto & action : actions) {
+            if (action->data().toByteArray() == cmd) {
                 // if we move a separator then make sure to pick up the right one
                 if (numSep > 0) {
                     if (++indexSep < numSep)
                         continue;
                 }
-                bars.front()->removeAction(*it);
+                bars.front()->removeAction(action);
                 break;
             }
         }
@@ -822,26 +822,26 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
         }
         QList<QAction*> actions = bars.front()->actions();
         QAction* before=nullptr;
-        for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
-            if ((*it)->data().toByteArray() == cmd) {
+        for (const auto & action : actions) {
+            if (action->data().toByteArray() == cmd) {
                 // if we move a separator then make sure to pick up the right one
                 if (numSep > 0) {
                     if (++indexSep < numSep) {
-                        before = *it;
+                        before = action;
                         continue;
                     }
                 }
                 if (before) {
-                    QList<QAction*> group = getActionGroup(*it);
-                    bars.front()->removeAction(*it);
-                    bars.front()->insertAction(before, *it);
+                    QList<QAction*> group = getActionGroup(action);
+                    bars.front()->removeAction(action);
+                    bars.front()->insertAction(before, action);
                     if (!group.isEmpty())
-                        setActionGroup(*it, group);
+                        setActionGroup(action, group);
                     break;
                 }
             }
 
-            before = *it;
+            before = action;
         }
     }
 }

@@ -260,8 +260,8 @@ void AutoSaveProperty::slotNewObject(const App::DocumentObject& obj)
 
     // if an object was deleted and then restored by an undo then add all properties
     // because this might be the data files which we may want to re-write
-    for (std::vector<App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        slotChangePropertyData(*(*it));
+    for (const auto & prop : props) {
+        slotChangePropertyData(*prop);
     }
 }
 
@@ -289,7 +289,7 @@ bool RecoveryWriter::shouldWrite(const std::string& name, const Base::Persistenc
     // Property files of a view provider can always be written because
     // these are rather small files.
     if (object->isDerivedFrom(App::Property::getClassTypeId())) {
-        const App::Property* prop = static_cast<const App::Property*>(object);
+        const auto* prop = static_cast<const App::Property*>(object);
         const App::PropertyContainer* parent = prop->getContainer();
         if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId()))
             return true;
@@ -381,7 +381,7 @@ void RecoveryWriter::writeFiles()
 
             // For properties a copy can be created and then this can be written to disk in a thread
             if (entry.Object->isDerivedFrom(App::Property::getClassTypeId())) {
-                const App::Property* prop = static_cast<const App::Property*>(entry.Object);
+                const auto* prop = static_cast<const App::Property*>(entry.Object);
                 QThreadPool::globalInstance()->start(new RecoveryRunnable(getModes(), DirName.c_str(), entry.FileName.c_str(), prop));
             }
             else {

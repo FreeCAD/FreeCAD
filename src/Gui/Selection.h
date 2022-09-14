@@ -756,7 +756,7 @@ inline std::vector<T*> SelectionSingleton::getObjectsOfType(const char* pDocName
     std::vector<T*> type;
     std::vector<App::DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId(), pDocName, resolve);
     type.reserve(obj.size());
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+    for (auto it = obj.begin(); it != obj.end(); ++it)
         type.push_back(static_cast<T*>(*it));
     return type;
 }

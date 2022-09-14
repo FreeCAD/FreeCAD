@@ -110,10 +110,10 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
     connect(editor, SIGNAL(findPrevious()), d->searchBar, SLOT(findPrevious()));
 
     // Create the layout containing the workspace and a tab bar
-    QFrame* hbox = new QFrame(this);
+    auto hbox = new QFrame(this);
     hbox->setFrameShape(QFrame::StyledPanel);
     hbox->setFrameShadow(QFrame::Sunken);
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     layout->setMargin(1);
     layout->addWidget(d->textEdit);
     layout->addWidget(d->searchBar);

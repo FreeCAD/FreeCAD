@@ -83,7 +83,7 @@ void ExpressionSpinBox::showInvalidExpression(const QString& tip)
 void ExpressionSpinBox::showValidExpression(ExpressionSpinBox::Number number)
 {
     std::unique_ptr<Expression> result(getExpression()->eval());
-    NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+    auto * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
     if (value) {
         switch (number) {
@@ -168,13 +168,13 @@ void ExpressionSpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
-    PropertyQuantity *  qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
+    auto * qprop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
     Unit unit;
 
     if (qprop)
         unit = qprop->getUnit();
 
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, spinbox);
+    auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), unit, spinbox);
     QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());

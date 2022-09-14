@@ -187,12 +187,12 @@ bool SelectionFilter::match()
         else {
             // if subnames present count all subs over the selected object of type
             std::size_t subCount = 0;
-            for (std::vector<Gui::SelectionObject>::const_iterator it2=temp.begin();it2!=temp.end();++it2) {
-                const std::vector<std::string>& subNames = it2->getSubNames();
+            for (const auto & it2 : temp) {
+                const std::vector<std::string>& subNames = it2.getSubNames();
                 if (subNames.empty())
                     return false;
-                for (std::vector<std::string>::const_iterator it3=subNames.begin();it3!=subNames.end();++it3) {
-                    if (it3->find(it->SubName) != 0)
+                for (const auto & subName : subNames) {
+                    if (subName.find(it->SubName) != 0)
                         return false;
                 }
                 subCount += subNames.size();
@@ -304,7 +304,7 @@ Py::Object SelectionFilterPy::test(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "O!|s",&(App::DocumentObjectPy::Type),&pcObj,&text))
         throw Py::Exception();
 
-    App::DocumentObjectPy* docObj = static_cast<App::DocumentObjectPy*>(pcObj);
+    auto docObj = static_cast<App::DocumentObjectPy*>(pcObj);
 
     return Py::Boolean(filter.test(docObj->getDocumentObjectPtr(),text));
 }
@@ -368,7 +368,7 @@ class StringFactory {
     std::size_t max_elements = 20;
 public:
     static StringFactory* instance() {
-        static StringFactory* inst = new StringFactory();
+        static auto inst = new StringFactory();
         return inst;
     }
     std::string* make(const std::string& str) {

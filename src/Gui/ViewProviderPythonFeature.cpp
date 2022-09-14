@@ -118,8 +118,8 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
                 QList<QByteArray> lines = ary.split('\n');
                 QByteArray buffer;
                 buffer.reserve(ary.size()+lines.size());
-                for (QList<QByteArray>::iterator it = lines.begin(); it != lines.end(); ++it) {
-                    QByteArray trim = it->trimmed();
+                for (const auto & line : lines) {
+                    QByteArray trim = line.trimmed();
                     if (!trim.isEmpty()) {
                         buffer.append(trim);
                         buffer.append('\n');
@@ -278,7 +278,7 @@ bool ViewProviderPythonFeatureImp::getDetail(const char* name, SoDetail *&det) c
         Py::Object pydet(Base::pyCall(py_getDetail.ptr(),args.ptr()));
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pydet.ptr(), &ptr, 0);
-        SoDetail* detail = static_cast<SoDetail*>(ptr);
+        auto detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
         return true;
     }
@@ -319,7 +319,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
             return Accepted;
         void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
-        SoDetail* detail = static_cast<SoDetail*>(ptr);
+        auto detail = static_cast<SoDetail*>(ptr);
         det = detail ? detail->copy() : nullptr;
         if(det)
             return Accepted;
@@ -668,8 +668,8 @@ ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub)
     try {
         Py::Tuple seq(sub.size());
         int index=0;
-        for (std::vector<std::string>::const_iterator it = sub.begin(); it != sub.end(); ++it) {
-            seq.setItem(index++, Py::String(*it));
+        for (const auto & it : sub) {
+            seq.setItem(index++, Py::String(it));
         }
 
         if (has__object__) {

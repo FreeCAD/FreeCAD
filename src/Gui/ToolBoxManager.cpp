@@ -85,7 +85,7 @@ void ToolBoxManager::setup( ToolBarItem* toolBar ) const
 
     for ( QList<ToolBarItem*>::Iterator item = items.begin(); item != items.end(); ++item )
     {
-        QToolBar* bar = new QToolBar();
+        auto bar = new QToolBar();
         bar->setOrientation(Qt::Vertical);
         bar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         std::string toolbarName = (*item)->command();

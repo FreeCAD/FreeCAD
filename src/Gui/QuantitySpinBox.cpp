@@ -212,8 +212,8 @@ public:
             }
             else if (len > 1) {
                 bool decOccurred = false;
-                for (int i = 0; i<copy.size(); i++) {
-                    if (copy.at(i) == locale.decimalPoint()) {
+                for (const auto & i : copy) {
+                    if (i == locale.decimalPoint()) {
                         // Disallow multiple decimal points within the same numeric substring
                         if (decOccurred) {
                             state = QValidator::Invalid;
@@ -222,7 +222,7 @@ public:
                         decOccurred = true;
                     }
                     // Reset decOcurred if non-numeric character found
-                    else if (!(copy.at(i) == locale.groupSeparator() || copy.at(i).isDigit())) {
+                    else if (!(i == locale.groupSeparator() || i.isDigit())) {
                         decOccurred = false;
                     }
                 }
@@ -389,8 +389,8 @@ void QuantitySpinBox::setBoundToByName(const QString &name)
         path.setDocumentName(std::string(doc->getName()), true);
         path.setDocumentObjectName(std::string(obj->getNameInDocument()), true);
 
-        for (QStringList::iterator it = list.begin(); it != list.end(); ++it) {
-            path << App::ObjectIdentifier::Component::SimpleComponent(it->toLatin1().constData());
+        for (const auto & it : list) {
+            path << App::ObjectIdentifier::Component::SimpleComponent(it.toLatin1().constData());
         }
 
         if (path.getProperty())
@@ -563,7 +563,7 @@ void QuantitySpinBox::openFormulaDialog()
     Q_ASSERT(isBound());
 
     Q_D(const QuantitySpinBox);
-    Gui::Dialog::DlgExpressionInput* box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
+    auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
     QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());
@@ -904,7 +904,7 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
         event->reason() == Qt::ShortcutFocusReason) {
 
         if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
-            QHelpEvent * helpEvent = new QHelpEvent(QEvent::ToolTip, QPoint( 0, rect().height() ), mapToGlobal( QPoint( 0, rect().height() ) ));
+            auto helpEvent = new QHelpEvent(QEvent::ToolTip, QPoint( 0, rect().height() ), mapToGlobal( QPoint( 0, rect().height() ) ));
             QApplication::postEvent(this, helpEvent);
             lineEdit()->setSelection(0, 0);
         }
@@ -937,14 +937,14 @@ void QuantitySpinBox::selectNumber()
     QChar g = locale().groupSeparator();
     QChar n = locale().negativeSign();
 
-    for (QString::const_iterator it = str.cbegin(); it != str.cend(); ++it) {
-        if (it->isDigit())
+    for (auto it : str) {
+        if (it.isDigit())
             i++;
-        else if (*it == d)
+        else if (it == d)
             i++;
-        else if (*it == g)
+        else if (it == g)
             i++;
-        else if (*it == n)
+        else if (it == n)
             i++;
         else // any non-number character
             break;

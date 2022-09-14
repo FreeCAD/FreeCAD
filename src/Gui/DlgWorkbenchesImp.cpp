@@ -99,7 +99,7 @@ void DlgWorkbenchesImp::add_workbench(QListWidgetCustom *lw, const QString& it)
 {
     QPixmap px = Application::Instance->workbenchIcon(it);
     QString mt = Application::Instance->workbenchMenuText(it);
-    QListWidgetItem *wi = (new QListWidgetItem(QIcon(px), mt));
+    auto wi = (new QListWidgetItem(QIcon(px), mt));
     wi->setData(Qt::UserRole, QVariant(it));
     lw->addItem(wi);
 }

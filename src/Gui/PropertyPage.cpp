@@ -128,7 +128,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
     file.close();
     if (form) {
         this->setWindowTitle(form->windowTitle());
-        QVBoxLayout *layout = new QVBoxLayout;
+        auto layout = new QVBoxLayout;
         layout->addWidget(form);
         setLayout(layout);
     }

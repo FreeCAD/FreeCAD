@@ -314,7 +314,7 @@ Py::Object View3DInventorPy::getattr(const char * attr)
             // else looking for a method with the name and call it
             Py::Object obj = getattribute(attr);
             if (PyCFunction_Check(obj.ptr())) {
-                PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+                auto op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
                 if (op->m_ml->ml_flags == METH_VARARGS) {
                     if (!pycxx_handler)
                         pycxx_handler = op->m_ml->ml_meth;
@@ -445,11 +445,11 @@ SbRotation Camera::rotation(Camera::Orientation view)
     case Bottom:
         return SbRotation(1, 0, 0, 0);
     case Front: {
-        float root = (float)(sqrt(2.0)/2.0);
+        auto root = (float)(sqrt(2.0)/2.0);
         return SbRotation(root, 0, 0, root);
     }
     case Rear: {
-        float root = (float)(sqrt(2.0)/2.0);
+        auto root = (float)(sqrt(2.0)/2.0);
         return SbRotation(0, root, root, 0);
     }
     case Left:
@@ -722,10 +722,10 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
         }
         else if (newDocView == "Custom") {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View/Custom");
-            float q0 = static_cast<float>(hGrp->GetFloat("Q0", 0));
-            float q1 = static_cast<float>(hGrp->GetFloat("Q1", 0));
-            float q2 = static_cast<float>(hGrp->GetFloat("Q2", 0));
-            float q3 = static_cast<float>(hGrp->GetFloat("Q3", 1));
+            auto q0 = static_cast<float>(hGrp->GetFloat("Q0", 0));
+            auto q1 = static_cast<float>(hGrp->GetFloat("Q1", 0));
+            auto q2 = static_cast<float>(hGrp->GetFloat("Q2", 0));
+            auto q3 = static_cast<float>(hGrp->GetFloat("Q3", 1));
             rot.setValue(q0, q1, q2, q3);
         }
 
@@ -1324,7 +1324,7 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    SoNode* node = static_cast<SoNode*>(ptr);
+    auto node = static_cast<SoNode*>(ptr);
     return Py::String(SoFCDB::writeNodesToString(node));
 }
 
@@ -1475,7 +1475,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                 if (!vp->isSelectable())
                     return ret;
-                ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
+                auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
                 if (vp->useNewSelectionModel()) {
                     std::string subname;
                     if (!vp->getElementPicked(Point,subname))
@@ -1576,7 +1576,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
             Py::List list;
             for (int i=0; i<pp.getLength(); i++) {
                 Py::Dict dict;
-                SoPickedPoint* point = static_cast<SoPickedPoint*>(pp.get(i));
+                auto point = static_cast<SoPickedPoint*>(pp.get(i));
                 SbVec3f pt = point->getPoint();
                 dict.setItem("x", Py::Float(pt[0]));
                 dict.setItem("y", Py::Float(pt[1]));
@@ -1587,7 +1587,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                     if(!vp->isSelectable())
                         continue;
-                    ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
+                    auto vpd = static_cast<ViewProviderDocumentObject*>(vp);
                     if (vp->useNewSelectionModel()) {
                         std::string subname;
                         if (!vp->getElementPicked(point,subname))
@@ -1756,7 +1756,7 @@ Py::Object View3DInventorPy::listNavigationTypes(const Py::Tuple&)
     std::vector<Base::Type> types;
     Py::List styles;
     Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
-    for (std::vector<Base::Type>::iterator it = types.begin()+1; it != types.end(); ++it) {
+    for (auto it = types.begin() + 1; it != types.end(); ++it) {
         styles.append(Py::String(it->getName()));
     }
     return styles;
@@ -1802,7 +1802,7 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         dict.setItem("AltDown",   Py::Object((e->wasAltDown()   ? Py_True : Py_False)));
         if (e->isOfType(SoButtonEvent::getClassTypeId())) {
             std::string state;
-            const SoButtonEvent* be = static_cast<const SoButtonEvent*>(e);
+            const auto be = static_cast<const SoButtonEvent*>(e);
             switch (be->getState()) {
                 case SoButtonEvent::UP:
                     state = "UP";
@@ -1818,7 +1818,7 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
             dict.setItem("State", Py::String(state));
         }
         if (e->isOfType(SoKeyboardEvent::getClassTypeId())) {
-            const SoKeyboardEvent* ke = static_cast<const SoKeyboardEvent*>(e);
+            const auto ke = static_cast<const SoKeyboardEvent*>(e);
             switch (ke->getKey()) {
                 case SoKeyboardEvent::ANY:
                     dict.setItem("Key", Py::String("ANY"));
@@ -2039,7 +2039,7 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
             }
         }
         if (e->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-            const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(e);
+            const auto mbe = static_cast<const SoMouseButtonEvent*>(e);
             std::string button;
             switch (mbe->getButton()) {
                 case SoMouseButtonEvent::BUTTON1:
@@ -2065,11 +2065,11 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
             dict.setItem("Button", Py::String(button));
         }
         if (e->isOfType(SoMouseWheelEvent::getClassTypeId())){
-            const SoMouseWheelEvent* mwe = static_cast<const SoMouseWheelEvent*>(e);
+            const auto mwe = static_cast<const SoMouseWheelEvent*>(e);
             dict.setItem("Delta", Py::Long(mwe->getDelta()));
         }
         if (e->isOfType(SoSpaceballButtonEvent::getClassTypeId())) {
-            const SoSpaceballButtonEvent* sbe = static_cast<const SoSpaceballButtonEvent*>(e);
+            const auto sbe = static_cast<const SoSpaceballButtonEvent*>(e);
             std::string button;
             switch (sbe->getButton()) {
                 case SoSpaceballButtonEvent::BUTTON1:
@@ -2101,7 +2101,7 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
             dict.setItem("Button", Py::String(button));
         }
         if (e->isOfType(SoMotion3Event::getClassTypeId())) {
-            const SoMotion3Event* me = static_cast<const SoMotion3Event*>(e);
+            const auto me = static_cast<const SoMotion3Event*>(e);
             const SbVec3f& m = me->getTranslation();
             const SbRotation& r = me->getRotation();
             Py::Tuple mov(3);
@@ -2342,7 +2342,7 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
         throw Py::RuntimeError(e.what());
     }
 
-    SoType* eventId = static_cast<SoType*>(ptr);
+    auto eventId = static_cast<SoType*>(ptr);
     if (eventId->isBad() || !eventId->isDerivedFrom(SoEvent::getClassTypeId())) {
         std::string s;
         std::ostringstream s_out;
@@ -2384,7 +2384,7 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
         throw Py::RuntimeError(e.what());
     }
 
-    SoType* eventId = static_cast<SoType*>(ptr);
+    auto eventId = static_cast<SoType*>(ptr);
     if (eventId->isBad() || !eventId->isDerivedFrom(SoEvent::getClassTypeId())) {
         std::string s;
         std::ostringstream s_out;
@@ -2475,7 +2475,7 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
     catch (const Base::Exception&) {
         throw Py::TypeError("The first argument must be of type SoDragger");
     }
-    SoDragger* drag = static_cast<SoDragger*>(ptr);
+    auto drag = static_cast<SoDragger*>(ptr);
 
     //Check if method is callable
     if (PyCallable_Check(method) == 0) {
@@ -2528,7 +2528,7 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
         throw Py::TypeError("The first argument must be of type SoDragger");
     }
 
-    SoDragger* drag = static_cast<SoDragger*>(ptr);
+    auto drag = static_cast<SoDragger*>(ptr);
     try {
         if (strcmp(type, "addFinishCallback") == 0) {
             drag->removeFinishCallback(draggerCallback, method);
@@ -2609,8 +2609,8 @@ Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
 
     std::vector<ViewProvider*> vps = getView3DIventorPtr()->getViewer()->getViewProvidersOfType(Base::Type::fromName(name));
     Py::List list;
-    for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
-        list.append(Py::asObject((*it)->getPyObject()));
+    for (const auto & vp : vps) {
+        list.append(Py::asObject(vp->getPyObject()));
     }
 
     return list;

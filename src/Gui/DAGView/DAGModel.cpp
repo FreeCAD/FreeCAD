@@ -241,7 +241,7 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   graphLink->insert(virginRecord);
   
   //setup rectangle.
-  auto *rectangle = (*theGraph)[virginVertex].rectangle.get();
+  auto rectangle = (*theGraph)[virginVertex].rectangle.get();
   rectangle->setEditingBrush(QBrush(Qt::yellow));
   
   auto icon = (*theGraph)[virginVertex].icon;
@@ -305,7 +305,7 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
   if (std::string("Label") == name)
   {
     const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
-    auto *text = (*theGraph)[record.vertex].text.get();
+    auto text = (*theGraph)[record.vertex].text.get();
     text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
   }
   else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
@@ -635,12 +635,12 @@ void Model::updateSlot()
     maxColumn = std::max(currentColumn, maxColumn);
     QBrush currentBrush(forgroundBrushes.at(currentColumn % forgroundBrushes.size()));
 
-    auto *rectangle = (*theGraph)[currentVertex].rectangle.get();
+    auto rectangle = (*theGraph)[currentVertex].rectangle.get();
     rectangle->setRect(-rowPadding, 0.0, rowPadding, rowHeight); //calculate actual length later.
     rectangle->setTransform(QTransform::fromTranslate(0, rowHeight * currentRow));
     rectangle->setBackgroundBrush(backgroundBrushes[currentRow % backgroundBrushes.size()]);
     
-    auto *point = (*theGraph)[currentVertex].point.get();
+    auto point = (*theGraph)[currentVertex].point.get();
     point->setRect(0.0, 0.0, pointSize, pointSize);
     point->setTransform(QTransform::fromTranslate(pointSpacing * currentColumn,
       rowHeight * currentRow + rowHeight / 2.0 - pointSize / 2.0));
@@ -650,16 +650,16 @@ void Model::updateSlot()
     if (direction == -1)
       cheat = rowHeight;
     
-    auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
+    auto visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
     visiblePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
     
-    auto *statePixmap = (*theGraph)[currentVertex].stateIcon.get();
+    auto statePixmap = (*theGraph)[currentVertex].stateIcon.get();
     statePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
     
-    auto *pixmap = (*theGraph)[currentVertex].icon.get();
+    auto pixmap = (*theGraph)[currentVertex].icon.get();
     pixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
     
-    auto *text = (*theGraph)[currentVertex].text.get();
+    auto text = (*theGraph)[currentVertex].text.get();
     text->setPlainText(QString::fromUtf8(findRecord(currentVertex, *graphLink).DObject->Label.getValue()));
     text->setDefaultTextColor(currentBrush.color());
     maxTextLength = std::max(maxTextLength, static_cast<float>(text->boundingRect().width()));
@@ -730,26 +730,26 @@ void Model::updateSlot()
   {
     float localCurrentX = columnSpacing;
     localCurrentX += pointToIcon;
-    auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
+    auto visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
     QTransform visibleIconTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     visiblePixmap->setTransform(visiblePixmap->transform() * visibleIconTransform);
     
     localCurrentX += iconSize + iconToIcon;
-    auto *statePixmap = (*theGraph)[currentVertex].stateIcon.get();
+    auto statePixmap = (*theGraph)[currentVertex].stateIcon.get();
     QTransform stateIconTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     statePixmap->setTransform(statePixmap->transform() * stateIconTransform);
     
     localCurrentX += iconSize + iconToIcon;
-    auto *pixmap = (*theGraph)[currentVertex].icon.get();
+    auto pixmap = (*theGraph)[currentVertex].icon.get();
     QTransform iconTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     pixmap->setTransform(pixmap->transform() * iconTransform);
     
     localCurrentX += iconSize + iconToText;
-    auto *text = (*theGraph)[currentVertex].text.get();
+    auto text = (*theGraph)[currentVertex].text.get();
     QTransform textTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     text->setTransform(text->transform() * textTransform);
     
-    auto *rectangle = (*theGraph)[currentVertex].rectangle.get();
+    auto rectangle = (*theGraph)[currentVertex].rectangle.get();
     QRectF rect = rectangle->rect();
     rect.setWidth(localCurrentX + maxTextLength + 2.0 * rowPadding);
     rectangle->setRect(rect);
@@ -835,7 +835,7 @@ void Model::updateStates()
   {
     const GraphLinkRecord &record = findRecord(currentVertex, *graphLink);
     
-    auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
+    auto visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
     VisibilityState currentVisibilityState = (record.VPDObject->isShow()) ? (VisibilityState::On) : (VisibilityState::Off);
     if
     (
@@ -884,7 +884,7 @@ RectItem* Model::getRectFromPosition(const QPointF& position)
 {
   RectItem *rect = nullptr;
   auto theItems = this->items(position, Qt::IntersectsItemBoundingRect, Qt::DescendingOrder);
-  for (auto *currentItem : theItems)
+  for (auto currentItem : theItems)
   {
     rect = dynamic_cast<RectItem *>(currentItem);
     if (rect) break;
@@ -931,7 +931,7 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
     for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
     {
-      RectItem *rect = dynamic_cast<RectItem *>(*currentItem);
+      auto rect = dynamic_cast<RectItem *>(*currentItem);
       if (!rect) continue;
       const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),
@@ -959,7 +959,7 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
         
         //don't like that I am doing this again here after getRectFromPosition call.
         QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
-        QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
+        auto pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
         if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
         {
           //get all selections, but for now just the current pick.
@@ -1053,7 +1053,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     
     //don't like that I am doing this again here after getRectFromPosition call.
     QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
-    QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
+    auto pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
     if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
     {
       visiblyIsolate(record.vertex);
@@ -1099,8 +1099,8 @@ void Model::onRenameSlot()
   std::vector<Gui::DAG::Vertex> selections = getAllSelected();
   assert(selections.size() == 1);
   
-  LineEdit *lineEdit = new LineEdit();
-  auto *text = (*theGraph)[selections.front()].text.get();
+  auto lineEdit = new LineEdit();
+  auto text = (*theGraph)[selections.front()].text.get();
   lineEdit->setText(text->toPlainText());
   connect(lineEdit, SIGNAL(acceptedSignal()), this, SLOT(renameAcceptedSlot()));
   connect(lineEdit, SIGNAL(rejectedSignal()), this, SLOT(renameRejectedSlot()));
@@ -1120,7 +1120,7 @@ void Model::renameAcceptedSlot()
   assert(selections.size() == 1);
   const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
   
-  LineEdit *lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
+  auto lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
   assert(lineEdit);
   const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData()); //const hack
   
@@ -1143,7 +1143,7 @@ void Model::finishRename()
 
 void Model::editingStartSlot()
 {
-  QAction* action = qobject_cast<QAction*>(sender());
+  auto action = qobject_cast<QAction*>(sender());
   if (action)
   {
     int edit = action->data().toInt();

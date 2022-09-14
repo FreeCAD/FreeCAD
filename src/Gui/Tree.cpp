@@ -413,7 +413,7 @@ QWidget* TreeWidgetEditDelegate::createEditor(
     auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if (ti->type() != TreeWidget::ObjectType || index.column() > 1)
         return nullptr;
-    DocumentObjectItem* item = static_cast<DocumentObjectItem*>(ti);
+    auto item = static_cast<DocumentObjectItem*>(ti);
     App::DocumentObject* obj = item->object()->getObject();
     auto& prop = index.column() ? obj->Label2 : obj->Label;
 
@@ -422,7 +422,7 @@ QWidget* TreeWidgetEditDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    ExpLineEdit* le = new ExpLineEdit(parent);
+    auto le = new ExpLineEdit(parent);
     le->setFrame(false);
     le->setReadOnly(prop.isReadOnly());
     le->bind(App::ObjectIdentifier(prop));
@@ -843,7 +843,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     this->contextItem = itemAt(e->pos());
 
     if (this->contextItem && this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         App::GetApplication().setActiveDocument(doc);
         showHiddenAction->setChecked(docitem->showHidden());
@@ -871,7 +871,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         contextMenu.addSeparator();
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
+        auto objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
 
         // check that the selection is not across several documents
@@ -936,7 +936,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         subMenu.setTitle(tr("Activate document"));
         contextMenu.addMenu(&subMenu);
         QAction* active = nullptr;
-        for (std::vector<App::Document*>::iterator it = docs.begin(); it != docs.end(); ++it) {
+        for (auto it = docs.begin(); it != docs.end(); ++it) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QAction* action = subMenuGroup.addAction(label);
             action->setCheckable(true);
@@ -980,7 +980,7 @@ void TreeWidget::onCreateGroup()
     QString name = tr("Group");
     App::AutoTransaction trans("Create group");
     if (this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
             "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
@@ -988,7 +988,7 @@ void TreeWidget::onCreateGroup()
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
     else if (this->contextItem->type() == ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
+        auto objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
@@ -1010,10 +1010,10 @@ void TreeWidget::onRelabelObject()
 
 void TreeWidget::onStartEditing()
 {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     if (action) {
         if (this->contextItem && this->contextItem->type() == ObjectType) {
-            DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
+            auto objitem = static_cast<DocumentObjectItem*>
                 (this->contextItem);
             int edit = action->data().toInt();
 
@@ -1034,7 +1034,7 @@ void TreeWidget::onStartEditing()
 void TreeWidget::onFinishEditing()
 {
     if (this->contextItem && this->contextItem->type() == ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
+        auto objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         if (!obj)
@@ -1058,7 +1058,7 @@ bool TreeWidget::CheckForDependents()
         QList<QTreeWidgetItem*> items = this->selectedItems();
         for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             if ((*it)->type() == ObjectType) {
-                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                auto objitem = static_cast<DocumentObjectItem*>(*it);
                 App::DocumentObject* obj = objitem->object()->getObject();
                 // get dependents
                 auto subObjectList = obj->getOutList();
@@ -1092,10 +1092,10 @@ void TreeWidget::onSelectDependents()
 
     // if the selected object is a document
     if (this->contextItem && this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         doc = docitem->document()->getDocument();
         std::vector<App::DocumentObject*> obj = doc->getObjects();
-        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+        for (auto it = obj.begin(); it != obj.end(); ++it)
             Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
     }
     // it can be an object
@@ -1103,7 +1103,7 @@ void TreeWidget::onSelectDependents()
         QList<QTreeWidgetItem*> items = this->selectedItems();
         for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             if ((*it)->type() == ObjectType) {
-                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                auto objitem = static_cast<DocumentObjectItem*>(*it);
                 doc = objitem->object()->getObject()->getDocument();
                 App::DocumentObject* obj = objitem->object()->getObject();
                 // the dependents can also have dependents, thus add them recursively via a separate void
@@ -1117,7 +1117,7 @@ void TreeWidget::onSkipRecompute(bool on)
 {
     // if a document item is selected then touch all objects
     if (this->contextItem && this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         doc->setStatus(App::Document::SkipRecompute, on);
     }
@@ -1127,7 +1127,7 @@ void TreeWidget::onAllowPartialRecompute(bool on)
 {
     // if a document item is selected then touch all objects
     if (this->contextItem && this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         doc->setStatus(App::Document::AllowPartialRecompute, on);
     }
@@ -1137,10 +1137,10 @@ void TreeWidget::onMarkRecompute()
 {
     // if a document item is selected then touch all objects
     if (this->contextItem && this->contextItem->type() == DocumentType) {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
         std::vector<App::DocumentObject*> obj = doc->getObjects();
-        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+        for (auto it = obj.begin(); it != obj.end(); ++it)
             (*it)->enforceRecompute();
     }
     // mark all selected objects
@@ -1148,7 +1148,7 @@ void TreeWidget::onMarkRecompute()
         QList<QTreeWidgetItem*> items = this->selectedItems();
         for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             if ((*it)->type() == ObjectType) {
-                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                auto objitem = static_cast<DocumentObjectItem*>(*it);
                 App::DocumentObject* obj = objitem->object()->getObject();
                 obj->enforceRecompute();
             }
@@ -1161,7 +1161,7 @@ void TreeWidget::onRecomputeObject() {
     const auto items = selectedItems();
     for (auto ti : items) {
         if (ti->type() == ObjectType) {
-            DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(ti);
+            auto objitem = static_cast<DocumentObjectItem*>(ti);
             objs.push_back(objitem->object()->getObject());
             objs.back()->enforceRecompute();
         }
@@ -1324,11 +1324,11 @@ bool TreeWidget::eventFilter(QObject*, QEvent* ev) {
     switch (ev->type()) {
     case QEvent::KeyPress:
     case QEvent::KeyRelease: {
-        QKeyEvent* ke = static_cast<QKeyEvent*>(ev);
+        auto ke = static_cast<QKeyEvent*>(ev);
         if (ke->key() != Qt::Key_Escape) {
             // Qt 5 only recheck key modifier on mouse move, so generate a fake
             // event to trigger drag cursor change
-            QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseMove,
+            auto mouseEvent = new QMouseEvent(QEvent::MouseMove,
                 mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton,
                 QApplication::mouseButtons(), QApplication::queryKeyboardModifiers());
             QApplication::postEvent(this, mouseEvent);
@@ -1424,7 +1424,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
                 doc->setActiveView(nullptr, View3DInventor::getClassTypeId());
         }
         else if (item->type() == TreeWidget::ObjectType) {
-            DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
+            auto objitem = static_cast<DocumentObjectItem*>(item);
             ViewProviderDocumentObject* vp = objitem->object();
 
             objitem->getOwnerDocument()->document()->setActiveView(vp);
@@ -1543,7 +1543,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
     else if (targetItem->type() == TreeWidget::ObjectType) {
         onItemEntered(targetItem);
 
-        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
+        auto targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         try {
@@ -1715,7 +1715,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
 
     if (targetItem->type() == TreeWidget::ObjectType) {
         // add object to group
-        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
+        auto targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         thisDoc = targetItemObj->getOwnerDocument()->document()->getDocument();
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
@@ -2292,7 +2292,7 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
 {
     if (Doc.getDocument()->testStatus(App::Document::TempDoc))
         return;
-    DocumentItem* item = new DocumentItem(&Doc, this->rootItem);
+    auto item = new DocumentItem(&Doc, this->rootItem);
     if (isMainDoc)
         this->expandItem(item);
     item->setIcon(0, *documentPixmap);
@@ -2314,7 +2314,7 @@ void TreeWidget::slotFinishOpenDocument() {
 void TreeWidget::onReloadDoc() {
     if (!this->contextItem || this->contextItem->type() != DocumentType)
         return;
-    DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+    auto docitem = static_cast<DocumentItem*>(this->contextItem);
     App::Document* doc = docitem->document()->getDocument();
     std::string name = doc->FileName.getValue();
     Application::Instance->reopen(doc);
@@ -2332,7 +2332,7 @@ void TreeWidget::onCloseDoc()
     if (!this->contextItem || this->contextItem->type() != DocumentType)
         return;
     try {
-        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        auto docitem = static_cast<DocumentItem*>(this->contextItem);
         Gui::Document* gui = docitem->document();
         App::Document* doc = gui->getDocument();
         if (gui->canClose(true, true))
@@ -2627,7 +2627,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem* item)
 {
     // object item selected
     if (item && item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
+        auto objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
 
         if (TreeParams::Instance()->PreSelection()) {
@@ -2664,7 +2664,7 @@ void TreeWidget::onPreSelectTimer() {
         return;
 
     preselectTime.restart();
-    DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
+    auto objItem = static_cast<DocumentObjectItem*>(item);
     auto vp = objItem->object();
     auto obj = vp->getObject();
     std::ostringstream ss;
@@ -2690,7 +2690,7 @@ void TreeWidget::onItemExpanded(QTreeWidgetItem* item)
 {
     // object item expanded
     if (item && item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
+        auto objItem = static_cast<DocumentObjectItem*>(item);
         objItem->setExpandedStatus(true);
         objItem->getOwnerDocument()->populateItem(objItem, false, false);
     }
@@ -3026,7 +3026,7 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
     if (indent)
         this->treeWidget->setIndentation(indent);
 
-    QVBoxLayout* pLayout = new QVBoxLayout(this);
+    auto pLayout = new QVBoxLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin(0);
     pLayout->addWidget(this->treeWidget);
@@ -3114,7 +3114,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument, QWidget* parent)
 {
     setWindowTitle(tr("Tree view"));
     auto panel = new TreePanel("TreeView", this);
-    QGridLayout* pLayout = new QGridLayout(this);
+    auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin(0);
     pLayout->addWidget(panel, 0, 0);
@@ -3317,7 +3317,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         data = pdata;
     }
 
-    DocumentObjectItem* item = new DocumentObjectItem(this, data);
+    auto item = new DocumentObjectItem(this, data);
     if (!parent || parent == this) {
         parent = this;
         data->rootItem = item;
@@ -3520,7 +3520,7 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
             if (ci->type() != TreeWidget::ObjectType)
                 continue;
 
-            DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
+            auto childItem = static_cast<DocumentObjectItem*>(ci);
             if (childItem->object()->getObject() != child)
                 continue;
 
@@ -3596,7 +3596,7 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
     for (++i; item->childCount() > i;) {
         QTreeWidgetItem* ci = item->child(i);
         if (ci->type() == TreeWidget::ObjectType) {
-            DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
+            auto childItem = static_cast<DocumentObjectItem*>(ci);
             if (childItem->requiredAtRoot()) {
                 item->removeChild(childItem);
                 auto index = findRootIndex(childItem->object()->getObject());

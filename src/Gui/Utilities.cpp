@@ -59,7 +59,7 @@ Base::Vector3f ViewVolumeProjection::operator()(const Base::Vector3f &pt) const
 
 Base::Vector3d ViewVolumeProjection::operator()(const Base::Vector3d &pt) const
 {
-    Base::Vector3f ptf = Base::convertTo<Base::Vector3f>(pt);
+    auto ptf = Base::convertTo<Base::Vector3f>(pt);
     ptf = operator()(ptf);
     return Base::convertTo<Base::Vector3d>(ptf);
 }
@@ -73,7 +73,7 @@ Base::Vector3f ViewVolumeProjection::inverse (const Base::Vector3f &pt) const
 
 Base::Vector3d ViewVolumeProjection::inverse (const Base::Vector3d &pt) const
 {
-    Base::Vector3f ptf = Base::convertTo<Base::Vector3f>(pt);
+    auto ptf = Base::convertTo<Base::Vector3f>(pt);
     ptf = inverse(ptf);
     return Base::convertTo<Base::Vector3d>(ptf);
 }
@@ -99,7 +99,7 @@ void Tessellator::tessCB(void * v0, void * v1, void * v2, void * cbdata)
     int * vtx1 = (int *)v1;
     int * vtx2 = (int *)v2;
 
-    std::vector<int>* array = (std::vector<int> *)cbdata;
+    auto array = (std::vector<int> *)cbdata;
     array->push_back(*vtx0);
     array->push_back(*vtx1);
     array->push_back(*vtx2);

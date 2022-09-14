@@ -277,7 +277,7 @@ PyObject* LinkViewPy::getElementPicked(PyObject* args)
         return nullptr;
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPickedPoint *", obj, &ptr, 0);
-    SoPickedPoint *pp = static_cast<SoPickedPoint*>(ptr);
+    auto pp = static_cast<SoPickedPoint*>(ptr);
     if(!pp)
         throw Py::TypeError("type must be of coin.SoPickedPoint");
     PY_TRY{
@@ -296,7 +296,7 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
         return nullptr;
     void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", path, &ptr, 0);
-    SoPath *pPath = static_cast<SoPath*>(ptr);
+    auto pPath = static_cast<SoPath*>(ptr);
     if(!pPath)
         throw Py::TypeError("type must be of coin.SoPath");
     PY_TRY{

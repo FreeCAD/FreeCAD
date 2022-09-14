@@ -69,7 +69,7 @@ QVariant PropertyModel::data ( const QModelIndex & index, int role ) const
     if (!index.isValid())
         return QVariant();
 
-    PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+    auto item = static_cast<PropertyItem*>(index.internalPointer());
     return item->data(index.column(), role);
 }
 
@@ -80,7 +80,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
 
     // we check whether the data has really changed, otherwise we ignore it
     if (role == Qt::EditRole) {
-        PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+        auto item = static_cast<PropertyItem*>(index.internalPointer());
         QVariant data = item->data(index.column(), role);
         if (data.type() == QVariant::Double && value.type() == QVariant::Double) {
             // since we store some properties as floats we get some round-off
@@ -107,7 +107,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
 
 Qt::ItemFlags PropertyModel::flags(const QModelIndex &index) const
 {
-    PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+    auto item = static_cast<PropertyItem*>(index.internalPointer());
     return item->flags(index.column());
 }
 
@@ -132,7 +132,7 @@ QModelIndex PropertyModel::parent ( const QModelIndex & index ) const
     if (!index.isValid())
         return QModelIndex();
 
-    PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
+    auto childItem = static_cast<PropertyItem*>(index.internalPointer());
     PropertyItem *parentItem = childItem->parent();
 
     if (parentItem == rootItem)
@@ -176,7 +176,7 @@ QStringList PropertyModel::propertyPathFromIndex(const QModelIndex& index) const
 {
     QStringList path;
     if (index.isValid()) {
-        PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+        auto item = static_cast<PropertyItem*>(index.internalPointer());
         while (item && item != this->rootItem) {
             path.push_front(item->propertyName());
             item = item->parent();
@@ -302,11 +302,11 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     // Second step, either find existing items or create new items for the given
     // properties. There is no signaling of model change at this stage. The
     // change information is kept pending in GroupInfo::children
-    for (auto jt = props.begin(); jt != props.end(); ++jt) {
-        App::Property* prop = jt->second.front();
+    for (const auto & jt : props) {
+        App::Property* prop = jt.second.front();
 
         PropertyItem *item = nullptr;
-        for (auto prop : jt->second) {
+        for (auto prop : jt.second) {
             auto it = itemMap.find(prop);
             if (it == itemMap.end() || !it->second)
                 continue;
@@ -323,16 +323,16 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         GroupInfo &groupInfo = getGroupInfo(prop);
         groupInfo.children.push_back(item);
 
-        item->setLinked(boost::ends_with(jt->first,"*"));
+        item->setLinked(boost::ends_with(jt.first,"*"));
         setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
 
-        if (jt->second != item->getPropertyData()) {
+        if (jt.second != item->getPropertyData()) {
             for (auto prop : item->getPropertyData())
                 itemMap.erase(prop);
-            for (auto prop : jt->second)
+            for (auto prop : jt.second)
                 itemMap[prop] = item;
             // TODO: is it necessary to make sure the item has no pending commit?
-            item->setPropertyData(jt->second);
+            item->setPropertyData(jt.second);
         }
         else
             item->updateData();

@@ -109,7 +109,7 @@ bool PropertyEditor::isAutomaticExpand(bool) const
 
 void PropertyEditor::onItemExpanded(const QModelIndex &index)
 {
-    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    auto item = static_cast<PropertyItem*>(index.internalPointer());
     item->setExpanded(true);
     for(int i=0, c=item->childCount(); i<c; ++i)
         setExpanded(propertyModel->index(i, 0, index), item->child(i)->isExpanded());
@@ -117,7 +117,7 @@ void PropertyEditor::onItemExpanded(const QModelIndex &index)
 
 void PropertyEditor::onItemCollapsed(const QModelIndex &index)
 {
-    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    auto item = static_cast<PropertyItem*>(index.internalPointer());
     item->setExpanded(false);
 }
 
@@ -161,7 +161,7 @@ QStyleOptionViewItem PropertyEditor::viewOptions() const
 bool PropertyEditor::event(QEvent* event)
 {
     if (event->type() == QEvent::ShortcutOverride) {
-        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        auto kevent = static_cast<QKeyEvent*>(event);
         Qt::KeyboardModifiers ShiftKeypadModifier = Qt::ShiftModifier | Qt::KeypadModifier;
         if (kevent->modifiers() == Qt::NoModifier ||
             kevent->modifiers() == Qt::ShiftModifier ||
@@ -251,7 +251,7 @@ void PropertyEditor::openEditor(const QModelIndex &index)
         FC_LOG("editor already transacting " << app.getActiveTransaction());
         return;
     }
-    PropertyItem* item = static_cast<PropertyItem*>(editingIndex.internalPointer());
+    auto item = static_cast<PropertyItem*>(editingIndex.internalPointer());
     auto items = item->getPropertyData();
     for(auto propItem=item->parent();items.empty() && propItem;propItem=propItem->parent())
         items = propItem->getPropertyData();
@@ -392,7 +392,7 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         lastIndex = index;
         setCurrentIndex(propertyModel->buddy(index));
 
-        PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+        auto item = static_cast<PropertyItem*>(index.internalPointer());
         // Skip readonly item, because the editor will be disabled and hence
         // does not accept focus, and in turn break Tab/Backtab navigation.
         if (item && item->isReadOnly())
@@ -413,7 +413,7 @@ void PropertyEditor::reset()
     int numRows = propertyModel->rowCount(parent);
     for (int i=0; i<numRows; ++i) {
         QModelIndex index = propertyModel->index(i, 0, parent);
-        PropertyItem *item = static_cast<PropertyItem*>(index.internalPointer());
+        auto item = static_cast<PropertyItem*>(index.internalPointer());
         if (item->childCount() == 0) {
             if(item->isSeparator())
                 setRowHidden(i, parent, true);
@@ -427,7 +427,7 @@ void PropertyEditor::reset()
 void PropertyEditor::onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &dst, int)
 {
     if(parent != dst) {
-        PropertyItem *item = static_cast<PropertyItem*>(parent.internalPointer());
+        auto item = static_cast<PropertyItem*>(parent.internalPointer());
         if(item && item->isSeparator() && item->childCount()==0)
             setRowHidden(parent.row(), propertyModel->parent(parent), true);
         item = static_cast<PropertyItem*>(dst.internalPointer());
@@ -442,7 +442,7 @@ void PropertyEditor::rowsInserted (const QModelIndex & parent, int start, int en
 {
     QTreeView::rowsInserted(parent, start, end);
 
-    PropertyItem *item = static_cast<PropertyItem*>(parent.internalPointer());
+    auto item = static_cast<PropertyItem*>(parent.internalPointer());
     if (item && item->isSeparator() && item->childCount() == end-start+1) {
         setRowHidden(parent.row(), propertyModel->parent(parent), false);
         if(item->isExpanded())
@@ -451,7 +451,7 @@ void PropertyEditor::rowsInserted (const QModelIndex & parent, int start, int en
 
     for (int i=start; i<end; ++i) {
         QModelIndex index = propertyModel->index(i, 0, parent);
-        PropertyItem *child = static_cast<PropertyItem*>(index.internalPointer());
+        auto child = static_cast<PropertyItem*>(index.internalPointer());
         if(child->isSeparator()) {
             // Set group header rows to span all columns
             setFirstColumnSpanned(i, parent, true);
@@ -468,7 +468,7 @@ void PropertyEditor::rowsAboutToBeRemoved (const QModelIndex & parent, int start
 {
     QTreeView::rowsAboutToBeRemoved(parent, start, end);
 
-    PropertyItem *item = static_cast<PropertyItem*>(parent.internalPointer());
+    auto item = static_cast<PropertyItem*>(parent.internalPointer());
     if (item && item->isSeparator() && item->childCount() == end-start+1)
         setRowHidden(parent.row(), propertyModel->parent(parent), true);
 
@@ -499,7 +499,7 @@ void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QM
     QTreeView::drawBranches(painter, rect, index);
 
     QStyleOptionViewItem opt = viewOptions();
-    PropertyItem *property = static_cast<PropertyItem*>(index.internalPointer());
+    auto property = static_cast<PropertyItem*>(index.internalPointer());
     if (property && property->isSeparator()) {
         painter->fillRect(rect, this->background);
     //} else if (selectionModel()->isSelected(index)) {
@@ -568,7 +568,7 @@ void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int en
     int column = 1;
     for (int i=start; i<=end; i++) {
         QModelIndex item = propertyModel->index(i, column, parent);
-        PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
+        auto propItem = static_cast<PropertyItem*>(item.internalPointer());
         if (!PropertyView::showAll() && propItem && propItem->testStatus(App::Property::Hidden)) {
             setRowHidden (i, parent, true);
         }

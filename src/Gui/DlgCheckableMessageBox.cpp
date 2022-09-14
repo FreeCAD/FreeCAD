@@ -53,7 +53,7 @@ void DlgCheckableMessageBox::showMessage(const QString& header, const QString& m
     bool checked = App::GetApplication().GetParameterGroupByPath(QByteArray("User parameter:BaseApp/CheckMessages"))->GetBool(toParamEntry(header));
 
     if (!checked) {
-        DlgCheckableMessageBox *mb = new DlgCheckableMessageBox(Gui::getMainWindow());
+        auto mb = new DlgCheckableMessageBox(Gui::getMainWindow());
         mb->setWindowTitle(header);
         mb->setIconPixmap(QMessageBox::standardIcon(QMessageBox::Warning));
         mb->setText(message);
@@ -200,7 +200,7 @@ void DlgCheckableMessageBox::setStandardButtons(QDialogButtonBox::StandardButton
 QDialogButtonBox::StandardButton DlgCheckableMessageBox::defaultButton() const
 {
     Q_FOREACH (QAbstractButton *b, m_d->ui.buttonBox->buttons())
-        if (QPushButton *pb = qobject_cast<QPushButton *>(b))
+        if (auto pb = qobject_cast<QPushButton *>(b))
             if (pb->isDefault())
                return m_d->ui.buttonBox->standardButton(pb);
     return QDialogButtonBox::NoButton;

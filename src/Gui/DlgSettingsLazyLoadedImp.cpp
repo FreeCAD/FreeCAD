@@ -150,12 +150,12 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         // Column 3: Autoloaded checkbox
         // 
         // To get the checkbox centered, we have to jump through some hoops...
-        QWidget* checkWidget = new QWidget(this);
+        auto checkWidget = new QWidget(this);
         auto autoloadCheckbox = new QCheckBox(this);
         autoloadCheckbox->setToolTip(tr("If checked") + 
                                      QString::fromUtf8(", ") + wbDisplayName + QString::fromUtf8(" ") + 
                                      tr("will be loaded automatically when FreeCAD starts up"));
-        QHBoxLayout* checkLayout = new QHBoxLayout(checkWidget);
+        auto checkLayout = new QHBoxLayout(checkWidget);
         checkLayout->addWidget(autoloadCheckbox);
         checkLayout->setAlignment(Qt::AlignCenter);
         checkLayout->setContentsMargins(0, 0, 0, 0);

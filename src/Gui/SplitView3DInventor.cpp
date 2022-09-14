@@ -198,7 +198,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     else if (strcmp(Reason,"HighlightColor") == 0) {
         float transparency;
         SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
+        auto highlight = (unsigned long)(highlightColor.getPackedValue());
         highlight = rGrp.GetUnsigned("HighlightColor", highlight);
         highlightColor.setPackedValue((uint32_t)highlight, transparency);
         SoSFColor col; col.setValue(highlightColor);
@@ -209,7 +209,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     else if (strcmp(Reason,"SelectionColor") == 0) {
         float transparency;
         SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
+        auto selection = (unsigned long)(selectionColor.getPackedValue());
         selection = rGrp.GetUnsigned("SelectionColor", selection);
         selectionColor.setPackedValue((uint32_t)selection, transparency);
         SoSFColor col; col.setValue(selectionColor);
@@ -519,7 +519,7 @@ Py::Object AbstractSplitViewPy::getattr(const char * attr)
 
 AbstractSplitView* AbstractSplitViewPy::getSplitViewPtr()
 {
-    AbstractSplitView* view = qobject_cast<AbstractSplitView*>(base.getMDIViewPtr());
+    auto view = qobject_cast<AbstractSplitView*>(base.getMDIViewPtr());
     if (!(view && view->getViewer(0)))
         throw Py::RuntimeError("Object already deleted");
     return view;
@@ -790,8 +790,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     }
     else {
         mainSplitter = new QSplitter(Qt::Vertical, this);
-        QSplitter *topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
-        QSplitter *botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        auto topSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+        auto botSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
 
         if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, topSplitter));
