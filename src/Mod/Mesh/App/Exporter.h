@@ -92,17 +92,32 @@ protected:
     std::string fName;
 };
 
+// ------------------------------------------------------------------------------------------------
+
+/*!
+ * \brief The AbstractExtension class
+ * Abstract base class for file format extensions
+ */
+class MeshExport AbstractFormatExtension
+{
+protected:
+    AbstractFormatExtension() = default;
+
+public:
+    virtual ~AbstractFormatExtension() = default;
+};
+
+using AbstractFormatExtensionPtr = std::shared_ptr<AbstractFormatExtension>;
+
 /*!
  * \brief The Extension3MF class
  * Abstract base class for 3MF extensions
  */
-class MeshExport Extension3MF
+class MeshExport Extension3MF : public AbstractFormatExtension
 {
 public:
     using Resource = MeshCore::Resource3MF;
     Extension3MF() = default;
-    virtual ~Extension3MF() = default;
-
     virtual Resource addMesh(const MeshObject & mesh) = 0;
 };
 
@@ -110,17 +125,42 @@ using Extension3MFPtr = std::shared_ptr<Extension3MF>;
 
 /*!
  * \brief The AbstractExtensionProducer class
- * Abstract base class to create an instance of an Extension3MF.
+ * Abstract base class to create an instance of an AbstractFormatExtension.
  */
 class MeshExport AbstractExtensionProducer
 {
 public:
     AbstractExtensionProducer() = default;
     virtual ~AbstractExtensionProducer() = default;
-    virtual Extension3MFPtr create() const = 0;
+    virtual AbstractFormatExtensionPtr create() const = 0;
 };
 
 using AbstractExtensionProducerPtr = std::shared_ptr<AbstractExtensionProducer>;
+
+/*!
+ * \brief The Extension3MFProducer class
+ * Abstract base class to create an instance of an Extension3MF.
+ */
+class MeshExport Extension3MFProducer : public AbstractExtensionProducer
+{
+public:
+    Extension3MFProducer() = default;
+    virtual void initialize() = 0;
+};
+
+using Extension3MFProducerPtr = std::shared_ptr<Extension3MFProducer>;
+
+/*!
+ * \brief The GuiExtension3MFProducer class
+ * This class tries to load the MeshGui module to register further 3MF extensions.
+ */
+class MeshExport GuiExtension3MFProducer : public Extension3MFProducer
+{
+public:
+    GuiExtension3MFProducer() = default;
+    void initialize() override;
+    AbstractFormatExtensionPtr create() const override;
+};
 
 /*!
  * \brief The Extension3MFFactory class
@@ -129,12 +169,15 @@ using AbstractExtensionProducerPtr = std::shared_ptr<AbstractExtensionProducer>;
 class MeshExport Extension3MFFactory
 {
 public:
-    static void addProducer(AbstractExtensionProducer* ext);
+    static void addProducer(Extension3MFProducer* ext);
+    static void initialize();
     static std::vector<Extension3MFPtr> create();
 
 private:
-    static std::vector<AbstractExtensionProducerPtr> producer;
+    static std::vector<Extension3MFProducerPtr> producer;
 };
+
+// ------------------------------------------------------------------------------------------------
 
 /// Used for exporting to 3D Manufacturing Format (3MF)
 /*!

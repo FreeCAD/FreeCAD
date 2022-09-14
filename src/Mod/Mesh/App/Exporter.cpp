@@ -229,25 +229,52 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 
 // ----------------------------------------------------------------------------
 
-void Extension3MFFactory::addProducer(AbstractExtensionProducer* ext)
+AbstractFormatExtensionPtr GuiExtension3MFProducer::create() const
+{
+    return nullptr;
+}
+
+void GuiExtension3MFProducer::initialize()
+{
+    Base::PyGILStateLocker lock;
+    PyObject* module = PyImport_ImportModule("MeshGui");
+    if (module)
+        Py_DECREF(module);
+    else
+        PyErr_Clear();
+}
+
+void Extension3MFFactory::addProducer(Extension3MFProducer* ext)
 {
     producer.emplace_back(ext);
+}
+
+void Extension3MFFactory::initialize()
+{
+    std::vector<Extension3MFProducerPtr> ext = producer;
+    for (const auto& it : ext) {
+        it->initialize();
+    }
 }
 
 std::vector<Extension3MFPtr> Extension3MFFactory::create()
 {
     std::vector<Extension3MFPtr> ext;
-    for (const auto& it : producer)
-        ext.emplace_back(it->create());
+    for (const auto& it : producer) {
+        Extension3MFPtr ptr = std::dynamic_pointer_cast<Extension3MF>(it->create());
+        if (ptr)
+            ext.push_back(ptr);
+    }
     return ext;
 }
 
-std::vector<AbstractExtensionProducerPtr> Extension3MFFactory::producer;
+std::vector<Extension3MFProducerPtr> Extension3MFFactory::producer;
 
 class Exporter3MF::Private {
 public:
     explicit Private(const std::string& filename)
       : writer3mf(filename) {
+        Extension3MFFactory::initialize();
         ext = Extension3MFFactory::create();
     }
     MeshCore::Writer3MF writer3mf;

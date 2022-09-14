@@ -39,11 +39,12 @@ private:
     int index = 0;
 };
 
-class ThumbnailExtensionProducer : public Mesh::AbstractExtensionProducer {
+class ThumbnailExtensionProducer : public Mesh::Extension3MFProducer {
 public:
-    Mesh::Extension3MFPtr create() const override {
+    Mesh::AbstractFormatExtensionPtr create() const override {
         return std::make_shared<ThumbnailExtension3MF>();
     }
+    void initialize() override {}
 };
 
 } // namespace MeshGui
