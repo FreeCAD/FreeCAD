@@ -184,7 +184,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
 
 void draggerCB(void * /*data*/, SoDragger * dragger)
 {
-    auto drag = (SoTransformerDragger *)dragger;
+  auto drag = (SoTransformerDragger *)dragger;
   doClipping(drag->translation.getValue(), drag->rotation.getValue());
 }
 

@@ -96,7 +96,7 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
 {
     // This method gets called if a property of any view provider is changed.
     // We pick out all the properties for which we need to update this dialog.
-    std::vector<Gui::ViewProvider*> Provider = getSelection();
+    const std::vector<Gui::ViewProvider*> Provider = getSelection();
     auto vp = std::find_if
         (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
 

@@ -80,14 +80,14 @@ void View::slotActiveDocument(const Document &documentIn)
 
 void View::slotDeleteDocument(const Document &documentIn)
 {
-    ModelMap::const_iterator it = modelMap.find(&documentIn);
+  ModelMap::const_iterator it = modelMap.find(&documentIn);
   if (it != modelMap.end())
     modelMap.erase(it);
 }
 
 void View::awakeSlot()
 {
-    Model *model = dynamic_cast<Model *>(this->scene());
+  Model *model = dynamic_cast<Model *>(this->scene());
   if (model)
     model->awake();
 }
