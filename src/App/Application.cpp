@@ -161,18 +161,6 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string, std::string> Application::mConfig;
 
-// Custom Python exception types
-BaseExport extern PyObject* Base::PyExc_FC_GeneralError;
-BaseExport extern PyObject* Base::PyExc_FC_FreeCADAbort;
-BaseExport extern PyObject* Base::PyExc_FC_XMLBaseException;
-BaseExport extern PyObject* Base::PyExc_FC_XMLParseException;
-BaseExport extern PyObject* Base::PyExc_FC_XMLAttributeError;
-BaseExport extern PyObject* Base::PyExc_FC_UnknownProgramOption;
-BaseExport extern PyObject* Base::PyExc_FC_BadFormatError;
-BaseExport extern PyObject* Base::PyExc_FC_BadGraphError;
-BaseExport extern PyObject* Base::PyExc_FC_ExpressionError;
-BaseExport extern PyObject* Base::PyExc_FC_ParserError;
-BaseExport extern PyObject* Base::PyExc_FC_CADKernelError;
 
 //**************************************************************************
 // Construction and destruction
