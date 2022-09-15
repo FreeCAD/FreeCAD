@@ -203,7 +203,7 @@ CheckOptions:
   - key:             bugprone-suspicious-missing-comma.RatioThreshold
     value:           '0.200000'
   - key:             readability-implicit-bool-conversion.AllowIntegerConditions
-    value:           'false'
+    value:           'true'
   - key:             readability-identifier-length.IgnoredParameterNames
     value:           '^[n]$'
   - key:             readability-function-size.StatementThreshold
