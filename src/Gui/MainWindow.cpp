@@ -471,6 +471,7 @@ void MainWindow::setupDockWindows()
 
     bool treeView = setupTreeView(hiddenDockWindows);
     bool propertyView = setupPropertyView(hiddenDockWindows);
+    setupTaskView(hiddenDockWindows);
     setupSelectionView(hiddenDockWindows);
     setupComboView(hiddenDockWindows, !treeView || !propertyView);
 
@@ -502,6 +503,23 @@ bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
             pDockMgr->registerDockWindow("Std_TreeView", tree);
             return true;
         }
+    }
+
+    return false;
+}
+
+bool MainWindow::setupTaskView(const std::string& hiddenDockWindows)
+{
+    // Task view
+    if (hiddenDockWindows.find("Std_TaskView") == std::string::npos) {
+        auto taskView = new Gui::TaskView::TaskView(this);
+        taskView->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
+        taskView->setMinimumWidth(210);
+
+        DockWindowManager* pDockMgr = DockWindowManager::instance();
+        pDockMgr->registerDockWindow("Std_TaskView", taskView);
+        return true;
     }
 
     return false;
