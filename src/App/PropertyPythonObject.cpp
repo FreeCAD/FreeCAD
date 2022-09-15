@@ -177,19 +177,19 @@ void PropertyPythonObject::loadPickle(const std::string& str)
 std::string PropertyPythonObject::encodeValue(const std::string& str) const
 {
     std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
+    for (char it : str) {
+        if (it == '<')
             tmp += "&lt;";
-        else if (*it == '"')
+        else if (it == '"')
             tmp += "&quot;";
-        else if (*it == '&')
+        else if (it == '&')
             tmp += "&amp;";
-        else if (*it == '>')
+        else if (it == '>')
             tmp += "&gt";
-        else if (*it == '\n')
+        else if (it == '\n')
             tmp += "\\n";
         else
-            tmp += *it;
+            tmp += it;
     }
 
     return tmp;
@@ -382,8 +382,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 void PropertyPythonObject::SaveDocFile (Base::Writer &writer) const
 {
     std::string buffer = this->toString();
-    for (std::string::iterator it = buffer.begin(); it != buffer.end(); ++it)
-        writer.Stream().put(*it);
+    for (const char & it : buffer)
+        writer.Stream().put(it);
 }
 
 void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
@@ -405,7 +405,7 @@ unsigned int PropertyPythonObject::getMemSize () const
 
 Property *PropertyPythonObject::Copy() const
 {
-    PropertyPythonObject *p = new PropertyPythonObject();
+    auto p = new PropertyPythonObject();
     Base::PyGILStateLocker lock;
     p->object = this->object;
     return p;

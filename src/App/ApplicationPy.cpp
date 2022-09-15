@@ -419,7 +419,7 @@ PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
     const std::map<std::string, std::string>& Map = GetApplication().Config();
 
-    std::map<std::string, std::string>::const_iterator it = Map.find(pstr);
+    auto it = Map.find(pstr);
     if (it != Map.end()) {
         return Py_BuildValue("s", it->second.c_str());
     }
@@ -435,8 +435,8 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (auto It= GetApplication()._mConfig.begin(); It != GetApplication()._mConfig.end(); ++It) {
-        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+    for (auto & It : GetApplication()._mConfig) {
+        PyDict_SetItemString(dict,It.first.c_str(), PyUnicode_FromString(It.second.c_str()));
     }
     return dict;
 }
@@ -523,8 +523,8 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getImportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (auto & module : modules) {
+            list.append(Py::String(module));
         }
 
         return Py::new_reference_to(list);
@@ -532,20 +532,20 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getImportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getImportModules(it->c_str());
+        for (auto & type : types) {
+            std::vector<std::string> modules = GetApplication().getImportModules(type.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(type.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(type.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (auto & module : modules) {
+                    list.append(Py::String(module));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(type.c_str(), list);
             }
         }
 
@@ -587,8 +587,8 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getExportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (auto & module : modules) {
+            list.append(Py::String(module));
         }
 
         return Py::new_reference_to(list);
@@ -596,20 +596,20 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it->c_str());
+        for (auto & type : types) {
+            std::vector<std::string> modules = GetApplication().getExportModules(type.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(type.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(type.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (auto & module : modules) {
+                    list.append(Py::String(module));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(type.c_str(), list);
             }
         }
 
@@ -872,12 +872,12 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for (Py_ssize_t i=0;i<seq.size();++i) {
-            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+        for (auto && i : seq) {
+            if(!PyObject_TypeCheck(i.ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return nullptr;
             }
-            objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+            objs.push_back(static_cast<DocumentObjectPy*>(i.ptr())->getDocumentObjectPtr());
         }
     }
     else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {

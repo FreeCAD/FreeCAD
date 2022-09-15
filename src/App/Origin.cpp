@@ -151,13 +151,13 @@ void Origin::setupObject () {
     App::Document *doc = getDocument ();
 
     std::vector<App::DocumentObject *> links;
-    for (auto data: setupData) {
+    for (const auto& data: setupData) {
         std::string objName = doc->getUniqueObjectName ( data.role );
         App::DocumentObject *featureObj = doc->addObject ( data.type.getName(), objName.c_str () );
 
         assert ( featureObj && featureObj->isDerivedFrom ( App::OriginFeature::getClassTypeId () ) );
 
-        App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
+        auto feature = static_cast <App::OriginFeature *> ( featureObj );
         feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );
         feature->Role.setValue ( data.role );
 

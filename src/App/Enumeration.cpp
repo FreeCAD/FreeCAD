@@ -141,8 +141,8 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     }
 
     enumArray.clear();
-    for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
-        enumArray.push_back(std::make_shared<StringCopy>(it->c_str()));
+    for (const auto & value : values) {
+        enumArray.push_back(std::make_shared<StringCopy>(value.c_str()));
     }
 
     // set _index

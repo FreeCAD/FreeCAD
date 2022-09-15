@@ -509,7 +509,7 @@ Property *PropertyFileIncluded::Copy() const
 void PropertyFileIncluded::Paste(const Property &from)
 {
     aboutToSetValue();
-    const PropertyFileIncluded &prop = dynamic_cast<const PropertyFileIncluded&>(from);
+    const auto &prop = dynamic_cast<const PropertyFileIncluded&>(from);
     // make sure that source and destination file are different
     if (_cValue != prop._cValue) {
         // delete old file (if still there)

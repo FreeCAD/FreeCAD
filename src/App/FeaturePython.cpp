@@ -243,7 +243,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         if(!subname) subname = "";
         args.setItem(1,Py::String(subname));
         args.setItem(2,Py::Int(pyObj?2:1));
-        Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
+        auto *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
         args.setItem(3,Py::asObject(pyMat));
         args.setItem(4,Py::Boolean(transform));
@@ -305,8 +305,8 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         if(!res.isSequence())
             throw Py::TypeError("getSubObjects expects return type of tuple");
         Py::Sequence seq(res);
-        for(Py_ssize_t i=0;i<seq.length();++i) {
-            Py::Object name(seq[i].ptr());
+        for(const auto && i : seq) {
+            Py::Object name(i.ptr());
             if(!name.isString())
                 throw Py::TypeError("getSubObjects expects string in returned sequence");
             ret.push_back(name.as_string());
@@ -333,7 +333,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         Py::Tuple args(5);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1,Py::Boolean(recurse));
-        Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
+        auto *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
         args.setItem(2,Py::asObject(pyMat));
         args.setItem(3,Py::Boolean(transform));

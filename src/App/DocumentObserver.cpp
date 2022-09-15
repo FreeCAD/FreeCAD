@@ -838,7 +838,7 @@ void DocumentObjectObserver::slotCreatedObject(const App::DocumentObject&)
 
 void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject& Obj)
 {
-    std::set<App::DocumentObject*>::iterator it = _objects.find
+    auto it = _objects.find
         (const_cast<App::DocumentObject*>(&Obj));
     if (it != _objects.end())
         _objects.erase(it);

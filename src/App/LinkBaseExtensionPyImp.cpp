@@ -185,10 +185,10 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)
 
     char *name;
     if(PyArg_ParseTuple(args,"s",&name)) {
-        for(int i=0;i<(int)infos.size();++i) {
-            if(strcmp(infos[i].name,name)==0) {
-                Py::TupleN ret(Py::String(infos[i].type.getName()),
-                            Py::String(infos[i].doc));
+        for(const auto & info : infos) {
+            if(strcmp(info.name,name)==0) {
+                Py::TupleN ret(Py::String(info.type.getName()),
+                            Py::String(info.doc));
                 return Py::new_reference_to(ret);
             }
         }

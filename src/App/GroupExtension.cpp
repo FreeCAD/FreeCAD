@@ -127,7 +127,7 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
     std::vector<DocumentObject*> newGrp = grp;
     std::vector<DocumentObject*> removed;
 
-    std::vector<DocumentObject*>::iterator end = newGrp.end();
+    auto end = newGrp.end();
     for(auto obj : objs) {       
        auto res = std::remove(newGrp.begin(), end, obj);
        if(res != end) {
@@ -260,7 +260,7 @@ std::vector<DocumentObject*> GroupExtension::getObjectsOfType(const Base::Type& 
 {
     std::vector<DocumentObject*> type;
     const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
+    for (auto it = grp.cbegin(); it != grp.cend(); ++it) {
         if ( (*it)->getTypeId().isDerivedFrom(typeId))
             type.push_back(*it);
     }
@@ -272,7 +272,7 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 {
     int type=0;
     const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
+    for (auto it = grp.cbegin(); it != grp.cend(); ++it) {
         if ( (*it)->getTypeId().isDerivedFrom(typeId))
             type++;
     }

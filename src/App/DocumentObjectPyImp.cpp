@@ -114,11 +114,11 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+    for (auto & it : ary) {
+        auto data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it->getName()));
+            res.append(Py::String(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -253,8 +253,8 @@ Py::List DocumentObjectPy::getInList() const
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (const auto & It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
@@ -265,8 +265,8 @@ Py::List DocumentObjectPy::getInListRecursive() const
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInListRecursive();
 
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (const auto & It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -279,8 +279,8 @@ Py::List DocumentObjectPy::getOutList() const
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (const auto & It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
@@ -292,8 +292,8 @@ Py::List DocumentObjectPy::getOutListRecursive() const
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
         // create the python list for the output
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (const auto & It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -442,7 +442,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         return nullptr;
     }
 
-    ReturnType retEnum = ReturnType(retType);
+    auto retEnum = ReturnType(retType);
     std::vector<std::string> subs;
     bool single = true;
 

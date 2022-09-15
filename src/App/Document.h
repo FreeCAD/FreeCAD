@@ -573,8 +573,8 @@ inline std::vector<T*> Document::getObjectsOfType() const
     std::vector<T*> type;
     std::vector<App::DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId());
     type.reserve(obj.size());
-    for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-        type.push_back(static_cast<T*>(*it));
+    for (auto & it : obj)
+        type.push_back(static_cast<T*>(it));
     return type;
 }
 

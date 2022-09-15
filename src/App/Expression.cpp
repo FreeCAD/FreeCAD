@@ -455,7 +455,7 @@ App::any pyObjectToAny(Py::Object value, bool check) {
         return App::any(pyObjectWrap(pyvalue));
 
     if (PyObject_TypeCheck(pyvalue, &Base::QuantityPy::Type)) {
-        Base::QuantityPy * qp = static_cast<Base::QuantityPy*>(pyvalue);
+        auto qp = static_cast<Base::QuantityPy*>(pyvalue);
         Base::Quantity * q = qp->getQuantityPtr();
 
         return App::any(*q);
@@ -1789,7 +1789,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
 
 FunctionExpression::~FunctionExpression()
 {
-    std::vector<Expression*>::iterator i = args.begin();
+    auto i = args.begin();
 
     while (i != args.end()) {
         delete *i;
@@ -1806,7 +1806,7 @@ FunctionExpression::~FunctionExpression()
 
 bool FunctionExpression::isTouched() const
 {
-    std::vector<Expression*>::const_iterator i = args.begin();
+    auto i = args.begin();
 
     while (i != args.end()) {
         if ((*i)->isTouched())
@@ -2337,8 +2337,8 @@ Expression *FunctionExpression::simplify() const
     std::vector<Expression*> a;
 
     // Try to simplify each argument to function
-    for (auto it = args.begin(); it != args.end(); ++it) {
-        Expression * v = (*it)->simplify();
+    for (auto arg : args) {
+        Expression * v = arg->simplify();
 
         if (freecad_dynamic_cast<NumberExpression>(v))
             ++numerics;
@@ -2349,8 +2349,8 @@ Expression *FunctionExpression::simplify() const
         // All constants, then evaluation must also be constant
 
         // Clean-up
-        for (auto it = args.begin(); it != args.end(); ++it)
-            delete *it;
+        for (auto arg : args)
+            delete arg;
 
         return eval();
     }
@@ -2460,10 +2460,10 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 
 Expression *FunctionExpression::_copy() const
 {
-    std::vector<Expression*>::const_iterator i = args.begin();
+    auto i = args.cbegin();
     std::vector<Expression*> a;
 
-    while (i != args.end()) {
+    while (i != args.cend()) {
         a.push_back((*i)->copy());
         ++i;
     }
@@ -2472,10 +2472,10 @@ Expression *FunctionExpression::_copy() const
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
 {
-    std::vector<Expression*>::const_iterator i = args.begin();
+    auto i = args.cbegin();
 
     HiddenReference ref(f == HIDDENREF || f == HREF);
-    while (i != args.end()) {
+    while (i != args.cend()) {
         (*i)->visit(v);
         ++i;
     }
@@ -2854,7 +2854,7 @@ Py::Object ConditionalExpression::_getPyValue() const {
 Expression *ConditionalExpression::simplify() const
 {
     std::unique_ptr<Expression> e(condition->simplify());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
+    auto * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (!v)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
@@ -3360,11 +3360,11 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     Expression * simplified = ScanResult->simplify();
 
     if (!unitExpression) {
-        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
+        auto * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
 
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+            auto * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+            auto * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
 
             // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
             if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
@@ -3374,7 +3374,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     delete ScanResult;
 
     if (unitExpression) {
-        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
+        auto * num = freecad_dynamic_cast<NumberExpression>(simplified);
 
         if (num) {
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());

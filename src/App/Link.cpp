@@ -103,7 +103,7 @@ public:
 
 // Auto generated code. See class document of LinkParams.
 LinkParamsP *instance() {
-    static LinkParamsP *inst = new LinkParamsP;
+    static auto inst = new LinkParamsP;
     return inst;
 }
 

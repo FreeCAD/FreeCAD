@@ -113,13 +113,13 @@ unsigned int PropertyExpressionEngine::getMemSize() const
 
 Property *PropertyExpressionEngine::Copy() const
 {
-    PropertyExpressionEngine * engine = new PropertyExpressionEngine();
+    auto engine = new PropertyExpressionEngine();
 
-    for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+    for (const auto & expression : expressions) {
         ExpressionInfo info;
-        if (it->second.expression)
-            info.expression = std::shared_ptr<Expression>(it->second.expression->copy());
-        engine->expressions[it->first] = info;
+        if (expression.second.expression)
+            info.expression = std::shared_ptr<Expression>(expression.second.expression->copy());
+        engine->expressions[expression.first] = info;
     }
 
     engine->validator = validator;
@@ -129,7 +129,7 @@ Property *PropertyExpressionEngine::Copy() const
 
 void PropertyExpressionEngine::hasSetValue()
 {
-    App::DocumentObject *owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument() || owner->isRestoring() || testFlag(LinkDetached)) {
         PropertyExpressionContainer::hasSetValue();
         return;
@@ -242,7 +242,7 @@ void PropertyExpressionEngine::slotChangedProperty(const App::DocumentObject &, 
 
 void PropertyExpressionEngine::Paste(const Property &from)
 {
-    const PropertyExpressionEngine &fromee = dynamic_cast<const PropertyExpressionEngine&>(from);
+    const auto &fromee = dynamic_cast<const PropertyExpressionEngine&>(from);
 
     AtomicPropertyChange signaller(*this);
 
@@ -269,15 +269,15 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
         writer.incInd();
         PropertyExpressionContainer::Save(writer);
     }
-    for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+    for (const auto & it : expressions) {
         std::string expression, comment;
-        if (it->second.expression) {
-            expression = it->second.expression->toString(true);
-            comment = it->second.expression->comment;
+        if (it.second.expression) {
+            expression = it.second.expression->toString(true);
+            comment = it.second.expression->comment;
         }
 
         writer.Stream() << writer.ind() << "<Expression path=\""
-            << Property::encodeAttribute(it->first.toString()) <<"\" expression=\""
+            << Property::encodeAttribute(it.first.toString()) <<"\" expression=\""
             << Property::encodeAttribute(expression) << "\"";
         if (!comment.empty())
             writer.Stream() << " comment=\"" 
@@ -367,7 +367,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
 
 ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier &p) const
 {
-    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+    auto * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
     // Am I owned by a DocumentObject?
     if (!docObj)
@@ -403,7 +403,7 @@ size_t PropertyExpressionEngine::numExpressions() const
 
 void PropertyExpressionEngine::afterRestore()
 {
-    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+    auto * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
     if(restoredExpressions && docObj) {
         Base::FlagToggler<bool> flag(restoring);
         AtomicPropertyChange signaller(*this);
@@ -447,9 +447,9 @@ const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentif
     // Get a canonical path
     ObjectIdentifier usePath(canonicalPath(path));
 
-    ExpressionMap::const_iterator i = expressions.find(usePath);
+    auto i = std::as_const(expressions).find(usePath);
 
-    if (i != expressions.end())
+    if (i != expressions.cend())
         return i->second;
     else
         return boost::any();
@@ -471,7 +471,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, std::shar
     prop->getPathValue(usePath);
 
     // Check if the current expression equals the new one and do nothing if so to reduce unneeded computations
-    ExpressionMap::iterator it = expressions.find(usePath);
+    auto it = expressions.find(usePath);
     if(it != expressions.end()
             && (expr == it->second.expression || 
                 (expr && it->second.expression 
@@ -530,9 +530,9 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
     std::vector<Edge> edges;
 
     // Build data structure for graph
-    for (ExpressionMap::const_iterator it = exprs.begin(); it != exprs.end(); ++it) {
+    for (const auto & expr : exprs) {
         if(option!=ExecuteAll) {
-            auto prop = it->first.getProperty();
+            auto prop = expr.first.getProperty();
             if(!prop)
                 throw Base::RuntimeError("Path does not resolve to a property.");
             bool is_output = prop->testStatus(App::Property::Output)||(prop->getType()&App::Prop_Output);
@@ -544,15 +544,15 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
                     && !prop->testStatus(Property::EvalOnRestore))
                 continue;
         }
-        buildGraphStructures(it->first, it->second.expression, nodes, revNodes, edges);
+        buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
     }
 
     // Create graph
     g = DiGraph(revNodes.size());
 
     // Add edges to graph
-    for (std::vector<Edge>::const_iterator i = edges.begin(); i != edges.end(); ++i)
-        add_edge(i->first, i->second, g);
+    for (const auto & edge : edges)
+        add_edge(edge.first, edge.second, g);
 
     // Check for cycles
     bool has_cycle = false;
@@ -585,9 +585,9 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
     std::vector<int> c;
     topological_sort(g, std::back_inserter(c));
 
-    for (std::vector<int>::iterator i = c.begin(); i != c.end(); ++i) {
-        if (revNodes.find(*i) != revNodes.end())
-            evaluationOrder.push_back(revNodes[*i]);
+    for (const int & i : c) {
+        if (revNodes.find(i) != revNodes.end())
+            evaluationOrder.push_back(revNodes[i]);
     }
 
     return evaluationOrder;
@@ -600,7 +600,7 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
 
 DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption option, bool *touched)
 {
-    DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
+    auto * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
     if (!docObj)
         throw Base::RuntimeError("PropertyExpressionEngine must be owned by a DocumentObject.");
@@ -658,7 +658,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         if (!prop)
             throw Base::RuntimeError("Path does not resolve to a property.");
 
-        DocumentObject* parent = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+        auto* parent = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
         /* Make sure property belongs to the same container as this PropertyExpressionEngine */
         if (parent != docObj)
@@ -720,7 +720,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
 void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
                                  std::vector<App::ObjectIdentifier> & paths) const
 {
-    DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
+    auto * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
 
     if (!owner || owner==obj)
         return;
@@ -818,23 +818,23 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
     std::map<ObjectIdentifier, ObjectIdentifier> canonicalPaths;
 
     /* ensure input map uses canonical paths */
-    for (std::map<ObjectIdentifier, ObjectIdentifier>::const_iterator i = paths.begin(); i != paths.end(); ++i)
-        canonicalPaths[canonicalPath(i->first)] = i->second;
+    for (const auto & path : paths)
+        canonicalPaths[canonicalPath(path.first)] = path.second;
 
-    for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i) {
-        std::map<ObjectIdentifier, ObjectIdentifier>::const_iterator j = canonicalPaths.find(i->first);
+    for (const auto & expression : expressions) {
+        std::map<ObjectIdentifier, ObjectIdentifier>::const_iterator j = canonicalPaths.find(expression.first);
 
         // Renamed now?
         if (j != canonicalPaths.end())
-            newExpressions[j->second] = i->second;
+            newExpressions[j->second] = expression.second;
         else
-            newExpressions[i->first] = i->second;
+            newExpressions[expression.first] = expression.second;
     }
 
     aboutToSetValue();
     expressions = newExpressions;
-    for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i)
-        expressionChanged(i->first);
+    for (const auto & expression : expressions)
+        expressionChanged(expression.first);
 
     hasSetValue();
 }
@@ -846,19 +846,19 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
 
 void PropertyExpressionEngine::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
 {
-    for (ExpressionMap::iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        RenameObjectIdentifierExpressionVisitor<PropertyExpressionEngine> v(*this, paths, it->first);
-        it->second.expression->visit(v);
+    for (auto & expression : expressions) {
+        RenameObjectIdentifierExpressionVisitor<PropertyExpressionEngine> v(*this, paths, expression.first);
+        expression.second.expression->visit(v);
     }
 }
 
 PyObject *PropertyExpressionEngine::getPyObject()
 {
     Py::List list;
-    for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+    for (const auto & expression : expressions) {
         Py::Tuple tuple(2);
-        tuple.setItem(0, Py::String(it->first.toString()));
-        auto expr = it->second.expression;
+        tuple.setItem(0, Py::String(expression.first.toString()));
+        auto expr = expression.second.expression;
         tuple.setItem(1, expr ? Py::String(expr->toString()) : Py::None());
         list.append(tuple);
     }

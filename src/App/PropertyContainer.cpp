@@ -101,8 +101,8 @@ void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
 {
     std::vector<Property*> List;
     getPropertyList(List);
-    for(std::vector<Property*>::const_iterator it=List.begin();it!=List.end();++it)
-        (**it).StatusBits.set(bit,value);
+    for(auto it : List)
+        (*it).StatusBits.set(bit,value);
 }
 
 short PropertyContainer::getPropertyType(const Property* prop) const
@@ -256,21 +256,21 @@ void PropertyContainer::Save (Base::Writer &writer) const
     writer.decInd();
 
     // Now store normal properties
-    for (auto it = Map.begin(); it != Map.end(); ++it)
+    for (auto & it : Map)
     {
         writer.incInd(); // indentation for 'Property name'
-        writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
-                        << it->second->getTypeId().getName();
+        writer.Stream() << writer.ind() << "<Property name=\"" << it.first << "\" type=\""
+                        << it.second->getTypeId().getName();
 
-        dynamicProps.save(it->second,writer);
+        dynamicProps.save(it.second,writer);
 
-        auto status = it->second->getStatus();
+        auto status = it.second->getStatus();
         if(status)
             writer.Stream() << "\" status=\"" << status;
         writer.Stream() << "\">";
 
-        if(it->second->testStatus(Property::Transient) 
-                || it->second->getType() & Prop_Transient) 
+        if(it.second->testStatus(Property::Transient)
+                || it.second->getType() & Prop_Transient)
         {
             writer.decInd();
             writer.Stream() << "</Property>" << std::endl;
@@ -285,7 +285,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
             // We must make sure to handle all exceptions accordingly so that
             // the project file doesn't get invalidated. In the error case this
             // means to proceed instead of aborting the write operation.
-            it->second->Save(writer);
+            it.second->Save(writer);
         }
         catch (const Base::Exception &e) {
             Base::Console().Error("%s\n", e.what());

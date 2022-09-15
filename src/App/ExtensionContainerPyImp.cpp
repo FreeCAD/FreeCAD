@@ -150,7 +150,7 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
         Py_DECREF(nameobj);
         Py_DECREF(obj);
         if (func && PyCFunction_Check(func)) {
-            PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(func);
+            auto cfunc = reinterpret_cast<PyCFunctionObject*>(func);
 
             // OK, that's what we wanted
             if (cfunc->m_self == obj)
@@ -216,7 +216,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     }
 
     //register the extension
-    App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
+    auto ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
     if (!ext->isPythonExtension()) {
         delete ext;
