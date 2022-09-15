@@ -87,9 +87,9 @@ def call_pip(args) -> List[str]:
                 shell=True,
                 check=True,
             )
+            if proc.returncode != 0:
+                pip_failed = True
         except subprocess.CalledProcessError:
-            pip_failed = True
-        if proc.returncode != 0:
             pip_failed = True
     else:
         pip_failed = True
