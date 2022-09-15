@@ -545,7 +545,7 @@ public:
     //@}
 
     void selectElement(const char *element, bool preselect=false) const;
-    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
+    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override;
 
     /** @name Attorneys for collaboration with helper classes */
     //@{

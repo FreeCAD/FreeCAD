@@ -4617,52 +4617,6 @@ GeomSurface::~GeomSurface()
 {
 }
 
-// Copied from OCC BRepBndLib_1.cxx
-//=======================================================================
-// Function : IsPlanar
-// purpose : Returns TRUE if theSurface is plane-like.
-//=======================================================================
-static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theSurface)
-{
-    const GeomAbs_SurfaceType aST = theSurface.GetType();
-    if(aST == GeomAbs_OffsetSurface)
-    {
-# if OCC_VERSION_HEX < 0x070600
-        return IsPlanar(theSurface.BasisSurface()->Surface());
-#else
-        return IsPlanar(*theSurface.BasisSurface());
-#endif
-    }
-
-    if(aST == GeomAbs_SurfaceOfExtrusion)
-    {
-# if OCC_VERSION_HEX < 0x070600
-        return IsLinear(theSurface.BasisCurve()->Curve());
-#else
-        return IsLinear(*theSurface.BasisCurve());
-#endif
-    }
-
-    if((aST == GeomAbs_BSplineSurface) || (aST == GeomAbs_BezierSurface))
-    {
-        if((theSurface.UDegree() != 1) || (theSurface.VDegree() != 1))
-            return Standard_False;
-
-        // Indeed, surfaces with C0-continuity and degree==1, may be 
-        // represented with set of points. It will be possible made
-        // in the future.
-
-        return ((theSurface.UContinuity() != GeomAbs_C0) && (theSurface.VContinuity() != GeomAbs_C0));
-    }
-
-    if(aST == GeomAbs_Plane)
-    {
-        return Standard_True;
-    }
-
-    return Standard_False;
-}
-
 bool GeomSurface::isPlanar(gp_Pln *pln, double tol) const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
