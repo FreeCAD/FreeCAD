@@ -258,6 +258,12 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         preferences = getPreferences()
 
     if preferences["MULTICORE"] and not hasattr(srcfile, "by_guid"):
+        # override with BIM IFC importer if present
+        try:
+            import BimIfcImport
+            return BimIfcImport.insert(srcfile, docname, preferences)
+        except:
+            pass
         return importIFCmulticore.insert(srcfile, docname, preferences)
 
     try:
