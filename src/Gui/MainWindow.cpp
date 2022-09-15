@@ -326,15 +326,47 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     connect(d->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)),
             this, SLOT(onWindowActivated(QMdiSubWindow* )));
 
-    DockWindowManager* pDockMgr = DockWindowManager::instance();
+    setupDockWindows();
 
-    std::string hiddenDockWindows;;
+    // accept drops on the window, get handled in dropEvent, dragEnterEvent
+    setAcceptDrops(true);
+    statusBar()->showMessage(tr("Ready"), 2001);
+}
+
+MainWindow::~MainWindow()
+{
+    delete d->status;
+    delete d;
+    instance = nullptr;
+}
+
+MainWindow* MainWindow::getInstance()
+{
+    // MainWindow has a public constructor
+    return instance;
+}
+
+void MainWindow::setupDockWindows()
+{
+    std::string hiddenDockWindows;
     const std::map<std::string,std::string>& config = App::Application::Config();
     auto ht = config.find("HiddenDockWindow");
     if (ht != config.end())
         hiddenDockWindows = ht->second;
 
-    bool treeView = false, propertyView = false;
+    bool treeView = setupTreeView(hiddenDockWindows);
+    bool propertyView = setupPropertyView(hiddenDockWindows);
+    setupSelectionView(hiddenDockWindows);
+    setupComboView(hiddenDockWindows, !treeView || !propertyView);
+
+    // Report view must be created before PythonConsole!
+    setupReportView(hiddenDockWindows);
+    setupPythonConsole(hiddenDockWindows);
+    setupDAGView(hiddenDockWindows);
+}
+
+bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
+{
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
         //work through parameter.
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -346,15 +378,22 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
-            treeView = true;
             auto tree = new TreeDockWidget(nullptr, this);
             tree->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
             tree->setMinimumWidth(210);
+
+            DockWindowManager* pDockMgr = DockWindowManager::instance();
             pDockMgr->registerDockWindow("Std_TreeView", tree);
+            return true;
         }
     }
 
+    return false;
+}
+
+bool MainWindow::setupPropertyView(const std::string& hiddenDockWindows)
+{
     // Property view
     if (hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
         //work through parameter.
@@ -367,27 +406,41 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
-            propertyView = true;
             auto pcPropView = new PropertyDockView(nullptr, this);
             pcPropView->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
             pcPropView->setMinimumWidth(210);
+
+            DockWindowManager* pDockMgr = DockWindowManager::instance();
             pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+            return true;
         }
     }
 
+    return false;
+}
+
+bool MainWindow::setupSelectionView(const std::string& hiddenDockWindows)
+{
     // Selection view
     if (hiddenDockWindows.find("Std_SelectionView") == std::string::npos) {
         auto pcSelectionView = new SelectionView(nullptr, this);
         pcSelectionView->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Selection view")));
         pcSelectionView->setMinimumWidth(210);
+
+        DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_SelectionView", pcSelectionView);
+        return true;
     }
 
+    return false;
+}
+
+bool MainWindow::setupComboView(const std::string& hiddenDockWindows, bool enable)
+{
     // Combo view
     if (hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
-        bool enable = !treeView || !propertyView;
         if (!enable) {
             ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
@@ -397,29 +450,17 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         auto pcComboView = new ComboView(enable, nullptr, this);
         pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
         pcComboView->setMinimumWidth(150);
+
+        DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
+        return true;
     }
 
-    // Report view (must be created before PythonConsole!)
-    if (hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
-        auto pcReport = new ReportOutput(this);
-        pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
-        pcReport->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-        pDockMgr->registerDockWindow("Std_ReportView", pcReport);
-        auto rvObserver = new ReportOutputObserver(pcReport);
-        qApp->installEventFilter(rvObserver);
-    }
+    return false;
+}
 
-    // Python console
-    if (hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
-        auto pcPython = new PythonConsole(this);
-        pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-        pcPython->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
-        pDockMgr->registerDockWindow("Std_PythonView", pcPython);
-    }
-
+bool MainWindow::setupDAGView(const std::string& hiddenDockWindows)
+{
     //TODO: Add external object support for DAGView
 
     //Dag View.
@@ -442,26 +483,51 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             auto dagDockWindow = new DAG::DockWindow(nullptr, this);
             dagDockWindow->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+
+            DockWindowManager* pDockMgr = DockWindowManager::instance();
             pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+            return true;
         }
     }
 
-    // accept drops on the window, get handled in dropEvent, dragEnterEvent
-    setAcceptDrops(true);
-    statusBar()->showMessage(tr("Ready"), 2001);
+    return false;
 }
 
-MainWindow::~MainWindow()
+bool MainWindow::setupReportView(const std::string& hiddenDockWindows)
 {
-    delete d->status;
-    delete d;
-    instance = nullptr;
+    // Report view
+    if (hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
+        auto pcReport = new ReportOutput(this);
+        pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
+        pcReport->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
+
+        DockWindowManager* pDockMgr = DockWindowManager::instance();
+        pDockMgr->registerDockWindow("Std_ReportView", pcReport);
+
+        auto rvObserver = new ReportOutputObserver(pcReport);
+        qApp->installEventFilter(rvObserver);
+        return true;
+    }
+
+    return false;
 }
 
-MainWindow* MainWindow::getInstance()
+bool MainWindow::setupPythonConsole(const std::string& hiddenDockWindows)
 {
-    // MainWindow has a public constructor
-    return instance;
+    // Python console
+    if (hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
+        auto pcPython = new PythonConsole(this);
+        pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
+        pcPython->setObjectName
+            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
+
+        DockWindowManager* pDockMgr = DockWindowManager::instance();
+        pDockMgr->registerDockWindow("Std_PythonView", pcPython);
+        return true;
+    }
+
+    return false;
 }
 
 QMenu* MainWindow::createPopupMenu ()

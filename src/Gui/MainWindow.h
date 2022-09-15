@@ -276,6 +276,16 @@ protected:
      */
     void changeEvent(QEvent *e) override;
 
+private:
+    void setupDockWindows();
+    bool setupTreeView(const std::string&);
+    bool setupPropertyView(const std::string&);
+    bool setupSelectionView(const std::string&);
+    bool setupComboView(const std::string&, bool enable);
+    bool setupDAGView(const std::string&);
+    bool setupReportView(const std::string&);
+    bool setupPythonConsole(const std::string&);
+
 private Q_SLOTS:
     /**
      * \internal
