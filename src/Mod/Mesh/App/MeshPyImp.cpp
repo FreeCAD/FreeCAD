@@ -2050,7 +2050,7 @@ Py::Tuple MeshPy::getTopology() const
 {
     std::vector<Base::Vector3d> Points;
     std::vector<Data::ComplexGeoData::Facet> Facets;
-    getMeshObjectPtr()->getFaces(Points, Facets, 0.0f);
+    getMeshObjectPtr()->getFaces(Points, Facets, 0.0);
     Py::Tuple tuple(2);
     Py::List vertex;
     for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();

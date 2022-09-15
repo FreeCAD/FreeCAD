@@ -3487,9 +3487,16 @@ void TopoShape::getFacesFromDomains(const std::vector<Domain>& domains,
     points.swap(meshPoints);
 }
 
+double TopoShape::getAccuracy() const
+{
+    double deviation = 0.2;
+    Base::BoundBox3d bbox = getBoundBox();
+    return ((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
+}
+
 void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
                          std::vector<Facet> &aTopo,
-                         float accuracy, uint16_t /*flags*/) const
+                         double accuracy, uint16_t /*flags*/) const
 {
     if (this->_Shape.IsNull())
         return;
@@ -3679,14 +3686,14 @@ void TopoShape::getLinesFromSubShape(const TopoDS_Shape& shape,
 
 void TopoShape::getLines(std::vector<Base::Vector3d> &vertices,
                          std::vector<TopoShape::Line> &lines,
-                         float /*Accuracy*/, uint16_t /*flags*/) const
+                         double /*Accuracy*/, uint16_t /*flags*/) const
 {
     getLinesFromSubShape(_Shape, vertices, lines);
 }
 
 void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
                           std::vector<Base::Vector3d> &Normals,
-                          float Accuracy, uint16_t /*flags*/) const
+                          double Accuracy, uint16_t /*flags*/) const
 {
     if (_Shape.IsNull())
         return;

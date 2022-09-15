@@ -1931,9 +1931,9 @@ PyObject* TopoShapePy::hashCode(PyObject *args)
 
 PyObject* TopoShapePy::tessellate(PyObject *args)
 {
-    float tolerance;
+    double tolerance;
     PyObject* ok = Py_False;
-    if (!PyArg_ParseTuple(args, "f|O!",&tolerance,&PyBool_Type,&ok))
+    if (!PyArg_ParseTuple(args, "d|O!", &tolerance, &PyBool_Type, &ok))
         return nullptr;
 
     try {

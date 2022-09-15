@@ -188,7 +188,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
     if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         App::GeoFeature* object = static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
         if (object) {
-            float accuracy=0;
+            double accuracy = 0.0;
             Base::Type meshId  = Base::Type::fromName("Mesh::Feature");
             Base::Type shapeId = Base::Type::fromName("Part::Feature");
             Base::Type pointId = Base::Type::fromName("Points::Feature");
@@ -211,12 +211,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                 App::Property* propS = object->getPropertyByName("Shape");
                 if (propS && propS->getTypeId().isDerivedFrom(propId)) {
                     const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propS)->getComplexData();
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                        ("User parameter:BaseApp/Preferences/Mod/Part");
-                    float deviation = hGrp->GetFloat("MeshDeviation",0.2);
-
-                    Base::BoundBox3d bbox = data->getBoundBox();
-                    accuracy = (float)((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
+                    accuracy = data->getAccuracy();
                     data->getFaces(points, faces, accuracy);
                     if (points.empty()) {
                         std::vector<Base::Vector3d> normals_d;

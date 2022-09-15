@@ -140,10 +140,10 @@ void MeshObject::getFacesFromSubElement(const Data::Segment* element,
         const MeshSegment* segm = static_cast<const MeshSegment*>(element);
         if (segm->segment) {
             Base::Reference<MeshObject> submesh(segm->mesh->meshFromSegment(segm->segment->getIndices()));
-            submesh->getFaces(points, faces, 0.0f);
+            submesh->getFaces(points, faces, 0.0);
         }
         else {
-            segm->mesh->getFaces(points, faces, 0.0f);
+            segm->mesh->getFaces(points, faces, 0.0);
         }
     }
 }
@@ -309,7 +309,7 @@ MeshPoint MeshObject::getMeshPoint(PointIndex index) const
 
 void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
                            std::vector<Base::Vector3d> &Normals,
-                           float /*Accuracy*/, uint16_t /*flags*/) const
+                           double /*Accuracy*/, uint16_t /*flags*/) const
 {
     Points = transformPointsToOutside(_kernel.GetPoints());
     MeshCore::MeshRefNormalToPoints ptNormals(_kernel);
@@ -323,7 +323,7 @@ Mesh::Facet MeshObject::getMeshFacet(FacetIndex index) const
 }
 
 void MeshObject::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-                          float /*Accuracy*/, uint16_t /*flags*/) const
+                          double /*Accuracy*/, uint16_t /*flags*/) const
 {
     unsigned long ctpoints = _kernel.CountPoints();
     Points.reserve(ctpoints);

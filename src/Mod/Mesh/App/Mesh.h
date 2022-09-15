@@ -150,9 +150,9 @@ public:
     /** Get points from object with given accuracy */
     void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     std::vector<PointIndex> getPointsFromFacets(const std::vector<FacetIndex>& facets) const;
     bool nearestFacetOnRay(const TRay& ray, double maxAngle, TFaceSection& output) const;
     std::vector<TFaceSection> foraminate(const TRay& ray, double maxAngle) const;

@@ -136,15 +136,17 @@ private:
     void getFacesFromDomains(const std::vector<Domain>& domains, std::vector<Base::Vector3d>& vertices, std::vector<Facet>& faces) const;
 
 public:
+    /// Get the standard accuracy to be used with getPoints, getLines or getFaces
+    double getAccuracy() const override;
     /** Get points from object with given accuracy */
     void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     /** Get lines from object with given accuracy */
     void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void setFaces(const std::vector<Base::Vector3d> &Points,
                   const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;

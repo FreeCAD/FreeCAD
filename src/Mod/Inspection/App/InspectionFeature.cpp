@@ -106,13 +106,7 @@ Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 
 InspectActualShape::InspectActualShape(const Part::TopoShape& shape) : _rShape(shape)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Part");
-    float deviation = hGrp->GetFloat("MeshDeviation",0.2);
-
-    Base::BoundBox3d bbox = _rShape.getBoundBox();
-    Standard_Real deflection = (bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation;
-
+    Standard_Real deflection = _rShape.getAccuracy();
     fetchPoints(deflection);
 }
 
@@ -123,13 +117,13 @@ void InspectActualShape::fetchPoints(double deflection)
     TopExp::MapShapes(_rShape.getShape(), TopAbs_FACE, mapOfShapes);
     if (!mapOfShapes.IsEmpty()) {
         std::vector<Data::ComplexGeoData::Facet> f;
-        _rShape.getFaces(points, f, static_cast<float>(deflection));
+        _rShape.getFaces(points, f, deflection);
     }
     else {
         TopExp::MapShapes(_rShape.getShape(), TopAbs_EDGE, mapOfShapes);
         if (!mapOfShapes.IsEmpty()) {
             std::vector<Base::Vector3d> n;
-            _rShape.getPoints(points, n, static_cast<float>(deflection));
+            _rShape.getPoints(points, n, deflection);
         }
     }
 }

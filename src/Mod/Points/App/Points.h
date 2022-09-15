@@ -92,7 +92,7 @@ public:
 
     void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const override;
+        double Accuracy, uint16_t flags=0) const override;
     void transformGeometry(const Base::Matrix4D &rclMat) override;
     Base::BoundBox3d getBoundBox()const override;
 

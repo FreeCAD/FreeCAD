@@ -139,8 +139,10 @@ public:
 
     /** @name Getting basic geometric entities */
     //@{
+    /// Get the standard accuracy to be used with getPoints, getLines or getFaces
+    virtual double getAccuracy() const;
     /// Get the bound box
-    virtual Base::BoundBox3d getBoundBox()const=0;
+    virtual Base::BoundBox3d getBoundBox() const=0;
     /** Get point from line object intersection  */
     virtual Base::Vector3d getPointFromLineIntersection(
         const Base::Vector3f& base,
@@ -148,13 +150,13 @@ public:
     /** Get points from object with given accuracy */
     virtual void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     /** Get lines from object with given accuracy */
     virtual void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     /** Get faces from object with given accuracy */
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     /** Get the center of gravity
      * If this method is implemented then true is returned and the center of gravity.
      * The default implementation only returns false.
