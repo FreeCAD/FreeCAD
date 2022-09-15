@@ -766,45 +766,45 @@ def calculate_rho(stress_tensor, fy):
     rhoy = np.zeros(15)
     rhoz = np.zeros(15)
 
-    #    i1=sxx+syy+szz NOT USED
-    #    i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
+    # i1=sxx+syy+szz NOT USED
+    # i2=sxx*syy+syy*szz+szz*sxx-sxy**2-sxz**2-syz**2 NOT USED
     i3 = (sxx * syy * szz + 2 * sxy * sxz * syz - sxx * syz ** 2
           - syy * sxz ** 2 - szz * sxy ** 2)
 
-    #    Solution (5)
+    # Solution (5)
     d = (sxx * syy - sxy ** 2)
     if d != 0.:
         rhoz[0] = i3 / d / fy
 
-    #    Solution (6)
+    # Solution (6)
     d = (sxx * szz - sxz ** 2)
     if d != 0.:
         rhoy[1] = i3 / d / fy
 
-    #    Solution (7)
+    # Solution (7)
     d = (syy * szz - syz ** 2)
     if d != 0.:
         rhox[2] = i3 / d / fy
 
-    #    Solution (9)
+    # Solution (9)
     if sxx != 0.:
         fc = sxz * sxy / sxx - syz
         fxy = sxy ** 2 / sxx
         fxz = sxz ** 2 / sxx
 
-        #    Solution (9+)
+        # Solution (9+)
         rhoy[3] = syy - fxy + fc
         rhoy[3] /= fy
         rhoz[3] = szz - fxz + fc
         rhoz[3] /= fy
 
-        #    Solution (9-)
+        # Solution (9-)
         rhoy[4] = syy - fxy - fc
         rhoy[4] /= fy
         rhoz[4] = szz - fxz - fc
         rhoz[4] /= fy
 
-    #   Solution (10)
+    # Solution (10)
     if syy != 0.:
         fc = syz * sxy / syy - sxz
         fxy = sxy ** 2 / syy
