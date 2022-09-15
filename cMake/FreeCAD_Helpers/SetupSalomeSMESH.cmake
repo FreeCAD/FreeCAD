@@ -121,6 +121,10 @@ macro(SetupSalomeSMESH)
             find_package(SMESH CONFIG)
             set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
             set(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
+            # If this definition is not set, linker errors will occur against SMESH on 64 bit machines.
+            if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+                add_definitions(-DSALOME_USE_64BIT_IDS)
+            endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
             if(NOT SMESH_FOUND)
                 message(ERROR "================\n"
                               "SMESH not found.\n"
