@@ -81,6 +81,7 @@ void QGVNavStyle::initialize()
     m_zoomPending = false;
     m_clickButton = Qt::NoButton;
     m_saveCursor = getViewer()->cursor();
+    m_wheelDeltaCounter = 0;
 }
 
 void QGVNavStyle::setAnchor()
@@ -268,21 +269,29 @@ void QGVNavStyle::pseudoContextEvent()
 
 void QGVNavStyle::handleWheelEvent(QWheelEvent *event)
 {
-//Delta is the distance that the wheel is rotated, in eighths of a degree.
-//positive indicates rotation forwards away from the user; negative backwards toward the user.
-//Most mouse types work in steps of 15 degrees, in which case the delta value is a multiple of 120; i.e., 120 units * 1/8 = 15 degrees.
-//1 click = 15 degrees.  15 degrees = 120 deltas.  delta/240 -> 1 click = 0.5 ==> factor = 1.2^0.5 = 1.095
-//                                                              1 click = -0.5 ==> factor = 1.2^-0.5 = 0.91
-//so to change wheel direction, multiply (event->delta() / 240.0) by +/-1
-    double mouseBase = 1.2;        //magic numbers. change for different mice?
-    double mouseAdjust = -240.0;
-    if (invertZoom) {
-        mouseAdjust = -mouseAdjust;
-    }
+//gets called once for every click of the wheel. the sign of event->angleDelta().y()
+//gives the direction of wheel rotation. positive indicates rotation forwards away
+//from the user; negative backwards toward the user. the magnitude of
+//event->angleDelta().y() is 120 for most mice which represents 120/8 = 15 degrees of
+//rotation. Some high resolution mice/trackpads report smaller values - ie a click is less than
+//15 degrees of wheel rotation.
+//https://doc.qt.io/qt-5/qwheelevent.html#angleDelta
 
-    int delta = event->angleDelta().y();
-    qreal factor = std::pow(mouseBase, delta / mouseAdjust);
-    zoom(factor);
+    //to avoid overly sensitive behaviour in high resolution mice/touchpads,
+    //save up wheel clicks until the wheel has rotated at least 15 degrees.
+    int wheelDeltaThreshold = 120;
+    m_wheelDeltaCounter += std::abs(event->angleDelta().y());
+    if (m_wheelDeltaCounter < wheelDeltaThreshold) {
+        return;
+    }
+    m_wheelDeltaCounter = 0;
+    //starting with -ve direction keeps us in sync with the behaviour of the 3d window
+    int rotationDirection = - event->angleDelta().y() / std::abs(event->angleDelta().y());
+    if (invertZoom) {
+        rotationDirection = -rotationDirection;
+    }
+    double zoomFactor = 1 + rotationDirection * zoomStep;
+    zoom(zoomFactor);
 }
 
 void QGVNavStyle::zoom(double factor)
