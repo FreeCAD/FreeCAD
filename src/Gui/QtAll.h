@@ -111,6 +111,7 @@
 #include <qpainter.h>
 #include <qpalette.h>
 #include <qpixmap.h>
+#include <QPdfWriter>
 #include <QPixmapCache>
 #include <QPlainTextEdit>
 #include <QPrinter>
