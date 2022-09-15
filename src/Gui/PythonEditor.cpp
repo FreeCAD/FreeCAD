@@ -87,7 +87,6 @@ PythonEditor::PythonEditor(QWidget* parent)
 /** Destroys the object and frees any allocated resources */
 PythonEditor::~PythonEditor()
 {
-    getWindowParameter()->Detach( this );
     delete d;
 }
 
