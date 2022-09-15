@@ -47,14 +47,12 @@ void QGVNavStyleTouchpad::handleKeyPressEvent(QKeyEvent *event)
 {
 //    Q_UNUSED(event)
     if (event->key() == Qt::Key_PageUp) {
-        setAnchor();
         zoom(1.0 + zoomStep);
         event->accept();
         return;
     }
 
     if (event->key() == Qt::Key_PageDown) {
-        setAnchor();
         zoom(1.0 - zoomStep);
         event->accept();
         return;
@@ -101,7 +99,6 @@ void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
         QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier) ) {
         //if control and shift are down, then we are zooming
         if (zoomingActive) {
-            setAnchor();
             zoom(mouseZoomFactor(event->pos()));
         } else {
             startZoom(event->pos());
