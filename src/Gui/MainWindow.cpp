@@ -479,6 +479,8 @@ void MainWindow::setupDockWindows()
     setupReportView(hiddenDockWindows);
     setupPythonConsole(hiddenDockWindows);
     setupDAGView(hiddenDockWindows);
+
+    this->setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::North);
 }
 
 bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
@@ -580,8 +582,8 @@ bool MainWindow::setupComboView(const std::string& hiddenDockWindows, bool enabl
             enable = group->GetBool("Enabled", true);
         }
 
-        auto pcComboView = new ComboView(enable, nullptr, this);
-        pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
+        auto pcComboView = new ComboView(nullptr, this);
+        pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget", "Model")));
         pcComboView->setMinimumWidth(150);
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
