@@ -148,7 +148,7 @@ public:
      */
     template<typename F, class... Args>
     void callExtension(F&& f, Args&&... args) const {
-        for(auto entry : _extensions) {            
+        for (const auto &entry : _extensions) {            
             if(entry.first.isDerivedFrom(ClassOf<F>::type::getExtensionClassTypeId()))
                 (static_cast<typename ClassOf<F>::type*>(entry.second)->*f)(std::forward<Args>(args)...);
         }
@@ -165,7 +165,7 @@ public:
      */
     template<typename F, class... Args>
     bool queryExtension(F&& f, Args&&... args) const {
-        for(auto entry : _extensions) {            
+        for (const auto &entry : _extensions) {            
             if(entry.first.isDerivedFrom(ClassOf<F>::type::getExtensionClassTypeId())) {
                 if((static_cast<typename ClassOf<F>::type*>(entry.second)->*f)(std::forward<Args>(args)...))
                     return true;
@@ -185,7 +185,7 @@ public:
      */
     template<typename T, typename F>
     bool foreachExtension(F f) const {
-        for(auto entry : _extensions) {            
+        for (const auto &entry : _extensions) {            
             if(entry.first.isDerivedFrom(T::getExtensionClassTypeId())) {
                 if(f(static_cast<T*>(entry.second)))
                     return true;
@@ -199,7 +199,7 @@ public:
     template<typename ExtensionT>
     std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
         std::vector<ExtensionT*> typevec;
-        for(auto entry : _extensions) {
+        for (const auto &entry : _extensions) {
             if(entry.first.isDerivedFrom(ExtensionT::getExtensionClassTypeId()))
                 typevec.push_back(static_cast<ExtensionT*>(entry.second));
         }

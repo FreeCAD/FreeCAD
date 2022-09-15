@@ -699,7 +699,7 @@ PyObject* SketchObjectPy::attachExternal(PyObject *args)
                 "Expect the first argument to be either integer or string or list of integer or string");
         return nullptr;
     }
-    for(auto arg : pyargs) {
+    for(const auto &arg : pyargs) {
         if(arg.isNumeric())
             geoIds.push_back(Py::Int(arg));
         else if(arg.isString()) {

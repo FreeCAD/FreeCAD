@@ -64,9 +64,9 @@ public:
     /** @name Modification */
     //@{
     /// Set the placement of the geometry
-    void setTransform(const Base::Matrix4D& rclTrf);
+    virtual void setTransform(const Base::Matrix4D& rclTrf) override;
     /// Get the placement of the geometry
-    Base::Matrix4D getTransform() const;
+    virtual Base::Matrix4D getTransform() const override;
     /// Transform the real shape data
     virtual void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
