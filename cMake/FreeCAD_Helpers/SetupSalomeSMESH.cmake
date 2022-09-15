@@ -119,6 +119,10 @@ macro(SetupSalomeSMESH)
 
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(SMESH CONFIG)
+            # If this definition is not set, linker errors will occur against SMESH on 64 bit machines.
+            if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+                add_definitions(-DSALOME_USE_64BIT_IDS)
+            endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
             if(NOT SMESH_FOUND)
                 find_package(SMESH REQUIRED)
                 if(NOT SMESH_FOUND)
