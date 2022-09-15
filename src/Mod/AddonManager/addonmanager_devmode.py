@@ -39,7 +39,7 @@ from PySide2.QtGui import (
     QPixmap,
 )
 from PySide2.QtCore import Qt
-from addonmanager_git import GitManager
+from addonmanager_git import GitManager, NoGitFound
 
 from addonmanager_devmode_add_content import AddContent
 from addonmanager_devmode_validators import NameValidator, VersionValidator
@@ -58,11 +58,18 @@ ContentIndexRole = Qt.UserRole + 1
 class AddonGitInterface:
     """Wrapper to handle the git calls needed by this class"""
 
-    git_manager = GitManager()
+    git_manager = None
 
     def __init__(self, path):
-        self.path = path
         self.git_exists = False
+        if not AddonGitInterface.git_manager:
+            try:
+                AddonGitInterface.git_manager = GitManager()
+            except NoGitFound:
+                FreeCAD.Console.PrintLog("No git found, Addon Manager Developer Mode disabled.")
+                return
+
+        self.path = path
         if os.path.exists(os.path.join(path, ".git")):
             self.git_exists = True
             self.branch = AddonGitInterface.git_manager.current_branch(self.path)
