@@ -287,13 +287,9 @@ void QGVNavStyle::handleWheelEvent(QWheelEvent *event)
 
 void QGVNavStyle::zoom(double factor)
 {
-    QPoint center = getViewer()->viewport()->rect().center();
+    setAnchor();
     getViewer()->scale(factor,
                        factor);
-
-    QPoint newCenter = getViewer()->viewport()->rect().center();
-    QPoint change = newCenter - center;
-    getViewer()->translate(change.x(), change.y());
     m_zoomPending = false;
 }
 
