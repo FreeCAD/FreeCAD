@@ -3491,7 +3491,9 @@ double TopoShape::getAccuracy() const
 {
     double deviation = 0.2;
     Base::BoundBox3d bbox = getBoundBox();
-    return ((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
+    if (bbox.IsValid())
+        return ((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
+    return ComplexGeoData::getAccuracy();
 }
 
 void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,

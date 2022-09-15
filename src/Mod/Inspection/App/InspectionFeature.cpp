@@ -116,14 +116,18 @@ void InspectActualShape::fetchPoints(double deflection)
     TopTools_IndexedMapOfShape mapOfShapes;
     TopExp::MapShapes(_rShape.getShape(), TopAbs_FACE, mapOfShapes);
     if (!mapOfShapes.IsEmpty()) {
-        std::vector<Data::ComplexGeoData::Facet> f;
-        _rShape.getFaces(points, f, deflection);
+        std::vector<Data::ComplexGeoData::Facet> faces;
+        _rShape.getFaces(points, faces, deflection);
     }
     else {
         TopExp::MapShapes(_rShape.getShape(), TopAbs_EDGE, mapOfShapes);
         if (!mapOfShapes.IsEmpty()) {
-            std::vector<Base::Vector3d> n;
-            _rShape.getPoints(points, n, deflection);
+            std::vector<Data::ComplexGeoData::Line> lines;
+            _rShape.getLines(points, lines, deflection);
+        }
+        else {
+            std::vector<Base::Vector3d> normals;
+            _rShape.getPoints(points, normals, deflection);
         }
     }
 }

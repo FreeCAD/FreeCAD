@@ -38,6 +38,7 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
@@ -182,101 +183,149 @@ void ViewProviderInspection::attach(App::DocumentObject *pcFeat)
     pcColorRoot->addChild(pcColorBar);
 }
 
+bool ViewProviderInspection::setupFaces(const Data::ComplexGeoData* data)
+{
+    std::vector<Base::Vector3d> points;
+    std::vector<Data::ComplexGeoData::Facet> faces;
+
+    // set the Distance property to the correct size to sync size of material node with number
+    // of vertices/points of the referenced geometry
+    double accuracy = data->getAccuracy();
+    data->getFaces(points, faces, accuracy);
+    if (faces.empty()) {
+        return false;
+    }
+
+    setupCoords(points);
+    setupFaceIndexes(faces);
+    return true;
+}
+
+bool ViewProviderInspection::setupLines(const Data::ComplexGeoData* data)
+{
+    std::vector<Base::Vector3d> points;
+    std::vector<Data::ComplexGeoData::Line> lines;
+
+    double accuracy = data->getAccuracy();
+    data->getLines(points, lines, accuracy);
+    if (lines.empty()) {
+        return false;
+    }
+
+    setupCoords(points);
+    setupLineIndexes(lines);
+    return true;
+}
+
+bool ViewProviderInspection::setupPoints(const Data::ComplexGeoData* data, App::PropertyContainer* container)
+{
+    std::vector<Base::Vector3d> points;
+    std::vector<Base::Vector3f> normals;
+    std::vector<Base::Vector3d> normals_d;
+    double accuracy = data->getAccuracy();
+    data->getPoints(points, normals_d, accuracy);
+    if (points.empty()) {
+        return false;
+    }
+
+    normals.reserve(normals_d.size());
+    std::transform(normals_d.cbegin(), normals_d.cend(), std::back_inserter(normals), [](const Base::Vector3d& p){
+        return Base::toVector<float>(p);
+    });
+
+    // If getPoints() doesn't deliver normals check a second property
+    if (normals.empty() && container) {
+        App::Property* propN = container->getPropertyByName("Normal");
+        if (propN && propN->getTypeId().isDerivedFrom(Points::PropertyNormalList::getClassTypeId())) {
+            normals = static_cast<Points::PropertyNormalList*>(propN)->getValues();
+        }
+    }
+
+    setupCoords(points);
+    if (!normals.empty() && normals.size() == points.size()) {
+        setupNormals(normals);
+    }
+
+    this->pcLinkRoot->addChild(this->pcPointStyle);
+    this->pcLinkRoot->addChild(new SoPointSet());
+
+    return true;
+}
+
+void ViewProviderInspection::setupCoords(const std::vector<Base::Vector3d>& points)
+{
+    this->pcLinkRoot->addChild(this->pcCoords);
+    this->pcCoords->point.setNum(points.size());
+    SbVec3f* pts = this->pcCoords->point.startEditing();
+    for (size_t i=0; i < points.size(); i++) {
+        const Base::Vector3d& p = points[i];
+        pts[i].setValue((float)p.x,(float)p.y,(float)p.z);
+    }
+    this->pcCoords->point.finishEditing();
+}
+
+void ViewProviderInspection::setupNormals(const std::vector<Base::Vector3f>& normals)
+{
+    SoNormal* normalNode = new SoNormal();
+    normalNode->vector.setNum(normals.size());
+    SbVec3f* norm = normalNode->vector.startEditing();
+
+    std::size_t i=0;
+    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
+        norm[i++].setValue(it->x, it->y, it->z);
+    }
+
+    normalNode->vector.finishEditing();
+    this->pcLinkRoot->addChild(normalNode);
+}
+
+void ViewProviderInspection::setupLineIndexes(const std::vector<Data::ComplexGeoData::Line>& lines)
+{
+    SoIndexedLineSet* line = new SoIndexedLineSet();
+    this->pcLinkRoot->addChild(line);
+    line->coordIndex.setNum(3 * lines.size());
+    int32_t* indices = line->coordIndex.startEditing();
+    unsigned long j=0;
+    for (const auto& it : lines) {
+        indices[3*j+0] = it.I1;
+        indices[3*j+1] = it.I2;
+        indices[3*j+2] = SO_END_LINE_INDEX;
+        j++;
+    }
+    line->coordIndex.finishEditing();
+}
+
+void ViewProviderInspection::setupFaceIndexes(const std::vector<Data::ComplexGeoData::Facet>& faces)
+{
+    SoIndexedFaceSet* face = new SoIndexedFaceSet();
+    this->pcLinkRoot->addChild(face);
+    face->coordIndex.setNum(4*faces.size());
+    int32_t* indices = face->coordIndex.startEditing();
+    unsigned long j=0;
+    for (const auto& it : faces) {
+        indices[4*j+0] = it.I1;
+        indices[4*j+1] = it.I2;
+        indices[4*j+2] = it.I3;
+        indices[4*j+3] = SO_END_FACE_INDEX;
+        j++;
+    }
+    face->coordIndex.finishEditing();
+}
+
 void ViewProviderInspection::updateData(const App::Property* prop)
 {
     // set to the expected size
     if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         App::GeoFeature* object = static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
-        if (object) {
-            double accuracy = 0.0;
-            Base::Type meshId  = Base::Type::fromName("Mesh::Feature");
-            Base::Type shapeId = Base::Type::fromName("Part::Feature");
-            Base::Type pointId = Base::Type::fromName("Points::Feature");
-            Base::Type propId  = App::PropertyComplexGeoData::getClassTypeId();
-
-            std::vector<Base::Vector3d> points;
-            std::vector<Base::Vector3f> normals;
-            std::vector<Data::ComplexGeoData::Facet> faces;
-
-            // set the Distance property to the correct size to sync size of material node with number
-            // of vertices/points of the referenced geometry
-            if (object->getTypeId().isDerivedFrom(meshId)) {
-                App::Property* propM = object->getPropertyByName("Mesh");
-                if (propM && propM->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propM)->getComplexData();
-                    data->getFaces(points, faces, accuracy);
-                }
-            }
-            else if (object->getTypeId().isDerivedFrom(shapeId)) {
-                App::Property* propS = object->getPropertyByName("Shape");
-                if (propS && propS->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propS)->getComplexData();
-                    accuracy = data->getAccuracy();
-                    data->getFaces(points, faces, accuracy);
-                    if (points.empty()) {
-                        std::vector<Base::Vector3d> normals_d;
-                        data->getPoints(points, normals_d, accuracy);
-                        normals.reserve(normals_d.size());
-                        std::transform(normals_d.cbegin(), normals_d.cend(), std::back_inserter(normals), [](const Base::Vector3d& p){
-                            return Base::toVector<float>(p);
-                        });
-                    }
-                }
-            }
-            else if (object->getTypeId().isDerivedFrom(pointId)) {
-                App::Property* propP = object->getPropertyByName("Points");
-                if (propP && propP->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propP)->getComplexData();
-                    std::vector<Base::Vector3d> normals;
-                    data->getPoints(points, normals, accuracy);
-                }
-                App::Property* propN = object->getPropertyByName("Normal");
-                if (propN && propN->getTypeId().isDerivedFrom(Points::PropertyNormalList::getClassTypeId())) {
-                    normals = static_cast<Points::PropertyNormalList*>(propN)->getValues();
-                }
-            }
-
+        const App::PropertyComplexGeoData* propData = object ? object->getPropertyOfGeometry() : nullptr;
+        if (propData) {
             Gui::coinRemoveAllChildren(this->pcLinkRoot);
-            this->pcLinkRoot->addChild(this->pcCoords);
-            this->pcCoords->point.setNum(points.size());
-            SbVec3f* pts = this->pcCoords->point.startEditing();
-            for (size_t i=0; i < points.size(); i++) {
-                const Base::Vector3d& p = points[i];
-                pts[i].setValue((float)p.x,(float)p.y,(float)p.z);
-            }
-            this->pcCoords->point.finishEditing();
 
-            if (!faces.empty()) {
-                SoIndexedFaceSet* face = new SoIndexedFaceSet();
-                this->pcLinkRoot->addChild(face);
-                face->coordIndex.setNum(4*faces.size());
-                int32_t* indices = face->coordIndex.startEditing();
-                unsigned long j=0;
-                std::vector<Data::ComplexGeoData::Facet>::iterator it;
-                for (it = faces.begin(); it != faces.end(); ++it,j++) {
-                    indices[4*j+0] = it->I1;
-                    indices[4*j+1] = it->I2;
-                    indices[4*j+2] = it->I3;
-                    indices[4*j+3] = SO_END_FACE_INDEX;
+            const Data::ComplexGeoData* data = propData->getComplexData();
+            if (!setupFaces(data)) {
+                if (!setupLines(data)) {
+                    setupPoints(data, object);
                 }
-                face->coordIndex.finishEditing();
-            }
-            else {
-                if (!normals.empty() && normals.size() == points.size()) {
-                    SoNormal* normalNode = new SoNormal();
-                    normalNode->vector.setNum(normals.size());
-                    SbVec3f* norm = normalNode->vector.startEditing();
-
-                    std::size_t i=0;
-                    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
-                        norm[i++].setValue(it->x, it->y, it->z);
-                    }
-
-                    normalNode->vector.finishEditing();
-                    this->pcLinkRoot->addChild(normalNode);
-                }
-                this->pcLinkRoot->addChild(this->pcPointStyle);
-                this->pcLinkRoot->addChild(new SoPointSet());
             }
         }
     }
