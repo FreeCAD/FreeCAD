@@ -119,6 +119,7 @@ protected:
 
     KeyCombination m_keyCombo;
     QCursor m_saveCursor;
+    int m_wheelDeltaCounter;
 
 private:
 
