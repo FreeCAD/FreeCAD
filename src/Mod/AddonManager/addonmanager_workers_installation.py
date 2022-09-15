@@ -147,7 +147,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         will revert to a clean clone."""
         self.status_message.emit("Updating module...")
         with self.repo.git_lock:
-            if not os.path.exists(clonedir + os.sep + ".git"):
+            if not os.path.exists(os.path.join(clonedir, ".git")):
                 self.git_manager.repair(self.repo.url, clonedir)
             try:
                 self.git_manager.update(clonedir)

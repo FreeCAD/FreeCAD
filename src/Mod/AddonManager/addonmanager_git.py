@@ -231,6 +231,7 @@ class GitManager:
             os.chdir(original_cwd)
             raise e
         os.chdir(original_cwd)
+        shutil.rmtree(backup_path, ignore_errors=True)
 
     def get_remote(self, local_path) -> str:
         """Get the repository that this local path is set to fetch from"""
