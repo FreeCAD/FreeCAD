@@ -3,6 +3,7 @@ on:
   push:
     branches: ['master', 'development/toponaming', 'releases/FreeCAD-0-20']
   pull_request:
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
