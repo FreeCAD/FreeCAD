@@ -129,18 +129,18 @@ execute_process(
 add_subdirectory(QuickLook)
 message("Quicklook: copy framework template from <<${CMAKE_CURRENT_LIST_DIR}>>/QuickLook/ to <<${CMAKE_INSTALL_PREFIX}>>/Library/QuickLook")
 install(
-	DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/QuickLook/QuicklookFCStd.qlgenerator" 
-	DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook"
+    DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/QuickLook/QuicklookFCStd.qlgenerator"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook"
 )
 #message("Quicklook: copy framework library from ${PROJECT_BINARY_DIR}/src/MacAppBundle/QuickLook/QuicklookFCStd.framework/QuicklookFCStd to ${CMAKE_INSTALL_PREFIX}/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/")
 install(
-#	TARGETS QuicklookFCStd
-#	LIBRARY 
-	PROGRAMS "${PROJECT_BINARY_DIR}/src/MacAppBundle/QuickLook/QuicklookFCStd.framework/Versions/A/QuicklookFCStd"
-	DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/"
+#   TARGETS QuicklookFCStd
+#   LIBRARY
+    PROGRAMS "${PROJECT_BINARY_DIR}/src/MacAppBundle/QuickLook/QuicklookFCStd.framework/Versions/A/QuicklookFCStd"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/"
 )
 
-install(CODE 
+install(CODE
     "message(STATUS \"Making bundle relocatable...\")
     # The top-level CMakeLists.txt should prevent multiple package manager
     # prefixes from being set, so the lib path will resolve correctly...
