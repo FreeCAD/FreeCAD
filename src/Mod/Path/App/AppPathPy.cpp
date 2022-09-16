@@ -161,7 +161,7 @@ namespace PathApp {
 
           if (PyObject_TypeCheck(pObj, &(App::DocumentObjectPy::Type))) {
               App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
-              if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("PathApp::Feature"))) {
+              if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Path::Feature"))) {
                   const Path::Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
                   std::string gcode = path.toGCode();
                   Base::ofstream ofile(file);
@@ -206,7 +206,7 @@ namespace PathApp {
               std::string gcode = buffer.str();
               Path::Toolpath path;
               path.setFromGCode(gcode);
-              Path::Feature *object = static_cast<Path::Feature *>(pcDoc->addObject("PathApp::Feature",file.fileNamePure().c_str()));
+              Path::Feature *object = static_cast<Path::Feature *>(pcDoc->addObject("Path::Feature",file.fileNamePure().c_str()));
               object->Path.setValue(path);
               pcDoc->recompute();
           }
@@ -230,7 +230,7 @@ namespace PathApp {
               if (!pcDoc)
                   pcDoc = App::GetApplication().newDocument();
               Path::PathPy* pPath = static_cast<Path::PathPy*>(pcObj);
-              Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("PathApp::Feature", name));
+              Path::Feature *pcFeature = static_cast<Path::Feature*>(pcDoc->addObject("Path::Feature", name));
               Path::Toolpath* pa = pPath->getToolpathPtr();
               if (!pa) {
                   throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid path");
