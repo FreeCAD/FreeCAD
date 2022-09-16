@@ -80,9 +80,23 @@ void DrawViewClip::addView(DrawView *view)
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(view);
     Views.setValues(newViews);
-    view->X.setValue(0.0);                   //position in centre of clip group frame
-    view->Y.setValue(0.0);
-    auto page = findParentPage();             //get Page to release child relationship in tree
+    QRectF viewRect = view->getRectAligned();
+    QPointF clipPoint(X.getValue(), Y.getValue());
+    if (viewRect.contains(clipPoint)) {
+        //position so the part of view that is overlapped by clip frame
+        //stays in the clip frame
+        double deltaX = view->X.getValue() - X.getValue();
+        double deltaY = view->Y.getValue() - Y.getValue();
+        view->X.setValue(deltaX);
+        view->Y.setValue(deltaY);
+    } else {
+        //position in centre of clip group frame
+        view->X.setValue(0.0);
+        view->Y.setValue(0.0);
+    }
+
+    //reparent view to clip in tree
+    auto page = findParentPage();
     page->Views.touch();
 }
 
