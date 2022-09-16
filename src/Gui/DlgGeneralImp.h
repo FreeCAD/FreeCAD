@@ -59,6 +59,7 @@ protected Q_SLOTS:
     void recreatePreferencePackMenu();
     void newPreferencePackDialogAccepted();
     void onManagePreferencePacksClicked();
+    void onImportConfigClicked();
 
 private:
     void setRecentFileSize();

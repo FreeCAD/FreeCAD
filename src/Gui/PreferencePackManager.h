@@ -156,9 +156,6 @@ namespace Gui {
          * color that is only used internally, and it should not include things like fonts, or 
          * behavior information.
          * 
-         * Template files are always located in a directory hierarchy that differentiates between
-         * templates that only affect appearance, and those that affect behavior.
-         * 
          * The base FreeCAD installation includes default templates in:
          *    $INSTALL_DIR/data/Gui/PreferencePackTemplates/
          * 
@@ -189,6 +186,11 @@ namespace Gui {
          */
         std::vector<boost::filesystem::path> configBackups() const;
 
+        /**
+         * Import an existing config file as a preference pack with a given name.
+         */
+        void importConfig(const std::string &packName, const boost::filesystem::path &path);
+
     private:
 
         void FindPreferencePacksInPackage(const boost::filesystem::path& mod);
@@ -196,6 +198,8 @@ namespace Gui {
         void BackupCurrentConfig() const;
 
         void DeleteOldBackups() const;
+
+        void AddPackToMetadata(const std::string &packName) const;
 
         std::vector<boost::filesystem::path> _preferencePackPaths;
         std::vector<TemplateFile> _templateFiles;

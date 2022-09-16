@@ -103,22 +103,22 @@
           </widget>
          </item>
          <item row="1" column="2">
-           <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
-            <property name="toolTip">
-             <string>If enabled, numerical keypad decimal separator will be substituted with locale separator</string>
-            </property>
-            <property name="text">
-             <string>Substitute decimal separator (needs restart)</string>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>SubstituteDecimalSeparator</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>General</cstring>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
+           <property name="toolTip">
+            <string>If enabled, numerical keypad decimal separator will be substituted with locale separator</string>
+           </property>
+           <property name="text">
+            <string>Substitute decimal separator (needs restart)</string>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>SubstituteDecimalSeparator</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>General</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -170,11 +170,11 @@
              <attribute name="horizontalHeaderCascadingSectionResizes">
               <bool>true</bool>
              </attribute>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>100</number>
-             </attribute>
              <attribute name="horizontalHeaderMinimumSectionSize">
               <number>30</number>
+             </attribute>
+             <attribute name="horizontalHeaderDefaultSectionSize">
+              <number>100</number>
              </attribute>
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
@@ -182,11 +182,11 @@
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
-             <attribute name="verticalHeaderDefaultSectionSize">
-              <number>24</number>
-             </attribute>
              <attribute name="verticalHeaderMinimumSectionSize">
               <number>16</number>
+             </attribute>
+             <attribute name="verticalHeaderDefaultSectionSize">
+              <number>24</number>
              </attribute>
              <column>
               <property name="text">
@@ -231,6 +231,13 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ImportConfig">
+               <property name="text">
+                <string>Import config...</string>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QPushButton" name="SaveNewPreferencePack">
@@ -556,7 +563,7 @@ after FreeCAD launches</string>
            </item>
           </layout>
          </item>
-        <item row="2" column="0">
+         <item row="2" column="0">
           <widget class="Gui::PrefCheckBox" name="SplashScreen">
            <property name="toolTip">
             <string>A Splash screen is a small loading window that is shown
@@ -577,7 +584,7 @@ display the splash screen</string>
            </property>
           </widget>
          </item>
-         </layout>
+        </layout>
        </widget>
       </item>
      </layout>

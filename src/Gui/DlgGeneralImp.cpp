@@ -24,7 +24,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QFileDialog>
 # include <QLocale>
+# include <QMessageBox>
+# include <algorithm>
+# include <boost/filesystem.hpp>
 #endif
 
 #include "DlgGeneralImp.h"
@@ -39,8 +43,8 @@
 #include "PreferencePackManager.h"
 #include "Language/Translator.h"
 
-
 using namespace Gui::Dialog;
+namespace fs = boost::filesystem;
 
 /* TRANSLATOR Gui::Dialog::DlgGeneralImp */
 
@@ -86,6 +90,8 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     }
 
     recreatePreferencePackMenu();
+
+    connect(ui->ImportConfig, &QPushButton::clicked, this, &DlgGeneralImp::onImportConfigClicked);
     connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
 
     ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
@@ -446,6 +452,29 @@ void DlgGeneralImp::onManagePreferencePacksClicked()
             this, &DlgGeneralImp::recreatePreferencePackMenu);
     }
     this->preferencePackManagementDialog->show();
+}
+
+void DlgGeneralImp::onImportConfigClicked() 
+{
+    auto path = fs::path(QFileDialog::getOpenFileName(this, 
+        tr("Choose a FreeCAD config file to import"), 
+        QString(), 
+        QString::fromUtf8("*.cfg")).toStdString());
+    if (!path.empty()) {
+        // Create a name from the filename:
+        auto packName = path.filename().stem().string();
+        std::replace(packName.begin(), packName.end(), '_', ' ');
+        auto existingPacks = Application::Instance->prefPackManager()->preferencePackNames();
+        if (std::find(existingPacks.begin(), existingPacks.end(), packName)
+            != existingPacks.end()) {
+            auto result = QMessageBox::question(
+                this, tr("File exists"),
+                tr("A preference pack with that name already exists. Overwrite?"));
+            if (result == QMessageBox::No) return; // Maybe someday ask for a new name?
+        }
+        Application::Instance->prefPackManager()->importConfig(packName, path);
+        recreatePreferencePackMenu();
+    }
 }
 
 void DlgGeneralImp::onLoadPreferencePackClicked(const std::string& packName)
