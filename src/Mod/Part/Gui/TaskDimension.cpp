@@ -227,9 +227,17 @@ void PartGui::dumpLinearResults(const BRepExtrema_DistShapeShape &measure)
 auto PartGui::getDimensionsFontName()
 {
   ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/Mod/Part");
-  std::string fontName = group->GetASCII("DimensionsFontName", "defaultFont")
-    + (group->GetBool("DimensionsFontStyleBold",   false) ? " :Bold"   : "")
-    + (group->GetBool("DimensionsFontStyleItalic", false) ? " :Italic" : "");
+  std::string fontName = group->GetASCII("DimensionsFontName", "defaultFont");
+  // if there is only italic, we must output ":Italic", otherwise ":Bold Italic"
+  if (group->GetBool("DimensionsFontStyleBold")) {
+      fontName = fontName + " :Bold";
+      if (group->GetBool("DimensionsFontStyleItalic"))
+          fontName = fontName + " Italic";
+  }
+  else {
+      if (group->GetBool("DimensionsFontStyleItalic"))
+          fontName = fontName + " :Italic";
+  }
   return fontName;
 }
 
