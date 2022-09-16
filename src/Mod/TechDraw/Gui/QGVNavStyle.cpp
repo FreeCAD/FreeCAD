@@ -82,6 +82,7 @@ void QGVNavStyle::initialize()
     m_clickButton = Qt::NoButton;
     m_saveCursor = getViewer()->cursor();
     m_wheelDeltaCounter = 0;
+    m_mouseDeltaCounter = 0;
 }
 
 void QGVNavStyle::setAnchor()
@@ -160,7 +161,6 @@ void QGVNavStyle::handleKeyPressEvent(QKeyEvent *event)
             }
             case Qt::Key_Shift: {
                 this->shiftdown = true;
-                Base::Console().Message("QGVNS::handleKeyPressEvent - shift pressed\n");
                 event->accept();
                 break;
             }
@@ -178,7 +178,6 @@ void QGVNavStyle::handleKeyReleaseEvent(QKeyEvent *event)
         switch(event->key()) {
             case Qt::Key_Shift: {
                 this->shiftdown = false;
-                Base::Console().Message("QGVNS::handleKeyPressEvent - shift released\n");
                 event->accept();
                 break;
             }
@@ -276,10 +275,9 @@ void QGVNavStyle::handleWheelEvent(QWheelEvent *event)
 //rotation. Some high resolution mice/trackpads report smaller values - ie a click is less than
 //15 degrees of wheel rotation.
 //https://doc.qt.io/qt-5/qwheelevent.html#angleDelta
-
     //to avoid overly sensitive behaviour in high resolution mice/touchpads,
     //save up wheel clicks until the wheel has rotated at least 15 degrees.
-    int wheelDeltaThreshold = 120;
+    constexpr int wheelDeltaThreshold = 120;
     m_wheelDeltaCounter += std::abs(event->angleDelta().y());
     if (m_wheelDeltaCounter < wheelDeltaThreshold) {
         return;
@@ -296,6 +294,15 @@ void QGVNavStyle::handleWheelEvent(QWheelEvent *event)
 
 void QGVNavStyle::zoom(double factor)
 {
+    constexpr double minimumScale(0.01);
+    QTransform transform = getViewer()->transform();
+    double xScale = transform.m11();
+    if (xScale <= minimumScale &&
+        factor < 1.0) {
+        //don't scale any smaller than this
+        return;
+    }
+
     setAnchor();
     getViewer()->scale(factor,
                        factor);
@@ -321,18 +328,19 @@ void QGVNavStyle::stopZoom()
 
 double QGVNavStyle::mouseZoomFactor(QPoint p)
 {
-//    Base::Console().Message("QGVNS::mouseZoomFactor(%s)\n", TechDraw::DrawUtil::formatVector(p).c_str());
-    QPoint movement = p - zoomOrigin;
-    double sensitivity = 0.1;
-    double direction = 1.0;
-    double invert = 1.0;
-    if (movement.y() < 0.0) {
+    constexpr int threshold(20);
+    int verticalTravel = (p - zoomOrigin).y();
+    m_mouseDeltaCounter += std::abs(verticalTravel);
+    if (m_mouseDeltaCounter < threshold) {
+        //do not zoom yet
+        return 1.0;
+    }
+    m_mouseDeltaCounter = 0;
+    double direction = verticalTravel / std::abs(verticalTravel);
+    if (invertZoom) {
         direction = -direction;
     }
-    if (invertZoom) {
-        invert = -invert;
-    }
-    double factor = 1.0 + (direction * invert * zoomStep * sensitivity);
+    double factor = 1.0 + (direction * zoomStep);
     zoomOrigin = p;
     return factor;
 }
