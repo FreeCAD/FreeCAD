@@ -816,17 +816,17 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Zmax=%9\n"
                     "%1.X2max=%10\n"
                     "%1.Z2max=%11\n")
-                    .arg(name)
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeXmin->value()))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format))
-                    .arg(Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format));
+                    .arg(name,
+                         Base::UnitsApi::toNumber(ui->wedgeXmin->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format));
                 break;
 
             default:
