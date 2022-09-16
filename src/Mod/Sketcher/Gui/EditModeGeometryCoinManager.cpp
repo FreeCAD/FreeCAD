@@ -385,8 +385,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
                         && !egf->testFlag(ExternalGeometryExtension::Missing)) {
                     float hsv[3];
                     color[i].getHSVValue(hsv);
-                    hsv[1] = 0.4;
-                    hsv[2] = 1.0;
+                    hsv[1] = 0.4f;
+                    hsv[2] = 1.0f;
                     color[i].setHSVValue(hsv);
                 }
                 for (int k=j; j<k+indexes; j++) {
