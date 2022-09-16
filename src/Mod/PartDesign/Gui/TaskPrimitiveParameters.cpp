@@ -817,7 +817,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.X2max=%10\n"
                     "%1.Z2max=%11\n")
                     .arg(name,
-                         Base::UnitsApi::toNumber(ui->wedgeXmin->value()),
+                         Base::UnitsApi::toNumber(ui->wedgeXmin->value(), format),
                          Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format),
                          Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format),
                          Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format),
