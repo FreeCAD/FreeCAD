@@ -152,15 +152,14 @@ class InstallWorkbenchWorker(QtCore.QThread):
             try:
                 self.git_manager.update(clonedir)
                 if self.repo.contains_workbench():
-                    # pylint: disable=line-too-long
                     answer = translate(
                         "AddonsInstaller",
-                        "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
+                        "Addon successfully updated. Please restart FreeCAD to apply the changes.",
                     )
                 else:
                     answer = translate(
                         "AddonsInstaller",
-                        "Workbench successfully updated.",
+                        "Addon successfully updated.",
                     )
             except GitFailed as e:
                 answer = (
@@ -206,7 +205,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if self.repo.contains_workbench():
             answer = translate(
                 "AddonsInstaller",
-                "Workbench successfully installed. Please restart FreeCAD to apply the changes.",
+                "Addon successfully installed. Please restart FreeCAD to apply the changes.",
             )
         else:
             answer = translate(
