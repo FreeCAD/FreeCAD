@@ -164,9 +164,12 @@ private:
 
     struct DocumentInfo {
         App::Document *doc;
-        std::vector<App::DocumentObject*> &children;
-        DocumentInfo(App::Document *d, std::vector<App::DocumentObject*> &objs)
-            :doc(d), children(objs)
+        std::vector<App::DocumentObject *> &children;
+        DocumentInfo(App::Document *d, std::vector<App::DocumentObject *> &objs)
+            : doc(d), children(objs)
+        {}
+        DocumentInfo(DocumentInfo &&other)
+            : doc(other.doc), children(other.children)
         {}
     };
     std::vector<DocumentInfo> myDocumentStack;
