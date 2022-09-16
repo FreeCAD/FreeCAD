@@ -98,6 +98,7 @@ public:
 protected:
     virtual void initialize();
     virtual void setAnchor();
+
     QGVPage* m_viewer;
     int m_currentmode;
 
@@ -120,6 +121,7 @@ protected:
     KeyCombination m_keyCombo;
     QCursor m_saveCursor;
     int m_wheelDeltaCounter;
+    int m_mouseDeltaCounter;
 
 private:
 
