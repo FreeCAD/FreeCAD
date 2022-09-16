@@ -226,23 +226,7 @@ void DlgSettingsGeneral::saveSettings()
     int blinkTime{hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0};
     qApp->setCursorFlashTime(blinkTime);
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool treeView=false;
-    bool propertyView=false;
-    bool comboView=true;
-    switch(ui->treeMode->currentIndex()) {
-    case 1:
-        treeView = propertyView = true;
-        comboView = false;
-        break;
-    case 2:
-        comboView = true;
-        treeView = propertyView = true;
-        break;
-    }
-    hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
-    hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
-    hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+    saveDockWindowVisibility();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
@@ -330,20 +314,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->toolbarIconSize->setCurrentIndex(index);
 
     //TreeMode combobox setup.
-    ui->treeMode->clear();
-    ui->treeMode->addItem(tr("Combo View"));
-    ui->treeMode->addItem(tr("TreeView and PropertyView"));
-    ui->treeMode->addItem(tr("Both"));
-
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled",false);
-    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled",false);
-    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled",true);
-    index = 0;
-    if(propertyView || treeView) {
-        index = comboView?2:1;
-    }
-    ui->treeMode->setCurrentIndex(index);
+    loadDockWindowVisibility();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
@@ -425,6 +396,48 @@ void DlgSettingsGeneral::changeEvent(QEvent *event)
     else {
         QWidget::changeEvent(event);
     }
+}
+
+void DlgSettingsGeneral::saveDockWindowVisibility()
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled", true);
+    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", true);
+    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled", false);
+    switch (ui->treeMode->currentIndex()) {
+    case 0:
+        comboView = true;
+        treeView = propertyView = false;
+        break;
+    case 1:
+        treeView = propertyView = true;
+        comboView = false;
+        break;
+    }
+
+    hGrp->GetGroup("ComboView")->SetBool("Enabled", comboView);
+    hGrp->GetGroup("TreeView")->SetBool("Enabled", treeView);
+    hGrp->GetGroup("PropertyView")->SetBool("Enabled", propertyView);
+}
+
+void DlgSettingsGeneral::loadDockWindowVisibility()
+{
+    ui->treeMode->clear();
+    ui->treeMode->addItem(tr("Combo View"));
+    ui->treeMode->addItem(tr("TreeView and PropertyView"));
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", true);
+    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled", true);
+    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled", false);
+    int index = -1;
+    if (propertyView || treeView) {
+        index = 1;
+    }
+    else if (comboView) {
+        index = 0;
+    }
+    ui->treeMode->setCurrentIndex(index);
 }
 
 void DlgSettingsGeneral::recreatePreferencePackMenu()

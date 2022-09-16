@@ -80,7 +80,7 @@ QTabBar* ControlSingleton::findTabBar(QDockWidget* widget) const
     if (count > 1) {
         QList<QTabBar*> bars = getMainWindow()->findChildren<QTabBar*>();
         for (auto it : bars) {
-            if (it->count() == count) {
+            if (it->count() <= count) {
                 for (int i = 0; i < count; i++) {
                     if (it->tabText(i) == widget->windowTitle()) {
                         return it;

@@ -287,7 +287,7 @@ private:
     bool setupTaskView(const std::string&);
     bool setupPropertyView(const std::string&);
     bool setupSelectionView(const std::string&);
-    bool setupComboView(const std::string&, bool enable);
+    bool setupComboView(const std::string&);
     bool setupDAGView(const std::string&);
     bool setupReportView(const std::string&);
     bool setupPythonConsole(const std::string&);
