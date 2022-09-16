@@ -124,16 +124,16 @@ class CommandPathStop:
         FreeCAD.ActiveDocument.openTransaction(
             "Add Optional or Mandatory Stop to the program"
         )
-        FreeCADGui.addModule("PathScripts.PathStop")
+        FreeCADGui.addModule("Path.Op.Gui.Stop")
         snippet = """
 import Path
 import PathScripts
 from PathScripts import PathUtils
 prjexists = False
 obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Stop")
-PathScripts.PathStop.Stop(obj)
+Path.Op.Gui.Stop.Stop(obj)
 
-PathScripts.PathStop._ViewProviderStop(obj.ViewObject)
+Path.Op.Gui.Stop._ViewProviderStop(obj.ViewObject)
 PathUtils.addToJob(obj)
 """
         FreeCADGui.doCommand(snippet)

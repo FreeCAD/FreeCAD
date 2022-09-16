@@ -819,7 +819,7 @@ class CommandPathSanity:
                 fname = obj.PostProcessorOutputFile
                 data["outputfilename"] = os.path.splitext(os.path.basename(fname))[0]
             for op in obj.Operations.Group:
-                if isinstance(op.Proxy, PathScripts.PathStop.Stop) and op.Stop is True:
+                if isinstance(op.Proxy, Path.Op.Gui.Stop.Stop) and op.Stop is True:
                     data["optionalstops"] = "True"
 
             if obj.LastPostProcessOutput == "":
