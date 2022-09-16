@@ -283,6 +283,8 @@ class AddContent:
 
         base_path = self.path_to_addon.replace("/", os.path.sep)
         icon_path = new_icon_path.replace("/", os.path.sep)
+        if base_path[-1] != os.path.sep:
+            base_path += os.path.sep
 
         if not icon_path.startswith(base_path):
             FreeCAD.Console.PrintError(

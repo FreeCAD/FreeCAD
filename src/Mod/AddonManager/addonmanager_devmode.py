@@ -349,6 +349,7 @@ class DeveloperMode:
         self.dialog.pathToAddonComboBox.editTextChanged.connect(
             self._addon_combo_text_changed
         )
+        self.dialog.iconBrowseButton.clicked.connect(self._browse_for_icon_clicked)
 
         self.dialog.addContentItemToolButton.clicked.connect(self._add_content_clicked)
         self.dialog.removeContentItemToolButton.clicked.connect(
@@ -551,3 +552,33 @@ class DeveloperMode:
         day = datetime.date.today().day
         version_string = f"{year}.{month:>02}.{day:>02}"
         self.dialog.versionLineEdit.setText(version_string)
+
+    def _browse_for_icon_clicked(self):
+        """Callback: when the "Browse..." button for the icon field is clicked"""
+        new_icon_path, _ = QFileDialog.getOpenFileName(
+            parent=self.dialog,
+            caption=translate(
+                "AddonsInstaller",
+                "Select an icon file for this package",
+            ),
+            dir=self.current_mod,
+        )
+
+        if not new_icon_path:
+            return
+
+        base_path = self.current_mod.replace("/", os.path.sep)
+        icon_path = new_icon_path.replace("/", os.path.sep)
+        if base_path[-1] != os.path.sep:
+            base_path += os.path.sep
+
+        if not icon_path.startswith(base_path):
+            FreeCAD.Console.PrintError(
+                translate("AddonsInstaller", "{} is not a subdirectory of {}").format(
+                    new_icon_path, self.current_mod
+                )
+                + "\n"
+            )
+            return
+        self.metadata.Icon = new_icon_path[len(base_path) :]
+        self._populate_icon_from_metadata(self.metadata)

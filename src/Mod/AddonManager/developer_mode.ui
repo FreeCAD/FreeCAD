@@ -221,7 +221,7 @@
          <widget class="QLineEdit" name="iconPathLineEdit"/>
         </item>
         <item>
-         <widget class="QPushButton" name="iconPathBrowse">
+         <widget class="QPushButton" name="iconBrowseButton">
           <property name="text">
            <string>Browse...</string>
           </property>
