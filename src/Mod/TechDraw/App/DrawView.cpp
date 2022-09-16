@@ -224,6 +224,14 @@ QRectF DrawView::getRect() const
     return result;
 }
 
+//get the rectangle centered on the position
+QRectF DrawView::getRectAligned() const
+{
+    double top = Y.getValue() + 0.5 * getRect().height();
+    double left = X.getValue() - 0.5 * getRect().width();
+    return {left, top, getRect().width(), - getRect().height()};
+}
+
 void DrawView::onDocumentRestored()
 {
     handleXYLock();
