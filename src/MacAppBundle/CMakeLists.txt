@@ -127,15 +127,11 @@ execute_process(
 # Build and install QuickLook for FCStd files (org.freecad.fcstd)
 #
 add_subdirectory(QuickLook)
-message("Quicklook: copy framework template from <<${CMAKE_CURRENT_LIST_DIR}>>/QuickLook/ to <<${CMAKE_INSTALL_PREFIX}>>/Library/QuickLook")
 install(
     DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/QuickLook/QuicklookFCStd.qlgenerator"
     DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook"
 )
-#message("Quicklook: copy framework library from ${PROJECT_BINARY_DIR}/src/MacAppBundle/QuickLook/QuicklookFCStd.framework/QuicklookFCStd to ${CMAKE_INSTALL_PREFIX}/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/")
 install(
-#   TARGETS QuicklookFCStd
-#   LIBRARY
     PROGRAMS "${PROJECT_BINARY_DIR}/src/MacAppBundle/QuickLook/QuicklookFCStd.framework/Versions/A/QuicklookFCStd"
     DESTINATION "${CMAKE_INSTALL_PREFIX}/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/"
 )
