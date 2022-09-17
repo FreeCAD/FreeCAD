@@ -59,10 +59,10 @@ Check if the object is visible.</UserDocu>
         </Methode>
         <Methode Name="canDragObject">
             <Documentation>
-                <UserDocu>canDragObject(obj) -> bool\n
+                <UserDocu>canDragObject(obj=None) -> bool\n
 Check whether the child object can be removed by dragging.
 If 'obj' is not given, check without filter by any particular object.\n
-obj : App.DocumentObject\n    Object to be dragged. Optional.</UserDocu>
+obj : App.DocumentObject or None\n    Object to be dragged.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="dragObject">
@@ -74,25 +74,25 @@ obj : App.DocumentObject\n    Object to be dragged.</UserDocu>
         </Methode>
         <Methode Name="canDropObject" Keyword="true">
             <Documentation>
-                <UserDocu>canDropObject(obj, owner, subname, elem) -> bool\n
+                <UserDocu>canDropObject(obj=None, owner=None, subname, elem=None) -> bool\n
 Check whether the child object can be added by dropping.
 If 'obj' is not given, check without filter by any particular object.\n
-obj : App.DocumentObject\n    Object to be dropped. Optional.
-owner : App.DocumentObject\n    Parent object of the dropping object. Optional.
+obj : App.DocumentObject or None\n    Object to be dropped.
+owner : App.DocumentObject or None\n    Parent object of the dropping object.
 subname : str\n    Subname reference to the dropping object. Optional.
-elem : sequence of str\n    Non-objects subelements selected when the object is
-    being dropped. Optional.</UserDocu>
+elem : sequence of str or None\n    Non-objects subelements selected when the object is
+    being dropped.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="dropObject" Keyword="true">
             <Documentation>
-                <UserDocu>dropObject(obj, owner, subname, elem) -> str\n
+                <UserDocu>dropObject(obj, owner=None, subname, elem=None) -> str\n
 Add a child object by dropping.\n
 obj : App.DocumentObject\n    Object to be dropped.
-owner : App.DocumentObject\n    Parent object of the dropping object. Optional.
+owner : App.DocumentObject or None\n    Parent object of the dropping object.
 subname : str\n    Subname reference to the dropping object. Optional.
-elem : sequence of str\n    Non-objects subelements selected when the object is
-    being dropped. Optional.</UserDocu>
+elem : sequence of str or None\n    Non-objects subelements selected when the object is
+    being dropped.</UserDocu>
 </Documentation>
         </Methode>
         <Methode Name="canDragAndDropObject">

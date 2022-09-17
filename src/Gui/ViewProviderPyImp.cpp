@@ -161,17 +161,23 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
 
 PyObject*  ViewProviderPy::canDragObject(PyObject *args)
 {
-    PyObject *obj = nullptr;
-    if (!PyArg_ParseTuple(args, "|O!", &App::DocumentObjectPy::Type, &obj))
+    PyObject *obj = Py_None;
+    if (!PyArg_ParseTuple(args, "|O", &obj))
         return nullptr;
 
     PY_TRY {
         bool ret;
-        if (!obj)
+        if (obj == Py_None) {
             ret = getViewProviderPtr()->canDragObjects();
-        else
+        }
+        else {
+            if (!PyObject_TypeCheck(obj, &App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "'obj' must be a App::DocumentObject or None");
+                return nullptr;
+            }
             ret = getViewProviderPtr()->canDragObject(
                     static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+        }
 
         return Py::new_reference_to(Py::Boolean(ret));
     }
@@ -180,14 +186,12 @@ PyObject*  ViewProviderPy::canDragObject(PyObject *args)
 
 PyObject*  ViewProviderPy::canDropObject(PyObject *args, PyObject *kw)
 {
-    PyObject *obj = nullptr;
-    PyObject *owner = nullptr;
-    PyObject *pyElements = nullptr;
+    PyObject *obj = Py_None;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = nullptr;
     static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "|O!O!sO", kwlist,
-            &App::DocumentObjectPy::Type,&obj, &App::DocumentObjectPy::Type, &owner,
-            &subname, &pyElements))
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements))
         return nullptr;
 
     PY_TRY {
@@ -195,18 +199,30 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args, PyObject *kw)
         App::DocumentObject* pcObject;
         App::DocumentObject* pcOwner = nullptr;
         App::PropertyStringList elements;
-        if (!obj && (owner || pyElements || subname)) {
+        if (obj == Py_None && (owner != Py_None || pyElements != Py_None || subname)) {
             PyErr_SetString(PyExc_ValueError, "'obj' must be specified if 'owner', 'subname' or 'elem' is given");
             return nullptr;
         }
-        if(!obj) {
+        if(obj == Py_None) {
             ret = getViewProviderPtr()->canDropObjects();
             return Py::new_reference_to(Py::Boolean(ret));
         }
-        pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
-        if (owner)
+        else {
+            if (!PyObject_TypeCheck(obj, &App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "'obj' must be a App::DocumentObject or None");
+                return nullptr;
+            }
+            pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
+        }
+
+        if (owner != Py_None) {
+            if (!PyObject_TypeCheck(owner, &App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "'owner' must be a App::DocumentObject or None");
+                return nullptr;
+            }
             pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
-        if (pyElements) {
+        }
+        if (pyElements != Py_None) {
             try {
                 elements.setPyObject(pyElements);
             }
@@ -238,22 +254,27 @@ PyObject*  ViewProviderPy::canDragAndDropObject(PyObject *args)
 PyObject*  ViewProviderPy::dropObject(PyObject *args, PyObject *kw)
 {
     PyObject *obj;
-    PyObject *owner = nullptr;
-    PyObject *pyElements = nullptr;
+    PyObject *owner = Py_None;
+    PyObject *pyElements = Py_None;
     const char *subname = nullptr;
     static char* kwlist[] = {"obj","owner","subname","elem",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|O!sO", kwlist,
-            &App::DocumentObjectPy::Type,&obj, &App::DocumentObjectPy::Type, &owner,
-            &subname, &pyElements))
+    if (!PyArg_ParseTupleAndKeywords(args, kw, "O!|OsO", kwlist,
+            &App::DocumentObjectPy::Type, &obj, &owner, &subname, &pyElements))
         return nullptr;
 
     PY_TRY {
         auto pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
         App::DocumentObject *pcOwner = nullptr;
         App::PropertyStringList elements;
-        if (owner)
+        if (owner != Py_None) {
+            if (!PyObject_TypeCheck(owner, &App::DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "'owner' must be a App::DocumentObject or None");
+                return nullptr;
+            }
             pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
-        if (pyElements) {
+        }
+
+        if (pyElements != Py_None) {
             try {
                 elements.setPyObject(pyElements);
             }
