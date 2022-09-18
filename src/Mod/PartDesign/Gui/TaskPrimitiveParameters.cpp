@@ -824,8 +824,8 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                          Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format),
                          Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format),
                          Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format),
-                         Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format),
+                         Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format),
                          Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format));
                 break;
 
