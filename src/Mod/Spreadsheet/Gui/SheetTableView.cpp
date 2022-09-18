@@ -166,27 +166,27 @@ SheetTableView::SheetTableView(QWidget *parent)
             menu.exec(horizontalHeader()->mapToGlobal(point));
        });
        
-    auto cellProperties = new QAction(tr("Properties..."), this);
-    addAction(cellProperties);
+    actionProperties = new QAction(tr("Properties..."), this);
+    addAction(actionProperties);
     
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
     contextMenu = new QMenu(this);
 
-    contextMenu->addAction(cellProperties);
-    connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
+    contextMenu->addAction(actionProperties);
+    connect(actionProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
 
     contextMenu->addSeparator();
-    QAction *recompute = new QAction(tr("Recompute"),this);
-    connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
-    contextMenu->addAction(recompute);
+    actionRecompute = new QAction(tr("Recompute"),this);
+    connect(actionRecompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
+    contextMenu->addAction(actionRecompute);
 
     actionBind = new QAction(tr("Bind..."),this);
     connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
     contextMenu->addAction(actionBind);
 
-    QAction *actionConf = new QAction(tr("Configuration table..."),this);
+    actionConf = new QAction(tr("Configuration table..."),this);
     connect(actionConf, SIGNAL(triggered()), this, SLOT(onConfSetup()));
     contextMenu->addAction(actionConf);
 
@@ -591,6 +591,18 @@ bool SheetTableView::event(QEvent* event)
         else if (kevent->matches(QKeySequence::Paste)) {
             kevent->accept();
         }
+    }
+    else if (event->type() == QEvent::LanguageChange) {
+        actionProperties->setText(tr("Properties..."));
+        actionRecompute->setText(tr("Recompute"));
+        actionConf->setText(tr("Configuration table..."));
+        actionMerge->setText(tr("Merge cells"));
+        actionSplit->setText(tr("Split cells"));
+        actionCopy->setText(tr("Copy"));
+        actionPaste->setText(tr("Paste"));
+        actionCut->setText(tr("Cut"));
+        actionDel->setText(tr("Delete"));
+        actionBind->setText(tr("Bind..."));
     }
     return QTableView::event(event);
 }

@@ -102,6 +102,9 @@ protected:
 
     QMenu *contextMenu;
 
+    QAction *actionProperties;
+    QAction *actionRecompute;
+    QAction *actionConf;
     QAction *actionMerge;
     QAction *actionSplit;
     QAction *actionCopy;
