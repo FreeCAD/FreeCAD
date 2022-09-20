@@ -223,7 +223,7 @@ to determine whether a solution converges or not</string>
      <item>
       <widget class="QLabel" name="labelSolverParam1">
        <property name="text">
-        <string>Param1</string>
+        <string notr="true">Param1</string>
        </property>
       </widget>
      </item>
@@ -247,7 +247,7 @@ to determine whether a solution converges or not</string>
      <item>
       <widget class="QLabel" name="labelSolverParam2">
        <property name="text">
-        <string>Param2</string>
+        <string notr="true">Param2</string>
        </property>
       </widget>
      </item>
@@ -271,7 +271,7 @@ to determine whether a solution converges or not</string>
      <item>
       <widget class="QLabel" name="labelSolverParam3">
        <property name="text">
-        <string>Param3</string>
+        <string notr="true">Param3</string>
        </property>
       </widget>
      </item>
@@ -514,7 +514,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
      <item>
       <widget class="QLabel" name="labelRedundantSolverParam1">
        <property name="text">
-        <string>Redundant param1</string>
+        <string notr="true">Redundant param1</string>
        </property>
       </widget>
      </item>
@@ -538,7 +538,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
      <item>
       <widget class="QLabel" name="labelRedundantSolverParam2">
        <property name="text">
-        <string>Redundant param2</string>
+        <string notr="true">Redundant param2</string>
        </property>
       </widget>
      </item>
@@ -562,7 +562,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
      <item>
       <widget class="QLabel" name="labelRedundantSolverParam3">
        <property name="text">
-        <string>Redundant param3</string>
+        <string notr="true">Redundant param3</string>
        </property>
       </widget>
      </item>
