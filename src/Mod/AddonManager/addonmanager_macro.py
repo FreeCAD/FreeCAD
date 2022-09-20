@@ -462,14 +462,14 @@ class Macro:
             else:
                 src_file = os.path.normpath(os.path.join(base_dir, other_file))
                 dst_file = os.path.normpath(os.path.join(macro_dir, other_file))
-            self._fetch_single_file(other_file, src_file, dst_file)
+            self._fetch_single_file(other_file, src_file, dst_file, warnings)
             try:
                 shutil.copy(src_file, dst_file)
             except IOError:
                 warnings.append(f"Failed to copy {src_file} to {dst_file}")
         return True  # No fatal errors, but some files may have failed to copy
 
-    def _fetch_single_file(self, other_file, src_file, dst_file):
+    def _fetch_single_file(self, other_file, src_file, dst_file, warnings):
         if not os.path.isfile(src_file):
             # If the file does not exist, see if we have a raw code URL to fetch from
             if self.raw_code_url:
