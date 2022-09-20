@@ -394,21 +394,7 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
     }
 
     aWriter.Transform(this->_Mtrx);
-    if (aWriter.SaveAny(file, f)) {
-        if (mat && mat->binding == MeshCore::MeshIO::PER_FACE) {
-            if (f == MeshCore::MeshIO::Undefined)
-                f = MeshCore::MeshOutput::GetFormat(file);
-
-            if (f == MeshCore::MeshIO::OBJ) {
-                Base::FileInfo fi(file);
-                std::string fn = fi.dirPath() + "/" + mat->library;
-                fi.setFile(fn);
-                Base::ofstream str(fi, std::ios::out | std::ios::binary);
-                aWriter.SaveMTL(str);
-                str.close();
-            }
-        }
-    }
+    aWriter.SaveAny(file, f);
 }
 
 void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
@@ -444,20 +430,6 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
         return false;
 
     swapKernel(kernel, aReader.GetGroupNames());
-
-    if (mat && mat->binding == MeshCore::MeshIO::PER_FACE) {
-        MeshCore::MeshIO::Format format = MeshCore::MeshOutput::GetFormat(file);
-
-        if (format == MeshCore::MeshIO::OBJ) {
-            Base::FileInfo fi(file);
-            std::string fn = fi.dirPath() + "/" + mat->library;
-            fi.setFile(fn);
-            Base::ifstream str(fi, std::ios::in | std::ios::binary);
-            aReader.LoadMTL(str);
-            str.close();
-        }
-    }
-
     return true;
 }
 

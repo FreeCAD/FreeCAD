@@ -76,7 +76,13 @@ struct MeshExport Material
     Material() : binding(MeshIO::OVERALL) {}
     MeshIO::Binding binding;
     mutable std::string library;
-    std::vector<App::Color> diffuseColor;
+
+    std::vector<App::Color> ambientColor;  /**< Defines the ambient color. */
+    std::vector<App::Color> diffuseColor;  /**< Defines the diffuse color. */
+    std::vector<App::Color> specularColor; /**< Defines the specular color. */
+    std::vector<App::Color> emissiveColor; /**< Defines the emissive color. */
+    std::vector<float> shininess;
+    std::vector<float> transparency;
 };
 
 struct MeshExport Group
@@ -115,8 +121,8 @@ public:
     bool LoadBinarySTL (std::istream &rstrIn);
     /** Loads an OBJ Mesh file. */
     bool LoadOBJ (std::istream &rstrIn);
-    /** Loads the materials of an OBJ file. */
-    bool LoadMTL (std::istream &rstrIn);
+    /** Loads an OBJ Mesh file. */
+    bool LoadOBJ (std::istream &rstrIn, const char* filename);
     /** Loads an SMF Mesh file. */
     bool LoadSMF (std::istream &rstrIn);
     /** Loads an OFF Mesh file. */
@@ -143,7 +149,6 @@ protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
     Material* _material;
     std::vector<std::string> _groupNames;
-    std::vector<std::pair<std::string, unsigned long> > _materialNames;
 };
 
 /**
@@ -188,8 +193,8 @@ public:
     bool SaveBinarySTL (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OBJ file. */
     bool SaveOBJ (std::ostream &rstrOut) const;
-    /** Saves the materials of an OBJ file. */
-    bool SaveMTL(std::ostream &rstrOut) const;
+    /** Saves the mesh object into an OBJ file. */
+    bool SaveOBJ (std::ostream &rstrOut, const char* filename) const;
     /** Saves the mesh object into an SMF file. */
     bool SaveSMF (std::ostream &rstrOut) const;
     /** Saves the mesh object into an OFF file. */
