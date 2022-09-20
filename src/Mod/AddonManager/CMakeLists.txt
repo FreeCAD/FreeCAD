@@ -22,6 +22,7 @@ SET(AddonManager_SRCS
     addonmanager_workers_startup.py
     addonmanager_workers_utility.py
     AddonManagerOptions.ui
+    AddonManagerOptions.py
     ALLOWED_PYTHON_PACKAGES.txt
     change_branch.py
     change_branch.ui

@@ -74,6 +74,8 @@ from addonmanager_devmode import DeveloperMode
 
 import NetworkManager
 
+from AddonManagerOptions import AddonManagerOptions
+
 translate = FreeCAD.Qt.translate
 
 
@@ -129,8 +131,12 @@ class CommandAddonManager:
     restart_required = False
 
     def __init__(self):
+        #FreeCADGui.addPreferencePage(
+        #    os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"),
+        #    translate("AddonsInstaller", "Addon Manager"),
+        #)
         FreeCADGui.addPreferencePage(
-            os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"),
+            AddonManagerOptions,
             translate("AddonsInstaller", "Addon Manager"),
         )
 
