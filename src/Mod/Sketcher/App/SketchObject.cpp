@@ -8492,7 +8492,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 /// false - fail (this indicates an error, or that a constraint locking isn't supported).
 bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool bLock)
 {
-    try{
+    try {
         //assert ( cstr->Type == Tangent  ||  cstr->Type == Perpendicular);
         if(cstr->getValue() != 0.0 && ! bForce) /*tangency type already set. If not bForce - don't touch.*/
             return true;
@@ -8536,7 +8536,8 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
                 cstr->setValue(angleDesire + angleOffset); //external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is invalid and treated as "undecided".
             }
         }
-    } catch (Base::Exception& e){
+    }
+    catch (Base::Exception& e){
         //failure to determine tangency type is not a big deal, so a warning.
         Base::Console().Warning("Error in AutoLockTangency. %s \n", e.what());
         return false;

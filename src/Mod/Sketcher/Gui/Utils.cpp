@@ -226,8 +226,22 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
     //Simple geometric test seems to be the best, because a point can be
     // constrained to a curve in a number of ways (e.g. it is an endpoint of an
     // arc, or is coincident to endpoint of an arc, or it is an endpoint of an
-    // ellipse's majopr diameter line). Testing all those possibilities is way
+    // ellipse's major diameter line). Testing all those possibilities is way
     // too much trouble, IMO(DeepSOIC).
+    // One exception: check for knots on their B-splines, at least until point on B-spline is implemented. (Ajinkya)
+    if (isBsplineKnot(Obj, GeoIdPoint)) {
+        const Part::Geometry *geoCurve = Obj->getGeometry(GeoIdCurve);
+        if (geoCurve->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            const std::vector<Constraint *> &constraints = Obj->Constraints.getValues();
+            for (const auto& constraint: constraints) {
+                if (constraint->Type == Sketcher::ConstraintType::InternalAlignment &&
+                    constraint->First == GeoIdPoint &&
+                    constraint->Second == GeoIdCurve)
+                    return true;
+            }
+        }
+    }
+
     Base::Vector3d p = Obj->getPoint(GeoIdPoint, PosIdPoint);
     return Obj->isPointOnCurve(GeoIdCurve, p.x, p.y);
 }
