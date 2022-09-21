@@ -2454,6 +2454,48 @@ int Sketch::addAngleAtPointConstraint(
     if(avp)
         geoId3 = checkGeoId(geoId3);
 
+    if ((Geoms[geoId1].type == BSpline && Geoms[geoId2].type == Line) ||
+        (Geoms[geoId1].type == Line && Geoms[geoId2].type == BSpline)) {
+        if (cTyp == Tangent) {
+            if (Geoms[geoId1].type == Line && Geoms[geoId2].type == BSpline) {
+                std::swap(geoId1, geoId2);
+                std::swap(pos1, pos2);
+            }
+            GCS::BSpline &b = BSplines[Geoms[geoId1].index];
+            GCS::Line &l = Lines[Geoms[geoId2].index];
+            size_t knotindex = b.knots.size();
+            if (avp) {
+                auto knotIt = std::find(b.knotpointGeoids.begin(),
+                                        b.knotpointGeoids.end(), geoId3);
+                knotindex =
+                    std::distance(b.knotpointGeoids.begin(), knotIt);
+            }
+            else {
+                knotindex = (pos1 == PointPos::start) ? 0 : (b.knots.size() - 1);
+            }
+            if (knotindex >= b.knots.size())
+                return -1;
+
+            if (b.mult[knotindex] >= b.degree) {
+                // Leave handling of start/end of non-periodic B-splines to legacy code
+                if (b.periodic ||
+                    (pos1 != PointPos::start && pos1 != PointPos::end)) {
+                    Base::Console().Error("addAngleAtPointConstraint: cannot set constraint when B-spline slope is discontinuous at knot!\n");
+                    return -1;
+                }
+            }
+            else {
+                int tag;
+                if(e2c)
+                    tag = Sketch::addPointOnObjectConstraint(geoId1, pos1, geoId2, driving);//increases ConstraintsCounter
+                else
+                    tag = ++ConstraintsCounter;
+                GCSsys.addConstraintTangentAtBSplineKnot(b, l, knotindex, tag, driving);
+                return ConstraintsCounter;
+            }
+        }
+    }
+
     if (Geoms[geoId1].type == Point ||
         Geoms[geoId2].type == Point){
         Base::Console().Error("addAngleAtPointConstraint: one of the curves is a point!\n");

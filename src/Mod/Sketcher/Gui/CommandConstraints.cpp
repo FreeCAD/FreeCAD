@@ -4198,7 +4198,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         };
         strError = QObject::tr("With 3 objects, there must be 2 curves and 1 point.", "tangent constraint");
 
-    } else if (SubNames.size() == 2) {
+    }
+    else if (SubNames.size() == 2) {
 
         if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // endpoint-to-endpoint tangency
 
@@ -4218,16 +4219,44 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             return;
         }
         else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
-                 (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) { // endpoint-to-curve tangency
+                 (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) { // endpoint-to-curve/knot-to-curve tangency
             if (isVertex(GeoId2,PosId2)) {
                 std::swap(GeoId1,GeoId2);
                 std::swap(PosId1,PosId2);
             }
 
             if (isSimpleVertex(Obj, GeoId1, PosId1)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
-                return;
+                if (isBsplineKnot(Obj, GeoId1)) {
+                    // find the B-spline and treat as TangentViaPoint
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
+                    const std::vector<Constraint *> &constraints = Obj->Constraints.getValues();
+                    for (const auto& constraint: constraints) {
+                        // TODO: wrap around with try-catch
+                        if (constraint->Type == Sketcher::ConstraintType::InternalAlignment &&
+                            constraint->First == GeoId1 &&
+                            constraint->AlignmentType == Sketcher::InternalAlignmentType::BSplineKnotPoint) {
+                            int GeoId3 = constraint->Second;
+                            // TODO: ensure C1 continuity at point
+                            if(! IsPointAlreadyOnCurve(GeoId2, GeoId1, PosId1, Obj)){
+                                Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                                                      GeoId1,static_cast<int>(PosId1),GeoId2);
+                            }
+
+                            Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
+                                                  GeoId3,GeoId2,GeoId1,static_cast<int>(PosId1));
+                            commitCommand();
+                            tryAutoRecompute(Obj);
+
+                            getSelection().clearSelection();
+                            return;
+                        }
+                    }
+                }
+                else {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                         QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
+                    return;
+                }
             }
 
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
