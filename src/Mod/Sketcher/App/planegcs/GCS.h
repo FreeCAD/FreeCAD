@@ -257,6 +257,8 @@ namespace GCS
                                         int tagId=0, bool driving = true);
         int addConstraintTangentCircumf(Point &p1, Point &p2, double *rd1, double *rd2,
                                         bool internal=false, int tagId=0, bool driving = true);
+        int addConstraintTangentAtBSplineKnot(BSpline &b, Line &l, size_t knotindex,
+                                              int tagId=0, bool driving = true);
 
         // derived constraints
         int addConstraintP2PCoincident(Point &p1, Point &p2, int tagId=0, bool driving = true);
