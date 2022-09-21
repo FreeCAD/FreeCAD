@@ -46,14 +46,12 @@ from addonmanager_workers_startup import (
     LoadMacrosFromCacheWorker,
     CheckWorkbenchesForUpdatesWorker,
     CacheMacroCodeWorker,
-    GetMacroDetailsWorker,
 )
 from addonmanager_workers_installation import (
     InstallWorkbenchWorker,
     DependencyInstallationWorker,
     UpdateMetadataCacheWorker,
     UpdateAllWorker,
-    UpdateSingleWorker,
 )
 from addonmanager_workers_utility import ConnectionChecker
 import addonmanager_utilities as utils
@@ -66,7 +64,6 @@ from install_to_toolbar import (
     remove_custom_toolbar_button,
 )
 from manage_python_dependencies import (
-    check_for_python_package_updates,
     CheckForPythonPackageUpdatesWorker,
     PythonPackageManager,
 )
@@ -377,7 +374,7 @@ class CommandAddonManager:
             self.dialog.buttonDevTools.hide()
 
         # Only shown if there are available Python package updates
-        self.dialog.buttonUpdateDependencies.hide()
+        #self.dialog.buttonUpdateDependencies.hide()
 
         # connect slots
         self.dialog.rejected.connect(self.reject)
@@ -937,7 +934,7 @@ class CommandAddonManager:
 
     def show_python_updates_dialog(self) -> None:
         if not hasattr(self, "manage_python_packages_dialog"):
-            self.manage_python_packages_dialog = PythonPackageManager()
+            self.manage_python_packages_dialog = PythonPackageManager(self.item_model.repos)
         self.manage_python_packages_dialog.show()
 
     def show_developer_tools(self) -> None:

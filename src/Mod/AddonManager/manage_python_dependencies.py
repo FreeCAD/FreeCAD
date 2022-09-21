@@ -86,10 +86,20 @@ def call_pip(args) -> List[str]:
                 stderr=subprocess.PIPE,
                 shell=True,
                 check=True,
+                timeout=30,
             )
             if proc.returncode != 0:
                 pip_failed = True
         except subprocess.CalledProcessError:
+            pip_failed = True
+        except subprocess.TimeoutExpired:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "pip took longer than 30 seconds to return results, giving up on it",
+                )
+            )
+            FreeCAD.Console.PrintLog(" ".join(call_args))
             pip_failed = True
     else:
         pip_failed = True
@@ -107,13 +117,14 @@ class PythonPackageManager:
 
     """A GUI-based pip interface allowing packages to be updated, either individually or all at once."""
 
-    def __init__(self):
+    def __init__(self, addons):
         self.dlg = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "PythonDependencyUpdateDialog.ui")
         )
         self.vendor_path = os.path.join(
             FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
         )
+        self.addons = addons
 
     def show(self):
         """Run the modal dialog"""
@@ -143,6 +154,13 @@ class PythonPackageManager:
         update_counter = 0
         self.dlg.tableWidget.setSortingEnabled(False)
         for package_name, package_details in package_list.items():
+            dependent_addons = self._get_dependent_addons(package_name)
+            dependencies = []
+            for addon in dependent_addons:
+                if addon["optional"]:
+                    dependencies.append(addon['name'] + "*")
+                else:
+                    dependencies.append(addon['name'])
             self.dlg.tableWidget.setItem(
                 counter, 0, QtWidgets.QTableWidgetItem(package_name)
             )
@@ -155,6 +173,11 @@ class PythonPackageManager:
                 counter,
                 2,
                 QtWidgets.QTableWidgetItem(package_details["available_version"]),
+            )
+            self.dlg.tableWidget.setItem(
+                counter,
+                3,
+                QtWidgets.QTableWidgetItem(", ".join(dependencies)),
             )
             if len(package_details["available_version"]) > 0:
                 updateButtons.append(
@@ -189,6 +212,16 @@ class PythonPackageManager:
             self.dlg.buttonUpdateAll.setEnabled(True)
         else:
             self.dlg.buttonUpdateAll.setEnabled(False)
+
+    def _get_dependent_addons(self, package):
+        dependent_addons = []
+        for addon in self.addons:
+            #if addon.installed_version is not None:
+                if package.lower() in addon.python_requires:
+                    dependent_addons.append({"name":addon.name,"optional":False})
+                elif package.lower() in addon.python_optional:
+                    dependent_addons.append({"name":addon.name,"optional":True})
+        return dependent_addons
 
     def _parse_pip_list_output(
         self, all_packages, outdated_packages

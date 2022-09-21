@@ -130,7 +130,7 @@
         <string>View and update Python package dependencies</string>
        </property>
        <property name="text">
-        <string>Update dependencies</string>
+        <string>Python dependencies...</string>
        </property>
       </widget>
      </item>
