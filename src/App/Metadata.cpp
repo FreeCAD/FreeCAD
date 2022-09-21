@@ -541,6 +541,8 @@ void Metadata::write(const fs::path& file) const
     DOMDocument* doc = impl->createDocument(nullptr, XUTF8Str("package").unicodeForm(), nullptr);
     DOMElement* root = doc->getDocumentElement();
     root->setAttribute(XUTF8Str("format").unicodeForm(), XUTF8Str("1").unicodeForm());
+    root->setAttribute(XUTF8Str("xmlns").unicodeForm(),
+                       XUTF8Str("https://wiki.freecad.org/Package_Metadata").unicodeForm());
 
     appendToElement(root);
 
