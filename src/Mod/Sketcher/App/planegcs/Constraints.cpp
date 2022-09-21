@@ -247,6 +247,213 @@ double ConstraintCenterOfGravity::grad(double *param)
     return scale * deriv;
 }
 
+// Slope at B-spline knot
+
+ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex)
+{
+    // set up pvec: pole x-coords, pole y-coords, pole weights,
+    // line point 1 coords, line point 2 coords
+
+    numpoles = b.degree - b.mult[knotindex] + 1;
+    // slope at knot doesn't make sense if there's only C0 continuity
+    assert(numpoles >= 2);
+
+    pvec.reserve(3*numpoles + 4);
+
+    size_t startpole = 0;
+    // TODO: Adjust for periodic knot
+    for (size_t j = 1; j <= knotindex; ++j)
+        startpole += b.mult[j];
+    if (!b.periodic && startpole >= b.poles.size())
+        startpole = b.poles.size() - 1;
+
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+    for (size_t i = 0; i < numpoles; ++i)
+        pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
+    pvec.push_back(l.p1.x);
+    pvec.push_back(l.p1.y);
+    pvec.push_back(l.p2.x);
+    pvec.push_back(l.p2.y);
+
+    // TODO: Set up factors to get slope at knot point
+    std::vector<double> tempfactors((numpoles + 1), 1.0 / (numpoles + 1));
+    factors.resize(numpoles);
+    slopefactors.resize(numpoles);
+    for (size_t i = 0; i < numpoles + 1; ++i) {
+        // FIXME: `getLinCombFactor` seg-faults for the last knot so this safeguard exists
+        if (numpoles > 2) {
+            tempfactors[i] =
+                b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i, b.degree - 1) /
+                (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
+        }
+    }
+    for (size_t i = 0; i < numpoles; ++i) {
+        factors[i] =
+            b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
+        slopefactors[i] = b.degree * (tempfactors[i] - tempfactors[i+1]);
+    }
+
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintSlopeAtBSplineKnot::getTypeId()
+{
+    return SlopeAtBSplineKnot;
+}
+
+void ConstraintSlopeAtBSplineKnot::rescale(double coef)
+{
+    double slopex = 0., slopey = 0.;
+    double linex = *linep2x() - *linep1x();
+    double liney = *linep2y() - *linep1y();
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        slopex += *polexat(i) * slopefactors[i];
+        slopey += *poleyat(i) * slopefactors[i];
+    }
+
+    scale = coef / sqrt((slopex*slopex + slopey*slopey) *
+                        (linex*linex + liney*liney));
+}
+
+double ConstraintSlopeAtBSplineKnot::error()
+{
+    // TODO: Fill up
+    double xsum = 0., xslopesum = 0.;
+    double ysum = 0., yslopesum = 0.;
+    double wsum = 0., wslopesum = 0.;
+
+    for (size_t i = 0; i < numpoles; ++i) {
+        double wcontrib = *weightat(i) * factors[i];
+        double wslopecontrib = *weightat(i) * slopefactors[i];
+        wsum += wcontrib;
+        xsum += *polexat(i) * wcontrib;
+        ysum += *poleyat(i) * wcontrib;
+        wslopesum += wslopecontrib;
+        xslopesum += *polexat(i) * wslopecontrib;
+        yslopesum += *poleyat(i) * wslopecontrib;
+    }
+
+    // This is actually wsum^2 * the respective slopes
+    double slopex = wsum*xslopesum - wslopesum*xsum;
+    double slopey = wsum*yslopesum - wslopesum*ysum;
+    double linex = *linep2x() - *linep1x();
+    double liney = *linep2y() - *linep1y();
+
+    // error is the cross product
+    return scale * (slopex*liney - slopey*linex);
+}
+
+double ConstraintSlopeAtBSplineKnot::grad(double *param)
+{
+    double result = 0.0;
+    double linex = *linep2x() - *linep1x();
+    double liney = *linep2y() - *linep1y();
+
+    // TODO: Fill up
+    for (size_t i = 0; i < numpoles; ++i) {
+        if (param == polexat(i)) {
+            double wsum = 0., wslopesum = 0.;
+            for (size_t j = 0; j < numpoles; ++j) {
+                double wcontrib = *weightat(j) * factors[j];
+                double wslopecontrib = *weightat(j) * slopefactors[j];
+                wsum += wcontrib;
+                wslopesum += wslopecontrib;
+            }
+            result += (wsum*slopefactors[i] - wslopesum*factors[i]) * liney;
+        }
+        if (param == poleyat(i)) {
+            double wsum = 0., wslopesum = 0.;
+            for (size_t i = 0; i < numpoles; ++i) {
+                double wcontrib = *weightat(i) * factors[i];
+                double wslopecontrib = *weightat(i) * slopefactors[i];
+                wsum += wcontrib;
+                wslopesum += wslopecontrib;
+            }
+            result += - (wsum*slopefactors[i] - wslopesum*factors[i]) * linex;
+        }
+        if (param == weightat(i)) {
+            double xsum = 0., xslopesum = 0.;
+            double ysum = 0., yslopesum = 0.;
+            for (size_t j = 0; j < numpoles; ++j) {
+                double wcontrib = *weightat(j) * factors[j];
+                double wslopecontrib = *weightat(j) * slopefactors[j];
+                xsum += wcontrib * (*polexat(j) - *polexat(i));
+                xslopesum += wslopecontrib * (*polexat(j) - *polexat(i));
+                ysum += wcontrib * (*poleyat(j) - *poleyat(i));
+                yslopesum += wslopecontrib * (*poleyat(j) - *poleyat(i));
+            }
+            result +=
+                (factors[i]*xslopesum - slopefactors[i]*xsum) * liney -
+                (factors[i]*yslopesum - slopefactors[i]*ysum) * linex;
+        }
+    }
+
+    double slopex = 0., slopey = 0.;
+    bool slopexcomputed = false, slopeycomputed = false;
+
+    auto getSlopeX = [&]() {
+        if (slopexcomputed)
+            return slopex;
+
+        double xsum = 0., xslopesum = 0.;
+        double wsum = 0., wslopesum = 0.;
+
+        for (size_t i = 0; i < numpoles; ++i) {
+            double wcontrib = *weightat(i) * factors[i];
+            double wslopecontrib = *weightat(i) * slopefactors[i];
+            wsum += wcontrib;
+            xsum += *polexat(i) * wcontrib;
+            wslopesum += wslopecontrib;
+            xslopesum += *polexat(i) * wslopecontrib;
+        }
+
+        // This is actually wsum^2 * the respective slopes
+        slopex = wsum*xslopesum - wslopesum*xsum;
+
+        slopexcomputed = true;
+        return slopex;
+    };
+
+    auto getSlopeY = [&]() {
+        if (slopeycomputed)
+            return slopey;
+
+        double ysum = 0., yslopesum = 0.;
+        double wsum = 0., wslopesum = 0.;
+
+        for (size_t i = 0; i < numpoles; ++i) {
+            double wcontrib = *weightat(i) * factors[i];
+            double wslopecontrib = *weightat(i) * slopefactors[i];
+            wsum += wcontrib;
+            ysum += *poleyat(i) * wcontrib;
+            wslopesum += wslopecontrib;
+            yslopesum += *poleyat(i) * wslopecontrib;
+        }
+
+        // this is actually wsum^2 * the respective slopes
+        slopey = wsum*yslopesum - wslopesum*ysum;
+
+        slopeycomputed = true;
+        return slopey;
+    };
+
+    if (param == linep1x())
+        result += getSlopeY();
+    if (param == linep2x())
+        result += -getSlopeY();
+    if (param == linep1y())
+        result += -getSlopeX();
+    if (param == linep2y())
+        result += getSlopeX();
+
+    return scale * result;
+}
+
 // Difference
 ConstraintDifference::ConstraintDifference(double *p1, double *p2, double *d)
 {
