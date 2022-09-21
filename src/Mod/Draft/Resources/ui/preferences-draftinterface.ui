@@ -76,13 +76,20 @@
          </widget>
         </item>
         <item row="0" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="3">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>Continue</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
+        <item row="0" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_3">
           <property name="enabled">
            <bool>true</bool>
@@ -119,14 +126,21 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
+        <item row="0" column="5">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="6">
          <widget class="QLabel" name="label_4">
           <property name="text">
            <string>Close</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
+        <item row="0" column="7">
          <widget class="Gui::PrefLineEdit" name="lineEdit_4">
           <property name="enabled">
            <bool>true</bool>
@@ -162,6 +176,13 @@
            <cstring>Mod/Draft</cstring>
           </property>
          </widget>
+        </item>
+        <item row="0" column="8">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </spacer>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_5">
@@ -207,14 +228,14 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Subelement Mode</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="3">
+        <item row="1" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_11">
           <property name="enabled">
            <bool>true</bool>
@@ -251,14 +272,14 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="4">
+        <item row="1" column="6">
          <widget class="QLabel" name="label_11">
           <property name="text">
            <string>Fill</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="5">
+        <item row="1" column="7">
          <widget class="Gui::PrefLineEdit" name="lineEdit_12">
           <property name="enabled">
            <bool>true</bool>
@@ -339,14 +360,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="2" column="3">
          <widget class="QLabel" name="label_17">
           <property name="text">
            <string>Select Edge</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="3">
+        <item row="2" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_13">
           <property name="enabled">
            <bool>true</bool>
@@ -383,14 +404,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="4">
+        <item row="2" column="6">
          <widget class="QLabel" name="label_18">
           <property name="text">
            <string>Add Hold</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="5">
+        <item row="2" column="7">
          <widget class="Gui::PrefLineEdit" name="lineEdit_15">
           <property name="enabled">
            <bool>true</bool>
@@ -471,14 +492,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="3" column="3">
          <widget class="QLabel" name="label_21">
           <property name="text">
            <string>Wipe</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="3">
+        <item row="3" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_14">
           <property name="enabled">
            <bool>true</bool>
@@ -515,14 +536,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="4">
+        <item row="3" column="6">
          <widget class="QLabel" name="label_22">
           <property name="text">
            <string>Set WP</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="5">
+        <item row="3" column="7">
          <widget class="Gui::PrefLineEdit" name="lineEdit_16">
           <property name="enabled">
            <bool>true</bool>
@@ -603,14 +624,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="4" column="3">
          <widget class="QLabel" name="label_27">
           <property name="text">
            <string>Global</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="3">
+        <item row="4" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_21">
           <property name="enabled">
            <bool>true</bool>
@@ -647,7 +668,51 @@
           </property>
          </widget>
         </item>
-       <item row="5" column="0">
+        <item row="4" column="6">
+         <widget class="QLabel" name="label_28">
+          <property name="text">
+           <string>Undo</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="7">
+         <widget class="Gui::PrefLineEdit" name="lineEdit_22">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>/</string>
+          </property>
+          <property name="maxLength">
+           <number>1</number>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+          <property name="clearButtonEnabled" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>inCommandShortcutUndo</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
            <string>Snap</string>
@@ -691,14 +756,14 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
+        <item row="5" column="3">
          <widget class="QLabel" name="label_15">
           <property name="text">
            <string>Increase Radius</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="3">
+        <item row="5" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_19">
           <property name="enabled">
            <bool>true</bool>
@@ -735,14 +800,14 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="4">
+        <item row="5" column="6">
          <widget class="QLabel" name="label_16">
           <property name="text">
            <string>Decrease Radius</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="5">
+        <item row="5" column="7">
          <widget class="Gui::PrefLineEdit" name="lineEdit_17">
           <property name="enabled">
            <bool>true</bool>
@@ -823,14 +888,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
+        <item row="6" column="3">
          <widget class="QLabel" name="label_25">
           <property name="text">
            <string>Restrict Y</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="3">
+        <item row="6" column="4">
          <widget class="Gui::PrefLineEdit" name="lineEdit_20">
           <property name="enabled">
            <bool>true</bool>
@@ -867,14 +932,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="4">
+        <item row="6" column="6">
          <widget class="QLabel" name="label_26">
           <property name="text">
            <string>Restrict Z</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="5">
+        <item row="6" column="7">
          <widget class="Gui::PrefLineEdit" name="lineEdit_18">
           <property name="enabled">
            <bool>true</bool>

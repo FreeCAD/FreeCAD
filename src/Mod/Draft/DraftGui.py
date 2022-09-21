@@ -151,13 +151,8 @@ inCommandShortcuts = {
         translate("draft","Cycle snap object"),
         None
         ],
-    "NearSnap": [
-        Draft.getParam("inCommandShortcutNearSnap", "N"),
-        translate("draft","Toggle near snap on/off"),
-        None
-        ],
     "Undo": [
-        Draft.getParam("inCommandShortcutNearSnap", "/"),
+        Draft.getParam("inCommandShortcutUndo", "/"),
         translate("draft","Undo last segment"),
         None
         ],
@@ -1671,9 +1666,6 @@ class DraftToolBar:
         elif txt.upper().startswith(inCommandShortcuts["Snap"][0]):
             self.togglesnap()
             spec = True
-        elif txt.upper().startswith(inCommandShortcuts["NearSnap"][0]):
-            self.togglenearsnap()
-            spec = True
         elif txt.upper().startswith(inCommandShortcuts["Increase"][0]):
             self.toggleradius(1)
             spec = True
@@ -2096,13 +2088,6 @@ class DraftToolBar:
 
     def togglesnap(self):
         FreeCADGui.doCommand('FreeCADGui.runCommand("Draft_Snap_Lock")')
-
-    def togglenearsnap(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonpassive":
-                        b.toggle()
 
     def toggleradius(self,val):
         if hasattr(FreeCADGui,"Snapper"):
