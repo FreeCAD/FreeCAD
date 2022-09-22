@@ -41,6 +41,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/DocumentParams.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -334,6 +335,40 @@ Application::Application(bool GUIenabled)
         App::GetApplication().signalRelabelDocument.connect(std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
 
+        App::GetApplication().signalFinishOpenDocument.connect([]() {
+            std::vector<App::Document*> docs;
+            for(auto doc : App::GetApplication().getDocuments()) {
+                if(doc->testStatus(App::Document::RecomputeOnRestore)) {
+                    docs.push_back(doc);
+                    doc->setStatus(App::Document::RecomputeOnRestore, false);
+                }
+            }
+            if(docs.empty() || !App::DocumentParams::getWarnRecomputeOnRestore())
+                return;
+            WaitCursor wc;
+            wc.restoreCursor();
+            auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recompution required"),
+                QObject::tr("Some document(s) require recomputation for migration purpose. "
+                            "It is highly recommended to perform a recomputation before "
+                            "any modification to avoid compatibility problem.\n\n"
+                            "Do you want to recompute now?"),
+                QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+            if(res != QMessageBox::Yes)
+                return;
+            bool hasError = false;
+            for(auto doc : App::Document::getDependentDocuments(docs,true)) {
+                try {
+                    doc->recompute({},false,&hasError);
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                    hasError = true;
+                }
+            }
+            if(hasError)
+                QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
+                        QObject::tr("Failed to recompute some document(s).\n"
+                                    "Please check report view for more details."));
+        });
 
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
