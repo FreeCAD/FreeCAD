@@ -28,6 +28,7 @@
 
 #include <sstream>
 #include <vector>
+#include <Base/Vector3D.h>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -35,8 +36,6 @@
 namespace Base
 {
 class Matrix4D;
-template <class _Precision> class Vector3;
-using Vector3f = Vector3<float>;
 
 /** A Builder class for 3D representations on App level
  * On the application level nothing is known of the visual representation of data.
@@ -369,17 +368,17 @@ public:
     }
 
     /// Return the vectors of an SoNormal node
-    const std::vector<Vector3f>& getVector() {
+    const std::vector<Vector3f>& getVector() const {
         return vector;
     }
 
     /// Return the points of an SoCoordinate3 node
-    const std::vector<Vector3f>& getPoints() {
+    const std::vector<Vector3f>& getPoints() const {
         return points;
     }
 
     /// Return the faces of an SoIndexedFaceSet node
-    const std::vector<Face>& getFaces() {
+    const std::vector<Face>& getFaces() const {
         return faces;
     }
 
