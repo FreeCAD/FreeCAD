@@ -74,7 +74,8 @@ namespace App {
             repository,
             bugtracker,
             readme,
-            documentation
+            documentation,
+            discussion
         };
 
         /**
@@ -203,6 +204,7 @@ namespace App {
 
         std::string name() const; //< A short name for this package, often used as a menu entry.
         Meta::Version version() const; //< Version string in symantic triplet format, e.g. "1.2.3".
+        std::string date() const; //< Date string -- currently arbitrary (when C++20 is well-supported we can revisit)
         std::string description() const; //< Text-only description of the package. No markup.
         std::vector<Meta::Contact> maintainer() const; //< Must be at least one, and must specify an email address.
         std::vector<Meta::License> license() const; //< Must be at least one, and most licenses require including a license file.
@@ -256,6 +258,7 @@ namespace App {
         // Setters
         void setName(const std::string& name);
         void setVersion(const Meta::Version& version);
+        void setDate(const std::string &date);
         void setDescription(const std::string& description);
         void addMaintainer(const Meta::Contact &maintainer);
         void addLicense(const Meta::License &license);
@@ -318,6 +321,7 @@ namespace App {
 
         std::string _name;
         Meta::Version _version;
+        std::string _date;
         std::string _description;
         std::vector<Meta::Contact> _maintainer;
         std::vector<Meta::License> _license;

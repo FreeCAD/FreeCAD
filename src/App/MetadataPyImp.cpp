@@ -145,6 +145,21 @@ void MetadataPy::setVersion(Py::Object args)
         getMetadataPtr()->setVersion(App::Meta::Version());
 }
 
+Py::Object MetadataPy::getDate() const 
+{ 
+    return Py::String(getMetadataPtr()->date()); 
+}
+
+void MetadataPy::setDate(Py::Object args)
+{
+    const char *date = nullptr;
+    if (!PyArg_Parse(args.ptr(), "z", &date)) 
+        throw Py::Exception(); 
+    if (date) getMetadataPtr()->setDate(date);
+    else
+        getMetadataPtr()->setDate("");
+}
+
 Py::Object MetadataPy::getDescription() const
 {
     return Py::String(getMetadataPtr()->description());

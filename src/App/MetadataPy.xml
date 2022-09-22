@@ -44,6 +44,12 @@ file : str\n    XML file name.</UserDocu>
 			</Documentation>
 			<Parameter Name="Version" Type="Object" />
 		</Attribute>
+		<Attribute Name="Date">
+			<Documentation>
+				<UserDocu>String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)</UserDocu>
+			</Documentation>
+			<Parameter Name="Date" Type="Object" />
+		</Attribute>
 		<Attribute Name="Description">
 			<Documentation>
 				<UserDocu>String representing the description of this item (text only, no markup allowed).</UserDocu>

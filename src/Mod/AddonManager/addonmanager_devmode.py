@@ -166,6 +166,8 @@ class DeveloperMode:
         result = self.dialog.exec()
         if result == QDialog.Accepted:
             self._sync_metadata_to_ui()
+            now = datetime.date.today()
+            self.metadata.Date = str(now)
             self.metadata.write(os.path.join(self.current_mod, "package.xml"))
 
     def _populate_dialog(self, path_to_repo):
