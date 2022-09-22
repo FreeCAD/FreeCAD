@@ -54,13 +54,17 @@
       <string>Metadata</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelDisplayName">
-        <property name="toolTip">
-         <string>Displayed in the Addon Manager's list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</string>
-        </property>
+      <item row="12" column="0">
+       <widget class="QLabel" name="labelIcon">
         <property name="text">
-         <string>Addon Name</string>
+         <string>Icon</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="labelReadmeURL">
+        <property name="text">
+         <string>README URL</string>
         </property>
        </widget>
       </item>
@@ -68,19 +72,6 @@
        <widget class="QLineEdit" name="displayNameLineEdit">
         <property name="toolTip">
          <string>Displayed in the Addon Manager's list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelDescription">
-        <property name="toolTip">
-         <string>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</string>
-        </property>
-        <property name="text">
-         <string>Description</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
@@ -97,6 +88,40 @@
         </property>
        </widget>
       </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="readmeURLLineEdit">
+        <property name="placeholderText">
+         <string>(Recommended)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="websiteURLLineEdit">
+        <property name="placeholderText">
+         <string>(Optional)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLineEdit" name="bugtrackerURLLineEdit">
+        <property name="placeholderText">
+         <string>(Optional)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="peopleAndLicenseshorizontalLayout"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelDisplayName">
+        <property name="toolTip">
+         <string>Displayed in the Addon Manager's list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</string>
+        </property>
+        <property name="text">
+         <string>Addon Name</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="labelVersion">
         <property name="text">
@@ -104,26 +129,12 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="QLineEdit" name="versionLineEdit">
-          <property name="placeholderText">
-           <string>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="versionToTodayButton">
-          <property name="text">
-           <string>Set to today (CalVer style)</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="peopleAndLicenseshorizontalLayout"/>
+      <item row="10" column="0">
+       <widget class="QLabel" name="labelDocumentationURL">
+        <property name="text">
+         <string>Documentation URL</string>
+        </property>
+       </widget>
       </item>
       <item row="6" column="0">
        <widget class="QLabel" name="labelRepoURL">
@@ -149,52 +160,23 @@
         </item>
        </layout>
       </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="labelReadmeURL">
+      <item row="11" column="0">
+       <widget class="QLabel" name="labelDiscssionURL">
         <property name="text">
-         <string>README URL</string>
+         <string>Discussion URL</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
-       <widget class="QLineEdit" name="readmeURLLineEdit">
-        <property name="placeholderText">
-         <string>(Recommended)</string>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelDescription">
+        <property name="toolTip">
+         <string>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</string>
         </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="labelWebsiteURL">
         <property name="text">
-         <string>Website URL</string>
+         <string>Description</string>
         </property>
-       </widget>
-      </item>
-      <item row="8" column="1">
-       <widget class="QLineEdit" name="websiteURLLineEdit">
-        <property name="placeholderText">
-         <string>(Optional)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="labelBugtrackerURL">
-        <property name="text">
-         <string>Bugtracker URL</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1">
-       <widget class="QLineEdit" name="bugtrackerURLLineEdit">
-        <property name="placeholderText">
-         <string>(Optional)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="labelDocumentationURL">
-        <property name="text">
-         <string>Documentation URL</string>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
@@ -205,14 +187,39 @@
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
-       <widget class="QLabel" name="labelIcon">
+      <item row="8" column="0">
+       <widget class="QLabel" name="labelWebsiteURL">
         <property name="text">
-         <string>Icon</string>
+         <string>Website URL</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="9" column="0">
+       <widget class="QLabel" name="labelBugtrackerURL">
+        <property name="text">
+         <string>Bugtracker URL</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLineEdit" name="versionLineEdit">
+          <property name="placeholderText">
+           <string>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="versionToTodayButton">
+          <property name="text">
+           <string>Set to today (CalVer style)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="12" column="1">
        <layout class="QHBoxLayout" name="iconHorizontalLayout">
         <item>
          <widget class="QLabel" name="iconDisplayLabel"/>
@@ -228,6 +235,13 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="11" column="1">
+       <widget class="QLineEdit" name="discussionURLLineEdit">
+        <property name="placeholderText">
+         <string>(Optional)</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

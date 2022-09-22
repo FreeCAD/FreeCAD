@@ -244,6 +244,8 @@ class DeveloperMode:
                 self.dialog.readmeURLLineEdit.setText(url["location"])
             elif url["type"] == "documentation":
                 self.dialog.documentationURLLineEdit.setText(url["location"])
+            elif url["type"] == "discussion":
+                self.dialog.discussionURLLineEdit.setText(url["location"])
 
     def _populate_contents_from_metadata(self, metadata):
         """Use the passed metadata object to populate the contents list"""
@@ -339,6 +341,7 @@ class DeveloperMode:
         self.dialog.bugtrackerURLLineEdit.clear()
         self.dialog.readmeURLLineEdit.clear()
         self.dialog.documentationURLLineEdit.clear()
+        self.dialog.discussionURLLineEdit.clear()
         self.dialog.iconDisplayLabel.setPixmap(QPixmap())
         self.dialog.iconPathLineEdit.clear()
 
@@ -413,6 +416,13 @@ class DeveloperMode:
                 {
                     "location": self.dialog.documentationURLLineEdit.text(),
                     "type": "documentation",
+                }
+            )
+        if self.dialog.discussionURLLineEdit.text():
+            urls.append(
+                {
+                    "location": self.dialog.discussionURLLineEdit.text(),
+                    "type": "discussion",
                 }
             )
         self.metadata.Urls = urls

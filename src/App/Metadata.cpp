@@ -772,6 +772,8 @@ void Metadata::parseVersion1(const DOMNode* startNode)
             _name = StrXUTF8(element->getTextContent()).str;
         else if (tagString == "version")
             _version = Meta::Version(StrXUTF8(element->getTextContent()).str);
+        else if (tagString == "date")
+            _date = StrXUTF8(element->getTextContent()).str;
         else if (tagString == "description")
             _description = StrXUTF8(element->getTextContent()).str;
         else if (tagString == "maintainer")

@@ -340,6 +340,8 @@ Py::Object MetadataPy::getUrls() const
             case Meta::UrlType::bugtracker: pyUrl["type"] = Py::String("bugtracker"); break;
             case Meta::UrlType::readme: pyUrl["type"] = Py::String("readme"); break;
             case Meta::UrlType::documentation: pyUrl["type"] = Py::String("documentation"); break;
+            case Meta::UrlType::discussion: pyUrl["type"] = Py::String("discussion"); break;
+            default: pyUrl["type"] = Py::String("unknown"); break;
         }
         if (url.type == Meta::UrlType::repository)
             pyUrl["branch"] = Py::String(url.branch);
@@ -377,6 +379,9 @@ void MetadataPy::setUrls(Py::Object args)
         }
         else if (typeAsString == "documentation") {
             newUrl.type = Meta::UrlType::documentation;
+        }
+        else if (typeAsString == "discussion") {
+            newUrl.type = Meta::UrlType::discussion;
         }
         else {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Unrecognized URL type");
