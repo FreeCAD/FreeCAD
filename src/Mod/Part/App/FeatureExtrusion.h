@@ -51,11 +51,7 @@ public:
     App::PropertyBool Symmetric;
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
-    App::PropertyAngle InnerTaperAngle;
-    App::PropertyAngle InnerTaperAngleRev;
     App::PropertyString FaceMakerClass;
-    App::PropertyBool UsePipeForDraft;
-    App::PropertyBool Linearize;
 
     /** @name methods override feature */
     //@{

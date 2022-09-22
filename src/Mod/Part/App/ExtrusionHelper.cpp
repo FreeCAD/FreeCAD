@@ -587,18 +587,21 @@ void ExtrusionHelper::makEDraft(const ExtrusionParameters& params,
     bool bRev = fabs(params.lengthRev) > Precision::Confusion();
     bool bMid = !bFwd || !bRev || params.lengthFwd*params.lengthRev > 0.0; //include the source shape as loft section?
 
-    TopoDS_Shape shape = _shape.getShape();
+    TopoShape shape = _shape;
     TopoShape sourceWire;
-    if (shape.IsNull())
+    if (shape.isNull())
         Standard_Failure::Raise("Not a valid shape");
 
-    if (shape.ShapeType() == TopAbs_FACE) {
+    if (params.solid && !shape.hasSubShape(TopAbs_FACE))
+        shape = shape.makEFace(nullptr, params.faceMakerClass.c_str());
+
+    if (shape.shapeType() == TopAbs_FACE) {
         std::vector<TopoShape> wires;
-        TopoShape outerWire = _shape.splitWires(&wires, TopoShape::ReorientForward);
+        TopoShape outerWire = shape.splitWires(&wires, TopoShape::ReorientForward);
         if (outerWire.isNull())
             Standard_Failure::Raise("Missing outer wire");
         if (wires.empty())
-            shape = outerWire.getShape();
+            shape = outerWire;
         else {
             unsigned pos = drafts.size();
             makEDraft(params, outerWire, drafts, hasher);
@@ -619,18 +622,18 @@ void ExtrusionHelper::makEDraft(const ExtrusionParameters& params,
         }
     }
 
-    if (shape.ShapeType() == TopAbs_WIRE) {
+    if (shape.shapeType() == TopAbs_WIRE) {
         ShapeFix_Wire aFix;
-        aFix.Load(TopoDS::Wire(shape));
+        aFix.Load(TopoDS::Wire(shape.getShape()));
         aFix.FixReorder();
         aFix.FixConnected();
         aFix.FixClosed();
         sourceWire.setShape(aFix.Wire());
-        sourceWire.Tag = _shape.Tag;
-        sourceWire.mapSubElement(_shape);
+        sourceWire.Tag = shape.Tag;
+        sourceWire.mapSubElement(shape);
     }
-    else if (shape.ShapeType() == TopAbs_COMPOUND) {
-        for(auto &s : _shape.getSubTopoShapes())
+    else if (shape.shapeType() == TopAbs_COMPOUND) {
+        for(auto &s : shape.getSubTopoShapes())
             makEDraft(params, s, drafts, hasher);
     }
     else {
@@ -699,8 +702,8 @@ void ExtrusionHelper::makEDraft(const ExtrusionParameters& params,
             //make loft
             BRepOffsetAPI_ThruSections mkGenerator(
                     params.solid ? Standard_True : Standard_False, /*ruled=*/Standard_True);
-            for(auto &shape : list_of_sections)
-                mkGenerator.AddWire(TopoDS::Wire(shape.getShape()));
+            for(auto &s : list_of_sections)
+                mkGenerator.AddWire(TopoDS::Wire(s.getShape()));
 
             mkGenerator.Build();
             drafts.push_back(TopoShape(0,hasher).makEShape(mkGenerator,list_of_sections));
