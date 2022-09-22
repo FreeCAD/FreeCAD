@@ -95,7 +95,10 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         }
 
         QColor invalid;
-        this->viewer->imageFromFramebuffer(this->size, this->size, 0, invalid, img);
+        QImage scaledImg;
+        this->viewer->imageFromFramebuffer(this->size*4, this->size*4, 0, invalid, scaledImg);
+        if (!scaledImg.isNull())
+            img = scaledImg.scaled(this->size, this->size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     }
 
     // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
@@ -105,7 +108,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         if (App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true)) {
             // only scale app icon if an offscreen image could be created
-            appIcon =  appIcon.scaled(this->size / 4, this->size /4);
+            appIcon = appIcon.scaled(this->size / 4, this->size /4, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             px = BitmapFactory().merge(QPixmap::fromImage(img), appIcon, BitmapFactoryInst::BottomRight);
         }
         else {
