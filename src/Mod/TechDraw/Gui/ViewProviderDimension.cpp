@@ -40,6 +40,7 @@
 #include <Mod/TechDraw/App/LandmarkDimension.h>
 
 #include "PreferencesGui.h"
+#include "ZVALUE.h"
 #include "TaskDimension.h"
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
@@ -86,8 +87,7 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(GapFactorASME, (Preferences::GapASME()), group, App::Prop_None,
                       "Adjusts the gap between dimension point and extension line");
 
-    //Dimensions take their stacking order from the parent View
-    StackOrder.setStatus(App::Property::Hidden,true);
+   StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 ViewProviderDimension::~ViewProviderDimension()
