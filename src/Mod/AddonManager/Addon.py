@@ -353,7 +353,7 @@ class Addon:
                             )
                         except ValueError:
                             FreeCAD.Console.PrintWarning(
-                                f"Package {self.name}: Invalid Python version requirment specified\n"
+                                f"Package {self.name}: Invalid Python version requirement specified\n"
                             )
             elif "type" in dep:
                 if dep["type"] == "internal":
