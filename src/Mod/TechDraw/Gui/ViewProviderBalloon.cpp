@@ -39,6 +39,7 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "PreferencesGui.h"
+#include "ZVALUE.h"
 #include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
@@ -65,8 +66,7 @@ ViewProviderBalloon::ViewProviderBalloon()
     ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
     ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
 
-    //Dimensions take their stacking order from the parent View
-    StackOrder.setStatus(App::Property::Hidden,true);
+    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
