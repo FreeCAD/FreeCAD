@@ -28,6 +28,7 @@ import os
 import functools
 import shutil
 import stat
+import sys
 import tempfile
 import hashlib
 import threading
@@ -128,10 +129,10 @@ class CommandAddonManager:
     restart_required = False
 
     def __init__(self):
-        #FreeCADGui.addPreferencePage(
+        # FreeCADGui.addPreferencePage(
         #    os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"),
         #    translate("AddonsInstaller", "Addon Manager"),
-        #)
+        # )
         FreeCADGui.addPreferencePage(
             AddonManagerOptions,
             translate("AddonsInstaller", "Addon Manager"),
@@ -374,7 +375,7 @@ class CommandAddonManager:
             self.dialog.buttonDevTools.hide()
 
         # Only shown if there are available Python package updates
-        #self.dialog.buttonUpdateDependencies.hide()
+        # self.dialog.buttonUpdateDependencies.hide()
 
         # connect slots
         self.dialog.rejected.connect(self.reject)
@@ -934,7 +935,9 @@ class CommandAddonManager:
 
     def show_python_updates_dialog(self) -> None:
         if not hasattr(self, "manage_python_packages_dialog"):
-            self.manage_python_packages_dialog = PythonPackageManager(self.item_model.repos)
+            self.manage_python_packages_dialog = PythonPackageManager(
+                self.item_model.repos
+            )
         self.manage_python_packages_dialog.show()
 
     def show_developer_tools(self) -> None:
@@ -1077,6 +1080,7 @@ class CommandAddonManager:
                         self.wbs.append(dep)
 
             # Check the Python dependencies:
+            self.python_min_version = deps.python_min_version
             self.python_required = []
             for py_dep in deps.python_required:
                 if py_dep not in self.python_required:
@@ -1248,6 +1252,25 @@ class CommandAddonManager:
 
         missing = CommandAddonManager.MissingDependencies(repo, self.item_model.repos)
         if self.handle_disallowed_python(missing.python_required):
+            return
+
+        # For now only look at the minor version, since major is always Python 3
+        minor_required = missing.python_min_version["minor"]
+        if sys.version_info.minor < minor_required:
+            QtWidgets.QMessageBox.critical(
+                self.dialog,
+                translate("AddonsInstaller", "Incompatible Python version"),
+                translate(
+                    "AddonsInstaller",
+                    "This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.",
+                ).format(
+                    missing.python_min_version["major"],
+                    missing.python_min_version["minor"],
+                    sys.version_info.major,
+                    sys.version_info.minor,
+                ),
+                QtWidgets.QMessageBox.Cancel,
+            )
             return
 
         good_packages = []
