@@ -151,9 +151,9 @@ Meta::Version Metadata::version() const
 {
     return _version; }
 
-std::string App::Metadata::date() const 
-{ 
-    return _date; 
+std::string App::Metadata::date() const
+{
+    return _date;
 }
 
 std::string Metadata::description() const
@@ -263,9 +263,9 @@ void Metadata::setVersion(const Meta::Version& version)
 {
     _version = version; }
 
-void App::Metadata::setDate(const std::string &date) 
-{ 
-    _date = date; 
+void App::Metadata::setDate(const std::string &date)
+{
+    _date = date;
 }
 
 void Metadata::setDescription(const std::string& description)
@@ -669,7 +669,7 @@ void Metadata::appendToElement(DOMElement* root) const
         // Only append version if it's not 0.0.0
         appendSimpleXMLNode(root, "version", _version.str());
 
-    if (!_date.empty()) 
+    if (!_date.empty())
         appendSimpleXMLNode(root, "date", _date);
 
     for (const auto& maintainer : _maintainer) {

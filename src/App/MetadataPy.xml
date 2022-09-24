@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-	  Father="PyObjectBase"
-	  Name="MetadataPy"
-	  Twin="Metadata"
-	  TwinPointer="Metadata"
-	  Include="App/Metadata.h"
-	  FatherInclude="Base/PyObjectBase.h"
-	  Namespace="App"
-	  Constructor="true"
-	  Delete="true"
-	  NumberProtocol="false"
-	  RichCompare="false"
-	  FatherNamespace="Base">
+    <PythonExport
+      Father="PyObjectBase"
+      Name="MetadataPy"
+      Twin="Metadata"
+      TwinPointer="Metadata"
+      Include="App/Metadata.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="App"
+      Constructor="true"
+      Delete="true"
+      NumberProtocol="false"
+      RichCompare="false"
+      FatherNamespace="Base">
 
-		
-		<Documentation>
-			<Author Licence="LGPL" Name="Chris Hennes" EMail="chennes@pioneerlibrarysystem.org" />
-			<UserDocu>App.Metadata class.\n
+
+        <Documentation>
+            <Author Licence="LGPL" Name="Chris Hennes" EMail="chennes@pioneerlibrarysystem.org" />
+            <UserDocu>App.Metadata class.\n
 A Metadata object reads an XML-formatted package metadata file and provides
 read and write access to its contents.\n
 The following constructors are supported:\n
@@ -29,67 +29,67 @@ metadata : App.Metadata\n
 Metadata(file)
 Reads the XML file and provides access to the metadata it specifies.
 file : str\n    XML file name.</UserDocu>
-			<DeveloperDocu>Metadata</DeveloperDocu>
-		</Documentation>
+            <DeveloperDocu>Metadata</DeveloperDocu>
+        </Documentation>
 
-		<Attribute Name="Name">
-			<Documentation>
-				<UserDocu>String representing the name of this item.</UserDocu>
-			</Documentation>
-			<Parameter Name="Name" Type="Object" />
-		</Attribute>
-		<Attribute Name="Version">
-			<Documentation>
-				<UserDocu>String representing the version of this item in semantic triplet format.</UserDocu>
-			</Documentation>
-			<Parameter Name="Version" Type="Object" />
-		</Attribute>
-		<Attribute Name="Date">
-			<Documentation>
-				<UserDocu>String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)</UserDocu>
-			</Documentation>
-			<Parameter Name="Date" Type="Object" />
-		</Attribute>
-		<Attribute Name="Description">
-			<Documentation>
-				<UserDocu>String representing the description of this item (text only, no markup allowed).</UserDocu>
-			</Documentation>
-			<Parameter Name="Description" Type="Object" />
-		</Attribute>
-		<Attribute Name="Maintainer">
-			<Documentation>
-				<UserDocu>List of maintainer objects with 'name' and 'email' string attributes.</UserDocu>
-			</Documentation>
-			<Parameter Name="Maintainer" Type="Object" />
-		</Attribute>
-		<Attribute Name="License">
-			<Documentation>
-				<UserDocu>List of applicable licenses as objects with 'name' and 'file' string attributes.</UserDocu>
-			</Documentation>
-			<Parameter Name="License" Type="Object" />
-		</Attribute>
-		<Attribute Name="Urls">
-			<Documentation>
-				<UserDocu>List of URLs as objects with 'location' and 'type' string attributes, where type
+        <Attribute Name="Name">
+            <Documentation>
+                <UserDocu>String representing the name of this item.</UserDocu>
+            </Documentation>
+            <Parameter Name="Name" Type="Object" />
+        </Attribute>
+        <Attribute Name="Version">
+            <Documentation>
+                <UserDocu>String representing the version of this item in semantic triplet format.</UserDocu>
+            </Documentation>
+            <Parameter Name="Version" Type="Object" />
+        </Attribute>
+        <Attribute Name="Date">
+            <Documentation>
+                <UserDocu>String representing the date of this item in YYYY-MM-DD format (format not currently programmatically enforced)</UserDocu>
+            </Documentation>
+            <Parameter Name="Date" Type="Object" />
+        </Attribute>
+        <Attribute Name="Description">
+            <Documentation>
+                <UserDocu>String representing the description of this item (text only, no markup allowed).</UserDocu>
+            </Documentation>
+            <Parameter Name="Description" Type="Object" />
+        </Attribute>
+        <Attribute Name="Maintainer">
+            <Documentation>
+                <UserDocu>List of maintainer objects with 'name' and 'email' string attributes.</UserDocu>
+            </Documentation>
+            <Parameter Name="Maintainer" Type="Object" />
+        </Attribute>
+        <Attribute Name="License">
+            <Documentation>
+                <UserDocu>List of applicable licenses as objects with 'name' and 'file' string attributes.</UserDocu>
+            </Documentation>
+            <Parameter Name="License" Type="Object" />
+        </Attribute>
+        <Attribute Name="Urls">
+            <Documentation>
+                <UserDocu>List of URLs as objects with 'location' and 'type' string attributes, where type
 is one of:
 * website
 * repository
 * bugtracker
 * readme
 * documentation</UserDocu>
-			</Documentation>
-			<Parameter Name="Urls" Type="Object" />
-		</Attribute>
-		<Attribute Name="Author">
-			<Documentation>
-				<UserDocu>List of author objects, each with a 'name' and a (potentially empty) 'email'
+            </Documentation>
+            <Parameter Name="Urls" Type="Object" />
+        </Attribute>
+        <Attribute Name="Author">
+            <Documentation>
+                <UserDocu>List of author objects, each with a 'name' and a (potentially empty) 'email'
 string attribute.</UserDocu>
-			</Documentation>
-			<Parameter Name="Author" Type="Object" />
-		</Attribute>
-		<Attribute Name="Depend">
-			<Documentation>
-				<UserDocu>List of dependencies, as objects with the following attributes:
+            </Documentation>
+            <Parameter Name="Author" Type="Object" />
+        </Attribute>
+        <Attribute Name="Depend">
+            <Documentation>
+                <UserDocu>List of dependencies, as objects with the following attributes:
 * package
     Required. Must exactly match the contents of the 'name' element in the
     referenced package's package.xml file.
@@ -110,102 +110,102 @@ string attribute.</UserDocu>
     than the stated version number.
 * condition
     Optional. Conditional expression as documented in REP149.</UserDocu>
-			</Documentation>
-			<Parameter Name="Depend" Type="Object" />
-		</Attribute>
-		<Attribute Name="Conflict">
-			<Documentation>
-				<UserDocu>List of conflicts, format identical to dependencies.</UserDocu>
-			</Documentation>
-			<Parameter Name="Conflict" Type="Object" />
-		</Attribute>
-		<Attribute Name="Replace">
-			<Documentation>
-				<UserDocu>List of things this item is considered by its author to replace. The format is
+            </Documentation>
+            <Parameter Name="Depend" Type="Object" />
+        </Attribute>
+        <Attribute Name="Conflict">
+            <Documentation>
+                <UserDocu>List of conflicts, format identical to dependencies.</UserDocu>
+            </Documentation>
+            <Parameter Name="Conflict" Type="Object" />
+        </Attribute>
+        <Attribute Name="Replace">
+            <Documentation>
+                <UserDocu>List of things this item is considered by its author to replace. The format is
 identical to dependencies.</UserDocu>
-			</Documentation>
-			<Parameter Name="Replace" Type="Object" />
-		</Attribute>
-		<Attribute Name="Tag">
-			<Documentation>
-				<UserDocu>List of strings.</UserDocu>
-			</Documentation>
-			<Parameter Name="Tag" Type="Object" />
-		</Attribute>
-		<Attribute Name="Icon">
-			<Documentation>
-				<UserDocu>Relative path to an icon file.</UserDocu>
-			</Documentation>
-			<Parameter Name="Icon" Type="Object" />
-		</Attribute>
-		<Attribute Name="Classname">
-			<Documentation>
-				<UserDocu>String representing the name of the main Python class this item
+            </Documentation>
+            <Parameter Name="Replace" Type="Object" />
+        </Attribute>
+        <Attribute Name="Tag">
+            <Documentation>
+                <UserDocu>List of strings.</UserDocu>
+            </Documentation>
+            <Parameter Name="Tag" Type="Object" />
+        </Attribute>
+        <Attribute Name="Icon">
+            <Documentation>
+                <UserDocu>Relative path to an icon file.</UserDocu>
+            </Documentation>
+            <Parameter Name="Icon" Type="Object" />
+        </Attribute>
+        <Attribute Name="Classname">
+            <Documentation>
+                <UserDocu>String representing the name of the main Python class this item
 creates/represents.</UserDocu>
-			</Documentation>
-			<Parameter Name="Classname" Type="Object" />
-		</Attribute>
-		<Attribute Name="Subdirectory">
-			<Documentation>
-				<UserDocu>String representing the name of the subdirectory this content item is located in.
+            </Documentation>
+            <Parameter Name="Classname" Type="Object" />
+        </Attribute>
+        <Attribute Name="Subdirectory">
+            <Documentation>
+                <UserDocu>String representing the name of the subdirectory this content item is located in.
 If empty, the item is in a directory named the same as the content item.</UserDocu>
-			</Documentation>
-			<Parameter Name="Subdirectory" Type="Object" />
-		</Attribute>
-		<Attribute Name="File">
-			<Documentation>
-				<UserDocu>List of files associated with this item.
+            </Documentation>
+            <Parameter Name="Subdirectory" Type="Object" />
+        </Attribute>
+        <Attribute Name="File">
+            <Documentation>
+                <UserDocu>List of files associated with this item.
 The meaning of each file is implementation-defined.</UserDocu>
-			</Documentation>
-			<Parameter Name="File" Type="Object" />
-		</Attribute>
-		<Attribute Name="Content">
-			<Documentation>
-				<UserDocu>Dictionary of lists of content items: defined recursively, each item is itself
+            </Documentation>
+            <Parameter Name="File" Type="Object" />
+        </Attribute>
+        <Attribute Name="Content">
+            <Documentation>
+                <UserDocu>Dictionary of lists of content items: defined recursively, each item is itself
 a Metadata object.
 See package.xml file format documentation for details.</UserDocu>
-			</Documentation>
-			<Parameter Name="Content" Type="Object" />
-		</Attribute>
+            </Documentation>
+            <Parameter Name="Content" Type="Object" />
+        </Attribute>
 
-		<Attribute Name="FreeCADMin">
-			<Documentation>
-				<UserDocu>String representing the minimum version of FreeCAD needed for this item.
+        <Attribute Name="FreeCADMin">
+            <Documentation>
+                <UserDocu>String representing the minimum version of FreeCAD needed for this item.
 If unset it will be 0.0.0.</UserDocu>
-			</Documentation>
-			<Parameter Name="FreeCADMin" Type="Object" />
-		</Attribute>
+            </Documentation>
+            <Parameter Name="FreeCADMin" Type="Object" />
+        </Attribute>
 
-		<Attribute Name="FreeCADMax">
-			<Documentation>
-				<UserDocu>String representing the maximum version of FreeCAD needed for this item.
+        <Attribute Name="FreeCADMax">
+            <Documentation>
+                <UserDocu>String representing the maximum version of FreeCAD needed for this item.
 If unset it will be 0.0.0.</UserDocu>
-			</Documentation>
-			<Parameter Name="FreeCADMax" Type="Object" />
-		</Attribute>
+            </Documentation>
+            <Parameter Name="FreeCADMax" Type="Object" />
+        </Attribute>
 
-		<Methode Name="getLastSupportedFreeCADVersion">
-			<Documentation>
-				<UserDocu>getLastSupportedFreeCADVersion() -> str or None\n
+        <Methode Name="getLastSupportedFreeCADVersion">
+            <Documentation>
+                <UserDocu>getLastSupportedFreeCADVersion() -> str or None\n
 Search through all content package items, and determine if a maximum supported
 version of FreeCAD is set.
 Returns None if no maximum version is set, or if *any* content item fails to
 provide a maximum version (implying that that content item will work with all
 known versions).</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
 
-		<Methode Name="getFirstSupportedFreeCADVersion">
-			<Documentation>
-				<UserDocu>getFirstSupportedFreeCADVersion() -> str or None\n
+        <Methode Name="getFirstSupportedFreeCADVersion">
+            <Documentation>
+                <UserDocu>getFirstSupportedFreeCADVersion() -> str or None\n
 Search through all content package items, and determine if a minimum supported
 version of FreeCAD is set.
 Returns 0.0 if no minimum version is set, or if *any* content item fails to
 provide a minimum version (implying that that content item will work with all
 known versions. Technically limited to 0.20 as the lowest known version since
 the metadata standard was added then).</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
 
     <Methode Name="supportsCurrentFreeCAD">
       <Documentation>
@@ -217,174 +217,173 @@ recurse into Content items.</UserDocu>
       </Documentation>
     </Methode>
 
-		<Methode Name="getGenericMetadata">
-			<Documentation>
-				<UserDocu>getGenericMetadata(name) -> list\n
-Get the list of GenericMetadata objects with key 'name'. 
+        <Methode Name="getGenericMetadata">
+            <Documentation>
+                <UserDocu>getGenericMetadata(name) -> list\n
+Get the list of GenericMetadata objects with key 'name'.
 Generic metadata objects are Python objects with a string 'contents' and a
 dictionary of strings, 'attributes'. They represent unrecognized simple XML tags
 in the metadata file.</UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addContentItem">
-			<Documentation>
-				<UserDocu>addContentItem(content_type,metadata)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addContentItem">
+            <Documentation>
+                <UserDocu>addContentItem(content_type,metadata)\n
 Add a new content item of type 'content_type' with metadata 'metadata'. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeContentItem">
-			<Documentation>
-				<UserDocu>removeContentItem(content_type,name)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeContentItem">
+            <Documentation>
+                <UserDocu>removeContentItem(content_type,name)\n
 Remove the content item of type 'content_type' with name 'name'. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		         
-		<Methode Name="addMaintainer">
-			<Documentation>
-				<UserDocu>addMaintainer(name, email)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addMaintainer">
+            <Documentation>
+                <UserDocu>addMaintainer(name, email)\n
 Add a new Maintainer. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeMaintainer">
-			<Documentation>
-				<UserDocu>removeMaintainer(name, email)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeMaintainer">
+            <Documentation>
+                <UserDocu>removeMaintainer(name, email)\n
 Remove the Maintainer. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addLicense">
-			<Documentation>
-				<UserDocu>addLicense(short_code,path)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addLicense">
+            <Documentation>
+                <UserDocu>addLicense(short_code,path)\n
 Add a new License. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeLicense">
-			<Documentation>
-				<UserDocu>removeLicense(short_code)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeLicense">
+            <Documentation>
+                <UserDocu>removeLicense(short_code)\n
 Remove the License. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addUrl">
-			<Documentation>
-				<UserDocu>addUrl(url_type,url,branch)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addUrl">
+            <Documentation>
+                <UserDocu>addUrl(url_type,url,branch)\n
 Add a new Url or type 'url_type' (which should be one of 'repository', 'readme',\n
 'bugtracker', 'documentation', or 'webpage') If type is 'repository' you\n
 must also specify the 'branch' parameter. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeUrl">
-			<Documentation>
-				<UserDocu>removeUrl(url_type,url)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeUrl">
+            <Documentation>
+                <UserDocu>removeUrl(url_type,url)\n
 Remove the Url. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addAuthor">
-			<Documentation>
-				<UserDocu>addAuthor(name, email)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addAuthor">
+            <Documentation>
+                <UserDocu>addAuthor(name, email)\n
 Add a new Author with name 'name', and optionally email 'email'. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeAuthor">
-			<Documentation>
-				<UserDocu>removeAuthor(name, email)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeAuthor">
+            <Documentation>
+                <UserDocu>removeAuthor(name, email)\n
 Remove the Author. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addDepend">
-			<Documentation>
-				<UserDocu>addDepend(name, kind, optional)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addDepend">
+            <Documentation>
+                <UserDocu>addDepend(name, kind, optional)\n
 Add a new Dependency on package 'name' of kind 'kind' (optional, one of 'auto' (the default),\n
 'internal', 'addon', or 'python'). </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeDepend">
-			<Documentation>
-				<UserDocu>removeDepend(name, kind)\n
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeDepend">
+            <Documentation>
+                <UserDocu>removeDepend(name, kind)\n
 Remove the Dependency on package 'name' of kind 'kind' (optional - if unspecified any\n
 matching name is removed). </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addConflict">
-			<Documentation>
-				<UserDocu>addConflict(name, kind)\n
-Add a new Conflict. See documentation for addDepend(). </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeConflict">
-			<Documentation>
-				<UserDocu>removeConflict(name, kind)\n
-Remove the Conflict. See documentation for removeDepend().</UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addReplace">
-			<Documentation>
-				<UserDocu>addReplace(name)\n
-Add a new Replace. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeReplace">
-			<Documentation>
-				<UserDocu>removeReplace(name)\n
-Remove the Replace. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addTag">
-			<Documentation>
-				<UserDocu>addTag(tag)\n
-Add a new Tag. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeTag">
-			<Documentation>
-				<UserDocu>removeTag(tag)\n
-Remove the Tag. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="addFile">
-			<Documentation>
-				<UserDocu>addFile(filename)\n
-Add a new File. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="removeFile">
-			<Documentation>
-				<UserDocu>removeFile(filename)\n
-Remove the File. </UserDocu>
-			</Documentation>
-		</Methode>
-		
-		<Methode Name="write">
-			<Documentation>
-				<UserDocu>write(filename)\n
-Write the metadata to the given file as XML data.</UserDocu>
-			</Documentation>
-		</Methode>
+            </Documentation>
+        </Methode>
 
-		<ClassDeclarations>
-			public:
-			MetadataPy(const Metadata &amp; pla, PyTypeObject *T = &amp;Type)
-			:PyObjectBase(new Metadata(pla),T){}
-			Metadata value() const
-			{ return *(getMetadataPtr()); }
-		</ClassDeclarations>
-	</PythonExport>
+        <Methode Name="addConflict">
+            <Documentation>
+                <UserDocu>addConflict(name, kind)\n
+Add a new Conflict. See documentation for addDepend(). </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeConflict">
+            <Documentation>
+                <UserDocu>removeConflict(name, kind)\n
+Remove the Conflict. See documentation for removeDepend().</UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addReplace">
+            <Documentation>
+                <UserDocu>addReplace(name)\n
+Add a new Replace. </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeReplace">
+            <Documentation>
+                <UserDocu>removeReplace(name)\n
+Remove the Replace. </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addTag">
+            <Documentation>
+                <UserDocu>addTag(tag)\n
+Add a new Tag. </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeTag">
+            <Documentation>
+                <UserDocu>removeTag(tag)\n
+Remove the Tag. </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="addFile">
+            <Documentation>
+                <UserDocu>addFile(filename)\n
+Add a new File. </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="removeFile">
+            <Documentation>
+                <UserDocu>removeFile(filename)\n
+Remove the File. </UserDocu>
+            </Documentation>
+        </Methode>
+
+        <Methode Name="write">
+            <Documentation>
+                <UserDocu>write(filename)\n
+Write the metadata to the given file as XML data.</UserDocu>
+            </Documentation>
+        </Methode>
+
+        <ClassDeclarations>
+            public:
+            MetadataPy(const Metadata &amp; pla, PyTypeObject *T = &amp;Type)
+            :PyObjectBase(new Metadata(pla),T){}
+            Metadata value() const
+            { return *(getMetadataPtr()); }
+        </ClassDeclarations>
+    </PythonExport>
 </GenerateModel>
