@@ -2912,7 +2912,7 @@ QString getUserHome()
     QString path;
 #if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD) || defined(FC_OS_MACOSX)
     // Default paths for the user specific stuff
-    struct passwd *pwd = getpwuid(getuid());
+    struct passwd *pwd = getpwuid_r(getuid());
     if (!pwd)
         throw Base::RuntimeError("Getting HOME path from system failed!");
     path = QString::fromUtf8(pwd->pw_dir);
