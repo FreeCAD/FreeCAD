@@ -423,7 +423,7 @@ void Metadata::removeFile(const boost::filesystem::path &path)
 }
 
 
-void Metadata::clearContent() 
+void Metadata::clearContent()
 {
     _content.clear();
 }
@@ -901,7 +901,7 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* e)
     else
         type = UrlType::website;
 
-    if (type == UrlType::repository) 
+    if (type == UrlType::repository)
         branch = StrXUTF8(e->getAttribute(XUTF8Str("branch").unicodeForm())).str;
 
     location = StrXUTF8(e->getTextContent()).str;
@@ -954,13 +954,13 @@ Meta::Dependency::Dependency(const XERCES_CPP_NAMESPACE::DOMElement *e)
 
 bool App::Meta::Dependency::operator==(const Dependency &rhs) const
 {
-    return package == rhs.package && 
-        version_lt == rhs.version_lt && 
-        version_lte == rhs.version_lte && 
-        version_eq == rhs.version_eq && 
-        version_gte == rhs.version_gte && 
-        version_gt == rhs.version_gt && 
-        condition == rhs.condition && 
+    return package == rhs.package &&
+        version_lt == rhs.version_lt &&
+        version_lte == rhs.version_lte &&
+        version_eq == rhs.version_eq &&
+        version_gte == rhs.version_gte &&
+        version_gt == rhs.version_gt &&
+        condition == rhs.condition &&
         optional == rhs.optional &&
         dependencyType == rhs.dependencyType;
 }

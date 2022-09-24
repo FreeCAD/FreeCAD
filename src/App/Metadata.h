@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_METADATAREADER_H 
-#define BASE_METADATAREADER_H 
+#ifndef BASE_METADATAREADER_H
+#define BASE_METADATAREADER_H
 
 #include "FCConfig.h"
 
