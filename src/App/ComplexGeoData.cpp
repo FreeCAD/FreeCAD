@@ -33,6 +33,7 @@
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 #include <boost/io/ios_state.hpp>
+#include <boost/regex.hpp>
 
 #include "ComplexGeoData.h"
 #include <Base/BoundBox.h>
@@ -1219,14 +1220,16 @@ ComplexGeoData::~ComplexGeoData()
 Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
 {
     int index = 0;
-    std::string element(name);
-    std::string::size_type pos = element.find_first_of("0123456789");
-    if (pos != std::string::npos) {
-        index = std::atoi(element.substr(pos).c_str());
-        element = element.substr(0,pos);
+    std::string element;
+    boost::regex ex("^([^0-9]*)([0-9]*)$");
+    boost::cmatch what;
+
+    if (boost::regex_match(name, what, ex)) {
+        element = what[1].str();
+        index = std::atoi(what[2].str().c_str());
     }
 
-    return getSubElement(element.c_str(),index);
+    return getSubElement(element.c_str(), static_cast<unsigned long>(index));
 }
 
 void ComplexGeoData::applyTransform(const Base::Matrix4D& rclTrf)
