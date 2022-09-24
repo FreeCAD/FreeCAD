@@ -321,10 +321,12 @@ class TaskPanel(object):
         typ = dialog.propertyType()
         grp = dialog.propertyGroup()
         info = dialog.propertyInfo()
-        propname = self.obj.Proxy.addCustomProperty(typ, name, grp, info)
-        if dialog.propertyIsEnumeration():
-            setattr(self.obj, name, dialog.propertyEnumerations())
-        return (propname, info)
+        if name:
+            propname = self.obj.Proxy.addCustomProperty(typ, name, grp, info)
+            if dialog.propertyIsEnumeration():
+                setattr(self.obj, name, dialog.propertyEnumerations())
+            return (propname, info)
+        return (None, None)
 
     def propertyAdd(self):
         Path.Log.track()
@@ -337,21 +339,24 @@ class TaskPanel(object):
                 # if we block signals the view doesn't get updated, surprise, surprise
                 # self.model.blockSignals(True)
                 name, info = self.addCustomProperty(self.obj, dialog)
-                index = 0
-                for i in range(self.model.rowCount()):
-                    index = i
-                    if (
-                        self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole)
-                        > dialog.propertyName()
-                    ):
-                        break
-                self.model.insertRows(index, 1)
-                self._setupProperty(index, name)
-                self.form.table.selectionModel().setCurrentIndex(
-                    self.model.index(index, 0), QtCore.QItemSelectionModel.Rows
-                )
-                # self.model.blockSignals(False)
-                more = dialog.createAnother()
+                if name:
+                    index = 0
+                    for i in range(self.model.rowCount()):
+                        index = i
+                        if (
+                            self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole)
+                            > dialog.propertyName()
+                        ):
+                            break
+                    self.model.insertRows(index, 1)
+                    self._setupProperty(index, name)
+                    self.form.table.selectionModel().setCurrentIndex(
+                        self.model.index(index, 0), QtCore.QItemSelectionModel.Rows
+                    )
+                    # self.model.blockSignals(False)
+                    more = dialog.createAnother()
+                else:
+                    more = False
             else:
                 more = False
             if not more:
