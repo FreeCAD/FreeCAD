@@ -428,10 +428,8 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         std::vector<std::string> names;
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
-        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
+        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos)
             names.emplace_back(pos->second->Label.getValue());
-        }
-
         if (!names.empty())
             userName = Base::Tools::getUniqueName(userName, names);
     }
@@ -570,7 +568,7 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
     else {
         std::vector<std::string> names;
         names.reserve(DocMap.size());
-        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
+        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
             if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
                 names.push_back(pos->first);
         }
@@ -2314,7 +2312,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
-        for (vector<string>::const_iterator It= Mods.begin();It != Mods.end();++It)
+        for (vector<string>::const_iterator It = Mods.begin(); It != Mods.end(); ++It)
             temp += *It + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
@@ -2322,14 +2320,14 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It= Paths.begin();It != Paths.end();++It)
+        for (vector<string>::const_iterator It = Paths.begin(); It != Paths.end(); ++It)
             Base::Interpreter().addPythonPath(It->c_str());
     }
 
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
-        for (vector<string>::const_iterator It = files.begin();It != files.end();++It) {
+        for (vector<string>::const_iterator It = files.begin(); It != files.end(); ++It) {
 
             //cout << "Input files are: "
             //     << vm["input-file"].as< vector<string> >() << "\n";
@@ -2800,7 +2798,7 @@ void Application::runApplication()
         Base::Console().Log("Exiting on purpose\n");
     }
     else {
-        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n",mConfig["RunMode"].c_str());
+        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
     }
 }
 
@@ -2810,9 +2808,9 @@ void Application::logStatus()
         boost::posix_time::second_clock::local_time());
     Base::Console().Log("Time = %s\n", time_str.c_str());
 
-    for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
-        Base::Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
-    }
+    for (std::map<std::string, std::string>::iterator It = mConfig.begin(); It != mConfig.end();
+         ++It)
+        Base::Console().Log("%s = %s\n", It->first.c_str(), It->second.c_str());
 }
 
 void Application::LoadParameters()
