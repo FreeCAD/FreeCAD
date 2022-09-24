@@ -95,6 +95,8 @@ class AddonManagerOptions:
             pref_path = widget.property("prefPath")
             pref_entry = widget.property("prefEntry")
             if pref_path and pref_entry:
+                pref_path = pref_path.data()
+                pref_entry = pref_entry.data()
                 pref_access_string = (
                     f"User parameter:BaseApp/Preferences/{str(pref_path,'utf-8')}"
                 )
@@ -137,6 +139,8 @@ class AddonManagerOptions:
             pref_path = widget.property("prefPath")
             pref_entry = widget.property("prefEntry")
             if pref_path and pref_entry:
+                pref_path = pref_path.data()
+                pref_entry = pref_entry.data()
                 pref_access_string = (
                     f"User parameter:BaseApp/Preferences/{str(pref_path,'utf-8')}"
                 )
