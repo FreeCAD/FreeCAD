@@ -94,17 +94,17 @@ void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, b
 
     // Get the latest constraint
     const std::vector<Sketcher::Constraint *> &ConStr = sketch->Constraints.getValues();
-    int lastConstraintIndex = ConStr.size() - 1;
+    auto lastConstraintIndex = ConStr.size() - 1;
     Sketcher::Constraint *constr = ConStr[lastConstraintIndex];
     auto lastConstraintType = constr->Type;
 
     // Guess some reasonable distance for placing the datum text
     Gui::Document *doc = cmd->getActiveGuiDocument();
-    float scaleFactor = 1.f;
-    float labelPosition = 0.f;
-    float labelPositionRandomness = 0.f;
+    float scaleFactor = 1.0;
+    double labelPosition = 0.0;
+    float labelPositionRandomness = 0.0;
 
-    if(lastConstraintType == Radius || lastConstraintType == Diameter) {
+    if (lastConstraintType == Radius || lastConstraintType == Diameter) {
         labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0) * (M_PI / 180); // Get radius/diameter constraint display angle
         labelPositionRandomness = hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0) * (M_PI / 180); // Get randomness
 
@@ -1996,7 +1996,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
 
         // check if the edge already has a Block constraint
-        if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
+        if (areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2)) {
             showNoConstraintBetweenFixedGeometry();
             return;
         }
@@ -2005,7 +2005,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         // arise and substitute them with more appropriate counterparts, examples:
         // - coincidence + tangency on edge
         // - point on object + tangency on edge
-        if(substituteConstraintCombinations(Obj, GeoId1, PosId1,GeoId2, PosId2)) {
+        if (substituteConstraintCombinations(Obj, GeoId1, PosId1,GeoId2, PosId2)) {
             constraintsAdded = true;
             break;
         }
@@ -2045,7 +2045,7 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
         Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
 
         // check if the edge already has a Block constraint
-        if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
+        if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
             showNoConstraintBetweenFixedGeometry();
             return;
         }

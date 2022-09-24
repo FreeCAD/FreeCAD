@@ -116,7 +116,7 @@ void DlgRunExternal::finished (int exitCode, QProcess::ExitStatus exitStatus)
     ui->buttonAbort->setEnabled(false);
 }
 
-void DlgRunExternal::on_chooseProgram_clicked()
+void DlgRunExternal::onChooseProgramClicked()
 {
     QString fn;
     fn = QFileDialog::getOpenFileName(this, tr("Select a file"), ui->programPath->text());

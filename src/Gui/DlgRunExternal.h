@@ -55,7 +55,7 @@ protected Q_SLOTS:
     virtual void abort();
     virtual void advanced();
     void finished (int exitCode, QProcess::ExitStatus exitStatus);
-    void on_chooseProgram_clicked();
+    void onChooseProgramClicked();
 
 protected:
     QProcess process;

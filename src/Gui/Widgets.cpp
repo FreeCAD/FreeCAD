@@ -261,16 +261,16 @@ void ActionSelector::keyPressEvent(QKeyEvent* event)
         switch (event->key())
         {
         case Qt::Key_Right:
-            on_addButton_clicked();
+            onAddButtonClicked();
             break;
         case Qt::Key_Left:
-            on_removeButton_clicked();
+            onRemoveButtonClicked();
             break;
         case Qt::Key_Up:
-            on_upButton_clicked();
+            onUpButtonClicked();
             break;
         case Qt::Key_Down:
-            on_downButton_clicked();
+            onDownButtonClicked();
             break;
         default:
             event->ignore();
@@ -313,7 +313,7 @@ void ActionSelector::onItemDoubleClicked(QTreeWidgetItem * item, int column)
     }
 }
 
-void ActionSelector::on_addButton_clicked()
+void ActionSelector::onAddButtonClicked()
 {
     QTreeWidgetItem* item = availableWidget->currentItem();
     if (item) {
@@ -325,7 +325,7 @@ void ActionSelector::on_addButton_clicked()
     }
 }
 
-void ActionSelector::on_removeButton_clicked()
+void ActionSelector::onRemoveButtonClicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
     if (item) {
@@ -337,7 +337,7 @@ void ActionSelector::on_removeButton_clicked()
     }
 }
 
-void ActionSelector::on_upButton_clicked()
+void ActionSelector::onUpButtonClicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
     if (item && item->isSelected()) {
@@ -350,7 +350,7 @@ void ActionSelector::on_upButton_clicked()
     }
 }
 
-void ActionSelector::on_downButton_clicked()
+void ActionSelector::onDownButtonClicked()
 {
     QTreeWidgetItem* item = selectedWidget->currentItem();
     if (item && item->isSelected()) {
@@ -421,7 +421,7 @@ void AccelLineEdit::keyPressEvent (QKeyEvent * e)
     }
 
     // 4 keys are allowed for QShortcut
-    switch(keyPressedCount) {
+    switch (keyPressedCount) {
     case 4:
         keyPressedCount = 0;
         txtLine.clear();
@@ -482,7 +482,7 @@ void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    switch(key) {
+    switch (key) {
     case Qt::Key_Backspace:
     case Qt::Key_Delete:
         clear();
