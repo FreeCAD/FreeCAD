@@ -41,7 +41,6 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
