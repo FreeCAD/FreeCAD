@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a class for adding a single content item, as well as auxilliary classes for
+""" Contains a class for adding a single content item, as well as auxiliary classes for
 its dependent dialog boxes. """
 
 import os
@@ -547,7 +547,7 @@ class EditDependency:
         if dep_type and dep_name:
             index = self.dialog.typeComboBox.findData(dep_type)
             if index == -1:
-                raise RuntimeError(f"Invaid dependency type {dep_type}")
+                raise RuntimeError(f"Invalid dependency type {dep_type}")
             self.dialog.typeComboBox.setCurrentIndex(index)
             index = self.dialog.dependencyComboBox.findData(dep_name)
             if index == -1:

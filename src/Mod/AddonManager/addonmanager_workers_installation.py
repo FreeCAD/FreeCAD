@@ -377,7 +377,7 @@ class DependencyInstallationWorker(QtCore.QThread):
     def __init__(
         self,
         addons: List[Addon],
-        python_required: List[str],
+        python_requires: List[str],
         python_optional: List[str],
         location: os.PathLike = None,
     ):
@@ -387,7 +387,7 @@ class DependencyInstallationWorker(QtCore.QThread):
         for testing purposes and shouldn't be set by normal code in most circumstances."""
         QtCore.QThread.__init__(self)
         self.addons = addons
-        self.python_required = python_required
+        self.python_requires = python_requires
         self.python_optional = python_optional
         self.location = location
 
@@ -395,7 +395,7 @@ class DependencyInstallationWorker(QtCore.QThread):
         """Normally not called directly: create the object and call start() to launch it
         in its own thread. Installs dependencies for the Addon."""
         self._install_required_addons()
-        if self.python_required or self.python_optional:
+        if self.python_requires or self.python_optional:
             self._install_python_packages()
         self.success.emit()
 
@@ -464,7 +464,7 @@ class DependencyInstallationWorker(QtCore.QThread):
         """Install the required Python package dependencies. If any fail a failure signal is
         emitted and the function exits without proceeding with any additional installs."""
         python_exe = utils.get_python_exe()
-        for pymod in self.python_required:
+        for pymod in self.python_requires:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
             proc = subprocess.run(

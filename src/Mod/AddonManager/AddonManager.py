@@ -1043,7 +1043,7 @@ class CommandAddonManager:
         """Encapsulates a group of four types of dependencies:
         * Internal workbenches -> wbs
         * External addons -> external_addons
-        * Required Python packages -> python_required
+        * Required Python packages -> python_requires
         * Optional Python packages -> python_optional
         """
 
@@ -1081,13 +1081,13 @@ class CommandAddonManager:
 
             # Check the Python dependencies:
             self.python_min_version = deps.python_min_version
-            self.python_required = []
-            for py_dep in deps.python_required:
-                if py_dep not in self.python_required:
+            self.python_requires = []
+            for py_dep in deps.python_requires:
+                if py_dep not in self.python_requires:
                     try:
                         __import__(py_dep)
                     except ImportError:
-                        self.python_required.append(py_dep)
+                        self.python_requires.append(py_dep)
 
             self.python_optional = []
             for py_dep in deps.python_optional:
@@ -1098,12 +1098,12 @@ class CommandAddonManager:
 
             self.wbs.sort()
             self.external_addons.sort()
-            self.python_required.sort()
+            self.python_requires.sort()
             self.python_optional.sort()
             self.python_optional = [
                 option
                 for option in self.python_optional
-                if option not in self.python_required
+                if option not in self.python_requires
             ]
 
     def update_allowed_packages_list(self) -> None:
@@ -1128,19 +1128,19 @@ class CommandAddonManager:
                 "Could not fetch remote ALLOWED_PYTHON_PACKAGES.txt, using local copy\n"
             )
 
-    def handle_disallowed_python(self, python_required: List[str]) -> bool:
+    def handle_disallowed_python(self, python_requires: List[str]) -> bool:
         """Determine if we are missing any required Python packages that are not in the allowed
         packages list. If so, display a message to the user, and return True. Otherwise return
         False."""
 
         bad_packages = []
         # self.update_allowed_packages_list()
-        for dep in python_required:
+        for dep in python_requires:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)
 
         for dep in bad_packages:
-            python_required.remove(dep)
+            python_requires.remove(dep)
 
         if bad_packages:
             message = (
@@ -1225,7 +1225,7 @@ class CommandAddonManager:
 
         for addon in missing.external_addons:
             self.dependency_dialog.listWidgetAddons.addItem(addon)
-        for mod in missing.python_required:
+        for mod in missing.python_requires:
             self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
         for mod in missing.python_optional:
             item = QtWidgets.QListWidgetItem(mod)
@@ -1251,7 +1251,7 @@ class CommandAddonManager:
             return
 
         missing = CommandAddonManager.MissingDependencies(repo, self.item_model.repos)
-        if self.handle_disallowed_python(missing.python_required):
+        if self.handle_disallowed_python(missing.python_requires):
             return
 
         # For now only look at the minor version, since major is always Python 3
@@ -1292,7 +1292,7 @@ class CommandAddonManager:
                 return
         if (
             missing.external_addons
-            or missing.python_required
+            or missing.python_requires
             or missing.python_optional
         ):
             # Recoverable: ask the user if they want to install the missing deps
@@ -1311,10 +1311,10 @@ class CommandAddonManager:
                 if repo.name == name or repo.display_name == name:
                     addons.append(repo)
 
-        python_required = []
+        python_requires = []
         for row in range(self.dependency_dialog.listWidgetPythonRequired.count()):
             item = self.dependency_dialog.listWidgetPythonRequired.item(row)
-            python_required.append(item.text())
+            python_requires.append(item.text())
 
         python_optional = []
         for row in range(self.dependency_dialog.listWidgetPythonOptional.count()):
@@ -1323,7 +1323,7 @@ class CommandAddonManager:
                 python_optional.append(item.text())
 
         self.dependency_installation_worker = DependencyInstallationWorker(
-            addons, python_required, python_optional
+            addons, python_requires, python_optional
         )
         self.dependency_installation_worker.no_python_exe.connect(
             functools.partial(self.no_python_exe, installing_repo)
