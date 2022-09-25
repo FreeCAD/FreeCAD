@@ -67,7 +67,12 @@ DlgRunExternal::~DlgRunExternal()
     delete ui;
 }
 
-int DlgRunExternal::Do()
+void DlgRunExternal::addArgument(const QString& arg)
+{
+    arguments.append(arg);
+}
+
+int DlgRunExternal::runProcess()
 {
     QFileInfo ifo (ProcName);
 

@@ -44,10 +44,8 @@ public:
     explicit DlgRunExternal(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgRunExternal() override;
 
-    int Do();
-
-    QString ProcName;
-    QStringList arguments;
+    void addArgument(const QString&);
+    int runProcess();
 
 protected Q_SLOTS:
     void reject() override;
@@ -57,11 +55,11 @@ protected Q_SLOTS:
     void finished (int exitCode, QProcess::ExitStatus exitStatus);
     void onChooseProgramClicked();
 
-protected:
+private:
+    QString ProcName;
+    QStringList arguments;
     QProcess process;
     bool advancedHidden;
-
-private:
     Ui_DlgRunExternal* ui;
 };
 

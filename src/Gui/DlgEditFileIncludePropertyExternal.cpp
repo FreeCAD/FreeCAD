@@ -55,7 +55,7 @@ DlgEditFileIncludePropertyExternal::~DlgEditFileIncludePropertyExternal()
 }
 
 
-int DlgEditFileIncludePropertyExternal::Do()
+int DlgEditFileIncludePropertyExternal::processFile()
 {
     QFileInfo file = QString::fromUtf8(Prop.getValue());
     assert(file.exists());
@@ -64,11 +64,11 @@ int DlgEditFileIncludePropertyExternal::Do()
     QString TempFile = tmp.absoluteFilePath(file.fileName());
     QFile::remove(TempFile);
 
-    QFile::copy(file.absoluteFilePath(),TempFile);
+    QFile::copy(file.absoluteFilePath(), TempFile);
 
-    arguments.append(TempFile);
+    addArgument(TempFile);
 
-    int ret = DlgRunExternal::Do();
+    int ret = DlgRunExternal::runProcess();
 
     if (ret == QDialog::Accepted)
         Prop.setValue(TempFile.toUtf8());
