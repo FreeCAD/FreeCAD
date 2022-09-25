@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <qlineedit.h>
-#endif
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 
 #include "DlgPartImportIgesImp.h"
 #include "ui_DlgPartImportIges.h"
+
 
 using namespace PartGui;
 

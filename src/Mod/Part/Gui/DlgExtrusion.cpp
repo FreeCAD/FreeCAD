@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
 # include <Precision.hxx>
@@ -38,9 +36,9 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/UnitsApi.h>
 #include <App/Link.h>
 #include <App/Part.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>

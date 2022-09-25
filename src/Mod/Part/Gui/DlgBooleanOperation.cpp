@@ -20,18 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QTreeWidget>
-# include <TopoDS_Shape.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
-#include "DlgBooleanOperation.h"
-#include "ui_DlgBooleanOperation.h"
-#include "../App/PartFeature.h"
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -44,6 +40,11 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "DlgBooleanOperation.h"
+#include "ui_DlgBooleanOperation.h"
+
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
