@@ -21,51 +21,40 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <TopoDS_Face.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepProj_Projection.hxx>
-# include <TopoDS_Builder.hxx>
-# include <TopoDS_Edge.hxx>
+# include <gp_Ax1.hxx>
 # include <ShapeAnalysis.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GeomProjLib.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include "ShapeFix_Edge.hxx"
-# include <BRepBuilderAPI_MakeFace.hxx>
 # include <ShapeFix_Face.hxx>
-# include <BRepCheck_Analyzer.hxx>
+# include <ShapeFix_Wire.hxx>
 # include <ShapeFix_Wireframe.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Builder.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
 #endif
-
-#include <Inventor/SbVec3d.h>
-
-#include "DlgProjectionOnSurface.h"
-#include "ui_DlgProjectionOnSurface.h"
 
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
 #include <Gui/SelectionObject.h>
+#include <Inventor/SbVec3d.h>
 
+#include "DlgProjectionOnSurface.h"
+#include "ui_DlgProjectionOnSurface.h"
 #include "ViewProviderExt.h"
-
-
-
 
 
 using namespace PartGui;
