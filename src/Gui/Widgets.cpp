@@ -192,22 +192,16 @@ ActionSelector::ActionSelector(QWidget* parent)
     upButton->setText(QString());
     downButton->setText(QString());
 
-    connect(addButton, SIGNAL(clicked()),
-            this, SLOT(on_addButton_clicked()) );
-    connect(removeButton, SIGNAL(clicked()),
-            this, SLOT(on_removeButton_clicked()) );
-    connect(upButton, SIGNAL(clicked()),
-            this, SLOT(on_upButton_clicked()) );
-    connect(downButton, SIGNAL(clicked()),
-            this, SLOT(on_downButton_clicked()) );
-    connect(availableWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-            this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
-    connect(selectedWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-            this, SLOT(onItemDoubleClicked(QTreeWidgetItem*,int)) );
-    connect(availableWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
-    connect(selectedWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem *)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)) );
+    connect(addButton, &QPushButton::clicked, this, &ActionSelector::onAddButtonClicked);
+    connect(removeButton, &QPushButton::clicked, this, &ActionSelector::onRemoveButtonClicked);
+    connect(upButton, &QPushButton::clicked, this, &ActionSelector::onUpButtonClicked);
+    connect(downButton, &QPushButton::clicked, this, &ActionSelector::onDownButtonClicked);
+
+    connect(availableWidget, &QTreeWidget::itemDoubleClicked, this, &ActionSelector::onItemDoubleClicked);
+    connect(availableWidget, &QTreeWidget::currentItemChanged, this, &ActionSelector::onCurrentItemChanged);
+    connect(selectedWidget, &QTreeWidget::itemDoubleClicked, this, &ActionSelector::onItemDoubleClicked);
+    connect(selectedWidget, &QTreeWidget::currentItemChanged, this, &ActionSelector::onCurrentItemChanged);
+
     retranslateUi();
     setButtonsEnabled();
 }
@@ -235,7 +229,6 @@ QString ActionSelector::availableLabel() const
 {
     return labelAvailable->text();
 }
-
 
 void ActionSelector::retranslateUi()
 {

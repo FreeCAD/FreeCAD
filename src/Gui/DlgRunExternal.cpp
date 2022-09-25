@@ -46,12 +46,13 @@ DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
 {
     ui = new Ui_DlgRunExternal();
     ui->setupUi(this);
-    connect(&process,SIGNAL(finished(int, QProcess::ExitStatus)),
-            this,SLOT(finished(int, QProcess::ExitStatus)));
-    connect(ui->buttonAccept,SIGNAL(clicked()),this,SLOT(accept()));
-    connect(ui->buttonDiscard,SIGNAL(clicked()),this,SLOT(reject()));
-    connect(ui->buttonAbort,SIGNAL(clicked()),this,SLOT(abort()));
-    connect(ui->buttonAdvanced,SIGNAL(clicked()),this,SLOT(advanced()));
+    connect(ui->chooseProgram, &QPushButton::clicked, this, &DlgRunExternal::onChooseProgramClicked);
+    connect(&process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this, qOverload<int, QProcess::ExitStatus>(&DlgRunExternal::finished));
+    connect(ui->buttonAccept, &QPushButton::clicked, this, &DlgRunExternal::accept);
+    connect(ui->buttonDiscard, &QPushButton::clicked, this, &DlgRunExternal::reject);
+    connect(ui->buttonAbort, &QPushButton::clicked, this, &DlgRunExternal::abort);
+    connect(ui->buttonAdvanced, &QPushButton::clicked, this, &DlgRunExternal::advanced);
 
     ui->gridLayout->setSizeConstraint(QLayout::SetFixedSize);
     ui->extensionWidget->hide();
