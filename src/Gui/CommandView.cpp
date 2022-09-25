@@ -3615,6 +3615,68 @@ Action * StdCmdSelBoundingBox::createAction()
 }
 
 //===========================================================================
+// Std_StoreWorkingView
+//===========================================================================
+DEF_STD_CMD_A(StdStoreWorkingView)
+
+StdStoreWorkingView::StdStoreWorkingView()
+  : Command("Std_StoreWorkingView")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Store working view");
+    sToolTipText  = QT_TR_NOOP("Store a document-specific temporary working view");
+    sStatusTip    = QT_TR_NOOP("Store a document-specific temporary working view");
+    sWhatsThis    = "Std_StoreWorkingView";
+    sAccel        = "Shift+End";
+    eType         = NoTransaction;
+}
+
+void StdStoreWorkingView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (auto view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow())) {
+        view->getViewer()->saveHomePosition();
+    }
+}
+
+bool StdStoreWorkingView::isActive()
+{
+    return dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+}
+
+//===========================================================================
+// Std_RecallWorkingView
+//===========================================================================
+DEF_STD_CMD_A(StdRecallWorkingView)
+
+StdRecallWorkingView::StdRecallWorkingView()
+  : Command("Std_RecallWorkingView")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Recall working view");
+    sToolTipText  = QT_TR_NOOP("Recall previously stored temporary working view");
+    sStatusTip    = QT_TR_NOOP("Recall previously stored temporary working view");
+    sWhatsThis    = "Std_RecallWorkingView";
+    sAccel        = "End";
+    eType         = NoTransaction;
+}
+
+void StdRecallWorkingView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (auto view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow())) {
+        if (view->getViewer()->hasHomePosition())
+            view->getViewer()->resetToHomePosition();
+    }
+}
+
+bool StdRecallWorkingView::isActive()
+{
+    auto view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    return view && view->getViewer()->hasHomePosition();
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3641,6 +3703,8 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());
     rcCmdMgr.addCommand(new StdCmdViewRotateLeft());
     rcCmdMgr.addCommand(new StdCmdViewRotateRight());
+    rcCmdMgr.addCommand(new StdStoreWorkingView());
+    rcCmdMgr.addCommand(new StdRecallWorkingView());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
