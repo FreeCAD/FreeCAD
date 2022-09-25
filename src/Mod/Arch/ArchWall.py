@@ -171,12 +171,23 @@ def joinWalls(walls,delete=False):
     if base.Base:
         if base.Base.Shape.Faces:
             return None
-        if Draft.getType(base.Base) == "Sketcher::SketchObject":
+        # Use ArchSketch if SketchArch add-on is present
+        if Draft.getType(base.Base) == "ArchSketch":
             sk = base.Base
         else:
-            sk = Draft.makeSketch(base.Base,autoconstraints=True)
-            if sk:
+            try:
+                import ArchSketchObject
+                newSk=ArchSketchObject.makeArchSketch()
+            except:
+                if Draft.getType(base.Base) != "Sketcher::SketchObject":
+                    newSk=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")
+                else:
+                    newSk=None
+            if newSk:
+                sk = Draft.makeSketch(base.Base,autoconstraints=True, addTo=newSk)
                 base.Base = sk
+            else:
+                sk = base.Base
     for w in walls:
         if w.Base:
             if not w.Base.Shape.Faces:
@@ -421,7 +432,12 @@ class _CommandWall:
 
         FreeCADGui.addModule("Draft")
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
-            FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
+            # Use ArchSketch if SketchArch add-on is present
+            try:
+                FreeCADGui.doCommand('import ArchSketchObject')
+                FreeCADGui.doCommand('base=ArchSketchObject.makeArchSketch()')
+            except:
+                FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
             FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
             FreeCADGui.doCommand('base.addGeometry(trace)')
         else:
