@@ -114,7 +114,7 @@ class Addon:
             self.blockers = []  # A list of Addons
             self.replaces = []  # A list of Addons
             self.internal_workbenches: Set[str] = set()  # Required internal workbenches
-            self.python_required: Set[str] = set()
+            self.python_requires: Set[str] = set()
             self.python_optional: Set[str] = set()
             self.python_min_version = {"major": 3, "minor": 0}
 
@@ -335,27 +335,22 @@ class Addon:
         if not self.version_is_ok(metadata):
             return
 
+        if metadata.PythonMin != "0.0.0":
+            split_version_string = metadata.PythonMin.split(".")
+            if len(split_version_string) >= 2:
+                try:
+                    self.python_min_version["major"] = int(split_version_string[0])
+                    self.python_min_version["minor"] = int(split_version_string[1])
+                    FreeCAD.Console.PrintLog(
+                        f"Package {self.name}: Requires Python {split_version_string[0]}.{split_version_string[1]} or greater\n"
+                    )
+                except ValueError:
+                    FreeCAD.Console.PrintWarning(
+                        f"Package {self.name}: Invalid Python version requirement specified\n"
+                    )
+
         for dep in metadata.Depend:
-            if dep["package"].lower() == "python":
-                # We only support the "version_gte" attribute for Python itself
-                if "version_gte" in dep and "." in dep["version_gte"]:
-                    split_version_string = dep["version_gte"].split(".")
-                    if len(split_version_string) >= 2:
-                        try:
-                            self.python_min_version["major"] = int(
-                                split_version_string[0]
-                            )
-                            self.python_min_version["minor"] = int(
-                                split_version_string[1]
-                            )
-                            FreeCAD.Console.PrintLog(
-                                f"Package {self.name}: Requires Python {split_version_string[0]}.{split_version_string[1]} or greater\n"
-                            )
-                        except ValueError:
-                            FreeCAD.Console.PrintWarning(
-                                f"Package {self.name}: Invalid Python version requirement specified\n"
-                            )
-            elif "type" in dep:
+            if "type" in dep:
                 if dep["type"] == "internal":
                     if dep["package"] in INTERNAL_WORKBENCHES:
                         self.requires.add(dep["package"])
@@ -369,10 +364,10 @@ class Addon:
                 elif dep["type"] == "addon":
                     self.requires.add(dep["package"])
                 elif dep["type"] == "python":
-                    if "optional" in dep and dep["optional"].lower() == "true":
+                    if "optional" in dep and dep["optional"]:
                         self.python_optional.add(dep["package"])
                     else:
-                        self.python_required.add(dep["package"])
+                        self.python_requires.add(dep["package"])
                 else:
                     # Automatic resolution happens later, once we have a complete list of Addons
                     self.requires.add(dep["package"])
@@ -517,7 +512,7 @@ class Addon:
         information that may be needed.
         """
 
-        deps.python_required |= self.python_requires
+        deps.python_requires |= self.python_requires
         deps.python_optional |= self.python_optional
 
         deps.python_min_version["major"] = max(
@@ -548,7 +543,7 @@ class Addon:
                     deps.internal_workbenches.add(INTERNAL_WORKBENCHES[real_name])
                 else:
                     # Assume it's a Python requirement of some kind:
-                    deps.python_required.add(dep)
+                    deps.python_requires.add(dep)
 
         for dep in self.blocks:
             if dep in all_repos:

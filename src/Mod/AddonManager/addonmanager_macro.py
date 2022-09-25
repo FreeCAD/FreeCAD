@@ -345,7 +345,7 @@ class Macro:
 
     def clean_icon(self):
         """Downloads the macro's icon from whatever source is specified and stores a local
-        copy, potentially updating the interal icon location to that local storage."""
+        copy, potentially updating the internal icon location to that local storage."""
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
             FreeCAD.Console.PrintLog(
                 f"Attempting to fetch macro icon from {self.icon}\n"

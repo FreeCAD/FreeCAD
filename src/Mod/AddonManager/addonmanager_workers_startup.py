@@ -331,7 +331,9 @@ class CreateAddonListWorker(QtCore.QThread):
                 + "\n"
             )
             try:
-                os.chdir(os.path.join(macro_cache_location,"..")) # Make sure we are not IN this directory
+                os.chdir(
+                    os.path.join(macro_cache_location, "..")
+                )  # Make sure we are not IN this directory
                 shutil.rmtree(macro_cache_location, onerror=self._remove_readonly)
                 self.git_manager.clone(
                     "https://github.com/FreeCAD/FreeCAD-macros.git",
@@ -449,10 +451,11 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                             repo.updated_timestamp = os.path.getmtime(
                                 repo_metadata_cache_path
                             )
-                        except Exception:
+                        except Exception as e:
                             FreeCAD.Console.PrintLog(
                                 f"Failed loading {repo_metadata_cache_path}\n"
                             )
+                            FreeCAD.Console.PrintLog(str(e) + "\n")
                     self.addon_repo.emit(repo)
 
 
