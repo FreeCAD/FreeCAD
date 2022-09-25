@@ -220,6 +220,7 @@ namespace App {
         std::vector<boost::filesystem::path> file() const; //< Arbitrary files associated with this package or content item.
         Meta::Version freecadmin() const; //< The minimum FreeCAD version.
         Meta::Version freecadmax() const; //< The maximum FreeCAD version.
+        Meta::Version pythonmin() const; //< The minimum Python version.
 
         /**
          * Access the metadata for the content elements of this package
@@ -274,7 +275,8 @@ namespace App {
         void addFile(const boost::filesystem::path &path);
         void addContentItem(const std::string &tag, const Metadata &item);
         void setFreeCADMin(const Meta::Version& version);
-        void setFreeCADMax(const Meta::Version& version);
+        void setFreeCADMax(const Meta::Version &version);
+        void setPythonMin(const Meta::Version &version);
         void addGenericMetadata(const std::string &tag, const Meta::GenericMetadata &genericMetadata);
 
         // Deleters
@@ -337,6 +339,7 @@ namespace App {
         std::vector<boost::filesystem::path> _file;
         Meta::Version _freecadmin;
         Meta::Version _freecadmax;
+        Meta::Version _pythonmin;
 
         std::multimap<std::string, Metadata> _content;
 

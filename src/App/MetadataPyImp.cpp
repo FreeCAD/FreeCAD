@@ -864,6 +864,21 @@ void MetadataPy::setFreeCADMax(Py::Object args)
         getMetadataPtr()->setFreeCADMax(App::Meta::Version());
 }
 
+Py::Object MetadataPy::getPythonMin() const
+{
+    return Py::String(getMetadataPtr()->pythonmin().str());
+}
+
+void MetadataPy::setPythonMin(Py::Object args)
+{
+    char *version = nullptr;
+    PyObject *p = args.ptr();
+    if (!PyArg_Parse(p, "z", &version)) throw Py::Exception();
+    if (version) getMetadataPtr()->setPythonMin(App::Meta::Version(version));
+    else
+        getMetadataPtr()->setPythonMin(App::Meta::Version());
+}
+
 PyObject *MetadataPy::getFirstSupportedFreeCADVersion(PyObject *p)
 {
     if (!PyArg_ParseTuple(p, ""))

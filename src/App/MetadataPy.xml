@@ -184,6 +184,14 @@ If unset it will be 0.0.0.</UserDocu>
             <Parameter Name="FreeCADMax" Type="Object" />
         </Attribute>
 
+        <Attribute Name="PythonMin">
+            <Documentation>
+                <UserDocu>String representing the minimum version of Python needed for this item.
+If unset it will be 0.0.0.</UserDocu>
+            </Documentation>
+            <Parameter Name="PythonMin" Type="Object" />
+        </Attribute>
+
         <Methode Name="getLastSupportedFreeCADVersion">
             <Documentation>
                 <UserDocu>getLastSupportedFreeCADVersion() -> str or None\n

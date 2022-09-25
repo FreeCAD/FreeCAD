@@ -228,7 +228,11 @@ Meta::Version Metadata::freecadmin() const
 
 Meta::Version Metadata::freecadmax() const
 {
-    return _freecadmax;
+    return _freecadmax; }
+
+Meta::Version Metadata::pythonmin() const 
+{ 
+    return _pythonmin; 
 }
 
 std::multimap<std::string, Metadata> Metadata::content() const
@@ -341,6 +345,11 @@ void Metadata::addContentItem(const std::string& tag, const Metadata& item)
 void Metadata::setFreeCADMin(const Meta::Version& version)
 {
     _freecadmin = version;
+}
+
+void Metadata::setPythonMin(const Meta::Version &version) 
+{ 
+    _pythonmin = version;
 }
 
 void Metadata::setFreeCADMax(const Meta::Version& version)
@@ -687,8 +696,11 @@ void Metadata::appendToElement(DOMElement* root) const
     if (_freecadmin != Meta::Version())
         appendSimpleXMLNode(root, "freecadmin", _freecadmin.str());
 
-    if (_freecadmax != Meta::Version())
-        appendSimpleXMLNode(root, "freecadmax", _freecadmin.str());
+    if (_freecadmax != Meta::Version()) 
+        appendSimpleXMLNode(root, "freecadmax", _freecadmax.str());
+
+    if (_pythonmin != Meta::Version()) 
+        appendSimpleXMLNode(root, "pythonmin", _pythonmin.str());
 
     for (const auto& url : _url) {
         auto element = appendSimpleXMLNode(root, "url", url.location);
@@ -784,6 +796,8 @@ void Metadata::parseVersion1(const DOMNode* startNode)
             _freecadmin = Meta::Version(StrXUTF8(element->getTextContent()).str);
         else if (tagString == "freecadmax")
             _freecadmax = Meta::Version(StrXUTF8(element->getTextContent()).str);
+        else if (tagString == "pythonmin")
+            _pythonmin = Meta::Version(StrXUTF8(element->getTextContent()).str);
         else if (tagString == "url")
             _url.emplace_back(element);
         else if (tagString == "author")
