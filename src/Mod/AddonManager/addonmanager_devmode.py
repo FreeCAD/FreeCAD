@@ -84,14 +84,14 @@ class AddonGitInterface:
 
     @property
     def committers(self):
-        """The commiters to this repo, in the last ten commits"""
+        """The committers to this repo, in the last ten commits"""
         if self.git_exists:
             return AddonGitInterface.git_manager.get_last_committers(self.path, 10)
         return []
 
     @property
     def authors(self):
-        """The commiters to this repo, in the last ten commits"""
+        """The committers to this repo, in the last ten commits"""
         if self.git_exists:
             return AddonGitInterface.git_manager.get_last_authors(self.path, 10)
         return []
