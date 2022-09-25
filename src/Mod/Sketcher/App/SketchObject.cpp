@@ -9492,10 +9492,14 @@ std::pair<std::string,std::string> SketchObject::getElementName(
 {
     std::pair<std::string, std::string> ret;
     if(!name) return ret;
+
+    if(hasSketchMarker(name))
+        return Part2DObject::getElementName(name,type);
+
     const char *mapped = Data::ComplexGeoData::isMappedElement(name);
     if(!mapped) {
-        if(boost::starts_with(name,"Vertex") ||
-           boost::starts_with(name,"Edge"))
+        auto occindex = Part::TopoShape::shapeTypeAndIndex(name);
+        if (occindex.second)
             return Part2DObject::getElementName(name,type);
 
         Data::IndexedName index = checkSubName(name);
@@ -9505,10 +9509,7 @@ std::pair<std::string,std::string> SketchObject::getElementName(
         index.toString(ret.second);
         return ret;
     }
-
-    if(hasSketchMarker(mapped))
-        return Part2DObject::getElementName(name,type);
-
+        
     Data::IndexedName index = checkSubName(name);
     if(index) {
         index.toString(ret.second);
@@ -9577,7 +9578,12 @@ Data::IndexedName SketchObject::checkSubName(const char *sub) const{
     if(!sub) return Data::IndexedName();
     const char *subname = Data::ComplexGeoData::isMappedElement(sub);
     if(!subname)  {
-        return Data::IndexedName(sub, types, false);
+        Data::IndexedName res(sub, types, true);
+        if (boost::equals(res.getType(), "edge"))
+            return Data::IndexedName("Edge", res.getIndex());
+        else if (boost::starts_with(res.getType(), "vertex"))
+            return Data::IndexedName("Vertex", res.getIndex());
+        return res;
     }
     if(!subname[0]) {
         FC_ERR("invalid subname " << sub);
@@ -9650,6 +9656,11 @@ Data::IndexedName SketchObject::shapeTypeFromGeoId(int geoId, PointPos posId) co
         return Data::IndexedName::fromConst("H_Axis", 0);
     }else if(geoId == GeoEnum::VAxis)
         return Data::IndexedName::fromConst("V_Axis", 0);
+    if (posId == PointPos::none) {
+        auto geo = getGeometry(geoId);
+        if (geo && geo->isDerivedFrom(Part::GeomPoint::getClassTypeId()))
+            posId = PointPos::start;
+    }
     if(posId != PointPos::none) {
         int idx = getVertexIndexGeoPos(geoId, posId);
         if(idx < 0)
