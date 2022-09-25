@@ -20,29 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <gp_Ax1.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 #include <QMessageBox>
 #include <QSignalMapper>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <Base/Interpreter.h>
-#include <Base/Rotation.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Part.h>
 #include <App/Document.h>
+#include <Base/Rotation.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
@@ -58,6 +55,7 @@
 #include "DlgPrimitives.h"
 #include "ui_DlgPrimitives.h"
 #include "ui_Location.h"
+
 
 using namespace PartGui;
 

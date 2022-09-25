@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QButtonGroup>
@@ -29,13 +28,14 @@
 # include <Interface_Static.hxx>
 #endif
 
-#include <Base/Parameter.h>
 #include <App/Application.h>
+#include <Base/Parameter.h>
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
 #include "ui_DlgImportExportIges.h"
 #include "ui_DlgImportExportStep.h"
+
 
 using namespace PartGui;
 

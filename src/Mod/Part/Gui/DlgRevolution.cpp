@@ -20,27 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pnt.hxx>
-# include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <Precision.hxx>
+# include <ShapeExtend_Explorer.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <ShapeExtend_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-# include <Inventor/system/inttypes.h>
-# include <Precision.hxx>
 #endif
 
-#include "ui_DlgRevolution.h"
-#include "DlgRevolution.h"
-#include "../App/PartFeature.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -53,11 +45,10 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/FeatureRevolution.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
 
+#include "DlgRevolution.h"
+#include "ui_DlgRevolution.h"
 
 
 using namespace PartGui;
