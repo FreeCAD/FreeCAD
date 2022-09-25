@@ -23,13 +23,11 @@
 #ifndef PARTGUI_SOFCSHAPEOBJECT_H
 #define PARTGUI_SOFCSHAPEOBJECT_H
 
-#include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/elements/SoReplacedElement.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 namespace PartGui {
 

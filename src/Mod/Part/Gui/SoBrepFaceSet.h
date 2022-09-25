@@ -23,18 +23,14 @@
 #ifndef PARTGUI_SOBREPFACESET_H
 #define PARTGUI_SOBREPFACESET_H
 
-#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <Gui/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;

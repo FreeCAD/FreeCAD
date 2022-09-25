@@ -23,18 +23,12 @@
 #ifndef PARTGUI_SOBREPPOINTSET_H
 #define PARTGUI_SOBREPPOINTSET_H
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoReplacedElement.h>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <Gui/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
+
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
