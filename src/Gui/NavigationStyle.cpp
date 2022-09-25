@@ -1614,14 +1614,6 @@ SbBool NavigationStyle::processKeyboardEvent(const SoKeyboardEvent * const event
     case SoKeyboardEvent::RIGHT_ALT:
         this->altdown = press;
         break;
-    case SoKeyboardEvent::H:
-        processed = true;
-        viewer->saveHomePosition();
-        break;
-    case SoKeyboardEvent::R:
-        processed = true;
-        viewer->resetToHomePosition();
-        break;
     case SoKeyboardEvent::S:
     case SoKeyboardEvent::HOME:
     case SoKeyboardEvent::LEFT_ARROW:
