@@ -100,4 +100,7 @@ macro(CompilerChecksAndSetups)
         add_definitions(-DBOOST_PP_VARIADICS=1)
         message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
     endif()
+
+    add_definitions(-DBOOST_NO_CXX98_FUNCTION_BASE)
+
 endmacro(CompilerChecksAndSetups)

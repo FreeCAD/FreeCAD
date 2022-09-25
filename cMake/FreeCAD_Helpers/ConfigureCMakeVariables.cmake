@@ -34,7 +34,4 @@ macro(ConfigureCMakeVariables)
     message(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
     message(STATUS "libdir: ${CMAKE_INSTALL_LIBDIR}")
     message(STATUS "cmake: ${CMAKE_VERSION}")
-
-    add_compile_definitions(BOOST_NO_CXX98_FUNCTION_BASE)
-
 endmacro(ConfigureCMakeVariables)
