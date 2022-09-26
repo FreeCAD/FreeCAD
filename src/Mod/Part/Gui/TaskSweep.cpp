@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -38,9 +37,10 @@
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include "ui_TaskSweep.h"
-#include "TaskSweep.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -50,14 +50,10 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskSweep.h"
+#include "ui_TaskSweep.h"
 
 
 using namespace PartGui;

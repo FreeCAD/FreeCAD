@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,15 +28,14 @@
 # include <QTreeWidget>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopoDS_Iterator.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
+# include <TopoDS_Iterator.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include "ui_TaskLoft.h"
-#include "TaskLoft.h"
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -45,13 +43,10 @@
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "TaskLoft.h"
+#include "ui_TaskLoft.h"
 
 
 using namespace PartGui;
