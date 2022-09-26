@@ -24,8 +24,9 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <boost_bind_bind.hpp>
-# include <boost_signals2.hpp>
+# include <QFontMetrics>
+# include <QPointer>
+# include <QSet>
 # include <BRep_Tool.hxx>
 # include <BRepGProp.hxx>
 # include <gp_Pnt.hxx>
@@ -40,9 +41,7 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <QFontMetrics>
-# include <QPointer>
-# include <QSet>
+
 #endif
 
 #include <App/Document.h>
