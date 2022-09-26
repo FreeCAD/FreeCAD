@@ -41,7 +41,6 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
-
 #endif
 
 #include <App/Document.h>
