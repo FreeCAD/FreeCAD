@@ -24,6 +24,9 @@
 #define TASKCHECKGEOMETRY_H
 
 #include <tuple>
+#include <QAbstractItemModel>
+#include <QElapsedTimer>
+#include <QProgressDialog>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Status.hxx>
 #include <Message_ProgressIndicator.hxx>
@@ -31,9 +34,7 @@
 #include <TopTools_MapOfShape.hxx>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <QAbstractItemModel>
-#include <QProgressDialog>
-#include <QElapsedTimer>
+
 
 class SoSeparator;
 class SoSwitch;

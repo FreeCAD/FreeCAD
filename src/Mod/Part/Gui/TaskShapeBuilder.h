@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_TASKSHAPEBUILDER_H
 #define PARTGUI_TASKSHAPEBUILDER_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace PartGui { 
 
