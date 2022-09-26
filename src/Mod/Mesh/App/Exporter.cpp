@@ -257,7 +257,7 @@ void Extension3MFFactory::initialize()
     }
 }
 
-std::vector<Extension3MFPtr> Extension3MFFactory::create()
+std::vector<Extension3MFPtr> Extension3MFFactory::createExtensions()
 {
     std::vector<Extension3MFPtr> ext;
     for (const auto& it : producer) {
@@ -272,19 +272,19 @@ std::vector<Extension3MFProducerPtr> Extension3MFFactory::producer;
 
 class Exporter3MF::Private {
 public:
-    explicit Private(const std::string& filename)
-      : writer3mf(filename) {
-        Extension3MFFactory::initialize();
-        ext = Extension3MFFactory::create();
+    explicit Private(const std::string& filename,
+                     const std::vector<Extension3MFPtr>& ext)
+      : writer3mf(filename)
+      , ext(ext) {
     }
     MeshCore::Writer3MF writer3mf;
     std::vector<Extension3MFPtr> ext;
 };
 
-Exporter3MF::Exporter3MF(std::string fileName)
+Exporter3MF::Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& ext)
 {
     throwIfNoPermission(fileName);
-    d.reset(new Private(fileName));
+    d.reset(new Private(fileName, ext));
 }
 
 Exporter3MF::~Exporter3MF()

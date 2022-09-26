@@ -171,7 +171,7 @@ class MeshExport Extension3MFFactory
 public:
     static void addProducer(Extension3MFProducer* ext);
     static void initialize();
-    static std::vector<Extension3MFPtr> create();
+    static std::vector<Extension3MFPtr> createExtensions();
 
 private:
     static std::vector<Extension3MFProducerPtr> producer;
@@ -187,7 +187,7 @@ private:
 class Exporter3MF : public Exporter
 {
 public:
-    Exporter3MF(std::string fileName);
+    Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& = {});
     ~Exporter3MF() override;
 
     bool addMesh(const char *name, const MeshObject & mesh) override;
