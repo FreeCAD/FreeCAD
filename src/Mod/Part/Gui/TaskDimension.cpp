@@ -20,64 +20,64 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreCpmp_
 # include <QButtonGroup>
 # include <QPushButton>
 # include <sstream>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom_ElementarySurface.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_SphericalSurface.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <TopExp.hxx>
+# include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-# include <TopoDS.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRep_Tool.hxx>
-# include <TopExp.hxx>
-# include <Geom_ElementarySurface.hxx>
-# include <Geom_CylindricalSurface.hxx>
-# include <Geom_SphericalSurface.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
 
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoMatrixTransform.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/engines/SoCalculator.h>
+# include <Inventor/engines/SoComposeVec3f.h>
+# include <Inventor/engines/SoConcatenate.h>
+# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/engines/SoComposeRotationFromTo.h>
+
 # include <Inventor/nodekits/SoShapeKit.h>
-# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoNurbsCurve.h>
-# include <Inventor/engines/SoComposeVec3f.h>
-# include <Inventor/engines/SoCalculator.h>
-# include <Inventor/nodes/SoResetTransform.h>
-# include <Inventor/engines/SoConcatenate.h>
-# include <Inventor/engines/SoComposeRotationFromTo.h>
-# include <Inventor/engines/SoComposeRotation.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMatrixTransform.h>
 # include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoResetTransform.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <Inventor/nodes/SoVertexProperty.h>
 #endif
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
-#include "../App/PartFeature.h"
-#include <App/Document.h>
 #include <Gui/Application.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Selection.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskDimension.h"
+
 
 namespace bp = boost::placeholders;
 

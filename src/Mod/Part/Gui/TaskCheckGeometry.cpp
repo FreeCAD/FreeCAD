@@ -22,54 +22,52 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QBoxLayout>
+# include <QCheckBox>
 # include <QCoreApplication>
 # include <QHeaderView>
-# include <QTextEdit>
-# include <QCheckBox>
+# include <QPushButton>
 # include <QScrollBar>
+# include <QTextEdit>
 # include <QTextStream>
 # include <QThread>
-# include <QTreeWidget>
-# include <QPushButton>
+# include <QTreeView>
 # include <Standard_Version.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <BRepCheck_Result.hxx>
-# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepTools_ShapeSet.hxx>
+# include <Bnd_Box.hxx>
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
-
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepCheck_Analyzer.hxx>
+# include <BRepCheck_ListIteratorOfListOfStatus.hxx>
+# include <BRepCheck_Result.hxx>
+# include <BRepTools_ShapeSet.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <gp_Trsf.hxx>
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoResetTransform.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoResetTransform.h>
 #endif //_PreComp_
 
-#include "../App/PartFeature.h"
-#include "../App/TopoShapePy.h"
 #include <Base/Interpreter.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Selection.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/MainWindow.h>
+#include <Mod/Part/App/PartFeature.h>
+
 #include "TaskCheckGeometry.h"
+
 
 using namespace PartGui;
 

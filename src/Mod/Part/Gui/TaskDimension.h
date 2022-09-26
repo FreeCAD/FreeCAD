@@ -23,22 +23,23 @@
 #ifndef TASKDIMENSION_H
 #define TASKDIMENSION_H
 
-#include <gp_Vec.hxx>
 #include <gp_Lin.hxx>
+#include <gp_Vec.hxx>
 
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodekits/SoSeparatorKit.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngine.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/nodekits/SoSeparatorKit.h>
 
+#include <Base/Matrix.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Base/Matrix.h>
+
 
 class TopoDS_Shape;
 class TopoDS_Face;
