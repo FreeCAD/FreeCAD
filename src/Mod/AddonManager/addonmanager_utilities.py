@@ -339,6 +339,7 @@ def get_python_exe() -> str:
     if not python_exe or not os.path.exists(python_exe):
         return ""
 
+    python_exe = python_exe.replace("/",os.path.sep)
     prefs.SetString("PythonExecutableForPip", python_exe)
     return python_exe
 

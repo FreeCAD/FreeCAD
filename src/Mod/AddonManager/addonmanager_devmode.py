@@ -24,6 +24,7 @@
 
 import os
 import datetime
+import subprocess
 
 import FreeCAD
 import FreeCADGui
@@ -33,6 +34,7 @@ from PySide2.QtWidgets import (
     QListWidgetItem,
     QDialog,
     QSizePolicy,
+    QMessageBox,
 )
 from PySide2.QtGui import (
     QIcon,
@@ -46,6 +48,7 @@ from addonmanager_devmode_validators import NameValidator, VersionValidator
 from addonmanager_devmode_predictor import Predictor
 from addonmanager_devmode_people_table import PeopleTable
 from addonmanager_devmode_licenses_table import LicensesTable
+import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
@@ -66,7 +69,9 @@ class AddonGitInterface:
             try:
                 AddonGitInterface.git_manager = GitManager()
             except NoGitFound:
-                FreeCAD.Console.PrintLog("No git found, Addon Manager Developer Mode disabled.")
+                FreeCAD.Console.PrintLog(
+                    "No git found, Addon Manager Developer Mode disabled."
+                )
                 return
 
         self.path = path
@@ -96,13 +101,14 @@ class AddonGitInterface:
             return AddonGitInterface.git_manager.get_last_authors(self.path, 10)
         return []
 
-#pylint: disable=too-many-instance-attributes
+
+# pylint: disable=too-many-instance-attributes
+
 
 class DeveloperMode:
     """The main Developer Mode dialog, for editing package.xml metadata graphically."""
 
     def __init__(self):
-
 
         # In the UI we want to show a translated string for the person type, but the underlying
         # string must be the one expected by the metadata parser, in English
@@ -137,6 +143,7 @@ class DeveloperMode:
 
         self.dialog.displayNameLineEdit.setValidator(NameValidator())
         self.dialog.versionLineEdit.setValidator(VersionValidator())
+        self.dialog.minPythonLineEdit.setValidator(VersionValidator())
 
         self.dialog.addContentItemToolButton.setIcon(
             QIcon.fromTheme("add", QIcon(":/icons/list-add.svg"))
@@ -210,6 +217,7 @@ class DeveloperMode:
         self.dialog.displayNameLineEdit.setText(self.metadata.Name)
         self.dialog.descriptionTextEdit.setPlainText(self.metadata.Description)
         self.dialog.versionLineEdit.setText(self.metadata.Version)
+        self.dialog.minPythonLineEdit.setText(self.metadata.PythonMin)
 
         self._populate_urls_from_metadata(self.metadata)
         self._populate_contents_from_metadata(self.metadata)
@@ -342,6 +350,7 @@ class DeveloperMode:
         self.dialog.readmeURLLineEdit.clear()
         self.dialog.documentationURLLineEdit.clear()
         self.dialog.discussionURLLineEdit.clear()
+        self.dialog.minPythonLineEdit.clear()
         self.dialog.iconDisplayLabel.setPixmap(QPixmap())
         self.dialog.iconPathLineEdit.clear()
 
@@ -353,6 +362,9 @@ class DeveloperMode:
         )
         self.dialog.pathToAddonComboBox.editTextChanged.connect(
             self._addon_combo_text_changed
+        )
+        self.dialog.detectMinPythonButton.clicked.connect(
+            self._detect_min_python_clicked
         )
         self.dialog.iconBrowseButton.clicked.connect(self._browse_for_icon_clicked)
 
@@ -426,6 +438,11 @@ class DeveloperMode:
                 }
             )
         self.metadata.Urls = urls
+
+        if self.dialog.minPythonLineEdit.text():
+            self.metadata.PythonMin = self.dialog.minPythonLineEdit.text()
+        else:
+            self.metadata.PythonMin = "0.0.0" # Code for "unset"
 
         # Content, people, and licenses should already be sync'ed
 
@@ -564,6 +581,135 @@ class DeveloperMode:
         day = datetime.date.today().day
         version_string = f"{year}.{month:>02}.{day:>02}"
         self.dialog.versionLineEdit.setText(version_string)
+
+    def _detect_min_python_clicked(self):
+        if not self._ensure_vermin_loaded():
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "No Vermin, cancelling operation.\n",
+                    "'Vermin' is a Python package - do not translate",
+                )
+            )
+            return
+        FreeCAD.Console.PrintMessage(
+            translate(
+                "AddonsInstaller", "Scanning Addon for Python version compatibility"
+            )
+            + "...\n"
+        )
+        #pylint: disable=import-outside-toplevel
+        import vermin
+
+        required_minor_version = 0
+        for dirpath, _, filenames in os.walk(self.current_mod):
+            for filename in filenames:
+                if filename.endswith(".py"):
+
+                    with open(
+                        os.path.join(dirpath, filename), "r", encoding="utf-8"
+                    ) as f:
+                        contents = f.read()
+                        version_strings = vermin.version_strings(
+                            vermin.detect(contents)
+                        )
+                        version = version_strings.split(",")
+                        if len(version) >= 2:
+                            # Only care about Py3, and only if there is a dot in the version:
+                            if "." in version[1]:
+                                py3 = version[1].split(".")
+                                major = int(py3[0].strip())
+                                minor = int(py3[1].strip())
+                                if major == 3:
+                                    FreeCAD.Console.PrintLog(
+                                        f"Detected Python 3.{minor} required by {filename}\n"
+                                    )
+                                    required_minor_version = max(
+                                        required_minor_version, minor
+                                    )
+        self.dialog.minPythonLineEdit.setText(f"3.{required_minor_version}")
+        QMessageBox.information(
+            self.dialog,
+            translate("AddonsInstaller", "Minimum Python Version Detected"),
+            translate(
+                "AddonsInstaller",
+                "Vermin auto-detected a required version of Python 3.{}",
+            ).format(required_minor_version),
+            QMessageBox.Ok,
+        )
+
+    def _ensure_vermin_loaded(self) -> bool:
+        try:
+            #pylint: disable=import-outside-toplevel,unused-import
+            import vermin
+        except ImportError:
+            #pylint: disable=line-too-long
+            response = QMessageBox.question(
+                self.dialog,
+                translate("AddonsInstaller", "Install Vermin?"),
+                translate(
+                    "AddonsInstaller",
+                    "Autodetecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?",
+                ),
+                QMessageBox.Yes | QMessageBox.Cancel,
+            )
+            if response == QMessageBox.Cancel:
+                return False
+            FreeCAD.Console.PrintMessage(
+                translate("AddonsInstaller", "Attempting to install Vermin from PyPi")
+                + "...\n"
+            )
+            python_exe = utils.get_python_exe()
+            vendor_path = os.path.join(
+                FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
+            )
+            if not os.path.exists(vendor_path):
+                os.makedirs(vendor_path)
+
+            proc = subprocess.run(
+                [
+                    python_exe,
+                    "-m",
+                    "pip",
+                    "install",
+                    "--disable-pip-version-check",
+                    "--target",
+                    vendor_path,
+                    "vermin",
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+            )
+            FreeCAD.Console.PrintMessage(proc.stdout.decode())
+            if proc.returncode != 0:
+                response = QMessageBox.critical(
+                    self.dialog,
+                    translate("AddonsInstaller", "Installation failed"),
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to install Vermin -- check Report View for details.",
+                        "'Vermin' is the name of a Python package, do not translate",
+                    ),
+                    QMessageBox.Cancel,
+                )
+                return False
+        try:
+            #pylint: disable=import-outside-toplevel
+            import vermin
+        except ImportError:
+            response = QMessageBox.critical(
+                self.dialog,
+                translate("AddonsInstaller", "Installation failed"),
+                translate(
+                    "AddonsInstaller",
+                    "Failed to import vermin after installation -- cannot scan Addon.",
+                    "'vermin' is the name of a Python package, do not translate",
+                ),
+                QMessageBox.Cancel,
+            )
+            return False
+        return True
 
     def _browse_for_icon_clicked(self):
         """Callback: when the "Browse..." button for the icon field is clicked"""
