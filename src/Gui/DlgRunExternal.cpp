@@ -42,9 +42,11 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
-    : QDialog(parent, fl),process(this),advancedHidden(true)
+    : QDialog(parent, fl)
+    , process(this)
+    , advancedHidden(true)
+    , ui(new Ui_DlgRunExternal)
 {
-    ui = new Ui_DlgRunExternal();
     ui->setupUi(this);
     connect(ui->chooseProgram, &QPushButton::clicked, this, &DlgRunExternal::onChooseProgramClicked);
     connect(&process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
@@ -63,8 +65,6 @@ DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
  */
 DlgRunExternal::~DlgRunExternal()
 {
-    // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgRunExternal::addArgument(const QString& arg)

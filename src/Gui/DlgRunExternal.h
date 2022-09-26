@@ -23,6 +23,7 @@
 #ifndef GUI_DIALOG_DlgRunExternal_H
 #define GUI_DIALOG_DlgRunExternal_H
 
+#include <memory>
 #include <QDialog>
 #include <QProcess>
 #include <FCGlobal.h>
@@ -60,7 +61,7 @@ private:
     QStringList arguments;
     QProcess process;
     bool advancedHidden;
-    Ui_DlgRunExternal* ui;
+    std::unique_ptr<Ui_DlgRunExternal> ui;
 };
 
 } // namespace Dialog
