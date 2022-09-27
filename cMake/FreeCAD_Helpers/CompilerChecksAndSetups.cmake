@@ -46,8 +46,6 @@ macro(CompilerChecksAndSetups)
         set(CMAKE_CXX_STANDARD 20)
     elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
         set(CMAKE_CXX_STANDARD 17)
-    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
-        set(CMAKE_CXX_STANDARD 14)
     endif()
 
     # Log the compiler and version
