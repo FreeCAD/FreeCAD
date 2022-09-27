@@ -169,6 +169,27 @@ class StockFromBase(Stock):
             "Component",
             QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "Length",
+            "Stock",
+            QT_TRANSLATE_NOOP("App::Property", "Stock lenght"),
+        )
+        obj.setEditorMode("Length", 1)  # read-only
+        obj.addProperty(
+            "App::PropertyString",
+            "Width",
+            "Stock",
+            QT_TRANSLATE_NOOP("App::Property", "Stock width"),
+        )
+        obj.setEditorMode("Width", 1)  # read-only
+        obj.addProperty(
+            "App::PropertyString",
+            "Height",
+            "Stock",
+            QT_TRANSLATE_NOOP("App::Property", "Stock height"),
+        )
+        obj.setEditorMode("Height", 1)  # read-only
 
         obj.Base = base
         obj.ExtXneg = 1.0
@@ -222,6 +243,10 @@ class StockFromBase(Stock):
             shape = Part.makeBox(self.length, self.width, self.height, self.origin)
             shape.Placement = obj.Placement
             obj.Shape = shape
+            obj.Length=FreeCAD.Units.Quantity(self.length, FreeCAD.Units.Length).UserString
+            obj.Width=FreeCAD.Units.Quantity(self.width, FreeCAD.Units.Length).UserString
+            obj.Height=FreeCAD.Units.Quantity(self.height, FreeCAD.Units.Length).UserString
+
 
     def onChanged(self, obj, prop):
         if (
