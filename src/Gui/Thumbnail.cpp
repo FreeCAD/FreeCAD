@@ -95,16 +95,14 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         }
 
         QColor invalid;
-        QImage scaledImg;
-        this->viewer->imageFromFramebuffer(this->size*4, this->size*4, 0, invalid, scaledImg);
-        if (!scaledImg.isNull())
-            img = scaledImg.scaled(this->size, this->size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
     }
 
     // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
     QPixmap appIcon = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
     QPixmap px =  appIcon;
     if (!img.isNull()) {
+        // Create a small "Fc" Application icon in the bottom right of the thumbnail
         if (App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true)) {
             // only scale app icon if an offscreen image could be created
