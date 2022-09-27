@@ -91,29 +91,13 @@ class Edit(gui_base_original.Modifier):
     Task panel (Draft Toolbar)
     ----------
     self.ui = Gui.draftToolBar
-    TODO: since we introduced context menu for interacting
-          with editTrackers, point 2 should become obsolete,
-          because not consistent with multi-object editing.
 
-    Draft_Edit uses taskpanel in 3 ways:
+    Draft_Edit uses the taskpanel in 2 ways:
 
-    1 - when waiting for user to select an object
-        calling self.ui.selectUi()
+    1 - the user can select select an object and close the operation
+        self.ui.editUi()
 
-    2 - when Trackers are displayed and user must click one, a
-        custom task panel is displayed depending on edited
-        object:
-        self.ui.editUi()            -> the default one
-        self.ui.editUi("Wire")      -> line and wire editing
-        self.ui.editUi("BezCurve")  -> BezCurve editing
-        self.ui.editUi("Circle")    -> circle editing
-        self.ui.editUi("Arc")       -> arc editing
-        When Draft_Edit evaluate mouse click, depending if some
-        ui button have been pressed (.isChecked()), decide if
-        the action is a startEditing or AddPoint or DelPoint or
-        change BezCurve Continuity, ecc.
-
-    3 - when in editing, lineUi support clicking destination point
+    2 - when editing, lineUi support clicking destination point
         by self.startEditing
         self.ui.lineUi()
 
@@ -122,7 +106,6 @@ class Edit(gui_base_original.Modifier):
     If the tool recognize mouse click as an attempt to startEditing,
     using soRayPickAction, it identifies the selected editTracker and
     start editing it. Here is where "looo" code was very useful.
-
 
     Editing preview
     ---------------
@@ -234,7 +217,7 @@ class Edit(gui_base_original.Modifier):
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
         self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
-        
+
         self.alt_edit_mode = 0 # default edit mode for objects
 
         # preview
@@ -300,7 +283,7 @@ class Edit(gui_base_original.Modifier):
             self.proceed()
         else:
             self.ui.selectUi(on_close_call=self.finish)
-            App.Console.PrintMessage(translate("draft", 
+            App.Console.PrintMessage(translate("draft",
                                                "Select a Draft object to edit")
                                                + "\n")
             self.register_selection_callback()
@@ -357,7 +340,7 @@ class Edit(gui_base_original.Modifier):
 
         if self.edited_objects:
             self.deformat_objects_after_editing(self.edited_objects)
-        
+
         super(Edit, self).finish()
         if Gui.Snapper.grid:
             Gui.Snapper.grid.set()
@@ -448,7 +431,7 @@ class Edit(gui_base_original.Modifier):
         mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint
         """
         event = event_callback.getEvent()
-        if (event.getState() == coin.SoMouseButtonEvent.DOWN and 
+        if (event.getState() == coin.SoMouseButtonEvent.DOWN and
             event.getButton() == event.BUTTON1
             ):#left click
             if not event.wasAltDown():
@@ -501,7 +484,7 @@ class Edit(gui_base_original.Modifier):
                                  + ": editing node number "
                                  + str(node_idx) + "\n")
 
-        self.ui.lineUi()
+        self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
 
@@ -538,7 +521,7 @@ class Edit(gui_base_original.Modifier):
             self.trackers[obj.Name][nodeIndex].set(v)
         self.update(obj, nodeIndex, v)
         self.alt_edit_mode = 0
-        self.ui.editUi(self.ui.lastMode)
+        self.ui.editUi()
         self.node = []
         self.editing = None
         self.showTrackers()
@@ -651,7 +634,7 @@ class Edit(gui_base_original.Modifier):
         self.current_editing_object_gui_tools = self.get_obj_gui_tools(obj)
         if self.current_editing_object_gui_tools:
             self.ghost = self.current_editing_object_gui_tools.init_preview_object(obj)
-        
+
     def updateGhost(self, obj, node_idx, v):
         self.ghost.on()
 
@@ -719,7 +702,7 @@ class Edit(gui_base_original.Modifier):
 
 
     # -------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS 
+    # EDIT OBJECT TOOLS
     #
     # This section contains the code to retrieve the object points and update them
     #
@@ -799,7 +782,7 @@ class Edit(gui_base_original.Modifier):
 
         #to be used for app link support
 
-        for selobj in Gui.Selection.getSelectionEx('', 0): 
+        for selobj in Gui.Selection.getSelectionEx('', 0):
     	    for sub in selobj.SubElementNames:
                 obj = selobj.Object
                 obj_matrix = selobj.Object.getSubObject(sub, retType=4)
@@ -828,7 +811,7 @@ class Edit(gui_base_original.Modifier):
             if obj_gui_tools:
                 self.objs_formats[obj.Name] = obj_gui_tools.get_object_style(obj)
                 obj_gui_tools.set_object_editing_style(obj)
-                
+
 
     def deformat_objects_after_editing(self, objs):
         """Restore objects style during editing mode.
@@ -902,7 +885,7 @@ class Edit(gui_base_original.Modifier):
         """Get edit node from given screen position."""
         node = self.sendRay(pos)
         return node
-    
+
     def sendRay(self, mouse_pos):
         """Send a ray through the scene and return the nearest entity."""
         ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
@@ -936,7 +919,7 @@ class Edit(gui_base_original.Modifier):
 
 
 class GuiToolsRepository():
-    """ This object provide a repository to collect all the specific objects 
+    """ This object provide a repository to collect all the specific objects
     editing tools.
     """
     def __init__(self):

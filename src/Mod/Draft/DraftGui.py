@@ -285,7 +285,6 @@ class DraftToolBar:
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
         self.isCenterPlane = False
-        self.lastMode = None
         self.input_fields = {
             "xValue":{"value":"x","unit":"Length"},
             "yValue":{"value":"y","unit":"Length"},
@@ -1198,34 +1197,8 @@ class DraftToolBar:
             self.labelx.show()
         self.makeDumbTask(extra, on_close_call)
 
-    def editUi(self, mode=None):
-        self.lastMode=mode
-        self.taskUi(translate("draft", "Edit"))
-        self.hideXYZ()
-        self.numFaces.hide()
-        self.hasFill.hide()
-        # self.addButton.show()
-        # self.delButton.show()
-        # if mode == 'Wire':
-        #     self.setEditButtons(True)
-        #     self.setBezEditButtons(False)
-        # elif mode == 'Arc':
-        #     self.addButton.hide()
-        #     self.delButton.hide()
-        #     self.arc3PtButton.show()
-        # elif mode == 'BezCurve':
-        #     self.sharpButton.show()
-        #     self.tangentButton.show()
-        #     self.symmetricButton.show()
-        self.closeButton.show()
-        # self.finishButton.show()
-        # always start Edit with buttons unchecked
-        # self.addButton.setChecked(False)
-        # self.delButton.setChecked(False)
-        # self.sharpButton.setChecked(False)
-        # self.tangentButton.setChecked(False)
-        # self.symmetricButton.setChecked(False)
-        # self.arc3PtButton.setChecked(False)
+    def editUi(self):
+        self.makeDumbTask(on_close_call=self.finish)
 
     def extUi(self):
         if Draft.getParam("UsePartPrimitives",False):
