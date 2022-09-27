@@ -173,7 +173,7 @@ class StockFromBase(Stock):
             "App::PropertyString",
             "Length",
             "Stock",
-            QT_TRANSLATE_NOOP("App::Property", "Stock lenght"),
+            QT_TRANSLATE_NOOP("App::Property", "Stock length"),
         )
         obj.setEditorMode("Length", 1)  # read-only
         obj.addProperty(
