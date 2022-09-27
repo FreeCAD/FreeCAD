@@ -77,9 +77,9 @@ def call_pip(args) -> List[str]:
     python_exe = utils.get_python_exe()
     pip_failed = False
     if python_exe:
+        call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
+        call_args.extend(args)
         try:
-            call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
-            call_args.extend(args)
             proc = subprocess.run(
                 call_args,
                 stdout=subprocess.PIPE,
@@ -101,15 +101,15 @@ def call_pip(args) -> List[str]:
             )
             FreeCAD.Console.PrintLog(" ".join(call_args))
             pip_failed = True
-    else:
-        pip_failed = True
 
-    result = []
-    if not pip_failed:
-        data = proc.stdout.decode()
-        result = data.split("\n")
+        result = []
+        if not pip_failed:
+            data = proc.stdout.decode()
+            result = data.split("\n")
+        else:
+            raise Exception(proc.stderr.decode())
     else:
-        raise Exception(proc.stderr.decode())
+        raise Exception("Could not locate Python executable on this system")
     return result
 
 
