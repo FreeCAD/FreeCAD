@@ -150,7 +150,7 @@ void StringID::mark() const
 {
     if (isMarked())
         return;
-    _flags.set(Marked);
+    _flags.setFlag(Flag::Marked);
     for (auto & sid : _sids)
         sid.deref().mark();
 }
@@ -222,11 +222,15 @@ long StringHasher::lastID() const {
 
 StringIDRef StringHasher::getID(const char *text, int len, bool hashable) {
     if(len<0) len = strlen(text);
-    return getID(QByteArray::fromRawData(text,len),false,hashable);
+    return getID(QByteArray::fromRawData(text,len),hashable?Option::Hashable:Option::None);
 }
 
-StringIDRef StringHasher::getID(const QByteArray &data, bool binary, bool hashable, bool nocopy)
+StringIDRef StringHasher::getID(const QByteArray &data, Options options)
 {
+    bool binary = options.testFlag(Option::Binary);
+    bool hashable = options.testFlag(Option::Hashable);
+    bool nocopy = options.testFlag(Option::NoCopy);
+
     bool hashed = hashable && _hashes->Threshold>0 
                            && (int)data.size()>_hashes->Threshold;
 
@@ -247,7 +251,12 @@ StringIDRef StringHasher::getID(const QByteArray &data, bool binary, bool hashab
         d._data = QByteArray(data.constData(), data.size());
     }
 
-    StringIDRef sid(new StringID(lastID()+1,d._data,binary,hashed));
+    StringID::Flags flags(StringID::Flag::None);
+    if (binary)
+        flags.setFlag(StringID::Flag::Binary);
+    if (hashed)
+        flags.setFlag(StringID::Flag::Hashed);
+    StringIDRef sid(new StringID(lastID()+1,d._data,flags));
     return StringIDRef(insert(sid));
 }
 
@@ -279,18 +288,18 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
 
     StringIDRef postfixRef;
     if (d._postfix.size() && d._postfix.indexOf("#") < 0) {
-        postfixRef = getID(d._postfix, false, false);
+        postfixRef = getID(d._postfix);
         postfixRef.toBytes(d._postfix);
     }
 
     StringIDRef indexRef;
     if (indexed)
-        indexRef = getID(d._data, false, false);
+        indexRef = getID(d._data);
 
-    StringIDRef sid(new StringID(lastID()+1,d._data,false,false));
+    StringIDRef sid(new StringID(lastID()+1,d._data));
     StringID & id = *sid._sid;
     if (d._postfix.size()) {
-        id._flags.set(StringID::Postfixed);
+        id._flags.setFlag(StringID::Flag::Postfixed);
         id._postfix = d._postfix;
     }
 
@@ -306,11 +315,11 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
     else {
         id._sids.reserve(count + extra);
         if (postfixRef) {
-            id._flags.set(StringID::PostfixEncoded);
+            id._flags.setFlag(StringID::Flag::PostfixEncoded);
             id._sids.push_back(postfixRef);
         }
         if (indexRef) {
-            id._flags.set(StringID::Indexed);
+            id._flags.setFlag(StringID::Flag::Indexed);
             id._sids.push_back(indexRef);
         }
         for (auto &s : sids) {
@@ -332,9 +341,9 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
                     if (i!=offset)
                         std::swap(id._sids[offset], id._sids[i]);
                     if (res.index != 0)
-                        id._flags.set(StringID::PrefixIDIndex);
+                        id._flags.setFlag(StringID::Flag::PrefixIDIndex);
                     else
-                        id._flags.set(StringID::PrefixID);
+                        id._flags.setFlag(StringID::Flag::PrefixID);
                     break;
                 }
             }
@@ -457,8 +466,8 @@ void StringHasher::saveStream(std::ostream &s) const {
         }
 
         auto flags = d._flags;
-        flags.reset(StringID::Marked);
-        s << '.' << flags.to_ulong();
+        flags.setFlag(StringID::Flag::Marked, false);
+        s << '.' << flags.toUnderlyingType();
 
         int i = 0;
         if (!relative) {
@@ -551,7 +560,7 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
         lastid = id;
 
         unsigned long flag = strtol(tokens[1].c_str(), nullptr, 16);
-        StringIDRef sid(new StringID(id,QByteArray(),flag));
+        StringIDRef sid(new StringID(id,QByteArray(),static_cast<StringID::Flag>(flag)));
 
         StringID & d = *sid._sid;
         d._sids.reserve(tokens.size()-2);
@@ -644,7 +653,7 @@ void StringHasher::restoreStream(std::istream &s, std::size_t count) {
         int32_t id;
         uint8_t type;
         str >> id >> type >> content;
-        StringIDRef sid = new StringID(id,QByteArray(),type);
+        StringIDRef sid = new StringID(id,QByteArray(),static_cast<StringID::Flag>(type));
         if(sid.isHashed() || sid.isBinary()) {
             sid._sid->_data = QByteArray::fromBase64(content.c_str());
         } else
@@ -708,9 +717,9 @@ void StringHasher::Restore(Base::XMLReader &reader) {
             bool hashed = reader.hasAttribute("hash");
             if(hashed || reader.hasAttribute("data")) {
                 const char* value = hashed?reader.getAttribute("hash"):reader.getAttribute("data");
-                sid = new StringID(id,QByteArray::fromBase64(value),true,hashed);
+                sid = new StringID(id,QByteArray::fromBase64(value),StringID::Flag::Hashed);
             }else {
-                sid = new StringID(id,QByteArray(reader.getAttribute("text")),false,false);
+                sid = new StringID(id,QByteArray(reader.getAttribute("text")));
             }
             insert(sid);
         }
@@ -736,5 +745,5 @@ std::map<long,StringIDRef> StringHasher::getIDMap() const {
 void StringHasher::clearMarks() const
 {
     for (auto & v : _hashes->right)
-        v.second->_flags.reset(StringID::Marked);
+        v.second->_flags.setFlag(StringID::Flag::Marked, false);
 }
