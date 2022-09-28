@@ -73,7 +73,7 @@ class ViewProviderWorkingPlaneProxy:
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         c = param.GetUnsigned("ColorHelpers",674321151)
         vobj.LineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
-        
+
         vobj.Proxy = self
         vobj.RestoreView = True
         vobj.RestoreState = True
@@ -133,6 +133,7 @@ class ViewProviderWorkingPlaneProxy:
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
+        import PartGui # Required for "SoBrepEdgeSet" (because a WorkingPlaneProxy is not a Part::FeaturePython object).
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,28,[0,1,-1,2,3,4,5,-1,6,7,-1,8,9,10,11,-1,12,13,-1,14,15,16,17,-1,18,19,20,21])
         sep = coin.SoSeparator()
