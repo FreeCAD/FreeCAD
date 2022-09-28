@@ -109,6 +109,7 @@ template <typename Enum>
 class Flags {
     static_assert(std::is_enum<Enum>::value, "Flags is only usable on enumeration types.");
     Enum i;
+    typedef typename std::underlying_type<Enum>::type underlying_type;
 
 public:
     constexpr inline Flags(Enum f) : i(f) {}
@@ -122,6 +123,12 @@ public:
     constexpr bool isEqual(Flags f) const {
         using u = typename std::underlying_type<Enum>::type;
         return static_cast<u>(i) == static_cast<u>(f.i);
+    }
+    Enum getValue() const {
+        return i;
+    }
+    underlying_type toUnderlyingType() const {
+        return static_cast<underlying_type>(i);
     }
 };
 }
