@@ -207,6 +207,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
 
+        import PartGui # Required for "SoBrepEdgeSet" (because a label is not a Part::FeaturePython object).
+
         self.lcoords = coin.SoCoordinate3()
         self.line = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
 

@@ -1053,6 +1053,7 @@ class _ViewProviderSectionPlane:
         self.drawstyle = coin.SoDrawStyle()
         self.drawstyle.style = coin.SoDrawStyle.LINES
         self.lcoords = coin.SoCoordinate3()
+        import PartGui # Required for "SoBrepEdgeSet" (because a SectionPlane is not a Part::FeaturePython object).
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         ls.coordIndex.setValues(0,57,[0,1,-1,2,3,4,5,-1,6,7,8,9,-1,10,11,-1,12,13,14,15,-1,16,17,18,19,-1,20,21,-1,22,23,24,25,-1,26,27,28,29,-1,30,31,-1,32,33,34,35,-1,36,37,38,39,-1,40,41,42,43,44])
         self.txtcoords = coin.SoTransform()

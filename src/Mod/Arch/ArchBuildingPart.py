@@ -660,6 +660,7 @@ class ViewProviderBuildingPart:
         self.sep.addChild(self.dst)
         self.lco = coin.SoCoordinate3()
         self.sep.addChild(self.lco)
+        import PartGui # Required for "SoBrepEdgeSet" (because a BuildingPart is not a Part::FeaturePython object).
         lin = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         if lin:
             lin.coordIndex.setValues([0,1,-1,2,3,-1,4,5,-1])

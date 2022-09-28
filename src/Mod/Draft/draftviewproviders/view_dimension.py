@@ -397,6 +397,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.marksDimOvershoot = coin.SoSeparator()
         self.marksExtOvershoot = coin.SoSeparator()
         self.drawstyle = coin.SoDrawStyle()
+        import PartGui # Required for "SoBrepEdgeSet" (because a dimension is not a Part::FeaturePython object).
         self.line = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.coords = coin.SoCoordinate3()
 
@@ -959,6 +960,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.marks = coin.SoSeparator()
         self.drawstyle = coin.SoDrawStyle()
         self.coords = coin.SoCoordinate3()
+        import PartGui # Required for "SoBrepEdgeSet" (because a dimension is not a Part::FeaturePython object).
         self.arc = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
 
         self.node = coin.SoGroup()
