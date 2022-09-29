@@ -27,8 +27,6 @@ set(SketcherGui_LIBS
 
 if(BUILD_QT5)
     qt5_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
-else()
-    qt4_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 endif()
 
 set(SketcherGui_UIC_SRCS
@@ -52,8 +50,6 @@ set(SketcherGui_UIC_SRCS
 
 if(BUILD_QT5)
     qt5_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(SketcherGui_UIC_HDRS ${SketcherGui_UIC_SRCS})
 endif()
 
 SET(SketcherGui_SRCS

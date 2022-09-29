@@ -110,14 +110,6 @@ if (BUILD_QT5)
         ${Qt5WinExtras_LIBRARIES}
       )
     endif()
-else()
-    include_directories(
-        ${QT_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADGui_LIBS
-        ${QT_LIBRARIES}
-        ${QT_QTUITOOLS_LIBRARY}
-    )
 endif()
 
 IF(SPNAV_FOUND)
@@ -176,8 +168,6 @@ ENDIF(OCULUS_FOUND)
 if(FREECAD_USE_SHIBOKEN)
     if (BUILD_QT5)
         add_definitions(-DHAVE_SHIBOKEN2)
-    else()
-        add_definitions(-DHAVE_SHIBOKEN)
     endif()
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
@@ -217,8 +207,6 @@ if(FREECAD_USE_PYSIDE)
             ${PYSIDE_INCLUDE_DIR}/QtWidgets
         )
         add_definitions(-DHAVE_PYSIDE2)
-    else()
-        add_definitions(-DHAVE_PYSIDE)
     endif()
 endif(FREECAD_USE_PYSIDE)
 
@@ -289,10 +277,6 @@ if (BUILD_QT5)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h)
-else()
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
-        COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
 endif()
 
 set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
@@ -373,9 +357,6 @@ SET(Gui_RES_SRCS
 if (BUILD_QT5)
     QT5_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
     QT5_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
-else()
-    QT4_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
-    QT4_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
 endif()
 SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
@@ -790,8 +771,6 @@ set(qsint_MOC_HDRS
 
 if(BUILD_QT5)
     qt5_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
-else()
-    qt4_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
 endif()
 SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
@@ -871,8 +850,6 @@ SET(Quarter_MOC_HDR
 )
 if(BUILD_QT5)
     qt5_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
-else()
-    qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
 endif()
 
 SET(Quarter_SRCS 

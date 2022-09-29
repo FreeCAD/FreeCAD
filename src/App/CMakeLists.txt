@@ -76,15 +76,6 @@ if (BUILD_QT5)
          ${Qt5Core_LIBRARIES}
          ${Qt5Xml_LIBRARIES}
     )
-else()
-    include_directories(
-        ${QT_QTCORE_INCLUDE_DIR}
-        ${QT_QTXML_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADApp_LIBS
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTXML_LIBRARY}
-    )
 endif()
 
 generate_from_xml(DocumentPy)

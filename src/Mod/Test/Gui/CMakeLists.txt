@@ -16,8 +16,6 @@ set(Dialogs_UIC_SRCS
 
 if(BUILD_QT5)
     qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
 endif()
 
 SET(Dialogs_SRCS
@@ -32,8 +30,6 @@ SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
 if(BUILD_QT5)
     qt5_add_resources(Resource_SRCS Resources/Test.qrc)
-else()
-    qt4_add_resources(Resource_SRCS Resources/Test.qrc)
 endif()
 
 SET(Resource_SRCS

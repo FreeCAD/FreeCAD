@@ -86,22 +86,7 @@ def translate(context, text, utf8_decode=False):
 
     Unicode strings
     ---------------
-    Whether it is Qt4 or Qt5, the `translate` function
-    always returns a unicode string.
-    The difference is how it handles the input.
-
-    Reference: https://pyside.github.io/docs/pyside/PySide/QtCore/
-
-    In Qt4 the translate function has a 4th parameter to define the encoding
-    of the input string.
-
-    >>> QtCore.QCoreApplication.translate(context, text, None, UnicodeUT8)
-    >>> QtGui.QApplication.translate(context, text, None, UnicodeUT8)
-
-    Reference: https://doc.qt.io/qtforpython/PySide2/QtCore
-
-    In Qt5 the strings are always assumed unicode, so the 4th parameter
-    is for a different use, and it is not used.
+    In Qt5 the strings are always assumed unicode.
 
     >>> QtCore.QCoreApplication.translate(context, text, None)
     >>> QtGui.QApplication.translate(context, text, None)

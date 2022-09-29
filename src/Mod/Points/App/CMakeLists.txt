@@ -25,10 +25,6 @@ if (BUILD_QT5)
     list(APPEND Points_LIBS
         ${Qt5Concurrent_LIBRARIES}
     )
-else()
-    include_directories(
-        ${QT_QTCORE_INCLUDE_DIR}
-    )
 endif()
 
 generate_from_xml(PointsPy)

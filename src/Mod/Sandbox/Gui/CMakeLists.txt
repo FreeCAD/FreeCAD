@@ -19,10 +19,6 @@ if(BUILD_QT5)
     include_directories(
         ${Qt5Core_INCLUDE_DIRS}
     )
-else()
-    include_directories(
-        ${QT_INCLUDE_DIR}
-    )
 endif()
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -42,8 +38,6 @@ SOURCE_GROUP("Moc" FILES ${SandboxGui_MOC_SRCS})
 
 if(BUILD_QT5)
     qt5_add_resources(Resource_SRCS Resources/Sandbox.qrc)
-else()
-    qt4_add_resources(Resource_SRCS Resources/Sandbox.qrc)
 endif()
 SET(Resource_SRCS
     ${Resource_SRCS}

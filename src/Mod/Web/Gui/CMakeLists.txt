@@ -26,8 +26,6 @@ if(BUILD_QT5)
         list(APPEND WebGui_LIBS ${Qt5WebKitWidgets_LIBRARIES})
     endif()
     qt5_add_resources(Web_QRC_SRCS Resources/Web.qrc)
-else()
-    qt4_add_resources(Web_QRC_SRCS Resources/Web.qrc)
 endif()
 
 SET(WebGui_SRCS

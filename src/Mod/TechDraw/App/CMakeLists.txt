@@ -35,12 +35,7 @@ if(BUILD_QT5)
     list(APPEND TechDrawLIBS
         ${Qt5Concurrent_LIBRARIES}
     )
-else(BUILD_QT5)
-    include_directories(
-        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
-    )
-    set(QtXmlPatternsLib ${QT_QTXMLPATTERNS_LIBRARY})
-endif(BUILD_QT5)
+endif()
 
 link_directories(${OCC_LIBRARY_DIR})
 

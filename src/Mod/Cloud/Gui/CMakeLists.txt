@@ -15,8 +15,6 @@ set(CloudGui_LIBS
 
 if (BUILD_QT5)
     qt5_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
-else()
-    qt4_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
 endif()
 
 SET(CloudGui_SRCS

@@ -214,6 +214,7 @@ def buildFileSwatch(name,scale=5,thickness=1,color="#000000",size=64,png=False):
         f.close()
         if png:
             # we use imagemagick's convert because Qt4 doesn't support SVG patterns...
+            # Qt5? Qt6?
             import os
             if os.system("convert -version") == 0:
                 ptf = os.path.splitext(tf)[0]+".png"

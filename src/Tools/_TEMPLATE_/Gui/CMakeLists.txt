@@ -16,8 +16,6 @@ set(_TEMPLATE_Gui_LIBS
 
 if (BUILD_QT5)
     qt5_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
-else()
-    qt4_add_resources(_TEMPLATE__QRC_SRCS Resources/_TEMPLATE_.qrc)
 endif()
 
 SET(_TEMPLATE_Gui_SRCS

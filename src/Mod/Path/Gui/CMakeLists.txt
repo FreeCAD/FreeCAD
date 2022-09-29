@@ -27,8 +27,6 @@ set(PathGui_LIBS
 
 if(BUILD_QT5)
     qt5_add_resources(PathResource_SRCS Resources/Path.qrc)
-else()
-    qt4_add_resources(PathResource_SRCS Resources/Path.qrc)
 endif()
 
 SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
@@ -41,8 +39,6 @@ set(PathGui_UIC_SRCS
 
 if(BUILD_QT5)
     qt5_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
 endif()
 
 SET(PathGui_SRCS_Module

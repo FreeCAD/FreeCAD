@@ -22,9 +22,6 @@ set(Dialogs_UIC_SRCS
 if(BUILD_QT5)
     qt5_add_resources(Inspection_QRC_SRCS Resources/Inspection.qrc)
     qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-else()
-    qt4_add_resources(Inspection_QRC_SRCS Resources/Inspection.qrc)
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
 endif()
 
 SET(Dialogs_SRCS

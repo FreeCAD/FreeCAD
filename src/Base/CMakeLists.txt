@@ -61,11 +61,6 @@ if (BUILD_QT5)
         ${Qt5Core_INCLUDE_DIRS}
     )
     list(APPEND FreeCADBase_LIBS ${Qt5Core_LIBRARIES})
-else()
-    include_directories(
-        ${QT_QTCORE_INCLUDE_DIR}
-    )
-    list(APPEND FreeCADBase_LIBS ${QT_QTCORE_LIBRARY})
 endif()
 
 if (BUILD_DYNAMIC_LINK_PYTHON)

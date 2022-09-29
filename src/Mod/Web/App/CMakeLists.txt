@@ -15,11 +15,6 @@ if(BUILD_QT5)
          FreeCADApp
          ${Qt5Network_LIBRARIES}
     )
-else()
-    set(Web_LIBS
-         FreeCADApp
-         ${QT_LIBRARIES}
-    )
 endif()
 
 SET(Web_SRCS

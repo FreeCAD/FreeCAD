@@ -19,9 +19,6 @@ set(StartGui_UIC_SRCS
 if(BUILD_QT5)
     qt5_add_resources(Start_QRC_SRCS Resources/Start.qrc)
     qt5_wrap_ui(StartGui_UIC_HDRS ${StartGui_UIC_SRCS})
-else()
-    qt4_add_resources(Start_QRC_SRCS Resources/Start.qrc)
-    qt4_wrap_ui(StartGui_UIC_HDRS ${StartGui_UIC_SRCS})
 endif()
 
 SET(StartGui_SRCS
