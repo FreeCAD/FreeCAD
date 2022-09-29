@@ -2343,7 +2343,13 @@ PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObjec
 
         Py::List list;
         for (const auto & it : sel) {
-            list.append(Py::asObject(it.pObject->getPyObject()));
+            SelectionObject obj(SelectionChanges(SelectionChanges::AddSelection,
+                                                 it.DocName,
+                                                 it.FeatName,
+                                                 it.SubName,
+                                                 it.TypeName,
+                                                 it.x, it.y, it.z));
+            list.append(Py::asObject(obj.getPyObject()));
         }
         return Py::new_reference_to(list);
     }
