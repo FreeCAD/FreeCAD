@@ -225,6 +225,7 @@ class CommandManager(object):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
             self.selobj = sel[0]
+            self.selobj2 = None
             return True
         elif len(sel) == 2:
             if sel[0].isDerivedFrom("Fem::FemMeshObject"):
