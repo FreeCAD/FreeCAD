@@ -42,7 +42,6 @@
 #include <QApplication>
 #include <QLocale>
 #include <QMessageBox>
-#include <QTextCodec>
 
 // FreeCAD header
 #include <App/Application.h>
@@ -95,20 +94,6 @@ private:
     Base::FileInfo fi;
     FILE* file;
 };
-
-#if defined (FC_OS_LINUX) || defined(FC_OS_BSD)
-QString myDecoderFunc(const QByteArray &localFileName)
-{
-    QTextCodec* codec = QTextCodec::codecForName("UTF-8");
-    return codec->toUnicode(localFileName);
-}
-
-QByteArray myEncoderFunc(const QString &fileName)
-{
-    QTextCodec* codec = QTextCodec::codecForName("UTF-8");
-    return codec->fromUnicode(fileName);
-}
-#endif
 
 int main( int argc, char ** argv )
 {

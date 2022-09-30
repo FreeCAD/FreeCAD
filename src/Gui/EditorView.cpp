@@ -37,7 +37,9 @@
 # include <QPrintPreviewDialog>
 # include <QSpacerItem>
 # include <QStyle>
+# if QT_VERSION < 0x060000
 # include <QTextCodec>
+# endif
 # include <QTextCursor>
 # include <QTextDocument>
 # include <QTextStream>
@@ -523,7 +525,9 @@ bool EditorView::saveFile()
     if (!file.open(QFile::WriteOnly))
         return false;
     QTextStream ts(&file);
+#if QT_VERSION < 0x060000
     ts.setCodec(QTextCodec::codecForName("UTF-8"));
+#endif
     ts << d->textEdit->document()->toPlainText();
     file.close();
     d->textEdit->document()->setModified(false);

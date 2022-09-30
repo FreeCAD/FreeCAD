@@ -23,6 +23,15 @@
 
 #include "PreCompiled.h"
 
+#include <qglobal.h>
+#if QT_VERSION < 0x060000
+#include <QTextCodec>
+#else
+#include <QByteArray>
+#include <QStringDecoder>
+#include <QStringEncoder>
+#endif
+
 #include "InputSource.h"
 #include "XMLTools.h"
 
@@ -36,11 +45,68 @@ using namespace std;
 // ---------------------------------------------------------------------------
 //  StdInputStream: Constructors and Destructor
 // ---------------------------------------------------------------------------
-StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager )
-  : stream(Stream), fMemoryManager(manager)
+
+#if QT_VERSION < 0x060000
+struct StdInputStream::TextCodec
 {
-    state.flags |= QTextCodec::IgnoreHeader;
-    state.flags |= QTextCodec::ConvertInvalidToNull;
+    QTextCodec::ConverterState state;
+    TextCodec() {
+        state.flags |= QTextCodec::IgnoreHeader;
+        state.flags |= QTextCodec::ConvertInvalidToNull;
+    }
+
+    void validateBytes(XMLByte* const  toFill, std::streamsize len) {
+        QTextCodec *textCodec = QTextCodec::codecForName("UTF-8");
+        if (textCodec) {
+            const QString text = textCodec->toUnicode(reinterpret_cast<char *>(toFill), static_cast<int>(len), &state);
+            if (state.invalidChars > 0) {
+                // In case invalid characters were found decode back to 'utf-8' and replace
+                // them with '?'
+                // First, Qt replaces invalid characters with '\0' (see ConvertInvalidToNull)
+                // but Xerces doesn't like this because it handles this as termination. Thus,
+                // we have to go through the array and replace '\0' with '?'.
+                std::streamsize pos = 0;
+                QByteArray ba = textCodec->fromUnicode(text);
+                for (int i=0; i<ba.length(); i++, pos++) {
+                    if (pos < len && ba[i] == '\0') {
+                        toFill[i] = '?';
+                    }
+                }
+            }
+        }
+    }
+};
+#else
+struct StdInputStream::TextCodec
+{
+    void validateBytes(XMLByte* const  toFill, std::streamsize len) {
+        QByteArray encodedString(reinterpret_cast<char *>(toFill), static_cast<int>(len));
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString text = toUtf16(encodedString);
+        if (toUtf16.hasError()) {
+            // In case invalid characters were found decode back to 'utf-8' and replace
+            // them with '?'
+            // First, Qt replaces invalid characters with '\0'
+            // but Xerces doesn't like this because it handles this as termination. Thus,
+            // we have to go through the array and replace '\0' with '?'.
+            std::streamsize pos = 0;
+            auto fromUtf16 = QStringEncoder(QStringEncoder::Utf8);
+            QByteArray ba = fromUtf16(text);
+            for (int i=0; i<ba.length(); i++, pos++) {
+                if (pos < len && ba[i] == '\0') {
+                    toFill[i] = '?';
+                }
+            }
+        }
+    }
+};
+#endif
+
+StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager )
+  : stream(Stream)
+  , fMemoryManager(manager)
+  , codec(new TextCodec)
+{
 }
 
 
@@ -65,21 +131,7 @@ XMLSize_t StdInputStream::readBytes(XMLByte* const  toFill, const XMLSize_t maxT
   stream.read(reinterpret_cast<char *>(toFill), static_cast<std::streamsize>(maxToRead));
   std::streamsize len = stream.gcount();
 
-  QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-  const QString text = codec->toUnicode(reinterpret_cast<char *>(toFill), static_cast<int>(len), &state);
-  if (state.invalidChars > 0) {
-      // In case invalid characters were found decode back to 'utf-8' and replace
-      // them with '?'
-      // First, Qt replaces invalid characters with '\0' (see ConvertInvalidToNull)
-      // but Xerces doesn't like this because it handles this as termination. Thus,
-      // we have to go through the array and replace '\0' with '?'.
-      std::streamsize pos = 0;
-      QByteArray ba = codec->fromUnicode(text);
-      for (int i=0; i<ba.length(); i++, pos++) {
-          if (pos < len && ba[i] == '\0')
-              toFill[i] = '?';
-      }
-  }
+  codec->validateBytes(toFill, len);
 
   return static_cast<XMLSize_t>(len);
 }

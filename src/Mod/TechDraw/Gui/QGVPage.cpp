@@ -43,7 +43,6 @@
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
-#include <QTextCodec>
 #endif
 
 #include <App/Application.h>

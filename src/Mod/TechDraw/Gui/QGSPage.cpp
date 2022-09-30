@@ -40,7 +40,6 @@
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
-#include <QTextCodec>
 #include <cmath>
 #endif
 

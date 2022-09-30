@@ -45,7 +45,6 @@
 #include <QSet>
 #include <QSignalMapper>
 #include <QTemporaryFile>
-#include <qtextcodec.h>
 #include <qtextstream.h>
 #include <qthread.h>
 #include <qthreadpool.h>

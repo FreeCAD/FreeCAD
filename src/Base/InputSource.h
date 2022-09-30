@@ -24,10 +24,10 @@
 #define BASE_IINPUTSOURCE_H
 
 #include <iosfwd>
+#include <memory>
 
 #include <xercesc/util/BinInputStream.hpp>
 #include <xercesc/sax/InputSource.hpp>
-#include <QTextCodec>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -70,7 +70,8 @@ private :
   // -----------------------------------------------------------------------
   std::istream            &stream;
   XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const    fMemoryManager;
-  QTextCodec::ConverterState state;
+  struct TextCodec;
+  std::unique_ptr<TextCodec> codec;
 };
 
 
