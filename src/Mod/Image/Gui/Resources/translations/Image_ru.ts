@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
-      <translation>Создать плоскость изображения ...</translation>
+      <translation>Создать плоскость изображения...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
@@ -73,32 +73,32 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Расстояние [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>Выберите первую точку</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
       <source>Enter distance</source>
-      <translation type="unfinished">Enter distance</translation>
+      <translation>Введите расстояние</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
       <source>Select ImagePlane</source>
-      <translation type="unfinished">Select ImagePlane</translation>
+      <translation>Выберите ПлоскостьИзображения</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>Выберите вторую точку</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>Выберите Плоскость Изображения и введите расстояние</translation>
     </message>
   </context>
   <context>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Неопределенный тип цветового пространства для просмотра изображений</translation>
+      <translation>Неопределённый тип цветового пространства для просмотра изображений</translation>
     </message>
   </context>
   <context>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Отображает изображение в масштабе 1: 1 </translation>
+      <translation>Отображает изображение в масштабе 1: 1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="124"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="60"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Масштабирует плоскость изображения изменением расстояния между двумя точками</translation>
+      <translation>Масштабирует плоскость изображения по расстоянию между двумя точками</translation>
     </message>
   </context>
   <context>
