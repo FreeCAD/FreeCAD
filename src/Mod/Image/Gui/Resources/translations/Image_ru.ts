@@ -78,7 +78,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
       <source>Select first point</source>
-      <translation>Выберите первую точку</translation>
+      <translation>Укажите первую точку</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
@@ -93,7 +93,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
       <source>Select second point</source>
-      <translation>Выберите вторую точку</translation>
+      <translation>Укажите вторую точку</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Отображает изображение в масштабе 1: 1</translation>
+      <translation>Отображает изображение в масштабе 1:1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="124"/>
@@ -244,7 +244,7 @@
       <location filename="../../Command.cpp" line="77"/>
       <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
-      <translation>Выберите файл изображения, чтобы открыть</translation>
+      <translation>Выберите файл изображения, чтобы его открыть</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="127"/>
