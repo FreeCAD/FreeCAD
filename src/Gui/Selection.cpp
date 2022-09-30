@@ -2357,8 +2357,14 @@ PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObjec
         sel = Selection().getCompleteSelection(toEnum(resolve));
 
         Py::List list;
-        for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            list.append(Py::asObject(it->pObject->getPyObject()));
+        for (const auto & it : sel) {
+            SelectionObject obj(SelectionChanges(SelectionChanges::AddSelection,
+                                                 it.DocName,
+                                                 it.FeatName,
+                                                 it.SubName,
+                                                 it.TypeName,
+                                                 it.x, it.y, it.z));
+            list.append(Py::asObject(obj.getPyObject()));
         }
         return Py::new_reference_to(list);
     }
