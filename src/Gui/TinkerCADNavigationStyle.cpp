@@ -114,7 +114,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SoMouseButtonEvent * const event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-        SbBool canOpenPopupMenu = false;
+        SbBool shortRMBclick = false;
 
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
@@ -144,7 +144,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 float dci = float(QApplication::doubleClickInterval())/1000.0f;
                 // time between press and release event
                 if (tmp.getValue() < dci) {
-                    canOpenPopupMenu = true;
+                    shortRMBclick = true;
                 }
             }
 
@@ -156,14 +156,16 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed = true;
             }
             else if (!press && (curmode == NavigationStyle::DRAGGING)) {
-                if (!viewer->isEditing() && canOpenPopupMenu) {
-                    // If we are in drag mode but mouse hasn't been moved open the context-menu
-                    if (this->isPopupMenuEnabled()) {
-                        this->openPopupMenu(event->getPosition());
+                if (shortRMBclick) {
+                    newmode = NavigationStyle::IDLE;
+                    if (!viewer->isEditing()) {
+                        // If we are in drag mode but mouse hasn't been moved open the context-menu
+                        if (this->isPopupMenuEnabled()) {
+                            this->openPopupMenu(event->getPosition());
+                        }
+                        processed = true;
                     }
                 }
-                newmode = NavigationStyle::IDLE;
-                processed = true;
             }
             break;
         case SoMouseButtonEvent::BUTTON3:
