@@ -57,23 +57,23 @@ struct StringIDHasher {
         return qHash(sid->data(), qHash(sid->postfix()));
     }
 
-    bool operator()(const StringID *a, const StringID *b) const {
-        if (a == b)
+    bool operator()(const StringID *IDa, const StringID *IDb) const {
+        if (IDa == IDb)
             return true;
-        if (!a || !b)
+        if (!IDa || !IDb)
             return false;
-        return a->data() == b->data() && a->postfix() == b->postfix();
+        return IDa->data() == IDb->data() && IDa->postfix() == IDb->postfix();
     }
 };
 
 typedef boost::bimap<
-            boost::bimaps::unordered_set_of<StringID*,
-                                            StringIDHasher,
-                                            StringIDHasher>,
-            boost::bimaps::set_of<long> >
-            HashMapBase;
+    boost::bimaps::unordered_set_of<StringID *,
+                                    StringIDHasher,
+                                    StringIDHasher>,
+    boost::bimaps::set_of<long>>
+    HashMapBase;
 
-class StringHasher::HashMap: public HashMapBase 
+class StringHasher::HashMap: public HashMapBase
 {
 public:
     bool SaveAll = false;
@@ -122,7 +122,7 @@ StringID::IndexID StringID::fromString(const char *name, bool eof, int size) {
     char sep = 0;
     char sep2 = 0;
     iss >> sep >> std::hex >> res.id >> sep2 >> res.index;
-    if((eof && !iss.eof()) || sep!='#' || (sep2!=0 && sep2!=':')) {
+    if ((eof && !iss.eof()) || sep != '#' || (sep2 != 0 && sep2 != ':')) {
         res.id = -1;
         return res;
     }
@@ -134,7 +134,7 @@ std::string StringID::dataToText(int index) const {
         return _data.toBase64().constData();
 
     std::string res(_data.constData());
-    if (index) 
+    if (index)
         res += std::to_string(index);
     if (_postfix.size())
         res += _postfix.constData();
@@ -216,8 +216,9 @@ long StringHasher::lastID() const {
 }
 
 StringIDRef StringHasher::getID(const char *text, int len, bool hashable) {
-    if(len<0) len = strlen(text);
-    return getID(QByteArray::fromRawData(text,len),hashable?Option::Hashable:Option::None);
+    if (len < 0)
+        len = strlen(text);
+    return getID(QByteArray::fromRawData(text, len), hashable ? Option::Hashable : Option::None);
 }
 
 StringIDRef StringHasher::getID(const QByteArray &data, Options options)
@@ -226,51 +227,50 @@ StringIDRef StringHasher::getID(const QByteArray &data, Options options)
     bool hashable = options.testFlag(Option::Hashable);
     bool nocopy = options.testFlag(Option::NoCopy);
 
-    bool hashed = hashable && _hashes->Threshold>0 
-                           && (int)data.size()>_hashes->Threshold;
+    bool hashed = hashable && _hashes->Threshold > 0
+        && (int)data.size() > _hashes->Threshold;
 
-    StringID d;
-    if(hashed) {
+    StringID dataID;
+    if (hashed) {
         QCryptographicHash hasher(QCryptographicHash::Sha1);
         hasher.addData(data);
-        d._data = hasher.result();
+        dataID._data = hasher.result();
     } else
-        d._data = data;
+        dataID._data = data;
 
-    auto it = _hashes->left.find(&d);
-    if(it!=_hashes->left.end())
+    auto it = _hashes->left.find(&dataID);
+    if (it!=_hashes->left.end())
         return StringIDRef(it->first);
 
-    if(!hashed && !nocopy) {
+    if (!hashed && !nocopy)
         // if not hashed, make a deep copy of the data
-        d._data = QByteArray(data.constData(), data.size());
-    }
+        dataID._data = QByteArray(data.constData(), data.size());
 
     StringID::Flags flags(StringID::Flag::None);
     if (binary)
         flags.setFlag(StringID::Flag::Binary);
     if (hashed)
         flags.setFlag(StringID::Flag::Hashed);
-    StringIDRef sid(new StringID(lastID()+1,d._data,flags));
+    StringIDRef sid(new StringID(lastID() + 1, dataID._data, flags));
     return StringIDRef(insert(sid));
 }
 
-StringIDRef StringHasher::getID(const Data::MappedName &name, 
+StringIDRef StringHasher::getID(const Data::MappedName &name,
                                 const QVector<StringIDRef> & sids)
 {
-    StringID d;
-    d._postfix = name.postfixBytes();
+    StringID anID;
+    anID._postfix = name.postfixBytes();
 
     Data::IndexedName indexed;
-    if (!d._postfix.size())
+    if (!anID._postfix.size())
         indexed = Data::IndexedName(name.dataBytes());
     if (indexed)
-        d._data = QByteArray::fromRawData(indexed.getType(), strlen(indexed.getType()));
+        anID._data = QByteArray::fromRawData(indexed.getType(), strlen(indexed.getType()));
     else
-        d._data = name.dataBytes();
+        anID._data = name.dataBytes();
 
-    auto it = _hashes->left.find(&d);
-    if(it!=_hashes->left.end()) {
+    auto it = _hashes->left.find(&anID);
+    if (it!=_hashes->left.end()) {
         auto res = StringIDRef(it->first);
         if (indexed)
             res._index = indexed.getIndex();
@@ -278,29 +278,29 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
     }
 
     if (!indexed && name.isRaw())
-        d._data = QByteArray(name.dataBytes().constData(),
+        anID._data = QByteArray(name.dataBytes().constData(),
                              name.dataBytes().size());
 
     StringIDRef postfixRef;
-    if (d._postfix.size() && d._postfix.indexOf("#") < 0) {
-        postfixRef = getID(d._postfix);
-        postfixRef.toBytes(d._postfix);
+    if (anID._postfix.size() && anID._postfix.indexOf("#") < 0) {
+        postfixRef = getID(anID._postfix);
+        postfixRef.toBytes(anID._postfix);
     }
 
     StringIDRef indexRef;
     if (indexed)
-        indexRef = getID(d._data);
+        indexRef = getID(anID._data);
 
-    StringIDRef sid(new StringID(lastID()+1,d._data));
+    StringIDRef sid(new StringID(lastID() + 1, anID._data));
     StringID & id = *sid._sid;
-    if (d._postfix.size()) {
+    if (anID._postfix.size()) {
         id._flags.setFlag(StringID::Flag::Postfixed);
-        id._postfix = d._postfix;
+        id._postfix = anID._postfix;
     }
 
     int count = 0;
-    for (auto & s : sids) {
-        if (s && s._sid->_hasher == this)
+    for (auto & sid : sids) {
+        if (sid && sid._sid->_hasher == this)
             ++count;
     }
 
@@ -349,10 +349,10 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
 }
 
 StringIDRef StringHasher::getID(long id, int index) const {
-    if(id<=0)
+    if (id<=0)
         return StringIDRef();
     auto it = _hashes->right.find(id);
-    if(it == _hashes->right.end())
+    if (it == _hashes->right.end())
         return StringIDRef();
     StringIDRef res(it->second);
     res._index = index;
@@ -360,7 +360,7 @@ StringIDRef StringHasher::getID(long id, int index) const {
 }
 
 void StringHasher::setPersistenceFileName(const char *filename) const {
-    if(!filename)
+    if (!filename)
         filename = "";
     _filename = filename;
 }
@@ -383,10 +383,10 @@ void StringHasher::Save(Base::Writer &writer) const {
     }
 
     writer.Stream() << writer.ind()
-        << "<StringHasher saveall=\"" << _hashes->SaveAll
-        << "\" threshold=\"" << _hashes->Threshold << "\"";
+                    << "<StringHasher saveall=\"" << _hashes->SaveAll
+                    << "\" threshold=\"" << _hashes->Threshold << "\"";
 
-    if(!count) {
+    if (!count) {
         writer.Stream() << " count=\"0\"></StringHasher>\n";
         return;
     }
@@ -394,10 +394,10 @@ void StringHasher::Save(Base::Writer &writer) const {
     writer.Stream() << " count=\"0\" new=\"1\"/>\n";
 
     writer.Stream() << writer.ind() << "<StringHasher2 ";
-    if(_filename.size()) {
-        writer.Stream() << " file=\"" 
-            << writer.addFile(_filename+".txt",this)
-            << "\"/>\n";
+    if (_filename.size()) {
+        writer.Stream() << " file=\""
+                        << writer.addFile(_filename + ".txt", this)
+                        << "\"/>\n";
         return;
     }
 
@@ -424,7 +424,7 @@ void StringHasher::saveStream(std::ostream &s) const {
     long lastid = 0;
     bool relative = false;
 
-    for(auto &v : _hashes->right) {
+    for (auto &v : _hashes->right) {
         auto & d = *v.second;
         long id = d._id;
         if (!_hashes->SaveAll && !d.isMarked() && !d.isPersistent())
@@ -468,7 +468,8 @@ void StringHasher::saveStream(std::ostream &s) const {
         if (!relative) {
             for (; i<d._sids.size(); ++i)
                 s << '.' << d._sids[i].value();
-        } else {
+        }
+        else {
             if (last) {
                 for (; i<d._sids.size() && i<last->_sids.size(); ++i) {
                     long m = last->_sids[i].value();
@@ -535,7 +536,7 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
 
     std::string tmp;
 
-    for(uint32_t i=0;i<count;++i) {
+    for (uint32_t i = 0; i < count; ++i) {
         if (!(s >> tmp))
             FC_THROWM(Base::RuntimeError, "Invalid string table");
 
@@ -548,14 +549,14 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
         bool relative = false;
         if (tokens[0][0] == '-') {
             relative = true;
-            id = lastid + strtol(tokens[0].c_str()+1, nullptr, 16);
+            id = lastid + strtol(tokens[0].c_str() + 1, nullptr, 16);
         } else
             id = strtol(tokens[0].c_str(), nullptr, 16);
 
         lastid = id;
 
         unsigned long flag = strtol(tokens[1].c_str(), nullptr, 16);
-        StringIDRef sid(new StringID(id,QByteArray(),static_cast<StringID::Flag>(flag)));
+        StringIDRef sid(new StringID(id, QByteArray(), static_cast<StringID::Flag>(flag)));
 
         StringID & d = *sid._sid;
         d._sids.reserve(tokens.size()-2);
@@ -644,14 +645,14 @@ void StringHasher::restoreStream(std::istream &s, std::size_t count) {
     Base::InputStream str(s,false);
     _hashes->clear();
     std::string content;
-    for(uint32_t i=0;i<count;++i) {
+    for (uint32_t i = 0; i < count; ++i) {
         int32_t id;
         uint8_t type;
         str >> id >> type >> content;
-        StringIDRef sid = new StringID(id,QByteArray(),static_cast<StringID::Flag>(type));
-        if(sid.isHashed() || sid.isBinary()) {
+        StringIDRef sid = new StringID(id, QByteArray(), static_cast<StringID::Flag>(type));
+        if (sid.isHashed() || sid.isBinary())
             sid._sid->_data = QByteArray::fromBase64(content.c_str());
-        } else
+        else
             sid._sid->_data = QByteArray(content.c_str());
         insert(sid);
     }
@@ -671,8 +672,8 @@ size_t StringHasher::size() const {
 
 size_t StringHasher::count() const {
     size_t count = 0;
-    for(auto &v : _hashes->right) 
-        if(v.second->getRefCount()>1)
+    for (auto &v : _hashes->right)
+        if (v.second->getRefCount() > 1)
             ++count;
     return count;
 }
@@ -705,17 +706,17 @@ void StringHasher::Restore(Base::XMLReader &reader) {
     else if(count && reader.FileVersion > 1)
         restoreStream(reader.beginCharStream(false),count);
     else {
-        for(std::size_t i=0;i<count;++i) {
+        for (std::size_t i = 0; i < count; ++i) {
             reader.readElement("Item");
             StringIDRef sid;
             long id = reader.getAttributeAsInteger("id");
             bool hashed = reader.hasAttribute("hash");
-            if(hashed || reader.hasAttribute("data")) {
-                const char* value = hashed?reader.getAttribute("hash"):reader.getAttribute("data");
-                sid = new StringID(id,QByteArray::fromBase64(value),StringID::Flag::Hashed);
-            }else {
-                sid = new StringID(id,QByteArray(reader.getAttribute("text")));
+            if (hashed || reader.hasAttribute("data")) {
+                const char *value = hashed ? reader.getAttribute("hash") : reader.getAttribute("data");
+                sid = new StringID(id, QByteArray::fromBase64(value), StringID::Flag::Hashed);
             }
+            else
+                sid = new StringID(id, QByteArray(reader.getAttribute("text")));
             insert(sid);
         }
     }
@@ -732,7 +733,7 @@ PyObject *StringHasher::getPyObject() {
 
 std::map<long,StringIDRef> StringHasher::getIDMap() const {
     std::map<long,StringIDRef> ret;
-    for(auto &v : _hashes->right)
+    for (auto &v : _hashes->right)
         ret.emplace_hint(ret.end(), v.first, StringIDRef(v.second));
     return ret;
 }

@@ -213,7 +213,7 @@ public:
     /** Get the text content of this StringID
      * @param index: optional index
      * @return Return the text content of this StringID. If the data is binary,
-     *         then output in base64 encoded string. 
+     *         then output in base64 encoded string.
      */
     std::string dataToText(int index) const;
 
@@ -604,7 +604,7 @@ public:
     virtual PyObject *getPyObject(void) override;
 
     /** Enable/disable saving all string ID
-     * 
+     *
      * If disabled, then only save string ID that are used.
      */
     void setSaveAll(bool enable);
