@@ -23,16 +23,17 @@
 #ifndef APP_STRINGID_H
 #define APP_STRINGID_H
 
-#include <memory>
 #include <bitset>
+#include <memory>
 
 #include <QByteArray>
 #include <QVector>
 
-#include <CXX/Objects.hxx>
+#include <Base/Bitmask.h>
 #include <Base/Handle.h>
 #include <Base/Persistence.h>
-#include <Base/Bitmask.h>
+#include <CXX/Objects.hxx>
+
 
 namespace Data{
 class MappedName;

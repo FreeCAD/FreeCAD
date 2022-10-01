@@ -20,33 +20,28 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <deque>
-#include <boost/io/ios_state.hpp>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/bimap.hpp>
-#include <boost/bimap/unordered_set_of.hpp>
-#include <boost/bimap/set_of.hpp>
-#include <QHash>
 #include <QCryptographicHash>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Writer.h>
+#include <QHash>
+
 #include <Base/Reader.h>
-#include <App/StringHasher.h>
-#include <App/StringHasherPy.h>
-#include <App/StringIDPy.h>
-#include <App/MappedElement.h>
-#include <App/DocumentParams.h>
+#include <Base/Writer.h>
+
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/bimap.hpp>
+#include <boost/bimap/set_of.hpp>
+#include <boost/bimap/unordered_set_of.hpp>
+#include <boost/iostreams/stream.hpp>
+
+#include "StringHasher.h"
+#include "StringHasherPy.h"
+#include "DocumentParams.h"
+#include "MappedElement.h"
+#include "StringIDPy.h"
+
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
