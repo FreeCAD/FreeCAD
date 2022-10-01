@@ -485,6 +485,8 @@ class Edit(gui_base_original.Modifier):
                                  + str(node_idx) + "\n")
 
         self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
+        self.ui.isRelative.hide()
+        self.ui.continueCmd.hide()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
 
