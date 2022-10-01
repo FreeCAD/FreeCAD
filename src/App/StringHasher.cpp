@@ -146,7 +146,7 @@ void StringID::mark() const
     if (isMarked())
         return;
     _flags.setFlag(Flag::Marked);
-    for (auto & sid : _sids)
+    for (auto &sid : _sids)
         sid.deref().mark();
 }
 
@@ -175,18 +175,18 @@ void StringHasher::compact()
         return;
 
     std::deque<StringIDRef> pendings;
-    for (auto & v : _hashes->right) {
+    for (auto &v : _hashes->right) {
         if (!v.second->isPersistent() && v.second->getRefCount() == 1)
             pendings.emplace_back(v.second);
     }
-    while(pendings.size()) {
+    while (pendings.size()) {
         StringIDRef sid = pendings.front();
         pendings.pop_front();
         if (!_hashes->right.erase(sid.value()))
             continue;
         sid._sid->_hasher = nullptr;
         sid._sid->unref();
-        for (auto & s : sid._sid->_sids) {
+        for (auto &s : sid._sid->_sids) {
             if (s._sid->_hasher == this
                     && !s._sid->isPersistent()
                     && s._sid->getRefCount() == 2)
@@ -235,11 +235,12 @@ StringIDRef StringHasher::getID(const QByteArray &data, Options options)
         QCryptographicHash hasher(QCryptographicHash::Sha1);
         hasher.addData(data);
         dataID._data = hasher.result();
-    } else
+    }
+    else
         dataID._data = data;
 
     auto it = _hashes->left.find(&dataID);
-    if (it!=_hashes->left.end())
+    if (it != _hashes->left.end())
         return StringIDRef(it->first);
 
     if (!hashed && !nocopy)
@@ -270,7 +271,7 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
         anID._data = name.dataBytes();
 
     auto it = _hashes->left.find(&anID);
-    if (it!=_hashes->left.end()) {
+    if (it != _hashes->left.end()) {
         auto res = StringIDRef(it->first);
         if (indexed)
             res._index = indexed.getIndex();
@@ -292,14 +293,14 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
         indexRef = getID(anID._data);
 
     StringIDRef sid(new StringID(lastID() + 1, anID._data));
-    StringID & id = *sid._sid;
+    StringID &id = *sid._sid;
     if (anID._postfix.size()) {
         id._flags.setFlag(StringID::Flag::Postfixed);
         id._postfix = anID._postfix;
     }
 
     int count = 0;
-    for (auto & sid : sids) {
+    for (auto &sid : sids) {
         if (sid && sid._sid->_hasher == this)
             ++count;
     }
@@ -323,15 +324,15 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
         }
     }
     if (id._sids.size() > 10) {
-        std::sort(id._sids.begin()+extra, id._sids.end());
-        id._sids.erase(std::unique(id._sids.begin()+extra, id._sids.end()), id._sids.end());
+        std::sort(id._sids.begin() + extra, id._sids.end());
+        id._sids.erase(std::unique(id._sids.begin() + extra, id._sids.end()), id._sids.end());
     }
 
     if (id._postfix.size() && !indexed) {
         StringID::IndexID res = StringID::fromString(id._data);
         if (res.id > 0) {
             int offset = id.isPostfixEncoded() ? 1 : 0;
-            for (int i=offset; i<id._sids.size();++i) {
+            for (int i = offset; i < id._sids.size(); ++i) {
                 if (id._sids[i].value() == res.id) {
                     if (i!=offset)
                         std::swap(id._sids[offset], id._sids[i]);
@@ -376,7 +377,7 @@ void StringHasher::Save(Base::Writer &writer) const {
         count = _hashes->size();
     else {
         count = 0;
-        for (auto & v : _hashes->right) {
+        for (auto &v : _hashes->right) {
             if (v.second->isMarked() || v.second->isPersistent())
                 ++count;
         }
@@ -407,7 +408,7 @@ void StringHasher::Save(Base::Writer &writer) const {
     writer.Stream() << writer.ind() << "</StringHasher2>\n";
 }
 
-void StringHasher::SaveDocFile (Base::Writer &writer) const {
+void StringHasher::SaveDocFile(Base::Writer &writer) const {
     std::size_t count = _hashes->SaveAll?this->size():this->count();
     writer.Stream() << "StringTableStart v1 " << count << '\n';
     saveStream(writer.Stream());
@@ -425,7 +426,7 @@ void StringHasher::saveStream(std::ostream &s) const {
     bool relative = false;
 
     for (auto &v : _hashes->right) {
-        auto & d = *v.second;
+        auto &d = *v.second;
         long id = d._id;
         if (!_hashes->SaveAll && !d.isMarked() && !d.isPersistent())
             continue;
@@ -466,25 +467,25 @@ void StringHasher::saveStream(std::ostream &s) const {
 
         int i = 0;
         if (!relative) {
-            for (; i<d._sids.size(); ++i)
+            for (; i < d._sids.size(); ++i)
                 s << '.' << d._sids[i].value();
         }
         else {
             if (last) {
-                for (; i<d._sids.size() && i<last->_sids.size(); ++i) {
+                for (; i < d._sids.size() && i < last->_sids.size(); ++i) {
                     long m = last->_sids[i].value();
                     long n = d._sids[i].value();
                     if (n < m)
                         s << ".-" << m-n;
                     else
-                        s << '.' << n-m;
+                        s << '.' << n - m;
                 }
             }
-            for (; i<d._sids.size(); ++i)
+            for (; i < d._sids.size(); ++i)
                 s << '.' << id - d._sids[i].value();
         }
 
-        last = & d;
+        last = &d;
 
         // Having postfix means it is a geometry element name, which
         // guarantees to be a single line without space. So it is safe to
@@ -508,7 +509,7 @@ void StringHasher::saveStream(std::ostream &s) const {
     }
 }
 
-void StringHasher::RestoreDocFile (Base::Reader &reader) {
+void StringHasher::RestoreDocFile(Base::Reader &reader) {
     std::string marker, ver;
     reader >> marker;
     std::size_t count;
@@ -521,18 +522,18 @@ void StringHasher::RestoreDocFile (Base::Reader &reader) {
         return;
     }
     count = atoi(marker.c_str());
-    restoreStream(reader,count);
+    restoreStream(reader, count);
 }
 
 void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
-    Base::InputStream str(s,false);
+    Base::InputStream str(s, false);
     _hashes->clear();
     std::string content;
     boost::io::ios_flags_saver ifs(s);
     s >> std::hex;
     std::vector<std::string> tokens;
     long lastid = 0;
-    const StringID * last = nullptr;
+    const StringID *last = nullptr;
 
     std::string tmp;
 
@@ -550,7 +551,8 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
         if (tokens[0][0] == '-') {
             relative = true;
             id = lastid + strtol(tokens[0].c_str() + 1, nullptr, 16);
-        } else
+        }
+        else
             id = strtol(tokens[0].c_str(), nullptr, 16);
 
         lastid = id;
@@ -558,13 +560,13 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
         unsigned long flag = strtol(tokens[1].c_str(), nullptr, 16);
         StringIDRef sid(new StringID(id, QByteArray(), static_cast<StringID::Flag>(flag)));
 
-        StringID & d = *sid._sid;
-        d._sids.reserve(tokens.size()-2);
+        StringID &d = *sid._sid;
+        d._sids.reserve(tokens.size() - 2);
 
         int j = 2;
         if (relative && last) {
-            for (;j<(int)tokens.size() && j-2<last->_sids.size(); ++j) {
-                long m = last->_sids[j-2].value();
+            for (; j < (int)tokens.size() && j - 2 < last->_sids.size(); ++j) {
+                long m = last->_sids[j - 2].value();
                 long n;
                 if (tokens[j][0] == '-')
                     n = -strtol(&tokens[j][1], nullptr, 16);
@@ -576,8 +578,8 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
                 d._sids.push_back(sid);
             }
         }
-        for (;j<(int)tokens.size(); ++j) {
-            long n = strtol(&tokens[j][0], nullptr, 16) ;
+        for (; j < (int)tokens.size(); ++j) {
+            long n = strtol(&tokens[j][0], nullptr, 16);
             StringIDRef sid = getID(relative ? id - n : n);
             if (!sid)
                 FC_THROWM(Base::RuntimeError, "Invalid string id reference");
@@ -586,11 +588,12 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
 
         if (!d.isPostfixed()) {
             str >> content;
-            if(d.isHashed() || d.isBinary())
+            if (d.isHashed() || d.isBinary())
                 d._data = QByteArray::fromBase64(content.c_str());
             else
                 d._data = content.c_str();
-        } else {
+        }
+        else {
             int offset = 0;
             if (d.isPostfixEncoded()) {
                 offset = 1;
@@ -612,7 +615,8 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
                         FC_THROWM(Base::RuntimeError, "Missing string prefix index");
                 }
                 d._data = d._sids[offset]._sid->toString(index).c_str();
-            } else {
+            }
+            else {
                 s >> content;
                 d._data = content.c_str();
             }
@@ -626,14 +630,14 @@ void StringHasher::restoreStreamNew(std::istream &s, std::size_t count) {
     }
 }
 
-StringID * StringHasher::insert(const StringIDRef & sid)
+StringID *StringHasher::insert(const StringIDRef &sid)
 {
     assert(sid && sid._sid->_hasher == nullptr);
-    auto & d = *sid._sid;
+    auto &d = *sid._sid;
     d._hasher = this;
     d.ref();
     auto res = _hashes->right.insert(_hashes->right.end(),
-            HashMap::right_map::value_type(sid.value(),&d));
+                                     HashMap::right_map::value_type(sid.value(), &d));
     if (res->second != &d) {
         d._hasher = nullptr;
         d.unref();
@@ -642,7 +646,7 @@ StringID * StringHasher::insert(const StringIDRef & sid)
 }
 
 void StringHasher::restoreStream(std::istream &s, std::size_t count) {
-    Base::InputStream str(s,false);
+    Base::InputStream str(s, false);
     _hashes->clear();
     std::string content;
     for (uint32_t i = 0; i < count; ++i) {
@@ -681,30 +685,30 @@ size_t StringHasher::count() const {
 void StringHasher::Restore(Base::XMLReader &reader) {
     clear();
     reader.readElement("StringHasher");
-    _hashes->SaveAll = reader.getAttributeAsInteger("saveall")?true:false;
+    _hashes->SaveAll = reader.getAttributeAsInteger("saveall") ? true : false;
     _hashes->Threshold = reader.getAttributeAsInteger("threshold");
 
     bool newtag = false;
-    if (reader.getAttributeAsInteger("new","0") > 0) {
+    if (reader.getAttributeAsInteger("new", "0") > 0) {
         reader.readElement("StringHasher2");
         newtag = true;
     }
 
-    if(reader.hasAttribute("file")) {
+    if (reader.hasAttribute("file")) {
         const char *file = reader.getAttribute("file");
         if(*file)
-            reader.addFile(file,this);
+            reader.addFile(file, this);
         return;
     }
 
     std::size_t count = reader.getAttributeAsUnsigned("count");
     if (newtag) {
-        restoreStreamNew(reader.beginCharStream(false),count);
+        restoreStreamNew(reader.beginCharStream(false), count);
         reader.readEndElement("StringHasher2");
         return;
     }
-    else if(count && reader.FileVersion > 1)
-        restoreStream(reader.beginCharStream(false),count);
+    else if (count && reader.FileVersion > 1)
+        restoreStream(reader.beginCharStream(false), count);
     else {
         for (std::size_t i = 0; i < count; ++i) {
             reader.readElement("Item");
@@ -731,7 +735,7 @@ PyObject *StringHasher::getPyObject() {
     return new StringHasherPy(this);
 }
 
-std::map<long,StringIDRef> StringHasher::getIDMap() const {
+std::map<long, StringIDRef> StringHasher::getIDMap() const {
     std::map<long,StringIDRef> ret;
     for (auto &v : _hashes->right)
         ret.emplace_hint(ret.end(), v.first, StringIDRef(v.second));
@@ -740,6 +744,6 @@ std::map<long,StringIDRef> StringHasher::getIDMap() const {
 
 void StringHasher::clearMarks() const
 {
-    for (auto & v : _hashes->right)
+    for (auto &v : _hashes->right)
         v.second->_flags.setFlag(StringID::Flag::Marked, false);
 }
