@@ -336,7 +336,7 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                                        std::vector<AutoConstraint> &sug1,
                                        std::vector<AutoConstraint> &sug2)
 {
-    if(!sug1.empty() && !sug2.empty()) {
+    if (!sug1.empty() && !sug2.empty()) {
 
         bool rmvhorvert = false;
 
@@ -349,8 +349,9 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
             orig = false;
             axis = false;
 
-            for(std::vector<AutoConstraint>::const_iterator it = sug.begin(); it!=sug.end(); ++it) {
-                if( (*it).Type == Sketcher::Coincident && ext == false) {
+            for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
+                 ++it) {
+                if ((*it).Type == Sketcher::Coincident && !ext) {
                     const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
                     if(!coincidents.empty()) {
@@ -371,8 +372,9 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                         orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
                     }
                 }
-                else if( (*it).Type == Sketcher::PointOnObject && axis == false) {
-                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
+                else if ((*it).Type == Sketcher::PointOnObject && !axis) {
+                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
+                            || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
                 }
 
             }

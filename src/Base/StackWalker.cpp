@@ -261,7 +261,7 @@ public:
     // SymInitialize
     if (szSymPath != NULL)
       m_szSymPath = _strdup(szSymPath);
-    if (this->pSI(m_hProcess, m_szSymPath, FALSE) == FALSE)
+    if (!this->pSI(m_hProcess, m_szSymPath, FALSE))
       this->m_parent->OnDbgHelpErr("SymInitialize", GetLastError(), 0);
       
     DWORD symOptions = this->pSGO();  // SymGetOptions
@@ -272,10 +272,9 @@ public:
     symOptions = this->pSSO(symOptions);
 
     char buf[StackWalker::STACKWALK_MAX_NAMELEN] = {0};
-    if (this->pSGSP != NULL)
-    {
-      if (this->pSGSP(m_hProcess, buf, StackWalker::STACKWALK_MAX_NAMELEN) == FALSE)
-        this->m_parent->OnDbgHelpErr("SymGetSearchPath", GetLastError(), 0);
+    if (this->pSGSP != NULL) {
+        if (!this->pSGSP(m_hProcess, buf, !StackWalker::STACKWALK_MAX_NAMELEN))
+            this->m_parent->OnDbgHelpErr("SymGetSearchPath", GetLastError(), 0);
     }
     char szUserName[1024] = {0};
     DWORD dwSize = 1024;
@@ -621,29 +620,26 @@ private:
       // retrieve some additional-infos about the module
       IMAGEHLP_MODULE64_V3 Module;
       const char *szSymType = "-unknown-";
-      if (this->GetModuleInfo(hProcess, baseAddr, &Module) != FALSE)
-      {
-        switch(Module.SymType)
-        {
-          case SymNone:
-            szSymType = "-nosymbols-";
+      if (this->GetModuleInfo(hProcess, baseAddr, &Module)) {
+        switch (Module.SymType) {
+          case SymNone: szSymType = "-nosymbols-";
             break;
-          case SymCoff:  // 1
+          case SymCoff: // 1
             szSymType = "COFF";
             break;
-          case SymCv:  // 2
+          case SymCv: // 2
             szSymType = "CV";
             break;
-          case SymPdb:  // 3
+          case SymPdb: // 3
             szSymType = "PDB";
             break;
-          case SymExport:  // 4
+          case SymExport: // 4
             szSymType = "-exported-";
             break;
-          case SymDeferred:  // 5
+          case SymDeferred: // 5
             szSymType = "-deferred-";
             break;
-          case SymSym:  // 6
+          case SymSym: // 6
             szSymType = "SYM";
             break;
           case 7: // SymDia:
@@ -692,10 +688,8 @@ public:
     }
     memcpy(pData, pModuleInfo, sizeof(IMAGEHLP_MODULE64_V3));
     static bool s_useV3Version = true;
-    if (s_useV3Version)
-    {
-      if (this->pSGMI(hProcess, baseAddr, (IMAGEHLP_MODULE64_V3*) pData) != FALSE)
-      {
+    if (s_useV3Version) {
+      if (this->pSGMI(hProcess, baseAddr, (IMAGEHLP_MODULE64_V3 *)pData)) {
         // only copy as much memory as is reserved...
         memcpy(pModuleInfo, pData, sizeof(IMAGEHLP_MODULE64_V3));
         pModuleInfo->SizeOfStruct = sizeof(IMAGEHLP_MODULE64_V3);
@@ -708,8 +702,7 @@ public:
     // could not retrieve the bigger structure, try with the smaller one (as defined in VC7.1)...
     pModuleInfo->SizeOfStruct = sizeof(IMAGEHLP_MODULE64_V2);
     memcpy(pData, pModuleInfo, sizeof(IMAGEHLP_MODULE64_V2));
-    if (this->pSGMI(hProcess, baseAddr, (IMAGEHLP_MODULE64_V3*) pData) != FALSE)
-    {
+    if (this->pSGMI(hProcess, baseAddr, (IMAGEHLP_MODULE64_V3 *)pData)) {
       // only copy as much memory as is reserved...
       memcpy(pModuleInfo, pData, sizeof(IMAGEHLP_MODULE64_V2));
       pModuleInfo->SizeOfStruct = sizeof(IMAGEHLP_MODULE64_V2);
@@ -767,7 +760,7 @@ BOOL StackWalker::LoadModules()
     SetLastError(ERROR_DLL_INIT_FAILED);
     return FALSE;
   }
-  if (m_modulesLoaded != FALSE)
+  if (m_modulesLoaded)
     return TRUE;
 
   // Build the sym-path:
@@ -861,15 +854,14 @@ BOOL StackWalker::LoadModules()
   // First Init the whole stuff...
   BOOL bRet = this->m_sw->Init(szSymPath);
   if (szSymPath != NULL) free(szSymPath); szSymPath = NULL;
-  if (bRet == FALSE)
-  {
+  if (!bRet) {
     this->OnDbgHelpErr("Error while initializing dbghelp.dll", 0, 0);
     SetLastError(ERROR_DLL_INIT_FAILED);
     return FALSE;
   }
 
   bRet = this->m_sw->LoadModules(this->m_hProcess, this->m_dwProcessId);
-  if (bRet != FALSE)
+  if (bRet)
     m_modulesLoaded = TRUE;
   return bRet;
 }
@@ -893,11 +885,10 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   bool bLastEntryCalled = true;
   int curRecursionCount = 0;
 
-  if (m_modulesLoaded == FALSE)
+  if (!m_modulesLoaded)
     this->LoadModules();  // ignore the result...
 
-  if (this->m_sw->m_hDbhHelp == NULL)
-  {
+  if (this->m_sw->m_hDbhHelp == NULL) {
     SetLastError(ERROR_DLL_INIT_FAILED);
     return FALSE;
   }
@@ -905,20 +896,16 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
   s_readMemoryFunction = readMemoryFunction;
   s_readMemoryFunction_UserData = pUserData;
 
-  if (context == NULL)
-  {
+  if (context == NULL) {
     // If no context is provided, capture the context
-    if (hThread == GetCurrentThread())
-    {
+    if (hThread == GetCurrentThread()) {
       GET_CURRENT_CONTEXT(c, USED_CONTEXT_FLAGS);
     }
-    else
-    {
+    else {
       SuspendThread(hThread);
       memset(&c, 0, sizeof(CONTEXT));
       c.ContextFlags = USED_CONTEXT_FLAGS;
-      if (GetThreadContext(hThread, &c) == FALSE)
-      {
+      if (!GetThreadContext(hThread, &c)) {
         ResumeThread(hThread);
         return FALSE;
       }
@@ -1013,7 +1000,7 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
     {
       // we seem to have a valid PC
       // show procedure info (SymGetSymFromAddr64())
-      if (this->m_sw->pSGSFA(this->m_hProcess, s.AddrPC.Offset, &(csEntry.offsetFromSmybol), pSym) != FALSE)
+      if (this->m_sw->pSGSFA(this->m_hProcess, s.AddrPC.Offset, &(csEntry.offsetFromSmybol), pSym))
       {
         MyStrCpy(csEntry.name, STACKWALK_MAX_NAMELEN, pSym->Name);
         // UnDecorateSymbolName()
@@ -1026,22 +1013,20 @@ BOOL StackWalker::ShowCallstack(HANDLE hThread, const CONTEXT *context, PReadPro
       }
 
       // show line number info, NT5.0-method (SymGetLineFromAddr64())
-      if (this->m_sw->pSGLFA != NULL )
-      { // yes, we have SymGetLineFromAddr64()
-        if (this->m_sw->pSGLFA(this->m_hProcess, s.AddrPC.Offset, &(csEntry.offsetFromLine), &Line) != FALSE)
-        {
-          csEntry.lineNumber = Line.LineNumber;
-          MyStrCpy(csEntry.lineFileName, STACKWALK_MAX_NAMELEN, Line.FileName);
+      if (this->m_sw->pSGLFA != NULL) { // yes, we have SymGetLineFromAddr64()
+        if (this->m_sw->pSGLFA(this->m_hProcess, s.AddrPC.Offset, &(csEntry.offsetFromLine),
+                               &Line)) {
+            csEntry.lineNumber = Line.LineNumber;
+            MyStrCpy(csEntry.lineFileName, STACKWALK_MAX_NAMELEN, Line.FileName);
         }
-        else
-        {
+        else {
           this->OnDbgHelpErr("SymGetLineFromAddr64", GetLastError(), s.AddrPC.Offset);
         }
       } // yes, we have SymGetLineFromAddr64()
 
       // show module info (SymGetModuleInfo64())
-      if (this->m_sw->GetModuleInfo(this->m_hProcess, s.AddrPC.Offset, &Module ) != FALSE)
-      { // got module info OK
+      if (this->m_sw->GetModuleInfo(this->m_hProcess, s.AddrPC.Offset, &Module)) {
+        // got module info OK
         switch ( Module.SymType )
         {
         case SymNone:
@@ -1195,11 +1180,10 @@ void StackWalker::OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUser
   OSVERSIONINFOEXA ver;
   ZeroMemory(&ver, sizeof(OSVERSIONINFOEXA));
   ver.dwOSVersionInfoSize = sizeof(ver);
-  if (GetVersionExA( (OSVERSIONINFOA*) &ver) != FALSE)
-  {
-    _snprintf_s(buffer, STACKWALK_MAX_NAMELEN, "OS-Version: %d.%d.%d (%s) 0x%x-0x%x\n", 
-      ver.dwMajorVersion, ver.dwMinorVersion, ver.dwBuildNumber,
-      ver.szCSDVersion, ver.wSuiteMask, ver.wProductType);
+  if (GetVersionExA((OSVERSIONINFOA *)&ver)) {
+    _snprintf_s(buffer, STACKWALK_MAX_NAMELEN, "OS-Version: %d.%d.%d (%s) 0x%x-0x%x\n",
+                ver.dwMajorVersion, ver.dwMinorVersion, ver.dwBuildNumber, ver.szCSDVersion,
+                ver.wSuiteMask, ver.wProductType);
     OnOutput(buffer);
   }
 }
