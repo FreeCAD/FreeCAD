@@ -21,61 +21,47 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <cmath> //OvG: Required for log10
-# include <TopoDS.hxx>
-# include <BRepGProp_Face.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Cylinder.hxx>
-# include <gp_Ax3.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
 # include <Adaptor3d_IsoCurve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <GProp_GProps.hxx>
-# include <BRepGProp.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <BRepClass_FaceClassifier.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepGProp.hxx>
 # include <BRepGProp_Face.hxx>
-# include <ShapeAnalysis.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomAPI_IntCS.hxx>
-# include <Geom_Plane.hxx>
+# include <BRepClass_FaceClassifier.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <Geom_Line.hxx>
+# include <Geom_Plane.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <gp_Cylinder.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
+# include <GProp_GProps.hxx>
 # include <Precision.hxx>
 # include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Vertex.hxx>
 # if OCC_VERSION_HEX < 0x070600
-# include <Adaptor3d_HSurface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
+#  include <Adaptor3d_HSurface.hxx>
+#  include <BRepAdaptor_HSurface.hxx>
 # endif
 #endif
-
-#include "FemConstraint.h"
-#include "FemTools.h"
 
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/OriginFeature.h>
-
 #include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
+
+#include "FemConstraint.h"
+#include "FemTools.h"
 
 
 using namespace Fem;
-
-// maybe in the c++ standard later, older compiler don't have round()
-#if _MSC_VER <= 1700
-double round(double r) {
-    return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
-}
-#endif
 
 #if OCC_VERSION_HEX >= 0x070600
 using Adaptor3d_HSurface = Adaptor3d_Surface;
