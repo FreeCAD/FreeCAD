@@ -21,16 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_FLUIDBOUNDARY_H
 #define FEM_FLUIDBOUNDARY_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraint.h"
+
 
 namespace Fem
 {
