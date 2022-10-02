@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
 #include <Base/PlacementPy.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "FemMeshProperty.h"
 #include "FemMeshPy.h"
+
 
 using namespace Fem;
 

@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemMeshShapeObject_H
 #define Fem_FemMeshShapeObject_H
 
-
 #include "FemMeshObject.h"
+
 
 namespace Fem
 {

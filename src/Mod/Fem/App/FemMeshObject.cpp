@@ -23,14 +23,13 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemMeshObject.h"
-#include "FemMesh.h"
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Placement.h>
+
+#include "FemMeshObject.h"
+#include "FemMesh.h"
+
 
 using namespace Fem;
 using namespace App;
