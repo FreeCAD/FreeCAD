@@ -135,10 +135,9 @@ const std::string &FileInfo::getTempPath()
     return tempPath;
 }
 
-std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
+wchar_t * FileInfo::getTempFileName(const char* FileName, const char* Path)
 {
-    //FIXME: To avoid race conditions we should rather return a file pointer
-    //than a file name.
+ 
 #ifdef FC_OS_WIN32
     wchar_t buf[MAX_PATH + 2];
 
@@ -159,9 +158,10 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 
     // this already creates the file
     GetTempFileNameW(path.c_str(),file.c_str(),0,buf);
-    DeleteFileW(buf);
+    
+    wchar_t * bufp = buf;
 
-    return std::string(ConvertFromWideString(std::wstring(buf)));
+    return bufp;
 #else
     std::string buf;
 
@@ -195,7 +195,8 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         buf.swap(str);
         unlink(buf.c_str());
     }
-    return buf;
+    wchar_t * bufp = buf;
+    return bufp;
 #endif
 }
 
