@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINT_H
 #define FEM_CONSTRAINT_H
 
@@ -29,8 +28,8 @@
 #include <App/FeaturePython.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 #include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem {
 

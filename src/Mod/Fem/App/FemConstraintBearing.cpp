@@ -21,23 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Surface.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopoDS.hxx>
 #endif
+
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FemConstraintBearing.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
@@ -64,7 +59,6 @@ App::DocumentObjectExecReturn *ConstraintBearing::execute()
 
 void ConstraintBearing::onChanged(const App::Property* prop)
 {
-    //Base::Console().Error("ConstraintBearing: onChanged %s\n", prop->getName());
     // Note: If we call this at the end, then the symbol is not oriented correctly initially
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);

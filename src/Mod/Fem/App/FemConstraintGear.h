@@ -21,15 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTGear_H
 #define FEM_CONSTRAINTGear_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-
 #include "FemConstraintBearing.h"
+
 
 namespace Fem
 {
