@@ -669,7 +669,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Cross;
                         done = true;
-                    } else if (preselection.PreselectConstraintSet.empty() != true) {
+                    } else if (!preselection.PreselectConstraintSet.empty()) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Constraint;
                         done = true;
@@ -926,7 +926,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             return true;
                         } else if (preselection.isPreselectCurveValid()) {
                             return true;
-                        } else if (preselection.PreselectConstraintSet.empty() != true) {
+                        } else if (!preselection.PreselectConstraintSet.empty()) {
                             return true;
                         } else {
                             Gui::MenuItem geom;
@@ -1053,7 +1053,7 @@ void ViewProviderSketch::editDoubleClicked()
     else if (preselection.isCrossPreselected()) {
         Base::Console().Log("double click cross:%d\n",preselection.PreselectCross);
     }
-    else if (preselection.PreselectConstraintSet.empty() != true) {
+    else if (!preselection.PreselectConstraintSet.empty()) {
         // Find the constraint
         const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
 
@@ -1735,7 +1735,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint *Point, const SbVec2s &cursorPos)
+bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint * Point, const SbVec2s &cursorPos)
 {
     assert(isInEditMode());
 
@@ -1846,7 +1846,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint *Point, const S
                   && result.ConstrIndices.empty())
                  && (preselection.isPreselectPointValid() || preselection.isPreselectCurveValid()
                      || preselection.isCrossPreselected()
-                     || preselection.PreselectConstraintSet.empty() != true
+                     || !preselection.PreselectConstraintSet.empty()
                      || preselection.blockedPreselection)) {
             // we have just left a preselection
             resetPreselectPoint();
@@ -1859,8 +1859,8 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint *Point, const S
                                            Point->getPoint()[2]);
     }
     else if (preselection.isPreselectCurveValid() || preselection.isPreselectPointValid()
-             || preselection.PreselectConstraintSet.empty() != true
-             || preselection.isCrossPreselected() || preselection.blockedPreselection) {
+             || !preselection.PreselectConstraintSet.empty() || preselection.isCrossPreselected()
+             || preselection.blockedPreselection) {
         resetPreselectPoint();
         preselection.blockedPreselection = false;
         if (sketchHandler)
