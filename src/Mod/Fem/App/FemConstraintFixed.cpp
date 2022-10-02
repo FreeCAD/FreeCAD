@@ -21,30 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Lin.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <Adaptor3d_IsoCurve.hxx>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS.hxx>
-#include <BRepClass_FaceClassifier.hxx>
-#include <BRep_Tool.hxx>
-#include <Precision.hxx>
-#endif
 
 #include "FemConstraintFixed.h"
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Base/Console.h>
 
 using namespace Fem;
 
