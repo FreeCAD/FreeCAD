@@ -20,25 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QString>
-# include <QSlider>
 #endif
 
-
-#include "ui_TaskObjectName.h"
-#include "TaskObjectName.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/Document.h>
+
+#include "TaskObjectName.h"
+#include "ui_TaskObjectName.h"
 
 
 using namespace FemGui;

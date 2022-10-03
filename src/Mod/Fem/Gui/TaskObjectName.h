@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskObjectName_H
 #define GUI_TASKVIEW_TaskObjectName_H
 
 #include <Gui/TaskView/TaskView.h>
-
 
 
 class Ui_TaskObjectName;

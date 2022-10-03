@@ -20,33 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QString>
-# include <QSlider>
-
-# include <Standard_math.hxx>
 #endif
 
-#include "ui_TaskTetParameter.h"
-#include "TaskTetParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/Utilities.h>
-#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
 #include <Mod/Fem/App/FemMesh.h>
+#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
+
+#include "TaskTetParameter.h"
+#include "ui_TaskTetParameter.h"
 
 
 using namespace FemGui;
 using namespace Gui;
-
 
 TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
@@ -94,11 +82,12 @@ TaskTetParameter::~TaskTetParameter()
 
 void TaskTetParameter::SwitchMethod(int Value)
 {
-    if(Value == 5){
+    if (Value == 5) {
         ui->doubleSpinBox_GrowthRate->setEnabled(true);
         ui->spinBox_SegsPerEdge->setEnabled(true);
         ui->spinBox_SegsPerRadius->setEnabled(true);
-    }else{
+    }
+    else {
         ui->doubleSpinBox_GrowthRate->setEnabled(false);
         ui->spinBox_SegsPerEdge->setEnabled(false);
         ui->spinBox_SegsPerRadius->setEnabled(false);
@@ -151,15 +140,10 @@ void TaskTetParameter::setInfo()
 {
     Fem::FemMesh::FemMeshInfo info = pcObject->FemMesh.getValue().getInfo();
     //Base::BoundBox3d bndBox = pcObject->FemMesh.getValue().getBoundBox();
-
-
     ui->lineEdit_InfoNodes      ->setText(QString::number(info.numNode));
     ui->lineEdit_InfoTriangle   ->setText(QString::number(info.numFaces));
     ui->lineEdit_InfoTet        ->setText(QString::number(info.numTetr));
 }
-
-
-
 
 
 #include "moc_TaskTetParameter.cpp"

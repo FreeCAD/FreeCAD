@@ -20,31 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QMessageBox>
 #endif
 
-#include "TaskDlgMeshShapeNetgen.h"
-
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
 
+#include "TaskDlgMeshShapeNetgen.h"
+#include "TaskTetParameter.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 
-#include <Mod/Fem/App/FemMeshShapeNetgenObject.h>
-#include "TaskTetParameter.h"
 
 using namespace FemGui;
-
 
 //**************************************************************************
 //**************************************************************************

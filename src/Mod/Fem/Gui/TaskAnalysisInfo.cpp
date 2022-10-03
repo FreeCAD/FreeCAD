@@ -21,18 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QString>
-# include <QSlider>
 
-# include <Standard_math.hxx>
-#endif
-
-#include "ui_TaskAnalysisInfo.h"
-#include "TaskAnalysisInfo.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+
+#include "TaskAnalysisInfo.h"
+#include "ui_TaskAnalysisInfo.h"
 
 
 using namespace FemGui;
