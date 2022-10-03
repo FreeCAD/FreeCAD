@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ViewProviderSetElements.h"
-//#include <Gui/Control.h>
+
 
 using namespace FemGui;
 
