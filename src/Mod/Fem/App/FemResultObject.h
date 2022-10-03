@@ -24,7 +24,6 @@
 #define Fem_FemResultObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 

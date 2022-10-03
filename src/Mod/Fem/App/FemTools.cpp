@@ -21,19 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Vec.hxx>
-# include <ElCLib.hxx>
-# include <ElSLib.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BezierSurface.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BSplineSurface.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Vec.hxx>
 # include <Precision.hxx>
 # include <TColgp_Array2OfPnt.hxx>
 # include <TopoDS.hxx>
@@ -43,6 +42,7 @@
 #endif
 
 #include "FemTools.h"
+
 
 Base::Vector3d Fem::Tools::getDirectionFromShape(const TopoDS_Shape& shape)
 {
