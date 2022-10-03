@@ -45,9 +45,9 @@ public:
         ObjectPerDirectory = 4,
     };
     enum class Unit {
-        MM = 0,
-        M = 1,
-        IN = 2,
+        Millimeter = 0,
+        Meter = 1,
+        Inch = 2,
     };
 
     static void initialize();

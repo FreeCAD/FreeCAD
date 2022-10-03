@@ -195,10 +195,10 @@ void ImportExportSettings::setUnit(ImportExportSettings::Unit unit)
     hStepGrp->SetInt("Unit", static_cast<long>(unit));
 
     switch (unit) {
-        case Unit::M:
+        case Unit::Meter:
             Interface_Static::SetCVal("write.step.unit","M");
             break;
-        case Unit::IN:
+        case Unit::Inch:
             Interface_Static::SetCVal("write.step.unit","INCH");
             break;
         default:
