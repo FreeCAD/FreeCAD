@@ -22,10 +22,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "FemSelectionGate.h"
+
 
 using namespace FemGui;
 using namespace Gui;
