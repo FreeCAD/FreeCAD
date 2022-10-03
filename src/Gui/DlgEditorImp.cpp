@@ -68,7 +68,7 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
 
     d = new DlgSettingsEditorP();
     QColor col;
-    col = Qt::black;
+    col = qApp->palette().windowText().color();
     unsigned int lText = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Text")), lText));

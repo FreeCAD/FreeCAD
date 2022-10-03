@@ -100,7 +100,7 @@ struct PythonConsoleP
         callTipsList = nullptr;
         interactive = false;
         historyFile = QString::fromUtf8((App::Application::getUserAppDataDir() + "PythonHistory.log").c_str());
-        colormap[QLatin1String("Text")] = Qt::black;
+        colormap[QLatin1String("Text")] = qApp->palette().windowText().color();
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
         colormap[QLatin1String("Keyword")] = Qt::blue;
@@ -932,7 +932,7 @@ void PythonConsole::changeEvent(QEvent *e)
         }
     }
     else if (e->type() == QEvent::StyleChange) {
-        QPalette pal = palette();
+        QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
         unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
         auto value = static_cast<unsigned long>(text);
