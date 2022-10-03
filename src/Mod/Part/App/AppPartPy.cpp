@@ -1347,7 +1347,7 @@ private:
             error = "Different point and parameter";
             break;
         case BRepBuilderAPI_LineThroughIdenticPoints:
-            error = "Line through identic points";
+            error = "Line through identical points";
             break;
         }
         // Error
