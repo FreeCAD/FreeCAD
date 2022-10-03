@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#include <Python.h>
-#endif
 
-#include "FemPostPipeline.h"
 #include <Base/FileInfo.h>
 
-#include <Mod/Fem/App/FemPostPipelinePy.h>
-#include <Mod/Fem/App/FemPostPipelinePy.cpp>
+#include "FemPostPipeline.h"
+#include "FemPostPipelinePy.h"
+#include "FemPostPipelinePy.cpp"
+
 
 using namespace Fem;
 

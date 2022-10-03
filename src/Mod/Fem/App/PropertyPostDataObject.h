@@ -24,7 +24,6 @@
 #define FEM_PROPERTYPOSTDATASET_H
 
 #include <vtkDataObject.h>
-#include <vtkDataSet.h>
 #include <vtkSmartPointer.h>
 
 #include <App/Property.h>

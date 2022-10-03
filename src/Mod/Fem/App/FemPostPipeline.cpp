@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <SMESH_Mesh.hxx>
 # include <vtkAppendFilter.h>
 # include <vtkDataSetReader.h>
 # include <vtkImageData.h>
@@ -32,21 +31,19 @@
 # include <vtkUnstructuredGrid.h>
 # include <vtkXMLImageDataReader.h>
 # include <vtkXMLPolyDataReader.h>
+# include <vtkXMLPUnstructuredGridReader.h>
 # include <vtkXMLRectilinearGridReader.h>
 # include <vtkXMLStructuredGridReader.h>
-# include <vtkXMLPUnstructuredGridReader.h>
 # include <vtkXMLUnstructuredGridReader.h>
 #endif
 
+#include <Base/Console.h>
+
 #include "FemPostPipeline.h"
+#include "FemPostPipelinePy.h"
 #include "FemMesh.h"
 #include "FemMeshObject.h"
 #include "FemVTKTools.h"
-
-#include <App/DocumentObjectPy.h>
-#include <Base/Console.h>
-
-#include "FemPostPipelinePy.h"
 
 
 using namespace Fem;
