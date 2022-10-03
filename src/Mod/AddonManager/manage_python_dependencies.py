@@ -79,6 +79,7 @@ def call_pip(args) -> List[str]:
     if python_exe:
         call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]
         call_args.extend(args)
+        proc = None
         try:
             proc = subprocess.run(
                 call_args,
@@ -106,8 +107,10 @@ def call_pip(args) -> List[str]:
         if not pip_failed:
             data = proc.stdout.decode()
             result = data.split("\n")
-        else:
+        elif proc:
             raise Exception(proc.stderr.decode())
+        else:
+            raise Exception("pip timed out")
     else:
         raise Exception("Could not locate Python executable on this system")
     return result
