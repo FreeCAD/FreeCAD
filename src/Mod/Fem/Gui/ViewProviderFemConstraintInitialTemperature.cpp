@@ -23,30 +23,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-#endif
-
-#include "Mod/Fem/App/FemConstraintInitialTemperature.h"
-#include "TaskFemConstraintInitialTemperature.h"
-#include "ViewProviderFemConstraintInitialTemperature.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
+#include "Mod/Fem/App/FemConstraintInitialTemperature.h"
+
+#include "ViewProviderFemConstraintInitialTemperature.h"
+#include "TaskFemConstraintInitialTemperature.h"
+
 
 using namespace FemGui;
 
@@ -55,7 +39,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature, FemGui::Vie
 ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTemperature()
 {
     sPixmap = "FEM_ConstraintInitialTemperature";
-    ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
+    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
 ViewProviderFemConstraintInitialTemperature::~ViewProviderFemConstraintInitialTemperature()
@@ -70,7 +54,8 @@ bool ViewProviderFemConstraintInitialTemperature::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintInitialTemperature *constrDlg = qobject_cast<TaskDlgFemConstraintInitialTemperature *>(dlg);
+        TaskDlgFemConstraintInitialTemperature *constrDlg =
+            qobject_cast<TaskDlgFemConstraintInitialTemperature *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {

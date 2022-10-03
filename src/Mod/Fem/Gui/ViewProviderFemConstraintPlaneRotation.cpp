@@ -23,31 +23,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
 # include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
+# include <Inventor/nodes/SoRotation.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSphere.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include "Mod/Fem/App/FemConstraintPlaneRotation.h"
-#include "TaskFemConstraintPlaneRotation.h"
-#include "ViewProviderFemConstraintPlaneRotation.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
+#include "Mod/Fem/App/FemConstraintPlaneRotation.h"
+
+#include "ViewProviderFemConstraintPlaneRotation.h"
+#include "TaskFemConstraintPlaneRotation.h"
+
 
 using namespace FemGui;
 
@@ -57,7 +49,7 @@ ViewProviderFemConstraintPlaneRotation::ViewProviderFemConstraintPlaneRotation()
 {
     sPixmap = "FEM_ConstraintPlaneRotation";
     //Note change "planerotation" in line above to new constraint name, make sure it is the same as in taskFem* cpp file
-    ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
+    ADD_PROPERTY(FaceColor, (0.2f, 0.3f, 0.2f));
 }
 
 ViewProviderFemConstraintPlaneRotation::~ViewProviderFemConstraintPlaneRotation()
@@ -72,7 +64,8 @@ bool ViewProviderFemConstraintPlaneRotation::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintPlaneRotation *constrDlg = qobject_cast<TaskDlgFemConstraintPlaneRotation *>(dlg);
+        TaskDlgFemConstraintPlaneRotation *constrDlg =
+            qobject_cast<TaskDlgFemConstraintPlaneRotation *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
@@ -107,7 +100,8 @@ bool ViewProviderFemConstraintPlaneRotation::setEdit(int ModNum)
 void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintPlaneRotation* pcConstraint = static_cast<Fem::ConstraintPlaneRotation*>(this->getObject());
+    Fem::ConstraintPlaneRotation *pcConstraint =
+        static_cast<Fem::ConstraintPlaneRotation *>(this->getObject());
     float scaledradius = RADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
 
@@ -121,7 +115,8 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
         // Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
+             p++) {
             //Define base and normal directions
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);//normal
@@ -139,19 +134,19 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
 
             ///draw a temp gauge,with sphere and a cylinder
             //first move to correct position
-            SoTranslation* trans = new SoTranslation();
-            SbVec3f newPos=base+scaledradius*dir*0.08f;
+            SoTranslation *trans = new SoTranslation();
+            SbVec3f newPos = base + scaledradius * dir * 0.08f;
             trans->translation.setValue(newPos);
             sep->addChild(trans);
 
             //adjust orientation
-            SoRotation* rot = new SoRotation();
-            rot->rotation.setValue(SbRotation(SbVec3f(1,0,0),dir));
+            SoRotation *rot = new SoRotation();
+            rot->rotation.setValue(SbRotation(SbVec3f(1, 0, 0), dir));
             sep->addChild(rot);
 
             //define color of shape
-            SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(0,1,0));//RGB
+            SoMaterial *myMaterial = new SoMaterial;
+            myMaterial->diffuseColor.set1Value(0, SbColor(0, 1, 0)); //RGB
             //myMaterial->diffuseColor.set1Value(1,SbColor(0,0,1));//possible to adjust sides separately
             sep->addChild(myMaterial);
 
@@ -164,9 +159,9 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             //trans2->translation.setValue(SbVec3f(0,scaledheight*0.375,0));
             //sep->addChild(trans2);
             //draw a cylinder
-            SoCylinder* cyl = new SoCylinder();
-            cyl->height.setValue(scaledheight*0.5);
-            cyl->radius.setValue(scaledradius*0.375);
+            SoCylinder *cyl = new SoCylinder();
+            cyl->height.setValue(scaledheight * 0.5);
+            cyl->radius.setValue(scaledradius * 0.375);
             sep->addChild(cyl);
             //translate position
             //SoTranslation* trans3 = new SoTranslation();
@@ -174,7 +169,7 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
             //sep->addChild(trans3);
             //define color of shape
             SoMaterial *myMaterial2 = new SoMaterial;
-            myMaterial2->diffuseColor.set1Value(0,SbColor(1,1,1));//RGB
+            myMaterial2->diffuseColor.set1Value(0, SbColor(1, 1, 1)); //RGB
             sep->addChild(myMaterial2);
             //draw a cylinder
             //SoCylinder* cyl2 = new SoCylinder();
