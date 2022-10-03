@@ -24,36 +24,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoText3.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoScale.h>
-
 # include <cmath>
+# include <Inventor/SbRotation.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <Gui/Command.h>
-
-#include "Mod/Fem/App/FemConstraintTransform.h"
-#include "TaskFemConstraintTransform.h"
-#include "ViewProviderFemConstraintTransform.h"
-#include <Base/Console.h>
 #include <Gui/Control.h>
+#include "Mod/Fem/App/FemConstraintTransform.h"
+#include "ViewProviderFemConstraintTransform.h"
+#include "TaskFemConstraintTransform.h"
 
 
 using namespace FemGui;
@@ -63,8 +46,6 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTransform, FemGui::ViewProvider
 ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
 {
     sPixmap = "FEM_ConstraintTransform";
-    //
-    //ADD_PROPERTY(FaceColor,(0.0f,0.2f,0.8f));
 }
 
 ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform()
@@ -79,7 +60,8 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintTransform *constrDlg = qobject_cast<TaskDlgFemConstraintTransform *>(dlg);
+        TaskDlgFemConstraintTransform *constrDlg =
+            qobject_cast<TaskDlgFemConstraintTransform *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
             constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
@@ -110,17 +92,20 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
 #define HEIGHTAXIS (20)
 #define RADIUSAXIS (0.8)
 #define ARROWLENGTH (3)
-#define ARROWHEADRADIUS (ARROWLENGTH/3)
+#define ARROWHEADRADIUS (ARROWLENGTH / 3)
 #define LENGTHDISC (0.25)
 #define RADIUSDISC (0.8)
 
 void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintTransform* pcConstraint = static_cast<Fem::ConstraintTransform*>(this->getObject());
-    float scaledradiusaxis = RADIUSAXIS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    Fem::ConstraintTransform *pcConstraint =
+        static_cast<Fem::ConstraintTransform *>(this->getObject());
+    float scaledradiusaxis =
+        RADIUSAXIS * pcConstraint->Scale.getValue();//OvG: Calculate scaled values once only
     float scaledheightaxis = HEIGHTAXIS * pcConstraint->Scale.getValue();
-    float scaledheadradiusA = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledheadradiusA =
+        ARROWHEADRADIUS * pcConstraint->Scale.getValue();//OvG: Calculate scaled values once only
     float scaledlengthA = ARROWLENGTH * pcConstraint->Scale.getValue();
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
@@ -135,7 +120,8 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
         // Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
+             p++) {
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f basex(p->x, p->y, p->z);
             SbVec3f basey(p->x, p->y, p->z);
@@ -233,17 +219,17 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             SoSeparator* sep = new SoSeparator();
 
             SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(0,0,1));//RGB
+            myMaterial->diffuseColor.set1Value(0, SbColor(0, 0, 1)); //RGB
             sep->addChild(myMaterial);
 
             createPlacement(sep, base, rot);
-            createArrow(sep, scaledlengthA*0.75 , scaledheadradiusA*0.9); //OvG: Scaling
+            createArrow(sep, scaledlengthA * 0.75, scaledheadradiusA * 0.9); //OvG: Scaling
             pShapeSep->addChild(sep);
 
             SoSeparator* sepx = new SoSeparator();
 
             SoMaterial* myMaterialx = new SoMaterial;
-            myMaterialx->diffuseColor.set1Value(0,SbColor(1,0,0));//RGB
+            myMaterialx->diffuseColor.set1Value(0, SbColor(1, 0, 0)); //RGB
             sepx->addChild(myMaterialx);
 
             createPlacement(sepx, basex, rotx);
@@ -253,11 +239,11 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             SoSeparator* sepy = new SoSeparator();
 
             SoMaterial* myMaterialy = new SoMaterial;
-            myMaterialy->diffuseColor.set1Value(0,SbColor(0,1,0));//RGB
+            myMaterialy->diffuseColor.set1Value(0, SbColor(0, 1, 0)); //RGB
             sepy->addChild(myMaterialy);
 
             createPlacement(sepy, basey, roty);
-            createArrow(sepy, scaledlengthA*0.65 , scaledheadradiusA*0.65); //OvG: Scaling
+            createArrow(sepy, scaledlengthA * 0.65, scaledheadradiusA * 0.65); //OvG: Scaling
             pShapeSep->addChild(sepy);
 
             n++;
@@ -287,14 +273,15 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             b = b - ax * scaledheightaxis/2;
             SoSeparator* sepAx = new SoSeparator();
             SoMaterial* myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0,SbColor(0,0,1));//RGB
+            myMaterial->diffuseColor.set1Value(0, SbColor(0, 0, 1));//RGB
             sepAx->addChild(myMaterial);
             createPlacement(sepAx, b, rots);
             createArrow(sepAx, scaledheightaxis, scaledradiusaxis);
             pShapeSep->addChild(sepAx);
         }
 
-        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
+        for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end();
+             p++) {
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);
             base = base + dir * scaledlengthA; //OvG: Scaling
@@ -302,7 +289,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
 
             SoSeparator* sep = new SoSeparator();
             SoMaterial* myMaterials = new SoMaterial;
-            myMaterials->diffuseColor.set1Value(0,SbColor(1,0,0));//RGB
+            myMaterials->diffuseColor.set1Value(0, SbColor(1, 0, 0)); //RGB
             sep->addChild(myMaterials);
             createPlacement(sep, base, rot);
             createArrow(sep, scaledlengthA , scaledheadradiusA); //OvG: Scaling

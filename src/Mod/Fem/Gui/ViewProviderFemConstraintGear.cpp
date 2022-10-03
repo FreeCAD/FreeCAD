@@ -21,27 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Precision.hxx>
-
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/SbMatrix.h>
-
 # include <QMessageBox>
+# include <Precision.hxx>
+# include <Inventor/SbMatrix.h>
+# include <Inventor/SbRotation.h>
+# include <Inventor/SbVec3f.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include "ViewProviderFemConstraintGear.h"
-#include <Mod/Fem/App/FemConstraintGear.h>
-#include "TaskFemConstraintGear.h"
-#include "Gui/Control.h"
-
 #include <Base/Console.h>
+#include "Gui/Control.h"
+#include <Mod/Fem/App/FemConstraintGear.h>
+
+#include "ViewProviderFemConstraintGear.h"
+#include "TaskFemConstraintGear.h"
+
 
 using namespace FemGui;
 
@@ -122,7 +119,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             Base::Vector3d axis = pcConstraint->Axis.getValue();
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3d(0,1,0);
+                direction = Base::Vector3d(0, 1, 0);
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
             if (dia < 2 * radius)
@@ -145,7 +142,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
             Base::Vector3d axis = pcConstraint->Axis.getValue();
             Base::Vector3d direction = pcConstraint->DirectionVector.getValue();
             if (direction.Length() < Precision::Confusion())
-                direction = Base::Vector3d(0,1,0);
+                direction = Base::Vector3d(0, 1, 0);
             double dia = pcConstraint->Diameter.getValue();
             double radius = pcConstraint->Radius.getValue();
             if (dia < 2 * radius)

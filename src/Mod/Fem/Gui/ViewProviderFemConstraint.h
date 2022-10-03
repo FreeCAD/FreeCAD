@@ -24,11 +24,13 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
+#include <QObject>
+#include <QVBoxLayout>
+
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
-#include <QObject>
-#include <QVBoxLayout>
+
 
 class SoFontStyle;
 class SoText2;
@@ -60,9 +62,12 @@ public:
     App::PropertyBool           Mirror;
 
     void attach(App::DocumentObject *) override;
-    void updateData(const App::Property* prop) override { Gui::ViewProviderGeometryObject::updateData(prop); }
+    void updateData(const App::Property *prop) override
+    {
+        Gui::ViewProviderGeometryObject::updateData(prop);
+    }
     std::vector<std::string> getDisplayModes() const override;
-    void setDisplayMode(const char* ModeName) override;
+    void setDisplayMode(const char *ModeName) override;
 
     std::vector<App::DocumentObject*> claimChildren()const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
@@ -78,32 +83,48 @@ protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
 
-    static void createPlacement(SoSeparator* sep, const SbVec3f &base, const SbRotation &r);
-    static void updatePlacement(const SoSeparator* sep, const int idx, const SbVec3f &base, const SbRotation &r);
-    static void createCone(SoSeparator* sep, const double height, const double radius);
-    static SoSeparator* createCone(const double height, const double radius);
-    static void updateCone(const SoNode* node, const int idx, const double height, const double radius);
-    static void createCylinder(SoSeparator* sep, const double height, const double radius);
-    static SoSeparator* createCylinder(const double height, const double radius);
-    static void updateCylinder(const SoNode* node, const int idx, const double height, const double radius);
-    static void createCube(SoSeparator* sep, const double width, const double length, const double height);
-    static SoSeparator* createCube(const double width, const double length, const double height);
-    static void updateCube(const SoNode* node, const int idx, const double width, const double length, const double height);
-    static void createArrow(SoSeparator* sep, const double length, const double radius);
-    static SoSeparator* createArrow(const double length, const double radius);
-    static void updateArrow(const SoNode* node, const int idx, const double length, const double radius);
-    static void createSpring(SoSeparator* sep, const double length, const double width);
-    static SoSeparator* createSpring(const double length, const double width);
-    static void updateSpring(const SoNode* node, const int idx, const double length, const double width);
-    static void createFixed(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator* createFixed(const double height, const double width, const bool gap = false);
-    static void updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
-    static void createDisplacement(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator* createDisplacement(const double height, const double width, const bool gap = false);
-    static void updateDisplacement(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
-    static void createRotation(SoSeparator* sep, const double height, const double width, const bool gap = false);
-    static SoSeparator* createRotation(const double height, const double width, const bool gap = false);
-    static void updateRotation(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
+    static void createPlacement(SoSeparator *sep, const SbVec3f &base, const SbRotation &r);
+    static void updatePlacement(const SoSeparator *sep, const int idx, const SbVec3f &base,
+                                const SbRotation &r);
+    static void createCone(SoSeparator *sep, const double height, const double radius);
+    static SoSeparator *createCone(const double height, const double radius);
+    static void updateCone(const SoNode *node, const int idx, const double height,
+                           const double radius);
+    static void createCylinder(SoSeparator *sep, const double height, const double radius);
+    static SoSeparator *createCylinder(const double height, const double radius);
+    static void updateCylinder(const SoNode *node, const int idx, const double height,
+                               const double radius);
+    static void createCube(SoSeparator *sep, const double width, const double length,
+                           const double height);
+    static SoSeparator *createCube(const double width, const double length, const double height);
+    static void updateCube(const SoNode *node, const int idx, const double width,
+                           const double length, const double height);
+    static void createArrow(SoSeparator *sep, const double length, const double radius);
+    static SoSeparator *createArrow(const double length, const double radius);
+    static void updateArrow(const SoNode *node, const int idx, const double length,
+                            const double radius);
+    static void createSpring(SoSeparator *sep, const double length, const double width);
+    static SoSeparator *createSpring(const double length, const double width);
+    static void updateSpring(const SoNode *node, const int idx, const double length,
+                             const double width);
+    static void createFixed(SoSeparator *sep, const double height, const double width,
+                            const bool gap = false);
+    static SoSeparator *createFixed(const double height, const double width,
+                                    const bool gap = false);
+    static void updateFixed(const SoNode *node, const int idx, const double height,
+                            const double width, const bool gap = false);
+    static void createDisplacement(SoSeparator *sep, const double height, const double width,
+                                   const bool gap = false);
+    static SoSeparator *createDisplacement(const double height, const double width,
+                                           const bool gap = false);
+    static void updateDisplacement(const SoNode *node, const int idx, const double height,
+                                   const double width, const bool gap = false);
+    static void createRotation(SoSeparator *sep, const double height, const double width,
+                               const bool gap = false);
+    static SoSeparator *createRotation(const double height, const double width,
+                                       const bool gap = false);
+    static void updateRotation(const SoNode *node, const int idx, const double height,
+                               const double width, const bool gap = false);
 
 private:
     SoFontStyle      * pFont;
