@@ -526,7 +526,7 @@ bool ReportOutput::event(QEvent* event)
 void ReportOutput::changeEvent(QEvent *ev)
 {
     if (ev->type() == QEvent::StyleChange) {
-        QPalette pal = palette();
+        QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
         unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
         auto value = static_cast<unsigned long>(text);
