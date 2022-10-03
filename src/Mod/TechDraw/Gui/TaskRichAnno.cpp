@@ -316,7 +316,7 @@ void TaskRichAnno::createAnnoFeature()
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
         commonFeatureUpdate();
-        if (m_baseFeat != nullptr) {
+        if (m_baseFeat) {
             QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
             Base::Vector3d vTemp(qTemp.x(), qTemp.y());
             m_annoFeat->X.setValue(Rez::appX(vTemp.x));

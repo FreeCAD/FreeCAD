@@ -180,10 +180,8 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 
     App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(imageName.c_str());
     TechDraw::DrawViewImage* newImg = dynamic_cast<TechDraw::DrawViewImage*>(newObj);
-    if ( (newObj == nullptr) ||
-         (newImg == nullptr) ) {
+    if (!newObj || !newImg)
         throw Base::RuntimeError("TaskActiveView - new image object not found");
-    }
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(newImg->getDocument());
     if (guiDoc) {
         Gui::ViewProvider* vp = guiDoc->getViewProvider(newImg);

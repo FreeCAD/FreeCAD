@@ -244,9 +244,8 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
 //    Base::Console().Message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    if (guiDoc == nullptr) {
+    if (!guiDoc)
         return;
-    }
 
     std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
     if (pages.size() > 1) {

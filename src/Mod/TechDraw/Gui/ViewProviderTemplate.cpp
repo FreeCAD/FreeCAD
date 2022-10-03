@@ -134,9 +134,8 @@ QGITemplate* ViewProviderTemplate::getQTemplate()
         auto page = dt->getParentPage();
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(dt->getDocument())->getViewProvider(page);
         TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
-        if (vpp != nullptr) {
+        if (vpp)
             return vpp->getQGSPage()->getTemplate();
-        }
     }
     return nullptr;
 }

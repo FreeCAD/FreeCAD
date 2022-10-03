@@ -207,7 +207,7 @@ QPointF QGSPage::getTemplateCenter()
 {
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
-    if( pageTemplate != nullptr ) {
+    if (pageTemplate) {
         double cx  =  Rez::guiX(pageTemplate->Width.getValue())/2.0;
         double cy =  -Rez::guiX(pageTemplate->Height.getValue())/2.0;
         return QPointF(cx, cy);
@@ -357,9 +357,8 @@ bool QGSPage::attachView(App::DocumentObject *obj)
 {
 //    Base::Console().Message("QGSP::attachView(%s)\n", obj->getNameInDocument());
     QGIView* existing = findQViewForDocObj(obj);
-    if (existing != nullptr) {
+    if (existing)
        return true;
-    }
 
     auto typeId(obj->getTypeId());
 
@@ -650,9 +649,8 @@ QGIView * QGSPage::addRichAnno(TechDraw::DrawRichAnno* richFeat)
     annoGroup->setViewFeature(richFeat);
 
     QGIView *parent = findParent(annoGroup);
-    if (parent != nullptr) {
+    if (parent)
         addAnnoToParent(annoGroup, parent);
-    }
 
     annoGroup->updateView(true);
 
@@ -837,9 +835,9 @@ QGIView *QGSPage::findParent(QGIView *view) const
    TechDraw::DrawLeaderLine *lead = nullptr;
    lead = dynamic_cast<TechDraw::DrawLeaderLine *>(myFeat);
 
-   if(lead != nullptr) {
+   if (lead) {
        App::DocumentObject* obj = lead->LeaderParent.getValue();
-       if(obj != nullptr) {
+       if (obj) {
            std::string parentName = obj->getNameInDocument();
            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
                if(strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
@@ -851,9 +849,9 @@ QGIView *QGSPage::findParent(QGIView *view) const
 
    //if type is a RichTextAnno we check AnnoParent
    TechDraw::DrawRichAnno* anno = dynamic_cast<TechDraw::DrawRichAnno*>(myFeat);
-   if (anno != nullptr) {
+   if (anno) {
        App::DocumentObject* obj = anno->AnnoParent.getValue();
-       if (obj != nullptr) {
+       if (obj) {
            std::string parentName = obj->getNameInDocument();
            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
                if(strcmp((*it)->getViewName(), parentName.c_str()) == 0) {
@@ -954,20 +952,18 @@ void QGSPage::fixOrphans(bool force)
     // if we ever have collections of collections, we'll need to revisit this
     TechDraw::DrawPage* thisPage = m_vpPage->getDrawPage();
 
-    if(!thisPage->getNameInDocument())
+    if (!thisPage->getNameInDocument())
         return;
 
     std::vector<App::DocumentObject*> pChildren  = thisPage->getAllViews();
 
     // if dv doesn't have a graphic, make one
     for (auto& dv: pChildren) {
-        if (dv->isRemoving()) {
+        if (dv->isRemoving())
             continue;
-        }
         QGIView* qv = findQViewForDocObj(dv);
-        if (qv == nullptr) {
+        if (!qv)
             attachView(dv);
-        }
     }
     // if qView doesn't have a Feature on this Page, delete it
     std::vector<QGIView*> qvss = getViews();

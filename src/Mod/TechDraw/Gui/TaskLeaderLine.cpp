@@ -140,9 +140,8 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     saveState();
 
     m_trackerMode = QGTracker::TrackerMode::Line;
-    if (m_vpp->getMDIViewPage() != nullptr) {
+    if (m_vpp->getMDIViewPage())
         m_saveContextPolicy = m_vpp->getMDIViewPage()->contextMenuPolicy();
-    }
 }
 
 //ctor for creation
@@ -188,10 +187,8 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     ui->pbCancelEdit->setEnabled(false);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
-    if (m_vpp->getMDIViewPage() != nullptr) {
+    if (m_vpp->getMDIViewPage())
         m_saveContextPolicy = m_vpp->getMDIViewPage()->contextMenuPolicy();
-    }
-
 }
 
 void TaskLeaderLine::saveState()
@@ -238,7 +235,7 @@ void TaskLeaderLine::setUiPrimary()
     }
 
     ui->pbTracker->setText(tr("Pick points"));
-    if (m_vpp->getMDIViewPage() != nullptr) {
+    if (m_vpp->getMDIViewPage()) {
         ui->pbTracker->setEnabled(true);
         ui->pbCancelEdit->setEnabled(true);
     } else {
@@ -287,7 +284,7 @@ void TaskLeaderLine::setUiEdit()
         connect(ui->cboxEndSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
 
         ui->pbTracker->setText(tr("Edit points"));
-        if (m_vpp->getMDIViewPage() != nullptr) {
+        if (m_vpp->getMDIViewPage()) {
             ui->pbTracker->setEnabled(true);
             ui->pbCancelEdit->setEnabled(true);
         } else {
@@ -471,7 +468,7 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
     Q_UNUSED(clicked);
 //    Base::Console().Message("TTL::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
-    if (m_vpp->getMDIViewPage() == nullptr) {
+    if (!m_vpp->getMDIViewPage()) {
         Base::Console().Message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
         return;
     }
@@ -569,12 +566,10 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
 void TaskLeaderLine::startTracker()
 {
 //    Base::Console().Message("TTL::startTracker()\n");
-    if (m_vpp->getQGSPage() == nullptr) {
+    if (!m_vpp->getQGSPage())
         return;
-    }
-    if (m_trackerMode == QGTracker::TrackerMode::None) {
+    if (m_trackerMode == QGTracker::TrackerMode::None)
         return;
-    }
 
     if (!m_tracker) {
         m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
@@ -629,9 +624,8 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgPare
 void TaskLeaderLine::removeTracker()
 {
 //    Base::Console().Message("TTL::removeTracker()\n");
-    if (m_vpp->getQGSPage() == nullptr) {
+    if (!m_vpp->getQGSPage())
         return;
-    }
     if (m_tracker && m_tracker->scene()) {
         m_vpp->getQGSPage()->removeItem(m_tracker);
         delete m_tracker;
@@ -783,9 +777,9 @@ bool TaskLeaderLine::accept()
 
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    if (m_vpp->getMDIViewPage() != nullptr) {
+    if (m_vpp->getMDIViewPage())
         m_vpp->getMDIViewPage()->setContextMenuPolicy(m_saveContextPolicy);
-    }
+
     return true;
 }
 

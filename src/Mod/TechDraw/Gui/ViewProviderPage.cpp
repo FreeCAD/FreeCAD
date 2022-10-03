@@ -312,7 +312,7 @@ void ViewProviderPage::createMDIViewPage()
     Gui::Document* doc = Gui::Application::Instance->getDocument
         (pcObject->getDocument());
     m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
-    if (m_graphicsView == nullptr) {
+    if (!m_graphicsView) {
         m_graphicsView = new QGVPage(this, m_graphicsScene, m_mdiView);
         std::string objName = m_pageName + "View";
         m_graphicsView->setObjectName(QString::fromLocal8Bit(objName.c_str()));
@@ -339,9 +339,8 @@ void ViewProviderPage::removeMDIView(void)
             m_mdiView = nullptr;            //m_mdiView will eventually be deleted and
             m_graphicsView = nullptr;       //will take m_graphicsView with it
             Gui::MDIView* aw = Gui::getMainWindow()->activeWindow();  //WF: this bit should be in the remove window logic, not here.
-            if (aw != nullptr) {
+            if (aw)
                 aw->showMaximized();
-            }
         }
     }
 }
