@@ -113,13 +113,11 @@ install(CODE "execute_process(COMMAND chmod -R a+w ${CMAKE_INSTALL_LIBDIR})")
 
 get_filename_component(APP_PATH ${CMAKE_INSTALL_PREFIX} PATH)
 
-execute_process(
-    COMMAND find /usr/local/Cellar/icu4c -name pkgconfig
-    RESULT_VARIABLE CMD_ERROR
-    OUTPUT_VARIABLE CONFIG_ICU)
-set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${CONFIG_ICU}")
-find_package(PkgConfig)
-pkg_check_modules(ICU icu-uc)
+file(GLOB CONFIG_ICU "${HOMEBREW_PREFIX}/opt/icu4c/lib")
+
+file(GLOB CONFIG_LLVM "${HOMEBREW_PREFIX}/opt/llvm/lib/c++")
+
+file(GLOB CONFIG_GCC "${HOMEBREW_PREFIX}/opt/gcc/lib/gcc/current")
 
 execute_process(
     COMMAND find -L /usr/local/Cellar/nglib -name MacOS
@@ -132,6 +130,6 @@ install(CODE
     execute_process(
         COMMAND python3
         ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
-        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${ICU_PREFIX}/lib/ /usr/local/opt ${CONFIG_NGLIB} ${Qt5Core_DIR}/../../.. ${XCTEST_PATH} ${WEBKIT_FRAMEWORK_DIR}
+        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${CONFIG_ICU} ${CONFIG_LLVM} ${CONFIG_GCC} /usr/local/opt ${CONFIG_NGLIB} ${Qt5Core_DIR}/../../.. ${XCTEST_PATH} ${WEBKIT_FRAMEWORK_DIR}
     )"
 )
