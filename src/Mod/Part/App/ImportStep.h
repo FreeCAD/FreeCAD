@@ -44,33 +44,68 @@ public:
         ObjectPerDocument = 3,
         ObjectPerDirectory = 4,
     };
+    enum class Unit {
+        MM = 0,
+        M = 1,
+        IN = 2,
+    };
 
     static void initialize();
     ImportExportSettings();
+
+    void setWriteSurfaceCurveMode(bool);
+    bool getWriteSurfaceCurveMode() const;
+
+    std::string getScheme() const;
+    void setScheme(const char*);
+
+    Unit getUnit() const;
+    void setUnit(Unit);
+
+    std::string getCompany() const;
+    void setCompany(const char*);
+
+    std::string getAuthor() const;
+    void setAuthor(const char*);
+
+    std::string getProductName() const;
+    void setProductName(const char*);
+
     void setReadShapeCompoundMode(bool);
     bool getReadShapeCompoundMode() const;
+
     void setExportHiddenObject(bool);
     bool getExportHiddenObject() const;
+
     void setImportHiddenObject(bool);
     bool getImportHiddenObject() const;
+
     void setExportLegacy(bool);
     bool getExportLegacy() const;
+
     void setExportKeepPlacement(bool);
     bool getExportKeepPlacement() const;
+
     void setUseLinkGroup(bool);
     bool getUseLinkGroup() const;
+
     void setUseBaseName(bool);
     bool getUseBaseName() const;
+
     void setReduceObjects(bool);
     bool getReduceObjects() const;
+
     void setExpandCompound(bool);
     bool getExpandCompound() const;
+
     void setShowProgress(bool);
     bool getShowProgress() const;
+
     void setImportMode(ImportMode);
     ImportMode getImportMode() const;
 
 private:
+    ParameterGrp::handle getPartGroup() const;
     static void initGeneral(Base::Reference<ParameterGrp> hGrp);
     static void initSTEP(Base::Reference<ParameterGrp> hGrp);
     static void initIGES(Base::Reference<ParameterGrp> hGrp);

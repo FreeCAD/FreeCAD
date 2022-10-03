@@ -150,6 +150,97 @@ ImportExportSettings::ImportExportSettings()
     pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
 }
 
+ParameterGrp::handle ImportExportSettings::getPartGroup() const
+{
+    return App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+}
+
+void ImportExportSettings::setWriteSurfaceCurveMode(bool on)
+{
+    ParameterGrp::handle grp = getPartGroup()->GetGroup("General");
+    grp->SetInt("WriteSurfaceCurveMode", on ? 1 : 0);
+    Interface_Static::SetIVal("write.surfacecurve.mode", on ? 1 : 0);
+}
+
+bool ImportExportSettings::getWriteSurfaceCurveMode() const
+{
+    ParameterGrp::handle grp = getPartGroup()->GetGroup("General");
+    int writesurfacecurve = Interface_Static::IVal("write.surfacecurve.mode");
+    writesurfacecurve = grp->GetInt("WriteSurfaceCurveMode", writesurfacecurve);
+    return (writesurfacecurve == 0 ? false : true);
+}
+
+std::string ImportExportSettings::getScheme() const
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    return hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+}
+
+void ImportExportSettings::setScheme(const char* scheme)
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    hStepGrp->SetASCII("Scheme", scheme);
+    Interface_Static::SetCVal("write.step.schema", scheme);
+}
+
+ImportExportSettings::Unit ImportExportSettings::getUnit() const
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    return static_cast<ImportExportSettings::Unit>(hStepGrp->GetInt("Unit", 0));
+}
+
+void ImportExportSettings::setUnit(ImportExportSettings::Unit unit)
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    hStepGrp->SetInt("Unit", static_cast<long>(unit));
+
+    switch (unit) {
+        case Unit::M:
+            Interface_Static::SetCVal("write.step.unit","M");
+            break;
+        case Unit::IN:
+            Interface_Static::SetCVal("write.step.unit","INCH");
+            break;
+        default:
+            Interface_Static::SetCVal("write.step.unit","MM");
+            break;
+    }
+}
+
+std::string ImportExportSettings::getCompany() const
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    return hStepGrp->GetASCII("Company");
+}
+
+void ImportExportSettings::setCompany(const char* name)
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    hStepGrp->SetASCII("Company", name);
+}
+
+std::string ImportExportSettings::getAuthor() const
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    return hStepGrp->GetASCII("Author");
+}
+
+void ImportExportSettings::setAuthor(const char* name)
+{
+    Base::Reference<ParameterGrp> hStepGrp = getPartGroup()->GetGroup("STEP");
+    hStepGrp->SetASCII("Author", name);
+}
+
+std::string ImportExportSettings::getProductName() const
+{
+    return Interface_Static::CVal("write.step.product.name");
+}
+
+void ImportExportSettings::setProductName(const char* name)
+{
+    Interface_Static::SetCVal("write.step.product.name", name);
+}
+
 void ImportExportSettings::setReadShapeCompoundMode(bool on)
 {
     auto grp = pGroup->GetGroup("hSTEP");
