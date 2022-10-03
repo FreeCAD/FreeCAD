@@ -22,12 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_DLGSETTINGSFEMGENERALIMP_H
 #define FEMGUI_DLGSETTINGSFEMGENERALIMP_H
 
-#include <Gui/PropertyPage.h>
 #include <memory>
+#include <Gui/PropertyPage.h>
+
 
 namespace FemGui {
 class Ui_DlgSettingsFemGeneralImp;
