@@ -32,7 +32,6 @@
 
 # include <QApplication>
 # include <QMessageBox>
-# include <QSlider>
 # include <QToolTip>
 #endif
 
@@ -58,9 +57,8 @@
 #include "ui_TaskPostScalarClip.h"
 #include "ui_TaskPostWarpVector.h"
 
-#include "FemSettings.h"
 #include "TaskPostBoxes.h"
-#include "ViewProviderFemPostFilter.h"
+#include "FemSettings.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
 
