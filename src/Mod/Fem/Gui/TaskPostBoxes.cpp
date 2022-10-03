@@ -59,6 +59,7 @@
 
 #include "TaskPostBoxes.h"
 #include "FemSettings.h"
+#include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
 
