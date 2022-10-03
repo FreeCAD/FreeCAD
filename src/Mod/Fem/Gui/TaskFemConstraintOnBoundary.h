@@ -28,7 +28,6 @@
 
 #include <Gui/Selection.h>
 #include <Gui/Widgets.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/FemGlobal.h>
 

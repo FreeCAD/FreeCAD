@@ -29,7 +29,6 @@
 
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintPulley.h>
 
 #include "TaskFemConstraintPulley.h"

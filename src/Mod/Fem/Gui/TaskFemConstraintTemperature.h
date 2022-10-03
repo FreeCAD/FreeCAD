@@ -28,8 +28,8 @@
 
 #include <QObject>
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintTemperature.h"

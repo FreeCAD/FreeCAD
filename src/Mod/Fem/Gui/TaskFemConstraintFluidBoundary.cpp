@@ -40,8 +40,8 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintFluidBoundary.h>
-#include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSolverObject.h>
 #include <Mod/Fem/App/FemTools.h>
 

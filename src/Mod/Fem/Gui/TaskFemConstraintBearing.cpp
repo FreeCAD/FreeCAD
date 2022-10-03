@@ -27,14 +27,14 @@
 # include <sstream>
 # include <QAction>
 # include <QMessageBox>
-# include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <TopoDS.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Selection.h>
+
 #include <Mod/Fem/App/FemConstraintBearing.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
