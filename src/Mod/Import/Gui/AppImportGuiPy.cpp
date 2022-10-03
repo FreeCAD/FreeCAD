@@ -425,6 +425,7 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+            ocaf.setImportOptions(ImportOCAFExt::customImportOptions());
             FC_TIME_INIT(t);
             FC_DURATION_DECL_INIT2(d1,d2);
 
@@ -589,10 +590,13 @@ private:
 
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
             if (!Base::asBoolean(legacy) || !ocaf.canFallback(objs)) {
+                ocaf.setExportOptions(Import::ExportOCAF2::customExportOptions());
+
                 if (exportHidden != Py_None)
                     ocaf.setExportHiddenObject(Base::asBoolean(exportHidden));
                 if (keepPlacement != Py_None)
                     ocaf.setKeepPlacement(Base::asBoolean(keepPlacement));
+
                 ocaf.exportObjects(objs);
             }
             else {

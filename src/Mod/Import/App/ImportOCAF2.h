@@ -67,19 +67,49 @@ struct LabelHasher {
     }
 };
 
+struct ImportExport ImportOCAFOptions
+{
+    ImportOCAFOptions();
+    App::Color defaultFaceColor;
+    App::Color defaultEdgeColor;
+    bool merge = false;
+    bool useLinkGroup = false;
+    bool useBaseName = true;
+    bool importHidden = true;
+    bool reduceObjects = false;
+    bool showProgress = false;
+    bool expandCompound = false;
+    int mode = 0;
+};
+
 class ImportExport ImportOCAF2
 {
 public:
     ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
     virtual ~ImportOCAF2();
     App::DocumentObject* loadShapes();
-    void setMerge(bool enable) { merge=enable;};
-    void setUseLinkGroup(bool enable) { useLinkGroup=enable; }
-    void setBaseName(bool enable) { useBaseName=enable; }
-    void setImportHiddenObject(bool enable) {importHidden=enable;}
-    void setReduceObjects(bool enable) {reduceObjects=enable;}
-    void setShowProgress(bool enable) {showProgress=enable;}
-    void setExpandCompound(bool enable) {expandCompound=enable;}
+
+    static ImportOCAFOptions customImportOptions();
+    void setImportOptions(ImportOCAFOptions opts);
+    void setMerge(bool enable) {
+        options.merge = enable;
+    }
+    void setUseLinkGroup(bool enable);
+    void setBaseName(bool enable) {
+        options.useBaseName = enable;
+    }
+    void setImportHiddenObject(bool enable) {
+        options.importHidden = enable;
+    }
+    void setReduceObjects(bool enable) {
+        options.reduceObjects = enable;
+    }
+    void setShowProgress(bool enable) {
+        options.showProgress = enable;
+    }
+    void setExpandCompound(bool enable) {
+        options.expandCompound = enable;
+    }
 
     enum ImportMode {
         SingleDoc = 0,
@@ -90,7 +120,9 @@ public:
         ModeMax,
     };
     void setMode(int m);
-    int getMode() const {return mode;}
+    int getMode() const {
+        return options.mode;
+    }
 
 private:
     struct Info {
@@ -145,26 +177,24 @@ private:
     App::Document* pDocument;
     Handle(XCAFDoc_ShapeTool) aShapeTool;
     Handle(XCAFDoc_ColorTool) aColorTool;
-    bool merge;
     std::string default_name;
-    bool useLinkGroup;
-    bool useBaseName;
-    bool importHidden;
-    bool reduceObjects;
-    bool showProgress;
-    bool expandCompound;
 
-    int mode;
+    ImportOCAFOptions options;
     std::string filePath;
 
     std::unordered_map<TopoDS_Shape, Info, ShapeHasher> myShapes;
     std::unordered_map<TDF_Label, std::string, LabelHasher> myNames;
     std::unordered_map<App::DocumentObject*, App::PropertyPlacement*> myCollapsedObjects;
 
-    App::Color defaultFaceColor;
-    App::Color defaultEdgeColor;
-
     Base::SequencerLauncher *sequencer;
+};
+
+struct ImportExport ExportOCAFOptions
+{
+    ExportOCAFOptions();
+    App::Color defaultColor;
+    bool exportHidden = true;
+    bool keepPlacement = false;
 };
 
 class ImportExport ExportOCAF2
@@ -174,8 +204,16 @@ public:
             App::DocumentObject*, const char*)>;
     explicit ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func=GetShapeColorsFunc());
 
-    void setExportHiddenObject(bool enable) {exportHidden=enable;}
-    void setKeepPlacement(bool enable) {keepPlacement=enable;}
+    static ExportOCAFOptions customExportOptions();
+    void setExportOptions(ExportOCAFOptions opts) {
+        options = opts;
+    }
+    void setExportHiddenObject(bool enable) {
+        options.exportHidden = enable;
+    }
+    void setKeepPlacement(bool enable) {
+        options.keepPlacement = enable;
+    }
     void exportObjects(std::vector<App::DocumentObject*> &objs, const char *name=nullptr);
     bool canFallback(std::vector<App::DocumentObject*> objs);
 
@@ -202,9 +240,7 @@ private:
 
     GetShapeColorsFunc getShapeColors;
 
-    App::Color defaultColor;
-    bool exportHidden;
-    bool keepPlacement;
+    ExportOCAFOptions options;
 };
 
 }

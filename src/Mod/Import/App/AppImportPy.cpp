@@ -238,6 +238,7 @@ private:
 
 #if 1
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+            ocaf.setImportOptions(ImportOCAFExt::customImportOptions());
             if (merge != Py_None)
                 ocaf.setMerge(Base::asBoolean(merge));
             if (importHidden != Py_None)
@@ -320,10 +321,13 @@ private:
 
             Import::ExportOCAF2 ocaf(hDoc);
             if (!Base::asBoolean(legacy) || !ocaf.canFallback(objs)) {
+                ocaf.setExportOptions(ExportOCAF2::customExportOptions());
+
                 if (exportHidden != Py_None)
                     ocaf.setExportHiddenObject(Base::asBoolean(exportHidden));
                 if (keepPlacement != Py_None)
                     ocaf.setKeepPlacement(Base::asBoolean(keepPlacement));
+
                 ocaf.exportObjects(objs);
             }
             else {
