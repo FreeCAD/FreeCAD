@@ -22,11 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
-
 #include "ViewProviderFemPostPipeline.h"
-
 // inclusion of the generated files (generated out of ViewProviderFemPostPipelinePy.xml)
 #include "ViewProviderFemPostPipelinePy.h"
 #include "ViewProviderFemPostPipelinePy.cpp"

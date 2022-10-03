@@ -23,8 +23,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cmath>
+
 # include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
 # include <Inventor/draggers/SoHandleBoxDragger.h>
 # include <Inventor/draggers/SoJackDragger.h>
 # include <Inventor/manips/SoCenterballManip.h>
@@ -40,14 +41,9 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QTextStream>
-
-# include <boost_bind_bind.hpp>
-
-# include <cmath>
 #endif
 
 #include <App/Document.h>
-#include <App/PropertyUnits.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -56,11 +52,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Fem/App/FemAnalysis.h>
-#include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ViewProviderFemPostFunction.h"
-#include "ActiveAnalysisObserver.h"
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
 

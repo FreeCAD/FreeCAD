@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 #define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 
-#include "ViewProviderFemPostObject.h"
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
+
+#include "ViewProviderFemPostObject.h"
+
 
 namespace FemGui
 {
