@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <Base/Parameter.h>
 #include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/Interface.h>
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
@@ -119,20 +120,10 @@ void DlgImportExportIges::saveSettings()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
     hGrp->SetInt("Unit", unit);
-    switch (unit) {
-        case 1:
-            Interface_Static::SetCVal("write.iges.unit","M");
-            break;
-        case 2:
-            Interface_Static::SetCVal("write.iges.unit","INCH");
-            break;
-        default:
-            Interface_Static::SetCVal("write.iges.unit","MM");
-            break;
-    }
+    Part::Interface::writeIgesUnit(static_cast<Part::Interface::Unit>(unit));
 
     hGrp->SetBool("BrepMode", bg->checkedId() == 1);
-    Interface_Static::SetIVal("write.iges.brep.mode", bg->checkedId());
+    Part::Interface::writeIgesBrepMode(bg->checkedId());
 
     // Import
     hGrp->SetBool("SkipBlankEntities", ui->checkSkipBlank->isChecked());
@@ -140,11 +131,9 @@ void DlgImportExportIges::saveSettings()
     // header info
     hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
     hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
-  //hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
 
-    Interface_Static::SetCVal("write.iges.header.company", ui->lineEditCompany->text().toLatin1());
-    Interface_Static::SetCVal("write.iges.header.author", ui->lineEditAuthor->text().toLatin1());
-  //Interface_Static::SetCVal("write.iges.header.product", ui->lineEditProduct->text().toLatin1());
+    Part::Interface::writeIgesHeaderAuthor(ui->lineEditAuthor->text().toLatin1());
+    Part::Interface::writeIgesHeaderCompany(ui->lineEditCompany->text().toLatin1());
 }
 
 void DlgImportExportIges::loadSettings()
@@ -154,7 +143,7 @@ void DlgImportExportIges::loadSettings()
     int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
 
-    int value = Interface_Static::IVal("write.iges.brep.mode");
+    int value = Part::Interface::writeIgesBrepMode();
     bool brep = hGrp->GetBool("BrepMode", value > 0);
     if (brep)
         ui->radioButtonBRepOn->setChecked(true);
@@ -166,12 +155,11 @@ void DlgImportExportIges::loadSettings()
 
     // header info
     ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company",
-        Interface_Static::CVal("write.iges.header.company"))));
+        Part::Interface::writeIgesHeaderCompany())));
     ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("Author",
-        Interface_Static::CVal("write.iges.header.author"))));
-  //ui->lineEditProduct->setText(QString::fromStdString(hGrp->GetASCII("Product")));
+        Part::Interface::writeIgesHeaderAuthor())));
     ui->lineEditProduct->setText(QString::fromLatin1(
-        Interface_Static::CVal("write.iges.header.product")));
+        Part::Interface::writeIgesHeaderProduct()));
 }
 
 /**

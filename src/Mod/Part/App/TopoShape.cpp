@@ -177,6 +177,7 @@
 #include "CrossSection.h"
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
+#include "Interface.h"
 #include "modelRefine.h"
 #include "PartPyCXX.h"
 #include "ProgressIndicator.h"
@@ -911,9 +912,9 @@ void TopoShape::exportIges(const char *filename) const
         IGESControl_Controller::Init();
         IGESControl_Writer aWriter;
         IGESData_GlobalSection header = aWriter.Model()->GlobalSection();
-        header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
-        header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-        header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+        header.SetAuthorName(new TCollection_HAsciiString(Interface::writeIgesHeaderAuthor()));
+        header.SetCompanyName(new TCollection_HAsciiString(Interface::writeIgesHeaderCompany()));
+        header.SetSendName(new TCollection_HAsciiString(Interface::writeIgesHeaderProduct()));
         aWriter.Model()->SetGlobalSection(header);
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
@@ -930,7 +931,7 @@ void TopoShape::exportStep(const char *filename) const
     try {
         // Fixes issue #6282
         // Do not write out any assembly information when using the simplified STEP export
-        Interface_Static::SetIVal("write.step.assembly", 0);
+        Interface::writeStepAssembly(Interface::Assembly::Off);
 
         // write step file
         STEPControl_Writer aWriter;

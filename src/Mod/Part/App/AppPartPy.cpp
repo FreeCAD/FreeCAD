@@ -88,6 +88,7 @@
 #include "GeometryPy.h"
 #include "ImportIges.h"
 #include "ImportStep.h"
+#include "Interface.h"
 #include "modelRefine.h"
 #include "OCCError.h"
 #include "PartFeature.h"
@@ -2103,17 +2104,17 @@ private:
             throw Py::Exception();
 
         if (unit) {
-            if (!Interface_Static::SetCVal("write.iges.unit",unit)) {
+            if (!Interface::writeIgesUnit(unit)) {
                 throw Py::RuntimeError("Failed to set 'write.iges.unit'");
             }
-            if (!Interface_Static::SetCVal("write.step.unit",unit)) {
+            if (!Interface::writeStepUnit(unit)) {
                 throw Py::RuntimeError("Failed to set 'write.step.unit'");
             }
         }
 
         Py::Dict dict;
-        dict.setItem("write.iges.unit", Py::String(Interface_Static::CVal("write.iges.unit")));
-        dict.setItem("write.step.unit", Py::String(Interface_Static::CVal("write.step.unit")));
+        dict.setItem("write.iges.unit", Py::String(Interface::writeIgesUnit()));
+        dict.setItem("write.step.unit", Py::String(Interface::writeStepUnit()));
         return dict;
     }
     Py::Object setStaticValue(const Py::Tuple& args)

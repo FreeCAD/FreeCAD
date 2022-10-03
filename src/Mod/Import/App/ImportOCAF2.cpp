@@ -68,6 +68,7 @@
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/Interface.h>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -925,7 +926,7 @@ ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-    Interface_Static::SetIVal("write.step.assembly",2);
+    Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
 }
 
 /*!

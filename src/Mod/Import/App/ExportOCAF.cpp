@@ -87,6 +87,7 @@
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/Interface.h>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -117,7 +118,7 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     if (keepExplicitPlacement) {
         // rootLabel = aShapeTool->NewShape();
         // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-        Interface_Static::SetIVal("write.step.assembly",2);
+        Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
     }
     else {
         rootLabel = TDF_TagSource::NewChild(pDoc->Main());

@@ -97,6 +97,7 @@
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
 
@@ -629,13 +630,13 @@ private:
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
-                std::string scheme = hGrp_stp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+                std::string scheme = hGrp_stp->GetASCII("Scheme", Part::Interface::writeStepScheme());
                 std::list<std::string> supported = Part::supportedSTEPSchemes();
                 if (std::find(supported.begin(), supported.end(), scheme) != supported.end())
-                    Interface_Static::SetCVal("write.step.schema", scheme.c_str());
+                    Part::Interface::writeStepScheme(scheme.c_str());
 
                 STEPCAFControl_Writer writer;
-                Interface_Static::SetIVal("write.step.assembly",1);
+                Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
                 // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
@@ -661,9 +662,9 @@ private:
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
-                header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
-                header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-                header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+                header.SetAuthorName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderAuthor()));
+                header.SetCompanyName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderCompany()));
+                header.SetSendName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderProduct()));
                 writer.Model()->SetGlobalSection(header);
                 writer.Transfer(hDoc);
                 Standard_Boolean ret = writer.Write((const char*)name8bit.c_str());

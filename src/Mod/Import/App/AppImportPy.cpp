@@ -72,6 +72,7 @@
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
@@ -355,7 +356,7 @@ private:
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 //Interface_Static::SetCVal("write.step.schema", "AP214IS");
                 STEPCAFControl_Writer writer;
-                Interface_Static::SetIVal("write.step.assembly",1);
+                Part::Interface::writeStepAssembly(Part::Interface::Assembly::On);
                 // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
@@ -379,9 +380,9 @@ private:
                 IGESControl_Controller::Init();
                 IGESCAFControl_Writer writer;
                 IGESData_GlobalSection header = writer.Model()->GlobalSection();
-                header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
-                header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-                header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+                header.SetAuthorName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderAuthor()));
+                header.SetCompanyName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderCompany()));
+                header.SetSendName(new TCollection_HAsciiString(Part::Interface::writeIgesHeaderProduct()));
                 writer.Model()->SetGlobalSection(header);
                 writer.Transfer(hDoc);
                 Standard_Boolean ret = writer.Write(name8bit.c_str());

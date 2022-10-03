@@ -519,6 +519,8 @@ SET(Part_SRCS
     ImportIges.h
     ImportStep.cpp
     ImportStep.h
+    Interface.cpp
+    Interface.h
     PreCompiled.cpp
     PreCompiled.h
     ProgressIndicator.cpp
