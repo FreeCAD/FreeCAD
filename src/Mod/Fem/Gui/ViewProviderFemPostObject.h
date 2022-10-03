@@ -30,8 +30,8 @@
 #include <vtkAppendPolyData.h>
 #include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
-#include <vtkSmartPointer.h>
 #include <vtkOutlineCornerFilter.h>
+#include <vtkSmartPointer.h>
 #include <vtkVertexGlyphFilter.h>
 
 class SoIndexedPointSet;

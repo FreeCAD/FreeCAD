@@ -22,10 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoDrawStyle.h>
-#endif
-
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "ViewProviderFemPostFilter.h"
@@ -33,7 +29,6 @@
 
 
 using namespace FemGui;
-
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObject)
 
