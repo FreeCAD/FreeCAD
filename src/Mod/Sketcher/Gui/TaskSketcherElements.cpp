@@ -1133,14 +1133,14 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
 
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {
         for(int iy=0 ; iy<imgConstr.height() ; iy++) {
-            QColor clr = QColor::fromRgba(imgConstr.pixel(ix,iy));
+            QColor clr(imgConstr.pixelColor(ix,iy));
             clr.getHsv(&hue, &sat, &val, &alp);
             if (alp > 127 && hue >= 0) {
                 if (sat > 127 && (hue > 330 || hue < 30)) {
                     clr.setHsv((hue + 240) % 360, sat, val, alp);
-                    imgConstr.setPixel(ix, iy, clr.rgba());
+                    imgConstr.setPixelColor(ix, iy, clr);
                     clr.setHsv((hue + 300) % 360, sat, val, alp);
-                    imgExt.setPixel(ix, iy, clr.rgba());
+                    imgExt.setPixelColor(ix, iy, clr);
                 }
                 else if (sat < 64 && val > 192)
                 {
