@@ -51,16 +51,16 @@
 #ifdef _PreComp_
 
 // standard
+#include <bitset>
+#include <cassert>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <cassert>
-#include <string>
 #include <map>
-#include <vector>
 #include <set>
-#include <bitset>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/is_kuratowski_subgraph.hpp>

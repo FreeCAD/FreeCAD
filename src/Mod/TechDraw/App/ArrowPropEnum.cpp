@@ -22,10 +22,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ArrowPropEnum.h"
+
 
 namespace TechDraw {
 

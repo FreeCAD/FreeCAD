@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include <Base/Console.h>
 
-#include "DrawUtil.h"
-#include "Cosmetic.h"
 #include "CenterLinePy.h"
+#include "DrawUtil.h"
+
 
 using namespace TechDraw;
 

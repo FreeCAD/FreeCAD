@@ -21,67 +21,54 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <BRep_Builder.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_Vec.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
-#include <TopoDS_Compound.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepTools.hxx>
 #endif
-
-#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <boost/regex.hpp>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Mod/Import/App/dxf/ImpExpDxf.h>
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
-#include <Mod/Part/App/TopoShapeCompoundPy.h>
-#include <Mod/Part/App/OCCError.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Mod/Import/App/dxf/ImpExpDxf.h>
-
-#include "DrawProjectSplit.h"
-#include "DrawViewPart.h"
-#include "DrawViewPartPy.h"
-#include "DrawViewAnnotation.h"
-#include "DrawViewDimension.h"
+#include "DrawDimHelper.h"
+#include "DrawGeomHatch.h"
 #include "DrawPage.h"
 #include "DrawPagePy.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "EdgeWalker.h"
-#include "DrawUtil.h"
+#include "DrawProjectSplit.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
-#include "DrawDimHelper.h"
-#include "HatchLine.h"
-#include "DrawGeomHatch.h"
-
-#include "TechDrawExport.h"
+#include "DrawUtil.h"
+#include "DrawViewAnnotation.h"
+#include "DrawViewDimension.h"
+#include "DrawViewPart.h"
+#include "DrawViewPartPy.h"
+#include "EdgeWalker.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
 #include "ProjectionAlgos.h"
+#include "TechDrawExport.h"
 
 
 namespace TechDraw {

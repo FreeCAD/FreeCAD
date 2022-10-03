@@ -21,25 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif  // #ifndef _PreComp_
-
-#include "CosmeticExtension.h"
 
 #include <Base/Console.h>
 
-#include <App/Application.h>
-#include <App/FeaturePythonPyImp.h>
-
+#include "CosmeticExtension.h"
 #include "CosmeticExtensionPy.h"
-
 #include "Cosmetic.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 
+
 using namespace TechDraw;
 using namespace std;
-
 
 EXTENSION_PROPERTY_SOURCE(TechDraw::CosmeticExtension, App::DocumentObjectExtension)
 

@@ -24,48 +24,38 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
-# include <boost/uuid/uuid.hpp>
-# include <boost/uuid/uuid_io.hpp>
-# include <boost/uuid/uuid_generators.hpp>
-# include <gp_Pnt.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Edge.hxx>
-# include <BRepBndLib.hxx>
 # include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <gp_Pnt.hxx>
 # include <Precision.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <boost/uuid/uuid.hpp>
+# include <boost/uuid/uuid_generators.hpp>
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
-#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Base/Writer.h>
-
-#include <App/Application.h>
-#include <App/Material.h>
-
-#include <Mod/TechDraw/App/GeomFormatPy.h>
 #include <Mod/TechDraw/App/CenterLinePy.h>
 #include <Mod/TechDraw/App/CosmeticEdgePy.h>
 #include <Mod/TechDraw/App/CosmeticVertexPy.h>
-
-#include "DrawUtil.h"
-#include "Preferences.h"
-#include "LineGroup.h"
-#include "GeometryObject.h"
-#include "Geometry.h"
-#include "DrawViewPart.h"
+#include <Mod/TechDraw/App/GeomFormatPy.h>
 
 #include "Cosmetic.h"
+#include "DrawUtil.h"
+#include "DrawViewPart.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
+#include "LineGroup.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
 using namespace std;
