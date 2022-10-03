@@ -26,9 +26,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QAction>
 # include <QMessageBox>
+# include <sstream>
 # include <TopoDS.hxx>
 #endif
 

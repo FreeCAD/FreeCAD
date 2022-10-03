@@ -30,7 +30,6 @@
 #endif
 
 #include <Gui/Command.h>
-#include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
 
