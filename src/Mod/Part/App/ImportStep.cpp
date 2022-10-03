@@ -250,7 +250,7 @@ void ImportExportSettings::setReadShapeCompoundMode(bool on)
 bool ImportExportSettings::getReadShapeCompoundMode() const
 {
     auto grp = pGroup->GetGroup("hSTEP");
-    return grp->GetBool("ReadShapeCompoundMode", true);
+    return grp->GetBool("ReadShapeCompoundMode", false);
 }
 
 void ImportExportSettings::setExportHiddenObject(bool on)
@@ -270,7 +270,7 @@ void ImportExportSettings::setImportHiddenObject(bool on)
 
 bool ImportExportSettings::getImportHiddenObject() const
 {
-    return pGroup->GetBool("ImportHiddenObject", false);
+    return pGroup->GetBool("ImportHiddenObject", true);
 }
 
 void ImportExportSettings::setExportLegacy(bool on)
@@ -310,7 +310,7 @@ void ImportExportSettings::setUseBaseName(bool on)
 
 bool ImportExportSettings::getUseBaseName() const
 {
-    return pGroup->GetBool("UseBaseName", false);
+    return pGroup->GetBool("UseBaseName", true);
 }
 
 void ImportExportSettings::setReduceObjects(bool on)
@@ -340,7 +340,7 @@ void ImportExportSettings::setShowProgress(bool on)
 
 bool ImportExportSettings::getShowProgress() const
 {
-    return pGroup->GetBool("ShowProgress", false);
+    return pGroup->GetBool("ShowProgress", true);
 }
 
 void ImportExportSettings::setImportMode(ImportExportSettings::ImportMode mode)

@@ -170,9 +170,6 @@ during file reading (slower but higher details).</string>
         <property name="text">
          <string>Enable STEP Compound merge</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ReadShapeCompoundMode</cstring>
         </property>
