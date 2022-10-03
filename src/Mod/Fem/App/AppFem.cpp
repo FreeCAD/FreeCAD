@@ -22,25 +22,13 @@
 
 #include "PreCompiled.h"
 
+#include <SMESH_Version.h>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <CXX/Extensions.hxx>
 
-#include <SMESH_Version.h>
-#include "FemMeshPy.h"
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
 #include "FemAnalysis.h"
-#include "FemMeshObject.h"
-#include "FemMeshShapeObject.h"
-#include "FemMeshShapeNetgenObject.h"
-
-#include "FemSetElementsObject.h"
-#include "FemSetFacesObject.h"
-#include "FemSetGeometryObject.h"
-#include "FemSetNodesObject.h"
-
-#include "HypothesisPy.h"
 #include "FemConstraintBearing.h"
 #include "FemConstraintFixed.h"
 #include "FemConstraintForce.h"
@@ -56,16 +44,27 @@
 #include "FemConstraintFluidBoundary.h"
 #include "FemConstraintTransform.h"
 #include "FemConstraintSpring.h"
-
+#include "FemMesh.h"
+#include "FemMeshObject.h"
+#include "FemMeshProperty.h"
+#include "FemMeshPy.h"
+#include "FemMeshShapeObject.h"
+#include "FemMeshShapeNetgenObject.h"
 #include "FemResultObject.h"
+#include "FemSetElementsObject.h"
+#include "FemSetFacesObject.h"
+#include "FemSetGeometryObject.h"
+#include "FemSetNodesObject.h"
 #include "FemSolverObject.h"
+#include "HypothesisPy.h"
 
 #ifdef FC_USE_VTK
-#include "FemPostPipeline.h"
-#include "FemPostFilter.h"
-#include "FemPostFunction.h"
-#include "PropertyPostDataObject.h"
+# include "FemPostFilter.h"
+# include "FemPostFunction.h"
+# include "FemPostPipeline.h"
+# include "PropertyPostDataObject.h"
 #endif
+
 
 namespace Fem {
 extern PyObject* initModule();

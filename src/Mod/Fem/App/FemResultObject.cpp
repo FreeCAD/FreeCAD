@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 
-#include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 
 #include "FemResultObject.h"
 
