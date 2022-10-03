@@ -344,7 +344,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainDistance"
             << "Sketcher_CompConstrainRadDia"
             << "Sketcher_ConstrainAngle"
-            << "Sketcher_ConstrainSnellsLaw"
+            // << "Sketcher_ConstrainSnellsLaw" // Rarely used, show only in menu
             // << "Sketcher_ConstrainInternalAlignment" // This constrain is never used by the user - Do not use precious toolbar space
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
