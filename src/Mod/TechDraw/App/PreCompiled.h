@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAW_PRECOMPILED_H
 #define TECHDRAW_PRECOMPILED_H
 
@@ -74,10 +73,6 @@
 
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>
-#include <gce_MakeCirc.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <HLRBRep_PolyAlgo.hxx>
-#include <HLRBRep_PolyHLRToShape.hxx>
 
 #endif // _PreComp_
 #endif
