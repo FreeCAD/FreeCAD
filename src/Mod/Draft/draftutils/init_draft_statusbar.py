@@ -219,6 +219,26 @@ def init_draft_statusbar_snap():
     """
     this function initializes draft statusbar snap widget
     """
+
+    unitsList = [translate("Draft","Millimeters"),
+                 translate("Draft","Centimeters"),
+                 translate("Draft","Meters"),
+                 translate("Draft","Inches"),
+                 translate("Draft","Feet"),
+                 translate("Draft","Architectural"),
+                    ]
+
+    def setUnit(action):
+
+        # set the label of the unit button
+        utext = action.text().replace("&","")
+        unit = [0,4,1,3,7,5][unitsList.index(utext)]
+        App.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt("UserSchema",unit)
+        if hasattr(App.Units,"setSchema"):
+            App.Units.setSchema(unit)
+        action.parent().parent().parent().setText(utext)
+
+
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
     mw = Gui.getMainWindow()
@@ -329,6 +349,27 @@ def init_draft_statusbar_snap():
                            lambda f=Gui.doCommand,
                            arg='Gui.runCommand("Draft_Snap_WorkingPlane")':f(arg))
     snap_widget.addWidget(wpbutton)
+
+
+    # units chooser
+    snap_widget.unitsList = unitsList
+    unitLabel = QtGui.QPushButton("Unit")
+    unitLabel.setObjectName("UnitLabel")
+    unitLabel.setFlat(True)
+    unit = App.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0)
+    menu = QtGui.QMenu(unitLabel)
+    gUnits = QtGui.QActionGroup(menu)
+    for u in unitsList:
+        a = QtGui.QAction(gUnits)
+        a.setText(u)
+        menu.addAction(a)
+    unitLabel.setMenu(menu)
+    gUnits.triggered.connect(setUnit)
+    unitLabel.setText([unitsList[0],unitsList[2],unitsList[3],unitsList[3],unitsList[1],unitsList[5],unitsList[0],unitsList[4]][unit])
+    unitLabel.setToolTip(translate("Draft","The preferred unit you are currently working with."))
+    snap_widget.addWidget(unitLabel)
+    snap_widget.unitLabel = unitLabel
+
 
     # add snap widget to the statusbar
     sb.insertPermanentWidget(2, snap_widget)
