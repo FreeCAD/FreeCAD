@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QKeyEvent>
 # include <QPainter>
 # include <QRegularExpression>
@@ -197,7 +198,7 @@ struct TextEditorP
     QMap<QString, QColor> colormap; // Color map
     TextEditorP()
     {
-        colormap[QLatin1String("Text")] = Qt::black;
+        colormap[QLatin1String("Text")] = qApp->palette().windowText().color();
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
         colormap[QLatin1String("Keyword")] = Qt::blue;
