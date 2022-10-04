@@ -90,13 +90,16 @@ def call_pip(args) -> List[str]:
         call_args.extend(args)
         proc = None
         try:
+            no_window_flag = 0
+            if hasattr(subprocess,"CREATE_NO_WINDOW"):
+                no_window_flag = subprocess.CREATE_NO_WINDOW # Added in Python 3.7
             proc = subprocess.run(
                 call_args,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                shell=True,
                 check=True,
                 timeout=30,
+                creationflags=no_window_flag,
             )
             if proc.returncode != 0:
                 pip_failed = True
