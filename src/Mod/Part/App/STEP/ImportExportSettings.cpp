@@ -37,6 +37,17 @@ ImportExportSettings::ImportExportSettings()
     pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
 }
 
+void ImportExportSettings::setVisibleExportDialog(bool on)
+{
+    pGroup->SetBool("VisibleExportDialog", on);
+}
+
+bool ImportExportSettings::isVisibleExportDialog() const
+{
+    return pGroup->GetBool("VisibleExportDialog", true);
+}
+
+
 void ImportExportSettings::setWriteSurfaceCurveMode(bool on)
 {
     ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/General");

@@ -101,6 +101,7 @@
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
+#include <Mod/Part/Gui/DlgExportStep.h>
 
 #include <TDataStd.hxx>
 #include <TDataStd_Integer.hxx>
@@ -572,14 +573,14 @@ private:
         Py::Dict options;
         Base::FileInfo file(name8bit.c_str());
 
-        // Here we can open a model dialog...
         if (file.hasExtension("stp") || file.hasExtension("step")) {
-            auto ocafSettings = Import::ExportOCAF2::customExportOptions();
-            options.setItem("exportHidden", Py::Boolean(ocafSettings.exportHidden));
-            options.setItem("keepPlacement", Py::Boolean(ocafSettings.keepPlacement));
-
-            Part::OCAF::ImportExportSettings stepSettings;
-            options.setItem("legacy", Py::Boolean(stepSettings.getExportLegacy()));
+            PartGui::TaskExportStep dlg(Gui::getMainWindow());
+            if (!dlg.showDialog() || dlg.exec()) {
+                auto stepSettings = dlg.getSettings();
+                options.setItem("exportHidden", Py::Boolean(stepSettings.exportHidden));
+                options.setItem("keepPlacement", Py::Boolean(stepSettings.keepPlacement));
+                options.setItem("legacy", Py::Boolean(stepSettings.exportLegacy));
+            }
         }
 
         return options;

@@ -48,6 +48,7 @@ set(PartGui_UIC_SRCS
     CrossSections.ui
     Mirroring.ui
     DlgBooleanOperation.ui
+    DlgExportStep.ui
     DlgExtrusion.ui
     DlgFilletEdges.ui
     DlgImportExportIges.ui
@@ -100,6 +101,9 @@ SET(PartGui_SRCS
     DlgBooleanOperation.cpp
     DlgBooleanOperation.h
     DlgBooleanOperation.ui
+    DlgExportStep.cpp
+    DlgExportStep.h
+    DlgExportStep.ui
     DlgExtrusion.cpp
     DlgExtrusion.h
     DlgExtrusion.ui

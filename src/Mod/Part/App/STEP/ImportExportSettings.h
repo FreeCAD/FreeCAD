@@ -37,6 +37,9 @@ class PartExport ImportExportSettings
 public:
     ImportExportSettings();
 
+    void setVisibleExportDialog(bool);
+    bool isVisibleExportDialog() const;
+
     void setWriteSurfaceCurveMode(bool);
     bool getWriteSurfaceCurveMode() const;
 
