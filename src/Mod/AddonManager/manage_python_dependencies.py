@@ -99,6 +99,7 @@ def call_pip(args) -> List[str]:
                     "AddonsInstaller",
                     "pip took longer than 30 seconds to return results, giving up on it",
                 )
+                + "\n"
             )
             FreeCAD.Console.PrintLog(" ".join(call_args))
             pip_failed = True
