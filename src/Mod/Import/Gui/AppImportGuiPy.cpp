@@ -381,6 +381,9 @@ public:
         add_keyword_method("insert",&Module::insert,
             "insert(string,string) -- Insert the file into the given document."
         );
+        add_varargs_method("exportOptions",&Module::exportOptions,
+            "exportOptions(string) -- Return the export options of a file type."
+        );
         add_keyword_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
@@ -556,21 +559,75 @@ private:
         return std::map<std::string,App::Color>();
     }
 
-    Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
+    Py::Object exportOptions(const Py::Tuple& args)
     {
-        PyObject* object;
         char* Name;
-        PyObject *exportHidden = Py_None;
-        PyObject *legacy = Py_None;
-        PyObject *keepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!",
-                    kwd_list,&object,"utf-8",&Name,&PyBool_Type,&exportHidden,&PyBool_Type,&legacy,&PyBool_Type,&keepPlacement))
+        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
+
+        Py::Dict options;
+        Base::FileInfo file(name8bit.c_str());
+
+        // Here we can open a model dialog...
+        if (file.hasExtension("stp") || file.hasExtension("step")) {
+            auto ocafSettings = Import::ExportOCAF2::customExportOptions();
+            options.setItem("exportHidden", Py::Boolean(ocafSettings.exportHidden));
+            options.setItem("keepPlacement", Py::Boolean(ocafSettings.keepPlacement));
+
+            Part::OCAF::ImportExportSettings stepSettings;
+            options.setItem("legacy", Py::Boolean(stepSettings.getExportLegacy()));
+        }
+
+        return options;
+    }
+
+    Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
+    {
+        PyObject* object;
+        char* Name;
+        PyObject *pyoptions = nullptr;
+        PyObject *pyexportHidden = Py_None;
+        PyObject *pylegacy = Py_None;
+        PyObject *pykeepPlacement = Py_None;
+        static char* kwd_list[] = {"obj", "name", "options", "exportHidden", "legacy", "keepPlacement", nullptr};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|O!O!O!O!",
+                                         kwd_list, &object,
+                                         "utf-8", &Name,
+                                         &PyDict_Type, &pyoptions,
+                                         &PyBool_Type, &pyexportHidden,
+                                         &PyBool_Type, &pylegacy,
+                                         &PyBool_Type, &pykeepPlacement))
+            throw Py::Exception();
+
+        std::string Utf8Name = std::string(Name);
+        PyMem_Free(Name);
+        std::string name8bit = Part::encodeFilename(Utf8Name);
+
+        // determine export options
+        Part::OCAF::ImportExportSettings settings;
+
+        // still support old way
+        bool legacyExport = (pylegacy == Py_None ? settings.getExportLegacy() : Base::asBoolean(pylegacy));
+        bool exportHidden = (pyexportHidden == Py_None ? settings.getExportHiddenObject() : Base::asBoolean(pyexportHidden));
+        bool keepPlacement = (pykeepPlacement == Py_None ? settings.getExportKeepPlacement() : Base::asBoolean(pykeepPlacement));
+
+        // new way
+        if (pyoptions) {
+            Py::Dict options(pyoptions);
+            if (options.hasKey("legacy")) {
+                legacyExport = static_cast<bool>(Py::Boolean(options.getItem("legacy")));
+            }
+            if (options.hasKey("exportHidden")) {
+                exportHidden = static_cast<bool>(Py::Boolean(options.getItem("exportHidden")));
+            }
+            if (options.hasKey("keepPlacement")) {
+                keepPlacement = static_cast<bool>(Py::Boolean(options.getItem("keepPlacement")));
+            }
+        }
 
         try {
             Py::Sequence list(object);
@@ -585,24 +642,15 @@ private:
                     objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
 
-            if (legacy == Py_None) {
-                Part::OCAF::ImportExportSettings settings;
-                legacy = settings.getExportLegacy() ? Py_True : Py_False;
-            }
-
             Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
-            if (!Base::asBoolean(legacy) || !ocaf.canFallback(objs)) {
+            if (!legacyExport || !ocaf.canFallback(objs)) {
                 ocaf.setExportOptions(Import::ExportOCAF2::customExportOptions());
-
-                if (exportHidden != Py_None)
-                    ocaf.setExportHiddenObject(Base::asBoolean(exportHidden));
-                if (keepPlacement != Py_None)
-                    ocaf.setKeepPlacement(Base::asBoolean(keepPlacement));
+                ocaf.setExportHiddenObject(exportHidden);
+                ocaf.setKeepPlacement(keepPlacement);
 
                 ocaf.exportObjects(objs);
             }
             else {
-                //bool keepExplicitPlacement = objs.size() > 1;
                 bool keepExplicitPlacement = Standard_True;
                 ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
@@ -623,7 +671,7 @@ private:
                 ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
 #if OCC_VERSION_HEX >= 0x070200
-            // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
+                // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
                 XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
 #endif
             }
