@@ -273,6 +273,7 @@ namespace GCS
         int addConstraintPointOnEllipse(Point &p, Ellipse &e, int tagId=0, bool driving = true);
         int addConstraintPointOnHyperbolicArc(Point &p, ArcOfHyperbola &e, int tagId=0, bool driving = true);
         int addConstraintPointOnParabolicArc(Point &p, ArcOfParabola &e, int tagId=0, bool driving = true);
+        int addConstraintPointOnBSpline(Point &p, BSpline &b, double* pointparam, int tagId, bool driving = true);
         int addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId=0, bool driving = true);
         int addConstraintCurveValue(Point &p, Curve &a, double *u, int tagId=0, bool driving = true);
         int addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId=0, bool driving = true);
