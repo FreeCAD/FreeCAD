@@ -694,17 +694,21 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             std::stringstream str;
             std::set<App::DocumentObject*> unique_objs;
-            str << "__objs__=[]" << std::endl;
-            for (auto it = sel.begin(); it != sel.end(); ++it) {
-                if (unique_objs.insert(*it).second) {
+            str << "__objs__ = []\n";
+            for (auto it : sel) {
+                if (unique_objs.insert(it).second) {
                     str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
-                        << (*it)->getNameInDocument() << "\"))" << std::endl;
+                        << it->getNameInDocument() << "\"))\n";
                 }
             }
 
-            str << "import " << Module << std::endl;
-            str << Module << ".export(__objs__,u\"" << unicodepath << "\")" << std::endl;
-            //str << "del __objs__" << std::endl;
+            // check for additional export options
+            str << "import " << Module << '\n';
+            str << "if hasattr(" << Module << ", \"exportOptions\"):\n"
+                << "    options = " << Module << ".exportOptions(u\"" << unicodepath << "\")\n"
+                << "    " << Module << ".export(__objs__, u\"" << unicodepath << "\", options)\n"
+                << "else:\n"
+                << "    " << Module << ".export(__objs__, u\"" << unicodepath << "\")\n";
 
             std::string code = str.str();
             // the original file name is required
