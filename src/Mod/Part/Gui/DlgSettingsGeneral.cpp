@@ -30,7 +30,9 @@
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
-#include <Mod/Part/App/ImportStep.h>
+#include <Mod/Part/App/IGES/ImportExportSettings.h>
+#include <Mod/Part/App/STEP/ImportExportSettings.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/Interface.h>
 
 #include "DlgSettingsGeneral.h"
@@ -116,50 +118,39 @@ DlgImportExportIges::~DlgImportExportIges()
 
 void DlgImportExportIges::saveSettings()
 {
-    int unit = ui->comboBoxUnits->currentIndex();
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
-    hGrp->SetInt("Unit", unit);
-    Part::Interface::writeIgesUnit(static_cast<Part::Interface::Unit>(unit));
+    Part::IGES::ImportExportSettings settings;
 
-    hGrp->SetBool("BrepMode", bg->checkedId() == 1);
-    Part::Interface::writeIgesBrepMode(bg->checkedId());
+    int unit = ui->comboBoxUnits->currentIndex();
+    settings.setUnit(static_cast<Part::Interface::Unit>(unit));
+    settings.setBRepMode(bg->checkedId() == 1);
 
     // Import
-    hGrp->SetBool("SkipBlankEntities", ui->checkSkipBlank->isChecked());
+    settings.setSkipBlankEntities(ui->checkSkipBlank->isChecked());
 
     // header info
-    hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
-    hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
-
-    Part::Interface::writeIgesHeaderAuthor(ui->lineEditAuthor->text().toLatin1());
-    Part::Interface::writeIgesHeaderCompany(ui->lineEditCompany->text().toLatin1());
+    settings.setCompany(ui->lineEditCompany->text().toLatin1());
+    settings.setAuthor(ui->lineEditAuthor->text().toLatin1());
 }
 
 void DlgImportExportIges::loadSettings()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
-    int unit = hGrp->GetInt("Unit", 0);
-    ui->comboBoxUnits->setCurrentIndex(unit);
+    Part::IGES::ImportExportSettings settings;
 
-    int value = Part::Interface::writeIgesBrepMode();
-    bool brep = hGrp->GetBool("BrepMode", value > 0);
+    ui->comboBoxUnits->setCurrentIndex(static_cast<int>(settings.getUnit()));
+
+    bool brep = settings.getBRepMode();
     if (brep)
         ui->radioButtonBRepOn->setChecked(true);
     else
         ui->radioButtonBRepOff->setChecked(true);
 
     // Import
-    ui->checkSkipBlank->setChecked(hGrp->GetBool("SkipBlankEntities", true));
+    ui->checkSkipBlank->setChecked(settings.getSkipBlankEntities());
 
     // header info
-    ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company",
-        Part::Interface::writeIgesHeaderCompany())));
-    ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("Author",
-        Part::Interface::writeIgesHeaderAuthor())));
-    ui->lineEditProduct->setText(QString::fromLatin1(
-        Part::Interface::writeIgesHeaderProduct()));
+    ui->lineEditCompany->setText(QString::fromStdString(settings.getCompany()));
+    ui->lineEditAuthor->setText(QString::fromStdString(settings.getAuthor()));
+    ui->lineEditProduct->setText(QString::fromStdString(settings.getProductName()));
 }
 
 /**
@@ -206,7 +197,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
     authorValidator->setRegExp(rx);
     ui->lineEditAuthor->setValidator(authorValidator);
 
-    Part::ImportExportSettings settings;
+    Part::OCAF::ImportExportSettings settings;
     ui->checkBoxMergeCompound->setChecked(settings.getReadShapeCompoundMode());
     ui->checkBoxExportHiddenObj->setChecked(settings.getExportHiddenObject());
     ui->checkBoxImportHiddenObj->setChecked(settings.getImportHiddenObject());
@@ -230,12 +221,12 @@ DlgImportExportStep::~DlgImportExportStep()
 void DlgImportExportStep::saveSettings()
 {
     // General
-    Part::ImportExportSettings settings;
+    Part::STEP::ImportExportSettings settings;
     settings.setWriteSurfaceCurveMode(ui->checkBoxPcurves->isChecked());
 
     // STEP
     int unit = ui->comboBoxUnits->currentIndex();
-    settings.setUnit(static_cast<Part::ImportExportSettings::Unit>(unit));
+    settings.setUnit(static_cast<Part::Interface::Unit>(unit));
 
     // scheme
     // possible values: AP203, AP214CD (1996), AP214DIS (1998), AP214IS (2002), AP242DIS
@@ -263,7 +254,7 @@ void DlgImportExportStep::saveSettings()
 void DlgImportExportStep::loadSettings()
 {
     // General
-    Part::ImportExportSettings settings;
+    Part::STEP::ImportExportSettings settings;
     ui->checkBoxPcurves->setChecked(settings.getWriteSurfaceCurveMode());
 
     // STEP

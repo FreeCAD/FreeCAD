@@ -24,8 +24,6 @@
 #define _ImportStep_h_
 
 #include <Mod/Part/PartGlobal.h>
-#include <Base/Parameter.h>
-
 
 namespace App {
 class Document;
@@ -33,86 +31,6 @@ class Document;
 
 namespace Part
 {
-
-class PartExport ImportExportSettings
-{
-public:
-    enum class ImportMode {
-        SingleDocument = 0,
-        GroupPerDocument = 1,
-        GroupPerDirectory = 2,
-        ObjectPerDocument = 3,
-        ObjectPerDirectory = 4,
-    };
-    enum class Unit {
-        Millimeter = 0,
-        Meter = 1,
-        Inch = 2,
-    };
-
-    static void initialize();
-    ImportExportSettings();
-
-    void setWriteSurfaceCurveMode(bool);
-    bool getWriteSurfaceCurveMode() const;
-
-    std::string getScheme() const;
-    void setScheme(const char*);
-
-    Unit getUnit() const;
-    void setUnit(Unit);
-
-    std::string getCompany() const;
-    void setCompany(const char*);
-
-    std::string getAuthor() const;
-    void setAuthor(const char*);
-
-    std::string getProductName() const;
-    void setProductName(const char*);
-
-    void setReadShapeCompoundMode(bool);
-    bool getReadShapeCompoundMode() const;
-
-    void setExportHiddenObject(bool);
-    bool getExportHiddenObject() const;
-
-    void setImportHiddenObject(bool);
-    bool getImportHiddenObject() const;
-
-    void setExportLegacy(bool);
-    bool getExportLegacy() const;
-
-    void setExportKeepPlacement(bool);
-    bool getExportKeepPlacement() const;
-
-    void setUseLinkGroup(bool);
-    bool getUseLinkGroup() const;
-
-    void setUseBaseName(bool);
-    bool getUseBaseName() const;
-
-    void setReduceObjects(bool);
-    bool getReduceObjects() const;
-
-    void setExpandCompound(bool);
-    bool getExpandCompound() const;
-
-    void setShowProgress(bool);
-    bool getShowProgress() const;
-
-    void setImportMode(ImportMode);
-    ImportMode getImportMode() const;
-
-private:
-    ParameterGrp::handle getPartGroup() const;
-    static void initGeneral(Base::Reference<ParameterGrp> hGrp);
-    static void initSTEP(Base::Reference<ParameterGrp> hGrp);
-    static void initIGES(Base::Reference<ParameterGrp> hGrp);
-
-private:
-    ParameterGrp::handle pGroup;
-};
 
 /** The part shape property
  */

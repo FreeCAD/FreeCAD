@@ -94,6 +94,7 @@
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ImportOCAF2.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
@@ -585,7 +586,7 @@ private:
             }
 
             if (legacy == Py_None) {
-                Part::ImportExportSettings settings;
+                Part::OCAF::ImportExportSettings settings;
                 legacy = settings.getExportLegacy() ? Py_True : Py_False;
             }
 

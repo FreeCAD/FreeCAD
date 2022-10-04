@@ -65,7 +65,6 @@ from install_to_toolbar import (
     remove_custom_toolbar_button,
 )
 from manage_python_dependencies import (
-    CheckForPythonPackageUpdatesWorker,
     PythonPackageManager,
 )
 from addonmanager_devmode import DeveloperMode
@@ -915,23 +914,8 @@ class CommandAddonManager:
         self.dialog.buttonCheckForUpdates.setEnabled(True)
 
     def check_python_updates(self) -> None:
-        if hasattr(self, "check_for_python_package_updates_worker"):
-            thread = self.check_for_python_package_updates_worker
-            if thread:
-                if not thread.isFinished():
-                    self.do_next_startup_phase()
-                    return
-        self.check_for_python_package_updates_worker = (
-            CheckForPythonPackageUpdatesWorker()
-        )
-        self.check_for_python_package_updates_worker.python_package_updates_available.connect(
-            lambda: self.dialog.buttonUpdateDependencies.show()
-        )
-        self.check_for_python_package_updates_worker.finished.connect(
-            self.do_next_startup_phase
-        )
         self.update_allowed_packages_list()  # Not really the best place for it...
-        self.check_for_python_package_updates_worker.start()
+        self.do_next_startup_phase()
 
     def show_python_updates_dialog(self) -> None:
         if not hasattr(self, "manage_python_packages_dialog"):
