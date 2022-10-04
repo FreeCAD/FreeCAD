@@ -42,6 +42,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
+#include "DrawUtil.h"
 #include "DrawViewSpreadsheet.h"
 
 #include <Mod/Spreadsheet/App/Cell.h>
@@ -284,13 +285,17 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             std::stringstream field;
             if (prop && cell) {
                 if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
-                    field << cell->getFormattedQuantity();
+                    std::string temp = cell->getFormattedQuantity();    //writable
+                    DrawUtil::encodeXmlSpecialChars(temp);
+                    field << temp;
                 } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {
                     field << cell->getFormattedQuantity();
                 } else if (prop->isDerivedFrom((App::PropertyInteger::getClassTypeId()))) {
                     field << cell->getFormattedQuantity();
                 } else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId()))) {
-                    field << static_cast<App::PropertyString*>(prop)->getValue();
+                    std::string temp = static_cast<App::PropertyString*>(prop)->getValue();
+                    DrawUtil::encodeXmlSpecialChars(temp);
+                    field << temp;
                 } else {
                     Base::Console().Error("DVSS: Unknown property type\n");
                     celltext = "???";
