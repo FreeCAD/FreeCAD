@@ -893,6 +893,19 @@ int System::addConstraintPointOnParabolicArc(Point &p, ArcOfParabola &e, int tag
     return addConstraint(constr);
 }
 
+int System::addConstraintPointOnBSpline(Point &p, BSpline &b, double* pointparam, int tagId, bool driving)
+{
+    Constraint *constr = new ConstraintPointOnBSpline(p.x, pointparam, 0, b);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    addConstraint(constr);
+
+    constr = new ConstraintPointOnBSpline(p.y, pointparam, 1, b);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start,a,a.startAngle, tagId, driving);

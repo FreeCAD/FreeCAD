@@ -462,6 +462,102 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
     return scale * result;
 }
 
+// Point On BSpline
+
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b)
+    : bsp(b)
+{
+    // This is always going to be true
+    numpoints = b.degree + 1;
+
+    pvec.reserve(2 + b.degree + 1);
+    pvec.push_back(point);
+    pvec.push_back(initparam);
+
+    // The startpole logic is repeated in a lot of places,
+    // for example in GCS and slope at knot
+    // find relevant poles
+    startpole = 0;
+    // TODO: Adjust for periodic knot
+    for (size_t j = 1; j < b.mult.size() && *(b.knots[j]) <= *initparam; ++j)
+        startpole += b.mult[j];
+    if (!b.periodic && startpole >= b.poles.size())
+        startpole = b.poles.size() - 1;
+
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (coordidx == 0)
+            pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+        else
+            pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+    }
+
+    factors.resize(numpoints);
+    if (b.flattenedknots.empty())
+        b.setupFlattenedKnots();
+
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintPointOnBSpline::getTypeId()
+{
+    return PointOnBSpline;
+}
+
+void ConstraintPointOnBSpline::rescale(double coef)
+{
+    scale = coef * 1.0;
+}
+
+double ConstraintPointOnBSpline::error()
+{
+    // We need to find factors over and over again because param can change.
+    // TODO: We don't need to find the factors here, just for grad.
+    // Calculate position with factors because we have the method.
+    double sum = 0;
+
+    // TODO: maybe make it global so it doesn't have to be created every time
+    VEC_D d(numpoints);
+    // TODO: Also support rational b-splines
+    for (size_t i = 0; i < numpoints; ++i)
+        d[i] = *poleat(i);
+    sum += BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+
+    // TODO: Change the poles as the point moves between pieces
+
+    return scale * (*thepoint() - sum);
+}
+
+double ConstraintPointOnBSpline::grad(double *gcsparam)
+{
+    double deriv=0.;
+    if (gcsparam == thepoint()) {
+        // TODO: Change this for rational splines
+        deriv += 1.;
+    }
+
+    if (gcsparam == theparam()) {
+        // TODO: Implement derivative and return value
+        VEC_D d(numpoints - 1);
+        for (size_t i = 1; i < numpoints; ++i) {
+            d[i-1] =
+                (*poleat(i) - *poleat(i-1)) /
+                (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
+        }
+        double slopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
+        deriv -= bsp.degree * slopevalue;
+    }
+
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (gcsparam == poleat(i)) {
+            factors[i] = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += -factors[i];
+        }
+    }
+
+    return scale * deriv;
+}
+
 // Difference
 ConstraintDifference::ConstraintDifference(double *p1, double *p2, double *d)
 {
