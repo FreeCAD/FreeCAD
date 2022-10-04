@@ -71,18 +71,7 @@ Interface::Unit ImportExportSettings::getUnit() const
 void ImportExportSettings::setUnit(Interface::Unit unit)
 {
     pGroup->SetInt("Unit", static_cast<long>(unit));
-
-    switch (unit) {
-        case Interface::Unit::Meter:
-            Interface_Static::SetCVal("write.step.unit","M");
-            break;
-        case Interface::Unit::Inch:
-            Interface_Static::SetCVal("write.step.unit","INCH");
-            break;
-        default:
-            Interface_Static::SetCVal("write.step.unit","MM");
-            break;
-    }
+    Part::Interface::writeStepUnit(unit);
 }
 
 std::string ImportExportSettings::getCompany() const
@@ -107,12 +96,12 @@ void ImportExportSettings::setAuthor(const char* name)
 
 std::string ImportExportSettings::getProductName() const
 {
-    return Interface_Static::CVal("write.step.product.name");
+    return Part::Interface::writeStepHeaderProduct();
 }
 
 void ImportExportSettings::setProductName(const char* name)
 {
-    Interface_Static::SetCVal("write.step.product.name", name);
+    Part::Interface::writeStepHeaderProduct(name);
 }
 
 } // namespace STEP

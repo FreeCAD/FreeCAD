@@ -68,6 +68,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
@@ -316,7 +317,7 @@ private:
             }
 
             if (legacy == Py_None) {
-                Part::ImportExportSettings settings;
+                Part::OCAF::ImportExportSettings settings;
                 legacy = settings.getExportLegacy() ? Py_True : Py_False;
             }
 

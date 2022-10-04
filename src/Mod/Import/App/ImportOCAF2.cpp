@@ -64,7 +64,7 @@
 #include <App/GroupExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
-#include "ImportOCAF2.h"
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
@@ -72,6 +72,7 @@
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include "ImportOCAF2.h"
 
 #if OCC_VERSION_HEX >= 0x070500
 // See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
@@ -200,7 +201,7 @@ ImportOCAF2::~ImportOCAF2()
 
 ImportOCAFOptions ImportOCAF2::customImportOptions()
 {
-    Part::ImportExportSettings settings;
+    Part::OCAF::ImportExportSettings settings;
 
     ImportOCAFOptions defaultOptions;
     defaultOptions.merge = settings.getReadShapeCompoundMode();
@@ -935,7 +936,7 @@ ExportOCAF2::ExportOCAF2(Handle(TDocStd_Document) h, GetShapeColorsFunc func)
  */
 ExportOCAFOptions ExportOCAF2::customExportOptions()
 {
-    Part::ImportExportSettings settings;
+    Part::OCAF::ImportExportSettings settings;
 
     ExportOCAFOptions defaultOptions;
     defaultOptions.exportHidden = settings.getExportHiddenObject();

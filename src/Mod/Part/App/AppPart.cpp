@@ -181,6 +181,7 @@
 
 #include <ShapeUpgrade/UnifySameDomainPy.h>
 
+#include <OCAF/ImportExportSettings.h>
 
 namespace Part {
 extern PyObject* initModule();
@@ -539,7 +540,7 @@ PyMOD_INIT_FUNC(Part)
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
 
-    ImportExportSettings::initialize();
+    OCAF::ImportExportSettings::initialize();
 
     PyMOD_Return(partModule);
 }

@@ -37,6 +37,12 @@ class PartExport ImportExportSettings
 public:
     ImportExportSettings();
 
+    bool getSkipBlankEntities() const;
+    void setSkipBlankEntities(bool) const;
+
+    bool getBRepMode() const;
+    void setBRepMode(bool) const;
+
     Interface::Unit getUnit() const;
     void setUnit(Interface::Unit);
 

@@ -50,9 +50,34 @@ bool Interface::writeStepUnit(Standard_CString unit)
     return Interface_Static::SetCVal("write.step.unit", unit);
 }
 
+bool Interface::writeStepUnit(Interface::Unit unit)
+{
+    switch (unit) {
+    case Interface::Unit::Meter:
+        Interface_Static::SetCVal("write.step.unit","M");
+        break;
+    case Interface::Unit::Inch:
+        Interface_Static::SetCVal("write.step.unit","INCH");
+        break;
+    default:
+        Interface_Static::SetCVal("write.step.unit","MM");
+        break;
+    }
+}
+
 Standard_CString Interface::writeStepUnit()
 {
     return Interface_Static::CVal("write.step.unit");
+}
+
+Standard_CString Interface::writeStepHeaderProduct()
+{
+    return Interface_Static::CVal("write.step.product.name");
+}
+
+bool Interface::writeStepHeaderProduct(Standard_CString name)
+{
+    Interface_Static::SetCVal("write.step.product.name", name);
 }
 
 Standard_CString Interface::writeIgesHeaderAuthor()

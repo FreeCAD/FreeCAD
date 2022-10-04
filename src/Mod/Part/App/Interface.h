@@ -47,12 +47,20 @@ public:
         Inch = 2,
     };
 
+    /** STEP settings */
+    //@{
     static void writeStepAssembly(Assembly);
     static Standard_CString writeStepScheme();
     static bool writeStepScheme(Standard_CString);
     static Standard_CString writeStepUnit();
     static bool writeStepUnit(Standard_CString);
+    static bool writeStepUnit(Unit);
+    static Standard_CString writeStepHeaderProduct();
+    static bool writeStepHeaderProduct(Standard_CString);
+    //@}
 
+    /** IGES settings */
+    //@{
     static Standard_CString writeIgesHeaderAuthor();
     static bool writeIgesHeaderAuthor(Standard_CString);
     static Standard_CString writeIgesHeaderCompany();
@@ -64,6 +72,7 @@ public:
     static bool writeIgesUnit(Unit);
     static int writeIgesBrepMode();
     static bool writeIgesBrepMode(int);
+    //@}
 };
 
 } //namespace Part
