@@ -1686,6 +1686,14 @@ int Sketch::addConstraint(const Constraint *constraint)
         rtn = addPointCoincidentConstraint(constraint->First,constraint->FirstPos,constraint->Second,constraint->SecondPos);
         break;
     case PointOnObject:
+        if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
+            c.value = new double(constraint->getValue());
+            // Driving doesn't make sense here
+            Parameters.push_back(c.value);
+
+            rtn = addPointOnObjectConstraint(constraint->First,constraint->FirstPos, constraint->Second, c.value);
+        }
+        else
         rtn = addPointOnObjectConstraint(constraint->First,constraint->FirstPos, constraint->Second);
         break;
     case Parallel:
@@ -3003,6 +3011,31 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, bo
             GCS::ArcOfParabola &a = ArcsOfParabola[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintPointOnParabolicArc(p1, a, tag, driving);
+            return ConstraintsCounter;
+        }
+    }
+    return -1;
+}
+
+int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, double* pointparam, bool driving)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    int pointId1 = getPointId(geoId1, pos1);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Point &p1 = Points[pointId1];
+
+        if (Geoms[geoId2].type == BSpline) {
+            GCS::BSpline &b = BSplines[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
+            double uNear;
+            partBsp->closestParameter(Base::Vector3d(*p1.x, *p1.y, 0.0), uNear);
+            *pointparam = uNear;
+            GCSsys.addConstraintPointOnBSpline(p1, b, pointparam, tag, driving);
+
             return ConstraintsCounter;
         }
     }
