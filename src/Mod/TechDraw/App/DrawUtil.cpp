@@ -854,7 +854,37 @@ int DrawUtil::countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape)
     return count;
 }
 
-
+//https://stackoverflow.com/questions/5665231/most-efficient-way-to-escape-xml-html-in-c-string
+//for every character in inoutText, check if it is on the list of characters to be substituted and
+//replace it with the encoding string
+void DrawUtil::encodeXmlSpecialChars(std::string& inoutText)
+{
+    std::string buffer;
+    buffer.reserve(inoutText.size());
+    for(size_t cursor = 0; cursor != inoutText.size(); ++cursor) {
+        switch(inoutText.at(cursor)) {
+            case '&':
+                buffer.append("&amp;");
+                break;
+            case '\"':
+                buffer.append("&quot;");
+                break;
+            case '\'':
+                buffer.append("&apos;");
+                break;
+            case '<':
+                buffer.append("&lt;");
+                break;
+            case '>':
+                buffer.append("&gt;");
+                break;
+            default:
+                buffer.append(&inoutText.at(cursor), 1);    //not a special character
+                break;
+        }
+    }
+    inoutText.swap(buffer);
+}
 
 // Supplementary mathematical functions
 // ====================================

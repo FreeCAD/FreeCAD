@@ -140,6 +140,7 @@ class TechDrawExport DrawUtil {
         static Base::Vector3d getFaceCenter(TopoDS_Face f);
         static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
         static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
+        static void encodeXmlSpecialChars(std::string& inoutText);
 
 
         // Supplementary mathematical functions
