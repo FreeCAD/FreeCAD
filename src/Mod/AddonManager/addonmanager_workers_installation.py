@@ -22,7 +22,7 @@
 
 """ Worker thread classes for Addon Manager installation and removal """
 
-# pylint: disable=c-extension-no-member,too-few-public-methods
+# pylint: disable=c-extension-no-member,too-few-public-methods,too-many-instance-attributes
 
 import io
 import os
@@ -550,9 +550,13 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.store = os.path.join(
             FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
         )
+        FreeCAD.Console.PrintLog(f"Storing Addon Manager cache data in {self.store}\n")
         self.updated_repos = set()
 
     def run(self):
+        """Not usually called directly: instead, create an instance and call its
+        start() function to spawn a new thread."""
+
         current_thread = QtCore.QThread.currentThread()
 
         for repo in self.repos:
@@ -592,7 +596,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 NetworkManager.AM_NETWORK_MANAGER.completed.disconnect(
                     self.download_completed
                 )
-                for request in self.requests.keys():
+                for request in self.requests:
                     NetworkManager.AM_NETWORK_MANAGER.abort(request)
                 return
             # 50 ms maximum between checks for interruption
@@ -635,7 +639,8 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         with open(new_xml_file, "wb") as f:
             f.write(data.data())
         metadata = FreeCAD.Metadata(new_xml_file)
-        repo.metadata = metadata
+        repo.set_metadata(metadata)
+        FreeCAD.Console.PrintLog(f"Downloaded package.xml for {repo.name}\n")
         self.status_message.emit(
             translate("AddonsInstaller", "Downloaded package.xml for {}").format(
                 repo.name
@@ -769,8 +774,11 @@ class UpdateAllWorker(QtCore.QThread):
     def __init__(self, repos):
         super().__init__()
         self.repos = repos
+        self.repo_queue = None
 
     def run(self):
+        """Normally not called directly: create the object and call start() to launch it
+        in its own thread."""
         self.progress_made.emit(0, len(self.repos))
         self.repo_queue = queue.Queue()
         current_thread = QtCore.QThread.currentThread()
@@ -784,7 +792,7 @@ class UpdateAllWorker(QtCore.QThread):
         # itself is not thread-safe, so for the time being only spawn one update thread.
         workers = []
         for _ in range(1):
-            FreeCAD.Console.PrintLog(f"  UPDATER: Starting worker\n")
+            FreeCAD.Console.PrintLog("  UPDATER: Starting worker\n")
             worker = UpdateSingleWorker(self.repo_queue)
             worker.success.connect(self.on_success)
             worker.failure.connect(self.on_failure)
@@ -808,6 +816,7 @@ class UpdateAllWorker(QtCore.QThread):
             worker.wait()
 
     def on_success(self, repo: Addon) -> None:
+        """Callback for a successful update"""
         FreeCAD.Console.PrintLog(
             f"  UPDATER: Main thread received notice that worker successfully updated {repo.name}\n"
         )
@@ -817,6 +826,7 @@ class UpdateAllWorker(QtCore.QThread):
         self.success.emit(repo)
 
     def on_failure(self, repo: Addon) -> None:
+        """Callback when an update failed"""
         FreeCAD.Console.PrintLog(
             f"  UPDATER:  Main thread received notice that worker failed to update {repo.name}\n"
         )
@@ -827,6 +837,8 @@ class UpdateAllWorker(QtCore.QThread):
 
 
 class UpdateSingleWorker(QtCore.QThread):
+    """Worker class to update a single Addon"""
+
     success = QtCore.Signal(Addon)
     failure = QtCore.Signal(Addon)
 
@@ -836,11 +848,13 @@ class UpdateSingleWorker(QtCore.QThread):
         self.location = location
 
     def run(self):
+        """Not usually called directly: instead, create an instance and call its
+        start() function to spawn a new thread."""
         current_thread = QtCore.QThread.currentThread()
         while True:
             if current_thread.isInterruptionRequested():
                 FreeCAD.Console.PrintLog(
-                    f"  UPDATER: Interruption requested, stopping all updates\n"
+                    "  UPDATER: Interruption requested, stopping all updates\n"
                 )
                 return
             try:
@@ -850,7 +864,7 @@ class UpdateSingleWorker(QtCore.QThread):
                 )
             except queue.Empty:
                 FreeCAD.Console.PrintLog(
-                    f"  UPDATER: Worker thread queue is empty, exiting thread\n"
+                    "  UPDATER: Worker thread queue is empty, exiting thread\n"
                 )
                 return
             if repo.repo_type == Addon.Kind.MACRO:
