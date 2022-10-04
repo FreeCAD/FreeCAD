@@ -37,6 +37,7 @@ import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
+#pylint: disable=too-few-public-methods
 
 class PipFailed(Exception):
     """Exception thrown when pip times out or otherwise fails to return valid results"""
@@ -51,17 +52,17 @@ class CheckForPythonPackageUpdatesWorker(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
-        """Usually not called directly: instead, instantiate this class and call its start() function
-        in a parent thread. emits a python_package_updates_available signal if updates are available
-        for any of the installed Python packages."""
+        """Usually not called directly: instead, instantiate this class and call its start()
+        function in a parent thread. emits a python_package_updates_available signal if updates
+        are available for any of the installed Python packages."""
 
         if check_for_python_package_updates():
             self.python_package_updates_available.emit()
 
 
 def check_for_python_package_updates() -> bool:
-    """Returns True if any of the Python packages installed into the AdditionalPythonPackages directory
-    have updates available, or False if the are all up-to-date."""
+    """Returns True if any of the Python packages installed into the AdditionalPythonPackages
+    directory have updates available, or False if the are all up-to-date."""
 
     vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
     package_counter = 0
@@ -79,8 +80,8 @@ def check_for_python_package_updates() -> bool:
 
 
 def call_pip(args) -> List[str]:
-    """Tries to locate the appropriate Python executable and run pip with version checking disabled. Fails
-    if Python can't be found or if pip is not installed."""
+    """Tries to locate the appropriate Python executable and run pip with version checking
+    disabled. Fails if Python can't be found or if pip is not installed."""
 
     python_exe = utils.get_python_exe()
     pip_failed = False
@@ -127,7 +128,8 @@ def call_pip(args) -> List[str]:
 
 class PythonPackageManager:
 
-    """A GUI-based pip interface allowing packages to be updated, either individually or all at once."""
+    """A GUI-based pip interface allowing packages to be updated, either individually or all at
+    once."""
 
     def __init__(self, addons):
         self.dlg = FreeCADGui.PySideUic.loadUi(
@@ -244,8 +246,8 @@ class PythonPackageManager:
     def _parse_pip_list_output(
         self, all_packages, outdated_packages
     ) -> Dict[str, Dict[str, str]]:
-        """Parses the output from pip into a dictionary with update information in it. The pip output should
-        be an array of lines of text."""
+        """Parses the output from pip into a dictionary with update information in it. The pip
+        output should be an array of lines of text."""
 
         # All Packages output looks like this:
         # Package    Version
