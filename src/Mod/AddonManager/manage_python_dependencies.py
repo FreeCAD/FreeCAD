@@ -134,14 +134,41 @@ class PythonPackageManager:
     """A GUI-based pip interface allowing packages to be updated, either individually or all at
     once."""
 
+    class PipRunner(QtCore.QObject):
+        """ Run pip in a separate thread so the UI doesn't block while it runs """
+
+        finished = QtCore.Signal()
+        error = QtCore.Signal(str)
+
+        def __init__(self, vendor_path, parent=None):
+            super().__init__(parent)
+            self.all_packages_stdout = []
+            self.outdated_packages_stdout = []
+            self.vendor_path = vendor_path
+
+        def process(self):
+            """ Execute this object. """
+            try:
+                self.all_packages_stdout = call_pip(["list", "--path", self.vendor_path])
+                self.outdated_packages_stdout = call_pip(
+                    ["list", "-o", "--path", self.vendor_path]
+                )
+            except PipFailed as e:
+                FreeCAD.Console.PrintError(str(e) + "\n")
+                self.error.emit(str(e))
+            self.finished.emit()
+
+
     def __init__(self, addons):
         self.dlg = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "PythonDependencyUpdateDialog.ui")
         )
+        self.addons = addons
         self.vendor_path = os.path.join(
             FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
         )
-        self.addons = addons
+        self.worker_thread = None
+        self.worker_object = None
 
     def show(self):
         """Run the modal dialog"""
@@ -154,16 +181,30 @@ class PythonPackageManager:
 
     def _create_list_from_pip(self):
         """Uses pip and pip -o to generate a list of installed packages, and creates the user
-        interface elements for those packages."""
+        interface elements for those packages. Asynchronous, will complete AFTER the window is
+        showing in most cases. """
 
-        try:
-            all_packages_stdout = call_pip(["list", "--path", self.vendor_path])
-            outdated_packages_stdout = call_pip(
-                ["list", "-o", "--path", self.vendor_path]
-            )
-        except PipFailed as e:
-            FreeCAD.Console.PrintError(str(e) + "\n")
-            return
+        self.worker_thread = QtCore.QThread()
+        self.worker_object = PythonPackageManager.PipRunner(self.vendor_path)
+        self.worker_object.moveToThread(self.worker_thread)
+        self.worker_object.finished.connect(self._worker_finished)
+        self.worker_object.finished.connect(self.worker_thread.quit)
+        self.worker_thread.started.connect(self.worker_object.process)
+        self.worker_thread.start()
+
+        self.dlg.tableWidget.setRowCount(1)
+        self.dlg.tableWidget.setItem(
+            0, 0, QtWidgets.QTableWidgetItem(translate("AddonsInstaller","Processing, please wait..."))
+        )
+        self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
+            0, QtWidgets.QHeaderView.ResizeToContents
+        )
+
+    def _worker_finished(self):
+        """ Callback for when the worker process has completed """
+        all_packages_stdout = self.worker_object.all_packages_stdout
+        outdated_packages_stdout = self.worker_object.outdated_packages_stdout
+
         package_list = self._parse_pip_list_output(
             all_packages_stdout, outdated_packages_stdout
         )
