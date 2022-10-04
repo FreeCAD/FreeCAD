@@ -30,6 +30,66 @@
 
 using namespace Part;
 
+/* Further parameters from
+ * https://dev.opencascade.org/doc/overview/html/occt_user_guides__step.html and
+ * https://dev.opencascade.org/doc/overview/html/occt_user_guides__iges.html
+ */
+
+/* Common:
+ * read.precision.mode
+ * read.precision.val
+ * read.maxprecision.mode
+ * read.maxprecision.val
+ * read.stdsameparameter.mode
+ * read.surfacecurve.mode
+ * read.encoderegularity.angle
+ * xstep.cascade.unit
+ *
+ * write.precision.mode
+ * write.precision.val
+ * write.surfacecurve.mode
+ */
+
+/* Undocumented
+ * read.stepcaf.subshapes.name
+ * write.stepcaf.subshapes.name
+ * write.convertsurface.mode
+ * write.step.nonmanifold
+ * read.iges.onlyvisible
+ * write.iges.offset.mode
+ * write.iges.plane.mode
+ */
+
+/* STEP specific:
+ * step.angleunit.mode
+ * read.step.resource.name
+ * read.step.sequence
+ * read.step.product.mode
+ * read.step.product.context
+ * read.step.shape.repr
+ * read.step.assembly.level
+ * read.step.shape.relationship
+ * read.step.shape.aspect
+ * read.step.constructivegeom.relationship
+ * read.step.tessellated
+ *
+ * write.step.resource.name
+ * write.step.sequence
+ * write.step.vertex.mode
+ * write.step.tessellated
+ */
+
+/* IGES specific:
+ * read.iges.bspline.continuity
+ * read.iges.bspline.approxd1.mode
+ * read.iges.resource.name
+ * read.iges.sequence
+ *
+ * write.iges.header.receiver
+ * write.iges.resource.name
+ * write.iges.sequence
+ */
+
 void Interface::writeStepAssembly(Interface::Assembly mode)
 {
     Interface_Static::SetIVal("write.step.assembly", static_cast<int>(mode));
