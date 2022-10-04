@@ -2571,13 +2571,6 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
                 const Part::Geometry *geom = Obj->getGeometry(curves[iCrv].GeoId);
 
-                if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-                    // unsupported until normal to B-spline at any point implemented.
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                         QObject::tr("Point on B-spline edge currently unsupported."));
-                    continue;
-                }
-
                 if( geom && isBsplinePole(geom)) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                         QObject::tr("Select an edge that is not a B-spline weight."));
@@ -2657,15 +2650,6 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
         allOK = false; //constraining a point of an element onto the element is a bad idea...
 
     const Part::Geometry *geom = Obj->getGeometry(GeoIdCrv);
-
-    if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-        // unsupported until normal to B-spline at any point implemented.
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Point on B-spline edge currently unsupported."));
-        abortCommand();
-
-        return;
-    }
 
     if( geom && isBsplinePole(geom)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
