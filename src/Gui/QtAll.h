@@ -41,6 +41,10 @@
 #include <QProcess>
 #include <qrect.h>
 #include <qregexp.h>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QRegularExpressionMatchIterator>
+#include <QRegularExpressionValidator>
 #include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
