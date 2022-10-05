@@ -38,6 +38,7 @@
 
 #include "DlgExportStep.h"
 #include "ui_DlgExportStep.h"
+#include "ui_DlgExportHeaderStep.h"
 
 
 using namespace PartGui;
@@ -54,21 +55,10 @@ DlgExportStep::DlgExportStep(QWidget* parent)
     ui->comboBoxSchema->setItemData(3, QByteArray("AP214IS"));
     ui->comboBoxSchema->setItemData(4, QByteArray("AP242DIS"));
 
-    ui->lineEditProduct->setReadOnly(true);
-
     // https://tracker.dev.opencascade.org/view.php?id=25654
     ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
                                        "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
                                        "the size of the resulting STEP file."));
-
-    QRegExp rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
-    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
-    companyValidator->setRegExp(rx);
-    ui->lineEditCompany->setValidator(companyValidator);
-    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
-    authorValidator->setRegExp(rx);
-    ui->lineEditAuthor->setValidator(authorValidator);
 
     Part::OCAF::ImportExportSettings settings;
     ui->checkBoxExportHiddenObj->setChecked(settings.getExportHiddenObject());
@@ -99,10 +89,6 @@ void DlgExportStep::saveSettings()
     QByteArray schema = ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
     settings.setScheme(schema);
 
-    // header info
-    settings.setCompany(ui->lineEditCompany->text().toLatin1());
-    settings.setAuthor(ui->lineEditAuthor->text().toLatin1());
-
     // (h)STEP of Import module
     ui->checkBoxExportHiddenObj->onSave();
     ui->checkBoxExportLegacy->onSave();
@@ -124,11 +110,6 @@ void DlgExportStep::loadSettings()
     if (index >= 0)
         ui->comboBoxSchema->setCurrentIndex(index);
 
-    // header info
-    ui->lineEditCompany->setText(QString::fromStdString(settings.getCompany()));
-    ui->lineEditAuthor->setText(QString::fromStdString(settings.getAuthor()));
-    ui->lineEditProduct->setText(QString::fromStdString(settings.getProductName()));
-
     // (h)STEP of Import module
     ui->checkBoxExportHiddenObj->onRestore();
     ui->checkBoxExportLegacy->onRestore();
@@ -148,6 +129,62 @@ StepSettings DlgExportStep::getSettings() const
  * Sets the strings of the subwidgets using the current language.
  */
 void DlgExportStep::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+DlgExportHeaderStep::DlgExportHeaderStep(QWidget* parent)
+  : PreferencePage(parent)
+  , ui(new Ui_DlgExportHeaderStep)
+{
+    ui->setupUi(this);
+
+    ui->lineEditProduct->setReadOnly(true);
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
+}
+
+DlgExportHeaderStep::~DlgExportHeaderStep()
+{
+}
+
+void DlgExportHeaderStep::saveSettings()
+{
+    Part::STEP::ImportExportSettings settings;
+
+    // header info
+    settings.setCompany(ui->lineEditCompany->text().toLatin1());
+    settings.setAuthor(ui->lineEditAuthor->text().toLatin1());
+}
+
+void DlgExportHeaderStep::loadSettings()
+{
+    Part::STEP::ImportExportSettings settings;
+
+    // header info
+    ui->lineEditCompany->setText(QString::fromStdString(settings.getCompany()));
+    ui->lineEditAuthor->setText(QString::fromStdString(settings.getAuthor()));
+    ui->lineEditProduct->setText(QString::fromStdString(settings.getProductName()));
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgExportHeaderStep::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

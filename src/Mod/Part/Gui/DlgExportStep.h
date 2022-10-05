@@ -40,6 +40,8 @@ struct StepSettings
     bool keepPlacement = false;
 };
 
+// ----------------------------------------------------------------------------
+
 class Ui_DlgExportStep;
 class DlgExportStep : public Gui::Dialog::PreferencePage
 {
@@ -60,6 +62,29 @@ protected:
 private:
     std::unique_ptr<Ui_DlgExportStep> ui;
 };
+
+// ----------------------------------------------------------------------------
+
+class Ui_DlgExportHeaderStep;
+class DlgExportHeaderStep : public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    explicit DlgExportHeaderStep(QWidget* parent = nullptr);
+    ~DlgExportHeaderStep() override;
+
+    void saveSettings() override;
+    void loadSettings() override;
+
+protected:
+    void changeEvent(QEvent *e) override;
+
+private:
+    std::unique_ptr<Ui_DlgExportHeaderStep> ui;
+};
+
+// ----------------------------------------------------------------------------
 
 class PartGuiExport TaskExportStep : public QDialog
 {

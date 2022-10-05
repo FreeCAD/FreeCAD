@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,74 +21,35 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGSGENERAL_H
-#define PARTGUI_DLGSETTINGSGENERAL_H
+#ifndef PARTGUI_DLGIMPORTSTEP_H
+#define PARTGUI_DLGIMPORTSTEP_H
 
 #include <Gui/PropertyPage.h>
 
 class QButtonGroup;
+class QCheckBox;
 
 namespace PartGui {
 
-class Ui_DlgSettingsGeneral;
-class DlgSettingsGeneral : public Gui::Dialog::PreferencePage
+class Ui_DlgImportStep;
+class DlgImportStep : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsGeneral(QWidget* parent = nullptr);
-    ~DlgSettingsGeneral() override;
+    explicit DlgImportStep(QWidget* parent = nullptr);
+    ~DlgImportStep() override;
 
-protected:
     void saveSettings() override;
     void loadSettings() override;
+
+protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    std::unique_ptr<Ui_DlgSettingsGeneral> ui;
+    std::unique_ptr<Ui_DlgImportStep> ui;
 };
 
-class Ui_DlgImportExportIges;
-class DlgImportExportIges : public Gui::Dialog::PreferencePage
-{
-    Q_OBJECT
+} // namespace PartGui
 
-public:
-    explicit DlgImportExportIges(QWidget* parent = nullptr);
-    ~DlgImportExportIges() override;
-
-protected:
-    void saveSettings() override;
-    void loadSettings() override;
-    void changeEvent(QEvent *e) override;
-
-private:
-    std::unique_ptr<Ui_DlgImportExportIges> ui;
-    QButtonGroup* bg;
-};
-
-class DlgExportStep;
-class DlgImportStep;
-class DlgExportHeaderStep;
-class DlgImportExportStep : public Gui::Dialog::PreferencePage
-{
-    Q_OBJECT
-
-public:
-    explicit DlgImportExportStep(QWidget* parent = nullptr);
-    ~DlgImportExportStep() override;
-
-protected:
-    void saveSettings() override;
-    void loadSettings() override;
-    void changeEvent(QEvent *e) override;
-
-private:
-    DlgExportStep* exportStep;
-    DlgImportStep* importStep;
-    DlgExportHeaderStep* headerStep;
-};
-
-} // namespace Gui
-
-#endif // PARTGUI_DLGSETTINGSGENERAL_H
+#endif // PARTGUI_DLGIMPORTSTEP_H

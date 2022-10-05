@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QButtonGroup>
+# include <QVBoxLayout>
 # include <QRegExp>
 # include <QRegExpValidator>
 # include <Interface_Static.hxx>
@@ -39,6 +40,8 @@
 #include "ui_DlgSettingsGeneral.h"
 #include "ui_DlgImportExportIges.h"
 #include "ui_DlgImportExportStep.h"
+#include "DlgExportStep.h"
+#include "DlgImportStep.h"
 
 
 using namespace PartGui;
@@ -169,45 +172,23 @@ void DlgImportExportIges::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportStep::DlgImportExportStep(QWidget* parent)
-  : PreferencePage(parent), ui(new Ui_DlgImportExportStep)
+  : PreferencePage(parent)
+  , exportStep(new DlgExportStep(this))
+  , importStep(new DlgImportStep(this))
+  , headerStep(new DlgExportHeaderStep(this))
 {
-    ui->setupUi(this);
+    setWindowTitle(tr("STEP"));
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    setLayout(layout);
 
-    ui->comboBoxSchema->setItemData(0, QByteArray("AP203"));
-    ui->comboBoxSchema->setItemData(1, QByteArray("AP214CD"));
-    ui->comboBoxSchema->setItemData(2, QByteArray("AP214DIS"));
-    ui->comboBoxSchema->setItemData(3, QByteArray("AP214IS"));
-    ui->comboBoxSchema->setItemData(4, QByteArray("AP242DIS"));
+    layout->addWidget(exportStep);
+    layout->addWidget(importStep);
+    layout->addWidget(headerStep);
 
-    ui->lineEditProduct->setReadOnly(true);
-    //ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
-    //ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
-
-    // https://tracker.dev.opencascade.org/view.php?id=25654
-    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
-                                       "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
-                                       "the size of the resulting STEP file."));
-
-    QRegExp rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
-    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
-    companyValidator->setRegExp(rx);
-    ui->lineEditCompany->setValidator(companyValidator);
-    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
-    authorValidator->setRegExp(rx);
-    ui->lineEditAuthor->setValidator(authorValidator);
-
-    Part::OCAF::ImportExportSettings settings;
-    ui->checkBoxMergeCompound->setChecked(settings.getReadShapeCompoundMode());
-    ui->checkBoxExportHiddenObj->setChecked(settings.getExportHiddenObject());
-    ui->checkBoxImportHiddenObj->setChecked(settings.getImportHiddenObject());
-    ui->checkBoxExportLegacy->setChecked(settings.getExportLegacy());
-    ui->checkBoxKeepPlacement->setChecked(settings.getExportKeepPlacement());
-    ui->checkBoxUseLinkGroup->setChecked(settings.getUseLinkGroup());
-    ui->checkBoxUseBaseName->setChecked(settings.getUseBaseName());
-    ui->checkBoxReduceObjects->setChecked(settings.getReduceObjects());
-    ui->checkBoxExpandCompound->setChecked(settings.getExpandCompound());
-    ui->checkBoxShowProgress->setChecked(settings.getShowProgress());
+    QSpacerItem* verticalSpacer = new QSpacerItem(20, 82, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    layout->addItem(verticalSpacer);
 }
 
 /**
@@ -220,82 +201,22 @@ DlgImportExportStep::~DlgImportExportStep()
 
 void DlgImportExportStep::saveSettings()
 {
-    // General
-    Part::STEP::ImportExportSettings settings;
-    settings.setWriteSurfaceCurveMode(ui->checkBoxPcurves->isChecked());
-
-    // STEP
-    int unit = ui->comboBoxUnits->currentIndex();
-    settings.setUnit(static_cast<Part::Interface::Unit>(unit));
-
-    // scheme
-    // possible values: AP203, AP214CD (1996), AP214DIS (1998), AP214IS (2002), AP242DIS
-    QByteArray schema = ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
-    settings.setScheme(schema);
-
-    // header info
-    settings.setCompany(ui->lineEditCompany->text().toLatin1());
-    settings.setAuthor(ui->lineEditAuthor->text().toLatin1());
-
-    // (h)STEP of Import module
-    ui->checkBoxMergeCompound->onSave();
-    ui->checkBoxExportHiddenObj->onSave();
-    ui->checkBoxExportLegacy->onSave();
-    ui->checkBoxKeepPlacement->onSave();
-    ui->checkBoxImportHiddenObj->onSave();
-    ui->checkBoxUseLinkGroup->onSave();
-    ui->checkBoxUseBaseName->onSave();
-    ui->checkBoxReduceObjects->onSave();
-    ui->checkBoxExpandCompound->onSave();
-    ui->checkBoxShowProgress->onSave();
-    ui->comboBoxImportMode->onSave();
+    exportStep->saveSettings();
+    importStep->saveSettings();
+    headerStep->saveSettings();
 }
 
 void DlgImportExportStep::loadSettings()
 {
-    // General
-    Part::STEP::ImportExportSettings settings;
-    ui->checkBoxPcurves->setChecked(settings.getWriteSurfaceCurveMode());
-
-    // STEP
-    ui->comboBoxUnits->setCurrentIndex(static_cast<int>(settings.getUnit()));
-
-    // scheme
-    QByteArray ap(settings.getScheme().c_str());
-    int index = ui->comboBoxSchema->findData(QVariant(ap));
-    if (index >= 0)
-        ui->comboBoxSchema->setCurrentIndex(index);
-
-    // header info
-    ui->lineEditCompany->setText(QString::fromStdString(settings.getCompany()));
-    ui->lineEditAuthor->setText(QString::fromStdString(settings.getAuthor()));
-    ui->lineEditProduct->setText(QString::fromStdString(settings.getProductName()));
-
-    // (h)STEP of Import module
-    ui->checkBoxMergeCompound->onRestore();
-    ui->checkBoxExportHiddenObj->onRestore();
-    ui->checkBoxExportLegacy->onRestore();
-    ui->checkBoxKeepPlacement->onRestore();
-    ui->checkBoxImportHiddenObj->onRestore();
-    ui->checkBoxUseLinkGroup->onRestore();
-    ui->checkBoxUseBaseName->onRestore();
-    ui->checkBoxReduceObjects->onRestore();
-    ui->checkBoxExpandCompound->onRestore();
-    ui->checkBoxShowProgress->onRestore();
-    ui->comboBoxImportMode->onRestore();
+    exportStep->loadSettings();
+    importStep->loadSettings();
+    headerStep->loadSettings();
 }
 
-/**
- * Sets the strings of the subwidgets using the current language.
- */
-void DlgImportExportStep::changeEvent(QEvent *e)
+void DlgImportExportStep::changeEvent(QEvent *)
 {
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-    }
-    else {
-        QWidget::changeEvent(e);
-    }
+    // do nothing
 }
+
 
 #include "moc_DlgSettingsGeneral.cpp"
