@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_PRECOMPILED_H
 #define PARTGUI_PRECOMPILED_H
 
@@ -38,7 +37,7 @@
 
 #ifdef FC_OS_WIN32
 # ifndef NOMINMAX
-# define NOMINMAX
+#  define NOMINMAX
 # endif
 # include <windows.h>
 #endif

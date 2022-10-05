@@ -25,9 +25,9 @@
 # include <QButtonGroup>
 # include <QCheckBox>
 # include <QDialogButtonBox>
-# include <QVBoxLayout>
 # include <QRegExp>
 # include <QRegExpValidator>
+# include <QVBoxLayout>
 # include <Interface_Static.hxx>
 #endif
 
