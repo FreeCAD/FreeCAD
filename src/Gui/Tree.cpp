@@ -4884,10 +4884,17 @@ void DocumentObjectItem::setData(int column, int role, const QVariant& value)
     if (role == Qt::EditRole && column <= 1) {
         auto obj = object()->getObject();
         auto& label = column ? obj->Label2 : obj->Label;
-        std::ostringstream ss;
-        ss << "Change " << getName() << '.' << label.getName();
-        App::AutoTransaction committer(ss.str().c_str());
-        label.setValue((const char*)value.toString().toUtf8());
+
+        std::ostringstream str;
+        str << TreeWidget::tr("Rename").toStdString() << ' ' << getName() << '.' << label.getName();
+
+        // Explicitly open and commit a transaction since this is a single change here
+        // For more details: https://forum.freecadweb.org/viewtopic.php?f=3&t=72351
+        App::Document* doc = obj->getDocument();
+        doc->openTransaction(str.str().c_str());
+        label.setValue(value.toString().toUtf8().constData());
+        doc->commitTransaction();
+
         myValue = QString::fromUtf8(label.getValue());
     }
     QTreeWidgetItem::setData(column, role, myValue);
