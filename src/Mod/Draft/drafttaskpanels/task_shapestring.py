@@ -160,7 +160,8 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
     def createObject(self):
         """Create object in the current document."""
         dquote = '"'
-        String = dquote + self.form.leString.text() + dquote
+        String = self.form.leString.text()
+        String = dquote + String.replace(dquote, '\\"') + dquote
         FFile = dquote + str(self.fileSpec) + dquote
 
         Size = str(App.Units.Quantity(self.form.sbHeight.text()).Value)
