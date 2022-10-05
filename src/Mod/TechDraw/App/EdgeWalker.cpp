@@ -26,30 +26,26 @@
 //**************************************************************************
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <ShapeAnalysis.hxx>
-#include <BRep_Tool.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopExp.hxx>
+# include <cmath>
+# include <sstream>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <ShapeAnalysis.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <ShapeExtend_WireData.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <TopExp.hxx>
+# include <boost/graph/boyer_myrvold_planar_test.hpp>
 #endif
 
-#include <sstream>
-#include <cmath>
-
-#include <boost/graph/boyer_myrvold_planar_test.hpp>
-#include <boost/graph/is_kuratowski_subgraph.hpp>
-
 #include <Base/Console.h>
-#include <Base/Exception.h>
 
+#include "EdgeWalker.h"
 #include "DrawUtil.h"
 #include "EWTOLERANCE.h"
-#include "EdgeWalker.h"
+
 
 using namespace TechDraw;
 using namespace boost;

@@ -23,12 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
-#include <iomanip>
-#include <QFile>
-#include <QFileInfo>
-#include <stdexcept>
 #include <cmath>
+#include <iomanip>
+#include <sstream>
+#include <stdexcept>
 #endif
 
 #include <TopoDS_Vertex.hxx>
@@ -39,10 +37,9 @@
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
 
-#include "Geometry.h"
-
-#include "DrawUtil.h"
 #include "HatchLine.h"
+#include "DrawUtil.h"
+
 
 using namespace TechDraw;
 

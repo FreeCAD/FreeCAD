@@ -326,6 +326,7 @@
 // gp*
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Ax2.hxx>
 #include <gp_Ax2d.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Circ.hxx>
@@ -339,8 +340,8 @@
 #include <gp_Lin2d.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Parab.hxx>
-#include <gp_Pnt2d.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Pnt2d.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Sphere.hxx>
 #include <gp_Torus.hxx>
@@ -353,6 +354,7 @@
 #include <GProp_PrincipalProps.hxx>
 
 // HLR*
+#include <HLRAlgo_Projector.hxx>
 #include <HLRAppli_ReflectLines.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <HLRBRep_PolyAlgo.hxx>

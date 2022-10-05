@@ -21,66 +21,47 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
 
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRepLib.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
+#ifndef _PreComp_
 #include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
-#include <Geom_BSplineCurve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepLib.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepTools.hxx>
 #include <gp_Ax2.hxx>
-#include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pln.hxx>
 #include <gp_Vec.hxx>
 #include <HLRBRep.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>
-#include <HLRAlgo_Projector.hxx>
-
-
-#include <BRepMesh_IncrementalMesh.hxx>
 #include <HLRBRep_PolyAlgo.hxx>
+#include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_PolyHLRToShape.hxx>
-#include <Poly_Triangulation.hxx>
-#include <TopLoc_Location.hxx>
-
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
-#include <TopoDS_Face.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
 #endif  // #ifndef _PreComp_
 
 #include <algorithm>
 #include <chrono>
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Tools.h>
-
 #include <Mod/Part/App/PartFeature.h>
 
+#include "GeometryObject.h"
 #include "Cosmetic.h"
 #include "DrawUtil.h"
-#include "GeometryObject.h"
 #include "DrawViewPart.h"
 #include "DrawViewDetail.h"
+
 
 using namespace TechDraw;
 using namespace std;

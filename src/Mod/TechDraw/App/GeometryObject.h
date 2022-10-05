@@ -28,10 +28,9 @@
 #include <string>
 #include <vector>
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Compound.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>

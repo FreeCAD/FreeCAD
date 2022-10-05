@@ -23,20 +23,18 @@
 #ifndef TECHDRAW_GEOMETRY_H
 #define TECHDRAW_GEOMETRY_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include <memory>
 #include <boost/uuid/uuid.hpp>
 
 #include <Base/Reader.h>
 #include <Base/Vector3D.h>
 #include <Base/Writer.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
-
-#include <memory>
 
 
 namespace TechDraw {

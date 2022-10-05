@@ -21,71 +21,62 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <cmath>
 # include <boost/uuid/uuid_generators.hpp>
 # include <boost/uuid/uuid_io.hpp>
+
 # include <Approx_Curve3d.hxx>
-# include <Bnd_Box.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepTools.hxx>
-# include <BRepLib.hxx>
-# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
-# include <Precision.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <gce_MakeCirc.hxx>
-# include <GC_MakeEllipse.hxx>
+# include <BRepTools.hxx>
 # include <GC_MakeArcOfCircle.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Ax2.hxx>
-# include <GeomAdaptor_Curve.hxx>
+# include <GC_MakeEllipse.hxx>
+# include <gce_MakeCirc.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BezierCurve.hxx>
 # include <Geom_Circle.hxx>
-# include <Geom_Geometry.hxx>
 # include <Geom_TrimmedCurve.hxx>
-# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 # include <GeomAPI_PointsToBSpline.hxx>
-# include <GeomLProp_CLProps.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <GeomLProp_CLProps.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
 # include <Poly_Polygon3D.hxx>
+# include <Precision.hxx>
 # include <Standard_Version.hxx>
+# include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-# include <TColgp_Array1OfPnt2d.hxx>
-# include <TColgp_Array1OfPnt.hxx>
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 #endif
-# include <cmath>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include <App/Application.h>
-#include <App/Material.h>
-
+#include "Geometry.h"
 #include "DrawUtil.h"
 
-#include "Geometry.h"
 
 using namespace TechDraw;
 using namespace std;

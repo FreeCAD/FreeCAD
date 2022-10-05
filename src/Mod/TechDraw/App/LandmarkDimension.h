@@ -23,10 +23,8 @@
 #ifndef TechDraw_LandmarkDimension_h_
 #define TechDraw_LandmarkDimension_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 # include <App/DocumentObject.h>
-# include <App/PropertyStandard.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewDimension.h"
 
