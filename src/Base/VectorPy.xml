@@ -109,7 +109,7 @@ vector2 : Base.Vector</UserDocu>
 Normalizes in-place this vector to the length of 1.0.</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="isEqual">
+        <Methode Name="isEqual" Const="true">
             <Documentation>
                 <UserDocu>isEqual(vector2, tol=0) -> bool\n
 Checks if the distance between the points represented by this vector
