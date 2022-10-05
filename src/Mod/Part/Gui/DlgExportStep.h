@@ -61,7 +61,7 @@ private:
     std::unique_ptr<Ui_DlgExportStep> ui;
 };
 
-class PartExport TaskExportStep : public QDialog
+class PartGuiExport TaskExportStep : public QDialog
 {
     Q_OBJECT
 
