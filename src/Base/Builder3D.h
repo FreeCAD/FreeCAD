@@ -407,7 +407,7 @@ private:
  * If it fails then a std::exception is thrown.
  * Supported type names are float or double
  */
-Base::Vector3f to_vector(std::string);
+BaseExport Base::Vector3f to_vector(std::string);
 
 } //namespace Base
 

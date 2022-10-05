@@ -1119,7 +1119,7 @@ bool InventorLoader::isValid() const
 }
 
 namespace Base {
-Vector3f to_vector(std::string str)
+BaseExport Vector3f to_vector(std::string str)
 {
     std::string_view view = str;
     if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")"))
@@ -1128,8 +1128,10 @@ Vector3f to_vector(std::string str)
     view.remove_prefix(1);
     view.remove_suffix(1);
 
+    str = view;
+
     boost::char_separator<char> sep(" ,");
-    boost::tokenizer<boost::char_separator<char> > tokens(view, sep);
+    boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
     std::vector<std::string> token_results;
     token_results.assign(tokens.begin(), tokens.end());
 
