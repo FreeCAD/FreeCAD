@@ -26,9 +26,12 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cassert>
+# include <exception>
 # include <string>
+# include <string_view>
 # include <fstream>
 # include <boost/algorithm/string.hpp>
+# include <boost/algorithm/string/predicate.hpp>
 # include <boost/lexical_cast.hpp>
 # include <boost/tokenizer.hpp>
 #endif
@@ -1113,4 +1116,32 @@ bool InventorLoader::isValid() const
     }
 
     return true;
+}
+
+namespace Base {
+Vector3f to_vector(std::string str)
+{
+    std::string_view view = str;
+    if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")"))
+        throw std::runtime_error("string is not a tuple");
+
+    view.remove_prefix(1);
+    view.remove_suffix(1);
+
+    boost::char_separator<char> sep(" ,");
+    boost::tokenizer<boost::char_separator<char> > tokens(view, sep);
+    std::vector<std::string> token_results;
+    token_results.assign(tokens.begin(), tokens.end());
+
+    if (token_results.size() != 3)
+        throw std::runtime_error("not a tuple of three floats");
+
+    Base::Vector3f vec;
+    vec.x = boost::lexical_cast<float>(token_results.at(0));
+    vec.y = boost::lexical_cast<float>(token_results.at(1));
+    vec.z = boost::lexical_cast<float>(token_results.at(2));
+
+    return vec;
+}
+
 }

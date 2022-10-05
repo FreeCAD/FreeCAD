@@ -64,6 +64,7 @@
 
 // STL
 #include <string>
+#include <string_view>
 #include <list>
 #include <map>
 #include <unordered_map>
@@ -112,6 +113,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
