@@ -52,6 +52,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
@@ -237,14 +238,13 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->getHeadlight()->color.setValue(headlightColor);
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            _viewer->getHeadlight()->direction.setValue(x,y,z);
+        try {
+            std::string pos = rGrp.GetASCII("HeadlightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
+            _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
@@ -262,14 +262,13 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->getBacklight()->color.setValue(backlightColor);
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
-            _viewer->getBacklight()->direction.setValue(x,y,z);
+        try {
+            std::string pos = rGrp.GetASCII("BacklightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
+            _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {

@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
+#include <Base/Builder3D.h>
 #include <Base/Interpreter.h>
 
 #include "SplitView3DInventor.h"
@@ -140,15 +141,14 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->getHeadlight()->color.setValue(headlightColor);
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
+        try {
+            std::string pos = rGrp.GetASCII("HeadlightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
             for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->getHeadlight()->direction.setValue(x,y,z);
+                (*it)->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
@@ -169,15 +169,14 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
             (*it)->getBacklight()->color.setValue(backlightColor);
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
-        std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
-        if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
-            float x = rx.cap(1).toFloat();
-            float y = rx.cap(2).toFloat();
-            float z = rx.cap(3).toFloat();
+        try {
+            std::string pos = rGrp.GetASCII("BacklightDirection");
+            Base::Vector3f dir = Base::to_vector(pos);
             for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-                (*it)->getBacklight()->direction.setValue(x,y,z);
+                (*it)->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
+        }
+        catch (const std::exception&) {
+            // ignore exception
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {
