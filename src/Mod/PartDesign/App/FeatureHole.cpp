@@ -866,8 +866,6 @@ void Hole::updateHoleCutParams()
 
         // handle legacy types but don't change user settings for
         // user defined None, Counterbore and Countersink
-        // handle legacy types but don't change user settings for
-        // user defined None, Counterbore and Countersink
         else if (holeCutTypeStr == "Cheesehead (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.6);
             HoleCutDepth.setValue(diameterVal * 0.6);
