@@ -54,7 +54,6 @@ set(PartGui_UIC_SRCS
     DlgImportStep.ui
     DlgFilletEdges.ui
     DlgImportExportIges.ui
-    DlgImportExportStep.ui
     DlgPartBox.ui
     DlgPartCylinder.ui
     DlgPartImportIges.ui
