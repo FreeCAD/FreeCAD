@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="PyObjectBase" 
-        Name="VectorPy" 
-        Twin="Vector" 
-        TwinPointer="Vector3d" 
-        Include="Base/Vector3D.h" 
-        FatherInclude="Base/PyObjectBase.h" 
-        Namespace="Base" 
+    <PythonExport
+        Father="PyObjectBase"
+        Name="VectorPy"
+        Twin="Vector"
+        TwinPointer="Vector3d"
+        Include="Base/Vector3D.h"
+        FatherInclude="Base/PyObjectBase.h"
+        Namespace="Base"
         Constructor="true"
         Delete="true"
         NumberProtocol="true"
@@ -124,7 +124,7 @@ tol : float</UserDocu>
 Projects `point` on a line that goes through the origin with the direction `dir`.
 The result is the vector from `point` to the projected point.
 The operation is equivalent to dir_n.cross(dir_n.cross(point)), where `dir_n` is
-the vector `dir` normalized. 
+the vector `dir` normalized.
 The method modifies this vector instance according to result and does not
 depend on the vector itself.\n
 point : Base.Vector
