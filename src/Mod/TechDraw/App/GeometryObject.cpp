@@ -34,6 +34,7 @@
 #include <BRepTools.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
 #include <HLRBRep.hxx>
 #include <HLRBRep_Algo.hxx>
