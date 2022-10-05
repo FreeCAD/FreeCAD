@@ -39,6 +39,7 @@
 #include "FemSetFacesObject.h"
 #include "FemSetGeometryObject.h"
 #include "FemSetNodesObject.h"
+#include "FemSetElementNodesObject.h"      
 
 #include "HypothesisPy.h"
 #include "FemConstraintBearing.h"
@@ -170,6 +171,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::FemSetFacesObject                    ::init();
     Fem::FemSetGeometryObject                 ::init();
     Fem::FemSetNodesObject                    ::init();
+    Fem::FemSetElementNodesObject             ::init();
 
     Fem::FemSolverObject                      ::init();
     Fem::FemSolverObjectPython                ::init();

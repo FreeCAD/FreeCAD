@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +20,55 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemSetElementNodesObject.h>    
+#ifndef ROBOTGUI_TaskDlgCreateElementSet_H
+#define ROBOTGUI_TaskDlgCreateElementSet_H
 
+#include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemSetElementNodesObject.h>
 
-class Ui_TaskAnalysisInfo;
-class SoEventCallback;
+#include "TaskCreateElementSet.h"
+#include "TaskObjectName.h"
 
-namespace Base {
-    class Polygon2d;
-}
-namespace App {
-    class Property;
-}
+// forward
+namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
 
-namespace Gui {
-class ViewProvider;
-class ViewVolumeProjection;
-}
-
-namespace Fem{
-    class FemAnalysis;
-}
 
 namespace FemGui {
 
-class ViewProviderFemMesh;
 
-
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+/// simulation dialog for the TaskView
+class TaskDlgCreateElementSet : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo() override;
+    TaskDlgCreateElementSet(Fem::FemSetElementNodesObject *);
+    ~TaskDlgCreateElementSet();
 
-private Q_SLOTS:
-    void SwitchMethod(int Value);
+public:
+    /// is called the TaskView when the dialog is opened
+    virtual void open();
+    /// is called by the framework if the dialog is accepted (Ok)
+    virtual bool accept();
+    /// is called by the framework if the dialog is rejected (Cancel)
+    virtual bool reject();
+    /// is called by the framework if the user press the help button
+    virtual void helpRequested();
+
+    /// returns for Close and Help button
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    Fem::FemAnalysis *pcObject;
+    TaskCreateElementSet             *param;
+    TaskObjectName                *name;
 
-private:
-    QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
+    Fem::FemSetElementNodesObject        *FemSetElementNodesObject;
 };
 
-} //namespace FEMGUI_TaskAnalysisInfo_H
 
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+
+} //namespace RobotGui
+
+#endif // ROBOTGUI_TASKDLGSIMULATE_H

@@ -1,5 +1,6 @@
+/* copy of: FemSetNodesObject.h */
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +21,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemSetElementNodesObject.h>    
+#ifndef Fem_FemSetElementNodesObject_H
+#define Fem_FemSetElementNodesObject_H
 
+#include <App/DocumentObject.h>
+#include <App/PropertyStandard.h>
+#include "FemSetObject.h"
 
-class Ui_TaskAnalysisInfo;
-class SoEventCallback;
-
-namespace Base {
-    class Polygon2d;
-}
-namespace App {
-    class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-class ViewVolumeProjection;
-}
-
-namespace Fem{
-    class FemAnalysis;
-}
-
-namespace FemGui {
-
-class ViewProviderFemMesh;
-
-
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+namespace Fem
 {
-    Q_OBJECT
+
+class FemExport FemSetElementNodesObject : public FemSetObject
+{
+    PROPERTY_HEADER(Fem::FemSetElementNodesObject);
 
 public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo() override;
+    /// Constructor
+    FemSetElementNodesObject(void);
+    virtual ~FemSetElementNodesObject();
 
-private Q_SLOTS:
-    void SwitchMethod(int Value);
+    App::PropertyIntegerSet Elements;
+    App::PropertyFloatList FloatNodes;
 
-protected:
-    Fem::FemAnalysis *pcObject;
+    // returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
+        return "FemGui::ViewProviderSetElementNodes";
+    }
+    virtual App::DocumentObjectExecReturn *execute(void) {
+        return App::DocumentObject::StdReturn;
+    }
+    virtual short mustExecute(void) const;
+    virtual PyObject *getPyObject(void);
+    static std::string elementsName; //  = "ElementsSet"; 
+    static std::string uniqueElementsName; // "ElementsSet" latest name
 
-private:
-    QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
+
 };
 
-} //namespace FEMGUI_TaskAnalysisInfo_H
+} //namespace Fem
 
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+
+#endif // Fem_FemSetElementNodesObject_H

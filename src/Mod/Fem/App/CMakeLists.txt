@@ -135,7 +135,9 @@ SET(FemSet_SRCS
     FemSetObject.cpp
     FemSetObject.h
     FemSetNodesObject.cpp
+    FemSetElementNodesObject.cpp  
     FemSetNodesObject.h
+    FemSetElementNodesObject.h
     FemSetElementsObject.cpp
     FemSetElementsObject.h
     FemSetFacesObject.cpp

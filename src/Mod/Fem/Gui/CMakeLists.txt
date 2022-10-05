@@ -69,6 +69,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
+    TaskCreateElementSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
     TaskFemConstraintBearing.ui
@@ -213,6 +214,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderSolver.h
     ViewProviderSetNodes.cpp
     ViewProviderSetNodes.h
+    ViewProviderSetElementNodes.cpp
+    ViewProviderSetElementNodes.h
     ViewProviderSetElements.cpp
     ViewProviderSetElements.h
     ViewProviderSetFaces.cpp
@@ -268,6 +271,9 @@ SET(FemGui_SRCS_TaskBoxes
     TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
+    TaskCreateElementSet.ui
+    TaskCreateElementSet.cpp
+    TaskCreateElementSet.h    
     TaskDriver.ui
     TaskDriver.cpp
     TaskDriver.h
@@ -300,6 +306,8 @@ SOURCE_GROUP("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 SET(FemGui_SRCS_TaskDlg
     TaskDlgCreateNodeSet.h
     TaskDlgCreateNodeSet.cpp
+    TaskDlgCreateElementSet.h
+    TaskDlgCreateElementSet.cpp
     TaskDlgMeshShapeNetgen.h
     TaskDlgMeshShapeNetgen.cpp
     TaskDlgAnalysis.h

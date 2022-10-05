@@ -1,5 +1,6 @@
+/* copy of: FemSetNodesObject.cpp */
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +21,41 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
+#include "PreCompiled.h"
 
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemSetElementNodesObject.h>    
+#ifndef _PreComp_
+#endif
 
+#include "FemSetElementNodesObject.h"
+#include <App/DocumentObjectPy.h>
+#include <Base/Placement.h>
 
-class Ui_TaskAnalysisInfo;
-class SoEventCallback;
+using namespace Fem;
+using namespace App;
 
-namespace Base {
-    class Polygon2d;
-}
-namespace App {
-    class Property;
-}
+PROPERTY_SOURCE(Fem::FemSetElementNodesObject, Fem::FemSetObject)
 
-namespace Gui {
-class ViewProvider;
-class ViewVolumeProjection;
-}
-
-namespace Fem{
-    class FemAnalysis;
-}
-
-namespace FemGui {
-
-class ViewProviderFemMesh;
-
-
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+FemSetElementNodesObject::FemSetElementNodesObject()
 {
-    Q_OBJECT
+// also add in FemSetElementNodesObject.h
+    ADD_PROPERTY_TYPE(Elements, (), "Element Indexes", Prop_None, "Elements belonging to the ElementsSet");
+    ADD_PROPERTY_TYPE(FloatNodes, (), "Node Float Indexes", Prop_None, "Elements belonging to the ElementsSet");
+}
 
-public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo() override;
+FemSetElementNodesObject::~FemSetElementNodesObject()
+{
+}
 
-private Q_SLOTS:
-    void SwitchMethod(int Value);
+short FemSetElementNodesObject::mustExecute(void) const
+{
+    return 0;
+}
 
-protected:
-    Fem::FemAnalysis *pcObject;
-
-private:
-    QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
-};
-
-} //namespace FEMGUI_TaskAnalysisInfo_H
-
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+PyObject *FemSetElementNodesObject::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}

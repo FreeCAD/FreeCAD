@@ -52,6 +52,7 @@
 #include <Mod/Fem/App/FemConstraint.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
+#include <Mod/Fem/App/FemSetElementNodesObject.h>
 
 #include "ActiveAnalysisObserver.h"
 #include "FemSettings.h"
@@ -60,8 +61,10 @@
 #include <Mod/Fem/App/FemPostPipeline.h>
 #endif
 
-
+using namespace FemGui;
 using namespace std;
+std::string Fem::FemSetElementNodesObject::elementsName;
+std::string Fem::FemSetElementNodesObject::uniqueElementsName;
 
 //================================================================================================
 //================================================================================================
@@ -1129,10 +1132,191 @@ bool CmdFemCreateNodesSet::isActive()
 
 //================================================================================================
 //================================================================================================
+
+/* start of Erase Element bit */
+DEF_STD_CMD_A(CmdFemDefineElementsSet);
+
+void DefineElementsCallback(void *ud, SoEventCallback *n)
+{
+    Fem::FemAnalysis* Analysis;
+
+//    Base::Console().Warning("DefineElemensCall\n");
+
+    if (getConstraintPrerequisits(&Analysis))
+        return;
+
+    // show the wait cursor because this could take quite some time
+    Gui::WaitCursor wc;
+
+    // When this callback function is invoked we must in either case leave the edit mode
+//    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    view->setEditing(false);
+    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineElementsCallback, ud);
+    n->setHandled();
+
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
+    if (clPoly.size() < 3)
+        return;
+    if (clPoly.front() != clPoly.back())
+        clPoly.push_back(clPoly.front());
+
+    SoCamera* cam = view->getSoRenderManager()->getCamera();
+    SbViewVolume vv = cam->getViewVolume();
+    Gui::ViewVolumeProjection proj(vv);
+    Base::Polygon2d polygon;
+    for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
+        polygon.Add(Base::Vector2d((*it)[0], (*it)[1]));
+
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
+    if (docObj.size() != 1)
+        return;
+
+//    const SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh())->GetMeshDS();
+    const SMESHDS_Mesh* data = static_cast<Fem::FemMeshObject*>(docObj[0])->FemMesh.getValue().getSMesh()->GetMeshDS();
+
+    SMDS_NodeIteratorPtr aNodeIter = data->nodesIterator();
+    Base::Vector3f pt2d;
+    std::set<int> IntSet;
+
+    while (aNodeIter->more()) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3f vec(aNode->X(), aNode->Y(), aNode->Z());
+        pt2d = proj(vec);
+        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y)))
+            IntSet.insert(aNode->GetID());
+    }
+
+    std::stringstream  set;
+
+    set << "[";
+    for (std::set<int>::const_iterator it = IntSet.begin(); it != IntSet.end(); ++it)
+        if (it == IntSet.begin())
+            set << *it;
+        else
+            set << "," << *it;
+    set << "]";
+
+//    Gui::Command::openCommand("Place robot");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.addObject('Fem::FemSetElementNodesObject','ElementSet')");
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.ActiveObject.Nodes = %s", set.str().c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ElementSet)", Analysis->getNameInDocument());
+
+    Gui::Command::commitCommand();
+
+}
+
+CmdFemDefineElementsSet::CmdFemDefineElementsSet()
+    : Command("FEM_DefineElementsSet")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Element set by poly");
+    sToolTipText = QT_TR_NOOP("Create Element set by Poly");
+    sWhatsThis = "FEM_DefineElementsSet";
+    sStatusTip = QT_TR_NOOP("Create Element set by Poly");
+    sPixmap = "FEM_CreateElementsSet";
+}
+
+void CmdFemDefineElementsSet::activated(int)
+{
+//    Base::Console().Warning("Activated\n");
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Fem::FemMeshObject::getClassTypeId());
+
+    for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        if (it == docObj.begin()) {
+            Gui::Document* doc = getActiveGuiDocument();
+            Gui::MDIView* view = doc->getActiveView();
+            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+                Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
+                viewer->setEditing(true);
+                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+                viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineElementsCallback);
+            }
+            else {
+                return;
+            }
+        }
+
+    }
+}
+
+bool CmdFemDefineElementsSet::isActive()
+{
+//    Base::Console().Warning("isActive\n");
+    // Check for the selected mesh feature (all Mesh types)
+    if (getSelection().countObjectsOfType(Fem::FemMeshObject::getClassTypeId()) != 1)
+        return false;
+
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+
+    return false;
+}
+
+//================================================================================================
+DEF_STD_CMD_A(CmdFemCreateElementsSet);
+
+CmdFemCreateElementsSet::CmdFemCreateElementsSet()
+    : Command("FEM_CreateElementsSet")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Erase Elements");
+    sToolTipText = QT_TR_NOOP("Creates a FEM mesh elements set");
+    sWhatsThis = "FEM_CreateElementsSet";
+    sStatusTip = sToolTipText;
+    sPixmap = "FEM_CreateElementsSet";
+}
+
+void CmdFemCreateElementsSet::activated(int)
+{
+//    Base::Console().Warning("Activated\n");
+    Gui::SelectionFilter ObjectFilter("SELECT Fem::FemSetElementNodesObject COUNT 1");
+    Gui::SelectionFilter FemMeshFilter("SELECT Fem::FemMeshObject COUNT 1");
+
+    if (ObjectFilter.match()) {
+        Fem::FemSetElementNodesObject* NodesObj = static_cast<Fem::FemSetElementNodesObject*>(ObjectFilter.Result[0][0].getObject());
+        openCommand(QT_TRANSLATE_NOOP("Command", "Edit Elements set"));
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", NodesObj->getNameInDocument());
+    }
+    // start
+    else if (FemMeshFilter.match()) {
+        Fem::FemMeshObject* MeshObj = static_cast<Fem::FemMeshObject*>(FemMeshFilter.Result[0][0].getObject());
+
+        Fem::FemSetElementNodesObject::elementsName = "ElementsSet";
+        Fem::FemSetElementNodesObject::uniqueElementsName = Command::getUniqueObjectName(Fem::FemSetElementNodesObject::elementsName.c_str());
+
+
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Elements set"));
+        doCommand(Doc, "App.activeDocument().addObject('Fem::FemSetElementNodesObject','%s')", Fem::FemSetElementNodesObject::uniqueElementsName.c_str());
+        doCommand(Gui, "App.activeDocument().%s.FemMesh = App.activeDocument().%s", Fem::FemSetElementNodesObject::uniqueElementsName.c_str(), MeshObj->getNameInDocument());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Fem::FemSetElementNodesObject::uniqueElementsName.c_str());
+
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemCreateElementsSet", "Wrong selection"),
+            qApp->translate("CmdFemCreateElementsSet", "Select a single FEM mesh or Elements set, please."));
+    }
+}
+
+bool CmdFemCreateElementsSet::isActive()
+{
+    //    Base::Console().Warning("ISACTIVE\n");
+    return hasActiveDocument();
+}
+/* end of Erase Element bit */
 // commands vtk post processing
 
 #ifdef FC_USE_VTK
 
+//================================================================================================
 //================================================================================================
 // helper vtk post processing
 
@@ -1910,6 +2094,8 @@ void CreateFemCommands()
     // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
+    rcCmdMgr.addCommand(new CmdFemCreateElementsSet());
+    rcCmdMgr.addCommand(new CmdFemDefineElementsSet());
 
     // vtk post processing
 #ifdef FC_USE_VTK

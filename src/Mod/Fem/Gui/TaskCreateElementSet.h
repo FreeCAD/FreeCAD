@@ -1,5 +1,8 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+copy of TaskCreateNodeSet.h bit with createElementSet
+ ***************************************************************************/
+/***************************************************************************
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,22 +23,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
+#ifndef GUI_TASKVIEW_TaskCreateElementSet_H
+#define GUI_TASKVIEW_TaskCreateElementSet_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemSetElementNodesObject.h>    
+#include <Mod/Fem/App/FemSetElementNodesObject.h>
+#include <Gui/Selection.h>
+
+#include <SMESH_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
+#include <SMDSAbs_ElementType.hxx>
+#include <SMESH_MeshEditor.hxx>
 
 
-class Ui_TaskAnalysisInfo;
+class Ui_TaskCreateElementSet;
+
 class SoEventCallback;
 
 namespace Base {
-    class Polygon2d;
+class Polygon2d;
 }
 namespace App {
-    class Property;
+class Property;
 }
 
 namespace Gui {
@@ -43,34 +52,47 @@ class ViewProvider;
 class ViewVolumeProjection;
 }
 
-namespace Fem{
-    class FemAnalysis;
-}
-
 namespace FemGui {
 
 class ViewProviderFemMesh;
 
 
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+class TaskCreateElementSet : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo() override;
+    TaskCreateElementSet(Fem::FemSetElementNodesObject *pcObject,QWidget *parent = nullptr);
+    ~TaskCreateElementSet();
+
+    std::set<long> elementTempSet;
+    ViewProviderFemMesh * MeshViewProvider;
+        static std::string currentProject;
 
 private Q_SLOTS:
+    void Poly(void);
+    void Restore(void);
+    void CopyResultsMesh(void);
     void SwitchMethod(int Value);
 
 protected:
-    Fem::FemAnalysis *pcObject;
+    Fem::FemSetElementNodesObject *pcObject;
+    static void DefineElementsCallback(void * ud, SoEventCallback * n);
+    void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj, bool);
+
+protected:
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    enum selectionModes
+        {
+            none,
+            PickElement
+        } selectionMode;
 
 private:
     QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
+    Ui_TaskCreateElementSet* ui;
 };
 
-} //namespace FEMGUI_TaskAnalysisInfo_H
+} // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+#endif // GUI_TASKVIEW_TaskCreateElementSet_H

@@ -333,6 +333,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_MeshGroup"
         << "Separator"
         << "FEM_CreateNodesSet"
+        << "FEM_CreateElementsSet"
         << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;

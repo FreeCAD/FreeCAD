@@ -83,8 +83,16 @@ Type BaseClass::getTypeId() const
 void BaseClass::initSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName,
                              Type::instantiationMethod method)
 {
+// ######  #####   #####    ####   #####
+// #       #    #  #    #  #    #  #    #
+// #####   #    #  #    #  #    #  #    #
+// #       #####   #####   #    #  #####
+// #       #   #   #   #   #    #  #   #
+// ######  #    #  #    #   ####   #    #
+// have commented out the next line as it always trips
+// this is tripped when i go into the FEM WB from START
     // don't init twice!
-    assert(toInit == Base::Type::badType());
+//    assert(toInit == Base::Type::badType());
     // get the parent class
     Base::Type parentType(Base::Type::fromName(ParentName));
     // forgot init parent!

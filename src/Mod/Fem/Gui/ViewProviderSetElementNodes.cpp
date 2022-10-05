@@ -1,5 +1,6 @@
+/* copy of ./src/Mod/Fem/Gui/ViewProviderSetNodes.cpp */
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +21,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemSetElementNodesObject.h>    
+#include "PreCompiled.h"
 
+#ifndef _PreComp_
+#endif
 
-class Ui_TaskAnalysisInfo;
-class SoEventCallback;
+#include "ViewProviderSetElementNodes.h"
+#include <Gui/Control.h>
+#include <Mod/Fem/Gui/TaskDlgCreateElementSet.h>
+#include <Mod/Fem/App/FemSetElementNodesObject.h>
 
-namespace Base {
-    class Polygon2d;
-}
-namespace App {
-    class Property;
-}
+using namespace FemGui;
 
-namespace Gui {
-class ViewProvider;
-class ViewVolumeProjection;
-}
+PROPERTY_SOURCE(FemGui::ViewProviderSetElementNodes, Gui::ViewProviderGeometryObject)
 
-namespace Fem{
-    class FemAnalysis;
-}
-
-namespace FemGui {
-
-class ViewProviderFemMesh;
-
-
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+bool ViewProviderSetElementNodes::doubleClicked(void) // leave as double
 {
-    Q_OBJECT
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateElementSet(static_cast<Fem::FemSetElementNodesObject *>(getObject()));
+    Gui::Control().showDialog(dlg);
+    return true;
+}
 
-public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo() override;
 
-private Q_SLOTS:
-    void SwitchMethod(int Value);
+bool ViewProviderSetElementNodes::setEdit(int)
+{
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateElementSet(static_cast<Fem::FemSetElementNodesObject *>(getObject()));
+    Gui::Control().showDialog(dlg);
+    return true;
+}
 
-protected:
-    Fem::FemAnalysis *pcObject;
+void ViewProviderSetElementNodes::unsetEdit(int)
+{
 
-private:
-    QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
-};
-
-} //namespace FEMGUI_TaskAnalysisInfo_H
-
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+}

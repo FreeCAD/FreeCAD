@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Mod/Fem/App/FemSetNodesObject.h>
-#include <Mod/Fem/App/FemSetElementNodesObject.h>    
+#ifndef FEM_ViewProviderSetElementNodes_H
+#define FEM_ViewProviderSetElementNodes_H
 
+#include <Gui/ViewProviderGeometryObject.h>
 
-class Ui_TaskAnalysisInfo;
-class SoEventCallback;
-
-namespace Base {
-    class Polygon2d;
-}
-namespace App {
-    class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-class ViewVolumeProjection;
-}
-
-namespace Fem{
-    class FemAnalysis;
-}
-
-namespace FemGui {
-
-class ViewProviderFemMesh;
-
-
-class TaskAnalysisInfo : public Gui::TaskView::TaskBox
+namespace FemGui
 {
-    Q_OBJECT
+
+class ViewProviderSetElementNodes : public Gui::ViewProviderGeometryObject
+{
+    PROPERTY_HEADER(FemGui::ViewProviderSetElementNodes);
 
 public:
-    explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
-    ~TaskAnalysisInfo() override;
-
-private Q_SLOTS:
-    void SwitchMethod(int Value);
+    virtual bool doubleClicked(void); // leave as double
 
 protected:
-    Fem::FemAnalysis *pcObject;
-
-private:
-    QWidget* proxy;
-    Ui_TaskAnalysisInfo* ui;
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
 };
 
-} //namespace FEMGUI_TaskAnalysisInfo_H
+} //namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskAnalysisInfo_H
+
+#endif // FEM_ViewProviderSetElementNodes_H
