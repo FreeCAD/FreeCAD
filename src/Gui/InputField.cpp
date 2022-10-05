@@ -77,7 +77,12 @@ InputField::InputField(QWidget * parent)
     SaveSize(5)
 {
     setValidator(new InputValidator(this));
-    setFocusPolicy(Qt::WheelFocus);
+    if (!App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->GetBool("ComboBoxWheelEventFilter",false)) {
+        setFocusPolicy(Qt::WheelFocus);
+    }
+    else {
+        setFocusPolicy(Qt::StrongFocus);
+    }
     iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
@@ -699,6 +704,9 @@ void InputField::keyPressEvent(QKeyEvent *event)
 
 void InputField::wheelEvent (QWheelEvent * event)
 {
+    if (!hasFocus())
+        return;
+
     if (isReadOnly()) {
         QLineEdit::wheelEvent(event);
         return;
