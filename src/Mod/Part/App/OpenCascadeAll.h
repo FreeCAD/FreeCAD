@@ -325,7 +325,6 @@
 
 // gp*
 #include <gp_Ax1.hxx>
-#include <gp_Dir.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Ax2d.hxx>
 #include <gp_Ax3.hxx>
@@ -333,6 +332,7 @@
 #include <gp_Circ2d.hxx>
 #include <gp_Cone.hxx>
 #include <gp_Cylinder.hxx>
+#include <gp_Dir.hxx>
 #include <gp_Dir2d.hxx>
 #include <gp_Elips.hxx>
 #include <gp_GTrsf.hxx>
