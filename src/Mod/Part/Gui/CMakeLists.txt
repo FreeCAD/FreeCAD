@@ -117,7 +117,6 @@ SET(PartGui_SRCS
     DlgImportStep.h
     DlgImportStep.ui
     DlgImportExportIges.ui
-    DlgImportExportStep.ui
     DlgPartBox.ui
     DlgPartBoxImp.cpp
     DlgPartBoxImp.h

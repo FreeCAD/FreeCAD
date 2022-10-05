@@ -39,7 +39,6 @@
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
 #include "ui_DlgImportExportIges.h"
-#include "ui_DlgImportExportStep.h"
 #include "DlgExportStep.h"
 #include "DlgImportStep.h"
 
