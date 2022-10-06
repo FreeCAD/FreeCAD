@@ -27,11 +27,11 @@
 
 #include "DrawViewClip.h"
 #include "DrawView.h"
-
 // inclusion of the generated files
 #include <Mod/TechDraw/App/DrawViewPy.h>
 #include <Mod/TechDraw/App/DrawViewClipPy.h>
 #include <Mod/TechDraw/App/DrawViewClipPy.cpp>
+
 
 using namespace TechDraw;
 

@@ -20,62 +20,48 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Bnd_Box.hxx>
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepPrimAPI_MakeCylinder.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepProj_Projection.hxx>
-#include <BRepTools.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Shell.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
+# include <QtConcurrentRun>
+# include <sstream>
+# include <Bnd_Box.hxx>
+# include <BRepAlgoAPI_Common.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepPrimAPI_MakeCylinder.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepProj_Projection.hxx>
+# include <BRepTools.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Shell.hxx>
+# include <TopoDS_Solid.hxx>
 #endif
-
-#include <chrono>
-#include <sstream>
-
-#include <QFile>
-#include <QFileInfo>
-#include <QtConcurrentRun>
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Material.h>
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-
+#include "DrawViewDetail.h"
 #include "DrawUtil.h"
 #include "DrawViewSection.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
 
-#include "DrawViewDetail.h"
 
 using namespace TechDraw;
-using namespace std;
 
 //===========================================================================
 // DrawViewDetail

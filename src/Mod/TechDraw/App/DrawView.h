@@ -23,17 +23,14 @@
 #ifndef DrawView_h_
 #define DrawView_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <boost_signals2.hpp>
-
 #include <QCoreApplication>
-#include <QObject>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw

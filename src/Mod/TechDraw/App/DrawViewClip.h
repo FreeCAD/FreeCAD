@@ -24,12 +24,10 @@
 #ifndef DrawViewClip_h_
 #define DrawViewClip_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
 

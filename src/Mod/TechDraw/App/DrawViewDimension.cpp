@@ -23,44 +23,37 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <cstring>
 # include <cstdlib>
-# include <exception>
+# include <cstring>
+# include <sstream>
+# include <QLocale>
+# include <QRegExp>
 # include <QString>
 # include <QStringList>
-# include <QRegExp>
-#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepBndLib.hxx>
 #include <gp_Pnt.hxx>
-#include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 #endif
-
-#include <QLocale>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Quantity.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-
 #include <Mod/Measure/App/Measurement.h>
+#include <Mod/TechDraw/App/DrawViewDimensionPy.h>  // generated from DrawViewDimensionPy.xml
 
-#include "Preferences.h"
-#include "Geometry.h"
-#include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 #include "DrawUtil.h"
-#include "LineGroup.h"
+#include "DrawViewPart.h"
+#include "Geometry.h"
+#include "Preferences.h"
 
-
-#include <Mod/TechDraw/App/DrawViewDimensionPy.h>  // generated from DrawViewDimensionPy.xml
 
 using namespace TechDraw;
 

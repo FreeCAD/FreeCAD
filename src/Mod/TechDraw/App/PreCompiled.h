@@ -55,6 +55,7 @@
 #include <cassert>
 #include <cstdio>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <set>
@@ -69,7 +70,9 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <QtConcurrentRun>
 #include <QFile>
+#include <QLocale>
 
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>

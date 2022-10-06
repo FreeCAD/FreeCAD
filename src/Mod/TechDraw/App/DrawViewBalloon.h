@@ -23,11 +23,9 @@
 #ifndef TechDraw_DrawViewBalloon_h_
 #define TechDraw_DrawViewBalloon_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
 
