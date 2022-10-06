@@ -132,6 +132,10 @@ def find_tools(noobsolete=True):
             raise Exception("Cannot find qmake")
         if (os.system("pylupdate -version") == 0):
             PYLUPDATE = "pylupdate"
+        elif (os.system("pylupdate6 --version") == 0):
+            PYLUPDATE = "pylupdate6"
+            if noobsolete:
+                PYLUPDATE += " -noobsolete"
         elif (os.system("pylupdate5 -version") == 0):
             PYLUPDATE = "pylupdate5"
             if noobsolete:
