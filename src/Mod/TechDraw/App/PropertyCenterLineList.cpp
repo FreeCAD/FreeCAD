@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <cassert>
-#endif
-
-/// Here the FreeCAD includes sorted by Base, App, Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "CenterLinePy.h"
 
 #include "PropertyCenterLineList.h"
+#include "CenterLinePy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyCenterLineList
@@ -137,18 +125,19 @@ void PropertyCenterLineList::setPyObject(PyObject *value)
 
 void PropertyCenterLineList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CenterLineList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<CenterLineList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CenterLine  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CenterLine>" << endl;
+        writer.Stream() << writer.ind() << "</CenterLine>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CenterLineList>" << endl ;
+    writer.Stream() << writer.ind() << "</CenterLineList>" << std::endl;
 }
 
 void PropertyCenterLineList::Restore(Base::XMLReader &reader)

@@ -23,14 +23,14 @@
 #ifndef ShapeExtractor_h_
 #define ShapeExtractor_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <TopoDS_Shape.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/Link.h>
 #include <Base/Type.h>
 #include <Base/Vector3D.h>
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw

@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <cassert>
-#endif
-
-/// Here the FreeCAD includes sorted by Base, App, Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "CosmeticVertexPy.h"
 
 #include "PropertyCosmeticVertexList.h"
+#include "CosmeticVertexPy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyCosmeticVertexList
@@ -139,18 +127,19 @@ void PropertyCosmeticVertexList::setPyObject(PyObject *value)
 
 void PropertyCosmeticVertexList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CosmeticVertexList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticVertexList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CosmeticVertex  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CosmeticVertex>" << endl;
+        writer.Stream() << writer.ind() << "</CosmeticVertex>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CosmeticVertexList>" << endl ;
+    writer.Stream() << writer.ind() << "</CosmeticVertexList>" << std::endl;
 }
 
 void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)

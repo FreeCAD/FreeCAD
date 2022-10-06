@@ -26,14 +26,14 @@
 
 #include "PreCompiled.h"
 
-#include "QDomNodeModel.h"
-
-#include <QDomNode>
 #include <QDomDocument>
-#include <QUrl>
-#include <QVector>
+#include <QDomNode>
+#include "QDomNodeModel.h"
 #include <QSourceLocation>
+#include <QUrl>
 #include <QVariant>
+#include <QVector>
+
 
 class PrivateDomNodeWrapper: public QDomNode
 {

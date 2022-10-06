@@ -20,31 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#   include <cassert>
-#endif
-
-/// Here the FreeCAD includes sorted by Base, App, Gui......
-
-#include <Base/Exception.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-
-#include "Cosmetic.h"
-#include "CosmeticEdgePy.h"
 
 #include "PropertyCosmeticEdgeList.h"
+#include "CosmeticEdgePy.h"
 
 
 using namespace App;
 using namespace Base;
-using namespace std;
 using namespace TechDraw;
-
 
 //**************************************************************************
 // PropertyCosmeticEdgeList
@@ -139,18 +127,19 @@ void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
 
 void PropertyCosmeticEdgeList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<CosmeticEdgeList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticEdgeList count=\"" << getSize() << "\">"
+                    << std::endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CosmeticEdge  type=\""
-                        << _lValueList[i]->getTypeId().getName() << "\">" << endl;
+                        << _lValueList[i]->getTypeId().getName() << "\">" << std::endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CosmeticEdge>" << endl;
+        writer.Stream() << writer.ind() << "</CosmeticEdge>" << std::endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</CosmeticEdgeList>" << endl ;
+    writer.Stream() << writer.ind() << "</CosmeticEdgeList>" << std::endl;
 }
 
 void PropertyCosmeticEdgeList::Restore(Base::XMLReader &reader)

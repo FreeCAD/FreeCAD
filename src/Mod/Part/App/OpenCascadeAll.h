@@ -356,6 +356,7 @@
 // HLR*
 #include <HLRAlgo_Projector.hxx>
 #include <HLRAppli_ReflectLines.hxx>
+#include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <HLRBRep_PolyAlgo.hxx>
 #include <HLRBRep_PolyHLRToShape.hxx>

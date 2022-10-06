@@ -22,65 +22,43 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <cmath>
+# include <sstream>
+# include <Approx_Curve3d.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <Geom_Circle.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepLProp_CLProps.hxx>
+# include <Geom_BezierCurve.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Dir.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# if OCC_VERSION_HEX < 0x070600
+#  include <BRepAdaptor_HCurve.hxx>
+# endif
 #endif
 
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <TopoDS_Shape.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <Poly_Triangulation.hxx>
-#include <Poly_PolygonOnTriangulation.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <BRep_Tool.hxx>
-
-#include <BRepAdaptor_CompCurve.hxx>
-#include <Approx_Curve3d.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-#include <Geom2d_BSplineCurve.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <Standard_Failure.hxx>
-#include <Standard_Version.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
+#include <Base/Tools.h>
 
 #include "TechDrawExport.h"
-#include <Base/Tools.h>
-#include <Base/Vector3D.h>
+
 
 #if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
@@ -242,7 +220,7 @@ void SVGOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     else {
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         char xar = '0'; // x-axis-rotation
-        char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
+        char las = (l-f > M_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r << " " << r << " "
@@ -289,7 +267,7 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
     // arc of ellipse
     else {
-        char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
+        char las = (l-f > M_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r1 << " " << r2 << " "
@@ -554,8 +532,8 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	double bx = e.X() - p.X();
 	double by = e.Y() - p.Y();
 
-	double start_angle = atan2(ay, ax) * 180/D_PI;
-	double end_angle = atan2(by, bx) * 180/D_PI;
+	double start_angle = atan2(ay, ax) * 180 / M_PI;
+    double end_angle = atan2(by, bx) * 180 / M_PI;
 
 
 	if(a > 0){

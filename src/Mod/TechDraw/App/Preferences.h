@@ -23,11 +23,10 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
-#include <App/Material.h>
+#include <string>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <string>
 
 class QString;
 

@@ -30,12 +30,11 @@
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Base/Vector3D.h>
 
 #include "Preferences.h"
+
 
 //getters for parameters used in multiple places.
 //ensure this is in sync with preference page user interfaces
