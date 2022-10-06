@@ -21,18 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QButtonGroup>
-# include <QCheckBox>
-# include <QDialogButtonBox>
-# include <QVBoxLayout>
-# include <QRegExp>
-# include <QRegExpValidator>
-# include <Interface_Static.hxx>
-#endif
 
-#include <App/Application.h>
-#include <Base/Parameter.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
 #include <Mod/Part/App/STEP/ImportExportSettings.h>
 

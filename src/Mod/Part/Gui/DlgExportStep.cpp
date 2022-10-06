@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <QButtonGroup>
 # include <QCheckBox>
 # include <QDialogButtonBox>
 # include <QRegExp>

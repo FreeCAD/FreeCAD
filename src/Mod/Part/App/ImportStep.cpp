@@ -24,8 +24,8 @@
 #ifndef _PreComp_
 # include <fcntl.h>
 # include <sstream>
-# include <BRep_Builder.hxx>
 # include <Quantity_Color.hxx>
+# include <BRep_Builder.hxx>
 # include <STEPControl_Reader.hxx>
 # include <StepData_StepModel.hxx>
 # include <TopoDS.hxx>
@@ -35,7 +35,6 @@
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Standard_Version.hxx>
-# include <Transfer_TransientProcess.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
 #endif
@@ -43,7 +42,6 @@
 #include <StepElement_AnalysisItemWithinRepresentation.hxx>
 #include <StepVisual_AnnotationCurveOccurrence.hxx>
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 
