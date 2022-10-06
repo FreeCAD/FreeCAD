@@ -521,7 +521,7 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     else {
         // See also https://developer.mozilla.org/en/SVG/Tutorial/Paths
         /*char xar = '0'; // x-axis-rotation
-        char las = (l-f > D_PI) ? '1' : '0'; // large-arc-flag
+        char las = (l-f > M_PI) ? '1' : '0'; // large-arc-flag
         char swp = (a < 0) ? '1' : '0'; // sweep-flag, i.e. clockwise (0) or counter-clockwise (1)
         out << "<path d=\"M" << s.X() <<  " " << s.Y()
             << " A" << r << " " << r << " "
@@ -533,10 +533,9 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	double by = e.Y() - p.Y();
 
 	double start_angle = atan2(ay, ax) * 180 / M_PI;
-    double end_angle = atan2(by, bx) * 180 / M_PI;
+	double end_angle = atan2(by, bx) * 180 / M_PI;
 
-
-	if(a > 0){
+	if (a > 0) {
 		double temp = start_angle;
 		start_angle = end_angle;
 		end_angle = temp;}
@@ -562,9 +561,6 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	out << start_angle	<< endl;	// Start angle
 	out << 51			<< endl;
 	out << end_angle	<< endl;	// End angle
-
-
-
     }
 }
 
