@@ -28,7 +28,7 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepTools.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx >
+# include <TopoDS_Iterator.hxx>
 # include <TopoDS_Vertex.hxx>
 #endif
 
