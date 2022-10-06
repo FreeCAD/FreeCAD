@@ -27,6 +27,8 @@
 # include <QKeyEvent>
 # include <QLabel>
 # include <QPlainTextEdit>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QTextCursor>
 # include <QToolTip>
 #endif
@@ -706,9 +708,9 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
        * Try to find out if call needs arguments.
        * For this we search the description for appropriate hints ...
        */
-      QRegExp argumentMatcher( QRegExp::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
-      argumentMatcher.setMinimal( true ); //< set regex non-greedy!
-      if (argumentMatcher.indexIn( callTip.description ) != -1)
+      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String("\\s*\\(\\s*\\w+.*\\)") );
+      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
+      if (argumentMatcher.match( callTip.description ).hasMatch())
       {
         // if arguments are needed, we just move the cursor one left, to between the parentheses.
         cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, 1 );

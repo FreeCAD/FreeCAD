@@ -28,6 +28,8 @@
 # include <QLocale>
 # include <QMutex>
 # include <QProcessEnvironment>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QScreen>
 # include <QSysInfo>
 # include <QTextBrowser>
@@ -119,18 +121,18 @@ public:
     void Log (const char * s)
     {
         QString msg(QString::fromUtf8(s));
-        QRegExp rx;
+        QRegularExpression rx;
         // ignore 'Init:' and 'Mod:' prefixes
         rx.setPattern(QLatin1String("^\\s*(Init:|Mod:)\\s*"));
-        int pos = rx.indexIn(msg);
-        if (pos != -1) {
-            msg = msg.mid(rx.matchedLength());
+        auto match = rx.match(msg);
+        if (match.hasMatch()) {
+            msg = msg.mid(match.capturedLength());
         }
         else {
             // ignore activation of commands
             rx.setPattern(QLatin1String("^\\s*(\\+App::|Create|CmdC:|CmdG:|Act:)\\s*"));
-            pos = rx.indexIn(msg);
-            if (pos == 0)
+            match = rx.match(msg);
+            if (match.hasMatch() && match.capturedStart() == 0)
                 return;
         }
 

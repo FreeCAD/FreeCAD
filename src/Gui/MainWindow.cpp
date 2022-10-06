@@ -39,6 +39,8 @@
 # include <QMessageBox>
 # include <QMimeData>
 # include <QPainter>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QScreen>
 # include <QSettings>
 # include <QSignalMapper>
@@ -1609,10 +1611,11 @@ QPixmap MainWindow::splashImage() const
         int v = QtTools::horizontalAdvance(metricVer, version);
 
         int x = -1, y = -1;
-        QRegExp rx(QLatin1String("(\\d+).(\\d+)"));
-        if (rx.indexIn(position) != -1) {
-            x = rx.cap(1).toInt();
-            y = rx.cap(2).toInt();
+        QRegularExpression rx(QLatin1String("(\\d+).(\\d+)"));
+        auto match = rx.match(position);
+        if (match.hasMatch()) {
+            x = match.captured(1).toInt();
+            y = match.captured(2).toInt();
         }
         else {
             x = w - (l + v + 10);

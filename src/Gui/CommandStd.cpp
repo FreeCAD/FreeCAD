@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QWhatsThis>
 #endif
 
@@ -89,11 +91,11 @@ void StdCmdWorkbench::activated(int i)
     catch(const Base::PyException& e) {
         QString msg(QLatin1String(e.what()));
         // ignore '<type 'exceptions.*Error'>' prefixes
-        QRegExp rx;
+        QRegularExpression rx;
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.\\w*'>:\\s*"));
-        int pos = rx.indexIn(msg);
-        if (pos != -1)
-            msg = msg.mid(rx.matchedLength());
+        auto match = rx.match(msg);
+        if (match.hasMatch())
+            msg = msg.mid(match.capturedLength());
         QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg);
     }
     catch(...) {

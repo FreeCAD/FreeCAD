@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include "Command.h"
@@ -97,15 +99,14 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
         if (action) {
             QString spc = QString::fromLatin1(" ");
             if (Base::asBoolean(bIsRegularExp)) {
-               QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
-               re.setCaseSensitivity(Qt::CaseInsensitive);
+               QRegularExpression re(QString::fromLatin1(shortcut_to_find), QRegularExpression::CaseInsensitiveOption);
                if (!re.isValid()) {
                    std::stringstream str;
                    str << "Invalid regular expression:" << ' ' << shortcut_to_find;
                    throw Py::RuntimeError(str.str());
                }
 
-               if (re.indexIn(action->shortcut().toString().remove(spc).toUpper()) != -1) {
+               if (re.match(action->shortcut().toString().remove(spc).toUpper()).hasMatch()) {
                    matches.emplace_back(c->getName());
                }
             }

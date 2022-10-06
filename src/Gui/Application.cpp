@@ -32,6 +32,8 @@
 # include <QLocale>
 # include <QMessageBox>
 # include <QMessageLogContext>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QStatusBar>
 # include <QStyle>
 # include <QTextStream>
@@ -1403,13 +1405,13 @@ bool Application::activateWorkbench(const char* name)
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         QString msg = QString::fromUtf8(e.what());
-        QRegExp rx;
+        QRegularExpression rx;
         // ignore '<type 'exceptions.ImportError'>' prefixes
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.ImportError'>:\\s*"));
-        int pos = rx.indexIn(msg);
-        while ( pos != -1 ) {
-            msg = msg.mid(rx.matchedLength());
-            pos = rx.indexIn(msg);
+        auto match = rx.match(msg);
+        while (match.hasMatch()) {
+            msg = msg.mid(match.capturedLength());
+            match = rx.match(msg);
         }
 
         Base::Console().Error("%s\n", (const char*)msg.toUtf8());

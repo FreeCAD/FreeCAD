@@ -33,6 +33,8 @@
 # include <QLineEdit>
 # include <QPushButton>
 # include <QRadioButton>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QResizeEvent>
 # include <QStandardPaths>
 # include <QStyle>
@@ -85,10 +87,11 @@ FileDialog::~FileDialog()
 
 void FileDialog::onSelectedFilter(const QString& /*filter*/)
 {
-    QRegExp rx(QLatin1String("\\(\\*.(\\w+)"));
+    QRegularExpression rx(QLatin1String("\\(\\*.(\\w+)"));
     QString suf = selectedNameFilter();
-    if (rx.indexIn(suf) >= 0) {
-        suf = rx.cap(1);
+    auto match = rx.match(suf);
+    if (match.hasMatch()) {
+        suf = match.captured(1);
         setDefaultSuffix(suf);
     }
 }
@@ -116,11 +119,10 @@ QList<QUrl> FileDialog::fetchSidebarUrls()
 
 bool FileDialog::hasSuffix(const QString& ext) const
 {
-    QRegExp rx(QString::fromLatin1("\\*.(%1)\\W").arg(ext));
-    rx.setCaseSensitivity(Qt::CaseInsensitive);
+    QRegularExpression rx(QString::fromLatin1("\\*.(%1)\\W").arg(ext), QRegularExpression::CaseInsensitiveOption);
     QStringList filters = nameFilters();
     for (const auto & str : filters) {
-        if (rx.indexIn(str) != -1) {
+        if (rx.match(str).hasMatch()) {
             return true;
         }
     }
@@ -182,12 +184,17 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         else {
             filterToSearch = &filter;
         }
-        QRegExp rx;
+
+        QRegularExpression rx;
         rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
-        int index = rx.indexIn(*filterToSearch);
-        if (index != -1) {
-            // get the suffix with the leading dot
-            QString suffix = filterToSearch->mid(index+3, rx.matchedLength()-4);
+        auto match = rx.match(*filterToSearch);
+        if (match.hasMatch()) {
+            int index = match.capturedStart();
+            int length = match.capturedLength();
+            // get the suffix with the leading dot but ignore the surrounding ' (*' and ')'
+            int offsetStart = 3;
+            int offsetEnd = 4;
+            QString suffix = filterToSearch->mid(index + offsetStart, length - offsetEnd);
             if (fi.suffix().isEmpty())
                 dirName += suffix;
         }
@@ -491,10 +498,11 @@ void FileOptionsDialog::accept()
     else if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         QString ext = fi.completeSuffix();
-        QRegExp rx(QLatin1String("\\(\\*.(\\w+)"));
+        QRegularExpression rx(QLatin1String("\\(\\*.(\\w+)"));
         QString suf = selectedNameFilter();
-        if (rx.indexIn(suf) >= 0)
-            suf = rx.cap(1);
+        auto match = rx.match(suf);
+        if (match.hasMatch())
+            suf = match.captured(1);
         if (ext.isEmpty())
             setDefaultSuffix(suf);
         else if (ext.toLower() != suf.toLower()) {
@@ -858,22 +866,22 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
     for (SelectModule::Dict::const_iterator it = types.begin(); it != types.end(); ++it) {
         auto button = new QRadioButton(groupBox);
 
-        QRegExp rx;
+        QRegularExpression rx;
         QString filter = it.key();
         QString module = it.value();
 
         // ignore file types in (...)
         rx.setPattern(QLatin1String("\\s+\\([\\w\\*\\s\\.]+\\)$"));
-        int pos = rx.indexIn(filter);
-        if (pos != -1) {
-            filter = filter.left(pos);
+        auto match = rx.match(filter);
+        if (match.hasMatch()) {
+            filter = filter.left(match.capturedStart());
         }
 
         // ignore Gui suffix in module name
         rx.setPattern(QLatin1String("Gui$"));
-        pos = rx.indexIn(module);
-        if (pos != -1) {
-            module = module.left(pos);
+        match = rx.match(module);
+        if (match.hasMatch()) {
+            module = module.left(match.capturedStart());
         }
 
         button->setText(QString::fromLatin1("%1 (%2)").arg(filter, module));

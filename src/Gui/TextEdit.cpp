@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 # include <QKeyEvent>
 # include <QPainter>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QShortcut>
 # include <QTextCursor>
 #endif
@@ -111,7 +113,7 @@ void TextEdit::complete()
     if (wordPrefix.isEmpty())
         return;
 
-    QStringList list = toPlainText().split(QRegExp(QLatin1String("\\W+")));
+    QStringList list = toPlainText().split(QRegularExpression(QLatin1String("\\W+")));
     QMap<QString, QString> map;
     QStringList::Iterator it = list.begin();
     while (it != list.end()) {
