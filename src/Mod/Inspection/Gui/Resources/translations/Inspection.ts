@@ -94,38 +94,38 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="405"/>
+        <location filename="../../ViewProviderInspection.cpp" line="457"/>
         <source>Remove annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="406"/>
+        <location filename="../../ViewProviderInspection.cpp" line="458"/>
         <source>Do you want to remove all annotations?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="458"/>
+        <location filename="../../ViewProviderInspection.cpp" line="510"/>
         <source>Annotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="461"/>
+        <location filename="../../ViewProviderInspection.cpp" line="513"/>
         <source>Leave info mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="582"/>
+        <location filename="../../ViewProviderInspection.cpp" line="634"/>
         <source>Distance: &gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="585"/>
+        <location filename="../../ViewProviderInspection.cpp" line="637"/>
         <source>Distance: &lt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderInspection.cpp" line="604"/>
-        <location filename="../../ViewProviderInspection.cpp" line="620"/>
+        <location filename="../../ViewProviderInspection.cpp" line="656"/>
+        <location filename="../../ViewProviderInspection.cpp" line="672"/>
         <source>Distance: %1</source>
         <translation type="unfinished"></translation>
     </message>

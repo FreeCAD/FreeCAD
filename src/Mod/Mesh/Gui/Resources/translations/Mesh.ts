@@ -773,8 +773,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSmoothing.cpp" line="174"/>
         <location filename="../../Command.cpp" line="1418"/>
+        <location filename="../../DlgSmoothing.cpp" line="174"/>
         <source>Mesh Smoothing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -864,34 +864,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="880"/>
-        <location filename="../../ViewProvider.cpp" line="935"/>
+        <location filename="../../ViewProvider.cpp" line="858"/>
+        <location filename="../../ViewProvider.cpp" line="913"/>
         <source>Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="889"/>
-        <location filename="../../ViewProvider.cpp" line="996"/>
+        <location filename="../../ViewProvider.cpp" line="867"/>
+        <location filename="../../ViewProvider.cpp" line="974"/>
         <source>Trim</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1073"/>
+        <location filename="../../ViewProvider.cpp" line="1051"/>
         <source>Split</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1137"/>
+        <location filename="../../ViewProvider.cpp" line="1115"/>
         <source>Segment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1722"/>
+        <location filename="../../ViewProvider.cpp" line="1700"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1829"/>
+        <location filename="../../ViewProvider.cpp" line="1807"/>
         <source>Fill hole</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2185,7 +2185,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppMeshGui.cpp" line="164"/>
+        <location filename="../../AppMeshGui.cpp" line="166"/>
         <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2368,48 +2368,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="740"/>
+        <location filename="../../ViewProvider.cpp" line="718"/>
         <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="746"/>
+        <location filename="../../ViewProvider.cpp" line="724"/>
         <source>Display segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="752"/>
+        <location filename="../../ViewProvider.cpp" line="730"/>
         <source>Display colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1573"/>
+        <location filename="../../ViewProvider.cpp" line="1551"/>
         <location filename="../../ViewProviderCurvature.cpp" line="514"/>
         <source>Leave info mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1632"/>
+        <location filename="../../ViewProvider.cpp" line="1610"/>
         <source>Index: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1655"/>
+        <location filename="../../ViewProvider.cpp" line="1633"/>
         <source>Leave hole-filling mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1701"/>
+        <location filename="../../ViewProvider.cpp" line="1679"/>
         <source>Leave removal mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1702"/>
+        <location filename="../../ViewProvider.cpp" line="1680"/>
         <source>Delete selected faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProvider.cpp" line="1703"/>
+        <location filename="../../ViewProvider.cpp" line="1681"/>
         <source>Clear selected faces</source>
         <translation type="unfinished"></translation>
     </message>
