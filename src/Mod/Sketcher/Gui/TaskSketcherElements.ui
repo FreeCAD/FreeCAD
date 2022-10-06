@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>214</width>
-    <height>401</height>
+    <width>220</width>
+    <height>400</height>
    </rect>
   </property>
-  <property name="minimumSize">
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
    <size>
-    <width>0</width>
-    <height>400</height>
+    <width>16777215</width>
+    <height>350</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -21,148 +27,150 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Type:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBoxElementFilter">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="locale">
-        <locale language="English" country="UnitedStates"/>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>Edge</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Starting Point</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>End Point</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Center Point</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout1">
      <item>
-      <widget class="QLabel" name="label1">
+      <widget class="QCheckBox" name="filterBox">
+       <property name="toolTip">
+        <string>Check to activate filters</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding-bottom: 0px; margin-bottom: 0px</string>
+       </property>
        <property name="text">
-        <string>Mode:</string>
+        <string>Filters</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxModeFilter">
-       <property name="enabled">
-        <bool>false</bool>
+      <widget class="QToolButton" name="settingsButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="locale">
-        <locale language="English" country="UnitedStates"/>
+       <property name="toolTip">
+        <string>Settings</string>
        </property>
-       <property name="editable">
-        <bool>false</bool>
+       <property name="text">
+        <string/>
        </property>
-       <property name="currentIndex">
-        <number>0</number>
+       <property name="icon">
+        <iconset resource="Resources/Sketcher.qrc">
+        <normaloff>:/icons/dialogs/Sketcher_Settings.svg</normaloff>:/icons/dialogs/Sketcher_Settings.svg</iconset>
        </property>
-       <item>
-        <property name="text">
-         <string>All</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Normal</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Construction</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>External</string>
-        </property>
-       </item>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="ElementView" name="listWidgetElements">
+    <widget class="QListWidget" name="listMultiFilter">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>237</height>
-      </size>
+     <property name="styleSheet">
+      <string notr="true">padding-top: 0px; margin-top: 0px</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::NoSelection</enum>
      </property>
      <property name="modelColumn">
       <number>0</number>
      </property>
+     <item>
+      <property name="text">
+       <string>Normal</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Construction</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Internal</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>External</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>All types</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Point</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Line</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Circle</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Ellipse </string>
+      </property>
+     </item>
+      <item>
+      <property name="text">
+       <string> - Arc</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Arc of ellipse</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Arc of hyperbola</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - Arc of parabola</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string> - B-Spline</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="namingBox">
-     <property name="toolTip">
-      <string>Extended naming containing info about element mode</string>
+    <widget class="ElementView" name="listWidgetElements">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="text">
-      <string>Extended naming</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="autoSwitchBox">
-     <property name="toolTip">
-      <string>Only the type 'Edge' will be available for the list</string>
-     </property>
-     <property name="text">
-      <string>Auto-switch to Edge</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="Explanation">
-     <property name="text">
-      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <property name="modelColumn">
+      <number>0</number>
      </property>
     </widget>
    </item>
