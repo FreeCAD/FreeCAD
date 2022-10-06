@@ -864,34 +864,34 @@
       <translation>Izbriši izbor</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Izreži</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Prireži</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Razdeli</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Odsek</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Zapolni luknjo</translation>
     </message>
@@ -2200,7 +2200,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Uvoz - Izvoz</translation>
     </message>
@@ -2383,48 +2383,48 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>[točk: %1, robov: %2, ploskev: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Prikaži sestavine</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Prikaži odseke</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation>Barve prikaza</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Zapusti podatkovni način</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Kazalo: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Zapusti način zapolnjevanja lukenj</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Zapusti odstranjevalni način</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Izbriši izbrane ploskve</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Počisti izbrane ploskve</translation>
     </message>

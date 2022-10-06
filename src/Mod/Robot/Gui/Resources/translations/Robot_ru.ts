@@ -868,7 +868,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="273"/>
       <source>Base</source>
-      <translation>Основание</translation>
+      <translation>Основные</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="278"/>

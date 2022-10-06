@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="479"/>
       <source>&amp;Annotation</source>
-      <translation>Περιγρ&amp;αφή</translation>
+      <translation>&amp; Σχολιασμός</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="480"/>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Export page...</source>
-      <translation>&amp;Εξαγάγετε σελίδα...</translation>
+      <translation>Εξαγωγή σελίδας...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="630"/>
@@ -741,20 +741,20 @@ Do you want to continue?</source>
       <translation>Επιλέξτε ακριβώς ένα Υπολογιστικό Φύλλο.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="50"/>
-      <location filename="../../TaskOrthoViews.cpp" line="978"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make axonometric...</source>
       <translation>Κάντε αξονομετρική...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="972"/>
       <source>Edit axonometric settings...</source>
       <translation>Επεξεργαστείτε τις αξονομετρικές ρυθμίσεις...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="50"/>
+      <location filename="../../TaskOrthoViews.cpp" line="973"/>
       <source>Make orthographic</source>
       <translation>Κάντε ορθογραφική</translation>
     </message>

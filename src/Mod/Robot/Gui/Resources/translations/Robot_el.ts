@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Δημιουργήστε μια νέα κενή τροχία</translation>
     </message>
   </context>
   <context>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
-      <translation>Θα πρέπει να πραγματοποιήσετε αιώρηση πάνω από ένα γεωμετρικό σχήμα (Προεπιλογή) με το ποντίκι για να χρησιμοποιήσετε αυτήν την εντολή. Δείτε την τεκμηρίωση για λεπτομέρειες.</translation>
+      <translation>Πρέπει να τοποθετήσετε το ποντίκι πάνω από μια γεωμετρία (Προεπιλογή) με το ποντίκι για να χρησιμοποιήσετε αυτήν την εντολή. Δείτε τεκμηρίωση για λεπτομέρειες.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>

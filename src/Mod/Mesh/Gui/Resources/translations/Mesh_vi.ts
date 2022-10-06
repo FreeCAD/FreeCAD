@@ -864,34 +864,34 @@
       <translation type="unfinished">Delete selection</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Cắt</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Cắt bỏ</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Phân đoạn</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Xóa</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation type="unfinished">Fill hole</translation>
     </message>
@@ -2200,7 +2200,7 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Nhập-Xuất</translation>
     </message>
@@ -2383,48 +2383,48 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
       <translation>[Điểm: %1, Cạnh: %2, Mặt: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Hiển thị các bộ phận</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation type="unfinished">Display segments</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Rời khỏi chế độ thông tin</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Chỉ mục: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Rời khỏi chế độ lấp đầy lỗ</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Rời khỏi chế độ gỡ bỏ</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Xóa các mặt đã chọn</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Xóa các mặt đã chọn</translation>
     </message>

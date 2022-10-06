@@ -146,6 +146,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"             )] = "gl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian"             )] = "ka";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                )] = "el";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
@@ -161,6 +162,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"              )] = "sr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
@@ -170,7 +172,6 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian")] = "ka";
 
     auto entries = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         GetASCII("AdditionalLanguageDomainEntries", "");

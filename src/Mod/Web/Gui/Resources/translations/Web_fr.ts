@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="785"/>
       <location filename="../../AppWebGui.cpp" line="85"/>
+      <location filename="../../BrowserView.cpp" line="784"/>
       <source>Browser</source>
       <translation>Navigateur</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="597"/>
+      <location filename="../../BrowserView.cpp" line="596"/>
       <source>File does not exist!</source>
       <translation>Le fichier n'existe pas !</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="585"/>
-      <location filename="../../BrowserView.cpp" line="590"/>
-      <location filename="../../BrowserView.cpp" line="593"/>
+      <location filename="../../BrowserView.cpp" line="584"/>
+      <location filename="../../BrowserView.cpp" line="589"/>
+      <location filename="../../BrowserView.cpp" line="592"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="590"/>
+      <location filename="../../BrowserView.cpp" line="589"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Des erreurs sont survenues lors du chargement du fichier. Certaines données pourraient avoir été modifiées, ou pas récupérées du tout. Consultez la vue rapport pour plus d’informations sur les objets concernés.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="593"/>
+      <location filename="../../BrowserView.cpp" line="592"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Il y a eu de sérieuses erreurs lors du chargement du fichier. Certaines données ont peut-être été modifiées ou pas du tout récupérées. L'enregistrement du projet entraînera très probablement une perte de données.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="753"/>
+      <location filename="../../BrowserView.cpp" line="752"/>
       <source>Loading %1...</source>
       <translation>Chargement %1...</translation>
     </message>

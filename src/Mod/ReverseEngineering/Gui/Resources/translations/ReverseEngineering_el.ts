@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation>Plane...</translation>
+      <translation>Επίπεδο...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
@@ -205,27 +205,27 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Εφαρμογή επιπέδου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Εφαρμογή κυλίνδρου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Εφαρμογή σφαίρας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Εφαρμόγη πολυωνυμικής επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Προβολή τριγωνισμού</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="157"/>
@@ -235,17 +235,17 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="229"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Προσαρμογή B-Spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Ανακατασκευή Poisson</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Κατάτμηση</translation>
     </message>
   </context>
   <context>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Δημιουργία τοποθέτησης</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -391,7 +391,7 @@
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>Παρακαλώ επιλέξτε ένα σημείο σύννεφο ή πλέγμα.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="570"/>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>View triangulation failed</source>
       <translation>Η προβολή τριγωνισμού απέτυχε</translation>
     </message>
@@ -427,12 +427,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Ανοχή καμπυλότητας</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Απόσταση μέχρι το τέλος</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Δημιουργήστε πλέγμα από αχρησιμοποίητα τρίγωνα</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Δημιουργία στοιχείου</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Χειροκίνητη τμηματοποίηση</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -507,7 +507,7 @@
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Εντοπισμός</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="135"/>
@@ -551,17 +551,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Κατάτμηση</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Περικοπή τμήματος από πλέγμα</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Απόκρυψη τμήματος</translation>
     </message>
   </context>
   <context>

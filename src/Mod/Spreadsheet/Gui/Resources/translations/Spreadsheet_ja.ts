@@ -347,31 +347,31 @@
       <translation>セルのプロパティ</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="471"/>
+      <location filename="../../SheetModel.cpp" line="470"/>
       <source>Edit cell</source>
       <translation>セルを編集</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="276"/>
-      <location filename="../../SheetTableView.cpp" line="308"/>
+      <location filename="../../SheetTableView.cpp" line="322"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
       <source>Insert rows</source>
       <translation>行を挿入</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="327"/>
-      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="373"/>
+      <location filename="../../SheetTableView.cpp" line="446"/>
       <source>Remove rows</source>
       <translation>行を削除</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="348"/>
-      <location filename="../../SheetTableView.cpp" line="381"/>
+      <location filename="../../SheetTableView.cpp" line="394"/>
+      <location filename="../../SheetTableView.cpp" line="427"/>
       <source>Insert columns</source>
       <translation>列を挿入</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="167"/>
-      <location filename="../../SheetTableView.cpp" line="557"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
+      <location filename="../../SpreadsheetView.cpp" line="168"/>
       <source>Clear cell(s)</source>
       <translation>セルをクリア</translation>
     </message>
@@ -391,84 +391,83 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>スプレッドシートのセルのバインド</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>バインド先のセル:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>シート:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>範囲の最初のセル</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>範囲の最後のセル</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>セルのバインド:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>開始セルのアドレス</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>開始セルのアドレス</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>バインド先の開始セルのアドレス。
+式を使いたい場合は '=' と入力してください。
+式はセルのアドレス文字列として評価されます。</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>バインド先の終了セルのアドレス。
+式を使いたい場合は '=' と入力してください。
+式はセルのアドレス文字列として評価されます。</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>どのスプレッドシートにバインドするか</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>参照されているスプレッドシートの依存関係は依存関係チェックで非表示になります。
+循環依存関係を避けるのに役立ちますが、注意して使用してください！</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>バインディングの依存関係を非表示</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>バインド解除</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -486,12 +485,12 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>構成表のセットアップ</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>セル範囲:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -504,14 +503,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>開始セルのアドレス
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+範囲の1列目は設定名のリストが入力されているものとされ、文字列リストの生成と、ユーザーが動的に設定を切り替えるために与えられたプロパティーをバインドするのに使用されます。
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+範囲の1行目はこのプロパティによって (間接的に) 選択された任意の行にバインドされます。
 </translation>
     </message>
     <message>
@@ -525,42 +521,39 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>終了セルのアドレス
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+範囲の1列目は設定名のリストが入力されているものとされ、文字列リストの生成と、ユーザーが動的に設定を切り替えるために与えられたプロパティーをバインドするのに使用されます。
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+範囲の1行目はこのプロパティによって (間接的に) 選択された任意の行にバインドされます。
 </translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>プロパティ:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>デザイン設定を動的に切り替えるためにオブジェクトとプロパティ名を指定する式を入力します。
+ 存在しない場合、プロパティが作成されます。</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>グループ:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>追加のプロパティグループ名。</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>設定解除</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -723,17 +716,17 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>スプレッドシートのセルの背景色を設定</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="677"/>
+      <location filename="../../SheetTableView.cpp" line="735"/>
       <source>Copy &amp; Paste failed</source>
       <translation>コピー＆ペーストに失敗しました</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="434"/>
+      <location filename="../../SpreadsheetView.cpp" line="435"/>
       <source>Alias contains invalid characters!</source>
       <translation>エイリアスに無効な文字が含まれています！</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="440"/>
+      <location filename="../../SpreadsheetView.cpp" line="441"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Spreadsheet.B1 の代わりに
@@ -877,97 +870,37 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
   </context>
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>スプレッドシート</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>セル</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>適用する</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>現在のセルに変更を適用</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>削除</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>現在のセルの内容を削除</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>計算</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>スプレッドシートを作成</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>コントローラを追加</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>プロパティコントローラを追加</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="194"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>セルのバインド</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="195"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>バインド元とバインド先のセル数が一致しません。部分バインディングは機能します。
 
-Do you want to continue?</translation>
+続行しますか？</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>スプレッドシートのセルのバインド</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
+      <translation>エラー:
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="240"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>セルの結合解除</translation>
     </message>
   </context>
   <context>
@@ -1015,7 +948,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;文字列区切りに使用される文字。通常はシングルクォート (') またはダブルクォート (&amp;quot;) です。1文字でなければなりません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="111"/>
@@ -1025,12 +958,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>エスケープ文字: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;表示されない特殊文字を表すためのエスケープ文字。通常はバックスラッシュ (\) で、例えば \t = tab です。1文字でなければなりません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="140"/>
@@ -1043,12 +976,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="245"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>構成表の設定</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="292"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>構成表の設定解除</translation>
     </message>
   </context>
   <context>
@@ -1062,108 +995,118 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="129"/>
+      <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>上に%n行挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="133"/>
+      <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>下に%n行挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="137"/>
+      <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>%n の不連続行を挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="140"/>
+      <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Remove row(s)</source>
       <translation>
         <numerusform>行を削除</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="154"/>
+      <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
       <translation>
         <numerusform>左に%n列挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="158"/>
+      <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
       <translation>
         <numerusform>右に%n列挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="162"/>
+      <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>%n の不連続列を挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="165"/>
+      <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
       <translation>
         <numerusform>列を削除</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="170"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
+      <location filename="../../SheetTableView.cpp" line="596"/>
       <source>Properties...</source>
       <translation>プロパティ(&amp;P)...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="182"/>
+      <location filename="../../SheetTableView.cpp" line="181"/>
+      <location filename="../../SheetTableView.cpp" line="597"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>再計算</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="185"/>
+      <location filename="../../SheetTableView.cpp" line="605"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>バインド...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="189"/>
+      <location filename="../../SheetTableView.cpp" line="598"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>構成表...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="198"/>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="599"/>
       <source>Merge cells</source>
       <translation>セルの結合</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="200"/>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="600"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>セルの分割</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="603"/>
       <source>Cut</source>
       <translation>切り取り</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="601"/>
       <source>Copy</source>
       <translation>コピー</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="208"/>
+      <location filename="../../SheetTableView.cpp" line="207"/>
+      <location filename="../../SheetTableView.cpp" line="602"/>
       <source>Paste</source>
       <translation>貼り付け</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="210"/>
+      <location filename="../../SheetTableView.cpp" line="209"/>
+      <location filename="../../SheetTableView.cpp" line="604"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
@@ -1171,53 +1114,14 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="262"/>
+      <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>Export PDF</source>
       <translation>PDFファイル形式でエクスポート</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="263"/>
+      <location filename="../../SpreadsheetView.cpp" line="264"/>
       <source>PDF file</source>
       <translation>PDFファイル</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>コントローラを追加</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>スプレッドシート</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>プロパティコントローラを追加</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -1230,7 +1134,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>スプレッドシート (&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1240,7 +1144,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>スタイル (&amp;S)</translation>
     </message>
   </context>
 </TS>

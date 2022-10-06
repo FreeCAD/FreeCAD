@@ -4,35 +4,35 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>Мрежа дела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
-      <translation>Пресеци...</translation>
+      <translation>Попречни пресек...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
-      <translation>Пресеци</translation>
+      <translation>Попречни пресек</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>Мрежа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation type="unfinished">Curve on mesh...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation type="unfinished">Creates an approximated curve on top of a mesh.
@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -60,19 +60,19 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
-      <translation>Направи пресек од модела и равни</translation>
+      <translation>Направи пресек од мреже и равни</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
-      <translation>Секција</translation>
+      <translation>Пресек</translation>
     </message>
   </context>
   <context>
@@ -85,13 +85,13 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim mesh with a plane</source>
-      <translation>Обрежи мрежу користећи раван</translation>
+      <translation>Обрежите мрежу помоћу равни</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Обрезује мрежу користећи раван</translation>
+      <translation>Обрезује мрежу помоћи равни</translation>
     </message>
   </context>
   <context>
@@ -102,7 +102,7 @@ This command only works with a 'mesh' object.</translation>
       <translation type="unfinished">Trim with plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation type="unfinished">Section with plane</translation>
     </message>
@@ -112,12 +112,12 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Пресеци</translation>
+      <translation>Попречни пресек</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Водећа раван</translation>
+      <translation>Раван водиља</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -142,17 +142,17 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Секције</translation>
+      <translation>Пресеци</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
       <source>On both sides</source>
-      <translation>Cа обе cтране</translation>
+      <translation>На обе стране</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Број</translation>
+      <translation>Бројати</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
@@ -162,7 +162,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
-      <translation>Opcije</translation>
+      <translation>Опције</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</translation>
       <translation type="unfinished">Connect edges if distance less than</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
       <translation type="unfinished">Failure</translation>
     </message>
@@ -180,7 +180,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Create</source>
-      <translation>Stvori</translation>
+      <translation>Направи</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -205,7 +205,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation>Ниједна тачка није одабрана</translation>
+      <translation>Ниједна тачка није изабрана</translation>
     </message>
   </context>
   <context>
@@ -260,14 +260,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>Непрекидно</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
       <translation type="unfinished">Maximum curve degree</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Почетак</translation>
     </message>
   </context>
   <context>
@@ -288,24 +288,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>Стандард</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="145"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="206"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation type="unfinished">Use the standard mesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
       <translation>Одступање површине:</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="33"/>
-      <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -359,6 +349,11 @@ this feature (e.g. the format OBJ).</translation>
       <translation type="unfinished">Define segments by face colors</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
       <translation type="unfinished">Use the Mefisto mesher</translation>
@@ -379,6 +374,11 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
       <translation type="unfinished">Estimate</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -486,18 +486,32 @@ A value in the range of 0.2-10.</translation>
       <translation type="unfinished">Leave panel open</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
-      <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <location filename="../../Tessellation.cpp" line="63"/>
+      <source>Gmsh</source>
+      <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="213"/>
-      <location filename="../../Tessellation.cpp" line="219"/>
+      <location filename="../../Tessellation.cpp" line="214"/>
+      <location filename="../../Tessellation.cpp" line="220"/>
       <source>No active document</source>
       <translation>Нема активног документа</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="234"/>
+      <location filename="../../Tessellation.cpp" line="248"/>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation type="unfinished">You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="252"/>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation type="unfinished">You have selected a shape without faces.
+Select a different shape, please.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Прво изаберите облик за мрежу.</translation>
     </message>
@@ -505,12 +519,12 @@ A value in the range of 0.2-10.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Одабери раван</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
     </message>

@@ -2,1050 +2,260 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sk" sourcelanguage="en">
   <context>
-    <name>AddonsInstaller</name>
+    <name>AddCustomRepositoryDialog</name>
     <message>
-      <location filename="install_to_toolbar.py" line="76"/>
-      <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
+      <source>Custom repository</source>
+      <translation type="unfinished">Custom repository</translation>
     </message>
     <message>
-      <location filename="install_to_toolbar.py" line="219"/>
-      <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
-    </message>
-    <message>
-      <location filename="install_to_toolbar.py" line="221"/>
-      <source>Run</source>
-      <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation>Spustiť</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="112"/>
-      <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="117"/>
-      <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="121"/>
-      <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="567"/>
-      <source>Installed</source>
-      <translation>Nainštalované</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="96"/>
-      <source>Version</source>
-      <translation>Verzia</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="103"/>
-      <source>Unknown version (no package.xml file found)</source>
-      <translation>Neznáma verzia (nenašiel sa žiadny súbor package.xml)</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="108"/>
-      <source>installed on</source>
-      <translation>nainštalované v</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="118"/>
-      <source>installed</source>
-      <translation>nainštalované</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="126"/>
-      <source>Update available to version</source>
-      <translation>Dostupná aktualizácia na verziu</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="144"/>
-      <source>This is the latest version available</source>
-      <translation>Toto je najnovšia dostupná verzia</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="151"/>
-      <source>Updated, please restart FreeCAD to use</source>
-      <translation>Aktualizované. Na začatie používanie, prosím, reštartujte aplikáciu FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="159"/>
-      <source>Update check in progress</source>
-      <translation>Prebieha kontrola aktualizácií</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="163"/>
-      <source>Automatic update checks disabled</source>
-      <translation>Automatické kontroly aktualizácií sú zakázané</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="172"/>
-      <source>Installation location</source>
-      <translation>Umiestnenie inštalácie</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="240"/>
-      <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="250"/>
-      <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="312"/>
-      <source>Fetching README.md from package repository</source>
-      <translation type="unfinished">Fetching README.md from package repository</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="354"/>
-      <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="package_details.py" line="431"/>
-      <source>Delete cached version of this README and re-download</source>
-      <translation type="unfinished">
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-      </translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="510"/>
-      <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="563"/>
-      <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="577"/>
-      <source>Success</source>
-      <translation type="unfinished">Success</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="600"/>
-      <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="636"/>
-      <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="407"/>
-      <source>Install</source>
-      <translation>Inštalovať</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="410"/>
-      <source>Uninstall</source>
-      <translation>Odinštalovať</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="413"/>
-      <source>Update</source>
-      <translation>Aktualizovať</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="416"/>
-      <source>Check for Update</source>
-      <translation>Skontrolovať aktualizáciu</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="419"/>
-      <source>Run Macro</source>
-      <translation>Spustiť makro</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="786"/>
-      <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="867"/>
-      <source>Enable</source>
-      <translation>Povoliť</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="870"/>
-      <source>Disable</source>
-      <translation type="unfinished">Disable</translation>
-    </message>
-    <message>
-      <location filename="package_details.py" line="424"/>
-      <source>Return to package list</source>
-      <translation>Návrat na zoznam balíkov</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="package_details.py" line="800"/>
-      <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-      </translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="119"/>
-      <source>Filter is valid</source>
-      <translation>Filter je platný</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="125"/>
-      <source>Filter regular expression is invalid</source>
-      <translation>Filter regulárneho výrazu je platný</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="207"/>
-      <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="211"/>
-      <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="215"/>
-      <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="326"/>
-      <source>Maintainer</source>
-      <translation>Správca</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="330"/>
-      <source>Maintainers:</source>
-      <translation>Správcovia:</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="364"/>
-      <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="371"/>
-      <source>updated</source>
-      <translation type="unfinished">updated</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="382"/>
-      <source>Author</source>
-      <translation>Autor</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="404"/>
-      <source>Up-to-date</source>
-      <translation>Aktuálne</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="586"/>
-      <source>Update available</source>
-      <translation>Dostupná aktualizácie</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="414"/>
-      <source>Pending restart</source>
-      <translation>Čakajúci reštart</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="498"/>
-      <source>DISABLED</source>
-      <translation>ZAKÁZANÉ</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>Nainštalovaná verzia</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="180"/>
-      <source>Click for details about package</source>
-      <translation>Kliknutím zobrazíte podrobnosti o balíku</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="185"/>
-      <source>Click for details about workbench</source>
-      <translation type="unfinished">Click for details about workbench</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="190"/>
-      <source>Click for details about macro</source>
-      <translation>Kliknutím zobrazíte podrobnosti o makre</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation type="unfinished">Updated</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="380"/>
-      <source>Unknown version</source>
-      <translation>Neznáma verzia</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="383"/>
-      <source>Installed on</source>
-      <translation>Nainštalované v</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="394"/>
-      <source>Available version</source>
-      <translation>Dostupná verzia</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="566"/>
-      <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="569"/>
-      <source>All</source>
-      <translation>Všetky</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="572"/>
-      <source>Workbenches</source>
-      <translation>Pracovné prostredia</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="575"/>
-      <source>Macros</source>
-      <translation>Makrá</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="578"/>
-      <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="692"/>
-      <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="695"/>
-      <source>Any</source>
-      <translation>Akékoľvek</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="702"/>
-      <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="582"/>
-      <source>Filter</source>
-      <translation type="unfinished">Filter</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="585"/>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="115"/>
-      <source>Checking network connection...
-</source>
-      <translation type="unfinished">Checking network connection...
-</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="167"/>
-      <source>Unable to download addon list.</source>
-      <translation>Nie je možné prevziať zoznam doplnkov.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="172"/>
-      <source>Workbenches list was updated.</source>
-      <translation>Zoznam pracovných priestorov bol aktualizovaný.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="261"/>
-      <source>Failed loading</source>
-      <translation>Zlyhalo načítavanie</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="296"/>
-      <source>List of macros successfully retrieved.</source>
-      <translation>Zoznam makier bol úspešne prijatý.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="310"/>
-      <source>GitPython not installed! Cannot retrieve macros from git</source>
-      <translation>Knižnica GitPython nie je nainštalovaná! Nedajú sa prijať makrá z git</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="319"/>
-      <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation>Niekde nastala chyba počas získavania makra zo systému Git, pravdepodobne spustiteľný súbor systému Git nie je v PATH</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="343"/>
-      <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
-      <translation>Vypadá byť problém s pripojením na Wiki, preto nie je momentálne možné načítať zoznam makier</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="367"/>
-      <source>Unable to fetch git updates for workbench</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="391"/>
-      <source>Retrieving info from</source>
-      <translation>Prijímajú sa informácie z lokality</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="419"/>
-      <source>Failed to read metadata from</source>
-      <translation type="unfinished">Failed to read metadata from</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="426"/>
-      <source>git fetch failed for {}</source>
-      <translation type="unfinished">git fetch failed for {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="429"/>
-      <source>git fetch failed for {wb.name}</source>
-      <translation type="unfinished">git fetch failed for {wb.name}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="433"/>
-      <source>Raw markdown displayed</source>
-      <translation>Zobrazí sa hrubé označenie</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="435"/>
-      <source>Python Markdown library is missing.</source>
-      <translation>Chýba knižnica Markdown jazyka Python.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="439"/>
-      <source>git pull failed for {wb.name}</source>
-      <translation type="unfinished">git pull failed for {wb.name}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="514"/>
-      <source>Done locating macros.</source>
-      <translation type="unfinished">Done locating macros.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="521"/>
-      <source>This addon is already installed.</source>
-      <translation>Tento doplnok je už nainštalovaný.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="533"/>
-      <source>An update is available for this addon.</source>
-      <translation>Je dostupná aktualizácia tohto doplnku.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="547"/>
-      <source>This addon is marked as obsolete</source>
-      <translation>Tento doplnok je označený ako zastaraný</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="551"/>
-      <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation>To obvykle znamená, že už nie je udržiavaný, a že niektorý pokročilejší doplnok z tohto zoznamu poskytuje rovnaké funkcie.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="559"/>
-      <source>This addon is marked as Python 2 Only</source>
-      <translation>Tento doplnok je označený ako kompatibilný iba s jazykom Python 2</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="564"/>
-      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation>Tento pracovný priestor nemusí byť už udržiavaný a jeho inštalácia v systéme s jazykom Python verzie 3 bude mať pravdepodobne za následok chyby pri spúšťaní alebo počas používania.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="608"/>
-      <source>An error occurred fetching macros from GitHub</source>
-      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="646"/>
-      <source>An error occurred updating macros from GitHub</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="651"/>
-      <source>Retrieving description...</source>
-      <translation>Prijíma sa popis...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="665"/>
-      <source>This macro is already installed.</source>
-      <translation>Toto makro je už nainštalované.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="697"/>
-      <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="700"/>
-      <source>GitPython not found. Using standard download instead.</source>
-      <translation>Knižnica GitPython sa nenašla. Použije sa namiesto toho štandardné preberanie.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="705"/>
-      <source>Your version of python doesn&apos;t appear to support ZIP files. Unable to proceed.</source>
-      <translation>Zdá sa, že vaša verzia jazyka python nepodporuje súbory ZIP. Nie je možné pokračovať.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="727"/>
-      <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation>Používateľ požiadal o aktualizáciu pracovného priestoru jazyka Python 2 v systéme s jazykom Python 3 - </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="738"/>
-      <source>Outdated GitPython detected, consider upgrading with pip.</source>
-      <translation>Bola zistená zastaraná knižnica GitPython. Zvážte jej aktualizáciu pomocou programu pip.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="763"/>
-      <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation>Pracovný priestor bol úspešne aktualizovaný. Prosím, reštartujte aplikáciu FreeCAD na uplatnenie zmien.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="771"/>
-      <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation>Používateľ požiadal o inštaláciu pracovného priestoru jazyka Python 2 v systéme s jazykom Python 3 - </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="786"/>
-      <source>Workbench successfully installed. Please restart FreeCAD to apply the changes.</source>
-      <translation>Pracovný priestor bol úspešne nainštalovaný. Aby sa prejavili zmeny, prosím, reštartujte aplikáciu FreeCAD.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="799"/>
-      <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
-      <translation>Makro bolo nainštalované a je dostupné v ponuke Makro -&gt; Makrá</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="824"/>
-      <source>Retrieving info from {}</source>
-      <translation type="unfinished">Retrieving info from {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="835"/>
-      <source>Missing workbench</source>
-      <translation>Chýba pracovný priestor</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="844"/>
-      <source>Missing python module</source>
-      <translation>Chýba modul jazyka python</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="854"/>
-      <source>Missing optional python module (doesn&apos;t prevent installing)</source>
-      <translation>Chýba voliteľný modul jazyka python (inštalácii nebude zabránené)</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="857"/>
-      <source>Some errors were found that prevent to install this workbench</source>
-      <translation>Našli sa nejaké chyby, ktoré zabránili inštalácii tohto pracovného priestoru</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="859"/>
-      <source>Please install the missing components first.</source>
-      <translation>Prosím, najskôr nainštalujte chýbajúce súčasti.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="873"/>
-      <source>Error: Unable to locate zip from</source>
-      <translation>Chyba: Nie je možné lokalizovať súbor zip z lokality</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="880"/>
-      <source>Error: Unable to download</source>
-      <translation>Chyba: Nie je možné prevziať</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="893"/>
-      <source>Successfully installed</source>
-      <translation>Inštalácia úspešná</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Prijímajú sa informácie z git</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Prijímajú sa informácie z wiki</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1013"/>
-      <source>Error updating module</source>
-      <translation>Chyba počas aktualizácie modulu</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>Chyba pri aktualizácii modulu </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Prosím, opravte to ručne</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1220"/>
-      <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation>Získavajú sa metaúdaje balíku...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1611"/>
-      <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1641"/>
-      <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1715"/>
-      <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_utilities.py" line="332"/>
-      <source>Failed to repair missing .git directory</source>
-      <translation type="unfinished">Failed to repair missing .git directory</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_utilities.py" line="335"/>
+      <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
       <translation type="unfinished">Repository URL</translation>
     </message>
     <message>
-      <location filename="addonmanager_utilities.py" line="338"/>
-      <source>Clone directory</source>
-      <translation type="unfinished">Clone directory</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="72"/>
-      <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="135"/>
-      <source>Failed to connect to</source>
-      <translation>Zlyhalo pripojenie k</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="220"/>
-      <source>Failed to connect to URL</source>
-      <translation type="unfinished">Failed to connect to URL</translation>
-    </message>
-    <message>
-      <location filename="change_branch.py" line="101"/>
-      <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
-    </message>
-    <message>
-      <location filename="change_branch.py" line="114"/>
-      <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
-    </message>
-    <message>
-      <location filename="change_branch.py" line="192"/>
+      <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <comment>git terminology</comment>
       <translation type="unfinished">Branch</translation>
     </message>
+  </context>
+  <context>
+    <name>CompactView</name>
     <message>
-      <location filename="change_branch.py" line="178"/>
-      <source>Tag</source>
-      <comment>git terminology</comment>
-      <translation type="unfinished">Tag</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="change_branch.py" line="261"/>
-      <source>Kind</source>
-      <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
-      </translation>
+      <location filename="../../compact_view.ui" line="20"/>
+      <source>Form</source>
+      <translation>Forma</translation>
     </message>
     <message>
-      <location filename="change_branch.py" line="265"/>
-      <source>Local name</source>
-      <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="change_branch.py" line="271"/>
-      <source>Tracking</source>
-      <comment>Table header for git remote tracking branch name name</comment>
-      <translation type="unfinished">
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
-        <numerusform>Tracking</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="change_branch.py" line="277"/>
-      <source>Local updated</source>
-      <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
-        <numerusform>Local updated</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="change_branch.py" line="283"/>
-      <source>Remote updated</source>
-      <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-      </translation>
+      <location filename="../../compact_view.ui" line="59"/>
+      <source>Icon</source>
+      <translation>Ikona</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="191"/>
-      <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <location filename="../../compact_view.ui" line="66"/>
+      <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
+      <translation type="unfinished">&lt;b&gt;Package Name&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="192"/>
-      <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <location filename="../../compact_view.ui" line="73"/>
+      <source>Version</source>
+      <translation>Verzia</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="213"/>
-      <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <location filename="../../compact_view.ui" line="86"/>
+      <source>Description</source>
+      <translation>Popis</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="240"/>
-      <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="324"/>
-      <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="258"/>
-      <source>Loading addon information</source>
-      <translation>Načítavajú sa informácie o doplnku</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="199"/>
-      <source>Addon manager</source>
-      <translation>Správca doplnkov</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="209"/>
-      <source>Restart now</source>
-      <translation>Reštartovať teraz</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="210"/>
-      <source>Restart later</source>
-      <translation>Reštartovať neskôr</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1248"/>
-      <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="659"/>
-      <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="766"/>
-      <source>Could not find addon &apos;{}&apos; to select
-</source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
-</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Kontrolujú sa aktualizácie...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Nie sú dostupné žiadne aktualizácie</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="86"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Doplnky, ktoré tu môžete nainštalovať, nie sú oficiálnou súčasťou aplikácie FreeCAD a nie sú skontrolované tímom aplikácie FreeCAD. Uistite sa, že viete, čo inštalujete!</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="203"/>
-      <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation>Pre uplatnenie zmien musíte reštartovať FreeCAD.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="204"/>
-      <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
-      <translation>Aby sa zmeny prejavili, musíte reštartovať aplikáciu FreeCAD. Stlačením tlačidla OK reštartujete aplikáciu FreeCAD ihneď alebo tlačidlom Zrušiť vykonáte reštart neskôr.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="241"/>
-      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="262"/>
-      <source>Apply</source>
-      <translation>Použiť</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="263"/>
-      <source>update(s)</source>
-      <translation>aktualizácia(e/í)</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="266"/>
-      <source>No update available</source>
-      <translation>Nie sú dostupné žiadne aktualizácie</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="433"/>
-      <source>Macro successfully installed. The macro is now available from the Macros dialog.</source>
-      <translation>Makro bolo úspešne nainštalované a je teraz dostupné v dialógovom okne Makrá.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="435"/>
-      <source>Unable to install</source>
-      <translation>Nie je možné vykonať inštaláciu</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="494"/>
-      <source>Addon successfully removed. Please restart FreeCAD</source>
-      <translation>Doplnok bol úspešne odstránený. Prosím, reštartujte aplikáciu FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="496"/>
-      <source>Unable to remove this addon</source>
-      <translation>Nie je možné odstrániť tento doplnok</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="502"/>
-      <source>Macro successfully removed.</source>
-      <translation>Makro bolo úspešne odstránené.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Makro sa nepodarilo odstrániť.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="534"/>
-      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="542"/>
-      <source>Restart required</source>
-      <translation>Vyžadovaný reštart</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="774"/>
-      <source>All packages updates failed. Packages:</source>
-      <translation>Aktualizácia všetkých balíkov zlyhala. Balíky:</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="786"/>
-      <source>Failed packages:</source>
-      <translation>Zlyhané balíky:</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="964"/>
-      <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1061"/>
-      <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1081"/>
-      <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1102"/>
-      <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1105"/>
-      <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="703"/>
-      <source>Installation of macro failed</source>
-      <translation>Inštalácia makra zlyhala</translation>
-    </message>
-    <message numerus="yes">
-      <location filename="AddonManager.py" line="1280"/>
-      <source>{} total, see Report view for list</source>
-      <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-      </translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1178"/>
-      <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1159"/>
-      <source>All packages updates failed:</source>
-      <translation type="unfinished">All packages updates failed:</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1183"/>
-      <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="800"/>
-      <source>Update report</source>
-      <translation>Hlásenie o aktualizácii</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="850"/>
-      <source>Installation succeeded</source>
-      <translation>Inštalácia bola úspešná</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="866"/>
-      <source>Installation failed</source>
-      <translation>Inštalácia zlyhala</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1457"/>
-      <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1460"/>
-      <source>Are you sure you want to uninstall this Addon?</source>
-      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1513"/>
-      <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1558"/>
-      <source>Successfully uninstalled {}</source>
-      <translation>Úspešne odinštalovaný doplnok {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_macro.py" line="157"/>
-      <source>Unable to fetch the code of this macro.</source>
-      <translation>Nie je možné získať kód tohto makra.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_macro.py" line="164"/>
-      <source>Unable to retrieve a description for this macro.</source>
-      <translation>Nie je možné prijať popis pre toto makro.</translation>
+      <location filename="../../compact_view.ui" line="102"/>
+      <source>UpdateAvailable</source>
+      <translation type="unfinished">UpdateAvailable</translation>
     </message>
   </context>
   <context>
-    <name>Std_AddonMgr</name>
+    <name>DependencyDialog</name>
     <message>
-      <location filename="AddonManager.py" line="68"/>
-      <source>&amp;Addon manager</source>
-      <translation>&amp;Správca doplnkov</translation>
+      <location filename="../../developer_mode_dependencies.ui" line="14"/>
+      <source>Dependencies</source>
+      <translation type="unfinished">Dependencies</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="69"/>
-      <source>Manage external workbenches and macros</source>
-      <translation>Spravuje externé pracovné priestory a makrá</translation>
+      <location filename="../../developer_mode_dependencies.ui" line="39"/>
+      <source>Dependency type</source>
+      <translation type="unfinished">Dependency type</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_dependencies.ui" line="44"/>
+      <source>Name</source>
+      <translation>Názov</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_dependencies.ui" line="49"/>
+      <source>Optional?</source>
+      <translation type="unfinished">Optional?</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_dependencies.ui" line="72"/>
+      <location filename="../../developer_mode_dependencies.ui" line="79"/>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
-    <name>AddonInstaller</name>
+    <name>DependencyResolutionDialog</name>
     <message>
-      <location filename="addonmanager_workers.py" line="535"/>
-      <source>Installed location</source>
-      <translation>Umiestnenie po inštalácii</translation>
+      <location filename="../../dependency_resolution_dialog.ui" line="17"/>
+      <source>Resolve Dependencies</source>
+      <translation type="unfinished">Resolve Dependencies</translation>
+    </message>
+    <message>
+      <location filename="../../dependency_resolution_dialog.ui" line="29"/>
+      <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+
+Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
+      <translation type="unfinished">This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+
+Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</translation>
+    </message>
+    <message>
+      <location filename="../../dependency_resolution_dialog.ui" line="43"/>
+      <source>FreeCAD Addons</source>
+      <translation type="unfinished">FreeCAD Addons</translation>
+    </message>
+    <message>
+      <location filename="../../dependency_resolution_dialog.ui" line="55"/>
+      <source>Required Python modules</source>
+      <translation type="unfinished">Required Python modules</translation>
+    </message>
+    <message>
+      <location filename="../../dependency_resolution_dialog.ui" line="67"/>
+      <source>Optional Python modules</source>
+      <translation type="unfinished">Optional Python modules</translation>
+    </message>
+  </context>
+  <context>
+    <name>DeveloperModeDialog</name>
+    <message>
+      <location filename="../../developer_mode.ui" line="14"/>
+      <source>Addon Developer Tools</source>
+      <translation type="unfinished">Addon Developer Tools</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="25"/>
+      <source>Path to Addon</source>
+      <translation type="unfinished">Path to Addon</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="45"/>
+      <location filename="../../developer_mode.ui" line="195"/>
+      <source>Browse...</source>
+      <translation type="unfinished">Browse...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="54"/>
+      <source>Metadata</source>
+      <translation type="unfinished">Metadata</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="65"/>
+      <source>Primary branch</source>
+      <translation type="unfinished">Primary branch</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="77"/>
+      <location filename="../../developer_mode.ui" line="160"/>
+      <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
+      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="80"/>
+      <source>Description</source>
+      <translation>Popis</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="90"/>
+      <source>Discussion URL</source>
+      <translation type="unfinished">Discussion URL</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="97"/>
+      <source>Icon</source>
+      <translation>Ikona</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="104"/>
+      <source>Bugtracker URL</source>
+      <translation type="unfinished">Bugtracker URL</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="113"/>
+      <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
+      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="120"/>
+      <source>Set to today (CalVer style)</source>
+      <translation type="unfinished">Set to today (CalVer style)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="132"/>
+      <location filename="../../developer_mode.ui" line="146"/>
+      <location filename="../../developer_mode.ui" line="180"/>
+      <location filename="../../developer_mode.ui" line="218"/>
+      <source>(Optional)</source>
+      <translation type="unfinished">(Optional)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="139"/>
+      <location filename="../../developer_mode.ui" line="225"/>
+      <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
+      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="153"/>
+      <source>README URL</source>
+      <translation type="unfinished">README URL</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="166"/>
+      <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
+      <translation type="unfinished">TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="173"/>
+      <source>Repository URL</source>
+      <translation type="unfinished">Repository URL</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="204"/>
+      <source>Website URL</source>
+      <translation type="unfinished">Website URL</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="211"/>
+      <source>Documentation URL</source>
+      <translation type="unfinished">Documentation URL</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="228"/>
+      <source>Addon Name</source>
+      <translation type="unfinished">Addon Name</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="235"/>
+      <source>Version</source>
+      <translation>Verzia</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="242"/>
+      <source>(Recommended)</source>
+      <translation type="unfinished">(Recommended)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="249"/>
+      <source>Minimum Python</source>
+      <translation type="unfinished">Minimum Python</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="258"/>
+      <source>(Optional, only 3.x version supported)</source>
+      <translation type="unfinished">(Optional, only 3.x version supported)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="265"/>
+      <source>Detect...</source>
+      <translation type="unfinished">Detect...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="277"/>
+      <source>Addon Contents</source>
+      <translation type="unfinished">Addon Contents</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode.ui" line="301"/>
+      <location filename="../../developer_mode.ui" line="308"/>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -1056,130 +266,933 @@
       <translation>Správca doplnkov</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="37"/>
-      <source>Workbenches</source>
-      <translation>Pracovné prostredia</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="47"/>
-      <source>Macros</source>
-      <translation>Makrá</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="56"/>
-      <source>Executes the selected macro, if installed</source>
-      <translation>Spustí vybrané makro, ak je nainštalované</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="59"/>
-      <source>Execute</source>
-      <translation>Spustiť</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="89"/>
-      <source>Sets configuration options for the Addon Manager</source>
-      <translation>Nastaví voľby konfigurácie správcu doplnkov</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="92"/>
-      <source>Configure...</source>
-      <translation>Konfigurovať...</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="113"/>
+      <location filename="../../AddonManager.ui" line="64"/>
       <source>Downloading info...</source>
       <translation>Preberajú sa informácie...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="127"/>
-      <source>Uninstalls a selected macro or workbench</source>
-      <translation>Odinštaluje vybrané makro alebo pracovný priestor</translation>
+      <location filename="../../AddonManager.ui" line="71"/>
+      <source>Pause cache update</source>
+      <translation type="unfinished">Pause cache update</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="130"/>
-      <source>Uninstall selected</source>
-      <translation>Odinštalovať vybrané</translation>
+      <location filename="../../AddonManager.ui" line="103"/>
+      <source>Refresh local cache</source>
+      <translation type="unfinished">Refresh local cache</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="137"/>
-      <source>Installs or updates the selected macro or workbench</source>
-      <translation>Nainštaluje alebo aktualizuje vybrané makro alebo pracovný priestor</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="140"/>
-      <source>Install/update selected</source>
-      <translation>Inštalovať/aktualizovať vybrané</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManager.ui" line="147"/>
+      <location filename="../../AddonManager.ui" line="110"/>
       <source>Download and apply all available updates</source>
       <translation>Preberie a aplikuje všetky dostupné aktualizácie</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="150"/>
-      <source>Update all</source>
-      <translation>Aktualizovať všetko</translation>
+      <location filename="../../AddonManager.ui" line="113"/>
+      <source>Update all Addons</source>
+      <translation type="unfinished">Update all Addons</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="157"/>
+      <location filename="../../AddonManager.ui" line="120"/>
+      <source>Check for updates</source>
+      <translation type="unfinished">Check for updates</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="130"/>
+      <source>View and update Python package dependencies</source>
+      <translation type="unfinished">View and update Python package dependencies</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="133"/>
+      <source>Python dependencies...</source>
+      <translation type="unfinished">Python dependencies...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="140"/>
+      <source>Developer tools...</source>
+      <translation type="unfinished">Developer tools...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.ui" line="160"/>
       <source>Close the Addon Manager</source>
       <translation>Zavrie správcu doplnkov</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.ui" line="160"/>
+      <location filename="../../AddonManager.ui" line="163"/>
       <source>Close</source>
       <translation>Zavrieť</translation>
     </message>
     <message>
+      <location filename="../../first_run.ui" line="17"/>
+      <source>Welcome to the Addon Manager</source>
+      <translation type="unfinished">Welcome to the Addon Manager</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="23"/>
+      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
+      <translation type="unfinished">The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="46"/>
+      <source>Download Settings</source>
+      <translation type="unfinished">Download Settings</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="53"/>
+      <source>Automatically check installed Addons for updates</source>
+      <translation type="unfinished">Automatically check installed Addons for updates</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="60"/>
+      <source>Download Macro metadata (approximately 10MB)</source>
+      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="70"/>
+      <source>No proxy</source>
+      <translation>Bez proxy</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="75"/>
+      <source>System proxy</source>
+      <translation type="unfinished">System proxy</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="80"/>
+      <source>User-defined proxy:</source>
+      <translation type="unfinished">User-defined proxy:</translation>
+    </message>
+    <message>
+      <location filename="../../first_run.ui" line="93"/>
+      <source>These and other settings are available in the FreeCAD Preferences window.</source>
+      <translation type="unfinished">These and other settings are available in the FreeCAD Preferences window.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_tags.ui" line="14"/>
+      <source>Edit Tags</source>
+      <translation type="unfinished">Edit Tags</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_tags.ui" line="20"/>
+      <source>Comma-separated list of tags describing this item:</source>
+      <translation type="unfinished">Comma-separated list of tags describing this item:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_tags.ui" line="35"/>
+      <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
+      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditDependencyDialog</name>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
+      <source>Edit Dependency</source>
+      <translation type="unfinished">Edit Dependency</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
+      <source>Dependency Type</source>
+      <translation type="unfinished">Dependency Type</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
+      <source>Dependency</source>
+      <translation type="unfinished">Dependency</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
+      <source>Package name, if &quot;Other...&quot;</source>
+      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
+      <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
+      <translation type="unfinished">NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
+      <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
+      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
+      <source>Optional</source>
+      <translation type="unfinished">Optional</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpandedView</name>
+    <message>
+      <location filename="../../expanded_view.ui" line="20"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="68"/>
+      <source>Icon</source>
+      <translation>Ikona</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="101"/>
+      <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
+      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="114"/>
+      <source>Version</source>
+      <translation>Verzia</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="121"/>
+      <source>(tags)</source>
+      <translation type="unfinished">(tags)</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="149"/>
+      <source>Description</source>
+      <translation>Popis</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="171"/>
+      <source>Maintainer</source>
+      <translation>Správca</translation>
+    </message>
+    <message>
+      <location filename="../../expanded_view.ui" line="186"/>
+      <source>UpdateAvailable</source>
+      <translation type="unfinished">UpdateAvailable</translation>
+    </message>
+  </context>
+  <context>
+    <name>Form</name>
+    <message>
+      <location filename="../../developer_mode_licenses_table.ui" line="14"/>
+      <location filename="../../developer_mode_people_table.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_licenses_table.ui" line="38"/>
+      <source>Licenses</source>
+      <translation type="unfinished">Licenses</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_licenses_table.ui" line="69"/>
+      <source>License</source>
+      <translation>Licencia</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_licenses_table.ui" line="74"/>
+      <source>License file</source>
+      <translation type="unfinished">License file</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
+      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
+      <location filename="../../developer_mode_people_table.ui" line="90"/>
+      <location filename="../../developer_mode_people_table.ui" line="100"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people_table.ui" line="26"/>
+      <source>People</source>
+      <translation type="unfinished">People</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people_table.ui" line="57"/>
+      <source>Kind</source>
+      <translation type="unfinished">Kind</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people_table.ui" line="62"/>
+      <source>Name</source>
+      <translation>Názov</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people_table.ui" line="67"/>
+      <source>Email</source>
+      <translation type="unfinished">Email</translation>
+    </message>
+  </context>
+  <context>
+    <name>FreeCADVersionToBranchMapDialog</name>
+    <message>
+      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
+      <source>Advanced Version Mapping</source>
+      <translation type="unfinished">Advanced Version Mapping</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
+      <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
+      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
+      <source>FreeCAD Version</source>
+      <translation type="unfinished">FreeCAD Version</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
+      <source>Best-available branch, tag, or commit</source>
+      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
+      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+  </context>
+  <context>
+    <name>FreeCADVersionsDialog</name>
+    <message>
+      <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
+      <source>Supported FreeCAD Versions</source>
+      <translation type="unfinished">Supported FreeCAD Versions</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
+      <source>Minimum FreeCAD Version Supported</source>
+      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
+      <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
+      <source>Optional</source>
+      <translation type="unfinished">Optional</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
+      <source>Maximum FreeCAD Version Supported</source>
+      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
+      <source>Advanced version mapping...</source>
+      <translation type="unfinished">Advanced version mapping...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsAddonManager</name>
+    <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>Voľby správcu doplnkov</translation>
+      <translation type="unfinished">Addon manager options</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Ak je vybraná táto voľba, správca doplnkov po spustení skontroluje
-dostupné aktualizácie nainštalovaných doplnkov (táto akcia vyžaduje
-nainštalovanú knižnicu GitPython vo vašom systéme)</translation>
+      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
+installed addons will be checked for available updates
+(this requires the GitPython package installed on your system)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
-      <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation>Automaticky skontrolovať aktualizácie po spustení (vyžaduje GitPython)</translation>
+      <source>Automatically check for updates at start (requires git)</source>
+      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="35"/>
-      <source>Custom repositories (one per line):</source>
-      <translation>Vlastné repozitáre (jeden na riadok):</translation>
+      <location filename="../../AddonManagerOptions.ui" line="41"/>
+      <source>Download Macro metadata (approximately 10MB)</source>
+      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="42"/>
-      <source>You can use this window to specify additional addon repositories
-to be scanned for available addons</source>
-      <translation>Toto okno môžete použiť na určenie dodatočných repozitárov
-s doplnkami, v ktorých budú vyhľadané dostupné doplnky</translation>
+      <location filename="../../AddonManagerOptions.ui" line="44"/>
+      <source>DownloadMacros</source>
+      <translation type="unfinished">DownloadMacros</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="57"/>
-      <source>Proxy </source>
-      <translation>Proxy </translation>
+      <location filename="../../AddonManagerOptions.ui" line="47"/>
+      <location filename="../../AddonManagerOptions.ui" line="373"/>
+      <location filename="../../AddonManagerOptions.ui" line="386"/>
+      <source>Addons</source>
+      <translation type="unfinished">Addons</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="64"/>
+      <location filename="../../AddonManagerOptions.ui" line="56"/>
+      <source>Cache update frequency</source>
+      <translation type="unfinished">Cache update frequency</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="76"/>
+      <source>Manual (no automatic updates)</source>
+      <translation type="unfinished">Manual (no automatic updates)</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="81"/>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="86"/>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="96"/>
+      <source>Hide Addons marked Python 2 Only</source>
+      <translation type="unfinished">Hide Addons marked Python 2 Only</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="112"/>
+      <source>Hide Addons marked Obsolete</source>
+      <translation type="unfinished">Hide Addons marked Obsolete</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="128"/>
+      <source>Hide Addons that require a newer version of FreeCAD</source>
+      <translation type="unfinished">Hide Addons that require a newer version of FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="150"/>
+      <source>Custom repositories</source>
+      <translation type="unfinished">Custom repositories</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="188"/>
+      <location filename="../../AddonManagerOptions.ui" line="195"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <source>Show option to change branches (requires git)</source>
+      <translation type="unfinished">Show option to change branches (requires git)</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="367"/>
+      <source>Disable git (fall back to ZIP downloads only)</source>
+      <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="370"/>
+      <source>disableGit</source>
+      <translation type="unfinished">disableGit</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="380"/>
+      <source>Activate Addon Manager options intended for developers of new Addons.</source>
+      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="383"/>
+      <source>Addon developer mode</source>
+      <translation type="unfinished">Addon developer mode</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="389"/>
+      <source>developerMode</source>
+      <translation type="unfinished">developerMode</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="204"/>
+      <source>Proxy</source>
+      <translation type="unfinished">Proxy</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="210"/>
       <source>No proxy</source>
       <translation>Bez proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="71"/>
+      <location filename="../../AddonManagerOptions.ui" line="226"/>
       <source>User system proxy</source>
-      <translation>Proxy systému používateľa</translation>
+      <translation type="unfinished">User system proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="78"/>
-      <source>User defined proxy :</source>
-      <translation>Proxy určená používateľom:</translation>
+      <location filename="../../AddonManagerOptions.ui" line="239"/>
+      <source>User-defined proxy:</source>
+      <translation type="unfinished">User-defined proxy:</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
+      <source>Python executable (optional):</source>
+      <translation type="unfinished">Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="295"/>
+      <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
+      <translation type="unfinished">The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="308"/>
+      <source>git executable (optional):</source>
+      <translation type="unfinished">git executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="327"/>
+      <source>The path to the git executable. Autodetected if needed and not specified.</source>
+      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="348"/>
+      <source>Advanced Options</source>
+      <translation type="unfinished">Advanced Options</translation>
+    </message>
+  </context>
+  <context>
+    <name>PackageDetails</name>
+    <message>
+      <location filename="../../package_details.ui" line="14"/>
+      <source>Form</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="29"/>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="49"/>
+      <source>Uninstalls a selected macro or workbench</source>
+      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="52"/>
+      <source>Install</source>
+      <translation>Inštalovať</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="59"/>
+      <source>Uninstall</source>
+      <translation>Odinštalovať</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="66"/>
+      <source>Update</source>
+      <translation>Aktualizovať</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="73"/>
+      <source>Run Macro</source>
+      <translation>Spustiť makro</translation>
+    </message>
+    <message>
+      <location filename="../../package_details.ui" line="80"/>
+      <source>Change branch</source>
+      <translation type="unfinished">Change branch</translation>
+    </message>
+  </context>
+  <context>
+    <name>PythonDependencyUpdateDialog</name>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
+      <source>Manage Python Dependencies</source>
+      <translation type="unfinished">Manage Python Dependencies</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
+      <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
+      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
+      <source>Package name</source>
+      <translation type="unfinished">Package name</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
+      <source>Installed version</source>
+      <translation type="unfinished">Installed version</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
+      <source>Available version</source>
+      <translation type="unfinished">Available version</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
+      <source>Used by</source>
+      <translation type="unfinished">Used by</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
+      <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
+      <translation type="unfinished">An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</translation>
+    </message>
+    <message>
+      <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
+      <source>Update all available</source>
+      <translation type="unfinished">Update all available</translation>
+    </message>
+  </context>
+  <context>
+    <name>SelectFromList</name>
+    <message>
+      <location filename="../../developer_mode_select_from_list.ui" line="14"/>
+      <source>Dialog</source>
+      <translation>Dialógové okno</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_select_from_list.ui" line="20"/>
+      <source>TextLabel</source>
+      <translation>Popisok</translation>
+    </message>
+  </context>
+  <context>
+    <name>addContentDialog</name>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="14"/>
+      <source>Content Item</source>
+      <translation type="unfinished">Content Item</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="25"/>
+      <source>Content type:</source>
+      <translation type="unfinished">Content type:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="33"/>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="38"/>
+      <source>Preference Pack</source>
+      <translation type="unfinished">Preference Pack</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="43"/>
+      <source>Workbench</source>
+      <translation>Pracovný priestor</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="51"/>
+      <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
+      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="54"/>
+      <source>This is the only item in the Addon</source>
+      <translation type="unfinished">This is the only item in the Addon</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="86"/>
+      <source>Main macro file</source>
+      <translation type="unfinished">Main macro file</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="93"/>
+      <source>The file with the macro&apos;s metadata in it</source>
+      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="100"/>
+      <location filename="../../developer_mode_add_content.ui" line="161"/>
+      <location filename="../../developer_mode_add_content.ui" line="193"/>
+      <source>Browse...</source>
+      <translation type="unfinished">Browse...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="111"/>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="125"/>
+      <source>Workbench class name</source>
+      <translation type="unfinished">Workbench class name</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="132"/>
+      <source>Class that defines &quot;Icon&quot; data member</source>
+      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="145"/>
+      <source>Subdirectory</source>
+      <translation type="unfinished">Subdirectory</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="154"/>
+      <source>Optional, defaults to name of content item</source>
+      <translation type="unfinished">Optional, defaults to name of content item</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="170"/>
+      <source>Icon</source>
+      <translation>Ikona</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="179"/>
+      <source>actualIcon</source>
+      <translation type="unfinished">actualIcon</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="186"/>
+      <source>Optional, defaults to inheriting from top-level Addon</source>
+      <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="206"/>
+      <source>Tags...</source>
+      <translation type="unfinished">Tags...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="213"/>
+      <source>Dependencies...</source>
+      <translation type="unfinished">Dependencies...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="220"/>
+      <source>FreeCAD Versions...</source>
+      <translation type="unfinished">FreeCAD Versions...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="258"/>
+      <source>Other Metadata</source>
+      <translation type="unfinished">Other Metadata</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="264"/>
+      <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
+      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="278"/>
+      <source>Version</source>
+      <translation>Verzia</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="285"/>
+      <source>Description</source>
+      <translation>Popis</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="297"/>
+      <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
+      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="304"/>
+      <source>Set to today (CalVer style)</source>
+      <translation type="unfinished">Set to today (CalVer style)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="313"/>
+      <source>Display Name</source>
+      <translation type="unfinished">Display Name</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_add_content.ui" line="330"/>
+      <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
+      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+    </message>
+  </context>
+  <context>
+    <name>add_toolbar_button_dialog</name>
+    <message>
+      <location filename="../../add_toolbar_button_dialog.ui" line="14"/>
+      <source>Add button?</source>
+      <translation type="unfinished">Add button?</translation>
+    </message>
+    <message>
+      <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
+      <source>Add a toolbar button for this macro?</source>
+      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+    </message>
+    <message>
+      <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
+      <source>Yes</source>
+      <translation type="unfinished">Yes</translation>
+    </message>
+    <message>
+      <location filename="../../add_toolbar_button_dialog.ui" line="39"/>
+      <source>No</source>
+      <translation type="unfinished">No</translation>
+    </message>
+    <message>
+      <location filename="../../add_toolbar_button_dialog.ui" line="46"/>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+  </context>
+  <context>
+    <name>change_branch</name>
+    <message>
+      <location filename="../../change_branch.ui" line="14"/>
+      <source>Change Branch</source>
+      <translation type="unfinished">Change Branch</translation>
+    </message>
+    <message>
+      <location filename="../../change_branch.ui" line="23"/>
+      <source>Change to branch or tag:</source>
+      <translation type="unfinished">Change to branch or tag:</translation>
+    </message>
+  </context>
+  <context>
+    <name>copyrightInformationDialog</name>
+    <message>
+      <location filename="../../developer_mode_copyright_info.ui" line="14"/>
+      <source>Copyright Information</source>
+      <translation type="unfinished">Copyright Information</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_copyright_info.ui" line="22"/>
+      <source>Copyright holder:</source>
+      <translation type="unfinished">Copyright holder:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_copyright_info.ui" line="32"/>
+      <source>Copyright year:</source>
+      <translation type="unfinished">Copyright year:</translation>
+    </message>
+  </context>
+  <context>
+    <name>personDialog</name>
+    <message>
+      <location filename="../../developer_mode_people.ui" line="14"/>
+      <source>Add Person</source>
+      <translation type="unfinished">Add Person</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people.ui" line="20"/>
+      <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
+      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people.ui" line="29"/>
+      <source>Name:</source>
+      <translation type="unfinished">Name:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people.ui" line="39"/>
+      <source>Email:</source>
+      <translation type="unfinished">Email:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_people.ui" line="46"/>
+      <source>Email is required for maintainers, and optional for authors.</source>
+      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+    </message>
+  </context>
+  <context>
+    <name>proxy_authentication</name>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="14"/>
+      <source>Proxy login required</source>
+      <translation type="unfinished">Proxy login required</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="20"/>
+      <source>Proxy requires authentication</source>
+      <translation type="unfinished">Proxy requires authentication</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="29"/>
+      <source>Proxy:</source>
+      <translation type="unfinished">Proxy:</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="42"/>
+      <source>Placeholder for proxy address</source>
+      <translation type="unfinished">Placeholder for proxy address</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="49"/>
+      <source>Realm:</source>
+      <translation type="unfinished">Realm:</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="56"/>
+      <source>Placeholder for proxy realm</source>
+      <translation type="unfinished">Placeholder for proxy realm</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="67"/>
+      <source>Username</source>
+      <translation type="unfinished">Username</translation>
+    </message>
+    <message>
+      <location filename="../../proxy_authentication.ui" line="77"/>
+      <source>Password</source>
+      <translation type="unfinished">Password</translation>
+    </message>
+  </context>
+  <context>
+    <name>selectLicenseDialog</name>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="14"/>
+      <source>Select a license</source>
+      <translation type="unfinished">Select a license</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="35"/>
+      <source>About...</source>
+      <translation type="unfinished">About...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="46"/>
+      <source>License name:</source>
+      <translation type="unfinished">License name:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="60"/>
+      <source>Path to license file:</source>
+      <translation type="unfinished">Path to license file:</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="67"/>
+      <source>(if required by license)</source>
+      <translation type="unfinished">(if required by license)</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="74"/>
+      <source>Browse...</source>
+      <translation type="unfinished">Browse...</translation>
+    </message>
+    <message>
+      <location filename="../../developer_mode_license.ui" line="81"/>
+      <source>Create...</source>
+      <translation type="unfinished">Create...</translation>
+    </message>
+  </context>
+  <context>
+    <name>select_toolbar_dialog</name>
+    <message>
+      <location filename="../../select_toolbar_dialog.ui" line="14"/>
+      <source>Select Toolbar</source>
+      <translation type="unfinished">Select Toolbar</translation>
+    </message>
+    <message>
+      <location filename="../../select_toolbar_dialog.ui" line="26"/>
+      <source>Select a toolbar to add this macro to:</source>
+      <translation type="unfinished">Select a toolbar to add this macro to:</translation>
+    </message>
+    <message>
+      <location filename="../../select_toolbar_dialog.ui" line="36"/>
+      <source>Ask every time</source>
+      <translation type="unfinished">Ask every time</translation>
+    </message>
+  </context>
+  <context>
+    <name>toolbar_button</name>
+    <message>
+      <location filename="../../toolbar_button.ui" line="14"/>
+      <source>Add button?</source>
+      <translation type="unfinished">Add button?</translation>
+    </message>
+    <message>
+      <location filename="../../toolbar_button.ui" line="20"/>
+      <source>Add a toolbar button for this macro?</source>
+      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+    </message>
+    <message>
+      <location filename="../../toolbar_button.ui" line="32"/>
+      <source>Yes</source>
+      <translation type="unfinished">Yes</translation>
+    </message>
+    <message>
+      <location filename="../../toolbar_button.ui" line="39"/>
+      <source>No</source>
+      <translation type="unfinished">No</translation>
+    </message>
+    <message>
+      <location filename="../../toolbar_button.ui" line="46"/>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
     </message>
   </context>
 </TS>

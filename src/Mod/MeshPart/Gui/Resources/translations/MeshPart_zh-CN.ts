@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>网格零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>横截面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>横截面</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation>网格上的曲线......</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>在网格顶上创建一个近似曲线。
@@ -60,17 +60,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
       <translation>从网格和平面创建剖面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>截面</translation>
     </message>
@@ -102,7 +102,7 @@ This command only works with a 'mesh' object.</source>
       <translation>用平面修剪</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation>用平面截断</translation>
     </message>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>如果距离小于，则连接边缘</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
       <translation>失败</translation>
     </message>
@@ -517,33 +517,14 @@ Select a different shape, please.</source>
     </message>
   </context>
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>展开网格</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>找到网格的平面表示</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>展开面</translation>
-    </message>
-  </context>
-  <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>选取平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>请选取一个您修剪网格的平面。</translation>
     </message>

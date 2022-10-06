@@ -22,17 +22,17 @@
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="159"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Place robot...</source>
       <translation>장소 로봇...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="160"/>
+      <location filename="../../Command.cpp" line="161"/>
       <source>Place a robot (experimental!)</source>
       <translation>로봇 배치하기(실험적)</translation>
     </message>
@@ -220,13 +220,13 @@
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
       <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Move to home</source>
       <translation type="unfinished">Move to home</translation>
     </message>
@@ -270,13 +270,13 @@
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
       <location filename="../../Command.cpp" line="57"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Set the home position</source>
       <translation type="unfinished">Set the home position</translation>
     </message>
@@ -284,17 +284,17 @@
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="199"/>
+      <location filename="../../Command.cpp" line="200"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Simulate a trajectory</source>
       <translation type="unfinished">Simulate a trajectory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Run a simulation on a trajectory</source>
       <translation type="unfinished">Run a simulation on a trajectory</translation>
     </message>
@@ -356,10 +356,10 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="124"/>
-      <location filename="../../Command.cpp" line="224"/>
-      <location filename="../../Command.cpp" line="253"/>
+      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="225"/>
+      <location filename="../../Command.cpp" line="254"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="127"/>
       <location filename="../../CommandInsertRobot.cpp" line="234"/>
@@ -371,18 +371,18 @@
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>Select one Robot to set home position</source>
       <translation type="unfinished">Select one Robot to set home position</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Select one Robot</source>
-      <translation type="unfinished">Select one Robot</translation>
+      <translation>로봇 하나 선택하기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="225"/>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="255"/>
       <location filename="../../CommandExport.cpp" line="66"/>
       <location filename="../../CommandExport.cpp" line="128"/>
       <location filename="../../CommandTrajectory.cpp" line="112"/>
@@ -390,12 +390,12 @@
       <translation type="unfinished">Select one Robot and one Trajectory object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Trajectory not valid</source>
       <translation type="unfinished">Trajectory not valid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="232"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
     </message>
@@ -534,7 +534,7 @@
     <message>
       <location filename="../../TrajectorySimulate.ui" line="272"/>
       <source>Type</source>
-      <translation>타입</translation>
+      <translation>유형</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="277"/>
@@ -714,7 +714,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
-      <translation>타입</translation>
+      <translation>유형</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="322"/>

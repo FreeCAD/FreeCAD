@@ -864,8 +864,8 @@ so that self intersection is avoided.</translation>
       <translation>Crea pallinatura</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation>Aggiungi corpo</translation>
     </message>
@@ -1033,7 +1033,7 @@ so that self intersection is avoided.</translation>
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1646"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1651"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1614,7 +1614,7 @@ fare nuovamente clic per terminare la selezione</translation>
   <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="331"/>
+      <location filename="../../TaskShapeBinder.cpp" line="413"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
@@ -1718,14 +1718,13 @@ fare nuovamente clic per terminare la selezione</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="53"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="723"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="902"/>
       <source>No face selected</source>
       <translation>Nessuna faccia selezionata</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="739"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
@@ -1749,6 +1748,11 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
       <translation>Direzione personalizzata</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
+      <source>Click on a face in the model</source>
+      <translation type="unfinished">Click on a face in the model</translation>
     </message>
   </context>
   <context>
@@ -2564,12 +2568,12 @@ misurata lungo la direzione specificata</translation>
       <translation>2° angolo rastrematura</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="341"/>
-      <source>Face</source>
-      <translation>Faccia</translation>
+      <location filename="../../TaskPadPocketParameters.ui" line="347"/>
+      <source>Select face</source>
+      <translation type="unfinished">Select face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="360"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
       <translation>Aggiorna la vista</translation>
     </message>
@@ -2657,12 +2661,12 @@ misurata lungo la direzione specificata</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="541"/>
+      <location filename="../../TaskPipeParameters.cpp" line="540"/>
       <source>Section orientation</source>
       <translation>Orientamento della sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="567"/>
+      <location filename="../../TaskPipeParameters.cpp" line="566"/>
       <source>Remove</source>
       <translation>Rimuovi</translation>
     </message>
@@ -2732,7 +2736,7 @@ misurata lungo la direzione specificata</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
-      <location filename="../../TaskPipeParameters.cpp" line="527"/>
+      <location filename="../../TaskPipeParameters.cpp" line="526"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
@@ -2780,12 +2784,12 @@ misurata lungo la direzione specificata</translation>
       <translation>La lista può essere riordinata trascinando</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="809"/>
+      <location filename="../../TaskPipeParameters.cpp" line="808"/>
       <source>Section transformation</source>
       <translation>Trasformazione della sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="825"/>
+      <location filename="../../TaskPipeParameters.cpp" line="824"/>
       <source>Remove</source>
       <translation>Rimuovi</translation>
     </message>
@@ -3042,9 +3046,14 @@ misurata lungo la direzione specificata</translation>
       <translation>Rimuovi geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="59"/>
+      <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
       <translation>Parametri di riferimento della forma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="132"/>
+      <source>Remove</source>
+      <translation>Rimuovi</translation>
     </message>
   </context>
   <context>
@@ -3411,19 +3420,6 @@ fare nuovamente clic per terminare la selezione</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation>Ruota dentata ad evolvente...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation>Crea o modifica la definizione dell'ingranaggio ad evolvente.</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3462,19 +3458,6 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Vuoi che l'ultima funzione sia il nuovo suggerimento?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation>Pignone...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation>Crea o modifica la definizione del pignone.</translation>
     </message>
   </context>
   <context>
@@ -3550,12 +3533,12 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
@@ -3563,12 +3546,12 @@ fare nuovamente clic per terminare la selezione</translation>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation>Si desidera chiudere questa finestra?</translation>
     </message>
@@ -3837,14 +3820,14 @@ This may lead to unexpected results.</source>
       <translation>Non è possibile creare una funzione sottrattiva senza una funzione di base disponibile</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Asse orizzontale dello schizzo</translation>
     </message>
@@ -3896,11 +3879,11 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4479,20 +4462,20 @@ Disponibile solo per fori senza filetto</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="586"/>
+      <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="587"/>
-      <location filename="../../TaskHoleParameters.cpp" line="598"/>
+      <location filename="../../TaskHoleParameters.cpp" line="594"/>
+      <location filename="../../TaskHoleParameters.cpp" line="605"/>
       <source>Close</source>
       <translation>Chiudi</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="588"/>
+      <location filename="../../TaskHoleParameters.cpp" line="595"/>
       <source>Wide</source>
       <translation>Larghezza</translation>
     </message>
@@ -4639,12 +4622,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Invertita</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="597"/>
+      <location filename="../../TaskHoleParameters.cpp" line="604"/>
       <source>Normal</source>
       <translation>Normale</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="599"/>
+      <location filename="../../TaskHoleParameters.cpp" line="606"/>
       <source>Loose</source>
       <translation>Ampio</translation>
     </message>
@@ -4660,64 +4643,6 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation>Nessun messaggio</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation>Progettazione albero assistita...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation>Avvia la procedura guidata di progettazione dell'albero</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation>Lunghezza [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation>Diametro [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation>Diametro interno [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation>Tipo di vincolo</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation>Tipo di bordo iniziale</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation>Dimensione bordo iniziale</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation>Tipo di bordo finale</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation>Dimensione bordo finale</translation>
     </message>
   </context>
   <context>

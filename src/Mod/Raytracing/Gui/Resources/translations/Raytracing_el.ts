@@ -208,7 +208,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="354"/>
       <location filename="../../Command.cpp" line="800"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation>Δε μπορεί να δημιουργηθεί έργο διότι δεν υπάρχει εγκατεστημένο πρότυπο.</translation>
+      <translation>Δεν μπορεί να δημιουργηθεί έργο διότι δεν υπάρχει εγκατεστημένο πρότυπο.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="785"/>
@@ -470,7 +470,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation>The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Η διαδρομή προς το εκτελέσιμο POV-Ray, εάν θέλετε να αποδώσετε από το %1</translation>
     </message>
   </context>
   <context>

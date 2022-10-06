@@ -121,12 +121,12 @@
     <message>
       <location filename="TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation>Pasiekiami plėtiniai</translation>
+      <translation>Pasiekiami papildiniai</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Žemiau pateiktas papildomų darbastalių, kurie gali būti įdiegti į jūsų „FreeCAD“ programą, sąrašas. Naršykite ir įdiekite juos meniu (Įrankiai-&gt;Plėtinių valdyklė) pagalba. Sužinoti plačiau apie kiekvieną jų galite paspaudę nuorodas, esančias žemiau.</translation>
+      <translation>Žemiau pateiktas papildomų darbastalių, kurie gali būti įdiegti į jūsų „FreeCAD“ programą, sąrašas. Naršykite ir įdiekite juos meniu (Įrankiai-&gt;Papildinių tvarkyklė) pagalba. Sužinoti plačiau apie kiekvieną jų galite paspaudę nuorodas, esančias žemiau.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>

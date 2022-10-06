@@ -864,34 +864,34 @@
       <translation>删除所选项</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>剪切</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>修剪</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>分割</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>段</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>填充孔</translation>
     </message>
@@ -2198,7 +2198,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Import-Export</translation>
     </message>
@@ -2381,48 +2381,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[点： %1，边线： %2，面： %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>显示组件</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>显示段</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation>显示颜色</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>退出查询模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>索引： %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>退出孔填充模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>退出删除模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>删除选定的面</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>清除选中的面</translation>
     </message>

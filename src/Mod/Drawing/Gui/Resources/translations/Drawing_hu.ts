@@ -741,20 +741,20 @@ Szeretné folytatni?</translation>
       <translation>Jelöljön ki pontosan egy számolótábla tárgyat.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="50"/>
-      <location filename="../../TaskOrthoViews.cpp" line="978"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make axonometric...</source>
       <translation>Axonometrikus létrehozás...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="972"/>
       <source>Edit axonometric settings...</source>
       <translation>Axonometrikus beállítások szerkesztése...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="50"/>
+      <location filename="../../TaskOrthoViews.cpp" line="973"/>
       <source>Make orthographic</source>
       <translation>Ortografikus létrehozás</translation>
     </message>

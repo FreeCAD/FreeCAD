@@ -864,34 +864,34 @@
       <translation type="unfinished">Delete selection</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Tallar</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Tallar</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Dividir</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Segmento</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Desbotar</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation type="unfinished">Fill hole</translation>
     </message>
@@ -2198,7 +2198,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Importar-Exportar</translation>
     </message>
@@ -2381,48 +2381,48 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
       <translation>[Puntos: %1, Arestas: %2, Faces: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Amosar compoñentes</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Amosar segmentos</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Saír do modo de información</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Índice: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Saír do modo de reenchido de buratos</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Saír do modo de rexeitado</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Desbotar as faces escolmadas</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Limpar faces escolmadas</translation>
     </message>

@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>View triangulation failed</source>
       <translation>ტრიანგულაციის ნახვის შეცდომა</translation>
     </message>

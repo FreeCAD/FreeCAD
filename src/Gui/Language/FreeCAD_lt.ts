@@ -127,8 +127,8 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3347"/>
-      <location filename="../CommandView.cpp" line="3348"/>
+      <location filename="../CommandView.cpp" line="3210"/>
+      <location filename="../CommandView.cpp" line="3211"/>
       <source>Clear measurement</source>
       <translation>Išvalyti matavimą</translation>
     </message>
@@ -136,8 +136,8 @@
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3377"/>
-      <location filename="../CommandView.cpp" line="3378"/>
+      <location filename="../CommandView.cpp" line="3240"/>
+      <location filename="../CommandView.cpp" line="3241"/>
       <source>Toggle measurement</source>
       <translation>Įjungti/išjungti matavimą</translation>
     </message>
@@ -150,17 +150,17 @@
       <translation>Taisyti</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="635"/>
+      <location filename="../Application.cpp" line="614"/>
       <source>Import</source>
       <translation>Įkelti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1307"/>
+      <location filename="../CommandDoc.cpp" line="1279"/>
       <source>Delete</source>
       <translation>Naikinti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1885"/>
+      <location filename="../CommandDoc.cpp" line="1827"/>
       <source>Paste expressions</source>
       <translation>Įklijuoti išraiškas</translation>
     </message>
@@ -221,19 +221,19 @@
       <translation>Išdėstymas</translation>
     </message>
     <message>
+      <location filename="../Transform.cpp" line="104"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
-      <location filename="../Transform.cpp" line="104"/>
       <source>Transform</source>
       <translation>Keisti</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2634"/>
+      <location filename="../ViewProviderLink.cpp" line="2570"/>
       <source>Toggle array elements</source>
       <translation>Įjungti ar išjungti masyvo narius</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3035"/>
+      <location filename="../ViewProviderLink.cpp" line="2979"/>
       <source>Link Transform</source>
       <translation>Susieti transformacijas</translation>
     </message>
@@ -246,77 +246,77 @@
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../Workbench.cpp" line="517"/>
+      <location filename="../Workbench.cpp" line="516"/>
       <source>File</source>
       <translation>Failas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="518"/>
+      <location filename="../Workbench.cpp" line="517"/>
       <source>Edit</source>
       <translation>Taisyti</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="519"/>
+      <location filename="../Workbench.cpp" line="518"/>
       <source>Help</source>
       <translation>Žinynas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="520"/>
+      <location filename="../Workbench.cpp" line="519"/>
       <source>Link</source>
       <translation>Nuoroda</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="521"/>
+      <location filename="../Workbench.cpp" line="520"/>
       <source>Tools</source>
       <translation>Priemonės</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="522"/>
+      <location filename="../Workbench.cpp" line="521"/>
       <source>View</source>
       <translation>Rodymas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="523"/>
+      <location filename="../Workbench.cpp" line="522"/>
       <source>Window</source>
       <translation>Langas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="524"/>
+      <location filename="../Workbench.cpp" line="523"/>
       <source>Standard</source>
       <translation>Įprastinis</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="525"/>
+      <location filename="../Workbench.cpp" line="524"/>
       <source>Macros</source>
       <translation>Makrokomandos</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="526"/>
+      <location filename="../Workbench.cpp" line="525"/>
       <source>Macro</source>
       <translation>Makrokomandos</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="527"/>
+      <location filename="../Workbench.cpp" line="526"/>
       <source>Structure</source>
       <translation>Sandara</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="528"/>
+      <location filename="../Workbench.cpp" line="527"/>
       <source>Standard-Test</source>
       <translation>Įprastinė patikra</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="529"/>
+      <location filename="../Workbench.cpp" line="528"/>
       <source>Standard-View</source>
       <translation>Įprastinis vaizdas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="530"/>
+      <location filename="../Workbench.cpp" line="529"/>
       <source>TreeView</source>
       <translation>Medžio rodinys</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="531"/>
+      <location filename="../Workbench.cpp" line="530"/>
       <source>Measure</source>
       <translation>Matavimas</translation>
     </message>
@@ -469,12 +469,12 @@
   <context>
     <name>Gui::AccelLineEdit</name>
     <message>
-      <location filename="../DlgActionsImp.cpp" line="502"/>
+      <location filename="../DlgActionsImp.cpp" line="501"/>
       <source>none</source>
       <translation>joks</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="377"/>
+      <location filename="../Widgets.cpp" line="370"/>
       <source>Press a keyboard shortcut</source>
       <translation>Paspauskite mygtukų trumpinį</translation>
     </message>
@@ -482,32 +482,32 @@
   <context>
     <name>Gui::ActionSelector</name>
     <message>
-      <location filename="../Widgets.cpp" line="242"/>
+      <location filename="../Widgets.cpp" line="235"/>
       <source>Available:</source>
       <translation>Pasiekiamas:</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="243"/>
+      <location filename="../Widgets.cpp" line="236"/>
       <source>Selected:</source>
       <translation>Pasirinktas:</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="244"/>
+      <location filename="../Widgets.cpp" line="237"/>
       <source>Add</source>
       <translation>Pridėti</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="245"/>
+      <location filename="../Widgets.cpp" line="238"/>
       <source>Remove</source>
       <translation>Pašalinti</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="246"/>
+      <location filename="../Widgets.cpp" line="239"/>
       <source>Move up</source>
       <translation>Perkelti į viršų</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="247"/>
+      <location filename="../Widgets.cpp" line="240"/>
       <source>Move down</source>
       <translation>Perkelti žemyn</translation>
     </message>
@@ -627,22 +627,22 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::DAG::Model</name>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="128"/>
+      <location filename="../DAGView/DAGModel.cpp" line="127"/>
       <source>Rename</source>
       <translation>Pervardyti</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="129"/>
+      <location filename="../DAGView/DAGModel.cpp" line="128"/>
       <source>Rename object</source>
       <translation>Pervardyti objektą</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="136"/>
+      <location filename="../DAGView/DAGModel.cpp" line="135"/>
       <source>Finish editing</source>
       <translation>Baigti taisymą</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="137"/>
+      <location filename="../DAGView/DAGModel.cpp" line="136"/>
       <source>Finish editing object</source>
       <translation>Baigti taisyti daiktą</translation>
     </message>
@@ -774,16 +774,6 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="285"/>
-      <source> "</source>
-      <translation> “</translation>
-    </message>
-    <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="285"/>
-      <source>"</source>
-      <translation>„</translation>
-    </message>
-    <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="286"/>
       <source>Button %1</source>
       <translation>Mygtukas %1</translation>
@@ -797,37 +787,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="244"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="239"/>
       <source>Camera settings</source>
       <translation>Kameros nustatymai</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="251"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="246"/>
       <source>Orientation</source>
       <translation>Kampinė padėtis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="265"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="260"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="275"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="270"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="285"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="280"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="295"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="290"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="305"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="299"/>
       <source>Current view</source>
       <translation>Dabartinė kameros padėtis</translation>
     </message>
@@ -1386,27 +1376,39 @@ Jei tai nepažymėta, tuomet ypatybė turi būti vienareikšmiškai pavadinta ir
       <translation>joks</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="373"/>
+      <location filename="../DlgKeyboardImp.cpp" line="332"/>
+      <source>Command not in use yet</source>
+      <translation type="unfinished">Command not in use yet</translation>
+    </message>
+    <message>
+      <location filename="../DlgKeyboardImp.cpp" line="333"/>
+      <source>The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.
+To enable assignment, please make '%2' the active workbench</source>
+      <translation type="unfinished">The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.
+To enable assignment, please make '%2' the active workbench</translation>
+    </message>
+    <message>
+      <location filename="../DlgKeyboardImp.cpp" line="378"/>
       <source>Multiple defined keyboard shortcut</source>
       <translation>Daugiau, nei kartą apibrėžtas klaviatūros trumpinys</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="374"/>
+      <location filename="../DlgKeyboardImp.cpp" line="379"/>
       <source>The keyboard shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
       <translation>Klaviatūros trumpinys „%1“ yra nurodytas daugiau, nei kartą. Tai gali sukelti nenumatytą elgseną.</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="381"/>
+      <location filename="../DlgKeyboardImp.cpp" line="386"/>
       <source>Already defined keyboard shortcut</source>
       <translation>Trumpinys jau nurodytas</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="382"/>
+      <location filename="../DlgKeyboardImp.cpp" line="387"/>
       <source>The keyboard shortcut '%1' is already assigned to '%2'.</source>
       <translation>Trumpinys „%1“ jau yra priskirtas „%2“.</translation>
     </message>
     <message>
-      <location filename="../DlgKeyboardImp.cpp" line="383"/>
+      <location filename="../DlgKeyboardImp.cpp" line="388"/>
       <source>Do you want to override it?</source>
       <translation>Ar nepaisyti?</translation>
     </message>
@@ -2004,124 +2006,124 @@ Jei tai nepažymėta, tuomet ypatybė turi būti vienareikšmiškai pavadinta ir
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="238"/>
+      <source>Import config...</source>
+      <translation type="unfinished">Import config...</translation>
+    </message>
+    <message>
+      <location filename="../DlgGeneral.ui" line="245"/>
       <source>Save new...</source>
       <translation>Išsaugoti naują...</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="251"/>
+      <location filename="../DlgGeneral.ui" line="258"/>
       <source>Manage...</source>
       <translation>Tvarkyti...</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="258"/>
+      <location filename="../DlgGeneral.ui" line="265"/>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>Sugrąžinti...</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="272"/>
+      <location filename="../DlgGeneral.ui" line="279"/>
       <source>Main window</source>
       <translation>Pagrindinis langas</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="310"/>
+      <location filename="../DlgGeneral.ui" line="317"/>
       <source>Size of recent file list</source>
       <translation>Paskiausiai naudotų rinkmenų sąrašo ilgis</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="333"/>
+      <location filename="../DlgGeneral.ui" line="340"/>
       <source>How many files should be listed in recent files list</source>
       <translation>Kiek failų turėtų būti nurodyta naujausių failų sąraše</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="368"/>
+      <location filename="../DlgGeneral.ui" line="375"/>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Pagrindinio lango pagrindas bus sudarytas iš tm tikro paveikslėlio mozaikos.
+Norėdami sužinoti plačiau apie šį paveikslėlį, žvilgtelėkite į „FreeCAD“ Wiki puslapį.</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="372"/>
+      <location filename="../DlgGeneral.ui" line="379"/>
       <source>Enable tiled background</source>
       <translation>Įgalinti pasikartojantį foną</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="379"/>
+      <location filename="../DlgGeneral.ui" line="386"/>
       <source>The text cursor will be blinking</source>
-      <translation type="unfinished">The text cursor will be blinking</translation>
+      <translation>Teksto žymeklis mirgsės</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="382"/>
+      <location filename="../DlgGeneral.ui" line="389"/>
       <source>Enable cursor blinking</source>
-      <translation type="unfinished">Enable cursor blinking</translation>
+      <translation>Įgalinti žymeklio mirgėjimą</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="417"/>
+      <location filename="../DlgGeneral.ui" line="424"/>
       <source>Style sheet:</source>
       <translation>Vartotojo sąsajos apipavidalinimas:</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="424"/>
+      <location filename="../DlgGeneral.ui" line="431"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Išvaizdos pavyzdys, kaip atrodys vartotojo sąsaja</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="450"/>
+      <location filename="../DlgGeneral.ui" line="457"/>
       <source>Size of toolbar icons:</source>
       <translation>Įrankių juostos piktogramų dydis:</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="457"/>
+      <location filename="../DlgGeneral.ui" line="464"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
-    </message>
-    <message>
-      <location filename="../DlgGeneral.ui" line="484"/>
-      <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Pasirinkite, kokio dydžio bus įrankių juostos paveikslėliai. Jūs galite parinkti dydį pagal savo vaizduoklio dydį ar savo skonį</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="491"/>
+      <source>Tree view mode:</source>
+      <translation>Medžio rodinio veiksena:</translation>
+    </message>
+    <message>
+      <location filename="../DlgGeneral.ui" line="498"/>
       <source>Customize how tree view is shown in the panel (restart required).
 
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</translation>
+      <translation>Nustatykite, kaip atrodys medžio rodinys skydelyje (reikalingas programos perleidimas).
+„Sudėtinis rodinys“: apjungia medžio rodinį ir ypatybių rodinį į vieną skydelį.
+„Medžio rodinys ir Ypatybių rodinys“: Medžio rodinys ir ypatybių rodinys atskiruose skydeliuose.
+„Abu“: palieka visus tris skydelius, leidžiančius turėti du rodinių rinkinius.</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="507"/>
+      <location filename="../DlgGeneral.ui" line="514"/>
       <source>Start up</source>
       <translation>Paleidimas</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="545"/>
+      <location filename="../DlgGeneral.ui" line="552"/>
       <source>Auto load module after start up:</source>
       <translation>Po programos paleidimo savaime persijungti į darbastalį:</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="552"/>
+      <location filename="../DlgGeneral.ui" line="559"/>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Parinkite, kuris darbastalis bus įgalintas ir rodomas paleidus „FreeCAD“ programą</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="562"/>
+      <location filename="../DlgGeneral.ui" line="569"/>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>Iššokantis pradžios langelis yra mažas įkrovos langas, rodomas „FreeCAD“ paleidimo metu. Jei ši parinktis pažymėta, „FreeCAD“ rodys šį langelį</translation>
     </message>
     <message>
-      <location filename="../DlgGeneral.ui" line="567"/>
+      <location filename="../DlgGeneral.ui" line="574"/>
       <source>Enable splash screen at start up</source>
       <translation>Įgalinti paleidimo lango rodymą pasileidžiant programai</translation>
     </message>
@@ -2129,74 +2131,89 @@ display the splash screen</translation>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="91"/>
+      <location filename="../DlgGeneralImp.cpp" line="97"/>
       <source>Manage preference packs</source>
-      <translation type="unfinished">Manage preference packs</translation>
+      <translation>Tvarkyti parinkčių rinkinius</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="262"/>
+      <location filename="../DlgGeneralImp.cpp" line="271"/>
       <source>Small (%1px)</source>
       <translation>Mažas (%1 tšk.)</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="263"/>
+      <location filename="../DlgGeneralImp.cpp" line="272"/>
       <source>Medium (%1px)</source>
       <translation>Vidutinis (%1 tšk.)</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="264"/>
+      <location filename="../DlgGeneralImp.cpp" line="273"/>
       <source>Large (%1px)</source>
       <translation>Didelis (%1 tšk.)</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="265"/>
+      <location filename="../DlgGeneralImp.cpp" line="274"/>
       <source>Extra large (%1px)</source>
       <translation>Ypač didelis (%1 tšk.)</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="268"/>
+      <location filename="../DlgGeneralImp.cpp" line="277"/>
       <source>Custom (%1px)</source>
       <translation>Pasirinktinis (%1 tšk.)</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="273"/>
+      <location filename="../DlgGeneralImp.cpp" line="283"/>
       <source>Combo View</source>
       <translation>Mišrusis rodinys</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="274"/>
+      <location filename="../DlgGeneralImp.cpp" line="284"/>
       <source>TreeView and PropertyView</source>
       <translation>Medžio ir savybių rodinys</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="275"/>
+      <location filename="../DlgGeneralImp.cpp" line="285"/>
       <source>Both</source>
       <translation>Abu</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="311"/>
+      <location filename="../DlgGeneralImp.cpp" line="322"/>
       <source>No style sheet</source>
       <translation>Joks</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="362"/>
+      <location filename="../DlgGeneralImp.cpp" line="374"/>
       <source>Preference Pack Name</source>
-      <translation type="unfinished">Preference Pack Name</translation>
+      <translation>Nuostatų rinkinio pavadinimas</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="363"/>
+      <location filename="../DlgGeneralImp.cpp" line="375"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Žymės</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="389"/>
+      <location filename="../DlgGeneralImp.cpp" line="401"/>
       <source>Apply</source>
       <translation>Pritaikyti</translation>
     </message>
     <message>
-      <location filename="../DlgGeneralImp.cpp" line="390"/>
+      <location filename="../DlgGeneralImp.cpp" line="402"/>
       <source>Apply the %1 preference pack</source>
-      <translation type="unfinished">Apply the %1 preference pack</translation>
+      <translation>Pritaikyti %1 nuostatų rinkinį</translation>
+    </message>
+    <message>
+      <location filename="../DlgGeneralImp.cpp" line="460"/>
+      <source>Choose a FreeCAD config file to import</source>
+      <translation type="unfinished">Choose a FreeCAD config file to import</translation>
+    </message>
+    <message>
+      <location filename="../DlgGeneralImp.cpp" line="471"/>
+      <source>File exists</source>
+      <translation type="unfinished">File exists</translation>
+    </message>
+    <message>
+      <location filename="../DlgGeneralImp.cpp" line="472"/>
+      <source>A preference pack with that name already exists. Overwrite?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Overwrite?</translation>
     </message>
   </context>
   <context>
@@ -2280,7 +2297,7 @@ display the splash screen</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="249"/>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
-      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+      <translation>Paleisti vedlį, kuriuo nustatysite makrokomandą susikurtoje visuotinėje įrankių juostoje.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="252"/>
@@ -2290,7 +2307,7 @@ display the splash screen</translation>
     <message>
       <location filename="../DlgMacroExecute.ui" line="275"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+      <translation>Atidaryti papildinių tvarkyklę, kurioje galima atsisiųsti įvairių makrokomandų, įskaitant ir sukurtų bendruomenės narių.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="278"/>
@@ -2368,7 +2385,7 @@ Toks failas jau yra.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="450"/>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Perėjimas naudojant vedlį</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="451"/>
@@ -2376,40 +2393,39 @@ Toks failas jau yra.</translation>
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
-
-Note: your changes will be applied when you next switch workbenches
+      <translation>Šis vedlys padės jums nustatyti makrokomandą, pasiekiamą visuotinėje įrankių juostoje. Nurodymai bus raudoni dialogo lange.
+Pastaba: jūsų pakeitimai bus bus įgalinti po darbastalio perjungimo veiksmo
 </translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="499"/>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>Nuostatų peržiūra, 1-asis žingsnis iš 2-ių</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="520"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Peržiūros nurodymai: Užpildykite trūkstamus laukus (pasirinktinai), tuomet spauskite „Pridėti“, tuomet „Užverti“</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="554"/>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>Nuostatų peržiūra, 1-asis žingsnis iš 1-o</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="556"/>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>Nuostatų peržiūra, 2-asis žingsnis iš 2-ių</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="583"/>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>Peržiūros nurodymai: Spauskite rodyklės mygtuką (-&gt;), tuomet ir „Užverti“.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="608"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Peržiūros nurodymai: Spauskite „Naujas“, tuomet rodyklės mygtuką (-&gt;), tuomet ir „Užverti“.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="694"/>
@@ -2644,7 +2660,7 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <location filename="../DlgParameter.ui" line="70"/>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Įveskite rinkinio pavadinimą, kad jį rastumėte</translation>
     </message>
     <message>
       <location filename="../DlgParameter.ui" line="73"/>
@@ -2783,12 +2799,12 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="14"/>
       <source>Manage Preference Packs</source>
-      <translation type="unfinished">Manage Preference Packs</translation>
+      <translation>Tvarkyti parinkčių rinkinius</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager...</source>
-      <translation type="unfinished">Open Addon Manager...</translation>
+      <translation>Atidaryti papildinių tvarkyklę...</translation>
     </message>
   </context>
   <context>
@@ -2796,12 +2812,12 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="88"/>
       <source>User-Saved Preference Packs</source>
-      <translation type="unfinished">User-Saved Preference Packs</translation>
+      <translation>Vartotojo išsaugoti nuostatų rinkiniai</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="92"/>
       <source>Built-In Preference Packs</source>
-      <translation type="unfinished">Built-In Preference Packs</translation>
+      <translation>Numatytieji nuostatų rinkiniai</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="127"/>
@@ -2844,22 +2860,22 @@ Prašome nurodti kitą aplanką.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="268"/>
+      <location filename="../DlgPreferencesImp.cpp" line="322"/>
       <source>Clear user settings</source>
       <translation>Ištrinti vartotojo nustatymus</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="269"/>
+      <location filename="../DlgPreferencesImp.cpp" line="323"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Ar tikrai norite panaikinti visus vartotojo nustatymus?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="270"/>
+      <location filename="../DlgPreferencesImp.cpp" line="324"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Jeigu sutinkate, tuomet visi jūsų sukurti nustatymai bus ištrinti.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="368"/>
+      <location filename="../DlgPreferencesImp.cpp" line="415"/>
       <source>Wrong parameter</source>
       <translation>Neteisingas dydis</translation>
     </message>
@@ -2877,67 +2893,67 @@ Prašome nurodti kitą aplanką.</translation>
       <translation>Duomenys</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="38"/>
+      <location filename="../DlgProjectInformation.ui" line="47"/>
       <source>&amp;Name:</source>
       <translation>&amp;Pavadinimas:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="64"/>
+      <location filename="../DlgProjectInformation.ui" line="73"/>
       <source>Path:</source>
       <translation>Kelias:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="87"/>
+      <location filename="../DlgProjectInformation.ui" line="96"/>
       <source>UUID:</source>
       <translation>UUID:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="110"/>
+      <location filename="../DlgProjectInformation.ui" line="119"/>
       <source>Program version:</source>
       <translation>Programos versija:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="133"/>
+      <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Created &amp;by:</source>
       <translation>Sukūrė:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="156"/>
+      <location filename="../DlgProjectInformation.ui" line="165"/>
       <source>Creation &amp;date:</source>
       <translation>Sukūrimo &amp;data:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="182"/>
+      <location filename="../DlgProjectInformation.ui" line="191"/>
       <source>&amp;Last modified by:</source>
       <translation>&amp;Paskutinius pataisymus darė:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="205"/>
+      <location filename="../DlgProjectInformation.ui" line="214"/>
       <source>Last &amp;modification date:</source>
       <translation>Paskutinis &amp;keitimo data:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="231"/>
+      <location filename="../DlgProjectInformation.ui" line="240"/>
       <source>Com&amp;pany:</source>
       <translation>Įmo&amp;nė:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="254"/>
+      <location filename="../DlgProjectInformation.ui" line="263"/>
       <source>License information:</source>
       <translation>Duomenys apie licenciją:</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="267"/>
+      <location filename="../DlgProjectInformation.ui" line="276"/>
       <source>License URL</source>
       <translation>Licencijos URL</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="282"/>
+      <location filename="../DlgProjectInformation.ui" line="291"/>
       <source>Open in browser</source>
       <translation>Atidaryti naršyklėje</translation>
     </message>
     <message>
-      <location filename="../DlgProjectInformation.ui" line="291"/>
+      <location filename="../DlgProjectInformation.ui" line="300"/>
       <source>Commen&amp;t:</source>
       <translation>Komen&amp;taras:</translation>
     </message>
@@ -3078,12 +3094,12 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <location filename="../DlgReportView.ui" line="38"/>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Įprastiniai pranešimai bus įrašomi</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="41"/>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Įrašyti įprastinius pranešimus</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="57"/>
@@ -3119,59 +3135,55 @@ Prašome nurodti kitą aplanką.</translation>
       <location filename="../DlgReportView.ui" line="111"/>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation type="unfinished">When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</translation>
+      <translation>Įvykus klaidai, pasirodo ataskaitos rodinio langas, pranešantis apie klaidą</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="115"/>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Įvykus klaidai rodyti ataskaitos rodinio langą</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="131"/>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>Esnt įspėjimui, pasirodo ataskaitos rodinio langas, pranešantis apie įspėjimą</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="135"/>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Esant perspėjimui, rodyti ataskaitos rodinio langą</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="148"/>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>Esnt įprastiniam pranešimui, pasirodo ataskaitos rodinio langas, parodantis pranešimo turinį</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="152"/>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Rodyti ataskaitos rodinio langą esant įprastiniam pranešimui</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</translation>
+      <translation>Esnt žurnaliniam pranešimui, pasirodo ataskaitos rodinio langas, parodantis žurnalinį pranešimą</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="172"/>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Rodyti ataskaitos rodinio langą esant žurnaliniam pranešimui</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="188"/>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Pridėti laiko ir datos žymą kiekvienam pranešimui</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="191"/>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Pridėti laiko ir datos žymą kiekvienam įrašui</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="210"/>
@@ -3186,7 +3198,7 @@ on-screen while displaying the log message</translation>
     <message>
       <location filename="../DlgReportView.ui" line="283"/>
       <source>Font color for normal messages in Report view panel</source>
-      <translation type="unfinished">Font color for normal messages in Report view panel</translation>
+      <translation>Įprastinių pranešimų teksto spalva ataskaitos rodinio skydelyje</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="306"/>
@@ -3196,7 +3208,7 @@ on-screen while displaying the log message</translation>
     <message>
       <location filename="../DlgReportView.ui" line="341"/>
       <source>Font color for log messages in Report view panel</source>
-      <translation type="unfinished">Font color for log messages in Report view panel</translation>
+      <translation>Žurnalinių pranešimų teksto spalva ataskaitos rodinio skydelyje</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="364"/>
@@ -3206,7 +3218,7 @@ on-screen while displaying the log message</translation>
     <message>
       <location filename="../DlgReportView.ui" line="399"/>
       <source>Font color for warning messages in Report view panel</source>
-      <translation type="unfinished">Font color for warning messages in Report view panel</translation>
+      <translation>Perspėjimo pranešimų teksto spalva ataskaitos rodinio skydelyje</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="422"/>
@@ -3216,7 +3228,7 @@ on-screen while displaying the log message</translation>
     <message>
       <location filename="../DlgReportView.ui" line="457"/>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>Klaidų pranešimų teksto spalva ataskaitos rodinio skydelyje</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="501"/>
@@ -3227,8 +3239,7 @@ on-screen while displaying the log message</translation>
       <location filename="../DlgReportView.ui" line="507"/>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python output will be redirected
-from Python console to Report view panel</translation>
+      <translation>Vidinės Python'o konsolės išvestys bus išvedamos į ataskaitos rodinio skydelį</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="511"/>
@@ -3321,7 +3332,7 @@ from Python console to Report view panel</translation>
       <translation>Žinynas</translation>
     </message>
     <message>
-      <location filename="../DlgRunExternal.cpp" line="122"/>
+      <location filename="../DlgRunExternal.cpp" line="128"/>
       <source>Select a file</source>
       <translation>Pasirinkti failą</translation>
     </message>
@@ -3353,7 +3364,7 @@ lower right corner within opened files</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="63"/>
       <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
+      <translation>Santykinis dydis:   </translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="73"/>
@@ -3377,7 +3388,7 @@ opening or creation</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="105"/>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Įprastai rodyti susikertančias ašis</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="118"/>
@@ -3404,7 +3415,7 @@ will be shown at the lower left corner in opened files</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="160"/>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Atvaizdavimas</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="166"/>
@@ -3418,7 +3429,7 @@ Changing this option requires a restart of the application.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="171"/>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Naudoti programinį OpenGL</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="184"/>
@@ -3446,7 +3457,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     <message>
       <location filename="../DlgSettings3DView.ui" line="196"/>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Naudoti OpenGL VBO (viršūnių buferio objektą)</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="211"/>
@@ -3483,7 +3494,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="247"/>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Centralizuotas</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="255"/>
@@ -3523,7 +3534,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="309"/>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>Skaidrūs daiktai:</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="322"/>
@@ -3533,12 +3544,12 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="332"/>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Vienas žingsnis</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="337"/>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Pereiti per galinius daugiakampius</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="348"/>
@@ -3567,16 +3578,15 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../DlgSettings3DView.ui" line="411"/>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Atstumas tarp akių vyzdžių stereoskopiniame atvaizdavime</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="424"/>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Atstumas tarp vyzdžių, naudojamas stereo atvaizdavimui.
+Nurodytasis dydis yra daugiklis, kuris dauginamas iš dabar erdviniame rodinyje rodomo daikto matmenų.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="454"/>
@@ -3677,7 +3687,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="14"/>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>Podėlis</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="20"/>
@@ -3687,37 +3697,37 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>Vieta:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="56"/>
       <source>Check periodically at program start:</source>
-      <translation type="unfinished">Check periodically at program start:</translation>
+      <translation>Patikros periodiškumas programos paleidimo metu:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="83"/>
       <source>Always</source>
-      <translation type="unfinished">Always</translation>
+      <translation>Visuomet</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="88"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Kasdien</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="93"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>Kas savaitę</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="98"/>
       <source>Monthly</source>
-      <translation type="unfinished">Monthly</translation>
+      <translation>Kas mėnesį</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="103"/>
       <source>Yearly</source>
-      <translation type="unfinished">Yearly</translation>
+      <translation>Kasmet</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="108"/>
@@ -3727,17 +3737,17 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="116"/>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>Podėlio dydžio riba:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="161"/>
       <source>Check now...</source>
-      <translation type="unfinished">Check now...</translation>
+      <translation>Tikrinti dabar...</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="58"/>
       <source>Notify the user if the cache size exceeds the specified limit</source>
-      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+      <translation>Pranešti vartotojui, kai podėlio dydis viršyja nustatytą ribą</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="60"/>
@@ -3747,7 +3757,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="117"/>
       <source>Current cache size: %1</source>
-      <translation type="unfinished">Current cache size: %1</translation>
+      <translation>Esamas podėlio dydis: %1</translation>
     </message>
   </context>
   <context>
@@ -3795,7 +3805,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="106"/>
       <source>Color gradient is used with its full color range</source>
-      <translation type="unfinished">Color gradient is used with its full color range</translation>
+      <translation>Spalvokaitai naudojama visa spalvų gama</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="109"/>
@@ -3810,7 +3820,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="122"/>
       <source>Color gradient starts from the zero value</source>
-      <translation type="unfinished">Color gradient starts from the zero value</translation>
+      <translation>Spalvokaita prasideda nuo nulinės vertės</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="125"/>
@@ -3831,8 +3841,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="159"/>
       <source>Data outside the specified min-max range
 will be displayed in gray</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed in gray</translation>
+      <translation>Duomenys už nurodytų rėžių bus atvaizduojami pilkai</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
@@ -3848,8 +3857,7 @@ will be displayed in gray</translation>
       <location filename="../DlgSettingsColorGradient.ui" line="173"/>
       <source>Data outside the specified min-max range
 will be displayed with transparency</source>
-      <translation type="unfinished">Data outside the specified min-max range
-will be displayed with transparency</translation>
+      <translation>Duomenys už nurodytų rėžių bus atvaizduojami kaip permatomi</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="177"/>
@@ -4012,7 +4020,7 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="277"/>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>Kaip dažnai atkūrimo rinkmena yra įrašoma</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="280"/>
@@ -4022,7 +4030,7 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="341"/>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>Paveikslėlio miniatiūra bus išsaugota kartu su saugomu dokumentu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="344"/>
@@ -4038,8 +4046,8 @@ automatically run a file recovery when it is started.</translation>
       <location filename="../DlgSettingsDocument.ui" line="383"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Nustato miniatiūros, s, augomos dokumente, dydį.
+Įprastiniai dydžiai yra ir 128, 256 ir 512</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="408"/>
@@ -4054,7 +4062,7 @@ Common sizes are 128, 256 and 512</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="444"/>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>Kiek atkūrimo rinkmenų bus palikta saugant dokumentą</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="447"/>
@@ -4065,8 +4073,7 @@ Common sizes are 128, 256 and 512</translation>
       <location filename="../DlgSettingsDocument.ui" line="511"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
-      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</translation>
+      <translation>Nurodytai rūšiai atsarginės rinkmenos turės „.FCbak“ plėtinį, o rinkmenų pavadinimai prasidės datos priešdėliu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="515"/>
@@ -4158,7 +4165,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="672"/>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>Numatytoji naujų dokumentų licencija</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="685"/>
@@ -4491,12 +4498,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsImageImp.cpp" line="53"/>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>Kadrų buferis (priskirtas)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsImageImp.cpp" line="54"/>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>Kadrų buferis (koks yra)</translation>
     </message>
   </context>
   <context>
@@ -4504,7 +4511,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="14"/>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Veiksnūs darbastaliai</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="32"/>
@@ -4514,17 +4521,17 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="57"/>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Darbastalio pavadinimas</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="62"/>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Įkelti savaime?</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="67"/>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Įkelti dabar</translation>
     </message>
   </context>
   <context>
@@ -4537,12 +4544,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsLazyLoadedImp.cpp" line="125"/>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Savaiminis įkėlimas</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoadedImp.cpp" line="155"/>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Jei pažymėta</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoadedImp.cpp" line="157"/>
@@ -4557,12 +4564,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsLazyLoadedImp.cpp" line="181"/>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Įkelta</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoadedImp.cpp" line="186"/>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Įkelti dabar</translation>
     </message>
   </context>
   <context>
@@ -4655,51 +4662,51 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="243"/>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Paskiausių makrokomandų meniu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="249"/>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Paskiausiai naudotų makrokomandų sąrašo ilgis</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="269"/>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Kiek makrokomandų turėtų būti nurodyta paskiausiai naudotųjų sąraše</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="285"/>
       <source>Keyboard shortcut count</source>
-      <translation type="unfinished">Keyboard shortcut count</translation>
+      <translation>Sparčiųjų klavišų trumpinių kiekis</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="305"/>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Kiek paskiausių makrokomandų gali apimti trumpiniai</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="321"/>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Klaviatūros modifikatoriai</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="341"/>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Klaviatūros modifikatoriai, įprastai tai Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../DlgSettingsNavigation.ui" line="177"/>
+      <location filename="../DlgSettingsNavigation.ui" line="183"/>
       <source>Navigation</source>
       <translation>Naršymas</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Naršymo kubas</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="29"/>
@@ -4722,187 +4729,187 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Kampas, kuriame rodomas naršymo kubas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="94"/>
+      <location filename="../DlgSettingsNavigation.ui" line="100"/>
       <source>Top left</source>
       <translation>Viršuje kairėje</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="99"/>
+      <location filename="../DlgSettingsNavigation.ui" line="105"/>
       <source>Top right</source>
       <translation>Viršuje dešinėje</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="104"/>
+      <location filename="../DlgSettingsNavigation.ui" line="110"/>
       <source>Bottom left</source>
       <translation>Apačioje kairėje</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="109"/>
+      <location filename="../DlgSettingsNavigation.ui" line="115"/>
       <source>Bottom right</source>
       <translation>Apačioje dešinėje</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="117"/>
+      <location filename="../DlgSettingsNavigation.ui" line="123"/>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Paspaudus kubo sieną, nutaiko kamerą iki artimiausio žiūrėjimo kampo</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="120"/>
+      <location filename="../DlgSettingsNavigation.ui" line="126"/>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Sukti iki artimiausio</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="136"/>
+      <location filename="../DlgSettingsNavigation.ui" line="142"/>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kubo dydis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="143"/>
+      <location filename="../DlgSettingsNavigation.ui" line="149"/>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Naršymo kubo dydis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="183"/>
+      <location filename="../DlgSettingsNavigation.ui" line="189"/>
       <source>3D Navigation</source>
       <translation>Erdvinio naršymo būdai</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="220"/>
+      <location filename="../DlgSettingsNavigation.ui" line="226"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
-      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</translation>
+      <translation>Rodyti pelės mygtukų derinius kiekvienai pasirinktai naršymo nuostatai.
+Pasirinkite rinkinį ir tuomet paspauskite mygtuką pamatyti išvartintus derinius.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="224"/>
+      <location filename="../DlgSettingsNavigation.ui" line="230"/>
       <source>Mouse...</source>
       <translation>Pelė...</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="245"/>
+      <location filename="../DlgSettingsNavigation.ui" line="251"/>
       <source>Navigation settings set</source>
-      <translation type="unfinished">Navigation settings set</translation>
+      <translation>Naršymo nuostatų rinkinys</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="255"/>
+      <location filename="../DlgSettingsNavigation.ui" line="261"/>
       <source>Orbit style</source>
       <translation>Vaizdo sukimo įrankis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="274"/>
+      <location filename="../DlgSettingsNavigation.ui" line="280"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</translation>
+      <translation>Sukimo ratu būdai.
+Sukimo rutulys: judinant pelę gulsčiai detalė bus sukama apie y ašį.
+Sukimo stalelis: detalė bus sukama apie z ašį.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="283"/>
+      <location filename="../DlgSettingsNavigation.ui" line="289"/>
       <source>Turntable</source>
       <translation>Peržiūra sukant</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="288"/>
+      <location filename="../DlgSettingsNavigation.ui" line="294"/>
       <source>Trackball</source>
       <translation>Rutulinis manipuliatorius</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="296"/>
+      <location filename="../DlgSettingsNavigation.ui" line="302"/>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Sukimo būdas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="315"/>
+      <location filename="../DlgSettingsNavigation.ui" line="321"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
+      <translation>Posūkis erdvėje bus atliekamas apie esamoje žymeklio padėtyje esantį sukimosi tašką</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="322"/>
+      <location filename="../DlgSettingsNavigation.ui" line="328"/>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>Lango vidurys</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="327"/>
+      <location filename="../DlgSettingsNavigation.ui" line="333"/>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Vilkti ties žymekliu</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="332"/>
+      <location filename="../DlgSettingsNavigation.ui" line="338"/>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Daikto vidurys</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="340"/>
+      <location filename="../DlgSettingsNavigation.ui" line="346"/>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>Numatytoji kameros padėtis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="359"/>
+      <location filename="../DlgSettingsNavigation.ui" line="365"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+      <translation>Numatytoji kameros padėtis kai kuriamas naujas dokumentas ar pasirenkamas pradinis rodinys</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="366"/>
+      <location filename="../DlgSettingsNavigation.ui" line="372"/>
       <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
+      <translation>Kameros priartinimas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="385"/>
+      <location filename="../DlgSettingsNavigation.ui" line="391"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
-      <translation type="unfinished">Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</translation>
+      <translation>Nustato kameros priartinimo lygį naujiems dokumentams.
+Dydis yra sferos, telpančios ekrane, skersmuo.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="389"/>
+      <location filename="../DlgSettingsNavigation.ui" line="395"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="414"/>
+      <location filename="../DlgSettingsNavigation.ui" line="420"/>
       <source>Enable animated rotations</source>
       <translation>Įgalinti animuotąjį sukimą</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="417"/>
+      <location filename="../DlgSettingsNavigation.ui" line="423"/>
       <source>Enable animation</source>
       <translation>Įgalinti animavimą</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="433"/>
+      <location filename="../DlgSettingsNavigation.ui" line="439"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
+      <translation>Priartinimo veiksmas bus atliekamas pelės žymeklio taško atžvilgiu</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="436"/>
+      <location filename="../DlgSettingsNavigation.ui" line="442"/>
       <source>Zoom at cursor</source>
       <translation>Priartinti vaizdą ties žymekliu</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="452"/>
+      <location filename="../DlgSettingsNavigation.ui" line="458"/>
       <source> Zoom step</source>
-      <translation type="unfinished"> Zoom step</translation>
+      <translation> Priartinimo žingsnis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="470"/>
+      <location filename="../DlgSettingsNavigation.ui" line="476"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Kaip bus pakeistas mastelis.
+Mastelio keitimo žingsnis „1“ reiškia 7,5 kartų priartinimą (tolinimą) mastelio keitimo žingsniui.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="514"/>
+      <location filename="../DlgSettingsNavigation.ui" line="520"/>
       <source>Direction of zoom operations will be inverted</source>
-      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
+      <translation>Mastelio keitimo veiksmas bus apgręžtas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="517"/>
+      <location filename="../DlgSettingsNavigation.ui" line="523"/>
       <source>Invert zoom</source>
       <translation>Apgręžtas didinimas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="533"/>
+      <location filename="../DlgSettingsNavigation.ui" line="539"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4911,57 +4918,57 @@ Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="538"/>
+      <location filename="../DlgSettingsNavigation.ui" line="544"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Išjungti pasukimo gestą jutikliniame ekrane</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="142"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="137"/>
       <source>Isometric</source>
       <translation>Izometrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="143"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="138"/>
       <source>Dimetric</source>
       <translation>Dimetrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="144"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="139"/>
       <source>Trimetric</source>
       <translation>Trimetrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="145"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="140"/>
       <source>Top</source>
       <translation>Iš viršaus</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="146"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="141"/>
       <source>Front</source>
       <translation>Iš priekio</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="147"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="142"/>
       <source>Left</source>
       <translation>Iš kairės</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="148"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="143"/>
       <source>Right</source>
       <translation>Iš dešinės</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="149"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="144"/>
       <source>Rear</source>
       <translation>Iš galo</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="150"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="145"/>
       <source>Bottom</source>
       <translation>Iš apačios</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="151"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="146"/>
       <source>Custom</source>
       <translation>Pasirinktinė</translation>
     </message>
@@ -5159,7 +5166,7 @@ horizontal space in Python console</translation>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="49"/>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>JAV statybinė (pėdos-coliai/kv. pėdos/kub. pėdos)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="50"/>
@@ -5169,12 +5176,12 @@ horizontal space in Python console</translation>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="51"/>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>Imperinė civilinės inžinerijos (pėdos, pėdos sekundei)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="52"/>
-      <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <source>FEM (mm, N, s)</source>
+      <translation type="unfinished">FEM (mm, N, s)</translation>
     </message>
   </context>
   <context>
@@ -5185,104 +5192,114 @@ horizontal space in Python console</translation>
       <translation>Spalvos</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="35"/>
+      <location filename="../DlgSettingsViewColor.ui" line="20"/>
       <source>Selection</source>
       <translation>Atranka</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="79"/>
+      <location filename="../DlgSettingsViewColor.ui" line="64"/>
       <source>Enable preselection and highlight by specified color</source>
       <translation type="unfinished">Enable preselection and highlight by specified color</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="82"/>
+      <location filename="../DlgSettingsViewColor.ui" line="67"/>
       <source>Enable preselection highlighting</source>
       <translation>Įgalinti paryškinimą žymint</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="127"/>
+      <location filename="../DlgSettingsViewColor.ui" line="112"/>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="130"/>
+      <location filename="../DlgSettingsViewColor.ui" line="115"/>
       <source>Enable selection highlighting</source>
       <translation>Įgalinti atrankos paryškinimą</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="187"/>
+      <location filename="../DlgSettingsViewColor.ui" line="172"/>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Pagrindo spalva modelio peržūroje</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="190"/>
+      <location filename="../DlgSettingsViewColor.ui" line="175"/>
       <source>Background color</source>
       <translation>Pagrindo spalva</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="234"/>
-      <location filename="../DlgSettingsViewColor.ui" line="259"/>
+      <location filename="../DlgSettingsViewColor.ui" line="219"/>
+      <location filename="../DlgSettingsViewColor.ui" line="244"/>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Pagrindas bus pasirinktos spalvos</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="237"/>
+      <location filename="../DlgSettingsViewColor.ui" line="222"/>
       <source>Simple color</source>
       <translation>Vienspalvis</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="282"/>
+      <location filename="../DlgSettingsViewColor.ui" line="267"/>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Pagrindas turės pasirinktą spalvokaitą</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="285"/>
+      <location filename="../DlgSettingsViewColor.ui" line="270"/>
       <source>Color gradient</source>
       <translation>Spalvokaita</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="301"/>
+      <location filename="../DlgSettingsViewColor.ui" line="286"/>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Viršaus spalva</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="340"/>
+      <location filename="../DlgSettingsViewColor.ui" line="309"/>
+      <source>Switches the colors of the gradient</source>
+      <translation type="unfinished">Switches the colors of the gradient</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsViewColor.ui" line="312"/>
+      <source>Switch</source>
+      <translation type="unfinished">Switch</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsViewColor.ui" line="332"/>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Apačios spalva</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="363"/>
+      <location filename="../DlgSettingsViewColor.ui" line="355"/>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>Spalvokaitos vidurinė spalva bus tokia, kaip pasirinktoji</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="366"/>
-      <location filename="../DlgSettingsViewColor.ui" line="382"/>
+      <location filename="../DlgSettingsViewColor.ui" line="358"/>
+      <location filename="../DlgSettingsViewColor.ui" line="374"/>
       <source>Middle color</source>
       <translation>Vidurinioji spalva</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="423"/>
+      <location filename="../DlgSettingsViewColor.ui" line="415"/>
       <source>Tree view</source>
       <translation>Medžio langas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="470"/>
+      <location filename="../DlgSettingsViewColor.ui" line="462"/>
       <source>Object being edited</source>
       <translation>Taisomasis daiktas</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="483"/>
+      <location filename="../DlgSettingsViewColor.ui" line="475"/>
       <source>Background color for objects in tree view that are currently edited</source>
       <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="503"/>
+      <location filename="../DlgSettingsViewColor.ui" line="495"/>
       <source>Active container</source>
       <translation>Pasirinktasis konteineris</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsViewColor.ui" line="516"/>
+      <location filename="../DlgSettingsViewColor.ui" line="508"/>
       <source>Background color for active containers in tree view</source>
       <translation type="unfinished">Background color for active containers in tree view</translation>
     </message>
@@ -5324,7 +5341,7 @@ horizontal space in Python console</translation>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="71"/>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Gavinys</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="83"/>
@@ -5396,7 +5413,7 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DlgUnitsCalculatorImp.cpp" line="147"/>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>nežinomas mato vienetas:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculatorImp.cpp" line="152"/>
@@ -5713,7 +5730,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Piktogramų aplankai</translation>
     </message>
     <message>
-      <location filename="../DlgActionsImp.cpp" line="574"/>
+      <location filename="../DlgActionsImp.cpp" line="573"/>
       <source>Add icon folder</source>
       <translation>Pridėti piktogramą aplanką</translation>
     </message>
@@ -5721,17 +5738,17 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
-      <location filename="../DlgActionsImp.cpp" line="551"/>
+      <location filename="../DlgActionsImp.cpp" line="550"/>
       <source>Add or remove custom icon folders</source>
       <translation>Pridėti arba pašalinti piktogramų aplankus</translation>
     </message>
     <message>
-      <location filename="../DlgActionsImp.cpp" line="598"/>
+      <location filename="../DlgActionsImp.cpp" line="597"/>
       <source>Remove folder</source>
       <translation>Pašalinti aplanką</translation>
     </message>
     <message>
-      <location filename="../DlgActionsImp.cpp" line="599"/>
+      <location filename="../DlgActionsImp.cpp" line="598"/>
       <source>Removing a folder only takes effect after an application restart.</source>
       <translation>Aplanko šalinimas suveiks tik paleidus programą iš naujo.</translation>
     </message>
@@ -6017,7 +6034,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="237"/>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Oilerio kampai (zy'x'')</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="290"/>
@@ -6032,32 +6049,32 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="364"/>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Pokrypis (apie z ašį):</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="371"/>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Pokrypis (apie z ašį)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="384"/>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Polinkis (apie y ašį):</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="391"/>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Polinkis (apie y ašį)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="404"/>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Posvyris (apie x ašį):</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="411"/>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Posvyris (apie x ašį)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="449"/>
@@ -6238,14 +6255,14 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::Transform</name>
     <message>
-      <location filename="../Transform.cpp" line="291"/>
-      <location filename="../Transform.cpp" line="419"/>
+      <location filename="../Transform.cpp" line="289"/>
+      <location filename="../Transform.cpp" line="417"/>
       <source>Cancel</source>
       <translation>Atšaukti</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="292"/>
-      <location filename="../Transform.cpp" line="420"/>
+      <location filename="../Transform.cpp" line="290"/>
+      <location filename="../Transform.cpp" line="418"/>
       <source>Transform</source>
       <translation>Keisti</translation>
     </message>
@@ -6352,7 +6369,7 @@ originally selected prior to opening this dialog</translation>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
-      <location filename="../PropertyView.cpp" line="548"/>
+      <location filename="../PropertyView.cpp" line="549"/>
       <source>Property View</source>
       <translation>Savybių langas</translation>
     </message>
@@ -6367,36 +6384,36 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../ReportView.cpp" line="554"/>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Rodomų žinučių rūšys</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="557"/>
       <location filename="../ReportView.cpp" line="577"/>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Įprasti pranešimai</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="561"/>
       <location filename="../ReportView.cpp" line="581"/>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Pranešimų žurnalas</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="565"/>
       <location filename="../ReportView.cpp" line="585"/>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Įspėjimai</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="569"/>
       <location filename="../ReportView.cpp" line="589"/>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Klaidos</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show output window on</source>
-      <translation type="unfinished">Show output window on</translation>
+      <translation>Virš ko rodyti įvesties langą</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
@@ -6482,72 +6499,72 @@ originally selected prior to opening this dialog</translation>
       <translation>Pasirinktų daiktų sąrašas</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="589"/>
+      <location filename="../SelectionView.cpp" line="590"/>
       <source>Select only</source>
       <translation>Išskirti tik</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="591"/>
+      <location filename="../SelectionView.cpp" line="592"/>
       <source>Selects only this object</source>
       <translation>Pažymi tik šį daiktą</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="592"/>
+      <location filename="../SelectionView.cpp" line="593"/>
       <source>Deselect</source>
       <translation>Atžymėti</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="594"/>
+      <location filename="../SelectionView.cpp" line="595"/>
       <source>Deselects this object</source>
       <translation>Nebežymi šio daikto</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="595"/>
+      <location filename="../SelectionView.cpp" line="596"/>
       <source>Zoom fit</source>
       <translation>Priartinti nurodytą sritį</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="597"/>
+      <location filename="../SelectionView.cpp" line="598"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Pasirenka šį daiktą ir prideriną jį erdvinio atvaizdavimo lange</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="598"/>
+      <location filename="../SelectionView.cpp" line="599"/>
       <source>Go to selection</source>
       <translation>Eiti į atranką</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="599"/>
+      <location filename="../SelectionView.cpp" line="600"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Pasirenka šį daiktus ir parodo jo vietą medyje</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="600"/>
+      <location filename="../SelectionView.cpp" line="601"/>
       <source>Mark to recompute</source>
       <translation>Pažymėti perskaičiavimui</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="602"/>
+      <location filename="../SelectionView.cpp" line="603"/>
       <source>Mark this object to be recomputed</source>
       <translation>Pažymėti šį daiktą perskaičiavimui</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="603"/>
+      <location filename="../SelectionView.cpp" line="604"/>
       <source>To python console</source>
       <translation>Į Python'o konsolę</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="605"/>
+      <location filename="../SelectionView.cpp" line="606"/>
       <source>Reveals this object and its subelements in the python console.</source>
       <translation>Parodo šį daiktą ir jo sandarą „Python'o“ konsolėje.</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="610"/>
+      <location filename="../SelectionView.cpp" line="611"/>
       <source>Duplicate subshape</source>
       <translation>Klonuoti formos kreivę</translation>
     </message>
     <message>
-      <location filename="../SelectionView.cpp" line="612"/>
+      <location filename="../SelectionView.cpp" line="613"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Sukuria atskirą šios formos kreivės kopiją dokumente</translation>
     </message>
@@ -6568,12 +6585,12 @@ originally selected prior to opening this dialog</translation>
   <context>
     <name>Gui::EditorView</name>
     <message>
-      <location filename="../EditorView.cpp" line="197"/>
+      <location filename="../EditorView.cpp" line="196"/>
       <source>Modified file</source>
       <translation>Pakeistas failas</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="198"/>
+      <location filename="../EditorView.cpp" line="197"/>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
@@ -6582,54 +6599,54 @@ This has been modified outside of the source editor. Do you want to reload it?</
 Buvo keistas išorine rengykle. Ar norite atnaujinti jį?</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="319"/>
+      <location filename="../EditorView.cpp" line="318"/>
       <source>Unsaved document</source>
       <translation>Neišsaugotas dokumentas</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="320"/>
+      <location filename="../EditorView.cpp" line="319"/>
       <source>The document has been modified.
 Do you want to save your changes?</source>
       <translation>Dokumentas buvo pakeistas.
 Ar norite įrašyti keitimus?</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="347"/>
+      <location filename="../EditorView.cpp" line="346"/>
       <source>FreeCAD macro</source>
       <translation>„FreeCAD“ makrokomandos</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="469"/>
+      <location filename="../EditorView.cpp" line="468"/>
       <source>Export PDF</source>
       <translation>Eksportuoti į PDF</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="470"/>
+      <location filename="../EditorView.cpp" line="469"/>
       <source>PDF file</source>
       <translation>PDF failas</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="501"/>
+      <location filename="../EditorView.cpp" line="500"/>
       <source>untitled[*]</source>
       <translation>be pavadinimo[*]</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="504"/>
+      <location filename="../EditorView.cpp" line="503"/>
       <source> - Editor</source>
       <translation> - Rengyklė</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="556"/>
+      <location filename="../EditorView.cpp" line="557"/>
       <source>%1 chars removed</source>
       <translation>pašalinta %1 simbolių(-iai)</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="558"/>
+      <location filename="../EditorView.cpp" line="559"/>
       <source>%1 chars added</source>
       <translation>pridėta %1 simbolių(-iai)</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="560"/>
+      <location filename="../EditorView.cpp" line="561"/>
       <source>Formatted</source>
       <translation>Suformatuotas</translation>
     </message>
@@ -6637,29 +6654,29 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="648"/>
+      <location filename="../ExpressionCompleter.cpp" line="659"/>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Tikslus atitikimas</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="747"/>
+      <location filename="../ExpressionCompleter.cpp" line="758"/>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Tikslus atitikimas</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="721"/>
-      <location filename="../FileDialog.cpp" line="723"/>
+      <location filename="../FileDialog.cpp" line="746"/>
+      <location filename="../FileDialog.cpp" line="748"/>
       <source>Select a file</source>
       <translation>Pasirinkti failą</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="726"/>
+      <location filename="../FileDialog.cpp" line="751"/>
       <source>Select a directory</source>
       <translation>Pasirinkite aplanką</translation>
     </message>
@@ -6667,13 +6684,13 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="177"/>
+      <location filename="../FileDialog.cpp" line="198"/>
       <source>Save as</source>
       <translation>Išsaugoti kaip</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="262"/>
-      <location filename="../FileDialog.cpp" line="323"/>
+      <location filename="../FileDialog.cpp" line="274"/>
+      <location filename="../FileDialog.cpp" line="327"/>
       <source>Open</source>
       <translation>Atverti</translation>
     </message>
@@ -6681,12 +6698,12 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="440"/>
+      <location filename="../FileDialog.cpp" line="436"/>
       <source>Extended</source>
       <translation>Plačiau</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="482"/>
+      <location filename="../FileDialog.cpp" line="478"/>
       <source>All files (*.*)</source>
       <translation>Visų rūšių failai (*.*)</translation>
     </message>
@@ -6745,74 +6762,74 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="314"/>
+      <location filename="../GraphvizView.cpp" line="307"/>
       <source>Graphviz not found</source>
       <translation>„Graphviz“ nerastas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="318"/>
+      <location filename="../GraphvizView.cpp" line="311"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>Nepavyko rasti „Graphviz“ jūsų sistemoje.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="319"/>
+      <location filename="../GraphvizView.cpp" line="312"/>
       <source>Read more about it here.</source>
       <translation>Skaitykite daugiau apie tai čia.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="320"/>
+      <location filename="../GraphvizView.cpp" line="313"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>Ar norite nurodyti kelią, jei tai jau įdiegta?</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="327"/>
+      <location filename="../GraphvizView.cpp" line="320"/>
       <source>Graphviz installation path</source>
       <translation>„Graphviz“ įdiegimo vieta</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="366"/>
+      <location filename="../GraphvizView.cpp" line="359"/>
       <source>Graphviz failed</source>
       <translation>„Graphviz“ triktis</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="367"/>
+      <location filename="../GraphvizView.cpp" line="360"/>
       <source>Graphviz failed to create an image file</source>
       <translation>„Graphviz“ nepavyko sukurti atvaizdo failo</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="454"/>
+      <location filename="../GraphvizView.cpp" line="447"/>
       <source>PNG format</source>
       <translation>PNG formatas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="455"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Bitmap format</source>
       <translation>BMP formatas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="456"/>
+      <location filename="../GraphvizView.cpp" line="449"/>
       <source>GIF format</source>
       <translation>GIF formatas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="457"/>
+      <location filename="../GraphvizView.cpp" line="450"/>
       <source>JPG format</source>
       <translation>JPG formatas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="458"/>
+      <location filename="../GraphvizView.cpp" line="451"/>
       <source>SVG format</source>
       <translation>SVG formatas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="459"/>
-      <location filename="../GraphvizView.cpp" line="543"/>
+      <location filename="../GraphvizView.cpp" line="452"/>
+      <location filename="../GraphvizView.cpp" line="536"/>
       <source>PDF format</source>
       <translation>PDF formatas</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="467"/>
-      <location filename="../GraphvizView.cpp" line="546"/>
+      <location filename="../GraphvizView.cpp" line="460"/>
+      <location filename="../GraphvizView.cpp" line="539"/>
       <source>Export graph</source>
       <translation>Eksportuoti grafiką</translation>
     </message>
@@ -6856,7 +6873,7 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1486"/>
+      <location filename="../Widgets.cpp" line="1445"/>
       <source>List</source>
       <translation>Sąrašas</translation>
     </message>
@@ -6961,12 +6978,12 @@ Ar norite įrašyti keitimus?</translation>
       <translation>Makrokomandos</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1128"/>
+      <location filename="../Command.cpp" line="1137"/>
       <source>Macro file doesn't exist</source>
       <translation>Makrokomandų failo nėra</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1129"/>
+      <location filename="../Command.cpp" line="1138"/>
       <source>No such macro file: '%1'</source>
       <translation>Nėra tokio makrokomandų failo: „%1“</translation>
     </message>
@@ -6974,63 +6991,63 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="294"/>
-      <location filename="../MainWindow.cpp" line="1875"/>
+      <location filename="../MainWindow.cpp" line="293"/>
+      <location filename="../MainWindow.cpp" line="1902"/>
       <source>Dimension</source>
       <translation>Matmuo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="483"/>
+      <location filename="../MainWindow.cpp" line="333"/>
       <source>Ready</source>
       <translation>Paruošta</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="708"/>
+      <location filename="../MainWindow.cpp" line="742"/>
       <source>Help addon needed!</source>
-      <translation type="unfinished">Help addon needed!</translation>
+      <translation>Reikalingas žinyno papildinys!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="709"/>
+      <location filename="../MainWindow.cpp" line="743"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+      <translation>%1 žinyno sistemą tvarko žinyno papildinys. Jis gali būti lengvai įdiegtas naudojantis papildinių tvarkykle</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="711"/>
+      <location filename="../MainWindow.cpp" line="745"/>
       <source>Open Addon Manager</source>
-      <translation type="unfinished">Open Addon Manager</translation>
+      <translation>Atidaryti papildinių tvarkyklę</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="906"/>
+      <location filename="../MainWindow.cpp" line="940"/>
       <source>Close All</source>
       <translation>Užverti viską</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1113"/>
-      <location filename="../MainWindow.cpp" line="1114"/>
-      <location filename="../MainWindow.cpp" line="1115"/>
+      <location filename="../MainWindow.cpp" line="1144"/>
+      <location filename="../MainWindow.cpp" line="1145"/>
+      <location filename="../MainWindow.cpp" line="1146"/>
       <source>Toggles this toolbar</source>
       <translation>Perjungia šią įrankių juostą</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1128"/>
-      <location filename="../MainWindow.cpp" line="1129"/>
-      <location filename="../MainWindow.cpp" line="1130"/>
+      <location filename="../MainWindow.cpp" line="1159"/>
+      <location filename="../MainWindow.cpp" line="1160"/>
+      <location filename="../MainWindow.cpp" line="1161"/>
       <source>Toggles this dockable window</source>
       <translation>Paslepia ar padaro matomu šį įstatomą langą</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1666"/>
-      <location filename="../MainWindow.cpp" line="1758"/>
+      <location filename="../MainWindow.cpp" line="1693"/>
+      <location filename="../MainWindow.cpp" line="1785"/>
       <source>Unsaved document</source>
       <translation>Neišsaugotas dokumentas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1667"/>
+      <location filename="../MainWindow.cpp" line="1694"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1759"/>
+      <location filename="../MainWindow.cpp" line="1786"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
@@ -7179,9 +7196,9 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
   <context>
     <name>Gui::ModifierLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="474"/>
+      <location filename="../Widgets.cpp" line="467"/>
       <source>Press modifier keys</source>
-      <translation type="unfinished">Press modifier keys</translation>
+      <translation>Paspauskite modifikavimo mygtukus(-ą)</translation>
     </message>
   </context>
   <context>
@@ -7225,17 +7242,17 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press right mouse button and move mouse</source>
-      <translation type="unfinished">Press right mouse button and move mouse</translation>
+      <translation>Judinkite pelę paspaudę dešinį pelės mygtuką</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="57"/>
       <source>Press left mouse button and move mouse</source>
-      <translation type="unfinished">Press left mouse button and move mouse</translation>
+      <translation>Judinkite pelę paspaudę kairį pelės mygtuką</translation>
     </message>
     <message>
       <location filename="../OpenSCADNavigationStyle.cpp" line="59"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
+      <translation>Paspauskite vidurinį belės mygtuką arba SHIFT mygtuką ir dešinį pelės mygtuką</translation>
     </message>
   </context>
   <context>
@@ -7295,7 +7312,7 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4295"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4296"/>
       <source>Change the linked object</source>
       <translation>Pakeisti susietą daiktą</translation>
     </message>
@@ -7303,12 +7320,12 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4264"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4265"/>
       <source>Error</source>
       <translation>Klaida</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4264"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4265"/>
       <source>Object not found</source>
       <translation>Daiktas nerastas</translation>
     </message>
@@ -7328,7 +7345,7 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="614"/>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Išplėsti savaime</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="619"/>
@@ -7336,30 +7353,30 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
       <translation>Rodyti viską</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="652"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="653"/>
       <source>Expression...</source>
       <translation>Išraiška...</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="658"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="659"/>
       <source>Add property</source>
       <translation>Pridėti ypatybę</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="664"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="774"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="665"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="776"/>
       <source>Rename property group</source>
-      <translation type="unfinished">Rename property group</translation>
+      <translation>Pervardinti ypatybių rinkinį</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="681"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="682"/>
       <source>Remove property</source>
       <translation>Šalinti savybę</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="774"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="776"/>
       <source>Group name:</source>
-      <translation type="unfinished">Group name:</translation>
+      <translation>Rinkinio pavadinimas:</translation>
     </message>
   </context>
   <context>
@@ -7379,13 +7396,13 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <name>Gui::PropertyView</name>
     <message>
       <location filename="../PropertyView.cpp" line="87"/>
-      <location filename="../PropertyView.cpp" line="536"/>
+      <location filename="../PropertyView.cpp" line="537"/>
       <source>View</source>
       <translation>Rodymas</translation>
     </message>
     <message>
       <location filename="../PropertyView.cpp" line="92"/>
-      <location filename="../PropertyView.cpp" line="537"/>
+      <location filename="../PropertyView.cpp" line="538"/>
       <source>Data</source>
       <translation>Duomenys</translation>
     </message>
@@ -7393,117 +7410,117 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
   <context>
     <name>Gui::PythonConsole</name>
     <message>
-      <location filename="../PythonConsole.cpp" line="833"/>
+      <location filename="../PythonConsole.cpp" line="832"/>
       <source>System exit</source>
       <translation>Palikti sistemą</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="834"/>
+      <location filename="../PythonConsole.cpp" line="833"/>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
       <translation>Programa vis dar veikia.
 Ar norite išeiti neišsaugoję duomenų?</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="846"/>
-      <location filename="../PythonConsole.cpp" line="849"/>
-      <location filename="../PythonConsole.cpp" line="852"/>
-      <location filename="../PythonConsole.cpp" line="855"/>
+      <location filename="../PythonConsole.cpp" line="845"/>
+      <location filename="../PythonConsole.cpp" line="848"/>
+      <location filename="../PythonConsole.cpp" line="851"/>
+      <location filename="../PythonConsole.cpp" line="854"/>
       <source>Python console</source>
       <translation>Python'o konsolė</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="846"/>
+      <location filename="../PythonConsole.cpp" line="845"/>
       <source>Unhandled PyCXX exception.</source>
       <translation>„PyCXX“ neapdorota išimtis.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="849"/>
+      <location filename="../PythonConsole.cpp" line="848"/>
       <source>Unhandled FreeCAD exception.</source>
       <translation>„FreeCAD“ neapdorota išimtis.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="852"/>
+      <location filename="../PythonConsole.cpp" line="851"/>
       <source>Unhandled std C++ exception.</source>
       <translation>Neapdorota „std C++“ išimtis.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="855"/>
+      <location filename="../PythonConsole.cpp" line="854"/>
       <source>Unhandled unknown C++ exception.</source>
       <translation>Neapdorota neatpažinta C++ išimtis.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1259"/>
+      <location filename="../PythonConsole.cpp" line="1258"/>
       <source>&amp;Copy</source>
       <translation>&amp;Kopijuoti</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1262"/>
+      <location filename="../PythonConsole.cpp" line="1261"/>
       <source>&amp;Copy command</source>
       <translation>&amp;Kopijuoti veiksmą</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1265"/>
+      <location filename="../PythonConsole.cpp" line="1264"/>
       <source>&amp;Copy history</source>
       <translation>Kop&amp;ijuoti istoriją</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1268"/>
+      <location filename="../PythonConsole.cpp" line="1267"/>
       <source>Save history as...</source>
       <translation>Išsaugoti istoriją kaip...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1271"/>
+      <location filename="../PythonConsole.cpp" line="1270"/>
       <source>Save history</source>
       <translation>Išsaugoti istoriją</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1272"/>
+      <location filename="../PythonConsole.cpp" line="1271"/>
       <source>Saves Python history across %1 sessions</source>
       <translation type="unfinished">Saves Python history across %1 sessions</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1278"/>
+      <location filename="../PythonConsole.cpp" line="1277"/>
       <source>&amp;Paste</source>
       <translation>Į&amp;klijuoti</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1282"/>
+      <location filename="../PythonConsole.cpp" line="1281"/>
       <source>Select All</source>
       <translation>Pasirinkti viską</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1285"/>
+      <location filename="../PythonConsole.cpp" line="1284"/>
       <source>Clear console</source>
       <translation>Išvalyti konsolės langą</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1289"/>
+      <location filename="../PythonConsole.cpp" line="1288"/>
       <source>Insert file name...</source>
       <translation>Įterpti failo pavadinimą...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1292"/>
+      <location filename="../PythonConsole.cpp" line="1291"/>
       <source>Word wrap</source>
       <translation>Žodžių lygiavimas</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1316"/>
+      <location filename="../PythonConsole.cpp" line="1315"/>
       <source>Save History</source>
       <translation>Išsaugoti istoriją</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1317"/>
+      <location filename="../PythonConsole.cpp" line="1316"/>
       <source>Macro Files</source>
       <translation>Makrokomandų failai</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1335"/>
+      <location filename="../PythonConsole.cpp" line="1334"/>
       <source>Insert file name</source>
       <translation>Įterpti failo pavadinimą</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1336"/>
+      <location filename="../PythonConsole.cpp" line="1335"/>
       <source>All Files</source>
       <translation>Visi failai</translation>
     </message>
@@ -7511,12 +7528,12 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
   <context>
     <name>Gui::PythonEditor</name>
     <message>
-      <location filename="../PythonEditor.cpp" line="156"/>
+      <location filename="../PythonEditor.cpp" line="155"/>
       <source>Comment</source>
       <translation>Pastaba</translation>
     </message>
     <message>
-      <location filename="../PythonEditor.cpp" line="157"/>
+      <location filename="../PythonEditor.cpp" line="156"/>
       <source>Uncomment</source>
       <translation>Panaikinti pastabą</translation>
     </message>
@@ -7524,17 +7541,17 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="763"/>
+      <location filename="../Action.cpp" line="750"/>
       <source>Open file %1</source>
       <translation>Atidaryti failą %1</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="805"/>
+      <location filename="../Action.cpp" line="792"/>
       <source>File not found</source>
       <translation>Failas nerastas</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="805"/>
+      <location filename="../Action.cpp" line="792"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Neįmanoma atverti failo „%1“.</translation>
     </message>
@@ -7542,22 +7559,22 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="923"/>
+      <location filename="../Action.cpp" line="910"/>
       <source>none</source>
       <translation>joks</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="939"/>
+      <location filename="../Action.cpp" line="926"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="979"/>
+      <location filename="../Action.cpp" line="966"/>
       <source>File not found</source>
       <translation>Failas nerastas</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="979"/>
+      <location filename="../Action.cpp" line="966"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Neįmanoma atverti failo „%1“.</translation>
     </message>
@@ -7588,40 +7605,40 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
   <context>
     <name>Gui::SearchBar</name>
     <message>
-      <location filename="../EditorView.cpp" line="746"/>
+      <location filename="../EditorView.cpp" line="747"/>
       <source>Previous</source>
       <translation type="unfinished">Previous</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="747"/>
-      <source>Next</source>
-      <translation type="unfinished">Next</translation>
-    </message>
-    <message>
       <location filename="../EditorView.cpp" line="748"/>
-      <source>Case sensitive</source>
-      <translation type="unfinished">Case sensitive</translation>
+      <source>Next</source>
+      <translation>Toliau</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="749"/>
+      <source>Case sensitive</source>
+      <translation>Skirti raidžių lygį</translation>
+    </message>
+    <message>
+      <location filename="../EditorView.cpp" line="750"/>
       <source>Whole words</source>
-      <translation type="unfinished">Whole words</translation>
+      <translation>Visas žodis</translation>
     </message>
   </context>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="807"/>
+      <location filename="../FileDialog.cpp" line="844"/>
       <source>Select module</source>
       <translation>Pasirinkti modulį</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="809"/>
+      <location filename="../FileDialog.cpp" line="846"/>
       <source>Open %1 as</source>
       <translation>Atidaryti %1 kaip</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="861"/>
+      <location filename="../FileDialog.cpp" line="898"/>
       <source>Select</source>
       <translation>Pasirinkti</translation>
     </message>
@@ -7770,7 +7787,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="68"/>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Stačiakampės srities parinkimas</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="77"/>
@@ -7780,7 +7797,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="84"/>
       <source>On-top when selected</source>
-      <translation type="unfinished">On-top when selected</translation>
+      <translation>Viršuje parinikimo metu</translation>
     </message>
   </context>
   <context>
@@ -7794,7 +7811,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
       <source>Document window:</source>
-      <translation>Dokumento rodinys:</translation>
+      <translation>Dokumento langas:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="60"/>
@@ -7908,7 +7925,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="57"/>
       <source>Press right mouse button</source>
-      <translation type="unfinished">Press right mouse button</translation>
+      <translation>Paspauskite dešinį pelės mygtuką</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="59"/>
@@ -7959,7 +7976,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="Translator.cpp" line="137"/>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Bulgarų</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="138"/>
@@ -8109,7 +8126,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="Translator.cpp" line="167"/>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Ispanų (Argentina)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="168"/>
@@ -8139,13 +8156,13 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="Translator.cpp" line="173"/>
       <source>Georgian</source>
-      <translation type="unfinished">Georgian</translation>
+      <translation>Kartvelų</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="3170"/>
+      <location filename="../Tree.cpp" line="3115"/>
       <source>Tree view</source>
       <translation>Medžio rodinys</translation>
     </message>
@@ -8153,7 +8170,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="3096"/>
+      <location filename="../Tree.cpp" line="3041"/>
       <source>Search</source>
       <translation>Paieška</translation>
     </message>
@@ -8161,172 +8178,173 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="513"/>
+      <location filename="../Tree.cpp" line="512"/>
       <source>Search...</source>
       <translation>Paieška...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="514"/>
+      <location filename="../Tree.cpp" line="513"/>
       <source>Search for objects</source>
       <translation>Ieškoma daiktų</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="937"/>
+      <location filename="../Tree.cpp" line="936"/>
       <source>Activate document</source>
       <translation>Rengti dokumentą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="944"/>
+      <location filename="../Tree.cpp" line="943"/>
       <source>Activate document %1</source>
       <translation>Rengti dokumentą %1</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="999"/>
+      <location filename="../Tree.cpp" line="980"/>
       <source>Group</source>
       <translation>Grupė</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2827"/>
+      <location filename="../Tree.cpp" line="2772"/>
       <source>Labels &amp; Attributes</source>
       <translation>Pavadinimai ir požymiai</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2828"/>
+      <location filename="../Tree.cpp" line="2773"/>
       <source>Description</source>
       <translation>Aprašymas</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2829"/>
+      <location filename="../Tree.cpp" line="2774"/>
       <source>Application</source>
       <translation>Taikymas</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2831"/>
+      <location filename="../Tree.cpp" line="2776"/>
       <source>Show hidden items</source>
       <translation>Rodyti paslėptus narius</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2832"/>
+      <location filename="../Tree.cpp" line="2777"/>
       <source>Show hidden tree view items</source>
       <translation>Rodyti paslėptus narius medžio rodinyje</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2834"/>
+      <location filename="../Tree.cpp" line="2779"/>
       <source>Hide item</source>
       <translation>Slėpti narį</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2835"/>
+      <location filename="../Tree.cpp" line="2780"/>
       <source>Hide the item in tree</source>
       <translation>Slėpti medžio narį</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2837"/>
+      <location filename="../Tree.cpp" line="2782"/>
       <source>Create group...</source>
       <translation>Sukurti grupę...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2838"/>
+      <location filename="../Tree.cpp" line="2783"/>
       <source>Create a group</source>
       <translation>Sukurti grupę</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2840"/>
+      <location filename="../Tree.cpp" line="2785"/>
+      <location filename="../Tree.cpp" line="4889"/>
       <source>Rename</source>
       <translation>Pervardyti</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2841"/>
+      <location filename="../Tree.cpp" line="2786"/>
       <source>Rename object</source>
       <translation>Pervardyti objektą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2843"/>
+      <location filename="../Tree.cpp" line="2788"/>
       <source>Finish editing</source>
       <translation>Baigti taisymą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2844"/>
+      <location filename="../Tree.cpp" line="2789"/>
       <source>Finish editing object</source>
       <translation>Baigti taisyti daiktą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2846"/>
+      <location filename="../Tree.cpp" line="2791"/>
       <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
+      <translation>Pasirinkti ir susijusius narius</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2847"/>
+      <location filename="../Tree.cpp" line="2792"/>
       <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <translation>Prie pasirinkimo prideda ir susijusius narius</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2849"/>
+      <location filename="../Tree.cpp" line="2794"/>
       <source>Close document</source>
       <translation>Užverti dokumentą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2850"/>
+      <location filename="../Tree.cpp" line="2795"/>
       <source>Close the document</source>
       <translation>Užverti dokumentą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2852"/>
+      <location filename="../Tree.cpp" line="2797"/>
       <source>Reload document</source>
       <translation>Iš naujo atverti dokumentą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2853"/>
+      <location filename="../Tree.cpp" line="2798"/>
       <source>Reload a partially loaded document</source>
       <translation>Iš naujo atverti dalinai įkeltą dokumentą</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2855"/>
+      <location filename="../Tree.cpp" line="2800"/>
       <source>Skip recomputes</source>
       <translation>Praleisti perskaičiavimus</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2856"/>
+      <location filename="../Tree.cpp" line="2801"/>
       <source>Enable or disable recomputations of document</source>
       <translation>Įgalina arba nedaro dokumento perskaičiavimų</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2858"/>
+      <location filename="../Tree.cpp" line="2803"/>
       <source>Allow partial recomputes</source>
       <translation>Leisti dalinius savybių perskaičiavimus</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2860"/>
+      <location filename="../Tree.cpp" line="2805"/>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Įgalinti ar uždrausti taisomo daikto savybių perskaičiavimą, kai yra įgalintas „perskaičiavimo praleidimas“</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2862"/>
+      <location filename="../Tree.cpp" line="2807"/>
       <source>Mark to recompute</source>
       <translation>Pažymėti perskaičiavimui</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2863"/>
+      <location filename="../Tree.cpp" line="2808"/>
       <source>Mark this object to be recomputed</source>
       <translation>Pažymėti šį daiktą perskaičiavimui</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2866"/>
+      <location filename="../Tree.cpp" line="2811"/>
       <source>Recompute object</source>
       <translation>Perskaičiuoti daikto savybes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2867"/>
+      <location filename="../Tree.cpp" line="2812"/>
       <source>Recompute the selected object</source>
       <translation>Perskaičiuoti pasirinkto daikto savybes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4915"/>
+      <location filename="../Tree.cpp" line="4860"/>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (bet turi būti įvykdyta)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4917"/>
+      <location filename="../Tree.cpp" line="4862"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, vidinis pavadinimas: %2</translation>
     </message>
@@ -8336,12 +8354,12 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <location filename="../VectorListEditor.ui" line="14"/>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vektoriai</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.ui" line="109"/>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Lentelė</translation>
     </message>
     <message>
       <location filename="../VectorListEditor.ui" line="123"/>
@@ -8355,22 +8373,22 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
-      <location filename="../View3DInventor.cpp" line="481"/>
+      <location filename="../View3DInventor.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>Eksportuoti į PDF</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="482"/>
+      <location filename="../View3DInventor.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDF failas</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="512"/>
+      <location filename="../View3DInventor.cpp" line="516"/>
       <source>Opening file failed</source>
       <translation>Failo atidarymas nepavyko</translation>
     </message>
     <message>
-      <location filename="../View3DInventor.cpp" line="513"/>
+      <location filename="../View3DInventor.cpp" line="517"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Nepavyksta atidaryti failo '%1' įrašymui.</translation>
     </message>
@@ -8378,8 +8396,8 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
-      <location filename="../Action.cpp" line="573"/>
-      <location filename="../Action.cpp" line="664"/>
+      <location filename="../Action.cpp" line="560"/>
+      <location filename="../Action.cpp" line="651"/>
       <source>Select the '%1' workbench</source>
       <translation>Pasirinkite darbastalį „%1“</translation>
     </message>
@@ -8387,37 +8405,37 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>MAC_APPLICATION_MENU</name>
     <message>
-      <location filename="../Workbench.cpp" line="555"/>
+      <location filename="../Workbench.cpp" line="554"/>
       <source>Services</source>
       <translation>Tarnybos</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="556"/>
+      <location filename="../Workbench.cpp" line="555"/>
       <source>Hide %1</source>
       <translation>Paslėpti %1</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="557"/>
+      <location filename="../Workbench.cpp" line="556"/>
       <source>Hide Others</source>
       <translation>Slėpti kitus</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="558"/>
+      <location filename="../Workbench.cpp" line="557"/>
       <source>Show All</source>
       <translation>Rodyti viską</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="559"/>
+      <location filename="../Workbench.cpp" line="558"/>
       <source>Preferences...</source>
       <translation>Parinktys...</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="560"/>
+      <location filename="../Workbench.cpp" line="559"/>
       <source>Quit %1</source>
       <translation>Baigti %1</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="561"/>
+      <location filename="../Workbench.cpp" line="560"/>
       <source>About %1</source>
       <translation>Apie %1</translation>
     </message>
@@ -8536,14 +8554,14 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1412"/>
-      <location filename="../Widgets.cpp" line="1423"/>
+      <location filename="../Widgets.cpp" line="1371"/>
+      <location filename="../Widgets.cpp" line="1382"/>
       <source>Invalid input</source>
       <translation>Blogai įvesta informacija</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1412"/>
-      <location filename="../Widgets.cpp" line="1423"/>
+      <location filename="../Widgets.cpp" line="1371"/>
+      <location filename="../Widgets.cpp" line="1382"/>
       <source>Input in line %1 is not a number</source>
       <translation>Eilutėje %1 įrašytas ne skaičius</translation>
     </message>
@@ -8551,47 +8569,42 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="344"/>
-      <source>Toolbox</source>
-      <translation>Įrankių rinkinys</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="365"/>
+      <location filename="../MainWindow.cpp" line="383"/>
       <source>Tree view</source>
       <translation>Medžio rodinys</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="386"/>
+      <location filename="../MainWindow.cpp" line="411"/>
       <source>Property view</source>
       <translation>Savybių langas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="396"/>
+      <location filename="../MainWindow.cpp" line="429"/>
       <source>Selection view</source>
       <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="411"/>
+      <location filename="../MainWindow.cpp" line="451"/>
       <source>Combo View</source>
       <translation>Mišrusis rodinys</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="421"/>
+      <location filename="../MainWindow.cpp" line="503"/>
       <source>Report view</source>
       <translation>Ataskaitos rodinys</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="432"/>
+      <location filename="../MainWindow.cpp" line="523"/>
       <source>Python console</source>
       <translation>Python'o konsolė</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="457"/>
+      <location filename="../MainWindow.cpp" line="485"/>
       <source>DAG View</source>
       <translation>DAG rodinys</translation>
     </message>
     <message>
-      <location filename="../DlgDisplayPropertiesImp.cpp" line="52"/>
+      <location filename="../DlgDisplayPropertiesImp.cpp" line="51"/>
       <source>Display properties</source>
       <translation>Išvaizdos savybės</translation>
     </message>
@@ -8599,65 +8612,65 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../resource.cpp" line="69"/>
       <location filename="../resource.cpp" line="70"/>
+      <location filename="../resource.cpp" line="71"/>
       <location filename="../resource.cpp" line="72"/>
       <location filename="../resource.cpp" line="73"/>
       <location filename="../resource.cpp" line="74"/>
       <location filename="../resource.cpp" line="75"/>
       <location filename="../resource.cpp" line="76"/>
       <location filename="../resource.cpp" line="77"/>
-      <location filename="../resource.cpp" line="78"/>
-      <location filename="../resource.cpp" line="79"/>
       <source>General</source>
       <translation>Bendrosios</translation>
     </message>
     <message>
+      <location filename="../resource.cpp" line="78"/>
+      <location filename="../resource.cpp" line="79"/>
       <location filename="../resource.cpp" line="80"/>
-      <location filename="../resource.cpp" line="81"/>
-      <location filename="../resource.cpp" line="82"/>
       <source>Display</source>
       <translation>Vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../resource.cpp" line="83"/>
+      <location filename="../resource.cpp" line="81"/>
       <source>Workbenches</source>
       <translation>Darbastaliai</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="600"/>
-      <location filename="../Application.cpp" line="692"/>
-      <location filename="../Application.cpp" line="758"/>
+      <location filename="../Application.cpp" line="579"/>
+      <location filename="../Application.cpp" line="671"/>
+      <location filename="../Application.cpp" line="741"/>
       <source>Unknown filetype</source>
       <translation>Nežinoma failo rūšis</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="601"/>
-      <location filename="../Application.cpp" line="693"/>
+      <location filename="../Application.cpp" line="580"/>
+      <location filename="../Application.cpp" line="672"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Neįmanoma atverti nežinomos rūšies failo: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="751"/>
+      <location filename="../Application.cpp" line="734"/>
       <source>Export failed</source>
       <translation>Eksportavimas nepavyko</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="759"/>
+      <location filename="../Application.cpp" line="742"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Neįmanoma įrašyti į nežinomos rūšies failą: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1440"/>
+      <location filename="../Application.cpp" line="1423"/>
       <source>Workbench failure</source>
       <translation>Darbastalio triktis</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1441"/>
+      <location filename="../Application.cpp" line="1424"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="462"/>
+      <location filename="../Command.cpp" line="463"/>
       <source>Exception</source>
       <translation>Išimtis</translation>
     </message>
@@ -8693,71 +8706,71 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
       <translation>Eksportuoti failą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="876"/>
+      <location filename="../CommandDoc.cpp" line="848"/>
       <source>Printing...</source>
       <translation>Spausdinimas...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="937"/>
+      <location filename="../CommandDoc.cpp" line="909"/>
       <source>Exporting PDF...</source>
       <translation>Išsaugoma į PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="547"/>
-      <location filename="../CommandDoc.cpp" line="1207"/>
+      <location filename="../CommandDoc.cpp" line="1179"/>
+      <location filename="../MainWindow.cpp" line="581"/>
       <source>Unsaved document</source>
       <translation>Neišsaugotas dokumentas</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1208"/>
+      <location filename="../CommandDoc.cpp" line="1180"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Eksportuotas daiktas turi išorinių saitų. Prašom prieš eksportuojant išsaugoti dokumentą bent kartą.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1439"/>
-      <location filename="../CommandDoc.cpp" line="1443"/>
+      <location filename="../CommandDoc.cpp" line="1381"/>
+      <location filename="../CommandDoc.cpp" line="1385"/>
       <source>Delete failed</source>
       <translation>Trynimas nepavyko</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1493"/>
+      <location filename="../CommandDoc.cpp" line="1435"/>
       <source>Dependency error</source>
       <translation>Priklausomybės klaida</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1771"/>
+      <location filename="../CommandDoc.cpp" line="1713"/>
       <source>Copy selected</source>
       <translation>Kopijuoti pasirinkimą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1772"/>
+      <location filename="../CommandDoc.cpp" line="1714"/>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Kopijuoti veikiamąjį dokumentą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1773"/>
+      <location filename="../CommandDoc.cpp" line="1715"/>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Kopijuoti visus dokumentus</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1774"/>
+      <location filename="../CommandDoc.cpp" line="1716"/>
       <source>Paste</source>
       <translation>Įklijuoti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="1821"/>
       <source>Expression error</source>
-      <translation type="unfinished">Expression error</translation>
+      <translation>Išraiškos klaida</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1880"/>
+      <location filename="../CommandDoc.cpp" line="1822"/>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
       <translation type="unfinished">Failed to parse some of the expressions.
 Please check the Report View for more details.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1904"/>
+      <location filename="../CommandDoc.cpp" line="1846"/>
       <source>Failed to paste expressions</source>
       <translation type="unfinished">Failed to paste expressions</translation>
     </message>
@@ -8793,77 +8806,77 @@ Be aware the point where you click matters.</source>
 Žinokite, kad svarbi vieta, kurioje paspaudžiate.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="308"/>
-      <location filename="../CommandView.cpp" line="528"/>
+      <location filename="../CommandView.cpp" line="307"/>
+      <location filename="../CommandView.cpp" line="527"/>
       <source>Save views...</source>
       <translation>Įrašyti rodinius...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="310"/>
-      <location filename="../CommandView.cpp" line="529"/>
+      <location filename="../CommandView.cpp" line="309"/>
+      <location filename="../CommandView.cpp" line="528"/>
       <source>Load views...</source>
       <translation>Įkelti rodinius...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="313"/>
-      <location filename="../CommandView.cpp" line="530"/>
+      <location filename="../CommandView.cpp" line="312"/>
+      <location filename="../CommandView.cpp" line="529"/>
       <source>Freeze view</source>
       <translation>Užrakinti rodinį</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="316"/>
-      <location filename="../CommandView.cpp" line="531"/>
+      <location filename="../CommandView.cpp" line="315"/>
+      <location filename="../CommandView.cpp" line="530"/>
       <source>Clear views</source>
       <translation>Išvalyti rodinius</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="349"/>
-      <location filename="../CommandView.cpp" line="488"/>
-      <location filename="../CommandView.cpp" line="535"/>
+      <location filename="../CommandView.cpp" line="348"/>
+      <location filename="../CommandView.cpp" line="487"/>
+      <location filename="../CommandView.cpp" line="534"/>
       <source>Restore view &amp;%1</source>
       <translation>Atstatyti rodinį &amp;%1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="378"/>
+      <location filename="../CommandView.cpp" line="377"/>
       <source>Save frozen views</source>
       <translation>Išsaugoti užrakintus rodinius</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="379"/>
-      <location filename="../CommandView.cpp" line="429"/>
+      <location filename="../CommandView.cpp" line="378"/>
+      <location filename="../CommandView.cpp" line="428"/>
       <source>Frozen views</source>
       <translation>Užrakinti rodiniai</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="419"/>
-      <location filename="../CommandView.cpp" line="434"/>
+      <location filename="../CommandView.cpp" line="418"/>
+      <location filename="../CommandView.cpp" line="433"/>
       <source>Restore views</source>
       <translation>Atstatyti rodinius</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="420"/>
+      <location filename="../CommandView.cpp" line="419"/>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
       <translation>Rodinių įkėlimas gali ištrinti jau išsaugotus rodinius.
 Ar norite tęsti?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="428"/>
+      <location filename="../CommandView.cpp" line="427"/>
       <source>Restore frozen views</source>
       <translation>Atstatyti užrakintus rodinius</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="435"/>
+      <location filename="../CommandView.cpp" line="434"/>
       <source>Cannot open file '%1'.</source>
       <translation>Nepavyksta atidaryti failo „%1“.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1837"/>
+      <location filename="../CommandView.cpp" line="1788"/>
       <source>files</source>
       <translation>failai</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1845"/>
+      <location filename="../CommandView.cpp" line="1796"/>
       <source>Save picture</source>
       <translation>Išsaugoti paveikslėlį</translation>
     </message>
@@ -8968,7 +8981,7 @@ Ar norite tęsti?</translation>
       <translation>Pakeiskite vertę</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1061"/>
+      <location filename="../Document.cpp" line="1047"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8977,44 +8990,44 @@ Ar norite tęsti?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1062"/>
+      <location filename="../Document.cpp" line="1048"/>
       <source>Are you sure you want to continue?</source>
       <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1081"/>
+      <location filename="../Document.cpp" line="1067"/>
       <source>Please check report view for more...</source>
       <translation type="unfinished">Please check report view for more...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1084"/>
+      <location filename="../Document.cpp" line="1070"/>
       <source>Physical path:</source>
-      <translation type="unfinished">Physical path:</translation>
+      <translation>Fizinis kelias:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1086"/>
-      <location filename="../Document.cpp" line="1092"/>
+      <location filename="../Document.cpp" line="1072"/>
+      <location filename="../Document.cpp" line="1078"/>
       <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
+      <translation>Dokumentas:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1088"/>
-      <location filename="../Document.cpp" line="1094"/>
+      <location filename="../Document.cpp" line="1074"/>
+      <location filename="../Document.cpp" line="1080"/>
       <source>Path:</source>
       <translation>Kelias:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1103"/>
+      <location filename="../Document.cpp" line="1089"/>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Tapatus fizinis kelias</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1111"/>
+      <location filename="../Document.cpp" line="1097"/>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Nepavyko išsaugoti dokumento</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1112"/>
+      <location filename="../Document.cpp" line="1098"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -9027,102 +9040,102 @@ Would you like to save the file with a different name?</source>
 Would you like to save the file with a different name?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1122"/>
-      <location filename="../Document.cpp" line="1254"/>
-      <location filename="../Document.cpp" line="1337"/>
+      <location filename="../Document.cpp" line="1108"/>
+      <location filename="../Document.cpp" line="1240"/>
+      <location filename="../Document.cpp" line="1323"/>
       <source>Saving aborted</source>
       <translation>Įrašymas nutrauktas</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1169"/>
+      <location filename="../Document.cpp" line="1155"/>
       <source>Save dependent files</source>
       <translation>Saugoti priklausomas rinkmenas</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1170"/>
+      <location filename="../Document.cpp" line="1156"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1204"/>
-      <location filename="../Document.cpp" line="1248"/>
+      <location filename="../Document.cpp" line="1190"/>
+      <location filename="../Document.cpp" line="1234"/>
       <source>Saving document failed</source>
       <translation>Nepavyko įrašyti dokumento</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1218"/>
+      <location filename="../Document.cpp" line="1204"/>
       <source>Save document under new filename...</source>
       <translation>Įrašyti dokumentą nauju pavadinimu...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1221"/>
-      <location filename="../Document.cpp" line="1322"/>
+      <location filename="../Document.cpp" line="1207"/>
+      <location filename="../Document.cpp" line="1308"/>
       <source>Save %1 Document</source>
       <translation>Įrašyti %1 dokumentą</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1223"/>
+      <location filename="../Document.cpp" line="1209"/>
       <source>Document</source>
       <translation>Dokumentas</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1267"/>
-      <location filename="../Document.cpp" line="1308"/>
+      <location filename="../Document.cpp" line="1253"/>
+      <location filename="../Document.cpp" line="1294"/>
       <source>Failed to save document</source>
       <translation>Nepavyko išsaugoti dokumento</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1268"/>
+      <location filename="../Document.cpp" line="1254"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation type="unfinished">Documents contains cyclic dependencies. Do you still want to save them?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1319"/>
+      <location filename="../Document.cpp" line="1305"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Įrašyti dokumento kopiją nauju pavadinimu...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1324"/>
+      <location filename="../Document.cpp" line="1310"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 dokumentas (*. FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1974"/>
+      <location filename="../Document.cpp" line="1960"/>
       <source>Document not closable</source>
       <translation>Dokumentas neužveriamas</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1975"/>
+      <location filename="../Document.cpp" line="1961"/>
       <source>The document is not closable for the moment.</source>
       <translation>Dokumento šiuo metu neįmanoma užverti.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2012"/>
+      <location filename="../Document.cpp" line="1998"/>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Dokumentas neišsaugotas</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2013"/>
+      <location filename="../Document.cpp" line="1999"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2342"/>
+      <location filename="../Document.cpp" line="2327"/>
       <source>Undo</source>
       <translation>Atšaukti</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2342"/>
+      <location filename="../Document.cpp" line="2327"/>
       <source>Redo</source>
       <translation>Pakartoti</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2344"/>
+      <location filename="../Document.cpp" line="2329"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2348"/>
+      <location filename="../Document.cpp" line="2332"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -9131,41 +9144,41 @@ Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="346"/>
+      <location filename="../EditorView.cpp" line="345"/>
       <source>Save Macro</source>
       <translation>Įrašyti makrokomandą</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="295"/>
-      <location filename="../MouseSelection.cpp" line="506"/>
+      <location filename="../MouseSelection.cpp" line="214"/>
+      <location filename="../MouseSelection.cpp" line="425"/>
       <source>Finish</source>
       <translation>Užbaigti</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="296"/>
-      <location filename="../MouseSelection.cpp" line="507"/>
+      <location filename="../MouseSelection.cpp" line="215"/>
+      <location filename="../MouseSelection.cpp" line="426"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="297"/>
-      <location filename="../MouseSelection.cpp" line="451"/>
-      <location filename="../MouseSelection.cpp" line="508"/>
+      <location filename="../MouseSelection.cpp" line="216"/>
+      <location filename="../MouseSelection.cpp" line="370"/>
+      <location filename="../MouseSelection.cpp" line="427"/>
       <source>Cancel</source>
       <translation>Atšaukti</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="448"/>
+      <location filename="../MouseSelection.cpp" line="367"/>
       <source>Inner</source>
       <translation>Vidinis</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="449"/>
+      <location filename="../MouseSelection.cpp" line="368"/>
       <source>Outer</source>
       <translation>Išorinis</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="450"/>
+      <location filename="../MouseSelection.cpp" line="369"/>
       <source>Split</source>
       <translation>Išskaidyti</translation>
     </message>
@@ -9199,17 +9212,17 @@ Atverkite naršyklės langą ir įveskite: http://localhost:%1.</translation>
       <translation>Neįmanoma atidaryti sistemos naršyklės.</translation>
     </message>
     <message>
-      <location filename="../SoFCColorBar.cpp" line="328"/>
+      <location filename="../SoFCColorBar.cpp" line="329"/>
       <source>Options...</source>
       <translation>Parinktys...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2339"/>
+      <location filename="../View3DInventorViewer.cpp" line="2315"/>
       <source>Out of memory</source>
       <translation>Trūksta atminties</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2340"/>
+      <location filename="../View3DInventorViewer.cpp" line="2316"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nepakanka atminties duomenų atvaizdavimui.</translation>
     </message>
@@ -9225,7 +9238,7 @@ Atverkite naršyklės langą ir įveskite: http://localhost:%1.</translation>
       <translation>Nepavyko rasti nei failo %1, nei failo %2, nei failo %3</translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1748"/>
+      <location filename="../NavigationStyle.cpp" line="1712"/>
       <source>Navigation styles</source>
       <translation>Naršymo būdai</translation>
     </message>
@@ -9235,8 +9248,8 @@ Atverkite naršyklės langą ir įveskite: http://localhost:%1.</translation>
       <translation>Perkelti aprašą</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2657"/>
       <location filename="../ViewProviderDragger.cpp" line="88"/>
+      <location filename="../ViewProviderLink.cpp" line="2594"/>
       <source>Transform</source>
       <translation>Keisti</translation>
     </message>
@@ -9246,34 +9259,34 @@ Atverkite naršyklės langą ir įveskite: http://localhost:%1.</translation>
       <translation>Ar norite uždaryti šį dialogo langą?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="549"/>
+      <location filename="../MainWindow.cpp" line="583"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Ar norite įrašyti keitimus į dokumentą „%1“ prieš užveriant?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="552"/>
+      <location filename="../MainWindow.cpp" line="586"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Ar norite įrašyti keitimus prieš užveriant?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="554"/>
+      <location filename="../MainWindow.cpp" line="588"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Jei neįrašysite, jūsų pakeitimai bus prarasti.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="559"/>
+      <location filename="../MainWindow.cpp" line="593"/>
       <source>Apply answer to all</source>
       <translation>Pritaikyti atsakymą visiems</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="649"/>
+      <location filename="../MainWindow.cpp" line="683"/>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>%1 dokumentas(-i) neišsaugotas(-i)</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="650"/>
+      <location filename="../MainWindow.cpp" line="684"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Kai kurie dokumentai negli būti išsaugoti. Ar norėtumėte atšaukti uždarymą?</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="412"/>
@@ -9330,48 +9343,48 @@ Atverkite naršyklės langą ir įveskite: http://localhost:%1.</translation>
       <location filename="../CommandLink.cpp" line="99"/>
       <location filename="../CommandLink.cpp" line="115"/>
       <source>Group with links</source>
-      <translation type="unfinished">Group with links</translation>
+      <translation>Rinkinys su nuorodomis</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="101"/>
       <location filename="../CommandLink.cpp" line="116"/>
       <source>Group with transform links</source>
-      <translation type="unfinished">Group with transform links</translation>
+      <translation>Rinkinys su pakeitimų nuorodomis</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="193"/>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>Nepavyko sukurti saitų rinkinio</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="257"/>
       <source>Create link failed</source>
-      <translation type="unfinished">Create link failed</translation>
+      <translation>Saito kūrims nepavyko</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="332"/>
       <source>Failed to create relative link</source>
-      <translation type="unfinished">Failed to create relative link</translation>
+      <translation>Nepavyko sukurti santykinio saito</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="460"/>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Atsiejimas nepavyko</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="460"/>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>Saito pakeitimas nepavyko</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="590"/>
       <source>Failed to import links</source>
-      <translation type="unfinished">Failed to import links</translation>
+      <translation>Nepavyko importuoti nuorodų</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="629"/>
       <source>Failed to import all links</source>
-      <translation type="unfinished">Failed to import all links</translation>
+      <translation>Nepavyko importuoti visų nuorodų</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.cpp" line="100"/>
@@ -9402,60 +9415,59 @@ underscore, and must not start with a digit.</translation>
       <translation type="unfinished">Failed to add property to '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2117"/>
-      <location filename="../Tree.cpp" line="2313"/>
+      <location filename="../Tree.cpp" line="2061"/>
+      <location filename="../Tree.cpp" line="2257"/>
       <source>Drag &amp; drop failed</source>
       <translation>Nuvilkimas nepavyko</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2485"/>
+      <location filename="../ViewProviderLink.cpp" line="2421"/>
       <source>Setup configurable object</source>
       <translation type="unfinished">Setup configurable object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2486"/>
+      <location filename="../ViewProviderLink.cpp" line="2422"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
       <translation type="unfinished">Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2501"/>
+      <location filename="../ViewProviderLink.cpp" line="2437"/>
       <source>Please select which objects to copy when the configuration is changed</source>
       <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2503"/>
+      <location filename="../ViewProviderLink.cpp" line="2439"/>
       <source>Apply to all</source>
-      <translation type="unfinished">Apply to all</translation>
+      <translation>Taikyti visiems</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2504"/>
+      <location filename="../ViewProviderLink.cpp" line="2440"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
-option to apply only to this link.</translation>
+      <translation>Pritaikyti visoms nuorodoms. Arba, išjunkite šią parinktį, kad būtų pritaikyta tik šiai nuorodai.</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2549"/>
+      <location filename="../ViewProviderLink.cpp" line="2485"/>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Kopijuoti pakeitus</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2550"/>
+      <location filename="../ViewProviderLink.cpp" line="2486"/>
       <source>Enable</source>
       <translation>Įgalinti</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2551"/>
+      <location filename="../ViewProviderLink.cpp" line="2487"/>
       <source>Enable auto copy of linked object when its configuration is changed</source>
-      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+      <translation>Įgalinti savaiminį susieto nario kopijavimą, kai jo savybės yra pakeičiamos</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2564"/>
+      <location filename="../ViewProviderLink.cpp" line="2500"/>
       <source>Tracking</source>
       <translation type="unfinished">Tracking</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2565"/>
+      <location filename="../ViewProviderLink.cpp" line="2501"/>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
@@ -9464,17 +9476,17 @@ Also auto redo the copy if the original linked object is changed.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2584"/>
+      <location filename="../ViewProviderLink.cpp" line="2520"/>
       <source>Disable copy on change</source>
       <translation type="unfinished">Disable copy on change</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2599"/>
+      <location filename="../ViewProviderLink.cpp" line="2535"/>
       <source>Refresh configurable object</source>
       <translation type="unfinished">Refresh configurable object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2600"/>
+      <location filename="../ViewProviderLink.cpp" line="2536"/>
       <source>Synchronize the original configurable source object by
 creating a new deep copy. Note that any changes made to
 the current copy will be lost.
@@ -9485,23 +9497,23 @@ the current copy will be lost.
 </translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2632"/>
+      <location filename="../ViewProviderLink.cpp" line="2568"/>
       <source>Toggle array elements</source>
       <translation>Įjungti ar išjungti masyvo narius</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2641"/>
+      <location filename="../ViewProviderLink.cpp" line="2577"/>
       <source>Change whether show each link array element as individual objects</source>
       <translation type="unfinished">Change whether show each link array element as individual objects</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2658"/>
+      <location filename="../ViewProviderLink.cpp" line="2595"/>
       <source>Transform at the origin of the placement</source>
       <translation type="unfinished">Transform at the origin of the placement</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2667"/>
-      <location filename="../ViewProviderLink.cpp" line="2673"/>
+      <location filename="../ViewProviderLink.cpp" line="2605"/>
+      <location filename="../ViewProviderLink.cpp" line="2611"/>
       <source>Override colors...</source>
       <translation>Pakeisti spalvas...</translation>
     </message>
@@ -9514,12 +9526,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection.cpp" line="838"/>
+      <location filename="../Selection.cpp" line="825"/>
       <source>Not allowed:</source>
       <translation>Neleidžiama:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="1106"/>
+      <location filename="../Selection.cpp" line="1092"/>
       <source>Selection not allowed by filter</source>
       <translation>Atranka neleidžiama filtro</translation>
     </message>
@@ -9527,9 +9539,9 @@ the current copy will be lost.
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3002"/>
-      <location filename="../CommandView.cpp" line="3003"/>
-      <location filename="../CommandView.cpp" line="3005"/>
+      <location filename="../CommandView.cpp" line="2864"/>
+      <location filename="../CommandView.cpp" line="2865"/>
+      <location filename="../CommandView.cpp" line="2867"/>
       <source>Box element selection</source>
       <translation>Stačiakampio gretasienio nario pasirinkimas</translation>
     </message>
@@ -9537,9 +9549,9 @@ the current copy will be lost.
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2739"/>
-      <location filename="../CommandView.cpp" line="2740"/>
-      <location filename="../CommandView.cpp" line="2742"/>
+      <location filename="../CommandView.cpp" line="2601"/>
+      <location filename="../CommandView.cpp" line="2602"/>
+      <location filename="../CommandView.cpp" line="2604"/>
       <source>Box selection</source>
       <translation>Stačiakampės srities parinkimas</translation>
     </message>
@@ -9603,13 +9615,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1613"/>
+      <location filename="../CommandDoc.cpp" line="1555"/>
       <source>Alignment...</source>
       <translation>Lygiavimas...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1614"/>
-      <location filename="../CommandDoc.cpp" line="1615"/>
+      <location filename="../CommandDoc.cpp" line="1556"/>
+      <location filename="../CommandDoc.cpp" line="1557"/>
       <source>Align the selected objects</source>
       <translation>Lygiuoti pažymėtus daiktus</translation>
     </message>
@@ -9631,12 +9643,9 @@ the current copy will be lost.
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2054"/>
-      <location filename="../CommandView.cpp" line="2055"/>
-      <location filename="../CommandView.cpp" line="2056"/>
-      <location filename="../CommandView.cpp" line="2141"/>
-      <location filename="../CommandView.cpp" line="2142"/>
-      <location filename="../CommandView.cpp" line="2143"/>
+      <location filename="../CommandView.cpp" line="2005"/>
+      <location filename="../CommandView.cpp" line="2006"/>
+      <location filename="../CommandView.cpp" line="2007"/>
       <source>Toggle axis cross</source>
       <translation>Rodyti arba slėpti koordinačių ašis</translation>
     </message>
@@ -9700,13 +9709,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1098"/>
+      <location filename="../CommandDoc.cpp" line="1070"/>
       <source>C&amp;opy</source>
       <translation>&amp;Kopijuoti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1099"/>
-      <location filename="../CommandDoc.cpp" line="1101"/>
+      <location filename="../CommandDoc.cpp" line="1071"/>
+      <location filename="../CommandDoc.cpp" line="1073"/>
       <source>Copy operation</source>
       <translation>Kopijuoti</translation>
     </message>
@@ -9714,13 +9723,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1070"/>
+      <location filename="../CommandDoc.cpp" line="1042"/>
       <source>&amp;Cut</source>
       <translation>Išk&amp;irpti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1071"/>
-      <location filename="../CommandDoc.cpp" line="1073"/>
+      <location filename="../CommandDoc.cpp" line="1043"/>
+      <location filename="../CommandDoc.cpp" line="1045"/>
       <source>Cut out</source>
       <translation>Iškirpti</translation>
     </message>
@@ -9728,13 +9737,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1292"/>
+      <location filename="../CommandDoc.cpp" line="1264"/>
       <source>&amp;Delete</source>
       <translation>&amp;Naikinti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1293"/>
-      <location filename="../CommandDoc.cpp" line="1295"/>
+      <location filename="../CommandDoc.cpp" line="1265"/>
+      <location filename="../CommandDoc.cpp" line="1267"/>
       <source>Deletes the selected objects</source>
       <translation>Naikina pasirinktus daiktus</translation>
     </message>
@@ -9742,13 +9751,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3319"/>
+      <location filename="../CommandView.cpp" line="3182"/>
       <source>View turntable...</source>
       <translation>Peržiūra sukant ratu...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3320"/>
-      <location filename="../CommandView.cpp" line="3322"/>
+      <location filename="../CommandView.cpp" line="3183"/>
+      <location filename="../CommandView.cpp" line="3185"/>
       <source>View turntable</source>
       <translation>Peržiūra sukant ratu</translation>
     </message>
@@ -9868,27 +9877,27 @@ the current copy will be lost.
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="634"/>
+      <location filename="../CommandView.cpp" line="604"/>
       <source>Draw style</source>
       <translation>Atvaizdavimo būdas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="635"/>
-      <location filename="../CommandView.cpp" line="636"/>
+      <location filename="../CommandView.cpp" line="605"/>
+      <location filename="../CommandView.cpp" line="606"/>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Keisti daiktų atvaizdavimo būdą</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1173"/>
+      <location filename="../CommandDoc.cpp" line="1145"/>
       <source>Duplicate selection</source>
       <translation>Kopijuoti pasirinkimą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1174"/>
-      <location filename="../CommandDoc.cpp" line="1176"/>
+      <location filename="../CommandDoc.cpp" line="1146"/>
+      <location filename="../CommandDoc.cpp" line="1148"/>
       <source>Put duplicates of the selected objects to the active document</source>
       <translation>Įdėti pasirinktų daiktų dublikatus į rengiamą dokumentą</translation>
     </message>
@@ -9896,17 +9905,17 @@ the current copy will be lost.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1683"/>
+      <location filename="../CommandDoc.cpp" line="1625"/>
       <source>Toggle &amp;Edit mode</source>
       <translation>&amp;Taisyti/baigti taisymą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1684"/>
+      <location filename="../CommandDoc.cpp" line="1626"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Įgalinamas arba užbaigiamas pažymėto daikto taisymas</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1686"/>
+      <location filename="../CommandDoc.cpp" line="1628"/>
       <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Įgalinamas arba išjungiamas pažymėto daikto taisymas</translation>
     </message>
@@ -9932,17 +9941,17 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="404"/>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Pasirinkti daiktus eksportavimui prieš eksportuojant juos.</translation>
     </message>
   </context>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1727"/>
-      <location filename="../CommandDoc.cpp" line="1728"/>
-      <location filename="../CommandDoc.cpp" line="1730"/>
+      <location filename="../CommandDoc.cpp" line="1669"/>
+      <location filename="../CommandDoc.cpp" line="1670"/>
+      <location filename="../CommandDoc.cpp" line="1672"/>
       <source>Expression actions</source>
-      <translation type="unfinished">Expression actions</translation>
+      <translation>Išraiškos veiksmai</translation>
     </message>
   </context>
   <context>
@@ -9969,7 +9978,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="511"/>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Paremti programos kūrimą finansiškai</translation>
     </message>
   </context>
   <context>
@@ -10057,13 +10066,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="293"/>
+      <location filename="../CommandView.cpp" line="292"/>
       <source>Freeze display</source>
       <translation>Išlaikyti vaizdą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="294"/>
-      <location filename="../CommandView.cpp" line="296"/>
+      <location filename="../CommandView.cpp" line="293"/>
+      <location filename="../CommandView.cpp" line="295"/>
       <source>Freezes the current view position</source>
       <translation>Išlaiko esamą kameros padėtį</translation>
     </message>
@@ -10084,13 +10093,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1106"/>
+      <location filename="../CommandView.cpp" line="1074"/>
       <source>Hide all objects</source>
       <translation>Slėpti visus daiktus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1107"/>
-      <location filename="../CommandView.cpp" line="1108"/>
+      <location filename="../CommandView.cpp" line="1075"/>
+      <location filename="../CommandView.cpp" line="1076"/>
       <source>Hide all objects in the document</source>
       <translation>Slėpti visus dokumente esančius daiktus</translation>
     </message>
@@ -10098,13 +10107,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="958"/>
+      <location filename="../CommandView.cpp" line="926"/>
       <source>Hide selection</source>
       <translation>Slėpti žymėjimą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="959"/>
-      <location filename="../CommandView.cpp" line="960"/>
+      <location filename="../CommandView.cpp" line="927"/>
+      <location filename="../CommandView.cpp" line="928"/>
       <source>Hide all selected objects</source>
       <translation>Slėpti visus pažymėtus daiktus</translation>
     </message>
@@ -10136,9 +10145,9 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="871"/>
-      <location filename="../CommandLink.cpp" line="872"/>
       <location filename="../CommandLink.cpp" line="874"/>
+      <location filename="../CommandLink.cpp" line="875"/>
+      <location filename="../CommandLink.cpp" line="877"/>
       <source>Link actions</source>
       <translation>Saito veiksmai</translation>
     </message>
@@ -10179,7 +10188,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="209"/>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Sukurti nuorodą į šį(-iuos) narį(-ius)</translation>
     </message>
   </context>
   <context>
@@ -10192,7 +10201,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="78"/>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Sukurti saitų grupę</translation>
     </message>
   </context>
   <context>
@@ -10213,37 +10222,37 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="492"/>
       <source>Replace with link</source>
-      <translation type="unfinished">Replace with link</translation>
+      <translation>Pakeisti nuoroda</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="493"/>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Pakeisti pažymėtą(-us) daiktą(-us) saitu(-ais)</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
     <message>
-      <location filename="../CommandLink.cpp" line="845"/>
+      <location filename="../CommandLink.cpp" line="848"/>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>Sieti naršymą</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="846"/>
-      <location filename="../CommandLink.cpp" line="848"/>
+      <location filename="../CommandLink.cpp" line="849"/>
+      <location filename="../CommandLink.cpp" line="851"/>
       <source>Link navigation actions</source>
-      <translation type="unfinished">Link navigation actions</translation>
+      <translation>Sieti naršymo veiksmus</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <location filename="../CommandLink.cpp" line="806"/>
+      <location filename="../CommandLink.cpp" line="808"/>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>Pasirinkti visus saitus</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="807"/>
+      <location filename="../CommandLink.cpp" line="809"/>
       <source>Select all links to the current selected object</source>
       <translation>Pasirinkti visus pažymėto daikto saitus</translation>
     </message>
@@ -10264,12 +10273,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <location filename="../CommandLink.cpp" line="772"/>
+      <location filename="../CommandLink.cpp" line="773"/>
       <source>Go to the deepest linked object</source>
       <translation>Eiti į tolimiausią susietąjį daiktą</translation>
     </message>
     <message>
-      <location filename="../CommandLink.cpp" line="773"/>
+      <location filename="../CommandLink.cpp" line="774"/>
       <source>Select the deepest linked object and switch to its owner document</source>
       <translation>Pasirinkti tolimiausią susietąjį daiktą ir pereiti į jį turintį dokumentą</translation>
     </message>
@@ -10366,9 +10375,9 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <location filename="../CommandView.cpp" line="3168"/>
-      <location filename="../CommandView.cpp" line="3169"/>
-      <location filename="../CommandView.cpp" line="3171"/>
+      <location filename="../CommandView.cpp" line="3031"/>
+      <location filename="../CommandView.cpp" line="3032"/>
+      <location filename="../CommandView.cpp" line="3034"/>
       <source>Measure distance</source>
       <translation>Matuoti atstumą</translation>
     </message>
@@ -10427,9 +10436,9 @@ the current copy will be lost.
       <translation>Sukurti naują tuščią dokumentą</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="389"/>
-      <location filename="../MainWindow.cpp" line="1863"/>
       <location filename="../CommandDoc.cpp" line="607"/>
+      <location filename="../DocumentRecovery.cpp" line="389"/>
+      <location filename="../MainWindow.cpp" line="1890"/>
       <source>Unnamed</source>
       <translation>Be pavadinimo</translation>
     </message>
@@ -10512,13 +10521,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1133"/>
+      <location filename="../CommandDoc.cpp" line="1105"/>
       <source>&amp;Paste</source>
       <translation>Į&amp;klijuoti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1134"/>
-      <location filename="../CommandDoc.cpp" line="1136"/>
+      <location filename="../CommandDoc.cpp" line="1106"/>
+      <location filename="../CommandDoc.cpp" line="1108"/>
       <source>Paste operation</source>
       <translation>Įklijuoti</translation>
     </message>
@@ -10526,13 +10535,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1545"/>
+      <location filename="../CommandDoc.cpp" line="1487"/>
       <source>Placement...</source>
       <translation>Išdėstymas...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1546"/>
-      <location filename="../CommandDoc.cpp" line="1547"/>
+      <location filename="../CommandDoc.cpp" line="1488"/>
+      <location filename="../CommandDoc.cpp" line="1489"/>
       <source>Place the selected objects</source>
       <translation>Išdėstyti pažymėtus daiktus</translation>
     </message>
@@ -10540,13 +10549,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="863"/>
+      <location filename="../CommandDoc.cpp" line="835"/>
       <source>&amp;Print...</source>
       <translation>S&amp;pausdinti...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="864"/>
-      <location filename="../CommandDoc.cpp" line="866"/>
+      <location filename="../CommandDoc.cpp" line="836"/>
+      <location filename="../CommandDoc.cpp" line="838"/>
       <source>Print the document</source>
       <translation>Spausdinti dokumentą</translation>
     </message>
@@ -10554,13 +10563,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="925"/>
+      <location filename="../CommandDoc.cpp" line="897"/>
       <source>&amp;Export PDF...</source>
       <translation>&amp;Eksportuoti į PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="926"/>
-      <location filename="../CommandDoc.cpp" line="928"/>
+      <location filename="../CommandDoc.cpp" line="898"/>
+      <location filename="../CommandDoc.cpp" line="900"/>
       <source>Export the document as PDF</source>
       <translation>Eksportuoja dokumentą PDF formatu</translation>
     </message>
@@ -10568,17 +10577,17 @@ the current copy will be lost.
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="895"/>
+      <location filename="../CommandDoc.cpp" line="867"/>
       <source>&amp;Print preview...</source>
       <translation>Sp&amp;audinio peržiūra...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="896"/>
+      <location filename="../CommandDoc.cpp" line="868"/>
       <source>Print the document</source>
       <translation>Spausdinti dokumentą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="898"/>
+      <location filename="../CommandDoc.cpp" line="870"/>
       <source>Print preview</source>
       <translation>Spaudinio peržiūra</translation>
     </message>
@@ -10586,13 +10595,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="805"/>
+      <location filename="../CommandDoc.cpp" line="777"/>
       <source>Project i&amp;nformation...</source>
       <translation>Projekto in&amp;formacija...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="806"/>
-      <location filename="../CommandDoc.cpp" line="808"/>
+      <location filename="../CommandDoc.cpp" line="778"/>
+      <location filename="../CommandDoc.cpp" line="780"/>
       <source>Show details of the currently active project</source>
       <translation>Pateikia išsamią informaciją apie šį projektą</translation>
     </message>
@@ -10600,13 +10609,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="836"/>
+      <location filename="../CommandDoc.cpp" line="808"/>
       <source>Project utility...</source>
       <translation>Projekto pagalbinės priemonės...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="837"/>
-      <location filename="../CommandDoc.cpp" line="838"/>
+      <location filename="../CommandDoc.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="810"/>
       <source>Utility to extract or create project files</source>
       <translation>Priemonė projektų failų išskleidimui ar sukūrimui</translation>
     </message>
@@ -10628,13 +10637,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="957"/>
+      <location filename="../CommandDoc.cpp" line="929"/>
       <source>E&amp;xit</source>
       <translation>Iš&amp;eiti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="958"/>
-      <location filename="../CommandDoc.cpp" line="960"/>
+      <location filename="../CommandDoc.cpp" line="930"/>
+      <location filename="../CommandDoc.cpp" line="932"/>
       <source>Quits the application</source>
       <translation>Baigia darbą su programa</translation>
     </message>
@@ -10668,25 +10677,25 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="174"/>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Paskiausios makrokomandos</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="175"/>
       <location filename="../CommandStd.cpp" line="177"/>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Paskiausiai naudotų makrokomandų sąrašas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1027"/>
+      <location filename="../CommandDoc.cpp" line="999"/>
       <source>&amp;Redo</source>
       <translation>&amp;Pakartoti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1028"/>
-      <location filename="../CommandDoc.cpp" line="1030"/>
+      <location filename="../CommandDoc.cpp" line="1000"/>
+      <location filename="../CommandDoc.cpp" line="1002"/>
       <source>Redoes a previously undone action</source>
       <translation>Pakartoti anksčiau atšauktą veiksmą</translation>
     </message>
@@ -10694,13 +10703,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1465"/>
+      <location filename="../CommandDoc.cpp" line="1407"/>
       <source>&amp;Refresh</source>
       <translation>&amp;Atnaujinti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1466"/>
-      <location filename="../CommandDoc.cpp" line="1468"/>
+      <location filename="../CommandDoc.cpp" line="1408"/>
+      <location filename="../CommandDoc.cpp" line="1410"/>
       <source>Recomputes the current active document</source>
       <translation>Iš naujo perskaičiuoti rengiamo dokumento duomenis</translation>
     </message>
@@ -10710,25 +10719,25 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="702"/>
       <source>Report a bug</source>
-      <translation type="unfinished">Report a bug</translation>
+      <translation>Pranešti apie triktį</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="703"/>
       <location filename="../CommandStd.cpp" line="705"/>
       <source>Report a bug or suggest a feature</source>
-      <translation type="unfinished">Report a bug or suggest a feature</translation>
+      <translation>Pranešti apie triktį arba pasiūlyti naują funkciją</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="766"/>
+      <location filename="../CommandDoc.cpp" line="738"/>
       <source>Revert</source>
       <translation>Sugrąžinti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="767"/>
-      <location filename="../CommandDoc.cpp" line="769"/>
+      <location filename="../CommandDoc.cpp" line="739"/>
+      <location filename="../CommandDoc.cpp" line="741"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Sugrįžta į vėliausiai įrašytą failo laidą</translation>
     </message>
@@ -10750,13 +10759,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="738"/>
+      <location filename="../CommandDoc.cpp" line="710"/>
       <source>Save All</source>
       <translation>Išsaugoti viską</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="739"/>
-      <location filename="../CommandDoc.cpp" line="741"/>
+      <location filename="../CommandDoc.cpp" line="711"/>
+      <location filename="../CommandDoc.cpp" line="713"/>
       <source>Save all opened document</source>
       <translation>Išsaugoti visus atvertus dokumentus</translation>
     </message>
@@ -10764,13 +10773,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="665"/>
+      <location filename="../CommandDoc.cpp" line="654"/>
       <source>Save &amp;As...</source>
       <translation>Išsaugoti k&amp;aip...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="666"/>
-      <location filename="../CommandDoc.cpp" line="668"/>
+      <location filename="../CommandDoc.cpp" line="655"/>
+      <location filename="../CommandDoc.cpp" line="657"/>
       <source>Save the active document under a new file name</source>
       <translation>Išsaugoti rengiamą dokumentą nauju pavadinimu</translation>
     </message>
@@ -10778,13 +10787,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="705"/>
+      <location filename="../CommandDoc.cpp" line="683"/>
       <source>Save a &amp;Copy...</source>
       <translation>Įrašyti &amp;kopiją...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="706"/>
-      <location filename="../CommandDoc.cpp" line="708"/>
+      <location filename="../CommandDoc.cpp" line="684"/>
+      <location filename="../CommandDoc.cpp" line="686"/>
       <source>Save a copy of the active document under a new file name</source>
       <translation>Išsaugoti rengiamą dokumentą nauju pavadinimu</translation>
     </message>
@@ -10792,13 +10801,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3259"/>
+      <location filename="../CommandView.cpp" line="3122"/>
       <source>Scene inspector...</source>
       <translation>Scenos tikrintuvė...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3260"/>
-      <location filename="../CommandView.cpp" line="3262"/>
+      <location filename="../CommandView.cpp" line="3123"/>
+      <location filename="../CommandView.cpp" line="3125"/>
       <source>Scene inspector</source>
       <translation>Scenos tikrintuvė</translation>
     </message>
@@ -10806,13 +10815,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3269"/>
       <source>&amp;Back</source>
       <translation>&amp;Atgal</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3407"/>
-      <location filename="../CommandView.cpp" line="3409"/>
+      <location filename="../CommandView.cpp" line="3270"/>
+      <location filename="../CommandView.cpp" line="3272"/>
       <source>Go back to previous selection</source>
       <translation>Į ankstesnį pasirinkimą</translation>
     </message>
@@ -10820,13 +10829,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3718"/>
+      <location filename="../CommandView.cpp" line="3582"/>
       <source>&amp;Bounding box</source>
       <translation>&amp;Ribiniai matmenys</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3719"/>
-      <location filename="../CommandView.cpp" line="3721"/>
+      <location filename="../CommandView.cpp" line="3583"/>
+      <location filename="../CommandView.cpp" line="3585"/>
       <source>Show selection bounding box</source>
       <translation>Rodyti pasirinkimo ribinius matmenis</translation>
     </message>
@@ -10834,13 +10843,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3436"/>
+      <location filename="../CommandView.cpp" line="3299"/>
       <source>&amp;Forward</source>
       <translation>&amp;Pirmyn</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3437"/>
-      <location filename="../CommandView.cpp" line="3439"/>
+      <location filename="../CommandView.cpp" line="3300"/>
+      <location filename="../CommandView.cpp" line="3302"/>
       <source>Repeat the backed selection</source>
       <translation>Pakartokite pasirinktą atranką</translation>
     </message>
@@ -10848,13 +10857,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1261"/>
+      <location filename="../CommandDoc.cpp" line="1233"/>
       <source>Select &amp;All</source>
       <translation>Pažymėti &amp;viską</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1262"/>
-      <location filename="../CommandDoc.cpp" line="1264"/>
+      <location filename="../CommandDoc.cpp" line="1234"/>
+      <location filename="../CommandDoc.cpp" line="1236"/>
       <source>Select all</source>
       <translation>Pažymėti visus</translation>
     </message>
@@ -10862,13 +10871,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="986"/>
+      <location filename="../CommandView.cpp" line="954"/>
       <source>Select visible objects</source>
       <translation>Pažymėti visus matomus daiktus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="987"/>
-      <location filename="../CommandView.cpp" line="988"/>
+      <location filename="../CommandView.cpp" line="955"/>
+      <location filename="../CommandView.cpp" line="956"/>
       <source>Select visible objects in the active document</source>
       <translation>Pasirinkti visus rengiamame dokumente rodomus daiktus</translation>
     </message>
@@ -10890,13 +10899,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../CommandView.cpp" line="1143"/>
+      <location filename="../CommandView.cpp" line="1111"/>
       <source>Appearance...</source>
       <translation>Apipavidalinimas...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1144"/>
-      <location filename="../CommandView.cpp" line="1146"/>
+      <location filename="../CommandView.cpp" line="1112"/>
+      <location filename="../CommandView.cpp" line="1114"/>
       <source>Sets the display properties of the selected object</source>
       <translation>Nustato pasirinktų objektų atvaizdavimo savybes</translation>
     </message>
@@ -10904,13 +10913,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1069"/>
+      <location filename="../CommandView.cpp" line="1037"/>
       <source>Show all objects</source>
       <translation>Rodyti visus daiktus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1070"/>
-      <location filename="../CommandView.cpp" line="1071"/>
+      <location filename="../CommandView.cpp" line="1038"/>
+      <location filename="../CommandView.cpp" line="1039"/>
       <source>Show all objects in the document</source>
       <translation>Rodyti visus dokumente esančius daiktus</translation>
     </message>
@@ -10918,13 +10927,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="930"/>
+      <location filename="../CommandView.cpp" line="898"/>
       <source>Show selection</source>
       <translation>Rodyti pažymėjimą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="931"/>
-      <location filename="../CommandView.cpp" line="932"/>
+      <location filename="../CommandView.cpp" line="899"/>
+      <location filename="../CommandView.cpp" line="900"/>
       <source>Show all selected objects</source>
       <translation>Rodyti visus pažymėtus daiktus</translation>
     </message>
@@ -10960,13 +10969,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3292"/>
+      <location filename="../CommandView.cpp" line="3155"/>
       <source>Texture mapping...</source>
       <translation>Tekstūros atvaizdavimas...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3293"/>
-      <location filename="../CommandView.cpp" line="3295"/>
+      <location filename="../CommandView.cpp" line="3156"/>
+      <location filename="../CommandView.cpp" line="3158"/>
       <source>Texture mapping</source>
       <translation>Tekstūros atvaizdavimas</translation>
     </message>
@@ -10998,13 +11007,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="552"/>
+      <location filename="../CommandView.cpp" line="551"/>
       <source>Clipping plane</source>
       <translation>Kirtimas plokštuma</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="553"/>
-      <location filename="../CommandView.cpp" line="555"/>
+      <location filename="../CommandView.cpp" line="552"/>
+      <location filename="../CommandView.cpp" line="554"/>
       <source>Toggles clipping plane for active view</source>
       <translation>Įjungti arba išjungti pjūvio plokštuma rodymą lange</translation>
     </message>
@@ -11012,13 +11021,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2004"/>
+      <location filename="../CommandView.cpp" line="1956"/>
       <source>Toggle navigation/Edit mode</source>
       <translation>Persijungti į naršymą ar taisymą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2005"/>
-      <location filename="../CommandView.cpp" line="2006"/>
+      <location filename="../CommandView.cpp" line="1957"/>
+      <location filename="../CommandView.cpp" line="1958"/>
       <source>Toggle between navigation and edit mode</source>
       <translation>Persijungia į naršymą arba taisymą</translation>
     </message>
@@ -11026,13 +11035,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1028"/>
+      <location filename="../CommandView.cpp" line="996"/>
       <source>Toggle all objects</source>
       <translation>Apkeisti visų daiktus matomumus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1029"/>
-      <location filename="../CommandView.cpp" line="1030"/>
+      <location filename="../CommandView.cpp" line="997"/>
+      <location filename="../CommandView.cpp" line="998"/>
       <source>Toggles visibility of all objects in the active document</source>
       <translation>Paslėpti matomus ir parodyti paslėptus rengiamo dokumento daiktus</translation>
     </message>
@@ -11040,13 +11049,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="883"/>
+      <location filename="../CommandView.cpp" line="852"/>
       <source>Toggle selectability</source>
       <translation>Perjungti pažymėjimo galimybę</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="884"/>
-      <location filename="../CommandView.cpp" line="885"/>
+      <location filename="../CommandView.cpp" line="853"/>
+      <location filename="../CommandView.cpp" line="854"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
       <translation>Perjungia galimybę pažymėti daiktus erdviniame rodinyje</translation>
     </message>
@@ -11054,13 +11063,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="853"/>
+      <location filename="../CommandView.cpp" line="822"/>
       <source>Toggle visibility</source>
       <translation>Pakeisti matomumą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="854"/>
-      <location filename="../CommandView.cpp" line="855"/>
+      <location filename="../CommandView.cpp" line="823"/>
+      <location filename="../CommandView.cpp" line="824"/>
       <source>Toggles visibility</source>
       <translation>Padaro objektus matomais arba nematomais</translation>
     </message>
@@ -11082,13 +11091,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1519"/>
+      <location filename="../CommandDoc.cpp" line="1461"/>
       <source>Transform...</source>
       <translation>Transformacija...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1520"/>
-      <location filename="../CommandDoc.cpp" line="1521"/>
+      <location filename="../CommandDoc.cpp" line="1462"/>
+      <location filename="../CommandDoc.cpp" line="1463"/>
       <source>Transform the geometry of selected objects</source>
       <translation>Pakeičia pažymėtų objektų pavidalą</translation>
     </message>
@@ -11096,13 +11105,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1579"/>
+      <location filename="../CommandDoc.cpp" line="1521"/>
       <source>Transform</source>
       <translation>Keisti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1580"/>
-      <location filename="../CommandDoc.cpp" line="1581"/>
+      <location filename="../CommandDoc.cpp" line="1522"/>
+      <location filename="../CommandDoc.cpp" line="1523"/>
       <source>Transform the selected object in the 3d view</source>
       <translation>Transformuoti pažymėtą objektą erdviniame rodinyje</translation>
     </message>
@@ -11110,13 +11119,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3068"/>
+      <location filename="../CommandView.cpp" line="2930"/>
       <source>Collapse selected item</source>
       <translation>Sutraukti pasirinktą narį</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3069"/>
-      <location filename="../CommandView.cpp" line="3071"/>
+      <location filename="../CommandView.cpp" line="2931"/>
+      <location filename="../CommandView.cpp" line="2933"/>
       <source>Collapse currently selected tree items</source>
       <translation>Sutraukti pasirinktą medžio šaką</translation>
     </message>
@@ -11124,13 +11133,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3093"/>
+      <location filename="../CommandView.cpp" line="2955"/>
       <source>Expand selected item</source>
       <translation>Išskleisti pasirinktą šaką</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3094"/>
-      <location filename="../CommandView.cpp" line="3096"/>
+      <location filename="../CommandView.cpp" line="2956"/>
+      <location filename="../CommandView.cpp" line="2958"/>
       <source>Expand currently selected tree items</source>
       <translation>Išskleisti pasirinktą medžio šaką</translation>
     </message>
@@ -11138,13 +11147,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3118"/>
+      <location filename="../CommandView.cpp" line="2980"/>
       <source>Select all instances</source>
       <translation>Pasirinkti visus narius</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3119"/>
-      <location filename="../CommandView.cpp" line="3121"/>
+      <location filename="../CommandView.cpp" line="2981"/>
+      <location filename="../CommandView.cpp" line="2983"/>
       <source>Select all instances of the current selected object</source>
       <translation>Pasirinkti visus pasirinkto daikto narius</translation>
     </message>
@@ -11152,13 +11161,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3681"/>
+      <location filename="../CommandView.cpp" line="3545"/>
       <source>TreeView actions</source>
       <translation>Medžio rodinio veiksmai</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3682"/>
-      <location filename="../CommandView.cpp" line="3684"/>
+      <location filename="../CommandView.cpp" line="3546"/>
+      <location filename="../CommandView.cpp" line="3548"/>
       <source>TreeView behavior options and actions</source>
       <translation>Medžio rodinio elgsena parinktys ir veiksmai</translation>
     </message>
@@ -11166,13 +11175,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="983"/>
+      <location filename="../CommandDoc.cpp" line="955"/>
       <source>&amp;Undo</source>
       <translation>A&amp;tšaukti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="984"/>
-      <location filename="../CommandDoc.cpp" line="986"/>
+      <location filename="../CommandDoc.cpp" line="956"/>
+      <location filename="../CommandDoc.cpp" line="958"/>
       <source>Undo exactly one action</source>
       <translation>Anuliuoti tik vieną veiksmą</translation>
     </message>
@@ -11196,13 +11205,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="856"/>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Taisos veiksena</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="857"/>
       <location filename="../CommandStd.cpp" line="858"/>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Apibrėžia elgseną taisant medžio narį</translation>
     </message>
   </context>
   <context>
@@ -11222,13 +11231,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1214"/>
+      <location filename="../CommandView.cpp" line="1169"/>
       <source>Bottom</source>
       <translation>Iš apačios</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1215"/>
-      <location filename="../CommandView.cpp" line="1217"/>
+      <location filename="../CommandView.cpp" line="1170"/>
+      <location filename="../CommandView.cpp" line="1172"/>
       <source>Set to bottom view</source>
       <translation>Vaizdas iš apačios</translation>
     </message>
@@ -11236,13 +11245,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="1975"/>
+      <location filename="../CommandView.cpp" line="1927"/>
       <source>Create new view</source>
       <translation>Sukurti naują rodinį</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1976"/>
-      <location filename="../CommandView.cpp" line="1978"/>
+      <location filename="../CommandView.cpp" line="1928"/>
+      <location filename="../CommandView.cpp" line="1930"/>
       <source>Creates a new view window for the active document</source>
       <translation>Sukuria naują rodinio langą aktyviam dokumentui</translation>
     </message>
@@ -11250,13 +11259,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1382"/>
+      <location filename="../CommandView.cpp" line="1337"/>
       <source>Dimetric</source>
       <translation>Dimetrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1383"/>
-      <location filename="../CommandView.cpp" line="1385"/>
+      <location filename="../CommandView.cpp" line="1338"/>
+      <location filename="../CommandView.cpp" line="1340"/>
       <source>Set to dimetric view</source>
       <translation>Perjungti į dimetrinį rodymą</translation>
     </message>
@@ -11264,13 +11273,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2189"/>
+      <location filename="../CommandView.cpp" line="2051"/>
       <source>Inventor example #1</source>
       <translation>Sukurti pavyzdį Nr. 1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2190"/>
-      <location filename="../CommandView.cpp" line="2192"/>
+      <location filename="../CommandView.cpp" line="2052"/>
+      <location filename="../CommandView.cpp" line="2054"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>Parodo erdvinę tekstūrą ir jos manipuliatorių</translation>
     </message>
@@ -11278,13 +11287,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2217"/>
+      <location filename="../CommandView.cpp" line="2079"/>
       <source>Inventor example #2</source>
       <translation>Sukurti pavyzdį Nr. 2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2218"/>
-      <location filename="../CommandView.cpp" line="2220"/>
+      <location filename="../CommandView.cpp" line="2080"/>
+      <location filename="../CommandView.cpp" line="2082"/>
       <source>Shows spheres and drag-lights</source>
       <translation>Rodo rutulius ir vilkimo pėdsakus</translation>
     </message>
@@ -11292,13 +11301,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2245"/>
+      <location filename="../CommandView.cpp" line="2107"/>
       <source>Inventor example #3</source>
       <translation>Sukurti pavyzdį Nr. 3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2246"/>
-      <location filename="../CommandView.cpp" line="2248"/>
+      <location filename="../CommandView.cpp" line="2108"/>
+      <location filename="../CommandView.cpp" line="2110"/>
       <source>Shows a animated texture</source>
       <translation>Rodo animuotą tekstūrą</translation>
     </message>
@@ -11306,13 +11315,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1478"/>
+      <location filename="../CommandView.cpp" line="1433"/>
       <source>Fit all</source>
       <translation>Sutalpinti viską</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1479"/>
-      <location filename="../CommandView.cpp" line="1481"/>
+      <location filename="../CommandView.cpp" line="1434"/>
+      <location filename="../CommandView.cpp" line="1436"/>
       <source>Fits the whole content on the screen</source>
       <translation>Atvaizduoti visą turinį lange</translation>
     </message>
@@ -11320,13 +11329,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1509"/>
+      <location filename="../CommandView.cpp" line="1464"/>
       <source>Fit selection</source>
       <translation>Sutalpinti parinkimą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1510"/>
-      <location filename="../CommandView.cpp" line="1512"/>
+      <location filename="../CommandView.cpp" line="1465"/>
+      <location filename="../CommandView.cpp" line="1467"/>
       <source>Fits the selected content on the screen</source>
       <translation>Atvaizduoti lange pasirinktą turinį</translation>
     </message>
@@ -11334,13 +11343,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1238"/>
+      <location filename="../CommandView.cpp" line="1193"/>
       <source>Front</source>
       <translation>Iš priekio</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1239"/>
-      <location filename="../CommandView.cpp" line="1241"/>
+      <location filename="../CommandView.cpp" line="1194"/>
+      <location filename="../CommandView.cpp" line="1196"/>
       <source>Set to front view</source>
       <translation>Vaizdas iš priekio</translation>
     </message>
@@ -11348,27 +11357,27 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1186"/>
+      <location filename="../CommandView.cpp" line="1141"/>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Pradžia</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1187"/>
-      <location filename="../CommandView.cpp" line="1189"/>
+      <location filename="../CommandView.cpp" line="1142"/>
+      <location filename="../CommandView.cpp" line="1144"/>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Nustatyti numatytąjį pradinį vaizdą</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1358"/>
+      <location filename="../CommandView.cpp" line="1313"/>
       <source>Isometric</source>
       <translation>Izometrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1359"/>
-      <location filename="../CommandView.cpp" line="1361"/>
+      <location filename="../CommandView.cpp" line="1314"/>
+      <location filename="../CommandView.cpp" line="1316"/>
       <source>Set to isometric view</source>
       <translation>Perjungti į izometrinį rodymą</translation>
     </message>
@@ -11376,13 +11385,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2416"/>
+      <location filename="../CommandView.cpp" line="2278"/>
       <source>Issue camera position</source>
       <translation>Kameros padėties parodymas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2417"/>
-      <location filename="../CommandView.cpp" line="2419"/>
+      <location filename="../CommandView.cpp" line="2279"/>
+      <location filename="../CommandView.cpp" line="2281"/>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Parodyti kameros padėtį konsolėje ir makrokomandoje, kad būtų paprasta ją panaudoti</translation>
     </message>
@@ -11390,13 +11399,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2387"/>
+      <location filename="../CommandView.cpp" line="2249"/>
       <source>Stereo Interleaved Columns</source>
       <translation>Stereoskopinis stulpelinis atvaizdavimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2388"/>
-      <location filename="../CommandView.cpp" line="2390"/>
+      <location filename="../CommandView.cpp" line="2250"/>
+      <location filename="../CommandView.cpp" line="2252"/>
       <source>Switch stereo viewing to Interleaved Columns</source>
       <translation>Įjungti stereoskopinį atvaizdavimą, perteikiamą stulpeliais</translation>
     </message>
@@ -11404,13 +11413,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2359"/>
+      <location filename="../CommandView.cpp" line="2221"/>
       <source>Stereo Interleaved Rows</source>
       <translation>Stereoskopinis eilutinis atvaizdavimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2360"/>
-      <location filename="../CommandView.cpp" line="2362"/>
+      <location filename="../CommandView.cpp" line="2222"/>
+      <location filename="../CommandView.cpp" line="2224"/>
       <source>Switch stereo viewing to Interleaved Rows</source>
       <translation>Įjungti stereoskopinį atvaizdavimą, perteikiamą eilutėmis</translation>
     </message>
@@ -11418,13 +11427,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2274"/>
+      <location filename="../CommandView.cpp" line="2136"/>
       <source>Stereo Off</source>
       <translation>Išjungti stereoskopinį vaizdavimą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2275"/>
-      <location filename="../CommandView.cpp" line="2277"/>
+      <location filename="../CommandView.cpp" line="2137"/>
+      <location filename="../CommandView.cpp" line="2139"/>
       <source>Switch stereo viewing off</source>
       <translation>Išjungia stereoskopinį atvaizdavimą</translation>
     </message>
@@ -11432,13 +11441,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2331"/>
+      <location filename="../CommandView.cpp" line="2193"/>
       <source>Stereo quad buffer</source>
       <translation>Stereoskopinis atvaizdavimas keturgubu buferiu</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2332"/>
-      <location filename="../CommandView.cpp" line="2334"/>
+      <location filename="../CommandView.cpp" line="2194"/>
+      <location filename="../CommandView.cpp" line="2196"/>
       <source>Switch stereo viewing to quad buffer</source>
       <translation>Įjungti stereoskopinį atvaizdavimą keturgubu buferiu</translation>
     </message>
@@ -11446,13 +11455,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2303"/>
+      <location filename="../CommandView.cpp" line="2165"/>
       <source>Stereo red/cyan</source>
       <translation>Stereoskopinis atvaizdavimas raudonai žydriems akiniams</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2304"/>
-      <location filename="../CommandView.cpp" line="2306"/>
+      <location filename="../CommandView.cpp" line="2166"/>
+      <location filename="../CommandView.cpp" line="2168"/>
       <source>Switch stereo viewing to red/cyan</source>
       <translation>Įjungti stereoskopinį atvaizdavimą žiūrėjimui su raudonai žydrais akiniais</translation>
     </message>
@@ -11460,13 +11469,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1262"/>
+      <location filename="../CommandView.cpp" line="1217"/>
       <source>Left</source>
       <translation>Iš kairės</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1263"/>
-      <location filename="../CommandView.cpp" line="1265"/>
+      <location filename="../CommandView.cpp" line="1218"/>
+      <location filename="../CommandView.cpp" line="1220"/>
       <source>Set to left view</source>
       <translation>Vaizdas iš kairės</translation>
     </message>
@@ -11474,13 +11483,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1286"/>
+      <location filename="../CommandView.cpp" line="1241"/>
       <source>Rear</source>
       <translation>Iš galo</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1287"/>
-      <location filename="../CommandView.cpp" line="1289"/>
+      <location filename="../CommandView.cpp" line="1242"/>
+      <location filename="../CommandView.cpp" line="1244"/>
       <source>Set to rear view</source>
       <translation>Vaizdas iš galo</translation>
     </message>
@@ -11488,27 +11497,27 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="234"/>
+      <location filename="../CommandView.cpp" line="233"/>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Atstatyti išsaugotą kamerą</translation>
     </message>
     <message>
+      <location filename="../CommandView.cpp" line="234"/>
       <location filename="../CommandView.cpp" line="235"/>
-      <location filename="../CommandView.cpp" line="236"/>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Atstatyti išsaugotas kameros nuostatas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1310"/>
+      <location filename="../CommandView.cpp" line="1265"/>
       <source>Right</source>
       <translation>Iš dešinės</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1311"/>
-      <location filename="../CommandView.cpp" line="1313"/>
+      <location filename="../CommandView.cpp" line="1266"/>
+      <location filename="../CommandView.cpp" line="1268"/>
       <source>Set to right view</source>
       <translation>Vaizdas iš dešinės</translation>
     </message>
@@ -11516,13 +11525,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1428"/>
+      <location filename="../CommandView.cpp" line="1383"/>
       <source>Rotate Left</source>
       <translation>Pasukti į kairę</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1429"/>
-      <location filename="../CommandView.cpp" line="1431"/>
+      <location filename="../CommandView.cpp" line="1384"/>
+      <location filename="../CommandView.cpp" line="1386"/>
       <source>Rotate the view by 90° counter-clockwise</source>
       <translation>Pasukti vaizdą 90° kampu prieš laikrodžio rodyklę</translation>
     </message>
@@ -11530,13 +11539,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1453"/>
+      <location filename="../CommandView.cpp" line="1408"/>
       <source>Rotate Right</source>
       <translation>Pasukti į dešinę</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1454"/>
-      <location filename="../CommandView.cpp" line="1456"/>
+      <location filename="../CommandView.cpp" line="1409"/>
+      <location filename="../CommandView.cpp" line="1411"/>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Pasukti vaizdą 90° kampu pagal laikrodžio rodyklę</translation>
     </message>
@@ -11544,27 +11553,27 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="208"/>
+      <location filename="../CommandView.cpp" line="207"/>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Išsaugoti esamą kamerą</translation>
     </message>
     <message>
+      <location filename="../CommandView.cpp" line="208"/>
       <location filename="../CommandView.cpp" line="209"/>
-      <location filename="../CommandView.cpp" line="210"/>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Išsaugoti esamas kameros nuostatas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1334"/>
+      <location filename="../CommandView.cpp" line="1289"/>
       <source>Top</source>
       <translation>Iš viršaus</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1335"/>
-      <location filename="../CommandView.cpp" line="1337"/>
+      <location filename="../CommandView.cpp" line="1290"/>
+      <location filename="../CommandView.cpp" line="1292"/>
       <source>Set to top view</source>
       <translation>Vaizdas iš viršaus</translation>
     </message>
@@ -11572,13 +11581,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1405"/>
+      <location filename="../CommandView.cpp" line="1360"/>
       <source>Trimetric</source>
       <translation>Trimetrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1406"/>
-      <location filename="../CommandView.cpp" line="1408"/>
+      <location filename="../CommandView.cpp" line="1361"/>
+      <location filename="../CommandView.cpp" line="1363"/>
       <source>Set to trimetric view</source>
       <translation>Perjungti į trimetrinį rodymą</translation>
     </message>
@@ -11586,13 +11595,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="1774"/>
+      <location filename="../CommandView.cpp" line="1726"/>
       <source>FreeCAD-VR</source>
       <translation>„FreeCAD-VR“</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1775"/>
-      <location filename="../CommandView.cpp" line="1777"/>
+      <location filename="../CommandView.cpp" line="1727"/>
+      <location filename="../CommandView.cpp" line="1729"/>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
       <translation>Išplėsti „FreeCAD“ erdvinį langą ir į „Oculus Rift“ įrenginį</translation>
     </message>
@@ -11652,13 +11661,13 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1598"/>
+      <location filename="../CommandView.cpp" line="1551"/>
       <source>Fullscreen</source>
       <translation>Per visą ekraną</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1599"/>
-      <location filename="../CommandView.cpp" line="1601"/>
+      <location filename="../CommandView.cpp" line="1552"/>
+      <location filename="../CommandView.cpp" line="1554"/>
       <source>Display the main window in fullscreen mode</source>
       <translation>Rodyti pagrindiniį langą visame ekrane</translation>
     </message>
@@ -11666,13 +11675,13 @@ the current copy will be lost.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="98"/>
+      <location filename="../CommandView.cpp" line="97"/>
       <source>Orthographic view</source>
       <translation>Ortografinis vaizdas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="99"/>
-      <location filename="../CommandView.cpp" line="101"/>
+      <location filename="../CommandView.cpp" line="98"/>
+      <location filename="../CommandView.cpp" line="100"/>
       <source>Switches to orthographic view mode</source>
       <translation>Įjungti ortografinį vaizdą</translation>
     </message>
@@ -11680,27 +11689,55 @@ the current copy will be lost.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="148"/>
+      <location filename="../CommandView.cpp" line="147"/>
       <source>Perspective view</source>
       <translation>Perspektyvos vaizdas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="149"/>
-      <location filename="../CommandView.cpp" line="151"/>
+      <location filename="../CommandView.cpp" line="148"/>
+      <location filename="../CommandView.cpp" line="150"/>
       <source>Switches to perspective view mode</source>
       <translation>Įjungti perspektyvinį vaizdą</translation>
     </message>
   </context>
   <context>
+    <name>StdRecallWorkingView</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3656"/>
+      <source>Recall working view</source>
+      <translation type="unfinished">Recall working view</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3657"/>
+      <location filename="../CommandView.cpp" line="3658"/>
+      <source>Recall previously stored temporary working view</source>
+      <translation type="unfinished">Recall previously stored temporary working view</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdStoreWorkingView</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3626"/>
+      <source>Store working view</source>
+      <translation type="unfinished">Store working view</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3627"/>
+      <location filename="../CommandView.cpp" line="3628"/>
+      <source>Store a document-specific temporary working view</source>
+      <translation type="unfinished">Store a document-specific temporary working view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3520"/>
+      <location filename="../CommandView.cpp" line="3383"/>
       <source>Collapse/Expand</source>
       <translation>Suskleisti/Išskleisti</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3521"/>
-      <location filename="../CommandView.cpp" line="3523"/>
+      <location filename="../CommandView.cpp" line="3384"/>
+      <location filename="../CommandView.cpp" line="3386"/>
       <source>Expand active document and collapse all others</source>
       <translation>Išskleisti pasirinktą dokumentą ir suskleisti kitus</translation>
     </message>
@@ -11708,12 +11745,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3649"/>
+      <location filename="../CommandView.cpp" line="3512"/>
       <source>Initiate dragging</source>
       <translation>Pradėti tempimą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3650"/>
+      <location filename="../CommandView.cpp" line="3513"/>
       <source>Initiate dragging of current selected tree items</source>
       <translation>Pradėti pasirinktos medžio šakos tempimą</translation>
     </message>
@@ -11721,13 +11758,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3503"/>
+      <location filename="../CommandView.cpp" line="3366"/>
       <source>Multi document</source>
       <translation>Daugybinis dokumentas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3504"/>
-      <location filename="../CommandView.cpp" line="3506"/>
+      <location filename="../CommandView.cpp" line="3367"/>
+      <location filename="../CommandView.cpp" line="3369"/>
       <source>Display all documents in the tree view</source>
       <translation>Rodyti visus dokumentus medžio rodinyje</translation>
     </message>
@@ -11735,12 +11772,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3613"/>
+      <location filename="../CommandView.cpp" line="3476"/>
       <source>Pre-selection</source>
       <translation>Pirminis pasirinkimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3614"/>
+      <location filename="../CommandView.cpp" line="3477"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
       <translation>Paryškinti daiktą erdviniame rodinyje kai pelės žymeklis yra virš atitinkamo medžio nario</translation>
     </message>
@@ -11748,12 +11785,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3631"/>
+      <location filename="../CommandView.cpp" line="3494"/>
       <source>Record selection</source>
       <translation>Įrašyti atranką</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3632"/>
+      <location filename="../CommandView.cpp" line="3495"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>Įrašyti atranką medžio rodinyje kad po to būtų galima judėti atgal ar pirmyn naudojantis naršymo mygtuku</translation>
     </message>
@@ -11761,13 +11798,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3043"/>
+      <location filename="../CommandView.cpp" line="2905"/>
       <source>Go to selection</source>
       <translation>Eiti į atranką</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3044"/>
-      <location filename="../CommandView.cpp" line="3046"/>
+      <location filename="../CommandView.cpp" line="2906"/>
+      <location filename="../CommandView.cpp" line="2908"/>
       <source>Scroll to first selected item</source>
       <translation>Šokti į pirmąjį pažymėtą narį</translation>
     </message>
@@ -11775,13 +11812,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3486"/>
+      <location filename="../CommandView.cpp" line="3349"/>
       <source>Single document</source>
       <translation>Vienas dokumentas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3487"/>
-      <location filename="../CommandView.cpp" line="3489"/>
+      <location filename="../CommandView.cpp" line="3350"/>
+      <location filename="../CommandView.cpp" line="3352"/>
       <source>Only display the active document in the tree view</source>
       <translation>Rodyti tik pasirinktą vieną dokumentą medžio rodinyje</translation>
     </message>
@@ -11789,12 +11826,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3595"/>
+      <location filename="../CommandView.cpp" line="3458"/>
       <source>Sync placement</source>
       <translation>Sinchronizuoti dėstymą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3596"/>
+      <location filename="../CommandView.cpp" line="3459"/>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
       <translation>Automatiškai priderinti išdėstymą velkant daiktus per koordinačių sistemas</translation>
     </message>
@@ -11802,12 +11839,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3577"/>
+      <location filename="../CommandView.cpp" line="3440"/>
       <source>Sync selection</source>
       <translation>Sinchronizuoti atranką</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3578"/>
+      <location filename="../CommandView.cpp" line="3441"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
       <translation>Savaime išplėsti medžio šaką, kuomet pasirenkamas atitinkamas daiktas erdviniame rodinyje</translation>
     </message>
@@ -11815,12 +11852,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3559"/>
+      <location filename="../CommandView.cpp" line="3422"/>
       <source>Sync view</source>
       <translation>Sinchronizuoti rodymą</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3560"/>
+      <location filename="../CommandView.cpp" line="3423"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>Savaime perjungti erdvinį rodinį su pasirinktuoju nariu</translation>
     </message>
@@ -11828,9 +11865,9 @@ the current copy will be lost.
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2669"/>
-      <location filename="../CommandView.cpp" line="2670"/>
-      <location filename="../CommandView.cpp" line="2672"/>
+      <location filename="../CommandView.cpp" line="2531"/>
+      <location filename="../CommandView.cpp" line="2532"/>
+      <location filename="../CommandView.cpp" line="2534"/>
       <source>Box zoom</source>
       <translation>Srities priartinimas</translation>
     </message>
@@ -11838,13 +11875,13 @@ the current copy will be lost.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1540"/>
+      <location filename="../CommandView.cpp" line="1493"/>
       <source>Docked</source>
       <translation>Įtvirtintas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1541"/>
-      <location filename="../CommandView.cpp" line="1543"/>
+      <location filename="../CommandView.cpp" line="1494"/>
+      <location filename="../CommandView.cpp" line="1496"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Rodyti langą per visą ekraną, įtvirtintą, arba atskirame lange</translation>
     </message>
@@ -11852,13 +11889,13 @@ the current copy will be lost.
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1660"/>
+      <location filename="../CommandView.cpp" line="1613"/>
       <source>Document window</source>
       <translation>Dokumento rodinys</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1661"/>
-      <location filename="../CommandView.cpp" line="1663"/>
+      <location filename="../CommandView.cpp" line="1614"/>
+      <location filename="../CommandView.cpp" line="1616"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Rodyti langą per visą ekraną, įtvirtintą, arba atskirame lange</translation>
     </message>
@@ -11866,13 +11903,13 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1630"/>
+      <location filename="../CommandView.cpp" line="1583"/>
       <source>Fullscreen</source>
       <translation>Per visą ekraną</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1631"/>
-      <location filename="../CommandView.cpp" line="1633"/>
+      <location filename="../CommandView.cpp" line="1584"/>
+      <location filename="../CommandView.cpp" line="1586"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Rodyti langą per visą ekraną, įtvirtintą, arba atskirame lange</translation>
     </message>
@@ -11880,13 +11917,13 @@ the current copy will be lost.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="1804"/>
+      <location filename="../CommandView.cpp" line="1755"/>
       <source>Save picture...</source>
       <translation>Išsaugoti paveikslėlį...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1805"/>
-      <location filename="../CommandView.cpp" line="1807"/>
+      <location filename="../CommandView.cpp" line="1756"/>
+      <location filename="../CommandView.cpp" line="1758"/>
       <source>Creates a screenshot of the active view</source>
       <translation>Sukurti rodinio nuotrauką</translation>
     </message>
@@ -11894,13 +11931,13 @@ the current copy will be lost.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1569"/>
+      <location filename="../CommandView.cpp" line="1522"/>
       <source>Undocked</source>
       <translation>Neįtvirtintas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1570"/>
-      <location filename="../CommandView.cpp" line="1572"/>
+      <location filename="../CommandView.cpp" line="1523"/>
+      <location filename="../CommandView.cpp" line="1525"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>Rodyti langą per visą ekraną, įtvirtintą, arba atskirame lange</translation>
     </message>
@@ -11908,9 +11945,9 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2466"/>
-      <location filename="../CommandView.cpp" line="2467"/>
-      <location filename="../CommandView.cpp" line="2469"/>
+      <location filename="../CommandView.cpp" line="2328"/>
+      <location filename="../CommandView.cpp" line="2329"/>
+      <location filename="../CommandView.cpp" line="2331"/>
       <source>Zoom In</source>
       <translation>Artiniti</translation>
     </message>
@@ -11918,9 +11955,9 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2499"/>
-      <location filename="../CommandView.cpp" line="2500"/>
-      <location filename="../CommandView.cpp" line="2502"/>
+      <location filename="../CommandView.cpp" line="2361"/>
+      <location filename="../CommandView.cpp" line="2362"/>
+      <location filename="../CommandView.cpp" line="2364"/>
       <source>Zoom Out</source>
       <translation>Tolinti</translation>
     </message>
@@ -11928,7 +11965,7 @@ the current copy will be lost.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1382"/>
+      <location filename="../CommandDoc.cpp" line="1337"/>
       <source>The following referencing objects might break.
 
 Are you sure you want to continue?
@@ -11939,12 +11976,7 @@ Ar esate įsitikinę, kad norite tęsti?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1396"/>
-      <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="1404"/>
+      <location filename="../CommandDoc.cpp" line="1346"/>
       <source>Object dependencies</source>
       <translation>Daikto priklausomybės</translation>
     </message>
@@ -11960,72 +11992,72 @@ Ar esate įsitikinę, kad norite tęsti?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="712"/>
+      <location filename="../CommandView.cpp" line="681"/>
       <source>As is</source>
       <translation>Kaip yra</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="714"/>
+      <location filename="../CommandView.cpp" line="683"/>
       <source>Normal mode</source>
       <translation>Įprastinis</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="717"/>
+      <location filename="../CommandView.cpp" line="686"/>
       <source>Points</source>
       <translation>Taškai</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="719"/>
+      <location filename="../CommandView.cpp" line="688"/>
       <source>Points mode</source>
       <translation>Taškais</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="722"/>
+      <location filename="../CommandView.cpp" line="691"/>
       <source>Wireframe</source>
       <translation>Rėmelis</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="724"/>
+      <location filename="../CommandView.cpp" line="693"/>
       <source>Wireframe mode</source>
       <translation>Rėminis atvaizdavimas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="727"/>
+      <location filename="../CommandView.cpp" line="696"/>
       <source>Hidden line</source>
       <translation>Paslėptos linijos</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="729"/>
+      <location filename="../CommandView.cpp" line="698"/>
       <source>Hidden line mode</source>
       <translation>Atvaizduoti paslėptas linijas</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="732"/>
+      <location filename="../CommandView.cpp" line="701"/>
       <source>No shading</source>
       <translation>Be šešėlių</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="734"/>
+      <location filename="../CommandView.cpp" line="703"/>
       <source>No shading mode</source>
       <translation>Atvaizduoti be šešėlių</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="737"/>
+      <location filename="../CommandView.cpp" line="706"/>
       <source>Shaded</source>
       <translation>Su šešėliais</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="739"/>
+      <location filename="../CommandView.cpp" line="708"/>
       <source>Shaded mode</source>
       <translation>Atvaizduoti su šešėliais</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="742"/>
+      <location filename="../CommandView.cpp" line="711"/>
       <source>Flat lines</source>
       <translation>Paryškinti kraštai</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="744"/>
+      <location filename="../CommandView.cpp" line="713"/>
       <source>Flat lines mode</source>
       <translation>Atvaizduoti paryškinant kraštines</translation>
     </message>
@@ -12033,12 +12065,12 @@ Ar esate įsitikinę, kad norite tęsti?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1225"/>
+      <location filename="../CommandDoc.cpp" line="1197"/>
       <source>Object dependencies</source>
       <translation>Daikto priklausomybės</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1226"/>
+      <location filename="../CommandDoc.cpp" line="1198"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Kad būtų susietas su išoriniais daiktais, dokumentas turi būti bent kartą išsaugotas.
@@ -12056,7 +12088,7 @@ Ar norit išsaugoti dokumentą dabar?</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1494"/>
+      <location filename="../CommandDoc.cpp" line="1436"/>
       <source>The document contains dependency cycles.
 Please check the Report View for more details.
 
@@ -12070,17 +12102,17 @@ Ar vis dar norite tęsti?</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="779"/>
+      <location filename="../CommandDoc.cpp" line="751"/>
       <source>Revert document</source>
       <translation>Sugrįžti į ankstesnę dokumento laidą</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="780"/>
+      <location filename="../CommandDoc.cpp" line="752"/>
       <source>This will discard all the changes since last file save.</source>
       <translation>Bus atmesti visi pakeitimai, padaryti iki paskutinio failo įrašymo.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="781"/>
+      <location filename="../CommandDoc.cpp" line="753"/>
       <source>Do you want to continue?</source>
       <translation>Ar norite tęsti?</translation>
     </message>
@@ -12088,12 +12120,12 @@ Ar vis dar norite tęsti?</translation>
   <context>
     <name>ViewIsometricCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1699"/>
+      <location filename="../NaviCube.cpp" line="1698"/>
       <source>Isometric</source>
       <translation>Izometrinis vaizdavimas</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1700"/>
+      <location filename="../NaviCube.cpp" line="1699"/>
       <source>Set NaviCube to Isometric mode</source>
       <translation>Nustatyti NaviCube į izometrinę veikseną</translation>
     </message>
@@ -12101,12 +12133,12 @@ Ar vis dar norite tęsti?</translation>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1719"/>
+      <location filename="../NaviCube.cpp" line="1718"/>
       <source>Orthographic</source>
       <translation>Ortografinis</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1720"/>
+      <location filename="../NaviCube.cpp" line="1719"/>
       <source>Set View to Orthographic mode</source>
       <translation>Perjungti į ortografinį rodymą</translation>
     </message>
@@ -12114,12 +12146,12 @@ Ar vis dar norite tęsti?</translation>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1740"/>
+      <location filename="../NaviCube.cpp" line="1739"/>
       <source>Perspective</source>
       <translation>Perspektyva</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1741"/>
+      <location filename="../NaviCube.cpp" line="1740"/>
       <source>Set View to Perspective mode</source>
       <translation>Perjungti į perspektyvinį rodymą</translation>
     </message>
@@ -12127,12 +12159,12 @@ Ar vis dar norite tęsti?</translation>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1761"/>
+      <location filename="../NaviCube.cpp" line="1760"/>
       <source>Zoom to fit</source>
       <translation>Priartinti, kad tilptų viskas</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1762"/>
+      <location filename="../NaviCube.cpp" line="1761"/>
       <source>Zoom so that model fills the view</source>
       <translation>Priartinama taip, kad modelis užpildo rodinio langą</translation>
     </message>
@@ -12140,92 +12172,92 @@ Ar vis dar norite tęsti?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../Workbench.cpp" line="533"/>
+      <location filename="../Workbench.cpp" line="532"/>
       <source>&amp;File</source>
       <translation>&amp;Failas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="534"/>
+      <location filename="../Workbench.cpp" line="533"/>
       <source>&amp;Edit</source>
       <translation>&amp;Taisa</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="535"/>
+      <location filename="../Workbench.cpp" line="534"/>
       <source>Standard views</source>
       <translation>Įprastiniai vaizdai</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="536"/>
+      <location filename="../Workbench.cpp" line="535"/>
       <source>Axonometric</source>
       <translation>Aksonometrinis</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="537"/>
+      <location filename="../Workbench.cpp" line="536"/>
       <source>&amp;Stereo</source>
       <translation>&amp;Stereoskopinis atvaizdavimas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="538"/>
+      <location filename="../Workbench.cpp" line="537"/>
       <source>&amp;Zoom</source>
       <translation>V&amp;aizdo dydis</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="539"/>
+      <location filename="../Workbench.cpp" line="538"/>
       <source>Visibility</source>
       <translation>Matomumas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="540"/>
+      <location filename="../Workbench.cpp" line="539"/>
       <source>&amp;View</source>
       <translation>&amp;Rodymas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="541"/>
+      <location filename="../Workbench.cpp" line="540"/>
       <source>&amp;Tools</source>
       <translation>Į&amp;rankiai</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="542"/>
+      <location filename="../Workbench.cpp" line="541"/>
       <source>&amp;Macro</source>
       <translation>&amp;Makrokomandos</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="543"/>
+      <location filename="../Workbench.cpp" line="542"/>
       <source>&amp;Windows</source>
       <translation>&amp;Langai</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="544"/>
+      <location filename="../Workbench.cpp" line="543"/>
       <source>&amp;On-line help</source>
       <translation>Pa&amp;galba žiniatinklyje</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="545"/>
+      <location filename="../Workbench.cpp" line="544"/>
       <source>&amp;Help</source>
       <translation>Ž&amp;inynas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="546"/>
+      <location filename="../Workbench.cpp" line="545"/>
       <source>File</source>
       <translation>Failas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="547"/>
+      <location filename="../Workbench.cpp" line="546"/>
       <source>Macro</source>
       <translation>Makrokomandos</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="548"/>
+      <location filename="../Workbench.cpp" line="547"/>
       <source>View</source>
       <translation>Rodymas</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="549"/>
+      <location filename="../Workbench.cpp" line="548"/>
       <source>Special Ops</source>
       <translation>Ypatingi veiksmai</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="551"/>
+      <location filename="../Workbench.cpp" line="550"/>
       <source>Link actions</source>
       <translation>Saito veiksmai</translation>
     </message>

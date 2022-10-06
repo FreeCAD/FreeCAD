@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="785"/>
       <location filename="../../AppWebGui.cpp" line="85"/>
+      <location filename="../../BrowserView.cpp" line="784"/>
       <source>Browser</source>
       <translation>瀏覽器</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="597"/>
+      <location filename="../../BrowserView.cpp" line="596"/>
       <source>File does not exist!</source>
       <translation>檔案不存在!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="585"/>
-      <location filename="../../BrowserView.cpp" line="590"/>
-      <location filename="../../BrowserView.cpp" line="593"/>
+      <location filename="../../BrowserView.cpp" line="584"/>
+      <location filename="../../BrowserView.cpp" line="589"/>
+      <location filename="../../BrowserView.cpp" line="592"/>
       <source>Error</source>
       <translation>錯誤</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="590"/>
+      <location filename="../../BrowserView.cpp" line="589"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>載入檔案時出錯. 某些數據可能已被修改或根本未恢復. 查看報告來了解所涉及物件的更多具體資訊.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="593"/>
+      <location filename="../../BrowserView.cpp" line="592"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="753"/>
+      <location filename="../../BrowserView.cpp" line="752"/>
       <source>Loading %1...</source>
       <translation>載入 %1...</translation>
     </message>

@@ -741,20 +741,20 @@ Do you want to continue?</source>
       <translation>Seleccione exactamente un objeto de hoja de cálculo.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="50"/>
-      <location filename="../../TaskOrthoViews.cpp" line="978"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make axonometric...</source>
       <translation>Hacer axonométrica...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="972"/>
       <source>Edit axonometric settings...</source>
       <translation>Editar configuración axonométrica...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="50"/>
+      <location filename="../../TaskOrthoViews.cpp" line="973"/>
       <source>Make orthographic</source>
       <translation>Hacer ortogonal</translation>
     </message>

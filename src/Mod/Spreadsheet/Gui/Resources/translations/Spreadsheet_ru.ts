@@ -347,31 +347,31 @@
       <translation>Изменения свойств ячеек</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="471"/>
+      <location filename="../../SheetModel.cpp" line="470"/>
       <source>Edit cell</source>
       <translation>Правка ячейки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="276"/>
-      <location filename="../../SheetTableView.cpp" line="308"/>
+      <location filename="../../SheetTableView.cpp" line="322"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
       <source>Insert rows</source>
       <translation>Вставка строк</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="327"/>
-      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="373"/>
+      <location filename="../../SheetTableView.cpp" line="446"/>
       <source>Remove rows</source>
       <translation>Удаление строк</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="348"/>
-      <location filename="../../SheetTableView.cpp" line="381"/>
+      <location filename="../../SheetTableView.cpp" line="394"/>
+      <location filename="../../SheetTableView.cpp" line="427"/>
       <source>Insert columns</source>
       <translation>Вставка столбцов</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="167"/>
-      <location filename="../../SheetTableView.cpp" line="557"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
+      <location filename="../../SpreadsheetView.cpp" line="168"/>
       <source>Clear cell(s)</source>
       <translation>Очистка ячейки(ек)</translation>
     </message>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Начальный адрес ячейки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
@@ -723,17 +723,17 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Задает цвет фона ячеек таблицы</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="677"/>
+      <location filename="../../SheetTableView.cpp" line="735"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Скопировать и вставить не удалось</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="434"/>
+      <location filename="../../SpreadsheetView.cpp" line="435"/>
       <source>Alias contains invalid characters!</source>
       <translation>Псевдоним содержит недопустимые символы!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="440"/>
+      <location filename="../../SpreadsheetView.cpp" line="441"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Обратитесь к ячейке по псевдониму, например
@@ -877,66 +877,6 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Электронная таблица</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Ячейка</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Применить</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Удалить</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Вычислить</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Создание электронной таблицы</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="194"/>
@@ -1061,7 +1001,7 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="129"/>
+      <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>Вставить %n строку выше</numerusform>
@@ -1071,7 +1011,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="133"/>
+      <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Вставить %n строку ниже</numerusform>
@@ -1081,7 +1021,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="137"/>
+      <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
       <translation>
         <numerusform>Вставить %n строку с пропуском строк</numerusform>
@@ -1091,7 +1031,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="140"/>
+      <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Remove row(s)</source>
       <translation>
         <numerusform>Удалить строку</numerusform>
@@ -1101,7 +1041,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="154"/>
+      <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
       <translation>
         <numerusform>Вставить %n столбец слева</numerusform>
@@ -1111,7 +1051,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="158"/>
+      <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
       <translation>
         <numerusform>Вставить %n столбец справа</numerusform>
@@ -1121,7 +1061,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="162"/>
+      <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
       <translation>
         <numerusform>Вставить %n столбец с пропуском столбцов</numerusform>
@@ -1131,7 +1071,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="165"/>
+      <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
       <translation>
         <numerusform>Удалить столбец</numerusform>
@@ -1141,52 +1081,62 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="170"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
+      <location filename="../../SheetTableView.cpp" line="596"/>
       <source>Properties...</source>
       <translation>Свойства...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="182"/>
+      <location filename="../../SheetTableView.cpp" line="181"/>
+      <location filename="../../SheetTableView.cpp" line="597"/>
       <source>Recompute</source>
       <translation type="unfinished">Recompute</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="185"/>
+      <location filename="../../SheetTableView.cpp" line="605"/>
       <source>Bind...</source>
       <translation type="unfinished">Bind...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="189"/>
+      <location filename="../../SheetTableView.cpp" line="598"/>
       <source>Configuration table...</source>
       <translation type="unfinished">Configuration table...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="198"/>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="599"/>
       <source>Merge cells</source>
       <translation>Объединить ячейки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="200"/>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="600"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Разделить ячейки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="603"/>
       <source>Cut</source>
       <translation>Обрезать</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="601"/>
       <source>Copy</source>
       <translation>Копировать</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="208"/>
+      <location filename="../../SheetTableView.cpp" line="207"/>
+      <location filename="../../SheetTableView.cpp" line="602"/>
       <source>Paste</source>
       <translation>Вставить</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="210"/>
+      <location filename="../../SheetTableView.cpp" line="209"/>
+      <location filename="../../SheetTableView.cpp" line="604"/>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
@@ -1194,53 +1144,14 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="262"/>
+      <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>Export PDF</source>
       <translation>Экспортировать в PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="263"/>
+      <location filename="../../SpreadsheetView.cpp" line="264"/>
       <source>PDF file</source>
       <translation>Файл PDF</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Электронная таблица</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -1263,7 +1174,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Стиль</translation>
     </message>
   </context>
 </TS>

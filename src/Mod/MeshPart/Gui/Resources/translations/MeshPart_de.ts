@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>Netz-Formteil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>Schnitte...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>Schnitte</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation>Kurve auf Netz...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Erstellt eine angenäherte Kurve auf einem Netz.
@@ -60,17 +60,17 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
       <translation>Schnitt aus Netz und Ebene erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>Schnittkurve</translation>
     </message>
@@ -102,7 +102,7 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
       <translation>An Ebene trimmen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation>Mit Ebene schneiden</translation>
     </message>
@@ -170,7 +170,7 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
       <translation>Kanten verbinden, wenn die Distanz kleiner ist als</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
       <translation>Ein Fehler ist aufgetreten</translation>
     </message>
@@ -515,33 +515,14 @@ Wähle bitte eine andere Form aus.</translation>
     </message>
   </context>
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Netz ausbreiten</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Eine ebene Darstellung eines Netzes finden.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Fläche ausbreiten</translation>
-    </message>
-  </context>
-  <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Ebene auswählen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Bitte wählen Sie eine Ebene, bei der Sie das Netz unterteilen.</translation>
     </message>

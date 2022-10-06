@@ -741,20 +741,20 @@ Devam etmek istiyor musun?</translation>
       <translation>Tam olarak bir Hesap Tablosu nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="50"/>
-      <location filename="../../TaskOrthoViews.cpp" line="978"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make axonometric...</source>
       <translation>Aksonometrik yap...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="49"/>
+      <location filename="../../TaskOrthoViews.cpp" line="972"/>
       <source>Edit axonometric settings...</source>
       <translation>Aksonometrik ayarlarını düzenle...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="50"/>
+      <location filename="../../TaskOrthoViews.cpp" line="973"/>
       <source>Make orthographic</source>
       <translation>Ortografik yap</translation>
     </message>

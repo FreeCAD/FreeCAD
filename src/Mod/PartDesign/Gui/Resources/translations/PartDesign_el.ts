@@ -6,55 +6,55 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Το κεντρικό σημείο της αρχής του βήματος. προέρχεται από τον άξονα αναφοράς.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Η κατεύθηνση του βήματος' που προκύπτει από τον άξονα αναφοράς.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Ο άξονας αναφοράς του βήματος.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Οι ιδιότητες λειτουργίας εισόδου βήματος ορίζονται από το χρήστη.
+Στη συνέχεια υπολογίζονται οι εξαρτημένες ιδιότητες.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>Η αξονική απόσταση μεταξύ δύο στροφών.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>Το ύψος του βήματος, χωρίς να υπολογίζεται η έκταση του προφίλ.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Ο αριθμός στροφών βήματος.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>Η γωνία του κώνου που σχηματίζει ένα κύτος γύρω από το βήμα.
+Οι μη μηδενικές τιμές μετατρέπουν την έλικα σε κωνική σπείρα.
+Οι θετικές τιμές κάνουν την ακτίνα να μεγαλώνει, αρνητικές τιμές να μικραίνει.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Η αύξηση της ακτίνας της σπείρας ανά στροφή.
+Οι μη μηδενικές τιμές μετατρέπουν την σπείρα σε κωνική σπείρα.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
@@ -77,8 +77,7 @@ i.e. counter-clockwise when moving along its axis.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Εάν είναι ψευδές (false), το εργαλείο θα προτείνει μια αρχική τιμή για το βήμα με βάση το πλαίσιο οριοθέτησης προφίλ, ώστε να αποφεύγεται η διασταύρωση.</translation>
     </message>
   </context>
   <context>
@@ -181,12 +180,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Create a local coordinate system</source>
-      <translation>Create a local coordinate system</translation>
+      <translation>Δημιουργία τοπικού συστήματος συντεταγμένων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
       <source>Create a new local coordinate system</source>
-      <translation>Create a new local coordinate system</translation>
+      <translation>Δημιουργία νέου τοπικού συστήματος συντεταγμένων</translation>
     </message>
   </context>
   <context>
@@ -451,12 +450,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2515"/>
       <source>Create MultiTransform</source>
-      <translation>Δημιουργήστε Πολλαπλό Μετασχηματισμό</translation>
+      <translation>Δημιουργία Πολλαπλών Μετατοπίσεων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2516"/>
       <source>Create a multitransform feature</source>
-      <translation>Δημιουργήστε ένα χαρακτηριστικό πολλαπλού μετασχηματισμού</translation>
+      <translation>Δημιουργήστε μια δυνατότητα πολλαπλών μετατοπίσεων</translation>
     </message>
   </context>
   <context>
@@ -469,7 +468,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create sketch</source>
-      <translation>Δημιουργία σκαριφήματος</translation>
+      <translation>Δημιουργία σχεδίου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -559,12 +558,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2401"/>
       <source>PolarPattern</source>
-      <translation>ΠολικόΜοτίβο</translation>
+      <translation>Κυκλικό Μοτίβο</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2402"/>
       <source>Create a polar pattern feature</source>
-      <translation>Δημιουργήστε ένα χαρακτηριστικό πολικού μοτίβου</translation>
+      <translation>Δημιουργεί μοτίβα σε κυκλικό επίπεδο</translation>
     </message>
   </context>
   <context>
@@ -577,12 +576,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1417"/>
       <source>Revolution</source>
-      <translation>Περιφορά</translation>
+      <translation>Γωνιακή καμπύλη</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1418"/>
       <source>Revolve a selected sketch</source>
-      <translation>Περιφορά ενός επιλεγμένου σκαριφήματος</translation>
+      <translation>Περιστροφή ενός επιλεγμένου σκίτσου</translation>
     </message>
   </context>
   <context>
@@ -645,7 +644,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1823"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>Ελικοειδής αφαίρεση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1824"/>
@@ -856,7 +855,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2564"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>Μετατροπή σε λειτουργία πολλαπλών μετατοπίσεων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2656"/>
@@ -864,8 +863,8 @@ so that self intersection is avoided.</translation>
       <translation type="unfinished">Create Boolean</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation type="unfinished">Add a Body</translation>
     </message>
@@ -902,12 +901,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
       <source>Make LinearPattern</source>
-      <translation type="unfinished">Make LinearPattern</translation>
+      <translation>Δημιουργήστε γραμμικό μοτίβο</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
       <source>PolarPattern</source>
-      <translation>ΠολικόΜοτίβο</translation>
+      <translation>Κυκλικό Μοτίβο</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
@@ -963,7 +962,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Sketch tools</source>
-      <translation>Εργαλεία Σκαριφήματος</translation>
+      <translation>Εργαλεία Σκίτσου</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -1033,7 +1032,7 @@ so that self intersection is avoided.</translation>
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1646"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1651"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1213,12 +1212,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation type="unfinished">Radius in local xy-plane</translation>
+      <translation>Ακτίνα σε τοπικό επίπεδο xy</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation type="unfinished">Radius in local xz-plane</translation>
+      <translation>Ακτίνα στο τοπικό xz-επίπεδο</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1361,7 +1360,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>Επιλέξατε γεωμετρίες που δεν ανήκουν στο ενεργό σώμα. Καθορίστε τον τρόπο χειρισμού αυτών των επιλογών. Εάν δεν θέλετε αυτές τις αναφορές, ακυρώστε την εντολή</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1440,7 +1439,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
       <source>Cone radii are equal</source>
-      <translation type="unfinished">Cone radii are equal</translation>
+      <translation>Οι ακτίνες του κώνου είναι ίσες</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
@@ -1614,7 +1613,7 @@ click again to end selection</translation>
   <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="331"/>
+      <location filename="../../TaskShapeBinder.cpp" line="413"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1718,14 +1717,13 @@ click again to end selection</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="53"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="723"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="902"/>
       <source>No face selected</source>
       <translation>Δεν επιλέχθηκε καμία όψη</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="739"/>
       <source>Face</source>
       <translation>Όψη</translation>
     </message>
@@ -1749,6 +1747,11 @@ click again to end selection</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
       <translation type="unfinished">Custom direction</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
+      <source>Click on a face in the model</source>
+      <translation type="unfinished">Click on a face in the model</translation>
     </message>
   </context>
   <context>
@@ -2071,17 +2074,17 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
       <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <translation>Κυλινδροκεφαλή (ξεπερασμένη)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="50"/>
       <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
+      <translation>Αλλεν βίδα φρεζάτη (ξεπερασμένη)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="51"/>
       <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
+      <translation>Κεφαλή βίδας</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
@@ -2096,7 +2099,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="66"/>
       <source>ISO metric regular profile</source>
-      <translation type="unfinished">ISO metric regular profile</translation>
+      <translation>ISO - Μετρικό κανονικό προφίλ</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="67"/>
@@ -2139,7 +2142,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Η λίστα μπορεί να αναδιαταχθεί με σύρσιμο</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -2222,7 +2225,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Η λίστα μπορεί να αναδιαταχθεί με σύρσιμο</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2260,7 +2263,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Η λίστα μπορεί να αναδιαταχθεί με σύρσιμο</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2308,12 +2311,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Η λίστα μπορεί να αναδιαταχθεί με σύρσιμο</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
       <source>Transformations</source>
-      <translation>Μετασχηματισμοί</translation>
+      <translation>Μετατοπισμοί</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="71"/>
@@ -2338,7 +2341,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
       <source>Add mirrored transformation</source>
-      <translation>Προσθέστε μετασχηματισμό κατοπτρικής συμμετρίας</translation>
+      <translation>Προσθήκη αντικατοπτρισμένης μετατόπισης</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
@@ -2348,12 +2351,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
       <source>Add polar pattern</source>
-      <translation>Προσθέστε πολικό μοτίβο</translation>
+      <translation>Προσθήκη κυκλικού μοτίβου</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
       <source>Add scaled transformation</source>
-      <translation>Προσθέστε μετασχηματισμό κλίμακας</translation>
+      <translation>Προσθέστε μετατόπιση κλίμακας</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
@@ -2386,7 +2389,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
       <source>Reverses pad direction</source>
-      <translation type="unfinished">Reverses pad direction</translation>
+      <translation>Αντίστροφη κατεύθυνση διαδρομής</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
@@ -2449,7 +2452,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="85"/>
       <source>Direction/edge:</source>
-      <translation type="unfinished">Direction/edge:</translation>
+      <translation>Κατεύθυνση/ακμή:</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
@@ -2476,7 +2479,7 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>Εμφάνιση κατεύθυνσης</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
@@ -2519,8 +2522,8 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="236"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>Αν δεν επιλεγεί, το μήκος θα
+μετρηθεί κατά μήκος της καθορισμένης κατεύθυνσης</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="240"/>
@@ -2530,7 +2533,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="253"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
+      <translation>Εφαρμόζει το μήκος συμμετρικά στο επίπεδο του σκίτσου</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="256"/>
@@ -2551,7 +2554,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>Κωνική γωνία</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2564,12 +2567,12 @@ measured along the specified direction</translation>
       <translation type="unfinished">2nd taper angle</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="341"/>
-      <source>Face</source>
-      <translation>Όψη</translation>
+      <location filename="../../TaskPadPocketParameters.ui" line="347"/>
+      <source>Select face</source>
+      <translation type="unfinished">Select face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="360"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
       <translation>Ανανέωση προβολής</translation>
     </message>
@@ -2657,12 +2660,12 @@ measured along the specified direction</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="541"/>
+      <location filename="../../TaskPipeParameters.cpp" line="540"/>
       <source>Section orientation</source>
       <translation>Προσανατολισμός τομής</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="567"/>
+      <location filename="../../TaskPipeParameters.cpp" line="566"/>
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
@@ -2693,7 +2696,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
-      <translation>Μετασχηματισμένο</translation>
+      <translation>Μετατοπισμένο</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
@@ -2732,7 +2735,7 @@ measured along the specified direction</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
-      <location filename="../../TaskPipeParameters.cpp" line="527"/>
+      <location filename="../../TaskPipeParameters.cpp" line="526"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -2777,15 +2780,15 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Η λίστα μπορεί να αναδιαταχθεί με σύρσιμο</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="809"/>
+      <location filename="../../TaskPipeParameters.cpp" line="808"/>
       <source>Section transformation</source>
-      <translation>Μετασχηματισμός τομής</translation>
+      <translation>Μετατόπιση τμήματος</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="825"/>
+      <location filename="../../TaskPipeParameters.cpp" line="824"/>
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
@@ -2805,7 +2808,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>Αντίστροφη κατεύθυνση θύλακες</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -2853,7 +2856,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Η λίστα μπορεί να αναδιαταχθεί με σύρσιμο</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -3042,9 +3045,14 @@ measured along the specified direction</translation>
       <translation>Αφαιρέστε Γεωμετρική Οντότητα</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="59"/>
+      <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
       <translation>Παράμετροι σχήματος αναφοράς</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="132"/>
+      <source>Remove</source>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -3158,7 +3166,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="37"/>
       <source>Transformed feature messages</source>
-      <translation>Μηνύματα μετασχηματισμένου χαρακτηριστικού</translation>
+      <translation>Μηνύματα μετατοπισμένου χαρακτηριστικού</translation>
     </message>
   </context>
   <context>
@@ -3257,7 +3265,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="126"/>
       <source>Local Coordinate System parameters</source>
-      <translation type="unfinished">Local Coordinate System parameters</translation>
+      <translation>Παράμετροι συστήματος συντεταγμένων</translation>
     </message>
   </context>
   <context>
@@ -3289,7 +3297,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Παράμετροι πολλαπλών μετατοπίσεων</translation>
     </message>
   </context>
   <context>
@@ -3297,7 +3305,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="38"/>
       <source>PolarPattern parameters</source>
-      <translation type="unfinished">PolarPattern parameters</translation>
+      <translation>Παράμετροι Κυκλικού Μοτίβου</translation>
     </message>
   </context>
   <context>
@@ -3305,7 +3313,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderScaled.h" line="38"/>
       <source>Scaled parameters</source>
-      <translation type="unfinished">Scaled parameters</translation>
+      <translation>Παράμετροι κλίμακας</translation>
     </message>
   </context>
   <context>
@@ -3411,19 +3419,6 @@ click again to end selection</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3465,19 +3460,6 @@ click again to end selection</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="138"/>
@@ -3514,7 +3496,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="591"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation>You have to select a single face as support for a sketch!</translation>
+      <translation>Πρέπει να επιλέξετε ένα μόνο πρόσωπο ως υποστήριξη για ένα σκίτσο!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
@@ -3524,7 +3506,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="602"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation>You have to select a face as support for a sketch!</translation>
+      <translation>Πρέπει να επιλέξετε ένα πρόσωπο ως υποστήριξη για ένα σκίτσο!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
@@ -3534,7 +3516,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>You need a planar face as support for a sketch!</translation>
+      <translation>Χρειάζεστε ένα επίπεδο πρόσωπο ως υποστήριξη για ένα σκίτσο!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>
@@ -3550,12 +3532,12 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
@@ -3563,29 +3545,29 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1106"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>Δεν είναι δυνατή η χρήση αυτής της εντολής, καθώς δεν υπάρχει στερεό για να αφαιρεθεί.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
+      <translation>Βεβαιωθείτε ότι το σώμα περιέχει ένα χαρακτηριστικό προτού επιχειρήσετε μια εντολή αφαίρεσης.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1128"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>Δεν είναι δυνατή η χρήση του επιλεγμένου αντικειμένου. Το επιλεγμένο αντικείμενο πρέπει να ανήκει στο ενεργό σώμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1129"/>
@@ -3664,7 +3646,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="2253"/>
       <source>Please select only one feature in an active body.</source>
-      <translation type="unfinished">Please select only one feature in an active body.</translation>
+      <translation>Επιλέξτε μόνο ένα χαρακτηριστικό από το αντικείμενο.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="67"/>
@@ -3843,14 +3825,14 @@ This may lead to unexpected results.</source>
       <translation>Δεν είναι εφικτό να δημιουργήσετε αφαιρετικό χαρακτηριστικό χωρίς κάποιο διαθέσιμο χαρακτηριστικό βάσης</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Κάθετος άξονας σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Οριζόντιος άξονας σκίτσου</translation>
     </message>
@@ -3904,13 +3886,13 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο εξάρτημα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <source>Edit %1</source>
-      <translation>Επεξεργασία του %1</translation>
+      <translation>Επεξεργασία %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="78"/>
@@ -4010,7 +3992,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="308"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Συγχρονισμός</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="310"/>
@@ -4020,7 +4002,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="169"/>
       <source>One transformed shape does not intersect support</source>
-      <translation>Ένα μετασχηματισμένο σχήμα δεν εφάπτεται σε υποστήριγμα</translation>
+      <translation>Ένα μετατοπισμένο σχήμα δεν εφάπτεται στη βάση</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="171"/>
@@ -4030,7 +4012,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>Transformation succeeded</source>
-      <translation>Ο μετασχηματισμός ολοκληρώθηκε με επιτυχία</translation>
+      <translation>Η μετατόπιση ολοκληρώθηκε με επιτυχία</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="138"/>
@@ -4077,7 +4059,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameter</source>
-      <translation type="unfinished">Sprocket parameter</translation>
+      <translation>Παράμετροι γραναζιού</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="20"/>
@@ -4087,172 +4069,172 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation type="unfinished">Sprocket Reference</translation>
+      <translation>Παραπομπή Sprocket</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>
       <source>ANSI 25</source>
-      <translation type="unfinished">ANSI 25</translation>
+      <translation>ANSI 25</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="53"/>
       <source>ANSI 35</source>
-      <translation type="unfinished">ANSI 35</translation>
+      <translation>ANSI 35</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="58"/>
       <source>ANSI 41</source>
-      <translation type="unfinished">ANSI 41</translation>
+      <translation>ANSI 41</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="63"/>
       <source>ANSI 40</source>
-      <translation type="unfinished">ANSI 40</translation>
+      <translation>ANSI 40</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="68"/>
       <source>ANSI 50</source>
-      <translation type="unfinished">ANSI 50</translation>
+      <translation>ANSI 50</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="73"/>
       <source>ANSI 60</source>
-      <translation type="unfinished">ANSI 60</translation>
+      <translation>ANSI 60</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="78"/>
       <source>ANSI 80</source>
-      <translation type="unfinished">ANSI 80</translation>
+      <translation>ANSI 80</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="83"/>
       <source>ANSI 100</source>
-      <translation type="unfinished">ANSI 100</translation>
+      <translation>ANSI 100</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="88"/>
       <source>ANSI 120</source>
-      <translation type="unfinished">ANSI 120</translation>
+      <translation>ANSI 120</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
       <source>ANSI 200</source>
-      <translation type="unfinished">ANSI 200</translation>
+      <translation>ANSI 200</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="113"/>
       <source>ANSI 240</source>
-      <translation type="unfinished">ANSI 240</translation>
+      <translation>ANSI 240</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
       <source>Bicycle with Derailleur</source>
-      <translation type="unfinished">Bicycle with Derailleur</translation>
+      <translation>Ποδήλατο με σύστημά αλλαγής ταχυτήτων (μετατοπιστή)</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="123"/>
       <source>Bicycle without Derailleur</source>
-      <translation type="unfinished">Bicycle without Derailleur</translation>
+      <translation>Ποδήλατο χωρίς σύστημά αλλαγής ταχυτήτων (μετατοπιστή)</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="133"/>
       <source>ISO 606 08B</source>
-      <translation type="unfinished">ISO 606 08B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="138"/>
       <source>ISO 606 10B</source>
-      <translation type="unfinished">ISO 606 10B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="143"/>
       <source>ISO 606 12B</source>
-      <translation type="unfinished">ISO 606 12B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="148"/>
       <source>ISO 606 16B</source>
-      <translation type="unfinished">ISO 606 16B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="153"/>
       <source>ISO 606 20B</source>
-      <translation type="unfinished">ISO 606 20B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="158"/>
       <source>ISO 606 24B</source>
-      <translation type="unfinished">ISO 606 24B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation type="unfinished">Motorcycle 420</translation>
+      <translation>Μοτοσικλέτα 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation type="unfinished">Motorcycle 425</translation>
+      <translation>Μοτοσικλέτα 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation type="unfinished">Motorcycle 428</translation>
+      <translation>Μοτοσικλέτα 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation type="unfinished">Motorcycle 520</translation>
+      <translation>Μοτοσικλέτα 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation type="unfinished">Motorcycle 525</translation>
+      <translation>Μοτοσικλέτα 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation type="unfinished">Motorcycle 530</translation>
+      <translation>Μοτοσικλέτα 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation type="unfinished">Motorcycle 630</translation>
+      <translation>Μοτοσικλέτα 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation type="unfinished">Chain Pitch:</translation>
+      <translation>Βήμα αλυσίδας:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 in (Ίντσες)</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation type="unfinished">Roller Diameter:</translation>
+      <translation>Διάμετρος Κυλίνδρου:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
@@ -4488,20 +4470,20 @@ Only available for holes without thread</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="586"/>
+      <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Standard</source>
       <translation>Καθιερωμένο</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="587"/>
-      <location filename="../../TaskHoleParameters.cpp" line="598"/>
+      <location filename="../../TaskHoleParameters.cpp" line="594"/>
+      <location filename="../../TaskHoleParameters.cpp" line="605"/>
       <source>Close</source>
       <translation>Κλείσιμο</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="588"/>
+      <location filename="../../TaskHoleParameters.cpp" line="595"/>
       <source>Wide</source>
       <translation type="unfinished">Wide</translation>
     </message>
@@ -4640,7 +4622,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="738"/>
       <source>Reverses the hole direction</source>
-      <translation type="unfinished">Reverses the hole direction</translation>
+      <translation>Αντιστροφή κατεύθυνση οπής</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="741"/>
@@ -4648,12 +4630,12 @@ over 90: larger hole radius at the bottom</translation>
       <translation>Ανεστραμμένο</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="597"/>
+      <location filename="../../TaskHoleParameters.cpp" line="604"/>
       <source>Normal</source>
       <translation>Κανονικό</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="599"/>
+      <location filename="../../TaskHoleParameters.cpp" line="606"/>
       <source>Loose</source>
       <translation type="unfinished">Loose</translation>
     </message>
@@ -4672,64 +4654,6 @@ over 90: larger hole radius at the bottom</translation>
     </message>
   </context>
   <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
-    </message>
-  </context>
-  <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -4744,7 +4668,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Create a datum</source>
-      <translation type="unfinished">Create a datum</translation>
+      <translation>Δημιουργήστε ένα σημείο αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -4754,7 +4678,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Create a subtractive feature</source>
-      <translation type="unfinished">Create a subtractive feature</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό στοιχείο</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -4769,7 +4693,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>γρανάζι...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -4794,7 +4718,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>Εναλλαγή 3D</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

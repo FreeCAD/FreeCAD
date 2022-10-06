@@ -77,8 +77,7 @@ i.e. counter-clockwise when moving along its axis.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Jei klaidinga, įrankis pasiūlys pradinę žingsnio vertę pagal profilio didžiausius matmenis, kad būtų išvengta savisusikirtimo.</translation>
     </message>
   </context>
   <context>
@@ -500,7 +499,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="162"/>
@@ -518,7 +517,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>PartDesign</source>
-      <translation>Detalių kūryba</translation>
+      <translation>Detalės projektavimas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
@@ -864,8 +863,8 @@ so that self intersection is avoided.</translation>
       <translation type="unfinished">Create Boolean</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation type="unfinished">Add a Body</translation>
     </message>
@@ -1033,7 +1032,7 @@ so that self intersection is avoided.</translation>
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1646"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1651"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1614,7 +1613,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
   <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="331"/>
+      <location filename="../../TaskShapeBinder.cpp" line="413"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -1718,14 +1717,13 @@ spustelėkite vėl, jei norite baigti atranką</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="53"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="723"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="902"/>
       <source>No face selected</source>
       <translation>Nepasirinkta siena</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="739"/>
       <source>Face</source>
       <translation>Siena</translation>
     </message>
@@ -1749,6 +1747,11 @@ spustelėkite vėl, jei norite baigti atranką</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
       <translation type="unfinished">Custom direction</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
+      <source>Click on a face in the model</source>
+      <translation type="unfinished">Click on a face in the model</translation>
     </message>
   </context>
   <context>
@@ -1898,7 +1901,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
       <source>Selection error</source>
-      <translation>Atrankos klaida</translation>
+      <translation type="unfinished">Selection error</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
@@ -1978,12 +1981,12 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="98"/>
       <source>Pitch-Height-Angle</source>
-      <translation type="unfinished">Pitch-Height-Angle</translation>
+      <translation>Žingsnis-Aukštis-Kampas</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="103"/>
       <source>Pitch-Turns-Angle</source>
-      <translation type="unfinished">Pitch-Turns-Angle</translation>
+      <translation>Žingsnis-Vijos-Kampas</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="108"/>
@@ -2564,12 +2567,12 @@ measured along the specified direction</translation>
       <translation type="unfinished">2nd taper angle</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="341"/>
-      <source>Face</source>
-      <translation>Siena</translation>
+      <location filename="../../TaskPadPocketParameters.ui" line="347"/>
+      <source>Select face</source>
+      <translation type="unfinished">Select face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="360"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
       <translation>Atnaujinti rodinį</translation>
     </message>
@@ -2657,12 +2660,12 @@ measured along the specified direction</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="541"/>
+      <location filename="../../TaskPipeParameters.cpp" line="540"/>
       <source>Section orientation</source>
       <translation>Pjūvio kampinė padėtis</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="567"/>
+      <location filename="../../TaskPipeParameters.cpp" line="566"/>
       <source>Remove</source>
       <translation>Pašalinti</translation>
     </message>
@@ -2732,7 +2735,7 @@ measured along the specified direction</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
-      <location filename="../../TaskPipeParameters.cpp" line="527"/>
+      <location filename="../../TaskPipeParameters.cpp" line="526"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -2780,12 +2783,12 @@ measured along the specified direction</translation>
       <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="809"/>
+      <location filename="../../TaskPipeParameters.cpp" line="808"/>
       <source>Section transformation</source>
       <translation type="unfinished">Section transformation</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="825"/>
+      <location filename="../../TaskPipeParameters.cpp" line="824"/>
       <source>Remove</source>
       <translation>Pašalinti</translation>
     </message>
@@ -3042,9 +3045,14 @@ measured along the specified direction</translation>
       <translation type="unfinished">Remove Geometry</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="59"/>
+      <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
       <translation type="unfinished">Datum shape parameters</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="132"/>
+      <source>Remove</source>
+      <translation>Pašalinti</translation>
     </message>
   </context>
   <context>
@@ -3145,7 +3153,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
@@ -3411,19 +3419,6 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3462,19 +3457,6 @@ spustelėkite vėl, jei norite baigti atranką</translation>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
     </message>
   </context>
   <context>
@@ -3550,12 +3532,12 @@ spustelėkite vėl, jei norite baigti atranką</translation>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
@@ -3563,12 +3545,12 @@ spustelėkite vėl, jei norite baigti atranką</translation>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
@@ -3843,14 +3825,14 @@ This may lead to unexpected results.</translation>
       <translation>Neįmanoma sukurti atimančio kūno nesant pagrindinio</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
@@ -3904,11 +3886,11 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <source>Edit %1</source>
       <translation type="unfinished">Edit %1</translation>
     </message>
@@ -4242,7 +4224,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
       <source>Chain Pitch:</source>
-      <translation type="unfinished">Chain Pitch:</translation>
+      <translation>Grandinės žingsnis:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
@@ -4488,20 +4470,20 @@ Only available for holes without thread</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="586"/>
+      <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Standard</source>
       <translation>Įprastinis</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="587"/>
-      <location filename="../../TaskHoleParameters.cpp" line="598"/>
+      <location filename="../../TaskHoleParameters.cpp" line="594"/>
+      <location filename="../../TaskHoleParameters.cpp" line="605"/>
       <source>Close</source>
       <translation>Užverti</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="588"/>
+      <location filename="../../TaskHoleParameters.cpp" line="595"/>
       <source>Wide</source>
       <translation type="unfinished">Wide</translation>
     </message>
@@ -4648,12 +4630,12 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Reversed</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="597"/>
+      <location filename="../../TaskHoleParameters.cpp" line="604"/>
       <source>Normal</source>
       <translation>Įprastiniai</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="599"/>
+      <location filename="../../TaskHoleParameters.cpp" line="606"/>
       <source>Loose</source>
       <translation type="unfinished">Loose</translation>
     </message>
@@ -4669,64 +4651,6 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation type="unfinished">No message</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
     </message>
   </context>
   <context>

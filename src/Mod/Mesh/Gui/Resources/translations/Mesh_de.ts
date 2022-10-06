@@ -171,7 +171,7 @@
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>Evaluate and repair mesh...</source>
-      <translation>Untersuche und repariere das Netz...</translation>
+      <translation>Netz untersuchen und reparieren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -864,34 +864,34 @@
       <translation>Auswahl löschen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Differenz</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Beschneiden</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Teilen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Loch füllen</translation>
     </message>
@@ -906,7 +906,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation>Verringerung</translation>
+      <translation>Reduzierung</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -2196,7 +2196,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Import / Export</translation>
     </message>
@@ -2379,48 +2379,48 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <translation>[Punkte: %1, Kanten: %2, Flächen: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Komponenten anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Segmente anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation>Farben anzeigen</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Info-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Löcher-Schließen-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Entfernen-Modus verlassen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Selektierte Dreiecke löschen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Auswahl aufheben</translation>
     </message>

@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Convert to points...</source>
       <translation>In Punkte umwandeln...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Convert to points</source>
       <translation>In Punkte umwandeln</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="112"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Export points...</source>
       <translation>Punkte exportieren...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="117"/>
       <source>Exports a point cloud</source>
       <translation>Exportiert eine Punktwolke</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="67"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Import points...</source>
       <translation>Punkte importieren...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="72"/>
       <source>Imports a point cloud</source>
       <translation>Importiert eine Punktwolke</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Merge point clouds</source>
       <translation>Punktwolken zusammenführen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="328"/>
-      <location filename="../../Command.cpp" line="330"/>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Merge several point clouds into one</source>
       <translation>Mehrere Punktwolken zu einer zusammenführen</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="267"/>
       <source>Cut point cloud</source>
       <translation>Punktwolke schneiden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
-      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Schneiden einer Punktwolke mit einem gewählten Polygon</translation>
     </message>
@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="354"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="370"/>
+      <location filename="../../Command.cpp" line="355"/>
       <source>Structured point cloud</source>
       <translation>Strukturierte Punktwolke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="356"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Convert points to structured point cloud</source>
       <translation>Punkte in eine strukturierte Punktwolke umwandeln</translation>
     </message>
@@ -118,18 +118,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="153"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Transform Points</source>
       <translation>Punkte transformieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
-      <location filename="../../Command.cpp" line="156"/>
+      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="157"/>
       <source>Test to transform a point cloud</source>
       <translation>Test zur Transformation einer Punktwolke</translation>
     </message>
@@ -137,17 +137,17 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Import points</source>
       <translation>Punkte importieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="169"/>
       <source>Transform points</source>
       <translation>Punkte transformieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="215"/>
       <source>Convert to points</source>
       <translation>In Punkte umwandeln</translation>
     </message>
@@ -306,24 +306,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="82"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Point formats</source>
       <translation>Punkt-Formate</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="82"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>All Files</source>
       <translation>Alle Dateien</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="209"/>
       <source>Distance</source>
       <translation>Abstand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Enter maximum distance:</source>
       <translation>Maximale Entfernung eingeben:</translation>
     </message>

@@ -22,17 +22,17 @@
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="159"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Place robot...</source>
       <translation>Поcтави робота...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="160"/>
+      <location filename="../../Command.cpp" line="161"/>
       <source>Place a robot (experimental!)</source>
       <translation>Поcтави робота (екcпериментално)</translation>
     </message>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Направи нову празну путању</translation>
     </message>
   </context>
   <context>
@@ -220,13 +220,13 @@
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
       <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="107"/>
       <source>Move to home</source>
       <translation>Помери на почетну позицију</translation>
     </message>
@@ -270,13 +270,13 @@
   <context>
     <name>CmdRobotSetHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
       <location filename="../../Command.cpp" line="57"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Set the home position</source>
       <translation>Постави почетну позицију</translation>
     </message>
@@ -284,17 +284,17 @@
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="199"/>
+      <location filename="../../Command.cpp" line="200"/>
       <source>Robot</source>
       <translation>Робот</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Simulate a trajectory</source>
       <translation>Cимулирај путању</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Run a simulation on a trajectory</source>
       <translation>Покрени cимулацију на путањи</translation>
     </message>
@@ -356,10 +356,10 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="124"/>
-      <location filename="../../Command.cpp" line="224"/>
-      <location filename="../../Command.cpp" line="253"/>
+      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="225"/>
+      <location filename="../../Command.cpp" line="254"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="127"/>
       <location filename="../../CommandInsertRobot.cpp" line="234"/>
@@ -371,18 +371,18 @@
       <translation>Погрешан избор</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>Select one Robot to set home position</source>
       <translation>Изабери једног Робота да поcтавиш почетну позицију</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>Select one Robot</source>
       <translation>Изабери једног Робота</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="225"/>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="255"/>
       <location filename="../../CommandExport.cpp" line="66"/>
       <location filename="../../CommandExport.cpp" line="128"/>
       <location filename="../../CommandTrajectory.cpp" line="112"/>
@@ -390,12 +390,12 @@
       <translation>Одабери једног Робота и један објекат Путање.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="231"/>
       <source>Trajectory not valid</source>
       <translation>Путања је неважећа</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="232"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Потребне cу бар две тачке путање за cимулацију.</translation>
     </message>

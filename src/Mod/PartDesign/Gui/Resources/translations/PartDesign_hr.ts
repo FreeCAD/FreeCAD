@@ -6,79 +6,79 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Središnja točka početka spirale; izvedena iz referentne osi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Smjer spirale; izveden iz referentne osi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Referentna os spirale.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Spirala, način unosa određuje koja svojstva postavlja korisnik.
+Zatim se izračunavaju zavisna svojstva.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>Osni razmak između dva zavoja.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>Visina staze spirale, ne uzimajući u obzir proširenje profila.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Broj zavoja spirale.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>Kut stošca koji čini omotač oko zavojnice.
+Vrijednosti različite od nule pretvaraju spiralu u stožastu spiralu.
+Pozitivne vrijednosti čine da radijus raste, nevatige se smanjuje.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Rast polumjera zavojnice po zavoju.
+Vrijednosti različite od nule pretvaraju spiralu u stožastu spiralu.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Postavlja smjer okretanja lijevom rukom,
+tj. suprotno od kazaljke na satu kada se kreće duž svoje osi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Određuje pokazuje li spirala u smjeru suprotnom od osi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Ako je postavljeno, rezultat će biti sjecište profila i postojećeg tijela.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Ako je lažno, alat će predložiti početnu vrijednost za nagib na temelju graničnog okvira profila,
+tako da je izbjegnuto samopresjecanje.</translation>
     </message>
   </context>
   <context>
@@ -864,8 +864,8 @@ so that self intersection is avoided.</translation>
       <translation>Stvori logičku vrijednost</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation>Dodaj tjelo</translation>
     </message>
@@ -1033,7 +1033,7 @@ so that self intersection is avoided.</translation>
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1646"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1651"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1539,7 +1539,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="138"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Koristite sve rubove</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="165"/>
@@ -1612,7 +1612,7 @@ kliknite ponovno za završetak odabira</translation>
   <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="331"/>
+      <location filename="../../TaskShapeBinder.cpp" line="413"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1694,12 +1694,12 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="276"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>Dodaj sve rubove</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>Dodaje sve rubove u okvir s popisom (aktivno samo kada je u načinu dodavanja odabira).</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1716,14 +1716,13 @@ kliknite ponovno za završetak odabira</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="53"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="723"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="902"/>
       <source>No face selected</source>
       <translation>Nije odabrana niti jedna površina</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="739"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
@@ -1735,7 +1734,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Normala lica</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -1746,7 +1745,12 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Korisnički smjer</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
+      <source>Click on a face in the model</source>
+      <translation type="unfinished">Click on a face in the model</translation>
     </message>
   </context>
   <context>
@@ -1883,7 +1887,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="81"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Koristite sve rubove</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="134"/>
@@ -2016,7 +2020,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>Radijalni rast:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2051,7 +2055,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="333"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>Pogreška: nepodržani način rada</translation>
     </message>
   </context>
   <context>
@@ -2379,7 +2383,9 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>Pomak od lica u kojem će podloška završiti
+
+</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2453,8 +2459,8 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>Postavite smjer ili odaberite rub
+iz modela kao reference</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2469,12 +2475,12 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Korisnički smjer</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>Prikaži smjer</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
@@ -2544,12 +2550,12 @@ mjereno duž navedenog smjera</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>Kut za sužavanje ekstruzije</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>Kut sužavanja</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2559,15 +2565,15 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation type="unfinished">2nd taper angle</translation>
+      <translation>2. kut sužavanja</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="341"/>
-      <source>Face</source>
-      <translation>Površina</translation>
+      <location filename="../../TaskPadPocketParameters.ui" line="347"/>
+      <source>Select face</source>
+      <translation type="unfinished">Select face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="360"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
       <translation>Ažuriraj pogled</translation>
     </message>
@@ -2655,12 +2661,12 @@ mjereno duž navedenog smjera</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="541"/>
+      <location filename="../../TaskPipeParameters.cpp" line="540"/>
       <source>Section orientation</source>
       <translation>Odjeljak orijentacija</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="567"/>
+      <location filename="../../TaskPipeParameters.cpp" line="566"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
@@ -2730,7 +2736,7 @@ mjereno duž navedenog smjera</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
-      <location filename="../../TaskPipeParameters.cpp" line="527"/>
+      <location filename="../../TaskPipeParameters.cpp" line="526"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -2778,12 +2784,12 @@ mjereno duž navedenog smjera</translation>
       <translation>Popis se može promijeniti povlačenjem</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="809"/>
+      <location filename="../../TaskPipeParameters.cpp" line="808"/>
       <source>Section transformation</source>
       <translation>Transformacija odjeljka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="825"/>
+      <location filename="../../TaskPipeParameters.cpp" line="824"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
@@ -2798,12 +2804,14 @@ mjereno duž navedenog smjera</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>Pomak od lica na kojem će utor završiti
+
+</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>Obrnuti smjer utora</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -3040,9 +3048,14 @@ mjereno duž navedenog smjera</translation>
       <translation>Ukloni Geometriju</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="59"/>
+      <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
       <translation>Parametri referentnog oblika</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="132"/>
+      <source>Remove</source>
+      <translation>Ukloniti</translation>
     </message>
   </context>
   <context>
@@ -3232,7 +3245,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderChamfer.h" line="41"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Parametri žlijeba</translation>
     </message>
   </context>
   <context>
@@ -3240,22 +3253,22 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="111"/>
       <source>Datum Plane parameters</source>
-      <translation type="unfinished">Datum Plane parameters</translation>
+      <translation>Parametri polazišne plohe</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="116"/>
       <source>Datum Line parameters</source>
-      <translation type="unfinished">Datum Line parameters</translation>
+      <translation>Parametri polazišne linije</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
       <source>Datum Point parameters</source>
-      <translation type="unfinished">Datum Point parameters</translation>
+      <translation>Parametri Podatkovne točke</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="126"/>
       <source>Local Coordinate System parameters</source>
-      <translation type="unfinished">Local Coordinate System parameters</translation>
+      <translation>Parametri lokalnog koordinatnog sustava</translation>
     </message>
   </context>
   <context>
@@ -3263,7 +3276,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderDraft.h" line="42"/>
       <source>Draft parameters</source>
-      <translation type="unfinished">Draft parameters</translation>
+      <translation>Parametri nacrta</translation>
     </message>
   </context>
   <context>
@@ -3271,7 +3284,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parameters</source>
-      <translation type="unfinished">Fillet parameters</translation>
+      <translation>Parametari obruba</translation>
     </message>
   </context>
   <context>
@@ -3279,7 +3292,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="38"/>
       <source>LinearPattern parameters</source>
-      <translation type="unfinished">LinearPattern parameters</translation>
+      <translation>Parametari linearnog uzorka</translation>
     </message>
   </context>
   <context>
@@ -3287,7 +3300,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Parametari višestruke transformacije</translation>
     </message>
   </context>
   <context>
@@ -3295,7 +3308,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="38"/>
       <source>PolarPattern parameters</source>
-      <translation type="unfinished">PolarPattern parameters</translation>
+      <translation>Parametri polarnog uzorka</translation>
     </message>
   </context>
   <context>
@@ -3303,7 +3316,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderScaled.h" line="38"/>
       <source>Scaled parameters</source>
-      <translation type="unfinished">Scaled parameters</translation>
+      <translation>Skalirani parametri</translation>
     </message>
   </context>
   <context>
@@ -3311,7 +3324,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation type="unfinished">Thickness parameters</translation>
+      <translation>Parametri debljine</translation>
     </message>
   </context>
   <context>
@@ -3319,7 +3332,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../ViewProviderMirrored.h" line="38"/>
       <source>Mirrored parameters</source>
-      <translation type="unfinished">Mirrored parameters</translation>
+      <translation>Zrcalni parametri</translation>
     </message>
   </context>
   <context>
@@ -3409,19 +3422,6 @@ kliknite ponovno za završetak odabira</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation>Spiralni zupčanik</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation>Stvara ili uređuje definiciju spiralnog zupčanika.</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3460,19 +3460,6 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation>Želite li da posljednji objekt bude nova radna pozicija?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation>Lančanik... </translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation>Stvara ili uređuje definiciju lančanika.</translation>
     </message>
   </context>
   <context>
@@ -3548,12 +3535,12 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
@@ -3561,12 +3548,12 @@ kliknite ponovno za završetak odabira</translation>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
@@ -3843,14 +3830,14 @@ To može dovesti do neočekivanih rezultata.</translation>
       <translation>Nije moguće stvoriti dodavajući element bez pripadajućeg osnovnog elementa</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikalna os skice</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontalna os skice</translation>
     </message>
@@ -3904,11 +3891,11 @@ Ako imate naslijeđeni dokument sa PartDesign objektom bez tijela koristite funk
       <translation>Da biste mogli koristiti ovu značajku ona mora pripadati objektu dio u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -4447,7 +4434,7 @@ Imajte na umu da izračun može potrajati
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
       <source>Custom Thread</source>
-      <translation type="unfinished">Custom Thread</translation>
+      <translation>Prilagođen navoj</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="124"/>
@@ -4489,20 +4476,20 @@ Dostupno samo za rupe bez navoja</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="586"/>
+      <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="587"/>
-      <location filename="../../TaskHoleParameters.cpp" line="598"/>
+      <location filename="../../TaskHoleParameters.cpp" line="594"/>
+      <location filename="../../TaskHoleParameters.cpp" line="605"/>
       <source>Close</source>
       <translation>Zatvori</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="588"/>
+      <location filename="../../TaskHoleParameters.cpp" line="595"/>
       <source>Wide</source>
       <translation>Širok</translation>
     </message>
@@ -4652,12 +4639,12 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Obrnuti</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="597"/>
+      <location filename="../../TaskHoleParameters.cpp" line="604"/>
       <source>Normal</source>
       <translation>Normalno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="599"/>
+      <location filename="../../TaskHoleParameters.cpp" line="606"/>
       <source>Loose</source>
       <translation>Nepovezano</translation>
     </message>
@@ -4673,64 +4660,6 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation>Nema poruke</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation>Čarobnjak za dizajn osovine... </translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation>Pokreni čarobnjak za dizajn osovine</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation>Dužina [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation>Promjer [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation>Unutrašnji promjer [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation>Vrsta ograničenja</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation>Vrsta početnog ruba</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation>Veličina početnog ruba</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation>Vrsta završnog ruba</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation>Veličina završnog ruba</translation>
     </message>
   </context>
   <context>

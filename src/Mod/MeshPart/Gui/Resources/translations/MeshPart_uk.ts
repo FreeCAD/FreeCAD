@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>Частина Сітки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>Поперечні перерізи...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>Створює поперечні перерізи</translation>
     </message>
@@ -22,21 +22,21 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>Сітка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
-      <translation type="unfinished">Curve on mesh...</translation>
+      <translation>Крива на сітці...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Створює приблизну криву на поверхні сітки.
+Ця команда працює тільки з об'єктом "сітка".</translation>
     </message>
   </context>
   <context>
@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh</source>
-      <translation>Сітка(Меш)</translation>
+      <translation>Сітка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -60,17 +60,17 @@ This command only works with a 'mesh' object.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation>Сітка(Меш)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
       <translation>Створити секцію з полігональної сітки і площини</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>Розріз</translation>
     </message>
@@ -102,7 +102,7 @@ This command only works with a 'mesh' object.</translation>
       <translation type="unfinished">Trim with plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation type="unfinished">Section with plane</translation>
     </message>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</translation>
       <translation type="unfinished">Connect edges if distance less than</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
       <translation>Помилка</translation>
     </message>
@@ -185,7 +185,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>Замкнути сітку</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="368"/>
@@ -200,7 +200,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh picked</source>
-      <translation type="unfinished">Wrong mesh picked</translation>
+      <translation>Обрана хибна сітка</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
@@ -213,7 +213,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Крива на сітці</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
@@ -242,17 +242,17 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>Поріг розділення</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>Сплайн-апроксимація</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>Точність сітки</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
@@ -262,7 +262,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Максимальний кут кривої</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
@@ -332,21 +332,20 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation type="unfinished">Apply face colors to mesh</translation>
+      <translation>Застосувати кольори поверхні до сітки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Сегменти сітки будуть згруповані відповідно до кольору граней об’єкта.
+Ці групи будуть експортовані для підтримки виводу форматів функцій сітки (наприклад, формат OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation type="unfinished">Define segments by face colors</translation>
+      <translation>Визначте відрізки за кольорами поверхні</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -483,7 +482,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Залишити панель відкритою</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="63"/>
@@ -517,33 +516,14 @@ Select a different shape, please.</translation>
     </message>
   </context>
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
-    </message>
-  </context>
-  <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Оберіть площину</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
     </message>
@@ -568,17 +548,17 @@ Select a different shape, please.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
-      <translation type="unfinished">Select the side you want to keep.</translation>
+      <translation>Оберіть сторону для збереження.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Знизу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Згори</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

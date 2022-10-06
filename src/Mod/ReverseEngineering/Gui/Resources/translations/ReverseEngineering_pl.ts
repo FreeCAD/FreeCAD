@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria wsteczna</translation>
+      <translation>Inżynieria Wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>View triangulation failed</source>
       <translation>Triangulacja widoku nie powiodła się</translation>
     </message>

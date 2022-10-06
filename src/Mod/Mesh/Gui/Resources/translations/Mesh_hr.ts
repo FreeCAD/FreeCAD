@@ -864,34 +864,34 @@
       <translation>Obriši označeno</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Isječak</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Skrati</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Razdjeli</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Ispuni rupu</translation>
     </message>
@@ -1454,7 +1454,7 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation>Visina:</translation>
+      <translation>Duljina:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="37"/>
@@ -1784,7 +1784,7 @@ vodi do uglađenijeg izgleda.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Ponovo umrežavanje sa gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -2052,7 +2052,7 @@ vodi do uglađenijeg izgleda.
       <location filename="../../SegmentationBestFit.cpp" line="365"/>
       <location filename="../../SegmentationBestFit.cpp" line="392"/>
       <source>Radius</source>
-      <translation>Radijus</translation>
+      <translation>Polumjer</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="391"/>
@@ -2201,7 +2201,7 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Uvoz / izvoz</translation>
     </message>
@@ -2384,48 +2384,48 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <translation>[Točke: %1, Rubovi: %2, Lica: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Prikaz komponenti</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Prikaži segmente</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Zatvori info način rada</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Indeks: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Zatvori način rada za popunjavanje otvora</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Zatvori način rada za uklanjanje</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Izbriši odabrane površine</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Izbriši odabrane površine</translation>
     </message>
@@ -2470,7 +2470,7 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Booleova mreža</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

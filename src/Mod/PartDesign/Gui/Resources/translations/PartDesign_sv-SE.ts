@@ -6,79 +6,78 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Helixens startmittpunkt, baserad på referensaxeln.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Helixens riktning, baserad på referensaxeln.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Referensaxeln för helixen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Helixens inläsningsläge bestämmer vilka inställningar som kan ändras av användaren.
+Beroende inställningar beräknas därefter.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>Det axiella avståndet mellan två varv.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>Höjden för helixens spår, ej medräknat profilens storlek.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Antal varv i helixen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>Vinkeln i konen som formar ett hölje runt helixen.
+Icke-nollvärden förvandlar helixen till en konisk spiral.
+Positiva värden gör att radien ökar, negativa minskar.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Helixens radieförändring per varv.
+Icke-nollvärden ändrar helixen till en konisk spiral.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Sätt vänstersystemsrotation,
+dvs., moturs när rörelsen går längs sin axel.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Bestämmer huruvida helixen pekar i motsatt riktning till axeln.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Om satt kommer resultatet bli snittet mellan profilen och den befintliga kroppen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Om falskt, så kommer verktyget att föreslå ett initialvärde för delningen, baserat på profilens omgivande låda, för att undvika självkorsning.</translation>
     </message>
   </context>
   <context>
@@ -91,12 +90,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1746"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Additiv helix</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1747"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix</translation>
+      <translation>Svep en markerad skiss längs en helix</translation>
     </message>
   </context>
   <context>
@@ -204,7 +203,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2040"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Fasa de markerade kanterna av en form</translation>
+      <translation>Fasa av de markerade kanterna på en form</translation>
     </message>
   </context>
   <context>
@@ -235,12 +234,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2068"/>
       <source>Draft</source>
-      <translation>Djupgående</translation>
+      <translation>Släppning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2069"/>
       <source>Make a draft on a face</source>
-      <translation>Gör en skiss på en yta</translation>
+      <translation>Skapa släppning på en yta</translation>
     </message>
   </context>
   <context>
@@ -864,8 +863,8 @@ so that self intersection is avoided.</translation>
       <translation type="unfinished">Create Boolean</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="104"/>
       <source>Add a Body</source>
       <translation type="unfinished">Add a Body</translation>
     </message>
@@ -1033,7 +1032,7 @@ so that self intersection is avoided.</translation>
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1646"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1651"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1614,7 +1613,7 @@ click again to end selection</translation>
   <context>
     <name>PartDesignGui::TaskDlgShapeBinder</name>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="331"/>
+      <location filename="../../TaskShapeBinder.cpp" line="413"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -1649,13 +1648,13 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the drafts</translation>
+      <translation>- välj ett objekt för att markera det
+- dubbelklicka på ett objekt för att se släppningarna</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
       <source>Draft angle</source>
-      <translation>skissvinkel</translation>
+      <translation>Släppningsvinkel</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="98"/>
@@ -1665,12 +1664,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="115"/>
       <source>Pull direction</source>
-      <translation>Dra riktning</translation>
+      <translation>Släppningens riktning</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="130"/>
       <source>Reverse pull direction</source>
-      <translation>Omvänd dra riktning</translation>
+      <translation>Omvänd släppningens riktning</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="147"/>
@@ -1712,20 +1711,19 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="303"/>
       <location filename="../../TaskDressUpParameters.cpp" line="305"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Det måste finnas minst ett objekt</translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="53"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="723"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="902"/>
       <source>No face selected</source>
       <translation>Inget yta vald</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="739"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -1749,6 +1747,11 @@ click again to end selection</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
       <translation type="unfinished">Custom direction</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
+      <source>Click on a face in the model</source>
+      <translation type="unfinished">Click on a face in the model</translation>
     </message>
   </context>
   <context>
@@ -1903,7 +1906,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Minst ett objekt måste finnas kvar.</translation>
     </message>
   </context>
   <context>
@@ -2564,12 +2567,12 @@ measured along the specified direction</translation>
       <translation type="unfinished">2nd taper angle</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="341"/>
-      <source>Face</source>
-      <translation>Yta</translation>
+      <location filename="../../TaskPadPocketParameters.ui" line="347"/>
+      <source>Select face</source>
+      <translation type="unfinished">Select face</translation>
     </message>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="360"/>
+      <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
       <translation>Uppdatera vy</translation>
     </message>
@@ -2657,12 +2660,12 @@ measured along the specified direction</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="541"/>
+      <location filename="../../TaskPipeParameters.cpp" line="540"/>
       <source>Section orientation</source>
       <translation>Snittriktning</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="567"/>
+      <location filename="../../TaskPipeParameters.cpp" line="566"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
@@ -2732,7 +2735,7 @@ measured along the specified direction</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
-      <location filename="../../TaskPipeParameters.cpp" line="527"/>
+      <location filename="../../TaskPipeParameters.cpp" line="526"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -2780,12 +2783,12 @@ measured along the specified direction</translation>
       <translation type="unfinished">List can be reordered by dragging</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="809"/>
+      <location filename="../../TaskPipeParameters.cpp" line="808"/>
       <source>Section transformation</source>
       <translation>Snittomvandling</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="825"/>
+      <location filename="../../TaskPipeParameters.cpp" line="824"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
@@ -3042,9 +3045,14 @@ measured along the specified direction</translation>
       <translation>Ta bort geometri</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBinder.cpp" line="59"/>
+      <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
       <translation>Utgångsformens parametrar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="132"/>
+      <source>Remove</source>
+      <translation>Ta bort</translation>
     </message>
   </context>
   <context>
@@ -3265,7 +3273,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../ViewProviderDraft.h" line="42"/>
       <source>Draft parameters</source>
-      <translation type="unfinished">Draft parameters</translation>
+      <translation>Släppningsparametrar</translation>
     </message>
   </context>
   <context>
@@ -3411,19 +3419,6 @@ click again to end selection</translation>
     </message>
   </context>
   <context>
-    <name>PartDesign_InvoluteGear</name>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="57"/>
-      <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
-    </message>
-    <message>
-      <location filename="../../../InvoluteGearFeature.py" line="61"/>
-      <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesign_MoveFeature</name>
     <message>
       <location filename="../../CommandBody.cpp" line="728"/>
@@ -3462,19 +3457,6 @@ click again to end selection</translation>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
       <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesign_Sprocket</name>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="62"/>
-      <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
-    </message>
-    <message>
-      <location filename="../../../SprocketFeature.py" line="66"/>
-      <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
     </message>
   </context>
   <context>
@@ -3550,12 +3532,12 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="811"/>
       <location filename="../../Command.cpp" line="1226"/>
       <location filename="../../Command.cpp" line="2225"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
@@ -3563,12 +3545,12 @@ click again to end selection</translation>
       <location filename="../../Command.cpp" line="812"/>
       <location filename="../../Command.cpp" line="1227"/>
       <location filename="../../Command.cpp" line="2226"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Do you want to close this dialog?</source>
       <translation>Vill du stänga denna dialogruta?</translation>
     </message>
@@ -3839,14 +3821,14 @@ This may lead to unexpected results.</source>
       <translation>Det går inte att skapa en subtraktiv funktion utan en tillgänglig basfunktion</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikal skissaxel</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Horisontell skissaxel</translation>
     </message>
@@ -3900,11 +3882,11 @@ Om du har ett utdaterat dokument med Part Design-objekt utan kropp, använd migr
       <translation>För att kunna använda denna funktion måste den tillhöra en del i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProvider.cpp" line="65"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <location filename="../../ViewProviderTransformed.cpp" line="65"/>
-      <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
@@ -4483,20 +4465,20 @@ Only available for holes without thread</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="586"/>
+      <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="587"/>
-      <location filename="../../TaskHoleParameters.cpp" line="598"/>
+      <location filename="../../TaskHoleParameters.cpp" line="594"/>
+      <location filename="../../TaskHoleParameters.cpp" line="605"/>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="588"/>
+      <location filename="../../TaskHoleParameters.cpp" line="595"/>
       <source>Wide</source>
       <translation type="unfinished">Wide</translation>
     </message>
@@ -4643,12 +4625,12 @@ over 90: larger hole radius at the bottom</translation>
       <translation>Omvänd</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="597"/>
+      <location filename="../../TaskHoleParameters.cpp" line="604"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="599"/>
+      <location filename="../../TaskHoleParameters.cpp" line="606"/>
       <source>Loose</source>
       <translation type="unfinished">Loose</translation>
     </message>
@@ -4664,64 +4646,6 @@ over 90: larger hole radius at the bottom</translation>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
       <translation>Inget meddelande</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaft</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
-      <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
-      <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
-    </message>
-  </context>
-  <context>
-    <name>WizardShaftTable</name>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
-      <source>Length [mm]</source>
-      <translation>Längd [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
-      <source>Diameter [mm]</source>
-      <translation>Diameter [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
-      <source>Inner diameter [mm]</source>
-      <translation>Innerdiameter [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
-      <source>Constraint type</source>
-      <translation>Begränsningstyp</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
-      <source>Start edge type</source>
-      <translation>Starta kanttyp</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
-      <source>Start edge size</source>
-      <translation>Starta kantstorlek</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
-      <source>End edge type</source>
-      <translation>Slutkantstyp</translation>
-    </message>
-    <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
-      <source>End edge size</source>
-      <translation>Slutkantsstorlek</translation>
     </message>
   </context>
   <context>

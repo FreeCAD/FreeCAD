@@ -347,31 +347,31 @@
       <translation>Postavi svojstava ćelija</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="471"/>
+      <location filename="../../SheetModel.cpp" line="470"/>
       <source>Edit cell</source>
       <translation>Uredi ćeliju</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="276"/>
-      <location filename="../../SheetTableView.cpp" line="308"/>
+      <location filename="../../SheetTableView.cpp" line="322"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
       <source>Insert rows</source>
       <translation>Umetni redove</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="327"/>
-      <location filename="../../SheetTableView.cpp" line="400"/>
+      <location filename="../../SheetTableView.cpp" line="373"/>
+      <location filename="../../SheetTableView.cpp" line="446"/>
       <source>Remove rows</source>
       <translation>Ukloni redove</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="348"/>
-      <location filename="../../SheetTableView.cpp" line="381"/>
+      <location filename="../../SheetTableView.cpp" line="394"/>
+      <location filename="../../SheetTableView.cpp" line="427"/>
       <source>Insert columns</source>
       <translation>Umetni stupce</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="167"/>
-      <location filename="../../SheetTableView.cpp" line="557"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
+      <location filename="../../SpreadsheetView.cpp" line="168"/>
       <source>Clear cell(s)</source>
       <translation>Obriši ćeliju(e)</translation>
     </message>
@@ -391,65 +391,67 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Poveži ćelije proračunske tablice</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Do ćelija:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>List:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Prva ćelija u rasponu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>Zadnja ćelija u rasponu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>Poveži ćelije:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Adresa početne ćelije</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Adresa krajnje ćelije</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Početna adresa ćelije za vezanje.
+Upišite '=' ako želite koristiti izraz.
+Izraz mora dati vrijednost nizu neke adrese ćelije.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Završna adresa ćelije za vezanje.
+Upišite '=' ako želite koristiti izraz.
+Izraz mora dati vrijednost nizu neke adrese ćelije.
+
+</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Koju proračunsku tablicu vezati na</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -468,7 +470,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Prekidanje veze</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -491,7 +493,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Raspon ćelija:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -550,7 +552,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Grupa:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -723,19 +725,19 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Postavlja boju pozadine ćelije proračunske tablice</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="677"/>
+      <location filename="../../SheetTableView.cpp" line="735"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Copy &amp; Paste nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="434"/>
+      <location filename="../../SpreadsheetView.cpp" line="435"/>
       <source>Alias contains invalid characters!</source>
       <translation>Pseudonim sadrži nevažeće znakove!
 
 </translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="440"/>
+      <location filename="../../SpreadsheetView.cpp" line="441"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Referenca na ćeliju sa pseudonimom, na primjer
@@ -883,66 +885,6 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     </message>
   </context>
   <context>
-    <name>Spreadsheet</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
-      <source>Spreadsheet</source>
-      <translation>Proračunska tablica</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
-      <source>Cell</source>
-      <translation>Ćelija</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
-      <source>Apply</source>
-      <translation>Primijeni</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
-      <source>Apply the changes to the current cell</source>
-      <translation>Primijenite promjene na trenutnu ćeliju</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
-      <source>Delete</source>
-      <translation>Izbriši</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
-      <source>Deletes the contents of the current cell</source>
-      <translation>Briše sadržaj trenutne ćelije</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
-      <source>Compute</source>
-      <translation>Izračunati</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
-      <source>Updates the values handled by controllers</source>
-      <translation>Ažurira vrijednosti kojima upravljaju regulatori</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
-      <source>Create Spreadsheet</source>
-      <translation>Stvori proračunsku tablicu</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
-      <source>Add controller</source>
-      <translation>Dodaj regulator</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
-      <source>Add property controller</source>
-      <translation>Dodaj značajke regulator</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="194"/>
@@ -961,14 +903,13 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>Poveži ćelije proračunske tablice</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="222"/>
       <source>Error: 
 </source>
-      <translation type="unfinished">Error: 
-</translation>
+      <translation>Greška: </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="240"/>
@@ -1068,7 +1009,7 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="129"/>
+      <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>Umetni %n red(ova) iznad</numerusform>
@@ -1077,7 +1018,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="133"/>
+      <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Umetni %n red(ova) ispod</numerusform>
@@ -1086,7 +1027,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="137"/>
+      <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
       <translation>
         <numerusform>Umetnite %n red koji nije u nizu</numerusform>
@@ -1095,7 +1036,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="140"/>
+      <location filename="../../SheetTableView.cpp" line="139"/>
       <source>Remove row(s)</source>
       <translation>
         <numerusform>Ukloni red(ove)</numerusform>
@@ -1104,7 +1045,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="154"/>
+      <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
       <translation>
         <numerusform>Umetni %n kolonu(e) lijevo</numerusform>
@@ -1113,7 +1054,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="158"/>
+      <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
       <translation>
         <numerusform>Umetni %n kolonu(e) desno</numerusform>
@@ -1122,7 +1063,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="162"/>
+      <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
       <translation>
         <numerusform>Umetnite %n red koji nije u nizu</numerusform>
@@ -1131,7 +1072,7 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="165"/>
+      <location filename="../../SheetTableView.cpp" line="164"/>
       <source>Remove column(s)</source>
       <translation>
         <numerusform>Ukloni kolonu(e)</numerusform>
@@ -1140,52 +1081,62 @@ Do you want to continue?</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="170"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
+      <location filename="../../SheetTableView.cpp" line="596"/>
       <source>Properties...</source>
       <translation>Svojstva...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="182"/>
+      <location filename="../../SheetTableView.cpp" line="181"/>
+      <location filename="../../SheetTableView.cpp" line="597"/>
       <source>Recompute</source>
       <translation type="unfinished">Recompute</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="186"/>
+      <location filename="../../SheetTableView.cpp" line="185"/>
+      <location filename="../../SheetTableView.cpp" line="605"/>
       <source>Bind...</source>
       <translation type="unfinished">Bind...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="190"/>
+      <location filename="../../SheetTableView.cpp" line="189"/>
+      <location filename="../../SheetTableView.cpp" line="598"/>
       <source>Configuration table...</source>
       <translation type="unfinished">Configuration table...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="198"/>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="599"/>
       <source>Merge cells</source>
       <translation>Spajanje ćelija</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="200"/>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="600"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Razdvoji ćelije</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="603"/>
       <source>Cut</source>
       <translation>Isječak</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="601"/>
       <source>Copy</source>
       <translation>Kopiraj</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="208"/>
+      <location filename="../../SheetTableView.cpp" line="207"/>
+      <location filename="../../SheetTableView.cpp" line="602"/>
       <source>Paste</source>
       <translation>Umetni</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="210"/>
+      <location filename="../../SheetTableView.cpp" line="209"/>
+      <location filename="../../SheetTableView.cpp" line="604"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
@@ -1193,53 +1144,14 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="262"/>
+      <location filename="../../SpreadsheetView.cpp" line="263"/>
       <source>Export PDF</source>
       <translation>Izvoz PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="263"/>
+      <location filename="../../SpreadsheetView.cpp" line="264"/>
       <source>PDF file</source>
       <translation>PDF Datoteka</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Controller</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
-      <source>Add controller</source>
-      <translation>Dodaj regulator</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
-      <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Dodaje kontroler ćelije odabranoj proračunskoj tablici</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_Create</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
-      <source>Spreadsheet</source>
-      <translation>Proračunska tablica</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
-      <source>Adds a spreadsheet object to the active document</source>
-      <translation>Dodaje objekt proračunske tablice u aktivni dokument</translation>
-    </message>
-  </context>
-  <context>
-    <name>Spreadsheet_PropertyController</name>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
-      <source>Add property controller</source>
-      <translation>Dodaj značajke regulator</translation>
-    </message>
-    <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
-      <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Dodaje kontroler značajki odabranoj proračunskoj tablici</translation>
     </message>
   </context>
   <context>
@@ -1252,7 +1164,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Proračunska tablica</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -1262,7 +1174,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Stilovi</translation>
     </message>
   </context>
 </TS>

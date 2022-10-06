@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD 單位測試</translation>
+      <translation>關於 FreeCAD 單位測試</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="32"/>

@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>MeshPart</source>
       <translation>PiezaDeMalla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections...</source>
       <translation>Cortes transversales...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Cross-sections</source>
       <translation>Cortes transversales</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Curve on mesh...</source>
       <translation>Curva en malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Crea una curva aproximada sobre una malla.
@@ -60,17 +60,17 @@ Este comando solo funciona con un objeto 'malla'.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Create section from mesh and plane</source>
       <translation>Crear corte desde malla y plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Section</source>
       <translation>Corte</translation>
     </message>
@@ -102,7 +102,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
       <translation>Recortar con plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="208"/>
       <source>Section with plane</source>
       <translation>Corte con plano</translation>
     </message>
@@ -170,7 +170,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
       <translation>Conecte las aristas si la distancia es inferior a</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="345"/>
+      <location filename="../../CrossSections.cpp" line="344"/>
       <source>Failure</source>
       <translation>Fallo</translation>
     </message>
@@ -517,33 +517,14 @@ Selecciona una forma diferente, por favor.</translation>
     </message>
   </context>
   <context>
-    <name>MeshPart_FlatteningCommand</name>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="47"/>
-      <source>Unwrap Mesh</source>
-      <translation>Desenvolver Malla</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="50"/>
-      <location filename="../../MeshFlatteningCommand.py" line="82"/>
-      <source>Find a flat representation of a mesh.</source>
-      <translation>Encuentra una representación plana de una malla.</translation>
-    </message>
-    <message>
-      <location filename="../../MeshFlatteningCommand.py" line="79"/>
-      <source>Unwrap Face</source>
-      <translation>Desenvolver Cara</translation>
-    </message>
-  </context>
-  <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Select plane</source>
       <translation>Seleccionar plano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Por favor seleccione el plano de corte de la malla.</translation>
     </message>

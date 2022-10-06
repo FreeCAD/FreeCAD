@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Boundings info...</source>
-      <translation>Informacje o granicach...</translation>
+      <translation>Informacje o granicach ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../../Command.cpp" line="1160"/>
       <source>Evaluate and repair mesh...</source>
-      <translation>Oceń i napraw siatkę...</translation>
+      <translation>Oceń i napraw siatkę ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1161"/>
@@ -190,7 +190,7 @@
     <message>
       <location filename="../../Command.cpp" line="494"/>
       <source>Export mesh...</source>
-      <translation>Eksport siatki...</translation>
+      <translation>Eksportuj siatkę ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="495"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../Command.cpp" line="1640"/>
       <source>Fill holes...</source>
-      <translation>Wypełnij otwory...</translation>
+      <translation>Wypełnij otwory ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1641"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>Create mesh from shape...</source>
-      <translation>Utwórz siatkę z kształtu...</translation>
+      <translation>Utwórz siatkę z kształtu ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="629"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Harmonize normals</source>
-      <translation>Porządkuj wektory normalne</translation>
+      <translation>Porządkuj wektory normalnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Command.cpp" line="443"/>
       <source>Import mesh...</source>
-      <translation>Import siatki...</translation>
+      <translation>Importuj siatkę ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="444"/>
@@ -467,7 +467,7 @@
     <message>
       <location filename="../../Command.cpp" line="1290"/>
       <source>Refinement...</source>
-      <translation>Ulepszanie...</translation>
+      <translation>Ulepsz ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1291"/>
@@ -486,7 +486,7 @@
     <message>
       <location filename="../../Command.cpp" line="1323"/>
       <source>Remove components by hand...</source>
-      <translation>Usuń fragmenty ręcznie...</translation>
+      <translation>Usuń fragmenty ręcznie ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1324"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../../Command.cpp" line="1245"/>
       <source>Remove components...</source>
-      <translation>Usuń fragmenty...</translation>
+      <translation>Usuń fragmenty ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1246"/>
@@ -561,7 +561,7 @@
     <message>
       <location filename="../../Command.cpp" line="1721"/>
       <source>Create mesh segments...</source>
-      <translation>Utwórz segmenty siatki...</translation>
+      <translation>Utwórz segmenty siatki ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
@@ -816,7 +816,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="484"/>
       <source>Harmonize normals</source>
-      <translation>Porządkuj wektory normalne</translation>
+      <translation>Porządkuj wektory normalnych</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="587"/>
@@ -864,34 +864,34 @@
       <translation>Usuń zaznaczone</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Wytnij</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Przytnij</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Rozdziel</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Wypełnij otwór</translation>
     </message>
@@ -940,7 +940,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Oceń i Napraw siatkę</translation>
+      <translation>Oceń i napraw siatkę</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="23"/>
@@ -1046,7 +1046,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="735"/>
       <source>Folds on surface</source>
-      <translation>Zagięcia na płaszczyźnie</translation>
+      <translation>Fałdy na powierzchni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="806"/>
@@ -1064,7 +1064,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="151"/>
       <source>Settings...</source>
-      <translation>Ustawienia...</translation>
+      <translation>Ustawienia ...</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="187"/>
@@ -1265,7 +1265,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Uznaj za uszkodzone tylko powierzchnie nie tworzące obszaru (zero area faces)</translation>
+      <translation>Uznaj za uszkodzone tylko powierzchnie nietworzące obszaru (zero area faces)</translation>
     </message>
   </context>
   <context>
@@ -1655,17 +1655,17 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="109"/>
       <source>Automatic</source>
-      <translation>Automatyczna</translation>
+      <translation>Automatycznie</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Adaptive</source>
-      <translation>Adaptacyjny</translation>
+      <translation>Adaptacyjnie</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal</source>
-      <translation>Przedni</translation>
+      <translation>Frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="114"/>
@@ -1770,7 +1770,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
-      <translation>Nie wybrano</translation>
+      <translation>Brak zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
@@ -2110,7 +2110,7 @@ do gładszego wyglądu.
       <location filename="../../RemoveComponents.cpp" line="176"/>
       <location filename="../../RemoveComponents.cpp" line="233"/>
       <source>Invert</source>
-      <translation>Przeciwny</translation>
+      <translation>Odwróć wybór</translation>
     </message>
   </context>
   <context>
@@ -2194,13 +2194,13 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1240"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Oceń i Napraw siatkę</translation>
+      <translation>Oceń i napraw siatkę</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Import-Eksport</translation>
     </message>
@@ -2383,48 +2383,48 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
       <translation>[Punktów: %1, Krawędzi: %2, Powierzchni: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Wyświetl fragmenty</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Wyświetl segmenty</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation>Wyświetlane kolory</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Opuść tryb informacyjny</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Indeks :%1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Opuść tryb wypełniania otworu</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Opuść tryb usuwania</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Usuń zaznaczone powierzchnie</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Wyczyść zaznaczone powierzchnie</translation>
     </message>

@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="1367"/>
       <source>Check solid mesh</source>
-      <translation>Vérifier le maillage solide</translation>
+      <translation>Vérifier la solidité du maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1368"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1882"/>
       <source>Scale...</source>
-      <translation>Échelle ...</translation>
+      <translation>Échelle...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1883"/>
@@ -864,34 +864,34 @@
       <translation>Supprimer la sélection</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Soustraction</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Ajuster</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Scinder</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Remplir le trou</translation>
     </message>
@@ -1504,12 +1504,12 @@ est utilisée lors de l'écriture d'un fichier au format AMF</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="119"/>
       <source>Default line color for new meshes</source>
-      <translation>Couleur de ligne par défaut pour les nouveaux maillages</translation>
+      <translation>Couleur des lignes par défaut pour les nouveaux maillages</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="155"/>
       <source>Line transparency</source>
-      <translation>Transparence de ligne</translation>
+      <translation>Transparence des lignes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="178"/>
@@ -1530,7 +1530,7 @@ sera utilisée soit du noir.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="224"/>
       <source>Two-side rendering</source>
-      <translation>Rendu biface</translation>
+      <translation>Rendu des deux côtés</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="240"/>
@@ -1540,7 +1540,7 @@ sera utilisée soit du noir.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="243"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Afficher le volume capable des mailles en surbrillance ou sélectionnées</translation>
+      <translation>Afficher la boîte englobante du maillage mis en évidence ou sélectionné</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="280"/>
@@ -1567,7 +1567,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="301"/>
       <source>Define normal per vertex</source>
-      <translation>Définir les normales par vertex</translation>
+      <translation>Définir les normales par les sommets</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="314"/>
@@ -1585,10 +1585,10 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>L'angle de pli est un angle de seuil entre deux faces.
+      <translation>L'angle de pliage est un angle de seuil entre deux faces.
 
- Si l'angle de face ≥ angle de pli, l'ombrage de facette est utilisé
- Si l'angle de face &lt; angle de pli, l'ombrage de lissage est utilisé</translation>
+ Si l'angle de face ≥ angle de pliage, l'ombrage de facette est utilisé
+ Si l'angle de face &lt; angle de pliage, l'ombrage de lissage est utilisé</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="333"/>
@@ -1598,7 +1598,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="362"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Définir les normales par vertex est aussi appelé &lt;span style=" font-style:italic;"&gt;ombrage de Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;alors que définir les normales par face est appelé&lt;/span&gt; ombrage plat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Définir les normales par les sommets est aussi appelé &lt;span style=" font-style:italic;"&gt;ombrage de Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;alors que définir les normales par les faces est appelé&lt;/span&gt; ombrage plat&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2199,7 +2199,7 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Importer-Exporter</translation>
     </message>
@@ -2382,48 +2382,48 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <translation>[Points : %1, Arêtes : %2, Faces : %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Afficher les composants</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Afficher les segments</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation>Affichage des couleurs</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Quitter le mode d'information</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Index : %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Quitter le mode de remplissage des trous</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Quitter le mode de suppression</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Supprimer les faces sélectionnées</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Dé-sélectionner les faces sélectionnées</translation>
     </message>

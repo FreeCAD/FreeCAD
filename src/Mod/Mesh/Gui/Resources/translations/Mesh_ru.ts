@@ -94,7 +94,7 @@
       <location filename="../../Command.cpp" line="1470"/>
       <location filename="../../Command.cpp" line="1471"/>
       <source>Decimates a mesh</source>
-      <translation>Уменьшает количество граней сетки</translation>
+      <translation>Проредить полигональную сетку</translation>
     </message>
   </context>
   <context>
@@ -580,13 +580,13 @@
     <message>
       <location filename="../../Command.cpp" line="1757"/>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>Создать сегменты полигональной сетка из наилучшего соответствия поверхностям...</translation>
+      <translation>Создать сегменты полигональной сетки из наилучшего соответствия поверхностям...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1758"/>
       <location filename="../../Command.cpp" line="1760"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Создать сегменты полигональной сетка из наилучшего соответствия поверхностям</translation>
+      <translation>Создать сегменты полигональной сетки из наилучшего соответствия поверхностям</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1837"/>
       <source>Split selected mesh into its components</source>
-      <translation>Разделяет выбранную сетку на её компоненты</translation>
+      <translation>Разделить выбранную полигональную сетку на её компоненты</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Segment by tool mesh</source>
-      <translation>Часть инструмента сетки</translation>
+      <translation>Часть по инструменту полигональной сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
@@ -740,53 +740,53 @@
       <location filename="../../Command.cpp" line="111"/>
       <location filename="../../Command.cpp" line="151"/>
       <source>Mesh Create</source>
-      <translation>Создание сетки</translation>
+      <translation>Создать полигональную сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Segment by tool mesh</source>
-      <translation>Часть инструмента сетки</translation>
+      <translation>Часть по инструменту полигональной сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Mesh union</source>
-      <translation>Объединение сеток</translation>
+      <translation>Объеденить полигональные сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Mesh difference</source>
-      <translation>Разница Сеток</translation>
+      <translation>Разница между полигональными сетками</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="385"/>
       <source>Mesh intersection</source>
-      <translation>Пересечение сеток</translation>
+      <translation>Пересечение полигональных сеток</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="471"/>
       <source>Import Mesh</source>
-      <translation>Импорт Сетки</translation>
+      <translation>Импортировать полигональную сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="669"/>
       <source>Mesh VertexCurvature</source>
-      <translation>Определение кривизны вершин сетки</translation>
+      <translation>Определить кривизну вершин полигональной сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1418"/>
       <location filename="../../DlgSmoothing.cpp" line="174"/>
       <source>Mesh Smoothing</source>
-      <translation>Сглаживание сетки</translation>
+      <translation>Сгладить полигональную сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1509"/>
       <source>Harmonize mesh normals</source>
-      <translation>Согласование нормалей сетки</translation>
+      <translation>Согласовать нормали полигональной сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1543"/>
       <source>Flip mesh normals</source>
-      <translation>Отражение нормалей сетки</translation>
+      <translation>Отразить нормали полигональной сетки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1655"/>
@@ -796,17 +796,17 @@
     <message>
       <location filename="../../Command.cpp" line="1806"/>
       <source>Mesh merge</source>
-      <translation>Слияние сеток</translation>
+      <translation>Слияние полигональных сеток</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Mesh split</source>
-      <translation>Разделение сетки</translation>
+      <translation>Разделить полигональную сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1901"/>
       <source>Mesh scale</source>
-      <translation>Масштабирование сетки</translation>
+      <translation>Масштабировать полигональную сетку</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
@@ -864,34 +864,34 @@
       <translation>Удалить выделение</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Обрезать</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Подгонка</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Разделить</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Сегмент</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Заполнить отверстие</translation>
     </message>
@@ -1766,7 +1766,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
-      <translation>Ничего не выбрано</translation>
+      <translation>Нет выбора</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
@@ -1779,7 +1779,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Изменить сетку с помощью Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -2031,7 +2031,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.cpp" line="337"/>
       <location filename="../../SegmentationBestFit.cpp" line="363"/>
       <source>Base</source>
-      <translation>Основание</translation>
+      <translation>Основные</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="338"/>
@@ -2124,17 +2124,17 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Минимальная граница:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Максимальная граница:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Окно информации о полигональной сетке</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
@@ -2196,7 +2196,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Импорт/экспорт</translation>
     </message>
@@ -2316,7 +2316,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="529"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Формат 3D-производства</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
@@ -2379,48 +2379,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[Точек: %1, рёбер: %2, граней: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Показать компоненты</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Отобразить сегменты</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>Отображаемые цвета</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Выйти из информационного режима</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Индекс: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Выйти из режима заполнения отверстий</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Выйти из режима удаления</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Удалить выбранные грани</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Снять выделение выбранных граней</translation>
     </message>
@@ -2460,12 +2460,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Видоизменить полигональную сетку</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Булева операция с полигональной сеткой</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

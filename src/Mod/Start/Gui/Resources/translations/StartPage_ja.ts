@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>ここに表示される最近使用したファイルの数を調整するにはメニューの 編集→設定→標準→最近使用したファイル一覧のサイズ を使用してください。</translation>
+      <translation>メニューの「編集→設定→標準→最近使用したファイル一覧のサイズ」でここに表示される最近使用したファイルの数を調整できます。</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>メニュー「編集-&gt; プレファレンス -&gt; 開始-&gt; 追加フォルダの表示」にて、表示するカスタムフォルダを構成できます。</translation>
+      <translation>メニューの「編集→設定→Start→追加フォルダを表示」でここに表示するカスタムフォルダを設定できます。</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -291,8 +291,8 @@
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>最初のページの下部に表示される追加のカスタムフォルダ。
+";;"を使用してパスを別々にすると複数のフォルダを追加できます。</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -302,7 +302,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>ファイルのサムネイルの隣にメモ帳を表示させて、セッション中にメモを保存できるようにします。</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
@@ -312,7 +312,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>Start ワークベンチのドキュメントタブにヘルプのヒントを表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -342,7 +342,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>グラデーション背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>チェックして一般ユーザー設定でスタイルシートを指定している場合、それを使用して以下の色を上書き</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>選択されている場合、「新規ファイル」アイコンに通常のアイコンの代わりにグラデーションアイコンを表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,12 +467,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>プログラム起動後に切り替えるワークベンチを選択</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>チェックされている場合、FreeCAD起動時に自動的にスタートページを閉じます</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
@@ -492,7 +492,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>ファイルオープンでアプリケーションを開始する場合、上の2つの設定を適用</translation>
     </message>
   </context>
 </TS>

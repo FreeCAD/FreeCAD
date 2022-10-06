@@ -64,44 +64,6 @@
     </message>
   </context>
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="138"/>
-      <source>Scale image plane</source>
-      <translation>Масштабировать плоскость изображения</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
-      <source>Distance [mm]</source>
-      <translation>Расстояние [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
-      <source>Select first point</source>
-      <translation>Укажите первую точку</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
-      <source>Enter distance</source>
-      <translation>Введите расстояние</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
-      <source>Select ImagePlane</source>
-      <translation>Выберите ПлоскостьИзображения</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
-      <source>Select second point</source>
-      <translation>Укажите вторую точку</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>Выберите Плоскость Изображения и введите расстояние</translation>
-    </message>
-  </context>
-  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
       <location filename="../../OpenGLImageBox.cpp" line="392"/>
@@ -172,7 +134,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Отображает изображение в масштабе 1:1</translation>
+      <translation>Отображает изображение в масштабе 1: 1 </translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="124"/>
@@ -214,19 +176,6 @@
     </message>
   </context>
   <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="56"/>
-      <source>Scale image plane</source>
-      <translation>Масштабировать плоскость изображения</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="60"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Масштабирует плоскость изображения по расстоянию между двумя точками</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="70"/>
@@ -244,7 +193,7 @@
       <location filename="../../Command.cpp" line="77"/>
       <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
-      <translation>Выберите файл изображения, чтобы его открыть</translation>
+      <translation>Выберите файл изображения, чтобы открыть</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="127"/>

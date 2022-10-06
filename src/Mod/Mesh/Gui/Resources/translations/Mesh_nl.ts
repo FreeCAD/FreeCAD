@@ -864,34 +864,34 @@
       <translation>Selectie verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>Snijden</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>Trim</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>Delen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>Segment</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>Vul gat</translation>
     </message>
@@ -2051,7 +2051,7 @@ tot een gladder uiterlijk leidt.
       <location filename="../../SegmentationBestFit.cpp" line="365"/>
       <location filename="../../SegmentationBestFit.cpp" line="392"/>
       <source>Radius</source>
-      <translation>Straal</translation>
+      <translation>Radius</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="391"/>
@@ -2128,12 +2128,12 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Minimale grens:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Maximale grens:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
@@ -2149,7 +2149,7 @@ tot een gladder uiterlijk leidt.
       <location filename="../../Workbench.cpp" line="128"/>
       <location filename="../../Workbench.cpp" line="130"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2200,7 +2200,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>Importeren-Exporteren</translation>
     </message>
@@ -2383,48 +2383,48 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
       <translation>[Punten: %1, randen: %2, gezichten: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>Geef componenten weer</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>Segmenten weergeven</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
       <translation type="unfinished">Display colors</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>Info modus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>Gatvulmodus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>Verwijdermodus verlaten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>Verwijder geselecteerde vlakken</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>Geselecteerde vlakken wissen</translation>
     </message>

@@ -864,34 +864,34 @@
       <translation>選択範囲を削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="881"/>
-      <location filename="../../ViewProvider.cpp" line="936"/>
+      <location filename="../../ViewProvider.cpp" line="858"/>
+      <location filename="../../ViewProvider.cpp" line="913"/>
       <source>Cut</source>
       <translation>切り取り</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="890"/>
-      <location filename="../../ViewProvider.cpp" line="997"/>
+      <location filename="../../ViewProvider.cpp" line="867"/>
+      <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
       <translation>トリム</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1074"/>
+      <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
       <translation>スプリット</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1138"/>
+      <location filename="../../ViewProvider.cpp" line="1115"/>
       <source>Segment</source>
       <translation>セグメント</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1723"/>
+      <location filename="../../ViewProvider.cpp" line="1700"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
+      <location filename="../../ViewProvider.cpp" line="1807"/>
       <source>Fill hole</source>
       <translation>穴埋め</translation>
     </message>
@@ -1777,7 +1777,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Gmsh で再メッシュ化</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -1964,7 +1964,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>球体</translation>
+      <translation>球</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -2117,33 +2117,33 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="77"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>面の数:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="83"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>最小限度:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="86"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>最大限度:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>メッシュ情報ボックス</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>メッシュ情報</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="128"/>
       <location filename="../../Workbench.cpp" line="130"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2194,7 +2194,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="164"/>
+      <location filename="../../AppMeshGui.cpp" line="166"/>
       <source>Import-Export</source>
       <translation>インポート/エクスポート</translation>
     </message>
@@ -2237,7 +2237,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="460"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
@@ -2248,7 +2248,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="462"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="463"/>
@@ -2314,7 +2314,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="529"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>3次元製造フォーマット</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
@@ -2377,48 +2377,48 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[点: %1, 線: %2 面: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="741"/>
+      <location filename="../../ViewProvider.cpp" line="718"/>
       <source>Display components</source>
       <translation>表示コンポーネント</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="747"/>
+      <location filename="../../ViewProvider.cpp" line="724"/>
       <source>Display segments</source>
       <translation>セグメントを表示</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="753"/>
+      <location filename="../../ViewProvider.cpp" line="730"/>
       <source>Display colors</source>
-      <translation type="unfinished">Display colors</translation>
+      <translation>表示色</translation>
     </message>
     <message>
+      <location filename="../../ViewProvider.cpp" line="1551"/>
       <location filename="../../ViewProviderCurvature.cpp" line="514"/>
-      <location filename="../../ViewProvider.cpp" line="1574"/>
       <source>Leave info mode</source>
       <translation>情報モードを解除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1633"/>
+      <location filename="../../ViewProvider.cpp" line="1610"/>
       <source>Index: %1</source>
       <translation>インデックス: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1656"/>
+      <location filename="../../ViewProvider.cpp" line="1633"/>
       <source>Leave hole-filling mode</source>
       <translation>穴埋めモードを解除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1702"/>
+      <location filename="../../ViewProvider.cpp" line="1679"/>
       <source>Leave removal mode</source>
       <translation>削除モードを解除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1703"/>
+      <location filename="../../ViewProvider.cpp" line="1680"/>
       <source>Delete selected faces</source>
       <translation>選択した面を削除</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1704"/>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
       <source>Clear selected faces</source>
       <translation>面の選択を全て解除</translation>
     </message>
@@ -2458,17 +2458,17 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>メッシュの変更</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>メッシュのブール演算</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh cutting</source>
-      <translation type="unfinished">Mesh cutting</translation>
+      <translation>メッシュの切断</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -2478,7 +2478,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Mesh analyze</source>
-      <translation type="unfinished">Mesh analyze</translation>
+      <translation>メッシュの分析</translation>
     </message>
   </context>
 </TS>

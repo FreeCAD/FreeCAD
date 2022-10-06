@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Приблизний циліндр</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Площина...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Поліноміальна поверхня</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>Апроксимація поліноміальної поверхні</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Апроксимація сфери</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Грань із границі полігональної сітки...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Створити грань в межах сітки</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Сегментація сітки...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="381"/>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>З компонентів</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Створити сегменти полігональної сітка з компонентів</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Ручна сегментація...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Створення сегментів полігональних сіток вручну</translation>
     </message>
   </context>
   <context>
@@ -205,27 +205,27 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Розмістити площину</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Розмістити циліндр</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Розмістити сферу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Розмістити поліноміальну поверхню</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Переглянути тріангуляцію</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="157"/>
@@ -235,17 +235,17 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="229"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Розмістити B-сплайн</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Реконструкція Пуассона</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Сегментація</translation>
     </message>
   </context>
   <context>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Створити розміщення</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -391,7 +391,7 @@
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>Будь ласка, виберіть точку хмари або сітку.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="570"/>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>View triangulation failed</source>
       <translation>Перегляд непрорахованими тріангуляції</translation>
     </message>
@@ -427,12 +427,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Допуск на кривизну</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Відстань до площини</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Створити полігональну сітку з невикористаних трикутників</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Створити сполуку</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Ручний сегментація</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -507,7 +507,7 @@
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Виявити</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="135"/>
@@ -551,17 +551,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Сегментація</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Вирізати сегмент з сітки</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Приховати сегмент</translation>
     </message>
   </context>
   <context>

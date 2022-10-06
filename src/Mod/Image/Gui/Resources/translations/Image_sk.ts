@@ -2,32 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sk" sourcelanguage="en">
   <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="_CommandImageScaling.py" line="62"/>
-      <source>Scale image plane</source>
-      <translation>Rovina zmeny mierky obrázku</translation>
-    </message>
-    <message>
-      <location filename="_CommandImageScaling.py" line="66"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Zmení mierku roviny obrázka definovaním vzdialenosti medzi bodmi</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Image</source>
       <translation>Obrázok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="100"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
       <translation>Vytvoriť rovinu obrázka...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
       <translation>Vytvorí planárný obrázok v 3D priestore</translation>
     </message>
@@ -35,17 +22,17 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Image</source>
       <translation>Obrázok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open...</source>
       <translation>Otvoriť...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>Open image view</source>
       <translation>Otvoriť prehliadanie obrázku</translation>
     </message>
@@ -53,17 +40,17 @@
   <context>
     <name>CmdImageScaling</name>
     <message>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Image</source>
       <translation>Obrázok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
       <translation type="unfinished">Scale...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
       <translation>Zmena mierky obrázku</translation>
     </message>
@@ -71,21 +58,19 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Create ImagePlane</source>
-      <translation type="unfinished">Create ImagePlane</translation>
+      <translation>Vytvoriť rovinu obrázku</translation>
     </message>
   </context>
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="334"/>
       <location filename="../../OpenGLImageBox.cpp" line="392"/>
       <source>Image pixel format</source>
       <translation>Pixel formát obrázku</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="335"/>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Nedefinovaný typ farebného systému pre prehliadanie obrázku</translation>
@@ -132,60 +117,60 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="111"/>
+      <location filename="../../ImageView.cpp" line="107"/>
       <source>&amp;Fit image</source>
       <translation>&amp;Prispôsobiť obrázok</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="109"/>
       <source>Stretch the image to fit the view</source>
       <translation>Roztiahnút obrázok do pohľadu</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="117"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;Mierka 1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="119"/>
+      <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Zobratiť obrázok v mierke 1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="128"/>
+      <location filename="../../ImageView.cpp" line="124"/>
       <source>Standard</source>
       <translation>Štandardné</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="146"/>
+      <location filename="../../ImageView.cpp" line="142"/>
       <source>Ready...</source>
       <translation>Hotovo...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="551"/>
+      <location filename="../../ImageView.cpp" line="543"/>
       <source>grey</source>
       <translation>šedá</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="552"/>
-      <location filename="../../ImageView.cpp" line="555"/>
-      <location filename="../../ImageView.cpp" line="565"/>
-      <location filename="../../ImageView.cpp" line="570"/>
-      <location filename="../../ImageView.cpp" line="580"/>
-      <location filename="../../ImageView.cpp" line="585"/>
-      <location filename="../../ImageView.cpp" line="596"/>
-      <location filename="../../ImageView.cpp" line="601"/>
-      <location filename="../../ImageView.cpp" line="612"/>
-      <location filename="../../ImageView.cpp" line="617"/>
+      <location filename="../../ImageView.cpp" line="544"/>
+      <location filename="../../ImageView.cpp" line="547"/>
+      <location filename="../../ImageView.cpp" line="557"/>
+      <location filename="../../ImageView.cpp" line="562"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="588"/>
+      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="604"/>
+      <location filename="../../ImageView.cpp" line="609"/>
       <source>zoom</source>
       <translation>priblíženie</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="555"/>
-      <location filename="../../ImageView.cpp" line="565"/>
-      <location filename="../../ImageView.cpp" line="580"/>
-      <location filename="../../ImageView.cpp" line="596"/>
-      <location filename="../../ImageView.cpp" line="612"/>
+      <location filename="../../ImageView.cpp" line="547"/>
+      <location filename="../../ImageView.cpp" line="557"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="588"/>
+      <location filename="../../ImageView.cpp" line="604"/>
       <source>outside image</source>
       <translation>mimo obraz</translation>
     </message>
@@ -193,30 +178,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Images</source>
       <translation>Obrázky</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
-      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>All files</source>
       <translation>Všetky súbory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
       <translation>Vyberte súbor s obrázkom na otvorenie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Error opening image</source>
       <translation>Chyba pri otváraní obrázka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Could not load the chosen image</source>
       <translation>Nepodarilo sa otvoriť zvolený obrázok</translation>
     </message>
@@ -224,7 +209,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="32"/>
       <source>Image</source>
       <translation>Obrázok</translation>
     </message>

@@ -64,44 +64,6 @@
     </message>
   </context>
   <context>
-    <name>Dialog</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="138"/>
-      <source>Scale image plane</source>
-      <translation>Масштабувати зображення площини</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
-      <source>Distance [mm]</source>
-      <translation>Відстань [mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
-      <source>Select first point</source>
-      <translation>Оберіть першу точку</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="165"/>
-      <source>Enter distance</source>
-      <translation>Введіть відстань</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="168"/>
-      <source>Select ImagePlane</source>
-      <translation type="unfinished">Select ImagePlane</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
-      <source>Select second point</source>
-      <translation>Оберіть другу точку</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="202"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>Оберіть  Площину Зображення та введіть відстань</translation>
-    </message>
-  </context>
-  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
       <location filename="../../OpenGLImageBox.cpp" line="392"/>
@@ -211,19 +173,6 @@
       <location filename="../../ImageView.cpp" line="604"/>
       <source>outside image</source>
       <translation>зовнішнє зображення</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="56"/>
-      <source>Scale image plane</source>
-      <translation>Масштабувати зображення площини</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="60"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Масштабує зображення площини, визначаючи відстань між двома точками</translation>
     </message>
   </context>
   <context>

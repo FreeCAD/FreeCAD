@@ -228,12 +228,12 @@
       <translation type="unfinished">View triangulation</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <location filename="../../FitBSplineSurface.cpp" line="157"/>
       <source>Placement</source>
       <translation>위치 설정</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <location filename="../../FitBSplineSurface.cpp" line="229"/>
       <source>Fit B-Spline</source>
       <translation type="unfinished">Fit B-Spline</translation>
     </message>
@@ -243,7 +243,7 @@
       <translation type="unfinished">Poisson reconstruction</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <location filename="../../SegmentationManual.cpp" line="235"/>
       <source>Segmentation</source>
       <translation type="unfinished">Segmentation</translation>
     </message>
@@ -294,57 +294,57 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
-      <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="227"/>
-      <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="256"/>
-      <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="285"/>
-      <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="314"/>
-      <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
       <translation type="unfinished">User-defined u/v directions</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="359"/>
+      <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
       <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="238"/>
+      <source>Smoothing</source>
+      <translation type="unfinished">Smoothing</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="247"/>
+      <source>Total Weight</source>
+      <translation type="unfinished">Total Weight</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="276"/>
+      <source>Length of gradient</source>
+      <translation type="unfinished">Length of gradient</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="305"/>
+      <source>Bending energy</source>
+      <translation type="unfinished">Bending energy</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="334"/>
+      <source>Curvature variation</source>
+      <translation type="unfinished">Curvature variation</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="207"/>
+      <location filename="../../FitBSplineSurface.cpp" line="168"/>
+      <location filename="../../FitBSplineSurface.cpp" line="236"/>
+      <source>Input error</source>
+      <translation>입력 오류</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="208"/>
+      <location filename="../../FitBSplineSurface.cpp" line="209"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.cpp" line="167"/>
-      <location filename="../../FitBSplineSurface.cpp" line="235"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
     </message>
   </context>
   <context>
@@ -402,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>View triangulation failed</source>
       <translation type="unfinished">View triangulation failed</translation>
     </message>
@@ -415,39 +415,39 @@
       <translation type="unfinished">Mesh segmentation</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="27"/>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="34"/>
+      <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
       <translation type="unfinished">Smooth mesh</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="44"/>
+      <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
       <translation>평면</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="53"/>
+      <location filename="../../Segmentation.ui" line="46"/>
       <source>Curvature tolerance</source>
       <translation type="unfinished">Curvature tolerance</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="70"/>
+      <location filename="../../Segmentation.ui" line="63"/>
       <source>Distance to plane</source>
       <translation type="unfinished">Distance to plane</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="87"/>
+      <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
       <translation type="unfinished">Minimum number of faces</translation>
     </message>
     <message>
-      <location filename="../../Segmentation.ui" line="107"/>
+      <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="107"/>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
     </message>
   </context>
   <context>
@@ -464,33 +464,33 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="41"/>
-      <source>Components</source>
-      <translation type="unfinished">Components</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="48"/>
       <source>Region</source>
       <translation type="unfinished">Region</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="55"/>
-      <source>Select whole component</source>
-      <translation type="unfinished">Select whole component</translation>
+      <location filename="../../SegmentationManual.ui" line="61"/>
+      <source>All</source>
+      <translation>전체</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="62"/>
-      <source>Pick triangle</source>
-      <translation type="unfinished">Pick triangle</translation>
+      <location filename="../../SegmentationManual.ui" line="81"/>
+      <source>Components</source>
+      <translation type="unfinished">Components</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="82"/>
+      <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
       <translation type="unfinished">&lt; faces than</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="89"/>
-      <source>All</source>
-      <translation>전체</translation>
+      <location filename="../../SegmentationManual.ui" line="98"/>
+      <source>Pick triangle</source>
+      <translation type="unfinished">Pick triangle</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="105"/>
+      <source>Select whole component</source>
+      <translation type="unfinished">Select whole component</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -506,22 +506,22 @@
       <location filename="../../SegmentationManual.ui" line="128"/>
       <location filename="../../SegmentationManual.ui" line="181"/>
       <location filename="../../SegmentationManual.ui" line="234"/>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="135"/>
+      <location filename="../../SegmentationManual.ui" line="188"/>
+      <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
       <translation>공차</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="148"/>
-      <location filename="../../SegmentationManual.ui" line="201"/>
-      <location filename="../../SegmentationManual.ui" line="254"/>
+      <location filename="../../SegmentationManual.ui" line="155"/>
+      <location filename="../../SegmentationManual.ui" line="208"/>
+      <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
       <translation type="unfinished">Minimum number of faces</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="165"/>
-      <location filename="../../SegmentationManual.ui" line="218"/>
-      <location filename="../../SegmentationManual.ui" line="271"/>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -567,7 +567,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="310"/>
+      <location filename="../../SegmentationManual.cpp" line="311"/>
       <source>Create</source>
       <translation>만들기</translation>
     </message>
