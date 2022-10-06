@@ -82,7 +82,6 @@
 #endif
 
 #include <qobject.h>
-#include <QRegExp>
 #include <QTextCharFormat>
 #include <QFileInfo>
 #include <QApplication>
