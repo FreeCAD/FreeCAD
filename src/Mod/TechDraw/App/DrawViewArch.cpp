@@ -20,25 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 
 #include "DrawViewArch.h"
 
-using namespace TechDraw;
-using namespace std;
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawViewArch

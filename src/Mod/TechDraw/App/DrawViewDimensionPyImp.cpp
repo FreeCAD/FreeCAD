@@ -21,19 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 
 #include "DrawViewDimension.h"
-
 // inclusion of the generated files (generated out of DrawViewDimensionPy.xml)
-#include <Base/VectorPy.h>
 #include <Mod/TechDraw/App/DrawViewDimensionPy.h>
 #include <Mod/TechDraw/App/DrawViewDimensionPy.cpp>
+
 
 using namespace TechDraw;
 

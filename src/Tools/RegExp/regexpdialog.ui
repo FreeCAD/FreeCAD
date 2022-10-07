@@ -33,7 +33,7 @@
    <item row="1" column="0">
     <widget class="QTextEdit" name="textEdit1"/>
    </item>
-  <item row="2" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -44,17 +44,7 @@
      <item>
       <widget class="QCheckBox" name="checkBox1">
        <property name="text">
-        <string>Case sensitive</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox2">
-       <property name="text">
-        <string>Wildcard</string>
+        <string>Case insensitive</string>
        </property>
       </widget>
      </item>
@@ -62,9 +52,6 @@
       <widget class="QCheckBox" name="checkBox3">
        <property name="text">
         <string>Minimal</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -146,7 +133,7 @@
      </item>
     </layout>
    </item>
-   </layout>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>

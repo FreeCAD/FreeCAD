@@ -27,7 +27,8 @@
 # include <cmath>
 # include <QContextMenuEvent>
 # include <QMenu>
-# include <QRegExp>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QString>
 # include <QMessageBox>
 # include <QStyledItemDelegate>
@@ -976,12 +977,13 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if (strcmp(msg.pDocName,sketchView->getSketchObject()->getDocument()->getName())==0 &&
             strcmp(msg.pObjectName,sketchView->getSketchObject()->getNameInDocument())== 0) {
             if (msg.pSubName) {
-                QRegExp rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
-                int pos = expr.indexOf(rx);
-                if (pos > -1) { // is a constraint
+                expr.indexOf(rx, 0, &match);
+                if (match.hasMatch()) { // is a constraint
                     bool ok;
-                    int ConstrId = rx.cap(1).toInt(&ok) - 1;
+                    int ConstrId = match.captured(1).toInt(&ok) - 1;
                     if (ok) {
                         int countItems = ui->listWidgetConstraints->count();
                         for (int i=0; i < countItems; i++) {
@@ -1025,25 +1027,26 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
 
 void TaskSketcherConstraints::getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pointpos)
 {
-    QRegExp rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
-    int pos = expr.indexOf(rxEdge);
+    QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    QRegularExpressionMatch match;
+    expr.indexOf(rxEdge, 0, &match);
     geoid = Sketcher::GeoEnum::GeoUndef;
     pointpos = Sketcher::PointPos::none;
 
-    if (pos > -1) {
+    if (match.hasMatch()) {
         bool ok;
-        int edgeId = rxEdge.cap(1).toInt(&ok) - 1;
+        int edgeId = match.captured(1).toInt(&ok) - 1;
         if (ok) {
             geoid = edgeId;
         }
     }
     else {
-        QRegExp rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
-        pos = expr.indexOf(rxVertex);
+        QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        expr.indexOf(rxVertex, 0, &match);
 
-        if (pos > -1) {
+        if (match.hasMatch()) {
             bool ok;
-            int vertexId = rxVertex.cap(1).toInt(&ok) - 1;
+            int vertexId = match.captured(1).toInt(&ok) - 1;
             if (ok) {
                 const Sketcher::SketchObject * sketch = sketchView->getSketchObject();
                 sketch->getGeoVertexIndex(vertexId, geoid, pointpos);

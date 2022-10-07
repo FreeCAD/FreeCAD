@@ -165,8 +165,7 @@ inline void SketcherAddWorkspaceSketchExtra<Gui::ToolBarItem>(Gui::ToolBarItem& 
     sketch  << "Sketcher_ReorientSketch"
             << "Sketcher_ValidateSketch"
             << "Sketcher_MergeSketches"
-            << "Sketcher_MirrorSketch"
-            << "Sketcher_StopOperation";
+            << "Sketcher_MirrorSketch";
 }
 
 template <typename T>
@@ -385,8 +384,8 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
     consaccel   << "Sketcher_SelectElementsWithDoFs"
                 << "Sketcher_SelectConstraints"
                 << "Sketcher_SelectElementsAssociatedWithConstraints"
-                << "Sketcher_SelectRedundantConstraints"
-                << "Sketcher_SelectConflictingConstraints"
+                //<< "Sketcher_SelectRedundantConstraints" //rarely used, it is usually accessed by solver message.
+                //<< "Sketcher_SelectConflictingConstraints"
                 << "Sketcher_RestoreInternalAlignmentGeometry"
                 << "Sketcher_Symmetry"
                 << "Sketcher_CompCopy"

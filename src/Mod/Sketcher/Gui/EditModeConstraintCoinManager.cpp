@@ -53,6 +53,8 @@
 # include <Inventor/SbVec3f.h>
 # include <Inventor/SbImage.h>
 
+# include <QRegularExpression>
+
 # include <memory>
 #endif  // #ifndef _PreComp_
 
@@ -1669,7 +1671,7 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint *c
             if (QString::compare(baseUnitStr, unitStr)==0)
             {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
-                QRegExp rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
+                QRegularExpression rxUnits(QString::fromUtf8(" \\D*$"));  //space + any non digits at end of string
                 valueStr.remove(rxUnits);                      //getUserString(defaultDecimals) without units
             }
         }

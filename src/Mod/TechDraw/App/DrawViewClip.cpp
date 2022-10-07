@@ -21,23 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-
-#endif
-
-#include <Base/Console.h>
 
 #include "DrawViewClip.h"
 #include "DrawPage.h"
-
 #include <Mod/TechDraw/App/DrawViewClipPy.h>  // generated from DrawViewClipPy.xml
 
-using namespace TechDraw;
-using namespace std;
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawViewClip

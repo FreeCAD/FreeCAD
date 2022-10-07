@@ -763,9 +763,9 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // File
     auto file = new ToolBarItem( root );
     file->setCommand("File");
-    *file << "Std_New" << "Std_Open" << "Std_Save" << "Separator" 
+    *file << "Std_New" << "Std_Open" << "Std_Save" << "Std_Print" << "Separator"
           << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_UserEditMode" << "Separator" << "Std_Refresh" << "Separator" << "Std_WhatsThis";
+          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher
     auto wb = new ToolBarItem( root );

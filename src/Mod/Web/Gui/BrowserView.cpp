@@ -32,7 +32,8 @@
 # include <QMessageBox>
 # include <QMouseEvent>
 # include <QNetworkRequest>
-# include <QRegExp>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QScreen>
 # include <QSignalMapper>
 # include <QStatusBar>
@@ -97,11 +98,12 @@ public:
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
             // wash out windows file:///C:/something ->file://C:/something
             QUrl url = info.requestUrl();
-            QRegExp re(QLatin1String("^/([a-zA-Z]\\:.*)")); // match & catch drive letter forward
+            QRegularExpression re(QLatin1String("^/([a-zA-Z]\\:.*)")); // match & catch drive letter forward
+            QRegularExpressionMatch match = re.match(url.path());
 
-            if (url.host().isEmpty() && url.isLocalFile() && re.exactMatch(url.path()))
+            if (url.host().isEmpty() && url.isLocalFile() && match.hasMatch())
                 // clip / in file urs ie /C:/something -> C:/something
-                url.setPath(re.cap(1));
+                url.setPath(match.captured(1));
 
             // invoke thread safe.
             QMetaObject::invokeMethod(m_parent, "urlFilter", Q_ARG(QUrl, url));

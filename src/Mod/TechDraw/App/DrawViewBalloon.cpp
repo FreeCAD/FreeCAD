@@ -23,43 +23,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <cstring>
 # include <cstdlib>
-# include <exception>
-# include <QString>
-# include <QStringList>
-# include <QRegExp>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <gp_Pnt.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
+# include <cstring>
+# include <sstream>
+# include <Precision.hxx>
 #endif
 
-#include <QLocale>
-
 #include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
-#include <Base/Quantity.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-
 #include <Mod/Measure/App/Measurement.h>
 
-#include "Preferences.h"
-#include "Geometry.h"
-#include "DrawViewPart.h"
 #include "DrawViewBalloon.h"
-#include "DrawUtil.h"
-#include "LineGroup.h"
 #include "ArrowPropEnum.h"
+#include "DrawViewPart.h"
+#include "Preferences.h"
 
-
-//#include <Mod/TechDraw/App/DrawViewBalloonPy.h>  // generated from DrawViewBalloonPy.xml
 
 using namespace TechDraw;
 

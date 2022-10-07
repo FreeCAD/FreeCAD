@@ -23,11 +23,10 @@
 #ifndef DrawViewArch_h_
 #define DrawViewArch_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewSymbol.h"
 

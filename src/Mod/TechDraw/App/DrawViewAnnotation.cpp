@@ -21,27 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Parameter.h>
-
-#include "Preferences.h"
 #include "DrawViewAnnotation.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawViewAnnotation

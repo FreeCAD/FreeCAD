@@ -23,10 +23,10 @@
 #include "PreCompiled.h"
 
 #include "DrawViewCollection.h"
-
 // inclusion of the generated files (generated out of DrawViewCollectionPy.xml)
 #include <Mod/TechDraw/App/DrawViewCollectionPy.h>
 #include <Mod/TechDraw/App/DrawViewCollectionPy.cpp>
+
 
 using namespace TechDraw;
 

@@ -23,13 +23,11 @@
 #ifndef TechDraw_DrawViewDimension_h_
 #define TechDraw_DrawViewDimension_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <tuple>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <Base/UnitsApi.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawView.h"
 
