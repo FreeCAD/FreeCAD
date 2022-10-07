@@ -55,7 +55,10 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
         Content.push_back(SolverAdvanced);
     }
 
-    Content.push_back(General);
+    if (hGrp->GetBool("ShowSettingsWidget", true)) {
+        Content.push_back(General);
+    }
+
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
