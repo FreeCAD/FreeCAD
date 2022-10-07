@@ -28,7 +28,6 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
-#include <qtextedit.h>
 
 RegExpDialog::RegExpDialog(QWidget* parent)
   : QDialog(parent), ui(new Ui_RegExpDialog())
@@ -53,10 +52,15 @@ void RegExpDialog::performRegExp()
         return;
     }
 
-    QRegExp rx(txt);
-    rx.setCaseSensitivity(ui->checkBox1->isChecked() ? Qt::CaseSensitive : Qt::CaseInsensitive);
-    rx.setPatternSyntax(ui->checkBox2->isChecked() ? QRegExp::Wildcard : QRegExp::RegExp);
-    rx.setMinimal(ui->checkBox3->isChecked());
+    QRegularExpression::PatternOptions options = QRegularExpression::NoPatternOption;
+    if (ui->checkBox1->isChecked()) {
+        options |= QRegularExpression::CaseInsensitiveOption;
+    }
+    if (ui->checkBox3->isChecked()) {
+        options |= QRegularExpression::InvertedGreedinessOption;
+    }
+
+    QRegularExpression rx(txt, options);
 
     // evaluate regular expression
     ui->textLabel4->setText(rx.errorString());
@@ -92,7 +96,7 @@ void RegExpSyntaxHighlighter::highlightBlock (const QString & text)
     regFormat.setFontWeight(QFont::Normal);
     setFormat(0, text.length(), regFormat);
 
-    if (regexp.isEmpty())
+    if (regexp.pattern().isEmpty())
         return; // empty regular expression
 
     int pos = 0;
@@ -100,16 +104,17 @@ void RegExpSyntaxHighlighter::highlightBlock (const QString & text)
     regFormat.setFontWeight(QFont::Bold);
     regFormat.setForeground(Qt::blue);
 
-    while ((pos = regexp.indexIn(text, pos)) != -1) {
+    QRegularExpressionMatch match;
+    while ((pos = text.indexOf(regexp, pos, &match)) != -1) {
         if (last == pos)
             break;
-        QString sub = text.mid(pos, regexp.matchedLength());
+        QString sub = text.mid(pos, match.capturedLength());
         if (!sub.isEmpty()) {
             setFormat(pos, sub.length(), regFormat);
         }
 
-        pos += regexp.matchedLength();
-        last=pos;
+        pos += match.capturedLength();
+        last = pos;
     }
 }
 #if 0
@@ -142,7 +147,7 @@ int RegExpSyntaxHighlighter::highlightParagraph ( const QString & text, int /*en
     return 0;
 }
 #endif
-void RegExpSyntaxHighlighter::highlightMatchedText(const QRegExp& rx)
+void RegExpSyntaxHighlighter::highlightMatchedText(const QRegularExpression& rx)
 {
     regexp = rx;
     rehighlight();

@@ -3,9 +3,10 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = regexp
 DEPENDPATH += .
 INCLUDEPATH += .
+QT           += widgets
 
 # Input
 HEADERS += regexpdialog.h

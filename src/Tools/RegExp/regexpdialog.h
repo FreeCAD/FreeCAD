@@ -25,8 +25,9 @@
 #define REG_EXP_DIALOG_H
 
 #include <qdialog.h>
-#include <qregexp.h>
+#include <qregularexpression.h>
 #include <qsyntaxhighlighter.h>
+#include <qtextedit.h>
 
 class RegExpSyntaxHighlighter;
 class Ui_RegExpDialog;
@@ -57,11 +58,11 @@ public:
 
     void highlightBlock (const QString & text);
     //int highlightParagraph ( const QString & text, int endStateOfLastPara );
-    void highlightMatchedText( const QRegExp& );
+    void highlightMatchedText( const QRegularExpression& );
     void resethighlight();
 
 private:
-    QRegExp regexp;
+    QRegularExpression regexp;
 };
 
 #endif // REG_EXP_DIALOG_H
