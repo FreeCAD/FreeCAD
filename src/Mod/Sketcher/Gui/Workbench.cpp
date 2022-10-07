@@ -165,8 +165,7 @@ inline void SketcherAddWorkspaceSketchExtra<Gui::ToolBarItem>(Gui::ToolBarItem& 
     sketch  << "Sketcher_ReorientSketch"
             << "Sketcher_ValidateSketch"
             << "Sketcher_MergeSketches"
-            << "Sketcher_MirrorSketch"
-            << "Sketcher_StopOperation";
+            << "Sketcher_MirrorSketch";
 }
 
 template <typename T>
