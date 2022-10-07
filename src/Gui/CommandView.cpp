@@ -87,6 +87,37 @@ using namespace Gui;
 using Gui::Dialog::DlgSettingsImageImp;
 namespace bp = boost::placeholders;
 
+namespace {
+// A helper class to open a transaction when changing properties of view providers.
+// It uses the same parameter key as the PropertyView to control the behaviour.
+class TransactionView {
+    Gui::Document* document;
+
+public:
+    static bool getDefault() {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/PropertyView");
+        return hGrp->GetBool("AutoTransactionView", false);
+    }
+    TransactionView(Gui::Document* doc, const char* name, bool enable = getDefault())
+        : document(doc)
+    {
+        if (document && enable) {
+            document->openCommand(name);
+        }
+        else {
+            document = nullptr;
+        }
+    }
+
+    ~TransactionView() {
+        if (document) {
+            document->commitCommand();
+        }
+    }
+};
+}
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_AC(StdOrthographicCamera)
@@ -863,6 +894,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
 void StdCmdToggleVisibility::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    TransactionView transaction(getActiveGuiDocument(), QT_TRANSLATE_NOOP("Command", "Toggle visibility"));
     Selection().setVisible(SelectionSingleton::VisToggle);
 }
 
@@ -898,9 +930,14 @@ void StdCmdToggleSelectability::activated(int iMsg)
         std::vector<App::DocumentObject*> sel = Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), (*it)->getName());
 
+        if (sel.empty()) {
+            continue;
+        }
 
-        for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
-            ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
+        TransactionView transaction(pcDoc, QT_TRANSLATE_NOOP("Command", "Toggle selectability"));
+
+        for (const auto & ft : sel) {
+            ViewProvider *pr = pcDoc->getViewProviderByName(ft->getNameInDocument());
             if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
@@ -3702,7 +3739,7 @@ public:
 
         addCommand(new StdTreeDrag(),cmds.size());
         addCommand(new StdTreeSelection(),cmds.size());
-    };
+    }
     virtual const char* className() const {return "StdCmdTreeViewActions";}
 };
 
