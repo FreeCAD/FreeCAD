@@ -29,7 +29,6 @@
 #include <QGraphicsView>
 #include <QMessageBox>
 #include <QPainter>
-#include <QRegExp>
 #include <QStringBuilder>
 #include <QSvgGenerator>
 #include <QSvgRenderer>

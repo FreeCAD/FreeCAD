@@ -25,7 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QRegExp>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QTextStream>
 #endif
 
@@ -158,16 +159,17 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
         QString name;
         QTextStream str(&name);
         str << "^" << tr("Face") << "(\\d+)$";
-        QRegExp rx(name);
-        if (parts[1].indexOf(rx) < 0) {
+        QRegularExpression rx(name);
+        QRegularExpressionMatch match;
+        if (parts[1].indexOf(rx, 0, &match) < 0) {
             return QVariant();
         }
 
-        int faceId = rx.cap(1).toInt();
+        int faceId = match.captured(1).toInt();
         std::stringstream ss;
         ss << "Face" << faceId;
 
-        std::vector<std::string> upToFaces(1,ss.str());
+        std::vector<std::string> upToFaces(1, ss.str());
         PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
         pcSketchBased->UpToFace.setValue(obj, upToFaces);
         recomputeFeature();

@@ -23,7 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QRegExp>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include "PovrayHighlighter.h"
@@ -95,12 +96,13 @@ void PovrayHighlighter::highlightBlock(const QString &text)
                 state = InsideCStyleComment;
             }
             else if (text.mid(i,1) == QLatin1String("#")) {
-                QRegExp rx(QLatin1String("#\\s*(\\w*)"));
-                int pos = text.indexOf(rx, i);
-                if (pos != -1) {
-                    if (d->keywords.contains(rx.cap(1)) != 0)
-                        setFormat(i, rx.matchedLength(), this->colorByType(SyntaxHighlighter::Keyword));
-                    i += rx.matchedLength();
+                QRegularExpression rx(QLatin1String("#\\s*(\\w*)"));
+                QRegularExpressionMatch match;
+                text.indexOf(rx, i, &match);
+                if (match.hasMatch()) {
+                    if (d->keywords.contains(match.captured(1)) != 0)
+                        setFormat(i, match.capturedLength(), this->colorByType(SyntaxHighlighter::Keyword));
+                    i += match.capturedLength();
                 }
             }
             else if (text[i] == QLatin1Char('"')) {

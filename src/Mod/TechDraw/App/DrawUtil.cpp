@@ -32,7 +32,6 @@
 #include <boost/regex.hpp>
 #include <QString>
 #include <QStringList>
-#include <QRegExp>
 #include <QChar>
 #include <QPointF>
 

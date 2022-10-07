@@ -31,7 +31,6 @@
 # include <QComboBox>
 # include <QString>
 # include <QStringList>
-# include <QRegExp>
 # include <QMessageBox>
 # include <QRectF>
 # include <QPointF>

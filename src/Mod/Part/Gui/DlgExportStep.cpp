@@ -25,8 +25,8 @@
 #ifndef _PreComp_
 # include <QCheckBox>
 # include <QDialogButtonBox>
-# include <QRegExp>
-# include <QRegExpValidator>
+# include <QRegularExpression>
+# include <QRegularExpressionValidator>
 # include <QVBoxLayout>
 # include <Interface_Static.hxx>
 #endif
@@ -148,13 +148,13 @@ DlgExportHeaderStep::DlgExportHeaderStep(QWidget* parent)
 
     ui->lineEditProduct->setReadOnly(true);
 
-    QRegExp rx;
+    QRegularExpression rx;
     rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
-    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
-    companyValidator->setRegExp(rx);
+    QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
+    companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);
-    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
-    authorValidator->setRegExp(rx);
+    QRegularExpressionValidator* authorValidator = new QRegularExpressionValidator(ui->lineEditAuthor);
+    authorValidator->setRegularExpression(rx);
     ui->lineEditAuthor->setValidator(authorValidator);
 }
 
