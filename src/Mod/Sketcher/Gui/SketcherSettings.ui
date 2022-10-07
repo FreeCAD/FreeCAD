@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Sketcher solver</string>
+      <string>Task Panel Widgets</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
@@ -34,10 +34,30 @@
 'Advanced solver control' to adjust solver settings</string>
         </property>
         <property name="text">
-         <string>Show section 'Advanced solver control' in task dialog</string>
+         <string>Show section 'Advanced solver control'</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowSolverAdvancedWidget</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxSettingsTaskBox">
+        <property name="toolTip">
+         <string>Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</string>
+        </property>
+        <property name="text">
+         <string>Show section 'Edit controls'</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowSettingsWidget</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
