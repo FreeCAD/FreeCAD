@@ -23,12 +23,11 @@
 #ifndef TechDraw_DrawHatch_h_
 #define TechDraw_DrawHatch_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace App {
 class Color;

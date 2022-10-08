@@ -23,15 +23,14 @@
 #ifndef TECHDRAW_FEATUREVIEWGROUP_H_
 #define TECHDRAW_FEATUREVIEWGROUP_H_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
-# include <QRectF>
+#include <QRectF>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewCollection.h"
 

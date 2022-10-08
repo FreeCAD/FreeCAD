@@ -23,13 +23,11 @@
 #ifndef DrawProjGroupItem_h_
 #define DrawProjGroupItem_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
 #include <App/PropertyStandard.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"
 

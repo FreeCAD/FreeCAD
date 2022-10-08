@@ -23,14 +23,13 @@
 #ifndef DrawPage_h_
 #define DrawPage_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <boost_signals2.hpp>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include "DrawViewPart.h"
 
 
 namespace TechDraw

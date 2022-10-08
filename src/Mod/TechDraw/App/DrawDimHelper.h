@@ -23,9 +23,6 @@
 #ifndef DrawDimHelper_h_
 #define DrawDimHelper_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <Geom2d_Curve.hxx>
 #include <gp_Pnt.hxx>
 #include <TopoDS_Edge.hxx>
 
@@ -33,6 +30,8 @@
 #include <vector>
 
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDraw
 {

@@ -23,13 +23,12 @@
 #ifndef TechDraw_DrawGeomHatch_h_
 #define TechDraw_DrawGeomHatch_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-#include <Mod/TechDraw/App/HatchLine.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
-#include <App/PropertyLinks.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include "HatchLine.h"
 
 
 class TopoDS_Edge;

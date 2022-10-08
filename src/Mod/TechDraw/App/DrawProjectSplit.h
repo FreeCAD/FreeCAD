@@ -23,17 +23,16 @@
 #ifndef DrawProjectSplit_h_
 #define DrawProjectSplit_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 
 #include <App/FeaturePython.h>
 #include <Base/Vector3D.h>
-
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawUtil.h"
 #include "Geometry.h"
+
 
 class gp_Pnt;
 class gp_Ax2;

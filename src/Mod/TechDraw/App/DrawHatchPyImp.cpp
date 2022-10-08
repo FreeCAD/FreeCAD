@@ -23,10 +23,10 @@
 #include "PreCompiled.h"
 
 #include "DrawHatch.h"
-
 // inclusion of the generated files (generated out of DrawHatchPy.xml)
 #include <Mod/TechDraw/App/DrawHatchPy.h>
 #include <Mod/TechDraw/App/DrawHatchPy.cpp>
+
 
 using namespace TechDraw;
 
@@ -35,12 +35,6 @@ std::string DrawHatchPy::representation() const
 {
     return std::string("<DrawHatch object>");
 }
-
-
-
-
-
-
 
 PyObject *DrawHatchPy::getCustomAttributes(const char* /*attr*/) const
 {
