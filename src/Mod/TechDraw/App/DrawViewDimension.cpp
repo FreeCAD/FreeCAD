@@ -27,7 +27,8 @@
 # include <cstring>
 # include <sstream>
 # include <QLocale>
-# include <QRegExp>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 # include <QString>
 # include <QStringList>
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -855,10 +856,11 @@ std::string DrawViewDimension::formatValue(qreal value,
 
         // qUserString is the value + unit with default decimals, so extract the unit
         // we cannot just use unit.getString() because this would convert '°' to 'deg'
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$")); // space + any non digits at end of string
-        int pos = rxUnits.indexIn(qUserString, 0);
+        QRegularExpression rxUnits(QString::fromUtf8(" \\D*$")); // space + any non digits at end of string
+        QRegularExpressionMatch rxMatch;
+        int pos = qUserString.indexOf(rxUnits, 0, &rxMatch);
         if (pos != -1) {
-            qUserStringUnits = rxUnits.cap(0); // entire capture - non numerics at end of qUserString
+            qUserStringUnits = rxMatch.captured(0); // entire capture - non numerics at end of qUserString
         }
 
         // get value in the base unit with default decimals
@@ -881,15 +883,15 @@ std::string DrawViewDimension::formatValue(qreal value,
         // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
         // the default is: if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
         // Also, handle the new non-standard format-specifier '%w', which has the following rules: works as %f, but no trailing zeros
-        if (formatSpecifier.contains(QRegExp(QStringLiteral("%.*[wW]")))) {
+        if (formatSpecifier.contains(QRegularExpression(QStringLiteral("%.*[wW]")))) {
             QString fs = formatSpecifier;
-            fs.replace(QRegExp(QStringLiteral("%(.*)w")), QStringLiteral("%\\1f"));
-            fs.replace(QRegExp(QStringLiteral("%(.*)W")), QStringLiteral("%\\1F"));
+            fs.replace(QRegularExpression(QStringLiteral("%(.*)w")), QStringLiteral("%\\1f"));
+            fs.replace(QRegularExpression(QStringLiteral("%(.*)W")), QStringLiteral("%\\1F"));
             formattedValue = QString::asprintf(Base::Tools::toStdString(fs).c_str(), userVal);
             // First, try to cut trailing zeros, if AFTER decimal dot there are nonzero numbers
             // Second, try to cut also decimal dot and zeros, if there are just zeros after it
-            formattedValue.replace(QRegExp(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
-            formattedValue.replace(QRegExp(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
+            formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
+            formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
         } else {
             formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
         }
@@ -931,7 +933,7 @@ std::string DrawViewDimension::formatValue(qreal value,
             // other units need 1 space for readability
             if ( angularMeasure &&
                  !qUserStringUnits.contains(QString::fromLatin1("deg")) ) {
-                QRegExp space(QString::fromUtf8("\\s"));
+                QRegularExpression space(QString::fromUtf8("\\s"));
                 qUserStringUnits.remove(space);
             }
             if (angularMeasure) {
@@ -963,7 +965,7 @@ std::string DrawViewDimension::formatValue(qreal value,
         if (angularMeasure) {
             // remove leading space from unit if unit is not "deg"
             if ( !qUserStringUnits.contains(QString::fromLatin1("deg")) ) {
-                QRegExp space(QString::fromUtf8("\\s"));
+                QRegularExpression space(QString::fromUtf8("\\s"));
                 qUserStringUnits.remove(space);
             }
             return Base::Tools::toStdString(qUserStringUnits);
@@ -1084,7 +1086,7 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 
         // tolerance might start with a plus sign that we don't want, so cut it off
         // note plus sign is not at pos = 0!
-        QRegExp plus(QString::fromUtf8("^\\s*\\+"));
+        QRegularExpression plus(QString::fromUtf8("^\\s*\\+"));
         tolerance.remove(plus);
 
         return (labelText +
@@ -1108,10 +1110,11 @@ QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
 {
     QStringList result;
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
-    int pos = rxFormat.indexIn(fSpec, 0);
+    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
+    QRegularExpressionMatch rxMatch;
+    int pos = fSpec.indexOf(rxFormat, 0, &rxMatch);
     if (pos != -1)  {
-        QString match = rxFormat.cap(0);                                  //entire capture of rx
+        QString match = rxMatch.captured(0);                                  //entire capture of rx
         QString formatPrefix = fSpec.left(pos);
         result.append(formatPrefix);
         QString formatSuffix = fSpec.right(fSpec.size() - pos - match.size());

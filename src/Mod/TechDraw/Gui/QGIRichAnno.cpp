@@ -37,7 +37,8 @@
 #include <QPainterPath>
 #include <QPaintDevice>
 #include <QSvgGenerator>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QTextFrame>
@@ -188,16 +189,17 @@ void QGIRichAnno::setTextItem()
     //font sizes differently from QGraphicsTextItem (?)
     if (!getExporting()) {
         //convert point font sizes to (Rez, mm) font sizes
-        QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+        QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+        QRegularExpressionMatch match;
         double mmPerPoint = 0.353;
         double sizeConvert = Rez::getRezFactor() * mmPerPoint;
         int pos = 0;
         QStringList findList;
         QStringList replList;
-        while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
-            QString found = rxFontSize.cap(0);
+        while ((pos = inHtml.indexOf(rxFontSize, pos, &match)) != -1) {
+            QString found = match.captured(0);
             findList << found;
-            QString qsOldSize = rxFontSize.cap(1);
+            QString qsOldSize = match.captured(1);
 
             QString repl = found;
             double newSize = qsOldSize.toDouble();
@@ -205,7 +207,7 @@ void QGIRichAnno::setTextItem()
             QString qsNewSize = QString::number(newSize, 'f', 2);
             repl.replace(qsOldSize, qsNewSize);
             replList << repl;
-            pos += rxFontSize.matchedLength();
+            pos += match.capturedLength();
         }
         QString outHtml = inHtml;
         int iRepl = 0;

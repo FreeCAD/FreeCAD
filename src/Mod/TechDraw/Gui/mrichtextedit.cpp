@@ -47,6 +47,7 @@
 #include <QMenu>
 #include <QDialog>
 #include <QBitmap>
+#include <QRegularExpression>
 #endif
 
 #include <Base/Console.h>
@@ -649,11 +650,11 @@ void MRichTextEdit::slotClipboardDataChanged() {
 QString MRichTextEdit::toHtml() const {
     QString s = f_textedit->toHtml();
     // convert emails to links
-    s = s.replace(QRegExp(
+    s = s.replace(QRegularExpression(
                 QString::fromUtf8("(<[^a][^>]+>(?:<span[^>]+>)?|\\s)([a-zA-Z\\d]+@[a-zA-Z\\d]+\\.[a-zA-Z]+)")),
                 QString::fromUtf8("\\1<a href=\"mailto:\\2\">\\2</a>"));
     // convert links
-    s = s.replace(QRegExp(
+    s = s.replace(QRegularExpression(
                 QString::fromUtf8("(<[^a][^>]+>(?:<span[^>]+>)?|\\s)((?:https?|ftp|file)://[^\\s'\"<>]+)")),
                 QString::fromUtf8( "\\1<a href=\"\\2\">\\2</a>"));
     // see also: Utils::linkify()
