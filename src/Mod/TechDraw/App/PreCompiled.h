@@ -77,6 +77,8 @@
 #include "QDomNodeModel.h"
 #include <QFile>
 #include <QLocale>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QtConcurrentRun>
 #include <QXmlQuery>
 #include <QXmlResultItems>
