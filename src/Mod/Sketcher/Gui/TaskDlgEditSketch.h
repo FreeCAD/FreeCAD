@@ -75,7 +75,7 @@ protected:
     TaskSketcherConstraints *Constraints;
     TaskSketcherElements    *Elements;
     TaskSketcherGeneral     *General;
-    TaskSketcherMessages    *Messages;
+    TaskSketcherMessages* Messages;
     TaskSketcherSolverAdvanced *SolverAdvanced;
 };
 

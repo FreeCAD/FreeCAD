@@ -133,6 +133,44 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     </widget>
    </item>
    <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoRemoveRedundants">
+     <property name="toolTip">
+      <string>New constraints that would be redundant will automatically be removed</string>
+     </property>
+     <property name="text">
+      <string>Auto remove redundants</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>AutoRemoveRedundants</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoUpdate">
+     <property name="toolTip">
+      <string>Executes a recomputation of active document after every sketch action</string>
+     </property>
+     <property name="text">
+      <string>Auto update</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>AutoRecompute</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Rendering order (global):</string>

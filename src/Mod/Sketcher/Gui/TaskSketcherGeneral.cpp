@@ -36,6 +36,8 @@
 
 #include <QEvent>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
 #include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
@@ -59,6 +61,11 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
             this, SIGNAL(emitToggleAutoconstraints(bool)));
     connect(ui->checkBoxRedundantAutoconstraints, SIGNAL(toggled(bool)),
         this, SIGNAL(emitToggleAvoidRedundant(bool)));
+    connect(ui->checkBoxAutoUpdate, SIGNAL(toggled(bool)),
+        this, SIGNAL(emitToggleAutoUpdate(bool)));
+    connect(ui->checkBoxAutoRemoveRedundants, SIGNAL(toggled(bool)),
+        this, SIGNAL(emitToggleAutoRemoveRedundants(bool)));
+
     ui->renderingOrder->installEventFilter(this);
 }
 
@@ -81,6 +88,8 @@ void SketcherGeneralWidget::saveSettings()
     ui->checkBoxGridSnap->onSave();
     ui->checkBoxAutoconstraints->onSave();
     ui->checkBoxRedundantAutoconstraints->onSave();
+    ui->checkBoxAutoUpdate->onSave();
+    ui->checkBoxAutoRemoveRedundants->onSave();
 
     saveOrderingOrder();
 }
@@ -105,6 +114,8 @@ void SketcherGeneralWidget::loadSettings()
     ui->checkBoxGridSnap->onRestore();
     ui->checkBoxAutoconstraints->onRestore();
     ui->checkBoxRedundantAutoconstraints->onRestore();
+    ui->checkBoxAutoUpdate->onRestore();
+    ui->checkBoxAutoRemoveRedundants->onRestore();
 
     loadOrderingOrder();
 }
@@ -164,6 +175,11 @@ void SketcherGeneralWidget::checkAvoidRedundant(bool on)
     ui->checkBoxRedundantAutoconstraints->setChecked(on);
 }
 
+bool SketcherGeneralWidget::isCheckedAutoUpdate()
+{
+    return ui->checkBoxAutoUpdate->isChecked();
+}
+
 void SketcherGeneralWidget::enableGridSettings(bool on)
 {
     ui->gridSize->setEnabled(on);
@@ -173,6 +189,16 @@ void SketcherGeneralWidget::enableGridSettings(bool on)
 void SketcherGeneralWidget::enableAvoidRedundant(bool on)
 {
     ui->checkBoxRedundantAutoconstraints->setEnabled(on);
+}
+
+void SketcherGeneralWidget::saveAutoUpdate()
+{
+    ui->checkBoxAutoUpdate->onSave();
+}
+
+void SketcherGeneralWidget::saveAutoRemoveRedundants()
+{
+    ui->checkBoxAutoRemoveRedundants->onSave();
 }
 
 void SketcherGeneralWidget::changeEvent(QEvent *e)
@@ -207,8 +233,9 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
         widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
         widget->checkAvoidRedundant(sketchView->AvoidRedundant.getValue());
         widget->enableAvoidRedundant(sketchView->Autoconstraints.getValue());
+        sketchView->getSketchObject()->noRecomputes = !widget->isCheckedAutoUpdate();
     }
-
+    
     // connecting the needed signals
     QObject::connect(
         widget, SIGNAL(emitToggleGridView(bool)),
@@ -233,6 +260,16 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     QObject::connect(
         widget, SIGNAL(emitToggleAvoidRedundant(bool)),
         this  , SLOT  (onToggleAvoidRedundant(bool))
+    );
+    
+    QObject::connect(
+        widget, SIGNAL(emitToggleAutoRemoveRedundants(bool)),
+        this  , SLOT  (onToggleAutoRemoveRedundants(bool))
+    );
+    
+    QObject::connect(
+        widget, SIGNAL(emitToggleAutoUpdate(bool)),
+        this  , SLOT  (onToggleAutoUpdate(bool))
     );
 
     QObject::connect(
@@ -312,6 +349,17 @@ void TaskSketcherGeneral::onToggleAvoidRedundant(bool on)
 {
     Base::ConnectionBlocker block(changedSketchView);
     sketchView->AvoidRedundant.setValue(on);
+}
+
+void TaskSketcherGeneral::onToggleAutoRemoveRedundants(bool on)
+{
+    widget->saveAutoRemoveRedundants();
+}
+
+void TaskSketcherGeneral::onToggleAutoUpdate(bool on)
+{
+    sketchView->getSketchObject()->noRecomputes = !on;
+    widget->saveAutoUpdate();
 }
 
 /// @cond DOXERR
