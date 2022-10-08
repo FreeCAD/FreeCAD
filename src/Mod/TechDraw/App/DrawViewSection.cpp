@@ -22,66 +22,52 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepTools.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Dir.hxx>
-#include <Geom_Plane.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
+# include <chrono>
+# include <sstream>
+# include <QtConcurrentRun>
+# include <Bnd_Box.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepTools.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Ax3.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopExp_Explorer.hxx>
 #endif
-
-#include <chrono>
-#include <sstream>
-
-#include <QFile>
-#include <QFileInfo>
-#include <QtConcurrentRun>
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Material.h>
 #include <Base/BoundBox.h>
-#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "HatchLine.h"
-#include "DrawUtil.h"
-#include "DrawProjGroupItem.h"
+#include "DrawViewSection.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
-#include "DrawViewSection.h"
+#include "DrawProjGroupItem.h"
+#include "DrawUtil.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
+
 
 using namespace TechDraw;
-using namespace std;
 
 const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Left",
@@ -94,7 +80,6 @@ const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
                                             "SvgHatch",
                                             "PatHatch",
                                              nullptr};
-
 
 //===========================================================================
 // DrawViewSection

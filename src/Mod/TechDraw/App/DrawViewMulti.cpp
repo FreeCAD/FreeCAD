@@ -20,53 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRep_Builder.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-
+# include <gp_Ax2.hxx>
+# include <gp_Pnt.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
-#include <chrono>
-
-# include <QFile>
-# include <QFileInfo>
-
-#include <App/Application.h>
-#include <App/Material.h>
-#include <App/Part.h>
-#include <Base/BoundBox.h>
-#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
-#include "Geometry.h"
 #include "GeometryObject.h"
 #include "DrawUtil.h"
 #include "DrawViewMulti.h"
 
-using namespace TechDraw;
-using namespace std;
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawViewMulti

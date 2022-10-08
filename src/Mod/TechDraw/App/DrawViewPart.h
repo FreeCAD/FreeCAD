@@ -25,11 +25,8 @@
 #ifndef DrawViewPart_h_
 #define DrawViewPart_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <QFuture>
 #include <QFutureWatcher>
-#include <QObject>
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
@@ -37,11 +34,11 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyUnits.h>
 #include <Base/BoundBox.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "CosmeticExtension.h"
 #include "DrawView.h"
+#include "CosmeticExtension.h"
 
 
 class gp_Pnt;

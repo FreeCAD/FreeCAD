@@ -25,22 +25,17 @@
 #ifndef DrawViewSection_h_
 #define DrawViewSection_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <gp_Ax2.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS_Shape.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyLinks.h>
-
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <gp_Ax2.hxx>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"
-#include "HatchLine.h"
 
 
 class Bnd_Box;

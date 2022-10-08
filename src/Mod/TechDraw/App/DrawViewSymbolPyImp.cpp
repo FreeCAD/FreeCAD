@@ -22,17 +22,16 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 
 #include "DrawViewSymbol.h"
 #include "DrawView.h"
-
 // inclusion of the generated files
 #include <Mod/TechDraw/App/DrawViewPy.h>
 #include <Mod/TechDraw/App/DrawViewSymbolPy.h>
 #include <Mod/TechDraw/App/DrawViewSymbolPy.cpp>
+
 
 using namespace TechDraw;
 

@@ -54,6 +54,7 @@
 #include <bitset>
 #include <cassert>
 #include <cstdio>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -70,9 +71,13 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-#include <QtConcurrentRun>
+#include <QDomDocument>
+#include "QDomNodeModel.h"
 #include <QFile>
 #include <QLocale>
+#include <QtConcurrentRun>
+#include <QXmlQuery>
+#include <QXmlResultItems>
 
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>

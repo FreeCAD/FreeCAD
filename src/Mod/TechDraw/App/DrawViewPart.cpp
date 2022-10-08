@@ -22,56 +22,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Bnd_Box.hxx>
-#include <BRepAlgo_NormalProjection.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Pnt.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <ShapeAnalysis.hxx>
-#include <TopExp.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
+# include <sstream>
+# include <QtConcurrentRun>
+# include <Bnd_Box.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAlgo_NormalProjection.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepTools.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Pnt.hxx>
+# include <HLRAlgo_Projector.hxx>
+# include <ShapeAnalysis.hxx>
+# include <TopExp.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopoDS_Wire.hxx>
 #endif
-
-#include <limits>
-#include <algorithm>
-#include <cmath>
-#include <sstream>
-
-#include <QtConcurrentRun>
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/GroupExtension.h>
-#include <App/Part.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
-#include <Mod/Part/App/TopoShape.h>
-
+#include "DrawViewPart.h"
+#include "DrawViewPartPy.h"  // generated from DrawViewPartPy.xml
 #include "Cosmetic.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
@@ -87,12 +74,8 @@
 #include "GeometryObject.h"
 #include "ShapeExtractor.h"
 
-#include "DrawViewPart.h"
-#include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawViewPart

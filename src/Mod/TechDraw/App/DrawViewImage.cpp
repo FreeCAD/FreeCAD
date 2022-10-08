@@ -20,28 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-#include <iterator>
-#include <boost/regex.hpp>
-
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
 #include <App/Document.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
 
-#include "DrawUtil.h"
 #include "DrawViewImage.h"
+#include "DrawUtil.h"
+
 
 using namespace TechDraw;
-using namespace std;
-
 
 //===========================================================================
 // DrawViewImage
