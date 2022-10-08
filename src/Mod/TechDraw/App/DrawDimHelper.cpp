@@ -23,50 +23,33 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <cstring>
 # include <cstdlib>
-#include <cmath>
-#include <cfloat>
-#include <string>
-# include <exception>
+# include <sstream>
 
-#include <limits>
-
-#include <Precision.hxx>
-#include <Bnd_Box2d.hxx>
-#include <BndLib_Add2dCurve.hxx>
-#include <Bnd_Box.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include "BRepBuilderAPI_MakeShape.hxx"
-#include <BRepBndLib.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_Curve.hxx>
-#include <gp_Pln.hxx>
-#include <TopoDS_Edge.hxx>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <Geom_Line.hxx>
+# include <gp_Pln.hxx>
+# include <TopoDS_Edge.hxx>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
+#include "DrawDimHelper.h"
 #include "Geometry.h"
-#include "DrawUtil.h"
 #include "Cosmetic.h"
 #include "DrawPage.h"
-#include "DrawViewPart.h"
+#include "DrawUtil.h"
 #include "DrawViewDimension.h"
 #include "DrawViewDimExtent.h"
+#include "DrawViewPart.h"
 
-#include "DrawDimHelper.h"
 
 #define HORIZONTAL 0
 #define VERTICAL 1

@@ -20,88 +20,71 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
-#include <iomanip>
-#include <cmath>
 
-# include <QFile>
-# include <QFileInfo>
-
+#include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRep_Builder.hxx>
-
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepTools.hxx>
-#include <Standard_PrimitiveTypes.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Compound.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopExp.hxx>
-#include <Precision.hxx>
-
-#include <cmath>
-
 #endif
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
 
-#include "HatchLine.h"
+#include "DrawGeomHatch.h"
+#include "DrawGeomHatchPy.h" // generated from DrawGeomHatchPy.xml
 #include "DrawUtil.h"
-#include "Preferences.h"
-#include "Geometry.h"
-#include "DrawPage.h"
 #include "DrawViewPart.h"
 #include "DrawViewSection.h"
-#include "DrawViewDetail.h"
-#include "DrawGeomHatch.h"
+#include "Geometry.h"
 #include "GeometryObject.h"
+#include "HatchLine.h"
+#include "Preferences.h"
 
-#include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
 
 using namespace TechDraw;
-using namespace std;
 
-App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision::Confusion(),
-                                                                       std::numeric_limits<double>::max(),
-                                                                       (0.1)}; // increment by 0.1
+App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {
+    Precision::Confusion(), std::numeric_limits<double>::max(), (0.1)}; // increment by 0.1
 
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
-
 
 DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be crosshatched");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+                      "The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()), vgroup, App::Prop_None, "The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(FilePattern, (prefGeomHatchFile()), vgroup, App::Prop_None,
+                      "The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup, App::Prop_None,
-                                            "Embedded Pat hatch file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(NamePattern, (prefGeomHatchName()), vgroup, App::Prop_None, "The name of the pattern");
-    ADD_PROPERTY_TYPE(ScalePattern, (1.0), vgroup, App::Prop_None, "GeomHatch pattern size adjustment");
+                      "Embedded Pat hatch file. System use only.");// n/a to end users
+    ADD_PROPERTY_TYPE(NamePattern, (prefGeomHatchName()), vgroup, App::Prop_None,
+                      "The name of the pattern");
+    ADD_PROPERTY_TYPE(ScalePattern, (1.0), vgroup, App::Prop_None,
+                      "GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
 
     m_saveFile = "";
@@ -122,14 +105,14 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
         if ((prop == &FilePattern) && doc) {
             if (!FilePattern.isEmpty()) {
                 replacePatIncluded(FilePattern.getValue());
-                DrawGeomHatch::execute();         //remake the line sets
+                DrawGeomHatch::execute();   //remake the line sets
             }
         }
         if ((prop == &NamePattern) && doc) {
-            DrawGeomHatch::execute();            //remake the line sets
+            DrawGeomHatch::execute();       //remake the line sets
         }
     } else {
-        if ((prop == &FilePattern) ||                //make sure right pattern gets loaded at start up
+        if ((prop == &FilePattern) ||       //make sure right pattern gets loaded at start up
             (prop == &NamePattern))   {
             DrawGeomHatch::execute();
         }

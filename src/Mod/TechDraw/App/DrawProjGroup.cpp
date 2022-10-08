@@ -25,39 +25,34 @@
 
 #ifndef _PreComp_
 # include <sstream>
-#include <QRectF>
-#include <cmath>
+# include <QRectF>
+# include <gp_Ax2.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
 #endif
-
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Ax2.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Part.h>
-
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
 #include <Base/Parameter.h>
 
-#include "DrawUtil.h"
-#include "Preferences.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupPy.h" // generated from DrawProjGroupPy.xml
 #include "DrawPage.h"
 #include "DrawProjGroupItem.h"
-#include "DrawProjGroup.h"
+#include "DrawUtil.h"
+#include "Preferences.h"
 
-#include <Mod/TechDraw/App/DrawProjGroupPy.h>  // generated from DrawProjGroupPy.xml
 
 using namespace TechDraw;
 
 const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
                                                     "Third Angle",
-                                                    "Default",          //Use Page setting
+                                                    "Default",     //Use Page setting
                                                     nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)

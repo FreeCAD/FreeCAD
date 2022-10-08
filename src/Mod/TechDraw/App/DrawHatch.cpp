@@ -20,41 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
-#include <Precision.hxx>
-#include <cmath>
-
 #endif
-
-#include <iomanip>
-
-# include <QFile>
-# include <QFileInfo>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
 
-#include "Preferences.h"
-#include "DrawViewPart.h"
-#include "DrawUtil.h"
 #include "DrawHatch.h"
+#include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
+#include "DrawUtil.h"
+#include "DrawViewPart.h"
+#include "Preferences.h"
 
-#include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
 
 using namespace TechDraw;
-using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
-
 
 DrawHatch::DrawHatch(void)
 {

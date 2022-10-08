@@ -312,6 +312,7 @@
 #include <GeomFill_Sweep.hxx>
 #include <GeomLib.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <GeomLib_Tool.hxx>
 #include <GeomLProp.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <GeomLProp_SLProps.hxx>

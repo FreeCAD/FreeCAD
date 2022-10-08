@@ -23,72 +23,38 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
+# include <limits>
 # include <sstream>
-
+#include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepGProp.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
 #include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepLProp_CurveTool.hxx>
 #include <Geom_Curve.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GProp_GProps.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
+#include <GeomLib_Tool.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Pln.hxx>
-#include <gp_XYZ.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <ShapeAnalysis.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
 #endif
 
-#include <limits>
-#include <algorithm>
-#include <cmath>
-#include <GeomLib_Tool.hxx>
-
-#include <App/Application.h>
-#include <Base/BoundBox.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Parameter.h>
-#include <Mod/Part/App/PartFeature.h>
 
+#include "DrawProjectSplit.h"
 #include "DrawUtil.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
-#include "DrawProjectSplit.h"
 
 
 using namespace TechDraw;
-using namespace std;
 
 //===========================================================================
 // DrawProjectSplit

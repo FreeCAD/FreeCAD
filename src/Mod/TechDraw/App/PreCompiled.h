@@ -51,6 +51,7 @@
 #ifdef _PreComp_
 
 // standard
+#include <algorithm>
 #include <bitset>
 #include <cassert>
 #include <cstdio>
@@ -58,6 +59,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <set>
 #include <sstream>

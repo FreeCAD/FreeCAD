@@ -24,39 +24,33 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <gp_Ax2.hxx>
 #endif
 
-#include <gp_Ax2.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Trsf.hxx>
-
-#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 
-#include "GeometryObject.h"
-#include "DrawUtil.h"
+#include "DrawProjGroupItem.h"
+#include "DrawProjGroupItemPy.h" // generated from DrawProjGroupItemPy.xml
 #include "DrawPage.h"
 #include "DrawProjGroup.h"
-#include "DrawProjGroupItem.h"
-
-#include <Mod/TechDraw/App/DrawProjGroupItemPy.h>  // generated from DrawProjGroupItemPy.xml
+#include "DrawUtil.h"
+#include "GeometryObject.h"
 
 
 using namespace TechDraw;
 
-const char* DrawProjGroupItem::TypeEnums[] = {"Front",
-                                             "Left",
-                                             "Right",
-                                             "Rear",
-                                             "Top",
-                                             "Bottom",
-                                             "FrontTopLeft",
-                                             "FrontTopRight",
-                                             "FrontBottomLeft",
-                                             "FrontBottomRight",
-                                             nullptr};
-
+const char *DrawProjGroupItem::TypeEnums[] = {"Front",
+                                              "Left",
+                                              "Right",
+                                              "Rear",
+                                              "Top",
+                                              "Bottom",
+                                              "FrontTopLeft",
+                                              "FrontTopRight",
+                                              "FrontBottomLeft",
+                                              "FrontBottomRight",
+                                              nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroupItem, TechDraw::DrawViewPart)
 
