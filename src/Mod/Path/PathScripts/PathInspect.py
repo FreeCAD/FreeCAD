@@ -61,28 +61,28 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         self.highlightingRules = []
         numberFormat = QtGui.QTextCharFormat()
         numberFormat.setForeground(colors[0])
-        self.highlightingRules.append((QtCore.QRegExp("[\\-0-9\\.]"), numberFormat))
+        self.highlightingRules.append((QtCore.QRegularExpression("[\\-0-9\\.]"), numberFormat))
         keywordFormat = QtGui.QTextCharFormat()
         keywordFormat.setForeground(colors[1])
         keywordFormat.setFontWeight(QtGui.QFont.Bold)
         keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
         self.highlightingRules.extend(
-            [(QtCore.QRegExp(pattern), keywordFormat) for pattern in keywordPatterns]
+            [(QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns]
         )
         speedFormat = QtGui.QTextCharFormat()
         speedFormat.setFontWeight(QtGui.QFont.Bold)
         speedFormat.setForeground(colors[2])
-        self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"), speedFormat))
+        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
 
     def highlightBlock(self, text):
 
         for pattern, fmt in self.highlightingRules:
-            expression = QtCore.QRegExp(pattern)
-            index = expression.indexIn(text)
-            while index >= 0:
-                length = expression.matchedLength()
-                self.setFormat(index, length, fmt)
-                index = expression.indexIn(text, index + length)
+            expression = QtCore.QRegularExpression(pattern)
+            index = expression.match(text)
+            while index.hasMatch():
+                length = index.capturedLength()
+                self.setFormat(index.capturedStart(), length, fmt)
+                index = expression.match(text, index.capturedStart() + length)
 
 
 class GCodeEditorDialog(QtGui.QDialog):

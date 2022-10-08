@@ -53,22 +53,22 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
 
         self.highlightingRules = [
-            (QtCore.QRegExp(pattern), keywordFormat) for pattern in keywordPatterns
+            (QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns
         ]
 
         speedFormat = QtGui.QTextCharFormat()
         speedFormat.setFontWeight(QtGui.QFont.Bold)
         speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"), speedFormat))
+        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
 
     def highlightBlock(self, text):
         for pattern, hlFormat in self.highlightingRules:
-            expression = QtCore.QRegExp(pattern)
-            index = expression.indexIn(text)
-            while index >= 0:
-                length = expression.matchedLength()
-                self.setFormat(index, length, hlFormat)
-                index = expression.indexIn(text, index + length)
+            expression = QtCore.QRegularExpression(pattern)
+            index = expression.match(text)
+            while index.hasMatch():
+                length = index.capturedLength()
+                self.setFormat(index.capturedStart(), length, hlFormat)
+                index = expression.match(text, index.capturedStart() + length)
 
 
 class GCodeEditorDialog(QtGui.QDialog):
