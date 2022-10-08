@@ -26,7 +26,7 @@
 
 #include <memory>
 #include <QDialog>
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 
 #include "PreferencePackManager.h"
 
@@ -72,7 +72,7 @@ private:
     std::unique_ptr<Ui_DlgCreateNewPreferencePack> ui;
     std::map<std::string, QTreeWidgetItem*> _groups;
     std::vector<PreferencePackManager::TemplateFile> _templates;
-    QRegExpValidator _nameValidator;
+    QRegularExpressionValidator _nameValidator;
     std::vector<std::string> _existingPackNames;
 };
 
