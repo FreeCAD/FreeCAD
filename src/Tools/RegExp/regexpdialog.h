@@ -29,6 +29,7 @@
 #include <qsyntaxhighlighter.h>
 #include <qtextedit.h>
 
+class QRegularExpressionValidator;
 class RegExpSyntaxHighlighter;
 class Ui_RegExpDialog;
 class RegExpDialog : public QDialog
@@ -45,6 +46,7 @@ protected Q_SLOTS:
 
 private:
     RegExpSyntaxHighlighter* rxhilighter;
+    QRegularExpressionValidator* validator;
     Ui_RegExpDialog* ui;
 };
 
@@ -57,7 +59,6 @@ public:
     ~RegExpSyntaxHighlighter();
 
     void highlightBlock (const QString & text);
-    //int highlightParagraph ( const QString & text, int endStateOfLastPara );
     void highlightMatchedText( const QRegularExpression& );
     void resethighlight();
 

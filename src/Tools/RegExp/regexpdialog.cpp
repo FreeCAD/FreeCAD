@@ -28,6 +28,7 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
+#include <qvalidator.h>
 
 RegExpDialog::RegExpDialog(QWidget* parent)
   : QDialog(parent), ui(new Ui_RegExpDialog())
@@ -35,8 +36,25 @@ RegExpDialog::RegExpDialog(QWidget* parent)
     ui->setupUi(this);
     rxhilighter = new RegExpSyntaxHighlighter(ui->textEdit1);
 
-    connect(ui->lineEdit1, SIGNAL(textChanged(const QString &)),
-            this, SLOT(performRegExp()));
+    validator = new QRegularExpressionValidator(this);
+    ui->lineEdit->setValidator(validator);
+
+    connect(ui->lineEditRegExp, &QLineEdit::textChanged,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->caseInsensitiveOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->invertedGreedinessOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->dotMatchesEverythingOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->multilineOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->extendedPatternSyntaxOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->dontCaptureOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
+    connect(ui->useUnicodePropertiesOption, &QCheckBox::toggled,
+            this, &RegExpDialog::performRegExp);
 }
 
 RegExpDialog::~RegExpDialog()
@@ -46,18 +64,39 @@ RegExpDialog::~RegExpDialog()
 
 void RegExpDialog::performRegExp()
 {
-    QString txt = ui->lineEdit1->text();
+    QString txt = ui->lineEditRegExp->text();
     if (txt.isEmpty()) {
         rxhilighter->resethighlight();
         return;
     }
 
     QRegularExpression::PatternOptions options = QRegularExpression::NoPatternOption;
-    if (ui->checkBox1->isChecked()) {
+    if (ui->caseInsensitiveOption->isChecked()) {
         options |= QRegularExpression::CaseInsensitiveOption;
     }
-    if (ui->checkBox3->isChecked()) {
+
+    if (ui->invertedGreedinessOption->isChecked()) {
         options |= QRegularExpression::InvertedGreedinessOption;
+    }
+
+    if (ui->dotMatchesEverythingOption->isChecked()) {
+        options |= QRegularExpression::DotMatchesEverythingOption;
+    }
+
+    if (ui->multilineOption->isChecked()) {
+        options |= QRegularExpression::MultilineOption;
+    }
+
+    if (ui->extendedPatternSyntaxOption->isChecked()) {
+        options |= QRegularExpression::ExtendedPatternSyntaxOption;
+    }
+
+    if (ui->dontCaptureOption->isChecked()) {
+        options |= QRegularExpression::DontCaptureOption;
+    }
+
+    if (ui->useUnicodePropertiesOption->isChecked()) {
+        options |= QRegularExpression::UseUnicodePropertiesOption;
     }
 
     QRegularExpression rx(txt, options);
@@ -70,6 +109,7 @@ void RegExpDialog::performRegExp()
     }
 
     rxhilighter->highlightMatchedText(rx);
+    validator->setRegularExpression(rx);
 }
 
 void RegExpDialog::about()
@@ -117,36 +157,7 @@ void RegExpSyntaxHighlighter::highlightBlock (const QString & text)
         last = pos;
     }
 }
-#if 0
-int RegExpSyntaxHighlighter::highlightParagraph ( const QString & text, int /*endStateOfLastPara*/ )
-{
-    // reset format
-    QFont font = textEdit()->font();
-    font.setBold( false );
-    setFormat(0, text.length(), font, Qt::black );
 
-    if (regexp.isEmpty())
-        return 0; // empty regular expression
-
-    int pos = 0;
-    int last = -1;
-    font.setBold(true);
-
-    while ( (pos = regexp.indexIn(text, pos)) != -1 ) {
-        if (last == pos)
-            break;
-        QString sub = text.mid( pos, regexp.matchedLength());
-        if (!sub.isEmpty()) {
-            setFormat(pos, sub.length(), font, Qt::blue );
-        }
-
-        pos += regexp.matchedLength();
-        last=pos;
-    }
-
-    return 0;
-}
-#endif
 void RegExpSyntaxHighlighter::highlightMatchedText(const QRegularExpression& rx)
 {
     regexp = rx;
