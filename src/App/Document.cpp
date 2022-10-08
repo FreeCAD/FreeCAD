@@ -887,7 +887,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
                     auto res = edge(GlobalVertexList[getId(obj)], GlobalVertexList[getId(linkedObj)], DepList);
                     if(res.second)
-                        edgeAttrMap[res.first]["color"] = "red";
+                        edgeAttrMap[res.first]["color"] = "orange";
                 }
             }
         }
