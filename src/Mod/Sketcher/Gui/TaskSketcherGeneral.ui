@@ -25,7 +25,7 @@
         <string>A grid will be shown</string>
        </property>
        <property name="text">
-        <string>Show grid</string>
+        <string>Grid</string>
        </property>
        <property name="checked">
         <bool>false</bool>
