@@ -31,11 +31,12 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/Gui/ui_TaskSurfaceFinishSymbols.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
 
+#include "ui_TaskSurfaceFinishSymbols.h"
 #include "TaskSurfaceFinishSymbols.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
