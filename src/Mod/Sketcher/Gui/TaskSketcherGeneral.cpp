@@ -166,7 +166,6 @@ void SketcherGeneralWidget::checkAvoidRedundant(bool on)
 
 void SketcherGeneralWidget::enableGridSettings(bool on)
 {
-    ui->label->setEnabled(on);
     ui->gridSize->setEnabled(on);
     ui->checkBoxGridSnap->setEnabled(on);
 }
