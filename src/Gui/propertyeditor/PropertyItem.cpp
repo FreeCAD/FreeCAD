@@ -4360,12 +4360,15 @@ void LinkLabel::onLinkActivated (const QString& s)
 
 void LinkLabel::onEditClicked ()
 {
-    if(!dlg) {
+    if (!dlg) {
         dlg = new DlgPropertyLink(this);
         dlg->init(objProp,true);
-        connect(dlg, SIGNAL(finished(int)), this, SLOT(onLinkChanged()));
-    } else
+        connect(dlg, &DlgPropertyLink::accepted, this, &LinkLabel::onLinkChanged);
+    }
+    else {
         dlg->init(objProp,false);
+    }
+
     dlg->show();
 }
 
