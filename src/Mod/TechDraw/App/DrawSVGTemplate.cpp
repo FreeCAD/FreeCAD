@@ -150,7 +150,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute()
 	if (!qDocImage.isEmpty()) {
 		// make a temp file for FileIncluded Property
 		std::string tempName = PageResult.getExchangeTempFile();
-        std::ofstream outfinal(tempName.c_str());
+		std::ofstream outfinal(tempName.c_str());
 		std::string result = Base::Tools::toStdString(qDocImage);
 		outfinal << result;
 		outfinal.close();
