@@ -23,8 +23,6 @@
 #ifndef DrawUtil_h_
 #define DrawUtil_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
 
 #include <QByteArray>
@@ -46,12 +44,11 @@
 
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/PartFeature.h>
-
-#include "LineGroup.h"
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 #ifndef M_2PI
-    #define M_2PI ((M_PI)*2.0)
+# define M_2PI ((M_PI) * 2.0)
 #endif
 
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
@@ -59,6 +56,16 @@
 
 #define SVG_NS_URI         "http://www.w3.org/2000/svg"
 #define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+
+//some shapes are being passed in where edges that should be connected are in fact
+//separated by more than 2*Precision::Confusion (expected tolerance for 2 TopoDS_Vertex)
+//this value is used in EdgeWalker, DrawProjectSplit and DrawUtil and needs to be in sync in
+//all 3 files.
+#define EWTOLERANCE 0.0001//arbitrary number that seems to give good results for drawing
+
+//a multiplier for EWTOLERANCE used in fuzzy fuse and common operations.
+#define FUZZYADJUST 4.0
+
 
 namespace TechDraw
 {

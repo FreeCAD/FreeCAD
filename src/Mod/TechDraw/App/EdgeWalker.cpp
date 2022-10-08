@@ -44,7 +44,6 @@
 
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
-#include "EWTOLERANCE.h"
 
 
 using namespace TechDraw;

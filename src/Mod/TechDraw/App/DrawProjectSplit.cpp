@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -85,12 +84,11 @@
 #include "DrawUtil.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
-#include "EWTOLERANCE.h"
 #include "DrawProjectSplit.h"
+
 
 using namespace TechDraw;
 using namespace std;
-
 
 //===========================================================================
 // DrawProjectSplit
