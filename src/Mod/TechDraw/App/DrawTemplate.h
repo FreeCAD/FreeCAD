@@ -23,11 +23,10 @@
 #ifndef TECHDRAW_DrawTemplate_h_
 #define TECHDRAW_DrawTemplate_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace TechDraw

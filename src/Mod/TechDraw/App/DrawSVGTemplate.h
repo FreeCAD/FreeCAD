@@ -23,10 +23,9 @@
 #ifndef TECHDRAW_DrawSVGTemplate_h_
 #define TECHDRAW_DrawSVGTemplate_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawTemplate.h"
 

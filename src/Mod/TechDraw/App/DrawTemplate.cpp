@@ -26,22 +26,14 @@
 # include <sstream>
 #endif
 
-#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
 
-#include <App/Application.h>
-
-#include <iostream>
-#include <iterator>
-
-#include "DrawPage.h"
 #include "DrawTemplate.h"
-#include <Mod/TechDraw/App/DrawTemplatePy.h>
+#include "DrawTemplatePy.h"
+#include "DrawPage.h"
+
 
 using namespace TechDraw;
-using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawTemplate, App::DocumentObject)
 
@@ -49,8 +41,6 @@ PROPERTY_SOURCE(TechDraw::DrawTemplate, App::DocumentObject)
 const char* DrawTemplate::OrientationEnums[]= {"Portrait",
                                                   "Landscape",
                                                   nullptr};
-
-
 
 DrawTemplate::DrawTemplate()
 {

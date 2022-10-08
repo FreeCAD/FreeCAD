@@ -22,18 +22,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-
-#include "DrawUtil.h"
-
-#include <Mod/TechDraw/App/DrawRichAnnoPy.h>  // generated from DrawRichAnnoPy.xml
 #include "DrawRichAnno.h"
+#include "DrawRichAnnoPy.h"  // generated from DrawRichAnnoPy.xml
+
 
 using namespace TechDraw;
 
