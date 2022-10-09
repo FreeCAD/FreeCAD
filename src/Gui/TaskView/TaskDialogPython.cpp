@@ -68,6 +68,9 @@ void ControlPy::init_type()
     add_varargs_method("activeDialog",&ControlPy::activeDialog,
                         "check if a dialog is active in the task panel\n"
                         "activeDialog() --> bool");
+    add_varargs_method("activeTaskDialog",&ControlPy::activeTaskDialog,
+                        "return the active task dialog if there is one\n"
+                        "activeTaskDialog() --> TaskDialog or None");
     add_varargs_method("closeDialog",&ControlPy::closeDialog,
                         "close the active dialog\n"
                         "closeDialog()");
@@ -129,6 +132,14 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
         throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return Py::Boolean(dlg != nullptr);
+}
+
+Py::Object ControlPy::activeTaskDialog(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    return (dlg ? Py::asObject(new TaskDialogPy(dlg)) : Py::None());
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)
@@ -302,6 +313,207 @@ bool TaskWatcherPython::shouldShow()
         return match();
     else
         return TaskWatcher::shouldShow();
+}
+
+// ------------------------------------------------------------------
+
+void TaskDialogPy::init_type()
+{
+    behaviors().name("TaskDialog");
+    behaviors().doc("Task dialog");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    add_varargs_method("getDialogContent",&TaskDialogPy::getDialogContent,
+                       "Returns the widgets of the task dialog -> list");
+    add_varargs_method("getStandardButtons",&TaskDialogPy::getStandardButtons,
+                       "Get the standard buttons of the box -> flags");
+    add_varargs_method("setEscapeButtonEnabled",&TaskDialogPy::setEscapeButtonEnabled,
+                       "Defines whether the task dialog can be rejected by pressing Esc");
+    add_varargs_method("isEscapeButtonEnabled",&TaskDialogPy::isEscapeButtonEnabled,
+                       "Checks if the task dialog can be rejected by pressing Esc -> bool");
+    add_varargs_method("setAutoCloseOnTransactionChange",&TaskDialogPy::setAutoCloseOnTransactionChange,
+                       "Defines whether a task dialog must be closed if the document changes the\n"
+                       "active transaction");
+    add_varargs_method("isAutoCloseOnTransactionChange",&TaskDialogPy::isAutoCloseOnTransactionChange,
+                       "Checks if the task dialog will be closed when the active transaction has changed -> bool");
+    add_varargs_method("getDocumentName",&TaskDialogPy::getDocumentName,
+                       "Get the name of the document the task dialog is attached to -> str");
+    add_varargs_method("isAllowedAlterDocument",&TaskDialogPy::isAllowedAlterDocument,
+                       "Indicates whether this task dialog allows other commands to modify\n"
+                       "the document while it is open -> bool");
+    add_varargs_method("isAllowedAlterView",&TaskDialogPy::isAllowedAlterView,
+                       "Indicates whether this task dialog allows other commands to modify\n"
+                       "the 3d view while it is open -> bool");
+    add_varargs_method("isAllowedAlterSelection",&TaskDialogPy::isAllowedAlterSelection,
+                       "Indicates whether this task dialog allows other commands to modify\n"
+                       "the selection while it is open -> bool");
+    add_varargs_method("needsFullSpace",&TaskDialogPy::needsFullSpace,
+                       "Indicates whether the task dialog fully requires the available space -> bool");
+    add_varargs_method("accept",&TaskDialogPy::accept,
+                       "Accept the task dialog");
+    add_varargs_method("reject",&TaskDialogPy::reject,
+                       "Reject the task dialog");
+}
+
+TaskDialogPy::TaskDialogPy(TaskDialog* dlg)
+  : dialog(dlg)
+{
+}
+
+TaskDialogPy::~TaskDialogPy()
+{
+}
+
+Py::Object TaskDialogPy::repr()
+{
+    std::string s;
+    std::ostringstream s_out;
+    s_out << "Task Dialog";
+    return Py::String(s_out.str());
+}
+
+Py::Object TaskDialogPy::getattr(const char * attr)
+{
+    if (!dialog) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
+    return BaseType::getattr(attr);
+}
+
+int TaskDialogPy::setattr(const char *attr, const Py::Object &value)
+{
+    if (!dialog) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
+    return BaseType::setattr(attr, value);
+}
+
+Py::Object TaskDialogPy::getDialogContent(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+
+    Py::List list;
+    auto widgets = dialog->getDialogContent();
+    for (auto it : widgets) {
+        list.append(wrap.fromQWidget(it));
+    }
+
+    return list;
+}
+
+Py::Object TaskDialogPy::getStandardButtons(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    auto buttons = dialog->getStandardButtons();
+    return Py::Long(static_cast<int>(buttons));
+}
+
+Py::Object TaskDialogPy::setEscapeButtonEnabled(const Py::Tuple& args)
+{
+    Py::Boolean value(args[0]);
+    dialog->setEscapeButtonEnabled(static_cast<bool>(value));
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::isEscapeButtonEnabled(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isEscapeButtonEnabled());
+}
+
+Py::Object TaskDialogPy::setAutoCloseOnTransactionChange(const Py::Tuple& args)
+{
+    Py::Boolean value(args[0]);
+    dialog->setAutoCloseOnTransactionChange(static_cast<bool>(value));
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::isAutoCloseOnTransactionChange(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAutoCloseOnTransactionChange());
+}
+
+Py::Object TaskDialogPy::getDocumentName(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::String(dialog->getDocumentName());
+}
+
+Py::Object TaskDialogPy::isAllowedAlterDocument(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAllowedAlterDocument());
+}
+
+Py::Object TaskDialogPy::isAllowedAlterView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAllowedAlterView());
+}
+
+Py::Object TaskDialogPy::isAllowedAlterSelection(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->isAllowedAlterSelection());
+}
+
+Py::Object TaskDialogPy::needsFullSpace(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(dialog->needsFullSpace());
+}
+
+namespace {
+auto clickButton = [](QDialogButtonBox* buttonBox, QDialogButtonBox::ButtonRole role) {
+    if (buttonBox) {
+        QList<QAbstractButton*> list = buttonBox->buttons();
+        for (auto pb : list) {
+            if (buttonBox->buttonRole(pb) == role) {
+                if (pb->isEnabled()) {
+                    pb->click();
+                    break;
+                }
+            }
+        }
+    }
+};
+}
+
+Py::Object TaskDialogPy::accept(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    auto buttonBox = TaskDialogAttorney::getButtonBox(dialog);
+    clickButton(buttonBox, QDialogButtonBox::AcceptRole);
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::reject(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    auto buttonBox = TaskDialogAttorney::getButtonBox(dialog);
+    clickButton(buttonBox, QDialogButtonBox::RejectRole);
+    return Py::None();
 }
 
 // ------------------------------------------------------------------

@@ -479,6 +479,7 @@ void TaskView::showDialog(TaskDialog *dlg)
     // first create the control element, set it up and wire it:
     ActiveCtrl = new TaskEditControl(this);
     ActiveCtrl->buttonBox->setStandardButtons(dlg->getStandardButtons());
+    TaskDialogAttorney::setButtonBox(dlg, ActiveCtrl->buttonBox);
 
     // make connection to the needed signals
     connect(ActiveCtrl->buttonBox,SIGNAL(accepted()),
