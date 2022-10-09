@@ -31,14 +31,6 @@
 #include <Mod/TechDraw/App/Cosmetic.h>
 
 
-//TODO: make this a proper enum
-#define TRACKERPICK 0
-#define TRACKEREDIT 1
-#define TRACKERCANCEL 2
-#define TRACKERCANCELEDIT 3
-#define TRACKERFINISHED 4
-#define TRACKERSAVE 5
-
 namespace TechDraw
 {
 class DrawPage;

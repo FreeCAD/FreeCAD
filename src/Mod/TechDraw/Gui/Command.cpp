@@ -19,41 +19,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QCoreApplication>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QGraphicsView>
-#include <QMessageBox>
-#include <QPainter>
-#include <QStringBuilder>
-#include <QSvgGenerator>
-#include <QSvgRenderer>
-#include <sstream>
-#include <vector>
+# include <QFileInfo>
+# include <QMessageBox>
+# include <sstream>
+# include <vector>
 #endif
 
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/GeoFeature.h>
 #include <App/Link.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyLinks.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -63,45 +43,36 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawViewArch.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
-#include "QGSPage.h"
-#include "QGVPage.h"
 #include "MDIViewPage.h"
 #include "QGIViewPart.h"
+#include "QGSPage.h"
+#include "QGVPage.h"
 #include "Rez.h"
-#include "TaskProjGroup.h"
-#include "TaskSectionView.h"
 #include "TaskActiveView.h"
 #include "TaskDetail.h"
+#include "TaskProjGroup.h"
 #include "TaskProjection.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
+#include "TaskSectionView.h"
 
 
 class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
-using namespace std;
 
 //===========================================================================
 // TechDraw_PageDefault

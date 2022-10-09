@@ -23,58 +23,40 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
-# include <QGraphicsView>
-# include <iostream>
-# include <string>
 # include <sstream>
-# include <cstdlib>
-# include <exception>
-#endif  //#ifndef _PreComp_
+#endif
 
-
-#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-# include <Mod/Part/App/PartFeature.h>
-
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/Gui/QGVPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
 #include "TaskHatch.h"
-//#include "TaskLeaderLine.h"
-//#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
-#include "ViewProviderHatch.h"
 #include "ViewProviderPage.h"
 
-using namespace TechDrawGui;
-using namespace std;
 
+using namespace TechDrawGui;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
-
 
 //===========================================================================
 // TechDraw_Hatch

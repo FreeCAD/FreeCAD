@@ -53,9 +53,10 @@
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
 #include <cassert>
 #include <cmath>
+#include <iostream>
+#include <sstream>
 
 // STL
 #include <vector>

@@ -24,9 +24,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
-# include <string>
 # include <sstream>
-#endif  //#ifndef _PreComp_
+#endif
 
 # include <App/Document.h>
 # include <App/DocumentObject.h>
@@ -45,8 +44,8 @@
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
-# include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
+# include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
@@ -56,7 +55,6 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
-using namespace std;
 
 namespace TechDrawGui {
     //internal structures and sort functions
