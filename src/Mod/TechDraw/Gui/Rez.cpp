@@ -19,24 +19,20 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif
-
 #include <App/Application.h>
-#include <Base/Console.h>
 #include <Base/Parameter.h>
 
 #include "Rez.h"
+
 
 using namespace TechDrawGui;
 
 //*** initial static var outside methods!
 double Rez::m_rezFactor = Rez::getParameter();
 //***
-
 
 double Rez::getRezFactor()
 {
@@ -47,7 +43,6 @@ void Rez::setRezFactor(double f)
 {
     Rez::m_rezFactor = f;
 }
-
 
 //turn App side value to Gui side value
 double Rez::guiX(double x)

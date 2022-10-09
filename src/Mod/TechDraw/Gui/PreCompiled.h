@@ -59,22 +59,21 @@
 #include <sstream>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
 #include <bitset>
+#include <list>
+#include <map>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <vector>
 
 #ifdef FC_OS_WIN32
 # define WIN32_LEAN_AND_MEAN
 # include <windows.h>
 # undef small
 #endif
-
 
 // Qt Toolkit
 #ifndef _QtAll__

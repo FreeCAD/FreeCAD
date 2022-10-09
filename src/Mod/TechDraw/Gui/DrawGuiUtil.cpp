@@ -24,65 +24,45 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <cstring>
-# include <cstdlib>
-# include <exception>
-# include <boost/regex.hpp>
+
 # include <QComboBox>
-# include <QString>
-# include <QStringList>
 # include <QMessageBox>
-# include <QRectF>
 # include <QPointF>
+# include <QRectF>
+# include <QString>
+
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <gp_Dir.hxx>
 #endif
 
-#include <gp_Vec.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Ax2.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepLProp_SLProps.hxx>
-
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/Property.h>
 #include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
 #include <Inventor/SbVec3f.h>
-
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include "QGSPage.h"
-#include "QGVPage.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
+#include "DlgPageChooser.h"
+#include "MDIViewPage.h"
+#include "QGSPage.h"
+#include "ViewProviderPage.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

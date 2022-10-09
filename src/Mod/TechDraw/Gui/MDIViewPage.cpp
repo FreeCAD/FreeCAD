@@ -21,71 +21,59 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-    #include <cmath>
-    #include <QAction>
-    #include <QTimer>
-    #include <QApplication>
-    #include <QContextMenuEvent>
-    #include <QFileDialog>
-    #include <QGridLayout>
-    #include <QGroupBox>
-    #include <QListWidget>
-    #include <QMenu>
-    #include <QMessageBox>
-    #include <QPageLayout>
-    #include <QPageSize>
-    #include <QPaintEngine>
-    #include <QPainter>
-    #include <QPdfWriter>
-    #include <QPrinter>
-    #include <QPrintDialog>
-    #include <QPrintPreviewDialog>
-    #include <boost_signals2.hpp>
-#endif  // #ifndef _PreComp_
-
-
-#include "MDIViewPage.h"
-
-#include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <Base/gzstream.h>
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
+# include <cmath>
+# include <QAction>
+# include <QApplication>
+# include <QContextMenuEvent>
+# include <QMenu>
+# include <QMessageBox>
+# include <QPageLayout>
+# include <QPageSize>
+# include <QPaintEngine>
+# include <QPainter>
+# include <QPdfWriter>
+# include <QPrinter>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
+# include <boost_signals2.hpp>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/FileDialog.h>
-#include <Gui/WaitCursor.h>
+#include <Base/Console.h>
+#include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Window.h>
+#include <Gui/Document.h>
+#include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/Window.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
-#include "QGIView.h"
-#include "QGIViewDimension.h"
-#include "QGIViewBalloon.h"
-#include "QGIVertex.h"
+#include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
-#include "ViewProviderPage.h"
+#include "QGIVertex.h"
+#include "QGIView.h"
+#include "QGIViewBalloon.h"
+#include "QGIViewDimension.h"
+#include "QGMText.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "QGMText.h"
+#include "Rez.h"
+#include "ViewProviderPage.h"
 
 
 using namespace TechDrawGui;

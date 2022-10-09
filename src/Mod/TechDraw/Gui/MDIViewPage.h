@@ -23,14 +23,12 @@
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-#include <QPointF>
 #include <QPrinter>
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
 #include <Gui/Selection.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "ViewProviderPage.h"
 

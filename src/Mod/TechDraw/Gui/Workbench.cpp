@@ -27,9 +27,10 @@
 # include <qobject.h>
 #endif
 
-#include "Workbench.h"
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+#include "Workbench.h"
+
 
 using namespace TechDrawGui;
 

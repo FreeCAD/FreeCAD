@@ -27,40 +27,36 @@
  ********************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-#include <algorithm>
-#include <iostream>
-#include <QApplication>
-#include <QClipboard>
-#include <QMimeData>
-#include <QFontDatabase>
-#include <QInputDialog>
-#include <QColorDialog>
-#include <QTextList>
-#include <QtDebug>
-#include <QFileDialog>
-#include <QImageReader>
-#include <QSettings>
-#include <QBuffer>
-#include <QUrl>
-#include <QPlainTextEdit>
-#include <QMenu>
-#include <QDialog>
-#include <QBitmap>
-#include <QRegularExpression>
+# include <algorithm>
+# include <iostream>
+# include <QApplication>
+# include <QBitmap>
+# include <QClipboard>
+# include <QColorDialog>
+# include <QDialog>
+# include <QFileDialog>
+# include <QFontDatabase>
+# include <QImageReader>
+# include <QInputDialog>
+# include <QMenu>
+# include <QMimeData>
+# include <QPlainTextEdit>
+# include <QRegularExpression>
+# include <QSettings>
+# include <QTextList>
 #endif
 
+#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Gui/FileDialog.h>
-
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include <App/Application.h>
-
-#include "PreferencesGui.h"
 #include "mrichtextedit.h"
+#include "PreferencesGui.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

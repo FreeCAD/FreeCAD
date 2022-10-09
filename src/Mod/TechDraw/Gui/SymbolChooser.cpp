@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QListWidget>
+# include <QListWidget>
 #endif
 
 #include <App/Application.h>
-#include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
 
 #include "SymbolChooser.h"
+#include "ui_SymbolChooser.h"
 
 
 using namespace Gui;

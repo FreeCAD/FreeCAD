@@ -22,20 +22,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif
-
-#include <App/Document.h>
 #include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
 #include "Grabber3d.h"
+
 
 using namespace TechDrawGui;
 using namespace Gui;

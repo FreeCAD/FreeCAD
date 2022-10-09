@@ -23,12 +23,12 @@
 #ifndef DrawGuiUtil_h_
 #define DrawGuiUtil_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
 #include <QCoreApplication>
 
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 class QComboBox;
 class QPointF;

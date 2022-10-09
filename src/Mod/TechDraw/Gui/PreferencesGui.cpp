@@ -23,24 +23,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <string>
-#include <QString>
-#include <QFont>
-#include <QColor>
-#include <QPen>
+# include <string>
+# include <QColor>
+# include <QFont>
+# include <QString>
 #endif
 
 #include <App/Application.h>
 #include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
-#include <Base/Vector3D.h>
-
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "Rez.h"
 #include "PreferencesGui.h"
+#include "Rez.h"
+
 
 //getters for parameters used in multiple places.
 //ensure this is in sync with preference page user interfaces

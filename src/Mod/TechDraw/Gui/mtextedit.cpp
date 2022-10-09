@@ -24,13 +24,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cstdlib>
-
-#include <QTextDocument>
-#include <QTextCursor>
-#include <QImage>
-#include <QByteArray>
-#include <QBuffer>
+# include <cstdlib>
+# include <QBuffer>
+# include <QByteArray>
+# include <QImage>
+# include <QTextCursor>
 #endif
 
 #include "mtextedit.h"
