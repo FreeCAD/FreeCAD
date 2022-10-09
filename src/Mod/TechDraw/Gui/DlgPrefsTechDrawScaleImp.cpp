@@ -22,12 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgPrefsTechDrawScaleImp.h"
 #include "ui_DlgPrefsTechDrawScale.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace TechDrawGui;
 

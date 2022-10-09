@@ -19,19 +19,19 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Qt>
-# include <QListWidget>
 # include <QListWidgetItem>
-# include <QPushButton>
 # include <QList>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+
 #include "DlgPageChooser.h"
 #include "ui_DlgPageChooser.h"
+
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 

@@ -22,19 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <App/Application.h>
+#include <vector>
 
-#include <Base/Parameter.h>
-#include <Base/Console.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
-#include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "ui_DlgPrefsTechDrawAnnotation.h"
-#include <Mod/TechDraw/App/LineGroup.h>
+#include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 
 
 using namespace TechDrawGui;

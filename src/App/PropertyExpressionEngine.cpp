@@ -34,7 +34,7 @@
 #include "ExpressionVisitors.h"
 
 
-FC_LOG_LEVEL_INIT("App",true);
+FC_LOG_LEVEL_INIT("App", true);
 
 using namespace App;
 using namespace Base;
