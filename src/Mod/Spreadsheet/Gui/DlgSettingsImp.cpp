@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QApplication>
-#endif
+
+#include <Gui/Application.h>
 
 #include "DlgSettingsImp.h"
 #include "ui_DlgSettings.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+
 
 using namespace SpreadsheetGui;
 

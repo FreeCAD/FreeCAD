@@ -21,16 +21,19 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+
 #include <boost/algorithm/string.hpp>
 #include <QMessageBox>
-#include "DlgBindSheet.h"
-#include <Base/Tools.h>
-#include <App/Range.h>
-#include <App/Document.h>
+
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/ExpressionParser.h>
+#include <App/Range.h>
 #include <Gui/CommandT.h>
+
+#include "DlgBindSheet.h"
 #include "ui_DlgBindSheet.h"
+
 
 using namespace App;
 using namespace Spreadsheet;

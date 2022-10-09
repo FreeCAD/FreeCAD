@@ -21,36 +21,36 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <QKeyEvent>
 # include <QAction>
-# include <QMenu>
 # include <QApplication>
 # include <QClipboard>
-# include <QMenu>
+# include <QKeyEvent>
 # include <QMessageBox>
+# include <QMenu>
 # include <QMimeData>
-# include <QTextStream>
 #endif
 # include <QTextTableCell>
 
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
+#include <App/Range.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>
-#include <Gui/CommandT.h>
 #include <Gui/Application.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include "../App/Utils.h"
-#include "../App/Cell.h"
-#include <App/Range.h>
+#include <Mod/Spreadsheet/App/Cell.h>
+
 #include "SheetTableView.h"
-#include "LineEdit.h"
-#include "PropertiesDialog.h"
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
+#include "LineEdit.h"
+#include "PropertiesDialog.h"
+
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;

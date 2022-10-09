@@ -22,32 +22,23 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QIcon>
-# include <QImage>
-# include <QFileInfo>
-#endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+
 #include "DlgSettingsImp.h"
-#include "Workbench.h"
-#include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
+#include "ViewProviderSpreadsheet.h"
+#include "Workbench.h"
 
 
 // use a different name to CreateCommand()

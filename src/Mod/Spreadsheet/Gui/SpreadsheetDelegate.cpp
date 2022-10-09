@@ -23,21 +23,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QLineEdit>
 # include <QPainter>
 #endif
 
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
+
 #include "SpreadsheetDelegate.h"
 #include "LineEdit.h"
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <Gui/ExpressionCompleter.h>
-#include "DlgBindSheet.h"
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;

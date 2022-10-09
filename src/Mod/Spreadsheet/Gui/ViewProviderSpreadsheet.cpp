@@ -21,43 +21,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QFile>
-# include <QFileInfo>
-# include <QImage>
-# include <QString>
-# include <QMdiSubWindow>
+# include <sstream>
 # include <QMenu>
+# include <QString>
 #endif
 
-#include "ViewProviderSpreadsheet.h"
-#include "SpreadsheetView.h"
-#include "ViewProviderSpreadsheetPy.h"
-
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Command.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <sstream>
+#include <Mod/Spreadsheet/App/Sheet.h>
+
+#include "ViewProviderSpreadsheet.h"
+#include "ViewProviderSpreadsheetPy.h"
+#include "SpreadsheetView.h"
+
 
 using namespace Base;
 using namespace Gui;
 using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
-
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 

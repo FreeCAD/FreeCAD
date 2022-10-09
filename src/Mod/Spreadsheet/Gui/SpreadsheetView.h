@@ -23,11 +23,14 @@
 #ifndef SpreadsheetView_H
 #define SpreadsheetView_H
 
+#include <QHeaderView>
+
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
-#include <QHeaderView>
-#include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
+
+#include "SheetModel.h"
+
 
 class QSlider;
 class QAction;

@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "PropertiesDialog.h"
-#include <Base/Tools.h>
+
 #include <App/Range.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
+#include <Base/Tools.h>
 #include <Gui/CommandT.h>
+
+#include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
+
 
 using namespace App;
 using namespace Spreadsheet;

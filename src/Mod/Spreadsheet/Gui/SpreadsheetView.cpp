@@ -21,44 +21,35 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QMenu>
-# include <QMouseEvent>
+# include <cmath>
+# include <QPalette>
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
-# include <QSlider>
-# include <QStatusBar>
-# include <QToolBar>
-# include <QTableWidgetItem>
 # include <QTextDocument>
-# include <QMessageBox>
-# include <QPalette>
-# include <cmath>
 #endif
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/ExpressionCompleter.h>
 #include <Gui/FileDialog.h>
-#include <LineEdit.h>
+#include <Gui/MainWindow.h>
+
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/SheetPy.h>
-#include <Mod/Spreadsheet/App/Utils.h>
-#include "qtcolorpicker.h"
 
 #include "SpreadsheetView.h"
-#include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
+#include "LineEdit.h"
+#include "qtcolorpicker.h"
+#include "SpreadsheetDelegate.h"
+
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;

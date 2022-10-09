@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SPREADSHEET_PRECOMPILED_H
 #define SPREADSHEET_PRECOMPILED_H
 
@@ -39,20 +38,21 @@
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
 #include <bitset>
+#include <list>
+#include <map>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
@@ -62,7 +62,6 @@
 #ifndef __QtAll__
 # include <Gui/QtAll.h>
 #endif
-
 
 #endif //_PreComp_
 

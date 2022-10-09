@@ -24,8 +24,9 @@
 #define SHEETMODEL_H
 
 #include <QAbstractTableModel>
-#include <Mod/Spreadsheet/App/Utils.h>
+
 #include <App/Range.h>
+
 
 namespace Spreadsheet {
 class Sheet;

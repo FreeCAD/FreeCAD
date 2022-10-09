@@ -23,22 +23,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QtCore>
-# include <QApplication>
+# include <QFont>
 # include <QLocale>
-# include <QMessageBox>
-# include <QTextDocument>
 #endif
 
 #include <App/Document.h>
-#include <Gui/Application.h>
-#include "SheetModel.h"
-#include <Mod/Spreadsheet/App/Utils.h>
-#include "../App/Sheet.h"
-#include <Gui/Command.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
+
+#include "SheetModel.h"
+
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;

@@ -21,17 +21,19 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-#include <boost/algorithm/string/predicate.hpp>
+
 #include <QMessageBox>
-#include "DlgSheetConf.h"
-#include <Base/Tools.h>
-#include <App/Range.h>
-#include <App/Document.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
+
 #include <App/AutoTransaction.h>
+#include <App/Document.h>
+#include <App/ExpressionParser.h>
+#include <App/Range.h>
+#include <Base/Tools.h>
 #include <Gui/CommandT.h>
+
+#include "DlgSheetConf.h"
 #include "ui_DlgSheetConf.h"
+
 
 using namespace App;
 using namespace Spreadsheet;
