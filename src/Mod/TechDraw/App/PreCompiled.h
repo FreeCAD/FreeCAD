@@ -66,6 +66,7 @@
 #include <string>
 #include <vector>
 
+// boost
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/is_kuratowski_subgraph.hpp>
 #include <boost/regex.hpp>
@@ -73,6 +74,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+// Qt
 #include <QDomDocument>
 #include "QDomNodeModel.h"
 #include <QFile>
