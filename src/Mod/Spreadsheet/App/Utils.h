@@ -23,12 +23,13 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <string>
 #include <map>
-#include <set>
 #include <memory>
-#include <Base/BaseClass.h>
+#include <set>
+#include <string>
+
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
+
 
 namespace Spreadsheet {
 

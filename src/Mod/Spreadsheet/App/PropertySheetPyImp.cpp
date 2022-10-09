@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mod/Spreadsheet/App/PropertySheet.h"
-
+#include "PropertySheet.h"
 // inclusion of the generated files (generated out of PropertySheetPy.xml)
 #include "PropertySheetPy.h"
 #include "PropertySheetPy.cpp"
+
 
 using namespace Spreadsheet;
 

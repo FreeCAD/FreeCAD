@@ -23,27 +23,27 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/regex.hpp>
+# include <boost/range/adaptor/map.hpp>
+# include <boost/range/algorithm/copy.hpp>
 #endif
 
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/assign.hpp>
-#include <boost/regex.hpp>
-#include <Base/Console.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
+#include <App/ExpressionParser.h>
+#include <App/ExpressionVisitors.h>
 #include <App/Property.h>
+#include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-#include <Base/PyObjectBase.h>
+#include <Base/Writer.h>
+
 #include "PropertySheet.h"
+#include "PropertySheetPy.h"
 #include "Sheet.h"
-#include "Utils.h"
-#include <PropertySheetPy.h>
-#include <App/ExpressionVisitors.h>
-#include <App/ExpressionParser.h>
+
 
 FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 

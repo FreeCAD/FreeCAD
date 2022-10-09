@@ -24,26 +24,22 @@
 #define Spreadsheet_Spreadsheet_H
 
 #ifdef signals
-#undef signals
-#define signals signals
+# undef signals
+# define signals signals
 #endif
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/DynamicProperty.h>
-#include <App/Material.h>
-#include <App/Range.h>
-#include <App/FeaturePython.h>
-#include <Base/Unit.h>
 #include <map>
-#include "PropertySheet.h"
+
+#include <App/DocumentObject.h>
+#include <App/DynamicProperty.h>
+#include <App/FeaturePython.h>
+#include <App/PropertyUnits.h>
+#include <App/Range.h>
+#include <Base/Unit.h>
+
 #include "PropertyColumnWidths.h"
 #include "PropertyRowHeights.h"
-#include "Utils.h"
+#include "PropertySheet.h"
 
 
 namespace Spreadsheet

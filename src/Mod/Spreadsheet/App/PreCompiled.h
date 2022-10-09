@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SPREADSHEET_PRECOMPILED_H
 #define SPREADSHEET_PRECOMPILED_H
 
@@ -39,20 +38,30 @@
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
 #include <bitset>
+#include <deque>
+#include <list>
+#include <map>
+#include <memory>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
+// boost
+#include <boost/regex.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range/adaptor/map.hpp>
+#include <boost/range/algorithm/copy.hpp>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>

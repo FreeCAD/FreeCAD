@@ -23,14 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 #endif
 
 #include "Utils.h"
-#include <sstream>
-#include <cstdlib>
-#include <boost/regex.hpp>
-#include <Base/Exception.h>
 #include "Sheet.h"
+
 
 /**
   * Encode \a col as a string.

@@ -23,27 +23,25 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
+# include <QLocale>
+# include <boost/tokenizer.hpp>
+# include <boost/algorithm/string/predicate.hpp>
 #endif
 
-#include <QLocale>
-
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include "Cell.h"
-#include "Utils.h"
-#include <boost/tokenizer.hpp>
-#include <Base/Reader.h>
+#include <App/ExpressionParser.h>
+#include <Base/Console.h>
 #include <Base/Quantity.h>
+#include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
-#include <Base/Console.h>
-#include <App/ExpressionParser.h>
-#include "Sheet.h"
-#include <iomanip>
-#include <cctype>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
+#include "Cell.h"
+#include "Sheet.h"
+
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__

@@ -24,12 +24,12 @@
 #define PROPERTYSHEET_H
 
 #include <map>
-#include <App/DocumentObserver.h>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyLinks.h>
-#include <Base/SmartPtrPy.h>
+
 #include "Cell.h"
+
 
 namespace Spreadsheet
 {

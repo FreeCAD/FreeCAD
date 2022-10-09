@@ -22,15 +22,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/Range.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "PropertyColumnWidths.h"
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <App/Range.h>
+#include "PropertyColumnWidthsPy.h"
 #include "Utils.h"
-#include <PropertyColumnWidthsPy.h>
+
 
 using namespace Spreadsheet;
 
