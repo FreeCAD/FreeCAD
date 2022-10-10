@@ -1068,8 +1068,8 @@ void PropertySheet::splitCell(CellAddress address)
     AtomicPropertyChange signaller(*this);
     cellAt(anchor)->getSpans(rows, cols);
 
-    for (int r = anchor.row(); r <= anchor.row() + rows; ++r)
-        for (int c = anchor.col(); c <= anchor.col() + cols; ++c) {
+    for (int r = anchor.row(); r < anchor.row() + rows; ++r)
+        for (int c = anchor.col(); c < anchor.col() + cols; ++c) {
             setDirty(CellAddress(r, c));
             mergedCells.erase(CellAddress(r, c));
         }
