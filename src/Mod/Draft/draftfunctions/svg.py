@@ -544,25 +544,24 @@ def get_svg(obj,
                         p2 = get_proj(prx.p2, plane)
                         p3 = get_proj(prx.p3, plane)
                         arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                        arrowlength = 4*obj.ViewObject.ArrowSize.Value
+                        halfarrowlength = 2 * arrowsize
+                        arrowangle = 2 * math.asin(halfarrowlength / prx.circle.Curve.Radius)
+                        if hasattr(obj.ViewObject, "FlipArrows") \
+                                and obj.ViewObject.FlipArrows:
+                            arrowangle = -arrowangle
 
                         _v1a = prx.circle.valueAt(prx.circle.FirstParameter
-                                                  + arrowlength)
+                                                  + arrowangle)
                         _v1b = prx.circle.valueAt(prx.circle.FirstParameter)
 
                         _v2a = prx.circle.valueAt(prx.circle.LastParameter
-                                                  - arrowlength)
+                                                  - arrowangle)
                         _v2b = prx.circle.valueAt(prx.circle.LastParameter)
 
                         u1 = get_proj(_v1a - _v1b, plane)
                         u2 = get_proj(_v2a - _v2b, plane)
                         angle1 = -DraftVecUtils.angle(u1)
                         angle2 = -DraftVecUtils.angle(u2)
-
-                        if hasattr(obj.ViewObject, "FlipArrows"):
-                            if obj.ViewObject.FlipArrows:
-                                angle1 = angle1 + math.pi
-                                angle2 = angle2 + math.pi
 
                         svg += get_arrow(obj,
                                          obj.ViewObject.ArrowType,
@@ -580,7 +579,7 @@ def get_svg(obj,
                         t = prx.circle.tangentAt(prx.circle.FirstParameter
                                                  + _diff/2.0)
                         t = get_proj(t, plane)
-                        tangle = DraftVecUtils.angle(t)
+                        tangle = -DraftVecUtils.angle(t)
                         if (tangle <= -math.pi/2) or (tangle > math.pi/2):
                             tangle = tangle + math.pi
 
