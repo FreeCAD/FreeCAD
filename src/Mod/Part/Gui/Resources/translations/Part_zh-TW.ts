@@ -2322,7 +2322,7 @@ of projection.</translation>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1061"/>
+      <location filename="../../TaskAttacher.cpp" line="1071"/>
       <source>Edit attachment</source>
       <translation type="unfinished">Edit attachment</translation>
     </message>
@@ -3066,7 +3066,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="264"/>
       <source>Chamfer type</source>
-      <translation type="unfinished">Chamfer type</translation>
+      <translation>倒角類型</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3101,12 +3101,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>大小2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>圓角類型</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -4953,7 +4953,7 @@ only created cuts will be visible</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
@@ -5034,77 +5034,77 @@ of object being attached.</translation>
       <translation>翻面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="312"/>
       <source>OCC error: %1</source>
       <translation type="unfinished">OCC error: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="313"/>
+      <location filename="../../TaskAttacher.cpp" line="314"/>
       <source>unknown error</source>
       <translation type="unfinished">unknown error</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="316"/>
+      <location filename="../../TaskAttacher.cpp" line="317"/>
       <source>Attachment mode failed: %1</source>
       <translation>連接模式失敗：%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="321"/>
       <source>Not attached</source>
       <translation>未連接任何物件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="324"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attached with mode %1</source>
       <translation>以模式 %1 連接</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>連接偏移(無效-未連接其他物件)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="626"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="633"/>
       <source>Edge</source>
       <translation>邊</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="640"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="695"/>
+      <location filename="../../TaskAttacher.cpp" line="705"/>
       <source>Selecting...</source>
       <translation>選擇...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="699"/>
+      <location filename="../../TaskAttacher.cpp" line="709"/>
       <source>Reference%1</source>
       <translation type="unfinished">Reference%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="746"/>
+      <location filename="../../TaskAttacher.cpp" line="756"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="812"/>
+      <location filename="../../TaskAttacher.cpp" line="822"/>
       <source>Reference combinations:</source>
       <translation>參考組合:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="829"/>
+      <location filename="../../TaskAttacher.cpp" line="839"/>
       <source>%1 (add %2)</source>
       <translation type="unfinished">%1 (add %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="834"/>
+      <location filename="../../TaskAttacher.cpp" line="844"/>
       <source>%1 (add more references)</source>
       <translation type="unfinished">%1 (add more references)</translation>
     </message>
@@ -5324,7 +5324,7 @@ Individual BOP Checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1112"/>
       <source>Datum dialog: Input error</source>
       <translation type="unfinished">Datum dialog: Input error</translation>
     </message>
@@ -5749,25 +5749,25 @@ Do you want to continue?</source>
       <translation>您必須選擇兩個邊或兩條線</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="65"/>
-      <location filename="../../TaskAttacher.cpp" line="101"/>
+      <location filename="../../TaskAttacher.cpp" line="66"/>
+      <location filename="../../TaskAttacher.cpp" line="102"/>
       <source>No reference selected</source>
       <translation>尚未選擇參考之物件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="74"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="77"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>邊</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>

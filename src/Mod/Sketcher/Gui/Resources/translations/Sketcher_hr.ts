@@ -2134,9 +2134,9 @@ nevaljana ograničenja, degenerirana geometrija itd.
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="897"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1222"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1265"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="898"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1225"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1268"/>
       <source>Update constraint's virtual space</source>
       <translation>Ažuriraj virtualni prostor ograničenja
 
@@ -2148,12 +2148,12 @@ nevaljana ograničenja, degenerirana geometrija itd.
       <translation>Dodajte automatska ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="626"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="627"/>
       <source>Swap constraint names</source>
       <translation>Zamjeni imena ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1207"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1210"/>
       <source>Rename sketch constraint</source>
       <translation>Preimenujte ograničenja skica</translation>
     </message>
@@ -3539,62 +3539,62 @@ Prihvatljive kombinacije: dvije krivulje; jedna krajnja točka i krivulja; dvije
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="494"/>
       <source>Change value</source>
       <translation>Promjena vrijednosti</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="497"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="498"/>
       <source>Toggle to/from reference</source>
       <translation>Prebaci u/iz referencu/e</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Deactivate</source>
       <translation>Dezaktivirati</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Activate</source>
       <translation>Aktivirati</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="504"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="505"/>
       <source>Show constraints</source>
       <translation>Pokaži ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="506"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
       <source>Hide constraints</source>
       <translation>Sakrij ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="512"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="513"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="519"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="520"/>
       <source>Center sketch</source>
       <translation>Centriraj skicu</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="522"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="523"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="526"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="527"/>
       <source>Swap constraint names</source>
       <translation>Zamjeni imena ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="617"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
       <source>Unnamed constraint</source>
       <translation>Bezimeno ograničenje</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="619"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Samo imena imenovanih ograničenja mogu biti zamijenjena.</translation>
     </message>
@@ -3677,7 +3677,7 @@ Prihvatljive kombinacije: dvije krivulje; jedna krajnja točka i krivulja; dvije
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="183"/>
+      <location filename="../../TaskSketcherElements.cpp" line="184"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
@@ -3923,7 +3923,7 @@ izravno odražava na kopijama</translation>
     <name>SketcherGui::SketcherSettings</name>
     <message>
       <location filename="../../SketcherSettings.ui" line="14"/>
-      <location filename="../../SketcherSettings.ui" line="109"/>
+      <location filename="../../SketcherSettings.ui" line="129"/>
       <source>General</source>
       <translation>Općenito</translation>
     </message>
@@ -3933,11 +3933,6 @@ izravno odražava na kopijama</translation>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="27"/>
-      <source>Sketcher solver</source>
-      <translation>Alat rješavač skice</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettings.ui" line="33"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
@@ -3945,17 +3940,34 @@ izravno odražava na kopijama</translation>
 'Advanced solver control' za podešavanje postavki (solver) alata za rješavanje</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="37"/>
-      <source>Show section 'Advanced solver control' in task dialog</source>
-      <translation>Pokažite odjeljak 'Advanced solver control' u dijaloškom okviru s zadacima</translation>
+      <location filename="../../SketcherSettings.ui" line="27"/>
+      <source>Task Panel Widgets</source>
+      <translation type="unfinished">Task Panel Widgets</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="53"/>
+      <location filename="../../SketcherSettings.ui" line="37"/>
+      <source>Show section 'Advanced solver control'</source>
+      <translation type="unfinished">Show section 'Advanced solver control'</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="50"/>
+      <source>Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</source>
+      <translation type="unfinished">Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="54"/>
+      <source>Show section 'Edit controls'</source>
+      <translation type="unfinished">Show section 'Edit controls'</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="73"/>
       <source>Dragging performance</source>
       <translation>Učinkovitost povlačenja</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="59"/>
+      <location filename="../../SketcherSettings.ui" line="79"/>
       <source>Special solver algorithm will be used while dragging sketch elements.
 Requires to re-enter edit mode to take effect.</source>
       <translation>Pri povlačenju elemenata skice koristit će se posebni algoritam rješavanja.
@@ -3964,43 +3976,43 @@ Za stupanje na snagu zahtijeva ponovni ulazak u način uređivanja.
 </translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="63"/>
+      <location filename="../../SketcherSettings.ui" line="83"/>
       <source>Improve solving while dragging</source>
       <translation>Poboljšajte rješavanje dok povlačite
 
 </translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="115"/>
+      <location filename="../../SketcherSettings.ui" line="135"/>
       <source>New constraints that would be redundant will automatically be removed</source>
       <translation>Nova ograničenja koja bi bila suvišna automatski će se ukloniti
 
 </translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="118"/>
+      <location filename="../../SketcherSettings.ui" line="138"/>
       <source>Auto remove redundants</source>
       <translation>Automatsko uklanjanje suvišnoga</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="134"/>
+      <location filename="../../SketcherSettings.ui" line="154"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
       <translation>Dopustite da se napusti način uređivanja skice kad se pritisne tipka Esc
 
 </translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="137"/>
+      <location filename="../../SketcherSettings.ui" line="157"/>
       <source>Esc can leave sketch edit mode</source>
       <translation>Sa Esc... možete napustiti način uređivanja skice</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="153"/>
+      <location filename="../../SketcherSettings.ui" line="173"/>
       <source>Notifies about automatic constraint substitutions</source>
       <translation>Obavijesti o automatskim zamjenama ograničenja</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="156"/>
+      <location filename="../../SketcherSettings.ui" line="176"/>
       <source>Notify automatic constraint substitutions</source>
       <translation>Obavijesti automatski zamjene ograničenja</translation>
     </message>
@@ -4469,12 +4481,12 @@ Tada su vidljivi samo objekti iza ravnine skice.</translation>
       <translation>Primijeni na postojeće skice</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="236"/>
+      <location filename="../../SketcherSettings.cpp" line="238"/>
       <source>Unexpected C++ exception</source>
       <translation>Neočekivani C++ izuzetak</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="239"/>
+      <location filename="../../SketcherSettings.cpp" line="241"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -4813,15 +4825,15 @@ Međutim, nema povezanih ograničenja na krajnje točake.</translation>
       <translation type="unfinished">Restrict Visibility</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="639"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
       <source>Constraints</source>
       <translation>Ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="919"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1216"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1288"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="920"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1219"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1291"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -4875,16 +4887,16 @@ Međutim, nema povezanih ograničenja na krajnje točake.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="105"/>
-      <location filename="../../TaskSketcherElements.cpp" line="755"/>
-      <location filename="../../TaskSketcherElements.cpp" line="759"/>
-      <location filename="../../TaskSketcherElements.cpp" line="763"/>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
-      <location filename="../../TaskSketcherElements.cpp" line="771"/>
-      <location filename="../../TaskSketcherElements.cpp" line="775"/>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
-      <location filename="../../TaskSketcherElements.cpp" line="783"/>
-      <location filename="../../TaskSketcherElements.cpp" line="787"/>
-      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="758"/>
+      <location filename="../../TaskSketcherElements.cpp" line="762"/>
+      <location filename="../../TaskSketcherElements.cpp" line="766"/>
+      <location filename="../../TaskSketcherElements.cpp" line="770"/>
+      <location filename="../../TaskSketcherElements.cpp" line="774"/>
+      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="782"/>
+      <location filename="../../TaskSketcherElements.cpp" line="786"/>
+      <location filename="../../TaskSketcherElements.cpp" line="790"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Construction</source>
       <translation>Izgradnja</translation>
     </message>
@@ -4914,92 +4926,92 @@ Međutim, nema povezanih ograničenja na krajnje točake.</translation>
       <translation>Automatsko prebacivanje na rub</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="256"/>
+      <location filename="../../TaskSketcherElements.cpp" line="257"/>
       <source>Elements</source>
       <translation>Elementi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="277"/>
+      <location filename="../../TaskSketcherElements.cpp" line="278"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: Višestruki odabir &lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: Prebaci na slijedeći valjani tip&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="754"/>
-      <location filename="../../TaskSketcherElements.cpp" line="756"/>
-      <location filename="../../TaskSketcherElements.cpp" line="861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="757"/>
+      <location filename="../../TaskSketcherElements.cpp" line="759"/>
+      <location filename="../../TaskSketcherElements.cpp" line="864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="865"/>
       <source>Point</source>
       <translation>Točka</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
-      <location filename="../../TaskSketcherElements.cpp" line="760"/>
-      <location filename="../../TaskSketcherElements.cpp" line="864"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="761"/>
+      <location filename="../../TaskSketcherElements.cpp" line="763"/>
+      <location filename="../../TaskSketcherElements.cpp" line="867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="868"/>
       <source>Line</source>
       <translation>Linija</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
-      <location filename="../../TaskSketcherElements.cpp" line="764"/>
-      <location filename="../../TaskSketcherElements.cpp" line="867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="765"/>
+      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="871"/>
       <source>Arc</source>
       <translation>Luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
-      <location filename="../../TaskSketcherElements.cpp" line="768"/>
-      <location filename="../../TaskSketcherElements.cpp" line="870"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="769"/>
+      <location filename="../../TaskSketcherElements.cpp" line="771"/>
+      <location filename="../../TaskSketcherElements.cpp" line="873"/>
+      <location filename="../../TaskSketcherElements.cpp" line="874"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
-      <location filename="../../TaskSketcherElements.cpp" line="772"/>
-      <location filename="../../TaskSketcherElements.cpp" line="873"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="773"/>
+      <location filename="../../TaskSketcherElements.cpp" line="775"/>
+      <location filename="../../TaskSketcherElements.cpp" line="876"/>
+      <location filename="../../TaskSketcherElements.cpp" line="877"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
-      <location filename="../../TaskSketcherElements.cpp" line="776"/>
-      <location filename="../../TaskSketcherElements.cpp" line="876"/>
-      <location filename="../../TaskSketcherElements.cpp" line="877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="880"/>
       <source>Elliptical Arc</source>
       <translation>Eliptični luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
-      <location filename="../../TaskSketcherElements.cpp" line="780"/>
-      <location filename="../../TaskSketcherElements.cpp" line="879"/>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="781"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
+      <location filename="../../TaskSketcherElements.cpp" line="882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="883"/>
       <source>Hyperbolic Arc</source>
       <translation>Hiperbolni luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="782"/>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
-      <location filename="../../TaskSketcherElements.cpp" line="882"/>
-      <location filename="../../TaskSketcherElements.cpp" line="883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="785"/>
+      <location filename="../../TaskSketcherElements.cpp" line="787"/>
+      <location filename="../../TaskSketcherElements.cpp" line="885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="886"/>
       <source>Parabolic Arc</source>
       <translation>Parabolični luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="786"/>
-      <location filename="../../TaskSketcherElements.cpp" line="788"/>
-      <location filename="../../TaskSketcherElements.cpp" line="885"/>
-      <location filename="../../TaskSketcherElements.cpp" line="886"/>
+      <location filename="../../TaskSketcherElements.cpp" line="789"/>
+      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="889"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="790"/>
-      <location filename="../../TaskSketcherElements.cpp" line="792"/>
-      <location filename="../../TaskSketcherElements.cpp" line="888"/>
-      <location filename="../../TaskSketcherElements.cpp" line="889"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
+      <location filename="../../TaskSketcherElements.cpp" line="891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="892"/>
       <source>Other</source>
       <translation>Drugo</translation>
     </message>

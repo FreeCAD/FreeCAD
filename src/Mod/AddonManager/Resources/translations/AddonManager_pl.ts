@@ -6,17 +6,17 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Niestandardowe repozytorium</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Adres URL repozytorium</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Gałąź</translation>
     </message>
   </context>
   <context>
@@ -57,12 +57,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Zależności</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Typ zależności</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Opcjonalne?</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="72"/>
@@ -118,34 +118,34 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Narzędzia dla twórców dodatków</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Ścieżka do dodatku</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Przeglądaj...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Metadane</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Gałąź główna</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Wyjaśnienie tego, co zawiera ten dodatek. Wyświetlane w Menedżerze Dodatków. Nie jest to konieczne, aby stwierdzić, że jest to dodatek dla programu FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -155,7 +155,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>Adres URL dyskusji</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -165,17 +165,17 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>Adres URL systemu rejestracji błędów</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Obsługiwane style semantyczne (1.2.3-beta) lub CalVer (2022.08.30)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Ustaw na dzisiaj (styl CalVer)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -183,43 +183,43 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(Opcjonalne)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+      <translation>Wyświetlane w Menedżerze Dodatków&apos;s lista dodatków. Nie powinno zawierać słowa &quot;FreeCAD&quot;i musi być prawidłową nazwą katalogu we wszystkich wspieranych systemach operacyjnych.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>Adres URL pliku readme</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation type="unfinished">TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</translation>
+      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak &quot;To jest dodatek do programu FreeCAD...&quot; -- po prostu powiedz co on robi.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Adres URL repozytorium</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>Adres URL strony</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>Adres URL dokumentacji</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Nazwa dodatku</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -229,27 +229,27 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(zalecane)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation type="unfinished">Minimum Python</translation>
+      <translation>Minimalna wersja Pythona</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation type="unfinished">(Optional, only 3.x version supported)</translation>
+      <translation>(Opcjonalne, obsługiwana jest tylko wersja 3.x)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Wykryj...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
+      <translation>Zawartość dodatku</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="301"/>
@@ -298,17 +298,17 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Wyświetl i zaktualizuj zależności pakietów Pythona</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Zależności Pythona...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Narzędzia deweloperskie...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -368,17 +368,17 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation type="unfinished">Edit Tags</translation>
+      <translation>Edytuj tagi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation type="unfinished">Comma-separated list of tags describing this item:</translation>
+      <translation>Oddzielona przecinkami lista tagów opisujących ten element:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>UWAGA: Zwykłe tagi obejmują &quot;Złożenie&quot;, &quot;MES&quot;, &quot;Siatka&quot;, &quot;NURBS&quot;itd.</translation>
     </message>
   </context>
   <context>
@@ -386,37 +386,37 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Edytuj zależność</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
       <source>Dependency Type</source>
-      <translation type="unfinished">Dependency Type</translation>
+      <translation>Typ zależności</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Zależność</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+      <translation>Nazwa pakietu, jeśli &quot;Inne ...&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation type="unfinished">NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</translation>
+      <translation>UWAGA: Jeśli wybrano &quot;Inne ...&quot;, pakiet nie jest w pliku ALLOWED_PYTHON_PACKAGES.txt i nie zostanie automatycznie zainstalowany przez Menedżera Dodatków. Prześlij PR na &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt;, aby poprosić o dodanie pakietu.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>Jeśli jest to opcjonalna zależność, Menedżer dodatków zaoferuje zainstalowanie tej zależności (jeśli to możliwe), ale nie zablokuje instalacji, jeśli użytkownik nie zdecyduje się na zainstalowanie pakietu lub nie może go zainstalować.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Opcjonalne</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Licencje</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -483,7 +483,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
+      <translation>Plik licencji</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="97"/>
@@ -496,12 +496,12 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>Twórcy</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Rodzaj</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -511,7 +511,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>E-mail</translation>
     </message>
   </context>
   <context>
@@ -519,22 +519,22 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
       <source>Advanced Version Mapping</source>
-      <translation type="unfinished">Advanced Version Mapping</translation>
+      <translation>Zaawansowane mapowanie wersji</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>Przyszłe wersje Menadżera dodatków FreeCAD będą wspierać deweloperów, ustawiając konkretną gałąź lub tag do użytku z konkretną wersją FreeCAD (np. ustawiając konkretny tag jako ostatnią wersję twojego dodatku, aby obsługiwał v0.19, itp.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>Wersja FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>Najlepsza dostępna gałąź, tag lub commit</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
@@ -548,28 +548,28 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Wspierane wersje FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Minimalna wersja FreeCAD, która jest obsługiwana</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Opcjonalne</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Maksymalna wersja FreeCAD, która jest obsługiwana</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>Zaawansowane mapowanie wersji ...</translation>
     </message>
   </context>
   <context>
@@ -591,7 +591,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>Automatycznie sprawdzaj aktualizacje podczas uruchomienia (wymaga git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -648,7 +648,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
+      <translation>Repozytoria użytkownika</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="188"/>
@@ -659,32 +659,32 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
-      <translation type="unfinished">Show option to change branches (requires git)</translation>
+      <translation>Pokaż opcję zmiany gałęzi (wymaga git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
+      <translation>Wyłącz git (wróć do pobierania tylko ZIP)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="370"/>
       <source>disableGit</source>
-      <translation type="unfinished">disableGit</translation>
+      <translation>wyłącz Git</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Aktywuj opcje Menedżera dodatków przeznaczone dla twórców nowych dodatków.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Tryb dewelopera dodatków</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
       <source>developerMode</source>
-      <translation type="unfinished">developerMode</translation>
+      <translation>Tryb dewelopera</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
@@ -719,12 +719,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
+      <translation>plik wykonywalny git (opcjonalnie):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>Ścieżka do pliku wykonywalnego git. W razie potrzeby wykrywana automatycznie, jeśli nie została określona.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
@@ -780,42 +780,42 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Zarządzaj zależnościami Pythona</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>Następujące pakiety Pythona zostały zainstalowane lokalnie przez Menedżera Dodatków w celu zaspokojenia zależności dodatku. Lokalizacja instalacji:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Nazwa pakietu</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Wersja zainstalowana</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Wersja  dostępna</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Używane przez</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation type="unfinished">An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</translation>
+      <translation>Gwiazdka (*) w kolumnie &quot;Używane przez&quot; wskazuje zależność opcjonalną. Zauważ, że Używane przez zapisuje tylko bezpośredni import w dodatku. Inne pakiety Pythona, od których te pakiety zależą, mogły również zostać zainstalowane.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Aktualizuj wszystkie dostępne</translation>
     </message>
   </context>
   <context>
@@ -836,12 +836,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="14"/>
       <source>Content Item</source>
-      <translation type="unfinished">Content Item</translation>
+      <translation>Element zawartości</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="25"/>
       <source>Content type:</source>
-      <translation type="unfinished">Content type:</translation>
+      <translation>Typ zawartości:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
@@ -851,7 +851,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Pakiet preferencji</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
@@ -861,29 +861,29 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+      <translation>Jeśli jest to jedyna rzecz w dodatku, wszystkie inne metadane mogą być odziedziczone z najwyższego poziomu i nie muszą być w tym miejscu określone.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation type="unfinished">This is the only item in the Addon</translation>
+      <translation>To jest jedyny element w dodatku</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation type="unfinished">Main macro file</translation>
+      <translation>Plik główny makrodefinicji</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
       <source>The file with the macro&apos;s metadata in it</source>
-      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+      <translation>Plik z metadanymi makrodefinicji</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="100"/>
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Przeglądaj...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -893,22 +893,22 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Nazwa klasy środowiska pracy</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>Klasa, która definiuje element danych &quot;ikona&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Katalog podrzędny</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
       <source>Optional, defaults to name of content item</source>
-      <translation type="unfinished">Optional, defaults to name of content item</translation>
+      <translation>Opcjonalne, domyślnie nazwa elementu zawartości</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
@@ -918,37 +918,37 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="179"/>
       <source>actualIcon</source>
-      <translation type="unfinished">actualIcon</translation>
+      <translation>aktualna ikonka</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
+      <translation>Opcjonalne, domyślnie odziedziczone z dodatku najwyższego poziomu</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Tagi...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Zależności...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation type="unfinished">FreeCAD Versions...</translation>
+      <translation>Wersje FreeCAD...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Inne metadane</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</translation>
+      <translation>Wyświetlane w Menedżerze Dodatków&apos;s lista dodatków. Nie powinno zawierać słowa &quot;FreeCAD&quot;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -963,12 +963,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Obsługiwane style semantyczne (1.2.3-beta) lub CalVer (2022.08.30)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Ustaw na dzisiaj (styl CalVer)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -978,7 +978,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Każde pole pozostawione puste jest dziedziczone z metadanych dodatku najwyższego poziomu, więc technicznie wszystkie są opcjonalne. Dla dodatków z wieloma elementami zawartości, każda pozycja powinna zawierać unikalną nazwę wyświetlaną i opis.</translation>
     </message>
   </context>
   <context>
@@ -1027,17 +1027,17 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Informacje o prawach autorskich</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Właściciel praw autorskich:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Rok praw autorskich:</translation>
     </message>
   </context>
   <context>
@@ -1045,12 +1045,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>Dodaj osobę</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>Opiekun to ktoś, kto ma dostęp do commitów w tym projekcie. Autorem jest każdy, kogo jeszcze chciałbyś uwzględnić.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -1060,12 +1060,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>Adres e-mail:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>Adres e-mail jest wymagany dla opiekunów i opcjonalny dla autorów.</translation>
     </message>
   </context>
   <context>
@@ -1116,37 +1116,37 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Wybierz licencję</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>O licencji ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Nazwa licencji:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>Ścieżka do pliku licencji:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(jeśli wymaga tego licencja)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Przeglądaj...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Utwórz ...</translation>
     </message>
   </context>
   <context>

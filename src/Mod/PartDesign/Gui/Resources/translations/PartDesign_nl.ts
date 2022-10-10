@@ -3057,7 +3057,7 @@ gemeten in de opgegeven richting</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
@@ -3841,7 +3841,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
       <translation>Constructielijn %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>

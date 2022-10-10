@@ -1162,7 +1162,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>მასშტაბი:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -2555,7 +2555,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
       <source>/</source>
-      <translation type="unfinished">/</translation>
+      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>

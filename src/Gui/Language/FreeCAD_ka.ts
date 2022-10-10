@@ -127,8 +127,8 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3210"/>
-      <location filename="../CommandView.cpp" line="3211"/>
+      <location filename="../CommandView.cpp" line="3248"/>
+      <location filename="../CommandView.cpp" line="3249"/>
       <source>Clear measurement</source>
       <translation>გაზომვის გასუფთავება</translation>
     </message>
@@ -136,8 +136,8 @@
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3240"/>
-      <location filename="../CommandView.cpp" line="3241"/>
+      <location filename="../CommandView.cpp" line="3278"/>
+      <location filename="../CommandView.cpp" line="3279"/>
       <source>Toggle measurement</source>
       <translation>გაზომვის გადართვა</translation>
     </message>
@@ -150,7 +150,7 @@
       <translation>ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="614"/>
+      <location filename="../Application.cpp" line="617"/>
       <source>Import</source>
       <translation>შემოტანა</translation>
     </message>
@@ -190,12 +190,12 @@
       <translation>ყველა ბმის შემოტანა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="768"/>
+      <location filename="../CommandStd.cpp" line="770"/>
       <source>Insert measurement</source>
       <translation>გაზომვის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="799"/>
+      <location filename="../CommandStd.cpp" line="801"/>
       <source>Insert text document</source>
       <translation>ტექსტური დოკუმენტის ჩასმა</translation>
     </message>
@@ -241,6 +241,16 @@
       <location filename="../ViewProviderMeasureDistance.cpp" line="272"/>
       <source>Measure distance</source>
       <translation>მანძილის გაზომვა</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="866"/>
+      <source>Toggle visibility</source>
+      <translation>ხილვადობის ჩართ/გამორთ</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="906"/>
+      <source>Toggle selectability</source>
+      <translation>მონიშვნადობის ჩართ/გამორთ</translation>
     </message>
   </context>
   <context>
@@ -703,47 +713,47 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
-      <location filename="../Splashscreen.cpp" line="395"/>
-      <location filename="../Splashscreen.cpp" line="404"/>
+      <location filename="../Splashscreen.cpp" line="397"/>
+      <location filename="../Splashscreen.cpp" line="406"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
       <translation>მონაწილეები</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="406"/>
+      <location filename="../Splashscreen.cpp" line="408"/>
       <source>FreeCAD would not be possible without the contributions of</source>
       <translation>FreeCAD-ის შექმნა შეუძლებელი იქნება ამ ადამიანების წვლილის გარეშე</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="409"/>
+      <location filename="../Splashscreen.cpp" line="411"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
       <translation>ერთეულები</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="420"/>
+      <location filename="../Splashscreen.cpp" line="422"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>ორგანიზაციები</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="447"/>
-      <location filename="../Splashscreen.cpp" line="666"/>
+      <location filename="../Splashscreen.cpp" line="449"/>
+      <location filename="../Splashscreen.cpp" line="668"/>
       <source>License</source>
       <translation>ლიცენზია</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="486"/>
+      <location filename="../Splashscreen.cpp" line="488"/>
       <source>Libraries</source>
       <translation>ბიბლიოთეკები</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="627"/>
+      <location filename="../Splashscreen.cpp" line="629"/>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
       <translation>ეს პროგრამა იყენებს ღია კოდის კომპონენტებს, რომელთა საავტორო და სხვა საკუთრების უფლებები ეკუთვნის მათ შესაბამის მფლობელებს:</translation>
     </message>
     <message>
-      <location filename="../Splashscreen.cpp" line="653"/>
+      <location filename="../Splashscreen.cpp" line="655"/>
       <source>Collection</source>
       <translation>კოლექცია</translation>
     </message>
@@ -1118,12 +1128,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
   <context>
     <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
     <message>
-      <location filename="../DlgCreateNewPreferencePackImp.cpp" line="158"/>
+      <location filename="../DlgCreateNewPreferencePackImp.cpp" line="160"/>
       <source>Pack already exists</source>
       <translation>ნაკრები უკვე არსებობს</translation>
     </message>
     <message>
-      <location filename="../DlgCreateNewPreferencePackImp.cpp" line="159"/>
+      <location filename="../DlgCreateNewPreferencePackImp.cpp" line="161"/>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
       <translation>პარამეტრების ნაკრები ამ სახელით უკვე არსებობს. გნებავთ, თავზე გადააწეროთ?</translation>
     </message>
@@ -1381,14 +1391,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="332"/>
       <source>Command not in use yet</source>
-      <translation type="unfinished">Command not in use yet</translation>
+      <translation>ბრძანება ჯერ არ გამოიყენება</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="333"/>
       <source>The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.
 To enable assignment, please make '%2' the active workbench</source>
-      <translation type="unfinished">The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.
-To enable assignment, please make '%2' the active workbench</translation>
+      <translation>ბრძანება '%1' ჩაიტვირთა, მაგრამ ჯერ არ გამოიყენება, ამიტომ მას მალსახმობს ჯერ ვერ მიანიჭებთ.
+მინიჭებისთვის საჭიროა %2-ის გააქტიურება</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="378"/>
@@ -2010,7 +2020,7 @@ To enable assignment, please make '%2' the active workbench</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="238"/>
       <source>Import config...</source>
-      <translation type="unfinished">Import config...</translation>
+      <translation>კონფიგურაციის შემოტანა...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="245"/>
@@ -2209,17 +2219,17 @@ display the splash screen</source>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="460"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation type="unfinished">Choose a FreeCAD config file to import</translation>
+      <translation>აირჩიეთ შემოსატანი FreeCAD-ის კონფიგურაციის ფაილი</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="471"/>
       <source>File exists</source>
-      <translation type="unfinished">File exists</translation>
+      <translation>ფაილი არსებობს</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="472"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite?</translation>
+      <translation>პარამეტრების ნაკრები ამ სახელით უკვე არსებობს. გნებავთ, თავზე გადააწეროთ?</translation>
     </message>
   </context>
   <context>
@@ -4492,22 +4502,22 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
   <context>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
-      <location filename="../DlgSettingsImageImp.cpp" line="51"/>
+      <location filename="../DlgSettingsImageImp.cpp" line="55"/>
       <source>Offscreen (New)</source>
       <translation>Offscreen (ახალი)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsImageImp.cpp" line="52"/>
+      <location filename="../DlgSettingsImageImp.cpp" line="56"/>
       <source>Offscreen (Old)</source>
       <translation>Offscreen (ძველი)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsImageImp.cpp" line="53"/>
+      <location filename="../DlgSettingsImageImp.cpp" line="57"/>
       <source>Framebuffer (custom)</source>
       <translation>Framebuffer (მომხმარებლის)</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsImageImp.cpp" line="54"/>
+      <location filename="../DlgSettingsImageImp.cpp" line="58"/>
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (როგორც არის)</translation>
     </message>
@@ -5186,7 +5196,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="52"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>საბოლოოდ ელემენტების მეთოდი (მმ, ნ, წმ)</translation>
     </message>
   </context>
   <context>
@@ -5260,12 +5270,12 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="309"/>
       <source>Switches the colors of the gradient</source>
-      <translation type="unfinished">Switches the colors of the gradient</translation>
+      <translation>გრადიენტის ფერების გადართვა</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="312"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>ჩამრთველი</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="332"/>
@@ -6677,13 +6687,13 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="746"/>
-      <location filename="../FileDialog.cpp" line="748"/>
+      <location filename="../FileDialog.cpp" line="754"/>
+      <location filename="../FileDialog.cpp" line="756"/>
       <source>Select a file</source>
       <translation>აირჩიეთ ფაილი</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="751"/>
+      <location filename="../FileDialog.cpp" line="759"/>
       <source>Select a directory</source>
       <translation>აირჩიეთ საქაღალდე</translation>
     </message>
@@ -6691,13 +6701,13 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="198"/>
+      <location filename="../FileDialog.cpp" line="205"/>
       <source>Save as</source>
       <translation>შენახვა როგორც</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="274"/>
-      <location filename="../FileDialog.cpp" line="327"/>
+      <location filename="../FileDialog.cpp" line="281"/>
+      <location filename="../FileDialog.cpp" line="334"/>
       <source>Open</source>
       <translation>გახსნა</translation>
     </message>
@@ -6705,12 +6715,12 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="436"/>
+      <location filename="../FileDialog.cpp" line="443"/>
       <source>Extended</source>
       <translation>გაფართოებული</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="478"/>
+      <location filename="../FileDialog.cpp" line="485"/>
       <source>All files (*.*)</source>
       <translation>ყველა ფაილი (*.*)</translation>
     </message>
@@ -6844,12 +6854,12 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::InputField</name>
     <message>
-      <location filename="../InputField.cpp" line="191"/>
+      <location filename="../InputField.cpp" line="196"/>
       <source>Edit</source>
       <translation>ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../InputField.cpp" line="211"/>
+      <location filename="../InputField.cpp" line="216"/>
       <source>Save value</source>
       <translation>მნიშვნელობის შენახვა</translation>
     </message>
@@ -6998,63 +7008,63 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="293"/>
-      <location filename="../MainWindow.cpp" line="1902"/>
+      <location filename="../MainWindow.cpp" line="295"/>
+      <location filename="../MainWindow.cpp" line="1905"/>
       <source>Dimension</source>
       <translation>ზომა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="333"/>
+      <location filename="../MainWindow.cpp" line="335"/>
       <source>Ready</source>
       <translation>მზადაა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="742"/>
+      <location filename="../MainWindow.cpp" line="744"/>
       <source>Help addon needed!</source>
       <translation>საჭიროა დამატების დახმარება!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="743"/>
+      <location filename="../MainWindow.cpp" line="745"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>%1-ის დახმარების სისტემა ახლა "Help" დამატების მიერაა მხარდაჭერილი. მისი დაყენება ადვილად შეგიძლიათ დამატების მმართველიდან</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="745"/>
+      <location filename="../MainWindow.cpp" line="747"/>
       <source>Open Addon Manager</source>
       <translation>დამატებების მმართველის გახსნა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="940"/>
+      <location filename="../MainWindow.cpp" line="942"/>
       <source>Close All</source>
       <translation>ყველას დახურვა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1144"/>
-      <location filename="../MainWindow.cpp" line="1145"/>
       <location filename="../MainWindow.cpp" line="1146"/>
+      <location filename="../MainWindow.cpp" line="1147"/>
+      <location filename="../MainWindow.cpp" line="1148"/>
       <source>Toggles this toolbar</source>
       <translation>ამ ზოლის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1159"/>
-      <location filename="../MainWindow.cpp" line="1160"/>
       <location filename="../MainWindow.cpp" line="1161"/>
+      <location filename="../MainWindow.cpp" line="1162"/>
+      <location filename="../MainWindow.cpp" line="1163"/>
       <source>Toggles this dockable window</source>
       <translation>მიმაგრებადი ფანჯრის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1693"/>
-      <location filename="../MainWindow.cpp" line="1785"/>
+      <location filename="../MainWindow.cpp" line="1696"/>
+      <location filename="../MainWindow.cpp" line="1788"/>
       <source>Unsaved document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1694"/>
+      <location filename="../MainWindow.cpp" line="1697"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>გატანილი ობიექტი შეიცავს გარე ბმულს. გთხოვთ გატანამდე დოკუმენტი ერთხელ მაინც შეინახოთ.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1786"/>
+      <location filename="../MainWindow.cpp" line="1789"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>გარე ობიექტებთან დასაკავშირებლად, დოკუმენტი უნდა იყოს შენახული ერთხელ მაინც. 
@@ -7634,17 +7644,17 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="844"/>
+      <location filename="../FileDialog.cpp" line="852"/>
       <source>Select module</source>
       <translation>აირჩიეთ მოდული</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="846"/>
+      <location filename="../FileDialog.cpp" line="854"/>
       <source>Open %1 as</source>
       <translation>%1-ის გაღება, როგორც</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="898"/>
+      <location filename="../FileDialog.cpp" line="906"/>
       <source>Select</source>
       <translation>არჩევა</translation>
     </message>
@@ -8040,127 +8050,132 @@ Do you want to specify another directory?</source>
       <translation>გალიციური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="149"/>
+      <location filename="Translator.cpp" line="150"/>
       <source>German</source>
       <translation>გერმანული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="150"/>
+      <location filename="Translator.cpp" line="151"/>
       <source>Greek</source>
       <translation>ბერძნული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="151"/>
+      <location filename="Translator.cpp" line="152"/>
       <source>Hungarian</source>
       <translation>უნგრული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="152"/>
+      <location filename="Translator.cpp" line="153"/>
       <source>Indonesian</source>
       <translation>ინდონეზიური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="153"/>
+      <location filename="Translator.cpp" line="154"/>
       <source>Italian</source>
       <translation>იტალიური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="154"/>
+      <location filename="Translator.cpp" line="155"/>
       <source>Japanese</source>
       <translation>იაპონური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="155"/>
+      <location filename="Translator.cpp" line="156"/>
       <source>Kabyle</source>
       <translation>კაბილური ენა</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="156"/>
+      <location filename="Translator.cpp" line="157"/>
       <source>Korean</source>
       <translation>კორეული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="157"/>
+      <location filename="Translator.cpp" line="158"/>
       <source>Lithuanian</source>
       <translation>ლიეტუვური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="158"/>
+      <location filename="Translator.cpp" line="159"/>
       <source>Norwegian</source>
       <translation>ნორვეგიული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="159"/>
+      <location filename="Translator.cpp" line="160"/>
       <source>Polish</source>
       <translation>პოლონური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="160"/>
+      <location filename="Translator.cpp" line="161"/>
       <source>Portuguese, Brazilian</source>
       <translation>ბრაზილიური, პორტუგალიური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="161"/>
+      <location filename="Translator.cpp" line="162"/>
       <source>Portuguese</source>
       <translation>პორტუგალიური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="162"/>
+      <location filename="Translator.cpp" line="163"/>
       <source>Romanian</source>
       <translation>რუმინული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="163"/>
+      <location filename="Translator.cpp" line="164"/>
       <source>Russian</source>
       <translation>რუსული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="164"/>
+      <location filename="Translator.cpp" line="165"/>
+      <source>Serbian</source>
+      <translation>სერბული</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="166"/>
       <source>Slovak</source>
       <translation>სლოვაკური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="165"/>
+      <location filename="Translator.cpp" line="167"/>
       <source>Slovenian</source>
       <translation>სლოვენური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="166"/>
+      <location filename="Translator.cpp" line="168"/>
       <source>Spanish</source>
       <translation>ესპანური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="167"/>
+      <location filename="Translator.cpp" line="169"/>
       <source>Spanish, Argentina</source>
       <translation>ესპანური, არგენინული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="168"/>
+      <location filename="Translator.cpp" line="170"/>
       <source>Swedish</source>
       <translation>შვედური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="169"/>
+      <location filename="Translator.cpp" line="171"/>
       <source>Turkish</source>
       <translation>თურქული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="170"/>
+      <location filename="Translator.cpp" line="172"/>
       <source>Ukrainian</source>
       <translation>უკრაინული</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="171"/>
+      <location filename="Translator.cpp" line="173"/>
       <source>Valencian</source>
       <translation>ვალენსიური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="172"/>
+      <location filename="Translator.cpp" line="174"/>
       <source>Vietnamese</source>
       <translation>ვიეტნამური</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="173"/>
+      <location filename="Translator.cpp" line="149"/>
       <source>Georgian</source>
       <translation>ქართული</translation>
     </message>
@@ -8575,37 +8590,37 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="383"/>
+      <location filename="../MainWindow.cpp" line="385"/>
       <source>Tree view</source>
       <translation>ელემენტების ხე</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="411"/>
+      <location filename="../MainWindow.cpp" line="413"/>
       <source>Property view</source>
       <translation>თვისებაზე გადახედვა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="429"/>
+      <location filename="../MainWindow.cpp" line="431"/>
       <source>Selection view</source>
       <translation>მონიშნულის ხედი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="451"/>
+      <location filename="../MainWindow.cpp" line="453"/>
       <source>Combo View</source>
       <translation>კომბო ხედი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="503"/>
+      <location filename="../MainWindow.cpp" line="505"/>
       <source>Report view</source>
       <translation>ანგარიში</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="523"/>
+      <location filename="../MainWindow.cpp" line="525"/>
       <source>Python console</source>
       <translation>Python-ის კონსოლი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="485"/>
+      <location filename="../MainWindow.cpp" line="487"/>
       <source>DAG View</source>
       <translation>DAG ხედი</translation>
     </message>
@@ -8643,35 +8658,35 @@ Do you want to specify another directory?</source>
       <translation>სამუშაო მაგიდები</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="579"/>
-      <location filename="../Application.cpp" line="671"/>
-      <location filename="../Application.cpp" line="741"/>
+      <location filename="../Application.cpp" line="582"/>
+      <location filename="../Application.cpp" line="674"/>
+      <location filename="../Application.cpp" line="744"/>
       <source>Unknown filetype</source>
       <translation>ფაილის უცნობი ტიპი</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="580"/>
-      <location filename="../Application.cpp" line="672"/>
+      <location filename="../Application.cpp" line="583"/>
+      <location filename="../Application.cpp" line="675"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>ფაილის უცნობი ტიპი: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="734"/>
+      <location filename="../Application.cpp" line="737"/>
       <source>Export failed</source>
       <translation>გატანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="742"/>
+      <location filename="../Application.cpp" line="745"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>უცნობ ფაილის ტიპში ჩაწერის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1423"/>
+      <location filename="../Application.cpp" line="1426"/>
       <source>Workbench failure</source>
       <translation>სამუშაო მაგიდის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1424"/>
+      <location filename="../Application.cpp" line="1427"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8723,7 +8738,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1179"/>
-      <location filename="../MainWindow.cpp" line="581"/>
+      <location filename="../MainWindow.cpp" line="583"/>
       <source>Unsaved document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
@@ -8781,108 +8796,108 @@ Please check the Report View for more details.</source>
       <translation>გამოთქმების ჩასმის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="97"/>
-      <location filename="../CommandStd.cpp" line="100"/>
+      <location filename="../CommandStd.cpp" line="99"/>
+      <location filename="../CommandStd.cpp" line="102"/>
       <source>Cannot load workbench</source>
       <translation>სამუშაო დაფის ჩატვირთვა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="101"/>
+      <location filename="../CommandStd.cpp" line="103"/>
       <source>A general error occurred while loading the workbench</source>
       <translation>სამუშაო მაგიდის ჩატვირთვის საერთო შეცდომა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="744"/>
-      <location filename="../CommandStd.cpp" line="750"/>
+      <location filename="../CommandStd.cpp" line="746"/>
+      <location filename="../CommandStd.cpp" line="752"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="745"/>
+      <location filename="../CommandStd.cpp" line="747"/>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
       <translation>არჩეულია ერთი ობიექტი. აირჩიეთ ორი. გაითვალისწინეთ, რომ 
 წერტილები, რომლებსაც აირჩევთ, მნიშვნელოვანია.</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="751"/>
+      <location filename="../CommandStd.cpp" line="753"/>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
       <translation>აირჩიეთ ორი ობიექტი. გაითვალისწინეთ, რომ 
 წერტილები, რომლებსაც აირჩევთ, მნიშვნელოვანია.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="307"/>
-      <location filename="../CommandView.cpp" line="527"/>
+      <location filename="../CommandView.cpp" line="338"/>
+      <location filename="../CommandView.cpp" line="558"/>
       <source>Save views...</source>
       <translation>ხედების შენახვა...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="309"/>
-      <location filename="../CommandView.cpp" line="528"/>
+      <location filename="../CommandView.cpp" line="340"/>
+      <location filename="../CommandView.cpp" line="559"/>
       <source>Load views...</source>
       <translation>ხედების ჩატვირთვა...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="312"/>
-      <location filename="../CommandView.cpp" line="529"/>
+      <location filename="../CommandView.cpp" line="343"/>
+      <location filename="../CommandView.cpp" line="560"/>
       <source>Freeze view</source>
       <translation>ხედების გაყინვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="315"/>
-      <location filename="../CommandView.cpp" line="530"/>
+      <location filename="../CommandView.cpp" line="346"/>
+      <location filename="../CommandView.cpp" line="561"/>
       <source>Clear views</source>
       <translation>ხედების გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="348"/>
-      <location filename="../CommandView.cpp" line="487"/>
-      <location filename="../CommandView.cpp" line="534"/>
+      <location filename="../CommandView.cpp" line="379"/>
+      <location filename="../CommandView.cpp" line="518"/>
+      <location filename="../CommandView.cpp" line="565"/>
       <source>Restore view &amp;%1</source>
       <translation>%1 ხედის აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="377"/>
+      <location filename="../CommandView.cpp" line="408"/>
       <source>Save frozen views</source>
       <translation>გაყინული ხედების შენახვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="378"/>
-      <location filename="../CommandView.cpp" line="428"/>
+      <location filename="../CommandView.cpp" line="409"/>
+      <location filename="../CommandView.cpp" line="459"/>
       <source>Frozen views</source>
       <translation>დამახსოვრებული ხედები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="418"/>
-      <location filename="../CommandView.cpp" line="433"/>
+      <location filename="../CommandView.cpp" line="449"/>
+      <location filename="../CommandView.cpp" line="464"/>
       <source>Restore views</source>
       <translation>ხედების აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="419"/>
+      <location filename="../CommandView.cpp" line="450"/>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
       <translation>აღდგენილი ხედების იმპორტი გაასუფთავებს უკვე შენახულ ხედებს.
 გნებავთ გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="427"/>
+      <location filename="../CommandView.cpp" line="458"/>
       <source>Restore frozen views</source>
       <translation>გაყინული ხედების აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="434"/>
+      <location filename="../CommandView.cpp" line="465"/>
       <source>Cannot open file '%1'.</source>
       <translation>%1-ის გახსნა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1788"/>
+      <location filename="../CommandView.cpp" line="1826"/>
       <source>files</source>
       <translation>ფაილები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1796"/>
+      <location filename="../CommandView.cpp" line="1834"/>
       <source>Save picture</source>
       <translation>გამოსახულების შენახვა</translation>
     </message>
@@ -9266,32 +9281,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="583"/>
+      <location filename="../MainWindow.cpp" line="585"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>გსურთ შეინახოთ ცვლილებები %1 -ში მის დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="586"/>
+      <location filename="../MainWindow.cpp" line="588"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>გსურთ შეინახოთ დოკუმენტის ცვლილებები მის დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="588"/>
+      <location filename="../MainWindow.cpp" line="590"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>თუ არ შეინახავთ, ყველა თქვენი ცვლილება დაიკარგება.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="593"/>
+      <location filename="../MainWindow.cpp" line="595"/>
       <source>Apply answer to all</source>
       <translation>პასუხის ყველაზე გადატარება</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="683"/>
+      <location filename="../MainWindow.cpp" line="685"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 დოკუმენტი არ იქნა შენახული</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="684"/>
+      <location filename="../MainWindow.cpp" line="686"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>ზოგიერთი დოკუმენტის შენახვა შეუძლებელია. გნებავთ დახურვის გაუქმება?</translation>
     </message>
@@ -9546,9 +9561,9 @@ the current copy will be lost.
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2864"/>
-      <location filename="../CommandView.cpp" line="2865"/>
-      <location filename="../CommandView.cpp" line="2867"/>
+      <location filename="../CommandView.cpp" line="2902"/>
+      <location filename="../CommandView.cpp" line="2903"/>
+      <location filename="../CommandView.cpp" line="2905"/>
       <source>Box element selection</source>
       <translation>ელემენტების მონიშვნის არეალი</translation>
     </message>
@@ -9556,9 +9571,9 @@ the current copy will be lost.
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2601"/>
-      <location filename="../CommandView.cpp" line="2602"/>
-      <location filename="../CommandView.cpp" line="2604"/>
+      <location filename="../CommandView.cpp" line="2639"/>
+      <location filename="../CommandView.cpp" line="2640"/>
+      <location filename="../CommandView.cpp" line="2642"/>
       <source>Box selection</source>
       <translation>არეალის მონიშვნა</translation>
     </message>
@@ -9566,13 +9581,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdAbout</name>
     <message>
-      <location filename="../CommandStd.cpp" line="214"/>
+      <location filename="../CommandStd.cpp" line="216"/>
       <source>&amp;About %1</source>
       <translation>%1-ის &amp;შესახებ</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="215"/>
       <location filename="../CommandStd.cpp" line="217"/>
+      <location filename="../CommandStd.cpp" line="219"/>
       <source>About %1</source>
       <translation>%1-ის შესახებ</translation>
     </message>
@@ -9580,13 +9595,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <location filename="../CommandStd.cpp" line="280"/>
+      <location filename="../CommandStd.cpp" line="282"/>
       <source>About &amp;Qt</source>
       <translation>&amp;Qt-ის შესახებ</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="281"/>
       <location filename="../CommandStd.cpp" line="283"/>
+      <location filename="../CommandStd.cpp" line="285"/>
       <source>About Qt</source>
       <translation>Qt- ს შესახებ</translation>
     </message>
@@ -9650,9 +9665,9 @@ the current copy will be lost.
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2005"/>
-      <location filename="../CommandView.cpp" line="2006"/>
-      <location filename="../CommandView.cpp" line="2007"/>
+      <location filename="../CommandView.cpp" line="2043"/>
+      <location filename="../CommandView.cpp" line="2044"/>
+      <location filename="../CommandView.cpp" line="2045"/>
       <source>Toggle axis cross</source>
       <translation>ღერძების ჩვენების ჩართ/გამორთ</translation>
     </message>
@@ -9702,13 +9717,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <location filename="../CommandStd.cpp" line="410"/>
+      <location filename="../CommandStd.cpp" line="412"/>
       <source>Start command &amp;line...</source>
       <translation>ბრძანების ვე&amp;ლის გაშვება...</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="411"/>
       <location filename="../CommandStd.cpp" line="413"/>
+      <location filename="../CommandStd.cpp" line="415"/>
       <source>Opens the command line in the console</source>
       <translation>ბრძანების ხაზის კონსოლში გახსნა</translation>
     </message>
@@ -9758,13 +9773,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3182"/>
+      <location filename="../CommandView.cpp" line="3220"/>
       <source>View turntable...</source>
       <translation>გრუნტის ნახვა...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3183"/>
-      <location filename="../CommandView.cpp" line="3185"/>
+      <location filename="../CommandView.cpp" line="3221"/>
+      <location filename="../CommandView.cpp" line="3223"/>
       <source>View turntable</source>
       <translation>გრუნტის ნახვა</translation>
     </message>
@@ -9786,13 +9801,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDlgCustomize</name>
     <message>
-      <location filename="../CommandStd.cpp" line="383"/>
+      <location filename="../CommandStd.cpp" line="385"/>
       <source>Cu&amp;stomize...</source>
       <translation>&amp;ხელით მითითება...</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="384"/>
       <location filename="../CommandStd.cpp" line="386"/>
+      <location filename="../CommandStd.cpp" line="388"/>
       <source>Customize toolbars and command bars</source>
       <translation>ხელსაწყოების და ბრძანებების ზოლების მორგება</translation>
     </message>
@@ -9842,13 +9857,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
-      <location filename="../CommandStd.cpp" line="326"/>
+      <location filename="../CommandStd.cpp" line="328"/>
       <source>E&amp;dit parameters ...</source>
       <translation>პარამეტრების ჩასწორება ...</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="327"/>
       <location filename="../CommandStd.cpp" line="329"/>
+      <location filename="../CommandStd.cpp" line="331"/>
       <source>Opens a Dialog to edit the parameters</source>
       <translation>პარამეტრების ჩასწორების ფანჯრის გახსნა</translation>
     </message>
@@ -9856,13 +9871,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <location filename="../CommandStd.cpp" line="351"/>
+      <location filename="../CommandStd.cpp" line="353"/>
       <source>&amp;Preferences ...</source>
       <translation>&amp;გამართვა ...</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="352"/>
       <location filename="../CommandStd.cpp" line="354"/>
+      <location filename="../CommandStd.cpp" line="356"/>
       <source>Opens a Dialog to edit the preferences</source>
       <translation>გამართვის ფანჯრის გახსნა</translation>
     </message>
@@ -9884,13 +9899,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="604"/>
+      <location filename="../CommandView.cpp" line="635"/>
       <source>Draw style</source>
       <translation>ხაზვის სტილი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="605"/>
-      <location filename="../CommandView.cpp" line="606"/>
+      <location filename="../CommandView.cpp" line="636"/>
+      <location filename="../CommandView.cpp" line="637"/>
       <source>Change the draw style of the objects</source>
       <translation>ობიექტების ხაზვის სტილის შეცვლა</translation>
     </message>
@@ -9978,12 +9993,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <location filename="../CommandStd.cpp" line="510"/>
+      <location filename="../CommandStd.cpp" line="512"/>
       <source>Donate</source>
       <translation>მხარდაჭერა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="511"/>
+      <location filename="../CommandStd.cpp" line="513"/>
       <source>Donate to FreeCAD development</source>
       <translation>შეწირულობა FreeCAD-ის განვითარებისთვის</translation>
     </message>
@@ -9991,17 +10006,17 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADFAQ</name>
     <message>
-      <location filename="../CommandStd.cpp" line="649"/>
+      <location filename="../CommandStd.cpp" line="651"/>
       <source>FreeCAD FAQ</source>
       <translation>FreeCAD-ის ხ.დ.კ.</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="650"/>
+      <location filename="../CommandStd.cpp" line="652"/>
       <source>Frequently Asked Questions on the FreeCAD website</source>
       <translation>ხშირად დასმული კითხვები FreeCAD-ის ვებგვერდზე</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="652"/>
+      <location filename="../CommandStd.cpp" line="654"/>
       <source>Frequently Asked Questions</source>
       <translation>ხშირად დასმული კითხვები</translation>
     </message>
@@ -10009,17 +10024,17 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <location filename="../CommandStd.cpp" line="621"/>
+      <location filename="../CommandStd.cpp" line="623"/>
       <source>FreeCAD Forum</source>
       <translation>FreeCAD-ის ფორუმი</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="622"/>
+      <location filename="../CommandStd.cpp" line="624"/>
       <source>The FreeCAD forum, where you can find help from other users</source>
       <translation>FreeCAD-ის ფორუმი, სადაც შეგიძლიათ მიიღოთ დახმარება სხვა მომხმარებლებისგან</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="624"/>
+      <location filename="../CommandStd.cpp" line="626"/>
       <source>The FreeCAD Forum</source>
       <translation>FreeCAD-ის ფორუმი</translation>
     </message>
@@ -10027,17 +10042,17 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
     <message>
-      <location filename="../CommandStd.cpp" line="593"/>
+      <location filename="../CommandStd.cpp" line="595"/>
       <source>Python scripting documentation</source>
       <translation>Python-ზე სკრიპტების შექმნის დოკუმენტაცია</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="594"/>
+      <location filename="../CommandStd.cpp" line="596"/>
       <source>Python scripting documentation on the FreeCAD website</source>
       <translation>Python-ის სკრიპტების დოკუმენტაცია FreeCAD-ის ვებგვერდზე</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="596"/>
+      <location filename="../CommandStd.cpp" line="598"/>
       <source>PowerUsers documentation</source>
       <translation>დოკუმენტაცია გამოცდილი მომხმარებლებისათვის</translation>
     </message>
@@ -10045,13 +10060,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <location filename="../CommandStd.cpp" line="565"/>
-      <location filename="../CommandStd.cpp" line="568"/>
+      <location filename="../CommandStd.cpp" line="567"/>
+      <location filename="../CommandStd.cpp" line="570"/>
       <source>Users documentation</source>
       <translation>მომხმარებლის დოკუმენტაცია</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="566"/>
+      <location filename="../CommandStd.cpp" line="568"/>
       <source>Documentation for users on the FreeCAD website</source>
       <translation>FreeCAD-ის ვებგვერდი</translation>
     </message>
@@ -10059,13 +10074,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="537"/>
-      <location filename="../CommandStd.cpp" line="540"/>
+      <location filename="../CommandStd.cpp" line="539"/>
+      <location filename="../CommandStd.cpp" line="542"/>
       <source>FreeCAD Website</source>
       <translation>FreeCAD-ის ვებგვერდი</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="538"/>
+      <location filename="../CommandStd.cpp" line="540"/>
       <source>The FreeCAD website</source>
       <translation>FreeCAD-ის ვებგვერდი</translation>
     </message>
@@ -10073,13 +10088,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="292"/>
+      <location filename="../CommandView.cpp" line="323"/>
       <source>Freeze display</source>
       <translation>კამერის მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="293"/>
-      <location filename="../CommandView.cpp" line="295"/>
+      <location filename="../CommandView.cpp" line="324"/>
+      <location filename="../CommandView.cpp" line="326"/>
       <source>Freezes the current view position</source>
       <translation>ხედის მიმდინარე პოზიციის გაყინვა</translation>
     </message>
@@ -10100,13 +10115,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1074"/>
+      <location filename="../CommandView.cpp" line="1112"/>
       <source>Hide all objects</source>
       <translation>ყველა ობიექტის დამალვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1075"/>
-      <location filename="../CommandView.cpp" line="1076"/>
+      <location filename="../CommandView.cpp" line="1113"/>
+      <location filename="../CommandView.cpp" line="1114"/>
       <source>Hide all objects in the document</source>
       <translation>დოკუმენტში ყველა ობიექტის დამალვა</translation>
     </message>
@@ -10114,13 +10129,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="926"/>
+      <location filename="../CommandView.cpp" line="964"/>
       <source>Hide selection</source>
       <translation>მონიშნულის დამალვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="927"/>
-      <location filename="../CommandView.cpp" line="928"/>
+      <location filename="../CommandView.cpp" line="965"/>
+      <location filename="../CommandView.cpp" line="966"/>
       <source>Hide all selected objects</source>
       <translation>ყველა მონიშნული ობიექტის დამალვა</translation>
     </message>
@@ -10382,9 +10397,9 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <location filename="../CommandView.cpp" line="3031"/>
-      <location filename="../CommandView.cpp" line="3032"/>
-      <location filename="../CommandView.cpp" line="3034"/>
+      <location filename="../CommandView.cpp" line="3069"/>
+      <location filename="../CommandView.cpp" line="3070"/>
+      <location filename="../CommandView.cpp" line="3072"/>
       <source>Measure distance</source>
       <translation>მანძილის გაზომვა</translation>
     </message>
@@ -10392,13 +10407,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdMeasurementSimple</name>
     <message>
-      <location filename="../CommandStd.cpp" line="730"/>
+      <location filename="../CommandStd.cpp" line="732"/>
       <source>Measure distance</source>
       <translation>მანძილის გაზომვა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="731"/>
       <location filename="../CommandStd.cpp" line="733"/>
+      <location filename="../CommandStd.cpp" line="735"/>
       <source>Measures distance between two selected objects</source>
       <translation>ორ მონიშნულ ობიექტს შორის მანძილის დათვლა</translation>
     </message>
@@ -10445,7 +10460,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="607"/>
       <location filename="../DocumentRecovery.cpp" line="389"/>
-      <location filename="../MainWindow.cpp" line="1890"/>
+      <location filename="../MainWindow.cpp" line="1893"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>
@@ -10453,13 +10468,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdOnlineHelp</name>
     <message>
-      <location filename="../CommandStd.cpp" line="458"/>
-      <location filename="../CommandStd.cpp" line="461"/>
+      <location filename="../CommandStd.cpp" line="460"/>
+      <location filename="../CommandStd.cpp" line="463"/>
       <source>Help</source>
       <translation>დახმარება</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="459"/>
+      <location filename="../CommandStd.cpp" line="461"/>
       <source>Show help to the application</source>
       <translation>აპლიკაციის დახმარების ჩვენება</translation>
     </message>
@@ -10467,13 +10482,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="483"/>
-      <location filename="../CommandStd.cpp" line="486"/>
+      <location filename="../CommandStd.cpp" line="485"/>
+      <location filename="../CommandStd.cpp" line="488"/>
       <source>Help Website</source>
       <translation>დახმარების ვებგვერდი</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="484"/>
+      <location filename="../CommandStd.cpp" line="486"/>
       <source>The website where the help is maintained</source>
       <translation>ვებგვერდი, სადაც ხელმისაწვდომია დახმარება</translation>
     </message>
@@ -10630,13 +10645,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="677"/>
-      <location filename="../CommandStd.cpp" line="680"/>
+      <location filename="../CommandStd.cpp" line="679"/>
+      <location filename="../CommandStd.cpp" line="682"/>
       <source>Python Website</source>
       <translation>Python-ის ვებგვერდი</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="678"/>
+      <location filename="../CommandStd.cpp" line="680"/>
       <source>The official Python website</source>
       <translation>Python-ის ოფიციალური ვებგვერდი</translation>
     </message>
@@ -10668,13 +10683,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdRecentFiles</name>
     <message>
-      <location filename="../CommandStd.cpp" line="133"/>
+      <location filename="../CommandStd.cpp" line="135"/>
       <source>Recent files</source>
       <translation>უკანასკნელი ფაილები</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="134"/>
       <location filename="../CommandStd.cpp" line="136"/>
+      <location filename="../CommandStd.cpp" line="138"/>
       <source>Recent file list</source>
       <translation>უკანასკნელი ფაილების სია</translation>
     </message>
@@ -10682,13 +10697,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <location filename="../CommandStd.cpp" line="174"/>
+      <location filename="../CommandStd.cpp" line="176"/>
       <source>Recent macros</source>
       <translation>ახლახანს გამოყენებული მაკროები</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="175"/>
       <location filename="../CommandStd.cpp" line="177"/>
+      <location filename="../CommandStd.cpp" line="179"/>
       <source>Recent macro list</source>
       <translation>ახლახანს გამოყენებული მაკროების სია</translation>
     </message>
@@ -10724,13 +10739,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdReportBug</name>
     <message>
-      <location filename="../CommandStd.cpp" line="702"/>
+      <location filename="../CommandStd.cpp" line="704"/>
       <source>Report a bug</source>
       <translation>შეგვატყობინეთ შეცდომების შესახებ</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="703"/>
       <location filename="../CommandStd.cpp" line="705"/>
+      <location filename="../CommandStd.cpp" line="707"/>
       <source>Report a bug or suggest a feature</source>
       <translation>მოგვწერეთ შეცდომის შესახებ ან შემოგვთავაზეთ იდეა</translation>
     </message>
@@ -10808,13 +10823,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3122"/>
+      <location filename="../CommandView.cpp" line="3160"/>
       <source>Scene inspector...</source>
       <translation>სცენის ინსპექტორი...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3123"/>
-      <location filename="../CommandView.cpp" line="3125"/>
+      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3163"/>
       <source>Scene inspector</source>
       <translation>სცენის ინსპექტორი</translation>
     </message>
@@ -10822,13 +10837,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3269"/>
+      <location filename="../CommandView.cpp" line="3307"/>
       <source>&amp;Back</source>
       <translation>&amp;უკან</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3270"/>
-      <location filename="../CommandView.cpp" line="3272"/>
+      <location filename="../CommandView.cpp" line="3308"/>
+      <location filename="../CommandView.cpp" line="3310"/>
       <source>Go back to previous selection</source>
       <translation>წინა მონიშნულზე დაბრუნება</translation>
     </message>
@@ -10836,13 +10851,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3582"/>
+      <location filename="../CommandView.cpp" line="3620"/>
       <source>&amp;Bounding box</source>
       <translation>&amp;გაბარიტები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3583"/>
-      <location filename="../CommandView.cpp" line="3585"/>
+      <location filename="../CommandView.cpp" line="3621"/>
+      <location filename="../CommandView.cpp" line="3623"/>
       <source>Show selection bounding box</source>
       <translation>მონიშნულის საზღვრების ჩვენება</translation>
     </message>
@@ -10850,13 +10865,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3299"/>
+      <location filename="../CommandView.cpp" line="3337"/>
       <source>&amp;Forward</source>
       <translation>&amp;წინ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3300"/>
-      <location filename="../CommandView.cpp" line="3302"/>
+      <location filename="../CommandView.cpp" line="3338"/>
+      <location filename="../CommandView.cpp" line="3340"/>
       <source>Repeat the backed selection</source>
       <translation>ფონის შერჩევის გამეორება</translation>
     </message>
@@ -10878,13 +10893,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="954"/>
+      <location filename="../CommandView.cpp" line="992"/>
       <source>Select visible objects</source>
       <translation>ხილული ობიექტების მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="955"/>
-      <location filename="../CommandView.cpp" line="956"/>
+      <location filename="../CommandView.cpp" line="993"/>
+      <location filename="../CommandView.cpp" line="994"/>
       <source>Select visible objects in the active document</source>
       <translation>აქტიურ დოკუმენტში ყველა ხილული ობიექტის მონიშვნა</translation>
     </message>
@@ -10906,13 +10921,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../CommandView.cpp" line="1111"/>
+      <location filename="../CommandView.cpp" line="1149"/>
       <source>Appearance...</source>
       <translation>გარეგნობა...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1112"/>
-      <location filename="../CommandView.cpp" line="1114"/>
+      <location filename="../CommandView.cpp" line="1150"/>
+      <location filename="../CommandView.cpp" line="1152"/>
       <source>Sets the display properties of the selected object</source>
       <translation>ადგენს მონიშნული ობიექტის ჩვენების თვისებებს</translation>
     </message>
@@ -10920,13 +10935,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1037"/>
+      <location filename="../CommandView.cpp" line="1075"/>
       <source>Show all objects</source>
       <translation>ყველა ობიექტის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1038"/>
-      <location filename="../CommandView.cpp" line="1039"/>
+      <location filename="../CommandView.cpp" line="1076"/>
+      <location filename="../CommandView.cpp" line="1077"/>
       <source>Show all objects in the document</source>
       <translation>დოკუმენტში ყველა ობიექტის ჩვენება</translation>
     </message>
@@ -10934,13 +10949,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="898"/>
+      <location filename="../CommandView.cpp" line="936"/>
       <source>Show selection</source>
       <translation>მონიშნულის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="899"/>
-      <location filename="../CommandView.cpp" line="900"/>
+      <location filename="../CommandView.cpp" line="937"/>
+      <location filename="../CommandView.cpp" line="938"/>
       <source>Show all selected objects</source>
       <translation>ყველა მონიშნული ობიექტის ჩვენება</translation>
     </message>
@@ -10962,13 +10977,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTextDocument</name>
     <message>
-      <location filename="../CommandStd.cpp" line="787"/>
+      <location filename="../CommandStd.cpp" line="789"/>
       <source>Add text document</source>
       <translation>ტექსტური დოკუმენტის დამატება</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="788"/>
       <location filename="../CommandStd.cpp" line="790"/>
+      <location filename="../CommandStd.cpp" line="792"/>
       <source>Add text document to active document</source>
       <translation>აქტიურ დოკუმენტში ტექსტური დოკუმენტის დამატება</translation>
     </message>
@@ -10976,13 +10991,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3155"/>
+      <location filename="../CommandView.cpp" line="3193"/>
       <source>Texture mapping...</source>
       <translation>ტექსტურების დალაგება...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3156"/>
-      <location filename="../CommandView.cpp" line="3158"/>
+      <location filename="../CommandView.cpp" line="3194"/>
+      <location filename="../CommandView.cpp" line="3196"/>
       <source>Texture mapping</source>
       <translation>ტექსტურების დალაგება</translation>
     </message>
@@ -11014,13 +11029,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="551"/>
+      <location filename="../CommandView.cpp" line="582"/>
       <source>Clipping plane</source>
       <translation>კვეთის სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="552"/>
-      <location filename="../CommandView.cpp" line="554"/>
+      <location filename="../CommandView.cpp" line="583"/>
+      <location filename="../CommandView.cpp" line="585"/>
       <source>Toggles clipping plane for active view</source>
       <translation>აქტიური ხედის სიბრტყის კვეთის ჩართ/გამორთ</translation>
     </message>
@@ -11028,13 +11043,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="1956"/>
+      <location filename="../CommandView.cpp" line="1994"/>
       <source>Toggle navigation/Edit mode</source>
       <translation>ნავიგაცია / ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1957"/>
-      <location filename="../CommandView.cpp" line="1958"/>
+      <location filename="../CommandView.cpp" line="1995"/>
+      <location filename="../CommandView.cpp" line="1996"/>
       <source>Toggle between navigation and edit mode</source>
       <translation>ნავიგაციისა და ჩასწორების რეჟიმებს შორის გადართვა</translation>
     </message>
@@ -11042,13 +11057,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="996"/>
+      <location filename="../CommandView.cpp" line="1034"/>
       <source>Toggle all objects</source>
       <translation>ყველა ობიექტის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="997"/>
-      <location filename="../CommandView.cpp" line="998"/>
+      <location filename="../CommandView.cpp" line="1035"/>
+      <location filename="../CommandView.cpp" line="1036"/>
       <source>Toggles visibility of all objects in the active document</source>
       <translation>აქტიურ დოკუმენტში ყველა ობიექტის ხილვადობის ჩართ/გამორთ</translation>
     </message>
@@ -11056,13 +11071,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="852"/>
+      <location filename="../CommandView.cpp" line="884"/>
       <source>Toggle selectability</source>
       <translation>მონიშვნადობის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="853"/>
-      <location filename="../CommandView.cpp" line="854"/>
+      <location filename="../CommandView.cpp" line="885"/>
+      <location filename="../CommandView.cpp" line="886"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
       <translation>ობიექტის თვისების, მონიშვნადი იყოს 3D ხედში, ჩართ/გამორთ</translation>
     </message>
@@ -11070,13 +11085,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="822"/>
+      <location filename="../CommandView.cpp" line="853"/>
       <source>Toggle visibility</source>
       <translation>ხილვადობის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="823"/>
-      <location filename="../CommandView.cpp" line="824"/>
+      <location filename="../CommandView.cpp" line="854"/>
+      <location filename="../CommandView.cpp" line="855"/>
       <source>Toggles visibility</source>
       <translation>ხილვადობის ჩართ/გამორთ</translation>
     </message>
@@ -11126,13 +11141,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="2930"/>
+      <location filename="../CommandView.cpp" line="2968"/>
       <source>Collapse selected item</source>
       <translation>არჩეული ელემენტის ჩაკეცვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2931"/>
-      <location filename="../CommandView.cpp" line="2933"/>
+      <location filename="../CommandView.cpp" line="2969"/>
+      <location filename="../CommandView.cpp" line="2971"/>
       <source>Collapse currently selected tree items</source>
       <translation>ხის მონიშნული ელემენტების ჩაკეცვა</translation>
     </message>
@@ -11140,13 +11155,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="2955"/>
+      <location filename="../CommandView.cpp" line="2993"/>
       <source>Expand selected item</source>
       <translation>მონიშნული ელემენტის გაშლა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2956"/>
-      <location filename="../CommandView.cpp" line="2958"/>
+      <location filename="../CommandView.cpp" line="2994"/>
+      <location filename="../CommandView.cpp" line="2996"/>
       <source>Expand currently selected tree items</source>
       <translation>ხის მონიშნული ელემენტების გაშლა</translation>
     </message>
@@ -11154,13 +11169,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="2980"/>
+      <location filename="../CommandView.cpp" line="3018"/>
       <source>Select all instances</source>
       <translation>ყველა ნიმუშის მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2981"/>
-      <location filename="../CommandView.cpp" line="2983"/>
+      <location filename="../CommandView.cpp" line="3019"/>
+      <location filename="../CommandView.cpp" line="3021"/>
       <source>Select all instances of the current selected object</source>
       <translation>მონიშნული ობიექტის ყველა ასლის მონიშვნა</translation>
     </message>
@@ -11168,13 +11183,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3545"/>
+      <location filename="../CommandView.cpp" line="3583"/>
       <source>TreeView actions</source>
       <translation>TreeVIew-ის ფუნქციები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3546"/>
-      <location filename="../CommandView.cpp" line="3548"/>
+      <location filename="../CommandView.cpp" line="3584"/>
+      <location filename="../CommandView.cpp" line="3586"/>
       <source>TreeView behavior options and actions</source>
       <translation>TreeView-ის ქცევებისა და მოქმედებების მორგება</translation>
     </message>
@@ -11196,13 +11211,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <location filename="../CommandStd.cpp" line="820"/>
+      <location filename="../CommandStd.cpp" line="822"/>
       <source>&amp;Units calculator...</source>
       <translation>&amp;საზომი ერთეულების კალკულატორი...</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="821"/>
       <location filename="../CommandStd.cpp" line="823"/>
+      <location filename="../CommandStd.cpp" line="825"/>
       <source>Start the units calculator</source>
       <translation>საზომი ერთეულების კალკულატორის გაშვება</translation>
     </message>
@@ -11210,13 +11225,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdUserEditMode</name>
     <message>
-      <location filename="../CommandStd.cpp" line="856"/>
+      <location filename="../CommandStd.cpp" line="858"/>
       <source>Edit mode</source>
       <translation>რედაქტირების რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="857"/>
-      <location filename="../CommandStd.cpp" line="858"/>
+      <location filename="../CommandStd.cpp" line="859"/>
+      <location filename="../CommandStd.cpp" line="860"/>
       <source>Defines behavior when editing an object from tree</source>
       <translation>განსაზღვრავს ქცევას ობიექტის ხიდან ჩასწორებისას</translation>
     </message>
@@ -11238,13 +11253,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1169"/>
+      <location filename="../CommandView.cpp" line="1207"/>
       <source>Bottom</source>
       <translation>ძირზე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1170"/>
-      <location filename="../CommandView.cpp" line="1172"/>
+      <location filename="../CommandView.cpp" line="1208"/>
+      <location filename="../CommandView.cpp" line="1210"/>
       <source>Set to bottom view</source>
       <translation>ქვედა ხედის დაყენება</translation>
     </message>
@@ -11252,13 +11267,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="1927"/>
+      <location filename="../CommandView.cpp" line="1965"/>
       <source>Create new view</source>
       <translation>ახალი ხედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1928"/>
-      <location filename="../CommandView.cpp" line="1930"/>
+      <location filename="../CommandView.cpp" line="1966"/>
+      <location filename="../CommandView.cpp" line="1968"/>
       <source>Creates a new view window for the active document</source>
       <translation>ქმნისა ქტიური დოკუმენტის ხედის ახალ ფანჯარას</translation>
     </message>
@@ -11266,13 +11281,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1337"/>
+      <location filename="../CommandView.cpp" line="1375"/>
       <source>Dimetric</source>
       <translation>დიმეტრიული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1338"/>
-      <location filename="../CommandView.cpp" line="1340"/>
+      <location filename="../CommandView.cpp" line="1376"/>
+      <location filename="../CommandView.cpp" line="1378"/>
       <source>Set to dimetric view</source>
       <translation>ტეტრაგონული ხედის დაყენება</translation>
     </message>
@@ -11280,13 +11295,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2051"/>
+      <location filename="../CommandView.cpp" line="2089"/>
       <source>Inventor example #1</source>
       <translation>Inventor-ის მაგალითი #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2052"/>
-      <location filename="../CommandView.cpp" line="2054"/>
+      <location filename="../CommandView.cpp" line="2090"/>
+      <location filename="../CommandView.cpp" line="2092"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>3D ტექსტურის მანიპულატორით ჩვენება</translation>
     </message>
@@ -11294,13 +11309,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2079"/>
+      <location filename="../CommandView.cpp" line="2117"/>
       <source>Inventor example #2</source>
       <translation>Inventor-ის მაგალითი #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2080"/>
-      <location filename="../CommandView.cpp" line="2082"/>
+      <location filename="../CommandView.cpp" line="2118"/>
+      <location filename="../CommandView.cpp" line="2120"/>
       <source>Shows spheres and drag-lights</source>
       <translation>სფეროების და გადათრევადი სინათლის წყაროების ჩვენება</translation>
     </message>
@@ -11308,13 +11323,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2107"/>
+      <location filename="../CommandView.cpp" line="2145"/>
       <source>Inventor example #3</source>
       <translation>Inventor-ის მაგალითი #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2108"/>
-      <location filename="../CommandView.cpp" line="2110"/>
+      <location filename="../CommandView.cpp" line="2146"/>
+      <location filename="../CommandView.cpp" line="2148"/>
       <source>Shows a animated texture</source>
       <translation>ანიმირებული ტექსტურის ჩვენება</translation>
     </message>
@@ -11322,13 +11337,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1433"/>
+      <location filename="../CommandView.cpp" line="1471"/>
       <source>Fit all</source>
       <translation>ყველას ჩატევა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1434"/>
-      <location filename="../CommandView.cpp" line="1436"/>
+      <location filename="../CommandView.cpp" line="1472"/>
+      <location filename="../CommandView.cpp" line="1474"/>
       <source>Fits the whole content on the screen</source>
       <translation>მთელი შემცველობის ეკრანის ზომებში ჩატევა</translation>
     </message>
@@ -11336,13 +11351,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1464"/>
+      <location filename="../CommandView.cpp" line="1502"/>
       <source>Fit selection</source>
       <translation>მონიშნულის ჩატევა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1465"/>
-      <location filename="../CommandView.cpp" line="1467"/>
+      <location filename="../CommandView.cpp" line="1503"/>
+      <location filename="../CommandView.cpp" line="1505"/>
       <source>Fits the selected content on the screen</source>
       <translation>მონიშნულის ეკრანის ზომებში ჩატევა</translation>
     </message>
@@ -11350,13 +11365,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1193"/>
+      <location filename="../CommandView.cpp" line="1231"/>
       <source>Front</source>
       <translation>წინ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1194"/>
-      <location filename="../CommandView.cpp" line="1196"/>
+      <location filename="../CommandView.cpp" line="1232"/>
+      <location filename="../CommandView.cpp" line="1234"/>
       <source>Set to front view</source>
       <translation>წინა ხედის დაყენება</translation>
     </message>
@@ -11364,13 +11379,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1141"/>
+      <location filename="../CommandView.cpp" line="1179"/>
       <source>Home</source>
       <translation>დასაწყისში</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1142"/>
-      <location filename="../CommandView.cpp" line="1144"/>
+      <location filename="../CommandView.cpp" line="1180"/>
+      <location filename="../CommandView.cpp" line="1182"/>
       <source>Set to default home view</source>
       <translation>საწყისი ხედის ნაგულისხმევა დაყენება</translation>
     </message>
@@ -11378,13 +11393,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1313"/>
+      <location filename="../CommandView.cpp" line="1351"/>
       <source>Isometric</source>
       <translation>იზომეტრიული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1314"/>
-      <location filename="../CommandView.cpp" line="1316"/>
+      <location filename="../CommandView.cpp" line="1352"/>
+      <location filename="../CommandView.cpp" line="1354"/>
       <source>Set to isometric view</source>
       <translation>იზომეტრიულ ხედზე გადართვა</translation>
     </message>
@@ -11392,13 +11407,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2278"/>
+      <location filename="../CommandView.cpp" line="2316"/>
       <source>Issue camera position</source>
       <translation>კამერის მდებარეობის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2279"/>
-      <location filename="../CommandView.cpp" line="2281"/>
+      <location filename="../CommandView.cpp" line="2317"/>
+      <location filename="../CommandView.cpp" line="2319"/>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
       <translation>ამ ადგილის ადვილად მოსაგნებად კამერის პოზიციის კონსოლსა და მაკროსთვის მიწოდება</translation>
     </message>
@@ -11406,13 +11421,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2249"/>
+      <location filename="../CommandView.cpp" line="2287"/>
       <source>Stereo Interleaved Columns</source>
       <translation>სტერეო მონაცვლეობითი სვეტები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2250"/>
-      <location filename="../CommandView.cpp" line="2252"/>
+      <location filename="../CommandView.cpp" line="2288"/>
+      <location filename="../CommandView.cpp" line="2290"/>
       <source>Switch stereo viewing to Interleaved Columns</source>
       <translation>სტერეო ხედიდან მონაცვლეობით სვეტებზე გადართვა</translation>
     </message>
@@ -11420,13 +11435,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2221"/>
+      <location filename="../CommandView.cpp" line="2259"/>
       <source>Stereo Interleaved Rows</source>
       <translation>სტერეო მონაცვლეობითი მწკრივები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2222"/>
-      <location filename="../CommandView.cpp" line="2224"/>
+      <location filename="../CommandView.cpp" line="2260"/>
+      <location filename="../CommandView.cpp" line="2262"/>
       <source>Switch stereo viewing to Interleaved Rows</source>
       <translation>სტერეო ხედიდან მონაცვლეობით მწკრივებზე გადართვა</translation>
     </message>
@@ -11434,13 +11449,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2136"/>
+      <location filename="../CommandView.cpp" line="2174"/>
       <source>Stereo Off</source>
       <translation>სტერეოს გამორთვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2137"/>
-      <location filename="../CommandView.cpp" line="2139"/>
+      <location filename="../CommandView.cpp" line="2175"/>
+      <location filename="../CommandView.cpp" line="2177"/>
       <source>Switch stereo viewing off</source>
       <translation>სტერეოთვალიერების რეჟიმის გამორთვა</translation>
     </message>
@@ -11448,13 +11463,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2193"/>
+      <location filename="../CommandView.cpp" line="2231"/>
       <source>Stereo quad buffer</source>
       <translation>სტერეოს ოთხმაგი ბაფერი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2194"/>
-      <location filename="../CommandView.cpp" line="2196"/>
+      <location filename="../CommandView.cpp" line="2232"/>
+      <location filename="../CommandView.cpp" line="2234"/>
       <source>Switch stereo viewing to quad buffer</source>
       <translation>სტერეოხედის ოთხმაგ ბაფერზე გადართვა</translation>
     </message>
@@ -11462,13 +11477,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2165"/>
+      <location filename="../CommandView.cpp" line="2203"/>
       <source>Stereo red/cyan</source>
       <translation>სტერეო წითელი/ცისფერი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2166"/>
-      <location filename="../CommandView.cpp" line="2168"/>
+      <location filename="../CommandView.cpp" line="2204"/>
+      <location filename="../CommandView.cpp" line="2206"/>
       <source>Switch stereo viewing to red/cyan</source>
       <translation>სტერეოხედის წითელ/ალისფერზე გადართვა</translation>
     </message>
@@ -11476,13 +11491,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1217"/>
+      <location filename="../CommandView.cpp" line="1255"/>
       <source>Left</source>
       <translation>მარცხნივ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1218"/>
-      <location filename="../CommandView.cpp" line="1220"/>
+      <location filename="../CommandView.cpp" line="1256"/>
+      <location filename="../CommandView.cpp" line="1258"/>
       <source>Set to left view</source>
       <translation>მარცხენა ხედის დაყენება</translation>
     </message>
@@ -11490,13 +11505,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1241"/>
+      <location filename="../CommandView.cpp" line="1279"/>
       <source>Rear</source>
       <translation>უკან</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1242"/>
-      <location filename="../CommandView.cpp" line="1244"/>
+      <location filename="../CommandView.cpp" line="1280"/>
+      <location filename="../CommandView.cpp" line="1282"/>
       <source>Set to rear view</source>
       <translation>უკანა ხედის დაყენება</translation>
     </message>
@@ -11504,13 +11519,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="233"/>
+      <location filename="../CommandView.cpp" line="264"/>
       <source>Restore saved camera</source>
       <translation>შენახული კამერის აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="234"/>
-      <location filename="../CommandView.cpp" line="235"/>
+      <location filename="../CommandView.cpp" line="265"/>
+      <location filename="../CommandView.cpp" line="266"/>
       <source>Restore saved camera settings</source>
       <translation>კამერის შენახული პარამეტრების აღდგენა</translation>
     </message>
@@ -11518,13 +11533,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1265"/>
+      <location filename="../CommandView.cpp" line="1303"/>
       <source>Right</source>
       <translation>მარჯვნივ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1266"/>
-      <location filename="../CommandView.cpp" line="1268"/>
+      <location filename="../CommandView.cpp" line="1304"/>
+      <location filename="../CommandView.cpp" line="1306"/>
       <source>Set to right view</source>
       <translation>მარჯვენა ხედის დაყენება</translation>
     </message>
@@ -11532,13 +11547,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1383"/>
+      <location filename="../CommandView.cpp" line="1421"/>
       <source>Rotate Left</source>
       <translation>მარცხნივ შებრუნება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1384"/>
-      <location filename="../CommandView.cpp" line="1386"/>
+      <location filename="../CommandView.cpp" line="1422"/>
+      <location filename="../CommandView.cpp" line="1424"/>
       <source>Rotate the view by 90° counter-clockwise</source>
       <translation>ხედის მობრუნება 90°-ით საათის ისრის საწინააღმდეგო მიმართულებით</translation>
     </message>
@@ -11546,13 +11561,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1408"/>
+      <location filename="../CommandView.cpp" line="1446"/>
       <source>Rotate Right</source>
       <translation>მარჯვნივ შებრუნება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1409"/>
-      <location filename="../CommandView.cpp" line="1411"/>
+      <location filename="../CommandView.cpp" line="1447"/>
+      <location filename="../CommandView.cpp" line="1449"/>
       <source>Rotate the view by 90° clockwise</source>
       <translation>ხედის საათის მიმართულებით 90°-ით შებრუნება</translation>
     </message>
@@ -11560,13 +11575,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="207"/>
+      <location filename="../CommandView.cpp" line="238"/>
       <source>Save current camera</source>
       <translation>მიმდინარე კამერის შენახვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="208"/>
-      <location filename="../CommandView.cpp" line="209"/>
+      <location filename="../CommandView.cpp" line="239"/>
+      <location filename="../CommandView.cpp" line="240"/>
       <source>Save current camera settings</source>
       <translation>კამერის მიმდინარე პარამეტრების შენახვა</translation>
     </message>
@@ -11574,13 +11589,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1289"/>
+      <location filename="../CommandView.cpp" line="1327"/>
       <source>Top</source>
       <translation>თავზე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1290"/>
-      <location filename="../CommandView.cpp" line="1292"/>
+      <location filename="../CommandView.cpp" line="1328"/>
+      <location filename="../CommandView.cpp" line="1330"/>
       <source>Set to top view</source>
       <translation>ზემოდან ხედის დაყენება</translation>
     </message>
@@ -11588,13 +11603,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1360"/>
+      <location filename="../CommandView.cpp" line="1398"/>
       <source>Trimetric</source>
       <translation>ტრიმეტრული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1361"/>
-      <location filename="../CommandView.cpp" line="1363"/>
+      <location filename="../CommandView.cpp" line="1399"/>
+      <location filename="../CommandView.cpp" line="1401"/>
       <source>Set to trimetric view</source>
       <translation>ტრიმეტრიული ხედის დაყენება</translation>
     </message>
@@ -11602,13 +11617,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="1726"/>
+      <location filename="../CommandView.cpp" line="1764"/>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1727"/>
-      <location filename="../CommandView.cpp" line="1729"/>
+      <location filename="../CommandView.cpp" line="1765"/>
+      <location filename="../CommandView.cpp" line="1767"/>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
       <translation>FreeCAD-ის 3D ფანჯრის Oculus Rift-მდე გაფართოება</translation>
     </message>
@@ -11616,13 +11631,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
-      <location filename="../CommandStd.cpp" line="302"/>
+      <location filename="../CommandStd.cpp" line="304"/>
       <source>&amp;What's This?</source>
       <translation>&amp;რა არის ეს?</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="303"/>
       <location filename="../CommandStd.cpp" line="305"/>
+      <location filename="../CommandStd.cpp" line="307"/>
       <source>What's This</source>
       <translation>რა არის ეს</translation>
     </message>
@@ -11654,13 +11669,13 @@ the current copy will be lost.
   <context>
     <name>StdCmdWorkbench</name>
     <message>
-      <location filename="../CommandStd.cpp" line="68"/>
+      <location filename="../CommandStd.cpp" line="70"/>
       <source>Workbench</source>
       <translation>სამუშაო მაგიდა</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="69"/>
       <location filename="../CommandStd.cpp" line="71"/>
+      <location filename="../CommandStd.cpp" line="73"/>
       <source>Switch between workbenches</source>
       <translation>სამუშაო მაგიდებს შორის გადართვა</translation>
     </message>
@@ -11668,13 +11683,13 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1551"/>
+      <location filename="../CommandView.cpp" line="1589"/>
       <source>Fullscreen</source>
       <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1552"/>
-      <location filename="../CommandView.cpp" line="1554"/>
+      <location filename="../CommandView.cpp" line="1590"/>
+      <location filename="../CommandView.cpp" line="1592"/>
       <source>Display the main window in fullscreen mode</source>
       <translation>მთავარი ფანჯრის მთელ ეკრანზე ჩვენება</translation>
     </message>
@@ -11682,13 +11697,13 @@ the current copy will be lost.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="97"/>
+      <location filename="../CommandView.cpp" line="128"/>
       <source>Orthographic view</source>
       <translation>ორთოგონალური პროექცია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="98"/>
-      <location filename="../CommandView.cpp" line="100"/>
+      <location filename="../CommandView.cpp" line="129"/>
+      <location filename="../CommandView.cpp" line="131"/>
       <source>Switches to orthographic view mode</source>
       <translation>ორთოგრაფიული ხედის რეჟიმზე გადართვა</translation>
     </message>
@@ -11696,13 +11711,13 @@ the current copy will be lost.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="147"/>
+      <location filename="../CommandView.cpp" line="178"/>
       <source>Perspective view</source>
       <translation>პერსპექტიული პროექცია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="148"/>
-      <location filename="../CommandView.cpp" line="150"/>
+      <location filename="../CommandView.cpp" line="179"/>
+      <location filename="../CommandView.cpp" line="181"/>
       <source>Switches to perspective view mode</source>
       <translation>პერსპექტივის ხედის რეჟიმზე გადართვა</translation>
     </message>
@@ -11710,41 +11725,41 @@ the current copy will be lost.
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3656"/>
+      <location filename="../CommandView.cpp" line="3694"/>
       <source>Recall working view</source>
-      <translation type="unfinished">Recall working view</translation>
+      <translation>მუშა ხედს თავიდან გამოძახება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3657"/>
-      <location filename="../CommandView.cpp" line="3658"/>
+      <location filename="../CommandView.cpp" line="3695"/>
+      <location filename="../CommandView.cpp" line="3696"/>
       <source>Recall previously stored temporary working view</source>
-      <translation type="unfinished">Recall previously stored temporary working view</translation>
+      <translation>ადრე შენახული დროებით მუშა ხედის თავიდან გამოძახება</translation>
     </message>
   </context>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3626"/>
+      <location filename="../CommandView.cpp" line="3664"/>
       <source>Store working view</source>
-      <translation type="unfinished">Store working view</translation>
+      <translation>მუშა ხედის დამახსოვრება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3627"/>
-      <location filename="../CommandView.cpp" line="3628"/>
+      <location filename="../CommandView.cpp" line="3665"/>
+      <location filename="../CommandView.cpp" line="3666"/>
       <source>Store a document-specific temporary working view</source>
-      <translation type="unfinished">Store a document-specific temporary working view</translation>
+      <translation>დოკუმენტის დროებითი მუშა ხედის დამახსოვრება</translation>
     </message>
   </context>
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3383"/>
+      <location filename="../CommandView.cpp" line="3421"/>
       <source>Collapse/Expand</source>
       <translation>ჩაკეცვა/ამოკეცვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3384"/>
-      <location filename="../CommandView.cpp" line="3386"/>
+      <location filename="../CommandView.cpp" line="3422"/>
+      <location filename="../CommandView.cpp" line="3424"/>
       <source>Expand active document and collapse all others</source>
       <translation>აქტიური დოკუმენტის გაფართოება და ყველა დანარჩენის ჩაკეცვა</translation>
     </message>
@@ -11752,12 +11767,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3512"/>
+      <location filename="../CommandView.cpp" line="3550"/>
       <source>Initiate dragging</source>
       <translation>გადათრევის დასაწყისი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3513"/>
+      <location filename="../CommandView.cpp" line="3551"/>
       <source>Initiate dragging of current selected tree items</source>
       <translation>ხის მონიშნული ელემენტების გადათრევის დაწყება</translation>
     </message>
@@ -11765,13 +11780,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3366"/>
+      <location filename="../CommandView.cpp" line="3404"/>
       <source>Multi document</source>
       <translation>შედგენილი დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3367"/>
-      <location filename="../CommandView.cpp" line="3369"/>
+      <location filename="../CommandView.cpp" line="3405"/>
+      <location filename="../CommandView.cpp" line="3407"/>
       <source>Display all documents in the tree view</source>
       <translation>დოკუმენტის ხის ფანჯარაში ყველა დოკუმენტის ჩვენება</translation>
     </message>
@@ -11779,12 +11794,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3476"/>
+      <location filename="../CommandView.cpp" line="3514"/>
       <source>Pre-selection</source>
       <translation>წინასწარ მონიშნული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3477"/>
+      <location filename="../CommandView.cpp" line="3515"/>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
       <translation>3D ხედში ხის ელემენტზე კურსორის გადატარებისას ობიექტების წინასწარი მონიშვნა</translation>
     </message>
@@ -11792,12 +11807,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3494"/>
+      <location filename="../CommandView.cpp" line="3532"/>
       <source>Record selection</source>
       <translation>მონიშნულის ჩაწერა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3495"/>
+      <location filename="../CommandView.cpp" line="3533"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
       <translation>მონიშნულის ხის ხედში ჩაწერა მათზე ნავიგაციის ღილაკებით წინ/უკან გადასასვლელად</translation>
     </message>
@@ -11805,13 +11820,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2905"/>
+      <location filename="../CommandView.cpp" line="2943"/>
       <source>Go to selection</source>
       <translation>მონიშნულზე გადასვლა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2906"/>
-      <location filename="../CommandView.cpp" line="2908"/>
+      <location filename="../CommandView.cpp" line="2944"/>
+      <location filename="../CommandView.cpp" line="2946"/>
       <source>Scroll to first selected item</source>
       <translation>პირველ მონიშნულ ელემენტზე გადასვლა</translation>
     </message>
@@ -11819,13 +11834,13 @@ the current copy will be lost.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3349"/>
+      <location filename="../CommandView.cpp" line="3387"/>
       <source>Single document</source>
       <translation>ერთიანი დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3350"/>
-      <location filename="../CommandView.cpp" line="3352"/>
+      <location filename="../CommandView.cpp" line="3388"/>
+      <location filename="../CommandView.cpp" line="3390"/>
       <source>Only display the active document in the tree view</source>
       <translation>ხის ხედში მხოლოდ აქტიური დოკუმენტის ჩვენება</translation>
     </message>
@@ -11833,12 +11848,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3458"/>
+      <location filename="../CommandView.cpp" line="3496"/>
       <source>Sync placement</source>
       <translation>მდებარეობის სინქრონიზაცია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3459"/>
+      <location filename="../CommandView.cpp" line="3497"/>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
       <translation>კოორდინატთა სისტემებს შორის ობიექტების გადათრევისას განლაგების ავტომატური რეგულირება</translation>
     </message>
@@ -11846,12 +11861,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3440"/>
+      <location filename="../CommandView.cpp" line="3478"/>
       <source>Sync selection</source>
       <translation>მონიშნულის სინქრონიზაცია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3441"/>
+      <location filename="../CommandView.cpp" line="3479"/>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
       <translation>ხის ელემენტის ავტომატური გაფართოება, როდესაც შესაბამისი ობიექტი მოინიშნება 3D ხედში</translation>
     </message>
@@ -11859,12 +11874,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3422"/>
+      <location filename="../CommandView.cpp" line="3460"/>
       <source>Sync view</source>
       <translation>სინქრონიზაციის ხედი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3423"/>
+      <location filename="../CommandView.cpp" line="3461"/>
       <source>Auto switch to the 3D view containing the selected item</source>
       <translation>მონიშნული ობიექტის 3D ხედზე ავტომატური გადართვა</translation>
     </message>
@@ -11872,9 +11887,9 @@ the current copy will be lost.
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2531"/>
-      <location filename="../CommandView.cpp" line="2532"/>
-      <location filename="../CommandView.cpp" line="2534"/>
+      <location filename="../CommandView.cpp" line="2569"/>
+      <location filename="../CommandView.cpp" line="2570"/>
+      <location filename="../CommandView.cpp" line="2572"/>
       <source>Box zoom</source>
       <translation>არეალის გაზრდა</translation>
     </message>
@@ -11882,13 +11897,13 @@ the current copy will be lost.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1493"/>
+      <location filename="../CommandView.cpp" line="1531"/>
       <source>Docked</source>
       <translation>დამაგრებული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1494"/>
-      <location filename="../CommandView.cpp" line="1496"/>
+      <location filename="../CommandView.cpp" line="1532"/>
+      <location filename="../CommandView.cpp" line="1534"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>აქტიური ხედის მთელ ეკრანზე, მომძვრალ ან მიმაგრებულ რეჟიმში ჩვენება</translation>
     </message>
@@ -11896,13 +11911,13 @@ the current copy will be lost.
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1613"/>
+      <location filename="../CommandView.cpp" line="1651"/>
       <source>Document window</source>
       <translation>დოკუმენტის ფანჯარა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1614"/>
-      <location filename="../CommandView.cpp" line="1616"/>
+      <location filename="../CommandView.cpp" line="1652"/>
+      <location filename="../CommandView.cpp" line="1654"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>აქტიური ხედის მთელ ეკრანზე, მომძვრალ ან მიმაგრებულ რეჟიმში ჩვენება</translation>
     </message>
@@ -11910,13 +11925,13 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1583"/>
+      <location filename="../CommandView.cpp" line="1621"/>
       <source>Fullscreen</source>
       <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1584"/>
-      <location filename="../CommandView.cpp" line="1586"/>
+      <location filename="../CommandView.cpp" line="1622"/>
+      <location filename="../CommandView.cpp" line="1624"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>აქტიური ხედის მთელ ეკრანზე, მომძვრალ ან მიმაგრებულ რეჟიმში ჩვენება</translation>
     </message>
@@ -11924,13 +11939,13 @@ the current copy will be lost.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="1755"/>
+      <location filename="../CommandView.cpp" line="1793"/>
       <source>Save picture...</source>
       <translation>გამოსახულების შენახვა...</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1756"/>
-      <location filename="../CommandView.cpp" line="1758"/>
+      <location filename="../CommandView.cpp" line="1794"/>
+      <location filename="../CommandView.cpp" line="1796"/>
       <source>Creates a screenshot of the active view</source>
       <translation>მიმდინარე ხედის სურათად ჩაწერა</translation>
     </message>
@@ -11938,13 +11953,13 @@ the current copy will be lost.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1522"/>
+      <location filename="../CommandView.cpp" line="1560"/>
       <source>Undocked</source>
       <translation>დამაგრება მოხსნილია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1523"/>
-      <location filename="../CommandView.cpp" line="1525"/>
+      <location filename="../CommandView.cpp" line="1561"/>
+      <location filename="../CommandView.cpp" line="1563"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
       <translation>აქტიური ხედის მთელ ეკრანზე, მომძვრალ ან მიმაგრებულ რეჟიმში ჩვენება</translation>
     </message>
@@ -11952,9 +11967,9 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2328"/>
-      <location filename="../CommandView.cpp" line="2329"/>
-      <location filename="../CommandView.cpp" line="2331"/>
+      <location filename="../CommandView.cpp" line="2366"/>
+      <location filename="../CommandView.cpp" line="2367"/>
+      <location filename="../CommandView.cpp" line="2369"/>
       <source>Zoom In</source>
       <translation>გადიდება</translation>
     </message>
@@ -11962,9 +11977,9 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2361"/>
-      <location filename="../CommandView.cpp" line="2362"/>
-      <location filename="../CommandView.cpp" line="2364"/>
+      <location filename="../CommandView.cpp" line="2399"/>
+      <location filename="../CommandView.cpp" line="2400"/>
+      <location filename="../CommandView.cpp" line="2402"/>
       <source>Zoom Out</source>
       <translation>დაპატარავება</translation>
     </message>
@@ -11999,72 +12014,72 @@ Are you sure you want to continue?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="681"/>
+      <location filename="../CommandView.cpp" line="712"/>
       <source>As is</source>
       <translation>როგორც არის</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="683"/>
+      <location filename="../CommandView.cpp" line="714"/>
       <source>Normal mode</source>
       <translation>სტანდარტული რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="686"/>
+      <location filename="../CommandView.cpp" line="717"/>
       <source>Points</source>
       <translation>წერტილები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="688"/>
+      <location filename="../CommandView.cpp" line="719"/>
       <source>Points mode</source>
       <translation>წერტილოვანი რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="691"/>
+      <location filename="../CommandView.cpp" line="722"/>
       <source>Wireframe</source>
       <translation>კარკასი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="693"/>
+      <location filename="../CommandView.cpp" line="724"/>
       <source>Wireframe mode</source>
       <translation>კარკასული რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="696"/>
+      <location filename="../CommandView.cpp" line="727"/>
       <source>Hidden line</source>
       <translation>დამალული ხაზი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="698"/>
+      <location filename="../CommandView.cpp" line="729"/>
       <source>Hidden line mode</source>
       <translation>დამალული ხაზების რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="701"/>
+      <location filename="../CommandView.cpp" line="732"/>
       <source>No shading</source>
       <translation>დაჩრდილვის გარეშე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="703"/>
+      <location filename="../CommandView.cpp" line="734"/>
       <source>No shading mode</source>
       <translation>დაჩრდილვის რეჟიმის გარეშე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="706"/>
+      <location filename="../CommandView.cpp" line="737"/>
       <source>Shaded</source>
       <translation>მხოლოდ წიბოები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="708"/>
+      <location filename="../CommandView.cpp" line="739"/>
       <source>Shaded mode</source>
       <translation>მხოლოდ წიბოების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="711"/>
+      <location filename="../CommandView.cpp" line="742"/>
       <source>Flat lines</source>
       <translation>ბრტყელი ხაზები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="713"/>
+      <location filename="../CommandView.cpp" line="744"/>
       <source>Flat lines mode</source>
       <translation>ბრტყელი ხაზების რეჟიმი</translation>
     </message>

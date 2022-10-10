@@ -608,7 +608,7 @@ aby uniknąć samoprzecięcia.</translation>
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
@@ -626,7 +626,7 @@ aby uniknąć samoprzecięcia.</translation>
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="344"/>
@@ -1750,7 +1750,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Kliknij ścianę modelu</translation>
     </message>
   </context>
   <context>
@@ -2568,7 +2568,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>Wybierz ścianę</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -3057,7 +3057,7 @@ mierzona wzdłuż podanego kierunku</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Ściana</translation>
     </message>
@@ -3841,7 +3841,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <translation>Linia konstrukcyjna %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Ściana</translation>
     </message>
@@ -4471,7 +4471,7 @@ Dostępne tylko dla otworów bez gwintu</translation>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Standard</source>
-      <translation>Średniodokładne</translation>
+      <translation>Standardowy</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>

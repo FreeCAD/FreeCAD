@@ -280,7 +280,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing options</source>
-      <translation>Опције израде мреже</translation>
+      <translation>Опције прављења мреже</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="30"/>

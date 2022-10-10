@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="85"/>
-      <location filename="../../BrowserView.cpp" line="784"/>
+      <location filename="../../BrowserView.cpp" line="786"/>
       <source>Browser</source>
       <translation>Webbläsare</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="596"/>
+      <location filename="../../BrowserView.cpp" line="598"/>
       <source>File does not exist!</source>
       <translation>Filen existerar inte!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="584"/>
-      <location filename="../../BrowserView.cpp" line="589"/>
-      <location filename="../../BrowserView.cpp" line="592"/>
+      <location filename="../../BrowserView.cpp" line="586"/>
+      <location filename="../../BrowserView.cpp" line="591"/>
+      <location filename="../../BrowserView.cpp" line="594"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="589"/>
+      <location filename="../../BrowserView.cpp" line="591"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Det uppstod ett fel under inläsning av filen. Viss data kan ha ändrats eller inte återställts alls. Titta i rapportvyn för mer specifik information om de inblandade objekten.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="592"/>
+      <location filename="../../BrowserView.cpp" line="594"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Det uppstod allvarliga fel vid inläsning av filen. Vissa data kan ha ändrats eller inte återställts alls. Att spara projektet kommer sannolikt att resultera i förlust av data.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="752"/>
+      <location filename="../../BrowserView.cpp" line="754"/>
       <source>Loading %1...</source>
       <translation>Laddar %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="351"/>
+      <location filename="../../BrowserView.cpp" line="353"/>
       <source>Open in External Browser</source>
       <translation>Öppna i extern webbläsare</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="355"/>
+      <location filename="../../BrowserView.cpp" line="357"/>
       <source>Open in new window</source>
       <translation>Öppna i nytt fönster</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="387"/>
+      <location filename="../../BrowserView.cpp" line="389"/>
       <source>View source</source>
       <translation>Visa källa</translation>
     </message>

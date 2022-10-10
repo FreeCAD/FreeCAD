@@ -114,27 +114,27 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="14"/>
       <source>BimServer</source>
-      <translation type="unfinished">BimServer</translation>
+      <translation>Bim伺服器</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="20"/>
       <source>Server</source>
-      <translation type="unfinished">Server</translation>
+      <translation>伺服器</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation type="unfinished">The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</translation>
+      <translation>你目前所連接的 Bim伺服器名稱。在 Arch 偏好設定中修改設定</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>Bim Server</source>
-      <translation type="unfinished">Bim Server</translation>
+      <translation>Bim 伺服器</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
       <source>Connect</source>
-      <translation type="unfinished">Connect</translation>
+      <translation>連接</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the Bim Server</source>
-      <translation type="unfinished">The list of projects present on the Bim Server</translation>
+      <translation>Bim 伺服器上的專案列表</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="115"/>
       <source>Available revisions:</source>
-      <translation type="unfinished">Available revisions:</translation>
+      <translation>可用修訂版:</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
@@ -175,12 +175,12 @@
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
       <location filename="../ui/BimServerTaskPanel.ui" line="205"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>上傳</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="164"/>
       <source>Root object:</source>
-      <translation type="unfinished">Root object:</translation>
+      <translation>根物件：</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
@@ -193,17 +193,17 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="14"/>
       <source>Schedule definition</source>
-      <translation type="unfinished">Schedule definition</translation>
+      <translation>排程定義</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation type="unfinished">Schedule name:</translation>
+      <translation>排程名稱：</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>未命名排程</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -213,7 +213,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
-      <translation type="unfinished">A description for this operation</translation>
+      <translation>此操作之描述</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
@@ -260,7 +260,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>Filter</source>
-      <translation type="unfinished">Filter</translation>
+      <translation>篩選器</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="101"/>
@@ -285,32 +285,32 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
-      <translation type="unfinished">Detailed results</translation>
+      <translation>詳細結果</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="135"/>
       <source>Adds a line below the selected line/cell</source>
-      <translation type="unfinished">Adds a line below the selected line/cell</translation>
+      <translation>在選擇線/元件(cell)底下新增一條線</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="138"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>新增列</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="150"/>
       <source>Deletes the selected line</source>
-      <translation type="unfinished">Deletes the selected line</translation>
+      <translation>刪除選擇線</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="153"/>
       <source>Del row</source>
-      <translation type="unfinished">Del row</translation>
+      <translation>刪除列</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="165"/>
       <source>Clears the whole list</source>
-      <translation type="unfinished">Clears the whole list</translation>
+      <translation>清空整個清單</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="168"/>
@@ -320,17 +320,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="180"/>
       <source>Put selected objects into the "Objects" column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the "Objects" column of the selected row</translation>
+      <translation>放置選擇物件至選擇列的物件行</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>增加選擇</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
       <source>Imports the contents of a CSV file</source>
-      <translation type="unfinished">Imports the contents of a CSV file</translation>
+      <translation>自一個  CSV 檔中匯入其內容</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="193"/>
@@ -350,17 +350,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation type="unfinished">BimServer Login</translation>
+      <translation>BimServer 登入</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>BimServer URL:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email):</source>
-      <translation type="unfinished">Login (email):</translation>
+      <translation>登入(email):</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -370,7 +370,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
       <source>Keep me logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Keep me logged in across FreeCAD sessions</translation>
+      <translation>讓我在 FreeCAD 工作區間中保持登入狀態</translation>
     </message>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
@@ -380,27 +380,27 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation type="unfinished">IFC properties editor</translation>
+      <translation>IFC 屬性編輯器</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
       <source>IFC UUID:</source>
-      <translation type="unfinished">IFC UUID:</translation>
+      <translation>IFC UUID:</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>在此保持空白以便在匯出時產生一個空白</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>此物件之 IFC 屬性清單。雙擊以編輯，拖放來重組。</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="63"/>
       <source>Delete selected property/set</source>
-      <translation type="unfinished">Delete selected property/set</translation>
+      <translation>刪除所選屬性/集合</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="76"/>
@@ -410,7 +410,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="83"/>
       <source>Force export full FreeCAD parametric data</source>
-      <translation type="unfinished">Force export full FreeCAD parametric data</translation>
+      <translation>強制匯出完整 FreeCAD 參數資料</translation>
     </message>
   </context>
   <context>
@@ -418,7 +418,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="14"/>
       <source>Git</source>
-      <translation type="unfinished">Git</translation>
+      <translation>Git</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
@@ -428,7 +428,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
       <source>Log</source>
-      <translation type="unfinished">Log</translation>
+      <translation>日誌</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
@@ -438,12 +438,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
       <source>List of files to be committed:</source>
-      <translation type="unfinished">List of files to be committed:</translation>
+      <translation>要提交的檔案列表：</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="93"/>
       <source>Diff</source>
-      <translation type="unfinished">Diff</translation>
+      <translation>差異</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
@@ -454,27 +454,27 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
       <location filename="../ui/GitTaskPanel.ui" line="147"/>
       <source>Commit</source>
-      <translation type="unfinished">Commit</translation>
+      <translation>提交</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="120"/>
       <source>Commit message</source>
-      <translation type="unfinished">Commit message</translation>
+      <translation>提交訊息</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="159"/>
       <source>Remote repositories</source>
-      <translation type="unfinished">Remote repositories</translation>
+      <translation>遠端儲存點</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="183"/>
       <source>Pull</source>
-      <translation type="unfinished">Pull</translation>
+      <translation>拉</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="190"/>
       <source>Push</source>
-      <translation type="unfinished">Push</translation>
+      <translation>推</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
@@ -534,17 +534,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
       <source>Nesting</source>
-      <translation type="unfinished">Nesting</translation>
+      <translation>巢狀</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="20"/>
       <source>Container</source>
-      <translation type="unfinished">Container</translation>
+      <translation>容器</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="36"/>
       <source>Pick selected</source>
-      <translation type="unfinished">Pick selected</translation>
+      <translation>挑選</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
@@ -554,7 +554,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation type="unfinished">Add selected</translation>
+      <translation>新增已選擇的</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
@@ -564,7 +564,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
       <source>Nesting parameters</source>
-      <translation type="unfinished">Nesting parameters</translation>
+      <translation>巢狀參數</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
@@ -574,12 +574,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
       <source>Closer than this, two points are considered equal</source>
-      <translation type="unfinished">Closer than this, two points are considered equal</translation>
+      <translation>兩點會視為相等若其距離比此還靠近</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="102"/>
       <source>Arcs subdivisions</source>
-      <translation type="unfinished">Arcs subdivisions</translation>
+      <translation>弧線細分</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="109"/>
@@ -589,7 +589,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="125"/>
       <source>Rotations</source>
-      <translation type="unfinished">Rotations</translation>
+      <translation>旋轉</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
@@ -599,12 +599,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="135"/>
       <source>0,90,180,270</source>
-      <translation type="unfinished">0,90,180,270</translation>
+      <translation>0,90,180,270</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
-      <translation type="unfinished">Nesting operation</translation>
+      <translation>巢狀操作</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="154"/>
@@ -647,12 +647,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="48"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation type="unfinished">If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</translation>
+      <translation>若此被勾選，當二個相似的牆被連結時，他們底下的草圖將被連接為一，而此兩個牆也會變成一個</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="51"/>
       <source>Join walls base sketches when possible</source>
-      <translation type="unfinished">Join walls base sketches when possible</translation>
+      <translation>在可能的情況下連接牆壁基礎草圖</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="64"/>
@@ -662,27 +662,27 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="67"/>
       <source>Remove external geometry of base sketches when needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+      <translation>在需要時移除基礎草圖的外部幾何圖形</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</translation>
+      <translation>若此被勾選，當一個物件變成一個 Arch 物件的減法或加法物件時，它將會取得建構草圖之顏色。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="83"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation type="unfinished">Apply Draft construction style to subcomponents</translation>
+      <translation>將建構草圖風格應用至子組件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="114"/>
       <source>Do not compute areas for object with more than:</source>
-      <translation type="unfinished">Do not compute areas for object with more than:</translation>
+      <translation>不要計算物件的面積超過：</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="121"/>
       <source> faces</source>
-      <translation type="unfinished"> faces</translation>
+      <translation> 面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
@@ -692,7 +692,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation>秒</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
@@ -707,7 +707,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>預設情況下設定"移動基底"屬性為 True</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
@@ -722,22 +722,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>IFC 版本</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>IFC 版本將改變其支持的屬性與產品</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="290"/>
       <source>IFC4</source>
-      <translation type="unfinished">IFC4</translation>
+      <translation>IFC4</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>IFC2X3</source>
-      <translation type="unfinished">IFC2X3</translation>
+      <translation>IFC2X3</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="308"/>
@@ -772,7 +772,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>Force flat faces</source>
-      <translation type="unfinished">Force flat faces</translation>
+      <translation>強制平面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="388"/>
@@ -812,12 +812,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="512"/>
       <source>Symbol line thickness ratio</source>
-      <translation type="unfinished">Symbol line thickness ratio</translation>
+      <translation>符號線寬比例</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="565"/>
       <source>Hidden geometry pattern</source>
-      <translation type="unfinished">Hidden geometry pattern</translation>
+      <translation>隱藏幾何樣式</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="585"/>
@@ -834,7 +834,7 @@ to projections of hidden objects.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
       <source>Pattern scale</source>
-      <translation type="unfinished">Pattern scale</translation>
+      <translation>樣式縮放</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="645"/>
@@ -1064,7 +1064,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="978"/>
       <source>Diameter:</source>
-      <translation type="unfinished">Diameter:</translation>
+      <translation>直徑:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1025"/>
@@ -1074,12 +1074,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1071"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>空間</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1118"/>
       <source>Line style:</source>
-      <translation type="unfinished">Line style:</translation>
+      <translation>線條樣式：</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
@@ -1089,17 +1089,17 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1145"/>
       <source>Dotted</source>
-      <translation type="unfinished">Dotted</translation>
+      <translation>點線</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1150"/>
       <source>Dashdot</source>
-      <translation type="unfinished">Dashdot</translation>
+      <translation>點虛線</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1158"/>
@@ -1109,12 +1109,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
       <source>IFC import</source>
-      <translation type="unfinished">IFC import</translation>
+      <translation>IFC匯入</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
-      <translation type="unfinished">Show this dialog when importing</translation>
+      <translation>當匯入時顯示此對話框</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
@@ -1132,8 +1132,8 @@ of IFC files in the Report view panel</translation>
       <location filename="../ui/preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation type="unfinished">Clones are used when objects have shared geometry
-One object is the base object, the others are clones.</translation>
+      <translation>當物件有共享幾何時使用複製品
+一個物件為基礎物件，其它為複製品。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
@@ -1163,7 +1163,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
       <source>Number of cores to use (experimental)</source>
-      <translation type="unfinished">Number of cores to use (experimental)</translation>
+      <translation>使用之核心數目(試驗性功能)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="157"/>
@@ -1173,24 +1173,24 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="165"/>
       <source>Import arch IFC objects as</source>
-      <translation type="unfinished">Import arch IFC objects as</translation>
+      <translation>匯入建築 IFC 物件為</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="172"/>
       <location filename="../ui/preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
+      <translation>描述什麼樣的物件將會在 FreeCAD 中建立</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation type="unfinished">Parametric Arch objects</translation>
+      <translation>參數 Arch 物件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="187"/>
       <location filename="../ui/preferences-ifc.ui" line="231"/>
       <source>Non-parametric Arch objects</source>
-      <translation type="unfinished">Non-parametric Arch objects</translation>
+      <translation>非參數 Arch 物件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="192"/>
@@ -1206,12 +1206,12 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="202"/>
       <source>Do not import Arch objects</source>
-      <translation type="unfinished">Do not import Arch objects</translation>
+      <translation>不要匯入 Arch 物件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Import struct IFC objects as</source>
-      <translation type="unfinished">Import struct IFC objects as</translation>
+      <translation>匯入結構 IFC 物件為</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="241"/>
@@ -1239,13 +1239,12 @@ Keep the element IfcProduct to import all building elements.</translation>
       <location filename="../ui/preferences-ifc.ui" line="284"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
-      <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
-will already have their openings subtracted</translation>
+      <translation>開口會以差集布林匯入，否則牆將會有差集的開口</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="288"/>
       <source>Separate openings</source>
-      <translation type="unfinished">Separate openings</translation>
+      <translation>分別的開口</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
@@ -1331,7 +1330,7 @@ This will slow down the import, but one can watch the import.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="433"/>
       <source>Fit view while importing</source>
-      <translation type="unfinished">Fit view while importing</translation>
+      <translation>匯入時調整成視圖大小</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
@@ -1364,7 +1363,7 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
       <source>DAE</source>
-      <translation type="unfinished">DAE</translation>
+      <translation>DAE</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="26"/>
@@ -1397,7 +1396,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="85"/>
       <source>Builtin</source>
-      <translation type="unfinished">Builtin</translation>
+      <translation>內建</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
@@ -1496,7 +1495,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC export</source>
-      <translation type="unfinished">IFC export</translation>
+      <translation>IFC 匯出</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
@@ -1507,7 +1506,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation type="unfinished">Show this dialog when exporting</translation>
+      <translation>當匯出時顯示此對話框</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -1524,17 +1523,17 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>匯出類型</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>標準模型</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>結構分析</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
@@ -1589,7 +1588,7 @@ is exported. This leads to smaller differences between file versions.</translati
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
-      <translation type="unfinished">Store IFC unique ID in FreeCAD objects</translation>
+      <translation>在 FreeCAD 物件中儲存 IFC 獨特 ID</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="183"/>
@@ -1597,25 +1596,25 @@ is exported. This leads to smaller differences between file versions.</translati
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</source>
-      <translation type="unfinished">IFCOpenShell is a library that allows to import IFC files.
-Its serializer functionality allows to give it an OCC shape and it will
-produce adequate IFC geometry: NURBS, faceted, or anything else.
-Note: The serializer is still an experimental feature!</translation>
+      <translation>IFCOpenShell 是一個可允許匯入 IFC 檔案的函式庫。
+其序列化器功能允許給它一個 OCC 形狀，它就會
+產生足夠的 IFC 幾何形狀：NURBS，分面，或是其它任何東西。
+注意：序列化器仍是一個實驗性功能!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="189"/>
       <source>Use IfcOpenShell serializer if available</source>
-      <translation type="unfinished">Use IfcOpenShell serializer if available</translation>
+      <translation>如果可用的話使用 IfcOpenShell 序列化器</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="202"/>
       <source>2D objects will be exported as IfcAnnotation</source>
-      <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
+      <translation>2D 物件將會以 IfcAnnotation 匯出</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
       <source>Export 2D objects as IfcAnnotations</source>
-      <translation type="unfinished">Export 2D objects as IfcAnnotations</translation>
+      <translation>匯出 2D 物件為 IfcAnnotation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
@@ -1655,7 +1654,7 @@ If this is your case, you can disable this and then all profiles will be exporte
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="264"/>
       <source>Disable IfcRectangleProfileDef</source>
-      <translation type="unfinished">Disable IfcRectangleProfileDef</translation>
+      <translation>禁用 IfcRectangleProfileDef</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="277"/>
@@ -1720,27 +1719,25 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation type="unfinished">The units you want your IFC file to be exported to.
+      <translation>要將 IFC 檔案匯出所要的單位。
 
-Note that IFC files are ALWAYS written in metric units; imperial units
-are only a conversion factor applied on top of them.
-However, some BIM applications will use this factor to choose which
-unit to work with when opening the file.</translation>
+注意 IFC 檔案永遠使用公制單位寫入; 英制單位只是應用在它們之上的轉換因素。
+然而，某些 BIM 應用程式將會使用此因素來選擇當開啟檔案時以何種單位來進行作業。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation type="unfinished">IFC file units</translation>
+      <translation>IFC 檔案單位</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>公制</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>英制</translation>
     </message>
   </context>
 </TS>

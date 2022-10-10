@@ -773,12 +773,12 @@
     <message>
       <location filename="../../Command.cpp" line="1733"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>Função criação de plano, definido por sua origem e direção normal</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>Função criação de esfera, definida por seu centro e raio</translation>
     </message>
   </context>
   <context>
@@ -792,7 +792,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
       <source>CalculiX binary</source>
-      <translation type="unfinished">CalculiX binary</translation>
+      <translation>Binário CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
@@ -827,7 +827,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="171"/>
       <source>Input file splitting</source>
-      <translation type="unfinished">Input file splitting</translation>
+      <translation>Dividir arquivo de entrada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="181"/>
@@ -837,7 +837,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="202"/>
       <source>Analysis defaults</source>
-      <translation type="unfinished">Analysis defaults</translation>
+      <translation>Parâmetros padrão da análise</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="210"/>
@@ -862,27 +862,27 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="251"/>
       <source>Thermomech</source>
-      <translation type="unfinished">Thermomech</translation>
+      <translation>Termo-mecânica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="260"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Verificar malha</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="269"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Flambagem</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="286"/>
       <source>Solver defaults</source>
-      <translation type="unfinished">Solver defaults</translation>
+      <translation>Parâmetros padrão do solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation type="unfinished">Number of CPU's to use</translation>
+      <translation>Número de núcleos do CPU a serem utilizados</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
@@ -917,12 +917,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="379"/>
       <source>Use non-linear geometry</source>
-      <translation type="unfinished">Use non-linear geometry</translation>
+      <translation>Utilizar não-linearidade geométrica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="395"/>
       <source>Time incrementation control parameter</source>
-      <translation type="unfinished">Time incrementation control parameter</translation>
+      <translation>Parâmetro de controle de incremento de tempo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
@@ -943,7 +943,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="473"/>
       <source>Time End</source>
-      <translation type="unfinished">Time End</translation>
+      <translation>Tempo final</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="512"/>
@@ -958,27 +958,27 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="540"/>
       <source>Thermo mechanical defaults</source>
-      <translation type="unfinished">Thermo mechanical defaults</translation>
+      <translation>Parâmetros termo-mecânicos padrão</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
       <source>Analysis type (transient or steady state)</source>
-      <translation type="unfinished">Analysis type (transient or steady state)</translation>
+      <translation>Tipo de análise (transiente ou permanente)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="555"/>
       <source>Use steady state</source>
-      <translation type="unfinished">Use steady state</translation>
+      <translation>Utilizar regime permanente</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="571"/>
       <source>Maximum number of iterations</source>
-      <translation type="unfinished">Maximum number of iterations</translation>
+      <translation>Número máximo de iterações</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="605"/>
       <source>Frequency defaults</source>
-      <translation type="unfinished">Frequency defaults</translation>
+      <translation>Parâmetros padrão de frequência</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="613"/>
@@ -1004,7 +1004,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>O arquivo não existe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1074,7 +1074,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>Núcleos de CPU a serem usados:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
@@ -1084,7 +1084,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>O arquivo não existe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1133,7 +1133,7 @@ Therefore an executable with the suffix '_mpi' is required.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="28"/>
       <source>Which mesh elements to export</source>
-      <translation type="unfinished">Which mesh elements to export</translation>
+      <translation>Quais elementos de malha a exportar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="35"/>
@@ -1165,7 +1165,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="62"/>
       <source>Highest</source>
-      <translation type="unfinished">Highest</translation>
+      <translation>Maior</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="67"/>
@@ -1175,7 +1175,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="75"/>
       <source>Export group data</source>
-      <translation type="unfinished">Export group data</translation>
+      <translation>Exportar dados do grupo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
@@ -1229,7 +1229,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="142"/>
       <source>Use custom directory</source>
-      <translation type="unfinished">Use custom directory</translation>
+      <translation>Usar diretório personalizado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="160"/>
@@ -1287,7 +1287,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh binary</source>
-      <translation type="unfinished">Gmsh binary</translation>
+      <translation>Binário Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="40"/>
@@ -1302,12 +1302,12 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
       <source>Leave blank to use default gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default gmsh binary file</translation>
+      <translation>Deixe em branco para usar o arquivo binário padrão do Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>O arquivo não existe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1326,7 +1326,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="14"/>
       <source>VTK</source>
-      <translation type="unfinished">VTK</translation>
+      <translation>VTK</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="23"/>
@@ -1364,12 +1364,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="53"/>
       <source>Choose in which object to import into</source>
-      <translation type="unfinished">Choose in which object to import into</translation>
+      <translation>Escolha em qual objeto importar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="66"/>
       <source>VTK result object</source>
-      <translation type="unfinished">VTK result object</translation>
+      <translation>Objeto de resultado VTK</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="71"/>
@@ -1456,7 +1456,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
       <source>Sort by resources</source>
-      <translation type="unfinished">Sort by resources</translation>
+      <translation>Ordenar por recursos</translation>
     </message>
   </context>
   <context>
@@ -1489,7 +1489,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="112"/>
       <source>Comments</source>
-      <translation type="unfinished">Comments</translation>
+      <translation>Comentários</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="119"/>
@@ -1499,7 +1499,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>O arquivo não existe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1543,17 +1543,17 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
       <source>Solver settings</source>
-      <translation type="unfinished">Solver settings</translation>
+      <translation>Configurações do solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="149"/>
       <source>Solver method</source>
-      <translation type="unfinished">Solver method</translation>
+      <translation>Método do solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="165"/>
       <source>Solver method to be used</source>
-      <translation type="unfinished">Solver method to be used</translation>
+      <translation>Método do solver a ser utilizado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
@@ -1611,7 +1611,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>O arquivo não existe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1628,7 +1628,7 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>Arquivo incorreto</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
@@ -2009,17 +2009,17 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="273"/>
       <source>Basic</source>
-      <translation type="unfinished">Basic</translation>
+      <translation>Básico</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
       <source>Turbulence</source>
-      <translation type="unfinished">Turbulence</translation>
+      <translation>Turbulência</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
       <source>Thermal</source>
-      <translation type="unfinished">Thermal</translation>
+      <translation>Térmico</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="277"/>
@@ -2034,7 +2034,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="444"/>
       <source>Dissipation Rate [m2/s3]</source>
-      <translation type="unfinished">Dissipation Rate [m2/s3]</translation>
+      <translation>Taxa de Dissipação [m2/s3]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="447"/>
@@ -2049,18 +2049,18 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
       <source>Hydraulic Diameter [m]</source>
-      <translation type="unfinished">Hydraulic Diameter [m]</translation>
+      <translation>Diâmetro hidráulico [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="479"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="484"/>
       <source>Gradient [K/m]</source>
-      <translation type="unfinished">Gradient [K/m]</translation>
+      <translation>Gradiente [K/m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="488"/>
       <source>Flux [W/m2]</source>
-      <translation type="unfinished">Flux [W/m2]</translation>
+      <translation>Flux [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
@@ -2070,7 +2070,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation>Por favor, selecione uma aresta ou uma face.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
@@ -2084,27 +2084,27 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
       <source>Selected object is not a part object!</source>
-      <translation type="unfinished">Selected object is not a part object!</translation>
+      <translation>O objeto selecionado não é um objeto do tipo parte!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Apenas uma face ou aresta plana pode ser selecionada!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation type="unfinished">Only planar faces can be picked for 3D</translation>
+      <translation>Apenas faces planas podem ser selecionadas para 3D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation type="unfinished">Only planar edges can be picked for 2D</translation>
+      <translation>Apenas arestas planas podem ser selecionadas para 2D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>Apenas faces para objetos 3D ou arestas para objetos 2D podem ser selecionadas</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
@@ -2170,7 +2170,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="300"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation>Por favor, selecione uma aresta ou uma face.</translation>
     </message>
   </context>
   <context>
@@ -2226,7 +2226,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="219"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="273"/>
       <source>Selection must only consist of faces!</source>
-      <translation type="unfinished">Selection must only consist of faces!</translation>
+      <translation>A seleção deve conter apenas faces!</translation>
     </message>
   </context>
   <context>
@@ -2608,22 +2608,22 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Propriedades básicas</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
       <source>Density                     </source>
-      <translation type="unfinished">Density                     </translation>
+      <translation>Densidade                     </translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
       <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
+      <translation>0 kg/m^3</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="210"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Propriedades Mecânicas</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="221"/>
@@ -2633,7 +2633,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="240"/>
       <source>0 Pa</source>
-      <translation type="unfinished">0 Pa</translation>
+      <translation>0 Pa</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="265"/>
@@ -2658,33 +2658,33 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="380"/>
       <source>Thermal  Properties</source>
-      <translation type="unfinished">Thermal  Properties</translation>
+      <translation>Propriedades Térmicas</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="391"/>
       <source>Thermal Conductivity:</source>
-      <translation type="unfinished">Thermal Conductivity:</translation>
+      <translation>Condutividade Térmica:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="410"/>
       <source>0 W/m/K</source>
-      <translation type="unfinished">0 W/m/K</translation>
+      <translation>0 W/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="435"/>
       <source>Expansion Coefficient:</source>
-      <translation type="unfinished">Expansion Coefficient:</translation>
+      <translation>Coeficiente de Expansão:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="454"/>
       <location filename="../ui/Material.ui" line="542"/>
       <source>0 m/m/K</source>
-      <translation type="unfinished">0 m/m/K</translation>
+      <translation>0 W/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="479"/>
       <source>Specific Heat:</source>
-      <translation type="unfinished">Specific Heat:</translation>
+      <translation>Calor Específico:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="498"/>
@@ -3786,12 +3786,12 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="91"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Verificar malha</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Flambagem</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="110"/>
@@ -4745,12 +4745,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>Ponto 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="108"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>Ponto 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="151"/>

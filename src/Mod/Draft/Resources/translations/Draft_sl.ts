@@ -1162,7 +1162,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Povečava:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -2560,7 +2560,7 @@ To lahko spodleti pri predlogah novejših od DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
       <source>/</source>
-      <translation type="unfinished">/</translation>
+      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>

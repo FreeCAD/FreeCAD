@@ -883,7 +883,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation type="unfinished">Number of CPU's to use</translation>
+      <translation>Numero dei Core della CPU da utilizzare</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
@@ -1005,7 +1005,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Il file non esiste</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1013,10 +1013,10 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>L'eseguibile specificato 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ non esiste!
+Specificare un altro file, per favore.</translation>
     </message>
   </context>
   <context>
@@ -1065,27 +1065,27 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="183"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lascia vuoto per usare il file binario Elmer elmer predefinito&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Per usare il multithreading devi specificare qui&lt;br&gt; la variante eseguibile con il suffisso &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
       <source>Multithreading:</source>
-      <translation type="unfinished">Multithreading:</translation>
+      <translation>Multithreading:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>Core della CPU da usare:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Si consiglia di utilizzare un numero pari di core per beneficiare delle simmetrie mesh. (Utilizzando 8 core può essere più veloce di 9 core.&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Nota anche:&lt;/span&gt; In casi estremi ElmerSolver potrebbe non convergere se il numero di core è troppo alto.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Il file non esiste</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1093,30 +1093,30 @@ Specify another file please.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>L'eseguibile specificato 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ non esiste!
+Specificare un altro file, per favore.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="120"/>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="130"/>
       <source>Not suitable for mulithreading</source>
-      <translation type="unfinished">Not suitable for mulithreading</translation>
+      <translation>Non adatto per il mulithreading</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
       <source>You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation type="unfinished">You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</translation>
+      <translation>Si utilizza più di un core della CPU.
+Pertanto è richiesto un eseguibile con il suffisso '_mpi.exe'.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
       <source>You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation type="unfinished">You use more than one CPU core.
-Therefore an executable with the suffix '_mpi' is required.</translation>
+      <translation>Usi più di un core della CPU.
+Pertanto è richiesto un eseguibile con il suffisso '_mpi'.</translation>
     </message>
   </context>
   <context>
@@ -1308,7 +1308,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Il file non esiste</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1316,10 +1316,10 @@ constraint or material is applied.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>L'eseguibile specificato 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ non esiste!
+Specificare un altro file, per favore.</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1500,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Il file non esiste</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1508,10 +1508,10 @@ If unchecked, they will be sorted by their name.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>L'eseguibile specificato 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ non esiste!
+Specificare un altro file, per favore.</translation>
     </message>
   </context>
   <context>
@@ -1612,7 +1612,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Il file non esiste</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1620,26 +1620,26 @@ that "MAXKOI" needs to be increased.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation>L'eseguibile z88r specificato 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ non esiste!
+Specificare un altro file, per favore.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>File errato</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation type="unfinished">You must specify the path to the z88r.exe!</translation>
+      <translation>È necessario specificare il percorso a z88r.exe!</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
       <source>You must specify the path to the z88r!</source>
-      <translation type="unfinished">You must specify the path to the z88r!</translation>
+      <translation>Devi specificare il percorso dello z88r!</translation>
     </message>
   </context>
   <context>
@@ -2480,7 +2480,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1181"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation type="unfinished">%1 at (%2; %3; %4) is: %5 %6</translation>
+      <translation>%1 a (%2; %3; %4) è: %5 %6</translation>
     </message>
   </context>
   <context>
@@ -3023,7 +3023,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
       <source>Body heat in W/kg:</source>
-      <translation type="unfinished">Body heat in W/kg:</translation>
+      <translation>Calore corporeo in W/kg:</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
@@ -3231,7 +3231,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
-      <translation type="unfinished">Pressure:</translation>
+      <translation>Pressione:</translation>
     </message>
   </context>
   <context>
@@ -4726,7 +4726,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
-      <translation type="unfinished">Coordinates</translation>
+      <translation>Coordinate</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="26"/>
@@ -4746,12 +4746,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>Punto 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="108"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>Punto 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="151"/>

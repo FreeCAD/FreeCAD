@@ -1158,7 +1158,7 @@ usando as teclas [ and ] enquanto está desenhando</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Escala:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -2550,7 +2550,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
       <source>/</source>
-      <translation type="unfinished">/</translation>
+      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>

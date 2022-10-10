@@ -1161,7 +1161,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Échelle :</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -2554,7 +2554,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
       <source>/</source>
-      <translation type="unfinished">/</translation>
+      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>

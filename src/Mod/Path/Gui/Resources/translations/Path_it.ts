@@ -680,7 +680,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ho controllato che il percorso sia vincolato dal solido. Altrimenti il volume del solido descrive una zona &amp;quot;di esclusione&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -2275,7 +2275,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Raggio del raccordo sul bordo superiore del tag.&lt;/p&gt;&lt;p&gt;Se il raggio è più grande di quello che la forma stessa del tag supporta, la forma risultante sarà quella di una cupola.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="97"/>
@@ -2786,7 +2786,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="57"/>
       <source>Compound paths</source>
       <translation>Percorsi composti</translation>
     </message>
@@ -3409,12 +3409,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch Camotics</source>
-      <translation type="unfinished">Launch Camotics</translation>
+      <translation>Avvia Camotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make Camotics File</source>
-      <translation type="unfinished">Make Camotics File</translation>
+      <translation>Crea dile di Camotics</translation>
     </message>
   </context>
   <context>

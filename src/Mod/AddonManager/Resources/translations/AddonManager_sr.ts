@@ -6,12 +6,12 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Сопствено спремиште</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL спремишта</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
@@ -57,12 +57,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Зависности</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Врста зависности</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Опционо?</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="72"/>
@@ -118,23 +118,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Алатке за програмере додатака</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Путања до додатка</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Потражи...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Метаподаци</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
@@ -145,7 +145,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Објашњење шта овај додатак пружа. Приказује се у Менаџеру додатака. Није неопходно да се наводи да је ово додатак за FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -155,7 +155,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>URL дискусије</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -170,7 +170,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Подржани су Semantic (1.2.3-beta) или CalVer (2022.08.30) стилови</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
@@ -183,7 +183,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(Опционо)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -194,7 +194,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>URL датотеке README</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -204,22 +204,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL спремишта</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>URL веб сајта</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>URL документације</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Име додатка</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -229,22 +229,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(Препоручено)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation type="unfinished">Minimum Python</translation>
+      <translation>Минимум Python</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation type="unfinished">(Optional, only 3.x version supported)</translation>
+      <translation>(Опционо, подржана је само верзија 3.x)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Открити...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
@@ -298,17 +298,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Прегледајте и ажурирајте зависности Python пакета</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Python зависности...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Алати за програмере...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -368,17 +368,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation type="unfinished">Edit Tags</translation>
+      <translation>Уреди ознаке</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation type="unfinished">Comma-separated list of tags describing this item:</translation>
+      <translation>Листа ознака раздвојених зарезима које описују ову ставку:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>САВЕТ: Уобичајене ознаке укључују &quot;Склоп&quot;, &quot;FEM&quot;, &quot;Мрежа&quot;, &quot;NURBS&quot;, etc.</translation>
     </message>
   </context>
   <context>
@@ -386,22 +386,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Уреди зависност</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
       <source>Dependency Type</source>
-      <translation type="unfinished">Dependency Type</translation>
+      <translation>Врста зависности</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Зависност</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+      <translation>Име пакета, ако је &quot;Остало...&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
@@ -411,12 +411,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>Ако је ово опциона зависност, Менаџер додатака ће понудити да је инсталира (када је то могуће), али неће блокирати инсталацију ако корисник одлучи да не инсталира или не може да инсталира пакет.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Опционо</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Лиценце</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -483,7 +483,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
+      <translation>Датотека лиценце</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="97"/>
@@ -496,12 +496,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>Особе</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -511,7 +511,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>Електронска пошта</translation>
     </message>
   </context>
   <context>
@@ -529,7 +529,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>FreeCAD верзија</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
@@ -548,23 +548,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Подржане FreeCAD верзије</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Минимална подржана FreeCAD верзија</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Опционо</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Максимална подржана FreeCAD верзија</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
@@ -591,7 +591,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>Аутоматски провери ажурирања на почетку (захтева git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -648,7 +648,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
+      <translation>Сопствено спремиште</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="188"/>
@@ -664,27 +664,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
+      <translation>Онемогућите git (вратите се само на ZIP преузимања)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="370"/>
       <source>disableGit</source>
-      <translation type="unfinished">disableGit</translation>
+      <translation>онемогућите Git</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Активирајте опције менаџера додатака намењене програмерима нових додатака.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Режим програмера додатака</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
       <source>developerMode</source>
-      <translation type="unfinished">developerMode</translation>
+      <translation>режим програмера</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
@@ -719,12 +719,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
+      <translation>извршна git датотека (опционо):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>Путања до git извршне датотеке. Аутоматски се детектује ако је потребно а није наведено.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
@@ -780,32 +780,32 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Управљање Python зависностима</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>Следеће Python пакете је локално инсталирао Менаџер додатака да би задовољио зависности додатака. Локација инсталације:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Име пакета</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Инсталирана верзија</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Доступна верзија</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Koristio</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
@@ -815,7 +815,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Ажурирајте све доступно</translation>
     </message>
   </context>
   <context>
@@ -851,7 +851,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Пакет подешавања</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
@@ -871,19 +871,19 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation type="unfinished">Main macro file</translation>
+      <translation>Главна макро датотека</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
       <source>The file with the macro&apos;s metadata in it</source>
-      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+      <translation>Датотека са метаподацима макро-а у њој</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="100"/>
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Потражи...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -928,22 +928,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Ознаке...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Зависности...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation type="unfinished">FreeCAD Versions...</translation>
+      <translation>FreeCAD верзија...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Остали метаподаци</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
@@ -963,7 +963,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Подржани су Semantic (1.2.3-beta) или CalVer (2022.08.30) стилови</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
@@ -1027,17 +1027,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Информације о ауторским правима</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Носилац ауторских права:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Година од кад важи ауторско право:</translation>
     </message>
   </context>
   <context>
@@ -1045,7 +1045,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>Додај особу</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
@@ -1060,12 +1060,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>Е-пошта:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>Е-пошта је неопходна за особу одговорну за одржавање, а опциона за ауторе.</translation>
     </message>
   </context>
   <context>
@@ -1116,37 +1116,37 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Изаберите лиценцу</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>О...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Назив лиценце:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>Путања до датотеке лиценце:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(ако то захтева лиценца)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Потражи...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Направи...</translation>
     </message>
   </context>
   <context>

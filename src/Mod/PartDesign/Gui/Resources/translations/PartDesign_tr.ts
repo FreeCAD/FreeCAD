@@ -3059,7 +3059,7 @@ belirlenen yön boyunca ölçülecek</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
@@ -3843,7 +3843,7 @@ Bu, beklenmedik sonuçlara neden olabilir.</translation>
       <translation>Yapı hattı %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>

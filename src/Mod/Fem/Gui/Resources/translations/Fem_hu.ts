@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="765"/>
       <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a spring acting on a face</translation>
+      <translation>FEM kényszert hoz létre a felületre ható rúgóra</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="855"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Rögzített hőmérséklet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
       <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</translation>
+      <translation>FEM kényszert hoz létre hőmérsékletnek/koncentrált hőáramnak a megadott felületre</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Kényszer átalakítás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
       <source>Create FEM constraint for transforming a face</source>
-      <translation type="unfinished">Create FEM constraint for transforming a face</translation>
+      <translation>FEM kényszert hoz létre felület átalakítására</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1091"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation type="unfinished">Creates a FEM mesh nodes set</translation>
+      <translation>FEM háló csomópont csoportot hoz lére</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1119"/>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../Command.cpp" line="1034"/>
       <source>Node set by poly</source>
-      <translation type="unfinished">Node set by poly</translation>
+      <translation>Csomópont beállítása sokszög által</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1035"/>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../Command.cpp" line="1760"/>
       <source>Apply changes to pipeline</source>
-      <translation type="unfinished">Apply changes to pipeline</translation>
+      <translation>Változások alkalmazása a csővezetékre</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1761"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation type="unfinished">Apply changes to parameters directly and not on recompute only...</translation>
+      <translation>Változtatások mentése a paraméterekre közvetlenül és nem csak újraszámolása...</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1302"/>
       <source>Region clip filter</source>
-      <translation type="unfinished">Region clip filter</translation>
+      <translation>Terület kivágási szűrő</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1303"/>
@@ -3452,12 +3452,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Rögzített hőmérséklet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="487"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Kényszer átalakítás</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="271"/>

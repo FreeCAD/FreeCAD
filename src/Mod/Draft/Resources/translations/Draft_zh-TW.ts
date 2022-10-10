@@ -937,12 +937,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="110"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>虛線</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="115"/>
       <source>Dotted</source>
-      <translation type="unfinished">Dotted</translation>
+      <translation>點線</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="120"/>
@@ -1162,7 +1162,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>比例:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -2555,7 +2555,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
       <source>/</source>
-      <translation type="unfinished">/</translation>
+      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>

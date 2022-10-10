@@ -3058,7 +3058,7 @@ zehaztutako norabidean</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>
@@ -3840,7 +3840,7 @@ Espero ez diren emaitzak gerta daitezke.</translation>
       <translation>%1 eraikuntza-lerroa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>

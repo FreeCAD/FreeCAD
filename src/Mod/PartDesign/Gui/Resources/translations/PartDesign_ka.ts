@@ -1751,7 +1751,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>დააწკაპუნეთ ზედაპირზე მოდელში</translation>
     </message>
   </context>
   <context>
@@ -2569,7 +2569,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>აირჩიეთ ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -3058,7 +3058,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>სიბრტყე</translation>
     </message>
@@ -3842,7 +3842,7 @@ This may lead to unexpected results.</source>
       <translation>დამხმარე ხაზი %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>სიბრტყე</translation>
     </message>

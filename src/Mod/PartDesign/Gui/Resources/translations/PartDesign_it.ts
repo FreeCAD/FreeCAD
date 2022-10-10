@@ -1752,7 +1752,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Fare clic su una faccia nel modello</translation>
     </message>
   </context>
   <context>
@@ -2433,7 +2433,7 @@ fare nuovamente clic per terminare la selezione</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Dimensione</translation>
+      <translation>Quota</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2570,7 +2570,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>Selezionare una faccia</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -3059,7 +3059,7 @@ misurata lungo la direzione specificata</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
@@ -3837,7 +3837,7 @@ This may lead to unexpected results.</source>
       <translation>Linea di costruzione %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>

@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Create spreadsheet</source>
       <translation>Створити таблицю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="894"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Create a new spreadsheet</source>
       <translation>Створює нову таблицю</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="503"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="504"/>
+      <location filename="../../Command.cpp" line="493"/>
       <source>Align bottom</source>
       <translation>Вирівняти знизу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Bottom-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок знизу</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="347"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="337"/>
       <source>Align center</source>
       <translation>Вирівняти у центрі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Center-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок у центрі</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Align left</source>
       <translation>Вирівняти ліворуч</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Left-align contents of selected cells</source>
       <translation>Вирівнює ліворуч вміст виділених комірок</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Align right</source>
       <translation>Вирівняти праворуч</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Right-align contents of selected cells</source>
       <translation>Вирівнює праворуч вміст виділених комірок</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Align top</source>
       <translation>Вирівняти вгорі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Top-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок вгорі</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>Vertically center-align</source>
       <translation>Вертикальне вирівнювання по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок вертикально у центрі</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Export spreadsheet</source>
       <translation>Експортувати таблицю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Export spreadsheet to CSV file</source>
       <translation>Експортує таблицю у CSV-файл</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Import spreadsheet</source>
       <translation>Імпортувати таблицю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Import CSV file into spreadsheet</source>
       <translation>Імпортує CSV-файл у таблицю</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Merge cells</source>
       <translation>Об'єднати комірки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
       <translation>Об'єднує виділені комірки</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="818"/>
       <source>Set alias</source>
       <translation>Встановити псевдонім</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Set alias for selected cell</source>
       <translation>Встановлює псевдонім для виділеної комірки</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>Split cell</source>
       <translation>Роз'єднати комірку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
       <translation>Роз'єднує раніше обʼєднані комірки</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
+      <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="608"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Bold text</source>
       <translation>Зробити текст жирним</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
       <translation>Робить текст у виділених комірках жирним шрифтом</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="671"/>
       <source>Italic text</source>
       <translation>Зробити текст курсивом</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
+      <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
       <translation>Робить текст у виділених комірках курсивом</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Underline text</source>
       <translation>Зробити текст підкресленим</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="757"/>
+      <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
       <translation>Робить текст у виділених комірках підкресленим</translation>
     </message>
@@ -282,72 +282,72 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
       <translation>Об'єднати комірки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="146"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Split cell</source>
       <translation>Роз'єднати комірку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Left-align cell</source>
       <translation>Вирівнювання ліворуч</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Center cell</source>
       <translation>Вирівнювання по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Right-align cell</source>
       <translation>Вирівнювання праворуч</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="462"/>
       <source>Top-align cell</source>
       <translation>Вирівнювання по верхньому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Bottom-align cell</source>
       <translation>Вирівнювання по нижньому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="577"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
       <translation>Вирівнювання вертикально по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
       <translation>Зробити текст напівжирним</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Set italic text</source>
       <translation>Зробити текст курсивом</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="783"/>
       <source>Set underline text</source>
       <translation>Підкреслити текст</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="894"/>
       <source>Create Spreadsheet</source>
       <translation>Створити таблицю</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="228"/>
+      <location filename="../../PropertiesDialog.cpp" line="230"/>
       <source>Set cell properties</source>
       <translation>Зміна властивостей комірок</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="470"/>
+      <location filename="../../SheetModel.cpp" line="468"/>
       <source>Edit cell</source>
       <translation>Редагування комірки</translation>
     </message>
@@ -371,17 +371,17 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="615"/>
-      <location filename="../../SpreadsheetView.cpp" line="168"/>
+      <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
       <translation>Очистити комірку(и)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="131"/>
+      <location filename="../../Workbench.cpp" line="132"/>
       <source>Set foreground color</source>
       <translation>Вибір кольору переднього плану</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="158"/>
+      <location filename="../../Workbench.cpp" line="159"/>
       <source>Set background color</source>
       <translation>Вибір кольору фону</translation>
     </message>
@@ -679,45 +679,45 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
-      <location filename="../../Command.cpp" line="252"/>
+      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>All (*)</source>
       <translation>Всі (*)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Import file</source>
       <translation>Імпорт файлу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Export file</source>
       <translation>Експорт файлу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="141"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
       <source>Show spreadsheet</source>
       <translation>Показати таблицю</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="90"/>
-      <location filename="../../Workbench.cpp" line="92"/>
+      <location filename="../../Workbench.cpp" line="91"/>
+      <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
       <translation>Встановити колір переднього плану комірки(ок)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="91"/>
+      <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
       <translation>Встановлює колір переднього плану комірки(ок) таблиці</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="105"/>
-      <location filename="../../Workbench.cpp" line="107"/>
+      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
       <translation>Встановити фоновий колір комірки(ок)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Встановити фоновий колір комірки(ок) таблиці</translation>
     </message>
@@ -727,12 +727,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Копіювання і вставка завершилась невдачею</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="435"/>
+      <location filename="../../SpreadsheetView.cpp" line="426"/>
       <source>Alias contains invalid characters!</source>
       <translation>Псевдонім містить некоректні символи!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="441"/>
+      <location filename="../../SpreadsheetView.cpp" line="432"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Зверніться до комірки за псевдонімом, наприклад
@@ -878,12 +878,12 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="194"/>
+      <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
       <translation>Звʼязати комірки</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="195"/>
+      <location filename="../../DlgBindSheet.cpp" line="198"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
@@ -892,19 +892,19 @@ Do you want to continue?</source>
 Бажаєте продовжити?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Звʼязування комірок таблиці</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Error: 
 </source>
       <translation>Помилка: 
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="240"/>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
       <translation>Відвʼязати комірки</translation>
     </message>
@@ -980,12 +980,12 @@ Do you want to continue?</source>
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="245"/>
+      <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
       <translation>Створити Таблицю Конфігурацій</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation>Видалити таблицю конфігурацій</translation>
     </message>
@@ -993,7 +993,7 @@ Do you want to continue?</source>
   <context>
     <name>SpreadsheetGui::Module</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="88"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>
@@ -1144,12 +1144,12 @@ Do you want to continue?</source>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="263"/>
+      <location filename="../../SpreadsheetView.cpp" line="254"/>
       <source>Export PDF</source>
       <translation>Експорт в PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="264"/>
+      <location filename="../../SpreadsheetView.cpp" line="255"/>
       <source>PDF file</source>
       <translation>PDF-файл</translation>
     </message>
@@ -1157,22 +1157,22 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
       <translation>&amp;Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
       <translation>&amp;Вирівнювання</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation>&amp;Стилі(v2) for test</translation>
     </message>

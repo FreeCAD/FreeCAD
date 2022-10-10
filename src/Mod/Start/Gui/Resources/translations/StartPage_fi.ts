@@ -106,7 +106,7 @@
     <message>
       <location filename="TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD foorumi&lt;/a&gt; on loistava paikka saada apua muilta FreeCADin käyttäjiltä ja kehittäjiltä. Foorumissa on useita osioita, joissa käsitellään erityyppisiä aiheita ja keskustelunaiheita. Jos olet epävarma, lähetä yleisempään &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Käyttöapua FreeCAD&lt;/a&gt; -osion käyttöön.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;FreeCAD-keskustelupalsta&lt;/a&gt; on loistava paikka saada apua muilta FreeCADin käyttäjiltä ja kehittäjiltä. Keskustelupalstalla on useita osioita, joissa käsitellään erityyppisiä aiheita ja keskustelunaiheita. Jos olet epävarma, lähetä yleisempään &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Käyttöapua FreeCAD:in kanssa&lt;/a&gt; -osioon.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="63"/>
@@ -181,7 +181,7 @@
     <message>
       <location filename="TranslationTexts.py" line="77"/>
       <source>Forum</source>
-      <translation>Foorumi</translation>
+      <translation>Keskustelupalsta</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="78"/>
@@ -265,7 +265,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation>Näytä foorumi</translation>
+      <translation>Näytä keskustelupalsta</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Jos tämä on valittuna, viimeisimmät viestit FreeCAD foorumista näytetään aktiivisuusvälilehdessä</translation>
+      <translation>Jos tämä on valittuna, viimeisimmät viestit FreeCAD-keskustelupalstalta näytetään aktiivisuusvälilehdessä</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>

@@ -2067,9 +2067,9 @@ invalid constraints, degenerated geometry, etc.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="897"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1222"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1265"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="898"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1225"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1268"/>
       <source>Update constraint's virtual space</source>
       <translation type="unfinished">Update constraint's virtual space</translation>
     </message>
@@ -2079,12 +2079,12 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation type="unfinished">Add auto constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="626"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="627"/>
       <source>Swap constraint names</source>
       <translation>Ipagpalit ang mga pangalan ng pagpilit</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1207"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1210"/>
       <source>Rename sketch constraint</source>
       <translation type="unfinished">Rename sketch constraint</translation>
     </message>
@@ -3458,62 +3458,62 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="494"/>
       <source>Change value</source>
       <translation>Baguhin ang halaga</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="497"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="498"/>
       <source>Toggle to/from reference</source>
       <translation>I-toggle sa/mula sanggunian</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Deactivate</source>
       <translation type="unfinished">Deactivate</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Activate</source>
       <translation type="unfinished">Activate</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="504"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="505"/>
       <source>Show constraints</source>
       <translation>Ipakita ang mga harang</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="506"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
       <source>Hide constraints</source>
       <translation>Itago ang mga harang</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="512"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="513"/>
       <source>Rename</source>
       <translation>Baguhin ang pangalan</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="519"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="520"/>
       <source>Center sketch</source>
       <translation>Gitnang skecth</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="522"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="523"/>
       <source>Delete</source>
       <translation>Burahin</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="526"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="527"/>
       <source>Swap constraint names</source>
       <translation>Ipagpalit ang mga pangalan ng pagpilit</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="617"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
       <source>Unnamed constraint</source>
       <translation>Hindi pinangalanang pagpilit</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="619"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Ang mga pangalan lamang ng mga hadlang na pinangalanang maaaring ma-pagpalit.</translation>
     </message>
@@ -3596,7 +3596,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="183"/>
+      <location filename="../../TaskSketcherElements.cpp" line="184"/>
       <source>Delete</source>
       <translation>Burahin</translation>
     </message>
@@ -3838,7 +3838,7 @@ reflected on copies</translation>
     <name>SketcherGui::SketcherSettings</name>
     <message>
       <location filename="../../SketcherSettings.ui" line="14"/>
-      <location filename="../../SketcherSettings.ui" line="109"/>
+      <location filename="../../SketcherSettings.ui" line="129"/>
       <source>General</source>
       <translation>Pangkalahatan</translation>
     </message>
@@ -3848,11 +3848,6 @@ reflected on copies</translation>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="27"/>
-      <source>Sketcher solver</source>
-      <translation type="unfinished">Sketcher solver</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettings.ui" line="33"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
@@ -3860,54 +3855,71 @@ reflected on copies</translation>
 'Advanced solver control' to adjust solver settings</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="37"/>
-      <source>Show section 'Advanced solver control' in task dialog</source>
-      <translation type="unfinished">Show section 'Advanced solver control' in task dialog</translation>
+      <location filename="../../SketcherSettings.ui" line="27"/>
+      <source>Task Panel Widgets</source>
+      <translation type="unfinished">Task Panel Widgets</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="53"/>
+      <location filename="../../SketcherSettings.ui" line="37"/>
+      <source>Show section 'Advanced solver control'</source>
+      <translation type="unfinished">Show section 'Advanced solver control'</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="50"/>
+      <source>Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</source>
+      <translation type="unfinished">Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="54"/>
+      <source>Show section 'Edit controls'</source>
+      <translation type="unfinished">Show section 'Edit controls'</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="73"/>
       <source>Dragging performance</source>
       <translation type="unfinished">Dragging performance</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="59"/>
+      <location filename="../../SketcherSettings.ui" line="79"/>
       <source>Special solver algorithm will be used while dragging sketch elements.
 Requires to re-enter edit mode to take effect.</source>
       <translation type="unfinished">Special solver algorithm will be used while dragging sketch elements.
 Requires to re-enter edit mode to take effect.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="63"/>
+      <location filename="../../SketcherSettings.ui" line="83"/>
       <source>Improve solving while dragging</source>
       <translation type="unfinished">Improve solving while dragging</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="115"/>
+      <location filename="../../SketcherSettings.ui" line="135"/>
       <source>New constraints that would be redundant will automatically be removed</source>
       <translation type="unfinished">New constraints that would be redundant will automatically be removed</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="118"/>
+      <location filename="../../SketcherSettings.ui" line="138"/>
       <source>Auto remove redundants</source>
       <translation type="unfinished">Auto remove redundants</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="134"/>
+      <location filename="../../SketcherSettings.ui" line="154"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
       <translation type="unfinished">Allow to leave sketch edit mode when pressing Esc button</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="137"/>
+      <location filename="../../SketcherSettings.ui" line="157"/>
       <source>Esc can leave sketch edit mode</source>
       <translation type="unfinished">Esc can leave sketch edit mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="153"/>
+      <location filename="../../SketcherSettings.ui" line="173"/>
       <source>Notifies about automatic constraint substitutions</source>
       <translation type="unfinished">Notifies about automatic constraint substitutions</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="156"/>
+      <location filename="../../SketcherSettings.ui" line="176"/>
       <source>Notify automatic constraint substitutions</source>
       <translation>Abisuhan ang kusang pagpapalit ng harang</translation>
     </message>
@@ -4366,12 +4378,12 @@ Then objects are only visible behind the sketch plane.</translation>
       <translation>I-aplay sa mga umiiral na mga sketches</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="236"/>
+      <location filename="../../SketcherSettings.cpp" line="238"/>
       <source>Unexpected C++ exception</source>
       <translation>Hindi inaasahang C++ taliwas</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="239"/>
+      <location filename="../../SketcherSettings.cpp" line="241"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -4704,15 +4716,15 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
       <translation type="unfinished">Restrict Visibility</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="639"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
       <source>Constraints</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="919"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1216"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1288"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="920"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1219"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1291"/>
       <source>Error</source>
       <translation>Kamalian</translation>
     </message>
@@ -4766,16 +4778,16 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="105"/>
-      <location filename="../../TaskSketcherElements.cpp" line="755"/>
-      <location filename="../../TaskSketcherElements.cpp" line="759"/>
-      <location filename="../../TaskSketcherElements.cpp" line="763"/>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
-      <location filename="../../TaskSketcherElements.cpp" line="771"/>
-      <location filename="../../TaskSketcherElements.cpp" line="775"/>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
-      <location filename="../../TaskSketcherElements.cpp" line="783"/>
-      <location filename="../../TaskSketcherElements.cpp" line="787"/>
-      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="758"/>
+      <location filename="../../TaskSketcherElements.cpp" line="762"/>
+      <location filename="../../TaskSketcherElements.cpp" line="766"/>
+      <location filename="../../TaskSketcherElements.cpp" line="770"/>
+      <location filename="../../TaskSketcherElements.cpp" line="774"/>
+      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="782"/>
+      <location filename="../../TaskSketcherElements.cpp" line="786"/>
+      <location filename="../../TaskSketcherElements.cpp" line="790"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Construction</source>
       <translation>Pagtatayo</translation>
     </message>
@@ -4805,92 +4817,92 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
       <translation>Auto-switch sa Edge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="256"/>
+      <location filename="../../TaskSketcherElements.cpp" line="257"/>
       <source>Elements</source>
       <translation>Elemento</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="277"/>
+      <location filename="../../TaskSketcherElements.cpp" line="278"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: maramihang pagpili&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: lumipat sa susunod na valid na uri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="754"/>
-      <location filename="../../TaskSketcherElements.cpp" line="756"/>
-      <location filename="../../TaskSketcherElements.cpp" line="861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="757"/>
+      <location filename="../../TaskSketcherElements.cpp" line="759"/>
+      <location filename="../../TaskSketcherElements.cpp" line="864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="865"/>
       <source>Point</source>
       <translation>Dunggot</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
-      <location filename="../../TaskSketcherElements.cpp" line="760"/>
-      <location filename="../../TaskSketcherElements.cpp" line="864"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="761"/>
+      <location filename="../../TaskSketcherElements.cpp" line="763"/>
+      <location filename="../../TaskSketcherElements.cpp" line="867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="868"/>
       <source>Line</source>
       <translation>Guhit</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
-      <location filename="../../TaskSketcherElements.cpp" line="764"/>
-      <location filename="../../TaskSketcherElements.cpp" line="867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="765"/>
+      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="871"/>
       <source>Arc</source>
       <translation>Arko</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
-      <location filename="../../TaskSketcherElements.cpp" line="768"/>
-      <location filename="../../TaskSketcherElements.cpp" line="870"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="769"/>
+      <location filename="../../TaskSketcherElements.cpp" line="771"/>
+      <location filename="../../TaskSketcherElements.cpp" line="873"/>
+      <location filename="../../TaskSketcherElements.cpp" line="874"/>
       <source>Circle</source>
       <translation>Sirkulo</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
-      <location filename="../../TaskSketcherElements.cpp" line="772"/>
-      <location filename="../../TaskSketcherElements.cpp" line="873"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="773"/>
+      <location filename="../../TaskSketcherElements.cpp" line="775"/>
+      <location filename="../../TaskSketcherElements.cpp" line="876"/>
+      <location filename="../../TaskSketcherElements.cpp" line="877"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
-      <location filename="../../TaskSketcherElements.cpp" line="776"/>
-      <location filename="../../TaskSketcherElements.cpp" line="876"/>
-      <location filename="../../TaskSketcherElements.cpp" line="877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="880"/>
       <source>Elliptical Arc</source>
       <translation>Elliptical na arko</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
-      <location filename="../../TaskSketcherElements.cpp" line="780"/>
-      <location filename="../../TaskSketcherElements.cpp" line="879"/>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="781"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
+      <location filename="../../TaskSketcherElements.cpp" line="882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="883"/>
       <source>Hyperbolic Arc</source>
       <translation>Hyperbolic na Arko</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="782"/>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
-      <location filename="../../TaskSketcherElements.cpp" line="882"/>
-      <location filename="../../TaskSketcherElements.cpp" line="883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="785"/>
+      <location filename="../../TaskSketcherElements.cpp" line="787"/>
+      <location filename="../../TaskSketcherElements.cpp" line="885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="886"/>
       <source>Parabolic Arc</source>
       <translation>Paparabola na Arko</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="786"/>
-      <location filename="../../TaskSketcherElements.cpp" line="788"/>
-      <location filename="../../TaskSketcherElements.cpp" line="885"/>
-      <location filename="../../TaskSketcherElements.cpp" line="886"/>
+      <location filename="../../TaskSketcherElements.cpp" line="789"/>
+      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="889"/>
       <source>BSpline</source>
       <translation>BSplinya</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="790"/>
-      <location filename="../../TaskSketcherElements.cpp" line="792"/>
-      <location filename="../../TaskSketcherElements.cpp" line="888"/>
-      <location filename="../../TaskSketcherElements.cpp" line="889"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
+      <location filename="../../TaskSketcherElements.cpp" line="891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="892"/>
       <source>Other</source>
       <translation>Iba pa</translation>
     </message>

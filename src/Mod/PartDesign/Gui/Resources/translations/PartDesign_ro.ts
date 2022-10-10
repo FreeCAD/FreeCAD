@@ -3061,7 +3061,7 @@ measured along the specified direction</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
@@ -3841,7 +3841,7 @@ This may lead to unexpected results.</source>
       <translation>%1 linie de construcție</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>

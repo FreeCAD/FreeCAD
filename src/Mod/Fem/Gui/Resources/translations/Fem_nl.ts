@@ -883,7 +883,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation type="unfinished">Number of CPU's to use</translation>
+      <translation>Aantal te gebruiken CPU's</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
@@ -1005,7 +1005,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Bestand bestaat niet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1013,10 +1013,10 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Het gespecificeerde uitvoerbare bestand 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ bestaat niet!
+Geef een ander bestand op.</translation>
     </message>
   </context>
   <context>
@@ -1075,7 +1075,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>CPU-kernen die moeten worden gebruikt:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
@@ -1085,7 +1085,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Bestand bestaat niet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1093,10 +1093,10 @@ Specify another file please.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Het gespecificeerde uitvoerbare bestand 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ bestaat niet!
+Geef een ander bestand op.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="120"/>
@@ -1108,15 +1108,15 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
       <source>You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation type="unfinished">You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</translation>
+      <translation>U gebruikt meer dan één CPU-kern.
+Daarom is een uitvoerbaar programma met het achtervoegsel '_mpi.exe' vereist.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
       <source>You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation type="unfinished">You use more than one CPU core.
-Therefore an executable with the suffix '_mpi' is required.</translation>
+      <translation>U gebruikt meer dan één CPU-kern.
+Daarom is een uitvoerbaar programma met het achtervoegsel '_mpi' vereist.</translation>
     </message>
   </context>
   <context>
@@ -1308,7 +1308,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Bestand bestaat niet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1316,10 +1316,10 @@ constraint or material is applied.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Het gespecificeerde uitvoerbare bestand 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ bestaat niet!
+Geef een ander bestand op.</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1500,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Bestand bestaat niet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1508,10 +1508,10 @@ If unchecked, they will be sorted by their name.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Het gespecificeerde uitvoerbare bestand 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ bestaat niet!
+Geef een ander bestand op.</translation>
     </message>
   </context>
   <context>
@@ -1612,7 +1612,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Bestand bestaat niet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1629,7 +1629,7 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>Verkeerd bestand</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
@@ -2480,7 +2480,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1181"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation type="unfinished">%1 at (%2; %3; %4) is: %5 %6</translation>
+      <translation>%1 bij (%2; %3; %4) is: %5 %6</translation>
     </message>
   </context>
   <context>
@@ -3023,7 +3023,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
       <source>Body heat in W/kg:</source>
-      <translation type="unfinished">Body heat in W/kg:</translation>
+      <translation>Lichaamswarmte in W/kg:</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
@@ -3231,7 +3231,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
-      <translation type="unfinished">Pressure:</translation>
+      <translation>Druk:</translation>
     </message>
   </context>
   <context>
@@ -4726,7 +4726,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
-      <translation type="unfinished">Coordinates</translation>
+      <translation>Coördinaten</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="26"/>
@@ -4746,12 +4746,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>Punt 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="108"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>Punt 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="151"/>

@@ -1654,7 +1654,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="284"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Formteil</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="285"/>
@@ -1672,7 +1672,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1077"/>
       <source>Part</source>
-      <translation>Formteil</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
@@ -2321,7 +2321,7 @@ der Projektion.</translation>
       <translation>Netz umwandeln</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1061"/>
+      <location filename="../../TaskAttacher.cpp" line="1071"/>
       <source>Edit attachment</source>
       <translation>Anhang bearbeiten</translation>
     </message>
@@ -3065,7 +3065,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="264"/>
       <source>Chamfer type</source>
-      <translation type="unfinished">Chamfer type</translation>
+      <translation>Fasentyp</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3100,12 +3100,12 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Grösse2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>Typ der Abrundung</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -4223,22 +4223,22 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
       <source>Measurement settings</source>
-      <translation type="unfinished">Measurement settings</translation>
+      <translation>Messeinstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation type="unfinished">3D color</translation>
+      <translation>3D-Farbe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation type="unfinished">Delta color</translation>
+      <translation>Delta-Farbe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation type="unfinished">Angular color</translation>
+      <translation>Winkelfarbe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
@@ -4268,7 +4268,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
       <source>Refresh existing measurements</source>
-      <translation type="unfinished">Refresh existing measurements</translation>
+      <translation>Vorhandene Messungen aktualisieren</translation>
     </message>
   </context>
   <context>
@@ -4306,12 +4306,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>Formtransparenz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>Die Standardtransparenz für neue Formen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
@@ -4736,7 +4736,7 @@ nur die erstellten Schnitte sichtbar</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Nicht unterstützt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
@@ -4949,7 +4949,7 @@ nur die erstellten Schnitte sichtbar</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Versatz der Anhänge (in lokalen Koordinaten):</translation>
     </message>
@@ -5026,77 +5026,77 @@ Hinweis: Die Positionierung wird im lokalen Koordinatensystem des angehängten O
       <translation>Seiten spiegeln</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="312"/>
       <source>OCC error: %1</source>
       <translation>OCC-Fehler: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="313"/>
+      <location filename="../../TaskAttacher.cpp" line="314"/>
       <source>unknown error</source>
       <translation>unbekannter Fehler</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="316"/>
+      <location filename="../../TaskAttacher.cpp" line="317"/>
       <source>Attachment mode failed: %1</source>
       <translation>Bindungsmethode fehlgeschlagen: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="321"/>
       <source>Not attached</source>
       <translation>Nicht gebunden</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="324"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attached with mode %1</source>
       <translation>Angehängt im Modus: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Befestigungsversatz (Inaktiv - nicht gebunden):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="626"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="633"/>
       <source>Edge</source>
       <translation>Kante</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="640"/>
       <source>Vertex</source>
       <translation>Knoten</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="695"/>
+      <location filename="../../TaskAttacher.cpp" line="705"/>
       <source>Selecting...</source>
       <translation>Auswählen...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="699"/>
+      <location filename="../../TaskAttacher.cpp" line="709"/>
       <source>Reference%1</source>
       <translation>Referenz%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="746"/>
+      <location filename="../../TaskAttacher.cpp" line="756"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Nicht editierbar, da der Rotationsteil des Befestigungsversatzes durch Ausdrücke gebunden ist.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="812"/>
+      <location filename="../../TaskAttacher.cpp" line="822"/>
       <source>Reference combinations:</source>
       <translation>Referenz-Kombinationen:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="829"/>
+      <location filename="../../TaskAttacher.cpp" line="839"/>
       <source>%1 (add %2)</source>
       <translation>%1 (%2 hinzufügen)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="834"/>
+      <location filename="../../TaskAttacher.cpp" line="844"/>
       <source>%1 (add more references)</source>
       <translation>%1 (fügen Sie weitere Referenzen hinzu)</translation>
     </message>
@@ -5313,7 +5313,7 @@ Individuelle BOP Checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1112"/>
       <source>Datum dialog: Input error</source>
       <translation>Bezugspunkt Dialog: Eingabefehler</translation>
     </message>
@@ -5323,7 +5323,7 @@ Individuelle BOP Checks:</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Diesen Dialog nicht mehr anzeigen</translation>
     </message>
   </context>
   <context>
@@ -5515,7 +5515,7 @@ indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Rechteckauswahl...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5667,7 +5667,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="214"/>
       <location filename="../../AppPartGui.cpp" line="215"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Part/Part Design</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="216"/>
@@ -5737,25 +5737,25 @@ Do you want to continue?</source>
       <translation>Wählen Sie entweder zwei Kanten oder zwei Kantenzüge aus.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="65"/>
-      <location filename="../../TaskAttacher.cpp" line="101"/>
+      <location filename="../../TaskAttacher.cpp" line="66"/>
+      <location filename="../../TaskAttacher.cpp" line="102"/>
       <source>No reference selected</source>
       <translation>Keine ausgewählten Referenzen</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="74"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="77"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Kante</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Knoten</translation>

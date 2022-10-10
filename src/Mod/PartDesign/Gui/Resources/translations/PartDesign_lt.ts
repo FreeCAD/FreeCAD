@@ -499,7 +499,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>PartDesign</source>
-      <translation>Detalių kūryba</translation>
+      <translation>Detalės projektavimas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="162"/>
@@ -517,7 +517,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
@@ -1901,7 +1901,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Atrankos klaida</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
@@ -2437,7 +2437,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
       <source>Length</source>
-      <translation>Ilgis</translation>
+      <translation type="unfinished">Length</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="58"/>
@@ -2543,7 +2543,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="263"/>
       <source>Reversed</source>
-      <translation>Atbulai</translation>
+      <translation type="unfinished">Reversed</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
@@ -2574,7 +2574,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
-      <translation>Atnaujinti rodinį</translation>
+      <translation type="unfinished">Update view</translation>
     </message>
   </context>
   <context>
@@ -2961,7 +2961,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
       <source>Symmetric to plane</source>
-      <translation>Simetriškai plokštumos atžvilgiu</translation>
+      <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="108"/>
@@ -2971,7 +2971,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Atnaujinti rodinį</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="49"/>
@@ -3058,7 +3058,7 @@ measured along the specified direction</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Siena</translation>
     </message>
@@ -3153,7 +3153,7 @@ spustelėkite vėl, jei norite baigti atranką</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
       <source>Selection error</source>
-      <translation>Atrankos klaida</translation>
+      <translation type="unfinished">Selection error</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
@@ -3842,7 +3842,7 @@ This may lead to unexpected results.</translation>
       <translation type="unfinished">Construction line %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Siena</translation>
     </message>
@@ -4627,7 +4627,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="741"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Atbulai</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="604"/>

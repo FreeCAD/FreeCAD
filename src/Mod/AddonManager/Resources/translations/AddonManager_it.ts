@@ -6,17 +6,17 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Repository personalizzato</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL del repository</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Ramo</translation>
     </message>
   </context>
   <context>
@@ -57,12 +57,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Dipendenze</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Tipo di dipendenza</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Facoltativo?</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="72"/>
@@ -118,34 +118,34 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Estensione strumenti per sviluppatori</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Percorso per l'estensione</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Sfoglia...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Metadati</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Ramo primario</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Spiegazione di ciò che questo componente aggiuntivo fornisce. Visualizzato in Addon Manager. Non è necessario per questo dichiarare che questo è un FreeCAD Addon.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -155,7 +155,7 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>Url della discussione</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -165,17 +165,17 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>URL del Bugtracker</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Stili semantici (1.2.3-beta) o calVer (2022.08.30) supportati</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Impostato a oggi (Stile CalVer)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -183,7 +183,7 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(opzionale)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -194,7 +194,7 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>URL del README</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -204,22 +204,22 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL del repository</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>URL del sito</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>URL documentazione</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Nome dell'estensione</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -229,7 +229,7 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(consigliato)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
@@ -529,12 +529,12 @@ Vuoi che Addon Manager li installi automaticamente? Scegli &quot;Ignora&quot; pe
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>Versione FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>Ramo migliore disponibile, tag o commit</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
@@ -851,7 +851,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Pacchetto Preferenze</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
@@ -861,29 +861,29 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+      <translation>Se questa è l'unica cosa nell'Estensione, tutti gli altri metadati possono essere ereditati dal livello superiore, e non hanno bisogno di essere specificati qui.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation type="unfinished">This is the only item in the Addon</translation>
+      <translation>Questo è l'unico elemento nel componente aggiuntivo</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation type="unfinished">Main macro file</translation>
+      <translation>File macro principale</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
       <source>The file with the macro&apos;s metadata in it</source>
-      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+      <translation>Il file con i metadati macro&apos;s in esso</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="100"/>
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Sfoglia...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -893,22 +893,22 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Nome classe Ambiente di lavoro</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>Classe che definisce &quot;Icona&quot; membro dei dati</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Sottocartella</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
       <source>Optional, defaults to name of content item</source>
-      <translation type="unfinished">Optional, defaults to name of content item</translation>
+      <translation>Opzionale, predefinito per il nome dell'elemento di contenuto</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
@@ -923,7 +923,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
+      <translation>Opzionale, predefinito per ereditare da Addon di alto livello</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
@@ -933,22 +933,22 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Dipendenze...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation type="unfinished">FreeCAD Versions...</translation>
+      <translation>Versioni FreeCAD...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Altri metadati</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</translation>
+      <translation>Visualizzati nella lista Addon Manager&apos; di Addons. Non dovrebbe includere la parola &quot;FreeCAD&quot;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -963,12 +963,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Stili semantici (1.2.3-beta) o calVer (2022.08.30) supportati</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Impostato a oggi (Stile CalVer)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -978,7 +978,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Tutti i campi lasciati in bianco sono ereditati dai metadati di Addon di alto livello, quindi tecnicamente sono tutti facoltativi. Per Addons con contenuti multipli, ogni elemento dovrebbe fornire un nome di visualizzazione e una descrizione unica.</translation>
     </message>
   </context>
   <context>
@@ -1027,17 +1027,17 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Informazioni sul copyright</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Titolare del copyright:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Anno del copyright:</translation>
     </message>
   </context>
   <context>
@@ -1045,12 +1045,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>Aggiungi persona</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>Un responsabile è qualcuno con accesso al commit corrente su questo progetto. Un autore è chiunque altro a cui tu&apos;vorresti dare credito.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -1060,12 +1060,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>Posta elettronica:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>L'email è richiesta per i manutentori e facoltativa per gli autori.</translation>
     </message>
   </context>
   <context>
@@ -1116,37 +1116,37 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Seleziona una licenza</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>Informazioni...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Nome licenza:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>Percorso del file di licenza:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(se richiesto dalla licenza)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Sfoglia...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Crea...</translation>
     </message>
   </context>
   <context>

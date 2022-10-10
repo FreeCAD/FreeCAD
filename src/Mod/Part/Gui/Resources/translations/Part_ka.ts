@@ -2321,7 +2321,7 @@ of projection.</source>
       <translation>მრავალკუთხა ბადის გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1061"/>
+      <location filename="../../TaskAttacher.cpp" line="1071"/>
       <source>Edit attachment</source>
       <translation>მიმაგრების ჩასწორება</translation>
     </message>
@@ -3063,7 +3063,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="264"/>
       <source>Chamfer type</source>
-      <translation type="unfinished">Chamfer type</translation>
+      <translation>კუთხის ნაზოლის ტიპი</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3098,12 +3098,12 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>ზომა2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>მომრგვალების ტიპი</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -4225,22 +4225,22 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
       <source>Measurement settings</source>
-      <translation type="unfinished">Measurement settings</translation>
+      <translation>გაზომვის მორგება</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation type="unfinished">3D color</translation>
+      <translation>3D ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation type="unfinished">Delta color</translation>
+      <translation>დელტა ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation type="unfinished">Angular color</translation>
+      <translation>კუთხურ ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
@@ -4260,7 +4260,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation type="unfinished">defaultFont</translation>
+      <translation>ნაგულისხმებიფონტი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
@@ -4270,7 +4270,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
       <source>Refresh existing measurements</source>
-      <translation type="unfinished">Refresh existing measurements</translation>
+      <translation>არსებული ზომების განახლება</translation>
     </message>
   </context>
   <context>
@@ -4308,12 +4308,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>მოხაზულობის გამჭვირვალობა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>ახალი მონახაზების ნაგულისხმები გამჭვირვალობა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
@@ -4738,12 +4738,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>მხარდაუჭერელი</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>გარსებისთვის ყუთების არჩევა მხარდაჭერილი არაა</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="224"/>
@@ -4951,7 +4951,7 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>მიმაგრების წანაცვლება (ლოკალური კოორდინატები):</translation>
     </message>
@@ -5029,77 +5029,77 @@ of object being attached.</source>
       <translation>გვერდებისთვის ადგილის გაცვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="312"/>
       <source>OCC error: %1</source>
       <translation>OCC-ის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="313"/>
+      <location filename="../../TaskAttacher.cpp" line="314"/>
       <source>unknown error</source>
       <translation>გაურკვეველი შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="316"/>
+      <location filename="../../TaskAttacher.cpp" line="317"/>
       <source>Attachment mode failed: %1</source>
       <translation>მიმაგრების რეჟიმის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="321"/>
       <source>Not attached</source>
       <translation>არაა მიმაგრებული</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="324"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attached with mode %1</source>
       <translation>მიბმულია რეჟიმში %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>მიმაგრების წანაცვლება (არააქტიური - არაფერია მიმაგრებული):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="626"/>
       <source>Face</source>
       <translation>სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="633"/>
       <source>Edge</source>
       <translation>წიბო</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="640"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="695"/>
+      <location filename="../../TaskAttacher.cpp" line="705"/>
       <source>Selecting...</source>
       <translation>მონიშვნა...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="699"/>
+      <location filename="../../TaskAttacher.cpp" line="709"/>
       <source>Reference%1</source>
       <translation>ორიენტირი %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="746"/>
+      <location filename="../../TaskAttacher.cpp" line="756"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>არაა ჩასწორებადი იმიტომ, რომ AttachmentOffset-ის ტრიალი ჩაკეტილი გამონათქვამებით.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="812"/>
+      <location filename="../../TaskAttacher.cpp" line="822"/>
       <source>Reference combinations:</source>
       <translation>ბმის კომბინაციები:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="829"/>
+      <location filename="../../TaskAttacher.cpp" line="839"/>
       <source>%1 (add %2)</source>
       <translation>%1 (%2-ის დამატება)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="834"/>
+      <location filename="../../TaskAttacher.cpp" line="844"/>
       <source>%1 (add more references)</source>
       <translation>%1 (დაამატეთ მეტი ბმა)</translation>
     </message>
@@ -5317,7 +5317,7 @@ Individual BOP Checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1112"/>
       <source>Datum dialog: Input error</source>
       <translation>სიდიდე: შეყვანის შეცდომა</translation>
     </message>
@@ -5327,7 +5327,7 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>აღარ მაჩვენო</translation>
     </message>
   </context>
   <context>
@@ -5519,7 +5519,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>ყუთის არჩევა...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5664,7 +5664,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../AppPartGui.cpp" line="211"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>ნაწილისა და ნაწილის დიზაინის სამუშაო მაგიდა</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="212"/>
@@ -5672,7 +5672,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="214"/>
       <location filename="../../AppPartGui.cpp" line="215"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>ნაწილი/ნაწილის დიზაინი</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="216"/>
@@ -5743,25 +5743,25 @@ Do you want to continue?</source>
       <translation>უნდა აირჩიოთ ორი წიბო ან ორი პოლიხაზი.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="65"/>
-      <location filename="../../TaskAttacher.cpp" line="101"/>
+      <location filename="../../TaskAttacher.cpp" line="66"/>
+      <location filename="../../TaskAttacher.cpp" line="102"/>
       <source>No reference selected</source>
       <translation>მიბმა არჩეული არაა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="74"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="77"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>წიბო</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>

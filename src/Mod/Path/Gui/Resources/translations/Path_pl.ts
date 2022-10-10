@@ -680,7 +680,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sprawdziłem, że ścieżka jest ograniczona przez bryłę. W przeciwnym razie objętość bryły opisuje strefę &amp;quot;wykluczenia.&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -1246,7 +1246,7 @@
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="159"/>
       <source>Chip Break</source>
-      <translation type="unfinished">Chip Break</translation>
+      <translation>Przerywanie wióra</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
@@ -2275,7 +2275,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Promień zaokrąglenia na górnej krawędzi pola mocującego.&lt;/p&gt;&lt;p&gt;Jeśli promień jest większy niż ten, który utrzymuje sam kształt podpory, wynikowy kształt będzie kopułą.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="97"/>
@@ -2376,7 +2376,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="193"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wprowadź ścieżkę i opcjonalnie nazwę pliku (zobacz niżej) do użycia jako wartości domyślne dla eksportu postprocessora.&lt;/p&gt;&lt;p&gt;Następujące podstawienia są wykonywane zanim nazwa zostanie rozwiązana w czasie postprocessingu:&lt;/p&gt;&lt;p&gt;Podstawianie umożliwia:&lt;/p&gt;&lt;p&gt;%D ... ścieżkę aktywnego dokumentu&lt;/p&gt;&lt;p&gt;%d ... nazwę aktywnego dokumentu (z rozszerzeniem)&lt;/p&gt;&lt;p&gt;%M ... ścieżkę makrodefinicji użytkownika&lt;/p&gt;&lt;p&gt;%j ... nazwę obiektu akwtywnego zadania&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Poniższe parametry mogą zostać użyte jeśli wynik jest dzielony. Jeśli nie jest dzielony&lt;/p&gt;&lt;p&gt;zostaną zignorowane.  &lt;/p&gt;&lt;p&gt;%T ... numer narzędzia&lt;/p&gt;&lt;p&gt;%t ... oznaczenie kontrolera narzędzia&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... układ współrzędnych roboczych &lt;/p&gt;&lt;p&gt;%O ... oznaczenie operacji&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Przy dzieleniu wyniku zawsze zostanie dodany numer sekwencji.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;jeśli %S jest uwzględniony, możesz wskazać gdzie numer zostanie wklejony.  Bez tego, numer zostanie dodany na końcu ciągu zznaków.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... numer sekwencji&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Następujący przykład przechowuje wszystkie pliki z taką samą nazwą jak dokument ścieżka/katalog domowy/freecad (proszę usunąć cudzysłów):&lt;/p&gt;&lt;p&gt;&amp;quot;/katalog domowy/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;Zapoznaj się z poniższą polityką zapisywania plików aby dowiedzieć się jak rozwiązywać konflikty nazw./p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="213"/>
@@ -2786,7 +2786,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="57"/>
       <source>Compound paths</source>
       <translation>Kombinuj ścieżki</translation>
     </message>
@@ -3409,12 +3409,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch Camotics</source>
-      <translation type="unfinished">Launch Camotics</translation>
+      <translation>Uruchom Camotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make Camotics File</source>
-      <translation type="unfinished">Make Camotics File</translation>
+      <translation>Utwórz plik Camotics</translation>
     </message>
   </context>
   <context>
@@ -3715,7 +3715,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wprowadź ścieżkę i opcjonalnie nazwę pliku (zobacz niżej) do użycia jako wartości domyślne dla eksportu postprocessora.&lt;/p&gt;&lt;p&gt;Następujące podstawienia są wykonywane zanim nazwa zostanie rozwiązana w czasie postprocessingu:&lt;/p&gt;&lt;p&gt;Podstawianie umożliwia:&lt;/p&gt;&lt;p&gt;%D ... ścieżkę aktywnego dokumentu&lt;/p&gt;&lt;p&gt;%d ... nazwę aktywnego dokumentu (z rozszerzeniem)&lt;/p&gt;&lt;p&gt;%M ... ścieżkę makrodefinicji użytkownika&lt;/p&gt;&lt;p&gt;%j ... nazwę obiektu akwtywnego zadania&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Poniższe parametry mogą zostać użyte jeśli wynik jest dzielony. Jeśli nie jest dzielony&lt;/p&gt;&lt;p&gt;zostaną zignorowane.  &lt;/p&gt;&lt;p&gt;%T ... numer narzędzia&lt;/p&gt;&lt;p&gt;%t ... oznaczenie kontrolera narzędzia&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... układ współrzędnych roboczych &lt;/p&gt;&lt;p&gt;%O ... oznaczenie operacji&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Przy dzieleniu wyniku zawsze zostanie dodany numer sekwencji.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;jeśli %S jest uwzględniony, możesz wskazać gdzie numer zostanie wklejony.  Bez tego, numer zostanie dodany na końcu ciągu zznaków.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... numer sekwencji&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Następujący przykład przechowuje wszystkie pliki z taką samą nazwą jak dokument ścieżka/katalog domowy/freecad (proszę usunąć cudzysłów):&lt;/p&gt;&lt;p&gt;&amp;quot;/katalog domowy/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;Zapoznaj się z poniższą polityką zapisywania plików aby dowiedzieć się jak rozwiązywać konflikty nazw./p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="366"/>
@@ -4009,12 +4009,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Posuw poziomo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1208"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Posuw pionowo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>

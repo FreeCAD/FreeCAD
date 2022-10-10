@@ -1752,7 +1752,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Haga clic en una cara en el modelo</translation>
     </message>
   </context>
   <context>
@@ -2569,7 +2569,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>Seleccionar cara</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -3058,7 +3058,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
@@ -3838,7 +3838,7 @@ This may lead to unexpected results.</source>
       <translation>Línea de construcción %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>

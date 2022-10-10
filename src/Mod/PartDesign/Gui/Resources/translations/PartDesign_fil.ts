@@ -3060,7 +3060,7 @@ measured along the specified direction</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3844,7 +3844,7 @@ Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
       <translation>Construction line %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>

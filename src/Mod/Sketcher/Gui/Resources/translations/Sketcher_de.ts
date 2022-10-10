@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5689"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Automatisch Radius/Durchmesser einschränken</translation>
+      <translation>Automatisch Radius oder Durchmesser festlegen</translation>
     </message>
   </context>
   <context>
@@ -416,12 +416,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1892"/>
       <source>Constrain coincident</source>
-      <translation>Koinzidenz erzwingen</translation>
+      <translation>Koinzidenz festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1893"/>
       <source>Create a coincident constraint on the selected item</source>
-      <translation>Eine Koinzidenzbeschränkung für das gewählte Element setzen</translation>
+      <translation>Erstellt eine Randbedingung, die die ausgewählten Punkte als koinzident (deckungsgleich) festlegt</translation>
     </message>
   </context>
   <context>
@@ -534,12 +534,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3186"/>
       <source>Constrain parallel</source>
-      <translation>Parallelität erzwingen</translation>
+      <translation>Parallel festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3187"/>
       <source>Create a parallel constraint between two lines</source>
-      <translation>Parallelität zwischen zwei Geraden erzwingen</translation>
+      <translation>Legt die Parallelität zweier Geraden fest</translation>
     </message>
   </context>
   <context>
@@ -573,7 +573,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5273"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Automatisch Radius/Durchmesser einschränken</translation>
+      <translation>Automatisch Radius oder Durchmesser festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5274"/>
@@ -627,12 +627,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3980"/>
       <source>Constrain tangent</source>
-      <translation>Tangente setzen</translation>
+      <translation>Tangential festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3981"/>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Tangente zwischen zwei Elementen erzwingen</translation>
+      <translation>Legt zwei Elementen tangential zueinander fest</translation>
     </message>
   </context>
   <context>
@@ -931,7 +931,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1251"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation>Verrundung, die den Schnittpunkt und die meisten Einschränkungen beibehält</translation>
+      <translation>Verrundung, die den Schnittpunkt und die meisten Randbedingungen beibehält</translation>
     </message>
   </context>
   <context>
@@ -2062,9 +2062,9 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="897"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1222"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1265"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="898"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1225"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1268"/>
       <source>Update constraint's virtual space</source>
       <translation>Virtuellen Raum der Einschränkungen aktualisieren</translation>
     </message>
@@ -2074,12 +2074,12 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Automatische Einschränkungen hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="626"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="627"/>
       <source>Swap constraint names</source>
       <translation>Namen der Beschränkungen tauschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1207"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1210"/>
       <source>Rename sketch constraint</source>
       <translation>Skizzeneinschränkung umbenennen</translation>
     </message>
@@ -3453,62 +3453,62 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="493"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="494"/>
       <source>Change value</source>
       <translation>Wert ändern</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="497"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="498"/>
       <source>Toggle to/from reference</source>
       <translation>Referenz-Modus ein- / ausschalten</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Deactivate</source>
       <translation>Deaktivieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="500"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="501"/>
       <source>Activate</source>
       <translation>Aktivieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="504"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="505"/>
       <source>Show constraints</source>
       <translation>Einschränkungen einblenden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="506"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="507"/>
       <source>Hide constraints</source>
       <translation>Einschränkungen ausblenden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="512"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="513"/>
       <source>Rename</source>
       <translation>Umbenennen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="519"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="520"/>
       <source>Center sketch</source>
       <translation>Skizze zentrieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="522"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="523"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="526"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="527"/>
       <source>Swap constraint names</source>
       <translation>Namen der Beschränkungen tauschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="617"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
       <source>Unnamed constraint</source>
       <translation>Unbenannte Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="618"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="619"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Nur die Namen von benannten Beschränkungen können vertauscht werden.</translation>
     </message>
@@ -3591,7 +3591,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="183"/>
+      <location filename="../../TaskSketcherElements.cpp" line="184"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
@@ -3830,7 +3830,7 @@ reflected on copies</source>
     <name>SketcherGui::SketcherSettings</name>
     <message>
       <location filename="../../SketcherSettings.ui" line="14"/>
-      <location filename="../../SketcherSettings.ui" line="109"/>
+      <location filename="../../SketcherSettings.ui" line="129"/>
       <source>General</source>
       <translation>Allgemein</translation>
     </message>
@@ -3840,11 +3840,6 @@ reflected on copies</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="27"/>
-      <source>Sketcher solver</source>
-      <translation>Sketcher - Löser</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettings.ui" line="33"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
@@ -3852,54 +3847,71 @@ reflected on copies</source>
 'Erweiterte Steuerung des Lösers', um die Einstellungen des Lösers anzupassen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="37"/>
-      <source>Show section 'Advanced solver control' in task dialog</source>
-      <translation>Bereich 'Erweiterte Steuerung des Lösers' im Aufgaben-Dialog anzeigen</translation>
+      <location filename="../../SketcherSettings.ui" line="27"/>
+      <source>Task Panel Widgets</source>
+      <translation type="unfinished">Task Panel Widgets</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="53"/>
+      <location filename="../../SketcherSettings.ui" line="37"/>
+      <source>Show section 'Advanced solver control'</source>
+      <translation type="unfinished">Show section 'Advanced solver control'</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="50"/>
+      <source>Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</source>
+      <translation type="unfinished">Sketcher dialog will have additional section
+'Edit controls' to easily access basic settings.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="54"/>
+      <source>Show section 'Edit controls'</source>
+      <translation type="unfinished">Show section 'Edit controls'</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="73"/>
       <source>Dragging performance</source>
       <translation>Zuggeschwindigkeit</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="59"/>
+      <location filename="../../SketcherSettings.ui" line="79"/>
       <source>Special solver algorithm will be used while dragging sketch elements.
 Requires to re-enter edit mode to take effect.</source>
       <translation>Beim Ziehen der Skizzenelemente wird ein spezieller Löser-Algorithmus verwendet.
 Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="63"/>
+      <location filename="../../SketcherSettings.ui" line="83"/>
       <source>Improve solving while dragging</source>
       <translation>Verbessert Lösen beim Ziehen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="115"/>
+      <location filename="../../SketcherSettings.ui" line="135"/>
       <source>New constraints that would be redundant will automatically be removed</source>
       <translation>Neue Einschränkungen, die überflüssig wären, werden automatisch entfernt</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="118"/>
+      <location filename="../../SketcherSettings.ui" line="138"/>
       <source>Auto remove redundants</source>
-      <translation>Automatisches entfernen redundanter Beschränkungen</translation>
+      <translation>Automatisches Entfernen überflüssiger Randbedingungen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="134"/>
+      <location filename="../../SketcherSettings.ui" line="154"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
       <translation>Erlaubt den Skizzenbearbeitungsmodus durch Drücken der Esc-Taste zu verlassen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="137"/>
+      <location filename="../../SketcherSettings.ui" line="157"/>
       <source>Esc can leave sketch edit mode</source>
       <translation>Esc kann Skizzenbearbeitungsmodus verlassen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="153"/>
+      <location filename="../../SketcherSettings.ui" line="173"/>
       <source>Notifies about automatic constraint substitutions</source>
       <translation>Benachrichtigt beim automatischen Ersetzen von Einschränkungen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="156"/>
+      <location filename="../../SketcherSettings.ui" line="176"/>
       <source>Notify automatic constraint substitutions</source>
       <translation>Benachrichtigung beim automatischen Ersetzen von Einschränkungen</translation>
     </message>
@@ -4357,12 +4369,12 @@ Then objects are only visible behind the sketch plane.</source>
       <translation>Auf vorhandene Skizzen anwenden</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="236"/>
+      <location filename="../../SketcherSettings.cpp" line="238"/>
       <source>Unexpected C++ exception</source>
       <translation>Unerwartete C++ - Ausnahme</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="239"/>
+      <location filename="../../SketcherSettings.cpp" line="241"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -4695,15 +4707,15 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Sichtbarkeit einschränken</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="639"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
       <source>Constraints</source>
       <translation>Einschränkungen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="919"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1216"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1288"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="920"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1219"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1291"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
@@ -4757,16 +4769,16 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="105"/>
-      <location filename="../../TaskSketcherElements.cpp" line="755"/>
-      <location filename="../../TaskSketcherElements.cpp" line="759"/>
-      <location filename="../../TaskSketcherElements.cpp" line="763"/>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
-      <location filename="../../TaskSketcherElements.cpp" line="771"/>
-      <location filename="../../TaskSketcherElements.cpp" line="775"/>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
-      <location filename="../../TaskSketcherElements.cpp" line="783"/>
-      <location filename="../../TaskSketcherElements.cpp" line="787"/>
-      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="758"/>
+      <location filename="../../TaskSketcherElements.cpp" line="762"/>
+      <location filename="../../TaskSketcherElements.cpp" line="766"/>
+      <location filename="../../TaskSketcherElements.cpp" line="770"/>
+      <location filename="../../TaskSketcherElements.cpp" line="774"/>
+      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="782"/>
+      <location filename="../../TaskSketcherElements.cpp" line="786"/>
+      <location filename="../../TaskSketcherElements.cpp" line="790"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Construction</source>
       <translation>Konstruktion</translation>
     </message>
@@ -4796,92 +4808,92 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Automatisch zu Kante umschalten</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="256"/>
+      <location filename="../../TaskSketcherElements.cpp" line="257"/>
       <source>Elements</source>
       <translation>Elemente</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="277"/>
+      <location filename="../../TaskSketcherElements.cpp" line="278"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: Mehrfachauswahl &lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: Umschalten auf den nächsten gültigen Typ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="754"/>
-      <location filename="../../TaskSketcherElements.cpp" line="756"/>
-      <location filename="../../TaskSketcherElements.cpp" line="861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="757"/>
+      <location filename="../../TaskSketcherElements.cpp" line="759"/>
+      <location filename="../../TaskSketcherElements.cpp" line="864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="865"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
-      <location filename="../../TaskSketcherElements.cpp" line="760"/>
-      <location filename="../../TaskSketcherElements.cpp" line="864"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="761"/>
+      <location filename="../../TaskSketcherElements.cpp" line="763"/>
+      <location filename="../../TaskSketcherElements.cpp" line="867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="868"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
-      <location filename="../../TaskSketcherElements.cpp" line="764"/>
-      <location filename="../../TaskSketcherElements.cpp" line="867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="765"/>
+      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="871"/>
       <source>Arc</source>
       <translation>Kreisbogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
-      <location filename="../../TaskSketcherElements.cpp" line="768"/>
-      <location filename="../../TaskSketcherElements.cpp" line="870"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="769"/>
+      <location filename="../../TaskSketcherElements.cpp" line="771"/>
+      <location filename="../../TaskSketcherElements.cpp" line="873"/>
+      <location filename="../../TaskSketcherElements.cpp" line="874"/>
       <source>Circle</source>
       <translation>Kreis</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
-      <location filename="../../TaskSketcherElements.cpp" line="772"/>
-      <location filename="../../TaskSketcherElements.cpp" line="873"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="773"/>
+      <location filename="../../TaskSketcherElements.cpp" line="775"/>
+      <location filename="../../TaskSketcherElements.cpp" line="876"/>
+      <location filename="../../TaskSketcherElements.cpp" line="877"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
-      <location filename="../../TaskSketcherElements.cpp" line="776"/>
-      <location filename="../../TaskSketcherElements.cpp" line="876"/>
-      <location filename="../../TaskSketcherElements.cpp" line="877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="880"/>
       <source>Elliptical Arc</source>
       <translation>Elliptischer Bogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
-      <location filename="../../TaskSketcherElements.cpp" line="780"/>
-      <location filename="../../TaskSketcherElements.cpp" line="879"/>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="781"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
+      <location filename="../../TaskSketcherElements.cpp" line="882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="883"/>
       <source>Hyperbolic Arc</source>
       <translation>Hyperbolischer Bogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="782"/>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
-      <location filename="../../TaskSketcherElements.cpp" line="882"/>
-      <location filename="../../TaskSketcherElements.cpp" line="883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="785"/>
+      <location filename="../../TaskSketcherElements.cpp" line="787"/>
+      <location filename="../../TaskSketcherElements.cpp" line="885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="886"/>
       <source>Parabolic Arc</source>
       <translation>Parabolischer Bogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="786"/>
-      <location filename="../../TaskSketcherElements.cpp" line="788"/>
-      <location filename="../../TaskSketcherElements.cpp" line="885"/>
-      <location filename="../../TaskSketcherElements.cpp" line="886"/>
+      <location filename="../../TaskSketcherElements.cpp" line="789"/>
+      <location filename="../../TaskSketcherElements.cpp" line="791"/>
+      <location filename="../../TaskSketcherElements.cpp" line="888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="889"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="790"/>
-      <location filename="../../TaskSketcherElements.cpp" line="792"/>
-      <location filename="../../TaskSketcherElements.cpp" line="888"/>
-      <location filename="../../TaskSketcherElements.cpp" line="889"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
+      <location filename="../../TaskSketcherElements.cpp" line="891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="892"/>
       <source>Other</source>
       <translation>Andere</translation>
     </message>
@@ -4928,7 +4940,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="107"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
-      <translation>Skizzierer schlägt automatisch sinnvolle Beschränkungen vor.</translation>
+      <translation>Sketcher schlägt automatisch sinnvolle Randbedingungen vor.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="110"/>
@@ -4938,12 +4950,12 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="126"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
-      <translation>Sketcher versucht, keine redundanten Beschränkungen vorzuschlagen</translation>
+      <translation>Sketcher versucht, keine überflüssigen automatischen Randbedingungen vorzuschlagen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="129"/>
       <source>Avoid redundant auto constraints</source>
-      <translation>Vermeide redundante automatische Beschränkung</translation>
+      <translation>Überflüssige automatische Randbedingungen vermeiden</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="145"/>
@@ -5494,7 +5506,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Beschränkungen.</translati
       <location filename="../../CommandCreateGeo.cpp" line="1358"/>
       <location filename="../../CommandCreateGeo.cpp" line="1359"/>
       <source>Creates a radius between two lines</source>
-      <translation>Konstruiert einen Radius zwischen zwei Linien</translation>
+      <translation>Erstellt einen Bogen zwischen zwei Linien</translation>
     </message>
   </context>
   <context>
@@ -5727,12 +5739,12 @@ Soll die Skizze von der Fläche entfernt werden?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="51"/>
       <source>New constraints that would be redundant will automatically be removed</source>
-      <translation>Neue Einschränkungen, die überflüssig wären, werden automatisch entfernt</translation>
+      <translation>Neue Randbedingungen, die überflüssig wären, werden automatisch entfernt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="54"/>
       <source>Auto remove redundants</source>
-      <translation>Automatisches entfernen redundanter Beschränkungen</translation>
+      <translation>Automatisches Entfernen überflüssiger Randbedingungen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="72"/>
@@ -6043,12 +6055,12 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>P&amp;rofiles</source>
-      <translation type="unfinished">P&amp;rofiles</translation>
+      <translation>P&amp;rofile</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>S&amp;ketch</source>
-      <translation type="unfinished">S&amp;ketch</translation>
+      <translation>S&amp;kizze</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

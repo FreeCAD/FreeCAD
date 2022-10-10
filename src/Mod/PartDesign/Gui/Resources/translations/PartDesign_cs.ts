@@ -3059,7 +3059,7 @@ měřena ve stanoveném směru</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
@@ -3843,7 +3843,7 @@ To může vést k neočekávaným výsledkům.</translation>
       <translation>Konstrukční čára %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>

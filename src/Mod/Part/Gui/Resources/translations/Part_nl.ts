@@ -2322,7 +2322,7 @@ of projection.</translation>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1061"/>
+      <location filename="../../TaskAttacher.cpp" line="1071"/>
       <source>Edit attachment</source>
       <translation>Bijlage bewerken</translation>
     </message>
@@ -3101,7 +3101,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Grootte2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
@@ -4227,22 +4227,22 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
       <source>Measurement settings</source>
-      <translation type="unfinished">Measurement settings</translation>
+      <translation>Eenheden instellingen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation type="unfinished">3D color</translation>
+      <translation>3D kleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation type="unfinished">Delta color</translation>
+      <translation>Delta kleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation type="unfinished">Angular color</translation>
+      <translation>Hoekkleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
@@ -4272,7 +4272,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
       <source>Refresh existing measurements</source>
-      <translation type="unfinished">Refresh existing measurements</translation>
+      <translation>Bestaande metingen vernieuwen</translation>
     </message>
   </context>
   <context>
@@ -4310,12 +4310,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>Vorm transparantie</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>De standaard transparantie voor nieuwe vormen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
@@ -4740,7 +4740,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Niet ondersteund</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
@@ -4953,7 +4953,7 @@ only created cuts will be visible</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Bijlageverschuiving (in lokale coördinaten):</translation>
     </message>
@@ -5034,77 +5034,77 @@ of object being attached.</translation>
       <translation>Zijden spiegelen</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="311"/>
+      <location filename="../../TaskAttacher.cpp" line="312"/>
       <source>OCC error: %1</source>
       <translation>OCC fout: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="313"/>
+      <location filename="../../TaskAttacher.cpp" line="314"/>
       <source>unknown error</source>
       <translation>onbekende fout</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="316"/>
+      <location filename="../../TaskAttacher.cpp" line="317"/>
       <source>Attachment mode failed: %1</source>
       <translation>Bijlage mode heeft gefaald: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="321"/>
       <source>Not attached</source>
       <translation>Niet toegevoegd</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="324"/>
+      <location filename="../../TaskAttacher.cpp" line="325"/>
       <source>Attached with mode %1</source>
       <translation>Toegevoegd met mode %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="328"/>
+      <location filename="../../TaskAttacher.cpp" line="329"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Bijlage Verschuiving (inactieve - niet toegevoegd):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="623"/>
+      <location filename="../../TaskAttacher.cpp" line="626"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="628"/>
+      <location filename="../../TaskAttacher.cpp" line="633"/>
       <source>Edge</source>
       <translation>Rand</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="640"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="695"/>
+      <location filename="../../TaskAttacher.cpp" line="705"/>
       <source>Selecting...</source>
       <translation>Selecteer...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="699"/>
+      <location filename="../../TaskAttacher.cpp" line="709"/>
       <source>Reference%1</source>
       <translation>Referentie%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="746"/>
+      <location filename="../../TaskAttacher.cpp" line="756"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="812"/>
+      <location filename="../../TaskAttacher.cpp" line="822"/>
       <source>Reference combinations:</source>
       <translation>Referentie combinaties:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="829"/>
+      <location filename="../../TaskAttacher.cpp" line="839"/>
       <source>%1 (add %2)</source>
       <translation>%1 (Voeg toe %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="834"/>
+      <location filename="../../TaskAttacher.cpp" line="844"/>
       <source>%1 (add more references)</source>
       <translation>%1 (Voeg meer referenties toe)</translation>
     </message>
@@ -5324,7 +5324,7 @@ Individual BOP Checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1112"/>
       <source>Datum dialog: Input error</source>
       <translation>Dimensiedialoogvenster: invoerfout</translation>
     </message>
@@ -5334,7 +5334,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Dit dialoogvenster niet meer weergeven</translation>
     </message>
   </context>
   <context>
@@ -5750,25 +5750,25 @@ Wilt u doorgaan?</translation>
       <translation>Je moet of twee randen of twee draden selecteren.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="65"/>
-      <location filename="../../TaskAttacher.cpp" line="101"/>
+      <location filename="../../TaskAttacher.cpp" line="66"/>
+      <location filename="../../TaskAttacher.cpp" line="102"/>
       <source>No reference selected</source>
       <translation>Geen referentie geselecteerd</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="74"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Vlak</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="77"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Rand</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>

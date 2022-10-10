@@ -126,7 +126,7 @@
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Испод је списак доступних додатних радних окружења која се могу додати у вашу инсталацију FreeCAD-а. Прегледајте и инсталирајте их из менија „Алати → Менаџер додатних модула“. Можете сазнати више о било ком од њих кликом на линкове испод.</translation>
+      <translation>Испод је списак доступних додатних радних окружења која се могу додати у вашу инсталацију FreeCAD-а. Прегледајте и инсталирајте их из менија „Алати → Менаџер додатака“. Можете сазнати више о било ком од њих кликом на линкове испод.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>

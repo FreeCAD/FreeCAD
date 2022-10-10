@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="85"/>
-      <location filename="../../BrowserView.cpp" line="784"/>
+      <location filename="../../BrowserView.cpp" line="786"/>
       <source>Browser</source>
       <translation>Navigator</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="596"/>
+      <location filename="../../BrowserView.cpp" line="598"/>
       <source>File does not exist!</source>
       <translation>Fișierul nu există!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="584"/>
-      <location filename="../../BrowserView.cpp" line="589"/>
-      <location filename="../../BrowserView.cpp" line="592"/>
+      <location filename="../../BrowserView.cpp" line="586"/>
+      <location filename="../../BrowserView.cpp" line="591"/>
+      <location filename="../../BrowserView.cpp" line="594"/>
       <source>Error</source>
       <translation>Eroare</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="589"/>
+      <location filename="../../BrowserView.cpp" line="591"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Au existat erori în timpul încărcării fişierului. Unele date s-ar putea să fi fost modificate sau să se nu recupereze deloc. Uitați-vă în raportul vizualizării pentru mai multe informaţii specifice despre obiectele implicate.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="592"/>
+      <location filename="../../BrowserView.cpp" line="594"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Au existat erori grave în timpul încărcării fișierului. Unele date ar fi putut fi modificate sau nu au fost recuperate deloc. Salvarea proiectului va duce cel mai probabil la pierderea datelor.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="752"/>
+      <location filename="../../BrowserView.cpp" line="754"/>
       <source>Loading %1...</source>
       <translation>Se încarcă %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="351"/>
+      <location filename="../../BrowserView.cpp" line="353"/>
       <source>Open in External Browser</source>
       <translation>Deschide în navigator extern</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="355"/>
+      <location filename="../../BrowserView.cpp" line="357"/>
       <source>Open in new window</source>
       <translation>Deschide intr-o fereastra noua</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="387"/>
+      <location filename="../../BrowserView.cpp" line="389"/>
       <source>View source</source>
       <translation>Vezi sursa</translation>
     </message>

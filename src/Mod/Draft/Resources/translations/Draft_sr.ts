@@ -1162,7 +1162,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Размера:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -1868,7 +1868,7 @@ You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
       <translation>Дозволите FreeCAD-у да преузме Python конвертор за DXF увоз и извоз.
 Ово можете урадити и ручно инсталирањем радног окружења „dxf_library“
-из Менаџера додатних модула.</translation>
+из Менаџера додатака.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
@@ -2557,7 +2557,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
       <source>/</source>
-      <translation type="unfinished">/</translation>
+      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>

@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="85"/>
-      <location filename="../../BrowserView.cpp" line="784"/>
+      <location filename="../../BrowserView.cpp" line="786"/>
       <source>Browser</source>
       <translation>Böngésző</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="596"/>
+      <location filename="../../BrowserView.cpp" line="598"/>
       <source>File does not exist!</source>
       <translation>A fájl nem létezik!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="584"/>
-      <location filename="../../BrowserView.cpp" line="589"/>
-      <location filename="../../BrowserView.cpp" line="592"/>
+      <location filename="../../BrowserView.cpp" line="586"/>
+      <location filename="../../BrowserView.cpp" line="591"/>
+      <location filename="../../BrowserView.cpp" line="594"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="589"/>
+      <location filename="../../BrowserView.cpp" line="591"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Hiba történt a fájl betöltésekor. Néhány adat lehet, hogy módosított vagy nem egyáltalán nem viszaállított. Nézze meg a jelentés nézetet részletesebb információért az érintett objektumokhoz.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="592"/>
+      <location filename="../../BrowserView.cpp" line="594"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>A fájl betöltése közben súlyos hibák történtek. Előfordulhat, hogy néhány adat módosult, vagy egyáltalán nem állt helyre. A terv mentése valószínűleg adatvesztést eredményez.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="752"/>
+      <location filename="../../BrowserView.cpp" line="754"/>
       <source>Loading %1...</source>
       <translation>%1 betöltve...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="351"/>
+      <location filename="../../BrowserView.cpp" line="353"/>
       <source>Open in External Browser</source>
       <translation>Megnyitás külső böngészőben</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="355"/>
+      <location filename="../../BrowserView.cpp" line="357"/>
       <source>Open in new window</source>
       <translation>Megnyitás új ablakban</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="387"/>
+      <location filename="../../BrowserView.cpp" line="389"/>
       <source>View source</source>
       <translation>Forrás nézet</translation>
     </message>

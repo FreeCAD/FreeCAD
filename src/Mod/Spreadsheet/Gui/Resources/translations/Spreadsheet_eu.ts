@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Create spreadsheet</source>
       <translation>Sortu kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="894"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Create a new spreadsheet</source>
       <translation>Sortu kalkulu-orri berria</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="503"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="504"/>
+      <location filename="../../Command.cpp" line="493"/>
       <source>Align bottom</source>
       <translation>Lerrokatu behean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Bottom-align contents of selected cells</source>
       <translation>Lerrokatu behean hautatutako gelaxken edukiak</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="347"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="337"/>
       <source>Align center</source>
       <translation>Lerrokatu erdian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Center-align contents of selected cells</source>
       <translation>Lerrokatu erdian hautatutako gelaxken edukiak</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Align left</source>
       <translation>Lerrokatu ezkerrean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Left-align contents of selected cells</source>
       <translation>Lerrokatu ezkerrean hautatutako gelaxken edukiak</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Align right</source>
       <translation>Lerrokatu eskuinean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Right-align contents of selected cells</source>
       <translation>Lerrokatu eskuinean hautatutako gelaxken edukiak</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Align top</source>
       <translation>Lerrokatu goian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Top-align contents of selected cells</source>
       <translation>Lerrokatu goian hautatutako gelaxken edukiak</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>Vertically center-align</source>
       <translation>Lerrokatu erdian bertikalean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
       <translation>Lerrokatu erdian eta bertikalean hautatutako gelaxken edukiak</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Export spreadsheet</source>
       <translation>Esportatu kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Export spreadsheet to CSV file</source>
       <translation>Esportatu kalkulu-orria CSV fitxategira</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Import spreadsheet</source>
       <translation>Inportatu kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Import CSV file into spreadsheet</source>
       <translation>Inportatu CSV fitxategia kalkulu-orrira</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Merge cells</source>
       <translation>Fusionatu gelaxkak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
       <translation>Fusionatu hautatutako gelaxkak</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="818"/>
       <source>Set alias</source>
       <translation>Ezarri aliasa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Set alias for selected cell</source>
       <translation>Ezarri aliasa hautatutako gelaxkarako</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>Split cell</source>
       <translation>Zatitu gelaxka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
       <translation>Zatitu lehenago fusionatutako gelaxkak</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
+      <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="608"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Bold text</source>
       <translation>Testu lodia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
       <translation>Ezarri letra lodia hautatutako gelaxken testuan</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="671"/>
       <source>Italic text</source>
       <translation>Testu etzana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
+      <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
       <translation>Ezarri letra etzana hautatutako gelaxken testuan</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Underline text</source>
       <translation>Testu azpimarratua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="757"/>
+      <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
       <translation>Azpimarratu testua hautatutako gelaxketan</translation>
     </message>
@@ -282,72 +282,72 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
       <translation>Fusionatu gelaxkak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="146"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Split cell</source>
       <translation>Zatitu gelaxka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Left-align cell</source>
       <translation>Lerrokatu gelaxka ezkerrean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Center cell</source>
       <translation>Zentratu gelaxka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Right-align cell</source>
       <translation>Lerrokatu gelaxka eskuinean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="462"/>
       <source>Top-align cell</source>
       <translation>Lerrokatu gelaxka goian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Bottom-align cell</source>
       <translation>Lerrokatu gelaxka behean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="577"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
       <translation>Zentratu gelaxkak bertikalean</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
       <translation>Ezarri testu lodia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Set italic text</source>
       <translation>Ezarri testu etzana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="783"/>
       <source>Set underline text</source>
       <translation>Ezarri testu azpimarratua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="894"/>
       <source>Create Spreadsheet</source>
       <translation>Sortu kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="228"/>
+      <location filename="../../PropertiesDialog.cpp" line="230"/>
       <source>Set cell properties</source>
       <translation>Ezarri gelaxka-propietateak</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="470"/>
+      <location filename="../../SheetModel.cpp" line="468"/>
       <source>Edit cell</source>
       <translation>Editatu gelaxka</translation>
     </message>
@@ -371,17 +371,17 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="615"/>
-      <location filename="../../SpreadsheetView.cpp" line="168"/>
+      <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
       <translation>Garbitu gelaxka(k)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="131"/>
+      <location filename="../../Workbench.cpp" line="132"/>
       <source>Set foreground color</source>
       <translation>Ezarri aurreko planoaren kolorea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="158"/>
+      <location filename="../../Workbench.cpp" line="159"/>
       <source>Set background color</source>
       <translation>Ezarri atzeko planoaren kolorea</translation>
     </message>
@@ -680,45 +680,45 @@ eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.<
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
-      <location filename="../../Command.cpp" line="252"/>
+      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>All (*)</source>
       <translation>Dena (*)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Import file</source>
       <translation>Inportatu fitxategia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Export file</source>
       <translation>Esportatu fitxategia</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="141"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
       <source>Show spreadsheet</source>
       <translation>Erakutsi kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="90"/>
-      <location filename="../../Workbench.cpp" line="92"/>
+      <location filename="../../Workbench.cpp" line="91"/>
+      <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
       <translation>Ezarri gelaxk(ar)en aurreko planoaren kolorea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="91"/>
+      <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
       <translation>Kalkulu-orriko gelaxk(ar)en aurreko planoaren kolorea ezartzen du</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="105"/>
-      <location filename="../../Workbench.cpp" line="107"/>
+      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
       <translation>Ezarri gelaxk(ar)en atzeko planoaren kolorea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Kalkulu-orriko gelaxk(ar)en atzeko planoaren kolorea ezartzen du</translation>
     </message>
@@ -728,12 +728,12 @@ eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.<
       <translation>Kopiatu eta itsasteak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="435"/>
+      <location filename="../../SpreadsheetView.cpp" line="426"/>
       <source>Alias contains invalid characters!</source>
       <translation>Aliasak karaktere baliogabeak ditu!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="441"/>
+      <location filename="../../SpreadsheetView.cpp" line="432"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
@@ -879,12 +879,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="194"/>
+      <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
       <translation>Lotu gelaxkak</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="195"/>
+      <location filename="../../DlgBindSheet.cpp" line="198"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
@@ -893,19 +893,19 @@ Do you want to continue?</source>
 Jarraitu?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Lotu kalkulu-orriaren gelaxkak</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Error: 
 </source>
       <translation>Errorea: 
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="240"/>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
       <translation>Deslotu gelaxkak</translation>
     </message>
@@ -981,12 +981,12 @@ Jarraitu?</translation>
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="245"/>
+      <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
       <translation>Konfiguratu konfigurazio-taula</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation>Deskonfiguratu konfigurazio-taula</translation>
     </message>
@@ -994,7 +994,7 @@ Jarraitu?</translation>
   <context>
     <name>SpreadsheetGui::Module</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="88"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
       <source>Unnamed</source>
       <translation>Izenik gabea</translation>
     </message>
@@ -1129,12 +1129,12 @@ Jarraitu?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="263"/>
+      <location filename="../../SpreadsheetView.cpp" line="254"/>
       <source>Export PDF</source>
       <translation>Esportatu PDFa</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="264"/>
+      <location filename="../../SpreadsheetView.cpp" line="255"/>
       <source>PDF file</source>
       <translation>PDF fitxategia</translation>
     </message>
@@ -1142,22 +1142,22 @@ Jarraitu?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
       <translation>&amp;Kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
       <translation>&amp;Lerrokatzea</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation>&amp;Estiloak</translation>
     </message>

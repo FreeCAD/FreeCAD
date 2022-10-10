@@ -1677,7 +1677,7 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="273"/>
       <location filename="../../TaskDraftParameters.cpp" line="275"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Det måste finnas minst ett objekt</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
@@ -1687,7 +1687,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Minst ett objekt måste finnas kvar.</translation>
     </message>
   </context>
   <context>
@@ -1711,7 +1711,7 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="303"/>
       <location filename="../../TaskDressUpParameters.cpp" line="305"/>
       <source>There must be at least one item</source>
-      <translation>Det måste finnas minst ett objekt</translation>
+      <translation type="unfinished">There must be at least one item</translation>
     </message>
   </context>
   <context>
@@ -1906,7 +1906,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
       <source>At least one item must be kept.</source>
-      <translation>Minst ett objekt måste finnas kvar.</translation>
+      <translation type="unfinished">At least one item must be kept.</translation>
     </message>
   </context>
   <context>
@@ -3058,7 +3058,7 @@ measured along the specified direction</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -3838,7 +3838,7 @@ This may lead to unexpected results.</source>
       <translation>Konstruktionslinje %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>

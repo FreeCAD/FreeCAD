@@ -1748,7 +1748,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Cliquer sur une face du modèle</translation>
     </message>
   </context>
   <context>
@@ -2952,7 +2952,7 @@ mesurée dans la direction spécifiée</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
@@ -3054,7 +3054,7 @@ mesurée dans la direction spécifiée</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3831,7 +3831,7 @@ This may lead to unexpected results.</source>
       <translation>Ligne de construction %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>

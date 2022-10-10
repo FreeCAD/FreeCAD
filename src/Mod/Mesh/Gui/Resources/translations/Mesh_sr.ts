@@ -1788,7 +1788,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation>Параметар поновног стварања мреже</translation>
+      <translation>Параметар поновног прављења мреже</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
@@ -2330,12 +2330,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="578"/>
       <source>Meshing Tolerance</source>
-      <translation>Толеранција мрежења</translation>
+      <translation>Толеранција прављења мреже</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="579"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Унеси толеранцију генерисане мреже на основу геометрије:</translation>
+      <translation>Унеси толеранцију прављења мреже на основу геометрије:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1381"/>

@@ -3054,7 +3054,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -3834,7 +3834,7 @@ This may lead to unexpected results.</source>
       <translation>補助線 %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -4386,7 +4386,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Threaded</source>
-      <translation>ねじ山</translation>
+      <translation>ねじ</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="78"/>

@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="892"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Create spreadsheet</source>
       <translation>Create spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="894"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Create a new spreadsheet</source>
       <translation>Membuat spreadsheet yang baru</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="503"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="504"/>
+      <location filename="../../Command.cpp" line="493"/>
       <source>Align bottom</source>
       <translation>Menyelaraskan bawah</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="505"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>Bottom-align contents of selected cells</source>
       <translation>Bagian bawah menyelaraskan isi sel yang dipilih</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="347"/>
+      <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="337"/>
       <source>Align center</source>
       <translation>Pusat sejajar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Center-align contents of selected cells</source>
       <translation>Bagian tengah menyelaraskan isi sel yang dipilih</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Align left</source>
       <translation>Rata Kiri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Left-align contents of selected cells</source>
       <translation>Rata kiri isi sel yang dipilih</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Align right</source>
       <translation>Rata kanan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Right-align contents of selected cells</source>
       <translation>Right-align isi sel yang dipilih</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Align top</source>
       <translation>Sejajarkan bagian atas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Top-align contents of selected cells</source>
       <translation>Isi top-align dari sel yang dipilih</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>Vertically center-align</source>
       <translation>Vertikal center-align</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
       <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Export spreadsheet</source>
       <translation>Ekspor spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Export spreadsheet to CSV file</source>
       <translation>Ekspor spreadsheet ke file CSV</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Import spreadsheet</source>
       <translation>Impor spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>Import CSV file into spreadsheet</source>
       <translation>Impor file CSV ke dalam spreadsheet</translation>
     </message>
@@ -166,17 +166,17 @@
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Merge cells</source>
       <translation>Gabungkan sel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
       <translation type="unfinished">Merge selected cells</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
+      <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="818"/>
       <source>Set alias</source>
       <translation>Setel alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="819"/>
       <source>Set alias for selected cell</source>
       <translation>Set alias untuk sel yang dipilih </translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="125"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>Split cell</source>
       <translation>Sel split</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
       <translation type="unfinished">Split previously merged cells</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="607"/>
+      <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="608"/>
+      <location filename="../../Command.cpp" line="597"/>
       <source>Bold text</source>
       <translation>Teks tebal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
       <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="671"/>
       <source>Italic text</source>
       <translation>Teks miring</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
+      <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
       <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Underline text</source>
       <translation>Garis bawahi teks</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="757"/>
+      <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
       <translation type="unfinished">Underline text in selected cells</translation>
     </message>
@@ -282,72 +282,72 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="91"/>
+      <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
       <translation>Gabungkan sel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="146"/>
+      <location filename="../../Command.cpp" line="135"/>
       <source>Split cell</source>
       <translation>Sel split</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Left-align cell</source>
       <translation type="unfinished">Left-align cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="358"/>
       <source>Center cell</source>
       <translation type="unfinished">Center cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>Right-align cell</source>
       <translation type="unfinished">Right-align cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="473"/>
+      <location filename="../../Command.cpp" line="462"/>
       <source>Top-align cell</source>
       <translation type="unfinished">Top-align cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Bottom-align cell</source>
       <translation type="unfinished">Bottom-align cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="577"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
       <translation type="unfinished">Vertically center cells</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
       <translation type="unfinished">Set bold text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Set italic text</source>
       <translation type="unfinished">Set italic text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="783"/>
       <source>Set underline text</source>
       <translation type="unfinished">Set underline text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="905"/>
+      <location filename="../../Command.cpp" line="894"/>
       <source>Create Spreadsheet</source>
       <translation type="unfinished">Create Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="228"/>
+      <location filename="../../PropertiesDialog.cpp" line="230"/>
       <source>Set cell properties</source>
       <translation type="unfinished">Set cell properties</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="470"/>
+      <location filename="../../SheetModel.cpp" line="468"/>
       <source>Edit cell</source>
       <translation type="unfinished">Edit cell</translation>
     </message>
@@ -371,17 +371,17 @@
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="615"/>
-      <location filename="../../SpreadsheetView.cpp" line="168"/>
+      <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
       <translation type="unfinished">Clear cell(s)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="131"/>
+      <location filename="../../Workbench.cpp" line="132"/>
       <source>Set foreground color</source>
       <translation type="unfinished">Set foreground color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="158"/>
+      <location filename="../../Workbench.cpp" line="159"/>
       <source>Set background color</source>
       <translation type="unfinished">Set background color</translation>
     </message>
@@ -680,45 +680,45 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
-      <location filename="../../Command.cpp" line="252"/>
+      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>All (*)</source>
       <translation>Semua (*)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Import file</source>
       <translation>Impor file</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="254"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Export file</source>
       <translation>Ekspor file</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="141"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="129"/>
       <source>Show spreadsheet</source>
       <translation>Tampilkan spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="90"/>
-      <location filename="../../Workbench.cpp" line="92"/>
+      <location filename="../../Workbench.cpp" line="91"/>
+      <location filename="../../Workbench.cpp" line="93"/>
       <source>Set cell(s) foreground color</source>
       <translation type="unfinished">Set cell(s) foreground color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="91"/>
+      <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
       <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="105"/>
-      <location filename="../../Workbench.cpp" line="107"/>
+      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="108"/>
       <source>Set cell(s) background color</source>
       <translation type="unfinished">Set cell(s) background color</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="106"/>
+      <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
     </message>
@@ -728,12 +728,12 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="435"/>
+      <location filename="../../SpreadsheetView.cpp" line="426"/>
       <source>Alias contains invalid characters!</source>
       <translation type="unfinished">Alias contains invalid characters!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="441"/>
+      <location filename="../../SpreadsheetView.cpp" line="432"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation type="unfinished">Refer to cell by alias, for example
@@ -879,12 +879,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="194"/>
+      <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
       <translation type="unfinished">Bind cells</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="195"/>
+      <location filename="../../DlgBindSheet.cpp" line="198"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
@@ -893,19 +893,19 @@ Do you want to continue?</source>
 Do you want to continue?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
       <translation type="unfinished">Bind Spreadsheet Cells</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="222"/>
+      <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Error: 
 </source>
       <translation type="unfinished">Error: 
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="240"/>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
       <translation type="unfinished">Unbind cells</translation>
     </message>
@@ -981,12 +981,12 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="245"/>
+      <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
       <translation type="unfinished">Setup configuration table</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="292"/>
+      <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation type="unfinished">Unsetup configuration table</translation>
     </message>
@@ -994,7 +994,7 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::Module</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="88"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
       <source>Unnamed</source>
       <translation>Tanpa nama</translation>
     </message>
@@ -1121,12 +1121,12 @@ Do you want to continue?</translation>
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="263"/>
+      <location filename="../../SpreadsheetView.cpp" line="254"/>
       <source>Export PDF</source>
       <translation>Ekspor PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="264"/>
+      <location filename="../../SpreadsheetView.cpp" line="255"/>
       <source>PDF file</source>
       <translation>File PDF</translation>
     </message>
@@ -1134,22 +1134,22 @@ Do you want to continue?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
       <translation>Indonesia</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="50"/>
+      <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
       <translation type="unfinished">&amp;Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="51"/>
+      <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Alignment</source>
       <translation>&amp;Penjajaran</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="52"/>
+      <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation type="unfinished">&amp;Styles</translation>
     </message>

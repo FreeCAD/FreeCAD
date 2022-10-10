@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Tyylisi nimi. Olemassa olevien tyylien nimiä voidaan muokata.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>Tuo tyylejä json-tiedostosta</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation type="unfinished">Export styles to json file</translation>
+      <translation>Vie tyylit json-tiedostoon</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -1162,7 +1162,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Skaala:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -2039,7 +2039,7 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
-      <translation type="unfinished">Use Layers</translation>
+      <translation>Käytä tasoja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="445"/>

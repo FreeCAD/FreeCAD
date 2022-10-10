@@ -2788,7 +2788,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="56"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="57"/>
       <source>Compound paths</source>
       <translation>Složene putanje staze</translation>
     </message>

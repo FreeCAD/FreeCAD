@@ -3061,7 +3061,7 @@ mjereno duž navedenog smjera</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="161"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
@@ -3847,7 +3847,7 @@ To može dovesti do neočekivanih rezultata.</translation>
       <translation>Izgradnja linije %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="76"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>

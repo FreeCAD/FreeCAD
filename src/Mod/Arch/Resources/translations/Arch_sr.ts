@@ -1481,7 +1481,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation type="unfinished">Optimize</translation>
+      <translation>Оптимизирати</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
