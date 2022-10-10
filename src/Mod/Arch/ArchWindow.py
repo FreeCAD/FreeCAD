@@ -651,8 +651,8 @@ class _Window(ArchComponent.Component):
                 if hasattr(self,prop):
                     if getattr(self,prop) != getattr(obj,prop):
                         touchhosts = True
-                if touchhosts and hasattr(obj,"Hosts"):
-                    for host in obj.Hosts:
+                if touchhosts and hasattr(self, "Hosts") and hasattr(obj, "Hosts"):
+                    for host in set(self.Hosts + obj.Hosts): # use set to remove duplicates
                         # mark host to recompute so it can detect this object
                         host.touch()
             if prop in ["Width","Height","Frame"]:
