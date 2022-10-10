@@ -981,7 +981,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
 void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
                         boost::function<void (Part::Feature*, App::DocumentObject*)> func)
 {
-    auto base_worker = [=](App::DocumentObject* feature, const std::vector<string> &subs) {
+    auto base_worker = [=](App::DocumentObject *feature, const std::vector<std::string> &subs) {
 
         if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
