@@ -189,6 +189,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ActiveView";
     *draw << "TechDraw_ProjectionGroup";
     *draw << "TechDraw_SectionView";
+    *draw << "TechDraw_ComplexSection";
     *draw << "TechDraw_DetailView";
     *draw << "Separator";
     *draw << "TechDraw_DraftView";
@@ -246,6 +247,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_ActiveView";
     *views << "TechDraw_ProjectionGroup";
     *views << "TechDraw_SectionView";
+    *views << "TechDraw_ComplexSection";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
@@ -392,6 +394,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *views << "TechDraw_NewMulti";    //deprecated
     *views << "TechDraw_ProjectionGroup";
     *views << "TechDraw_SectionView";
+    *views << "TechDraw_ComplexSection";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_SpreadsheetView";

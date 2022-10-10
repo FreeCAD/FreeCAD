@@ -22,33 +22,55 @@
  *                                                                         *
  ***************************************************************************/
 
+//DrawViewSection processing overview
+
+//execute
+//    sectionExec(getShapeToCut())
+
+//sectionExec
+//    makeSectionCut(baseShape)
+
+//makeSectionCut (separate thread)
+//    m_cuttingTool = makeCuttingTool (DVSTool.brep)
+//    m_cutPieces = (baseShape - m_cuttingTool) (DVSCutPieces.brep)
+
+//onSectionCutFinished
+//    m_preparedShape = prepareShape(m_cutPieces) - centered, scaled, rotated
+//    geometryObject = DVP::buildGeometryObject(m_preparedShape)  (HLR)
+
+//postHlrTasks
+//    faceIntersections = findSectionPlaneIntersections
+//    m_sectionTopoDSFaces = alignSectionFaces(faceIntersections)
+//    m_tdSectionFaces = makeTDSectionFaces(m_sectionTopoDSFaces)
+
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <chrono>
-# include <sstream>
-# include <QtConcurrentRun>
-# include <Bnd_Box.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepTools.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Ax3.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopExp_Explorer.hxx>
+#include <chrono>
+#include <sstream>
+#include <QtConcurrentRun>
+#include <Bnd_Box.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepTools.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
 #endif
 
 #include <App/Application.h>
@@ -58,21 +80,32 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
-#include "DrawViewSection.h"
+#include <Mod/Part/App/PartFeature.h>
+
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
 #include "DrawProjGroupItem.h"
+#include "DrawProjGroupItem.h"
 #include "DrawUtil.h"
+#include "DrawUtil.h"
+#include "EdgeWalker.h"
+#include "Geometry.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "GeometryObject.h"
+#include "HatchLine.h"
 
+#include "DrawViewSection.h"
 
 using namespace TechDraw;
+
+using DU = DrawUtil;
 
 const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Left",
                                             "Up",
                                             "Down",
+                                            "Aligned",
                                              nullptr};
 
 const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
@@ -88,7 +121,8 @@ const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
 PROPERTY_SOURCE(TechDraw::DrawViewSection, TechDraw::DrawViewPart)
 
 DrawViewSection::DrawViewSection()  :
-    m_waitingForCut(false)
+    m_waitingForCut(false),
+    m_shapeSize(0.0)
 {
     static const char *sgroup = "Section";
     static const char *fgroup = "Cut Surface Format";
@@ -200,29 +234,37 @@ void DrawViewSection::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 }
 
+TopoDS_Shape DrawViewSection::getShapeToCut()
+{
+//    Base::Console().Message("DVS::getShapeToCut()\n");
+    App::DocumentObject* base = BaseView.getValue();
+    TechDraw::DrawViewPart* dvp = nullptr;
+    if (!base ||
+        !base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        //this can probably only happen with scripting
+        return TopoDS_Shape();
+    } else {
+        dvp = static_cast<TechDraw::DrawViewPart*>(base);
+    }
+    TopoDS_Shape shapeToCut = dvp->getSourceShape();
+    if (FuseBeforeCut.getValue()) {
+        shapeToCut = dvp->getSourceShapeFused();
+    }
+    return shapeToCut;
+}
+
 App::DocumentObjectExecReturn *DrawViewSection::execute()
 {
+//    Base::Console().Message("DVS::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
 
-    App::DocumentObject* base = BaseView.getValue();
-    if (!base) {
+    if (!isBaseValid()) {
         return new App::DocumentObjectExecReturn("BaseView object not found");
     }
 
-    TechDraw::DrawViewPart* dvp = nullptr;
-    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        //this can probably only happen with scripting
-        return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
-    } else {
-        dvp = static_cast<TechDraw::DrawViewPart*>(base);
-    }
-
-    TopoDS_Shape baseShape = dvp->getSourceShape();
-    if (FuseBeforeCut.getValue()) {
-        baseShape = dvp->getSourceShapeFused();
-    }
+    TopoDS_Shape baseShape = getShapeToCut();
 
     if (baseShape.IsNull()) {
         return DrawView::execute();
@@ -230,7 +272,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
 
     m_saveShape = baseShape;        //save shape for 2nd pass
 
-//    checkXDirection();
     bool haveX = checkXDirection();
     if (!haveX) {
         //block touch/onChanged stuff
@@ -244,6 +285,16 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
     addShapes2d();
 
     return DrawView::execute();
+}
+
+bool DrawViewSection::isBaseValid() const
+{
+    App::DocumentObject* base = BaseView.getValue();
+    if (base &&
+        base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        return true;
+    }
+    return false;
 }
 
 void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
@@ -289,112 +340,128 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
     Bnd_Box centerBox;
     BRepBndLib::AddOptimal(baseShape, centerBox);
     centerBox.SetGap(0.0);
-    gp_Pln pln = getSectionPlane();
-    gp_Dir gpNormal = pln.Axis().Direction();
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
     if(!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
         Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n", getNameInDocument());
     }
-
-    // make cutting tool
-    // Make the extrusion face
-    double dMax = sqrt(centerBox.SquareExtent());
-    BRepBuilderAPI_MakeFace mkFace(pln, -dMax, dMax, -dMax, dMax);
-    TopoDS_Face aProjFace = mkFace.Face();
-    if(aProjFace.IsNull()) {
-        Base::Console().Warning("DVS: Section face is NULL in %s\n", getNameInDocument());
-        return;
-    }
-    gp_Vec extrudeDir = dMax * gp_Vec(gpNormal);
-    TopoDS_Shape prism = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
+   m_shapeSize = sqrt(centerBox.SquareExtent());
 
     // We need to copy the shape to not modify the BRepstructure
     BRepBuilderAPI_Copy BuilderCopy(baseShape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
     m_saveShape = myShape;        //save shape for 2nd pass
 
+    if (debugSection()) {
+        BRepTools::Write(myShape, "DVSCopy.brep");            //debug
+    }
+
+    m_cuttingTool = makeCuttingTool(m_shapeSize);
+
+    if (debugSection()) {
+        BRepTools::Write(m_cuttingTool, "DVSTool.brep");              //debug
+    }
+
 // perform cut
     BRep_Builder builder;
-    TopoDS_Compound pieces;
-    builder.MakeCompound(pieces);
+    TopoDS_Compound cutPieces;
+    builder.MakeCompound(cutPieces);
     TopExp_Explorer expl(myShape, TopAbs_SOLID);
-    int indb = 0;
-    int outdb = 0;
     for (; expl.More(); expl.Next()) {
-        indb++;
         const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        BRepAlgoAPI_Cut mkCut(s, prism);
+        BRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
         if (!mkCut.IsDone()) {
             Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
             continue;
         }
-        TopoDS_Shape cut = mkCut.Shape();
-        builder.Add(pieces, cut);
-        outdb++;
+        builder.Add(cutPieces, mkCut.Shape());
     }
 
-    // pieces contains result of cutting each subshape in baseShape with tool
-    TopoDS_Shape rawShape = pieces;
+    // cutPieces contains result of cutting each subshape in baseShape with tool
+    m_cutPieces = cutPieces;
 
     if (debugSection()) {
-        BRepTools::Write(myShape, "DVSCopy.brep");            //debug
-        BRepTools::Write(aProjFace, "DVSFace.brep");          //debug
-        BRepTools::Write(prism, "DVSTool.brep");              //debug
-        BRepTools::Write(pieces, "DVSPieces.brep");         //debug
+        BRepTools::Write(cutPieces, "DVSCutPieces.brep");         //debug
     }
 
 // check for error in cut
     Bnd_Box testBox;
-    BRepBndLib::AddOptimal(rawShape, testBox);
+    BRepBndLib::AddOptimal(m_cutPieces, testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
         Base::Console().Warning("DVS::makeSectionCut - prism & input don't intersect - %s\n", Label.getValue());
         return;
-
     }
 
-// build display geometry as in DVP, with minor mods
-    TopoDS_Shape centeredShape;
+    if (debugSection()) {
+        BRepTools::Write(m_cutPieces, "DVSRawShapeAfter.brep");         //debug
+    }
+
+    waitingForCut(false);
+}
+
+//position, scale and rotate shape for  buildGeometryObject
+TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& rawShape,
+                                           double shapeSize)
+{
+//    Base::Console().Message("DVS::prepareShape - %s - rawShape.IsNull: %d shapeSize: %.3f\n",
+//                            getNameInDocument(), rawShape.IsNull(), shapeSize);
+    (void) shapeSize;    //shapeSize is not used in this base class, but is interesting for
+                         //derived classes
+    // build display geometry as in DVP, with minor mods
+    TopoDS_Shape preparedShape;
     try {
         Base::Vector3d origin(0.0, 0.0, 0.0);
-        m_viewAxis = getProjectionCS(origin);
+        m_projectionCS = getProjectionCS(origin);
         gp_Pnt inputCenter;
         inputCenter = TechDraw::findCentroid(rawShape,
-                                             m_viewAxis);
+                                             m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(),
                                 inputCenter.Y(),
                                 inputCenter.Z());
 
-        centeredShape = TechDraw::moveShape(rawShape,
+        preparedShape = TechDraw::moveShape(rawShape,
                                             centroid * -1.0);
-        m_cutShape = centeredShape;
+        m_cutShape = preparedShape;
         m_saveCentroid = centroid;
 
-        m_scaledShape   = TechDraw::scaleShape(centeredShape,
-                                             getScale());
+        preparedShape   = TechDraw::scaleShape(preparedShape,
+                                               getScale());
 
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-            m_scaledShape = TechDraw::rotateShape(m_scaledShape,
-                                                  m_viewAxis,
+            preparedShape = TechDraw::rotateShape(preparedShape,
+                                                  m_projectionCS,
                                                   Rotation.getValue());
         }
         if (debugSection()) {
             BRepTools::Write(m_cutShape, "DVSmCutShape.brep");         //debug
-            BRepTools::Write(m_scaledShape, "DVSScaled.brep");              //debug
 //            DrawUtil::dumpCS("DVS::makeSectionCut - CS to GO", viewAxis);
         }
 
-        m_rawShape = rawShape;  //save for section face finding
-
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Warning("DVS::makeSectionCut - failed to build base shape %s - %s **\n",
+        Base::Console().Warning("DVS::prepareShape - failed to build shape %s - %s **\n",
                                 getNameInDocument(), e1.GetMessageString());
-        return;
     }
+    return preparedShape;
+}
 
-    waitingForCut(false);
+TopoDS_Shape DrawViewSection::makeCuttingTool(double shapeSize)
+{
+//    Base::Console().Message("DVS::makeCuttingTool(%.3f) - %s\n", shapeSize, getNameInDocument());
+    // Make the extrusion face
+    gp_Pln pln = getSectionPlane();
+    gp_Dir gpNormal = pln.Axis().Direction();
+    BRepBuilderAPI_MakeFace mkFace(pln, -shapeSize, shapeSize, -shapeSize, shapeSize);
+    TopoDS_Face aProjFace = mkFace.Face();
+    if(aProjFace.IsNull()) {
+        return TopoDS_Shape();
+    }
+    if (debugSection()){
+        BRepTools::Write(aProjFace, "DVSSectionFace.brep");          //debug
+    }
+    gp_Vec extrudeDir = shapeSize * gp_Vec(gpNormal);
+    return BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
 }
 
 void DrawViewSection::onSectionCutFinished()
@@ -404,10 +471,15 @@ void DrawViewSection::onSectionCutFinished()
 
     showProgressMessage(getNameInDocument(), "has finished making section cut");
 
+    m_preparedShape = prepareShape(getShapeToPrepare(), m_shapeSize);
+    if (debugSection()) {
+        BRepTools::Write(m_preparedShape, "DVSPreparedShape.brep");              //debug
+    }
+
     postSectionCutTasks();
 
     //display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getSectionCS());
 }
 
 //activities that depend on updated geometry object
@@ -430,78 +502,44 @@ void DrawViewSection::postHlrTasks(void)
 
 
     // build section face geometry
-    TopoDS_Compound faceIntersections = findSectionPlaneIntersections(m_rawShape);
+    TopoDS_Compound faceIntersections = findSectionPlaneIntersections(getShapeToIntersect());
     if (faceIntersections.IsNull()) {
         requestPaint();
         return;
     }
 
-    TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
+    TopoDS_Shape centeredFaces = TechDraw::moveShape(faceIntersections,
                                                        m_saveCentroid * -1.0);
 
-    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShapeF,
+    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredFaces,
                                                       getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection = TechDraw::rotateShape(scaledSection,
-                                              m_viewAxis,
+                                              getProjectionCS(),
                                               Rotation.getValue());
     }
     if (debugSection()) {
-        BRepTools::Write(scaledSection, "DVSScaledFaces.brep");            //debug
+        BRepTools::Write(faceIntersections, "DVSFaceIntersections.brep");              //debug
     }
 
-    // scaledSection is compound of TopoDS_Face intersections, but aligned to pln(origin, sectionNormal)
-    // needs to be aligned to pln (origin, stdZ);
-    gp_Ax3 R3;
-    gp_Ax2 projCS = getSectionCS();
-    gp_Ax3 proj3 = gp_Ax3(gp_Pnt(0.0, 0.0, 0.0),
-                   projCS.Direction(),
-                   projCS.XDirection());
-    gp_Trsf fromR3;
-    fromR3.SetTransformation(R3, proj3);
-    BRepBuilderAPI_Transform xformer(fromR3);
-    xformer.Perform(scaledSection, true);
-    if (xformer.IsDone()) {
-        sectionTopoDSFaces = TopoDS::Compound(xformer.Shape());
-    } else {
-        Base::Console().Message("DVS::sectionExec - face xform failed\n");
+    m_sectionTopoDSFaces = alignSectionFaces(faceIntersections);
+    if (debugSection()) {
+        BRepTools::Write(m_sectionTopoDSFaces, "DVSTopoSectionFaces.brep");              //debug
     }
+    m_tdSectionFaces = makeTDSectionFaces(m_sectionTopoDSFaces);
 
-    sectionTopoDSFaces = TopoDS::Compound(GeometryObject::invertGeometry(sectionTopoDSFaces));     //handle Qt -y
-
-    //turn section faces into TD geometry
-    tdSectionFaces.clear();
-    TopExp_Explorer sectionExpl(sectionTopoDSFaces, TopAbs_FACE);
-    for (; sectionExpl.More(); sectionExpl.Next()) {
-        const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
-        TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
-        TopExp_Explorer expFace(face, TopAbs_WIRE);
-        for ( ; expFace.More(); expFace.Next()) {
-            TechDraw::Wire* w = new TechDraw::Wire();
-            const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
-            TopExp_Explorer expWire(wire, TopAbs_EDGE);
-            for ( ; expWire.More(); expWire.Next()) {
-                const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
-                TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
-                if (e) {
-                    w->geoms.push_back(e);
-                }
-            }
-            sectionFace->wires.push_back(w);
-        }
-        tdSectionFaces.push_back(sectionFace);
-    }
 
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(BaseView.getValue());
     if (dvp) {
         dvp->requestPaint();  //to refresh section line
     }
-    requestPaint();
+    requestPaint();         //this will be a duplicate paint if we are making a standalone ComplexSection
 }
 
 //activities that depend on a valid section cut
 void DrawViewSection::postSectionCutTasks()
 {
+//    Base::Console().Message("DVS::postSectionCutTasks()\n");
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& c: children) {
         if (c->getTypeId().isDerivedFrom(DrawViewPart::getClassTypeId())) {
@@ -529,16 +567,24 @@ gp_Pln DrawViewSection::getSectionPlane() const
 }
 
 //! tries to find the intersection of the section plane with the shape giving a collection of planar faces
+//! the original algo finds the intersections first then transforms them to match the centered, rotated
+//! and scaled cut shape.  Piecewise complex sections need to intersect the final cut shape (which in this
+//! case is a compound of individual cuts) with the "effective" (flattened) section plane.
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if(shape.IsNull()){
         // this shouldn't happen
-        Base::Console().Warning("DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n", getNameInDocument());
+//        Base::Console().Warning("DrawViewSection::findSectionPlaneInter - %s - input shape is Null\n", getNameInDocument());
         return TopoDS_Compound();
     }
 
     gp_Pln plnSection = getSectionPlane();
+    if (debugSection()) {
+        BRepBuilderAPI_MakeFace mkFace(plnSection, -m_shapeSize, m_shapeSize, -m_shapeSize, m_shapeSize);
+        BRepTools::Write(mkFace.Face(), "DVSSectionPlane.brep");            //debug
+        BRepTools::Write(shape, "DVSShapeToIntersect.brep)");
+    }
     BRep_Builder builder;
     TopoDS_Compound result;
     builder.MakeCompound(result);
@@ -556,6 +602,109 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
         }
     }
     return result;
+}
+
+//move section faces to line up with cut shape
+TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersections)
+{
+//    Base::Console().Message("DVS::alignSectionFaces()\n");
+    TopoDS_Compound sectionFaces;
+    TopoDS_Shape centeredShape = TechDraw::moveShape(faceIntersections,
+                                                     getOriginalCentroid() * -1.0);
+
+    TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShape,
+                                                      getScale());
+    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+        scaledSection = TechDraw::rotateShape(scaledSection,
+                                              getSectionCS(),
+                                              Rotation.getValue());
+    }
+    if (debugSection()) {
+        BRepTools::Write(scaledSection, "DVSScaledFaces.brep");            //debug
+    }
+
+    return mapToPage(scaledSection);
+}
+
+TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
+{
+    // shapeToAlign is compound of TopoDS_Face intersections, but aligned to pln(origin, sectionNormal)
+    // needs to be aligned to paper plane (origin, stdZ);
+    //project the faces in the shapeToAlign, build new faces from the resulting wires and
+    //combine everything into a compound of faces
+
+    BRep_Builder builder;
+    TopoDS_Compound result;
+    builder.MakeCompound(result);
+
+    TopExp_Explorer expFace(shapeToAlign, TopAbs_FACE);
+    for (int iFace = 1; expFace.More(); expFace.Next(), iFace++) {
+        const TopoDS_Face& face = TopoDS::Face(expFace.Current());
+        std::vector<TopoDS_Wire> faceWires;
+        TopExp_Explorer expWires(face, TopAbs_WIRE);
+        for ( ; expWires.More(); expWires.Next()) {
+            const TopoDS_Wire& wire = TopoDS::Wire(expWires.Current());
+            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getSectionCS());
+            std::vector<TopoDS_Edge> wireEdges;
+            //projectedShape is just a bunch of edges. we have to rebuild the wire.
+            TopExp_Explorer expEdges(projectedShape, TopAbs_EDGE);
+            for ( ; expEdges.More(); expEdges.Next()) {
+                const TopoDS_Edge& edge = TopoDS::Edge(expEdges.Current());
+                wireEdges.push_back(edge);
+            }
+            TopoDS_Wire cleanWire = EdgeWalker::makeCleanWire(wireEdges, 2.0 * EWTOLERANCE);
+            faceWires.push_back(cleanWire);
+        }
+        if (debugSection()) {
+            std::stringstream ss;
+            ss << "DVSFaceWires" << iFace << ".brep";
+            BRepTools::Write(DrawUtil::vectorToCompound(faceWires), ss.str().c_str());          //debug
+        }
+        //first wire should be the outer boundary of the face
+        BRepBuilderAPI_MakeFace mkFace(faceWires.front());
+        int wireCount = faceWires.size();
+        for (int iWire = 1; iWire < wireCount; iWire++) {
+            //make holes in the face with the rest of the wires
+            mkFace.Add(faceWires.at(iWire));
+        }
+        builder.Add(result, mkFace.Face());
+        if (debugSection()) {
+            std::stringstream ss;
+            ss << "DVSFaceFromWires" << iFace << ".brep";
+            BRepTools::Write(mkFace.Face(), ss.str().c_str());          //debug
+        }
+    }
+
+    return result;
+}
+
+//turn OCC section faces into TD geometry
+std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(TopoDS_Compound topoDSFaces)
+{
+//    Base::Console().Message("DVS::makeTDSectionFaces()\n");
+    std::vector<TechDraw::FacePtr> tdSectionFaces;
+    TopExp_Explorer sectionExpl(topoDSFaces, TopAbs_FACE);
+    for (; sectionExpl.More(); sectionExpl.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
+        TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
+        TopExp_Explorer expFace(face, TopAbs_WIRE);
+        for ( ; expFace.More(); expFace.Next()) {
+            TechDraw::Wire* w = new TechDraw::Wire();
+            const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
+            TopExp_Explorer expWire(wire, TopAbs_EDGE);
+            for ( ; expWire.More(); expWire.Next()) {
+                const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
+                TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
+                if (e) {
+                    w->geoms.push_back(e);
+                }
+            }
+            sectionFace->wires.push_back(w);
+        }
+        tdSectionFaces.push_back(sectionFace);
+    }
+
+    return tdSectionFaces;
 }
 
 //calculate the ends of the section line in BaseView's coords
@@ -662,8 +811,6 @@ void DrawViewSection::setCSFromBase(const std::string sectionName)
 gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 {
 //    Base::Console().Message("DVS::getCSFromBase(%s)\n", sectionName.c_str());
-    Base::Vector3d sectionNormal;
-    Base::Vector3d sectionXDir;
     Base::Vector3d origin(0.0, 0.0, 0.0);
     Base::Vector3d sectOrigin = SectionOrigin.getValue();
 
@@ -693,6 +840,12 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
     } else if (sectionName == "Right") {
         dvsDir = dvpRight.Reversed();
         dvsXDir = dvpDir;
+    } else if (sectionName == "Aligned") {
+        //if aligned, we don't get our direction from the base view
+        Base::Vector3d sectionNormal = SectionNormal.getValue();
+        dvsDir = gp_Dir(sectionNormal.x, sectionNormal.y, sectionNormal.z);
+        Base::Vector3d sectionXDir = XDirection.getValue();
+        dvsXDir = gp_Dir(sectionXDir.x, sectionXDir.y, sectionXDir.z);
     } else {
         Base::Console().Log("Error - DVS::getCSFromBase - bad sectionName: %s\n", sectionName.c_str());
         dvsDir = dvpRight;
@@ -752,7 +905,7 @@ std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 TopoDS_Face DrawViewSection::getSectionTopoDSFace(int i)
 {
     TopoDS_Face result;
-    TopExp_Explorer expl(sectionTopoDSFaces, TopAbs_FACE);
+    TopExp_Explorer expl(m_sectionTopoDSFaces, TopAbs_FACE);
     int count = 1;
     for (; expl.More(); expl.Next(), count++) {
         if (count == i+1) {

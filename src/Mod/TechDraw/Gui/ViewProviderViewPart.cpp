@@ -76,6 +76,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *group = "Lines";
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
+    static const char *sgroup = "Section Line";
 
     //default line weights
 
@@ -104,12 +105,14 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
     //properties that affect Section Line
-    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
-    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
                         "Set section line color if applicable");
+    ADD_PROPERTY_TYPE(SectionLineMarks, (PreferencesGui::sectionLineMarks()), sgroup, App::Prop_None,
+                        "Show marks at direction changes for ComplexSection");
 
     //properties that affect Detail Highlights
     HighlightLineStyle.setEnums(LineStyleEnums);
@@ -139,6 +142,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(ShowSectionLine)  ||
         prop == &(SectionLineStyle) ||
         prop == &(SectionLineColor) ||
+        prop == &(SectionLineMarks) ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine)  ||

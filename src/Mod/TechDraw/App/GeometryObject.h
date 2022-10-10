@@ -67,13 +67,24 @@ TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
                                        double scale);
 TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape &input,
-                             gp_Ax2& viewAxis,
-                             double rotAngle);
+                                        const gp_Ax2& viewAxis,
+                                        double rotAngle);
 TopoDS_Shape TechDrawExport moveShape(const TopoDS_Shape &input,
                                       const Base::Vector3d& motion);
-
+TopoDS_Shape TechDrawExport moveShapeRestricted(const TopoDS_Shape &input,
+                                                const Base::Vector3d& motion,
+                                                bool allowX = true,
+                                                bool allowY = true,
+                                                bool allowZ = true);
+TopoDS_Shape TechDrawExport moveShapeRestricted(const TopoDS_Shape &input,
+                                                const Base::Vector3d& motion,
+                                                const Base::Vector3d& mask);
+TopoDS_Shape TechDrawExport moveShapeRestricted(const TopoDS_Shape &input,
+                                                const gp_Vec& motion,
+                                                const gp_Vec& mask);
 
 //! Returns the centroid of shape, as viewed according to direction
+gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape& shape);
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
@@ -118,9 +129,12 @@ public:
                       const gp_Ax2 &viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape &input,
                                      const gp_Ax2 &viewAxis);
-    TopoDS_Shape projectFace(const TopoDS_Shape &face,
-                             const gp_Ax2 &CS);
-
+    static TopoDS_Shape projectSimpleShape(const TopoDS_Shape &shape,
+                                           const gp_Ax2 &CS);
+    static TopoDS_Shape simpleProjection(const TopoDS_Shape& shape,
+                                         const gp_Ax2& projCS);
+    static TopoDS_Shape projectFace(const TopoDS_Shape &face,
+                                    const gp_Ax2 &CS);
     void makeTDGeometry();
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(FacePtr f);

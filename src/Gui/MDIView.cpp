@@ -147,11 +147,13 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         // Either with dirty flag ...
         QRegularExpression rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
         QRegularExpressionMatch match;
-        int pos = cap.lastIndexOf(rx, -1, &match);
+        //int pos =
+        cap.lastIndexOf(rx, -1, &match);
         if (!match.hasMatch()) {
             // ... or not
             rx.setPattern(QLatin1String("(\\s\\:\\s\\d+)$"));
-            pos = cap.lastIndexOf(rx, -1, &match);
+            //pos =
+            cap.lastIndexOf(rx, -1, &match);
         }
         if (match.hasMatch()) {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());

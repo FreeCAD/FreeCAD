@@ -1246,8 +1246,8 @@ bool BSpline::isLine()
         return false;
     }
 
-    Base::Vector3d vs = DrawUtil::gpPnt2V3(s);
-    Base::Vector3d ve = DrawUtil::gpPnt2V3(e);
+    Base::Vector3d vs = DrawUtil::toVector3d(s);
+    Base::Vector3d ve = DrawUtil::toVector3d(e);
     double endLength = (vs - ve).Length();
     int low = 0;
     int high = spline->NbPoles() - 1;
@@ -1256,9 +1256,9 @@ bool BSpline::isLine()
     double lenTotal = 0.0;
     for (int i = 0; i < high; i++) {
         gp_Pnt p1 = poles(i);
-        Base::Vector3d v1 = DrawUtil::gpPnt2V3(p1);
+        Base::Vector3d v1 = DrawUtil::toVector3d(p1);
         gp_Pnt p2 = poles(i+1);
-        Base::Vector3d v2 = DrawUtil::gpPnt2V3(p2);
+        Base::Vector3d v2 = DrawUtil::toVector3d(p2);
         lenTotal += (v2-v1).Length();
     }
 
@@ -1415,7 +1415,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
         gp_Circ circle1 = gce_circ1.Value();
         double radius1 = circle1.Radius();
         gp_Pnt center1 = circle1.Location();
-        Base::Vector3d vc1 = DrawUtil::gpPnt2V3(center1);
+        Base::Vector3d vc1 = DrawUtil::toVector3d(center1);
 
         gce_MakeCirc gce_circ2 = gce_MakeCirc(pcm, pc2, e);
         if (gce_circ2.Status() != gce_Done) {
@@ -1424,7 +1424,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
         gp_Circ circle2 = gce_circ2.Value();
         double radius2 = circle2.Radius();
         gp_Pnt center2 = circle2.Location();
-        Base::Vector3d vc2 = DrawUtil::gpPnt2V3(center2);
+        Base::Vector3d vc2 = DrawUtil::toVector3d(center2);
 
         // compare radii & centers
         double allowError = 0.001;           //mm^-3 good enough for printing

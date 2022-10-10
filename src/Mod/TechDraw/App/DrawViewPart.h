@@ -142,11 +142,12 @@ public:
     virtual Base::Vector3d projectPoint(const Base::Vector3d& pt,
                                         bool invert = true) const;
     virtual BaseGeomPtr projectEdge(const TopoDS_Edge& e) const;
+    virtual BaseGeomPtrVector projectWire(const TopoDS_Wire& inWire) const;
 
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction,
                                const bool flip=true) const;
-    virtual gp_Ax2 getProjectionCS(Base::Vector3d pt) const;
+    virtual gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const;
     virtual Base::Vector3d getXDirection() const;       //don't use XDirection.getValue()
     virtual Base::Vector3d getOriginalCentroid() const;
     virtual Base::Vector3d getCurrentCentroid() const;
@@ -223,7 +224,7 @@ protected:
     void onChanged(const App::Property* prop) override;
     void unsetupObject() override;
 
-    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis);
+    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2& viewAxis);
     virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape& shape);   //const??
     void partExec(TopoDS_Shape& shape);
     virtual void addShapes2d(void);

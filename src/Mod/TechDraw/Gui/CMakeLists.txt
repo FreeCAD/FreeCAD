@@ -87,6 +87,7 @@ set(TechDrawGui_UIC_SRCS
     SymbolChooser.ui
     TaskMoveView.ui
     TaskProjection.ui
+    TaskComplexSection.ui
 )
 
 if(BUILD_QT5)
@@ -222,6 +223,9 @@ SET(TechDrawGui_SRCS
     TaskProjection.cpp
     TaskProjection.h
     TaskProjection.ui
+    TaskComplexSection.cpp
+    TaskComplexSection.h
+    TaskComplexSection.ui
 )
 
 SET(TechDrawGuiView_SRCS
@@ -419,6 +423,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskCustomizeFormat.ui
     TaskMoveView.ui
     TaskProjection.ui
+    TaskComplexSection.ui
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})

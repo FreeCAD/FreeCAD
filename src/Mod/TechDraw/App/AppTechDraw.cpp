@@ -24,8 +24,9 @@
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
-#include "Cosmetic.h"
 #include "CosmeticExtension.h"
+#include "Cosmetic.h"
+#include "DrawComplexSection.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
 #include "DrawLeaderLine.h"
@@ -37,7 +38,6 @@
 #include "DrawSVGTemplate.h"
 #include "DrawTile.h"
 #include "DrawTileWeld.h"
-#include "DrawView.h"
 #include "DrawViewAnnotation.h"
 #include "DrawViewArch.h"
 #include "DrawViewBalloon.h"
@@ -47,8 +47,8 @@
 #include "DrawViewDimension.h"
 #include "DrawViewDimExtent.h"
 #include "DrawViewDraft.h"
+#include "DrawView.h"
 #include "DrawViewImage.h"
-#include "DrawViewMulti.h"
 #include "DrawViewPart.h"
 #include "DrawViewSection.h"
 #include "DrawViewSpreadsheet.h"
@@ -60,6 +60,7 @@
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyGeomFormatList.h"
+
 
 
 namespace TechDraw {
@@ -90,7 +91,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewSpreadsheet ::init();
 
     TechDraw::DrawViewSection     ::init();
-    TechDraw::DrawViewMulti       ::init();
+    TechDraw::DrawComplexSection     ::init();
     TechDraw::DrawViewDimension   ::init();
     TechDraw::DrawViewDimExtent   ::init();
     TechDraw::LandmarkDimension     ::init();
@@ -134,7 +135,8 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
     TechDraw::DrawViewPartPython  ::init();
-    TechDraw::DrawViewMultiPython ::init();
+    TechDraw::DrawViewSectionPython::init();
+    TechDraw::DrawComplexSectionPython ::init();
     TechDraw::DrawTemplatePython  ::init();
     TechDraw::DrawViewSymbolPython::init();
     TechDraw::DrawLeaderLinePython::init();

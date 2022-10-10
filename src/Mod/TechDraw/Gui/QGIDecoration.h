@@ -55,6 +55,7 @@ public:
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void draw();
     void setWidth(double w);
+    double getWidth() { return m_width; }
     void setStyle(Qt::PenStyle s);
     void setColor(QColor c);
     QColor getColor(void) { return m_colNormal; }
