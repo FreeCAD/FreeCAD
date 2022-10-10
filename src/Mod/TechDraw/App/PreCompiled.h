@@ -85,7 +85,7 @@
 #include <QXmlQuery>
 #include <QXmlResultItems>
 
-// OpenCasCade =====================================================================================
+// OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
 #endif // _PreComp_

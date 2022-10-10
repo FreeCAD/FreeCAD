@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_PRECOMPILED_H
 #define DRAWINGGUI_PRECOMPILED_H
 
@@ -43,11 +42,11 @@
 #endif
 
 #ifdef _MSC_VER
-#   pragma warning(disable : 4005)
+# pragma warning(disable : 4005)
 #endif
 
 #ifdef FC_OS_WIN32
-#   define NOMINMAX
+# define NOMINMAX
 #endif
 
 #ifdef _PreComp_
@@ -86,11 +85,17 @@
 #include <QXmlQuery>
 #include <QXmlResultItems>
 
+// OpenCasCade
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepLProp_SLProps.hxx>
+#include <gp_Dir.hxx>
+
+// Open Inventor
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/misc/SoChildList.h>
 
 #endif //_PreComp_
 
