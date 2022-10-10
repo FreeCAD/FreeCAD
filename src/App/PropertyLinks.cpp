@@ -1743,7 +1743,7 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
     hasSetValue();
 }
 
-void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
+void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<std::string> &SubList)
 {
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
     verifyObject(lValue, parent);
@@ -3919,7 +3919,7 @@ void PropertyXLinkSubList::addValue(App::DocumentObject *obj,
     guard.tryInvoke();
 }
 
-void PropertyXLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
+void PropertyXLinkSubList::setValue(DocumentObject *lValue, const std::vector<std::string> &SubList)
 {
     std::map<DocumentObject *, std::vector<std::string> > values;
     if(lValue)

@@ -28,6 +28,7 @@
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepTools.hxx>
 # include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
 # include <StdMeshers_MaxLength.hxx>
 # include <StdMeshers_LocalLength.hxx>
 # include <StdMeshers_MaxElementArea.hxx>
@@ -60,7 +61,9 @@ PROPERTY_SOURCE(Fem::FemMeshShapeObject, Fem::FemMeshObject)
 
 FemMeshShapeObject::FemMeshShapeObject()
 {
-    ADD_PROPERTY_TYPE(Shape,(nullptr), "FEM Mesh",Prop_None,"Geometry object, the mesh is made from. The geometry object has to have a Shape.");
+    ADD_PROPERTY_TYPE(
+        Shape, (nullptr), "FEM Mesh", Prop_None,
+        "Geometry object, the mesh is made from. The geometry object has to have a Shape.");
 }
 
 FemMeshShapeObject::~FemMeshShapeObject()

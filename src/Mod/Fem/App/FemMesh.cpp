@@ -1171,7 +1171,7 @@ class GRIDFreeFieldElement : public GRIDElement {
     void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
-        std::vector<string> token_results;
+        std::vector<std::string> token_results;
         token_results.assign(tokens.begin(),tokens.end());
         if (token_results.size() < 6)
             return;//Line does not include Nodal coordinates
@@ -1225,7 +1225,7 @@ public:
     void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
-        std::vector<string> token_results;
+        std::vector<std::string> token_results;
         token_results.assign(tokens.begin(),tokens.end());
         if (token_results.size() < 6)
             return;//Line does not include enough nodal IDs
@@ -1295,7 +1295,7 @@ public:
     void read(const std::string& str, const std::string&) override {
         char_separator<char> sep(",");
         tokenizer<char_separator<char> > tokens(str, sep);
-        std::vector<string> token_results;
+        std::vector<std::string> token_results;
         token_results.assign(tokens.begin(),tokens.end());
         if (token_results.size() < 14)
             return;//Line does not include enough nodal IDs
