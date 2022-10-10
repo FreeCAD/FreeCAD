@@ -75,6 +75,8 @@ generate_from_xml(CosmeticExtensionPy)
 SET(Draw_SRCS
     DrawPage.cpp
     DrawPage.h
+    DrawComplexSection.cpp
+    DrawComplexSection.h
     DrawView.cpp
     DrawView.h
     DrawViewPart.cpp

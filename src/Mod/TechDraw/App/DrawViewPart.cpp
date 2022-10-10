@@ -25,29 +25,30 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QtConcurrentRun>
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAlgo_NormalProjection.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepTools.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <HLRAlgo_Projector.hxx>
-# include <ShapeAnalysis.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Wire.hxx>
+#include <sstream>
+#include <QtConcurrentRun>
+#include <Bnd_Box.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAlgo_NormalProjection.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepTools.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <ShapeAnalysis.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 #endif
 
 #include <App/Application.h>
@@ -237,7 +238,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
-        Base::Console().Log("DVP::execute - %s - Source shape is Null.\n",
+        Base::Console().Message("DVP::execute - %s - Source shape is Null.\n",
                             getNameInDocument());
         return DrawView::execute();
     }
@@ -345,7 +346,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 }
 
 //create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis)
+TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2 &viewAxis)
 {
 //    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
     showProgressMessage(getNameInDocument(), "is finding hidden lines");
@@ -468,13 +469,20 @@ void DrawViewPart::extractFaces()
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 
     if (goEdges.empty()) {
-        Base::Console().Message("DVP::extractFaces - %s - no face edges available!\n", getNameInDocument());
+//        Base::Console().Message("DVP::extractFaces - %s - no face edges available!\n", getNameInDocument());    //debug
         return;
     }
 
     if (newFaceFinder()) {
         std::vector<TopoDS_Edge> closedEdges;
         std::vector<TopoDS_Edge> cleanEdges = DrawProjectSplit::scrubEdges(goEdges, closedEdges);
+
+        if (cleanEdges.empty() &&
+            closedEdges.empty()) {
+            //how does this happen?  something wrong somewhere
+//            Base::Console().Message("DVP::extractFaces - no clean or closed wires\n");    //debug
+            return;
+        }
 
         //use EdgeWalker to make wires from edges
         EdgeWalker eWalker;
@@ -892,8 +900,27 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
     projector.Add(e);
     projector.Build();
     TopoDS_Shape s = projector.Projection();
-//    Base::Console().Message("DVP::projectEdge - s.IsNull: %d\n", s.IsNull());
-    BaseGeomPtr result;
+    return BaseGeom::baseFactory(TopoDS::Edge(s));
+}
+
+//simple projection of inWire with conversion of the result to TD geometry
+BaseGeomPtrVector DrawViewPart::projectWire(const TopoDS_Wire& inWire) const
+{
+//    Base::Console().Message("DVP::projectWire() - inWire.IsNull: %d\n", inWire.IsNull());
+    BaseGeomPtrVector result;
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+
+    TopoDS_Face paper = BRepBuilderAPI_MakeFace(gp_Pln(getProjectionCS(stdOrg)));
+    BRepAlgo_NormalProjection projector(paper);
+    projector.Add(inWire);
+    projector.Build();
+    BRepTools::Write(projector.Projection(), "DVPprojectedWire.brep");            //debug
+
+    TopExp_Explorer expShape(projector.Projection(), TopAbs_EDGE);
+    for (; expShape.More(); expShape.Next()) {
+        BaseGeomPtr edge = BaseGeom::baseFactory(TopoDS::Edge(expShape.Current()));
+        result.push_back(edge);
+    }
     return result;
 }
 

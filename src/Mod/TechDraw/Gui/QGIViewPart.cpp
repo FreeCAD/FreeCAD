@@ -56,6 +56,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
@@ -446,10 +447,10 @@ void QGIViewPart::drawViewPart()
     if (!vp)
         return;
 
-    float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;
-    float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;
-    float lineWidthIso = vp->IsoWidth.getValue() * lineScaleFactor;
-//    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;
+    float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;       //thick
+    float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;  //thin
+    float lineWidthIso = vp->IsoWidth.getValue() * lineScaleFactor;     //graphic
+//    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;  //extra
     bool showAll = vp->ShowAllEdges.getValue();
 
     prepareGeometryChange();
@@ -803,7 +804,11 @@ void QGIViewPart::drawAllSectionLines()
     if (vp->ShowSectionLine.getValue()) {
         auto refs = viewPart->getSectionRefs();
         for (auto& r:refs) {
-            drawSectionLine(r, true);
+            if (r->isDerivedFrom(DrawComplexSection::getClassTypeId())) {
+                drawComplexSectionLine(r, true);
+            } else {
+                drawSectionLine(r, true);
+            }
         }
     }
 }
@@ -820,8 +825,10 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         return;
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if (!vp)
+    if (!vp) {
         return;
+    }
+    float lineWidthThin = vp->HiddenWidth.getValue() * lineScaleFactor;  //thin
 
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
@@ -829,7 +836,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
         sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
         sectionLine->setSectionColor(vp->SectionLineColor.getValue().asValue<QColor>());
-
+        sectionLine->setPathMode(false);
         //find the ends of the section line
         double scale = viewPart->getScale();
         std::pair<Base::Vector3d, Base::Vector3d> sLineEnds = viewSection->sectionLineEnds();
@@ -839,11 +846,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         //which way to the arrows point?
         Base::Vector3d lineDir = l2 - l1;
         lineDir.Normalize();
-        Base::Vector3d normalDir = viewSection->SectionNormal.getValue();
-        Base::Vector3d projNormal = viewPart->projectPoint(normalDir);
-        projNormal.Normalize();
         Base::Vector3d arrowDir = viewSection->SectionNormal.getValue();
-        arrowDir = - viewPart->projectPoint(arrowDir);  //arrows point reverse of sectionNormal(extrusion dir)
+        arrowDir = - viewPart->projectPoint(arrowDir);  //arrows point reverse of sectionNormal
         sectionLine->setDirection(arrowDir.x, -arrowDir.y);           //invert Y
 
         //make the section line a little longer
@@ -853,13 +857,80 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         //set the general parameters
         sectionLine->setPos(0.0, 0.0);
-        sectionLine->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+        sectionLine->setWidth(lineWidthThin);
         double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(getFont(), fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(- viewPart->Rotation.getValue());
         sectionLine->draw();
     }
+}
+
+void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
+{
+    Q_UNUSED(b);
+    TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
+    if (!viewPart)
+        return;
+    if (!viewSection)
+        return;
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+    float lineWidthThin = vp->HiddenWidth.getValue() * lineScaleFactor;  //thin
+
+    auto dcs = static_cast<DrawComplexSection*>(viewSection);
+    BaseGeomPtrVector edges = dcs->makeSectionLineGeometry();
+    QPainterPath wirePath;
+    QPainterPath firstSeg = drawPainterPath(edges.front());
+    wirePath.connectPath(firstSeg);
+    int edgeCount = edges.size();
+    //NOTE: if the edges are not in nose to tail order, Qt will insert extra segments
+    //that will overlap the segments we add. for interupted line styles, this
+    //will make the line look continuous.  This is prevented in
+    //DrawComplexSection::makeSectionLineGeometry by calling makeNoseToTailWire
+    for (int i = 1; i < edgeCount; i++) {
+        QPainterPath edgePath = drawPainterPath(edges.at(i));
+        wirePath.connectPath(edgePath);
+    }
+
+    std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
+    Base::Vector3d vStart = Rez::guiX(ends.first);      //already scaled by dcs
+    Base::Vector3d vEnd = Rez::guiX(ends.second);
+
+    QGISectionLine* sectionLine = new QGISectionLine();
+    addToGroup(sectionLine);
+    sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
+    sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
+    sectionLine->setSectionColor(vp->SectionLineColor.getValue().asValue<QColor>());
+    sectionLine->setPathMode(true);
+    sectionLine->setPath(wirePath);
+    sectionLine->setEnds(vStart, vEnd);
+    if (vp->SectionLineMarks.getValue()) {
+        sectionLine->setChangePoints(dcs->getChangePointsFromSectionLine());
+    } else {
+        sectionLine->clearChangePoints();
+    }
+    if (dcs->ProjectionStrategy.isValue("Single")) {
+        Base::Vector3d arrowDirSingle = viewSection->SectionNormal.getValue();
+        arrowDirSingle =  - viewPart->projectPoint(arrowDirSingle);         //arrows are opposite section normal
+        sectionLine->setDirection(arrowDirSingle.x, -arrowDirSingle.y);     //invert y for Qt
+    } else {
+        std::pair<Base::Vector3d, Base::Vector3d> dirsPiecewise = dcs->sectionArrowDirs();
+        dirsPiecewise.first = DrawUtil::invertY(dirsPiecewise.first);
+        dirsPiecewise.second = DrawUtil::invertY(dirsPiecewise.second);
+        sectionLine->setArrowDirections(dirsPiecewise.first, dirsPiecewise.second);
+    }
+
+    //set the general parameters
+    sectionLine->setPos(0.0, 0.0);
+    sectionLine->setWidth(lineWidthThin);
+    double fontSize = Preferences::dimFontSizeMM();
+    sectionLine->setFont(getFont(), fontSize);
+    sectionLine->setZValue(ZVALUE::SECTIONLINE);
+    sectionLine->setRotation(- viewPart->Rotation.getValue());
+    sectionLine->draw();
 }
 
 //TODO: use Cosmetic::CenterLine object for this to make it usable for dims.
@@ -885,35 +956,28 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine = new QGICenterLine();
             addToGroup(centerLine);
             centerLine->setPos(0.0, 0.0);
-            //this should work from the viewPart's bbox, not the border
-//            double scale = viewPart->getScale();
             double width = Rez::guiX(viewPart->getBoxX());
             sectionSpan = width + sectionFudge;
-//            sectionSpan = m_border->rect().width() + sectionFudge;
             xVal = sectionSpan / 2.0;
             yVal = 0.0;
             centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal, -yVal, xVal, yVal);
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-//            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
         if (vert) {
             centerLine = new QGICenterLine();
             addToGroup(centerLine);
             centerLine->setPos(0.0, 0.0);
-//            double scale = viewPart->getScale();
             double height = Rez::guiX(viewPart->getBoxY());
             sectionSpan = height + sectionFudge;
-//            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
             centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal, -yVal, xVal, yVal);
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
             centerLine->setZValue(ZVALUE::SECTIONLINE);
-//            centerLine->setRotation(viewPart->Rotation.getValue());
             centerLine->draw();
         }
     }

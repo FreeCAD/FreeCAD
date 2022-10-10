@@ -132,7 +132,28 @@ double Preferences::vertexScale()
     return result;
 }
 
+int Preferences::scaleType()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    int result = hGrp->GetInt("DefaultScaleType", 0);
+    return result;
+}
 
+double Preferences::scale()
+{
+    int prefScaleType = scaleType();
+    if (prefScaleType == 0) {       //page scale
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+              .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+        return hGrp->GetFloat("DefaultPageScale", 1.0);
+    } else if (prefScaleType == 1) {    //custom scale
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+              .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+        return hGrp->GetFloat("DefaultViewScale", 1.0);
+    }
+    return 1.0;
+}
 
 //lightgray #D3D3D3
 

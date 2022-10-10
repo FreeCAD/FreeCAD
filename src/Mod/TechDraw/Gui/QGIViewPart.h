@@ -68,6 +68,7 @@ public:
     QRectF boundingRect() const override;
     virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
+    virtual void drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b);
     virtual void drawCenterLines(bool b);
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
     virtual void drawMatting();

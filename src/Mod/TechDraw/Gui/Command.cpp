@@ -30,8 +30,10 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Link.h>
+
 #include <Base/Console.h>
 #include <Base/Tools.h>
+
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -43,14 +45,18 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+
 #include <Mod/Spreadsheet/App/Sheet.h>
+
+#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
-#include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
@@ -62,6 +68,7 @@
 #include "QGVPage.h"
 #include "Rez.h"
 #include "TaskActiveView.h"
+#include "TaskComplexSection.h"
 #include "TaskDetail.h"
 #include "TaskProjGroup.h"
 #include "TaskProjection.h"
@@ -510,6 +517,120 @@ bool CmdTechDrawSectionView::isActive()
         taskInProgress = Gui::Control().activeDialog();
     }
     return (havePage && haveView && !taskInProgress);
+}
+
+//===========================================================================
+// TechDraw_ComplexSection
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawComplexSection)
+
+CmdTechDrawComplexSection::CmdTechDrawComplexSection()
+  : Command("TechDraw_ComplexSection")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Complex Section");
+    sToolTipText    = QT_TR_NOOP("Insert a Complex Section");
+    sWhatsThis      = "TechDraw_ComplexSection";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/TechDraw_ComplexSection";
+}
+
+void CmdTechDrawComplexSection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
+    TechDraw::DrawViewPart* baseView(nullptr);
+    std::vector<App::DocumentObject*> shapes;
+    std::vector<App::DocumentObject*> xShapes;
+    App::DocumentObject* profileObject(nullptr);
+    std::vector<std::string> profileSubs;
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;  //mystery
+    bool single = false;                                           //mystery
+    auto selection = getSelection().getSelectionEx(nullptr,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   resolve,
+                                                   single);
+    for (auto& sel: selection) {
+        bool is_linked = false;
+        auto obj = sel.getObject();
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+            continue;
+        }
+        if (obj->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            //use the dvp's Sources as sources for this ComplexSection &
+            //check the subelement(s) to see if they can be used as a profile
+            baseView = static_cast<TechDraw::DrawViewPart*>(obj);
+            if (!sel.getSubNames().empty()) {
+                //need to add profile subs as parameter
+                profileObject = baseView;
+                profileSubs = sel.getSubNames();
+            }
+            continue;
+        }
+        if (obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+            obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
+            obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != this->getDocument()) {
+            std::set<App::DocumentObject*> parents = obj->getInListEx(true);
+            for (auto& parent : parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != this->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::LinkGroup::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
+            xShapes.push_back(obj);
+            continue;
+        }
+        //not a Link and not null.  assume to be drawable.  Undrawables will be
+        // skipped later.
+        if (TechDraw::DrawComplexSection::isProfileObject(obj)) {
+            profileObject = obj;
+        } else {
+            shapes.push_back(obj);
+        }
+    }
+
+    if (shapes.empty() &&
+        xShapes.empty() &&
+        !baseView) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Base View, Shapes, Groups or Links in this selection"));
+        return;
+    }
+    if (!profileObject) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No profile object found in selection"));
+        return;
+    }
+
+    Gui::Control().showDialog(new TaskDlgComplexSection(page, baseView,
+                                                        shapes, xShapes,
+                                                        profileObject, profileSubs));
+}
+
+bool CmdTechDrawComplexSection::isActive()
+{
+    return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
@@ -1510,4 +1631,5 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
     rcCmdMgr.addCommand(new CmdTechDrawBalloon());
     rcCmdMgr.addCommand(new CmdTechDrawProjectShape());
+    rcCmdMgr.addCommand(new CmdTechDrawComplexSection());
 }
