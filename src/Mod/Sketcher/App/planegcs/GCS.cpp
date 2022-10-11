@@ -3712,6 +3712,8 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool /*isFine*/, bool 
             double alpha=1;
             alpha = std::min(alpha, subsysA->maxStep(plistAB,xdir));
 
+            // From the book "Numerical Optimization - Jorge Nocedal, Stephen J. Wright".
+            // See https://forum.freecadweb.org/viewtopic.php?f=10&t=35469.
             // Eq. 18.32
             // double mu = lambda.lpNorm<Eigen::Infinity>() + 0.01;
             // Eq. 18.33
