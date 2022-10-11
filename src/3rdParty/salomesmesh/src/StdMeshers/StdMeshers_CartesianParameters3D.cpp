@@ -783,7 +783,7 @@ std::ostream & StdMeshers_CartesianParameters3D::SaveTo(std::ostream & save)
 
 //=======================================================================
 //function : LoadFrom
-//purpose  : resore my parameters from a stream
+//purpose  : restore my parameters from a stream
 //=======================================================================
 
 std::istream & StdMeshers_CartesianParameters3D::LoadFrom(std::istream & load)
