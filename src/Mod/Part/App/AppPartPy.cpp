@@ -2032,7 +2032,7 @@ private:
 #else
 #ifdef FC_OS_WIN32
             //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknow glyph in even positions, and wrong characters in
+            //will result in unknown glyph in even positions, and wrong characters in
             //odd positions.
             unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
 #else
@@ -2048,7 +2048,7 @@ private:
 #else
 #ifdef FC_OS_WIN32
             //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknow glyph in even positions, and wrong characters in
+            //will result in unknown glyph in even positions, and wrong characters in
             //odd positions.
             unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
 #else
