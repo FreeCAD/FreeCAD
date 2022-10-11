@@ -746,6 +746,20 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i, size_t p)
     return d[p];
 }
 
+double BSpline::splineValue(double x, size_t k, size_t p, VEC_D& d, const VEC_D& flatknots)
+{
+    for (size_t r = 1; r < p + 1; ++r) {
+        for (size_t j = p; j > r - 1; --j) {
+            double alpha =
+                (x - flatknots[j + k - p]) /
+                (flatknots[j + 1 + k - r] - flatknots[j + k - p]);
+            d[j] = (1.0 - alpha) * d[j-1] + alpha * d[j];
+        }
+    }
+
+    return d[p];
+}
+
 void BSpline::setupFlattenedKnots()
 {
     flattenedknots.clear();

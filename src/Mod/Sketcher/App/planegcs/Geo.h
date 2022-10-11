@@ -308,6 +308,13 @@ namespace GCS
         inline double getLinCombFactor(double x, size_t k, size_t i)
         { return getLinCombFactor(x, k, i, degree); }
         void setupFlattenedKnots();
+        /// finds spline(x) for the given parameter and knot/pole vector
+        /// x is the point at which combination is needed
+        /// k is the range in `flattenedknots` that contains x
+        /// p is the degree
+        /// d is the vector of (relevant) poles (this will be changed)
+        /// flatknots is the vector of knots
+        static double splineValue(double x, size_t k, size_t p, VEC_D& d, const VEC_D& flatknots);
     };
 
 } //namespace GCS
