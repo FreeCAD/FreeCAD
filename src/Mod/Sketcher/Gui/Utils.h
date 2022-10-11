@@ -129,13 +129,12 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj);
 
-//convenience functions for cursor coodinates
+//convenience functions for cursor coordinates
 bool        hideUnits();
 bool        showCursorCoords();
 bool        useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
-
 }
 
 /// converts a 2D vector into a 3D vector in the XY plane
