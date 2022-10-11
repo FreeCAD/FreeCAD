@@ -490,6 +490,8 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initpa
         else
             pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
     }
+    for (size_t i = 0; i < numpoints; ++i)
+        pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
 
     factors.resize(numpoints);
     if (b.flattenedknots.empty())
@@ -511,47 +513,59 @@ void ConstraintPointOnBSpline::rescale(double coef)
 
 double ConstraintPointOnBSpline::error()
 {
-    // We need to find factors over and over again because param can change.
-    // TODO: We don't need to find the factors here, just for grad.
-    // Calculate position with factors because we have the method.
     double sum = 0;
+    double wsum = 0;
 
     // TODO: maybe make it global so it doesn't have to be created every time
     VEC_D d(numpoints);
-    // TODO: Also support rational b-splines
     for (size_t i = 0; i < numpoints; ++i)
-        d[i] = *poleat(i);
-    sum += BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+        d[i] = *poleat(i) * *weightat(i);
+    sum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i)
+        d[i] = *weightat(i);
+    wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
 
     // TODO: Change the poles as the point moves between pieces
 
-    return scale * (*thepoint() - sum);
+    return scale * (*thepoint() * wsum - sum);
 }
 
 double ConstraintPointOnBSpline::grad(double *gcsparam)
 {
     double deriv=0.;
     if (gcsparam == thepoint()) {
-        // TODO: Change this for rational splines
-        deriv += 1.;
+        VEC_D d(numpoints);
+        for (size_t i = 0; i < numpoints; ++i)
+            d[i] = *weightat(i);
+        double wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+        deriv += wsum;
     }
 
     if (gcsparam == theparam()) {
-        // TODO: Implement derivative and return value
         VEC_D d(numpoints - 1);
         for (size_t i = 1; i < numpoints; ++i) {
             d[i-1] =
-                (*poleat(i) - *poleat(i-1)) /
+                (*poleat(i) * *weightat(i) - *poleat(i-1) * *weightat(i-1)) /
                 (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
         }
         double slopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
-        deriv -= bsp.degree * slopevalue;
+        for (size_t i = 1; i < numpoints; ++i) {
+            d[i-1] =
+                (*weightat(i) - *weightat(i-1)) /
+                (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
+        }
+        double wslopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
+        deriv += (*thepoint() * wslopevalue - slopevalue) * bsp.degree;
     }
 
     for (size_t i = 0; i < numpoints; ++i) {
         if (gcsparam == poleat(i)) {
             factors[i] = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
-            deriv += -factors[i];
+            deriv += -(*weightat(i) * factors[i]);
+        }
+        if (gcsparam == weightat(i)) {
+            factors[i] = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += (*thepoint() - *poleat(i)) * factors[i];
         }
     }
 
