@@ -42,8 +42,8 @@ class TestFeature:
     def __init__(self):
         self.Path = Path.Path()
 
-    def addProperty(self, typ, nam, category, tip):
-        setattr(self, nam, None)
+    def addProperty(self, typ, name, category, tip):
+        setattr(self, name, None)
 
     def setEditorMode(self, prop, mode):
         pass

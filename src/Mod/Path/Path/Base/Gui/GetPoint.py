@@ -76,17 +76,17 @@ class TaskPanel:
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
         self.formPoint.buttonBox.rejected.connect(self.pointReject)
 
-        self.formPoint.globalX.editingFinished.connect(self.updatePoint)
-        self.formPoint.globalY.editingFinished.connect(self.updatePoint)
-        self.formPoint.globalZ.editingFinished.connect(self.updatePoint)
+        self.formPoint.XGlobal.editingFinished.connect(self.updatePoint)
+        self.formPoint.YGlobal.editingFinished.connect(self.updatePoint)
+        self.formPoint.ZGlobal.editingFinished.connect(self.updatePoint)
 
-        self.formPoint.globalX.setProperty(
+        self.formPoint.XGlobal.setProperty(
             "unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2]
         )
-        self.formPoint.globalY.setProperty(
+        self.formPoint.YGlobal.setProperty(
             "unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2]
         )
-        self.formPoint.globalZ.setProperty(
+        self.formPoint.ZGlobal.setProperty(
             "unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2]
         )
 
@@ -123,11 +123,11 @@ class TaskPanel:
 
         def displayPoint(p):
             self.point = p
-            self.formPoint.globalX.setProperty("rawValue", p.x)
-            self.formPoint.globalY.setProperty("rawValue", p.y)
-            self.formPoint.globalZ.setProperty("rawValue", p.z)
-            self.formPoint.globalX.setFocus()
-            self.formPoint.globalX.selectAll()
+            self.formPoint.XGlobal.setProperty("rawValue", p.x)
+            self.formPoint.YGlobal.setProperty("rawValue", p.y)
+            self.formPoint.ZGlobal.setProperty("rawValue", p.z)
+            self.formPoint.XGlobal.setFocus()
+            self.formPoint.XGlobal.selectAll()
 
         def mouseMove(cb):
             p = None
@@ -256,7 +256,7 @@ class TaskPanel:
         if usePoint and self.point:
             self.pt = self.point
         else:
-            x = FreeCAD.Units.Quantity(self.formPoint.globalX.text()).Value
-            y = FreeCAD.Units.Quantity(self.formPoint.globalY.text()).Value
-            z = FreeCAD.Units.Quantity(self.formPoint.globalZ.text()).Value
+            x = FreeCAD.Units.Quantity(self.formPoint.XGlobal.text()).Value
+            y = FreeCAD.Units.Quantity(self.formPoint.YGlobal.text()).Value
+            z = FreeCAD.Units.Quantity(self.formPoint.ZGlobal.text()).Value
             self.pt = FreeCAD.Vector(x, y, z)

@@ -367,21 +367,21 @@ class TaskPanel(object):
         row = index.row()
 
         obj = self.model.item(row, self.ColumnVal).data(Delegate.RoleObject)
-        nam = self.model.item(row, self.ColumnVal).data(Delegate.RoleProperty)
-        grp = obj.getGroupOfProperty(nam)
-        typ = obj.getTypeIdOfProperty(nam)
+        prop = self.model.item(row, self.ColumnVal).data(Delegate.RoleProperty)
+        grp = obj.getGroupOfProperty(prop)
+        typ = obj.getTypeIdOfProperty(prop)
 
         dialog = PropertyCreate(self.obj, grp, typ, False)
-        if dialog.exec_(nam):
-            val = getattr(obj, nam)
-            obj.removeProperty(nam)
+        if dialog.exec_(prop):
+            val = getattr(obj, prop)
+            obj.removeProperty(prop)
             name, info = self.addCustomProperty(self.obj, dialog)
             try:
-                setattr(obj, nam, val)
+                setattr(obj, prop, val)
             except Exception:
                 # this can happen if the old enumeration value doesn't exist anymore
                 pass
-            newVal = PathUtil.getPropertyValueString(obj, nam)
+            newVal = PathUtil.getPropertyValueString(obj, prop)
             self.model.setData(
                 self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole
             )
