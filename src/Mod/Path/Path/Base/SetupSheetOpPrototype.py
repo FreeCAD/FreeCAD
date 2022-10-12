@@ -127,7 +127,11 @@ class PropertyFloat(Property):
         return "Float"
 
     def valueFromString(self, string):
-        return float(string)
+        try:
+            return float(string)
+        except ValueError:
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
+            raise
 
 
 class PropertyInteger(Property):
@@ -135,7 +139,11 @@ class PropertyInteger(Property):
         return "Integer"
 
     def valueFromString(self, string):
-        return int(string)
+        try:
+            return int(string)
+        except ValueError:
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
+            raise
 
 
 class PropertyPercent(PropertyInteger):
@@ -148,7 +156,11 @@ class PropertyBool(Property):
         return "Bool"
 
     def valueFromString(self, string):
-        return bool(string)
+        try:
+            return bool(string)
+        except ValueError:
+            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
+            raise
 
 
 class PropertyString(Property):
