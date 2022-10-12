@@ -26,8 +26,7 @@
 # ***************************************************************************
 """Provides functions to create PointArray objects.
 
-The copies will be placed along a list of points defined by a sketch,
-a `Part::Compound`, or a `Draft Block`.
+The copies will be created at the points of a point object.
 """
 ## @package make_pointarray
 # \ingroup draftmake
@@ -51,8 +50,8 @@ if App.GuiUp:
 def make_point_array(base_object, point_object, extra=None, use_link=True):
     """Make a Draft PointArray object.
 
-    Distribute copies of a `base_object` in the points
-    defined by `point_object`.
+    Create copies of a `base_object` at the points defined by
+    a `point_object`.
 
     Parameters
     ----------
@@ -63,26 +62,9 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
         Since a label is not guaranteed to be unique in a document,
         it will use the first object found with this label.
 
-    point_object: Part::Feature or str
-        An object that is a type of container for holding points.
-        This object must have one of the following properties `Geometry`,
-        `Links`, or `Components`, which themselves must contain objects
-        with `X`, `Y`, and `Z` properties.
-
-        This object could be:
-
-        - A `Sketcher::SketchObject`, as it has a `Geometry` property.
-          The sketch can contain different elements but it must contain
-          at least one `Part::GeomPoint`.
-
-        - A `Part::Compound`, as it has a `Links` property. The compound
-          can contain different elements but it must contain at least
-          one object that has `X`, `Y`, and `Z` properties,
-          like a `Draft Point` or a `Part::Vertex`.
-
-        - A `Draft Block`, as it has a `Components` property. This `Block`
-          behaves essentially the same as a `Part::Compound`. It must
-          contain at least a point or vertex object.
+    point_object: Part::Feature, Sketcher::SketchObject, Mesh::Feature,
+                  Points::FeatureCustom or str
+        The object must have vertices and/or points.
 
     extra: Base::Placement, Base::Vector3, or Base::Rotation, optional
         It defaults to `None`.
@@ -105,7 +87,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(translate("draft","No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     if isinstance(base_object, str):
@@ -114,7 +96,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     found, base_object = utils.find_object(base_object, doc)
     if not found:
         _msg("base_object: {}".format(base_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object not in document."))
         return None
 
     _msg("base_object: {}".format(base_object.Label))
@@ -125,14 +107,14 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     found, point_object = utils.find_object(point_object, doc)
     if not found:
         _msg("point_object: {}".format(point_object_str))
-        _err(translate("draft","Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object not in document."))
         return None
 
     _msg("point_object: {}".format(point_object.Label))
-    if (not hasattr(point_object, "Geometry")
-            and not hasattr(point_object, "Links")
-            and not hasattr(point_object, "Components")):
-        _err(translate("draft","Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'."))
+    if not ((hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"))
+            or hasattr(point_object, "Mesh")
+            or hasattr(point_object, "Points")):
+        _err(translate("draft", "Wrong input: object has the wrong type."))
         return None
 
     _msg("extra: {}".format(extra))
@@ -144,7 +126,7 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
                                    App.Rotation))],
                          name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a placement, a vector, or a rotation."))
+        _err(translate("draft", "Wrong input: must be a placement, a vector, or a rotation."))
         return None
 
     # Convert the vector or rotation to a full placement

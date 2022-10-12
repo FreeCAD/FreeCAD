@@ -23,32 +23,20 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the PointArray object.
-
-To Do
------
-This object currently uses the points inside a `Draft Block`,
-a `Part::Compound`, or a `Sketch`. To make this more general,
-this object could be augmented to extract a list of points
-from the vertices of any object with a `Part::TopoShape` (2D or 3D).
-
-See the `get_point_list` function for more information.
 """
 ## @package pointarray
 # \ingroup draftobjects
 # \brief Provides the object code for the PointArray object.
 
-import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+import DraftVecUtils
 import draftutils.utils as utils
 
 from draftutils.messages import _wrn, _err
 from draftutils.translate import translate
 from draftobjects.draftlink import DraftLink
-
-# Delay import of module until first use because it is heavy
-Part = lz.LazyLoader("Part", globals(), "Part")
 
 ## \addtogroup draftobjects
 # @{
@@ -75,7 +63,7 @@ class PointArray(DraftLink):
         properties = obj.PropertiesList
 
         if "Base" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Base object that will be duplicated")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Base object that will be duplicated")
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
@@ -83,7 +71,7 @@ class PointArray(DraftLink):
             obj.Base = None
 
         if "PointObject" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Object containing points used to distribute the base object, for example, a sketch or a Part compound.\nThe sketch or compound must contain at least one explicit point or vertex object.")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Object containing points used to distribute the copies.")
             obj.addProperty("App::PropertyLink",
                             "PointObject",
                             "Objects",
@@ -91,7 +79,7 @@ class PointArray(DraftLink):
             obj.PointObject = None
 
         if "Count" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Total number of elements in the array.\nThis property is read-only, as the number depends on the points contained within 'Point Object'.")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Number of copies in the array.\nThis property is read-only, as the number depends on the points in 'Point Object'.")
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
@@ -100,7 +88,7 @@ class PointArray(DraftLink):
             obj.setEditorMode("Count", 1)  # Read only
 
         if "ExtraPlacement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Additional placement, shift and rotation, that will be applied to each copy")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, that will be applied to each copy")
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
@@ -108,7 +96,7 @@ class PointArray(DraftLink):
             obj.ExtraPlacement = App.Placement()
 
         if self.use_link and "ExpandArray" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Show the individual array elements (only for Link arrays)")
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
@@ -118,8 +106,8 @@ class PointArray(DraftLink):
     def execute(self, obj):
         """Run when the object is created or recomputed."""
 
-        pt_list, count = get_point_list(obj.PointObject)
-        obj.Count = count
+        pt_list = get_point_list(obj.PointObject)
+        obj.Count = len(pt_list)
         pls = build_placements(obj.Base, pt_list, obj.ExtraPlacement)
 
         return super(PointArray, self).buildShape(obj, obj.Placement, pls)
@@ -161,82 +149,62 @@ class PointArray(DraftLink):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft","added property 'ExtraPlacement'"))
 
 
+def remove_equal_vecs (vec_list):
+    """Remove equal vectors from a list.
+
+    Parameters
+    ----------
+    vec_list: list of App.Vectors
+
+    Returns
+    -------
+    list of App.Vectors
+    """
+    res_list = []
+    for vec in vec_list:
+        for res in res_list:
+            if DraftVecUtils.equals(vec, res):
+                break
+        else:
+            res_list.append(vec)
+    return res_list
+
 def get_point_list(point_object):
     """Extract a list of points from a point object.
 
     Parameters
     ----------
-    point_object: Part::Feature
-        Either a `Draft Block`, a `Part::Compound`,
-        or a `Sketcher::SketchObject` containing points.
+    point_object: Part::Feature, Sketcher::SketchObject, Mesh::Feature
+                  or Points::FeatureCustom
+        The object must have vertices and/or points.
 
     Returns
     -------
-    list, int
-        A list of points that have `X`, `Y`, `Z` coordinates;
-        the second element is the number of elements.
-        If the list is empty, the second element is zero.
-
-    To Do
-    -----
-    - This function currently extracts the points inside a `Draft Block`,
-      a `Part::Compound`, or a `Sketch`. To make this more general,
-      this function could be augmented to extract a list of points
-      from the vertices of any object with a `Part::TopoShape` (2D or 3D).
-
-    - If the input is a `Part::Compound`, it should handle all valid types
-      of objects simultaneously, that is, `Draft Points`, `Part::Vertexes`,
-      `Sketches` with points, and possibly any other object with
-      a `Part::TopoShape` as in the previous point.
-      It should recursively call itself to extract
-      points contained in nested compounds.
+    list of App.Vectors
     """
-    # If its a clone, extract the real object
-    while utils.get_type(point_object) == 'Clone':
-        point_object = point_object.Objects[0]
+    if hasattr(point_object, "Shape") and hasattr(point_object.Shape, "Vertexes"):
+        pt_list = [v.Point for v in point_object.Shape.Vertexes]
+        # For compatibility with previous versions: add all points from sketch (including construction geometry):
+        if hasattr(point_object, 'Geometry'):
+            place = point_object.Placement
+            for geo in point_object.Geometry:
+                if geo.TypeId == "Part::GeomPoint":
+                    pt_list.append(place.multVec(App.Vector(geo.X, geo.Y, geo.Z)))
+    elif hasattr(point_object, "Mesh"):
+        pt_list = [p.Vector for p in point_object.Mesh.Points]
+    elif hasattr(point_object, "Points"):
+        pt_list = point_object.Points.Points
+    else:
+        return []
 
-    # If the point object doesn't have actual points
-    # the point list will remain empty
-    pt_list = list()
-
-    if hasattr(point_object, 'Geometry'):
-        # Intended for a Sketcher::SketchObject, which has this property
-        place = point_object.Placement
-        for geo in point_object.Geometry:
-            # It must contain at least one Part::GeomPoint.
-            if (hasattr(geo, 'X')
-                    and hasattr(geo, 'Y') and hasattr(geo, 'Z')):
-                point = geo.copy()
-                point.translate(place.Base)
-                point.rotate(place)
-                pt_list.append(point)
-
-        count = len(pt_list)
-        return pt_list, count
-
-    obj_list = list()
-    if hasattr(point_object, 'Links'):
-        # Intended for a Part::Compound, which has this property
-        obj_list = point_object.Links
-    elif hasattr(point_object, 'Components'):
-        # Intended for a Draft Block, which has this property
-        obj_list = point_object.Components
-
-    # These compounds should have at least one discrete point object
-    # like a Draft Point or a Part::Vertex
-    for _obj in obj_list:
-        if hasattr(_obj, 'X') and hasattr(_obj, 'Y') and hasattr(_obj, 'Z'):
-            pt_list.append(_obj)
-
-    count = len(pt_list)
-    return pt_list, count
+    return remove_equal_vecs(pt_list)
 
 def build_placements(base_object, pt_list=None, placement=App.Placement()):
     """Build a placements from the base object and list of points.
 
     Returns
     -------
-    list(App.Placement)
+    list of App.Placements
     """
     if not pt_list:
         _err(translate("Draft",
@@ -255,68 +223,11 @@ def build_placements(base_object, pt_list=None, placement=App.Placement()):
         # are combined by multiplying them.
         new_pla.Base = placement.Base
         new_pla.Rotation = original_rotation * placement.Rotation
-
-        if point.TypeId == "Part::Vertex":
-            # For this object the final position is the value of the Placement
-            # plus the value of the X, Y, Z properties
-            place = App.Vector(point.X,
-                               point.Y,
-                               point.Z) + point.Placement.Base
-
-        elif hasattr(point, 'Placement'):
-            # If the point object has a placement (Draft Point), use it
-            # to displace the copy of the shape
-            place = point.Placement.Base
-
-            # The following old code doesn't make much sense because it uses
-            # the rotation value of the auxiliary point.
-            # Even if the point does have a rotation property as part of its
-            # placement, rotating a point by itself is a strange workflow.
-            # We want to use the position of the point but not its rotation,
-            # which will probably be zero anyway.
-
-            # Old code:
-            # place = point.Placement
-            # new_shape.rotate(place.Base,
-            #                  place.Rotation.Axis,
-            #                  math.degrees(place.Rotation.Angle))
-        else:
-            # In other cases (Sketch with points)
-            # translate by the X, Y, Z coordinates
-            place = App.Vector(point.X, point.Y, point.Z)
-
-        new_pla.translate(place)
+        new_pla.translate(point)
 
         pls.append(new_pla)
 
     return pls
-
-def build_copies(base_object, pt_list=None, placement=App.Placement()):
-    """Build a compound of copies from the base object and list of points.
-
-    Returns
-    -------
-    Part::TopoShape
-        The compound shape created by `Part.makeCompound`.
-    """
-
-    if not pt_list:
-        _err(translate("Draft",
-                       "Point object doesn't have a discrete point, "
-                       "it cannot be used for an array."))
-        shape = base_object.Shape.copy()
-        return shape
-
-    copies = list()
-
-    for pla in build_copies(base_object, pt_list, placement):
-        new_shape = base_object.Shape.copy()
-        new_shape.Placement = pla
-
-        copies.append(new_shape)
-
-    shape = Part.makeCompound(copies)
-    return shape
 
 
 # Alias for compatibility with v0.18 and earlier

@@ -25,16 +25,7 @@
 # ***************************************************************************
 """Provides GUI tools to create PointArray objects.
 
-The copies will be created where various points are located.
-
-The points need to be grouped under a compound before using this tool.
-To create this compound, select various points and then use the Draft Upgrade
-tool to create a `Block`, or use a `Part::Compound`.
-You can also create a Sketch, and place explicit points.
-
-Other geometrical objects may be contained inside the compounds but only
-the explicit point and vertex objects will be used when creating
-the point array.
+The copies will be created at the points of a point object.
 """
 ## @package gui_pointarray
 # \ingroup draftguitools
@@ -74,7 +65,7 @@ class PointArray(gui_base_original.Modifier):
 
         return {'Pixmap': 'Draft_PointArray',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_PointArray", "Point array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected object, and places the copies at the position of various points.\n\nThe points need to be grouped under a compound of points before using this tool.\nTo create this compound, select various points and then use the Part Compound tool,\nor use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.\n\nSelect the base object, and then select the compound or the sketch to create the point array.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_PointArray", "Creates copies of the selected base object at the points of a point object.\nFirst select the base object, and then select the point object.")}
 
     def Activated(self, name="Point array"):
         """Execute when the command is called."""
