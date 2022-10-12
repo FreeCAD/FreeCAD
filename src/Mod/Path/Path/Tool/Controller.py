@@ -187,13 +187,20 @@ class ToolController:
                         template.get(ToolControllerTemplate.ToolNumber)
                     )
                 if template.get(ToolControllerTemplate.Tool):
+                    self.ensureToolBit(obj)
                     toolVersion = template.get(ToolControllerTemplate.Tool).get(
                         ToolControllerTemplate.Version
                     )
-                    self.ensureToolBit(obj)
-                    obj.Tool = PathToolBit.Factory.CreateFromAttrs(
-                        template.get(ToolControllerTemplate.Tool)
-                    )
+                    if toolVersion == 2:
+                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(
+                            template.get(ToolControllerTemplate.Tool)
+                        )
+                    else:
+                        obj.Tool = None
+                        if toolVersion == 1:
+                            Path.Log.error(f"{obj.Name} - legacy Tools no longer supported - ignoring")
+                        else:
+                            Path.Log.error(f"{obj.Name} - unknown Tool version {toolVersion} - ignoring")
                     if (
                         obj.Tool
                         and obj.Tool.ViewObject
@@ -246,7 +253,7 @@ class ToolController:
         return attrs
 
     def execute(self, obj):
-        Path.Log.track()
+        Path.Log.track(obj.Name)
 
         args = {
             "toolnumber": obj.ToolNumber,
@@ -304,7 +311,7 @@ def Create(
     assignTool=True,
 ):
 
-    Path.Log.track(tool, toolNumber)
+    Path.Log.track(name, tool, toolNumber, assignViewProvider, assignTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
@@ -333,8 +340,10 @@ def FromTemplate(template, assignViewProvider=True):
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
     obj = Create(name, assignViewProvider=True, assignTool=False)
     obj.Proxy.setFromTemplate(obj, template)
-
-    return obj
+    if obj.Tool:
+        return obj
+    FreeCAD.ActiveDocument.removeObject(obj.Name)
+    return None
 
 
 if FreeCAD.GuiUp:

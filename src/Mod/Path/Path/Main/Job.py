@@ -604,7 +604,11 @@ class ObjectJob:
 
                 if attrs.get(JobTemplate.ToolController):
                     for tc in attrs.get(JobTemplate.ToolController):
-                        tcs.append(PathToolController.FromTemplate(tc))
+                        ctrl = PathToolController.FromTemplate(tc)
+                        if ctrl:
+                            tcs.append(ctrl)
+                        else:
+                            Path.Log.debug(f"skipping TC {tc['name']}")
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(
                         obj, attrs.get(JobTemplate.Stock)
@@ -622,7 +626,8 @@ class ObjectJob:
                     obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
 
                 Path.Log.debug("setting tool controllers (%d)" % len(tcs))
-                obj.Tools.Group = tcs
+                if tcs:
+                    obj.Tools.Group = tcs
             else:
                 Path.Log.error(
                     "Unsupported PathJob template version {}".format(
