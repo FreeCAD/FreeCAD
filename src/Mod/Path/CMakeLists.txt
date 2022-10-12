@@ -10,8 +10,6 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestPathApp.py
-    PathMachineState.py
-    PathFeedRate.py
 )
 
 if(BUILD_GUI)
@@ -25,168 +23,210 @@ INSTALL(
         Mod/Path
 )
 
+SET(PathPython_SRCS
+    Path/__init__.py
+    Path/Log.py
+    Path/Geom.py
+    Path/GuiInit.py
+    Path/Preferences.py
+)
+
+SET(PathPythonBase_SRCS
+    Path/Base/__init__.py
+    Path/Base//Drillable.py
+    Path/Base/MachineState.py
+    Path/Base/FeedRate.py
+    Path/Base/Property.py
+    Path/Base/PropertyBag.py
+    Path/Base/SetupSheet.py
+    Path/Base/SetupSheetOpPrototype.py
+    Path/Base/Util.py
+)
+
+SET(PathPythonBaseGui_SRCS
+    Path/Base/Gui/__init__.py
+    Path/Base/Gui/GetPoint.py
+    Path/Base/Gui/IconViewProvider.py
+    Path/Base/Gui/PreferencesAdvanced.py
+    Path/Base/Gui/PropertyBag.py
+    Path/Base/Gui/PropertyEditor.py
+    Path/Base/Gui/SetupSheet.py
+    Path/Base/Gui/SetupSheetOpPrototype.py
+    Path/Base/Gui/Util.py
+)
+
+SET(PathPythonDressup_SRCS
+    Path/Dressup/__init__.py
+    Path/Dressup/Utils.py
+    Path/Dressup/Boundary.py
+    Path/Dressup/Tags.py
+)
+
+SET(PathPythonDressupGui_SRCS
+    Path/Dressup/Gui/__init__.py
+    Path/Dressup/Gui/AxisMap.py
+    Path/Dressup/Gui/Dogbone.py
+    Path/Dressup/Gui/Dragknife.py
+    Path/Dressup/Gui/LeadInOut.py
+    Path/Dressup/Gui/Boundary.py
+    Path/Dressup/Gui/Preferences.py
+    Path/Dressup/Gui/RampEntry.py
+    Path/Dressup/Gui/Tags.py
+    Path/Dressup/Gui/TagPreferences.py
+    Path/Dressup/Gui/ZCorrect.py
+)
+
+SET(PathPythonMain_SRCS
+    Path/Main/__init__.py
+    Path/Main/Job.py
+    Path/Main/Stock.py
+)
+
+SET(PathPythonMainGui_SRCS
+    Path/Main/Gui/__init__.py
+    Path/Main/Gui/Camotics.py
+    Path/Main/Gui/Fixture.py
+    Path/Main/Gui/Inspect.py
+    Path/Main/Gui/Job.py
+    Path/Main/Gui/JobCmd.py
+    Path/Main/Gui/JobDlg.py
+    Path/Main/Gui/PreferencesJob.py
+    Path/Main/Gui/Sanity.py
+    Path/Main/Gui/Simulator.py
+)
+
+SET(PathPythonTools_SRCS
+    Path/Tool/__init__.py
+    Path/Tool/Bit.py
+    Path/Tool/Controller.py
+)
+
+SET(PathPythonToolsGui_SRCS
+    Path/Tool/Gui/__init__.py
+    Path/Tool/Gui/Bit.py
+    Path/Tool/Gui/BitCmd.py
+    Path/Tool/Gui/BitEdit.py
+    Path/Tool/Gui/BitLibraryCmd.py
+    Path/Tool/Gui/BitLibrary.py
+    Path/Tool/Gui/Controller.py
+)
+
+SET(PathPythonPost_SRCS
+    Path/Post/__init__.py
+    Path/Post/Command.py
+    Path/Post/Processor.py
+    Path/Post/Utils.py
+    Path/Post/UtilsArguments.py
+    Path/Post/UtilsExport.py
+    Path/Post/UtilsParse.py
+)
+
+SET(PathPythonPostScripts_SRCS
+    Path/Post/scripts/__init__.py
+    Path/Post/scripts/centroid_post.py
+    Path/Post/scripts/comparams_post.py
+    Path/Post/scripts/dxf_post.py
+    Path/Post/scripts/dynapath_post.py
+    Path/Post/scripts/example_pre.py
+    Path/Post/scripts/fablin_post.py
+    Path/Post/scripts/fanuc_post.py
+    Path/Post/scripts/gcode_pre.py
+    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/heidenhain_post.py
+    Path/Post/scripts/jtech_post.py
+    Path/Post/scripts/KineticNCBeamicon2_post.py
+    Path/Post/scripts/linuxcnc_post.py
+    Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/marlin_post.py
+    Path/Post/scripts/nccad_post.py
+    Path/Post/scripts/opensbp_post.py
+    Path/Post/scripts/opensbp_pre.py
+    Path/Post/scripts/philips_post.py
+    Path/Post/scripts/refactored_centroid_post.py
+    Path/Post/scripts/refactored_grbl_post.py
+    Path/Post/scripts/refactored_linuxcnc_post.py
+    Path/Post/scripts/refactored_mach3_mach4_post.py
+    Path/Post/scripts/refactored_test_post.py
+    Path/Post/scripts/rml_post.py
+    Path/Post/scripts/rrf_post.py
+    Path/Post/scripts/slic3r_pre.py
+    Path/Post/scripts/smoothie_post.py
+    Path/Post/scripts/uccnc_post.py
+)
+
+SET(PathPythonOp_SRCS
+    Path/Op/__init__.py
+    Path/Op/Adaptive.py
+    Path/Op/Area.py
+    Path/Op/Base.py
+    Path/Op/CircularHoleBase.py
+    Path/Op/Custom.py
+    Path/Op/Deburr.py
+    Path/Op/Engrave.py
+    Path/Op/EngraveBase.py
+    Path/Op/FeatureExtension.py
+    Path/Op/Drilling.py
+    Path/Op/Helix.py
+    Path/Op/MillFace.py
+    Path/Op/Pocket.py
+    Path/Op/PocketBase.py
+    Path/Op/PocketShape.py
+    Path/Op/Probe.py
+    Path/Op/Profile.py
+    Path/Op/Slot.py
+    Path/Op/Surface.py
+    Path/Op/SurfaceSupport.py
+    Path/Op/ThreadMilling.py
+    Path/Op/Util.py
+    Path/Op/Vcarve.py
+    Path/Op/Waterline.py
+)
+
+SET(PathPythonOpGui_SRCS
+    Path/Op/Gui/__init__.py
+    Path/Op/Gui/Adaptive.py
+    Path/Op/Gui/Array.py
+    Path/Op/Gui/Base.py
+    Path/Op/Gui/CircularHoleBase.py
+    Path/Op/Gui/Comment.py
+    Path/Op/Gui/Copy.py
+    Path/Op/Gui/Custom.py
+    Path/Op/Gui/Deburr.py
+    Path/Op/Gui/Drilling.py
+    Path/Op/Gui/Engrave.py
+    Path/Op/Gui/FeatureExtension.py
+    Path/Op/Gui/Helix.py
+    Path/Op/Gui/Hop.py
+    Path/Op/Gui/MillFace.py
+    Path/Op/Gui/Pocket.py
+    Path/Op/Gui/PocketBase.py
+    Path/Op/Gui/PocketShape.py
+    Path/Op/Gui/Probe.py
+    Path/Op/Gui/Profile.py
+    Path/Op/Gui/Selection.py
+    Path/Op/Gui/SimpleCopy.py
+    Path/Op/Gui/Slot.py
+    Path/Op/Gui/Stop.py
+    Path/Op/Gui/Surface.py
+    Path/Op/Gui/ThreadMilling.py
+    Path/Op/Gui/Vcarve.py
+    Path/Op/Gui/Waterline.py
+)
+
 SET(PathScripts_SRCS
-    PathScripts/drillableLib.py
-    PathScripts/PathAdaptive.py
-    PathScripts/PathAdaptiveGui.py
-    PathScripts/PathAreaOp.py
-    PathScripts/PathArray.py
-    PathScripts/PathCircularHoleBase.py
-    PathScripts/PathCircularHoleBaseGui.py
-    PathScripts/PathCamoticsGui.py
-    PathScripts/PathComment.py
-    PathScripts/PathCopy.py
-    PathScripts/PathCustom.py
-    PathScripts/PathCustomGui.py
-    PathScripts/PathDeburr.py
-    PathScripts/PathDeburrGui.py
-    PathScripts/PathDressup.py
-    PathScripts/PathDressupAxisMap.py
-    PathScripts/PathDressupDogbone.py
-    PathScripts/PathDressupDragknife.py
-    PathScripts/PathDressupHoldingTags.py
-    PathScripts/PathDressupLeadInOut.py
-    PathScripts/PathDressupPathBoundary.py
-    PathScripts/PathDressupPathBoundaryGui.py
-    PathScripts/PathDressupRampEntry.py
-    PathScripts/PathDressupTag.py
-    PathScripts/PathDressupTagGui.py
-    PathScripts/PathDressupTagPreferences.py
-    PathScripts/PathDressupZCorrect.py
-    PathScripts/PathDrilling.py
-    PathScripts/PathDrillingGui.py
-    PathScripts/PathEngrave.py
-    PathScripts/PathEngraveBase.py
-    PathScripts/PathEngraveGui.py
-    PathScripts/PathFeatureExtensions.py
-    PathScripts/PathFeatureExtensionsGui.py
-    PathScripts/PathFixture.py
-    PathScripts/PathGeom.py
-    PathScripts/PathGetPoint.py
-    PathScripts/PathGui.py
-    PathScripts/PathGuiInit.py
-    PathScripts/PathHelix.py
-    PathScripts/PathHelixGui.py
-    PathScripts/PathHop.py
-    PathScripts/PathIconViewProvider.py
-    PathScripts/PathInspect.py
-    PathScripts/PathJob.py
-    PathScripts/PathJobCmd.py
-    PathScripts/PathJobDlg.py
-    PathScripts/PathJobGui.py
-    PathScripts/PathLog.py
-    PathScripts/PathMillFace.py
-    PathScripts/PathMillFaceGui.py
-    PathScripts/PathOp.py
-    PathScripts/PathOpGui.py
-    PathScripts/PathOpTools.py
-    PathScripts/PathPocket.py
-    PathScripts/PathPocketBase.py
-    PathScripts/PathPocketBaseGui.py
-    PathScripts/PathPocketGui.py
-    PathScripts/PathPocketShape.py
-    PathScripts/PathPocketShapeGui.py
-    PathScripts/PathPost.py
-    PathScripts/PathPostProcessor.py
-    PathScripts/PathPreferences.py
-    PathScripts/PathPreferencesAdvanced.py
-    PathScripts/PathPreferencesPathDressup.py
-    PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathProbe.py
-    PathScripts/PathProbeGui.py
-    PathScripts/PathProfile.py
-    PathScripts/PathProfileContour.py
-    PathScripts/PathProfileContourGui.py
-    PathScripts/PathProfileEdges.py
-    PathScripts/PathProfileEdgesGui.py
-    PathScripts/PathProfileFaces.py
-    PathScripts/PathProfileFacesGui.py
-    PathScripts/PathProfileGui.py
-    PathScripts/PathProperty.py
-    PathScripts/PathPropertyBag.py
-    PathScripts/PathPropertyBagGui.py
-    PathScripts/PathPropertyEditor.py
-    PathScripts/PathSanity.py
-    PathScripts/PathSelection.py
-    PathScripts/PathSetupSheet.py
-    PathScripts/PathSetupSheetGui.py
-    PathScripts/PathSetupSheetOpPrototype.py
-    PathScripts/PathSetupSheetOpPrototypeGui.py
-    PathScripts/PathSimpleCopy.py
-    PathScripts/PathSimulatorGui.py
-    PathScripts/PathSlot.py
-    PathScripts/PathSlotGui.py
-    PathScripts/PathStock.py
-    PathScripts/PathStop.py
-    PathScripts/PathSurface.py
-    PathScripts/PathSurfaceGui.py
-    PathScripts/PathSurfaceSupport.py
-    PathScripts/PathThreadMilling.py
-    PathScripts/PathThreadMillingGui.py
-    PathScripts/PathToolBit.py
-    PathScripts/PathToolBitCmd.py
-    PathScripts/PathToolBitEdit.py
-    PathScripts/PathToolBitGui.py
-    PathScripts/PathToolBitLibraryCmd.py
-    PathScripts/PathToolBitLibraryGui.py
-    PathScripts/PathToolController.py
-    PathScripts/PathToolControllerGui.py
-    PathScripts/PathToolEdit.py
-    PathScripts/PathToolLibraryEditor.py
-    PathScripts/PathToolLibraryManager.py
-    PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
-    PathScripts/PathVcarve.py
-    PathScripts/PathVcarveGui.py
-    PathScripts/PathWaterline.py
-    PathScripts/PathWaterlineGui.py
-    PathScripts/PostUtils.py
-    PathScripts/PostUtilsArguments.py
-    PathScripts/PostUtilsExport.py
-    PathScripts/PostUtilsParse.py
+    PathScripts/PathPropertyBag.py
+    PathScripts/PathPropertyBagGui.py
     PathScripts/__init__.py
 )
 
-SET(Generator_SRCS
-    Generators/drill_generator.py
-    Generators/helix_generator.py
-    Generators/rotation_generator.py
-    Generators/threadmilling_generator.py
-    Generators/toolchange_generator.py
-)
-
-SET(PathScripts_post_SRCS
-    PathScripts/post/__init__.py
-    PathScripts/post/centroid_post.py
-    PathScripts/post/comparams_post.py
-    PathScripts/post/dxf_post.py
-    PathScripts/post/dynapath_post.py
-    PathScripts/post/example_pre.py
-    PathScripts/post/fablin_post.py
-    PathScripts/post/fanuc_post.py
-    PathScripts/post/gcode_pre.py
-    PathScripts/post/grbl_post.py
-    PathScripts/post/heidenhain_post.py
-    PathScripts/post/jtech_post.py
-    PathScripts/post/KineticNCBeamicon2_post.py
-    PathScripts/post/linuxcnc_post.py
-    PathScripts/post/mach3_mach4_post.py
-    PathScripts/post/marlin_post.py
-    PathScripts/post/nccad_post.py
-    PathScripts/post/opensbp_post.py
-    PathScripts/post/opensbp_pre.py
-    PathScripts/post/philips_post.py
-    PathScripts/post/refactored_centroid_post.py
-    PathScripts/post/refactored_grbl_post.py
-    PathScripts/post/refactored_linuxcnc_post.py
-    PathScripts/post/refactored_mach3_mach4_post.py
-    PathScripts/post/refactored_test_post.py
-    PathScripts/post/rml_post.py
-    PathScripts/post/rrf_post.py
-    PathScripts/post/slic3r_pre.py
-    PathScripts/post/smoothie_post.py
-    PathScripts/post/uccnc_post.py
+SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/drill.py
+    Path/Base/Generator/helix.py
+    Path/Base/Generator/rotation.py
+    Path/Base/Generator/threadmilling.py
+    Path/Base/Generator/toolchange.py
 )
 
 SET(PathPythonGui_SRCS
@@ -256,7 +296,7 @@ SET(PathTests_SRCS
     PathTests/TestPathHelpers.py
     PathTests/TestPathHelixGenerator.py
     PathTests/TestPathLog.py
-    PathTests/TestPathOpTools.py
+    PathTests/TestPathOpUtil.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
     PathTests/TestPathPropertyBag.py
@@ -265,10 +305,8 @@ SET(PathTests_SRCS
     PathTests/TestPathToolChangeGenerator.py
     PathTests/TestPathThreadMilling.py
     PathTests/TestPathThreadMillingGenerator.py
-    PathTests/TestPathTool.py
     PathTests/TestPathToolBit.py
     PathTests/TestPathToolController.py
-    PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
     PathTests/TestPathVcarve.py
     PathTests/TestPathVoronoi.py
@@ -313,8 +351,20 @@ SET(Path_Data
 
 SET(all_files
     ${PathScripts_SRCS}
-    ${Generator_SRCS}
-    ${PathScripts_post_SRCS}
+    ${PathPython_SRCS}
+    ${PathPythonBase_SRCS}
+    ${PathPythonBaseGui_SRCS}
+    ${PathPythonBaseGenerator_SRCS}
+    ${PathPythonDressup_SRCS}
+    ${PathPythonDressupGui_SRCS}
+    ${PathPythonMain_SRCS}
+    ${PathPythonMainGui_SRCS}
+    ${PathPythonOp_SRCS}
+    ${PathPythonOpGui_SRCS}
+    ${PathPythonPost_SRCS}
+    ${PathPythonPostScripts_SRCS}
+    ${PathPythonTools_SRCS}
+    ${PathPythonToolsGui_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -349,9 +399,98 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${Generator_SRCS}
+        ${PathPython_SRCS}
     DESTINATION
-        Mod/Path/Generators
+        Mod/Path/Path
+)
+
+INSTALL(
+    FILES
+        ${PathPythonBase_SRCS}
+    DESTINATION
+        Mod/Path/Path/Base
+)
+
+INSTALL(
+    FILES
+        ${PathPythonBaseGenerator_SRCS}
+    DESTINATION
+        Mod/Path/Path/Base/Generator
+)
+
+INSTALL(
+    FILES
+        ${PathPythonBaseGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Base/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonDressup_SRCS}
+    DESTINATION
+        Mod/Path/Path/Dressup
+)
+
+INSTALL(
+    FILES
+        ${PathPythonDressupGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Dressup/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonMain_SRCS}
+    DESTINATION
+        Mod/Path/Path/Main
+)
+INSTALL(
+    FILES
+        ${PathPythonMainGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Main/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonOp_SRCS}
+    DESTINATION
+        Mod/Path/Path/Op
+)
+INSTALL(
+    FILES
+        ${PathPythonOpGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Op/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonPost_SRCS}
+    DESTINATION
+        Mod/Path/Path/Post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonPostScripts_SRCS}
+    DESTINATION
+        Mod/Path/Path/Post/scripts
+)
+
+INSTALL(
+    FILES
+        ${PathPythonTools_SRCS}
+    DESTINATION
+        Mod/Path/Path/Tool
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsGui_SRCS}
+    DESTINATION
+        Mod/Path/Path/Tool/Gui
 )
 
 INSTALL(
@@ -368,13 +507,6 @@ INSTALL(
         Mod/Path/PathTests
 )
 
-
-INSTALL(
-    FILES
-        ${PathScripts_post_SRCS}
-    DESTINATION
-        Mod/Path/PathScripts/post
-)
 
 INSTALL(
     FILES

@@ -40,9 +40,6 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 
-#include <Mod/Path/App/Tooltable.h>
-
-
 using namespace PathGui;
 using namespace Gui;
 

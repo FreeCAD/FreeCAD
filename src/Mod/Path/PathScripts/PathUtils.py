@@ -23,12 +23,9 @@
 
 import FreeCAD
 from FreeCAD import Vector
-from PathScripts import PathLog
 from PySide import QtCore
-from PySide import QtGui
 import Path
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathJob as PathJob
+import Path.Main.Job as PathJob
 import math
 from numpy import linspace
 
@@ -43,10 +40,10 @@ translate = FreeCAD.Qt.translate
 
 
 if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 UserInput = None
@@ -65,6 +62,7 @@ def waiting_effects(function):
     def new_function(*args, **kwargs):
         if not FreeCAD.GuiUp:
             return function(*args, **kwargs)
+        from PySide import QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         res = None
         try:
@@ -99,7 +97,7 @@ def loopdetect(obj, edge1, edge2):
     edge2 = edge
     """
 
-    PathLog.track()
+    Path.Log.track()
     candidates = []
     for wire in obj.Shape.Wires:
         for e in wire.Edges:
@@ -123,8 +121,8 @@ def horizontalEdgeLoop(obj, edge):
     loops = [
         w
         for w in wires
-        if all(PathGeom.isHorizontal(e) for e in w.Edges)
-        and PathGeom.isHorizontal(Part.Face(w))
+        if all(Path.Geom.isHorizontal(e) for e in w.Edges)
+        and Path.Geom.isHorizontal(Part.Face(w))
     ]
     if len(loops) == 1:
         return loops[0]
@@ -147,7 +145,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         faces = [
             "Face%d" % (i + 1)
             for i, f in enumerate(obj.Shape.Faces)
-            if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)
+            if any(e.hashCode() in hashes for e in f.Edges) and Path.Geom.isVertical(f)
         ]
 
         if faceList and not all(f in faces for f in faceList):
@@ -162,7 +160,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         # trace-backs single edge spikes don't contribute to the bound box
         uniqueEdges = []
         for edge in outline.Edges:
-            if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
+            if any(Path.Geom.edgesMatch(edge, e) for e in uniqueEdges):
                 continue
             uniqueEdges.append(edge)
         w = Part.Wire(uniqueEdges)
@@ -173,10 +171,10 @@ def horizontalFaceLoop(obj, face, faceList=None):
         bb2 = w.BoundBox
         if (
             w.isClosed()
-            and PathGeom.isRoughly(bb1.XMin, bb2.XMin)
-            and PathGeom.isRoughly(bb1.XMax, bb2.XMax)
-            and PathGeom.isRoughly(bb1.YMin, bb2.YMin)
-            and PathGeom.isRoughly(bb1.YMax, bb2.YMax)
+            and Path.Geom.isRoughly(bb1.XMin, bb2.XMin)
+            and Path.Geom.isRoughly(bb1.XMax, bb2.XMax)
+            and Path.Geom.isRoughly(bb1.YMin, bb2.YMin)
+            and Path.Geom.isRoughly(bb1.YMax, bb2.YMax)
         ):
             return faces
     return None
@@ -184,7 +182,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
 
 def filterArcs(arcEdge):
     """filterArcs(Edge) -used to split an arc that is over 180 degrees. Returns list"""
-    PathLog.track()
+    Path.Log.track()
     splitlist = []
     if isinstance(arcEdge.Curve, Part.Circle):
         angle = abs(arcEdge.LastParameter - arcEdge.FirstParameter)  # Angle in radians
@@ -225,7 +223,7 @@ def makeWorkplane(shape):
     """
     Creates a workplane circle at the ZMin level.
     """
-    PathLog.track()
+    Path.Log.track()
     loc = Vector(shape.BoundBox.Center.x, shape.BoundBox.Center.y, shape.BoundBox.ZMin)
     c = Part.makeCircle(10, loc)
     return c
@@ -240,20 +238,20 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     partshape = solid object
     stockheight = float - Absolute Z height of the top of material before cutting.
     """
-    PathLog.track(partshape, subshape, depthparams)
+    Path.Log.track(partshape, subshape, depthparams)
 
     zShift = 0
     if subshape is not None:
         if isinstance(subshape, Part.Face):
-            PathLog.debug("processing a face")
+            Path.Log.debug("processing a face")
             sec = Part.makeCompound([subshape])
         else:
             area = Path.Area(Fill=2, Coplanar=0).add(subshape)
             area.setPlane(makeWorkplane(partshape))
-            PathLog.debug("About to section with params: {}".format(area.getParams()))
+            Path.Log.debug("About to section with params: {}".format(area.getParams()))
             sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-        PathLog.debug(
+        Path.Log.debug(
             "partshapeZmin: {}, subshapeZMin: {}, zShift: {}".format(
                 partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift
             )
@@ -269,7 +267,7 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     if depthparams is not None:
         eLength = depthparams.safe_height - depthparams.final_depth
         zShift = depthparams.final_depth - sec.BoundBox.ZMin
-        PathLog.debug(
+        Path.Log.debug(
             "boundbox zMIN: {} elength: {} zShift {}".format(
                 partshape.BoundBox.ZMin, eLength, zShift
             )
@@ -283,7 +281,7 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
 
     # Extrude the section to top of Boundbox or desired height
     envelopeshape = sec.extrude(Vector(0, 0, eLength))
-    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
+    if Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
     return envelopeshape
@@ -300,10 +298,10 @@ def getOffsetArea(
 ):
     """Make an offset area of a shape, projected onto a plane.
     Positive offsets expand the area, negative offsets shrink it.
-    Inspired by _buildPathArea() from PathAreaOp.py module. Adjustments made
+    Inspired by _buildPathArea() from Path.Op.Area.py module. Adjustments made
     based on notes by @sliptonic at this webpage:
     https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes."""
-    PathLog.debug("getOffsetArea()")
+    Path.Log.debug("getOffsetArea()")
 
     areaParams = {}
     areaParams["Offset"] = offset
@@ -363,7 +361,7 @@ def getToolControllers(obj, proxy=None):
     except Exception:
         job = None
 
-    PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
+    Path.Log.debug("op={} ({})".format(obj.Label, type(obj)))
     if job:
         return [tc for tc in job.Tools.Group if proxy.isToolSupported(obj, tc.Tool)]
     return []
@@ -374,7 +372,7 @@ def findToolController(obj, proxy, name=None):
     If no name is specified, returns the first controller.
     if no controller is found, returns None"""
 
-    PathLog.track("name: {}".format(name))
+    Path.Log.track("name: {}".format(name))
     c = None
     if UserInput:
         c = UserInput.selectedToolController()
@@ -401,7 +399,7 @@ def findToolController(obj, proxy, name=None):
 
 def findParentJob(obj):
     """retrieves a parent job object for an operation or other Path object"""
-    PathLog.track()
+    Path.Log.track()
     for i in obj.InList:
         if hasattr(i, "Proxy") and isinstance(i.Proxy, PathJob.ObjectJob):
             return i
@@ -427,7 +425,7 @@ def addToJob(obj, jobname=None):
     """adds a path object to a job
     obj = obj
     jobname = None"""
-    PathLog.track(jobname)
+    Path.Log.track(jobname)
 
     job = None
     if jobname is not None:
@@ -435,7 +433,7 @@ def addToJob(obj, jobname=None):
         if len(jobs) == 1:
             job = jobs[0]
         else:
-            PathLog.error(translate("Path", "Didn't find job {}".format(jobname)))
+            Path.Log.error(translate("Path", "Didn't find job {}".format(jobname)))
             return None
     else:
         jobs = GetJobs()
@@ -542,18 +540,14 @@ def guessDepths(objshape, subs=None):
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
 
-    if isinstance(tool, Path.Tool):
-        PathLog.error(translate("Path", "Legacy Tools not supported"))
-        return 0.0
-
     if not hasattr(tool, "TipAngle"):
-        PathLog.error(translate("Path", "Selected tool is not a drill"))
+        Path.Log.error(translate("Path", "Selected tool is not a drill"))
         return 0.0
 
     angle = tool.TipAngle
 
     if angle <= 0 or angle >= 180:
-        PathLog.error(
+        Path.Log.error(
             translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°")
             % angle
         )
@@ -563,7 +557,7 @@ def drillTipLength(tool):
     length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
 
     if length < 0:
-        PathLog.error(
+        Path.Log.error(
             translate(
                 "Path", "Cutting Edge Angle (%.2f) results in negative tool tip length"
             )
@@ -726,7 +720,7 @@ class depth_params(object):
 
     def __filter_roughly_equal_depths(self, depths):
         """Depths arrive sorted from largest to smallest, positive to negative.
-        Return unique list of depths, using PathGeom.isRoughly() method to determine
+        Return unique list of depths, using Path.Geom.isRoughly() method to determine
         if the two values are equal.  Only one of two consecutive equals are removed.
 
         The assumption is that there are not enough consecutively roughly-equal depths
@@ -736,7 +730,7 @@ class depth_params(object):
         depthcopy = sorted(depths)  # make a copy and sort low to high
         keep = [depthcopy[0]]
         for depth in depthcopy[1:]:
-            if not PathGeom.isRoughly(depth, keep[-1]):
+            if not Path.Geom.isRoughly(depth, keep[-1]):
                 keep.append(depth)
         keep.reverse()  # reverse results back high to low
         return keep

@@ -21,8 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import PathScripts
-import PathScripts.PathLog as PathLog
 import traceback
 
 from PathScripts.PathUtils import loopdetect
@@ -80,7 +80,7 @@ class _CommandSelectLoop:
                 self.active = False
             return self.active
         except Exception as exc:
-            PathLog.error(exc)
+            Path.Log.error(exc)
             traceback.print_exc(exc)
             return False
 
@@ -161,10 +161,10 @@ class _ToggleOperation:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                selProxy = PathScripts.PathDressup.baseOp(sel.Object).Proxy
+                selProxy = Path.Dressup.Utils.baseOp(sel.Object).Proxy
                 if not isinstance(
-                    selProxy, PathScripts.PathOp.ObjectOp
-                ) and not isinstance(selProxy, PathScripts.PathArray.ObjectArray):
+                    selProxy, Path.Op.Base.ObjectOp
+                ) and not isinstance(selProxy, Path.Op.Gui.Array.ObjectArray):
                     return False
             return True
         except (IndexError, AttributeError):
@@ -172,7 +172,7 @@ class _ToggleOperation:
 
     def Activated(self):
         for sel in FreeCADGui.Selection.getSelectionEx():
-            op = PathScripts.PathDressup.baseOp(sel.Object)
+            op = Path.Dressup.Utils.baseOp(sel.Object)
             op.Active = not op.Active
             op.ViewObject.Visibility = op.Active
 
@@ -203,7 +203,7 @@ class _CopyOperation:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, PathScripts.PathOp.ObjectOp):
+                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
                     return False
             return True
         except (IndexError, AttributeError):

@@ -28,20 +28,18 @@ import unittest
 import FreeCAD
 import Path
 
-from PathScripts import PathLog
-from PathScripts import PathPost
-from PathScripts import PathPreferences
-from PathScripts import PostUtils
+import Path.Post.Command as PathPost
+import Path.Post.Utils as PostUtils
 
-from PathScripts.PathPostProcessor import PostProcessor
+import Path.Post.Processor as PostProcessor
 
 # If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test succeeds.
 # If KEEP_DEBUG_OUTPUT is True or the test fails leave the gcode file behind
 # so it can be looked at easily.
 KEEP_DEBUG_OUTPUT = False
 
-PathPost.LOG_MODULE = PathLog.thisModule()
-PathLog.setLevel(PathLog.Level.INFO, PathPost.LOG_MODULE)
+PathPost.LOG_MODULE = Path.Log.thisModule()
+Path.Log.setLevel(Path.Log.Level.INFO, PathPost.LOG_MODULE)
 
 
 class TestPathPost(unittest.TestCase):
@@ -410,7 +408,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc.Label)
         teststring = ""
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         self.job.SplitOutput = False
@@ -426,7 +424,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Test basic string substitution without splitting
         teststring = "~/Desktop/%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         self.job.SplitOutput = False
@@ -444,7 +442,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Substitute current file path
         teststring = "%D/testfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -458,7 +456,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
     def test020(self):
         teststring = "%d.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -469,7 +467,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
     def test030(self):
         teststring = "%M/outfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -481,7 +479,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # unused substitution strings should be ignored
         teststring = "%d%T%t%W%O/testdoc.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -496,7 +494,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # explicitly using the sequence number should include it where indicated.
         teststring = "%S-%d.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -513,7 +511,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # substitute jobname and use default sequence numbers
         teststring = "%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         subpart, objs = outlist[0]
@@ -526,7 +524,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Use Toolnumbers and default sequence numbers
         teststring = "%T.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -540,7 +538,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
         # Use Tooldescriptions and default sequence numbers
         teststring = "%t.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         outlist = PathPost.buildPostList(self.job)
@@ -559,7 +557,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         subpart, objs = outlist[0]
@@ -571,7 +569,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%W-%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         subpart, objs = outlist[0]
@@ -589,7 +587,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         subpart, objs = outlist[0]
@@ -601,7 +599,7 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
         teststring = "%O-%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        PathPreferences.setOutputFileDefaults(
+        Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
         subpart, objs = outlist[0]

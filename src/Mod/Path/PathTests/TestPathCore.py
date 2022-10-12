@@ -130,40 +130,6 @@ G0 Z0.500000
         p.setFromGCode(lines)
         self.assertEqual(p.toGCode(), output)
 
-    def test20(self):
-        """Test Path Tool and ToolTable object core functionality"""
-
-        t1 = Path.Tool()
-        self.assertIsInstance(t1, Path.Tool)
-
-        t1.Name = "12.7mm Drill Bit"
-        self.assertEqual(t1.Name, "12.7mm Drill Bit")
-        self.assertEqual(t1.ToolType, "Undefined")
-        t1.ToolType = "Drill"
-        self.assertEqual(t1.ToolType, "Drill")
-        t1.Diameter = 12.7
-        t1.LengthOffset = 127
-        t1.CuttingEdgeAngle = 59
-        t1.CuttingEdgeHeight = 50.8
-
-        self.assertEqual(t1.Diameter, 12.7)
-        self.assertEqual(t1.LengthOffset, 127)
-        self.assertEqual(t1.CuttingEdgeAngle, 59)
-        self.assertEqual(t1.CuttingEdgeHeight, 50.8)
-
-        t2 = Path.Tool("my other tool", tooltype="EndMill", diameter=10)
-        table = Path.Tooltable()
-        self.assertIsInstance(table, Path.Tooltable)
-        table.addTools(t1)
-        table.addTools(t2)
-
-        self.assertEqual(len(table.Tools), 2)
-        # gcc7 build needs some special treatment (makes 1L out of a 1) ...
-        if str(table.Tools) != "{1L: Tool 12.7mm Drill Bit, 2L: Tool my other tool}":
-            self.assertEqual(
-                str(table.Tools), "{1: Tool 12.7mm Drill Bit, 2: Tool my other tool}"
-            )
-
     def test50(self):
         """Test Path.Length calculation"""
         commands = []

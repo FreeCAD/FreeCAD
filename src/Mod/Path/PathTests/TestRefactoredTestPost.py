@@ -25,15 +25,13 @@ from importlib import reload
 
 import FreeCAD
 
-# import Part
 import Path
-import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
-from PathScripts.post import refactored_test_post as postprocessor
+from Path.Post.scripts import refactored_test_post as postprocessor
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class TestRefactoredTestPost(PathTestUtils.PathTestBase):
@@ -138,7 +136,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
             gcode.splitlines()[1],
-            "(Post Processor: PathScripts.post.refactored_test_post)",
+            "(Post Processor: Path.Post.scripts.refactored_test_post)",
         )
         self.assertEqual(gcode.splitlines()[2], "(Cam File: )")
         self.assertIn("(Output Time: ", gcode.splitlines()[3])
@@ -170,7 +168,7 @@ G21
         self.assertEqual(gcode.splitlines()[0], "(Exported by FreeCAD)")
         self.assertEqual(
             gcode.splitlines()[1],
-            "(Post Processor: PathScripts.post.refactored_test_post)",
+            "(Post Processor: Path.Post.scripts.refactored_test_post)",
         )
         self.assertEqual(gcode.splitlines()[2], "(Cam File: )")
         self.assertIn("(Output Time: ", gcode.splitlines()[3])

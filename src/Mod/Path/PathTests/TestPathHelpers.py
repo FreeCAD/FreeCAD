@@ -23,14 +23,23 @@
 import FreeCAD
 import Part
 import Path
-import PathFeedRate
-import PathMachineState
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathToolController as PathToolController
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.MachineState as PathMachineState
+import Path.Tool.Bit as PathToolBit
+import Path.Tool.Controller as PathToolController
 import PathScripts.PathUtils as PathUtils
 
 from PathTests.PathTestUtils import PathTestBase
 
+
+def createTool(name="t1", diameter=1.75):
+    attrs = {
+        "shape": None,
+        "name": name,
+        "parameter": {"Diameter": diameter},
+        "attribute": [],
+    }
+    return PathToolBit.Factory.CreateFromAttrs(attrs, name)
 
 class TestPathHelpers(PathTestBase):
     def setUp(self):
@@ -48,7 +57,7 @@ class TestPathHelpers(PathTestBase):
 
     def test00(self):
         """Test that FeedRate Helper populates horiz and vert feed rate based on TC"""
-        t = Path.Tool("test", "5.0")
+        t = createTool("test", 5.0)
         tc = PathToolController.Create("TC0", t)
         tc.VertRapid = 5
         tc.HorizRapid = 10
@@ -124,7 +133,7 @@ class TestPathHelpers(PathTestBase):
         self.assertTrue(len(results) == 2)
         e1 = results[0]
         self.assertTrue(isinstance(e1.Curve, Part.Circle))
-        self.assertTrue(PathGeom.pointsCoincide(edge.Curve.Location, e1.Curve.Location))
+        self.assertTrue(Path.Geom.pointsCoincide(edge.Curve.Location, e1.Curve.Location))
         self.assertTrue(edge.Curve.Radius == e1.Curve.Radius)
 
         # filter a 180 degree arc

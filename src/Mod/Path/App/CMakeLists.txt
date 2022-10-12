@@ -31,8 +31,6 @@ set(Path_LIBS
 
 generate_from_xml(CommandPy)
 generate_from_xml(PathPy)
-generate_from_xml(ToolPy)
-generate_from_xml(TooltablePy)
 generate_from_xml(FeaturePathCompoundPy)
 generate_from_xml(AreaPy)
 generate_from_xml(FeatureAreaPy)
@@ -46,10 +44,6 @@ SET(Python_SRCS
     CommandPyImp.cpp
     PathPy.xml
     PathPyImp.cpp
-    ToolPy.xml
-    ToolPyImp.cpp
-    TooltablePy.xml
-    TooltablePyImp.cpp
     FeaturePathCompoundPy.xml
     FeaturePathCompoundPyImp.cpp
     AreaPy.xml
@@ -78,18 +72,10 @@ SET(Path_SRCS
     Command.h
     Path.cpp
     Path.h
-    Tool.cpp
-    Tool.h
-    Tooltable.cpp
-    Tooltable.h
     PropertyPath.cpp
     PropertyPath.h
     FeaturePath.cpp
     FeaturePath.h
-    PropertyTool.cpp
-    PropertyTool.h
-    PropertyTooltable.cpp
-    PropertyTooltable.h
     FeaturePathCompound.cpp
     FeaturePathCompound.h
     FeaturePathShape.cpp
@@ -163,7 +149,7 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 
-SET_BIN_DIR(Path Path /Mod/Path)
+SET_BIN_DIR(Path PathApp /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(Path)
 
 INSTALL(TARGETS Path DESTINATION ${CMAKE_INSTALL_LIBDIR})

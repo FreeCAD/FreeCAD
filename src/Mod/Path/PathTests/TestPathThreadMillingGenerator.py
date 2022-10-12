@@ -21,8 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathGeom as PathGeom
-import Generators.threadmilling_generator as threadmilling
+import Path.Base.Generator.threadmilling as threadmilling
 import math
 
 from PathTests.PathTestUtils import PathTestBase

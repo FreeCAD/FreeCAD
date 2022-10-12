@@ -22,9 +22,8 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathToolBit as PathToolBit
-import PathScripts.PathToolController as PathToolController
+import Path.Tool.Bit as PathToolBit
+import Path.Tool.Controller as PathToolController
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -37,8 +36,6 @@ class TestPathToolController(PathTestBase):
         FreeCAD.closeDocument(self.doc.Name)
 
     def createTool(self, name="t1", diameter=1.75):
-        if PathPreferences.toolsUseLegacyTools():
-            return Path.Tool(name=name, diameter=diameter)
         attrs = {
             "shape": None,
             "name": name,
@@ -73,10 +70,7 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs["hrapid"], "28.0 mm/s")
         self.assertEqual(attrs["dir"], "Reverse")
         self.assertEqual(attrs["speed"], 12000)
-        if PathPreferences.toolsUseLegacyTools():
-            self.assertEqual(attrs["tool"], t.templateAttrs())
-        else:
-            self.assertEqual(attrs["tool"], t.Proxy.templateAttrs(t))
+        self.assertEqual(attrs["tool"], t.Proxy.templateAttrs(t))
 
         return tc
 

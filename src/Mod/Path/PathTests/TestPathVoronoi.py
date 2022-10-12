@@ -23,7 +23,6 @@
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathGeom as PathGeom
 import PathTests.PathTestUtils as PathTestUtils
 
 vd = None
@@ -110,7 +109,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape()
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(
-            PathGeom.pointsCoincide(
+            Path.Geom.pointsCoincide(
                 e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
             )
         )
@@ -127,7 +126,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape(13.7)
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(
-            PathGeom.pointsCoincide(
+            Path.Geom.pointsCoincide(
                 e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
             )
         )
@@ -144,7 +143,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape(2.37, 5.14)
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(
-            PathGeom.pointsCoincide(
+            Path.Geom.pointsCoincide(
                 e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
             )
         )
@@ -163,7 +162,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
             type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve
         )
         self.assertFalse(
-            PathGeom.pointsCoincide(
+            Path.Geom.pointsCoincide(
                 e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
             )
         )
@@ -182,7 +181,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
             type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve
         )
         self.assertFalse(
-            PathGeom.pointsCoincide(
+            Path.Geom.pointsCoincide(
                 e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
             )
         )
@@ -201,7 +200,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
             type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve
         )
         self.assertFalse(
-            PathGeom.pointsCoincide(
+            Path.Geom.pointsCoincide(
                 e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
             )
         )

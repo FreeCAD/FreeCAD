@@ -24,14 +24,13 @@
 
 import FreeCAD
 import Part
-import PathScripts.PathJob as PathJob
-import PathScripts.PathAdaptive as PathAdaptive
-import PathScripts.PathGeom as PathGeom
+import Path.Op.Adaptive as PathAdaptive
+import Path.Main.Job as PathJob
 from PathTests.PathTestUtils import PathTestBase
 
 if FreeCAD.GuiUp:
-    import PathScripts.PathAdaptiveGui as PathAdaptiveGui
-    import PathScripts.PathJobGui as PathJobGui
+    import Path.Main.gui.Job as PathJobGui
+    import Path.Op.Gui.Adaptive as PathAdaptiveGui
 
 
 class TestPathAdaptive(PathTestBase):
