@@ -1,4 +1,4 @@
-![Logo](https://www.freecadweb.org/images/logo.png)
+<a href="https://freecadweb.org"><img src="https://www.freecadweb.org/svg/icon-freecad.svg" height="100px" width="100px"></a>
 
 ### Your own 3D parametric modeler
 
