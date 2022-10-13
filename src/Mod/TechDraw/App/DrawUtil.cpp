@@ -62,6 +62,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
+#include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
 #include "DrawUtil.h"
@@ -350,19 +351,19 @@ Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
     return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
 }
 
+//TODO: make formatVector using toVector3d
 std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.x  << ", " << v.y << ", " << v.z << ") ";
-//    builder << " (" << setw(6) << v.x  << ", " << setw(6) << v.y << ", " << setw(6) << v.z << ") ";
     return builder.str();
 }
 
 std::string DrawUtil::formatVector(const gp_Dir& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
@@ -370,14 +371,14 @@ std::string DrawUtil::formatVector(const gp_Dir& v)
 std::string DrawUtil::formatVector(const gp_Dir2d& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() <<  ") ";
     return builder.str();
 }
 std::string DrawUtil::formatVector(const gp_Vec& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
@@ -385,7 +386,7 @@ std::string DrawUtil::formatVector(const gp_Vec& v)
 std::string DrawUtil::formatVector(const gp_Pnt& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
@@ -393,7 +394,7 @@ std::string DrawUtil::formatVector(const gp_Pnt& v)
 std::string DrawUtil::formatVector(const gp_Pnt2d& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ") ";
     return builder.str();
 }
@@ -401,7 +402,7 @@ std::string DrawUtil::formatVector(const gp_Pnt2d& v)
 std::string DrawUtil::formatVector(const QPointF& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.x()  << ", " << v.y() << ") ";
     return builder.str();
 }
@@ -587,7 +588,7 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys)
 
 Base::Vector3d  DrawUtil::closestBasis(gp_Dir gDir, gp_Ax2 coordSys)
 {
-    gp_Dir xCS = coordSys.XDirection();     //these are unit vectors?
+    gp_Dir xCS = coordSys.XDirection();
     gp_Dir yCS = coordSys.YDirection();
     gp_Dir zCS = coordSys.Direction();
 

@@ -30,7 +30,6 @@
 #include <QMessageBox>
 #endif // #ifndef _PreComp_
 
-
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -58,7 +57,8 @@
 //#include "ViewProviderViewPart.h"
 
 #include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
-
+#include "Widgets/CompassWidget.h"
+#include "Widgets/VectorEditWidget.h"
 #include "TaskSectionView.h"
 
 using namespace Gui;
@@ -71,10 +71,11 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_base(base),
     m_section(nullptr),
     m_saveScale(1.0),
+    m_dirName(""),
     m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
-    m_abort(false)
+    m_applyDeferred(0)
 {
     //existence of base is guaranteed by CmdTechDrawSectionView (Command.cpp)
 
@@ -85,15 +86,12 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_savePageName = m_base->findParentPage()->getNameInDocument();
 
     ui->setupUi(this);
-
-    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
-    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
-
     setUiPrimary();
-}
 
+    m_applyDeferred = 0;  //setting the direction widgets causes an increment of the deferred count,
+                          //so we reset the counter and the message.
+    ui->lPendingUpdates->setText(QString());
+}
 
 //ctor for edit
 TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
@@ -104,7 +102,7 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_doc(nullptr),
     m_createMode(false),
     m_saved(false),
-    m_abort(false)
+    m_applyDeferred(0)
 {
     //existence of section is guaranteed by ViewProviderViewSection.setEdit
 
@@ -112,76 +110,82 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_sectionName = m_section->getNameInDocument();
     App::DocumentObject* newObj = m_section->BaseView.getValue();
     m_base = dynamic_cast<TechDraw::DrawViewPart*>(newObj);
-    if (!newObj || !m_base)
+    if (!newObj || !m_base) {
         throw Base::RuntimeError("TaskSectionView - BaseView not found");
+    }
 
     m_saveBaseName = m_base->getNameInDocument();
     m_savePageName = m_base->findParentPage()->getNameInDocument();
 
     ui->setupUi(this);
 
-    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
-    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
-
     m_dirName = m_section->SectionDirection.getValueAsString();
     saveSectionState();
     setUiEdit();
+
+    m_applyDeferred = 0;  //setting the direction widgets causes an increment of the deferred count,
+                          //so we reset the counter and the message.
+    ui->lPendingUpdates->setText(QString());
 }
 
 void TaskSectionView::setUiPrimary()
 {
 //    Base::Console().Message("TSV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Section View"));
-    std::string temp = m_base->getNameInDocument();
-    QString qTemp    = Base::Tools::fromStdString(temp);
-    ui->leBaseView->setText(qTemp);
-
 
     ui->sbScale->setValue(m_base->getScale());
     ui->cmbScaleType->setCurrentIndex(m_base->ScaleType.getValue());
+
+    //Allow or prevent scale changing initially
+    if (m_base->ScaleType.isValue("Custom"))	{
+        ui->sbScale->setEnabled(true);
+    }
+    else {
+        ui->sbScale->setEnabled(false);
+    }
+
     Base::Vector3d origin = m_base->getOriginalCentroid();
-    ui->sbOrgX->setUnit(Base::Unit::Length);
-    ui->sbOrgX->setValue(origin.x);
-    ui->sbOrgY->setUnit(Base::Unit::Length);
-    ui->sbOrgY->setValue(origin.y);
-    ui->sbOrgZ->setUnit(Base::Unit::Length);
-    ui->sbOrgZ->setValue(origin.z);
+    setUiCommon(origin);
 
-    // before the user did not select an orientation,
-    // the section properties cannot be changed
-    this->setToolTip(QObject::tr("Select at first an orientation"));
-    enableAll(false);
-
-    connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-
-    // the UI file uses keyboardTracking = false so that a recomputation
-    // will only be triggered when the arrow keys of the spinboxes are used
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
-
-    connect(ui->cmbScaleType, SIGNAL(currentIndexChanged(int)), this, SLOT(scaleTypeChanged(int)));
+    m_viewDirectionWidget->setValue(Base::Vector3d(1.0, 0.0, 0.0));
 }
 
 void TaskSectionView::setUiEdit()
 {
 //    Base::Console().Message("TSV::setUiEdit()\n");
     setWindowTitle(QObject::tr("Edit Section View"));
+    std::string temp = m_section->SectionSymbol.getValue();
+    QString qTemp = Base::Tools::fromStdString(temp);
+    ui->leSymbol->setText(qTemp);
 
+    ui->sbScale->setValue(m_section->getScale());
+    ui->cmbScaleType->setCurrentIndex(m_section->ScaleType.getValue());
+    //Allow or prevent scale changing initially
+    if (m_section->ScaleType.isValue("Custom"))	{
+        ui->sbScale->setEnabled(true);
+    }
+    else {
+        ui->sbScale->setEnabled(false);
+    }
+
+    Base::Vector3d origin = m_section->SectionOrigin.getValue();
+    setUiCommon(origin);
+
+    // convert section normal to view angle
+    Base::Vector3d sectionNormalVec = m_section->SectionNormal.getValue();
+    Base::Vector3d projectedViewDirection = m_base->projectPoint(sectionNormalVec, false);
+    double viewAngle = atan2(-projectedViewDirection.y,
+                             -projectedViewDirection.x);
+    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    m_viewDirectionWidget->setValue(sectionNormalVec * -1.0);
+}
+
+void TaskSectionView::setUiCommon(Base::Vector3d origin)
+{
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
 
-    temp = m_section->SectionSymbol.getValue();
-    qTemp = Base::Tools::fromStdString(temp);
-    ui->leSymbol->setText(qTemp);
-    ui->sbScale->setValue(m_section->getScale());
-    ui->cmbScaleType->setCurrentIndex(m_section->ScaleType.getValue());
-
-    Base::Vector3d origin = m_section->SectionOrigin.getValue();
     ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
     ui->sbOrgY->setUnit(Base::Unit::Length);
@@ -189,33 +193,58 @@ void TaskSectionView::setUiEdit()
     ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
 
+    enableAll(false);
+
     connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
 
+    //TODO: use event filter instead of keyboard tracking to capture enter/return keys
     // the UI file uses keyboardTracking = false so that a recomputation
     // will only be triggered when the arrow keys of the spinboxes are used
+    //if this is not done, recomputes are triggered on each key press giving
+    //unaccceptable UX
     connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
     connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
     connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 
     connect(ui->cmbScaleType, SIGNAL(currentIndexChanged(int)), this, SLOT(scaleTypeChanged(int)));
+
+    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
+    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
+    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
+    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
+
+    connect(ui->pbUpdateNow, SIGNAL(clicked(bool)), this, SLOT(updateNowClicked()));
+    connect(ui->cbLiveUpdate, SIGNAL(clicked(bool)), this, SLOT(liveUpdateClicked()));
+
+    m_compass = new CompassWidget(this);
+    auto layout = ui->compassLayout;
+    layout->addWidget(m_compass);
+    connect(m_compass, SIGNAL(angleChanged(double)), this, SLOT(slotChangeAngle(double)));
+
+    m_viewDirectionWidget = new VectorEditWidget(this);
+    m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
+    auto editLayout = ui->viewDirectionLayout;
+    editLayout->addWidget(m_viewDirectionWidget);
+    connect(m_viewDirectionWidget, SIGNAL(valueChanged(Base::Vector3d)),
+            this, SLOT(slotViewDirectionChanged(Base::Vector3d)));
 }
 
 //save the start conditions
 void TaskSectionView::saveSectionState()
 {
 //    Base::Console().Message("TSV::saveSectionState()\n");
-    if (!m_section)
-        return;
-
-    m_saveSymbol = m_section->SectionSymbol.getValue();
-    m_saveScale  = m_section->getScale();
-    m_saveScaleType = m_section->ScaleType.getValue();
-    m_saveNormal = m_section->SectionNormal.getValue();
-    m_saveDirection = m_section->Direction.getValue();
-    m_saveOrigin    = m_section->SectionOrigin.getValue();
-    m_saveDirName   = m_section->SectionDirection.getValueAsString();
-    m_saved = true;
+    if (m_section) {
+        m_saveSymbol = m_section->SectionSymbol.getValue();
+        m_saveScale  = m_section->getScale();
+        m_saveScaleType = m_section->ScaleType.getValue();
+        m_saveNormal = m_section->SectionNormal.getValue();
+        m_normal = m_saveNormal;
+        m_saveDirection = m_section->Direction.getValue();
+        m_saveOrigin    = m_section->SectionOrigin.getValue();
+        m_saveDirName   = m_section->SectionDirection.getValueAsString();
+        m_saved = true;
+    }
 }
 
 //restore the start conditions
@@ -234,36 +263,72 @@ void TaskSectionView::restoreSectionState()
     m_section->SectionDirection.setValue(m_saveDirName.c_str());
 }
 
+//the VectorEditWidget reports a change in direction
+void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
+{
+//    Base::Console().Message("TSV::slotViewDirectionChanged(%s)\n",
+//                            DrawUtil::formatVector(newDirection).c_str());
+    Base::Vector3d projectedViewDirection = m_base->projectPoint(newDirection, false);
+    projectedViewDirection.Normalize();
+    double viewAngle = atan2(projectedViewDirection.y,
+                             projectedViewDirection.x);
+    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    checkAll(false);
+    applyAligned(projectedViewDirection);
+}
+
+//the CompassWidget reports that the view direction angle has changed
+void TaskSectionView::slotChangeAngle(double newAngle)
+{
+//    Base::Console().Message("TSV::slotChangeAngle(%.3f)\n", newAngle);
+    double angleRadians = newAngle * M_PI / 180.0;
+    double unitX = cos(angleRadians);
+    double unitY = sin(angleRadians);
+    Base::Vector3d localUnit(unitX, unitY, 0.0);
+    m_viewDirectionWidget->setValueNoNotify(localUnit);
+    checkAll(false);
+    applyAligned(localUnit);
+}
+
+//preset view directions
 void TaskSectionView::onUpClicked()
 {
 //    Base::Console().Message("TSV::onUpClicked()\n");
+    m_compass->setToNorth();
+    Base::Vector3d localUnit(0.0, 1.0, 0.0);
+    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    ui->pbUp->setChecked(true);
-    applyQuick("Up");
+    applyAligned(localUnit);
 }
 
 void TaskSectionView::onDownClicked()
 {
 //    Base::Console().Message("TSV::onDownClicked()\n");
+    m_compass->setToSouth();
+    Base::Vector3d localUnit(0.0, -1.0, 0.0);
+    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    ui->pbDown->setChecked(true);
-    applyQuick("Down");
+    applyAligned(localUnit);
 }
 
 void TaskSectionView::onLeftClicked()
 {
 //    Base::Console().Message("TSV::onLeftClicked()\n");
+    m_compass->setToWest();
+    Base::Vector3d localUnit(-1.0, 0.0, 0.0);
+    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    ui->pbLeft->setChecked(true);
-    applyQuick("Left");
+    applyAligned(localUnit);
 }
 
 void TaskSectionView::onRightClicked()
 {
 //    Base::Console().Message("TSV::onRightClicked()\n");
+    m_compass->setToEast();
+    Base::Vector3d localUnit(1.0, 0.0, 0.0);
+    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    ui->pbRight->setChecked(true);
-    applyQuick("Right");
+    applyAligned(localUnit);
 }
 
 void TaskSectionView::onIdentifierChanged()
@@ -278,18 +343,17 @@ void TaskSectionView::onScaleChanged()
     apply();
 }
 
+//SectionOrigin changed
 void TaskSectionView::onXChanged()
 {
     checkAll(false);
     apply();
 }
-
 void TaskSectionView::onYChanged()
 {
     checkAll(false);
     apply();
 }
-
 void TaskSectionView::onZChanged()
 {
     checkAll(false);
@@ -303,6 +367,7 @@ void TaskSectionView::scaleTypeChanged(int index)
         ui->sbScale->setEnabled(false);
         if (m_base->findParentPage()) {
             ui->sbScale->setValue(m_base->findParentPage()->Scale.getValue());
+            ui->sbScale->setEnabled(false);
         }
     } else if (index == 1) {
         // Automatic Scale Type
@@ -315,6 +380,7 @@ void TaskSectionView::scaleTypeChanged(int index)
         ui->sbScale->setEnabled(true);
         if (m_section) {
             ui->sbScale->setValue(m_section->Scale.getValue());
+            ui->sbScale->setEnabled(true);
         }
     } else {
         Base::Console().Log("Error - TaskSectionView::scaleTypeChanged - unknown scale type: %d\n", index);
@@ -338,25 +404,68 @@ void TaskSectionView::enableAll(bool enable)
     ui->sbOrgY->setEnabled(enable);
     ui->sbOrgZ->setEnabled(enable);
     ui->cmbScaleType->setEnabled(enable);
+    QString qScaleType = ui->cmbScaleType->currentText();
+    //Allow or prevent scale changing initially
+    if (qScaleType == QString::fromUtf8("Custom"))	{
+        ui->sbScale->setEnabled(true);
+    }
+    else {
+        ui->sbScale->setEnabled(false);
+    }
+}
+
+void TaskSectionView::liveUpdateClicked() {
+    apply(true);
+}
+
+void TaskSectionView::updateNowClicked() {
+    apply(true);
 }
 
 //******************************************************************************
-bool TaskSectionView::apply()
+bool TaskSectionView::apply(bool forceUpdate)
 {
-//    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
+//    Base::Console().Message("TSV::apply() - liveUpdate: %d force: %d deferred: %d\n",
+//                            ui->cbLiveUpdate->isChecked(), forceUpdate, m_applyDeferred);
+    if(!ui->cbLiveUpdate->isChecked() &&
+       !forceUpdate) {
+        //nothing to do
+        m_applyDeferred++;
+        QString msgLiteral = QString::fromUtf8(QT_TRANSLATE_NOOP("TaskPojGroup", " updates pending"));
+        QString msgNumber = QString::number(m_applyDeferred);
+        ui->lPendingUpdates->setText(msgNumber + msgLiteral);
+        return false;
+    }
+
+    Gui::WaitCursor wc;
     if (m_dirName.empty()) {
-        std::string msg =
+        //this should never happen
+        std::string msg = 
             Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
         return false;
     }
-    if (!m_section)         //didn't create the feature yet
-        //this can't happen as applyQuick has to be called by the direction
-        //setting process
-        return false;
+    if (!m_section) {
+        m_section = createSectionView();
+    }
 
+    if (isSectionValid()) {
+        updateSectionView();
+    } else {
+        failNoObject();
+    }
+
+    m_section->recomputeFeature();
+    if (isBaseValid()) {
+        m_base->requestPaint();
+    }
+
+    enableAll(true);
     checkAll(false);
-    applyQuick(m_dirName);
+
+    wc.restoreCursor();
+    m_applyDeferred = 0;
+    ui->lPendingUpdates->setText(QString());
     return true;
 }
 
@@ -364,39 +473,27 @@ void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
-    if (!m_section)
-        createSectionView();
-
-    if (!isSectionValid()) {
-        failNoObject(m_sectionName);
-        return;
-    }
-
-    updateSectionView();
     enableAll(true);
-
-    m_section->recomputeFeature();
-    if (isBaseValid())
-        m_base->requestPaint();
+    apply();
 }
 
-void TaskSectionView::applyAligned()
+void TaskSectionView::applyAligned(Base::Vector3d localUnit)
 {
-    Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
-//    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
+//    Base::Console().Message("TSV::applyAligned()\n");
     m_dirName = "Aligned";
-    //fiddle with directions here
+    m_localUnit = localUnit;
+    enableAll(true);
+    apply();
 }
 
 //*********************************************************************
 
-//pointer to created view is not returned, but stored in m_section
-void TaskSectionView::createSectionView()
+TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 {
 //    Base::Console().Message("TSV::createSectionView()\n");
     if (!isBaseValid()) {
-        failNoObject(m_baseName);
-        return;
+        failNoObject();
+        return nullptr;
     }
 
     std::string sectionName;
@@ -416,7 +513,7 @@ void TaskSectionView::createSectionView()
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Source = App.ActiveDocument.%s.Source",
                            m_sectionName.c_str(), baseName.c_str());
         Command::doCommand(Command::Doc,
-                           "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.3f, %.3f, %.3f)",
+                           "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.6f, %.6f, %.6f)",
                            m_sectionName.c_str(),
                            ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(),
@@ -427,22 +524,32 @@ void TaskSectionView::createSectionView()
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
+                           m_sectionName.c_str(), m_dirName.c_str());
 
         App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
         m_section = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
-        if (!newObj || !m_section)
+        if (!newObj || !m_section) {
             throw Base::RuntimeError("TaskSectionView - new section object not found");
+        }
+        if (m_dirName == "Aligned") {
+            //m_localUnit is a view direction so we need to reverse it to make a
+            //section normal
+            m_section->setCSFromBase(m_localUnit * -1.0);
+        } else {
+            //Note: DirectionName is to be deprecated in the future
+            m_section->setCSFromBase(m_dirName.c_str());
+        }
     }
     Gui::Command::commitCommand();
-
-    return;
+    return m_section;
 }
 
 void TaskSectionView::updateSectionView()
 {
 //    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
-        failNoObject(m_sectionName);
+        failNoObject();
         return;
     }
 
@@ -474,18 +581,28 @@ void TaskSectionView::updateSectionView()
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
-        m_section->setCSFromBase(m_dirName.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
+                           m_sectionName.c_str(), m_dirName.c_str());
+        if (m_dirName == "Aligned") {
+            //m_localUnit is a view direction so we need to reverse it to make a
+            //section normal
+            m_section->setCSFromBase(m_localUnit * -1.0);
+        } else {
+            //Note: DirectionName is to be deprecated in the future
+            m_section->setCSFromBase(m_dirName.c_str());
+        }
+
     }
     Gui::Command::commitCommand();
 }
 
-void TaskSectionView::failNoObject(std::string objectName)
+void TaskSectionView::failNoObject(void)
 {
-    QString qObjectName = Base::Tools::fromStdString(objectName);
-    QString msg = tr("Can not continue. Object * %1 * not found.").arg(qObjectName);
+    QString qsectionName = Base::Tools::fromStdString(m_sectionName);
+    QString qbaseName = Base::Tools::fromStdString(m_baseName);
+    QString msg = tr("Can not continue. Object * %1 or %2 not found.").arg(qsectionName, qbaseName);
     QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Operation Failed"), msg);
     Gui::Control().closeDialog();
-    m_abort = true;
 }
 
 bool TaskSectionView::isBaseValid()
@@ -517,12 +634,8 @@ bool TaskSectionView::isSectionValid()
 bool TaskSectionView::accept()
 {
 //    Base::Console().Message("TSV::accept()\n");
-    if (m_abort) {
-        return true;
-    }
-    apply();
-    Gui::Command::updateActive();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    apply(true);
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return true;
 }
 
@@ -589,6 +702,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) :
     widget  = new TaskSectionView(section);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
                                          widget->windowTitle(), true, nullptr);
+
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

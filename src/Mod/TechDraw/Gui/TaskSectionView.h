@@ -39,6 +39,9 @@ namespace TechDraw {
 namespace TechDrawGui
 {
 
+class CompassWidget;
+class VectorEditWidget;
+
 class TaskSectionView : public QWidget
 {
     Q_OBJECT
@@ -56,20 +59,21 @@ protected:
     void saveSectionState();
     void restoreSectionState();
 
-    bool apply();
+    bool apply(bool forceUpdate = false);
     void applyQuick(std::string dir);
-    void applyAligned();
+    void applyAligned(Base::Vector3d localUnit);
 
-    void createSectionView();
+    TechDraw::DrawViewSection* createSectionView();
     void updateSectionView();
 
     void setUiPrimary();
     void setUiEdit();
+    void setUiCommon(Base::Vector3d origin);
 
     void checkAll(bool check);
     void enableAll(bool enable);
 
-    void failNoObject(std::string objectName);
+    void failNoObject();
     bool isBaseValid();
     bool isSectionValid();
 
@@ -84,6 +88,10 @@ protected Q_SLOTS:
     void onYChanged();
     void onZChanged();
     void scaleTypeChanged(int index);
+    void liveUpdateClicked();
+    void updateNowClicked();
+    void slotChangeAngle(double newAngle);
+    void slotViewDirectionChanged(Base::Vector3d newDirection);
 
 private:
     std::unique_ptr<Ui_TaskSectionView> ui;
@@ -113,8 +121,10 @@ private:
     std::string m_saveBaseName;
     std::string m_savePageName;
 
-    bool m_abort;
-
+    int m_applyDeferred;
+    Base::Vector3d m_localUnit;
+    CompassWidget* m_compass;
+    VectorEditWidget* m_viewDirectionWidget;
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog

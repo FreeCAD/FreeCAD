@@ -189,7 +189,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
             visHard    = hlrToShape.VCompound();
             BRepLib::BuildCurves3d(visHard);
             visHard = invertGeometry(visHard);
-            BRepTools::Write(visHard, "GOvisHard.brep");            //debug
+//            BRepTools::Write(visHard, "GOvisHard.brep");            //debug
         }
 
         if (!hlrToShape.Rg1LineVCompound().IsNull()) {

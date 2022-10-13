@@ -69,8 +69,10 @@ public:
     App::PropertyLink   BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
-    App::PropertyEnumeration SectionDirection;
+    App::PropertyString SectionSymbol;
 
+
+    App::PropertyEnumeration SectionDirection;      //to be made obsolete eventually
     App::PropertyEnumeration CutSurfaceDisplay;        //new v019
     App::PropertyFile   FileHatchPattern;
     App::PropertyFile   FileGeomPattern;               //new v019
@@ -79,8 +81,8 @@ public:
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
 
-    App::PropertyString SectionSymbol;
     App::PropertyBool   FuseBeforeCut;
+    App::PropertyBool   TrimAfterCut;                   //new v021
 
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
@@ -107,8 +109,12 @@ public:
     virtual TopoDS_Shape  prepareShape(const TopoDS_Shape& rawShape,
                                        double shapeSize);
     virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
+
     //CS related methods
+    gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const override;
     void setCSFromBase(const std::string sectionName);
+    void setCSFromBase(Base::Vector3d localUnit);
+    void setCSFromLocalUnit(const Base::Vector3d localUnit);
     virtual gp_Ax2 getCSFromBase(const std::string sectionName) const;
     gp_Ax2 getSectionCS() const;
     Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
@@ -152,6 +158,7 @@ protected:
     void getParameters();
     bool debugSection() const;
     int prefCutSurface() const;
+    bool trimAfterCut() const;
 
     TopoDS_Shape m_cutShape;
 
