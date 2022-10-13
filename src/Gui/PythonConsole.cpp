@@ -967,16 +967,6 @@ void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
     return;
   }
   TextEdit::mouseReleaseEvent( e );
-  if (e->button() == Qt::LeftButton)
-  {
-    QTextCursor cursor   = this->textCursor();
-    if (!cursor.hasSelection()
-     && cursor < this->inputBegin())
-    {
-      cursor.movePosition( QTextCursor::End );
-      this->setTextCursor( cursor );
-    }
-  }
 }
 
 /**
