@@ -226,6 +226,12 @@ SET(TechDrawGui_SRCS
     TaskComplexSection.cpp
     TaskComplexSection.h
     TaskComplexSection.ui
+    Widgets/CompassDialWidget.cpp
+    Widgets/CompassDialWidget.h
+    Widgets/CompassWidget.cpp
+    Widgets/CompassWidget.h
+    Widgets/VectorEditWidget.cpp
+    Widgets/VectorEditWidget.h
 )
 
 SET(TechDrawGuiView_SRCS

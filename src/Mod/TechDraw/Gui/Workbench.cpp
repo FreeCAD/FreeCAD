@@ -246,8 +246,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_View";
     *views << "TechDraw_ActiveView";
     *views << "TechDraw_ProjectionGroup";
-    *views << "TechDraw_SectionView";
-    *views << "TechDraw_ComplexSection";
+    *views << "TechDraw_SectionGroup";
+//    *views << "TechDraw_SectionView";
+//    *views << "TechDraw_ComplexSection";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
@@ -391,10 +392,10 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     views->setCommand("Views");
     *views << "TechDraw_View";
     *views << "TechDraw_ActiveView";
-//    *views << "TechDraw_NewMulti";    //deprecated
     *views << "TechDraw_ProjectionGroup";
-    *views << "TechDraw_SectionView";
-    *views << "TechDraw_ComplexSection";
+    *views << "TechDraw_SectionGroup";
+//    *views << "TechDraw_SectionView";
+//    *views << "TechDraw_ComplexSection";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_SpreadsheetView";

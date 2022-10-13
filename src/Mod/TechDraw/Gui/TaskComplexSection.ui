@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>370</width>
-    <height>478</height>
+    <height>612</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -86,6 +86,13 @@
     </widget>
    </item>
    <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Section Parameters</string>
@@ -93,14 +100,7 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,1">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Identifier</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QComboBox" name="cmbScaleType">
           <property name="minimumSize">
            <size>
@@ -128,8 +128,22 @@
           </item>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QDoubleSpinBox" name="dsbScale">
+        <item row="4" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Scale Type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="sbScale">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -141,41 +155,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Scale Type</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="leSymbol">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>26</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Identifier for this section</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Projection Strategy</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="1" column="1">
          <widget class="QComboBox" name="cmbStrategy">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -196,19 +183,19 @@
            </size>
           </property>
           <property name="currentText">
-           <string>Single</string>
+           <string>Offset</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
           <item>
            <property name="text">
-            <string>Single</string>
+            <string>Offset</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Piecewise</string>
+            <string>Aligned</string>
            </property>
           </item>
           <item>
@@ -218,67 +205,194 @@
           </item>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Identifier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="leSymbol">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Identifier for this section</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>BaseView</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="leBaseView">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbOrientation">
      <property name="title">
-      <string>Section Normal</string>
+      <string>Set View Direction</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
+       <layout class="QHBoxLayout" name="viewDirectionLayout"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="quickPickLayout">
+        <item>
+         <widget class="QPushButton" name="pbUp">
+          <property name="toolTip">
+           <string>Preset view direction looking up.</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-up.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbDown">
+          <property name="toolTip">
+           <string>Preset view direction looking down.</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-down.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbLeft">
+          <property name="toolTip">
+           <string>Preset view direction looking left.</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-left.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbRight">
+          <property name="toolTip">
+           <string>Preset view direction looking right.</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-right.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="compassLayout"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Z</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>X</string>
+         <widget class="QCheckBox" name="cbLiveUpdate">
+          <property name="toolTip">
+           <string>Check to update display after every property change.</string>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Y</string>
+           <string>Live Update</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="dsbXNormal">
-          <property name="minimum">
-           <double>-2147483647.000000000000000</double>
+         <widget class="QPushButton" name="pbUpdateNow">
+          <property name="toolTip">
+           <string>Rebuild display now. May be slow for complex models.</string>
           </property>
-          <property name="maximum">
-           <double>2147483647.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dsbYNormal">
-          <property name="minimum">
-           <double>-2147483647.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>2147483647.000000000000000</double>
+          <property name="text">
+           <string>Update Now</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="dsbZNormal">
-          <property name="minimum">
-           <double>-2147483647.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>2147483647.000000000000000</double>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lPendingUpdates">
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>

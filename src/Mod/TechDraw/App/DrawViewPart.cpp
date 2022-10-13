@@ -31,8 +31,10 @@
 #include <BRep_Tool.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepTools.hxx>
 #include <gp_Ax2.hxx>
@@ -382,11 +384,17 @@ void DrawViewPart::onHlrFinished(void)
 //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
 
     //now that the new GeometryObject is fully populated, we can replace the old one
-    if (geometryObject) {
-        delete geometryObject;
+    if (geometryObject &&
+            m_tempGeometryObject) {
+        delete geometryObject;      //remove the old
     }
-    geometryObject = m_tempGeometryObject;
-    m_tempGeometryObject = nullptr;     //superfluous
+    if (m_tempGeometryObject) {
+        geometryObject = m_tempGeometryObject;  //replace with new
+        m_tempGeometryObject = nullptr;     //superfluous?
+    }
+    if (!geometryObject) {
+        throw Base::RuntimeError("DrawViewPart has lost its geometry");
+    }
 
     //the last hlr related task is to make a bbox of the results
     bbox = geometryObject->calcBoundingBox();
@@ -869,10 +877,55 @@ QRectF DrawViewPart::getRect() const
     return result;
 }
 
+//returns a compound of all the visible projected edges
+TopoDS_Shape DrawViewPart::getShape() const
+{
+    BRep_Builder builder;
+    TopoDS_Compound result;
+    builder.MakeCompound(result);
+    if (geometryObject) {
+        if (!geometryObject->getVisHard().IsNull()) {
+            builder.Add(result, geometryObject->getVisHard());
+        }
+        if (!geometryObject->getVisOutline().IsNull()) {
+            builder.Add(result, geometryObject->getVisOutline());
+        }
+        if (!geometryObject->getVisSeam().IsNull()) {
+            builder.Add(result, geometryObject->getVisSeam());
+        }
+        if (!geometryObject->getVisSmooth().IsNull()) {
+            builder.Add(result, geometryObject->getVisSmooth());
+        }
+    }
+    return result;
+}
+
+//returns the (unscaled) size of the visible lines along the alignment vector
+double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
+{
+    gp_Ax3 projectedCS3(getProjectionCS());
+    projectedCS3.SetXDirection(DrawUtil::togp_Dir(alignmentVector));
+    gp_Ax3 stdCS;   //OXYZ
+
+    gp_Trsf xPieceAlign;
+    xPieceAlign.SetTransformation(stdCS, projectedCS3);
+    BRepBuilderAPI_Transform mkTransAlign(getShape(), xPieceAlign);
+    TopoDS_Shape shapeAligned = mkTransAlign.Shape();
+
+    Bnd_Box shapeBox;
+    shapeBox.SetGap(0.0);
+    BRepBndLib::AddOptimal(shapeAligned, shapeBox);
+    double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
+    shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    double shapeWidth((xMax - xMin) / getScale());
+    return shapeWidth;
+}
+
 //used to project a pt (ex SectionOrigin) onto paper plane
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert) const
 {
-//    Base::Console().Message("DVP::projectPoint()\n");
+//    Base::Console().Message("DVP::projectPoint(%s, %d\n",
+//                            DrawUtil::formatVector(pt).c_str(), invert);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
     gp_Pnt gPt(pt.x, pt.y, pt.z);
@@ -951,6 +1004,27 @@ bool DrawViewPart::hasGeometry(void) const
         return true;
     }
     return false;
+}
+
+//convert a vector in local XY coords into a coordinate sytem in global
+//coordinates aligned to the vector.
+//Note that this CS may not have the ideal XDirection for the derived view
+//(likely a DrawViewSection) and the user may need to adjust the XDirection
+//in the derived view.
+gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
+{
+    gp_Pnt stdOrigin(0.0, 0.0, 0.0);
+    gp_Ax2 dvpCS = getProjectionCS(DrawUtil::toVector3d(stdOrigin));
+    gp_Vec gLocalUnit = DrawUtil::togp_Dir(localUnit);
+    gp_Vec gLocalX(-gLocalUnit.Y(), gLocalUnit.X(), 0.0);    //clockwise perp for 2d
+
+    gp_Ax3 OXYZ;
+    gp_Trsf xLocalOXYZ;
+    xLocalOXYZ.SetTransformation(OXYZ, gp_Ax3(dvpCS));
+    gp_Vec gLocalUnitOXYZ = gLocalUnit.Transformed(xLocalOXYZ);
+    gp_Vec gLocalXOXYZ = gLocalX.Transformed(xLocalOXYZ);
+
+    return { stdOrigin, gp_Dir(gLocalUnitOXYZ), gp_Dir(gLocalXOXYZ) };
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const

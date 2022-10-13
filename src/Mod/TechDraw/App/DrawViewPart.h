@@ -154,6 +154,7 @@ public:
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
                                       const Base::Vector3d& axis,
                                       const bool flip = true)  const;
+    gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;
 
 
     bool handleFaces();
@@ -166,6 +167,9 @@ public:
     virtual TopoDS_Shape getSourceShape() const;
     virtual TopoDS_Shape getSourceShapeFused() const;
     virtual std::vector<TopoDS_Shape> getSourceShape2d() const;
+
+    TopoDS_Shape getShape() const;
+    double getSizeAlongVector(Base::Vector3d alignmentVector);
 
     virtual void postHlrTasks(void);
 

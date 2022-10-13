@@ -25,10 +25,10 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Vec.hxx>
 
 #include "DrawViewSection.h"
 
@@ -56,7 +56,7 @@ private:
 
 using ChangePointVector = std::vector<ChangePoint>;
 
-class TechDrawExport DrawComplexSection : public DrawViewSection
+class TechDrawExport DrawComplexSection: public DrawViewSection
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawComplexSection);
 
@@ -64,66 +64,60 @@ public:
     DrawComplexSection();
     ~DrawComplexSection() = default;
 
-    App::PropertyLink           CuttingToolWireObject;
-    App::PropertyEnumeration    ProjectionStrategy;     //Single or Piecewise
+    App::PropertyLink CuttingToolWireObject;
+    App::PropertyEnumeration ProjectionStrategy;//Offset or Aligned
 
-    TopoDS_Shape                getShapeToCut() override;
-    TopoDS_Shape                makeCuttingTool(double dMax) override;
-    gp_Ax2                      getCSFromBase(const std::string sectionName) const override;
-    bool                        isBaseValid() const override;
-    TopoDS_Compound             findSectionPlaneIntersections(const TopoDS_Shape& cutShape) override;
-    TopoDS_Shape                prepareShape(const TopoDS_Shape& cutShape,
-                                             double shapeSize) override;
-    TopoDS_Shape                getShapeToPrepare() const override;
-    void                        makeSectionCut(TopoDS_Shape &baseShape) override;
-    TopoDS_Shape                getShapeToIntersect() override;
-    gp_Pln                      getSectionPlane() const override;
-    TopoDS_Compound             alignSectionFaces(TopoDS_Shape faceIntersections) override;
-    std::pair<Base::Vector3d, Base::Vector3d>
-                                sectionLineEnds() override;
+    TopoDS_Shape getShapeToCut() override;
+    TopoDS_Shape makeCuttingTool(double dMax) override;
+    gp_Ax2 getCSFromBase(const std::string sectionName) const override;
+    bool isBaseValid() const override;
+    TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape &cutShape) override;
+    TopoDS_Shape prepareShape(const TopoDS_Shape &cutShape, double shapeSize) override;
+    TopoDS_Shape getShapeToPrepare() const override;
+    void makeSectionCut(TopoDS_Shape &baseShape) override;
+    TopoDS_Shape getShapeToIntersect() override;
+    gp_Pln getSectionPlane() const override;
+    TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections) override;
+    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds() override;
 
-    bool                        boxesIntersect(TopoDS_Face& face, TopoDS_Shape &shape);
-    TopoDS_Shape                shapeShapeIntersect(const TopoDS_Shape& shape0, const TopoDS_Shape& shape1);
-    std::vector<TopoDS_Face>    faceShapeIntersect(const TopoDS_Face& face, const TopoDS_Shape& shape);
-    TopoDS_Shape                extrudeWireToFace(TopoDS_Wire& wire, gp_Dir extrudeDir, double extrudeDist);
-    TopoDS_Shape                makeAlignedPieces(const TopoDS_Shape& rawShape,
-                                                  const TopoDS_Shape& toolFaceShape,
-                                                  double extrudeDistance);
-    TopoDS_Shape                distributeAlignedPieces(std::vector<TopoDS_Shape> pieces);
-    TopoDS_Compound             singleToolIntersections(const TopoDS_Shape& cutShape);
-    TopoDS_Compound             piecewiseToolIntersections(const TopoDS_Shape& cutShape);
+    bool boxesIntersect(TopoDS_Face &face, TopoDS_Shape &shape);
+    TopoDS_Shape shapeShapeIntersect(const TopoDS_Shape &shape0, const TopoDS_Shape &shape1);
+    std::vector<TopoDS_Face> faceShapeIntersect(const TopoDS_Face &face, const TopoDS_Shape &shape);
+    TopoDS_Shape extrudeWireToFace(TopoDS_Wire &wire, gp_Dir extrudeDir, double extrudeDist);
+    TopoDS_Shape makeAlignedPieces(const TopoDS_Shape &rawShape, const TopoDS_Shape &toolFaceShape,
+                                   double extrudeDistance);
+    TopoDS_Shape distributeAlignedPieces(std::vector<TopoDS_Shape> pieces);
+    TopoDS_Compound singleToolIntersections(const TopoDS_Shape &cutShape);
+    TopoDS_Compound piecewiseToolIntersections(const TopoDS_Shape &cutShape);
 
-    BaseGeomPtrVector           makeSectionLineGeometry();
-    std::pair<Base::Vector3d, Base::Vector3d>
-                                sectionArrowDirs();
-    TopoDS_Wire                 makeSectionLineWire();
+    BaseGeomPtrVector makeSectionLineGeometry();
+    std::pair<Base::Vector3d, Base::Vector3d> sectionArrowDirs();
+    TopoDS_Wire makeSectionLineWire();
 
-    TopoDS_Wire                 makeProfileWire(App::DocumentObject* toolObj);
-    TopoDS_Wire                 makeNoseToTailWire(TopoDS_Wire inWire);
-    gp_Dir                      projectProfileWire(TopoDS_Wire profileWire, gp_Ax3 paperCS);
-    ChangePointVector           getChangePointsFromSectionLine();
+    TopoDS_Wire makeProfileWire(App::DocumentObject *toolObj);
+    TopoDS_Wire makeNoseToTailWire(TopoDS_Wire inWire);
+    gp_Dir projectProfileWire(TopoDS_Wire profileWire, gp_Ax3 paperCS);
+    ChangePointVector getChangePointsFromSectionLine();
 
-    bool                        validateProfilePosition(TopoDS_Wire profileWire,
-                                                        gp_Ax2 sectionCS,
-                                                        gp_Dir& gClosestBasis) const;
-    bool                        showSegment(gp_Dir segmentNormal) const;
+    bool validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2 sectionCS,
+                                 gp_Dir &gClosestBasis) const;
+    bool showSegment(gp_Dir segmentNormal) const;
 
-    static bool                 isProfileObject(App::DocumentObject* obj);
-    static bool                 isMultiSegmentProfile(App::DocumentObject* obj);
-    static bool                 isLinearProfile(App::DocumentObject* obj);
+    static bool isProfileObject(App::DocumentObject *obj);
+    static bool isMultiSegmentProfile(App::DocumentObject *obj);
+    static bool isLinearProfile(App::DocumentObject *obj);
 
 private:
-    gp_Dir                      getFaceNormal(TopoDS_Face& face);
+    gp_Dir getFaceNormal(TopoDS_Face &face);
 
     TopoDS_Shape m_toolFaceShape;
-    TopoDS_Wire  m_profileWire;
+    TopoDS_Wire m_profileWire;
 
-    static const char* ProjectionStrategyEnums[];
+    static const char *ProjectionStrategyEnums[];
 };
 
 using DrawComplexSectionPython = App::FeaturePythonT<DrawComplexSection>;
 
-} //namespace TechDraw
+}//namespace TechDraw
 
 #endif
-

@@ -912,15 +912,15 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     } else {
         sectionLine->clearChangePoints();
     }
-    if (dcs->ProjectionStrategy.isValue("Single")) {
-        Base::Vector3d arrowDirSingle = viewSection->SectionNormal.getValue();
-        arrowDirSingle =  - viewPart->projectPoint(arrowDirSingle);         //arrows are opposite section normal
-        sectionLine->setDirection(arrowDirSingle.x, -arrowDirSingle.y);     //invert y for Qt
+    if (dcs->ProjectionStrategy.isValue("Offset")) {
+        Base::Vector3d arrowDirOffset = viewSection->SectionNormal.getValue();
+        arrowDirOffset =  - viewPart->projectPoint(arrowDirOffset);         //arrows are opposite section normal
+        sectionLine->setDirection(arrowDirOffset.x, -arrowDirOffset.y);     //invert y for Qt
     } else {
-        std::pair<Base::Vector3d, Base::Vector3d> dirsPiecewise = dcs->sectionArrowDirs();
-        dirsPiecewise.first = DrawUtil::invertY(dirsPiecewise.first);
-        dirsPiecewise.second = DrawUtil::invertY(dirsPiecewise.second);
-        sectionLine->setArrowDirections(dirsPiecewise.first, dirsPiecewise.second);
+        std::pair<Base::Vector3d, Base::Vector3d> dirsAligned = dcs->sectionArrowDirs();
+        dirsAligned.first = DrawUtil::invertY(dirsAligned.first);
+        dirsAligned.second = DrawUtil::invertY(dirsAligned.second);
+        sectionLine->setArrowDirections(dirsAligned.first, dirsAligned.second);
     }
 
     //set the general parameters
