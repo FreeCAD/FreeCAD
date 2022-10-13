@@ -3,6 +3,7 @@
 ** This file is part of a Qt Solutions component.
 **
 ** Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** Modified 2022 by 0penBrain under LGPL : fix issues about popup positioning
 **
 ** Contact:  Qt Software Information (qt-info@nokia.com)
 **
@@ -314,7 +315,7 @@ void QtColorPicker::buttonPressed(bool toggled)
     if (!toggled)
         return;
 
-    const QRect desktop = QApplication::primaryScreen()->geometry();
+    const QRect desktop = QApplication::activeWindow()->geometry();
 
     // Make sure the popup is inside the desktop.
     QPoint pos = mapToGlobal(rect().bottomLeft());
@@ -323,8 +324,8 @@ void QtColorPicker::buttonPressed(bool toggled)
     if (pos.y() < desktop.top())
        pos.setY(desktop.top());
 
-    if ((pos.x() + popup->sizeHint().width()) > desktop.width())
-       pos.setX(desktop.width() - popup->sizeHint().width());
+    if ((pos.x() + popup->sizeHint().width()) > desktop.right())
+       pos.setX(desktop.right() - popup->sizeHint().width());
     if ((pos.y() + popup->sizeHint().height()) > desktop.bottom())
        pos.setY(desktop.bottom() - popup->sizeHint().height());
     popup->move(pos);
