@@ -81,7 +81,7 @@ void Workbench::activated()
             if (fgList.size() > 0)
                 foregroundColor = fgList[0];
             else {
-                foregroundColor = new QtColorPicker();
+                foregroundColor = new QtColorPicker(bar);
                 foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
@@ -96,7 +96,7 @@ void Workbench::activated()
             if (bgList.size() > 0)
                 backgroundColor = bgList[0];
             else {
-                backgroundColor = new QtColorPicker();
+                backgroundColor = new QtColorPicker(bar);
                 backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
