@@ -508,6 +508,125 @@ this according to your screen size or personal taste</string>
         </layout>
        </widget>
       </item>
+	  <item>
+       <widget class="QGroupBox" name="GroupBox4">
+        <property name="title">
+         <string>Show Workbench selection widget in </string>
+        </property>
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>11</number>
+         </property>
+         <property name="topMargin">
+          <number>11</number>
+         </property>
+         <property name="rightMargin">
+          <number>11</number>
+         </property>
+         <property name="bottomMargin">
+          <number>11</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="Gui::PrefCheckBox" name="WBSLeftCorner">
+             <property name="toolTip">
+              <string>Show the workbench selector as a menu bar left corner widget</string>
+             </property>
+             <property name="text">
+              <string>Left corner</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="prefEntry" stdset="0">
+              <cstring>WBSLeftCorner</cstring>
+             </property>
+             <property name="prefPath" stdset="0">
+              <cstring>General</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::PrefCheckBox" name="WBSRightCorner">
+             <property name="toolTip">
+              <string>Show the workbench selector as a menu bar right corner widget</string>
+             </property>
+             <property name="text">
+              <string>Right corner</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="prefEntry" stdset="0">
+              <cstring>WBSRightCorner</cstring>
+             </property>
+             <property name="prefPath" stdset="0">
+              <cstring>General</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::PrefCheckBox" name="WBSToolBar">
+             <property name="toolTip">
+              <string>Show the workbench selector as a toolbar widget</string>
+             </property>
+             <property name="text">
+              <string>Toolbar</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="prefEntry" stdset="0">
+              <cstring>WBSToolBar</cstring>
+             </property>
+             <property name="prefPath" stdset="0">
+              <cstring>General</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::PrefCheckBox" name="WBSViewMenu">
+             <property name="toolTip">
+              <string>Show the workbench selector as a menu in view/workbench</string>
+             </property>
+             <property name="text">
+              <string>View menu</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+             <property name="prefEntry" stdset="0">
+              <cstring>WBSViewMenu</cstring>
+             </property>
+             <property name="prefPath" stdset="0">
+              <cstring>General</cstring>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item>
        <widget class="QGroupBox" name="GroupBox10">
         <property name="title">

@@ -691,8 +691,13 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
           << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
-          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
+          << "Std_SetAppearance" << "Std_RandomColor" << "Separator";
+
+    if (WindowParameter::getDefaultParameter()->GetGroup("General")->GetBool("WBSViewMenu", true)) {
+        *view << "Std_Workbench";
+    }
+
+    *view << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
 
@@ -767,10 +772,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Std_Undo" << "Std_Redo" << "Separator"
           << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
-    // Workbench switcher
-    auto wb = new ToolBarItem( root );
-    wb->setCommand("Workbench");
-    *wb << "Std_Workbench";
+    if (WindowParameter::getDefaultParameter()->GetGroup("General")->GetBool("WBSToolBar", true)) {
+        // Workbench switcher
+        auto wb = new ToolBarItem(root);
+        wb->setCommand("Workbench");
+        *wb << "Std_Workbench";
+    }
 
     // Macro
     auto macro = new ToolBarItem( root );

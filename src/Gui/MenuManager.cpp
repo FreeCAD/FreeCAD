@@ -263,6 +263,8 @@ void MenuManager::setup(MenuItem* menuItems) const
             setup(*it, action->menu());
     }
 
+    setupMenuBarCornerWidgets();
+
     // hide all menus which we don't need for the moment
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
         (*it)->setVisible(false);
@@ -335,6 +337,31 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
     // remove all menu items which we don't need for the moment
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
         menu->removeAction(*it);
+    }
+}
+
+void MenuManager::setupMenuBarCornerWidgets() const {
+    QMenuBar* menuBar = getMainWindow()->menuBar();
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+
+    //Right corner widget
+    if (hGrp->GetBool("WBSRightCorner", false)) { //add workbench selector to menubar right corner widget.
+        if (!qobject_cast<QComboBox*>(menuBar->cornerWidget(Qt::TopRightCorner)))
+            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+    }
+    else if (menuBar->cornerWidget(Qt::TopRightCorner)) {
+        delete menuBar->cornerWidget(Qt::TopRightCorner);
+        menuBar->setCornerWidget(nullptr, Qt::TopRightCorner);
+    }
+
+    //Left corner widget
+    if (hGrp->GetBool("WBSLeftCorner", false)) { //add workbench selector to menubar left corner widget.
+        if (!qobject_cast<QComboBox*>(menuBar->cornerWidget(Qt::TopLeftCorner)))
+            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+    }
+    else if (menuBar->cornerWidget(Qt::TopLeftCorner)) {
+        delete menuBar->cornerWidget(Qt::TopLeftCorner);
+        menuBar->setCornerWidget(nullptr, Qt::TopLeftCorner);
     }
 }
 

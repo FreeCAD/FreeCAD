@@ -539,6 +539,34 @@ void WorkbenchGroup::addTo(QWidget *w)
         connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated (QAction*)));
         bar->addWidget(box);
     }
+    else if (w->inherits("QMenuBar")) {
+        auto menuBar = qobject_cast<QMenuBar*>(w);
+        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+
+        if (hGrp->GetBool("WBSLeftCorner", true)) {
+            QComboBox* box = new WorkbenchComboBox(this, w);
+            box->setIconSize(QSize(16, 16));
+            box->setToolTip(_action->toolTip());
+            box->setStatusTip(_action->statusTip());
+            box->setWhatsThis(_action->whatsThis());
+            box->addActions(_group->actions());
+            connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated(QAction*)));
+            menuBar->setCornerWidget(box, Qt::TopLeftCorner);
+            box->show();
+        }
+        if (hGrp->GetBool("WBSRightCorner", true)) {
+            QComboBox* box = new WorkbenchComboBox(this, w);
+            box->setIconSize(QSize(16, 16));
+            box->setToolTip(_action->toolTip());
+            box->setStatusTip(_action->statusTip());
+            box->setWhatsThis(_action->whatsThis());
+            box->addActions(_group->actions());
+            connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated(QAction*)));
+            menuBar->setCornerWidget(box, Qt::TopRightCorner);
+            box->show();
+        }
+
+    }
     else if (w->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(w);
         menu = menu->addMenu(_action->text());

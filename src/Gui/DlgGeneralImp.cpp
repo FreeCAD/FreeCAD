@@ -40,6 +40,8 @@
 #include "DlgPreferencePackManagementImp.h"
 #include "DlgRevertToBackupConfigImp.h"
 #include "MainWindow.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
 #include "PreferencePackManager.h"
 #include "Language/Translator.h"
 
@@ -104,6 +106,15 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     else
         ui->RevertToSavedConfig->setEnabled(true);
     connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
+
+    connect(ui->WBSLeftCorner, SIGNAL(toggled(bool)),
+        this, SLOT(emitReloadWorkbenchNeeded(bool)));
+    connect(ui->WBSRightCorner, SIGNAL(toggled(bool)),
+        this, SLOT(emitReloadWorkbenchNeeded(bool)));
+    connect(ui->WBSToolBar, SIGNAL(toggled(bool)),
+        this, SLOT(emitReloadWorkbenchNeeded(bool)));
+    connect(ui->WBSViewMenu, SIGNAL(toggled(bool)),
+        this, SLOT(emitReloadWorkbenchNeeded(bool)));
 }
 
 /**
@@ -179,6 +190,20 @@ void DlgGeneralImp::saveSettings()
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
+    ui->WBSLeftCorner->onSave();
+    ui->WBSRightCorner->onSave();
+    ui->WBSToolBar->onSave();
+    ui->WBSViewMenu->onSave();
+
+    //Reload workbench to take into account workbench selector settings by refreshing toolbars and menubar.
+    if (needReloadWb) {
+        Workbench* w = WorkbenchManager::instance()->active();
+        if (w) {
+            Application::Instance->activateWorkbench("NoneWorkbench");
+            Application::Instance->activateWorkbench(w->name().c_str());
+        }
+    }
+    needReloadWb = false;
 
     setRecentFileSize();
     bool force = setLanguage();
@@ -218,6 +243,10 @@ void DlgGeneralImp::saveSettings()
     Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
 }
 
+void DlgGeneralImp::emitReloadWorkbenchNeeded(bool val) {
+    needReloadWb = true;
+}
+
 void DlgGeneralImp::loadSettings()
 {
     std::string start = App::Application::Config()["StartWorkbench"];
@@ -231,6 +260,10 @@ void DlgGeneralImp::loadSettings()
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
+    ui->WBSLeftCorner->onRestore();
+    ui->WBSRightCorner->onRestore();
+    ui->WBSToolBar->onRestore();
+    ui->WBSViewMenu->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");

@@ -60,6 +60,7 @@ protected Q_SLOTS:
     void newPreferencePackDialogAccepted();
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
+    void emitReloadWorkbenchNeeded(bool val);
 
 private:
     void setRecentFileSize();
@@ -69,6 +70,7 @@ private:
     void setNumberLocale(bool force = false);
 
 private:
+    bool needReloadWb;
     int localeIndex;
     std::unique_ptr<Ui_DlgGeneral> ui;
     std::unique_ptr<DlgCreateNewPreferencePackImp> newPreferencePackDialog;
