@@ -30,6 +30,7 @@
 #include <regex>
 #endif
 
+#include <string_view>
 #include <Base/Exception.h>
 #include "Range.h"
 
@@ -38,6 +39,18 @@ using namespace App;
 
 const int App::CellAddress::MAX_ROWS = 16384;
 const int App::CellAddress::MAX_COLUMNS = 26 * 26 + 26;
+
+namespace App {
+// From a given cell address the '$' must be at within the first
+// few characters
+bool maybeAbsolute(std::string_view address)
+{
+    const int MAX_COLUMNS_LETTERS = 2;
+
+    address = address.substr(0, MAX_COLUMNS_LETTERS + 1);
+    return address.find("$") != std::string_view::npos;
+}
+}
 
 Range::Range(const char * range, bool normalize)
 {
@@ -271,10 +284,16 @@ std::string App::CellAddress::toString(Cell cell) const
     return s.str();
 }
 
-bool App::CellAddress::parseAbsoluteAddress(const char *txt) {
-    if(txt[0]=='$' || (txt[0] && txt[1] && (txt[1]=='$' || txt[2]=='$'))) {
-        CellAddress addr = stringToAddress(txt,true);
-        if(addr.isValid()) {
+/*!
+ * \brief App::CellAddress::parseAbsoluteAddress
+ * \param address
+ * If the passed string is a valid and absolute cell address it will be assigned to this instance.
+ * \return True if it's an absolute cell address and false otherwise
+ */
+bool App::CellAddress::parseAbsoluteAddress(const char *address) {
+    if (maybeAbsolute(address)) {
+        CellAddress addr = stringToAddress(address, true);
+        if (addr.isValid()) {
             *this = addr;
             return true;
         }

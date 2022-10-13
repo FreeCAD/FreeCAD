@@ -2308,6 +2308,113 @@ class FeatureTestColumn(unittest.TestCase):
         FreeCAD.closeDocument("TestColumn")
 
 
+
+class FeatureTestRow(unittest.TestCase):
+    def setUp(self):
+        doc = FreeCAD.newDocument("TestRow")
+        self.obj = doc.addObject("App::FeatureTestRow", "Row")
+
+    def testEmpty(self):
+        self.obj.Silent = True
+        self.obj.Row = ""
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def testA(self):
+        self.obj.Silent = True
+        self.obj.Row = "A"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def testException(self):
+        value = self.obj.Value
+        self.obj.Row = "A"
+        self.assertFalse(self.obj.recompute())
+        self.assertEqual(self.obj.Value, value)
+
+    def test0(self):
+        self.obj.Silent = True
+        self.obj.Row = "0"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def test1(self):
+        self.obj.Silent = True
+        self.obj.Row = "1"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 0)
+
+    def test16384(self):
+        self.obj.Silent = True
+        self.obj.Row = "16384"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, 16383)
+
+    def test16385(self):
+        self.obj.Silent = True
+        self.obj.Row = "16385"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Value, -1)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestRow")
+
+
+
+class FeatureTestAbsAddress(unittest.TestCase):
+    def setUp(self):
+        doc = FreeCAD.newDocument("TestAbsAddress")
+        self.obj = doc.addObject("App::FeatureTestAbsAddress", "Cell")
+
+    def testAbsoluteA12(self):
+        self.obj.Address = "$A$12"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteA13(self):
+        self.obj.Address = "A$13"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteAA13(self):
+        self.obj.Address = "AA$13"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteZZ12(self):
+        self.obj.Address = "$ZZ$12"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, True)
+
+    def testAbsoluteABC1(self):
+        self.obj.Address = "$ABC1"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testAbsoluteABC2(self):
+        self.obj.Address = "ABC$2"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testRelative(self):
+        self.obj.Address = "A1"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testInvalid(self):
+        self.obj.Address = "A"
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def testEmpty(self):
+        self.obj.Address = ""
+        self.obj.recompute()
+        self.assertEqual(self.obj.Valid, False)
+
+    def tearDown(self):
+        FreeCAD.closeDocument("TestAbsAddress")
+
+
 class FeatureTestAttribute(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestAttribute")

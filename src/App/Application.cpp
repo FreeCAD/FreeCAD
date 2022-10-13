@@ -1981,6 +1981,8 @@ void Application::initTypes()
     App::FeatureTest               ::init();
     App::FeatureTestException      ::init();
     App::FeatureTestColumn         ::init();
+    App::FeatureTestRow            ::init();
+    App::FeatureTestAbsAddress     ::init();
     App::FeatureTestPlacement      ::init();
     App::FeatureTestAttribute      ::init();
 

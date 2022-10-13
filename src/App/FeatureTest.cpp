@@ -219,6 +219,42 @@ DocumentObjectExecReturn *FeatureTestColumn::execute()
 
 // ----------------------------------------------------------------------------
 
+PROPERTY_SOURCE(App::FeatureTestRow, App::DocumentObject)
+
+
+FeatureTestRow::FeatureTestRow()
+{
+    ADD_PROPERTY_TYPE(Row, ("1"), "Test", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(Silent, (false), "Test", App::Prop_None, "");
+    ADD_PROPERTY_TYPE(Value, (0L), "Test", App::Prop_Output, "");
+}
+
+DocumentObjectExecReturn *FeatureTestRow::execute()
+{
+    Value.setValue(decodeRow(Row.getStrValue(), Silent.getValue()));
+    return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestAbsAddress, App::DocumentObject)
+
+
+FeatureTestAbsAddress::FeatureTestAbsAddress()
+{
+    ADD_PROPERTY_TYPE(Address, (""), "Test", Prop_None, "");
+    ADD_PROPERTY_TYPE(Valid, (false), "Test", PropertyType(Prop_Output | Prop_ReadOnly), "");
+}
+
+DocumentObjectExecReturn *FeatureTestAbsAddress::execute()
+{
+    CellAddress address;
+    Valid.setValue(address.parseAbsoluteAddress(Address.getValue()));
+    return StdReturn;
+}
+
+// ----------------------------------------------------------------------------
+
 PROPERTY_SOURCE(App::FeatureTestPlacement, App::DocumentObject)
 
 
