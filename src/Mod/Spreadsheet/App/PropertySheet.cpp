@@ -680,6 +680,7 @@ void PropertySheet::setSpans(CellAddress address, int rows, int columns)
     Cell * cell = nonNullCellAt(address);
     assert(cell);
     cell->setSpans(rows, columns);
+    owner->cellSpanChanged(address);
 }
 
 void PropertySheet::clearAlias(CellAddress address)
@@ -1025,32 +1026,47 @@ unsigned int PropertySheet::getMemSize() const
 
 bool PropertySheet::mergeCells(CellAddress from, CellAddress to)
 {
-    // Check that this merge is not overlapping other merged cells
-    for (int r = from.row(); r <= to.row(); ++r) {
-        for (int c = from.col(); c <= to.col(); ++c) {
-            if (mergedCells.find(CellAddress(r, c)) != mergedCells.end()) {
-                    Base::Console().Warning("Cells merging is not possible when already merged cells are in the target range.\n");
-                    return false;
-            }
-        }
+    if (from == to) {
+        splitCell(from);
+        return true;
+    }
+
+    auto it = mergedCells.find(from);
+    if (it != mergedCells.end()) {
+        int rows, cols;
+        cellAt(it->second)->getSpans(rows, cols);
+        if (to.row() - from.row() + 1 == rows
+                && to.col() - from.col() + 1 == cols)
+            return false;
     }
 
     AtomicPropertyChange signaller(*this);
 
+    // Check that this merge is not overlapping other merged cells
+    for (int r = from.row(); r <= to.row(); ++r) {
+        for (int c = from.col(); c <= to.col(); ++c) {
+            splitCell(CellAddress(r, c));
+        }
+    }
+
     // Clear cells that will be hidden by the merge
-    for (int r = from.row(); r <= to.row(); ++r)
-        for (int c = from.col(); c <= to.col(); ++c)
+    for (int r = from.row(); r <= to.row(); ++r) {
+        for (int c = from.col(); c <= to.col(); ++c) {
             if ( !(r == from.row() && c == from.col()) )
                 clear(CellAddress(r, c));
+        }
+    }
 
     // Update internal structure to track merged cells
-    for (int r = from.row(); r <= to.row(); ++r)
+    for (int r = from.row(); r <= to.row(); ++r) {
         for (int c = from.col(); c <= to.col(); ++c) {
             mergedCells[CellAddress(r, c)] = from;
             setDirty(CellAddress(r, c));
         }
+    }
 
     setSpans(from, to.row() - from.row() + 1, to.col() - from.col() + 1);
+
     signaller.tryInvoke();
 
     return true;
@@ -1068,13 +1084,15 @@ void PropertySheet::splitCell(CellAddress address)
     AtomicPropertyChange signaller(*this);
     cellAt(anchor)->getSpans(rows, cols);
 
-    for (int r = anchor.row(); r <= anchor.row() + rows; ++r)
-        for (int c = anchor.col(); c <= anchor.col() + cols; ++c) {
+    for (int r = anchor.row(); r < anchor.row() + rows; ++r) {
+        for (int c = anchor.col(); c < anchor.col() + cols; ++c) {
             setDirty(CellAddress(r, c));
             mergedCells.erase(CellAddress(r, c));
         }
+    }
 
     setSpans(anchor, -1, -1);
+
     signaller.tryInvoke();
 }
 
