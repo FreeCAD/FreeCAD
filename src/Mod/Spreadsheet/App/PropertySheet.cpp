@@ -261,14 +261,23 @@ void PropertySheet::Paste(const Property &from)
     }
 
     std::map<CellAddress, Cell* >::const_iterator ifrom = froms.data.begin();
+    std::vector<CellAddress> spanChanges;
+    int rows, cols;
     while (ifrom != froms.data.end()) {
-        std::map<CellAddress, Cell* >::iterator i = data.find(ifrom->first);
+        auto &cell = data[ifrom->first];
 
-        if (i != data.end()) {
-            *(data[ifrom->first]) = *(ifrom->second); // Exists; assign cell directly
+        if (cell) {
+            int r,c;
+            cell->getSpans(rows,cols);
+            ifrom->second->getSpans(r, c);
+            if (rows != r || cols != c)
+                spanChanges.push_back(ifrom->first);
+            *cell = *(ifrom->second); // Exists; assign cell directly
         }
         else {
-            data[ifrom->first] = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            cell = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            if (cell->getSpans(rows, cols))
+                spanChanges.push_back(ifrom->first);
         }
         recomputeDependencies(ifrom->first);
 
@@ -283,6 +292,9 @@ void PropertySheet::Paste(const Property &from)
         Cell * cell = icurr->second;
 
         if (cell->isMarked()) {
+            if (cell->getSpans(rows, cols))
+                spanChanges.push_back(icurr->first);
+
             std::map<CellAddress, Cell* >::iterator next = icurr;
 
             ++next;
@@ -293,7 +305,13 @@ void PropertySheet::Paste(const Property &from)
             ++icurr;
     }
 
-    mergedCells = froms.mergedCells;
+    if (!spanChanges.empty()) {
+        mergedCells = froms.mergedCells;
+        if (auto sheet = Base::freecad_dynamic_cast<Sheet>(getContainer())) {
+            for (const auto &addr : spanChanges)
+                sheet->cellSpanChanged(addr);
+        }
+    }
     signaller.tryInvoke();
 }
 
@@ -460,7 +478,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                         continue;
 
                     auto cell = owner->getNewCell(dst);
-                    cell->setSpans(-1,-1);
+                    splitCell(dst);
 
                     int roffset_cur, coffset_cur;
                     if(!newCellAddr.isValid()) {
@@ -482,8 +500,10 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                     }
 
                     int rows, cols;
-                    if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
+                    if (cell->getSpans(rows, cols))
                         mergeCells(dst, CellAddress(dst.row() + rows - 1, dst.col() + cols - 1));
+                    else
+                        splitCell(dst);
 
                     if(roffset_cur || coffset_cur) {
                         OffsetCellsExpressionVisitor<PropertySheet> visitor(*this, roffset_cur, coffset_cur);
@@ -747,7 +767,7 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
         int rows, columns;
 
         // Get merged cell data
-        cell->getSpans(rows, columns);
+        bool hasSpan = cell->getSpans(rows, columns);
 
         // Remove merged cell data
         splitCell(currPos);
@@ -761,13 +781,10 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
         cell->moveAbsolute(newPos);
         data[newPos] = cell;
 
-        if (rows > 1 || columns > 1) {
+        if (hasSpan) {
             CellAddress toPos(newPos.row() + rows - 1, newPos.col() + columns - 1);
-
             mergeCells(newPos, toPos);
         }
-        else
-            cell->setSpans(-1, -1);
 
         addDependencies(newPos);
 
@@ -872,6 +889,7 @@ void PropertySheet::removeRows(int row, int count)
             moveAlias(*i, CellAddress(i->row() - count, i->col()));
     }
 
+    int spanRows, spanCols;
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -891,6 +909,13 @@ void PropertySheet::removeRows(int row, int count)
             clear(*i, false);  // aliases were cleared earlier
         else if (i->row() >= row + count)
             moveCell(*i, CellAddress(i->row() - count, i->col()), renames);
+        else if (cell->getSpans(spanRows, spanCols) && i->row() + spanRows >= row) {
+            if (i->row() + spanRows >= row + count)
+                spanRows -= count;
+            else
+                spanRows = i->row() - row;
+            mergeCells(j->first, CellAddress(j->first.row()+spanRows-1, j->first.col()+spanCols-1));
+        }
     }
 
     const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
@@ -992,6 +1017,7 @@ void PropertySheet::removeColumns(int col, int count)
             moveAlias(*i, CellAddress(i->row(), i->col() - count));
     }
 
+    int spanRows, spanCols;
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
         std::map<CellAddress, Cell*>::iterator j = data.find(*i);
 
@@ -1011,6 +1037,13 @@ void PropertySheet::removeColumns(int col, int count)
             clear(*i, false);  // aliases were cleared earlier
         else if (i->col() >= col + count)
             moveCell(*i, CellAddress(i->row(), i->col() - count), renames);
+        else if (cell->getSpans(spanRows, spanCols) && i->col() + spanCols >= col) {
+            if (i->col() + spanCols >= col + count)
+                spanCols -= count;
+            else
+                spanCols = i->col() - col;
+            mergeCells(j->first, CellAddress(j->first.row()+spanRows-1, j->first.col()+spanCols-1));
+        }
     }
 
     const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
