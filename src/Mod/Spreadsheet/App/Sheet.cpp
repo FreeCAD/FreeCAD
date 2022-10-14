@@ -810,9 +810,6 @@ void Sheet::recomputeCell(CellAddress p)
         if(e.isDerivedFrom(Base::AbortException::getClassTypeId()))
             throw;
     }
-
-    if (!cell || cell->spansChanged())
-        cellSpanChanged(p);
 }
 
 PropertySheet::BindingType

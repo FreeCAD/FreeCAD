@@ -80,7 +80,6 @@ const int Cell::MARK_SET             = 0x40000000;
 const int Cell::EXCEPTION_SET        = 0x20000000;
 const int Cell::PARSE_EXCEPTION_SET  = 0x80000000;
 const int Cell::RESOLVE_EXCEPTION_SET= 0x01000000;
-const int Cell::SPANS_UPDATED        = 0x10000000;
 
 /* Alignment */
 const int Cell::ALIGNMENT_LEFT       = 0x01;
@@ -619,7 +618,6 @@ void Cell::setSpans(int rows, int columns)
         rowSpan = (rows == -1 ? 1 : rows);
         colSpan = (columns == -1 ? 1 : columns);
         setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
-        setUsed(SPANS_UPDATED);
         setDirty();
         signaller.tryInvoke();
     }
