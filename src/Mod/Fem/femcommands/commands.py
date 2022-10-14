@@ -81,7 +81,10 @@ class _ClippingPlaneAdd(CommandManager):
 
     def __init__(self):
         super(_ClippingPlaneAdd, self).__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Clipping plane on face")
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ClippingPlaneAdd",
+            "Clipping plane on face"
+        )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ClippingPlaneAdd",
             "Add a clipping plane on a selected face"
