@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathGeom as PathGeom
 import math
 
 __title__ = "PathLanguage - classes for an internal language/representaion for Path"
@@ -30,7 +29,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
-CmdMoveStraight = PathGeom.CmdMoveStraight + PathGeom.CmdMoveRapid
+CmdMoveStraight = Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid
 
 class Instruction (object):
     '''An Instruction is a pure python replacement of Path.Command which also tracks its begin position.'''
@@ -112,7 +111,7 @@ class MoveStraight (Instruction):
         end = self.xyEnd()
         if end == begin:
             return (0, 0)
-        a = PathGeom.getAngle(end - begin)
+        a = Path.Geom.getAngle(end - begin)
         return (a, a)
 
     def isMove(self):
@@ -129,11 +128,11 @@ class MoveArc (Instruction):
         end = self.xyEnd()
         center = self.xyCenter()
         # calculate angle of the hypotenuse at begin and end
-        s0 = PathGeom.getAngle(begin - center)
-        s1 = PathGeom.getAngle(end - center)
+        s0 = Path.Geom.getAngle(begin - center)
+        s1 = Path.Geom.getAngle(end - center)
         # the tangents are perpendicular to the hypotenuse with the sign determined by the
         # direction of the arc
-        return (PathGeom.normalizeAngle(s0 + self.arcDirection()), PathGeom.normalizeAngle(s1 + self.arcDirection()))
+        return (Path.Geom.normalizeAngle(s0 + self.arcDirection()), Path.Geom.normalizeAngle(s1 + self.arcDirection()))
 
     def isMove(self):
         return True
@@ -152,8 +151,8 @@ class MoveArc (Instruction):
         begin = self.xyBegin()
         end = self.xyEnd()
         center = self.xyCenter()
-        s0 = PathGeom.getAngle(begin - center)
-        s1 = PathGeom.getAngle(end - center)
+        s0 = Path.Geom.getAngle(begin - center)
+        s1 = Path.Geom.getAngle(end - center)
 
         if self.isCW():
             while s0 < s1:
@@ -214,9 +213,9 @@ class Maneuver (object):
 
         if cmd.Name in CmdMoveStraight:
             return MoveStraight(begin, cmd.Name, cmd.Parameters)
-        if cmd.Name in PathGeom.CmdMoveCW:
+        if cmd.Name in Path.Geom.CmdMoveCW:
             return MoveArcCW(begin, cmd.Name, cmd.Parameters)
-        if cmd.Name in PathGeom.CmdMoveCCW:
+        if cmd.Name in Path.Geom.CmdMoveCCW:
             return MoveArcCCW(begin, cmd.Name, cmd.Parameters)
         return Instruction(begin, cmd.Name, cmd.Parameters)
 
@@ -235,4 +234,7 @@ class Maneuver (object):
     @classmethod
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
+
+def instruction_to_command(instr):
+    return Path.Command(instr.cmd, instr.param)
 

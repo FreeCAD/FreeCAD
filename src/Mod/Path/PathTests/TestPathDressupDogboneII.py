@@ -22,189 +22,28 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathLanguage as PathLanguage
-import PathScripts.PathLog as PathLog
+import Path.Base.Generator.dogboneII as dogboneII
+import Path.Base.Language as PathLanguage
+import Path.Dressup.DogboneII as PathDressupDogboneII
 import PathTests.PathTestUtils as PathTestUtils
 import math
 
 
-# PathLog.setLevel(PathLog.Level.DEBUG)
-PathLog.setLevel(PathLog.Level.NOTICE)
+# Path.Log.setLevel(Path.Log.Level.DEBUG)
+Path.Log.setLevel(Path.Log.Level.NOTICE)
 
 PI = math.pi
-DebugMode = PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
+DebugMode = Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG
 
-class Kink (object):
-    '''A Kink represents the angle at which two moves connect.
-A positive kink angle represents a move to the left, and a negative angle represents a move to the right.'''
-
-    def __init__(self, m0, m1):
-        if m1 is None:
-            m1 = m0[1]
-            m0 = m0[0]
-        self.m0 = m0
-        self.m1 = m1
-        self.t0 = m0.anglesOfTangents()[1]
-        self.t1 = m1.anglesOfTangents()[0]
-
-    def deflection(self):
-        '''deflection() ... returns the tangential difference of the two edges at their intersection'''
-        return PathGeom.normalizeAngle(self.t1 - self.t0)
-
-    def normAngle(self):
-        '''normAngle() ... returns the angle opposite between the two tangents'''
-
-        # The normal angle is perpendicular to the "average tangent" of the kink. The question
-        # is into which direction to turn. One lies in the center between the two edges and the
-        # other is opposite to that. As it turns out, the magnitude of the tangents tell it all.
-        if self.t0 > self.t1:
-            return PathGeom.normalizeAngle((self.t0 + self.t1 + PI) / 2)
-        return PathGeom.normalizeAngle((self.t0 + self.t1 - PI) / 2)
-
-    def position(self):
-        '''position() ... position of the edge's intersection'''
-        return self.m0.positionEnd()
-
-    def x(self):
-        return self.position().x
-
-    def y(self):
-        return self.position().y
-
-    def __repr__(self):
-        return f"({self.x():.4f}, {self.y():.4f})[t0={180*self.t0/PI:.2f}, t1={180*self.t1/PI:.2f}, deflection={180*self.deflection()/PI:.2f}, normAngle={180*self.normAngle()/PI:.2f}]"
-
-def createKinks(maneuver):
-    k = []
-    moves = maneuver.getMoves()
-    if moves:
-        move0 = moves[0]
-        prev = move0
-        for m in moves[1:]:
-            k.append(Kink(prev, m))
-            prev = m
-        if PathGeom.pointsCoincide(move0.positionBegin(), prev.positionEnd()):
-            k.append(Kink(prev, move0))
-    return k
-
-
-def findDogboneKinks(maneuver, threshold):
-    '''findDogboneKinks(maneuver, threshold) ... return all kinks fitting the criteria.
-A positive threshold angle returns all kinks on the right side, and a negative all kinks on the left side'''
-    if threshold > 0:
-        return [k for k in createKinks(maneuver) if k.deflection() > threshold]
-    if threshold < 0:
-        return [k for k in createKinks(maneuver) if k.deflection() < threshold]
-    # you asked for it ...
-    return createKinks(maneuver)
-
-
-class Bone (object):
-    '''A Bone holds all the information of a bone and the kink it is attached to'''
-
-    def __init__(self, kink, angle, instr=None):
-        self.kink = kink
-        self.angle = angle
-        self.instr = [] if instr is None else instr
-
-    def addInstruction(self, instr):
-        self.instr.append(instr)
-
-def instruction_to_command(instr):
-    return Path.Command(instr.cmd, instr.param)
-
-def kink_to_path(kink, g0=False):
-    return Path.Path([instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
-
-def bone_to_path(bone, g0=False):
-    kink = bone.kink
-    cmds = []
-    if g0 and not PathGeom.pointsCoincide(kink.m0.positionBegin(), FreeCAD.Vector(0, 0, 0)):
-        pos = kink.m0.positionBegin()
-        param = {}
-        if not PathGeom.isRoughly(pos.x, 0):
-            param['X'] = pos.x
-        if not PathGeom.isRoughly(pos.y, 0):
-            param['Y'] = pos.y
-        cmds.append(Path.Command('G0', param))
-    for instr in [kink.m0, bone.instr[0], bone.instr[1], kink.m1]:
-        cmds.append(instruction_to_command(instr))
-    return Path.Path(cmds)
-
-def generate_tbone(kink, length, dim):
-    def getAxisX(v):
-        return v.x
-    def getAxisY(v):
-        return v.y
-    axis = getAxisY if dim == 'Y' else getAxisX
-    angle = 0 if dim == 'X' else PI/2
-
-    d0 = axis(kink.position())
-    dd = axis(kink.m0.positionEnd()) - axis(kink.m0.positionBegin())
-    if dd < 0 or (PathGeom.isRoughly(dd, 0) and (axis(kink.m1.positionEnd()) > axis(kink.m1.positionBegin()))):
-        length = -length
-        angle = angle - PI
-
-    d1 = d0 + length
-
-    moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {dim: d1})
-    moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
-    return Bone(kink, angle, [moveIn, moveOut])
-
-def generate_tbone_horizontal(kink, length):
-    return generate_tbone(kink, length, 'X')
-
-def generate_tbone_vertical(kink, length):
-    return generate_tbone(kink, length, 'Y')
-
-def generate_bone(kink, length, angle):
-    # These two special cases could be removed, they are more efficient though because they
-    # don't require trigonometric function calls. They are also a gentle introduction into
-    # the dog/t/bone world, so we'll leave them here for now
-    if PathGeom.isRoughly(0, angle) or PathGeom.isRoughly(abs(angle), PI):
-        return generate_tbone_horizontal(kink, length)
-    if PathGeom.isRoughly(abs(angle), PI/2):
-        return generate_tbone_vertical(kink, length)
-
-    #if kink.deflection() > 0:
-    #    length = -length
-
-    dx = length * math.cos(angle)
-    dy = length * math.sin(angle)
-    p0 = kink.position()
-
-    moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
-    moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
-
-    return Bone(kink, angle, [moveIn, moveOut])
-
-def generate_tbone_on_short(kink, length):
-    if kink.m0.pathLength() < kink.m1.pathLength():
-        a = PathGeom.normalizeAngle(kink.t0 + PI/2)
-    else:
-        a = PathGeom.normalizeAngle(kink.t1 - PI/2)
-    return generate_bone(kink, length, a)
-
-def generate_tbone_on_long(kink, length):
-    if kink.m0.pathLength() > kink.m1.pathLength():
-        a = PathGeom.normalizeAngle(kink.t0 + PI/2)
-    else:
-        a = PathGeom.normalizeAngle(kink.t1 - PI/2)
-    return generate_bone(kink, length, a)
-
-def generate_dogbone(kink, length):
-    #return generate_bone(kink, length, PathGeom.normalizeAngle((kink.deflection() + PI) / 2))
-    return generate_bone(kink, length, kink.normAngle())
 
 def calc_adaptive_length(kink, angle, nominal_length):
-    if PathGeom.isRoughly(abs(kink.deflection()), 0):
+    if Path.Geom.isRoughly(abs(kink.deflection()), 0):
         return 0
 
     # If the kink poses a 180deg turn the adaptive length is undefined. Mathematically
     # it's infinite but that is not practical.
     # We define the adaptive length to be the nominal length for this case.
-    if PathGeom.isRoughly(abs(kink.deflection()), PI):
+    if Path.Geom.isRoughly(abs(kink.deflection()), PI):
         return nominal_length
 
     # The distance of the (estimated) corner from the kink position depends only on the
@@ -234,23 +73,23 @@ def calc_adaptive_length(kink, angle, nominal_length):
     # speaking no intersection and the bone is ineffective. However, giving it our 
     # best shot we should probably move the entire depth.
 
-    da = PathGeom.normalizeAngle(kink.normAngle() - angle)
+    da = Path.Geom.normalizeAngle(kink.normAngle() - angle)
     depth = dist * math.cos(da)
     if depth < 0:
-        PathLog.debug(f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0")
+        Path.Log.debug(f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0")
         depth = 0
     else:
         height = dist * abs(math.sin(da))
         if height < nominal_length:
             depth = depth - math.sqrt(nominal_length * nominal_length - height * height)
-        PathLog.debug(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
+        Path.Log.debug(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
 
     if DebugMode and FreeCAD.GuiUp:
         import Part
         FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
         group = FreeCAD.ActiveDocument.ActiveObject
-        bone = generate_dogbone(kink, dist)
-        Path.show(bone_to_path(bone, True), 'adaptive')
+        bone = dogboneII.generate_dogbone(kink, dist)
+        Path.show(PathDressupDogboneII.bone_to_path(bone, True), 'adaptive')
         group.addObject(FreeCAD.ActiveDocument.ActiveObject)
         instr = bone.instr[0]
         Part.show(Part.Edge(Part.makeCircle(.025, instr.positionEnd())), 'adaptive')
@@ -279,26 +118,26 @@ def KINK(gcode, begin=None):
     maneuver = MNVR(gcode, begin)
     if len(maneuver.instr) != 2:
         return None
-    return Kink(maneuver.instr[0], maneuver.instr[1])
+    return dogboneII.Kink(maneuver.instr[0], maneuver.instr[1])
 
-class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
+class TestDressupDogboneII(PathTestUtils.PathTestBase):
     """Unit tests for the Dogbone dressup."""
 
     def assertKinks(self, maneuver, s):
-        kinks = [f"{k.deflection():4.2f}" for k in createKinks(maneuver)]
+        kinks = [f"{k.deflection():4.2f}" for k in PathDressupDogboneII.createKinks(maneuver)]
         self.assertEqual(f"[{', '.join(kinks)}]", s)
 
     def assertBones(self, maneuver, threshold, s):
-        bones = [f"({int(b.x())},{int(b.y())})" for b in findDogboneKinks(maneuver, threshold)]
+        bones = [f"({int(b.x())},{int(b.y())})" for b in PathDressupDogboneII.findDogboneKinks(maneuver, threshold)]
         self.assertEqual(f"[{', '.join(bones)}]", s)
 
     def assertBone(self, bone, s, digits=0):
         if DebugMode and FreeCAD.GuiUp:
-            Path.show(kink_to_path(bone.kink))
+            Path.show(PathDressupDogboneII.kink_to_path(bone.kink))
             FreeCAD.ActiveDocument.Objects[-1].Visibility = False
-            Path.show(bone_to_path(bone))
+            Path.show(PathDressupDogboneII.bone_to_path(bone))
             FreeCAD.ActiveDocument.Objects[-1].Visibility = False
-        PathLog.debug(f"{bone.kink} : {bone.angle / PI:.2f}")
+        Path.Log.debug(f"{bone.kink} : {bone.angle / PI:.2f}")
 
         b = [i.str(digits) for i in bone.instr]
         self.assertEqual(f"[{', '.join(b)}]", s)
@@ -345,17 +184,17 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
 
         # single move right
         maneuver = MNVR('G1X1/G1Y1')
-        kinks = findDogboneKinks(maneuver, PI/4)
+        kinks = PathDressupDogboneII.findDogboneKinks(maneuver, PI/4)
         self.assertEqual(len(kinks), 1)
         k = kinks[0]
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
-        bone = generate_tbone_horizontal(k, 1)
+        bone = dogboneII.generate_tbone_horizontal(k, 1)
         self.assertBone(bone, "[G1{X: 2}, G1{X: 1}]")
 
         # full loop CCW
-        kinks = findDogboneKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), PI/4)
-        bones = [generate_tbone_horizontal(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), PI/4)
+        bones = [dogboneII.generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
         self.assertBone(bones[0], "[G1{X: 2}, G1{X: 1}]")
         self.assertBone(bones[1], "[G1{X: 2}, G1{X: 1}]")
@@ -364,17 +203,17 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
 
         # single move left
         maneuver = MNVR('G1X1/G1Y-1')
-        kinks = findDogboneKinks(maneuver, -PI/4)
+        kinks = PathDressupDogboneII.findDogboneKinks(maneuver, -PI/4)
         self.assertEqual(len(kinks), 1)
         k = kinks[0]
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
-        bone = generate_tbone_horizontal(k, 1)
+        bone = dogboneII.generate_tbone_horizontal(k, 1)
         self.assertBone(bone, "[G1{X: 2}, G1{X: 1}]")
 
         # full loop CW
-        kinks = findDogboneKinks(MNVR('G1X1/G1Y-1/G1X0/G1Y0'), -PI/4)
-        bones = [generate_tbone_horizontal(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G1Y-1/G1X0/G1Y0'), -PI/4)
+        bones = [dogboneII.generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
         self.assertBone(bones[0], "[G1{X: 2}, G1{X: 1}]")
         self.assertBone(bones[1], "[G1{X: 2}, G1{X: 1}]")
@@ -382,16 +221,16 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
         self.assertBone(bones[3], "[G1{X: -1}, G1{X: 0}]")
 
         # bones on arcs
-        kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4);
-        bones = [generate_tbone_horizontal(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4);
+        bones = [dogboneII.generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 3)
         self.assertBone(bones[0], "[G1{X: 4}, G1{X: 3}]")
         self.assertBone(bones[1], "[G1{X: -1}, G1{X: 0}]")
         self.assertBone(bones[2], "[G1{X: -1}, G1{X: 0}]")
 
         # bones on arcs
-        kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  -PI/4);
-        bones = [generate_tbone_horizontal(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  -PI/4);
+        bones = [dogboneII.generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 1)
         self.assertBone(bones[0], "[G1{X: 2}, G1{X: 1}]")
 
@@ -401,17 +240,17 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
 
         # single move right
         maneuver = MNVR('G1X1/G1Y1')
-        kinks = findDogboneKinks(maneuver, PI/4)
+        kinks = PathDressupDogboneII.findDogboneKinks(maneuver, PI/4)
         self.assertEqual(len(kinks), 1)
         k = kinks[0]
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
-        bone = generate_tbone_vertical(k, 1)
+        bone = dogboneII.generate_tbone_vertical(k, 1)
         self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
 
         # full loop CCW
-        kinks = findDogboneKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), PI/4)
-        bones = [generate_tbone_vertical(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), PI/4)
+        bones = [dogboneII.generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
         self.assertBone(bones[0], "[G1{Y: -1}, G1{Y: 0}]")
         self.assertBone(bones[1], "[G1{Y: 2}, G1{Y: 1}]")
@@ -420,17 +259,17 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
 
         # single move left
         maneuver = MNVR('G1X1/G1Y-1')
-        kinks = findDogboneKinks(maneuver, -PI/4)
+        kinks = PathDressupDogboneII.findDogboneKinks(maneuver, -PI/4)
         self.assertEqual(len(kinks), 1)
         k = kinks[0]
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
-        bone = generate_tbone_vertical(k, 1)
+        bone = dogboneII.generate_tbone_vertical(k, 1)
         self.assertBone(bone, "[G1{Y: 1}, G1{Y: 0}]")
 
         # full loop CW
-        kinks = findDogboneKinks(MNVR('G1X1/G1Y-1/G1X0/G1Y0'), -PI/4)
-        bones = [generate_tbone_vertical(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G1Y-1/G1X0/G1Y0'), -PI/4)
+        bones = [dogboneII.generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
         self.assertBone(bones[0], "[G1{Y: 1}, G1{Y: 0}]")
         self.assertBone(bones[1], "[G1{Y: -2}, G1{Y: -1}]")
@@ -438,16 +277,16 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
         self.assertBone(bones[3], "[G1{Y: 1}, G1{Y: 0}]")
 
         # bones on arcs
-        kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4);
-        bones = [generate_tbone_vertical(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4);
+        bones = [dogboneII.generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 3)
         self.assertBone(bones[0], "[G1{Y: 2}, G1{Y: 1}]")
         self.assertBone(bones[1], "[G1{Y: 2}, G1{Y: 1}]")
         self.assertBone(bones[2], "[G1{Y: -1}, G1{Y: 0}]")
 
         # bones on arcs
-        kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  -PI/4);
-        bones = [generate_tbone_vertical(k, 1) for k in kinks]
+        kinks = PathDressupDogboneII.findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  -PI/4);
+        bones = [dogboneII.generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 1)
         self.assertBone(bones[0], "[G1{Y: 1}, G1{Y: 0}]")
 
@@ -455,55 +294,55 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
         """Verify t-bones on edges"""
 
         # horizontal short edge
-        bone = generate_tbone_on_short(KINK('G1X1/G1Y2'), 1)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1X1/G1Y2'), 1)
         self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
 
-        bone = generate_tbone_on_short(KINK('G1X-1/G1Y2'), 1)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1X-1/G1Y2'), 1)
         self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
 
         # vertical short edge
-        bone = generate_tbone_on_short(KINK('G1Y1/G1X2'), 1)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1Y1/G1X2'), 1)
         self.assertBone(bone, "[G1{X: -1}, G1{X: 0}]")
 
-        bone = generate_tbone_on_short(KINK('G1Y1/G1X-2'), 1)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1Y1/G1X-2'), 1)
         self.assertBone(bone, "[G1{X: 1}, G1{X: 0}]")
 
         # some other angle
-        bone = generate_tbone_on_short(KINK('G1X1Y1/G1Y-1'), 5)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1X1Y1/G1Y-1'), 5)
         self.assertBone(bone, "[G1{X: -2.5, Y: 4.5}, G1{X: 1.0, Y: 1.0}]", 2)
 
-        bone = generate_tbone_on_short(KINK('G1X-1Y-1/G1Y1'), 5)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1X-1Y-1/G1Y1'), 5)
         self.assertBone(bone, "[G1{X: 2.5, Y: -4.5}, G1{X: -1.0, Y: -1.0}]", 2)
 
         # some other angle
-        bone = generate_tbone_on_short(KINK('G1X2Y1/G1Y-3'), 5)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1X2Y1/G1Y-3'), 5)
         self.assertBone(bone, "[G1{X: -0.24, Y: 5.5}, G1{X: 2.0, Y: 1.0}]", 2)
 
-        bone = generate_tbone_on_short(KINK('G1X-2Y-1/G1Y3'), 5)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1X-2Y-1/G1Y3'), 5)
         self.assertBone(bone, "[G1{X: 0.24, Y: -5.5}, G1{X: -2.0, Y: -1.0}]", 2)
 
         # short edge - the 2nd
-        bone = generate_tbone_on_short(KINK('G1Y2/G1X1'), 1)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1Y2/G1X1'), 1)
         self.assertBone(bone, "[G1{Y: 3}, G1{Y: 2}]")
-        bone = generate_tbone_on_short(KINK('G1Y2/G1X-1'), 1)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1Y2/G1X-1'), 1)
         self.assertBone(bone, "[G1{Y: 3}, G1{Y: 2}]")
 
-        bone = generate_tbone_on_short(KINK('G1Y-3/G1X2Y-2'), 5)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1Y-3/G1X2Y-2'), 5)
         self.assertBone(bone, "[G1{X: 2.2, Y: -7.5}, G1{X: 0.0, Y: -3.0}]", 2)
 
-        bone = generate_tbone_on_short(KINK('G1Y3/G1X-2Y2'), 5)
+        bone = dogboneII.generate_tbone_on_short(KINK('G1Y3/G1X-2Y2'), 5)
         self.assertBone(bone, "[G1{X: -2.2, Y: 7.5}, G1{X: 0.0, Y: 3.0}]", 2)
 
         # long edge
-        bone = generate_tbone_on_long(KINK('G1X2/G1Y1'), 1)
+        bone = dogboneII.generate_tbone_on_long(KINK('G1X2/G1Y1'), 1)
         self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
-        bone = generate_tbone_on_long(KINK('G1X-2/G1Y1'), 1)
+        bone = dogboneII.generate_tbone_on_long(KINK('G1X-2/G1Y1'), 1)
         self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
 
-        bone = generate_tbone_on_long(KINK('G1Y-1/G1X2Y0'), 5)
+        bone = dogboneII.generate_tbone_on_long(KINK('G1Y-1/G1X2Y0'), 5)
         self.assertBone(bone, "[G1{X: 2.2, Y: -5.5}, G1{X: 0.0, Y: -1.0}]", 2)
 
-        bone = generate_tbone_on_long(KINK('G1Y1/G1X-2Y0'), 5)
+        bone = dogboneII.generate_tbone_on_long(KINK('G1Y1/G1X-2Y0'), 5)
         self.assertBone(bone, "[G1{X: -2.2, Y: 5.5}, G1{X: 0.0, Y: 1.0}]", 2)
 
     def test70(self):
@@ -526,13 +365,13 @@ class TestPathDressupDogboneII(PathTestUtils.PathTestBase):
     def test71(self):
         """Verify dogbones"""
 
-        bone = generate_dogbone(KINK('G1X1/G1Y1'), 1)
+        bone = dogboneII.generate_dogbone(KINK('G1X1/G1Y1'), 1)
         self.assertBone(bone, "[G1{X: 1.7, Y: -0.71}, G1{X: 1.0, Y: 0.0}]", 2)
 
-        bone = generate_dogbone(KINK('G1X1/G1X3Y-1'), 1)
+        bone = dogboneII.generate_dogbone(KINK('G1X1/G1X3Y-1'), 1)
         self.assertBone(bone, "[G1{X: 1.2, Y: 0.97}, G1{X: 1.0, Y: 0.0}]", 2)
 
-        bone = generate_dogbone(KINK('G1X1Y1/G1X2'), 1)
+        bone = dogboneII.generate_dogbone(KINK('G1X1Y1/G1X2'), 1)
         self.assertBone(bone, "[G1{X: 0.62, Y: 1.9}, G1{X: 1.0, Y: 1.0}]", 2)
 
     def test80(self):

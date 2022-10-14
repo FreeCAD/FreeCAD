@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-import PathScripts.PathLanguage as PathLanguage
+import Path.Base.Language as PathLanguage
 import PathTests.PathTestUtils as PathTestUtils
 import math
 

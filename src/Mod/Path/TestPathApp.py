@@ -32,6 +32,7 @@ from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDrillable import TestPathDrillable
 from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
 from PathTests.TestPathGeom import TestPathGeom
+from PathTests.TestPathLanguage import TestPathLanguage
 
 # from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathHelpers import TestPathHelpers
@@ -68,9 +69,6 @@ from PathTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
 from PathTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
 from PathTests.TestRefactoredTestPost import TestRefactoredTestPost
 
-from PathTests.TestPathLanguage import TestPathLanguage
-from PathTests.TestPathDressupDogboneII import TestPathDressupDogboneII
-
 # dummy usage to get flake8 and lgtm quiet
 False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
@@ -78,6 +76,7 @@ False if TestBuildPostList.__name__ else True
 False if TestDressupDogbone.__name__ else True
 False if TestDressupDogboneII.__name__ else True
 False if TestHoldingTags.__name__ else True
+False if TestPathLanguage.__name__ else True
 False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True
@@ -115,6 +114,3 @@ False if TestRefactoredGrblPost.__name__ else True
 False if TestRefactoredLinuxCNCPost.__name__ else True
 False if TestRefactoredMach3Mach4Post.__name__ else True
 False if TestRefactoredTestPost.__name__ else True
-
-False if TestPathLanguage.__name__ else True
-False if TestPathDressupDogboneII.__name__ else True

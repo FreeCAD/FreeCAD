@@ -33,9 +33,10 @@ SET(PathPython_SRCS
 
 SET(PathPythonBase_SRCS
     Path/Base/__init__.py
-    Path/Base//Drillable.py
-    Path/Base/MachineState.py
+    Path/Base/Drillable.py
     Path/Base/FeedRate.py
+    Path/Base/Language.py
+    Path/Base/MachineState.py
     Path/Base/Property.py
     Path/Base/PropertyBag.py
     Path/Base/SetupSheet.py
@@ -59,6 +60,7 @@ SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
     Path/Dressup/Boundary.py
+    Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
 )
 
