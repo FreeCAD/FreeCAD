@@ -71,12 +71,7 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy() con
     std::unique_ptr<GeometryDefaultExtension<T>> cpy = std::make_unique<GeometryDefaultExtension<T>>();
 
     copyAttributes(cpy.get());
-
-    #if defined(_MSC_VER)
-        return std::move(cpy); // MSC does not support automatic move constructor call if the compiler fails to elide
-    #else
-        return cpy; // all the others do automatic move constructor if RVO optimization not possible.
-    #endif
+    return cpy;
 }
 
 template <typename T>
