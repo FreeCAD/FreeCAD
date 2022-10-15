@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+// HypothesisPy.h must be included as first file to avoid compiler warning,
+// see: https://forum.freecadweb.org/viewtopic.php?p=633192#p633192
+#include "HypothesisPy.h"
+
 #ifndef _PreComp_
 # include <sstream>
 
@@ -64,7 +68,6 @@
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
-#include "HypothesisPy.h"
 #include "FemMeshPy.h"
 
 
