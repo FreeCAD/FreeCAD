@@ -9,13 +9,20 @@
 #  include <${OCC_INCLUDE_DIR}/Standard_Version.hxx>
 #endif
 
+#cmakedefine BUILD_SMESH
+
+#if defined(BUILD_SMESH)
+#  include <SMESH_Version.h>
+#endif
+
 
 /* No need for Boost (version info is always included in the source) */
 /* No need for Python (version info is always included in the source) */
 /* No need for Qt (version info is always included in the source) */
+/* No need for SMESH (version info is always included in the source) */
 /* No need for zlib (version info is always included in the source) */
 
-// No CMake version info for SMESH, libarea, Zipios, or KDL
+// No CMake version info for libarea, Zipios, or KDL
 
 // Coin3D
 constexpr char * FC_COIN3D_VERSION = "${COIN3D_VERSION}";
