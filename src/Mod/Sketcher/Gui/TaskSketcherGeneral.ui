@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="Gui::PrefCheckBox" name="checkBoxShowGrid">
        <property name="enabled">
@@ -25,7 +25,7 @@
         <string>A grid will be shown</string>
        </property>
        <property name="text">
-        <string>Grid</string>
+        <string>Show grid</string>
        </property>
        <property name="checked">
         <bool>false</bool>
@@ -39,35 +39,59 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
-       <property name="toolTip">
-        <string>Distance between two subsequent grid lines</string>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
        </property>
-       <property name="decimals" stdset="0">
-        <number>3</number>
-       </property>
-       <property name="maximum" stdset="0">
-        <double>99999999.000000000000000</double>
-       </property>
-       <property name="minimum" stdset="0">
-        <double>0.001000000000000</double>
-       </property>
-       <property name="singleStep" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value" stdset="0">
-        <double>10.000000000000000</double>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>GridSize</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher/General/GridSize</cstring>
-       </property>
-      </widget>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="gridSizeLabel">
+         <property name="text">
+          <string>Grid size:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
+         <property name="toolTip">
+          <string>Distance between two subsequent grid lines</string>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
+         <property name="minimum">
+          <double>0.001000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>99999999.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>1.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>GridSize</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>Mod/Sketcher/General/GridSize</cstring>
+         </property>
+         <property name="decimals" stdset="0">
+          <number>3</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -174,13 +198,18 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
