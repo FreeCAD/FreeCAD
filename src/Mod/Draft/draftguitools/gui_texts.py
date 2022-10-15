@@ -64,7 +64,6 @@ class Text(gui_base_original.Creator):
         """Execute when the command is called."""
         super(Text, self).Activated(name="Text")
         if self.ui:
-            self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
@@ -77,13 +76,18 @@ class Text(gui_base_original.Creator):
             _msg(translate("draft", "Pick location point"))
             Gui.draftToolBar.show()
 
-    def finish(self, closed=False, cont=False):
-        """Terminate the operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         super(Text, self).finish(self)
-        if self.ui:
-            del self.dialog
-            if self.ui.continueMode:
-                self.Activated()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def createObject(self):
         """Create the actual object in the current document."""
@@ -120,7 +124,7 @@ class Text(gui_base_original.Creator):
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(translate("draft", "Create Text"),
                     _cmd_list)
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def action(self, arg):
         """Handle the 3D scene events.

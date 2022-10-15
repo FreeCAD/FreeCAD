@@ -102,7 +102,8 @@ class BezCurve(gui_lines.Line):
               and arg["State"] == "DOWN"
               and arg["Button"] == "BUTTON1"):  # left click
             if arg["Position"] == self.pos:
-                self.finish(False, cont=True)
+                self.finish(cont=None)
+                return
 
             if (not self.node) and (not self.support):  # first point
                 gui_tool_utils.getSupport(arg)
@@ -118,7 +119,7 @@ class BezCurve(gui_lines.Line):
                 # then create 2 handle points?
                 self.drawUpdate(self.point)
                 if not self.isWire and len(self.node) == 2:
-                    self.finish(False, cont=True)
+                    self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # does this make sense for a BCurve?
                     # DNC: allows to close the curve
@@ -127,7 +128,7 @@ class BezCurve(gui_lines.Line):
                     # old code has been to insensitive
                     if (self.point-self.node[0]).Length < utils.tolerance():
                         self.undolast()
-                        self.finish(True, cont=True)
+                        self.finish(cont=None, closed=True)
                         _msg(translate("draft",
                                        "Bézier curve has been closed"))
 
@@ -148,9 +149,7 @@ class BezCurve(gui_lines.Line):
             _msg(translate("draft", "Pick next point"))
         else:
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft",
-                           "Pick next point, "
-                           "or finish (A) or close (O)"))
+            _msg(translate("draft", "Pick next point"))
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -174,13 +173,16 @@ class BezCurve(gui_lines.Line):
         w = Part.Wire(edges)
         return w
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the curve if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
-            Close the line if `True`.
+            Close the curve if `True`.
         """
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
@@ -220,7 +222,7 @@ class BezCurve(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
 
@@ -309,7 +311,7 @@ class CubicBezCurve(gui_lines.Line):
                         # then create 2 handle points?
                         self.drawUpdate(self.point)
                         if not self.isWire and len(self.node) == 2:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
                         # does this make sense for a BCurve?
                         if len(self.node) > 2:
                             # add point to "clicked list"
@@ -327,7 +329,7 @@ class CubicBezCurve(gui_lines.Line):
                                 # close the curve with a smooth symmetric knot
                                 _sym = 2 * self.node[0] - self.node[1]
                                 self.node.append(_sym)
-                                self.finish(True, cont=True)
+                                self.finish(cont=None, closed=True)
                                 _msg(translate("draft",
                                                "Bézier curve has been closed"))
 
@@ -349,7 +351,7 @@ class CubicBezCurve(gui_lines.Line):
                         # then create 2 handle points?
                         self.drawUpdate(self.point)
                         if not self.isWire and len(self.node) == 2:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
                         # Does this make sense for a BCurve?
                         if len(self.node) > 2:
                             self.node[-3] = 2 * self.node[-2] - self.node[-1]
@@ -377,9 +379,7 @@ class CubicBezCurve(gui_lines.Line):
         elif (len(self.node) - 1) % self.degree == 1 and len(self.node) > 2:
             # is a knot
             self.obj.Shape = self.updateShape(self.node[:-1])
-            _msg(translate("draft",
-                           "Click and drag to define next knot, "
-                           "or finish (A) or close (O)"))
+            _msg(translate("draft", "Click and drag to define next knot"))
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -408,13 +408,16 @@ class CubicBezCurve(gui_lines.Line):
         w = Part.Wire(edges)
         return w
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the curve if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
-            Close the line if `True`.
+            Close the curve if `True`.
         """
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
@@ -460,7 +463,7 @@ class CubicBezCurve(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
 

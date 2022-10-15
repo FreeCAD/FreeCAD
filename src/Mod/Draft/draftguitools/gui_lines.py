@@ -102,7 +102,8 @@ class Line(gui_base_original.Creator):
               and arg["State"] == "DOWN"
               and arg["Button"] == "BUTTON1"):
             if arg["Position"] == self.pos:
-                return self.finish(False, cont=True)
+                self.finish(cont=None)
+                return
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
                 (self.point,
@@ -113,21 +114,24 @@ class Line(gui_base_original.Creator):
                 self.node.append(self.point)
                 self.drawSegment(self.point)
                 if not self.isWire and len(self.node) == 2:
-                    self.finish(False, cont=True)
+                    self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # The wire is closed
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
                         if len(self.node) > 2:
-                            self.finish(True, cont=True)
+                            self.finish(cont=None, closed=True)
                         else:
-                            self.finish(False, cont=True)
+                            self.finish(cont=None, closed=False)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the polyline if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
             Close the line if `True`.
         """
@@ -185,7 +189,7 @@ class Line(gui_base_original.Creator):
                 self.commit(translate("draft", "Create Wire"),
                             _cmd_list)
         super(Line, self).finish()
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
     def removeTemporaryObject(self):
@@ -280,7 +284,7 @@ class Line(gui_base_original.Creator):
         self.node.append(self.point)
         self.drawSegment(self.point)
         if not self.isWire and len(self.node) == 2:
-            self.finish(False, cont=True)
+            self.finish(cont=None, closed=False)
         self.ui.setNextFocus()
 
 

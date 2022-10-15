@@ -1540,10 +1540,12 @@ class DraftToolBar:
                         translate("draft", "Please enter a font file."))
 
 
-    def finish(self):
+    def finish(self, cont=None):
         """finish button action"""
         if self.sourceCmd:
-            self.sourceCmd.finish(False)
+            if cont is None:
+                cont = self.continueMode
+            self.sourceCmd.finish(cont=cont)
         if self.cancel:
             self.cancel()
             self.cancel = None
@@ -1552,15 +1554,11 @@ class DraftToolBar:
 
     def escape(self):
         """escapes the current command"""
-        self.continueMode = False
-        if not self.taskmode:
-            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
-            self.continueCmd.setChecked(False)
-        self.finish()
+        self.finish(cont=False)
 
     def closeLine(self):
         """close button action"""
-        self.sourceCmd.finish(True)
+        self.sourceCmd.finish(cont=self.continueMode, closed=True)
         FreeCADGui.ActiveDocument.resetEdit()
 
     def wipeLine(self):
@@ -1624,7 +1622,6 @@ class DraftToolBar:
         elif txt.upper().startswith(inCommandShortcuts["Exit"][0]):
             if self.finishButton.isVisible():
                 self.finish()
-            spec = True
         elif txt.upper().startswith(inCommandShortcuts["Continue"][0]):
             if self.continueCmd.isVisible():
                 self.toggleContinue()

@@ -172,7 +172,7 @@ class Dimension(gui_base_original.Creator):
                 return False
         return True
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate the operation."""
         self.cont = None
         self.dir = None

@@ -102,13 +102,19 @@ class Move(gui_base_original.Modifier):
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _msg(translate("draft", "Pick start point"))
 
-    def finish(self, closed=False, cont=False):
-        """Finish the move operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         for ghost in self.ghosts:
             ghost.finalize()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                todo.ToDo.delayAfter(self.Activated, [])
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            todo.ToDo.delayAfter(self.Activated, [])
         super(Move, self).finish()
 
     def action(self, arg):
@@ -170,7 +176,7 @@ class Move(gui_base_original.Modifier):
             if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
                 self.extendedCopy = True
             else:
-                self.finish(cont=True)
+                self.finish(cont=None)
 
     def set_ghosts(self):
         """Set the ghost to display."""

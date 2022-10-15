@@ -154,7 +154,7 @@ class DraftTool:
         _msg("{}".format(16*"-"))
         _msg("GuiCommand: {}".format(self.featureName))
 
-    def finish(self, close=False):
+    def finish(self, cont=False):
         """Finish the current command.
 
         These are general cleaning tasks that are performed

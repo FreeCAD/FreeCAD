@@ -85,7 +85,6 @@ class ShapeString(gui_base_original.Creator):
                 _msg(translate("draft", "Pick ShapeString location point"))
                 todo.ToDo.delay(Gui.Control.showDialog, self.task)
             else:
-                self.dialog = None
                 self.text = ''
                 self.ui.sourceCmd = self
                 self.ui.pointUi(title=translate("draft",self.featureName),
@@ -98,6 +97,8 @@ class ShapeString(gui_base_original.Creator):
                 _msg(translate("draft", "Pick ShapeString location point"))
                 Gui.draftToolBar.show()
 
+    # The createObject function is no longer used.
+    # See the function with the same name in task_shapestring.py.
     def createObject(self):
         """Create the actual object in the current document."""
         # print("debug: D_T ShapeString.createObject type(self.SString):"
@@ -209,14 +210,6 @@ class ShapeString(gui_base_original.Creator):
         self.FFile = FFile
         # last step in ShapeString parm capture, create object
         self.createObject()
-
-    def finish(self, finishbool=False):
-        """Terminate the operation."""
-        super(ShapeString, self).finish()
-        if self.ui:
-            # del self.dialog  # what does this do??
-            if self.ui.continueMode:
-                self.Activated()
 
 
 Gui.addCommand('Draft_ShapeString', ShapeString())

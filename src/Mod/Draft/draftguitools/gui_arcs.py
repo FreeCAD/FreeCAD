@@ -87,20 +87,21 @@ class Arc(gui_base_original.Creator):
             self.call = self.view.addEventCallback("SoEvent", self.action)
             _msg(translate("draft", "Pick center point"))
 
-    def finish(self, closed=False, cont=False):
-        """Terminate the operation and close the arc if asked.
+    def finish(self, cont=False):
+        """Terminate the operation.
 
         Parameters
         ----------
-        closed: bool, optional
-            Close the line if `True`.
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         """
         super(Arc, self).finish()
         if self.ui:
             self.linetrack.finalize()
             self.arctrack.finalize()
             self.doc.recompute()
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
     def updateAngle(self, angle):
@@ -392,7 +393,7 @@ class Arc(gui_base_original.Creator):
                 _err("Draft: error delaying commit")
 
         # Finalize full circle or cirular arc
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.
@@ -565,9 +566,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
                                         self.points[1],
                                         self.points[2]], primitive=False)
 
-            self.finish()
-            if Gui.Snapper.ui.continueMode:
-                self.Activated()
+            self.finish(cont=None)
 
     def drawArc(self, point, info):
         """Draw preview arc when we move the pointer in the 3D view.
@@ -589,9 +588,19 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
                                           self.points[1],
                                           point)
 
-    def finish(self, close=False):
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         self.tracker.finalize()
         self.doc.recompute()
+        if cont or (cont is None and Gui.Snapper.ui and Gui.Snapper.ui.continueMode):
+            self.Activated()
 
 
 Draft_Arc_3Points = Arc_3Points

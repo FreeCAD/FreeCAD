@@ -150,7 +150,7 @@ class Draft_SelectPlane:
                 "Pick a face, 3 vertices or a WP Proxy to define the drawing plane"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
-    def finish(self, close=False):
+    def finish(self):
         """Execute when the command is terminated."""
         # Store values
         self.param.SetBool("CenterPlaneOnView",

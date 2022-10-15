@@ -324,17 +324,14 @@ class Edit(gui_base_original.Modifier):
         App.ActiveDocument.recompute()
 
 
-    def finish(self, closed=False):
+    def finish(self, cont=False):
         """Terminate Edit Tool."""
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
         self.editing = None
         self.finalizeGhost()
         Gui.Snapper.setSelectMode(False)
-        if self.obj and closed:
-            if "Closed" in self.obj.PropertiesList:
-                if not self.obj.Closed:
-                    self.obj.Closed = True
+
         if self.ui:
             self.removeTrackers()
 
@@ -416,10 +413,6 @@ class Edit(gui_base_original.Modifier):
             # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307:  # ESC
                 self.finish()
-            if key == 97:  # "a"
-                self.finish()
-            if key == 111:  # "o"
-                self.finish(closed=True)
             if key == 101:  # "e"
                 self.display_tracker_menu(event)
             if key == 65535 and Gui.Selection.GetSelection() is None: # BUG: delete key activate Std::Delete command at the same time!
