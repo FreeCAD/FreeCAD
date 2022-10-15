@@ -22,8 +22,7 @@
 import FreeCAD
 import FreeCADGui
 
-FreeCAD.newDocument()
-FreeCADGui.activeDocument().activeView().viewDefaultOrientation()
+FreeCADGui.runCommand('Std_New')
 
 from StartPage import StartPage
 StartPage.postStart()
