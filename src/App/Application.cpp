@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-# include <unistd.h>
-# include <pwd.h>
-# include <sys/types.h>
+#  include <unistd.h>
+#  include <pwd.h>
+#  include <sys/types.h>
 # elif defined(__MINGW32__)
-# define WINVER 0x502 // needed for SetDllDirectory
-# include <Windows.h>
+#  define WINVER 0x502 // needed for SetDllDirectory
+#  include <Windows.h>
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
@@ -2313,6 +2313,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             str << "Python   " << PY_VERSION << '\n';
             str << "PySide   " << FC_PYSIDE_VERSION << '\n';
             str << "shiboken " << FC_SHIBOKEN_VERSION << '\n';
+            str << "SMESH    " << SMESH_VERSION_STR << '\n';
             str << "VTK      " << FC_VTK_VERSION << '\n';
             str << "xerces-c " << FC_XERCESC_VERSION << '\n';
         }
@@ -2605,6 +2606,7 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["QT_VERSION"] = QT_VERSION_STR;
     mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
     mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
+    mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
     mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
 
 
