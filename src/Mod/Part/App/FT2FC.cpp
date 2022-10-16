@@ -155,7 +155,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
 //  This sets size to 48 point. Magic.
     error = FT_Set_Char_Size(FTFont,
                              0,             /* char_width in 1/64th of points */
-                             48*64,         /* char_height in 1/64th of points */
+                             480*64,         /* char_height in 1/64th of points */
                              0,             /* horizontal device resolution */
                              0 );           /* vertical device resolution */
     if (error) {
@@ -163,7 +163,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-    scalefactor = stringheight/float(FTFont->height);
+    scalefactor = (stringheight/float(FTFont->height))/10;
     for (i=0; i<length; i++) {
         currchar = PyUString[i];
         error = FT_Load_Char(FTFont,
