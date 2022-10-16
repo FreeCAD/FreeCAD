@@ -36,76 +36,6 @@ PI = math.pi
 DebugMode = Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG
 
 
-def calc_adaptive_length(kink, angle, nominal_length):
-    if Path.Geom.isRoughly(abs(kink.deflection()), 0):
-        return 0
-
-    # If the kink poses a 180deg turn the adaptive length is undefined. Mathematically
-    # it's infinite but that is not practical.
-    # We define the adaptive length to be the nominal length for this case.
-    if Path.Geom.isRoughly(abs(kink.deflection()), PI):
-        return nominal_length
-
-    # The distance of the (estimated) corner from the kink position depends only on the
-    # deflection of the kink.
-    # Some sample values to build up intuition:
-    #           deflection :   dog bone  : norm distance : calc
-    #      ----------------:-------------:---------------:--------------
-    #               0      :    -PI/2    :   1
-    #              PI/6    :  -5*PI/12   :   1.03528     : 1/cos(  (pi/6) / 2)
-    #              PI/4    :  -3*PI/8    :   1.08239     : 1/cos(  (pi/4) / 2)
-    #              PI/3    :    -PI/3    :   1.1547      : 1/cos(  (pi/3) / 2)
-    #              PI/2    :    -PI/4    :   1.41421     : 1/cos(  (pi/2) / 2)
-    #            2*PI/3    :    -PI/6    :   2           : 1/cos((2*pi/3) / 2)
-    #            3*PI/4    :    -PI/8    :   2.61313     : 1/cos((3*pi/4) / 2)
-    #            5*PI/6    :    -PI/12   :   3.8637      : 1/cos((5*pi/6) / 2)
-    #              PI      :      0      :   nan  <-- see above
-    # The last column can be geometrically derived or found by experimentation.
-    dist = nominal_length / math.cos(kink.deflection() / 2)
-
-    # The depth of the bone depends on the direction of the bone in relation to the
-    # direction of the corner. If the direction is identical then the depth is the same
-    # as the distance of the corner minus the nominal_length (which corresponds to the
-    # radius of the tool).
-    # If the corner's direction is PI/4 off the bone angle the intersecion of the tool
-    # with the corner is the projection of the corner onto the bone.
-    # If the corner's direction is perpendicular to the bone's angle there is, strictly
-    # speaking no intersection and the bone is ineffective. However, giving it our 
-    # best shot we should probably move the entire depth.
-
-    da = Path.Geom.normalizeAngle(kink.normAngle() - angle)
-    depth = dist * math.cos(da)
-    if depth < 0:
-        Path.Log.debug(f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0")
-        depth = 0
-    else:
-        height = dist * abs(math.sin(da))
-        if height < nominal_length:
-            depth = depth - math.sqrt(nominal_length * nominal_length - height * height)
-        Path.Log.debug(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
-
-    if DebugMode and FreeCAD.GuiUp:
-        import Part
-        FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
-        group = FreeCAD.ActiveDocument.ActiveObject
-        bone = dogboneII.generate_dogbone(kink, dist)
-        Path.show(PathDressupDogboneII.bone_to_path(bone, True), 'adaptive')
-        group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-        instr = bone.instr[0]
-        Part.show(Part.Edge(Part.makeCircle(.025, instr.positionEnd())), 'adaptive')
-        group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-        if depth != 0:
-            x = kink.position().x + depth * math.cos(angle)
-            y = kink.position().y + depth * math.sin(angle)
-            pos = FreeCAD.Vector(x, y, 0)
-            Part.show(Part.Edge(Part.makeLine(kink.position(), pos)), 'adaptive')
-            group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-            Part.show(Part.Edge(Part.makeCircle(nominal_length, pos)), 'adaptive')
-            group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-        group.Visibility = False
-
-    return depth
-
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
     # leave it here anyway for clarity
@@ -379,43 +309,43 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
 
         if True:
             # horizontal bones
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1), 0)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y1'), 0, 1), 1)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y1'), 0, 1), 2.414211)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0'), 0, 1), 1)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), 0, 1), 2.414211)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y-1'), 0, 1), 1)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1, DebugMode), 0)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1Y1'), 0, 1, DebugMode), 1)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X0Y1'), 0, 1, DebugMode), 2.414211)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X0'), 0, 1, DebugMode), 1)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X0Y-1'), 0, 1, DebugMode), 2.414211)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X1Y-1'), 0, 1, DebugMode), 1)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1, DebugMode), 0.414214)
 
         if True:
             # more horizontal and some vertical bones
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2'), 0, 1), 0)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X1'), PI, 1), 1)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI, 1), 0.089820)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI/2, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y0X1'), PI/2, 1), 2.414211)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y0'), 0, 1), 1)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y0X-1'), PI/2, 1), 2.414211)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X-1'), 0, 1), 1)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), 0, 1), 0.089820)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), PI/2, 1), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y2'), 0, 1, DebugMode), 0)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y1X1'), PI, 1, DebugMode), 1)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI, 1, DebugMode), 0.089820)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI/2, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y0X1'), PI/2, 1, DebugMode), 2.414211)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y0'), 0, 1, DebugMode), 1)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y0X-1'), PI/2, 1, DebugMode), 2.414211)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y1X-1'), 0, 1, DebugMode), 1)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), 0, 1, DebugMode), 0.089820)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), PI/2, 1, DebugMode), 0.414214)
 
         if True:
             # dogbones
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y1'), -PI/4, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y1'), -PI/8, 1), 1.613126)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y-1'), PI/4, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), PI/8, 1), 1.613126)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1X-1'), PI/4, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1X1'), 3*PI/4, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y-1/G1X1'), -3*PI/4, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1Y-1/G1X-1'), -PI/4, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X-1Y1/G1X0Y2'), PI, 1), 0.414214)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X2Y0'), PI/2, 2), 0.828428)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X-1Y-1/G1X-2Y0'), -PI/2, 2), 0.828428)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X-1Y1/G1X-2Y0'), PI/2, 2), 0.828428)
-            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y-1/G1X2Y0'), -PI/2, 2), 0.828428)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1Y1'), -PI/4, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X0Y1'), -PI/8, 1, DebugMode), 1.613126)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1Y-1'), PI/4, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1/G1X0Y-1'), PI/8, 1, DebugMode), 1.613126)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1X-1'), PI/4, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y1/G1X1'), 3*PI/4, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y-1/G1X1'), -3*PI/4, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1Y-1/G1X-1'), -PI/4, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X-1Y1/G1X0Y2'), PI, 1, DebugMode), 0.414214)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1Y1/G1X2Y0'), PI/2, 2, DebugMode), 0.828428)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X-1Y-1/G1X-2Y0'), -PI/2, 2, DebugMode), 0.828428)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X-1Y1/G1X-2Y0'), PI/2, 2, DebugMode), 0.828428)
+            self.assertRoughly(PathDressupDogboneII.calc_adaptive_length(KINK('G1X1Y-1/G1X2Y0'), -PI/2, 2, DebugMode), 0.828428)
 
