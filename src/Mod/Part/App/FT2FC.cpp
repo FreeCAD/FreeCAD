@@ -149,13 +149,13 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-//TODO: check that FTFont is scalable?  only relevant for hinting etc?
+    //TODO: check that FTFont is scalable?  only relevant for hinting etc?
 
-//  FT2 blows up if char size is not set to some non-zero value.
-//  This sets size to 48 point. Magic.
+    //  FT2 blows up if char size is not set to some non-zero value.
+    //  This sets size to 48 point. Magic.
     error = FT_Set_Char_Size(FTFont,
                              0,             /* char_width in 1/64th of points */
-                             480*64,         /* char_height in 1/64th of points */
+                             48*64*10,      /* char_height in 1/64th of points */ // increased 10X to preserve very small details
                              0,             /* horizontal device resolution */
                              0 );           /* vertical device resolution */
     if (error) {
@@ -163,7 +163,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
         throw std::runtime_error(ErrorMsg.str());
     }
 
-    scalefactor = (stringheight/float(FTFont->height))/10;
+    scalefactor = (stringheight/float(FTFont->height))/10;  // divide scale by 10 to offset the 10X increased scale in FT_Set_Char_Size above
     for (i=0; i<length; i++) {
         currchar = PyUString[i];
         error = FT_Load_Char(FTFont,
