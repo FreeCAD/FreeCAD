@@ -449,7 +449,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView()
 void CmdTechDrawActiveView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this, true);
     if (!page) {
         return;
     }
@@ -459,7 +459,7 @@ void CmdTechDrawActiveView::activated(int iMsg)
 
 bool CmdTechDrawActiveView::isActive()
 {
-    return DrawGuiUtil::needPage(this);
+    return DrawGuiUtil::needPage(this, true);
 }
 
 //===========================================================================

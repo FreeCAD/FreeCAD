@@ -36,6 +36,7 @@
 # include <gp_Dir.hxx>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyPythonObject.h>
@@ -83,35 +84,75 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 //===========================================================================
 
 //find a page in Selection, Document or CurrentWindow.
-TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
+TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd,
+                                          bool findAny)
 {
-    TechDraw::DrawPage* page = nullptr;
+//    Base::Console().Message("DGU::findPage()\n");
     std::vector<std::string> names;
     std::vector<std::string> labels;
+    auto docs = App::GetApplication().getDocuments();
+
+    if (findAny) {
+        //find a page in any open document
+        std::vector<App::DocumentObject*> foundPageObjects;
+        //no page found in the usual places, but we have been asked to search all
+        //open documents for a page.
+        auto docsAll = App::GetApplication().getDocuments();
+        for (auto& doc : docsAll) {
+            auto docPages = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            if (docPages.empty()) {
+                //this open document has no TD pages
+                continue;
+            }
+            foundPageObjects.insert(foundPageObjects.end(), docPages.begin(), docPages.end());
+        }
+        if (foundPageObjects.empty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                 QObject::tr("No Drawing Pages available."));
+            return nullptr;
+        } else if (foundPageObjects.size() > 1) {
+            //multiple pages available, ask for help
+            for (auto obj : foundPageObjects) {
+                std::string name = obj->getNameInDocument();
+                names.push_back(name);
+                std::string label = obj->Label.getValue();
+                labels.push_back(label);
+            }
+            DlgPageChooser dlg(labels, names, Gui::getMainWindow());
+            if (dlg.exec() == QDialog::Accepted) {
+                std::string selName = dlg.getSelection();
+                App::Document* doc = cmd->getDocument();
+                return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+            }
+        } else {
+            //only 1 page found
+            return static_cast<TechDraw::DrawPage*> (foundPageObjects.front());
+        }
+    }
 
     //check Selection for a page
     std::vector<App::DocumentObject*> selPages = cmd->getSelection().
                                                  getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (selPages.empty()) {
-        //no page in selection, try document
-        selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {
-            //no page in document
+        //no page in selection, try this document
+        auto docPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        if (docPages.empty()) {
+            //we are only to look in this document, and there is no page in this document
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
                                  QObject::tr("No Drawing Pages in document."));
+            return nullptr;
         }
-        else if (selPages.size() > 1) {
-            //multiple pages in document, but none selected
-            //use active page if there is one
+        if (docPages.size() > 1) {
+            //multiple pages in document, use active page if there is one
             Gui::MainWindow* w = Gui::getMainWindow();
             Gui::MDIView* mv = w->activeWindow();
             MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
             if (mvp) {
                 QGSPage* qp = mvp->getViewProviderPage()->getQGSPage();
-                page = qp->getDrawPage();
+                return qp->getDrawPage();
             }
             else {
-                // no active page
+                // none of pages in document is active, ask for help
                 for (auto obj : selPages) {
                     std::string name = obj->getNameInDocument();
                     names.push_back(name);
@@ -122,13 +163,12 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
                 if (dlg.exec() == QDialog::Accepted) {
                     std::string selName = dlg.getSelection();
                     App::Document* doc = cmd->getDocument();
-                    page = static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+                    return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
                 }
             }
-        }
-        else {
+        } else {
             //only 1 page in document - use it
-            page = static_cast<TechDraw::DrawPage*>(selPages.front());
+            return static_cast<TechDraw::DrawPage*>(docPages.front());
         }
     }
     else if (selPages.size() > 1) {
@@ -143,15 +183,16 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
         if (dlg.exec() == QDialog::Accepted) {
             std::string selName = dlg.getSelection();
             App::Document* doc = cmd->getDocument();
-            page = static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+            return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
         }
     }
     else {
         //exactly 1 page in selection, use it
-        page = static_cast<TechDraw::DrawPage*>(selPages.front());
+        return static_cast<TechDraw::DrawPage*>(selPages.front());
     }
 
-    return page;
+    //we can not actually reach this point.
+    return nullptr;
 }
 
 bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
@@ -246,18 +287,33 @@ bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
     return result;
 }
 
-bool DrawGuiUtil::needPage(Gui::Command* cmd)
+bool DrawGuiUtil::needPage(Gui::Command* cmd,
+                           bool findAny)
 {
+    if (findAny) {
+        //look for any page in any open document
+        auto docsAll = App::GetApplication().getDocuments();
+        for (auto& doc : docsAll) {
+            auto docPages = doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+            if (docPages.empty()) {
+                //this open document has no TD pages
+                continue;
+            } else {
+                //found at least 1 page
+                return true;
+            }
+        }
+        //did not find any pages
+        return false;
+    }
+
     //need a Document and a Page
-    bool active = false;
     if (cmd->hasActiveDocument()) {
         auto drawPageType(TechDraw::DrawPage::getClassTypeId());
         auto selPages = cmd->getDocument()->getObjectsOfType(drawPageType);
-        if (!selPages.empty()) {
-            active = true;
-        }
+        return !selPages.empty();
     }
-    return active;
+    return false;
 }
 
 bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
