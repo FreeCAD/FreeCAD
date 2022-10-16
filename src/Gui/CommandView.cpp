@@ -941,10 +941,10 @@ void StdCmdToggleSelectability::activated(int iMsg)
             if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
-                                 , (*it)->getName(), (*ft)->getNameInDocument());
+                                 , (*it)->getName(), ft->getNameInDocument());
                 else
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
-                                 , (*it)->getName(), (*ft)->getNameInDocument());
+                                 , (*it)->getName(), ft->getNameInDocument());
             }
         }
     }
