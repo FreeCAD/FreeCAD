@@ -28,7 +28,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
-
+# include <SMESH_Version.h> // needed for SMESH_VERSION_MAJOR
 # include <StdMeshers_Arithmetic1D.hxx>
 # include <StdMeshers_AutomaticLength.hxx>
 # include <StdMeshers_CompositeSegment_1D.hxx>
