@@ -29,7 +29,7 @@ import Path.Main.Job as PathJob
 from PathTests.PathTestUtils import PathTestBase
 
 if FreeCAD.GuiUp:
-    import Path.Main.gui.Job as PathJobGui
+    import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Adaptive as PathAdaptiveGui
 
 

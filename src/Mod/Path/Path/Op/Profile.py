@@ -1092,13 +1092,13 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         V1 = FreeCAD.Vector(VV1.X, VV1.Y, VV1.Z)
         V2 = FreeCAD.Vector(VV2.X, VV2.Y, VV2.Z)
 
-        lenE = len(wire.Edges)
+        edgeCount = len(wire.Edges)
         FLGS = []
-        for e in range(0, lenE):
+        for e in range(0, edgeCount):
             FLGS.append(0)
 
         chk4 = False
-        for e in range(0, lenE):
+        for e in range(0, edgeCount):
             v = 0
             E = wire.Edges[e]
             fv0 = FreeCAD.Vector(E.Vertexes[0].X, E.Vertexes[0].Y, E.Vertexes[0].Z)
@@ -1135,7 +1135,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         IDXS = []
         IDX1 = []
         IDX2 = []
-        for e in range(0, lenE):
+        for e in range(0, edgeCount):
             f = FLGS[e]
             PRE.append(f)
             POST.append(f)
@@ -1161,7 +1161,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     wireIdxs[0].append(i)
                     break
             # find first 3 edge
-            for e in range(begIdx + 1, lenE + begIdx):
+            for e in range(begIdx + 1, edgeCount + begIdx):
                 f = PRE[e]
                 i = IDXS[e]
                 grps[1].append(f)
@@ -1180,7 +1180,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         break
             # find first 3 edge and group all first wire edges
             endIdx = None
-            for e in range(begIdx, lenE + begIdx):
+            for e in range(begIdx, edgeCount + begIdx):
                 f = PRE[e]
                 i = IDXS[e]
                 if f == 3:
