@@ -78,7 +78,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
       <source>Font size</source>
-      <translation>Kirjasimen koko</translation>
+      <translation>Fonttikoko</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Show lines</source>
-      <translation>Näytä rivit</translation>
+      <translation>Näytä viivat</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="363"/>
@@ -180,7 +180,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="389"/>
       <source>Line / text color</source>
-      <translation>Rivin / tekstin väri</translation>
+      <translation>Viivan / tekstin väri</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
@@ -862,7 +862,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation type="unfinished">Center view</translation>
+      <translation>Keskitä näkymä</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="251"/>
@@ -872,7 +872,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Edellinen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
@@ -892,7 +892,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Tallenna nykyinen tyyli esiasetuksena...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
@@ -1062,7 +1062,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="287"/>
       <source>Arrow style</source>
-      <translation type="unfinished">Arrow style</translation>
+      <translation>Nuolen tyyli</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="294"/>
@@ -1542,7 +1542,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="76"/>
       <source>Font size</source>
-      <translation>Kirjasimen koko</translation>
+      <translation>Fonttikoko</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="89"/>
@@ -1714,7 +1714,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
-      <translation>Valitse fontti-tiedosto</translation>
+      <translation>Valitse fonttitiedosto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="14"/>
@@ -2422,7 +2422,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="88"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Jatka</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="110"/>

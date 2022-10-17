@@ -639,7 +639,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
       <source>&amp;Style</source>
-      <translation>모양(&amp;S)</translation>
+      <translation>스타일(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="196"/>
@@ -659,7 +659,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="233"/>
       <source>&amp;Display unit</source>
-      <translation>단위 표시(&amp;D)</translation>
+      <translation>디스플레이 장치(&amp;D)</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
@@ -725,7 +725,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../SheetTableView.cpp" line="735"/>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>복사 및 붙여넣기 실패함</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="426"/>
@@ -861,12 +861,12 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>내용(&amp;C):</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>별칭(&amp;A):</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -1141,7 +1141,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>스프레드시트(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -1151,7 +1151,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>스타일(&amp;S)</translation>
     </message>
   </context>
 </TS>

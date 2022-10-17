@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="881"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="882"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="493"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="284"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="285"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="388"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="545"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="817"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="818"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="670"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="671"/>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../Command.cpp" line="744"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="745"/>
       <source>Underline text</source>
-      <translation>Alleviivaa teksti</translation>
+      <translation>Alleviivattu teksti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="746"/>
@@ -324,7 +324,7 @@
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
-      <translation>Aseta lihavointi</translation>
+      <translation>Aseta lihavoitu teksti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Set underline text</source>
-      <translation>Aseta alleviivausteksti</translation>
+      <translation>Aseta alleviivattu teksti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="894"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="132"/>
       <source>Set foreground color</source>
-      <translation>Etualan väri</translation>
+      <translation>Aseta edustaväri</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="159"/>
       <source>Set background color</source>
-      <translation>Taustaväri</translation>
+      <translation>Aseta taustaväri</translation>
     </message>
   </context>
   <context>
@@ -654,12 +654,12 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="210"/>
       <source>Underline</source>
-      <translation>Alleviivaus</translation>
+      <translation>Alleviivattu</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="233"/>
       <source>&amp;Display unit</source>
-      <translation>&amp; Näyttöyksikkö</translation>
+      <translation>&amp;Näyttöyksikkö</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
@@ -914,7 +914,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -1130,7 +1130,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="254"/>
       <source>Export PDF</source>
-      <translation>Vienti PDF</translation>
+      <translation>Vie PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="255"/>
@@ -1143,7 +1143,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Spreadsheet</source>
-      <translation>Taulukkolaskenta</translation>
+      <translation>Laskentataulukko</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

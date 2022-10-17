@@ -2536,21 +2536,11 @@
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="639"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna zaharrek ez dute forma-irudikapen zehatzik eta GreeCADen erabiltzaile-hobespenetan biltegiratzen dira.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
-      <source>Use Legacy Tools</source>
-      <translation>Erabili tresna zaharrak</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="649"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atalen eta haien formen erreferentziak bide-izen absolutuekin edo (bilaketa-bidearekiko) erlatiboak direnekin gorde daitezke.&lt;/p&gt;&lt;p&gt;Oro har, bide-izen erlatiboak erabiltzea gomendatzen da, zaluagoak eta sendoagoak baitira diseinuan aldaketak daudenerako.&lt;/p&gt;&lt;p&gt;Izen bera duten tresna edo tresna-forma anitz badaude direktorio desberdinetan, bide-izen absolutuak erabili behar dira. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="652"/>
+      <location filename="../preferences/PathJob.ui" line="642"/>
       <source>Store Absolute Paths</source>
       <translation>Gorde bide absolutuak</translation>
     </message>
@@ -2786,7 +2776,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="57"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
       <source>Compound paths</source>
       <translation>Bide konposatuak</translation>
     </message>
@@ -3518,69 +3508,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
       <translation>Atributuak</translation>
-    </message>
-  </context>
-  <context>
-    <name>ToolLibrary</name>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
-      <source>Tool Library</source>
-      <translation>Tresna-liburutegia</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
-      <source>Import...</source>
-      <translation>Inportatu...</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
-      <source>Export...</source>
-      <translation>Esportatu...</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
-      <source>Tool Tables</source>
-      <translation>Tresna-taulak</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
-      <source>New Tool</source>
-      <translation>Tresna berria</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
-      <source>Delete</source>
-      <translation>Ezabatu</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="274"/>
-      <source>Edit</source>
-      <translation>Editatu</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="291"/>
-      <source>Duplicate</source>
-      <translation>Bikoiztu</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="305"/>
-      <source>Move up</source>
-      <translation>Mugitu gora</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="331"/>
-      <source>Move down</source>
-      <translation>Mugitu behera</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="368"/>
-      <source>Create Tool Controllers for the selected tools</source>
-      <translation>Sortu tresna-kontrolagailuak hautatutako tresnetarako</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="371"/>
-      <source>Create Tool Controller(s)</source>
-      <translation>Sortu tresna-kontrolagailua(k)</translation>
     </message>
   </context>
   <context>

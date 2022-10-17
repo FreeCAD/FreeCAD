@@ -924,7 +924,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>
       <source>Speed &amp; Acceleration:</source>
-      <translation type="unfinished">Speed &amp; Acceleration:</translation>
+      <translation>속도 및 가속:</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="29"/>
@@ -975,7 +975,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="159"/>
       <source>Don't change Position &amp; Orientation</source>
-      <translation type="unfinished">Don't change Position &amp; Orientation</translation>
+      <translation>위치 및 방향을 변경하지 마십시오</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="164"/>
@@ -1008,7 +1008,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Robot</source>
-      <translation type="unfinished">&amp;Robot</translation>
+      <translation>로봇(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

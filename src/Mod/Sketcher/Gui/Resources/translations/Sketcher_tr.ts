@@ -2148,59 +2148,59 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
       <translation>Otomatik kısıtlama hatası: Eşitlik kısıtlamaları uygulandıktan sonra eskiz çözülemez.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2024"/>
+      <location filename="../../../App/SketchObject.cpp" line="1979"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Eğrilerin kesişimini tahmin edemiyoruz. Dilimlemeyi planladığınız eğrilerin köşeleri arasında çakışan bir kısıtlama eklemeyi deneyin.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5757"/>
-      <location filename="../../../App/SketchObject.cpp" line="5931"/>
+      <location filename="../../../App/SketchObject.cpp" line="5712"/>
+      <location filename="../../../App/SketchObject.cpp" line="5886"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometri Dizini (GeoID) sınırların dışında.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5760"/>
+      <location filename="../../../App/SketchObject.cpp" line="5715"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Düğüm çokluğunda herhangi bir değişiklik istemiyorsunuz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5765"/>
-      <location filename="../../../App/SketchObject.cpp" line="5939"/>
+      <location filename="../../../App/SketchObject.cpp" line="5720"/>
+      <location filename="../../../App/SketchObject.cpp" line="5894"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Sağlanan Geometri Dizini (GeoId) bir B-spline eğrisi değil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5772"/>
+      <location filename="../../../App/SketchObject.cpp" line="5727"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Düğüm endeksi sınırların dışındadır. OCC gösterimine göre, ilk düğümün indeks 1'i olduğunu ve sıfır olmadığını unutmayın.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5779"/>
+      <location filename="../../../App/SketchObject.cpp" line="5734"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Çeşitlilik, B-spline'nın derecesinin ötesinde artırılamaz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5782"/>
+      <location filename="../../../App/SketchObject.cpp" line="5737"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Çokluk sıfırdan aşağıya düşürülemez.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5794"/>
+      <location filename="../../../App/SketchObject.cpp" line="5749"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC, maksimum tolerans dahilinde çokluğu azaltamıyor.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5934"/>
+      <location filename="../../../App/SketchObject.cpp" line="5889"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5948"/>
+      <location filename="../../../App/SketchObject.cpp" line="5903"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5951"/>
+      <location filename="../../../App/SketchObject.cpp" line="5906"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -3847,7 +3847,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="27"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
+      <translation>Görev Paneli Araçları</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
@@ -4904,69 +4904,64 @@ Ancak, uç noktalara bağlanan hiçbir kısıtlama bulunamadı.</translation>
       <translation>Şekil:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
       <source>A grid will be shown</source>
       <translation>Bir ızgara gösterilecek</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
-      <source>Show grid</source>
-      <translation>Izgarayı göster</translation>
+      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
+      <source>Grid</source>
+      <translation>Izgara</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Grid size:</source>
-      <translation>Izgara boyutu:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Sonraki iki ızgara çizgisi arası mesafe</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="87"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
       <translation>Yeni noktalar, en yakın ızgara çizgisinde yakalanacak.
 Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarlanmalıdır.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="91"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
       <source>Grid snap</source>
       <translation>Izgarayı Yakala</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="107"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation>Sketcher, otomatik olarak mantıklı kısıtlamalar önerir.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="110"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
       <source>Auto constraints</source>
       <translation>Otomatik kısıtlamalar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="126"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation>Sketcher, gereksiz otomatik kısıtlamalar önermemeye çalışıyor</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="129"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Yedekli otomatik sınırlamalardan kaçının</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="145"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
       <source>Rendering order (global):</source>
       <translation>Oluşturma sırası (genel):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="164"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation>Geometri türünü üste veya alta sürükleyip bırakmayı değiştirmek için</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="190"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="189"/>
       <source>Edit controls</source>
       <translation>Denetimleri düzenle</translation>
     </message>

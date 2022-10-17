@@ -145,7 +145,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>აღწერა, რას აკეთებს ეს დამატება. გამოჩნდება დამატებების მმართველში. ეს საკმარისი არაა, რომ ის FreeCAD-ის დამატება აღმოჩნდეს.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -189,7 +189,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+      <translation>ნაჩვენებია დამატებების სიაში. არ უნდა შეიცავდეს სიტყვას &quot;FreeCAD&quot; და ყველა მხარდაჭერილი ოპერაციული სისტემებისთვის სწორ საქაღალდის სახელს უნდა წარმოადგენდეს.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
@@ -199,7 +199,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation type="unfinished">TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</translation>
+      <translation>მინიშნება: იმის გამო, რომ ეს FreeCAD-ის შიგნით, დამატებების მმართველში გამოჩნდება, ნუ დახარჯავთ ადგილს, რომ მიაწეროთ &quot;ეს FreeCAD-ის დამატებაა&quot; -- უბრალოდ დააწერეთ, რას აკეთებს.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -378,7 +378,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>მინიშნება: გავრცელებული ჭდეები შეიცავენ &quot;ანაწყობს&quot;,&quot;სემ&quot;,&quot;ბადე&quot;,&quot;NURBS&quot; და ა.შ.</translation>
     </message>
   </context>
   <context>
@@ -411,7 +411,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>თუ ეს არასავალდებულო დემოკიდებულებაა, დამატებების მმართველი შემოგთავაზებთ, დააყენოთ ის (თუ ეს შესაძლებელია), მაგრამ არ დაბლოკავს დაყენებას, თუ უარს განაცხადებთ, პაკეტი დააყენოთ.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
@@ -784,7 +784,8 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>დამატებების მმართველის მიერ დამატების მოთხოვნების დასაკმაყოფილებლად Python-ის პაკეტები იქნა დაყენებული.
+დაყენების მდებარეობა:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -860,7 +861,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+      <translation>თუ ეს ამ დამატების ერთად-ერთი რამაა, სხვა მეტამონაცემების მიღება მემკვიდრეობით შეგიძლიათ, უმაღლესი დონიდან და არ სჭირდება, აქაც იყოს მითითებული.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
@@ -947,7 +948,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</translation>
+      <translation>ნაჩვენებია დამატებების მმართველის სიაში. არ უნდა შეიცავდეს სიტყვას "FreeCAD".</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -977,7 +978,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>ნებისმიერი ცარიელად დატოვებული ველი მემკვირდრეობით იქნება აღებული ზედა-დონის დამატების მეტამონაცემებიდან, ასე რომ, ტექნიკურად, ისინი სავალდებული არაა. დამატებებისთვის, რომლებსაც შემცველობის მრავალი ელემენტი გააჩნიათ, თითოეულ მათგანს თავისი, უნიკალური სახელი და აღწერა უნდა გააჩნდეს.</translation>
     </message>
   </context>
   <context>
@@ -1049,7 +1050,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>პროექტის წამყვანი წარმაოდგენს პიროვნებას, რომელსაც ამ პროექტში ცვლილებების შეტანა შეუძლია. ავტორი წარმოადგენს ნებისმიერს, ვისაც გნებავთ, პატივი მიაგოთ.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>

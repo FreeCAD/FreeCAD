@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="490"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="491"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="557"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="379"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="380"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="412"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="590"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="591"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Reverse Engineering</source>
-      <translation>Käänteis suunnittelu</translation>
+      <translation>Käänteissuunnittelu</translation>
     </message>
   </context>
 </TS>

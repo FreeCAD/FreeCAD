@@ -578,7 +578,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5274"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
+      <translation>Legt den Durchmesser fest, wenn ein Kreis ausgewählt wird, oder den Radius, wenn ein Kreisbogen / Spline-Kurve ausgewählt wird</translation>
     </message>
   </context>
   <context>
@@ -2150,59 +2150,59 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze nach dem Anwenden von gleichheits Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2024"/>
+      <location filename="../../../App/SketchObject.cpp" line="1979"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Schnittpunkt von Kurven konnte nicht gefunden werden. Versuchen Sie eine Koinzidenz Beschränkung zwischen den Scheitelpunkten der Kurven hinzuzufügen, die Sie verrunden möchten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5757"/>
-      <location filename="../../../App/SketchObject.cpp" line="5931"/>
+      <location filename="../../../App/SketchObject.cpp" line="5712"/>
+      <location filename="../../../App/SketchObject.cpp" line="5886"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometrie Index (GeoID) ist außerhalb des gültigen Bereichs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5760"/>
+      <location filename="../../../App/SketchObject.cpp" line="5715"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Sie fordern keine Änderung in der Multiplizität der Knoten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5765"/>
-      <location filename="../../../App/SketchObject.cpp" line="5939"/>
+      <location filename="../../../App/SketchObject.cpp" line="5720"/>
+      <location filename="../../../App/SketchObject.cpp" line="5894"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Der bereitgestellte Geometrieindex (GeoId) ist keine B-Spline-Kurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5772"/>
+      <location filename="../../../App/SketchObject.cpp" line="5727"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Der Knotenindex ist außerhalb der Grenzen. Beachten Sie, dass der erste Knoten gemäß der OCC-Notation den Index 1 und nicht Null hat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5779"/>
+      <location filename="../../../App/SketchObject.cpp" line="5734"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Die Vielfachheit kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5782"/>
+      <location filename="../../../App/SketchObject.cpp" line="5737"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Die Vielfachheit kann nicht über Null hinaus verringert werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5794"/>
+      <location filename="../../../App/SketchObject.cpp" line="5749"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kann die Multiplizität innerhalb der maximalen Toleranz nicht verringern.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5934"/>
+      <location filename="../../../App/SketchObject.cpp" line="5889"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ein Knoten kann nicht die Vielfachheit Null haben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5948"/>
+      <location filename="../../../App/SketchObject.cpp" line="5903"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Die Vielfachheit kann nicht höher als der Grad des B-Splines sein.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5951"/>
+      <location filename="../../../App/SketchObject.cpp" line="5906"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Knoten kann nicht außerhalb des BSpline-Parameterbereichs eingefügt werden.</translation>
     </message>
@@ -3849,24 +3849,24 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="27"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
+      <translation>Widgets des Aufgabenbereichs</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
       <source>Show section 'Advanced solver control'</source>
-      <translation type="unfinished">Show section 'Advanced solver control'</translation>
+      <translation>Abschnitt 'Erweiterte Einstellungen des Lösers' anzeigen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="50"/>
       <source>Sketcher dialog will have additional section
 'Edit controls' to easily access basic settings.</source>
-      <translation type="unfinished">Sketcher dialog will have additional section
-'Edit controls' to easily access basic settings.</translation>
+      <translation>Der Sketcher-Dialog wird einen zusätzlichen Abschnitt
+'Bedienelemente bearbeiten' erhalten, um einfach auf die Grundeinstellungen zuzugreifen.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="54"/>
       <source>Show section 'Edit controls'</source>
-      <translation type="unfinished">Show section 'Edit controls'</translation>
+      <translation>Abschnitt 'Bedienelemente bearbeiten' anzeigen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="73"/>
@@ -4179,8 +4179,8 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
-      <translation type="unfinished">Base length units will not be displayed in constraints or cursor coordinates.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</translation>
+      <translation>Basislängeneinheiten werden in Beschränkungen oder Koordinaten des Eingabezeigers nicht angezeigt.
+Unterstützt alle Einheitssysteme außer 'US-üblichen' und 'Gebäude US/Euro'.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
@@ -4205,12 +4205,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="257"/>
       <source>Cursor position coordinates will be displayed beside cursor while editing sketch.</source>
-      <translation type="unfinished">Cursor position coordinates will be displayed beside cursor while editing sketch.</translation>
+      <translation>Während der Bearbeitung der Skizze werden die Koordinaten des Eingabezeigers neben diesem angezeigt.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="260"/>
       <source>Show coodinates beside cursor while editing</source>
-      <translation type="unfinished">Show coodinates beside cursor while editing</translation>
+      <translation>Zeige während der Bearbeitung Koordinaten neben dem Eingabezeiger an</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="276"/>
@@ -4278,12 +4278,12 @@ Standardmäßig: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="295"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form.</source>
-      <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form.</translation>
+      <translation>Eingabezeiger-Koordinaten verwenden anstelle der Kurzform die Einstellungen der Dezimalstellen des Systems.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="298"/>
       <source>Use system decimals setting for cursor coordinates</source>
-      <translation type="unfinished">Use system decimals setting for cursor coordinates</translation>
+      <translation>Benutze die dezimalen Einstellungen des Systems für Koordinaten des Eingabezeigers</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
@@ -4906,69 +4906,64 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
       <source>A grid will be shown</source>
       <translation>Ein Raster wird angezeigt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
-      <source>Show grid</source>
-      <translation>Raster anzeigen</translation>
+      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
+      <source>Grid</source>
+      <translation>Raster</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Grid size:</source>
-      <translation>Rastergröße:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Abstand zwischen zwei nachfolgenden Rasterlinien</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="87"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
       <translation>Neue Punkte werden an der nächsten Rasterlinie fangen.
 Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie gesetzt werden, damit sie fangen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="91"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
       <source>Grid snap</source>
       <translation>Am Raster fangen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="107"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation>Sketcher schlägt automatisch sinnvolle Randbedingungen vor.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="110"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
       <source>Auto constraints</source>
       <translation>Automatische Randbedingungen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="126"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation>Sketcher versucht, keine überflüssigen automatischen Randbedingungen vorzuschlagen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="129"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Überflüssige automatische Randbedingungen vermeiden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="145"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
       <source>Rendering order (global):</source>
       <translation>Rendering-Reihenfolge (global):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="164"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation>Zum Ändern ein Geometrietyp per Drag &amp; Drop nach oben oder unten ziehen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="190"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="189"/>
       <source>Edit controls</source>
       <translation>Bedienelemente bearbeiten</translation>
     </message>
@@ -5739,7 +5734,7 @@ Soll die Skizze von der Fläche entfernt werden?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="51"/>
       <source>New constraints that would be redundant will automatically be removed</source>
-      <translation>Neue Randbedingungen, die überflüssig wären, werden automatisch entfernt</translation>
+      <translation>Neue Einschränkungen, die überflüssig wären, werden automatisch entfernt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="54"/>

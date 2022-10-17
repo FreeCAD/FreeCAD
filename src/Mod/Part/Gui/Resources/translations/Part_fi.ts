@@ -1858,7 +1858,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>3D Offset...</source>
-      <translation>3D siirtymä...</translation>
+      <translation>3D-siirtymä...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
@@ -1876,7 +1876,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="1729"/>
       <source>2D Offset...</source>
-      <translation>2D siirtymä...</translation>
+      <translation>2D-siirtymä...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1730"/>
@@ -2489,7 +2489,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Ohjaus taso</translation>
+      <translation>Ohjaustaso</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -2730,7 +2730,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgExportStep.ui" line="75"/>
       <source>Export invisible objects</source>
-      <translation type="unfinished">Export invisible objects</translation>
+      <translation>Vie näkymättömät objektit</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="88"/>
@@ -2944,7 +2944,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="547"/>
       <source>Object not found: %1</source>
-      <translation>Kohdetta ei löydy: %1</translation>
+      <translation>Objektia ei löydy: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="609"/>
@@ -3011,7 +3011,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
       <source>Fillet Parameter</source>
-      <translation>Pyäristys parametri</translation>
+      <translation>Pyöristysparametri</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -3041,17 +3041,17 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
       <source>Fillet type:</source>
-      <translation>Pyöristys tyyppi:</translation>
+      <translation>Pyöristystyyppi:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant Radius</source>
-      <translation>Jatkuva Säde</translation>
+      <translation>Jatkuva säde</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable Radius</source>
-      <translation>Muuttuva Säde</translation>
+      <translation>Muuttuva säde</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
@@ -3488,7 +3488,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
       <source>IGES input file</source>
-      <translation>IGES syötetiedosto</translation>
+      <translation>IGES-syötetiedosto</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
@@ -4083,7 +4083,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="168"/>
       <source>Object not found: %1</source>
-      <translation>Kohdetta ei löydy: %1</translation>
+      <translation>Objektia ei löydy: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="249"/>
@@ -4210,12 +4210,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
       <source>Object naming</source>
-      <translation>Kohteen nimeäminen</translation>
+      <translation>Objektin nimeäminen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="77"/>
       <source>Add name of base object</source>
-      <translation>Lisää peruskohteelle nimi</translation>
+      <translation>Lisää perusobjektille nimi</translation>
     </message>
   </context>
   <context>
@@ -4248,7 +4248,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
       <source>Font size</source>
-      <translation>Kirjasimen koko</translation>
+      <translation>Fonttikoko</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="158"/>
@@ -4306,7 +4306,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>Satunnainen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
@@ -4377,7 +4377,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Rajaavien ruutujen oletusväri 3D näkymässä</translation>
+      <translation>Rajaavien ruutujen oletusväri 3D-näkymässä</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="287"/>
@@ -4716,7 +4716,7 @@ Works only if all objects have the same values.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="370"/>
       <source>Refresh view</source>
-      <translation type="unfinished">Refresh view</translation>
+      <translation>Päivitä näkymä</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="400"/>
@@ -6065,7 +6065,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1420"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>Valinta </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1504"/>
@@ -6153,7 +6153,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Part tools</source>
-      <translation>Osa työkalut</translation>
+      <translation>Osan työkalut</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>

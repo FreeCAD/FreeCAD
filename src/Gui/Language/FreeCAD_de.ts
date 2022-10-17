@@ -1397,8 +1397,8 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
       <location filename="../DlgKeyboardImp.cpp" line="333"/>
       <source>The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.
 To enable assignment, please make '%2' the active workbench</source>
-      <translation type="unfinished">The command '%1' is loaded but not in use yet, so it can't be assigned a new shortcut.
-To enable assignment, please make '%2' the active workbench</translation>
+      <translation>Der Befehl '%1' wurde geladen, wird aber noch nicht verwendet, daher kann ihm keine neue Tastenkombination zugewiesen werden.
+Um die Aufgabe zu aktivieren, machen Sie bitte '%2' zum aktiven Arbeitsbereich</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="378"/>
@@ -2228,7 +2228,7 @@ display the splash screen</source>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="472"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite?</translation>
+      <translation>Ein Einstellungspaket mit diesem Namen existiert bereits. Möchten Sie es überschreiben?</translation>
     </message>
   </context>
   <context>
@@ -5272,7 +5272,7 @@ wenn sie die verfügbare Zeilenlänge überschreiten</translation>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="312"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>Auswahl</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="332"/>
@@ -11726,7 +11726,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="3695"/>
       <location filename="../CommandView.cpp" line="3696"/>
       <source>Recall previously stored temporary working view</source>
-      <translation type="unfinished">Recall previously stored temporary working view</translation>
+      <translation>Zuletzt gespeicherte temporäre Arbeitsansicht wiederherstellen</translation>
     </message>
   </context>
   <context>
@@ -11740,7 +11740,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="3665"/>
       <location filename="../CommandView.cpp" line="3666"/>
       <source>Store a document-specific temporary working view</source>
-      <translation type="unfinished">Store a document-specific temporary working view</translation>
+      <translation>Dokument-spezifische temporäre Arbeitsansicht speichern</translation>
     </message>
   </context>
   <context>

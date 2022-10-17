@@ -2152,59 +2152,59 @@ restricciones inválidas, geometrías degeneradas, etc.</translation>
       <translation>Error de autorestricción: boceto sin solución después de aplicar restricciones de igualdad.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2024"/>
+      <location filename="../../../App/SketchObject.cpp" line="1979"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>No se puede adivinar la intersección de curvas. Intente agregar una restricción coincidente entre los vértices de las curvas que pretende redondear.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5757"/>
-      <location filename="../../../App/SketchObject.cpp" line="5931"/>
+      <location filename="../../../App/SketchObject.cpp" line="5712"/>
+      <location filename="../../../App/SketchObject.cpp" line="5886"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Índice de geometría BSpline (GeoID) está fuera de restricciones.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5760"/>
+      <location filename="../../../App/SketchObject.cpp" line="5715"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Usted esta solicitando no cambio en multiplicidad de nudo.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5765"/>
-      <location filename="../../../App/SketchObject.cpp" line="5939"/>
+      <location filename="../../../App/SketchObject.cpp" line="5720"/>
+      <location filename="../../../App/SketchObject.cpp" line="5894"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>El índice de geometría (GeoID) proporcionado no es una curva B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5772"/>
+      <location filename="../../../App/SketchObject.cpp" line="5727"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>El índice de nudo es fuera de los limites. Note que según en concordancia con notación de la OCC, el primer nudo tiene índice 1 y no 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5779"/>
+      <location filename="../../../App/SketchObject.cpp" line="5734"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicidad no puede incrementarse más allá del grado de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5782"/>
+      <location filename="../../../App/SketchObject.cpp" line="5737"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicidad no puede ser disminuida más allá de cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5794"/>
+      <location filename="../../../App/SketchObject.cpp" line="5749"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC es incapaz de disminuir la multiplicidad dentro de la tolerancia máxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5934"/>
+      <location filename="../../../App/SketchObject.cpp" line="5889"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El nodo no puede tener una multiplicidad cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5948"/>
+      <location filename="../../../App/SketchObject.cpp" line="5903"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicidad del nodo no puede ser mayor que el grado de la BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5951"/>
+      <location filename="../../../App/SketchObject.cpp" line="5906"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>El nodo no puede ser insertado fuera del rango de parámetros de la B-Spline.</translation>
     </message>
@@ -3850,24 +3850,24 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="27"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
+      <translation>Widgets del Panel de Tareas</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
       <source>Show section 'Advanced solver control'</source>
-      <translation type="unfinished">Show section 'Advanced solver control'</translation>
+      <translation>Mostrar sección 'Control avanzado del resolutor'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="50"/>
       <source>Sketcher dialog will have additional section
 'Edit controls' to easily access basic settings.</source>
-      <translation type="unfinished">Sketcher dialog will have additional section
-'Edit controls' to easily access basic settings.</translation>
+      <translation>El diálogo de Sketcher tendrá una sección adicional
+'Editar controles' para acceder fácilmente a los ajustes básicos.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="54"/>
       <source>Show section 'Edit controls'</source>
-      <translation type="unfinished">Show section 'Edit controls'</translation>
+      <translation>Mostrar sección 'Editar controles'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="73"/>
@@ -4908,69 +4908,64 @@ Sin embargo, no se encontraron restricciones a los extremos.</translation>
       <translation>Formulario</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
       <source>A grid will be shown</source>
       <translation>Se mostrará una cuadrícula</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
-      <source>Show grid</source>
-      <translation>Mostrar cuadrícula</translation>
+      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
+      <source>Grid</source>
+      <translation>Rejilla</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Grid size:</source>
-      <translation>Tamaño de cuadrícula:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Distancia entre dos líneas consecutivas de cuadrícula</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="87"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
       <translation>Los nuevos puntos se ajustarán a la línea de rejilla más cercana.
 Los puntos deben estar más cerca de una quinta parte del tamaño de la cuadrícula a una línea de cuadrícula para ajustarlos.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="91"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
       <source>Grid snap</source>
       <translation>Ajuste a la cuadrícula</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="107"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation>Sketcher propone automáticamente restricciones sensibles.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="110"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
       <source>Auto constraints</source>
       <translation>Restricciones automáticas</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="126"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation>El croquis intenta no proponer restricciones automáticas redundantes</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="129"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Evitar las auto restricciones redundantes</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="145"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
       <source>Rendering order (global):</source>
       <translation>Orden de renderizado (global):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="164"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation>Para cambiar, arrastre y suelte un tipo de geometría arriba o abajo</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="190"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="189"/>
       <source>Edit controls</source>
       <translation>Controles de edición</translation>
     </message>

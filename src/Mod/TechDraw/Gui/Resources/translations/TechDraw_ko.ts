@@ -3478,7 +3478,7 @@ it has a weld symbol that would become broken.</translation>
       <location filename="../../ViewProviderViewPart.cpp" line="318"/>
       <location filename="../../ViewProviderWeld.cpp" line="149"/>
       <source>Object dependencies</source>
-      <translation>개체의 의존도</translation>
+      <translation>객체 종속성</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="153"/>
@@ -4060,7 +4060,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="215"/>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>숨기기</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="220"/>
@@ -5404,7 +5404,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="197"/>
       <source>Rotate</source>
-      <translation>회전</translation>
+      <translation>회전하기</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="210"/>

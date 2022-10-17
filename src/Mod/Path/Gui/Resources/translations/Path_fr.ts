@@ -680,7 +680,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;J'ai vérifié que le chemin est contraint par le solide. Sinon, le volume du solide décrit une zone &amp;quot;d'exclusion.&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -1246,7 +1246,7 @@
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="159"/>
       <source>Chip Break</source>
-      <translation type="unfinished">Chip Break</translation>
+      <translation>Brise copeau</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
@@ -2536,21 +2536,11 @@
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="639"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les outils historiques n'ont pas de représentation précise des formes et sont stockés dans les préférences de l'utilisateur de FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
-      <source>Use Legacy Tools</source>
-      <translation>Utiliser les outils historiques</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="649"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les références aux outils et à leurs formes peuvent être enregistrées soit avec un chemin absolu, soit avec un chemin relatif au chemin de recherche.&lt;/p&gt;&lt;p&gt;Généralement, il est recommandé d'utiliser des chemins relatifs en raison de leur flexibilité et de leur robustesse aux changements de disposition.&lt;/p&gt;&lt;p&gt;Si plusieurs outils ou formes d'outils portant le même nom existent dans différents répertoires, il peut être nécessaire d'utiliser des chemins absolus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="652"/>
+      <location filename="../preferences/PathJob.ui" line="642"/>
       <source>Store Absolute Paths</source>
       <translation>Enregistrer les parcours absolus</translation>
     </message>
@@ -2786,7 +2776,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="57"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
       <source>Compound paths</source>
       <translation>Parcours composés</translation>
     </message>
@@ -3521,69 +3511,6 @@ p, li { white-space: pre-wrap; }
     </message>
   </context>
   <context>
-    <name>ToolLibrary</name>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
-      <source>Tool Library</source>
-      <translation>Bibliothèque d'outils</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
-      <source>Import...</source>
-      <translation>Importer...</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
-      <source>Export...</source>
-      <translation>Exporter...</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
-      <source>Tool Tables</source>
-      <translation>Listes des outils</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
-      <source>New Tool</source>
-      <translation>Nouvel outil</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
-      <source>Delete</source>
-      <translation>Supprimer</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="274"/>
-      <source>Edit</source>
-      <translation>Éditer</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="291"/>
-      <source>Duplicate</source>
-      <translation>Doublon</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="305"/>
-      <source>Move up</source>
-      <translation>Déplacer vers le haut</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="331"/>
-      <source>Move down</source>
-      <translation>Déplacer vers le bas</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="368"/>
-      <source>Create Tool Controllers for the selected tools</source>
-      <translation>Créer des contrôleurs d'outils pour les outils sélectionnés</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="371"/>
-      <source>Create Tool Controller(s)</source>
-      <translation>Créer un/des contrôleur(s) d'outils</translation>
-    </message>
-  </context>
-  <context>
     <name>ToolSelector</name>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
@@ -4009,12 +3936,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avance horizontale&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1208"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avance verticale&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>

@@ -26,7 +26,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Tilt</source>
-      <translation>Вращение</translation>
+      <translation>Наклон (вращение)</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="72"/>

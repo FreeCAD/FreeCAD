@@ -1903,12 +1903,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="400"/>
       <source>Add line to sketch wire</source>
-      <translation>Додајте линију повезаним линијама</translation>
+      <translation>Додајте линију жичаној скици</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="420"/>
       <source>Add arc to sketch wire</source>
-      <translation>Додајте лук повезаним линијама</translation>
+      <translation>Додајте лук жичаној скици</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="178"/>
@@ -2153,59 +2153,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Грешка аутоматског ограничавања: Нерешива скица после примене ограничења једнакости.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2024"/>
+      <location filename="../../../App/SketchObject.cpp" line="1979"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Није могуће одредити пресечну такчу кривих. Покушајте да додате ограничење подударности између тачака кривих где намеравате да направите заобљење.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5757"/>
-      <location filename="../../../App/SketchObject.cpp" line="5931"/>
+      <location filename="../../../App/SketchObject.cpp" line="5712"/>
+      <location filename="../../../App/SketchObject.cpp" line="5886"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5760"/>
+      <location filename="../../../App/SketchObject.cpp" line="5715"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Не захтевате промену у вишеструкости чворова.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5765"/>
-      <location filename="../../../App/SketchObject.cpp" line="5939"/>
+      <location filename="../../../App/SketchObject.cpp" line="5720"/>
+      <location filename="../../../App/SketchObject.cpp" line="5894"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5772"/>
+      <location filename="../../../App/SketchObject.cpp" line="5727"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5779"/>
+      <location filename="../../../App/SketchObject.cpp" line="5734"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Вишеструкост се не може повећати изнад степена Б-сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5782"/>
+      <location filename="../../../App/SketchObject.cpp" line="5737"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Вишеструкост не може бити мање од нуле.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5794"/>
+      <location filename="../../../App/SketchObject.cpp" line="5749"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC није у стању да смањи вишеструкост унутар максималне толеранције.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5934"/>
+      <location filename="../../../App/SketchObject.cpp" line="5889"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Чвор не може имати нулту вишеструкост.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5948"/>
+      <location filename="../../../App/SketchObject.cpp" line="5903"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Вишеструкост чворова не може бити већа од степена Б-Сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5951"/>
+      <location filename="../../../App/SketchObject.cpp" line="5906"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -4913,69 +4913,64 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>Образац</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
       <source>A grid will be shown</source>
       <translation>Координатна мрежа ће бити приказана</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
-      <source>Show grid</source>
-      <translation>Прикажи координатну мрежу</translation>
+      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
+      <source>Grid</source>
+      <translation>Координатна мрежа</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Grid size:</source>
-      <translation>Величина решетке:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Растојање између две следеће линије координатне мреже</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="87"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
       <translation>Нове тачке ће се ухватити на најближу линију координатне мреже.
 Да би се ухватиле тачке се морају налазити ближе од петине вредности величине координатне мреже.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="91"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
       <source>Grid snap</source>
       <translation>Ухвати координатну мрежу</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="107"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation>Sketcher аутоматски предлаже разумна ограничења.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="110"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
       <source>Auto constraints</source>
       <translation>Аутоматска ограничења</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="126"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation>Sketcher покушава да не предложи сувишна аутоматска ограничења</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="129"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Избегавајте сувишна аутоматска ограничења</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="145"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
       <source>Rendering order (global):</source>
       <translation>Редослед рендеровања (глобални):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="164"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation>Да бисте променили, превуците тип геометрије на врх или на дно</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="190"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="189"/>
       <source>Edit controls</source>
       <translation type="unfinished">Edit controls</translation>
     </message>

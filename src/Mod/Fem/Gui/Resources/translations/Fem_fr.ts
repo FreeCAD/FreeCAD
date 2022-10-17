@@ -374,7 +374,7 @@
     <message>
       <location filename="../../Command.cpp" line="1345"/>
       <source>Function cut filter</source>
-      <translation>Filtre de découpe selon une fonction</translation>
+      <translation>Filtre de fonction de découpe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1346"/>
@@ -568,7 +568,7 @@
     <message>
       <location filename="../../Command.cpp" line="1579"/>
       <source>Warp filter</source>
-      <translation>Filtre de visualisation des déformations</translation>
+      <translation>Filtre des déformations</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1580"/>
@@ -1034,7 +1034,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="38"/>
       <source>ElmerGrid:</source>
-      <translation>Grille Elmer:</translation>
+      <translation>ElmerGrid :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="45"/>
@@ -1075,7 +1075,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation>Cœurs du CPU à utiliser :</translation>
+      <translation>Nombre de cœurs du CPU à utiliser :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
@@ -3538,7 +3538,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="77"/>
       <source>Max Principal Stress</source>
-      <translation>Contrainte principale maxi</translation>
+      <translation>Contrainte principale max.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="90"/>
@@ -3558,7 +3558,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
       <source>Max Shear Stress (Tresca)</source>
-      <translation>Contrainte de cisaillement maxi (Tresca)</translation>
+      <translation>Contrainte de cisaillement max. (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
@@ -3644,7 +3644,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultShow.ui" line="359"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
-      <translation>P1 - P3 # Max - Min Contrainte principale</translation>
+      <translation>P1 - P3 # Max. - Min. contrainte principale</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -3689,22 +3689,22 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultHints.ui" line="158"/>
       <source>von Mises stress: vM</source>
-      <translation>contraintes de von Mises : vM</translation>
+      <translation>contrainte de von Mises : vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>max shear stress: MS</source>
-      <translation>contrainte maximale de cisaillement: MS</translation>
+      <translation>contrainte maximale de cisaillement : MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>max princ. stress vector: s3x, s3y, s3z</source>
-      <translation>vecteur de contrainte principal max : s3x, s3y, s3z</translation>
+      <translation>vecteur de contrainte principal max. : s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>max principal stress: P1</source>
-      <translation>contrainte principale max: P1</translation>
+      <translation>contrainte principale max. : P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>

@@ -2536,21 +2536,11 @@
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="639"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Las herramientas de Legado no tienen una representación precisa de forma y se almacenan en las preferencias de usuario de FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
-      <source>Use Legacy Tools</source>
-      <translation>Usar Herramientas de Legado</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="649"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Referencias a Herramientas Bit y sus formas pueden almacenarse con una ruta absoluta o con una ruta relativa a la ruta de búsqueda.&lt;/p&gt;&lt;p&gt;Generalmente se recomienda utilizar rutas relativas debido a su flexibilidad y robustez a los cambios de diseño.&lt;/p&gt;&lt;p&gt;Si existen múltiples herramientas o formas de herramientas con el mismo nombre en diferentes directorios, puede ser necesario utilizar rutas absolutas. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="652"/>
+      <location filename="../preferences/PathJob.ui" line="642"/>
       <source>Store Absolute Paths</source>
       <translation>Almacenar Rutas Absolutas</translation>
     </message>
@@ -2786,7 +2776,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="57"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
       <source>Compound paths</source>
       <translation>Trayectorias compuestas</translation>
     </message>
@@ -3518,69 +3508,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
       <translation>Atributos</translation>
-    </message>
-  </context>
-  <context>
-    <name>ToolLibrary</name>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
-      <source>Tool Library</source>
-      <translation>Librería de Herramientas</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
-      <source>Import...</source>
-      <translation>Importar...</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
-      <source>Export...</source>
-      <translation>Exportar...</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
-      <source>Tool Tables</source>
-      <translation>Tablas de Herramientas</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
-      <source>New Tool</source>
-      <translation>Nueva Herramienta</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
-      <source>Delete</source>
-      <translation>Borrar</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="274"/>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="291"/>
-      <source>Duplicate</source>
-      <translation>Duplicar</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="305"/>
-      <source>Move up</source>
-      <translation>Mover hacia arriba</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="331"/>
-      <source>Move down</source>
-      <translation>Mover hacia abajo</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="368"/>
-      <source>Create Tool Controllers for the selected tools</source>
-      <translation>Crear Controladores de Herramientas para las herramientas seleccionadas</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolLibraryEditor.ui" line="371"/>
-      <source>Create Tool Controller(s)</source>
-      <translation>Crear Controlador(es) de Herramienta(s)</translation>
     </message>
   </context>
   <context>

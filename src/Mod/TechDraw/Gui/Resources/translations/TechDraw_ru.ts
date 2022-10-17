@@ -565,7 +565,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1418"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Простановка горизонтальной цепочки размеров</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1419"/>
@@ -602,7 +602,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1229"/>
       <location filename="../../CommandExtensionDims.cpp" line="1492"/>
       <source>Create Horizontal Chain Dimensions</source>
-      <translation type="unfinished">Create Horizontal Chain Dimensions</translation>
+      <translation>Простановка горизонтальной цепочки размеров</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1230"/>
@@ -720,7 +720,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1294"/>
       <location filename="../../CommandExtensionDims.cpp" line="1499"/>
       <source>Create Vertical Chain Dimensions</source>
-      <translation type="unfinished">Create Vertical Chain Dimensions</translation>
+      <translation>Простановка вертикальной цепочки размеров</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1295"/>

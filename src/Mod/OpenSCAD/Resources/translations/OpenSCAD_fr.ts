@@ -21,7 +21,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation>Le chemin d'accès de l'exécutable de OpenSCAD</translation>
+      <translation>Le chemin de l'exécutable d'OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>

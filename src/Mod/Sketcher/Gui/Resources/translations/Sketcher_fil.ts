@@ -2155,59 +2155,59 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2024"/>
+      <location filename="../../../App/SketchObject.cpp" line="1979"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5757"/>
-      <location filename="../../../App/SketchObject.cpp" line="5931"/>
+      <location filename="../../../App/SketchObject.cpp" line="5712"/>
+      <location filename="../../../App/SketchObject.cpp" line="5886"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5760"/>
+      <location filename="../../../App/SketchObject.cpp" line="5715"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Humihiling ka ng walang pagbabago sa pagkarami-rami ng pinagdahunan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5765"/>
-      <location filename="../../../App/SketchObject.cpp" line="5939"/>
+      <location filename="../../../App/SketchObject.cpp" line="5720"/>
+      <location filename="../../../App/SketchObject.cpp" line="5894"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5772"/>
+      <location filename="../../../App/SketchObject.cpp" line="5727"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Ang index ng natuklod ay wala sa hangganan. Tandaan na alinsunod sa notasyon ng OCC, ang unang buhol ay may index 1 at hindi zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5779"/>
+      <location filename="../../../App/SketchObject.cpp" line="5734"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5782"/>
+      <location filename="../../../App/SketchObject.cpp" line="5737"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Ang pagkarami-rami ay hindi maaaring mabawasan ng lampas sa zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5794"/>
+      <location filename="../../../App/SketchObject.cpp" line="5749"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>Ang OCC ay hindi maaaring bawasan ang maraming iba't ibang uri sa loob ng maximum na tolerasyon.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5934"/>
+      <location filename="../../../App/SketchObject.cpp" line="5889"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5948"/>
+      <location filename="../../../App/SketchObject.cpp" line="5903"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5951"/>
+      <location filename="../../../App/SketchObject.cpp" line="5906"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -4915,69 +4915,64 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
       <translation>Porma</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="25"/>
       <source>A grid will be shown</source>
       <translation type="unfinished">A grid will be shown</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
-      <source>Show grid</source>
-      <translation>Ipakita ang grid</translation>
+      <location filename="../../TaskSketcherGeneral.ui" line="28"/>
+      <source>Grid</source>
+      <translation>Grid</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="44"/>
-      <source>Grid size:</source>
-      <translation>Sukat ng grid:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
       <translation type="unfinished">Distance between two subsequent grid lines</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="87"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="80"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
       <translation type="unfinished">New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="91"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="84"/>
       <source>Grid snap</source>
       <translation>Grid snap</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="107"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="100"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation type="unfinished">Sketcher proposes automatically sensible constraints.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="110"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="103"/>
       <source>Auto constraints</source>
       <translation>Mga hadlang sa auto</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="126"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="119"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation type="unfinished">Sketcher tries not to propose redundant auto constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="129"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="122"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Iwasan ang paulit ulit na pagpigil</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="145"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="138"/>
       <source>Rendering order (global):</source>
       <translation type="unfinished">Rendering order (global):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="164"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="157"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation type="unfinished">To change, drag and drop a geometry type to top or bottom</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="190"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="189"/>
       <source>Edit controls</source>
       <translation type="unfinished">Edit controls</translation>
     </message>

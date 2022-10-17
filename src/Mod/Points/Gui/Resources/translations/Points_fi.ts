@@ -163,7 +163,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation>Tuo ASCII pisteet</translation>
+      <translation>Tuo ASCII-pisteet</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>

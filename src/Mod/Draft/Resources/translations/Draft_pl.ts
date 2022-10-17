@@ -1144,7 +1144,7 @@ używając klawisza [ i ] podczas rysowania</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
       <source>PAT file:</source>
-      <translation>Plik z wzorem:</translation>
+      <translation>Plik ze wzorem:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>

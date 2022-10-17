@@ -31,7 +31,7 @@
     <message>
       <location filename="TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation>도움말</translation>
+      <translation>팁</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="48"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation>예제</translation>
+      <translation>예시</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="50"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation>사용자 센터</translation>
+      <translation>사용자 허브</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="52"/>
@@ -61,22 +61,22 @@
     <message>
       <location filename="TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation>고급 사용자 센터</translation>
+      <translation>고급 사용자 허브</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>이 섹션에서는 고급 사용자와 Python 스크립트 작성에 관심이있는 사람들을 위한 문서를 수집합니다. 또한 매크로 저장소, 설치 및 사용 방법에 대한 지침, 특정 요구 사항에 맞게 FreeCAD를 사용자 정의하는 방법에 대한 자세한 정보를 찾을 수 있습니다.</translation>
+      <translation>이 섹션에서는 고급 사용자와 Python 스크립트 작성에 관심이 있는 사람들을 위한 문서를 수집합니다. 또한 매크로 저장소, 매크로 설치 및 사용 방법에 대한 지침, FreeCAD를 특정 요구 사항에 맞게 사용자 지정하는 방법에 대한 추가 정보를 찾을 수 있습니다.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation>개발자 센터</translation>
+      <translation>개발자 허브</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>이 섹션에는 개발자를 위한 자료가 포함되어 있습니다: FreeCAD를 직접 컴파일하는 방법, FreeCAD 소스 코드가 어떻게 구성되어 있는지, 탐색 방법, 새로운 작업 벤치 개발 방법 및 / 또는 자신의 응용 프로그램에 FreeCAD를 임베드하는 방법.</translation>
+      <translation>이 섹션에는 개발자를 위한 자료가 포함되어 있습니다: FreeCAD를 직접 컴파일하는 방법, FreeCAD 소스 코드의 구조화 방법 + 탐색 방법, 새로운 워크벤치 개발 방법 및/또는 자체 응용 프로그램에 FreeCAD를 내장하는 방법을 알아봅니다.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -121,12 +121,12 @@
     <message>
       <location filename="TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation>사용 가능한 추가 기능</translation>
+      <translation>사용 가능한 애드온</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>다음은 FreeCAD 설치에 추가할 수 있는 워크 벤치 목록입니다. 메뉴 도구 -&gt; 추가 기능 관리에서 찾아보고 설치하십시오. 아래 링크를 클릭하면 해당 항목에 대해 자세히 알아볼 수 있습니다.</translation>
+      <translation>다음은 FreeCAD 설치에 추가할 수 있는 사용 가능한 추가 워크벤치 목록입니다. 메뉴 도구 -&gt; 애드온 관리자에서 찾아보고 설치합니다. 아래 링크를 클릭하면 이들 중 하나에 대해 자세히 알아볼 수 있습니다.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>

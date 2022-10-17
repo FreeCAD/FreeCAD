@@ -1055,7 +1055,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
+      <translation>이름:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>

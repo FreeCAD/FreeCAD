@@ -101,7 +101,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
-      <translation type="unfinished">Opens the URL in a browser</translation>
+      <translation>Avaa URL-osoitteen selaimessa</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>Bim Server</source>
-      <translation>Bim Palvelin</translation>
+      <translation>Bim-palvelin</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the Bim Server</source>
-      <translation>Bim Serverillä olevien hankkeiden luettelo</translation>
+      <translation>Bim-palvelimella olevien projektien luettelo</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -180,7 +180,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="164"/>
       <source>Root object:</source>
-      <translation type="unfinished">Root object:</translation>
+      <translation>Juuriobjekti:</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
@@ -325,7 +325,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>Lisää valinta</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
@@ -459,22 +459,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="120"/>
       <source>Commit message</source>
-      <translation>Vahvista viesti</translation>
+      <translation>Commit-viesti</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="159"/>
       <source>Remote repositories</source>
-      <translation>Etä tietovarastot</translation>
+      <translation>Etätietovarastot</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="183"/>
       <source>Pull</source>
-      <translation>Vedä</translation>
+      <translation>Pull</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="190"/>
       <source>Push</source>
-      <translation>Työnnä</translation>
+      <translation>Push</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
@@ -637,7 +637,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
       <source>Object creation</source>
-      <translation>Kohteen luonti</translation>
+      <translation>Objektin luonti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="32"/>
@@ -692,7 +692,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation> sekuntia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
@@ -722,7 +722,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation>IFC versio</translation>
+      <translation>IFC-versio</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
@@ -787,7 +787,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="412"/>
       <source>2D rendering</source>
-      <translation>2D renderöinti</translation>
+      <translation>2D-renderöinti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="420"/>
@@ -1163,7 +1163,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
       <source>Number of cores to use (experimental)</source>
-      <translation type="unfinished">Number of cores to use (experimental)</translation>
+      <translation>Käytettävien ydinten määrä (kokeellinen)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="157"/>
@@ -1179,7 +1179,7 @@ if you start getting crashes when you set multiple cores.</translation>
       <location filename="../ui/preferences-ifc.ui" line="172"/>
       <location filename="../ui/preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
+      <translation>Määrittää millaisia objekteja FreeCADissa luodaan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="182"/>
@@ -1221,7 +1221,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="246"/>
       <source>Do not import structural objects</source>
-      <translation>Älä tuo rakenteellisia kohteita</translation>
+      <translation>Älä tuo rakenteellisia objekteja</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="258"/>
@@ -1299,7 +1299,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="370"/>
       <source>Import IFC properties in spreadsheet</source>
-      <translation>Tuo IFC ominaisuudet laskentataulukossa</translation>
+      <translation>Tuo IFC-ominaisuudet laskentataulukossa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
@@ -1551,7 +1551,7 @@ Use this to force all objects to be exported as BREP geometry.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="115"/>
       <source>Force export as Brep</source>
-      <translation>Pakota vienti Brep muodossa</translation>
+      <translation>Pakota vienti Brep-muodossa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="128"/>
@@ -1655,7 +1655,7 @@ If this is your case, you can disable this and then all profiles will be exporte
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="264"/>
       <source>Disable IfcRectangleProfileDef</source>
-      <translation type="unfinished">Disable IfcRectangleProfileDef</translation>
+      <translation>Poista IfcRectangleProfileDef käytöstä</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="277"/>
@@ -1730,7 +1730,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation>IFC tiedostoyksiköt</translation>
+      <translation>IFC-tiedostoyksiköt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>

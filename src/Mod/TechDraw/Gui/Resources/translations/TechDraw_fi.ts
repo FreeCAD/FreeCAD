@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1232"/>
       <source>Insert Arch Workbench Object</source>
-      <translation>Lisää Arch työpöytä -objekti</translation>
+      <translation>Lisää Arch-työpöytäobjekti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1233"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation>Lisää näkymä osion tasosta Arch työpöytä</translation>
+      <translation>Lisää poikkileikkaustason näkymä Arch-työpöydästä</translation>
     </message>
   </context>
   <context>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="350"/>
       <source>Insert Diameter Dimension</source>
-      <translation>Lisää Halkaisijamitta</translation>
+      <translation>Lisää halkaisijamitta</translation>
     </message>
   </context>
   <context>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="107"/>
       <source>Insert Dimension</source>
-      <translation>Lisää Ulottuvuus</translation>
+      <translation>Lisää ulottuvuus</translation>
     </message>
   </context>
   <context>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Command.cpp" line="1174"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>Lisää Luonnos Työpöytä Objekti</translation>
+      <translation>Lisää työpöydän luonnosobjekti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
@@ -1467,13 +1467,13 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="239"/>
       <source>Insert Bitmap Image</source>
-      <translation>Lisää Bitmap kuva</translation>
+      <translation>Lisää Bitmap-kuva</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="240"/>
       <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>Insert Bitmap from a file into a page</source>
-      <translation>Lisää Bitmap kuva tiedostosta sivulle</translation>
+      <translation>Lisää Bitmap-kuva tiedostosta sivulle</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="257"/>
@@ -1496,7 +1496,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1291"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
-      <translation>Lisää Maisemamitta - KOKEELLINEN</translation>
+      <translation>Lisää maisemamitta - KOKEELLINEN</translation>
     </message>
   </context>
   <context>
@@ -1623,12 +1623,12 @@
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>Insert Projection Group</source>
-      <translation>Lisää Projektioryhmä</translation>
+      <translation>Lisää projektioryhmä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="576"/>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation>Aseta useita linkitettyjä näkymiä vedettävistä kohteista</translation>
+      <translation>Aseta useita linkitettyjä näkymiä piirrettävistä objekteista</translation>
     </message>
   </context>
   <context>
@@ -1654,7 +1654,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="234"/>
       <source>Insert Radius Dimension</source>
-      <translation>Lisää Sädemitta</translation>
+      <translation>Lisää sädemitta</translation>
     </message>
   </context>
   <context>
@@ -1680,7 +1680,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="153"/>
       <source>Insert Rich Text Annotation</source>
-      <translation>Lisää rich text-muotoiltu huomautus</translation>
+      <translation>Lisää rich text -tekstimerkintä</translation>
     </message>
   </context>
   <context>
@@ -1706,7 +1706,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1324"/>
       <source>Show/Hide Invisible Edges</source>
-      <translation>Näytä/Piilota näkymättömät reunat</translation>
+      <translation>Näytä/piilota näkymättömät reunat</translation>
     </message>
   </context>
   <context>
@@ -1724,7 +1724,7 @@
     <message>
       <location filename="../../Command.cpp" line="1298"/>
       <source>Insert View to a spreadsheet</source>
-      <translation>Lisää näkymä taulukkoon</translation>
+      <translation>Lisää näkymä laskentataulukkoon</translation>
     </message>
   </context>
   <context>
@@ -1840,12 +1840,12 @@
     <message>
       <location filename="../../Command.cpp" line="1119"/>
       <source>Insert SVG Symbol</source>
-      <translation>Lisää SVG -symboli</translation>
+      <translation>Lisää SVG-symboli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1120"/>
       <source>Insert symbol from an SVG file</source>
-      <translation>Lisää symboli SVG- tiedostosta</translation>
+      <translation>Lisää symboli SVG-tiedostosta</translation>
     </message>
   </context>
   <context>
@@ -1955,7 +1955,7 @@
     <message>
       <location filename="../../Command.cpp" line="1146"/>
       <source>Create Symbol</source>
-      <translation>Luo Symboli</translation>
+      <translation>Luo symboli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1203"/>
@@ -1970,13 +1970,13 @@
     <message>
       <location filename="../../Command.cpp" line="1321"/>
       <source>Create spreadsheet view</source>
-      <translation>Luo laskentataulukko näkymä</translation>
+      <translation>Luo laskentataulukkonäkymä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1444"/>
       <location filename="../../MDIViewPage.cpp" line="687"/>
       <source>Save page to dxf</source>
-      <translation>Tallenna sivu dxf: ään</translation>
+      <translation>Tallenna sivu dxf-muotoon</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="338"/>
@@ -2377,7 +2377,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="280"/>
       <source>Italic (CTRL+I)</source>
-      <translation>Kursivoitu (CTRL+I)</translation>
+      <translation>Kursivoi (CTRL+I)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="283"/>
@@ -2392,12 +2392,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="309"/>
       <source>Underline</source>
-      <translation>Alleviivaus</translation>
+      <translation>Alleviivattu</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="329"/>
       <source>Strikethrough</source>
-      <translation>Yliviivattu</translation>
+      <translation>Yliviivaa</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="332"/>
@@ -2437,12 +2437,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
       <source>Text foreground color</source>
-      <translation>Tekstin väri</translation>
+      <translation>Tekstin edustaväri</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="496"/>
       <source>Text background color</source>
-      <translation>Taustaväri</translation>
+      <translation>Tekstin taustaväri</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="499"/>
@@ -2452,7 +2452,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="525"/>
       <source>Font size</source>
-      <translation>Kirjasimen koko</translation>
+      <translation>Fonttikoko</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="566"/>
@@ -2488,7 +2488,7 @@
     <message>
       <location filename="../../mrichtextedit.cpp" line="105"/>
       <source>Monospace</source>
-      <translation>Tasavälinen</translation>
+      <translation>Tasalevyinen</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="165"/>
@@ -2571,7 +2571,7 @@
       <location filename="../../Command.cpp" line="494"/>
       <location filename="../../Command.cpp" line="545"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
-      <translation>Valitse vähintään 1 DrawViewPart objekti alustaksi.</translation>
+      <translation>Valitse vähintään 1 DrawViewPart-objekti pohjaksi.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
@@ -2611,7 +2611,7 @@
       <location filename="../../Command.cpp" line="806"/>
       <location filename="../../CommandCreateDims.cpp" line="1433"/>
       <source>No View of a Part in selection.</source>
-      <translation>Valinnassa ei ole Näkymää Osasta.</translation>
+      <translation>Valinnassa ei ole osan näkymää.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="973"/>
@@ -3039,7 +3039,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1279"/>
       <source>No View in Selection.</source>
-      <translation>Valittuna ei ole Näkymää.</translation>
+      <translation>Valinnassa ei ole näkymää.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1272"/>
@@ -3137,7 +3137,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="267"/>
       <source>Export Page As PDF</source>
-      <translation>Vie Sivu PDF-tiedostoon</translation>
+      <translation>Vie sivu PDF-tiedostoon</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="542"/>
@@ -3159,7 +3159,7 @@
       <location filename="../../ViewProviderProjGroup.cpp" line="169"/>
       <location filename="../../ViewProviderTemplate.cpp" line="178"/>
       <source>Are you sure you want to continue?</source>
-      <translation>Oletko varma että haluat jatkaa?</translation>
+      <translation>Haluatko varmasti jatkaa?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="233"/>
@@ -3216,22 +3216,22 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="121"/>
       <source>No Main Window</source>
-      <translation type="unfinished">No Main Window</translation>
+      <translation>Ei pääikkunaa</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="122"/>
       <source>Can not find the main window</source>
-      <translation type="unfinished">Can not find the main window</translation>
+      <translation>Pääikkunaa ei löydy</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="138"/>
       <source>No 3D Viewer</source>
-      <translation type="unfinished">No 3D Viewer</translation>
+      <translation>Ei 3D-katselinta</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="139"/>
       <source>Can not find a 3D viewer</source>
-      <translation type="unfinished">Can not find a 3D viewer</translation>
+      <translation>3D-katselinta ei löydy</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="168"/>
@@ -3360,7 +3360,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="2264"/>
       <location filename="../../CommandExtensionPack.cpp" line="1901"/>
       <source>No object selected</source>
-      <translation type="unfinished">No object selected</translation>
+      <translation>Yhtäkään objektia ei ole valittu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="112"/>
@@ -3385,7 +3385,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1977"/>
       <source>Please select two straight lines</source>
-      <translation type="unfinished">Please select two straight lines</translation>
+      <translation>Valitse kaksi suoraa viivaa</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="412"/>
@@ -3477,7 +3477,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderViewPart.cpp" line="318"/>
       <location filename="../../ViewProviderWeld.cpp" line="149"/>
       <source>Object dependencies</source>
-      <translation>Kohteiden riippuvuudet</translation>
+      <translation>Objektin riippuvuudet</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="153"/>
@@ -3613,12 +3613,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From Page</source>
-      <translation type="unfinished">From Page</translation>
+      <translation>Sivulta</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
-      <translation type="unfinished">To Page</translation>
+      <translation>Sivulle</translation>
     </message>
   </context>
   <context>
@@ -3871,7 +3871,7 @@ voi kärsiä käsitellessä monimutkaisia malleja.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Edge Fuzz</source>
-      <translation>Reunan Sumuisuus</translation>
+      <translation>Reunan sumuisuus</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="285"/>
@@ -4220,7 +4220,7 @@ kun Aluetta viivoitetaan PAT-kuvionnilla</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="802"/>
       <source>Show Center Marks</source>
-      <translation>Näytä kaarien Keskimerkit</translation>
+      <translation>Näytä kaarien keskimerkit</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="830"/>
@@ -4230,7 +4230,7 @@ kun Aluetta viivoitetaan PAT-kuvionnilla</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
       <source>Print Center Marks</source>
-      <translation>Tulosta kaarien Keskimerkit</translation>
+      <translation>Tulosta kaarien keskimerkit</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="857"/>
@@ -4299,7 +4299,7 @@ kun Aluetta viivoitetaan PAT-kuvionnilla</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="228"/>
       <source>Section Line</source>
-      <translation>Poikkileikkauksen Viiva</translation>
+      <translation>Poikkileikkauksen viiva</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="235"/>
@@ -4339,7 +4339,7 @@ kun Aluetta viivoitetaan PAT-kuvionnilla</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="351"/>
       <source>Geometric Hatch</source>
-      <translation>Geometrinen Kuviointi</translation>
+      <translation>Geometrinen kuviointi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="358"/>
@@ -4428,22 +4428,22 @@ kun Aluetta viivoitetaan PAT-kuvionnilla</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="152"/>
       <source>ISO Oriented</source>
-      <translation>ISO Orientoitu</translation>
+      <translation>ISO-orientoitu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="157"/>
       <source>ISO Referencing</source>
-      <translation>ISO Viittaava</translation>
+      <translation>ISO-viittaava</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="162"/>
       <source>ASME Inlined</source>
-      <translation>ASME Upotettu</translation>
+      <translation>ASME-upotettu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="167"/>
       <source>ASME Referencing</source>
-      <translation>ASME Viittaava</translation>
+      <translation>ASME-viittaava</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="437"/>
@@ -4651,7 +4651,7 @@ Näkymät projektioryhmissä</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="221"/>
       <source>Label Font*</source>
-      <translation>Nimikkeen Fontti*</translation>
+      <translation>Nimikkeen fontti*</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="268"/>
@@ -5072,7 +5072,7 @@ Nopea, mutta tulos on kokoelma lyhyitä suoria viivoja.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Export PDF</source>
-      <translation>Vienti PDF</translation>
+      <translation>Vie PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
@@ -6152,22 +6152,22 @@ be used instead if the dimension value</source>
     <message>
       <location filename="../../TaskDimension.ui" line="283"/>
       <source>ISO Oriented</source>
-      <translation>ISO Orientoitu</translation>
+      <translation>ISO-orientoitu</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="288"/>
       <source>ISO Referencing</source>
-      <translation>ISO Viittaava</translation>
+      <translation>ISO-viittaava</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="293"/>
       <source>ASME Inlined</source>
-      <translation>ASME Upotettu</translation>
+      <translation>ASME-upotettu</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="298"/>
       <source>ASME Referencing</source>
-      <translation>ASME Viittaava</translation>
+      <translation>ASME-viittaava</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="311"/>
@@ -7562,22 +7562,22 @@ käyttäen annettuja X/Y-välimatkoja</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw Pages</source>
-      <translation>TechDraw-sivu</translation>
+      <translation>TechDraw-sivut</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Views</source>
-      <translation>TechDraw-Näkymä</translation>
+      <translation>TechDraw-näkymät</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>TechDraw Clips</source>
-      <translation>TechDraw Leikekuviot</translation>
+      <translation>TechDraw-leikekuviot</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Dimensions</source>
-      <translation>TechDraw-Mitat</translation>
+      <translation>TechDraw-mitat</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

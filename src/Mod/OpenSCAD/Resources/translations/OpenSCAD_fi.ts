@@ -11,12 +11,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Yleiset OpenSCAD asetukset</translation>
+      <translation>Yleiset OpenSCAD-asetukset</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD suoritettava tiedosto</translation>
+      <translation>OpenSCAD-suoritustiedosto</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD import</source>
-      <translation>OpenSCAD tuonti</translation>
+      <translation>OpenSCAD-tuonti</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>

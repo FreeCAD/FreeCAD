@@ -171,7 +171,7 @@
     <message>
       <location filename="TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation>Utwórz nowy...</translation>
+      <translation>Utwórz nowy ...</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="76"/>

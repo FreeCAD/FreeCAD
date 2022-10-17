@@ -1948,7 +1948,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="2502"/>
       <source>Create projection on surface...</source>
-      <translation type="unfinished">Create projection on surface...</translation>
+      <translation>Создать проекцию на поверхность...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2503"/>

@@ -4103,7 +4103,7 @@ get date suffix according to the specified format</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="528"/>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>日期格式</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="553"/>
@@ -7622,7 +7622,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../EditorView.cpp" line="747"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>上一個</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="748"/>

@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="587"/>
       <source>&amp;Render</source>
-      <translation>&amp; 렌더링</translation>
+      <translation>렌더링하기(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="588"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>&amp;Reset Camera</source>
-      <translation>&amp; 카메라를 재설정</translation>
+      <translation>카메라 재설정(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
@@ -516,7 +516,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Raytracing</source>
-      <translation>&amp; 레이트레이싱</translation>
+      <translation>레이트레이싱(&amp;R)</translation>
     </message>
   </context>
 </TS>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation>Arch Material</translation>
+      <translation>Bogenmaterial</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>

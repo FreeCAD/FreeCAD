@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Go to the next page</source>
-      <translation>다음 페이지로 이동</translation>
+      <translation>다음 페이지로 가기</translation>
     </message>
   </context>
   <context>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>FreeCAD에서 웹사이트를 엽니다.</translation>
+      <translation>FreeCAD에서 웹사이트를 엽니다</translation>
     </message>
   </context>
   <context>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="598"/>
       <source>File does not exist!</source>
-      <translation>파일이 존재 하지 않습니다!</translation>
+      <translation>파일이 존재하지 않습니다!</translation>
     </message>
   </context>
   <context>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="591"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>파일을 불러오는 도중 문제가 생겼습니다. 일부 데이터가 수정되거나 전혀 복구되지 않았을 수 있습니다. 해당 개체에 대한 보다 구체적인 정보를 확인하려면 보고서를 보세요.</translation>
+      <translation>파일을 불러오는 동안 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 관련된 객체에 대한 보다 구체적인 정보는 보고서 보기에서 확인하십시오.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="594"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="353"/>
       <source>Open in External Browser</source>
-      <translation>다른 브라우저에서 열기</translation>
+      <translation>외부 브라우저에서 열기</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="357"/>

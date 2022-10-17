@@ -1424,7 +1424,7 @@ To enable assignment, please make '%2' the active workbench</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="388"/>
       <source>Do you want to override it?</source>
-      <translation>Да ли желите да је надјачате?</translation>
+      <translation>Да ли желите да је измените?</translation>
     </message>
   </context>
   <context>
@@ -7631,7 +7631,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../EditorView.cpp" line="747"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Претходни</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="748"/>
@@ -9209,7 +9209,7 @@ Choose 'Abort' to abort</source>
     <message>
       <location filename="../MouseSelection.cpp" line="369"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Разделите</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="418"/>
@@ -9546,7 +9546,7 @@ the current copy will be lost.
       <location filename="../ViewProviderLink.cpp" line="2605"/>
       <location filename="../ViewProviderLink.cpp" line="2611"/>
       <source>Override colors...</source>
-      <translation>Прегази боје...</translation>
+      <translation>Измените боје...</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="261"/>

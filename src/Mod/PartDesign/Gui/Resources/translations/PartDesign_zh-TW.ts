@@ -1746,7 +1746,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>點擊模型中的一個面</translation>
     </message>
   </context>
   <context>
@@ -2204,7 +2204,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>物件</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
@@ -2560,7 +2560,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>選擇面</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -2618,7 +2618,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>物件</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
@@ -2677,7 +2677,7 @@ measured along the specified direction</source>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
       <location filename="../../TaskPipeParameters.ui" line="93"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>物件</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
@@ -3023,7 +3023,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>物件</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>

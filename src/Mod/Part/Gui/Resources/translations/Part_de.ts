@@ -4258,7 +4258,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation type="unfinished">defaultFont</translation>
+      <translation>Standardschrift</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
@@ -4741,7 +4741,7 @@ nur die erstellten Schnitte sichtbar</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>Boxauswahl für Hüllen wird nicht unterstützt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="224"/>
@@ -5659,7 +5659,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../AppPartGui.cpp" line="211"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>Arbeitsbereich für Bauteile und deren Konstruktion</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="212"/>

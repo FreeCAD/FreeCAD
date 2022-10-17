@@ -3579,7 +3579,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="147"/>
       <source>No Background</source>
-      <translation type="unfinished">No Background</translation>
+      <translation>Nessuno Sfondo</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="160"/>
@@ -3589,7 +3589,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="167"/>
       <source>Crop Image</source>
-      <translation type="unfinished">Crop Image</translation>
+      <translation>Ritaglia Immagine</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="134"/>
@@ -7367,7 +7367,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
       <source>ASME</source>
-      <translation type="unfinished">ASME</translation>
+      <translation>ASME</translation>
     </message>
   </context>
   <context>

@@ -872,7 +872,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>上一個</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
@@ -1012,7 +1012,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="205"/>
       <source>Text font</source>
-      <translation type="unfinished">Text font</translation>
+      <translation>文字字型</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="218"/>
@@ -1022,7 +1022,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>字體大小</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="232"/>
@@ -1042,7 +1042,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="259"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>文字顏色</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
@@ -1142,7 +1142,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>填充</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
@@ -2156,21 +2156,21 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="151"/>
       <location filename="../ui/preferences-draftsnap.ui" line="206"/>
       <source>Shift</source>
-      <translation type="unfinished">Shift</translation>
+      <translation>Shift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="101"/>
       <location filename="../ui/preferences-draftsnap.ui" line="156"/>
       <location filename="../ui/preferences-draftsnap.ui" line="211"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="106"/>
       <location filename="../ui/preferences-draftsnap.ui" line="161"/>
       <location filename="../ui/preferences-draftsnap.ui" line="216"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="118"/>
@@ -2370,7 +2370,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>LibreDWG</source>
-      <translation type="unfinished">LibreDWG</translation>
+      <translation>LibreDWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="61"/>

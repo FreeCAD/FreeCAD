@@ -203,7 +203,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Could not load the chosen image</source>
-      <translation>Valittua tiedostoa ei voi avata</translation>
+      <translation>Valittua kuvaa ei voi avata</translation>
     </message>
   </context>
   <context>

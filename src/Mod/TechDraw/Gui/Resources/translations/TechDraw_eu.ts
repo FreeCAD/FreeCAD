@@ -2013,12 +2013,12 @@
     <message>
       <location filename="../../TaskHatch.cpp" line="214"/>
       <source>Update Hatch</source>
-      <translation type="unfinished">Update Hatch</translation>
+      <translation>Eguneratu itzaleztadura</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="118"/>
       <source>Remove old Hatch</source>
-      <translation type="unfinished">Remove old Hatch</translation>
+      <translation>Kendu itzaleztadura zaharra</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="197"/>
@@ -3562,7 +3562,7 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
       <source>Use 3d Background</source>
-      <translation type="unfinished">Use 3d Background</translation>
+      <translation>Erabili 3D atzeko planoa</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -3572,12 +3572,12 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="137"/>
       <source>Solid Background</source>
-      <translation type="unfinished">Solid Background</translation>
+      <translation>Atzeko plano solidoa</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="147"/>
       <source>No Background</source>
-      <translation type="unfinished">No Background</translation>
+      <translation>Atzeko planorik ez</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="160"/>

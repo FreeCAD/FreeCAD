@@ -1012,10 +1012,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
-'%1'
- does not exist!
-Specify another file please.</translation>
+      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
     </message>
   </context>
   <context>
@@ -1064,7 +1061,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="183"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bitte leer lassen, um die Elmer Standardsoftware zu verwenden.&lt;/p&gt; &lt;p&gt;&lt;span style=" font-weight:600;"&gt;Achtung:&lt;/span&gt; Für die Verwendung von Multithreading bitte hier&lt;br&gt; den Namen der Variante mit dem Zusatz &amp;quot;_mpi&amp;quot; angeben.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
@@ -1079,7 +1076,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Es wird emfohlen, eine gerade Anzahl von Kernen zu verwenden, um von den Netzsymmetrien zu profitieren. (Der Einsatz von 8 kann schneller als der von 9 Kernen sein.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
@@ -1092,10 +1089,7 @@ Specify another file please.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
-'%1'
- does not exist!
-Specify another file please.</translation>
+      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="120"/>
@@ -1314,10 +1308,7 @@ besteht aus zwei Netzgruppen, Flächen und Knoten, auf die die Beschränkung ode
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
-'%1'
- does not exist!
-Specify another file please.</translation>
+      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
     </message>
   </context>
   <context>
@@ -1412,8 +1403,8 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
       <location filename="../../DlgSettingsFemMaterial.ui" line="69"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation type="unfinished">Also material cards also from the specified directory
-will be listed as available.</translation>
+      <translation>Auch Materialkarten aus dem angegebenen Verzeichnis
+werden als verfügbar angezeigt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="73"/>
@@ -1433,7 +1424,7 @@ will be listed as available.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="154"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list.</translation>
+      <translation>Doppelte Karten werden aus der Liste der angezeigten Materialien gelöscht.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="157"/>
@@ -1444,8 +1435,8 @@ will be listed as available.</translation>
       <location filename="../../DlgSettingsFemMaterial.ui" line="173"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation type="unfinished">Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</translation>
+      <translation>Materialkarten werden nach ihren Ressourcen (Ablageorten) sortiert.
+Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
@@ -1501,10 +1492,7 @@ If unchecked, they will be sorted by their name.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
-'%1'
- does not exist!
-Specify another file please.</translation>
+      <translation>Die angegebene ausführbare Datei '%1' existiert nicht. Bitte gib einen anderen Dateinamen an.</translation>
     </message>
   </context>
   <context>
@@ -1567,7 +1555,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="196"/>
       <source>Max places in stiffness matrix</source>
-      <translation type="unfinished">Max places in stiffness matrix</translation>
+      <translation>Maximale Anzahl an Punkten in einer Steifigkeitsmatrix</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="209"/>
@@ -1575,10 +1563,8 @@ Specify another file please.</translation>
 You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in stiffnes matrix.
-You might need to increase this when using the
-Cholesky solver and you get the error message
-that "MAXGS" needs to be increased.</translation>
+      <translation>Maximale Anzahl an Punkten in einer Steifigkeitsmatrix.
+Wenn die Fehlermeldung "MAXGS", bei der Verwendung des Cholesky Solvers, angezeigt wird, muss dieser Wert erhöht werden.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="240"/>

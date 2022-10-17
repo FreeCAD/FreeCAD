@@ -167,7 +167,7 @@
     <message>
       <location filename="../CommandLink.cpp" line="140"/>
       <source>Make link group</source>
-      <translation>Tee linkki ryhmä</translation>
+      <translation>Tee linkkiryhmä</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="236"/>
@@ -225,7 +225,7 @@
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
       <source>Transform</source>
-      <translation>muunna</translation>
+      <translation>Muunna</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2570"/>
@@ -450,12 +450,12 @@
     <message>
       <location filename="../Application.h" line="244"/>
       <source>Transform</source>
-      <translation>muunna</translation>
+      <translation>Muunna</translation>
     </message>
     <message>
       <location filename="../Application.h" line="245"/>
       <source>Cutting</source>
-      <translation>Leikataan</translation>
+      <translation>Leikkuu</translation>
     </message>
     <message>
       <location filename="../Application.h" line="246"/>
@@ -717,18 +717,18 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Splashscreen.cpp" line="406"/>
       <source>Credits</source>
       <extracomment>Header for the Credits tab of the About screen</extracomment>
-      <translation>Krediitit</translation>
+      <translation>Tekijät</translation>
     </message>
     <message>
       <location filename="../Splashscreen.cpp" line="408"/>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD ei olisi mahdollinen ilman seuraavien tahojen vaivannäköä</translation>
     </message>
     <message>
       <location filename="../Splashscreen.cpp" line="411"/>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Yksityishenkilöt</translation>
     </message>
     <message>
       <location filename="../Splashscreen.cpp" line="422"/>
@@ -763,7 +763,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="230"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Välimuistin hakemisto</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="232"/>
@@ -773,7 +773,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="233"/>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>Haluatko tyhjentää sen nyt?</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="234"/>
@@ -972,7 +972,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgActivateWindow.ui" line="14"/>
       <source>Choose Window</source>
-      <translation>Valitse Ikkuna</translation>
+      <translation>Valitse ikkuna</translation>
     </message>
     <message>
       <location filename="../DlgActivateWindowImp.cpp" line="52"/>
@@ -1023,7 +1023,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DlgAddProperty.ui" line="53"/>
       <source>Documentation</source>
-      <translation>Käyttöohjeet</translation>
+      <translation>Dokumentaatio</translation>
     </message>
     <message>
       <location filename="../DlgAddProperty.ui" line="67"/>
@@ -1258,7 +1258,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgActionsImp.cpp" line="279"/>
       <source>Please select a macro item first.</source>
-      <translation>Ole hyvä ja valitse makro kohde ensin.</translation>
+      <translation>Valitse makro ensin.</translation>
     </message>
   </context>
   <context>
@@ -1312,12 +1312,12 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgKeyboard.ui" line="85"/>
       <source>Current shortcut:</source>
-      <translation>Nykyinen pikakuvake:</translation>
+      <translation>Nykyinen pikanäppäin:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="99"/>
       <source>Press &amp;new shortcut:</source>
-      <translation>Paina &amp;uusi pikakuvaketta:</translation>
+      <translation>Paina &amp;uutta pikanäppäintä:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="112"/>
@@ -1327,7 +1327,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <location filename="../DlgKeyboard.ui" line="166"/>
       <source>&amp;Assign</source>
-      <translation>&amp;Määrittää</translation>
+      <translation>&amp;Määritä</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="169"/>
@@ -1970,7 +1970,7 @@ To enable assignment, please make '%2' the active workbench</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="76"/>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>Numeron muoto:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="90"/>
@@ -1985,7 +1985,7 @@ To enable assignment, please make '%2' the active workbench</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="100"/>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="108"/>
@@ -2359,7 +2359,7 @@ väläysikkunan.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="357"/>
       <source>Enter a file name, please:</source>
-      <translation>Anna tiedoston nimi, kiitos:</translation>
+      <translation>Anna tiedostolle nimi:</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="377"/>
@@ -2520,7 +2520,7 @@ Ehkä tiedoston käyttöoikeusvirhe?</translation>
     <message>
       <location filename="../DlgMacroRecord.ui" line="126"/>
       <source>Record</source>
-      <translation>Tallennus</translation>
+      <translation>Tallenna</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecord.ui" line="149"/>
@@ -2685,7 +2685,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgParameter.ui" line="73"/>
       <source>Search Group</source>
-      <translation>Etsi Ryhmää</translation>
+      <translation>Etsi ryhmää</translation>
     </message>
     <message>
       <location filename="../DlgParameter.ui" line="86"/>
@@ -2801,7 +2801,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgParameterImp.cpp" line="121"/>
       <source>Search Group</source>
-      <translation>Etsi Ryhmää</translation>
+      <translation>Etsi ryhmää</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="439"/>
@@ -2950,7 +2950,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="214"/>
       <source>Last &amp;modification date:</source>
-      <translation>Viime &amp;muutosten päivämäärä:</translation>
+      <translation>Viimeisen &amp;muutoksen päivämäärä:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="240"/>
@@ -2965,7 +2965,7 @@ Määritä toinen hakemisto, ole hyvä.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="276"/>
       <source>License URL</source>
-      <translation>Lisenssi URL</translation>
+      <translation>Lisenssin URL-osoite</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="291"/>
@@ -3217,7 +3217,7 @@ näytöllä samalla kun lokiviesti näytetään</translation>
     <message>
       <location filename="../DlgReportView.ui" line="248"/>
       <source>Normal messages:</source>
-      <translation>Normaaleja sanomia:</translation>
+      <translation>Tavalliset viestit:</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="283"/>
@@ -3227,7 +3227,7 @@ näytöllä samalla kun lokiviesti näytetään</translation>
     <message>
       <location filename="../DlgReportView.ui" line="306"/>
       <source>Log messages:</source>
-      <translation>Lokin viestejä:</translation>
+      <translation>Lokiviestit:</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="341"/>
@@ -3257,7 +3257,7 @@ näytöllä samalla kun lokiviesti näytetään</translation>
     <message>
       <location filename="../DlgReportView.ui" line="501"/>
       <source>Python interpreter</source>
-      <translation>Python tulkki</translation>
+      <translation>Python-tulkki</translation>
     </message>
     <message>
       <location filename="../DlgReportView.ui" line="507"/>
@@ -3303,7 +3303,7 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../DlgRevertToBackupConfig.ui" line="52"/>
       <source>Available backup files:</source>
-      <translation type="unfinished">Available backup files:</translation>
+      <translation>Saatavilla olevat varmuuskopiotiedostot:</translation>
     </message>
   </context>
   <context>
@@ -3454,7 +3454,7 @@ Tämän vaihtoehdon muuttaminen vaatii sovelluksen uudelleenkäynnistyksen.</tra
     <message>
       <location filename="../DlgSettings3DView.ui" line="171"/>
       <source>Use software OpenGL</source>
-      <translation>Käytä OpenGL- ohjelmistoa</translation>
+      <translation>Käytä ohjelmistopohjaista OpenGL:ää</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="184"/>
@@ -3524,7 +3524,7 @@ mutta hitaamman vasteen kaikkiin näkymien muutoksiin.</translation>
     <message>
       <location filename="../DlgSettings3DView.ui" line="255"/>
       <source>Anti-Aliasing</source>
-      <translation>sahalaitaisuuden poisto</translation>
+      <translation>Reunanpehmennys</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="268"/>
@@ -3718,7 +3718,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Välimuistin hakemisto</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="28"/>
@@ -3763,7 +3763,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="116"/>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>Välimuistin kokorajoitus:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsCacheDirectory.ui" line="161"/>
@@ -3783,7 +3783,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../DlgSettingsCacheDirectory.cpp" line="117"/>
       <source>Current cache size: %1</source>
-      <translation type="unfinished">Current cache size: %1</translation>
+      <translation>Nykyinen välimuistin koko: %1</translation>
     </message>
   </context>
   <context>
@@ -4233,7 +4233,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="720"/>
       <source>Public Domain</source>
-      <translation>Julkinen Aineisto</translation>
+      <translation>Public Domain</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="725"/>
@@ -4248,7 +4248,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="738"/>
       <source>License URL</source>
-      <translation>Lisenssi URL</translation>
+      <translation>Lisenssin URL-osoite</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="745"/>
@@ -4339,12 +4339,12 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgEditorImp.cpp" line="122"/>
       <source>Python output</source>
-      <translation>Python ulostulo</translation>
+      <translation>Python-tuloste</translation>
     </message>
     <message>
       <location filename="../DlgEditorImp.cpp" line="126"/>
       <source>Python error</source>
-      <translation>Python virhe</translation>
+      <translation>Python-virhe</translation>
     </message>
     <message>
       <location filename="../DlgEditorImp.cpp" line="130"/>
@@ -4539,17 +4539,17 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="14"/>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Saatavilla olevat työpöydät</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resurssien säästämiseksi FreeCAD ei lataa työpöytiä ennen kuin niitä käytetään. Työpöytien lataaminen voi mahdollistaa pääsyn niiden toiminnallisuuksiin liittyviin lisäasetuksiin.&lt;/p&gt;&lt;p&gt;Seuraavat työpöydät ovat saatavilla asennuksessasi:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="57"/>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Työpöydän nimi</translation>
     </message>
     <message>
       <location filename="../DlgSettingsLazyLoaded.ui" line="62"/>
@@ -4610,7 +4610,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="20"/>
       <source>General macro settings</source>
-      <translation>Yleisten makrojen asetukset</translation>
+      <translation>Yleiset makrojen asetukset</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="26"/>
@@ -4620,7 +4620,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="29"/>
       <source>Run macros in local environment</source>
-      <translation>Aja makrot paikallisessa ympäristössä</translation>
+      <translation>Suorita makrot paikallisessa ympäristössä</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="48"/>
@@ -4665,7 +4665,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="171"/>
       <source>Logging Commands</source>
-      <translation>Lokin teon käskyt</translation>
+      <translation>Lokituskomennot</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="192"/>
@@ -4675,7 +4675,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="195"/>
       <source>Show script commands in python console</source>
-      <translation>Näytä skripti komennot python konsolissa</translation>
+      <translation>Näytä skriptikomennot Python-konsolissa</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="211"/>
@@ -4734,7 +4734,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="20"/>
       <source>Navigation cube</source>
-      <translation>Navigointi kuutio</translation>
+      <translation>Navigointikuutio</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="29"/>
@@ -4789,17 +4789,17 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="142"/>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kuution koko</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="149"/>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Navigointikuution koko</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="189"/>
       <source>3D Navigation</source>
-      <translation>3D navigointi</translation>
+      <translation>3D-navigointi</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="226"/>
@@ -4845,7 +4845,7 @@ Levylautanen: osaa käännetään z-akselin ympärille.</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="302"/>
       <source>Rotation mode</source>
-      <translation>Kierto tila</translation>
+      <translation>Kiertotila</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="321"/>
@@ -5023,7 +5023,7 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="30"/>
       <source>Enable word wrap</source>
-      <translation>Ota käyttöön sana wrap (kääri)</translation>
+      <translation>Ota käyttöön sanojen rivitys</translation>
     </message>
     <message>
       <location filename="../DlgSettingsPythonConsole.ui" line="46"/>
@@ -5459,12 +5459,12 @@ Oletussjärjestelmä on määritetty yleisissä asetuksissa.</translation>
     <message>
       <location filename="../DlgWorkbenches.ui" line="34"/>
       <source>Disabled workbenches</source>
-      <translation>Poistetut työpöydät</translation>
+      <translation>Käytöstä poistetut työpöydät</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="54"/>
       <source>Enabled workbenches</source>
-      <translation>Valitut työpöydät</translation>
+      <translation>Käytössä olevat työpöydät</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="75"/>
@@ -5701,7 +5701,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DownloadItem.cpp" line="568"/>
       <source>%1 of %2 - Stopped</source>
-      <translation>%1  %2:sta - keskeytynyt</translation>
+      <translation>%1 / %2 - Lopetettu</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="579"/>
@@ -5711,12 +5711,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DownloadItem.cpp" line="582"/>
       <source>kB</source>
-      <translation>kB</translation>
+      <translation>kt</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="585"/>
       <source>MB</source>
-      <translation>MB</translation>
+      <translation>Mt</translation>
     </message>
   </context>
   <context>
@@ -5757,12 +5757,12 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgActionsImp.cpp" line="437"/>
       <source>Icon folders</source>
-      <translation>Kuvake kansiot</translation>
+      <translation>Kuvakekansiot</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="573"/>
       <source>Add icon folder</source>
-      <translation>Lisää kuvake kansio</translation>
+      <translation>Lisää kuvakekansio</translation>
     </message>
   </context>
   <context>
@@ -5770,7 +5770,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgActionsImp.cpp" line="550"/>
       <source>Add or remove custom icon folders</source>
-      <translation>Mukautetun kuvakkeen kansioiden lisääminen tai poistaminen</translation>
+      <translation>Lisää tai poista mukautettuja kuvakekansioita</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="597"/>
@@ -6180,7 +6180,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../RemoteDebugger.ui" line="58"/>
       <source>VS Code</source>
-      <translation>VS Koodi</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="64"/>
@@ -6221,7 +6221,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../SceneInspector.cpp" line="69"/>
       <source>Inventor Tree</source>
-      <translation>Keksijä puu</translation>
+      <translation>Keksijäpuu</translation>
     </message>
     <message>
       <location filename="../SceneInspector.cpp" line="71"/>
@@ -6294,7 +6294,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Transform.cpp" line="290"/>
       <location filename="../Transform.cpp" line="418"/>
       <source>Transform</source>
-      <translation>muunna</translation>
+      <translation>Muunna</translation>
     </message>
   </context>
   <context>
@@ -6349,7 +6349,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="149"/>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Käytä alkuperäisiä valintoja</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="150"/>
@@ -6426,7 +6426,7 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ReportView.cpp" line="561"/>
       <location filename="../ReportView.cpp" line="581"/>
       <source>Log messages</source>
-      <translation>Loki viestit</translation>
+      <translation>Lokiviestit</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="565"/>
@@ -6448,12 +6448,12 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
       <source>Redirect Python output</source>
-      <translation>Uudelleen ohjaa Pythonin tuloste</translation>
+      <translation>Uudelleenohjaa Pythonin tuloste</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="599"/>
       <source>Redirect Python errors</source>
-      <translation>Uudelleen ohjaa Pythonin virhetulosteet</translation>
+      <translation>Uudelleenohjaa Pythonin virheet</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="604"/>
@@ -6581,7 +6581,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../SelectionView.cpp" line="604"/>
       <source>To python console</source>
-      <translation>Python konsoliin</translation>
+      <translation>Python-konsoliin</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="606"/>
@@ -6642,12 +6642,12 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../EditorView.cpp" line="346"/>
       <source>FreeCAD macro</source>
-      <translation>FreeCAD makro</translation>
+      <translation>FreeCAD-makro</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="468"/>
       <source>Export PDF</source>
-      <translation>Vienti PDF</translation>
+      <translation>Vie PDF</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="469"/>
@@ -6828,33 +6828,33 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../GraphvizView.cpp" line="447"/>
       <source>PNG format</source>
-      <translation>PNG muoto</translation>
+      <translation>PNG-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="448"/>
       <source>Bitmap format</source>
-      <translation>Bitmap muoto</translation>
+      <translation>Bitmap-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="449"/>
       <source>GIF format</source>
-      <translation>GIF muoto</translation>
+      <translation>GIF-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="450"/>
       <source>JPG format</source>
-      <translation>JPG muoto</translation>
+      <translation>JPG-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="451"/>
       <source>SVG format</source>
-      <translation>SVG muoto</translation>
+      <translation>SVG-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="452"/>
       <location filename="../GraphvizView.cpp" line="536"/>
       <source>PDF format</source>
-      <translation>PDF muoto</translation>
+      <translation>PDF-muoto</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="460"/>
@@ -7251,7 +7251,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../OpenCascadeNavigationStyle.cpp" line="57"/>
       <source>Press CTRL and right mouse button</source>
-      <translation>Paina CTRL ja hiiren oikeata painiketta</translation>
+      <translation>Paina CTRL ja hiiren oikeaa painiketta</translation>
     </message>
     <message>
       <location filename="../OpenCascadeNavigationStyle.cpp" line="59"/>
@@ -7354,7 +7354,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4265"/>
       <source>Object not found</source>
-      <translation type="unfinished">Object not found</translation>
+      <translation>Objektia ei löydy</translation>
     </message>
   </context>
   <context>
@@ -7483,7 +7483,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../PythonConsole.cpp" line="1261"/>
       <source>&amp;Copy command</source>
-      <translation>&amp;Kopiointi-komento</translation>
+      <translation>&amp;Kopioi komento</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1264"/>
@@ -7633,7 +7633,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../EditorView.cpp" line="747"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Edellinen</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="748"/>
@@ -7951,7 +7951,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="57"/>
       <source>Press right mouse button</source>
-      <translation type="unfinished">Press right mouse button</translation>
+      <translation>Paina hiiren oikeaa painiketta</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="59"/>
@@ -7969,7 +7969,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="54"/>
       <source>Press SHIFT button</source>
-      <translation>Paina SHIFT-painiketta</translation>
+      <translation>Paina SHIFT-näppäintä</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="56"/>
@@ -7979,7 +7979,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="58"/>
       <source>Press CTRL and SHIFT buttons</source>
-      <translation>Paina CTRL ja SHIFT painikkeet</translation>
+      <translation>Paina CTRL- ja SHIFT-näppäimiä</translation>
     </message>
   </context>
   <context>
@@ -8302,12 +8302,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Tree.cpp" line="2791"/>
       <source>Add dependent objects to selection</source>
-      <translation type="unfinished">Add dependent objects to selection</translation>
+      <translation>Lisää riippuvaisia objekteja valintaan</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2792"/>
       <source>Adds all dependent objects to the selection</source>
-      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+      <translation>Lisää kaikki riippuvaiset objektit valintaan</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2794"/>
@@ -8362,12 +8362,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Tree.cpp" line="2811"/>
       <source>Recompute object</source>
-      <translation>Uudelleenlaske kohde</translation>
+      <translation>Laske objekti uudelleen</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2812"/>
       <source>Recompute the selected object</source>
-      <translation>Uudelleenlaske valittu kohde</translation>
+      <translation>Laske uudelleen valittu objekti</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="4860"/>
@@ -8406,7 +8406,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../View3DInventor.cpp" line="485"/>
       <source>Export PDF</source>
-      <translation>Vienti PDF</translation>
+      <translation>Vie PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="486"/>
@@ -8430,7 +8430,7 @@ Haluatko valita toisen hakemiston?</translation>
       <location filename="../Action.cpp" line="560"/>
       <location filename="../Action.cpp" line="651"/>
       <source>Select the '%1' workbench</source>
-      <translation>Valitse '%1' Työpöytä</translation>
+      <translation>Valitse työpöytä '%1'</translation>
     </message>
   </context>
   <context>
@@ -8448,12 +8448,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Workbench.cpp" line="556"/>
       <source>Hide Others</source>
-      <translation>Piilota Muut</translation>
+      <translation>Piilota muut</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="557"/>
       <source>Show All</source>
-      <translation>Näytä Kaikki</translation>
+      <translation>Näytä kaikki</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="558"/>
@@ -8607,12 +8607,12 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="413"/>
       <source>Property view</source>
-      <translation>Ominaisuudet näkymä</translation>
+      <translation>Ominaisuusnäkymä</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="431"/>
       <source>Selection view</source>
-      <translation>Valinta Näytä</translation>
+      <translation>Valintanäkymä</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="453"/>
@@ -8632,7 +8632,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="487"/>
       <source>DAG View</source>
-      <translation>DAG Näkymä</translation>
+      <translation>DAG-näkymä</translation>
     </message>
     <message>
       <location filename="../DlgDisplayPropertiesImp.cpp" line="51"/>
@@ -8693,7 +8693,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../Application.cpp" line="1426"/>
       <source>Workbench failure</source>
-      <translation>Työpöytä häiriö</translation>
+      <translation>Työpöydän häiriö</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1427"/>
@@ -8744,7 +8744,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="909"/>
       <source>Exporting PDF...</source>
-      <translation>PDF vienti...</translation>
+      <translation>Viedään PDF...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1179"/>
@@ -8766,7 +8766,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1435"/>
       <source>Dependency error</source>
-      <translation>Riippuvuus virhe</translation>
+      <translation>Riippuvuusvirhe</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1713"/>
@@ -8791,7 +8791,7 @@ Haluatko valita toisen hakemiston?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1821"/>
       <source>Expression error</source>
-      <translation>Lauseke virhe</translation>
+      <translation>Lausekevirhe</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1822"/>
@@ -8809,7 +8809,7 @@ Ole hyvä ja tarkista raporttinäkymä saadaksesi lisätietoja.</translation>
       <location filename="../CommandStd.cpp" line="99"/>
       <location filename="../CommandStd.cpp" line="102"/>
       <source>Cannot load workbench</source>
-      <translation>Ei voi ladata Työpöytää</translation>
+      <translation>Ei voi ladata työpöytää</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="103"/>
@@ -9023,7 +9023,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../Document.cpp" line="1048"/>
       <source>Are you sure you want to continue?</source>
-      <translation>Oletko varma että haluat jatkaa?</translation>
+      <translation>Haluatko varmasti jatkaa?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1067"/>
@@ -9102,7 +9102,7 @@ Would you like to save the file with a different name?</translation>
       <location filename="../Document.cpp" line="1207"/>
       <location filename="../Document.cpp" line="1308"/>
       <source>Save %1 Document</source>
-      <translation>Tallenna asiakirja %1</translation>
+      <translation>Tallenna %1-asiakirja</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1209"/>
@@ -9128,7 +9128,7 @@ Would you like to save the file with a different name?</translation>
     <message>
       <location filename="../Document.cpp" line="1310"/>
       <source>%1 document (*.FCStd)</source>
-      <translation>asiakirja %1 (*.FCStd)</translation>
+      <translation>%1-asiakirja (*.FCStd)</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1960"/>
@@ -9229,7 +9229,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="424"/>
       <source>No Server</source>
-      <translation>Ei Serveriä</translation>
+      <translation>Ei palvelinta</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="425"/>
@@ -9239,7 +9239,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="459"/>
       <source>Unable to open your system browser.</source>
-      <translation>Järjestelmä-selaimen avaaminen ei onnistu.</translation>
+      <translation>Järjestelmän selaimen avaaminen ei onnistu.</translation>
     </message>
     <message>
       <location filename="../SoFCColorBar.cpp" line="329"/>
@@ -9270,7 +9270,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../NavigationStyle.cpp" line="1712"/>
       <source>Navigation styles</source>
-      <translation>Navigointi tyylit</translation>
+      <translation>Navigointityylit</translation>
     </message>
     <message>
       <location filename="../ViewProviderAnnotation.cpp" line="410"/>
@@ -9281,7 +9281,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <location filename="../ViewProviderDragger.cpp" line="88"/>
       <location filename="../ViewProviderLink.cpp" line="2594"/>
       <source>Transform</source>
-      <translation>muunna</translation>
+      <translation>Muunna</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="67"/>
@@ -9468,7 +9468,7 @@ alaviivoja, eikä se saa alkaa numerolla.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2439"/>
       <source>Apply to all</source>
-      <translation type="unfinished">Apply to all</translation>
+      <translation>Käytä kaikkiin</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2440"/>
@@ -9592,7 +9592,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="216"/>
       <source>&amp;About %1</source>
-      <translation>&amp;Tietoja %1</translation>
+      <translation>&amp;Tietoja %1ista</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="217"/>
@@ -9606,13 +9606,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="282"/>
       <source>About &amp;Qt</source>
-      <translation>Tietoja &amp;Qt</translation>
+      <translation>Tietoja &amp;Qt:stä</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="283"/>
       <location filename="../CommandStd.cpp" line="285"/>
       <source>About Qt</source>
-      <translation>Tietoja Qt</translation>
+      <translation>Tietoja Qt:stä</translation>
     </message>
   </context>
   <context>
@@ -9678,7 +9678,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="2044"/>
       <location filename="../CommandView.cpp" line="2045"/>
       <source>Toggle axis cross</source>
-      <translation>Valitse akselien riestysmerkintä</translation>
+      <translation>Akselien risteysmerkintä päälle/pois</translation>
     </message>
   </context>
   <context>
@@ -9748,7 +9748,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1071"/>
       <location filename="../CommandDoc.cpp" line="1073"/>
       <source>Copy operation</source>
-      <translation>Kopiointi toiminto</translation>
+      <translation>Kopiointitoiminto</translation>
     </message>
   </context>
   <context>
@@ -9762,7 +9762,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1043"/>
       <location filename="../CommandDoc.cpp" line="1045"/>
       <source>Cut out</source>
-      <translation>Leikata pois</translation>
+      <translation>Leikkaa pois</translation>
     </message>
   </context>
   <context>
@@ -9798,7 +9798,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="562"/>
       <source>Dependency graph...</source>
-      <translation>Riippuvuus kaavio...</translation>
+      <translation>Riippuvuuskaavio...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="563"/>
@@ -9812,7 +9812,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="385"/>
       <source>Cu&amp;stomize...</source>
-      <translation>Mukauta...</translation>
+      <translation>&amp;Mukauta...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="386"/>
@@ -9972,7 +9972,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="404"/>
       <source>Select the objects to export before choosing Export.</source>
-      <translation>Valitse haluamasi vietävät objektit ennen kuin valitset viennin.</translation>
+      <translation>Valitse vietävät objektit ennen kuin valitset viennin.</translation>
     </message>
   </context>
   <context>
@@ -10017,7 +10017,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="651"/>
       <source>FreeCAD FAQ</source>
-      <translation>FreeCAD tietoja</translation>
+      <translation>FreeCADin UKK</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="652"/>
@@ -10053,17 +10053,17 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="595"/>
       <source>Python scripting documentation</source>
-      <translation>Python komentosarjojen ohjeisto</translation>
+      <translation>Python-komentosarjojen dokumentaatio</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="596"/>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation>Python komentosarjojen ohjeisto FreeCAD-sivustolla</translation>
+      <translation>Python-komentosarjojen dokumentaatio FreeCAD-sivustolla</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="598"/>
       <source>PowerUsers documentation</source>
-      <translation>Tehokäyttäjän ohjeisto</translation>
+      <translation>Tehokäyttäjän dokumentaatio</translation>
     </message>
   </context>
   <context>
@@ -10072,7 +10072,7 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="567"/>
       <location filename="../CommandStd.cpp" line="570"/>
       <source>Users documentation</source>
-      <translation>Käyttäjän ohjeisto</translation>
+      <translation>Käyttäjän dokumentaatio</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="568"/>
@@ -10086,7 +10086,7 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="539"/>
       <location filename="../CommandStd.cpp" line="542"/>
       <source>FreeCAD Website</source>
-      <translation>FreeCAD Web-sivusto</translation>
+      <translation>FreeCADin verkkosivusto</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="540"/>
@@ -10118,7 +10118,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStructure.cpp" line="93"/>
       <source>Create a new group for ordering objects</source>
-      <translation>Luo uusi ryhmä kohteiden tilaamista varten</translation>
+      <translation>Luo uusi ryhmä objektien järjestämistä varten</translation>
     </message>
   </context>
   <context>
@@ -10126,7 +10126,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1112"/>
       <source>Hide all objects</source>
-      <translation>Piilota kaikki kohteet</translation>
+      <translation>Piilota kaikki objektit</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1113"/>
@@ -10227,7 +10227,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="77"/>
       <source>Make link group</source>
-      <translation>Tee linkki ryhmä</translation>
+      <translation>Tee linkkiryhmä</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="78"/>
@@ -10245,7 +10245,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="272"/>
       <source>Create a sub-object or sub-element link</source>
-      <translation>Luo aliobjekti tai alielementti linkki</translation>
+      <translation>Luo aliobjekti- tai alielementtilinkki</translation>
     </message>
   </context>
   <context>
@@ -10400,7 +10400,7 @@ the current copy will be lost.
       <location filename="../CommandMacro.cpp" line="76"/>
       <location filename="../CommandMacro.cpp" line="78"/>
       <source>Stop the macro recording session</source>
-      <translation>Lopeta makro istunnon tallentaminen</translation>
+      <translation>Lopeta makron tallentaminen</translation>
     </message>
   </context>
   <context>
@@ -10445,7 +10445,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="523"/>
       <source>%1 document (*.FCStd)</source>
-      <translation>asiakirja %1 (*.FCStd)</translation>
+      <translation>%1-asiakirja (*.FCStd)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="532"/>
@@ -10464,7 +10464,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="595"/>
       <location filename="../CommandDoc.cpp" line="597"/>
       <source>Create a new empty document</source>
-      <translation>Luo uusi tyhjä dokumentti</translation>
+      <translation>Luo uusi tyhjä asiakirja</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="607"/>
@@ -10485,7 +10485,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="461"/>
       <source>Show help to the application</source>
-      <translation>Näytä ohje sovellukselle</translation>
+      <translation>Näytä sovelluksen ohje</translation>
     </message>
   </context>
   <context>
@@ -10494,12 +10494,12 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="485"/>
       <location filename="../CommandStd.cpp" line="488"/>
       <source>Help Website</source>
-      <translation>Ohje Web-sivusto</translation>
+      <translation>Ohjeen verkkosivusto</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="486"/>
       <source>The website where the help is maintained</source>
-      <translation>Verkkosivusto, josta saat pääasiallisen avun</translation>
+      <translation>Verkkosivusto, jossa ohjetta ylläpidetään</translation>
     </message>
   </context>
   <context>
@@ -10582,7 +10582,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="835"/>
       <source>&amp;Print...</source>
-      <translation>&amp;Tulostaa...</translation>
+      <translation>&amp;Tulosta...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="836"/>
@@ -10657,7 +10657,7 @@ the current copy will be lost.
       <location filename="../CommandStd.cpp" line="679"/>
       <location filename="../CommandStd.cpp" line="682"/>
       <source>Python Website</source>
-      <translation>Python Web-sivusto</translation>
+      <translation>Pythonin verkkosivusto</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="680"/>
@@ -10742,7 +10742,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="1408"/>
       <location filename="../CommandDoc.cpp" line="1410"/>
       <source>Recomputes the current active document</source>
-      <translation>Uudelleen laskee aktiivisen dokumentin tiedot</translation>
+      <translation>Laskee uudelleen aktiivisen dokumentin tiedot</translation>
     </message>
   </context>
   <context>
@@ -10820,7 +10820,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="683"/>
       <source>Save a &amp;Copy...</source>
-      <translation>Tallenna kopio &amp;C...</translation>
+      <translation>Tallenna &amp;kopio...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="684"/>
@@ -11138,7 +11138,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1521"/>
       <source>Transform</source>
-      <translation>muunna</translation>
+      <translation>Muunna</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1522"/>
@@ -11236,7 +11236,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="858"/>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Muokkaustila</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="859"/>
@@ -11270,7 +11270,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1208"/>
       <location filename="../CommandView.cpp" line="1210"/>
       <source>Set to bottom view</source>
-      <translation>Aseta pohjan tarkastelu näkymä</translation>
+      <translation>Aseta näkymä alhaalta</translation>
     </message>
   </context>
   <context>
@@ -11382,7 +11382,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1232"/>
       <location filename="../CommandView.cpp" line="1234"/>
       <source>Set to front view</source>
-      <translation>Aseta näkymä edestäpäin</translation>
+      <translation>Aseta näkymä edestä</translation>
     </message>
   </context>
   <context>
@@ -11508,7 +11508,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1256"/>
       <location filename="../CommandView.cpp" line="1258"/>
       <source>Set to left view</source>
-      <translation>Aseta vasemmanpuoleinen näkymä</translation>
+      <translation>Aseta näkymä vasemmalta</translation>
     </message>
   </context>
   <context>
@@ -11522,7 +11522,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1280"/>
       <location filename="../CommandView.cpp" line="1282"/>
       <source>Set to rear view</source>
-      <translation>Aseta Taustakamera</translation>
+      <translation>Aseta näkymä takaa</translation>
     </message>
   </context>
   <context>
@@ -11550,7 +11550,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1304"/>
       <location filename="../CommandView.cpp" line="1306"/>
       <source>Set to right view</source>
-      <translation>Aseta oikea näkymä</translation>
+      <translation>Aseta näkymä oikealta</translation>
     </message>
   </context>
   <context>
@@ -11606,7 +11606,7 @@ the current copy will be lost.
       <location filename="../CommandView.cpp" line="1328"/>
       <location filename="../CommandView.cpp" line="1330"/>
       <source>Set to top view</source>
-      <translation>Aseta yläpuolen näkymä</translation>
+      <translation>Aseta näkymä ylhäältä</translation>
     </message>
   </context>
   <context>
@@ -12009,7 +12009,7 @@ Oletko varma, että haluat jatkaa?
     <message>
       <location filename="../CommandDoc.cpp" line="1346"/>
       <source>Object dependencies</source>
-      <translation>Kohteiden riippuvuudet</translation>
+      <translation>Objektin riippuvuudet</translation>
     </message>
   </context>
   <context>
@@ -12085,7 +12085,7 @@ Oletko varma, että haluat jatkaa?
     <message>
       <location filename="../CommandView.cpp" line="742"/>
       <source>Flat lines</source>
-      <translation>Tasainen rivit</translation>
+      <translation>Tasaiset viivat</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="744"/>
@@ -12098,7 +12098,7 @@ Oletko varma, että haluat jatkaa?
     <message>
       <location filename="../CommandDoc.cpp" line="1197"/>
       <source>Object dependencies</source>
-      <translation>Kohteiden riippuvuudet</translation>
+      <translation>Objektin riippuvuudet</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1198"/>
@@ -12158,7 +12158,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1699"/>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Aseta navigointi-kuutio isometriseen tilaan</translation>
+      <translation>Aseta navigointikuutio isometriseen tilaan</translation>
     </message>
   </context>
   <context>
@@ -12215,7 +12215,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../Workbench.cpp" line="534"/>
       <source>Standard views</source>
-      <translation>Standardi näkymät</translation>
+      <translation>Standardinäkymät</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="535"/>
@@ -12245,7 +12245,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../Workbench.cpp" line="540"/>
       <source>&amp;Tools</source>
-      <translation>Työkalut</translation>
+      <translation>T&amp;yökalut</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="541"/>
@@ -12260,7 +12260,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../Workbench.cpp" line="543"/>
       <source>&amp;On-line help</source>
-      <translation>&amp;Internetistä saatava apu</translation>
+      <translation>&amp;Verkko-ohje</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="544"/>

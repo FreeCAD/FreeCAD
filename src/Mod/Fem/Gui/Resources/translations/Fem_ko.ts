@@ -1005,7 +1005,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>파일이 존재하지 않습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1085,7 +1085,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>파일이 존재하지 않습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1308,7 +1308,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>파일이 존재하지 않습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1500,7 +1500,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>파일이 존재하지 않습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1612,7 +1612,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>파일이 존재하지 않습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1629,7 +1629,7 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>잘못된 파일</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
@@ -3023,7 +3023,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
       <source>Body heat in W/kg:</source>
-      <translation type="unfinished">Body heat in W/kg:</translation>
+      <translation>체온(W/kg당):</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
@@ -3863,7 +3863,7 @@ following referencing objects might be lost:</translation>
       <location filename="../../ViewProviderFemPostObject.cpp" line="794"/>
       <location filename="../../ViewProviderSolver.cpp" line="74"/>
       <source>Object dependencies</source>
-      <translation>개체의 의존도</translation>
+      <translation>객체 종속성</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="139"/>
@@ -3950,7 +3950,7 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-search</source>
-      <translation type="unfinished">Angle-search</translation>
+      <translation>각도 검색</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
@@ -4746,12 +4746,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>포인트 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="108"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>포인트 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="151"/>
@@ -5098,7 +5098,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>&amp;FEM</source>
-      <translation>&amp; FEM</translation>
+      <translation>&amp;FEM</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5108,7 +5108,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>M&amp;odel</source>
-      <translation type="unfinished">M&amp;odel</translation>
+      <translation>모델(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -5118,7 +5118,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>재료(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -5128,7 +5128,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>&amp;Element Geometry</source>
-      <translation type="unfinished">&amp;Element Geometry</translation>
+      <translation>요소 형상(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -5138,7 +5138,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>&amp;Electrostatic Constraints</source>
-      <translation type="unfinished">&amp;Electrostatic Constraints</translation>
+      <translation>정전기 제약조건(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -5148,7 +5148,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Fluid Constraints</source>
-      <translation type="unfinished">&amp;Fluid Constraints</translation>
+      <translation>유체 제약조건(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -5158,7 +5158,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Geometrical Constraints</source>
-      <translation type="unfinished">&amp;Geometrical Constraints</translation>
+      <translation>형상 제약조건(&amp;G)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
@@ -5168,7 +5168,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Mechanical Constraints</source>
-      <translation type="unfinished">&amp;Mechanical Constraints</translation>
+      <translation>기계적 제약조건(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -5178,7 +5178,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Thermal Constraints</source>
-      <translation type="unfinished">&amp;Thermal Constraints</translation>
+      <translation>열 제약조건(&amp;T)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
@@ -5198,7 +5198,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Overwrite Constants</source>
-      <translation type="unfinished">&amp;Overwrite Constants</translation>
+      <translation>상수 덮어쓰기(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -5208,7 +5208,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>M&amp;esh</source>
-      <translation type="unfinished">M&amp;esh</translation>
+      <translation>메시(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
@@ -5228,7 +5228,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>&amp;Results</source>
-      <translation type="unfinished">&amp;Results</translation>
+      <translation>결과(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
@@ -5238,7 +5238,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>&amp;Filter functions</source>
-      <translation type="unfinished">&amp;Filter functions</translation>
+      <translation>필터 기능(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>

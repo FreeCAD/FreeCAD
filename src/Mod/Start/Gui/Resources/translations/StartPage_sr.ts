@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Ако је ово означено и листа стилова је наведена у Општим подешавањима, она ће се користити и заменити боје испод</translation>
+      <translation>Ако је ово означено и листа стилова је наведена у општим подешавањима, она ће се користити и заменити боје испод</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>

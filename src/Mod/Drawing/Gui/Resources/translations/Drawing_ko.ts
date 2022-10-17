@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>&amp;Clip</source>
-      <translation>&amp;클립</translation>
+      <translation>클립(&amp;C)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="528"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="718"/>
       <source>&amp;Draft View</source>
-      <translation>&amp; 초안 뷰</translation>
+      <translation>초안 보기(&amp;D)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../Command.cpp" line="629"/>
       <source>&amp;Export page...</source>
-      <translation>&amp; 페이지 내보내기...</translation>
+      <translation>페이지 내보내기(&amp;E)...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="630"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Open &amp;browser view</source>
-      <translation>열기 &amp;브라우저 보기</translation>
+      <translation>브라우저 보기 열기(&amp;B)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../Command.cpp" line="749"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>스프레드시트 보기(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="750"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>&amp;Symbol</source>
-      <translation type="unfinished">&amp;Symbol</translation>
+      <translation>기호(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="573"/>
@@ -240,32 +240,32 @@
     <message>
       <location filename="../../DrawingView.cpp" line="217"/>
       <source>&amp;Background</source>
-      <translation type="unfinished">&amp;Background</translation>
+      <translation>배경(&amp;B)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="223"/>
       <source>&amp;Outline</source>
-      <translation type="unfinished">&amp;Outline</translation>
+      <translation>윤곽선(&amp;O)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="229"/>
       <source>&amp;Native</source>
-      <translation type="unfinished">&amp;Native</translation>
+      <translation>네이티브(&amp;N)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="233"/>
       <source>&amp;OpenGL</source>
-      <translation>&amp; OpenGL</translation>
+      <translation>&amp;OpenGL</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="236"/>
       <source>&amp;Image</source>
-      <translation type="unfinished">&amp;Image</translation>
+      <translation>이미지(&amp;I)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="240"/>
       <source>&amp;High Quality Antialiasing</source>
-      <translation type="unfinished">&amp;High Quality Antialiasing</translation>
+      <translation>고품질 앤티앨리어싱(&amp;H)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="277"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="365"/>
       <source>&amp;Renderer</source>
-      <translation type="unfinished">&amp;Renderer</translation>
+      <translation>렌더러(&amp;R)</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="470"/>

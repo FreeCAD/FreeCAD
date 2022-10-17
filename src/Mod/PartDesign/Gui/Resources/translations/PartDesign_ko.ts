@@ -4659,12 +4659,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>&amp;Sketch</source>
-      <translation type="unfinished">&amp;Sketch</translation>
+      <translation>스케치하기(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Part Design</source>
-      <translation>&amp;부품설계</translation>
+      <translation>부품 설계(&amp;P)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

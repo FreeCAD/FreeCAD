@@ -1391,7 +1391,7 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="332"/>
       <source>Command not in use yet</source>
-      <translation type="unfinished">Command not in use yet</translation>
+      <translation>Oraindik erabilia ez den komandoa</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="333"/>
@@ -2226,12 +2226,12 @@ abioko pantaila erakutsiko du.</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="471"/>
       <source>File exists</source>
-      <translation type="unfinished">File exists</translation>
+      <translation>Fitxategi hori badago</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="472"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite?</translation>
+      <translation>Badago izen hori duen hobespen-pakete bat. Gainidatzi?</translation>
     </message>
   </context>
   <context>
@@ -5211,7 +5211,7 @@ espazioa baino gehiago behar dutenean</translation>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="52"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
   </context>
   <context>

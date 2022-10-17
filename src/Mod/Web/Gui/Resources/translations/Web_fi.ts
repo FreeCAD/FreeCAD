@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Go back to the previous page</source>
-      <translation>Edellinen sivu</translation>
+      <translation>Siirry edelliselle sivulle</translation>
     </message>
   </context>
   <context>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Avaa Web-sivun FreeCADissa</translation>
+      <translation>Avaa verkkosivuston FreeCADissa</translation>
     </message>
   </context>
   <context>

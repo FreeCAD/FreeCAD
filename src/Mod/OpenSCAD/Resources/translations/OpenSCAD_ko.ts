@@ -62,42 +62,42 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation type="unfinished">Maximum number of faces for polygons (fn)</translation>
+      <translation>폴리곤의 최대 면 수 (fn)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via:</source>
-      <translation type="unfinished">Send to OpenSCAD via:</translation>
+      <translation>다음을 통해 OpenSCAD로 보내기:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation type="unfinished">The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>OpenSCAD와 데이터를 주고받기 위한 전송 메커니즘</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation type="unfinished">Standard temp directory</translation>
+      <translation>표준 임시 디렉터리</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>사용자 지정된 디렉터리</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>stdout pipe (requires OpenSCAD &gt;= 2021.1)</source>
-      <translation type="unfinished">stdout pipe (requires OpenSCAD &gt;= 2021.1)</translation>
+      <translation>stdout 파이프 (OpenSCAD &gt;= 2021.1 필요)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
       <source>Transfer directory</source>
-      <translation type="unfinished">Transfer directory</translation>
+      <translation>디렉터리 전송하기</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="240"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
-      <translation type="unfinished">The path to the directory for transferring files to and from OpenSCAD</translation>
+      <translation>OpenSCAD로 파일을 전송하거나 OpenSCAD에서 파일을 전송하기 위한 디렉터리 경로</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="258"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="422"/>
       <source>Mesh fallback</source>
-      <translation>대체 메시</translation>
+      <translation>메시 대체</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="442"/>
@@ -160,12 +160,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="445"/>
       <source>deflection</source>
-      <translation>deflection</translation>
+      <translation>편향</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="452"/>
       <source>Triangulation settings</source>
-      <translation>삼각 측정 설정</translation>
+      <translation>삼각 측량 설정</translation>
     </message>
   </context>
 </TS>

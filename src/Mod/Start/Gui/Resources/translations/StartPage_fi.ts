@@ -41,12 +41,12 @@
     <message>
       <location filename="TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation>Esimerkki</translation>
+      <translation>Esimerkit</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation>Yleinen ohjeisto</translation>
+      <translation>Yleinen dokumentaatio</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="51"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>Työpenkkien dokumentaatio</translation>
+      <translation>Työpöytien dokumentaatio</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="60"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation>Haetaan apua yhteisöltä</translation>
+      <translation>Tuki yhteisöltä</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Alla on luettelo käytettävissä olevista ylimääräisistä työpenkeistä, jotka voidaan lisätä FreeCAD asennukseen. Selaa ja asenna ne valikon Työkalut -&gt; Lisäosat -hallinnasta (Addons manager). Voit oppia lisää niistä klikkaamalla alla olevia linkkejä.</translation>
+      <translation>Alla on luettelo käytettävissä olevista ylimääräisistä työpöydistä, jotka voidaan lisätä FreeCAD-asennukseen. Selaa ja asenna niitä valikosta Työkalut -&gt; Lisäosien hallinta. Voit lukea lisää niistä napsauttamalla alla olevia linkkejä.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>
@@ -141,17 +141,17 @@
     <message>
       <location filename="TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation>Viimeisimmät merkinnät</translation>
+      <translation>Viimeisimmät kommitit</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Alla ovat viimeisimmät muutokset, jotka on lisätty &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD lähdekoodiin&lt;/a&gt;. Nämä muutokset eivät ehkä vielä heijasta FreeCAD-versiossa, jota parhaillaan käytät. Valitse &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;käytettävissä olevat vaihtoehdot&lt;/a&gt; jos haluat saada kehitysversion.</translation>
+      <translation>Alla on viimeisimmät muutokset, jotka on lisätty &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD:in lähdekoodiin&lt;/a&gt;. Nämä muutokset eivät ehkä vielä näy FreeCAD-versiossa, jota parhaillaan käytät. Katso &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;saatavilla olevat vaihtoehdot&lt;/a&gt;, jos haluat saada ohjelman kehitysversion.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Näytä kaikki githubissa olevat merkinnät</translation>
+      <translation>Näytä kaikki GitHubissa olevat kommitit</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="72"/>
@@ -166,12 +166,12 @@
     <message>
       <location filename="TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation>rakentaa</translation>
+      <translation>koonti</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation>Luo uusi "...</translation>
+      <translation>Luo uusi...</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="76"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation>Viimeisimmät viestit &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD foorumilla&lt;/a&gt;:</translation>
+      <translation>Viimeisimmät viestit &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD-keskustelupalstalla&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="79"/>
@@ -219,7 +219,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Start page</source>
-      <translation>Aloitus sivu</translation>
+      <translation>Aloitussivu</translation>
     </message>
   </context>
   <context>
@@ -317,7 +317,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
       <source>Fonts and colors</source>
-      <translation>Kirjasimet ja värit</translation>
+      <translation>Fontit ja värit</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="197"/>
@@ -332,7 +332,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="229"/>
       <source>in FreeCAD</source>
-      <translation>FreeCAD: ssä</translation>
+      <translation>FreeCAD:issa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="248"/>
@@ -422,7 +422,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="516"/>
       <source>Use FreeCAD style sheet</source>
-      <translation>Käytä FreeCAD tyylilomaketta</translation>
+      <translation>Käytä FreeCAD-tyylisivua</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="523"/>
@@ -432,7 +432,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="532"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation>Aloitussivulla käytettävät kirjasimet (fontit). Se voi olla kirjasimen nimi tai pilkulla erotettu kirjasinten sarja</translation>
+      <translation>Aloitussivulla käytettävä fonttiperhe. Se voi olla fontin nimi tai pilkulla erotettu sarja varafontteja</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="538"/>
@@ -442,7 +442,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation>Peruskirjasimen koko, jota käytetään kaikkiin aloitussivun teksteihin</translation>
+      <translation>Perusfontin koko, jota käytetään kaikkiin aloitussivun teksteihin</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="554"/>

@@ -887,7 +887,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="739"/>
       <source>Move an object</source>
-      <translation type="unfinished">Move an object</translation>
+      <translation>Siirrä objektia</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="890"/>
@@ -963,7 +963,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Sketch tools</source>
-      <translation>Sketsi työkalut</translation>
+      <translation>Luonnostyökalut</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -1422,7 +1422,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="52"/>
       <source>Boolean parameters</source>
-      <translation>Boolen operaation parametrit</translation>
+      <translation>Boolen-operaation parametrit</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -2352,7 +2352,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
       <source>Add polar pattern</source>
-      <translation>Lisää suunnattukuvio</translation>
+      <translation>Lisää suunnattu kuvio</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
@@ -3992,7 +3992,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="308"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Synkronoi</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="310"/>
@@ -4119,17 +4119,17 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="93"/>
       <source>ANSI 140</source>
-      <translation type="unfinished">ANSI 140</translation>
+      <translation>ANSI 140</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="98"/>
       <source>ANSI 160</source>
-      <translation type="unfinished">ANSI 160</translation>
+      <translation>ANSI 160</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="103"/>
       <source>ANSI 180</source>
-      <translation type="unfinished">ANSI 180</translation>
+      <translation>ANSI 180</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="108"/>
@@ -4154,12 +4154,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
       <source>ISO 606 06B</source>
-      <translation type="unfinished">ISO 606 06B</translation>
+      <translation>ISO 606 06B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="133"/>
       <source>ISO 606 08B</source>
-      <translation type="unfinished">ISO 606 08B</translation>
+      <translation>ISO 606 08B</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="138"/>

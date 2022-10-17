@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="525"/>
       <source>Export a Raytracing project to a file</source>
-      <translation>Raytracing projektin vieminen tiedostoon</translation>
+      <translation>Säteenseurantaprojektin vieminen tiedostoon</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="769"/>
       <source>New Luxrender project</source>
-      <translation>Uusi Luxrender projekti</translation>
+      <translation>Uusi Luxrender-projekti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="770"/>
       <source>Insert new Luxrender project into the document</source>
-      <translation>Lisää uusi Luxrender projekti asiakirjaan</translation>
+      <translation>Lisää uusi Luxrender-projekti asiakirjaan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="822"/>
@@ -75,12 +75,12 @@
     <message>
       <location filename="../../Command.cpp" line="323"/>
       <source>New POV-Ray project</source>
-      <translation>Uusi POV-Ray projekti</translation>
+      <translation>Uusi POV-Ray-projekti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Insert new POV-Ray project into the document</source>
-      <translation>Lisää uusi POV-Ray projekti asiakirjaan</translation>
+      <translation>Lisää uusi POV-Ray-projekti asiakirjaan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
@@ -263,24 +263,24 @@ Haluatko jatkaa?</translation>
       <location filename="../../Command.cpp" line="462"/>
       <location filename="../../Command.cpp" line="474"/>
       <source>No Raytracing project to insert</source>
-      <translation>Ei ole sädeseuranta -projektia, johon lisätä</translation>
+      <translation>Ei säteenseurantaprojektia johon lisätä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="463"/>
       <source>Create a Raytracing project to insert a view.</source>
-      <translation>Luo sädeseuranta -projekti näkymän lisäämiseksi.</translation>
+      <translation>Luo säteenseurantaprojekti näkymän lisäämiseksi.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Select a Raytracing project to insert the view.</source>
-      <translation>Valitse sädeseuranta -projekti, johon lisäät näkymän.</translation>
+      <translation>Valitse säteenseurantaprojekti, johon lisäät näkymän.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="539"/>
       <location filename="../../Command.cpp" line="603"/>
       <location filename="../../Command.cpp" line="896"/>
       <source>Select one Raytracing project object.</source>
-      <translation>EValitse ykis sädeseuranta -projektin kohde.</translation>
+      <translation>Valitse yksi säteenseurantaprojektin objekti.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="543"/>
@@ -322,12 +322,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="651"/>
       <source>POV-Ray file missing</source>
-      <translation>POV-Ray tiedosto puuttuu</translation>
+      <translation>POV-Ray-tiedosto puuttuu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="652"/>
       <source>The POV-Ray project file doesn't exist.</source>
-      <translation>POV-Ray projektitiedostoa ei ole olemassa.</translation>
+      <translation>POV-Ray-projektitiedostoa ei ole olemassa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="658"/>
@@ -339,7 +339,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="735"/>
       <source>Lux project file missing</source>
-      <translation>Lux projektin tiedosto puuttuu</translation>
+      <translation>Lux-projektin tiedosto puuttuu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="736"/>
@@ -362,7 +362,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="34"/>
       <source>POV-Ray executable:</source>
-      <translation>POV-Ray suoritettava ohjelma:</translation>
+      <translation>POV-Ray-suoritustiedosto:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="51"/>
@@ -480,17 +480,17 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="68"/>
       <source>Edit LuxRender project</source>
-      <translation>Muokkaa LuxRender -projektia</translation>
+      <translation>Muokkaa LuxRender-projektia</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <source>LuxRender template</source>
-      <translation>LuxRender malli</translation>
+      <translation>LuxRender-malli</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <source>Select a LuxRender template</source>
-      <translation>Valitse LuxRender malli</translation>
+      <translation>Valitse LuxRender-malli</translation>
     </message>
   </context>
   <context>
@@ -498,17 +498,17 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
-      <translation>Muokkaa Povray projektia</translation>
+      <translation>Muokkaa Povray-projektia</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
-      <translation>Povray malli</translation>
+      <translation>Povray-malli</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
-      <translation>Valitse Povray malli</translation>
+      <translation>Valitse Povray-malli</translation>
     </message>
   </context>
   <context>

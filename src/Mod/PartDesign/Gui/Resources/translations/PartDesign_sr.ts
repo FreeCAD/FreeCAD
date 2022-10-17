@@ -930,7 +930,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="44"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Нема жице у скици</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="45"/>
@@ -1810,7 +1810,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="63"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Нема жице у скици</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="64"/>

@@ -5660,7 +5660,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
       <source>Modifiers</source>
-      <translation type="unfinished">Modifiers</translation>
+      <translation>Модификатори</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="190"/>

@@ -117,7 +117,7 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Ohjaus taso</translation>
+      <translation>Ohjaustaso</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>

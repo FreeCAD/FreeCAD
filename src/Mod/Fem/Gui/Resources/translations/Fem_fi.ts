@@ -452,7 +452,7 @@
       <location filename="../../Command.cpp" line="1224"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
-      <translation type="unfinished">Thickness [mm]</translation>
+      <translation>Paksuus [mm]</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
@@ -671,12 +671,12 @@
     <message>
       <location filename="../../Command.cpp" line="1195"/>
       <source>Create filter</source>
-      <translation type="unfinished">Create filter</translation>
+      <translation>Luo suodatin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1643"/>
       <source>Create function</source>
-      <translation type="unfinished">Create function</translation>
+      <translation>Luo funktio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1846"/>
@@ -793,7 +793,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
       <source>CalculiX binary</source>
-      <translation type="unfinished">CalculiX binary</translation>
+      <translation>CalculiX-binääri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
@@ -1070,7 +1070,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
       <source>Multithreading:</source>
-      <translation type="unfinished">Multithreading:</translation>
+      <translation>Monisäikeistys:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
@@ -2706,7 +2706,7 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="45"/>
       <location filename="../ui/MaterialReinforcement.ui" line="118"/>
       <source>Choose</source>
-      <translation type="unfinished">Choose</translation>
+      <translation>Valitse</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="53"/>
@@ -3128,7 +3128,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
       <source>Thickness:     </source>
-      <translation type="unfinished">Thickness:     </translation>
+      <translation>Paksuus:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
@@ -3505,7 +3505,7 @@ Specify another file please.</translation>
       <location filename="../../ViewProviderFemPostObject.cpp" line="791"/>
       <location filename="../../ViewProviderSolver.cpp" line="71"/>
       <source>Are you sure you want to continue?</source>
-      <translation>Oletko varma että haluat jatkaa?</translation>
+      <translation>Haluatko varmasti jatkaa?</translation>
     </message>
   </context>
   <context>
@@ -3807,7 +3807,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="130"/>
       <source>Run CalculiX</source>
-      <translation type="unfinished">Run CalculiX</translation>
+      <translation>Suorita CalculiX</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="151"/>
@@ -3863,7 +3863,7 @@ following referencing objects might be lost:</translation>
       <location filename="../../ViewProviderFemPostObject.cpp" line="794"/>
       <location filename="../../ViewProviderSolver.cpp" line="74"/>
       <source>Object dependencies</source>
-      <translation>Kohteiden riippuvuudet</translation>
+      <translation>Objektin riippuvuudet</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="139"/>

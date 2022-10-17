@@ -3203,12 +3203,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation>Пуна тела и љуске ће се извозити као обрезана површина</translation>
+      <translation>Пуна тела и љуске ће се извозити као опсечена површина</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+      <translation>Групе опсечених равни (тип 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
@@ -3921,7 +3921,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add wire</source>
-      <translation type="unfinished">Add wire</translation>
+      <translation>Додајте жицу</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
@@ -4289,7 +4289,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Shape color</source>
-      <translation type="unfinished">Shape color</translation>
+      <translation>Боја облика</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
@@ -4529,7 +4529,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>Теме/Ивица/Жица/Страница</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="245"/>
@@ -5485,7 +5485,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Жица од ивица</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -6170,7 +6170,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Разделите</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>

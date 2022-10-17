@@ -1763,27 +1763,27 @@
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
       <source>Adjust stacking order of views</source>
-      <translation type="unfinished">Adjust stacking order of views</translation>
+      <translation>Ajuster l’ordre d’empilage des vues</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="143"/>
       <source>Stack Top</source>
-      <translation type="unfinished">Stack Top</translation>
+      <translation>Haut de la pile</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="147"/>
       <source>Stack Bottom</source>
-      <translation type="unfinished">Stack Bottom</translation>
+      <translation>Bas de la pile</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="151"/>
       <source>Stack Up</source>
-      <translation type="unfinished">Stack Up</translation>
+      <translation>Remonter dans la pile</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="155"/>
       <source>Stack Down</source>
-      <translation type="unfinished">Stack Down</translation>
+      <translation>Descendre dans la pile</translation>
     </message>
   </context>
   <context>
@@ -1796,7 +1796,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
       <source>Move view to top of stack</source>
-      <translation type="unfinished">Move view to top of stack</translation>
+      <translation>Déplacer la vue en haut de la pile</translation>
     </message>
   </context>
   <context>
@@ -1809,7 +1809,7 @@
     <message>
       <location filename="../../CommandStack.cpp" line="298"/>
       <source>Move view up one level</source>
-      <translation type="unfinished">Move view up one level</translation>
+      <translation>Déplacer la vue d’un niveau vers le haut</translation>
     </message>
   </context>
   <context>
@@ -1822,12 +1822,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1453"/>
       <source>Create a Surface Finish Symbol</source>
-      <translation type="unfinished">Create a Surface Finish Symbol</translation>
+      <translation>Créer un symbole de finition de surface</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1454"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
-      <translation type="unfinished">Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</translation>
+      <translation>Sélectionnez une vue&lt;br&gt; - cliquez sur ce bouton&lt;br&gt; - sélectionnez les attributs du symbole d'état de surface dans le panneau ouvert</translation>
     </message>
   </context>
   <context>
@@ -2013,12 +2013,12 @@
     <message>
       <location filename="../../TaskHatch.cpp" line="214"/>
       <source>Update Hatch</source>
-      <translation type="unfinished">Update Hatch</translation>
+      <translation>Mettre à jour les hachures</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="118"/>
       <source>Remove old Hatch</source>
-      <translation type="unfinished">Remove old Hatch</translation>
+      <translation>Enlever les anciennes hachures</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="197"/>
@@ -2293,7 +2293,7 @@
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="321"/>
       <source>Surface Finish Symbols</source>
-      <translation type="unfinished">Surface Finish Symbols</translation>
+      <translation>Symboles de finition de surface</translation>
     </message>
   </context>
   <context>
@@ -2771,17 +2771,17 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="516"/>
       <source>Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension</source>
-      <translation type="unfinished">Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension</translation>
+      <translation>Il faut 1 arête rectiligne, 2 sommets, 2 arêtes ou un sommet, et 1 arête pour la cote de distance</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="621"/>
       <source>Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension</source>
-      <translation type="unfinished">Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension</translation>
+      <translation>Il faut 1 arête droite, 2 sommets, 2 arêtes ou 1 sommet et 1 arête pour la cote horizontale</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="726"/>
       <source>Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension</source>
-      <translation type="unfinished">Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension</translation>
+      <translation>Il faut 1 arête droite, 2 sommets, 2 arêtes ou 1 sommet et 1 arête pour la cote verticale</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="814"/>
@@ -3061,7 +3061,7 @@
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
       <location filename="../../CommandAnnotate.cpp" line="1474"/>
       <source>SurfaceFinishSymbols</source>
-      <translation type="unfinished">SurfaceFinishSymbols</translation>
+      <translation>Symboles d'état de surface</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1533"/>
@@ -3143,7 +3143,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="542"/>
       <source>Document Name: </source>
-      <translation type="unfinished">Document Name: </translation>
+      <translation>Nom du document: </translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="645"/>
@@ -3217,22 +3217,22 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="121"/>
       <source>No Main Window</source>
-      <translation type="unfinished">No Main Window</translation>
+      <translation>Pas de fenêtre principale</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="122"/>
       <source>Can not find the main window</source>
-      <translation type="unfinished">Can not find the main window</translation>
+      <translation>Impossible de trouver la fenêtre principale</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="138"/>
       <source>No 3D Viewer</source>
-      <translation type="unfinished">No 3D Viewer</translation>
+      <translation>Pas de visualiseur 3D</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="139"/>
       <source>Can not find a 3D viewer</source>
-      <translation type="unfinished">Can not find a 3D viewer</translation>
+      <translation>Impossible de trouver une visionneuse 3D</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="168"/>
@@ -3412,12 +3412,12 @@
     <message>
       <location filename="../../TaskHatch.cpp" line="99"/>
       <source>Create Face Hatch</source>
-      <translation type="unfinished">Create Face Hatch</translation>
+      <translation>Créer les hachures de la face</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="110"/>
       <source>Edit Face Hatch</source>
-      <translation type="unfinished">Edit Face Hatch</translation>
+      <translation>Modifier les hachures de la face</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="199"/>
@@ -3427,32 +3427,32 @@
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="205"/>
       <source>Addition</source>
-      <translation type="unfinished">Addition</translation>
+      <translation>Addition</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="214"/>
       <source>Average roughness</source>
-      <translation type="unfinished">Average roughness</translation>
+      <translation>Rugosité moyenne</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="220"/>
       <source>Roughness sampling length</source>
-      <translation type="unfinished">Roughness sampling length</translation>
+      <translation>Longueur d’échantillonnage de la rugosité</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="229"/>
       <source>Lay symbol</source>
-      <translation type="unfinished">Lay symbol</translation>
+      <translation>Symbole de stries</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="237"/>
       <source>Minimum roughness grade number</source>
-      <translation type="unfinished">Minimum roughness grade number</translation>
+      <translation>Indice minimum de la rugosité</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="247"/>
       <source>Maximum roughness grade number</source>
-      <translation type="unfinished">Maximum roughness grade number</translation>
+      <translation>Indice maximum de rugosité</translation>
     </message>
   </context>
   <context>
@@ -3548,47 +3548,47 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="44"/>
       <source>If Crop Image is checked, crop captured image to this width.</source>
-      <translation type="unfinished">If Crop Image is checked, crop captured image to this width.</translation>
+      <translation>Si Recadrer l'Image est cochée, recadre l'image capturée à cette largeur.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="72"/>
       <source>Select a color for solid background</source>
-      <translation type="unfinished">Select a color for solid background</translation>
+      <translation>Sélectionner une couleur pour un arrière-plan uni</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="92"/>
       <source>Crop To Height</source>
-      <translation type="unfinished">Crop To Height</translation>
+      <translation>Rogner à la hauteur</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
       <source>Use 3d Background</source>
-      <translation type="unfinished">Use 3d Background</translation>
+      <translation>Utiliser un arrière-plan 3d</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
       <source>If Crop Image is checked, crop captured image to this height.</source>
-      <translation type="unfinished">If Crop Image is checked, crop captured image to this height.</translation>
+      <translation>Si Recadrer l'Image est cochée, recadre l'image capturée à cette hauteur.</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="137"/>
       <source>Solid Background</source>
-      <translation type="unfinished">Solid Background</translation>
+      <translation>Arrière-plan uni</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="147"/>
       <source>No Background</source>
-      <translation type="unfinished">No Background</translation>
+      <translation>Pas d’arrière-plan</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="160"/>
       <source>Crop To Width</source>
-      <translation type="unfinished">Crop To Width</translation>
+      <translation>Rogner à la largeur</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="167"/>
       <source>Crop Image</source>
-      <translation type="unfinished">Crop Image</translation>
+      <translation>Recadrer l’image</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="134"/>
@@ -3948,12 +3948,12 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="505"/>
       <source>Issue progress messages while building View geometry</source>
-      <translation type="unfinished">Issue progress messages while building View geometry</translation>
+      <translation>Afficher des messages de progression lors de la construction de la géométrie de la vue</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="508"/>
       <source>Report Progress</source>
-      <translation type="unfinished">Report Progress</translation>
+      <translation>Rapport d'avancement</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="532"/>
@@ -4483,12 +4483,12 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="481"/>
       <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions.</source>
-      <translation type="unfinished">Controls the size of gap between dimension point and start of extension line for ISO dimensions.</translation>
+      <translation>Contrôle la taille de l'écart entre le point de dimension et le début de la ligne d'extension pour les dimensions ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="484"/>
       <source>Extension Gap Factor - ISO</source>
-      <translation type="unfinished">Extension Gap Factor - ISO</translation>
+      <translation>Facteur d'écart d'extension - ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="491"/>
@@ -4555,22 +4555,22 @@ Multiplicateur de &apos;Taille de police&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="512"/>
       <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions.</source>
-      <translation type="unfinished">Controls the size of gap between dimension point and start of extension line for ASME dimensions.</translation>
+      <translation>Contrôle la taille de l'écart entre le point de dimension et le début de la ligne d'extension pour les dimensions ASME.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="515"/>
       <source>Extension Gap Factor - ASME</source>
-      <translation type="unfinished">Extension Gap Factor - ASME</translation>
+      <translation>Facteur d'écart d'extension - ASME</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="522"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ISO dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contrôle la taille de l'écart entre le point de cote et le début de la ligne d'extension pour les cotes ISO. Valeur * largeur de ligne est l'écart.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="541"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controls the size of gap between dimension point and start of extension line for ASME dimensions. Value * linewidth is the gap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contrôle la taille de l'écart entre le point de cote et le début de la ligne d'extension pour les cotes ASME. Valeur * largeur de ligne est l'écart.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="571"/>
@@ -6319,37 +6319,37 @@ au format printf() , ou du texte arbitraire</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an Svg or Bitmap file</source>
-      <translation type="unfinished">Select an Svg or Bitmap file</translation>
+      <translation>Sélectionnez un fichier Svg ou Bitmap</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
       <source>Pattern Parameters</source>
-      <translation type="unfinished">Pattern Parameters</translation>
+      <translation>Paramètres de Motif</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an Svg or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an Svg or Bitmap file as a pattern</translation>
+      <translation>Choisissez un fichier Svg ou Bitmap comme motif</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
       <source>Color of pattern lines (Svg Only)</source>
-      <translation type="unfinished">Color of pattern lines (Svg Only)</translation>
+      <translation>Couleur des lignes du motif (Svg seulement)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="104"/>
       <source>Enlarges/shrinks the pattern (Svg Only)</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern (Svg Only)</translation>
+      <translation>Augmente/diminue l'échelle du motif (Svg seulement)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="126"/>
       <source>Svg Pattern Scale</source>
-      <translation type="unfinished">Svg Pattern Scale</translation>
+      <translation>Échelle du motif Svg</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Svg Line Color</source>
-      <translation type="unfinished">Svg Line Color</translation>
+      <translation>Couleur de ligne Svg</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
@@ -7296,47 +7296,47 @@ en utilisant l'espacement X/Y donné</translation>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="182"/>
       <source>Surface Finish Symbols</source>
-      <translation type="unfinished">Surface Finish Symbols</translation>
+      <translation>Symboles de finition de surface</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériau interdit, pièce entière&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="44"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;N'importe quelle méthode est autorisée, pièce entière&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="54"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required, whole part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériau nécessaire, pièce entière&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal required&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériau nécessaire&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Material removal prohibited&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enlèvement de matériaux interdit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Any method allowed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;N'importe quelle méthode est autorisée&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
       <source>Symbol angle:</source>
-      <translation type="unfinished">Symbol angle:</translation>
+      <translation>Angle du symbole :</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation angle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rotation angle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle de rotation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="108"/>
@@ -7346,7 +7346,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ISO standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ISO standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utiliser la norme ISO&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
@@ -7356,12 +7356,12 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ASME standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use ASME standard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utiliser la norme ASME&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
       <source>ASME</source>
-      <translation type="unfinished">ASME</translation>
+      <translation>ASME</translation>
     </message>
   </context>
   <context>
@@ -7498,7 +7498,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="144"/>
       <source>Move view to top of stack</source>
-      <translation type="unfinished">Move view to top of stack</translation>
+      <translation>Déplacer la vue en haut de la pile</translation>
     </message>
   </context>
   <context>
@@ -7506,7 +7506,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="152"/>
       <source>Move view up one level</source>
-      <translation type="unfinished">Move view up one level</translation>
+      <translation>Déplacer la vue d’un niveau vers le haut</translation>
     </message>
   </context>
   <context>

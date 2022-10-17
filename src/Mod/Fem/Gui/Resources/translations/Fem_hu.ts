@@ -351,7 +351,7 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the cliped region</translation>
+      <translation>Kivágás szűrő definiálása/létrehozása, amely függvények segítségével határozza meg a vágott régiót</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1687"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../../Command.cpp" line="1688"/>
       <source>Select a pipeline, please.</source>
-      <translation type="unfinished">Select a pipeline, please.</translation>
+      <translation>Kérjük, válasszon ki egy folyamatot.</translation>
     </message>
   </context>
   <context>
@@ -374,12 +374,12 @@
     <message>
       <location filename="../../Command.cpp" line="1345"/>
       <source>Function cut filter</source>
-      <translation type="unfinished">Function cut filter</translation>
+      <translation>Kivágási szűrő funkció</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1346"/>
       <source>Cut the data along an implicit function</source>
-      <translation type="unfinished">Cut the data along an implicit function</translation>
+      <translation>Az adatok kivágása egy implicit függvény mentén</translation>
     </message>
   </context>
   <context>
@@ -392,12 +392,12 @@
     <message>
       <location filename="../../Command.cpp" line="1388"/>
       <source>Line clip filter</source>
-      <translation type="unfinished">Line clip filter</translation>
+      <translation>Vonal kivágó szűrő</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1389"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>Kivágás szűrő definiálása/létrehozása, amely egy mezőt egy vonal mentén vág le</translation>
     </message>
   </context>
   <context>
@@ -410,12 +410,12 @@
     <message>
       <location filename="../../Command.cpp" line="1429"/>
       <source>Data at point clip filter</source>
-      <translation type="unfinished">Data at point clip filter</translation>
+      <translation>Adat a pont kivágó szűrőjén</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1430"/>
       <source>Define/create a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field data at point</translation>
+      <translation>Kivágó szűrő definiálása/létrehozása, amely pontnál vág egy mezőadatot</translation>
     </message>
   </context>
   <context>
@@ -428,12 +428,12 @@
     <message>
       <location filename="../../Command.cpp" line="1620"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Szűrési funkciók</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1621"/>
       <source>Functions for use in postprocessing filter...</source>
-      <translation type="unfinished">Functions for use in postprocessing filter...</translation>
+      <translation>Az utófeldolgozási szűrőben használható funkciók...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1732"/>
@@ -452,31 +452,31 @@
       <location filename="../../Command.cpp" line="1224"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
-      <translation type="unfinished">Thickness [mm]</translation>
+      <translation>Vastagság [mm]</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
-      <translation type="unfinished">Stress [MPa]</translation>
+      <translation>Nyomás [MPa]</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
-      <translation type="unfinished">Linearized Stresses</translation>
+      <translation>Linearizált nyomások</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Membrane</translation>
+      <translation>Membrán</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Membrane and Bending</translation>
+      <translation>Membrán és hajlítás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../Command.cpp" line="1474"/>
       <source>Stress linearization plot</source>
-      <translation type="unfinished">Stress linearization plot</translation>
+      <translation>Nyomás linearizációs diagram</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1475"/>
       <source>Define/create stress linearization plots</source>
-      <translation type="unfinished">Define/create stress linearization plots</translation>
+      <translation>Nyomés linearizációs diagramok definiálása/létrehozása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
@@ -509,7 +509,7 @@
       <location filename="../../Command.cpp" line="1508"/>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation type="unfinished">Select a Clip filter which clips a STRESS field along a line, please.</translation>
+      <translation>Kérjük, válasszon ki egy Kivágás szűrőt, amely egy VONAL MENTÉN rögzíti a NYOMÁS mezőt.</translation>
     </message>
   </context>
   <context>
@@ -5233,7 +5233,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Szűrési funkciók</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>

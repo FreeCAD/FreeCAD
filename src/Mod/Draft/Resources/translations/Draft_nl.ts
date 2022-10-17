@@ -886,12 +886,12 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>Voorinstelling laden</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>Huidige stijl opslaan als voorinstelling...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
@@ -1421,7 +1421,7 @@ Let op dat dit niet volledig ondersteund wordt en veel objecten niet bewerkt kun
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="194"/>
       <source>Alternate SVG patterns location</source>
-      <translation type="unfinished">Alternate SVG patterns location</translation>
+      <translation>Alternatieve SVG-patronen locatie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="220"/>
@@ -1431,7 +1431,7 @@ Let op dat dit niet volledig ondersteund wordt en veel objecten niet bewerkt kun
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>
       <source>SVG pattern resolution</source>
-      <translation type="unfinished">SVG pattern resolution</translation>
+      <translation>SVG-patroonresolutie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="257"/>

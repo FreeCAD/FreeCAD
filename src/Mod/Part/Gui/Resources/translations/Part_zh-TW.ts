@@ -7,7 +7,7 @@
       <location filename="../../AttacherTexts.cpp" line="314"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Any</translation>
+      <translation>任何</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="315"/>
@@ -37,7 +37,7 @@
       <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Curve</translation>
+      <translation>曲線</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="321"/>
@@ -49,7 +49,7 @@
       <location filename="../../AttacherTexts.cpp" line="322"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Conic</translation>
+      <translation>圓錐</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="323"/>
@@ -61,13 +61,13 @@
       <location filename="../../AttacherTexts.cpp" line="324"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Parabola</translation>
+      <translation>拋物線</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="325"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Hyperbola</translation>
+      <translation>雙曲線</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="327"/>
@@ -109,7 +109,7 @@
       <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Object</translation>
+      <translation>物件</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="335"/>
@@ -154,19 +154,19 @@
       <location filename="../../AttacherTexts.cpp" line="277"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus1</translation>
+      <translation>焦點1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Focus of ellipse, parabola, hyperbola.</translation>
+      <translation>橢圓、拋物線、雙曲線之焦點。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Focus2</translation>
+      <translation>焦點2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="281"/>
@@ -202,7 +202,7 @@
       <location filename="../../AttacherTexts.cpp" line="289"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of mass</translation>
+      <translation>質心</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="290"/>
@@ -4412,7 +4412,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="382"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>文字顏色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="389"/>

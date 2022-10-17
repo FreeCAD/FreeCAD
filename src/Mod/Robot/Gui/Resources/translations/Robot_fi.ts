@@ -345,12 +345,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Robot tools</source>
-      <translation>Robotti työkalut</translation>
+      <translation>Robottityökalut</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Insert Robot</source>
-      <translation>Lisää Robotti</translation>
+      <translation>Lisää robotti</translation>
     </message>
   </context>
   <context>
@@ -378,7 +378,7 @@
     <message>
       <location filename="../../Command.cpp" line="126"/>
       <source>Select one Robot</source>
-      <translation>Valitse yksi Robotti</translation>
+      <translation>Valitse yksi robotti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="226"/>
@@ -403,7 +403,7 @@
       <location filename="../../CommandExport.cpp" line="88"/>
       <location filename="../../CommandExport.cpp" line="150"/>
       <source>KRL file</source>
-      <translation>KRL- tiedosto</translation>
+      <translation>KRL-tiedosto</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>
@@ -420,7 +420,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="235"/>
       <source>Select one robot and one shape or VRML object.</source>
-      <translation>Valitse yksi robotti ja yksi muoto tai VRML objekti.</translation>
+      <translation>Valitse yksi robotti ja yksi muoto tai VRML-objekti.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="168"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>No robot files installed</source>
-      <translation>Robotti-tiedostoja ei ole asennettu</translation>
+      <translation>Robottitiedostoja ei ole asennettu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="82"/>
@@ -775,7 +775,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
       <source>Sizing Value:</source>
-      <translation>Mitoitus Arvo:</translation>
+      <translation>Mitoitusarvo:</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>

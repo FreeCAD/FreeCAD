@@ -2185,8 +2185,8 @@ sileämpään ulkonäköön.
       <location filename="../../Command.cpp" line="423"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD ei löydy järjestelmästäsi. Käy http://www.openscad.org/index.html 
-osoittweessa asentaaksesi ohjelman.</translation>
+      <translation>OpenSCAD:ia ei löydy järjestelmästäsi. Käy 
+http://www.openscad.org/index.html asentaaksesi sen.</translation>
     </message>
   </context>
   <context>
@@ -2454,7 +2454,7 @@ osoittweessa asentaaksesi ohjelman.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Cutting</source>
-      <translation>Leikataan</translation>
+      <translation>Leikkuu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

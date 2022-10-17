@@ -338,7 +338,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>&amp;Points</source>
-      <translation type="unfinished">&amp;Points</translation>
+      <translation>포인트(&amp;P)</translation>
     </message>
   </context>
 </TS>

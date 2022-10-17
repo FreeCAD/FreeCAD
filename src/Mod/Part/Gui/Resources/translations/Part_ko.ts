@@ -1159,7 +1159,7 @@
       <location filename="../../Command.cpp" line="2473"/>
       <location filename="../../Command.cpp" line="2475"/>
       <source>Box selection</source>
-      <translation>개체 선택 상자</translation>
+      <translation>박스 선택항목</translation>
     </message>
   </context>
   <context>
@@ -3101,12 +3101,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>크기2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>필렛 유형</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -3899,7 +3899,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2063"/>
       <source>&amp;Create</source>
-      <translation>&amp; 만들기</translation>
+      <translation>만들기(&amp;C)</translation>
     </message>
   </context>
   <context>
@@ -4232,17 +4232,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation type="unfinished">3D color</translation>
+      <translation>3D 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation type="unfinished">Delta color</translation>
+      <translation>증분 치수의 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation type="unfinished">Angular color</translation>
+      <translation>각도 치수의 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
@@ -4262,7 +4262,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation type="unfinished">defaultFont</translation>
+      <translation>기본글꼴</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
@@ -5374,7 +5374,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
       <source>Box selection</source>
-      <translation>개체 선택 상자</translation>
+      <translation>박스 선택항목</translation>
     </message>
   </context>
   <context>
@@ -6130,12 +6130,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Part</source>
-      <translation>&amp;부품</translation>
+      <translation>부품(&amp;P)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Simple</source>
-      <translation>&amp; 간단</translation>
+      <translation>단순(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

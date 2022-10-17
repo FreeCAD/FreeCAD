@@ -16,7 +16,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotate</source>
-      <translation>회전</translation>
+      <translation>회전하기</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="72"/>
       <source>Navigation style</source>
-      <translation>화면탐색 형식</translation>
+      <translation>탐색 스타일</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="73"/>
@@ -41,12 +41,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Rotation focus</source>
-      <translation>시점회전</translation>
+      <translation>회전 시점</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="75"/>
       <source>Middle mouse button or H key.</source>
-      <translation>가운데버튼 또는 'H' 키</translation>
+      <translation>마우스 가운데 버튼 또는 H 키.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="77"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="80"/>
       <source>Navigation style not recognized.</source>
-      <translation>인식할 수 없는 화면탐색 형식</translation>
+      <translation>탐색 스타일이 인식되지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="331"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="333"/>
       <source>Compact</source>
-      <translation>최적화</translation>
+      <translation>소형</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="334"/>

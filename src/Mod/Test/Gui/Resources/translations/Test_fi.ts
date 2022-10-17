@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;About</source>
-      <translation>&amp;Tietoja ohjelmasta</translation>
+      <translation>&amp;Tietoja</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
@@ -120,7 +120,7 @@ Kaksoisnapsauta puunäkymässä olevaa virhettä nähdäksesi lisää tietoa sii
     <message>
       <location filename="../../UnitTestImp.cpp" line="167"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>Tietoja FreeCAD toiminnan testauksesta</translation>
+      <translation>Tietoja FreeCAD-yksikkötestauksesta</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="167"/>

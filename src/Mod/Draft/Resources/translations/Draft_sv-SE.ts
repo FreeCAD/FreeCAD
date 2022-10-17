@@ -881,7 +881,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
       <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+      <translation>Fyller värdena nedan med en lagrad stil förinställning</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
@@ -1036,7 +1036,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="249"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>Avståndet mellan texten och måttsättningslinjen</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="259"/>
@@ -1056,7 +1056,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="280"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>Avståndet mellan textrader</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="287"/>
@@ -1126,7 +1126,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>Tillämpa ovanstående stil på valda objekt</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
@@ -1136,7 +1136,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
       <source>Texts/dims</source>
-      <translation type="unfinished">Texts/dims</translation>
+      <translation>Text/dims</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
@@ -1151,7 +1151,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>
       <source>pattern files (*.pat)</source>
-      <translation type="unfinished">pattern files (*.pat)</translation>
+      <translation>mönsterfiler (*.pat)</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
@@ -1161,7 +1161,7 @@ när man närmar sig musen. Du kan också ändra detta
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Skala:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -1418,12 +1418,12 @@ Observera att detta inte stöds fullt ut, och många objekt kommer inte att kunn
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="194"/>
       <source>Alternate SVG patterns location</source>
-      <translation type="unfinished">Alternate SVG patterns location</translation>
+      <translation>Alternativa SVG Mönsterplats</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="220"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
-      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+      <translation>Här kan du ange en katalog med anpassade SVG-filer som innehåller &lt;pattern&gt; definitioner som ska läggas till standardmönstren</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>

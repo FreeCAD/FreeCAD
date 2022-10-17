@@ -11,7 +11,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation type="unfinished">Choose a preset card</translation>
+      <translation>選擇一個預設卡</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
-      <translation>在瀏覽器中打開此頁</translation>
+      <translation>在瀏覽器中打開網址</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
@@ -226,10 +226,10 @@
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</translation>
+      <translation>從每個物件所取得之屬性。
+可以是 "Count" 以計算物件數量，或是屬性名稱
+例如 "長度" 或 "形狀.體積" 以取得
+某些屬性。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="79"/>
@@ -239,7 +239,7 @@ a certain property.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>表示結果值的可選單位。例如 m^3 (你也可以寫成 m³ 或 m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -252,10 +252,10 @@ a certain property.</translation>
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>一個可選分號 (;) 分隔物件名稱之列表
+(內部名稱，不是標籤)，被考慮以此操作進行。
+若此清單包含群組，子物件將被加入。
+留空以使用來自文件的所有物件</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
@@ -265,7 +265,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;一個可選的分號 (;) 分隔屬性之清單:值過濾器。在一個屬性名稱前置 ! 以反轉過濾器的效果 (將符合過濾條件之物件除外)。 屬性包含其值的物件將會被匹配。 有效過濾器範圍 (所有東西不分大小寫)：&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - 將只會考慮物件中有 &amp;quot;wall&amp;quot; 在其名稱中 (內部名稱)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - 將只會考慮物件沒有 &amp;quot;wall&amp;quot; 在其名稱中 (內部名稱)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;描述:Win&lt;/span&gt; - 將只會考慮物件中有 &amp;quot;win&amp;quot; 在其描述&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - 將只會考慮物件沒有 &amp;quot;win&amp;quot; 在其標籤(label)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - 將只會考慮物件其 Ifc 類型是 &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - 將只會考慮物件標記(tag)不包含 &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;若您將此欄位保留為空白，將不會進行過濾&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="111"/>
@@ -280,7 +280,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>若這被開啟，額外的線將會被填充到每個被考慮到的物件。若沒有，只有全部。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -340,7 +340,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;這匯出結果到一個 CSV 或 Markdown 檔案。 &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;CSV 匯出注意事項：&lt;/span&gt;&lt;/p&gt;&lt;p&gt;在 Libreoffice，你可以保留此 CSV 檔連結藉由右鍵單擊表格標籤欄 -&amp;gt; 新表格 -&amp;gt; 從檔案 -&amp;gt; 連結 (注意：在 LibreOffice v6.x 版中正確的路徑現在是： 表格 -&amp;gt; 插入表格... -&amp;gt; 從檔案 -&amp;gt; 瀏覽...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
@@ -584,7 +584,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="109"/>
       <source>The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</source>
-      <translation type="unfinished">The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</translation>
+      <translation>將非線性邊劃分成片段之數目，以用來計算。若彎曲形狀重疊，試著提高此值。</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="125"/>
@@ -594,7 +594,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
-      <translation type="unfinished">A comma-separated list of angles to try and rotate the shapes</translation>
+      <translation>以逗號分隔的角度列表，用於嘗試和旋轉形狀</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="135"/>
@@ -609,7 +609,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="154"/>
       <source>pass %p</source>
-      <translation type="unfinished">pass %p</translation>
+      <translation>通過 %p</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
@@ -687,7 +687,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
       <source>Interval between file checks for references</source>
-      <translation type="unfinished">Interval between file checks for references</translation>
+      <translation>檔案檢查間隔以作為參考</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
@@ -712,7 +712,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>若此被勾選，當一個 Arch 物件有材質時，此物件將自材質取得顏色。這可以覆蓋到每個物件。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="226"/>
@@ -747,7 +747,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="316"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation type="unfinished">If this is checked, conversion is faster but the result might still contain triangulated faces</translation>
+      <translation>若此被勾選，轉換會比較快但是其結果可能仍然包含三角形的面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="319"/>
@@ -762,12 +762,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="345"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
+      <translation>檢查 2 個相鄰面是否為平面時使用的誤差值</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
+      <translation>若此被勾選，平面群組將會被強制展開，從而可能導致間隙及非實體結果</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
@@ -777,7 +777,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="388"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation type="unfinished">If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</translation>
+      <translation>若此被勾選，面中的孔洞將通過減法執行而不是使用導線方向</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="391"/>
@@ -823,8 +823,7 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/preferences-arch.ui" line="585"/>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
-      <translation type="unfinished">This is the SVG stroke-dasharray property to apply
-to projections of hidden objects.</translation>
+      <translation>這是 SVG stroke-dasharray 屬性套用在隱藏物件的投影。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="589"/>
@@ -840,8 +839,7 @@ to projections of hidden objects.</translation>
       <location filename="../ui/preferences-arch.ui" line="645"/>
       <source>Scaling factor for patterns used by object that have
 a Footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by object that have
-a Footprint display mode</translation>
+      <translation>物件所使用的樣式縮放係數有足跡顯示模式</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="673"/>
@@ -856,7 +854,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org) to connect to.</translation>
+      <translation>要連接的 bim 伺服器實體的網址 (www.bimserver.org) 。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
@@ -868,14 +866,13 @@ a Footprint display mode</translation>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BimServer in browser"
-button will open the Bim Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>若此被選擇，"在瀏覽器中開啟 BimServer"按鍵將會開啟 Bim 
+伺服器界面在一個外部瀏覽器，而不是在 FreeCAD web 工作台中開啟</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
       <source>Open in external browser</source>
-      <translation type="unfinished">Open in external browser</translation>
+      <translation>於外部瀏覽器開啟</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="731"/>
@@ -885,12 +882,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="739"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation type="unfinished">If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</translation>
+      <translation>若此被勾選，剪貼簿中的文字將會包含單位。否則，它將會是一個以內部單位表示(毫米)的單純數字</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="742"/>
       <source>Include unit when sending measurements to clipboard</source>
-      <translation type="unfinished">Include unit when sending measurements to clipboard</translation>
+      <translation>將測量值發送到剪貼簿時包含單位</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="14"/>
@@ -939,7 +936,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
       <source>Use sketches</source>
-      <translation type="unfinished">Use sketches</translation>
+      <translation>使用草圖</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="132"/>
@@ -1069,7 +1066,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1025"/>
       <source>Helpers (grids, axes, etc...)</source>
-      <translation type="unfinished">Helpers (grids, axes, etc...)</translation>
+      <translation>幫手 (網格線, 軸向, 等...)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1071"/>
@@ -1120,8 +1117,7 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation type="unfinished">Shows verbose debug messages during import and export
-of IFC files in the Report view panel</translation>
+      <translation>在報告視圖面板中顯示 IFC 檔案在匯入及匯出時之詳細除錯訊息</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>
@@ -1151,14 +1147,13 @@ for example, 3 if you have a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
 if you start getting crashes when you set multiple cores.</source>
-      <translation type="unfinished">EXPERIMENTAL
-The number of cores to use in multicore mode.
-Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
+      <translation>實驗性功能
+在多核模式所使用的核心數量。
+保持 0 以禁用多核模式。
+最大值應為您的核心數量減 1，
+例如如果您有一個 4 核 CPU 的話，其值為 3。
 
-Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</translation>
+設定為 1 以在單核模式中使用多核模式；這比較安全如果您在設定多核時開始遭遇程式當掉的情況。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
@@ -1201,7 +1196,7 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="197"/>
       <source>One compound per floor</source>
-      <translation type="unfinished">One compound per floor</translation>
+      <translation>每一層一個組件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="202"/>
@@ -1216,12 +1211,12 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="241"/>
       <source>One compound for all</source>
-      <translation type="unfinished">One compound for all</translation>
+      <translation>一個組件給所有</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="246"/>
       <source>Do not import structural objects</source>
-      <translation type="unfinished">Do not import structural objects</translation>
+      <translation>不要匯入結構物件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="258"/>
@@ -1232,8 +1227,8 @@ if you start getting crashes when you set multiple cores.</translation>
       <location filename="../ui/preferences-ifc.ui" line="265"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of the specified element will be imported.
-Keep the element IfcProduct to import all building elements.</translation>
+      <translation>只有指定元件的子類型將會被匯入。
+保留元件 IfcProduct 以導入所有建築元件。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="284"/>
@@ -1261,34 +1256,33 @@ Note that this might slow things down.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="318"/>
       <source>Split walls made of multiple layers</source>
-      <translation type="unfinished">Split walls made of multiple layers</translation>
+      <translation>由多層所構成的分裂牆</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="321"/>
       <source>Split multilayer walls</source>
-      <translation type="unfinished">Split multilayer walls</translation>
+      <translation>拆分多層牆</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+      <translation>物件名稱前將會加入IFC ID號碼</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
       <source>Prefix names with ID number</source>
-      <translation type="unfinished">Prefix names with ID number</translation>
+      <translation>名稱前加上 ID 號碼</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
-they will be treated as one.</translation>
+      <translation>若於 IFC 檔案中發現數個相同名稱與顏色之材質，其將會被視為一個。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="354"/>
       <source>Merge materials with same name and same color</source>
-      <translation type="unfinished">Merge materials with same name and same color</translation>
+      <translation>合併相同名稱及相同顏色之材質</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
@@ -1303,7 +1297,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
+      <translation>IFC 檔案可以包含不乾淨或是非實體幾何。若此選項勾選，所有幾何會匯入而不管其有效性。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
@@ -1313,19 +1307,19 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
       <source>Exclude list:</source>
-      <translation type="unfinished">Exclude list:</translation>
+      <translation>排除清單：</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="408"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
-      <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
+      <translation>以逗號分隔之 IFC 實體清單會在匯入時排除</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="429"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation type="unfinished">Fit view during import on the imported objects.
-This will slow down the import, but one can watch the import.</translation>
+      <translation>在匯入想匯入物件時調整成視圖大小。
+這會減慢匯入速度，但是使用者可以看到匯入結果。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="433"/>
@@ -1336,13 +1330,12 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>在匯入時使用儲存之 FreeCAD 物件屬性來以建立一個完整參數化模型</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="450"/>
       <source>Import full FreeCAD parametric definitions if available</source>
-      <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
+      <translation>如果可以的話，匯入完整的 FreeCAD 參數定義</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="463"/>
@@ -1350,15 +1343,14 @@ FreeCAD object properties</translation>
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</source>
-      <translation type="unfinished">If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
-objects that are usually found in an IFC file are not imported, and all objects
-are placed in a 'Group' instead.
-'Buildings' and 'Storeys' are still imported if there is more than one.</translation>
+      <translation>若此選項被勾選時，經常在 IFC 檔中發現之預設 '專案'、'基地'、'建築物' 與 '樓層'
+物件不會被匯入，且取而代之的是所有物件會放置在一個 '群組'。
+如果有多於一個以上的話，'建築物' 與 '樓層' 仍會被匯入。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="469"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
-      <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
+      <translation>以 '群組' 取代 '專案'、'基地'、'建築物' 以及 '樓層'</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
@@ -1379,7 +1371,7 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-dae.ui" line="41"/>
       <source>All dimensions in the file will be scaled with this factor</source>
-      <translation type="unfinished">All dimensions in the file will be scaled with this factor</translation>
+      <translation>檔案中的所有尺寸都將以此因數進行縮放</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="67"/>
@@ -1411,7 +1403,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and mefisto mesher options</source>
-      <translation type="unfinished">Builtin and mefisto mesher options</translation>
+      <translation>內建和 mefisto 網格產生器選項</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -1421,7 +1413,7 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
+      <translation>使用在內建與 Mefisto 網格程式之鑲嵌值。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
@@ -1431,16 +1423,16 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="155"/>
       <source>Grading</source>
-      <translation type="unfinished">Grading</translation>
+      <translation>評分中</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="162"/>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation type="unfinished">Grading value to use for meshing using Netgen.
-This value describes how fast the mesh size decreases.
-The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</translation>
+      <translation>使用 Netgen 作網格之分級值。
+此值描述網格尺寸減小的速度。
+局部網格尺寸的梯度 h(x) 是以 |Δh(x)| ≤ 1/值 為界。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
@@ -1450,7 +1442,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="194"/>
       <source>Maximum number of segments per edge</source>
-      <translation type="unfinished">Maximum number of segments per edge</translation>
+      <translation>每個邊的最大片段數目</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="217"/>
@@ -1485,12 +1477,12 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
       <source>Allow quadrilateral faces</source>
-      <translation type="unfinished">Allow quadrilateral faces</translation>
+      <translation>允許四邊形面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="293"/>
       <source>Allow quads</source>
-      <translation type="unfinished">Allow quads</translation>
+      <translation>允許四邊形</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
@@ -1515,10 +1507,10 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
 - Standard + structural: both types of models.</source>
-      <translation type="unfinished">The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</translation>
+      <translation>您希望匯出的物件類別：
+- 標準模型：實體物件。
+- 結構分析：線框模型以供結構計算。
+- 標準 + 結構：兩種類別的模型。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
@@ -1538,7 +1530,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>標準+結構</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
@@ -1555,35 +1547,34 @@ Use this to force all objects to be exported as BREP geometry.</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="128"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
+      <translation>使用在 DAE 選項頁面中的三角測量選項設定</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="131"/>
       <source>Use DAE triangulation options</source>
-      <translation type="unfinished">Use DAE triangulation options</translation>
+      <translation>使用 DAE 三角測量選項</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="144"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
-are decomposed into flat facets.
-If this is checked, an additional calculation is done to join coplanar facets.</translation>
+      <translation>不能在 IFC 中表示為曲線的彎曲形狀會被分解成平面。
+若此勾選的話，會進行額外的計算以連接共面小平面。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="149"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation type="unfinished">Join coplanar facets when triangulating</translation>
+      <translation>當三角測量時合併共面刻面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="162"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation type="unfinished">When exporting objects without unique ID (UID), the generated UID
-will be stored inside the FreeCAD object for reuse next time that object
-is exported. This leads to smaller differences between file versions.</translation>
+      <translation>當在沒有唯一 ID (UID) 的情況下匯出物件時，所產生出來的 UID
+將會被儲存在 FreeCAD 物件內以提供該物件下次匯出時重複使用。
+這會導致不同檔案版本間有些微差異。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
@@ -1620,25 +1611,25 @@ Note: The serializer is still an experimental feature!</source>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation type="unfinished">All FreeCAD object properties will be stored inside the exported objects,
-allowing to recreate a full parametric model on reimport.</translation>
+      <translation>所有 FreeCAD 物件屬性將會被儲存在匯出物件內，
+以允許在重新匯入時重新建立完整參數化模型。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
       <source>Export full FreeCAD parametric model</source>
-      <translation type="unfinished">Export full FreeCAD parametric model</translation>
+      <translation>匯出完整 FreeCAD 參數模型</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
-      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable.</translation>
+      <translation>若可行的話，類似實體將會在檔案中只使用一次。
+這可以大幅減低檔案尺寸，但會使其不那麼容易閱讀。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="242"/>
       <source>Reuse similar entities</source>
-      <translation type="unfinished">Reuse similar entities</translation>
+      <translation>重用相似的實體</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="258"/>
@@ -1646,10 +1637,9 @@ This can reduce the file size a lot, but will make it less easily readable.</tra
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
 If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</source>
-      <translation type="unfinished">When possible, IFC objects that are extruded rectangles will be
-exported as IfcRectangleProfileDef.
-However, some other applications might have problems importing that entity.
-If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
+      <translation>若可行的話，以矩形拉伸所產生之 IFC 物件將會被匯出為 IfcRectangleProfileDef。
+然而，某些其它應用程式可能在匯入實體時會有問題。
+若您遇上這種情況，您可以禁用此方式然後所有的輪廓將會被匯出為 IfcArbitraryClosedProfileDef。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="264"/>
@@ -1662,53 +1652,53 @@ If this is your case, you can disable this and then all profiles will be exporte
 like IfcWallStandardCase or IfcBeamStandardCase.
 If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions
-like IfcWallStandardCase or IfcBeamStandardCase.
-If this option is turned on, FreeCAD will automatically export such objects
-as standard cases when the necessary conditions are met.</translation>
+      <translation>某些 IFC 類型例如 IfcWall 或 IfcBeam 有特殊標準版本像
+IfcWallStandardCase 或 IfcBeamStandardCase。
+若此選項開啟，FreeCAD 將會在符合必要條件時自動匯出這些物件為標準案例。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+      <translation>當適用時自動偵測並匯出為標準案例</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice is to have at least one in the file.</translation>
+      <translation>如果在 FreeCAD 文件中找不到基地的話，一個預設的將會被添加。
+一個基地不是強制性的，但是在檔案中至少有一個是常見的作法。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>如果在文件中找不到的話，加入預設基地</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="313"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
-      <translation type="unfinished">If no building is found in the FreeCAD document, a default one will be added.
-Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
-However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</translation>
+      <translation>如果在 FreeCAD 文件中找不到建築的話，一個預設的將會被添加。
+警告：IFC 標準要求每個檔案中至少要有一個建築。藉由關閉此選項，您將會產生一個非標準的
+IFC 檔案。
+然而，在 FreeCAD 中，我們相信擁有一個建築並非強制的，而此選項是有機會展示我們的觀點。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+      <translation>如果文件中找不到的話加入預設建築(非標準作法)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="334"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
-      <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
-A building storey is not mandatory but a common practice to have at least one in the file.</translation>
+      <translation>如果在 FreeCAD 文件中找不到建物樓層的話，一個預設的將會被添加。
+一個建物樓層不是強制性的，但是在檔案中至少有一個是常見的作法。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Add default building storey if one is not found in the document</source>
-      <translation type="unfinished">Add default building storey if one is not found in the document</translation>
+      <translation>如果在文件中找不到的話，加入預設建物樓層</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="353"/>

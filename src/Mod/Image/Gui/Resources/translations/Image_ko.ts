@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
-      <translation>이미지 평면을 생성...</translation>
+      <translation>이미지 평면 만들기...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="57"/>
       <source>Open image view</source>
-      <translation>이미지 뷰 열기</translation>
+      <translation>이미지 보기 열기</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>이미지 스케일링</translation>
+      <translation>이미지 크기조정</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Create ImagePlane</source>
-      <translation>이미지 평면 생성</translation>
+      <translation>이미지 평면 만들기</translation>
     </message>
   </context>
   <context>
@@ -73,7 +73,7 @@
     <message>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>색깔 공간의 이미지 보기에 대한 정의 되지 않은 형식</translation>
+      <translation>이미지 보기를 위한 정의되지 않은 색상 공간 유형</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../ImageView.cpp" line="107"/>
       <source>&amp;Fit image</source>
-      <translation>&amp; 맞는 이미지</translation>
+      <translation>이미지 맞춤(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="109"/>
       <source>Stretch the image to fit the view</source>
-      <translation>보기에 맞게 이미지를 스트레칭</translation>
+      <translation>보기에 맞게 이미지 늘리기</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>이미지를 1:1 스케일로 표시</translation>
+      <translation>이미지를 1:1 비율로 화면표시하기</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="124"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="543"/>
       <source>grey</source>
-      <translation>흑백</translation>
+      <translation>회색</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="544"/>
@@ -172,7 +172,7 @@
       <location filename="../../ImageView.cpp" line="588"/>
       <location filename="../../ImageView.cpp" line="604"/>
       <source>outside image</source>
-      <translation>외부 이미지</translation>
+      <translation>외면 이미지</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
       <location filename="../../Command.cpp" line="77"/>
       <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
-      <translation>이미지 파일 선택</translation>
+      <translation>열려는 이미지 파일 고르기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="127"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Could not load the chosen image</source>
-      <translation>선택한 이미지를 로드할 수 없습니다.</translation>
+      <translation>선택한 이미지를 불러올 수 없습니다</translation>
     </message>
   </context>
   <context>

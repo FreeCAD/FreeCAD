@@ -448,13 +448,13 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Trim mesh</source>
-      <translation>Обрежите мрежу</translation>
+      <translation>Обсеците мрежу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
       <location filename="../../Command.cpp" line="963"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Обрезује мрежу са одабраним многоуглом</translation>
+      <translation>Опсеца мрежу са одабраним многоуглом</translation>
     </message>
   </context>
   <context>
@@ -674,13 +674,13 @@
     <message>
       <location filename="../../Command.cpp" line="1021"/>
       <source>Trim mesh with a plane</source>
-      <translation>Обрежите мрежу помоћу равни</translation>
+      <translation>Опсеците мрежу помоћу равни</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <location filename="../../Command.cpp" line="1023"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Обрезује мрежу помоћи равни</translation>
+      <translation>Опсеца мрежу помоћи равни</translation>
     </message>
   </context>
   <context>
@@ -873,12 +873,12 @@
       <location filename="../../ViewProvider.cpp" line="867"/>
       <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Trim</source>
-      <translation type="unfinished">Trim</translation>
+      <translation>Опсеците</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1051"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Разделите</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1115"/>

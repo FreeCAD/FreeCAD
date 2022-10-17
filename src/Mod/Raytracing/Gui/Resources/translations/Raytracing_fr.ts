@@ -294,12 +294,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="619"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>S'il vous plaît, définissez le chemin vers l'exécutable POV-Ray dans les préférences.</translation>
+      <translation>Veuillez définir le chemin à l'exécutable de POV-Ray dans les préférences.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>S'il vous plaît, corrigez le chemin vers l'exécutable POV-Ray dans les préférences.</translation>
+      <translation>Veuillez corriger le chemin vers l'exécutable de POV-Ray dans les préférences.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="632"/>
@@ -310,12 +310,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>S'il vous plaît, définissez le chemin vers l'exécutable Luxrender ou Luxconsole dans les préférences.</translation>
+      <translation>Veuillez définir le chemin vers l'exécutable de Luxrender ou de Luxconsole dans les préférences.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="639"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>S'il vous plaît, corrigez le chemin vers l'exécutable Luxrender ou Luxconsole dans les préférences.</translation>
+      <translation>Veuillez corriger le chemin vers l'exécutable de Luxrender ou de Luxconsole dans les préférences.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="651"/>
@@ -360,7 +360,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="34"/>
       <source>POV-Ray executable:</source>
-      <translation>Exécutable de POV-Ray :</translation>
+      <translation>L'exécutable de POV-Ray :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="51"/>
@@ -400,7 +400,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="130"/>
       <source>Luxrender executable:</source>
-      <translation>LuxRender exécutable :</translation>
+      <translation>L'exécutable de LuxRender :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="137"/>

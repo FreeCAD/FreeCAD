@@ -123,7 +123,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Polku lisäosaan</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -263,7 +263,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation>Lisäosien Hallinta</translation>
+      <translation>Lisäosien hallinta</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="64"/>
@@ -288,7 +288,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Päivitä kaikki lisäosat</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
@@ -511,7 +511,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>Sähköposti</translation>
     </message>
   </context>
   <context>
@@ -577,7 +577,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Lisäosien hallinnan asetukset</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -608,7 +608,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
-      <translation type="unfinished">Addons</translation>
+      <translation>Lisäosat</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>

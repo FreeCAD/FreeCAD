@@ -5205,7 +5205,7 @@ dans la console Python</translation>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="52"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -5284,7 +5284,7 @@ dans la console Python</translation>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="312"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>Changer</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="332"/>
@@ -11747,7 +11747,7 @@ Notez que toute modification apportée à la copie en cours sera perdue.</transl
       <location filename="../CommandView.cpp" line="3665"/>
       <location filename="../CommandView.cpp" line="3666"/>
       <source>Store a document-specific temporary working view</source>
-      <translation>Stocker une vue de travail temporaire spécifique à un document</translation>
+      <translation>Stocker une vue de travail temporaire spécifique au document</translation>
     </message>
   </context>
   <context>

@@ -940,7 +940,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
+      <translation>메시 평가 및 수리하기</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="23"/>
@@ -1371,7 +1371,7 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp; 만들기</translation>
+      <translation>만들기(&amp;C)</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
@@ -2194,7 +2194,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1240"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
+      <translation>메시 평가 및 수리하기</translation>
     </message>
   </context>
   <context>
@@ -2449,7 +2449,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Meshes</source>
-      <translation type="unfinished">&amp;Meshes</translation>
+      <translation>메시(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation type="unfinished">Arch material</translation>
+      <translation>Arch 재료</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>섹션 색상</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="163"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="184"/>
       <source>Standard code</source>
-      <translation type="unfinished">Standard code</translation>
+      <translation>표준 코드</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
@@ -114,27 +114,27 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="14"/>
       <source>BimServer</source>
-      <translation type="unfinished">BimServer</translation>
+      <translation>BimServer</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="20"/>
       <source>Server</source>
-      <translation type="unfinished">Server</translation>
+      <translation>서버</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation type="unfinished">The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</translation>
+      <translation>현재 연결 중인 BimServer의 이름입니다. Arch 환경설정에서 설정을 변경합니다.</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>Bim Server</source>
-      <translation type="unfinished">Bim Server</translation>
+      <translation>Bim 서버</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
       <source>Connect</source>
-      <translation>연결</translation>
+      <translation>연결하기</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the Bim Server</source>
-      <translation type="unfinished">The list of projects present on the Bim Server</translation>
+      <translation>Bim 서버에 있는 프로젝트 목록</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="115"/>
       <source>Available revisions:</source>
-      <translation type="unfinished">Available revisions:</translation>
+      <translation>사용 가능한 리비전:</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
@@ -175,12 +175,12 @@
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
       <location filename="../ui/BimServerTaskPanel.ui" line="205"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>업로드</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="164"/>
       <source>Root object:</source>
-      <translation type="unfinished">Root object:</translation>
+      <translation>루트 객체:</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
@@ -350,17 +350,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation type="unfinished">BimServer Login</translation>
+      <translation>BimServer 로그인</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>BimServer URL:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email):</source>
-      <translation>로그인(이메일)</translation>
+      <translation>로그인 (이메일):</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -370,7 +370,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
       <source>Keep me logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Keep me logged in across FreeCAD sessions</translation>
+      <translation>FreeCAD 세션에서 로그인 상태 유지하기</translation>
     </message>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
@@ -494,7 +494,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="37"/>
       <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
+      <translation>이름:</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="49"/>
@@ -589,7 +589,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="125"/>
       <source>Rotations</source>
-      <translation type="unfinished">Rotations</translation>
+      <translation>회전</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
@@ -692,7 +692,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation> 초</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
@@ -722,7 +722,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>IFC 버전</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
@@ -732,12 +732,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="290"/>
       <source>IFC4</source>
-      <translation type="unfinished">IFC4</translation>
+      <translation>IFC4</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>IFC2X3</source>
-      <translation type="unfinished">IFC2X3</translation>
+      <translation>IFC2X3</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="308"/>
@@ -787,7 +787,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="412"/>
       <source>2D rendering</source>
-      <translation type="unfinished">2D rendering</translation>
+      <translation>2D 렌더링</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="420"/>
@@ -829,7 +829,7 @@ to projections of hidden objects.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="589"/>
       <source>30, 10</source>
-      <translation type="unfinished">30, 10</translation>
+      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
@@ -846,7 +846,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="673"/>
       <source>Bim server</source>
-      <translation type="unfinished">Bim server</translation>
+      <translation>Bim 서버</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="681"/>
@@ -856,12 +856,12 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org) to connect to.</translation>
+      <translation>연결할 bim 서버 인스턴스(www.bimserver.org)의 URL입니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
       <source>http://localhost:8082</source>
-      <translation type="unfinished">http://localhost:8082</translation>
+      <translation>http://localhost:8082</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="708"/>
@@ -1524,12 +1524,12 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>내보내기 유형</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>표준 모델</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
