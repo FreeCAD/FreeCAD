@@ -94,7 +94,8 @@ class BSpline(gui_lines.Line):
               and arg["State"] == "DOWN"
               and arg["Button"] == "BUTTON1"):
             if arg["Position"] == self.pos:
-                self.finish(False, cont=True)
+                self.finish(cont=None)
+                return
 
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
@@ -107,7 +108,7 @@ class BSpline(gui_lines.Line):
                 self.node.append(self.point)
                 self.drawUpdate(self.point)
                 if not self.isWire and len(self.node) == 2:
-                    self.finish(False, cont=True)
+                    self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
                     # DNC: allows to close the curve
                     # by placing ends close to each other
@@ -115,9 +116,8 @@ class BSpline(gui_lines.Line):
                     # old code has been to insensitive
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
-                        self.finish(True, cont=True)
-                        _msg(translate("draft",
-                                       "Spline has been closed"))
+                        self.finish(cont=None, closed=True)
+                        _msg(translate("draft", "Spline has been closed"))
 
     def undolast(self):
         """Undo last line segment."""
@@ -142,17 +142,18 @@ class BSpline(gui_lines.Line):
             spline = Part.BSplineCurve()
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
-            _msg(translate("draft",
-                           "Pick next point, "
-                           "or finish (A) or close (O)"))
+            _msg(translate("draft", "Pick next point"))
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False, closed=False):
         """Terminate the operation and close the spline if asked.
 
         Parameters
         ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         closed: bool, optional
-            Close the line if `True`.
+            Close the spline if `True`.
         """
         if self.ui:
             self.bsplinetrack.finalize()
@@ -192,7 +193,7 @@ class BSpline(gui_lines.Line):
         # another method that performs cleanup (superfinish)
         # that is not re-implemented by any of the child classes.
         gui_base_original.Creator.finish(self)
-        if self.ui and self.ui.continueMode:
+        if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
 

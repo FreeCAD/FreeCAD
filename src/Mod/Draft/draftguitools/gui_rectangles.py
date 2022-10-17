@@ -68,10 +68,14 @@ class Rectangle(gui_base_original.Creator):
             self.rect = trackers.rectangleTracker()
             _msg(translate("draft", "Pick first point"))
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Terminate the operation.
 
-        The arguments of this function are not used and should be removed.
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
         """
         super(Rectangle, self).finish()
         if self.ui:
@@ -80,8 +84,8 @@ class Rectangle(gui_base_original.Creator):
                 del self.fillstate
             self.rect.off()
             self.rect.finalize()
-            if self.ui.continueMode:
-                self.Activated()
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            self.Activated()
 
     def createObject(self):
         """Create the final object in the current document."""
@@ -143,7 +147,7 @@ class Rectangle(gui_base_original.Creator):
                             _cmd_list)
         except Exception:
             _err("Draft: error delaying commit")
-        self.finish(cont=True)
+        self.finish(cont=None)
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -171,7 +175,8 @@ class Rectangle(gui_base_original.Creator):
               and arg["Button"] == "BUTTON1"):
 
             if arg["Position"] == self.pos:
-                self.finish()
+                self.finish(cont=None)
+                return
 
             if (not self.node) and (not self.support):
                 gui_tool_utils.getSupport(arg)
@@ -181,6 +186,7 @@ class Rectangle(gui_base_original.Creator):
                                                             noTracker=True)
             if self.point:
                 self.ui.redraw()
+                self.pos = arg["Position"]
                 self.appendPoint(self.point)
 
     def numericInput(self, numx, numy, numz):

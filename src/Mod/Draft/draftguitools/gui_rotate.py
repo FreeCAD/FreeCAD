@@ -230,7 +230,7 @@ class Rotate(gui_base_original.Modifier):
         if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
             self.extendedCopy = True
         else:
-            self.finish(cont=True)
+            self.finish(cont=None)
 
     def set_ghosts(self):
         """Set the ghost to display."""
@@ -255,15 +255,21 @@ class Rotate(gui_base_original.Modifier):
                     ghosts.append(trackers.ghostTracker(subelement))
         return ghosts
 
-    def finish(self, closed=False, cont=False):
-        """Finish the rotate operation."""
+    def finish(self, cont=False):
+        """Terminate the operation.
+
+        Parameters
+        ----------
+        cont: bool or None, optional
+            Restart (continue) the command if `True`, or if `None` and
+            `ui.continueMode` is `True`.
+        """
         if self.arctrack:
             self.arctrack.finalize()
         for ghost in self.ghosts:
             ghost.finalize()
-        if cont and self.ui:
-            if self.ui.continueMode:
-                todo.ToDo.delayAfter(self.Activated, [])
+        if cont or (cont is None and self.ui and self.ui.continueMode):
+            todo.ToDo.delayAfter(self.Activated, [])
         super(Rotate, self).finish()
         if self.doc:
             self.doc.recompute()
@@ -419,7 +425,7 @@ class Rotate(gui_base_original.Modifier):
         else:
             self.angle = math.radians(rad)
             self.rotate(self.ui.isCopy.isChecked())
-            self.finish(cont=True)
+            self.finish(cont=None)
 
 
 Gui.addCommand('Draft_Rotate', Rotate())

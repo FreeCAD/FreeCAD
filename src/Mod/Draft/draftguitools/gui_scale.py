@@ -418,7 +418,7 @@ class Scale(gui_base_original.Modifier):
                     self.task.lock.setChecked(True)
                     self.task.setValue(d2/d1)
 
-    def finish(self, closed=False, cont=False):
+    def finish(self, cont=False):
         """Terminate the operation."""
         super(Scale, self).finish()
         for ghost in self.ghosts:
