@@ -60,9 +60,15 @@ class Point(DraftObject):
         import Part
         shape = Part.Vertex(App.Vector(0, 0, 0))
         obj.Shape = shape
-        obj.Placement.Base = App.Vector(obj.X.Value,
-                                        obj.Y.Value,
-                                        obj.Z.Value)
+        obj.Placement.Base = App.Vector(obj.X, obj.Y, obj.Z)
+
+    def onChanged(self, obj, prop):
+        if prop == "Placement" \
+                and obj.Placement.Base != App.Vector(obj.X, obj.Y, obj.Z):
+            base = obj.Placement.Base
+            obj.X = base.x
+            obj.Y = base.y
+            obj.Z = base.z
 
 
 # Alias for compatibility with v0.18 and earlier
