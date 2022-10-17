@@ -452,14 +452,15 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         for j in range(0, len(ends)):
             if travel <= ends[j]:
                 iend = j
+                remains = ends[iend] - travel
+                offset = path[iend].Length - remains
                 break
         else:
             # avoids problems with float math travel > ends[-1]
             iend = len(ends) - 1
+            offset = path[iend].Length
 
         # place shape at proper spot on proper edge
-        remains = ends[iend] - travel
-        offset = path[iend].Length - remains
         pt = path[iend].valueAt(get_parameter_from_v0(path[iend], offset))
         place = calculate_placement(shapeRotation,
                                     path[iend], offset,
