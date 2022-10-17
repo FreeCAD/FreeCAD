@@ -318,6 +318,7 @@ def Create(
     obj.Proxy = ToolController(obj, assignTool)
 
     if FreeCAD.GuiUp and assignViewProvider:
+        from Path.Tool.Gui.Controller import ViewProvider
         ViewProvider(obj.ViewObject)
 
     if assignTool:
@@ -344,10 +345,5 @@ def FromTemplate(template, assignViewProvider=True):
         return obj
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     return None
-
-
-if FreeCAD.GuiUp:
-    # need ViewProvider class in this file to support loading of old files
-    from Path.Tool.Gui.Controller import ViewProvider
 
 FreeCAD.Console.PrintLog("Loading Path.Tool.Gui.Controller... done\n")
