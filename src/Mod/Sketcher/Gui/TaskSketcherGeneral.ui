@@ -30,10 +30,10 @@
        <property name="checked">
         <bool>false</bool>
        </property>
-       <property name="prefEntry" stdset="0">
+       <property name="prefEntry">
         <cstring>ShowGrid</cstring>
        </property>
-       <property name="prefPath" stdset="0">
+       <property name="prefPath">
         <cstring>Mod/Sketcher/General</cstring>
        </property>
       </widget>
@@ -43,29 +43,29 @@
        <property name="toolTip">
         <string>Distance between two subsequent grid lines</string>
        </property>
-       <property name="unit" stdset="0">
+       <property name="unit">
         <string notr="true">mm</string>
        </property>
-       <property name="decimals" stdset="0">
-        <number>3</number>
-       </property>
-       <property name="maximum" stdset="0">
-        <double>99999999.000000000000000</double>
-       </property>
-       <property name="minimum" stdset="0">
+       <property name="minimum">
         <double>0.001000000000000</double>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="maximum">
+        <double>99999999.000000000000000</double>
+       </property>
+       <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>10.000000000000000</double>
        </property>
-       <property name="prefEntry" stdset="0">
+       <property name="prefEntry">
         <cstring>GridSize</cstring>
        </property>
-       <property name="prefPath" stdset="0">
+       <property name="prefPath">
         <cstring>Mod/Sketcher/General/GridSize</cstring>
+       </property>
+       <property name="decimals">
+        <number>3</number>
        </property>
       </widget>
      </item>
@@ -83,10 +83,10 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="text">
       <string>Grid snap</string>
      </property>
-     <property name="prefEntry" stdset="0">
+     <property name="prefEntry">
       <cstring>GridSnap</cstring>
      </property>
-     <property name="prefPath" stdset="0">
+     <property name="prefPath">
       <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
@@ -105,10 +105,10 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="checked">
       <bool>true</bool>
      </property>
-     <property name="prefEntry" stdset="0">
+     <property name="prefEntry">
       <cstring>AutoConstraints</cstring>
      </property>
-     <property name="prefPath" stdset="0">
+     <property name="prefPath">
       <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
@@ -124,10 +124,10 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="checked">
       <bool>true</bool>
      </property>
-     <property name="prefEntry" stdset="0">
+     <property name="prefEntry">
       <cstring>AvoidRedundantAutoconstraints</cstring>
      </property>
-     <property name="prefPath" stdset="0">
+     <property name="prefPath">
       <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
@@ -174,13 +174,18 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
