@@ -342,14 +342,13 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     // the HoleCutDepth is something different for countersinks and counterbores
     // therefore reset it, it will be reset to sensible values by setting the new HoleCutType
     pcHole->HoleCutDepth.setValue(0.0);
+    pcHole->HoleCutType.setValue(index);
 
     // when holeCutType was changed, reset HoleCutCustomValues to false because it should
     // be a purpose decision to overwrite the normed values
     // we will handle the case that there is no normed value later in this routine
     ui->HoleCutCustomValues->setChecked(false);
     pcHole->HoleCutCustomValues.setValue(false);
-
-    pcHole->HoleCutType.setValue(index);
 
     // recompute to get the info about the HoleCutType properties
     recomputeFeature();
