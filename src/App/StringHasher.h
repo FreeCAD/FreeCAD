@@ -127,15 +127,15 @@ public:
 
     /// @name Flag accessors
     //@{
-    bool isBinary() const {return _flags.testFlag(Flag::Binary);}
-    bool isHashed() const {return _flags.testFlag(Flag::Hashed);}
-    bool isPostfixed() const {return _flags.testFlag(Flag::Postfixed);}
-    bool isPostfixEncoded() const {return _flags.testFlag(Flag::PostfixEncoded);}
-    bool isIndexed() const {return _flags.testFlag(Flag::Indexed);}
-    bool isPrefixID() const {return _flags.testFlag(Flag::PrefixID);}
-    bool isPrefixIDIndex() const {return _flags.testFlag(Flag::PrefixIDIndex);}
-    bool isMarked() const {return _flags.testFlag(Flag::Marked);}
-    bool isPersistent() const {return _flags.testFlag(Flag::Persistent);}
+    bool isBinary() const;
+    bool isHashed() const;
+    bool isPostfixed() const;
+    bool isPostfixEncoded() const;
+    bool isIndexed() const;
+    bool isPrefixID() const;
+    bool isPrefixIDIndex() const;
+    bool isMarked() const;
+    bool isPersistent() const;
     //@}
 
     /// Checks if this StringID is from the input hasher
@@ -234,10 +234,7 @@ public:
     void mark() const;
 
     /// Mark the StringID as persistent regardless of usage mark
-    void setPersistent(bool enable)
-    {
-        _flags.setFlag(Flag::Persistent, enable);
-    }
+    void setPersistent(bool enable);
 
     bool operator<(const StringID &other) const {
         return compare(other) < 0;
@@ -642,10 +639,42 @@ private:
     std::unique_ptr<HashMap> _hashes;
     mutable std::string _filename;
 };
-
-}
+} //namespace App
 
 ENABLE_BITMASK_OPERATORS(App::StringID::Flag)
 ENABLE_BITMASK_OPERATORS(App::StringHasher::Option)
+
+namespace App {
+inline bool StringID::isBinary() const {
+    return _flags.testFlag(Flag::Binary);
+}
+inline bool StringID::isHashed() const {
+    return _flags.testFlag(Flag::Hashed);
+}
+inline bool StringID::isPostfixed() const {
+    return _flags.testFlag(Flag::Postfixed);
+}
+inline bool StringID::isPostfixEncoded() const {
+    return _flags.testFlag(Flag::PostfixEncoded);
+}
+inline bool StringID::isIndexed() const {
+    return _flags.testFlag(Flag::Indexed);
+}
+inline bool StringID::isPrefixID() const {
+    return _flags.testFlag(Flag::PrefixID);
+}
+inline bool StringID::isPrefixIDIndex() const {
+    return _flags.testFlag(Flag::PrefixIDIndex);
+}
+inline bool StringID::isMarked() const {
+    return _flags.testFlag(Flag::Marked);
+}
+inline bool StringID::isPersistent() const {
+    return _flags.testFlag(Flag::Persistent);
+}
+inline void StringID::setPersistent(bool enable) {
+    _flags.setFlag(Flag::Persistent, enable);
+}
+} //namespace App
 
 #endif
