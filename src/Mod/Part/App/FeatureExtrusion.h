@@ -118,7 +118,11 @@ public:
     virtual std::string getUserFriendlyName() const override;
     virtual std::string getBriefExplanation() const override;
 
+#if OCC_VERSION_HEX >= 0x070600
+    virtual void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
+#else
     virtual void Build() override;
+#endif
 protected:
     virtual void Build_Essence() override {}
 };

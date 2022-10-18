@@ -102,10 +102,17 @@ void BRepOffsetAPI_MakeOffsetFix::Perform (const Standard_Real Offset, const Sta
     mkOffset.Perform(Offset, Alt);
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void BRepOffsetAPI_MakeOffsetFix::Build(const Message_ProgressRange& theRange)
+{
+    mkOffset.Build(theRange);
+}
+#else
 void BRepOffsetAPI_MakeOffsetFix::Build()
 {
     mkOffset.Build();
 }
+#endif
 
 void BRepOffsetAPI_MakeOffsetFix::Init(const TopoDS_Face& Spine, const GeomAbs_JoinType Join,
                                        const Standard_Boolean IsOpenResult)

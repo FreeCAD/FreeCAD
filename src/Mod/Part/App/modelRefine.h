@@ -198,7 +198,11 @@ class PartExport BRepBuilderAPI_RefineModel : public BRepBuilderAPI_MakeShape
 {
 public:
     BRepBuilderAPI_RefineModel(const TopoDS_Shape&);
-    void Build();
+#if OCC_VERSION_HEX >= 0x070600
+    virtual void Build(const Message_ProgressRange& theRange = Message_ProgressRange());
+#else
+    virtual void Build();
+#endif
     const TopTools_ListOfShape& Modified(const TopoDS_Shape& S);
     Standard_Boolean IsDeleted(const TopoDS_Shape& S);
 

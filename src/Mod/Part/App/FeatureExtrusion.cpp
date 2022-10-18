@@ -390,7 +390,11 @@ std::string FaceMakerExtrusion::getBriefExplanation() const
     return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker", "Supports making faces with holes, does not support nesting."));
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void FaceMakerExtrusion::Build(const Message_ProgressRange&)
+#else
 void FaceMakerExtrusion::Build()
+#endif
 {
     this->NotDone();
     this->myGenerated.Clear();

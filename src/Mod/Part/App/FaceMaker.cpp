@@ -108,7 +108,11 @@ const Part::TopoShape &Part::FaceMaker::getTopoShape() const{
     return this->myTopoShape;
 }
 
+#if OCC_VERSION_HEX >= 0x070600
+void Part::FaceMaker::Build(const Message_ProgressRange&)
+#else
 void Part::FaceMaker::Build()
+#endif
 {
     this->NotDone();
     this->myShapesToReturn = this->myInputFaces;

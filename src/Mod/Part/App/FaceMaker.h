@@ -84,7 +84,11 @@ public:
      */
     virtual const TopoDS_Face& Face();
 
+#if OCC_VERSION_HEX >= 0x070600
+    virtual void Build(const Message_ProgressRange& theRange = Message_ProgressRange());
+#else
     virtual void Build();
+#endif
 
     //fails to compile, huh!
     //virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override {throwNotImplemented();}
