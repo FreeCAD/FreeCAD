@@ -160,6 +160,14 @@ bool GeometryFacade::isInternalType(const Part::Geometry * geometry, InternalTyp
     return gf->getInternalType() == type;
 }
 
+bool GeometryFacade::isInternalAligned(const Part::Geometry * geometry)
+{
+    throwOnNullPtr(geometry);
+
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->isInternalAligned();
+}
+
 bool GeometryFacade::getBlocked(const Part::Geometry * geometry)
 {
     throwOnNullPtr(geometry);

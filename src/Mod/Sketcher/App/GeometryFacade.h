@@ -123,6 +123,7 @@ public: // Utility methods
     static bool getConstruction(const Part::Geometry * geometry);
     static void setConstruction(Part::Geometry * geometry, bool construction);
     static bool isInternalType(const Part::Geometry * geometry, InternalType::InternalType type);
+    static bool isInternalAligned(const Part::Geometry * geometry);
     static bool getBlocked(const Part::Geometry * geometry);
 
 public:
