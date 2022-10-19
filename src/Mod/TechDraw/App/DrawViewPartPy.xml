@@ -148,7 +148,15 @@
         <UserDocu>getVertexBySelection(vertexName). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="requestPaint">
+    <Methode Name="projectPoint">
+      <Documentation>
+        <UserDocu>projectPoint(vector3d point, [bool invert]). Returns the projection of point in the
+        projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
+        result.</UserDocu>
+      </Documentation>
+    </Methode>
+
+<Methode Name="requestPaint">
       <Documentation>
         <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
       </Documentation>
