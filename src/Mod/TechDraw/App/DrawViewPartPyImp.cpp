@@ -709,6 +709,20 @@ PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
     return new Part::TopoShapeVertexPy(new Part::TopoShape(outVertex));
 }
 
+PyObject* DrawViewPartPy::projectPoint(PyObject *args)
+{
+    PyObject* pPoint = nullptr;
+    PyObject* pInvert = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!", &(Base::VectorPy::Type), &pPoint, &PyBool_Type, &pInvert)) {
+        throw Py::TypeError("expected (vector)");
+    }
+
+    bool invert = Base::asBoolean(pInvert);
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    Base::Vector3d projection = dvp->projectPoint(static_cast<Base::VectorPy*>(pPoint)->value(), invert);
+    return new Base::VectorPy(new Base::Vector3d(projection));
+}
 
 //==============================================================================
 PyObject *DrawViewPartPy::getCustomAttributes(const char* /*attr*/) const
