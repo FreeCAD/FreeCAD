@@ -759,10 +759,19 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // File
     auto file = new ToolBarItem( root );
     file->setCommand("File");
-    *file << "Std_New" << "Std_Open" << "Std_Save" << "Separator"
-          << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
+    *file << "Std_New" << "Std_Open" << "Std_Save";
 
+    // Edit
+    auto edit = new ToolBarItem( root );
+    edit->setCommand("Edit");
+    *edit << "Std_Undo" << "Std_Redo"
+          << "Separator" << "Std_Refresh";
+    
+    // Clipboard
+    auto clipboard = new ToolBarItem( root , ToolBarItem::HideStyle::HIDDEN );
+    clipboard->setCommand("Clipboard");
+    *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
+    
     // Workbench switcher
     if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
         auto wb = new ToolBarItem(root);
@@ -790,6 +799,11 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     structure->setCommand("Structure");
     *structure << "Std_Part" << "Std_Group" << "Std_LinkMake" << "Std_LinkActions";
 
+    // Help
+    auto help = new ToolBarItem( root );
+    help->setCommand("Help");
+    *help << "Std_WhatsThis";
+    
     return root;
 }
 
