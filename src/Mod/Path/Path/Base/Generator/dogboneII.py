@@ -39,10 +39,23 @@ A positive kink angle represents a move to the left, and a negative angle repres
         self.m1 = m1
         self.t0 = m0.anglesOfTangents()[1]
         self.t1 = m1.anglesOfTangents()[0]
+        if Path.Geom.isRoughly(self.t0, self.t1):
+            self.defl = 0
+        else:
+            self.defl = Path.Geom.normalizeAngle(self.t1 - self.t0)
+
+    def isKink(self):
+        return self.defl == 0
+
+    def goesLeft(self):
+        return self.defl > 0
+
+    def goesRight(self):
+        return self.defl < 0
 
     def deflection(self):
         '''deflection() ... returns the tangential difference of the two edges at their intersection'''
-        return Path.Geom.normalizeAngle(self.t1 - self.t0)
+        return self.defl
 
     def normAngle(self):
         '''normAngle() ... returns the angle opposite between the two tangents'''
@@ -65,7 +78,7 @@ A positive kink angle represents a move to the left, and a negative angle repres
         return self.position().y
 
     def __repr__(self):
-        return f"({self.x():.4f}, {self.y():.4f})[t0={180*self.t0/math.pi:.2f}, t1={180*self.t1/math.pi:.2f}, deflection={180*self.deflection()/math.pi:.2f}, normAngle={180*self.normAngle()/math.pi:.2f}]"
+        return f"({self.x():.4f}, {self.y():.4f})[t0={180*self.t0/math.pi:.2f}, t1={180*self.t1/math.pi:.2f}, deflection={180*self.defl/math.pi:.2f}, normAngle={180*self.normAngle()/math.pi:.2f}]"
 
 class Bone (object):
     '''A Bone holds all the information of a bone and the kink it is attached to'''
@@ -77,6 +90,24 @@ class Bone (object):
 
     def addInstruction(self, instr):
         self.instr.append(instr)
+
+def kink_to_path(kink, g0=False):
+    return Path.Path([PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
+
+def bone_to_path(bone, g0=False):
+    kink = bone.kink
+    cmds = []
+    if g0 and not Path.Geom.pointsCoincide(kink.m0.positionBegin(), FreeCAD.Vector(0, 0, 0)):
+        pos = kink.m0.positionBegin()
+        param = {}
+        if not Path.Geom.isRoughly(pos.x, 0):
+            param['X'] = pos.x
+        if not Path.Geom.isRoughly(pos.y, 0):
+            param['Y'] = pos.y
+        cmds.append(Path.Command('G0', param))
+    for instr in [kink.m0, bone.instr[0], bone.instr[1], kink.m1]:
+        cmds.append(PathLanguage.instruction_to_command(instr))
+    return Path.Path(cmds)
 
 def generate_tbone(kink, length, dim):
     def getAxisX(v):
@@ -113,9 +144,6 @@ def generate_bone(kink, length, angle):
     if Path.Geom.isRoughly(abs(angle), PI/2):
         return generate_tbone_vertical(kink, length)
 
-    #if kink.deflection() > 0:
-    #    length = -length
-
     dx = length * math.cos(angle)
     dy = length * math.sin(angle)
     p0 = kink.position()
@@ -140,5 +168,58 @@ def generate_tbone_on_long(kink, length):
     return generate_bone(kink, length, a)
 
 def generate_dogbone(kink, length):
-    #return generate_bone(kink, length, Path.Geom.normalizeAngle((kink.deflection() + PI) / 2))
     return generate_bone(kink, length, kink.normAngle())
+
+class Generator(object):
+    def __init__(self, calc_length, nominal_length, custom_length):
+        self.calc_length = calc_length
+        self.nominal_length = nominal_length
+        self.custom_length = custom_length
+
+    def length(self, kink, angle):
+        return self.calc_length(kink, angle, self.nominal_length, self.custom_length)
+
+    def generate_func(self):
+        return generate_bone
+
+    def generate(self, kink):
+        angle = self.angle(kink)
+        return self.generate_func()(kink, self.length(kink, angle), angle)
+
+class GeneratorTBoneHorizontal(Generator):
+    def angle(self, kink):
+        if kink.m0.positionEnd().x < kink.m1.positionEnd().x:
+            return -PI
+        else:
+            return 0
+
+class GeneratorTBoneVertical(Generator):
+    def angle(self, kink):
+        if kink.m0.positionEnd().y < kink.m1.positionEnd().y:
+            return -PI/2
+        else:
+            return PI/2
+
+class GeneratorTBoneOnShort(Generator):
+    def angle(self, kink):
+        if kink.m0.pathLength() < kink.m1.pathLength():
+            return Path.Geom.normalizeAngle(kink.t0 + PI/2)
+        else:
+            return Path.Geom.normalizeAngle(kink.t1 - PI/2)
+
+class GeneratorTBoneOnLong(Generator):
+    def angle(self, kink):
+        if kink.m0.pathLength() > kink.m1.pathLength():
+            return Path.Geom.normalizeAngle(kink.t0 + PI/2)
+        else:
+            return Path.Geom.normalizeAngle(kink.t1 - PI/2)
+
+class GeneratorDogbone(Generator):
+    def angle(self, kink):
+        return kink.normAngle()
+
+def generate(kink, generator, calc_length, nominal_length, custom_length=None):
+    if custom_length is None:
+        custom_length = nominal_length
+    gen = generator(calc_length, nominal_length, custom_length)
+    return gen.generate(calc_length)

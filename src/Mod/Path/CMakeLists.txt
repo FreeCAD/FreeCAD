@@ -293,7 +293,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
     PathTests/TestPathDrillable.py
-    PathTests/TestPathRotationGenerator.py
+    PathTests/TestPathGeneratorDogboneII.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
     PathTests/TestPathHelpers.py
@@ -304,6 +304,7 @@ SET(PathTests_SRCS
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
     PathTests/TestPathPropertyBag.py
+    PathTests/TestPathRotationGenerator.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
     PathTests/TestPathToolChangeGenerator.py
