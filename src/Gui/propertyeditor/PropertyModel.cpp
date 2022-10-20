@@ -414,11 +414,12 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         int last = groupInfo.groupItem->childCount();
         int first = static_cast<int>(groupInfo.children.size());
         if (last > first) {
-            QModelIndex midx = this->index(groupInfo.groupItem->_row,0,QModelIndex());
-            beginRemoveRows(midx, first, last-1);
-            groupInfo.groupItem->removeChildren(first, last-1);
+            QModelIndex midx = this->index(groupInfo.groupItem->_row, 0, QModelIndex());
+            beginRemoveRows(midx, first, last - 1);
+            groupInfo.groupItem->removeChildren(first, last - 1);
             endRemoveRows();
-        } else {
+        }
+        else {
             assert(last == first);
         }
     }

@@ -331,8 +331,8 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
     timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
-void PropertyView::onTimer() {
-
+void PropertyView::onTimer()
+{
     timer->stop();
 
     if(!this->isSelectionAttached()) {

@@ -252,7 +252,7 @@ void PropertyItem::insertChild(int index, PropertyItem *child)
  */
 void PropertyItem::removeChildren(int from, int to)
 {
-    int count = to-from+1;
+    int count = to - from + 1;
     for (int i=0; i<count; i++) {
         PropertyItem* child = childItems.takeAt(from);
         delete child;
