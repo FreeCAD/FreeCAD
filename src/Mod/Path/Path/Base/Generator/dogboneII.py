@@ -129,20 +129,14 @@ def generate_tbone(kink, length, dim):
     moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
     return Bone(kink, angle, [moveIn, moveOut])
 
-def generate_tbone_horizontal(kink, length):
-    return generate_tbone(kink, length, 'X')
-
-def generate_tbone_vertical(kink, length):
-    return generate_tbone(kink, length, 'Y')
-
 def generate_bone(kink, length, angle):
     # These two special cases could be removed, they are more efficient though because they
     # don't require trigonometric function calls. They are also a gentle introduction into
     # the dog/t/bone world, so we'll leave them here for now
     if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(abs(angle), PI):
-        return generate_tbone_horizontal(kink, length)
+        return generate_tbone(kink, length, 'X')
     if Path.Geom.isRoughly(abs(angle), PI/2):
-        return generate_tbone_vertical(kink, length)
+        return generate_tbone(kink, length, 'Y')
 
     dx = length * math.cos(angle)
     dy = length * math.sin(angle)
@@ -152,23 +146,6 @@ def generate_bone(kink, length, angle):
     moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
 
     return Bone(kink, angle, [moveIn, moveOut])
-
-def generate_tbone_on_short(kink, length):
-    if kink.m0.pathLength() < kink.m1.pathLength():
-        a = Path.Geom.normalizeAngle(kink.t0 + PI/2)
-    else:
-        a = Path.Geom.normalizeAngle(kink.t1 - PI/2)
-    return generate_bone(kink, length, a)
-
-def generate_tbone_on_long(kink, length):
-    if kink.m0.pathLength() > kink.m1.pathLength():
-        a = Path.Geom.normalizeAngle(kink.t0 + PI/2)
-    else:
-        a = Path.Geom.normalizeAngle(kink.t1 - PI/2)
-    return generate_bone(kink, length, a)
-
-def generate_dogbone(kink, length):
-    return generate_bone(kink, length, kink.normAngle())
 
 class Generator(object):
     def __init__(self, calc_length, nominal_length, custom_length):

@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Base.Generator.dogboneII as dogboneII
@@ -28,7 +29,7 @@ import math
 
 PI = math.pi
 
-def calc_adaptive_length(kink, angle, nominal_length, debugMode=False):
+def calc_length_adaptive(kink, angle, nominal_length, custom_length):
     if Path.Geom.isRoughly(abs(kink.deflection()), 0):
         return 0
 
@@ -76,68 +77,173 @@ def calc_adaptive_length(kink, angle, nominal_length, debugMode=False):
             depth = depth - math.sqrt(nominal_length * nominal_length - height * height)
         Path.Log.debug(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
 
-    if debugMode and FreeCAD.GuiUp:
-        import Part
-        FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
-        group = FreeCAD.ActiveDocument.ActiveObject
-        bone = dogboneII.generate_dogbone(kink, dist)
-        Path.show(PathDressupDogboneII.bone_to_path(bone, True), 'adaptive')
-        group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-        instr = bone.instr[0]
-        Part.show(Part.Edge(Part.makeCircle(.025, instr.positionEnd())), 'adaptive')
-        group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-        if depth != 0:
-            x = kink.position().x + depth * math.cos(angle)
-            y = kink.position().y + depth * math.sin(angle)
-            pos = FreeCAD.Vector(x, y, 0)
-            Part.show(Part.Edge(Part.makeLine(kink.position(), pos)), 'adaptive')
-            group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-            Part.show(Part.Edge(Part.makeCircle(nominal_length, pos)), 'adaptive')
-            group.addObject(FreeCAD.ActiveDocument.ActiveObject)
-        group.Visibility = False
-
     return depth
 
-def createKinks(maneuver):
-    k = []
-    moves = maneuver.getMoves()
-    if moves:
-        move0 = moves[0]
-        prev = move0
-        for m in moves[1:]:
-            k.append(dogboneII.Kink(prev, m))
-            prev = m
-        if Path.Geom.pointsCoincide(move0.positionBegin(), prev.positionEnd()):
-            k.append(dogboneII.Kink(prev, move0))
-    return k
+def calc_length_nominal(kink, angle, nominal_length, custom_length):
+    return nominal_length
+
+def calc_length_custom(kink, angle, nominal_length, custom_length):
+    return custom_length
 
 
-def findDogboneKinks(maneuver, threshold):
-    '''findDogboneKinks(maneuver, threshold) ... return all kinks fitting the criteria.
-A positive threshold angle returns all kinks on the right side, and a negative all kinks on the left side'''
-    if threshold > 0:
-        return [k for k in createKinks(maneuver) if k.deflection() > threshold]
-    if threshold < 0:
-        return [k for k in createKinks(maneuver) if k.deflection() < threshold]
-    # you asked for it ...
-    return createKinks(maneuver)
+class Style(object):
+    '''Style - enumeration class for the supported bone styles'''
+
+    Dogbone = "Dogbone"
+    Tbone_H = "T-bone horizontal"
+    Tbone_V = "T-bone vertical"
+    Tbone_L = "T-bone long edge"
+    Tbone_S = "T-bone short edge"
+    All = [Dogbone, Tbone_H, Tbone_V, Tbone_L, Tbone_S]
+
+    #Generator = {
+    #    Dogbone : dogboneII.generate_dogbone,
+    #    Tbone_H : dogboneII.generate_tbone_horizontal,
+    #    Tbone_V : dogboneII.generate_tbone_vertical,
+    #    Tbone_S : dogboneII.generate_tbone_on_short,
+    #    Tbone_L : dogboneII.generate_tbone_on_long,
+    #    }
+
+class Side(object):
+    '''Side - enumeration class for the side of the path to attach bones'''
+
+    Left = "Left"
+    Right = "Right"
+    All = [Left, Right]
+
+    @classmethod
+    def oppositeOf(cls, side):
+        if side == cls.Left:
+            return cls.Right
+        if side == cls.Right:
+            return cls.Left
+        return None
 
 
-def kink_to_path(kink, g0=False):
-    return Path.Path([PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
+class Incision(object):
+    '''Incision - enumeration class for the different depths of bone incision'''
 
-def bone_to_path(bone, g0=False):
-    kink = bone.kink
-    cmds = []
-    if g0 and not Path.Geom.pointsCoincide(kink.m0.positionBegin(), FreeCAD.Vector(0, 0, 0)):
-        pos = kink.m0.positionBegin()
-        param = {}
-        if not Path.Geom.isRoughly(pos.x, 0):
-            param['X'] = pos.x
-        if not Path.Geom.isRoughly(pos.y, 0):
-            param['Y'] = pos.y
-        cmds.append(Path.Command('G0', param))
-    for instr in [kink.m0, bone.instr[0], bone.instr[1], kink.m1]:
-        cmds.append(PathLanguage.instruction_to_command(instr))
-    return Path.Path(cmds)
+    Fixed = "fixed"
+    Adaptive = "adaptive"
+    Custom = "custom"
+    All = [Adaptive, Fixed, Custom]
+
+    Calc = {
+        Fixed : calc_length_nominal,
+        Adaptive : calc_length_adaptive,
+        Custom : calc_length_custom,
+        }
+
+
+def insertBone(kink, side):
+    '''insertBone(kink, side) - return True if a bone should be inserted into the kink'''
+    if not kink.isKink():
+        return False
+
+    if obj.Side == Side.Right and kink.goesRight():
+        return False
+    if obj.Side == Side.Left and kink.goesLeft():
+        return False
+    return True
+
+class Proxy(object):
+    def __init__(self, obj, base):
+        obj.addProperty(
+            "App::PropertyLink",
+            "Base",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "The base path to dress up"),
+        )
+
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Side",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
+        )
+        obj.Side = Side.All
+        obj.Side = Side.Right
+
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Style",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "The style of bones"),
+        )
+        obj.Style = Style.All
+        obj.Style = Style.Dogbone
+
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Incision",
+            "Dressup",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The algorithm to determine the bone length"
+            ),
+        )
+        obj.Incision = Incision.All
+        obj.Incision = Incision.Adaptive
+
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Custom",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == Incision.Custom"),
+        )
+        obj.Custom = 0.0
+
+        obj.addProperty(
+            "App::PropertyIntegerList",
+            "BoneBlacklist",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
+        )
+        obj.BoneBlacklist = []
+
+        self.onDocumentRestored(obj)
+
+    def onDocumentRestored(self, obj):
+        self.obj = obj
+        obj.setEditorMode("BoneBlacklist", 2)  # hide
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
+    def boneMoves(self, obj, move0, move1): 
+        moves = []
+        kink = dogboneII.Kink(lastMove, thisMove)
+        if insertBone(kink, obj.Side):
+            pass
+
+        moves.append(move1)
+        return moves
+
+    def execute(self, obj):
+        maneuver = PathLanguage.Maneuver()
+        lastMove = None
+        moveAfterPlunge = None
+        if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
+            for i, instr in enumerate(PathLanguage.Maneuver.FromPath(obj.Base.Path)):
+                if instr.isMove():
+                    thisMove = instr
+                    if thisMove.isPlunge():
+                        if lastMove and moveAfterPlunge:
+                            pass
+                        lastMove = None
+                        moveAfterPlunge = None
+                    else:
+                        if moveAfterPlunge is None:
+                            moveAfterPlunge = thisMove
+                        if lastMove:
+                            pass
+                        lastMove = thisMove
+                    maneuver.addInstruction(thisMove)
+                else:
+                    # none move instructions get added verbatim
+                    maneuver.addInstruction(instr)
+
+        obj.Path = maneuver.toPath()
 

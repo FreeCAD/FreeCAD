@@ -67,6 +67,10 @@ class Instruction (object):
     def isMove(self):
         return False
 
+    def isPlunge(self):
+        '''isPlunge() ... return true if this moves up or down'''
+        return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+
     def x(self, default=0):
         return self.param.get('X', default)
 
@@ -200,6 +204,12 @@ class Maneuver (object):
 
     def getMoves(self):
         return [instr for instr in self.instr if instr.isMove()]
+
+    def addInstruction(self, instr):
+        self.instr.append(instr)
+
+    def toPath(self):
+        return Path.Path([instruction_to_command(instr) for instr in self.instr])
 
     def __repr__(self):
         if self.instr:
