@@ -648,11 +648,12 @@ void System::removeConstraint(Constraint *constr)
 
 // basic constraints
 
-int System::addConstraintEqual(double *param1, double *param2, int tagId, bool driving)
+int System::addConstraintEqual(double *param1, double *param2, int tagId, bool driving, Constraint::Alignment internalalignment)
 {
     Constraint *constr = new ConstraintEqual(param1, param2);
     constr->setTag(tagId);
     constr->setDriving(driving);
+    constr->setInternalAlignment(internalalignment);
     return addConstraint(constr);
 }
 
@@ -1125,6 +1126,7 @@ int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, I
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
     constr->setTag(tagId);
     constr->setDriving(driving);
+    constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
     return addConstraint(constr);
 }
 
@@ -1133,6 +1135,7 @@ int System::addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola &e, Point &p
     Constraint *constr = new ConstraintInternalAlignmentPoint2Hyperbola(e, p1, alignmentType);
     constr->setTag(tagId);
     constr->setDriving(driving);
+    constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
     return addConstraint(constr);
 }
 
@@ -1216,8 +1219,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point
 
 int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId, bool driving)
 {
-    addConstraintEqual(e.focus1.x, p1.x, tagId, driving);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving);
+    addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, int tagId, bool driving)
@@ -1313,21 +1316,21 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
 
 int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId, bool driving)
 {
-    addConstraintEqual(e.focus1.x, p1.x, tagId, driving);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving);
+    addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
 int System::addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId, bool driving)
 {
-    addConstraintEqual(e.focus1.x, p1.x, tagId, driving);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving);
+    addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
 int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tagId, bool driving)
 {
-    addConstraintEqual(b.poles[poleindex].x, c.center.x, tagId, driving);
-    addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId, driving);
-    return addConstraintEqual(b.weights[poleindex], c.rad, tagId, driving);
+    addConstraintEqual(b.poles[poleindex].x, c.center.x, tagId, driving, Constraint::Alignment::InternalAlignment);
+    addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    return addConstraintEqual(b.weights[poleindex], c.rad, tagId, driving, Constraint::Alignment::InternalAlignment);
 }
 
 //calculates angle between two curves at point of their intersection p. If two
@@ -4482,13 +4485,29 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         Constraint *mostPopular = nullptr;
         for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
                 it != conflictingMap.end(); ++it) {
-            if (static_cast<int>(it->second.size()) > maxPopularity ||
-                (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) ||
 
-                (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
-                    it->first->getTag() > mostPopular->getTag())
+            bool isinternalalignment = ((it->first)->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+            int numberofsets =  static_cast<int>(it->second.size()); // number of sets in which the constraint appears
+
+
+            /* This is a heuristic algorithm to propose the user which constraints from a redundant/conflicting set should be removed. It is based on the following principles:
+             * 1. if it is internal alignment, we discard it from the contest, as it is inherent to the geometry and cannot be the conflicting/redundant to be removed, so it is not proposed.
+             * 2. if the current constraint is more popular than previous ones (appears in more sets), take it. This prioritises removal of constraints that cause several independent groups of constraints to be conflicting/redundant. It is based on the observation that the redundancy/conflict is caused by the lesser amount of constraints.
+             * 3. if there is already a constraint ranking in the contest, and the current one is as popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises removal of sketcher constraints (not solver constraints) that generates a higher amount of solver constraints. It is based on
+             * the observation that constraints taking a higher amount of DoFs (such as symmetry) are preferred by the user, who may not see the redundancy of simpler
+             * ones.
+             * 4. if there is already a constraint ranking in the context, the current one is as popular, and they remove the same amount of DoFs, prefer removal of
+             * the latest introduced.
+             */
+
+            if ( !isinternalalignment && //  (1) internal alignment => Discard
+                 (   numberofsets > maxPopularity || // (2)
+                    (numberofsets == maxPopularity && mostPopular &&
+                    tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) || // (3)
+
+                    (numberofsets == maxPopularity && mostPopular &&
+                    tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
+                        it->first->getTag() > mostPopular->getTag())) // (4)
 
             ) {
                 mostPopular = it->first;
