@@ -415,6 +415,7 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         int first = static_cast<int>(groupInfo.children.size());
         if (last > first) {
             QModelIndex midx = this->index(groupInfo.groupItem->_row, 0, QModelIndex());
+            // This can trigger a recursive call of PropertyView::onTimer()
             beginRemoveRows(midx, first, last - 1);
             groupInfo.groupItem->removeChildren(first, last - 1);
             endRemoveRows();
