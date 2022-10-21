@@ -3166,6 +3166,7 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     auto dataPtr = static_cast<VPRender*>(cameraSensor.getData());
     dataPtr->attached = false;
     delete dataPtr;
+    cameraSensor.setData(nullptr);
     cameraSensor.detach();
 
     viewer->removeGraphicsItem(rubberband.get());
@@ -3177,7 +3178,7 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 void ViewProviderSketch::camSensCB(void *data, SoSensor *)
 {
     VPRender *proxyVPrdr = static_cast<VPRender*>(data);
-    if (!proxyVPrdr->attached)
+    if (!proxyVPrdr || !proxyVPrdr->attached)
         return;
 
     auto vp = proxyVPrdr->vp;
