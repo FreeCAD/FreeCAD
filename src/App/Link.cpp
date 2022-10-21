@@ -117,8 +117,8 @@ ParameterGrp::handle LinkParams::getHandle() {
 // Auto generated code. See class document of LinkParams.
 const char *LinkParams::docCopyOnChangeApplyToAll() {
     return QT_TRANSLATE_NOOP("LinkParams",
-"Stores the last user choice of whether to apply CopyOnChange setup to all link\n"
-"that links to the same configurable object");
+"Stores the last user choice of whether to apply CopyOnChange setup to all links\n"
+"that reference the same configurable object");
 }
 
 // Auto generated code. See class document of LinkParams.
