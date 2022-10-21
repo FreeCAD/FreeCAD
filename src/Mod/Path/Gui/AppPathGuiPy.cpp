@@ -104,7 +104,7 @@ private:
             std::ostringstream pre;
             std::ostringstream cmd;
             if (processor.empty()) {
-                App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+                App::Document *pcDoc = App::GetApplication().newDocument();
                 Gui::Command::runCommand(Gui::Command::Gui,"import Path");
                 cmd << "Path.read(\"" << EncodedName << "\",\"" << pcDoc->getName() << "\")";
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());

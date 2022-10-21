@@ -407,9 +407,13 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
 {
+    bool defaultConstructor= false;
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
+    {
         Name = "Unnamed";
+        defaultConstructor= true; //we have function call like newDocument();
+    }
     string name = getUniqueDocumentName(Name, tempDoc);
 
     // return the temporary document if it exists
@@ -424,7 +428,14 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         userName = UserName;
     }
     else {
-        userName = Name;
+        if (defaultConstructor) //we have function call newDocument() thus set internal name to "Unnamed" and userName to translated string "Unnamed"
+        {
+            QString L10nUserName = QObject::tr("Unnamed");
+            userName = L10nUserName.toStdString().c_str();
+        }
+        else {
+            userName = Name;
+        }
         std::vector<std::string> names;
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
