@@ -396,10 +396,6 @@ private:
     struct VPRender {
         ViewProviderSketch* vp;
         SoRenderManager* renderMgr;
-        // we have to manage an internal flag because as sensor events are queued in Coin,
-        // it may happen that the callback is called while the sensor is detached,
-        // leading to subsequent code trying to access deleted objects (passed as sensor data)
-        bool attached = true;
     };
 
 public:
