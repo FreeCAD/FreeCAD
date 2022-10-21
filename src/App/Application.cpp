@@ -407,14 +407,39 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
 {
-    bool defaultConstructor= false;
-    // get a valid name anyway!
-    if (!Name || Name[0] == '\0')
-    {
-        Name = "Unnamed";
-        defaultConstructor= true; //we have function call like newDocument();
-    }
-    string name = getUniqueDocumentName(Name, tempDoc);
+    auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
+        bool defaultName = (!Name || Name[0] == '\0');
+
+        // get a valid name anyway!
+        if (defaultName) {
+            Name = "Unnamed";
+        }
+
+        std::string userName;
+        if (UserName && UserName[0] != '\0') {
+            userName = UserName;
+        }
+        else {
+            userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
+
+            std::vector<std::string> names;
+            names.reserve(DocMap.size());
+            for (const auto& pos : DocMap) {
+                names.emplace_back(pos.second->Label.getValue());
+            }
+
+            if (!names.empty()) {
+                userName = Base::Tools::getUniqueName(userName, names);
+            }
+        }
+
+        return std::make_tuple(std::string(Name), userName);
+    };
+
+    auto tuple = getNameAndLabel(Name, UserName);
+    std::string name = std::get<0>(tuple);
+    std::string userName = std::get<1>(tuple);
+    name = getUniqueDocumentName(name.c_str(), tempDoc);
 
     // return the temporary document if it exists
     if (tempDoc) {
@@ -423,39 +448,16 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
             return it->second;
     }
 
-    std::string userName;
-    if (UserName && UserName[0] != '\0') {
-        userName = UserName;
-    }
-    else {
-        if (defaultConstructor) //we have function call newDocument() thus set internal name to "Unnamed" and userName to translated string "Unnamed"
-        {
-            QString L10nUserName = QObject::tr("Unnamed");
-            userName = L10nUserName.toStdString().c_str();
-        }
-        else {
-            userName = Name;
-        }
-        std::vector<std::string> names;
-        names.reserve(DocMap.size());
-        std::map<string,Document*>::const_iterator pos;
-        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos)
-            names.emplace_back(pos->second->Label.getValue());
-        if (!names.empty())
-            userName = Base::Tools::getUniqueName(userName, names);
-    }
-
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
-    if (tempDoc)
-        newDoc->setStatus(Document::TempDoc, true);
+    newDoc->setStatus(Document::TempDoc, tempDoc);
 
     auto oldActiveDoc = _pActiveDoc;
-    auto doc = newDoc.get();
+    auto doc = newDoc.release(); // now owned by the Application
 
     // add the document to the internal list
-    DocMap[name] = newDoc.release(); // now owned by the Application
-    _pActiveDoc = DocMap[name];
+    DocMap[name] = doc;
+    _pActiveDoc = doc;
 
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
@@ -476,14 +478,13 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
     _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
-    _pActiveDoc->signalChangePropertyEditor.connect(
-            std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChangePropertyEditor.connect(std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
 
     // make sure that the active document is set in case no GUI is up
     {
         Base::PyGILStateLocker lock;
         Py::Object active(_pActiveDoc->getPyObject(), true);
-        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
+        Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"), active);
     }
 
     signalNewDocument(*_pActiveDoc, createView);
