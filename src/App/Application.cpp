@@ -430,11 +430,12 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     else {
         if (defaultConstructor) //we have function call newDocument() thus set internal name to "Unnamed" and userName to translated string "Unnamed"
         {
-        QString L10nUserName = QObject::tr("Unnamed");
-        userName = L10nUserName.toStdString().c_str();
+            QString L10nUserName = QObject::tr("Unnamed");
+            userName = L10nUserName.toStdString().c_str();
         }
-        else
+        else {
             userName = Name;
+        }
         std::vector<std::string> names;
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
