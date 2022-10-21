@@ -104,7 +104,7 @@ it inside the Placement property.</string>
       <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxExportLegacy">
         <property name="text">
-         <string>Use legacy exporter</string>
+         <string>Use legacy export function</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ExportLegacy</cstring>
