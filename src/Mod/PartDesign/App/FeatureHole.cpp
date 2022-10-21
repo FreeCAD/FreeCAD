@@ -1722,7 +1722,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         if (isCountersink) {
             double countersinkAngle = Base::toRadians(HoleCutCountersinkAngle.getValue() / 2.0);
 
-            if (countersinkAngle <= 0 || countersinkAngle > Base::toRadians(180.0))
+            if (countersinkAngle <= 0 || countersinkAngle > Base::toRadians(90.0))
                 return new App::DocumentObjectExecReturn("Hole error: Invalid countersink angle");
 
             if (holeCutRadius < radius)
