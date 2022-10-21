@@ -1707,7 +1707,6 @@ App::DocumentObjectExecReturn* Hole::execute()
         double radiusBottom = Diameter.getValue() / 2.0 - length / tan(TaperedAngleVal);
 
         double radius = Diameter.getValue() / 2.0;
-        double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
         gp_Pnt firstPoint(0, 0, 0);
         gp_Pnt lastPoint(0, 0, 0);
         double lengthCounter = 0.0;
@@ -1717,44 +1716,28 @@ App::DocumentObjectExecReturn* Hole::execute()
         if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians(180.0))
             return new App::DocumentObjectExecReturn("Hole error: Invalid taper angle");
 
-        if (isCountersink) {
+        if (isCountersink || isCounterbore) {
+            double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
+            double holeCutDepth = HoleCutDepth.getValue();
             double countersinkAngle = Base::toRadians(HoleCutCountersinkAngle.getValue() / 2.0);
 
-            if (countersinkAngle <= 0 || countersinkAngle > Base::toRadians(180.0))
-                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink angle");
+            if ( isCounterbore) {
+                // Counterbore is rendered the same way as a countersink, but with a hardcoded angle of 90deg
+                countersinkAngle = Base::toRadians(90.0);
+            }
+
+            if ( isCountersink) {
+                holeCutDepth = 0;
+            }
 
             if (holeCutRadius < radius)
                 return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
-
-            // Top point
-            gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
-
-            computeIntersection(gp_Pnt( holeCutRadius, 0, 0 ),
-                                gp_Pnt(holeCutRadius - sin(countersinkAngle), -cos(countersinkAngle), 0),
-                                gp_Pnt(radius, 0, 0),
-                                gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
-            if (-length > zPosCounter)
-                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
-
-            lengthCounter = zPosCounter;
-
-            newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
-        }
-        else if (isCounterbore) {
-            double holeCutDepth = HoleCutDepth.getValue();
-
-            if (holeCutDepth <= 0.0)
-                return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be greater than zero");
 
             if (holeCutDepth > length)
                 return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be less than hole depth");
 
-            if (holeCutRadius < radius)
-                return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
+            if (holeCutDepth < 0.0)
+                return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be greater or equal to zero");
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
@@ -1762,15 +1745,20 @@ App::DocumentObjectExecReturn* Hole::execute()
             lastPoint = newPoint;
 
             // Bottom of counterbore
-            newPoint = toPnt(holeCutRadius * xDir - holeCutDepth * zDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
+            if (holeCutDepth > 0.0) {
+                newPoint = toPnt(holeCutRadius * xDir - holeCutDepth * zDir);
+                mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+                lastPoint = newPoint;
+            }
 
             // Compute intersection of tapered edge and line at bottom of counterbore hole
-            computeIntersection(gp_Pnt(0, -holeCutDepth, 0),
-                                gp_Pnt(holeCutRadius, -holeCutDepth, 0),
+            computeIntersection(gp_Pnt(holeCutRadius, -holeCutDepth, 0 ),
+                                gp_Pnt(holeCutRadius - sin(countersinkAngle), -cos(countersinkAngle) - holeCutDepth, 0),
                                 gp_Pnt(radius, 0, 0),
-                                gp_Pnt(radiusBottom, length, 0), xPosCounter, zPosCounter);
+                                gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
+
+            if (-length > zPosCounter)
+                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
 
             lengthCounter = zPosCounter;
             newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
