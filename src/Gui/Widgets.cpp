@@ -760,29 +760,42 @@ void ColorButton::paintEvent (QPaintEvent * e)
     QPushButton::paintEvent(e);
 }
 
-/**
- * Opens a QColorDialog to set a new color.
- */
-void ColorButton::onChooseColor()
+void ColorButton::showModeless()
 {
-    if (!d->allowChange)
-        return;
-    if (d->modal) {
-        QColor currentColor = d->col;
-        QColorDialog cd(d->col, this);
+    if (d->cd.isNull()) {
+        d->old = d->col;
+
+        QColorDialog* dlg = new QColorDialog(d->col, this);
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
         if (DialogOptions::dontUseNativeColorDialog())
-            cd.setOptions(QColorDialog::DontUseNativeDialog);
-        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+            dlg->setOptions(QColorDialog::DontUseNativeDialog);
+        dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+        connect(dlg, &QColorDialog::rejected, this, &ColorButton::onRejected);
+        connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
+        d->cd = dlg;
+    }
+    d->cd->show();
+}
 
-        if (d->autoChange) {
-            connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
-                    this, SLOT(onColorChosen(const QColor&)));
-        }
+void ColorButton::showModal()
+{
+    QColor currentColor = d->col;
+    QColorDialog* dlg = new QColorDialog(d->col, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    if (DialogOptions::dontUseNativeColorDialog())
+        dlg->setOptions(QColorDialog::DontUseNativeDialog);
+    dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
-        cd.setCurrentColor(currentColor);
-        cd.adjustSize();
-        if (cd.exec() == QDialog::Accepted) {
-            QColor c = cd.selectedColor();
+    if (d->autoChange) {
+        connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
+    }
+
+    dlg->setCurrentColor(currentColor);
+    dlg->adjustSize();
+
+    connect(dlg, &QColorDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            QColor c = dlg->selectedColor();
             if (c.isValid()) {
                 setColor(c);
                 Q_EMIT changed();
@@ -792,21 +805,23 @@ void ColorButton::onChooseColor()
             setColor(currentColor);
             Q_EMIT changed();
         }
+    });
+
+    dlg->exec();
+}
+
+/**
+ * Opens a QColorDialog to set a new color.
+ */
+void ColorButton::onChooseColor()
+{
+    if (!d->allowChange)
+        return;
+    if (d->modal) {
+        showModal();
     }
     else {
-        if (d->cd.isNull()) {
-            d->old = d->col;
-            d->cd = new QColorDialog(d->col, this);
-            if (DialogOptions::dontUseNativeColorDialog())
-                d->cd->setOptions(QColorDialog::DontUseNativeDialog);
-            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
-            d->cd->setAttribute(Qt::WA_DeleteOnClose);
-            connect(d->cd, SIGNAL(rejected()),
-                    this, SLOT(onRejected()));
-            connect(d->cd, SIGNAL(currentColorChanged(const QColor &)),
-                    this, SLOT(onColorChosen(const QColor&)));
-        }
-        d->cd->show();
+        showModeless();
     }
 }
 
