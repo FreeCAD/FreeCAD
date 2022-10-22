@@ -136,7 +136,7 @@ class Proxy(equation.Proxy):
             "Steady State",
             ""
         )
-        
+
         obj.BiCGstablDegree = (2, 2, 10, 1)
         obj.IdrsParameter = (2, 1, 10, 1)
         obj.LinearDirectMethod = LINEAR_DIRECT

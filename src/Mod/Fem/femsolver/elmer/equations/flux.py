@@ -37,6 +37,7 @@ from . import linear
 COEFFICIENTS = ["Heat Conductivity", "None"]
 VARIABLES = ["Potential", "Temperature"]
 
+
 def create(doc, name="Flux"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)
