@@ -221,6 +221,7 @@ jobs:
           echo "" >> ${{ env.logdir }}checkReport.md
 
       - name: Harmonize Line endings
+        if: false #disabled because it causes failure when applied on .FCStd files
         id: harmonize-line-endings
         shell: bash
         run: |
