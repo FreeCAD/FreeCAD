@@ -90,7 +90,7 @@ private:
 private:
     static Translator* _pcSingleton;
     TranslatorP* d;
-    bool decimalPointConversionEnabled;
+    std::unique_ptr<Translator, std::function<void(Translator*)>> decimalPointConverter;
 };
 
 } // namespace Gui
