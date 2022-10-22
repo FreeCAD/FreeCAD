@@ -1568,15 +1568,18 @@ VectorListWidget::VectorListWidget(int decimals, QWidget *parent)
 
 void VectorListWidget::buttonClicked()
 {
-    VectorListEditor dlg(decimals, this);
-    dlg.setValues(value().value<QList<Base::Vector3d>>());
+    VectorListEditor* dlg = new VectorListEditor(decimals, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setValues(value().value<QList<Base::Vector3d>>());
     QPoint p(0, 0);
     p = this->mapToGlobal(p);
-    dlg.move(p);
-    if (dlg.exec() == QDialog::Accepted) {
-        QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg.getValues());
+    dlg->move(p);
+    connect(dlg, &VectorListEditor::accepted, this, [&] {
+        QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg->getValues());
         setValue(data);
-    }
+    });
+
+    dlg->exec();
 }
 
 void VectorListWidget::showValue(const QVariant& d)

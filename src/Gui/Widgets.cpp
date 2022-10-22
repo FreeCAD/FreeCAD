@@ -1441,24 +1441,28 @@ void LabelEditor::setText(const QString& s)
 
 void LabelEditor::changeText()
 {
-    PropertyListDialog dlg(static_cast<int>(type), this);
-    dlg.setWindowTitle(tr("List"));
-    auto hboxLayout = new QVBoxLayout(&dlg);
-    auto buttonBox = new QDialogButtonBox(&dlg);
+    PropertyListDialog* dlg = new PropertyListDialog(static_cast<int>(type), this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setWindowTitle(tr("List"));
+
+    auto hboxLayout = new QVBoxLayout(dlg);
+    auto buttonBox = new QDialogButtonBox(dlg);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-    auto edit = new PropertyListEditor(&dlg);
+    auto edit = new PropertyListEditor(dlg);
     edit->setPlainText(this->plainText);
 
     hboxLayout->addWidget(edit);
     hboxLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(accepted()), &dlg, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), &dlg, SLOT(reject()));
-    if (dlg.exec() == QDialog::Accepted) {
+    connect(buttonBox, &QDialogButtonBox::accepted, dlg, &PropertyListDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, dlg, &PropertyListDialog::reject);
+    connect(dlg, &PropertyListDialog::accepted, this, [&] {
         QString inputText = edit->toPlainText();
         QString text = QString::fromLatin1("[%1]").arg(inputText);
         lineEdit->setText(text);
-    }
+    });
+
+    dlg->exec();
 }
 
 /**
