@@ -128,8 +128,7 @@ void Translator::destruct ()
     _pcSingleton=nullptr;
 }
 
-Translator::Translator():
-    decimalPointConversionEnabled(false)
+Translator::Translator()
 {
     // This is needed for Qt's lupdate
     d = new TranslatorP;
@@ -384,19 +383,22 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
 void Translator::enableDecimalPointConversion(bool on)
 {
     if (!on) {
-        qApp->removeEventFilter(this);
-        decimalPointConversionEnabled = false;
+        decimalPointConverter.reset();
         return;
     }
-    if (on && !decimalPointConversionEnabled) {
-        qApp->installEventFilter(this);
-        decimalPointConversionEnabled = true;
-    }
 #if FC_DEBUG
-    if (on && decimalPointConversionEnabled) {
+    if (on && decimalPointConverter) {
         Base::Console().Instance().Warning("Translator: decimal point converter is already installed\n");
     }
 #endif
+    if (on && !decimalPointConverter) {
+        decimalPointConverter = std::unique_ptr<Translator, std::function<void(Translator*)>>(this,
+            [](Translator* evFilter) {
+                qApp->removeEventFilter(evFilter);
+            }
+        );
+        qApp->installEventFilter(decimalPointConverter.get());
+    }
 }
 
 #include "moc_Translator.cpp"
