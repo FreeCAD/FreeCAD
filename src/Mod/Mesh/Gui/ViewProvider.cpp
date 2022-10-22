@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <cstdlib>
 # include <QAction>
 # include <QMenu>
@@ -382,6 +383,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     }
     else if (prop == &Coloring) {
         tryColorPerVertexOrFace(Coloring.getValue());
+        tryTransparency(Coloring.getValue());
     }
     else if (prop == &SelectionStyle) {
         pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
@@ -583,6 +585,47 @@ void ViewProviderMesh::setColorPerFace(const App::PropertyColorList* prop)
     }
 
     pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+App::PropertyFloatList* ViewProviderMesh::getTransparencyProperty() const
+{
+    if (pcObject) {
+        App::Property* prop = pcObject->getPropertyByName("Transparency");
+        if (prop && prop->getTypeId() == App::PropertyFloatList::getClassTypeId()) {
+            App::PropertyFloatList* transp = static_cast<App::PropertyFloatList*>(prop);
+            return transp;
+        }
+    }
+
+    return nullptr; // no such property found
+}
+
+void ViewProviderMesh::tryTransparency(bool on)
+{
+    if (on) {
+        App::PropertyFloatList* prop = getTransparencyProperty();
+        if (prop) {
+            const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+            const Mesh::MeshObject& mesh = meshProp.getValue();
+            int numFacets = static_cast<int>(mesh.countFacets());
+
+            if (prop->getSize() == numFacets) {
+                const auto& values = prop->getValue();
+                std::vector<float> transp;
+                transp.reserve(values.size());
+                std::transform(values.cbegin(), values.cend(), std::back_inserter(transp), [](double v) -> float {
+                    // force values in range [0, 1]
+                    return std::clamp<float>(v, 0.0f, 1.0f);
+                });
+                setFacetTransparency(transp);
+            }
+        }
+    }
+    else {
+        pcMatBinding->value = SoMaterialBinding::OVERALL;
+        float trans = Transparency.getValue()/100.0f;
+        pcShapeMaterial->transparency.setValue(trans);
+    }
 }
 
 void ViewProviderMesh::setDisplayMode(const char* ModeName)
@@ -1813,12 +1856,14 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 
 void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
 {
-    App::Color c = ShapeColor.getValue();
-    pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
-    SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
-    for (std::size_t index = 0; index < facetTransparency.size(); ++index)
-        cols[index].setValue(c.r, c.g, c.b);
-    pcShapeMaterial->diffuseColor.finishEditing();
+    if (pcShapeMaterial->diffuseColor.getNum() != int(facetTransparency.size())) {
+        App::Color c = ShapeColor.getValue();
+        pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
+        SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+        for (std::size_t index = 0; index < facetTransparency.size(); ++index)
+            cols[index].setValue(c.r, c.g, c.b);
+        pcShapeMaterial->diffuseColor.finishEditing();
+    }
 
     pcShapeMaterial->transparency.setNum(facetTransparency.size());
     float* tran = pcShapeMaterial->transparency.startEditing();
