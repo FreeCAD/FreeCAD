@@ -468,7 +468,7 @@ def polar_placements(base_placement,
     # print("angle ",angle," num ",num)
     placements = [base_placement.copy()]
 
-    if number == 0:
+    if number <= 1:
         return placements
 
     if angle == 360:
