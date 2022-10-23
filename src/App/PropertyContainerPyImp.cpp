@@ -34,7 +34,7 @@
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 
-// inclution of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
 
