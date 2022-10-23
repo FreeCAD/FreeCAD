@@ -444,20 +444,20 @@ class DependencyInstallationWorker(QtCore.QThread):
                 proc = subprocess.run(
                     [python_exe, "-m", "pip", "--version"],
                     stdout=subprocess.PIPE,
+                    timeout=30,
                     check=True,
                 )
             except subprocess.CalledProcessError:
-                pip_failed = True
-            if proc.returncode != 0:
                 pip_failed = True
         else:
             pip_failed = True
         if pip_failed:
             self.no_pip.emit(f"{python_exe} -m pip --version")
-        FreeCAD.Console.PrintMessage(proc.stdout)
-        FreeCAD.Console.PrintWarning(proc.stderr)
-        result = proc.stdout
-        FreeCAD.Console.PrintMessage(result.decode())
+        if proc:
+            FreeCAD.Console.PrintMessage(proc.stdout)
+            FreeCAD.Console.PrintWarning(proc.stderr)
+            result = proc.stdout
+            FreeCAD.Console.PrintMessage(result.decode())
         return not pip_failed
 
     def _install_required(self, vendor_path: os.PathLike):
@@ -467,31 +467,35 @@ class DependencyInstallationWorker(QtCore.QThread):
         for pymod in self.python_requires:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            proc = subprocess.run(
-                [
-                    python_exe,
-                    "-m",
-                    "pip",
-                    "install",
-                    "--disable-pip-version-check",
-                    "--target",
-                    vendor_path,
-                    pymod,
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=True,
-            )
-            FreeCAD.Console.PrintMessage(proc.stdout.decode())
-            if proc.returncode != 0:
+            try:
+                proc = subprocess.run(
+                    [
+                        python_exe,
+                        "-m",
+                        "pip",
+                        "install",
+                        "--disable-pip-version-check",
+                        "--target",
+                        vendor_path,
+                        pymod,
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    timeout=30,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as e:
+                FreeCAD.Console.PrintError(str(e))
                 self.failure.emit(
                     translate(
                         "AddonsInstaller",
                         "Installation of Python package {} failed",
                     ).format(pymod),
-                    proc.stderr,
+                    str(e),
                 )
                 return
+            if proc:
+                FreeCAD.Console.PrintMessage(proc.stdout.decode())
 
     def _install_optional(self, vendor_path: os.PathLike):
         """Install the optional Python package dependencies. If any fail a message is printed to
@@ -513,6 +517,7 @@ class DependencyInstallationWorker(QtCore.QThread):
                     ],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
+                    timeout=30,
                     check=True,
                 )
             except subprocess.CalledProcessError as e:
