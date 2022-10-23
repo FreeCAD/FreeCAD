@@ -43,6 +43,7 @@ class SoCoordinate3;
 class SoIndexedFaceSet;
 class SoShapeHints;
 class SoMaterialBinding;
+class SoMFColor;
 class SoCamera;
 class SoAction;
 class SbViewportRegion;
@@ -70,6 +71,9 @@ namespace MeshCore {
   struct Material;
 }
 
+namespace Mesh {
+class PropertyMaterial;
+}
 
 namespace MeshGui {
 class SoFCMeshObjectNode;
@@ -196,11 +200,16 @@ protected:
     void highlightColors();
     bool canHighlightColors() const;
     App::PropertyColorList* getColorProperty() const;
-    App::PropertyFloatList* getTransparencyProperty() const;
+    Mesh::PropertyMaterial* getMaterialProperty() const;
     void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
     void setColorPerFace(const App::PropertyColorList*);
-    void tryTransparency(bool);
+
+    void setColorField(const std::vector<App::Color>&, SoMFColor&);
+    void setAmbientColor(const std::vector<App::Color>&);
+    void setDiffuseColor(const std::vector<App::Color>&);
+    void setSpecularColor(const std::vector<App::Color>&);
+    void setEmissiveColor(const std::vector<App::Color>&);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;

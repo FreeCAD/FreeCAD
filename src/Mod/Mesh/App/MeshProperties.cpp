@@ -724,13 +724,13 @@ void PropertyMaterial::Paste(const Property& from)
 
 unsigned int PropertyMaterial::getMemSize() const
 {
-    auto size = _material.ambientColor.size() +
-                _material.diffuseColor.size() +
-                _material.emissiveColor.size() +
-                _material.shininess.size() +
-                _material.specularColor.size() +
-                _material.transparency.size() +
-                _material.library.size() + sizeof(_material);
+    auto size = (_material.ambientColor.size() +
+                 _material.diffuseColor.size() +
+                 _material.emissiveColor.size() +
+                 _material.specularColor.size()) * sizeof(App::Color) +
+                (_material.shininess.size() +
+                 _material.transparency.size()) * sizeof(float) +
+                 _material.library.size() + sizeof(_material);
     return static_cast<unsigned int>(size);
 }
 
