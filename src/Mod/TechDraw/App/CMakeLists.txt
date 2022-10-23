@@ -26,21 +26,22 @@ set(TechDrawLIBS
     Import
 )
 
-if(BUILD_QT5)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
     include_directories(
-        ${Qt5XmlPatterns_INCLUDE_DIRS}
-        ${Qt5Concurrent_INCLUDE_DIRS}
+        ${QtXmlPatterns_INCLUDE_DIRS}
     )
-    set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
-    list(APPEND TechDrawLIBS
-        ${Qt5Concurrent_LIBRARIES}
-    )
-else(BUILD_QT5)
-    include_directories(
-        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
-    )
-    set(QtXmlPatternsLib ${QT_QTXMLPATTERNS_LIBRARY})
-endif(BUILD_QT5)
+else()
+    # This is deprecated as of Qt 5.13, and removed in Qt 6
+    message(WARNING "TechDraw relies on the now-removed Qt XMLPatterns package, and must be refactored to compile against Qt6.")
+endif()
+
+include_directories(
+    ${QtConcurrent_INCLUDE_DIRS}
+)
+set(QtXmlPatternsLib ${QtXmlPatterns_LIBRARIES})
+list(APPEND TechDrawLIBS
+    ${QtConcurrent_LIBRARIES}
+)
 
 link_directories(${OCC_LIBRARY_DIR})
 

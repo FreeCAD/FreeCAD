@@ -22,11 +22,7 @@ set(ReenGui_LIBS
     MeshGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
-else()
-    qt4_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
-endif()
+qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
 
 set(Dialogs_UIC_SRCS
     FitBSplineSurface.ui
@@ -34,12 +30,6 @@ set(Dialogs_UIC_SRCS
     Segmentation.ui
     SegmentationManual.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-endif()
 
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}

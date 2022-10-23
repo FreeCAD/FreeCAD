@@ -7,28 +7,17 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-if (Qt5WebEngineWidgets_FOUND)
+if (QtWebEngineWidgets_FOUND)
     add_definitions(-DQTWEBENGINE)
-elseif(Qt5WebKitWidgets_FOUND OR QT_QTWEBKIT_FOUND) # Qt5 and Qt4
-    add_definitions(-DQTWEBKIT)
 endif()
 
 set(WebGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    if(Qt5WebEngineWidgets_FOUND)
-        include_directories(${Qt5WebEngineWidgets_INCLUDE_DIRS})
-        list(APPEND WebGui_LIBS ${Qt5WebEngineWidgets_LIBRARIES})
-    else()
-        include_directories(${Qt5WebKitWidgets_INCLUDE_DIRS})
-        list(APPEND WebGui_LIBS ${Qt5WebKitWidgets_LIBRARIES})
-    endif()
-    qt5_add_resources(Web_QRC_SRCS Resources/Web.qrc)
-else()
-    qt4_add_resources(Web_QRC_SRCS Resources/Web.qrc)
-endif()
+include_directories(${QtWebEngineWidgets_INCLUDE_DIRS})
+list(APPEND WebGui_LIBS ${QtWebEngineWidgets_LIBRARIES})
+qt_add_resources(Web_QRC_SRCS Resources/Web.qrc)
 
 SET(WebGui_SRCS
     ${Web_QRC_SRCS}
@@ -40,8 +29,8 @@ SET(WebGui_SRCS
     Workbench.h
     BrowserView.h
     BrowserView.cpp
-    CookieJar.cpp   # QWebkit only
-    CookieJar.h     # QWebkit only
+    CookieJar.cpp
+    CookieJar.h
 )
 
 SET(WebGuiIcon_SVG

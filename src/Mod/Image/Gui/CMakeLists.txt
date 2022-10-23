@@ -35,13 +35,7 @@ set(ImageGui_UIC_SRCS
     ImageOrientationDialog.ui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(ImageGui_QRC_SRCS ${ImageGui_RES_SRCS})
-    qt5_wrap_ui(ImageGui_UIC_HDRS ${ImageGui_UIC_SRCS})
-else()
-    qt4_add_resources(ImageGui_QRC_SRCS ${ImageGui_RES_SRCS})
-    qt4_wrap_ui(ImageGui_UIC_HDRS ${ImageGui_UIC_SRCS})
-endif()
+qt_add_resources(ImageGui_QRC_SRCS ${ImageGui_RES_SRCS})
 
 SET(ImageGui_SRCS
     ${ImageGui_QRC_SRCS}
