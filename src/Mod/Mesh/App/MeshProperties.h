@@ -37,8 +37,9 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 
-#include "Core/MeshKernel.h"
-#include "Mesh.h"
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/App/Core/MeshIO.h>
+#include <Mod/Mesh/App/Mesh.h>
 
 
 namespace Mesh
@@ -162,6 +163,57 @@ public:
 
 private:
     std::vector<CurvatureInfo> _lValueList;
+};
+
+/** Mesh material properties
+ */
+class MeshExport PropertyMaterial : public App::Property
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMaterial() = default;
+    ~PropertyMaterial() override = default;
+
+    /** Sets the property
+     */
+    void setValue(const MeshCore::Material &mat);
+    void setAmbientColor(const std::vector<App::Color>& col);
+    void setDiffuseColor(const std::vector<App::Color>& col);
+    void setSpecularColor(const std::vector<App::Color>& col);
+    void setEmissiveColor(const std::vector<App::Color>& col);
+    void setShininess(const std::vector<float>&);
+    void setTransparency(const std::vector<float>&);
+    void setBinding(MeshCore::MeshIO::Binding);
+
+    const MeshCore::Material& getValue() const;
+    const std::vector<App::Color>& getAmbientColor() const;
+    const std::vector<App::Color>& getDiffuseColor() const;
+    const std::vector<App::Color>& getSpecularColor() const;
+    const std::vector<App::Color>& getEmissiveColor() const;
+    const std::vector<float>& getShininess() const;
+    const std::vector<float>& getTransparency() const;
+    MeshCore::MeshIO::Binding getBinding() const;
+
+    PyObject* getPyObject() override;
+    void setPyObject(PyObject*) override;
+
+    void Save (Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
+
+    const char* getEditorName() const override;
+
+    Property* Copy() const override;
+    void Paste(const Property& from) override;
+
+    unsigned int getMemSize() const override;
+    bool isSame(const Property& other) const override;
+
+private:
+    MeshCore::Material _material;
 };
 
 /** The mesh kernel property class.

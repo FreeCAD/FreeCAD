@@ -83,6 +83,9 @@ struct MeshExport Material
     std::vector<App::Color> emissiveColor; /**< Defines the emissive color. */
     std::vector<float> shininess;
     std::vector<float> transparency;
+
+    bool operator == (const Material& mat) const;
+    bool operator != (const Material& mat) const;
 };
 
 struct MeshExport Group

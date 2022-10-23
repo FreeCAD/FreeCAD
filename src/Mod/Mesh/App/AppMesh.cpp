@@ -74,6 +74,7 @@ PyMOD_INIT_FUNC(Mesh)
     // init Type system
     Mesh::PropertyNormalList    ::init();
     Mesh::PropertyCurvatureList ::init();
+    Mesh::PropertyMaterial      ::init();
     Mesh::PropertyMeshKernel    ::init();
 
     Mesh::MeshObject            ::init();

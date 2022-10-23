@@ -46,6 +46,7 @@ using namespace Mesh;
 
 TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists)
 TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyMaterial , App::Property)
 TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData)
 
 PropertyNormalList::PropertyNormalList()
@@ -422,6 +423,323 @@ void PropertyCurvatureList::Paste(const App::Property &from)
     aboutToSetValue();
     _lValueList = dynamic_cast<const PropertyCurvatureList&>(from)._lValueList;
     hasSetValue();
+}
+
+// ----------------------------------------------------------------------------
+
+const MeshCore::Material& PropertyMaterial::getValue() const
+{
+    return _material;
+}
+
+MeshCore::MeshIO::Binding PropertyMaterial::getBinding() const
+{
+    return _material.binding;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getAmbientColor() const
+{
+    return _material.ambientColor;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getDiffuseColor() const
+{
+    return _material.diffuseColor;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getSpecularColor() const
+{
+    return _material.specularColor;
+}
+
+const std::vector<App::Color>& PropertyMaterial::getEmissiveColor() const
+{
+    return _material.emissiveColor;
+}
+
+const std::vector<float>& PropertyMaterial::getShininess() const
+{
+    return _material.shininess;
+}
+
+const std::vector<float>& PropertyMaterial::getTransparency() const
+{
+    return _material.transparency;
+}
+
+void PropertyMaterial::setValue(const MeshCore::Material& value)
+{
+    aboutToSetValue();
+    _material = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setAmbientColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.ambientColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setDiffuseColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.diffuseColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setSpecularColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.specularColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setEmissiveColor(const std::vector<App::Color>& value)
+{
+    aboutToSetValue();
+    _material.emissiveColor = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setShininess(const std::vector<float>& value)
+{
+    aboutToSetValue();
+    _material.shininess = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setTransparency(const std::vector<float>& value)
+{
+    aboutToSetValue();
+    _material.transparency = value;
+    hasSetValue();
+}
+
+void PropertyMaterial::setBinding(MeshCore::MeshIO::Binding bind)
+{
+    aboutToSetValue();
+    _material.binding = bind;
+    hasSetValue();
+}
+
+PyObject* PropertyMaterial::getPyObject()
+{
+    auto getColorList = [](const std::vector<App::Color>& color) {
+        Py::List list;
+        for (const auto& it : color) {
+            list.append(Py::TupleN(Py::Float(it.r),
+                                   Py::Float(it.g),
+                                   Py::Float(it.b)));
+        }
+        return list;
+    };
+
+    auto getFloatList = [](const std::vector<float>& value) {
+        Py::List list;
+        for (auto it : value) {
+            list.append(Py::Float(it));
+        }
+        return list;
+    };
+
+    Py::Dict dict;
+    dict.setItem("binding", Py::Long(static_cast<int>(_material.binding)));
+    dict.setItem("ambientColor", getColorList(_material.ambientColor));
+    dict.setItem("diffuseColor", getColorList(_material.diffuseColor));
+    dict.setItem("specularColor", getColorList(_material.specularColor));
+    dict.setItem("emissiveColor", getColorList(_material.emissiveColor));
+    dict.setItem("shininess", getFloatList(_material.shininess));
+    dict.setItem("transparency", getFloatList(_material.transparency));
+
+    return Py::new_reference_to(dict);
+}
+
+void PropertyMaterial::setPyObject(PyObject* obj)
+{
+    auto getColorList = [](const Py::Dict& dict, const std::string& key) {
+        std::vector<App::Color> color;
+        if (dict.hasKey(key)) {
+            Py::Sequence list(dict.getItem(key));
+            color.reserve(list.size());
+            for (const auto& it : list) {
+                Py::Sequence tuple(it);
+                float r = static_cast<float>(Py::Float(tuple[0]));
+                float g = static_cast<float>(Py::Float(tuple[1]));
+                float b = static_cast<float>(Py::Float(tuple[2]));
+                color.emplace_back(r, g, b);
+            }
+        }
+        return color;
+    };
+
+    auto getFloatList = [](const Py::Dict& dict, const std::string& key) {
+        std::vector<float> value;
+        if (dict.hasKey(key)) {
+            Py::Sequence list(dict.getItem(key));
+            value.reserve(list.size());
+            for (const auto& it : list) {
+                value.push_back(static_cast<float>(Py::Float(it)));
+            }
+        }
+        return value;
+    };
+
+    try {
+        MeshCore::Material material;
+        Py::Dict dict(obj);
+
+        if (dict.hasKey("binding")) {
+            Py::Long binding(dict.getItem("binding"));
+            int bind = static_cast<int>(binding);
+            material.binding = static_cast<MeshCore::MeshIO::Binding>(bind);
+        }
+
+        material.ambientColor = getColorList(dict, "ambientColor");
+        material.diffuseColor = getColorList(dict, "diffuseColor");
+        material.specularColor = getColorList(dict, "specularColor");
+        material.emissiveColor = getColorList(dict, "emissiveColor");
+        material.shininess = getFloatList(dict, "shininess");
+        material.transparency = getFloatList(dict, "transparency");
+
+        setValue(material);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        throw Base::TypeError("Not a dict with expected keys");
+    }
+}
+
+void PropertyMaterial::Save(Base::Writer& writer) const
+{
+    if (!writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<Material file=\""
+                        << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyMaterial::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("Material");
+    if (reader.hasAttribute("file")) {
+        std::string file(reader.getAttribute("file"));
+
+        if (!file.empty()) {
+            // initiate a file read
+            reader.addFile(file.c_str(), this);
+        }
+    }
+}
+
+void PropertyMaterial::SaveDocFile(Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    auto saveColor = [&str](const std::vector<App::Color>& color) {
+        uint32_t count = static_cast<uint32_t>(color.size());
+        str << count;
+        for (const auto& it : color) {
+            str << it.getPackedValue();
+        }
+    };
+
+    auto saveFloat = [&str](const std::vector<float>& value) {
+        uint32_t count = static_cast<uint32_t>(value.size());
+        str << count;
+        for (const auto& it : value) {
+            str << it;
+        }
+    };
+
+    uint32_t bind = static_cast<uint32_t>(_material.binding);
+    str << bind;
+
+    saveColor(_material.ambientColor);
+    saveColor(_material.diffuseColor);
+    saveColor(_material.specularColor);
+    saveColor(_material.emissiveColor);
+    saveFloat(_material.shininess);
+    saveFloat(_material.transparency);
+}
+
+void PropertyMaterial::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    auto restoreColor = [&str](std::vector<App::Color>& color) {
+        uint32_t count = 0;
+        str >> count;
+        color.resize(count);
+        for (auto& it : color) {
+            uint32_t value; // must be 32 bit long
+            str >> value;
+            it.setPackedValue(value);
+        }
+    };
+
+    auto restoreFloat = [&str](std::vector<float>& value) {
+        uint32_t count = 0;
+        str >> count;
+        value.resize(count);
+        for (auto& it : value) {
+            float valueF;
+            str >> valueF;
+            it = valueF;
+        }
+    };
+
+    MeshCore::Material material;
+
+    uint32_t bind = 0;
+    str >> bind;
+    material.binding = static_cast<MeshCore::MeshIO::Binding>(bind);
+
+    restoreColor(material.ambientColor);
+    restoreColor(material.diffuseColor);
+    restoreColor(material.specularColor);
+    restoreColor(material.emissiveColor);
+    restoreFloat(material.shininess);
+    restoreFloat(material.transparency);
+
+    setValue(material);
+}
+
+const char* PropertyMaterial::getEditorName() const
+{
+    return "";
+}
+
+App::Property* PropertyMaterial::Copy() const
+{
+    PropertyMaterial *prop = new PropertyMaterial();
+    prop->_material = _material;
+    return prop;
+}
+
+void PropertyMaterial::Paste(const Property& from)
+{
+    aboutToSetValue();
+    using ObjectType = std::remove_pointer<decltype(this)>::type;
+    _material = dynamic_cast<const ObjectType&>(from)._material;
+    hasSetValue();
+}
+
+unsigned int PropertyMaterial::getMemSize() const
+{
+    auto size = _material.ambientColor.size() +
+                _material.diffuseColor.size() +
+                _material.emissiveColor.size() +
+                _material.shininess.size() +
+                _material.specularColor.size() +
+                _material.transparency.size() +
+                _material.library.size() + sizeof(_material);
+    return static_cast<unsigned int>(size);
+}
+
+bool PropertyMaterial::isSame(const App::Property& other) const
+{
+    if (&other == this)
+        return true;
+    return getTypeId() == other.getTypeId()
+        && getValue() == static_cast<decltype(this)>(&other)->getValue();
 }
 
 // ----------------------------------------------------------------------------

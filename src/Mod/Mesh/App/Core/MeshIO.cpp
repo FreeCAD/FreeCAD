@@ -99,6 +99,32 @@ struct QUAD {int iV[4];};
 
 // --------------------------------------------------------------
 
+bool Material::operator == (const Material& mat) const
+{
+    if (binding != mat.binding)
+        return false;
+    if (ambientColor != mat.ambientColor)
+        return false;
+    if (diffuseColor != mat.diffuseColor)
+        return false;
+    if (specularColor != mat.specularColor)
+        return false;
+    if (emissiveColor != mat.emissiveColor)
+        return false;
+    if (shininess != mat.shininess)
+        return false;
+    if (transparency != mat.transparency)
+        return false;
+    return true;
+}
+
+bool Material::operator != (const Material& mat) const
+{
+    return !operator==(mat);
+}
+
+// --------------------------------------------------------------
+
 std::vector<std::string> MeshInput::supportedMeshFormats()
 {
     std::vector<std::string> fmt;
