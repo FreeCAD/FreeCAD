@@ -434,6 +434,7 @@ class _CommandWall:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
             # Use ArchSketch if SketchArch add-on is present
             try:
+                import ArchSketchObject
                 FreeCADGui.doCommand('import ArchSketchObject')
                 FreeCADGui.doCommand('base=ArchSketchObject.makeArchSketch()')
             except:
