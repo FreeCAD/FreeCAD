@@ -2001,7 +2001,8 @@ void Application::runApplication(void)
         mainApp.setApplicationName(QString::fromUtf8(it->second.c_str()));
     }
     else {
-        mainApp.setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
+        // mainApp.setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
+        mainApp.setApplicationName(QString::fromUtf8("FreeCAD TopoNaming"));
     }
 #ifndef Q_OS_MACX
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
