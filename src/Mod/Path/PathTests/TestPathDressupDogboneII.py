@@ -24,10 +24,59 @@ import FreeCAD
 import Path
 import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
-import Path.Dressup.DogboneII as PathDressupDogboneII
+import Path.Dressup.DogboneII
 import PathTests.PathTestUtils as PathTestUtils
 import math
 
+class MockTB(object):
+
+    def __init__(self, dia):
+        self.Name = 'ToolBit'
+        self.Label = 'ToolBit'
+        self.Diameter = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
+
+class MockTC(object):
+
+    def __init__(self, dia=2):
+        self.Name = 'TC'
+        self.Label = 'TC'
+        self.Tool = MockTB(dia)
+
+class MockOp(object):
+
+    def __init__(self, path, dia=2):
+        self.Path = Path.Path(path)
+        self.ToolController = MockTC(dia)
+
+class MockFeaturePython(object):
+
+    def __init__(self, name):
+        self.prop = {}
+        self.addProperty('App::PropertyString', 'Name', val=name)
+        self.addProperty('App::PropertyString', 'Label', val=name)
+        self.addProperty('App::PropertyLink', 'Proxy')
+        self.addProperty('Path::Path', 'Path', val=Path.Path())
+
+    def addProperty(self, typ, name, grp=None, desc=None, val=None):
+        self.prop[name] = (typ, val)
+
+    def setEditorMode(self, name, mode):
+        pass
+
+    def __setattr__(self, name, val):
+        if name == 'prop':
+            return super().__setattr__(name, val)
+        self.prop[name] = (self.prop[name][0], val)
+
+    def __getattr__(self, name):
+        if name == 'prop':
+            return super().__getattr__(name)
+        typ, val = self.prop[name]
+        if typ == 'App::PropertyLength':
+            if type(val) == float or type(val) == int:
+                return FreeCAD.Units.Quantity(val, FreeCAD.Units.Length)
+            return FreeCAD.Units.Quantity(val)
+        return val
 
 # Path.Log.setLevel(Path.Log.Level.DEBUG)
 
@@ -50,11 +99,19 @@ def KINK(gcode, begin=None):
 class TestDressupDogboneII(PathTestUtils.PathTestBase):
     """Unit tests for the DogboneII dressup."""
 
+    def assertEqualPath(self, path, s):
+        def cmd2str(cmd):
+            param = [f"{k}{v:g}" for k, v in cmd.Parameters.items()]
+            return f"{cmd.Name}{''.join(param)}"
+
+        p = '/'.join([cmd2str(cmd) for cmd in path.Commands])
+        self.assertEqual(p, s)
+
     def test00(self):
         """Verify adaptive length"""
 
         def adaptive(k, a, n): 
-            return PathDressupDogboneII.calc_length_adaptive(k, a, n, n)
+            return Path.Dressup.DogboneII.calc_length_adaptive(k, a, n, n)
 
         if True:
             # horizontal bones
@@ -102,7 +159,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         """Verify nominal length"""
 
         def nominal(k, a, n):
-            return PathDressupDogboneII.calc_length_nominal(k, a, n, 0)
+            return Path.Dressup.DogboneII.calc_length_nominal(k, a, n, 0)
 
         # neither angle nor kink matter
         self.assertRoughly(nominal(KINK('G1X1/G1X2'), 0, 13), 13)
@@ -118,7 +175,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         """Verify custom length"""
 
         def custom(k, a, c):
-            return PathDressupDogboneII.calc_length_custom(k, a, 0, c)
+            return Path.Dressup.DogboneII.calc_length_custom(k, a, 0, c)
 
         # neither angle nor kink matter
         self.assertRoughly(custom(KINK('G1X1/G1X2'), 0, 7), 7)
@@ -129,3 +186,21 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         self.assertRoughly(custom(KINK('G1X9/G1X0'), 0, 7), 7)
         self.assertRoughly(custom(KINK('G1X7/G1X9'), 0, 7), 7)
         self.assertRoughly(custom(KINK('G1X5/G1X1'), 0, 7), 7)
+
+
+    def test10(self):
+        """Verify basic op dressup"""
+
+        op = MockOp("G1X10/G1Y10")
+        obj = MockFeaturePython("DogboneII")
+        db = Path.Dressup.DogboneII.Proxy(obj, op)
+        obj.Proxy = db
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+
+        db.execute(obj)
+
+        self.assertEqualPath(obj.Path, 'G1X10/G1X11/G1X10/G1Y10')
+
+

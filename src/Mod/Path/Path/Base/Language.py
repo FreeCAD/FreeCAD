@@ -208,6 +208,9 @@ class Maneuver (object):
     def addInstruction(self, instr):
         self.instr.append(instr)
 
+    def addInstructions(self, coll):
+        self.instr.extend(coll)
+
     def toPath(self):
         return Path.Path([instruction_to_command(instr) for instr in self.instr])
 

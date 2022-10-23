@@ -45,7 +45,7 @@ A positive kink angle represents a move to the left, and a negative angle repres
             self.defl = Path.Geom.normalizeAngle(self.t1 - self.t0)
 
     def isKink(self):
-        return self.defl == 0
+        return self.defl != 0
 
     def goesLeft(self):
         return self.defl > 0
@@ -199,4 +199,4 @@ def generate(kink, generator, calc_length, nominal_length, custom_length=None):
     if custom_length is None:
         custom_length = nominal_length
     gen = generator(calc_length, nominal_length, custom_length)
-    return gen.generate(calc_length)
+    return gen.generate(kink)

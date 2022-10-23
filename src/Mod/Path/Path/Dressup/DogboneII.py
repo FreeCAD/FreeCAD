@@ -27,6 +27,9 @@ import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
 import math
 
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
+
 PI = math.pi
 
 def calc_length_adaptive(kink, angle, nominal_length, custom_length):
@@ -96,13 +99,13 @@ class Style(object):
     Tbone_S = "T-bone short edge"
     All = [Dogbone, Tbone_H, Tbone_V, Tbone_L, Tbone_S]
 
-    #Generator = {
-    #    Dogbone : dogboneII.generate_dogbone,
-    #    Tbone_H : dogboneII.generate_tbone_horizontal,
-    #    Tbone_V : dogboneII.generate_tbone_vertical,
-    #    Tbone_S : dogboneII.generate_tbone_on_short,
-    #    Tbone_L : dogboneII.generate_tbone_on_long,
-    #    }
+    Generator = {
+        Dogbone : dogboneII.GeneratorDogbone,
+        Tbone_H : dogboneII.GeneratorTBoneHorizontal,
+        Tbone_V : dogboneII.GeneratorTBoneVertical,
+        Tbone_S : dogboneII.GeneratorTBoneOnShort,
+        Tbone_L : dogboneII.GeneratorTBoneOnLong,
+        }
 
 class Side(object):
     '''Side - enumeration class for the side of the path to attach bones'''
@@ -135,9 +138,10 @@ class Incision(object):
         }
 
 
-def insertBone(kink, side):
+def insertBone(obj, kink):
     '''insertBone(kink, side) - return True if a bone should be inserted into the kink'''
     if not kink.isKink():
+        Path.Log.debug(f"not a kink")
         return False
 
     if obj.Side == Side.Right and kink.goesRight():
@@ -154,6 +158,7 @@ class Proxy(object):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base path to dress up"),
         )
+        obj.Base = base
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -185,7 +190,7 @@ class Proxy(object):
         obj.Incision = Incision.Adaptive
 
         obj.addProperty(
-            "App::PropertyFloat",
+            "App::PropertyLength",
             "Custom",
             "Dressup",
             QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == Incision.Custom"),
@@ -212,38 +217,58 @@ class Proxy(object):
     def __setstate__(self, state):
         return None
 
-    def boneMoves(self, obj, move0, move1): 
-        moves = []
-        kink = dogboneII.Kink(lastMove, thisMove)
-        if insertBone(kink, obj.Side):
-            pass
-
-        moves.append(move1)
-        return moves
+    def createBone(self, obj, move0, move1): 
+        kink = dogboneII.Kink(move0, move1)
+        if insertBone(obj, kink):
+            generator = Style.Generator[obj.Style]
+            calc_length = Incision.Calc[obj.Incision]
+            nominal = obj.Base.ToolController.Tool.Diameter.Value / 2
+            custom = obj.Custom.Value
+            return dogboneII.generate(kink, generator, calc_length, nominal, custom)
+        return None
 
     def execute(self, obj):
+        Path.Log.track(obj.Label)
         maneuver = PathLanguage.Maneuver()
+        bones = []
         lastMove = None
         moveAfterPlunge = None
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
-            for i, instr in enumerate(PathLanguage.Maneuver.FromPath(obj.Base.Path)):
+            for i, instr in enumerate(PathLanguage.Maneuver.FromPath(obj.Base.Path).instr):
+                Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():
                     thisMove = instr
+                    bone = None
                     if thisMove.isPlunge():
                         if lastMove and moveAfterPlunge:
-                            pass
+                            bone = self.createBone(obj, lastMove, moveAfterPlunge)
                         lastMove = None
                         moveAfterPlunge = None
                     else:
                         if moveAfterPlunge is None:
                             moveAfterPlunge = thisMove
                         if lastMove:
-                            pass
+                            bone = self.createBone(obj, lastMove, thisMove)
                         lastMove = thisMove
+                    if bone:
+                        enabled = not len(bones) in obj.BoneBlacklist
+                        if enabled:
+                            maneuver.addInstructions(bone.instr)
+                        bones.append((bone, enabled))
                     maneuver.addInstruction(thisMove)
                 else:
-                    # none move instructions get added verbatim
+                    # non-move instructions get added verbatim
                     maneuver.addInstruction(instr)
 
+        else:
+            Path.Log.info(f"No Path found to dress up in op {obj.Base}")
+        self.maneuver = maneuver
         obj.Path = maneuver.toPath()
 
+def Create(base, name="DressupDogbone"):
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    pxy = Proxy(obj, base)
+
+    obj.Proxy = pxy
+
+    return obj
