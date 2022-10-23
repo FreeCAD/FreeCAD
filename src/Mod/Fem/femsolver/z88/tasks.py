@@ -109,10 +109,9 @@ class Solve(run.Solve):
             return
 
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
-        solver = SOLVER_TYPES
-        solver = prefs.GetInt("Solver", 0)
-        solver = SOLVER_TYPES[solver]
-        self.pushStatus("Used solver: " + solver + "\n")
+        solver_index = prefs.GetInt("Solver", 0)
+        solver_name = SOLVER_TYPES[solver_index]
+        self.pushStatus("Used solver: {}\n".format(solver_name))
 
         # run solver test mode
         # AFAIK: z88r needs to be run twice
@@ -121,18 +120,19 @@ class Solve(run.Solve):
         # TODO: search out for "Vector GS" and "Vector KOI" and print values
         # may be compare with the used ones
         self.pushStatus("Executing solver in test mode...\n")
-        Solve.runZ88(self, "-t", binary, solver, "hide")
+        Solve.runZ88(self, "-t", binary, solver_name, "hide")
 
         # run solver real mode
         self.pushStatus("Executing solver in real mode...\n")
         # starting normal because the user must see the z88 window
-        Solve.runZ88(self, "-c", binary, solver, "normal")
+        Solve.runZ88(self, "-c", binary, solver_name, "normal")
 
     def runZ88(self, command, binary, solver, state):
+        solver_name = solver
         # minimize or hide the popups on Windows
         if system() == "Windows":
             self._process = subprocess.Popen(
-                [binary, command, "-" + solver],
+                [binary, command, "-" + solver_name],
                 cwd=self.directory,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -140,7 +140,7 @@ class Solve(run.Solve):
             )
         else:
             self._process = subprocess.Popen(
-                [binary, command, "-" + solver],
+                [binary, command, "-" + solver_name],
                 cwd=self.directory,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
