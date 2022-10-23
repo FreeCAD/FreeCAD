@@ -760,29 +760,42 @@ void ColorButton::paintEvent (QPaintEvent * e)
     QPushButton::paintEvent(e);
 }
 
-/**
- * Opens a QColorDialog to set a new color.
- */
-void ColorButton::onChooseColor()
+void ColorButton::showModeless()
 {
-    if (!d->allowChange)
-        return;
-    if (d->modal) {
-        QColor currentColor = d->col;
-        QColorDialog cd(d->col, this);
+    if (d->cd.isNull()) {
+        d->old = d->col;
+
+        QColorDialog* dlg = new QColorDialog(d->col, this);
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
         if (DialogOptions::dontUseNativeColorDialog())
-            cd.setOptions(QColorDialog::DontUseNativeDialog);
-        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+            dlg->setOptions(QColorDialog::DontUseNativeDialog);
+        dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
+        connect(dlg, &QColorDialog::rejected, this, &ColorButton::onRejected);
+        connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
+        d->cd = dlg;
+    }
+    d->cd->show();
+}
 
-        if (d->autoChange) {
-            connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
-                    this, SLOT(onColorChosen(const QColor&)));
-        }
+void ColorButton::showModal()
+{
+    QColor currentColor = d->col;
+    QColorDialog* dlg = new QColorDialog(d->col, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    if (DialogOptions::dontUseNativeColorDialog())
+        dlg->setOptions(QColorDialog::DontUseNativeDialog);
+    dlg->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
-        cd.setCurrentColor(currentColor);
-        cd.adjustSize();
-        if (cd.exec() == QDialog::Accepted) {
-            QColor c = cd.selectedColor();
+    if (d->autoChange) {
+        connect(dlg, &QColorDialog::currentColorChanged, this, &ColorButton::onColorChosen);
+    }
+
+    dlg->setCurrentColor(currentColor);
+    dlg->adjustSize();
+
+    connect(dlg, &QColorDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            QColor c = dlg->selectedColor();
             if (c.isValid()) {
                 setColor(c);
                 Q_EMIT changed();
@@ -792,21 +805,23 @@ void ColorButton::onChooseColor()
             setColor(currentColor);
             Q_EMIT changed();
         }
+    });
+
+    dlg->exec();
+}
+
+/**
+ * Opens a QColorDialog to set a new color.
+ */
+void ColorButton::onChooseColor()
+{
+    if (!d->allowChange)
+        return;
+    if (d->modal) {
+        showModal();
     }
     else {
-        if (d->cd.isNull()) {
-            d->old = d->col;
-            d->cd = new QColorDialog(d->col, this);
-            if (DialogOptions::dontUseNativeColorDialog())
-                d->cd->setOptions(QColorDialog::DontUseNativeDialog);
-            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
-            d->cd->setAttribute(Qt::WA_DeleteOnClose);
-            connect(d->cd, SIGNAL(rejected()),
-                    this, SLOT(onRejected()));
-            connect(d->cd, SIGNAL(currentColorChanged(const QColor &)),
-                    this, SLOT(onColorChosen(const QColor&)));
-        }
-        d->cd->show();
+        showModeless();
     }
 }
 
@@ -1441,24 +1456,28 @@ void LabelEditor::setText(const QString& s)
 
 void LabelEditor::changeText()
 {
-    PropertyListDialog dlg(static_cast<int>(type), this);
-    dlg.setWindowTitle(tr("List"));
-    auto hboxLayout = new QVBoxLayout(&dlg);
-    auto buttonBox = new QDialogButtonBox(&dlg);
+    PropertyListDialog* dlg = new PropertyListDialog(static_cast<int>(type), this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setWindowTitle(tr("List"));
+
+    auto hboxLayout = new QVBoxLayout(dlg);
+    auto buttonBox = new QDialogButtonBox(dlg);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-    auto edit = new PropertyListEditor(&dlg);
+    auto edit = new PropertyListEditor(dlg);
     edit->setPlainText(this->plainText);
 
     hboxLayout->addWidget(edit);
     hboxLayout->addWidget(buttonBox);
-    connect(buttonBox, SIGNAL(accepted()), &dlg, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), &dlg, SLOT(reject()));
-    if (dlg.exec() == QDialog::Accepted) {
+    connect(buttonBox, &QDialogButtonBox::accepted, dlg, &PropertyListDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, dlg, &PropertyListDialog::reject);
+    connect(dlg, &PropertyListDialog::accepted, this, [&] {
         QString inputText = edit->toPlainText();
         QString text = QString::fromLatin1("[%1]").arg(inputText);
         lineEdit->setText(text);
-    }
+    });
+
+    dlg->exec();
 }
 
 /**

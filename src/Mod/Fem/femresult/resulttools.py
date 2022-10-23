@@ -399,7 +399,9 @@ def add_principal_stress_std(res_obj):
         res_obj.NodeStressYZ
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
-        prin1, prin2, prin3, shear = calculate_principal_stress_std((Sxx, Syy, Szz, Sxy, Sxz, Syz))
+        prin1, prin2, prin3, shear = calculate_principal_stress_std(
+            (Sxx, Syy, Szz, Sxy, Sxz, Syz)
+        )
         prinstress1.append(prin1)
         prinstress2.append(prin2)
         prinstress3.append(prin3)
@@ -418,8 +420,10 @@ def add_principal_stress_std(res_obj):
     #   critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
     #       peeq = equivalent plastic strain
     #       critical strain = alpha * np.exp(-beta * T)
-    #           alpha and beta are material parameters, where alpha can be related to unixial test data (user input) and
-    #           beta is normally kept fixed at 1.5, unless available from extensive research experiments
+    #           alpha and beta are material parameters,
+    #           where alpha can be related to unixial test data (user input) and
+    #           beta is normally kept fixed at 1.5,
+    #           unless available from extensive research experiments
     #           T = pressure / von Mises stress (stress triaxiality)
     #
 
@@ -428,13 +432,21 @@ def add_principal_stress_std(res_obj):
         stress_strain = MatMechNon.YieldPoints
         if stress_strain:
             i = -1
-            while stress_strain[i] == "": i -= 1
+            while stress_strain[i] == "":
+                i -= 1
             critical_uniaxial_strain = float(stress_strain[i].split(",")[1])
-            alpha = np.sqrt(np.e) * critical_uniaxial_strain  # stress triaxiality T = 1/3 for uniaxial test
+            # stress triaxiality T = 1/3 for uniaxial test
+            alpha = np.sqrt(np.e) * critical_uniaxial_strain
             beta = 1.5
             if res_obj.Peeq:
-                res_obj.CriticalStrainRatio = calculate_csr(prinstress1, prinstress2, prinstress3, alpha, beta,
-                                                            res_obj)
+                res_obj.CriticalStrainRatio = calculate_csr(
+                    prinstress1,
+                    prinstress2,
+                    prinstress3,
+                    alpha,
+                    beta,
+                    res_obj
+                )
 
     return res_obj
 
@@ -448,16 +460,19 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
     critical strain ratio = peeq / critical_strain (>1.0 indicates ductile rupture)
         peeq = equivalent plastic strain
         critical strain = alpha * np.exp(-beta * T)
-            alpha and beta are material parameters, where alpha can be related to unixial test data (user input) and
-            beta is normally kept fixed at 1.5, unless available from extensive research experiments
+            alpha and beta are material parameters,
+            where alpha can be related to unixial test data (user input) and
+            beta is normally kept fixed at 1.5,
+            unless available from extensive research experiments
             T = pressure / von Mises stress (stress triaxiality)
     """
     csr = []  # critical strain ratio
     nsr = len(ps1)  # number of stress results
     for i in range(nsr):
         p = (ps1[i] + ps2[i] + ps3[i]) / 3.0  # pressure
-        svm = np.sqrt(1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (
-                    ps3[i] - p) ** 2)  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
+        svm = np.sqrt(
+            1.5 * (ps1[i] - p) ** 2 + 1.5 * (ps2[i] - p) ** 2 + 1.5 * (ps3[i] - p) ** 2
+        )  # von Mises stress: https://en.wikipedia.org/wiki/Von_Mises_yield_criterion
         if svm != 0.:
             T = p / svm  # stress triaxiality
         else:
@@ -465,6 +480,7 @@ def calculate_csr(ps1, ps2, ps3, alpha, beta, res_obj):
         critical_strain = alpha * np.exp(-beta * T)  # critical strain
         csr.append(abs(res_obj.Peeq[i]) / critical_strain)  # critical strain ratio
     return csr
+
 
 def get_concrete_nodes(res_obj):
     """Determine concrete / non-concrete nodes."""
@@ -660,7 +676,10 @@ def calculate_von_mises(stress_tensor):
     normal = stress_tensor[:3]
     shear = stress_tensor[3:]
     pressure = np.average(normal)
-    return np.sqrt(1.5 * np.linalg.norm(normal - pressure) ** 2 + 3.0 * np.linalg.norm(shear) ** 2)
+    von_mises = np.sqrt(
+        1.5 * np.linalg.norm(normal - pressure) ** 2 + 3.0 * np.linalg.norm(shear) ** 2
+    )
+    return von_mises
 
 
 def calculate_principal_stress_std(

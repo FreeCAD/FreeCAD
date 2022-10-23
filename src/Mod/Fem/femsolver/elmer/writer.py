@@ -835,7 +835,6 @@ class Writer(object):
                 equation.FluxVariable = flux.VARIABLES
                 equation.FluxVariable = tempFluxVariable
 
-
     def _handleElectricforce(self):
         activeIn = []
         for equation in self.solver.Group:
@@ -1271,7 +1270,7 @@ class Writer(object):
                 # don't evaluate fluid material
                 if self._isBodyMaterialFluid(name):
                     break
-                if not "YoungsModulus" in m:
+                if "YoungsModulus" not in m:
                     Console.PrintMessage("m: {}\n".format(m))
                     # it is no fluid but also no solid
                     # -> user set no material reference at all
@@ -1314,7 +1313,7 @@ class Writer(object):
     def _haveMaterialFluid(self):
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
-            # fluid material always has KinematicViscosity defined 
+            # fluid material always has KinematicViscosity defined
             if "KinematicViscosity" in m:
                 return True
         return False

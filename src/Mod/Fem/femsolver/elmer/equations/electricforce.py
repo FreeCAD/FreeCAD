@@ -34,6 +34,7 @@ from . import linear
 
 SOLVER_EXEC_METHODS = ["After Timestep", "Always"]
 
+
 def create(doc, name="Electricforce"):
     return femutils.createObject(
         doc, name, Proxy, ViewProxy)

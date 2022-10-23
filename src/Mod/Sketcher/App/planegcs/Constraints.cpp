@@ -37,7 +37,7 @@ namespace GCS
 ///////////////////////////////////////
 
 Constraint::Constraint()
-: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true), driving(true)
+: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true), driving(true), internalAlignment(Alignment::NoInternalAlignment)
 {
 }
 

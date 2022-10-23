@@ -3157,13 +3157,15 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     viewer->setupEditingRoot();
 
-    cameraSensor.setData(new VPCam{this, viewer->getSoRenderManager()->getCamera()});
-    cameraSensor.attach(&viewer->getSoRenderManager()->getCamera()->orientation);
+    cameraSensor.setData(new VPRender{this, viewer->getSoRenderManager()});
+    cameraSensor.attach(viewer->getSoRenderManager()->getSceneGraph());
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    delete static_cast<VPCam*>(cameraSensor.getData());
+    auto dataPtr = static_cast<VPRender*>(cameraSensor.getData());
+    delete dataPtr;
+    cameraSensor.setData(nullptr);
     cameraSensor.detach();
 
     viewer->removeGraphicsItem(rubberband.get());
@@ -3174,9 +3176,12 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 
 void ViewProviderSketch::camSensCB(void *data, SoSensor *)
 {
-    VPCam *proxyVPCam = static_cast<VPCam*>(data);
-    auto vp = proxyVPCam->vp;
-    auto cam = proxyVPCam->cam;
+    VPRender *proxyVPrdr = static_cast<VPRender*>(data);
+    if (!proxyVPrdr)
+        return;
+
+    auto vp = proxyVPrdr->vp;
+    auto cam = proxyVPrdr->renderMgr->getCamera();
 
     auto rotSk = Base::Rotation(vp->getDocument()->getEditingTransform()); //sketch orientation
     auto rotc = cam->orientation.getValue().getValue();

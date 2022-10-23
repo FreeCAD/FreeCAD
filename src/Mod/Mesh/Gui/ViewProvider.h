@@ -196,9 +196,11 @@ protected:
     void highlightColors();
     bool canHighlightColors() const;
     App::PropertyColorList* getColorProperty() const;
+    App::PropertyFloatList* getTransparencyProperty() const;
     void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
     void setColorPerFace(const App::PropertyColorList*);
+    void tryTransparency(bool);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;

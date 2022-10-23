@@ -3283,6 +3283,8 @@ int Sketch::addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex)
 
         // no constraint is actually added, as knots are fixed geometry in this implementation
         // indexing is added here.
+        // However, we need to advance the tag, so that the index after a knot constraint is accurate
+        ConstraintsCounter++;
 
         b.knotpointGeoids[knotindex] = geoId2;
 

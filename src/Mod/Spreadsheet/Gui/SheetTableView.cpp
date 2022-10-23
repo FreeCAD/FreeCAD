@@ -210,6 +210,9 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionDel,SIGNAL(triggered()), this, SLOT(deleteSelection()));
 
     setTabKeyNavigation(false);
+
+    timer.setSingleShot(true);
+    QObject::connect(&timer, &QTimer::timeout, [this](){updateCellSpan();});
 }
 
 void SheetTableView::onRecompute() {
@@ -456,20 +459,31 @@ SheetTableView::~SheetTableView()
 
 }
 
-void SheetTableView::updateCellSpan(CellAddress address)
+void SheetTableView::updateCellSpan()
 {
     int rows, cols;
 
-    sheet->getSpans(address, rows, cols);
+    // Unspan first to avoid overlap
+    for (const auto &addr : spanChanges) {
+        if (rowSpan(addr.row(), addr.col()) > 1 || columnSpan(addr.row(), addr.col()) > 1)
+            setSpan(addr.row(), addr.col(), 1, 1);
+    }
 
-    if (rows != rowSpan(address.row(), address.col()) || cols != columnSpan(address.row(), address.col()))
-        setSpan(address.row(), address.col(), rows, cols);
+    for (const auto &addr : spanChanges) {
+        sheet->getSpans(addr, rows, cols);
+        if (rows > 1 || cols > 1)
+            setSpan(addr.row(), addr.col(), rows, cols);
+    }
+    spanChanges.clear();
 }
 
 void SheetTableView::setSheet(Sheet* _sheet)
 {
     sheet = _sheet;
-    cellSpanChangedConnection = sheet->cellSpanChanged.connect(bind(&SheetTableView::updateCellSpan, this, bp::_1));
+    cellSpanChangedConnection = sheet->cellSpanChanged.connect([&](const CellAddress &addr) {
+        spanChanges.insert(addr);
+        timer.start(10);
+    });
 
     // Update row and column spans
     std::vector<std::string> usedCells = sheet->getUsedCells();
@@ -477,8 +491,11 @@ void SheetTableView::setSheet(Sheet* _sheet)
     for (std::vector<std::string>::const_iterator i = usedCells.begin(); i != usedCells.end(); ++i) {
         CellAddress address(*i);
 
-        if (sheet->isMergedCell(address))
-            updateCellSpan(address);
+        if (sheet->isMergedCell(address)) {
+            int rows, cols;
+            sheet->getSpans(address, rows, cols);
+            setSpan(address.row(), address.col(), rows, cols);
+        }
     }
 
     // Update column widths and row height

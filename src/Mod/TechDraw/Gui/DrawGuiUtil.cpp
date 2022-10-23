@@ -141,8 +141,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd,
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
                                  QObject::tr("No Drawing Pages in document."));
             return nullptr;
-        }
-        if (docPages.size() > 1) {
+        } else if (docPages.size() > 1) {
             //multiple pages in document, use active page if there is one
             Gui::MainWindow* w = Gui::getMainWindow();
             Gui::MDIView* mv = w->activeWindow();
@@ -150,10 +149,9 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd,
             if (mvp) {
                 QGSPage* qp = mvp->getViewProviderPage()->getQGSPage();
                 return qp->getDrawPage();
-            }
-            else {
+            } else {
                 // none of pages in document is active, ask for help
-                for (auto obj : selPages) {
+                for (auto obj : docPages) {
                     std::string name = obj->getNameInDocument();
                     names.push_back(name);
                     std::string label = obj->Label.getValue();
@@ -165,13 +163,13 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd,
                     App::Document* doc = cmd->getDocument();
                     return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
                 }
+                return nullptr;
             }
         } else {
             //only 1 page in document - use it
             return static_cast<TechDraw::DrawPage*>(docPages.front());
         }
-    }
-    else if (selPages.size() > 1) {
+    } else if (selPages.size() > 1) {
         //multiple pages in selection
         for (auto obj : selPages) {
             std::string name = obj->getNameInDocument();

@@ -94,6 +94,13 @@ namespace GCS
 
     class Constraint
     {
+
+    public:
+        enum class Alignment  {
+            NoInternalAlignment,
+            InternalAlignment
+        };
+
     _PROTECTED_UNLESS_EXTRACT_MODE_:
         VEC_pD origpvec; // is used only as a reference for redirecting and reverting pvec
         VEC_pD pvec;
@@ -101,6 +108,8 @@ namespace GCS
         int tag;
         bool pvecChangedFlag;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
         bool driving;
+        Alignment internalAlignment;
+
     public:
         Constraint();
         virtual ~Constraint(){}
@@ -114,6 +123,9 @@ namespace GCS
 
         void setDriving(bool isdriving) { driving = isdriving; }
         bool isDriving() const { return driving; }
+
+        void setInternalAlignment(Alignment isinternalalignment) { internalAlignment = isinternalalignment; }
+        Alignment isInternalAlignment() const { return internalAlignment; }
 
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);

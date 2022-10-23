@@ -2749,8 +2749,8 @@ sie in der Eigenschaft Platzierung zu speichern.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
-      <source>Use legacy exporter</source>
-      <translation>Verwende den ältere-Exporteur</translation>
+      <source>Use legacy export function</source>
+      <translation>Bisherige Export-Funktion verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>

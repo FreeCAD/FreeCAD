@@ -42,8 +42,8 @@
 
 #include <Mod/Sketcher/App/GeoList.h>
 
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/SoRenderManager.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -391,11 +391,11 @@ private:
         bool buttonPress = false;
     };
 
-    /** @brief Private struct grouping ViewProvider and Camera node, to be used as SoFieldSensor data
+    /** @brief Private struct grouping ViewProvider and RenderManager node, to be used as SoNode sensor data
      */
-    struct VPCam {
+    struct VPRender {
         ViewProviderSketch* vp;
-        SoCamera* cam;
+        SoRenderManager* renderMgr;
     };
 
 public:
@@ -777,7 +777,7 @@ private:
 
     ViewProviderParameters viewProviderParameters;
 
-    SoFieldSensor cameraSensor;
+    SoNodeSensor cameraSensor;
     int viewOrientationFactor; // stores if sketch viewed from front or back
 };
 

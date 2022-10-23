@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,35 +20,15 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint initial pressure document object"
-__author__ = "Uwe Stöhr"
-__url__ = "https://www.freecadweb.org"
+__title__ = "MeshEnums module"
+__author__ = "Werner Mayer"
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Enum types"
 
-## @package constraint_initialpressure
-#  \ingroup FEM
-#  \brief constraint initial pressure object
+from enum import IntEnum
 
-from . import base_fempythonobject
+class Binding(IntEnum):
+    OVERALL = 0
+    PER_VERTEX = 1
+    PER_FACE = 2
 
-
-class ConstraintInitialPressure(base_fempythonobject.BaseFemPythonObject):
-
-    Type = "Fem::ConstraintInitialPressure"
-
-    def __init__(self, obj):
-        super(ConstraintInitialPressure, self).__init__(obj)
-        self.add_properties(obj)
-
-    def onDocumentRestored(self, obj):
-        self.add_properties(obj)
-
-    def add_properties(self, obj):
-        if not hasattr(obj, "Pressure"):
-            obj.addProperty(
-                "App::PropertyPressure",
-                "Pressure",
-                "Parameter",
-                "Initial Pressure"
-            )
-            # App::PropertyPressure is in kPa and we initialize 1 bar
-            obj.Pressure = 100

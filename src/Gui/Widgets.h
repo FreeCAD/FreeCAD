@@ -268,6 +268,10 @@ protected:
     void paintEvent (QPaintEvent*) override;
 
 private:
+    void showModeless();
+    void showModal();
+
+private:
     struct ColorButtonP *d;
 };
 

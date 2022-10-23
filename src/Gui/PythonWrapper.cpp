@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <limits>
+# include <unordered_map>
+# include <list>
 # include <QDir>
 # include <QIcon>
 # include <QWidget>
@@ -217,6 +219,72 @@ void registerTypes()
 // --------------------------------------------------------
 
 namespace Gui {
+
+/*!
+ * \brief The WrapperManager class
+ * This is a helper class that records the Python wrappers of a QObject and invalidates
+ * them when the QObject is about to be destroyed.
+ * This is to make sure that if the Python wrapper doesn't own the QObject it won't be notified
+ * if the QObject is destroyed.
+ * \code
+ * ui = Gui.UiLoader()
+ * lineedit = ui.createWidget("QLineEdit")
+ * lineedit.deleteLater()
+ * # Make sure this won't crash
+ * lineedit.show()
+ * \endcode
+ */
+class WrapperManager : public QObject
+{
+    std::unordered_map<QObject*, std::list<PyObject*>> wrappers;
+
+public:
+    static WrapperManager& instance()
+    {
+        static WrapperManager singleton;
+        return singleton;
+    }
+    /*!
+     * \brief addQObject
+     * \param obj
+     * \param pyobj
+     * Add the QObject and its Python wrapper to the list.
+     */
+    void addQObject(QObject* obj, PyObject* pyobj)
+    {
+        if (wrappers.find(obj) == wrappers.end()) {
+            QObject::connect(obj, &QObject::destroyed, this, &WrapperManager::destroyed);
+        }
+
+        wrappers[obj].push_back(pyobj);
+    }
+
+private:
+    /*!
+     * \brief destroyed
+     * \param obj
+     * The listed QObject is about to be destroyed. Invalidate its Python wrappers now.
+     */
+    void destroyed(QObject* obj = nullptr)
+    {
+        if (obj) {
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+            auto key = wrappers.find(obj);
+            if (key != wrappers.end()) {
+                for (auto it : key->second) {
+                    Shiboken::Object::setValidCpp(reinterpret_cast<SbkObject*>(it), false);
+                }
+
+                wrappers.erase(key);
+            }
+#endif
+        }
+    }
+
+    WrapperManager() = default;
+    ~WrapperManager() = default;
+};
+
 template<typename qttype>
 Py::Object qt_wrapInstance(qttype object, const char* className,
                            const char* shiboken, const char* pyside,
@@ -491,6 +559,7 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
         else
             typeName = object->metaObject()->className();
         PyObject* pyobj = Shiboken::Object::newObject(sbk_type, object, false, false, typeName.c_str());
+        WrapperManager::instance().addQObject(object, pyobj);
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap object");
@@ -519,6 +588,7 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
         else
             typeName = widget->metaObject()->className();
         PyObject* pyobj = Shiboken::Object::newObject(sbk_type, widget, false, false, typeName.c_str());
+        WrapperManager::instance().addQObject(widget, pyobj);
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap widget");

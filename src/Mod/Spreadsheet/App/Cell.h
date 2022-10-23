@@ -118,8 +118,6 @@ public:
 
     bool isMarked() const { return isUsed(MARK_SET); }
 
-    bool spansChanged() const { return isUsed(SPANS_UPDATED); }
-
     void visit(App::ExpressionVisitor & v);
 
     App::CellAddress getAddress() const { return address; }
@@ -172,7 +170,6 @@ private:
     static const int ALIAS_SET;
     static const int SPANS_SET;
     static const int MARK_SET;
-    static const int SPANS_UPDATED;
     static const int EXCEPTION_SET;
     static const int PARSE_EXCEPTION_SET;
     static const int RESOLVE_EXCEPTION_SET;

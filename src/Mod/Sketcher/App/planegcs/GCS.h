@@ -230,7 +230,7 @@ namespace GCS
         void removeConstraint(Constraint *constr);
 
         // basic constraints
-        int addConstraintEqual(double *param1, double *param2, int tagId=0, bool driving = true);
+        int addConstraintEqual(double *param1, double *param2, int tagId=0, bool driving = true, Constraint::Alignment internalalignment = Constraint::Alignment::NoInternalAlignment);
         int addConstraintProportional(double *param1, double *param2, double ratio, int tagId, bool driving = true);
         int addConstraintDifference(double *param1, double *param2,
                                     double *difference, int tagId=0, bool driving = true);

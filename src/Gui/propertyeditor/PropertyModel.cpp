@@ -282,42 +282,67 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     // If props empty, then simply reset all property items, but keep the group
     // items.
     if (props.empty()) {
-        beginResetModel();
-        for(auto &v : groupItems) {
-            auto &groupInfo = v.second;
-            groupInfo.groupItem->reset();
-            groupInfo.children.clear();
-        }
-        itemMap.clear();
-        endResetModel();
+        resetGroups();
         return;
     }
 
     // First step, init group info
-    for (auto &v : groupItems) {
-        auto &groupInfo = v.second;
-        groupInfo.children.clear();
-    }
+    initGroups();
 
     // Second step, either find existing items or create new items for the given
     // properties. There is no signaling of model change at this stage. The
     // change information is kept pending in GroupInfo::children
+    findOrCreateChildren(props);
+
+    // Third step, signal item insertion and movement.
+    insertOrMoveChildren();
+
+
+    // Final step, signal item removal. This is separated from the above because
+    // of the possibility of moving items between groups.
+    removeChildren();
+}
+
+void PropertyModel::resetGroups()
+{
+    beginResetModel();
+    for(auto &v : groupItems) {
+        auto &groupInfo = v.second;
+        groupInfo.groupItem->reset();
+        groupInfo.children.clear();
+    }
+    itemMap.clear();
+    endResetModel();
+}
+
+void PropertyModel::initGroups()
+{
+    for (auto &v : groupItems) {
+        auto &groupInfo = v.second;
+        groupInfo.children.clear();
+    }
+}
+
+void PropertyModel::findOrCreateChildren(const PropertyModel::PropertyList& props)
+{
     for (const auto & jt : props) {
         App::Property* prop = jt.second.front();
 
         PropertyItem *item = nullptr;
         for (auto prop : jt.second) {
             auto it = itemMap.find(prop);
-            if (it == itemMap.end() || !it->second)
+            if (it == itemMap.end() || !it->second) {
                 continue;
+            }
             item = it->second;
             break;
         }
 
         if (!item) {
             item = createPropertyItem(prop);
-            if (!item)
+            if (!item) {
                 continue;
+            }
         }
 
         GroupInfo &groupInfo = getGroupInfo(prop);
@@ -327,18 +352,23 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
 
         if (jt.second != item->getPropertyData()) {
-            for (auto prop : item->getPropertyData())
+            for (auto prop : item->getPropertyData()) {
                 itemMap.erase(prop);
-            for (auto prop : jt.second)
+            }
+            for (auto prop : jt.second) {
                 itemMap[prop] = item;
+            }
             // TODO: is it necessary to make sure the item has no pending commit?
             item->setPropertyData(jt.second);
         }
-        else
+        else {
             item->updateData();
+        }
     }
+}
 
-    // Third step, signal item insertion and movement.
+void PropertyModel::insertOrMoveChildren()
+{
     for (auto &v : groupItems) {
         auto &groupInfo = v.second;
         int beginChange = -1;
@@ -375,10 +405,12 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
             if (!item->parent()) {
                 flushChanges();
                 item->setParent(groupInfo.groupItem);
-                if (beginInsert < 0)
+                if (beginInsert < 0) {
                     beginInsert = row;
+                }
                 endInsert = row;
-            } else {
+            }
+            else {
                 flushInserts();
                 int oldRow = item->row();
                 // Dynamic property can rename group, so must check
@@ -388,12 +420,14 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     if (beginChange < 0)
                         beginChange = row;
                     endChange = row;
-                } else {
+                }
+                else {
                     flushChanges();
-                    beginMoveRows(createIndex(groupItem->row(),0,groupItem),
-                            oldRow, oldRow, midx, row);
-                    if (groupItem == groupInfo.groupItem)
+                    beginMoveRows(createIndex(groupItem->row(), 0, groupItem),
+                                  oldRow, oldRow, midx, row);
+                    if (groupItem == groupInfo.groupItem) {
                         groupInfo.groupItem->moveChild(oldRow, row);
+                    }
                     else {
                         groupItem->takeChild(oldRow);
                         item->setParent(groupInfo.groupItem);
@@ -403,25 +437,35 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                 }
             }
         }
+
         flushChanges();
         flushInserts();
     }
+}
 
-    // Final step, signal item removal. This is separated from the above because
-    // of the possibility of moving items between groups.
+void PropertyModel::removeChildren()
+{
     for (auto &v : groupItems) {
         auto &groupInfo = v.second;
-        int last = groupInfo.groupItem->childCount();
-        int first = static_cast<int>(groupInfo.children.size());
+        int first, last;
+        getRange(groupInfo, first, last);
         if (last > first) {
-            QModelIndex midx = this->index(groupInfo.groupItem->_row,0,QModelIndex());
-            beginRemoveRows(midx, first, last-1);
-            groupInfo.groupItem->removeChildren(first, last-1);
+            QModelIndex midx = this->index(groupInfo.groupItem->_row, 0, QModelIndex());
+            // This can trigger a recursive call of PropertyView::onTimer()
+            beginRemoveRows(midx, first, last - 1);
+            groupInfo.groupItem->removeChildren(first, last - 1);
             endRemoveRows();
-        } else {
+        }
+        else {
             assert(last == first);
         }
     }
+}
+
+void PropertyModel::getRange(const PropertyModel::GroupInfo& groupInfo, int& first, int& last) const
+{
+    first = static_cast<int>(groupInfo.children.size());
+    last = groupInfo.groupItem->childCount();
 }
 
 void PropertyModel::updateProperty(const App::Property& prop)

@@ -70,13 +70,19 @@ public:
     QModelIndex propertyIndexFromPath(const QStringList&) const;
 
 private:
+    void resetGroups();
+    void initGroups();
     void updateChildren(PropertyItem* item, int column, const QModelIndex& parent);
+    void findOrCreateChildren(const PropertyList& props);
+    void insertOrMoveChildren();
+    void removeChildren();
 
     struct GroupInfo {
         PropertySeparatorItem *groupItem = nullptr;
         std::vector<PropertyItem *> children;
     };
     GroupInfo &getGroupInfo(App::Property *);
+    void getRange(const GroupInfo&, int& first, int& last) const;
 
 private:
     PropertyItem *rootItem;
