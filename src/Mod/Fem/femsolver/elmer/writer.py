@@ -1522,8 +1522,6 @@ class Writer(object):
         return s
 
     def _hasExpression(self, equation):
-        obj = None
-        exp = None
         for (obj, exp) in equation.ExpressionEngine:
             if obj == equation:
                 return exp
