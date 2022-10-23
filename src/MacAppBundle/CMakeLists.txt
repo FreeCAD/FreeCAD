@@ -3,7 +3,7 @@
 # Build and install QuickLook for FCStd files (org.freecad.fcstd)
 # This is used by Homebrew and Conda/Mamabe scripts alike,
 #
-if(FREECAD_CREATE_MAC_APP OR (APPLE AND BUID_WITH_CONDA))
+if(FREECAD_CREATE_MAC_APP OR (APPLE AND BUILD_WITH_CONDA))
     add_subdirectory(QuickLook)
     install(
         DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/QuickLook/QuicklookFCStd.qlgenerator"
