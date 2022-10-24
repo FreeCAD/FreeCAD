@@ -32,7 +32,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 3. Roles
     1. "User": An member of the wider FreeCAD community who uses the software.
     2. "Contributor":  A person who submits a patch that resolves a previously identified problem. Contributors do not have commit access to the repository unless they are also maintainers. Everyone, without distinction or discrimination, SHALL have an equal right to become a Contributor
-    3. "Maintainer": A person who merges patches. Maintainers may or may not be developers. Their role is to enforce the process. Maintainers have commit access to the repository.
+    3. "Maintainer": A person who merges patches. Maintainers may or may not be Contributors. Their role is to enforce the process. Maintainers have commit access to the repository.
     4. "Administrator": Administrators have additional authority to maintain the list of designated maintainers.
 
 4. Licensing, Ownership, and Credit
