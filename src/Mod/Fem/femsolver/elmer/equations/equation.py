@@ -47,7 +47,7 @@ class Proxy(equationbase.BaseProxy):
             "Base",
             (
                 "Number of your choice\n"
-                "The equation with lowest number\n"
+                "The equation with highest number\n"
                 "will be solved first."
             )
         )
