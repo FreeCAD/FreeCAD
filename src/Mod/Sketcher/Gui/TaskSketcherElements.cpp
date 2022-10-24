@@ -436,21 +436,22 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
 bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index)
 {
+    using SubElementType = ElementItem::SubElementType;
 
-    auto getElementType = [&](ElementItem* item, int xPos, int width) {
+    auto getSubElementType = [&](ElementItem* item, int xPos, int width) {
 
         bool label = (xPos > option.rect.x() + leftMargin + width * 4 + border);
 
         if((xPos < option.rect.x() + leftMargin + width + border) || ( item->GeometryType != Part::GeomPoint::getClassTypeId() && label))
-            return ElementType::edge;
+            return SubElementType::edge;
         if(xPos < option.rect.x() + leftMargin + width * 2 + border || ( item->GeometryType == Part::GeomPoint::getClassTypeId() && label))
-            return ElementType::start;
+            return SubElementType::start;
         if(xPos < option.rect.x() + leftMargin + width * 3 + border)
-            return ElementType::end;
+            return SubElementType::end;
         else if (xPos < option.rect.x() + leftMargin + width * 4 + border)
-            return ElementType::mid;
+            return SubElementType::mid;
         else
-            return ElementType::none;
+            return SubElementType::none;
     };
 
     if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick) {
@@ -460,20 +461,20 @@ bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
         int xPos = mEvent->pos().x();
         int width = option.rect.height(); //icons are square
 
-        item->clickedOn = getElementType(item, xPos, width);
+        item->clickedOn = getSubElementType(item, xPos, width);
 
         if (mEvent->button() == Qt::RightButton)
             item->rightClicked = true;
     }
     else if (event->type() == QEvent::MouseMove) {
-        ElementType typeUnderMouse;
+        SubElementType typeUnderMouse;
         QMouseEvent* mEvent = static_cast<QMouseEvent*>(event);
         int xPos = mEvent->pos().x();
         int width = option.rect.height(); //icons are square
 
         ElementItem* item = getElementtItem(index);
 
-        typeUnderMouse = getElementType(item, xPos, width);
+        typeUnderMouse = getSubElementType(item, xPos, width);
 
         item->hovered = typeUnderMouse;
         Q_EMIT itemHovered(index);
@@ -496,7 +497,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     , focusItemIndex(-1)
     , previouslySelectedItemIndex(-1)
     , previouslyHoveredItemIndex(-1)
-    , previouslyHoveredType(ElementType::none)
+    , previouslyHoveredType(SubElementType::none)
     , isNamingBoxChecked(false)
 {
     // we need a separate container widget to add all controls to
@@ -788,7 +789,7 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
 
             if (item == itf) {
 
-                if (item->clickedOn == ElementType::mid
+                if (item->clickedOn == SubElementType::mid
                     && (item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfHyperbola::getClassTypeId()
@@ -797,7 +798,7 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
                         || item->GeometryType == Part::GeomEllipse::getClassTypeId())) {
                     item->isMidPointSelected = !item->isMidPointSelected;
                 }
-                else if (item->clickedOn == ElementType::start &&
+                else if (item->clickedOn == SubElementType::start &&
                     (item->GeometryType == Part::GeomPoint::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
@@ -807,7 +808,7 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
                         || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId())) {
                     item->isStartingPointSelected = !item->isStartingPointSelected;
                 }
-                else if (item->clickedOn == ElementType::end &&
+                else if (item->clickedOn == SubElementType::end &&
                     (item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
                         || item->GeometryType == Part::GeomArcOfHyperbola::getClassTypeId()
@@ -816,11 +817,11 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
                         || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId())) {
                     item->isEndPointSelected = !item->isEndPointSelected;
                 }
-                else if (item->clickedOn == ElementType::edge &&
+                else if (item->clickedOn == SubElementType::edge &&
                     item->GeometryType != Part::GeomPoint::getClassTypeId()){
                     item->isLineSelected = !item->isLineSelected;
                 }
-                item->clickedOn = ElementType::none;
+                item->clickedOn = SubElementType::none;
             }
             else if (multipleconsecutiveselection && previouslySelectedItemIndex >= 0 && !rightClickOnSelected &&
                 ((i > focusItemIndex && i < previouslySelectedItemIndex) || (i<focusItemIndex && i>previouslySelectedItemIndex))) {
@@ -890,7 +891,7 @@ void TaskSketcherElements::on_listWidgetElements_mouseMoveOnItem(QListWidgetItem
 
     Gui::Selection().rmvPreselect();
 
-    bool validmid = item->hovered == ElementType::mid
+    bool validmid = item->hovered == SubElementType::mid
         && (item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
             || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
             || item->GeometryType == Part::GeomArcOfHyperbola::getClassTypeId()
@@ -898,7 +899,7 @@ void TaskSketcherElements::on_listWidgetElements_mouseMoveOnItem(QListWidgetItem
             || item->GeometryType == Part::GeomCircle::getClassTypeId()
             || item->GeometryType == Part::GeomEllipse::getClassTypeId());
 
-    bool validstartpoint = item->hovered == ElementType::start &&
+    bool validstartpoint = item->hovered == SubElementType::start &&
         (item->GeometryType == Part::GeomPoint::getClassTypeId()
             || item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
             || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
@@ -907,7 +908,7 @@ void TaskSketcherElements::on_listWidgetElements_mouseMoveOnItem(QListWidgetItem
             || item->GeometryType == Part::GeomLineSegment::getClassTypeId()
             || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId());
 
-    bool validendpoint = item->hovered == ElementType::end &&
+    bool validendpoint = item->hovered == SubElementType::end &&
         (item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()
             || item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()
             || item->GeometryType == Part::GeomArcOfHyperbola::getClassTypeId()
@@ -915,7 +916,7 @@ void TaskSketcherElements::on_listWidgetElements_mouseMoveOnItem(QListWidgetItem
             || item->GeometryType == Part::GeomLineSegment::getClassTypeId()
             || item->GeometryType == Part::GeomBSplineCurve::getClassTypeId());
 
-    bool validedge = item->hovered == ElementType::edge &&
+    bool validedge = item->hovered == SubElementType::edge &&
         item->GeometryType != Part::GeomPoint::getClassTypeId();
 
     if (validmid || validstartpoint || validendpoint || validedge) {
@@ -932,13 +933,13 @@ void TaskSketcherElements::on_listWidgetElements_mouseMoveOnItem(QListWidgetItem
             }
         };
 
-        if (item->hovered == ElementType::start)
+        if (item->hovered == SubElementType::start)
             preselectvertex(item->ElementNbr, Sketcher::PointPos::start);
-        else if (item->hovered == ElementType::end)
+        else if (item->hovered == SubElementType::end)
             preselectvertex(item->ElementNbr, Sketcher::PointPos::end);
-        else if (item->hovered == ElementType::mid)
+        else if (item->hovered == SubElementType::mid)
             preselectvertex(item->ElementNbr, Sketcher::PointPos::mid);
-        else if (item->hovered == ElementType::edge) {
+        else if (item->hovered == SubElementType::edge) {
             ss << "Edge" << item->ElementNbr + 1;
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
