@@ -5938,7 +5938,7 @@ CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
     sToolTipText    = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
     sWhatsThis      = "Sketcher_CreatePointFillet";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateFillet";
+    sPixmap         = "Sketcher_CreatePointFillet";
     sAccel          = "G, F, P";
     eType           = ForEdit;
 }
