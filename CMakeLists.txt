@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
 # relates to FindOpenGL module
 # and cache variables OPENGL_gl_LIBRARY, OPENGL_glu_LIBRARY
 if (POLICY CMP0072)
-    cmake_policy(SET CMP0072 OLD)
+    set(OpenGL_GL_PREFERENCE LEGACY)
 endif(POLICY CMP0072)
 
 find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
