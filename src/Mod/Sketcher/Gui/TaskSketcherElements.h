@@ -40,7 +40,7 @@ namespace SketcherGui {
 class ViewProviderSketch;
 class Ui_TaskSketcherElements;
 
-enum class ElementType { edge, start, end, mid, none }; //This is to identify the type of element selected
+
 
 // helper class to store additional information about the listWidget entry.
 class ElementItem : public QListWidgetItem
@@ -52,6 +52,15 @@ class ElementItem : public QListWidgetItem
         Construction,
         InternalAlignment,
         External
+    };
+
+    // Struct to identify the selection/preselection of a subelement of the item
+    enum class SubElementType {
+        edge,
+        start,
+        end,
+        mid,
+        none
     };
 
     ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
@@ -66,8 +75,8 @@ class ElementItem : public QListWidgetItem
         , isStartingPointSelected(false)
         , isEndPointSelected(false)
         , isMidPointSelected(false)
-        , clickedOn(ElementType::none)
-        , hovered(ElementType::none)
+        , clickedOn(SubElementType::none)
+        , hovered(SubElementType::none)
         , rightClicked(false)
         , label(lab)
     {}
@@ -89,8 +98,8 @@ class ElementItem : public QListWidgetItem
     bool isMidPointSelected;
 
 
-    ElementType clickedOn;
-    ElementType hovered;
+    SubElementType clickedOn;
+    SubElementType hovered;
     bool rightClicked;
 
     QString label;
@@ -205,12 +214,13 @@ protected:
     Connection connectionElementsChanged;
 
 private:
+    using SubElementType = ElementItem::SubElementType;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
     int previouslyHoveredItemIndex;
-    ElementType previouslyHoveredType;
+    SubElementType previouslyHoveredType;
 
     bool isNamingBoxChecked;
 };
