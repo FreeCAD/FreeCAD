@@ -106,7 +106,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
 
     def assertEqualPath(self, path, s):
         def cmd2str(cmd):
-            param = [f"{k}{v:g}" for k, v in cmd.Parameters.items()]
+            param = [f"{k}{v:g}" if Path.Geom.isRoughly(0, v - int(v)) else f"{k}{v:.2f}" for k, v in cmd.Parameters.items()]
             return f"{cmd.Name}{''.join(param)}"
 
         p = '/'.join([cmd2str(cmd) for cmd in path.Commands])
@@ -248,4 +248,85 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
 
         obj.Proxy.execute(obj)
         self.assertEqualPath(obj.Path, 'G0Z10/G1Z0/G1X10/G1X11/G1X10/G1Y10/G1X11/G1X10/G1X0/G1X-1/G1X0/G1Y5/G0Z10')
+
+    def test30(self):
+        """Verify TBone_V style"""
+
+        obj = CreateDressup("G1X10/G1Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_V
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1Y-1/G1Y0/G1Y20')
+
+    def test40(self):
+        """Verify TBone_S style"""
+        obj = CreateDressup("G1X10/G1Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_S
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1Y-1/G1Y0/G1Y20')
+
+    def test50(self):
+        """Verify TBone_L style"""
+        obj = CreateDressup("G1X10/G1Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_L
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1X11/G1X10/G1Y20')
+
+    def test60(self):
+        """Verify Dogbone style"""
+
+        obj = CreateDressup("G1X10/G1Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Style = Path.Dressup.DogboneII.Style.Dogbone
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1X10.71Y-0.71/G1X10Y0/G1Y20')
+
+    def test70(self):
+        """Verify custom length."""
+
+        obj = CreateDressup("G0Z10/G1Z0/G1X10/G1Y10/G1X0/G1Y0/G0Z10")
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Incision = Path.Dressup.DogboneII.Incision.Custom
+        obj.Custom = 3
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G0Z10/G1Z0/G1X10/G1X13/G1X10/G1Y10/G1X13/G1X10/G1X0/G1X-3/G1X0/G1Y0/G1X-3/G1X0/G0Z10')
+
+        obj.Custom = 2
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G0Z10/G1Z0/G1X10/G1X12/G1X10/G1Y10/G1X12/G1X10/G1X0/G1X-2/G1X0/G1Y0/G1X-2/G1X0/G0Z10')
+
+
+    def test80(self):
+        """Verify adaptive length."""
+
+        obj = CreateDressup("G1X10/G1Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Adaptive
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Style = Path.Dressup.DogboneII.Style.Dogbone
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1X10.29Y-0.29/G1X10Y0/G1Y20')
+
+    def test81(self):
+        """Verify adaptive length II."""
+
+        obj = CreateDressup("G1X10/G1X20Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Adaptive
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Style = Path.Dressup.DogboneII.Style.Dogbone
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1X10.09Y-0.15/G1X10Y0/G1X20Y20')
 
