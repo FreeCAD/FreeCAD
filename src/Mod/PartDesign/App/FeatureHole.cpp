@@ -475,7 +475,14 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
 };
 
 /* ISO coarse metric enums */
-std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)", "Counterdrill" };
+std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums = {
+    "None",
+    "Counterbore",
+    "Countersink",
+    "Counterdrill",
+    "Cheesehead (deprecated)",
+    "Countersink socket screw (deprecated)",
+    "Cap screw (deprecated)"};
 const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1.4", "M1.6",
                                                      "M1.8", "M2",   "M2.2", "M2.5", "M3",
                                                      "M3.5", "M4",   "M4.5", "M5",   "M6",
@@ -486,7 +493,14 @@ const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1
                                                      "M52",  "M56",  "M60",  "M64",  "M68",  nullptr };
 const char* Hole::ThreadClass_ISOmetric_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", nullptr };
 
-std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)", "Counterdrill" };
+std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums = {
+    "None",
+    "Counterbore",
+    "Countersink",
+    "Counterdrill",
+    "Cheesehead (deprecated)",
+    "Countersink socket screw (deprecated)",
+    "Cap screw (deprecated)"};
 const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
     "M1x0.2",      "M1.1x0.2",    "M1.2x0.2",    "M1.4x0.2",
     "M1.6x0.2",    "M1.8x0.2",    "M2x0.25",     "M2.2x0.25",
