@@ -71,6 +71,10 @@ class Instruction (object):
         '''isPlunge() ... return true if this moves up or down'''
         return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
 
+    def leadsInto(self, instr):
+        '''leadsInto(instr) ... return true if instr is a continuation of self'''
+        return Path.Geom.pointsCoincide(self.positionEnd(), instr.positionBegin())
+
     def x(self, default=0):
         return self.param.get('X', default)
 

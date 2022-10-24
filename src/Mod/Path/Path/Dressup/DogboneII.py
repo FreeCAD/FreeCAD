@@ -218,6 +218,7 @@ class Proxy(object):
         return None
 
     def createBone(self, obj, move0, move1): 
+        Path.Log.track(move0, move1)
         kink = dogboneII.Kink(move0, move1)
         if insertBone(obj, kink):
             generator = Style.Generator[obj.Style]
@@ -240,7 +241,7 @@ class Proxy(object):
                     thisMove = instr
                     bone = None
                     if thisMove.isPlunge():
-                        if lastMove and moveAfterPlunge:
+                        if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)
                         lastMove = None
                         moveAfterPlunge = None

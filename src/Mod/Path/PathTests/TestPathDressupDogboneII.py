@@ -28,6 +28,8 @@ import Path.Dressup.DogboneII
 import PathTests.PathTestUtils as PathTestUtils
 import math
 
+PI = math.pi
+
 class MockTB(object):
 
     def __init__(self, dia):
@@ -78,9 +80,12 @@ class MockFeaturePython(object):
             return FreeCAD.Units.Quantity(val)
         return val
 
-# Path.Log.setLevel(Path.Log.Level.DEBUG)
-
-PI = math.pi
+def CreateDressup(path):
+    op = MockOp(path)
+    obj = MockFeaturePython("DogboneII")
+    db = Path.Dressup.DogboneII.Proxy(obj, op)
+    obj.Proxy = db
+    return obj
 
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
@@ -191,16 +196,56 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
     def test10(self):
         """Verify basic op dressup"""
 
-        op = MockOp("G1X10/G1Y10")
-        obj = MockFeaturePython("DogboneII")
-        db = Path.Dressup.DogboneII.Proxy(obj, op)
-        obj.Proxy = db
-        obj.Side = Path.Dressup.DogboneII.Side.Right
-        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj = CreateDressup("G1X10/G1Y20")
         obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
 
-        db.execute(obj)
+        # bones on right side
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1X11/G1X10/G1Y20')
 
-        self.assertEqualPath(obj.Path, 'G1X10/G1X11/G1X10/G1Y10')
+        # no bones on left side
+        obj.Side = Path.Dressup.DogboneII.Side.Left
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/G1Y20')
 
+    def test11(self):
+        """Verify retaining non-move instructions"""
+
+        obj = CreateDressup("G1X10/(some comment)/G1Y20")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+
+        # bone on right side
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/(some comment)/G1X11/G1X10/G1Y20')
+
+        # no bone on left side
+        obj.Side = Path.Dressup.DogboneII.Side.Left
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G1X10/(some comment)/G1Y20')
+
+    def test20(self):
+        """Verify bone on plunge moves"""
+
+        obj = CreateDressup("G0Z10/G1Z0/G1X10/G1Y10/G1X0/G1Y0/G0Z10")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G0Z10/G1Z0/G1X10/G1X11/G1X10/G1Y10/G1X11/G1X10/G1X0/G1X-1/G1X0/G1Y0/G1X-1/G1X0/G0Z10')
+
+    def test21(self):
+        """Verify ignoring plunge moves that don't connect"""
+
+        obj = CreateDressup("G0Z10/G1Z0/G1X10/G1Y10/G1X0/G1Y5/G0Z10")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G0Z10/G1Z0/G1X10/G1X11/G1X10/G1Y10/G1X11/G1X10/G1X0/G1X-1/G1X0/G1Y5/G0Z10')
 
