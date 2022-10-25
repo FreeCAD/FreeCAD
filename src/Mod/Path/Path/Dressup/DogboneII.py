@@ -153,7 +153,8 @@ def insertBone(obj, kink):
 class BoneState(object):
 
     def __init__(self, bone, nr, enabled=True):
-        self.bone = {nr : bone}
+        self.bone = bone
+        self.bones = {nr : bone}
         self.enabled = enabled
         pos = bone.position()
         self.pos = FreeCAD.Vector(pos.x, pos.y, 0)
@@ -162,13 +163,22 @@ class BoneState(object):
         return self.enabled
 
     def addBone(self, bone, nr):
-        self.bone[nr] = bone
+        self.bones[nr] = bone
 
     def position(self):
         return self.pos
 
+    def boneTip(self):
+        return self.bone.tip()
+
     def boneIDs(self):
-        return list(sorted(self.bone.keys()))
+        return list(sorted(self.bones.keys()))
+
+    def zLevels(self):
+        return list(sorted([bone.position().z for bone in self.bones.values()]))
+
+    def length(self):
+        return self.bone.length
 
 class Proxy(object):
     def __init__(self, obj, base):
@@ -237,13 +247,16 @@ class Proxy(object):
     def __setstate__(self, state):
         return None
 
+    def toolRadius(self, obj):
+        return obj.Base.ToolController.Tool.Diameter.Value / 2
+
     def createBone(self, obj, move0, move1): 
         Path.Log.debug(f"createBone({obj.Label}, {move0}, {move1})")
         kink = dogboneII.Kink(move0, move1)
         if insertBone(obj, kink):
             generator = Style.Generator[obj.Style]
             calc_length = Incision.Calc[obj.Incision]
-            nominal = obj.Base.ToolController.Tool.Diameter.Value / 2
+            nominal = self.toolRadius(obj)
             custom = obj.Custom.Value
             return dogboneII.generate(kink, generator, calc_length, nominal, custom)
         return None

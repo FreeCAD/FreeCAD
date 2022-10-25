@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 import Path
 import Path.Base.Language as PathLanguage
 
@@ -83,9 +84,10 @@ A positive kink angle represents a move to the left, and a negative angle repres
 class Bone (object):
     '''A Bone holds all the information of a bone and the kink it is attached to'''
 
-    def __init__(self, kink, angle, instr=None):
+    def __init__(self, kink, angle, length, instr=None):
         self.kink = kink
         self.angle = angle
+        self.length = length
         self.instr = [] if instr is None else instr
 
     def addInstruction(self, instr):
@@ -94,6 +96,12 @@ class Bone (object):
     def position(self):
         '''pos() ... return the position of the bone'''
         return self.kink.position()
+
+    def tip(self):
+        '''tip() ... return the tip of the bone.'''
+        dx = self.length * math.cos(self.angle)
+        dy = self.length * math.sin(self.angle)
+        return self.position() + FreeCAD.Vector(dx, dy, 0)
 
 def kink_to_path(kink, g0=False):
     return Path.Path([PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
@@ -131,7 +139,7 @@ def generate_tbone(kink, length, dim):
 
     moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {dim: d1})
     moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
-    return Bone(kink, angle, [moveIn, moveOut])
+    return Bone(kink, angle, length, [moveIn, moveOut])
 
 def generate_bone(kink, length, angle):
     # These two special cases could be removed, they are more efficient though because they
@@ -149,7 +157,7 @@ def generate_bone(kink, length, angle):
     moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
     moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
 
-    return Bone(kink, angle, [moveIn, moveOut])
+    return Bone(kink, angle, length, [moveIn, moveOut])
 
 class Generator(object):
     def __init__(self, calc_length, nominal_length, custom_length):

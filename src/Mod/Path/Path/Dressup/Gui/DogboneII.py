@@ -24,7 +24,6 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Base.Util as PathUtil
 import Path.Dressup.DogboneII as DogboneII
 import PathScripts.PathUtils as PathUtils
 import math
@@ -32,41 +31,13 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-Part = LazyLoader("Part", globals(), "Part")
-
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-
 translate = FreeCAD.Qt.translate
-
-def debugMarker(vector, label, color=None, radius=0.5):
-    if Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
-        obj.Label = label
-        obj.Radius = radius
-        obj.Placement = FreeCAD.Placement(
-            vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        )
-        if color:
-            obj.ViewObject.ShapeColor = color
-
-
-def debugCircle(vector, r, label, color=None):
-    if Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
-        obj.Label = label
-        obj.Radius = r
-        obj.Height = 1
-        obj.Placement = FreeCAD.Placement(
-            vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
-        )
-        obj.ViewObject.Transparency = 90
-        if color:
-            obj.ViewObject.ShapeColor = color
 
 class Marker(object):
     def __init__(self, pt, r, h):
@@ -115,8 +86,7 @@ class Marker(object):
 
 class TaskPanel(object):
     DataIds = QtCore.Qt.ItemDataRole.UserRole
-    DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
-    DataLoc = QtCore.Qt.ItemDataRole.UserRole + 2
+    DataState = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def __init__(self, viewProvider, obj):
         self.viewProvider = viewProvider
@@ -179,45 +149,35 @@ class TaskPanel(object):
             flags |= QtCore.Qt.ItemFlag.ItemIsUserCheckable
             item.setFlags(flags)
             item.setData(self.DataIds, state.boneIDs())
-            item.setData(self.DataKey, ids[0])
-            item.setData(self.DataLoc, pos)
+            item.setData(self.DataState, state)
             itemList.append(item)
+
+        markers = []
         self.form.bones.clear()
-        for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
+        for item in sorted(itemList, key=lambda item: item.data(self.DataState).boneIDs()[0]):
             self.form.bones.addItem(item)
-            #pos = item.data(self.DataLoc)
-            #r = max(self.obj.Proxy.length, 1)
-            #markers.append(
-            #    Marker(
-            #        FreeCAD.Vector(loc[0], loc[1], min(zs)),
-            #        r,
-            #        max(1, max(zs) - min(zs)),
-            #    )
-            #)
-        #for m in self.markers:
-        #    self.viewProvider.switch.removeChild(m.sep)
-        #for m in markers:
-        #    self.viewProvider.switch.addChild(m.sep)
-        #self.markers = markers
+            state = item.data(self.DataState)
+            loc = state.boneTip()
+            r = self.obj.Proxy.toolRadius(self.obj)
+            zs = state.zLevels()
+            markers.append(
+                Marker(
+                    FreeCAD.Vector(loc.x, loc.y, min(zs)),
+                    r,
+                    max(1, max(zs) - min(zs)),
+                )
+            )
+        for m in self.markers:
+            self.viewProvider.switch.removeChild(m.sep)
+        for m in markers:
+            self.viewProvider.switch.addChild(m.sep)
+        self.markers = markers
 
     def updateUI(self):
         customSelected = self.obj.Incision == DogboneII.Incision.Custom
         self.form.custom.setEnabled(customSelected)
         self.form.customLabel.setEnabled(customSelected)
         self.updateBoneList()
-
-        if Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
-            for obj in FreeCAD.ActiveDocument.Objects:
-                if obj.Name.startswith("Shape"):
-                    FreeCAD.ActiveDocument.removeObject(obj.Name)
-            Path.Log.info("object name %s" % self.obj.Name)
-            if hasattr(self.obj.Proxy, "shapes"):
-                Path.Log.info("showing shapes attribute")
-                for shapes in self.obj.Proxy.shapes.values():
-                    for shape in shapes:
-                        Part.show(shape)
-            else:
-                Path.Log.info("no shapes attribute found")
 
     def updateModel(self):
         self.getFields()
