@@ -123,6 +123,7 @@ PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
 #endif
 
 #include <App/Application.h>
+#include <Base/Interpreter.h>
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 
@@ -236,7 +237,7 @@ namespace Gui {
  */
 class WrapperManager : public QObject
 {
-    std::unordered_map<QObject*, std::list<PyObject*>> wrappers;
+    std::unordered_map<QObject*, std::list<Py::Object>> wrappers;
 
 public:
     static WrapperManager& instance()
@@ -256,7 +257,7 @@ public:
             QObject::connect(obj, &QObject::destroyed, this, &WrapperManager::destroyed);
         }
 
-        wrappers[obj].push_back(pyobj);
+        wrappers[obj].emplace_back(pyobj);
     }
 
 private:
@@ -271,8 +272,10 @@ private:
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
             auto key = wrappers.find(obj);
             if (key != wrappers.end()) {
+                Base::PyGILStateLocker lock;
                 for (auto it : key->second) {
-                    Shiboken::Object::setValidCpp(reinterpret_cast<SbkObject*>(it), false);
+                    auto value = it.ptr();
+                    Shiboken::Object::setValidCpp(reinterpret_cast<SbkObject*>(value), false);
                 }
 
                 wrappers.erase(key);
