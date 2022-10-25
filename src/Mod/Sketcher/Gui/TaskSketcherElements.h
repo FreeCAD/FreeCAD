@@ -202,6 +202,7 @@ public Q_SLOTS:
     void on_listWidgetElements_itemEntered(QListWidgetItem *item);
     void on_listWidgetElements_mouseMoveOnItem(QListWidgetItem* item);
     void on_settings_extendedInformation_changed();
+    void on_settings_autoCollapseFilter_changed();
     void on_settingsButton_clicked(bool);
     void on_filterBox_stateChanged(int val);
     void on_listMultiFilter_itemChanged(QListWidgetItem* item);
@@ -223,6 +224,7 @@ private:
     SubElementType previouslyHoveredType;
 
     bool isNamingBoxChecked;
+    bool collapseFilter;
 };
 
 } //namespace SketcherGui

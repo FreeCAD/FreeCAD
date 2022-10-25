@@ -498,6 +498,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     , previouslyHoveredItemIndex(-1)
     , previouslyHoveredType(SubElementType::none)
     , isNamingBoxChecked(false)
+    , collapseFilter(true)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -546,6 +547,10 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
         qAsConst(ui->settingsButton)->actions()[0], SIGNAL(changed()),
         this, SLOT(on_settings_extendedInformation_changed())
     );
+    QObject::connect(
+        qAsConst(ui->settingsButton)->actions()[1], SIGNAL(changed()),
+        this, SLOT(on_settings_autoCollapseFilter_changed())
+    );
 
     connectionElementsChanged = sketchView->signalElementsChanged.connect(
         boost::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
@@ -590,14 +595,16 @@ void TaskSketcherElements::on_filterBox_stateChanged(int val){
 
 bool TaskSketcherElements::eventFilter(QObject* obj, QEvent* event)
 {
-    if (obj == qobject_cast<QObject*>(ui->filterBox) && event->type() == QEvent::Enter && ui->filterBox->checkState() == Qt::Checked) {
-        ui->listMultiFilter->show();
-    }
-    else if (obj == qobject_cast<QObject*>(ui->listMultiFilter) && event->type() == QEvent::Leave) {
-        ui->listMultiFilter->hide();
-    }
-    else if (obj == this && event->type() == QEvent::Leave) {
-        ui->listMultiFilter->hide();
+    if (collapseFilter) {
+        if (obj == qobject_cast<QObject*>(ui->filterBox) && event->type() == QEvent::Enter && ui->filterBox->checkState() == Qt::Checked) {
+            ui->listMultiFilter->show();
+        }
+        else if (obj == qobject_cast<QObject*>(ui->listMultiFilter) && event->type() == QEvent::Leave) {
+            ui->listMultiFilter->hide();
+        }
+        else if (obj == this && event->type() == QEvent::Leave) {
+            ui->listMultiFilter->hide();
+        }
     }
     return TaskBox::eventFilter(obj, event);
 }
@@ -1134,16 +1141,23 @@ void TaskSketcherElements::changeEvent(QEvent *e)
 void TaskSketcherElements::createSettingsButtonActions()
 {
     QAction* action = new QAction(QString::fromLatin1("Extended information"), this);
+    QAction* action2 = new QAction(QString::fromLatin1("Auto collapse filter"), this);
 
     action->setCheckable(true);
+    action2->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
     {
         QSignalBlocker block(this);
         action->setChecked(hGrp->GetBool("ExtendedNaming", false));
+        action2->setChecked(hGrp->GetBool("AutoCollapseFilter", false));
     }
 
     ui->settingsButton->addAction(action);
+    ui->settingsButton->addAction(action2);
+
+    isNamingBoxChecked = hGrp->GetBool("ExtendedNaming", false);
+    collapseFilter = hGrp->GetBool("AutoCollapseFilter", false);
 }
 
 void TaskSketcherElements::on_settings_extendedInformation_changed()
@@ -1153,6 +1167,14 @@ void TaskSketcherElements::on_settings_extendedInformation_changed()
 
     isNamingBoxChecked = ui->settingsButton->actions()[0]->isChecked();
     slotElementsChanged();
+}
+
+void TaskSketcherElements::on_settings_autoCollapseFilter_changed()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
+    hGrp->SetBool("AutoCollapseFilter", ui->settingsButton->actions()[1]->isChecked());
+
+    collapseFilter = ui->settingsButton->actions()[1]->isChecked();
 }
 
 void TaskSketcherElements::on_settingsButton_clicked(bool)
