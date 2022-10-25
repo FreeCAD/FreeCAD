@@ -13,25 +13,25 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 
     1. To provide transparency and fairness in the contribution process.
     2. To allow useful contributions to be included as quickly as possible.
-    3. To preserve and improve the code quality while encouraging appropriate experimentation and risk-taking
-    4. To minimize dependence on individual contributors by encouraging a large pool of active contributors
-    5. To be inclusive of many viewpoints and to harness a diverse set of skills
-    6. To provide an encouraging environment where contributors learn and improve their skills
-    7. To protect the free and open nature of the FreeCAD project
+    3. To preserve and improve the code quality while encouraging appropriate experimentation and risk-taking.
+    4. To minimize dependence on individual contributors by encouraging a large pool of active contributors.
+    5. To be inclusive of many viewpoints and to harness a diverse set of skills.
+    6. To provide an encouraging environment where contributors learn and improve their skills.
+    7. To protect the free and open nature of the FreeCAD project.
 
 2. Fundamentals
 
     1. FreeCAD uses the git distributed revision control system.
     2. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization, hereafter referred to as 'the platform'.
     3. Problems are discrete, well-defined limitations or bugs.
-    4. FreeCAD uses the platform's issue-tracking system to track problems
-    5. Patches are sets of code changes that resolve a single problem
-    6. FreeCAD uses the Pull Request workflow for evaluating and accepting patches
+    4. FreeCAD uses the platform's issue-tracking system to track problems.
+    5. Patches are sets of code changes that resolve a single problem.
+    6. FreeCAD uses the Pull Request workflow for evaluating and accepting patches.
 
 
 3. Roles
     1. "User": An member of the wider FreeCAD community who uses the software.
-    2. "Contributor":  A person who submits a patch that resolves a previously identified problem. Contributors do not have commit access to the repository unless they are also maintainers. Everyone, without distinction or discrimination, SHALL have an equal right to become a Contributor
+    2. "Contributor":  A person who submits a patch that resolves a previously identified problem. Contributors do not have commit access to the repository unless they are also maintainers. Everyone, without distinction or discrimination, SHALL have an equal right to become a Contributor.
     3. "Maintainer": A person who merges patches. Maintainers may or may not be Contributors. Their role is to enforce the process. Maintainers have commit access to the repository.
     4. "Administrator": Administrators have additional authority to maintain the list of designated maintainers.
 
@@ -44,7 +44,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 
 5. Contribution Requirements
 
-    1. Patches are submitted in the form of Pull Requests (PR)
+    1. Patches are submitted in the form of Pull Requests (PR).
     2. Maintainers and Contributors MUST have a platform account and SHOULD use their real names or a well-known alias. If the platform alias differs from the account alias on the FreeCAD Forum, effort SHOULD be taken to avoid confusion.
     3. A PR SHOULD be a minimal and accurate answer to exactly one identified and agreed-on problem.
     4. A PR SHOULD refrain from adding additional dependencies to the FreeCAD project unless no other option is available.
