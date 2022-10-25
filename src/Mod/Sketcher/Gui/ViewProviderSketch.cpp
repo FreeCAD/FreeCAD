@@ -3009,8 +3009,9 @@ void ViewProviderSketch::UpdateSolverInformation()
     } else if (dofs > 0) {
         signalSetUp(QString::fromUtf8("under_constrained"),
             tr("Under constrained:"),
-            QString::fromUtf8("#dofs"),
-            tr("%n DoF(s)","",dofs));
+                    QString::fromUtf8("Select geometrical elements where solver\n"
+                                      "detects unconstrained degrees of freedom"),
+            tr("%n Degree(s) of freedom", "", dofs));
     }
     else {
         signalSetUp(QString::fromUtf8("fully_constrained"), tr("Fully constrained"), QString(), QString());

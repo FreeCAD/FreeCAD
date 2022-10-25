@@ -111,26 +111,26 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
 
 void TaskSketcherMessages::on_labelConstrainStatusLink_linkClicked(const QString &str)
 {
-    if( str == QString::fromLatin1("#conflicting"))
+    if (str == QString::fromLatin1("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
     else
-    if( str == QString::fromLatin1("#redundant"))
+    if (str == QString::fromLatin1("#redundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
     else
-    if( str == QString::fromLatin1("#dofs"))
+    if (str == QString::fromLatin1("Select geometrical elements where solver\n"
+                                    "detects unconstrained degrees of freedom"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
     else
-    if( str == QString::fromLatin1("#malformed"))
+    if (str == QString::fromLatin1("#malformed"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectMalformedConstraints");
     else
-    if( str == QString::fromLatin1("#partiallyredundant"))
+    if (str == QString::fromLatin1("#partiallyredundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectPartiallyRedundantConstraints");
-
 }
 
 void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
 {
-    if(state==Qt::Checked) {
+    if (state==Qt::Checked) {
         sketchView->getSketchObject()->noRecomputes=false;
         ui->autoUpdate->onSave();
     }
