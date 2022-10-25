@@ -2150,23 +2150,42 @@ void Hole::addCutType(const CutDimensionSet& dimensions)
     const std::string& name = dimensions.name;
 
     std::vector<std::string>* list;
+    int counter = -1;
+
     switch (thread) {
     case CutDimensionSet::Metric:
         HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricProfile", name), dimensions);
         list = &HoleCutType_ISOmetric_Enums;
+        // search for first entry that contains "deprecated"
+        for (auto it = HoleCutType_ISOmetric_Enums.begin();
+             it != HoleCutType_ISOmetric_Enums.end(); it++) {
+            counter += 1;
+            if ((*it).find("deprecated") != std::string::npos)
+                break;
+        }
         break;
     case CutDimensionSet::MetricFine:
         HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricFineProfile", name), dimensions);
         list = &HoleCutType_ISOmetricfine_Enums;
+        for (auto it = HoleCutType_ISOmetricfine_Enums.begin();
+             it != HoleCutType_ISOmetricfine_Enums.end(); it++) {
+            counter += 1;
+            if ((*it).find("deprecated") != std::string::npos)
+                break;
+        }
         break;
     default:
         return;
     }
     // add the collected lists of JSON definitions to the lists
     // if a name doesn't already exist in the list
+    // sort them hereby in before the deprecated entries
     if (std::all_of(list->begin(), list->end(),
-                [name](const std::string& x) { return x != name; }))
-        list->push_back(name);
+                    [name](const std::string &x) { return x != name; })) {
+        auto listPos = list->begin() + counter;
+        auto newIt = list->insert(listPos, name);
+        counter += 1;
+    }
 }
 
 bool Hole::isDynamicCounterbore(const std::string& thread,
