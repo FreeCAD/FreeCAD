@@ -74,9 +74,9 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 
     12. Maintainers SHALL merge valid PRs from other Contributors rapidly.
     13. Maintainers MAY, at their discretion merge PRs that have not met all criteria to be considered valid to:
-        - (a) ending fruitless discussions
-        - (b) capturing toxic patches in the historical record
-        - (c) engaging with the Contributor on improving their patch quality.
+        - (a) end fruitless discussions
+        - (b) capture toxic patches in the historical record
+        - (c) engage with the Contributor on improving their patch quality.
     14. Maintainers SHALL NOT make value judgments on correct patches.
     15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
     16. The User who created an issue SHOULD close the issue after checking the PR is successful.
