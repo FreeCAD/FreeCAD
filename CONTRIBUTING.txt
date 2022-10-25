@@ -70,7 +70,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
     10. To accept or reject a Pull Request, a Maintainer SHALL use the platform interface.
     11. Maintainers SHOULD NOT merge their own PRs except:
       - in exceptional cases, such as non-responsiveness from other Maintainers for an extended period (more than 1-2 days).
-      - If the maintainer is also the primary developer of the workbench or subsystem.
+      - If the Maintainer is also the Primary Developer of the workbench or subsystem.
 
     12. Maintainers SHALL merge valid PRs from other Contributors rapidly.
     13. Maintainers MAY, at their discretion merge PRs that have not met all criteria to be considered valid to:
