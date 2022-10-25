@@ -1246,7 +1246,7 @@ void Sheet::removeColumns(int col, int count)
 }
 
 /**
-  * Inser \a count rows at row \a row.
+  * Insert \a count rows at row \a row.
   *
   * @param row   Address of row where the rows are inserted.
   * @param count Number of rows to insert.
