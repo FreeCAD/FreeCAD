@@ -65,6 +65,11 @@ void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
 
+    showIcon();
+}
+
+void ExpressionSpinBox::showIcon()
+{
     int frameWidth = spinbox->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
     lineedit->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
 

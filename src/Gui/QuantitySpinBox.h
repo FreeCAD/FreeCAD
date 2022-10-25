@@ -145,6 +145,7 @@ protected Q_SLOTS:
 protected:
     void setExpression(std::shared_ptr<App::Expression> expr) override;
     void openFormulaDialog() override;
+    void showIcon() override;
     StepEnabled stepEnabled() const override;
     void showEvent(QShowEvent * event) override;
     void hideEvent(QHideEvent * event) override;

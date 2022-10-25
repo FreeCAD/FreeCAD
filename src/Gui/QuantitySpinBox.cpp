@@ -337,8 +337,11 @@ QuantitySpinBox::~QuantitySpinBox()
 
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
 {
-    ExpressionBinding::bind(_path);
+    ExpressionSpinBox::bind(_path);
+}
 
+void QuantitySpinBox::showIcon()
+{
     iconLabel->show();
 }
 
