@@ -31,7 +31,7 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -40,12 +40,13 @@ else:
 translate = FreeCAD.Qt.translate
 
 class Marker(object):
-    def __init__(self, pt, r, h):
+    def __init__(self, pt, r, h, ena):
         if Path.Geom.isRoughly(h, 0):
             h = 0.1
         self.pt = pt
         self.r = r
         self.h = h
+        self.ena = ena
         self.sep = coin.SoSeparator()
         self.pos = coin.SoTranslation()
         self.pos.translation = (pt.x, pt.y, pt.z + h / 2)
@@ -72,16 +73,26 @@ class Marker(object):
 
     def highlight(self):
         self.material.diffuseColor = self.color(1)
-        self.material.transparency = 0.45
+        self.material.transparency = 0.75
 
     def lowlight(self):
         self.material.diffuseColor = self.color(0)
-        self.material.transparency = 0.75
+        self.material.transparency = 0.90
+
+    def _colorEnabled(self, id):
+        if id == 1:
+            return coin.SbColor(0.0, 0.9, 0.0)
+        return coin.SbColor(0.0, 0.9, 0.0)
+
+    def _colorDisabled(self, id):
+        if id == 1:
+            return coin.SbColor(0.9, 0.0, 0.0)
+        return coin.SbColor(0.9, 0.0, 0.0)
 
     def color(self, id):
-        if id == 1:
-            return coin.SbColor(0.9, 0.9, 0.5)
-        return coin.SbColor(0.9, 0.5, 0.9)
+        if self.ena:
+            return self._colorEnabled(id)
+        return self._colorDisabled(id)
 
 
 class TaskPanel(object):
@@ -165,6 +176,7 @@ class TaskPanel(object):
                     FreeCAD.Vector(loc.x, loc.y, min(zs)),
                     r,
                     max(1, max(zs) - min(zs)),
+                    state.isEnabled(),
                 )
             )
         for m in self.markers:
