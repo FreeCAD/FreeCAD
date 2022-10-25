@@ -292,13 +292,15 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QComboBox" name="direction">
-              <property name="currentIndex">
-               <number>-1</number>
-              </property>
-             </widget>
+             <widget class="Gui::QuantitySpinBox" name="xAxis"/>
             </item>
-            <item row="1" column="0">
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="yAxis"/>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::QuantitySpinBox" name="zAxis"/>
+            </item>
+            <item row="3" column="0">
              <widget class="QLabel" name="textLabelAngle">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -311,7 +313,7 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="angle"/>
             </item>
            </layout>
@@ -525,7 +527,9 @@
  </customwidgets>
  <tabstops>
   <tabstop>rotationInput</tabstop>
-  <tabstop>direction</tabstop>
+  <tabstop>xAxis</tabstop>
+  <tabstop>yAxis</tabstop>
+  <tabstop>zAxis</tabstop>
   <tabstop>applyIncrementalPlacement</tabstop>
   <tabstop>oKButton</tabstop>
   <tabstop>applyButton</tabstop>

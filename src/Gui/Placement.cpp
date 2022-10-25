@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QClipboard>
 #include <QDockWidget>
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <QMetaObject>
 #include <QSignalMapper>
@@ -85,13 +86,14 @@ public:
 /* TRANSLATOR Gui::Dialog::Placement */
 
 Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationDialog(parent, fl)
+  : QDialog(parent, fl)
   , changeProperty(false)
 {
     selectionObjects = Gui::Selection().getSelectionEx();
 
     propertyName = "Placement"; // default name
-    ui = new Ui_PlacementComp(this);
+    ui = new Ui_Placement();
+    ui->setupUi(this);
     ui->gridLayout->removeItem(ui->vSpacer);
 
     ui->xPos->setUnit(Base::Unit::Length);
@@ -108,7 +110,6 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
 
     // create a signal mapper in order to have one slot to perform the change
     signalMapper = new QSignalMapper(this);
-    connect(this, SIGNAL(directionChanged()), signalMapper, SLOT(map()));
     signalMapper->setMapping(this, 0);
 
     int id = 1;
@@ -649,22 +650,23 @@ void Placement::bindObject()
         ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
         ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
 
+        ui->xAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.x")));
+        ui->yAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.y")));
+        ui->zAxis->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Axis.z")));
+        ui->angle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Angle")));
+
         ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
         ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
         ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
     }
 }
 
-void Placement::directionActivated(int index)
-{
-    if (ui->directionActivated(this, index)) {
-        Q_EMIT directionChanged();
-    }
-}
-
 Base::Vector3d Placement::getDirection() const
 {
-    return ui->getDirection();
+    double x = ui->xAxis->value().getValue();
+    double y = ui->yAxis->value().getValue();
+    double z = ui->zAxis->value().getValue();
+    return Base::Vector3d(x, y, z);
 }
 
 void Placement::setPlacement(const Base::Placement& p)
@@ -685,35 +687,14 @@ void Placement::setPlacementData(const Base::Placement& p)
     ui->pitchAngle->setValue(Base::Quantity(P, Base::Unit::Angle));
     ui->rollAngle->setValue(Base::Quantity(R, Base::Unit::Angle));
 
-    // check if the user-defined direction is already there
-    bool newitem = true;
     double angle;
     Base::Vector3d axis;
-    p.getRotation().getValue(axis, angle);
+    p.getRotation().getRawValue(axis, angle);
+    ui->xAxis->setValue(axis.x);
+    ui->yAxis->setValue(axis.y);
+    ui->zAxis->setValue(axis.z);
     ui->angle->setValue(Base::Quantity(angle*180.0/D_PI, Base::Unit::Angle));
-    Base::Vector3d dir(axis.x,axis.y,axis.z);
-    for (int i=0; i<ui->direction->count()-1; i++) {
-        QVariant data = ui->direction->itemData (i);
-        if (data.canConvert<Base::Vector3d>()) {
-            const Base::Vector3d val = data.value<Base::Vector3d>();
-            if (val == dir) {
-                ui->direction->setCurrentIndex(i);
-                newitem = false;
-                break;
-            }
-        }
-    }
 
-    if (newitem) {
-        // add a new item before the very last item
-        QString display = QString::fromLatin1("(%1,%2,%3)")
-            .arg(dir.x)
-            .arg(dir.y)
-            .arg(dir.z);
-        ui->direction->insertItem(ui->direction->count()-1, display,
-            QVariant::fromValue<Base::Vector3d>(dir));
-        ui->direction->setCurrentIndex(ui->direction->count()-2);
-    }
     signalMapper->blockSignals(false);
 }
 
@@ -798,7 +779,7 @@ QString Placement::getPlacementString() const
 void Placement::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslate(this);
+        ui->retranslateUi(this);
     }
     else {
         QDialog::changeEvent(e);

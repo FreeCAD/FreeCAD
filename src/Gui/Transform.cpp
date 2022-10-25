@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <QDialogButtonBox>
+#include <QKeyEvent>
 #include <QSignalMapper>
 
 #include <App/GeoFeature.h>
@@ -280,9 +281,10 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
 /* TRANSLATOR Gui::Dialog::Transform */
 
 Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationDialog(parent, fl), strategy(nullptr)
+  : QDialog(parent, fl), strategy(nullptr)
 {
-    ui = new Ui_TransformComp(this);
+    ui = new Ui_Placement();
+    ui->setupUi(this);
     ui->resetButton->hide();
     ui->applyIncrementalPlacement->hide();
 
@@ -291,7 +293,6 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
 
     // create a signal mapper in order to have one slot to perform the change
     auto signalMapper = new QSignalMapper(this);
-    connect(this, SIGNAL(directionChanged()), signalMapper, SLOT(map()));
     signalMapper->setMapping(this, 0);
 
     int id = 1;
@@ -373,16 +374,12 @@ void Transform::on_applyButton_clicked()
     ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Unit::Length));
 }
 
-void Transform::directionActivated(int index)
-{
-    if (ui->directionActivated(this, index)) {
-        Q_EMIT directionChanged();
-    }
-}
-
 Base::Vector3d Transform::getDirection() const
 {
-    return ui->getDirection();
+    double x = ui->xAxis->value().getValue();
+    double y = ui->yAxis->value().getValue();
+    double z = ui->zAxis->value().getValue();
+    return Base::Vector3d(x, y, z);
 }
 
 Base::Placement Transform::getPlacementData() const
@@ -413,7 +410,7 @@ Base::Placement Transform::getPlacementData() const
 void Transform::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslate(this);
+        ui->retranslateUi(this);
         ui->closeButton->setText(tr("Cancel"));
         this->setWindowTitle(tr("Transform"));
     }
