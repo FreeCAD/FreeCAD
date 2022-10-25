@@ -29,6 +29,7 @@
 # include <QComboBox>
 # include <QFontDatabase>
 # include <QLocale>
+# include <QMessageBox>
 # include <QPalette>
 # include <QPixmap>
 # include <QTextStream>

@@ -27,6 +27,7 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QDateTime>
+# include <QMessageBox>
 # include <QTextStream>
 # include <QTreeWidgetItem> 
 #endif
