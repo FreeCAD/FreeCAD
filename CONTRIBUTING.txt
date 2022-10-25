@@ -66,7 +66,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
     6. The user or Contributor SHOULD seek consensus on the accuracy of their observation and the value of solving the problem.
     7. To submit a solution to a problem, a Contributor SHALL create a pull request back to the project.
     8. Contributors and Maintainers SHALL NOT commit changes directly to the target branch.
-    9. To discuss a proposed solution, users MAY comment on the platform pull request. Forum conversations regarding the solution should be discouraged and conversation redirected to the Pull Request or the related issue.
+    9. To discuss a proposed solution, Users MAY comment on the platform Pull Request. Forum conversations regarding the solution should be discouraged and conversation redirected to the Pull Request or the related issue.
     10. To accept or reject a Pull Request, a Maintainer SHALL use the platform interface.
     11. Maintainers SHOULD NOT merge their own PRs except:
       - in exceptional cases, such as non-responsiveness from other Maintainers for an extended period (more than 1-2 days).
