@@ -23,7 +23,6 @@
 import FreeCAD
 import Path
 import Path.Base.Language as PathLanguage
-
 import math
 
 PI = math.pi

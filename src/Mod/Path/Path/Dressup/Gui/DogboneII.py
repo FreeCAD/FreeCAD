@@ -23,13 +23,10 @@
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import FreeCADGui
 import Path
 import Path.Dressup.DogboneII as DogboneII
 import PathScripts.PathUtils as PathUtils
-import math
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -52,7 +49,7 @@ class Marker(object):
         self.pos.translation = (pt.x, pt.y, pt.z + h / 2)
         self.rot = coin.SoRotationXYZ()
         self.rot.axis = self.rot.X
-        self.rot.angle = math.pi / 2
+        self.rot.angle = DogboneII.PI / 2
         self.cyl = coin.SoCylinder()
         self.cyl.radius = r
         self.cyl.height = h
