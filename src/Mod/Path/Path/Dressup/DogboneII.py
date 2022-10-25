@@ -28,7 +28,7 @@ import Path.Base.Language as PathLanguage
 import math
 
 #Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-#Path.Log.trackModule(Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 PI = math.pi
 
@@ -150,6 +150,26 @@ def insertBone(obj, kink):
         return False
     return True
 
+class BoneState(object):
+
+    def __init__(self, bone, nr, enabled=True):
+        self.bone = {nr : bone}
+        self.enabled = enabled
+        pos = bone.position()
+        self.pos = FreeCAD.Vector(pos.x, pos.y, 0)
+
+    def isEnabled(self):
+        return self.enabled
+
+    def addBone(self, bone, nr):
+        self.bone[nr] = bone
+
+    def position(self):
+        return self.pos
+
+    def boneIDs(self):
+        return list(sorted(self.bone.keys()))
+
 class Proxy(object):
     def __init__(self, obj, base):
         obj.addProperty(
@@ -218,7 +238,7 @@ class Proxy(object):
         return None
 
     def createBone(self, obj, move0, move1): 
-        Path.Log.track(move0, move1)
+        Path.Log.debug(f"createBone({obj.Label}, {move0}, {move1})")
         kink = dogboneII.Kink(move0, move1)
         if insertBone(obj, kink):
             generator = Style.Generator[obj.Style]
@@ -255,7 +275,7 @@ class Proxy(object):
                         enabled = not len(bones) in obj.BoneBlacklist
                         if enabled:
                             maneuver.addInstructions(bone.instr)
-                        bones.append((bone, enabled))
+                        bones.append(bone)
                     maneuver.addInstruction(thisMove)
                 else:
                     # non-move instructions get added verbatim
@@ -264,7 +284,23 @@ class Proxy(object):
         else:
             Path.Log.info(f"No Path found to dress up in op {obj.Base}")
         self.maneuver = maneuver
+        self.bones = bones
         obj.Path = maneuver.toPath()
+
+    def boneStates(self, obj):
+        state = {}
+        if hasattr(self, 'bones'):
+            for nr, bone in enumerate(self.bones):
+                pos = bone.position()
+                loc = f"({pos.x:.4f}, {pos.y:.4f})"
+                if state.get(loc, None):
+                    state[loc].addBone(bone, nr)
+                else:
+                    state[loc] = BoneState(bone, nr)
+                if nr in obj.BoneBlacklist:
+                    state[loc].enabled = False
+        return state.values()
+
 
 def Create(base, name="DressupDogbone"):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)

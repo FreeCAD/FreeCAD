@@ -91,6 +91,10 @@ class Bone (object):
     def addInstruction(self, instr):
         self.instr.append(instr)
 
+    def position(self):
+        '''pos() ... return the position of the bone'''
+        return self.kink.position()
+
 def kink_to_path(kink, g0=False):
     return Path.Path([PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
 

@@ -1401,11 +1401,12 @@ class CommandDressupDogbone(object):
         FreeCAD.ActiveDocument.recompute()
 
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
-    from pivy import coin
-
-    FreeCADGui.addCommand("Path_DressupDogbone", CommandDressupDogbone())
+# obsolete, replaced by DogboneII
+#if FreeCAD.GuiUp:
+#    import FreeCADGui
+#    from PySide import QtGui
+#    from pivy import coin
+#
+#    FreeCADGui.addCommand("Path_DressupDogbone", CommandDressupDogbone())
 
 FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")
