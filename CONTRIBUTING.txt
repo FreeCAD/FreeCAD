@@ -39,7 +39,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 
 4. Licensing, Ownership, and Credit
     1. FreeCAD is distributed under the Lesser General Public License, version 2, or superior (LGPL2+).  Additional details can be found in the LICENSE file.
-    2. All contributions to FreeCAD SHALL use the same license as the project.
+    2. All contributions to FreeCAD MUST use a compatible license.
     3. All contributions are owned by their authors unless assigned to another.
     4. FreeCAD does not have a mandatory copyright assignment policy.
     5. A Contributor who wishes to be identified in the Credits section of the application "About" dialog is responsible for identifying themselves appropriately by notifying an Administrator or Maintainer.
