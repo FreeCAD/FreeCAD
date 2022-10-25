@@ -80,7 +80,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
     14. Maintainers SHALL NOT make value judgments on correct patches.
     15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
     16. The User who created an issue SHOULD close the issue after checking the PR is successful.
-    17. Maintainers SHOULD close user issues that are left open without action or update for an uncomfortable period.
+    17. Maintainers SHOULD close User issues that are left open without action or update for an uncomfortable period.
 
 7. Branches and Releases
 
