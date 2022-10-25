@@ -273,7 +273,7 @@ private:
             auto key = wrappers.find(obj);
             if (key != wrappers.end()) {
                 Base::PyGILStateLocker lock;
-                for (auto it : key->second) {
+                for (const auto& it : key->second) {
                     auto value = it.ptr();
                     Shiboken::Object::setValidCpp(reinterpret_cast<SbkObject*>(value), false);
                 }
