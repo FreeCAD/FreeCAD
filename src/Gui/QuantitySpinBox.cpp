@@ -743,15 +743,7 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 
 void QuantitySpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
-    Q_ASSERT(isBound());
-
-    try {
-        ExpressionBinding::setExpression(expr);
-        validateInput();
-    }
-    catch (const Base::Exception & e) {
-        showInvalidExpression(QString::fromLatin1(e.what()));
-    }
+    ExpressionSpinBox::setExpression(expr);
 }
 
 QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const

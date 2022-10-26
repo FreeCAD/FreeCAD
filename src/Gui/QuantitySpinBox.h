@@ -157,7 +157,7 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    void validateInput();
+    void validateInput() override;
     void updateText(const Base::Quantity&);
     void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;

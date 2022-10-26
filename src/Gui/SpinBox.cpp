@@ -76,6 +76,10 @@ void ExpressionSpinBox::showIcon()
     iconLabel->show();
 }
 
+void ExpressionSpinBox::validateInput()
+{
+}
+
 void ExpressionSpinBox::showInvalidExpression(const QString& tip)
 {
     spinbox->setReadOnly(true);
@@ -142,6 +146,7 @@ void ExpressionSpinBox::setExpression(std::shared_ptr<Expression> expr)
 
     try {
         ExpressionBinding::setExpression(expr);
+        validateInput();
     }
     catch (const Base::Exception & e) {
         showInvalidExpression(QString::fromLatin1(e.what()));
