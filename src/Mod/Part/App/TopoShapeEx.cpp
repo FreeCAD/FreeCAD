@@ -5648,17 +5648,9 @@ bool TopoShape::isLinearEdge(Base::Vector3d *dir, Base::Vector3d *base) const
 
     if (!GeomCurve::isLinear(BRepAdaptor_Curve(TopoDS::Edge(getShape())).Curve().Curve(), dir, base))
         return false;
-    if (dir || base) {
-        auto pla = getPlacement();
-        if (dir) {
-            Base::Vector3d p0, p1;
-            pla.multVec(Base::Vector3d(), p0);
-            pla.multVec(*dir, p1);
-            *dir = p1 - p0;
-        }
-        if (base)
-            pla.multVec(*base, *base);
-    }
+
+    // BRep_Tool::Curve() will transform the returned geometry, so no need to
+    // check the shape's placement. 
     return true;
 }
 
