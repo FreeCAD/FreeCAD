@@ -2941,48 +2941,115 @@ void TopoShape::sewShape(double tolerance)
     *this = makEShape(sew);
 }
 
+bool TopoShape::fix()
+{
+    if (this->_Shape.IsNull())
+        return false;
+
+    // First, we do fix regardless if the current shape is valid or not,
+    // because not all problems that are handled by ShapeFix_Shape can be
+    // recognized by BRepCheck_Analyzer.
+    //
+    // Second, for some reason, a failed fix (i.e. a fix that produces invalid shape)
+    // will affect the input shape. (See // https://github.com/realthunder/FreeCAD/issues/585,
+    // BTW, the file attached in the issue also shows that ShapeFix_Shape may
+    // actually make a valid input shape invalid). So, it actually change the
+    // underlying shape data. Therefore, we try with a copy first. 
+    auto copy = makECopy();
+    ShapeFix_Shape fix(copy._Shape);
+    fix.Perform();
+
+    if (fix.Shape().IsSame(copy._Shape))
+        return false;
+
+    BRepCheck_Analyzer aChecker(fix.Shape());
+    if (!aChecker.IsValid())
+        return false;
+
+    // If the above fix produces a valid shape, then we fix the original shape,
+    // because BRepBuilderAPI_Copy has some undesired side effect (e.g. flatten
+    // underlying shape, and thus break internal shape sharing).
+    ShapeFix_Shape fixThis(this->_Shape);
+    fixThis.Perform();
+
+    aChecker.Init(fixThis.Shape());
+    if (aChecker.IsValid()) {
+        // Must call makESHAPE() (which calls mapSubElement()) to remap element
+        // names because ShapeFix_Shape may delete (e.g. small edges) or modify
+        // the input shape.
+        //
+        // See https://github.com/realthunder/FreeCAD/issues/595. Sketch001
+        // has small edges. Simply recompute the sketch to trigger call of fix()
+        // through makEWires(), and it will remove those edges. Without
+        // remapping, there will be invalid index jumpping in reference in
+        // Sketch002.ExternalEdge5.
+        makESHAPE(fixThis.Shape(), MapperHistory(fixThis), {*this});
+    } else
+        makESHAPE(fix.Shape(), MapperHistory(fix), {copy});
+    return true;
+}
+
 bool TopoShape::fix(double precision, double mintol, double maxtol)
 {
     if (this->_Shape.IsNull())
         return false;
 
-    TopAbs_ShapeEnum type = this->_Shape.ShapeType();
+    auto doFix = [precision, mintol, maxtol](ShapeFix_Shape &fix,
+                                             const TopoShape &s,
+                                             TopoDS_Shape &result)
+    {
+        TopAbs_ShapeEnum type = s._Shape.ShapeType();
 
-    ShapeFix_Shape fix(this->_Shape);
-    fix.SetPrecision(precision);
-    fix.SetMinTolerance(mintol);
-    fix.SetMaxTolerance(maxtol);
+        fix.SetPrecision(precision);
+        fix.SetMinTolerance(mintol);
+        fix.SetMaxTolerance(maxtol);
 
-    fix.Perform();
+        fix.Perform();
 
-    if (type == TopAbs_SOLID) {
-        //fix.FixEdgeTool();
-        fix.FixWireTool()->Perform();
-        fix.FixFaceTool()->Perform();
-        fix.FixShellTool()->Perform();
-        fix.FixSolidTool()->Perform();
-        setShape(fix.FixSolidTool()->Shape(), false);
-    }
-    else if (type == TopAbs_SHELL) {
-        fix.FixWireTool()->Perform();
-        fix.FixFaceTool()->Perform();
-        fix.FixShellTool()->Perform();
-        setShape(fix.FixShellTool()->Shape(), false);
-    }
-    else if (type == TopAbs_FACE) {
-        fix.FixWireTool()->Perform();
-        fix.FixFaceTool()->Perform();
-        setShape(fix.Shape(), false);
-    }
-    else if (type == TopAbs_WIRE) {
-        fix.FixWireTool()->Perform();
-        setShape(fix.Shape(), false);
-    }
-    else {
-        setShape(fix.Shape(), false);
-        return isValid();
-    }
-    return isValid();
+        if (type == TopAbs_SOLID) {
+            //fix.FixEdgeTool();
+            fix.FixWireTool()->Perform();
+            fix.FixFaceTool()->Perform();
+            fix.FixShellTool()->Perform();
+            fix.FixSolidTool()->Perform();
+            result = fix.FixSolidTool()->Shape();
+        }
+        else if (type == TopAbs_SHELL) {
+            fix.FixWireTool()->Perform();
+            fix.FixFaceTool()->Perform();
+            fix.FixShellTool()->Perform();
+            result = fix.FixShellTool()->Shape();
+        }
+        else if (type == TopAbs_FACE) {
+            fix.FixWireTool()->Perform();
+            fix.FixFaceTool()->Perform();
+            result = fix.Shape();
+        }
+        else if (type == TopAbs_WIRE) {
+            fix.FixWireTool()->Perform();
+            result = fix.Shape();
+        }
+        else {
+            result = fix.Shape();
+        }
+        if (result.IsSame(s.getShape()))
+            return false;
+        BRepCheck_Analyzer check(result);
+        return check.IsValid();
+    };
+
+    auto copy = makECopy();
+    TopoDS_Shape copiedShape;
+    ShapeFix_Shape fix(copy._Shape);
+    if (!doFix(fix, copy, copiedShape))
+        return false;
+    ShapeFix_Shape fixThis(_Shape);
+    TopoDS_Shape fixedShape;
+    if (doFix(fixThis, *this, fixedShape))
+        makESHAPE(fixedShape, MapperHistory(fixThis), {*this});
+    else
+        makESHAPE(copiedShape, MapperHistory(fix), {copy});
+    return true;
 }
 
 bool TopoShape::removeInternalWires(double minArea)

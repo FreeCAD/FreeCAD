@@ -339,6 +339,7 @@ public:
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
     void sewShape(double tolerance = 1.0e-06);
+    bool fix();
     bool fix(double, double, double);
     bool fixSolidOrientation();
     bool removeInternalWires(double);
