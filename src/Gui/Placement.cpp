@@ -658,6 +658,10 @@ void Placement::bindObject()
         ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
         ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
         ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
+
+        ui->yawAngle->evaluateExpression();
+        ui->pitchAngle->evaluateExpression();
+        ui->rollAngle->evaluateExpression();
     }
 }
 

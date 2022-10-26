@@ -108,6 +108,7 @@ public:
 
     /// Gets the expression as a string
     QString expressionText() const;
+    void evaluateExpression();
 
     /// Set the number portion selected
     void selectNumber();
