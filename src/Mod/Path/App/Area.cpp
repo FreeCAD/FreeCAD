@@ -38,6 +38,7 @@
 # include <boost/range/adaptor/indexed.hpp>
 # include <boost/range/adaptor/transformed.hpp>
 
+# include <Standard_Version.hxx>
 # include <Bnd_Box.hxx>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
@@ -76,7 +77,6 @@
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>

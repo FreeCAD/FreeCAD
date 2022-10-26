@@ -23,6 +23,7 @@
 #ifndef PART_FACEMAKER_H
 #define PART_FACEMAKER_H
 
+#include <Standard_Version.hxx>
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <Base/BaseClass.h>
 #include <TopoDS_Compound.hxx>
