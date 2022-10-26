@@ -49,6 +49,7 @@ public:
     void accept() override;
     void reject() override;
 
+    void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
@@ -62,15 +63,22 @@ protected:
 
 private Q_SLOTS:
     void openTransaction();
-    void on_applyButton_clicked();
-    void on_applyIncrementalPlacement_toggled(bool);
+    void onApplyButtonClicked();
+    void onApplyIncrementalPlacementToggled(bool);
     void onPlacementChanged(int);
-    void on_resetButton_clicked();
-    void on_centerOfMass_toggled(bool);
-    void on_selectedVertex_clicked();
-    void on_applyAxial_clicked();
+    void onResetButtonClicked();
+    void onCenterOfMassToggled(bool);
+    void onSelectedVertexClicked();
+    void onApplyAxialClicked();
 
 private:
+    void setupUi();
+    void setupConnections();
+    void setupUnits();
+    void setupSignalMapper();
+    void setupDocument();
+    void setupRotationMethod();
+
     bool onApply();
     void setPlacementData(const Base::Placement&);
     Base::Placement getPlacementData() const;
@@ -130,6 +138,7 @@ public:
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
+    void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
     bool accept() override;
     bool reject() override;

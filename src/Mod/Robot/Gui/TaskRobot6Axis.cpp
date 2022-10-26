@@ -118,6 +118,7 @@ void TaskRobot6Axis::setRobot(Robot::RobotObject *pcRobotObject)
 void TaskRobot6Axis::createPlacementDlg()
 {
     Gui::Dialog::Placement plc;
+    plc.setSelection(Gui::Selection().getSelectionEx());
     plc.setPlacement(pcRobot->Tool.getValue());
     if (plc.exec()==QDialog::Accepted)
         pcRobot->Tool.setValue(plc.getPlacement());

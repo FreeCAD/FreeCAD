@@ -227,6 +227,7 @@ void CmdRobotSetDefaultOrientation::activated(int)
 {
     // create placement dialog
     Gui::Dialog::Placement Dlg;
+    Dlg.setSelection(Gui::Selection().getSelectionEx());
     Base::Placement place;
     Dlg.setPlacement(place);
     if (Dlg.exec() == QDialog::Accepted ){

@@ -87,15 +87,49 @@ public:
 
 Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
-  , changeProperty(false)
+  , ui{nullptr}
+  , propertyName{"Placement"}
+  , changeProperty{false}
 {
-    selectionObjects = Gui::Selection().getSelectionEx();
+    setupUi();
+    setupConnections();
+    setupUnits();
+    setupSignalMapper();
+    setupDocument();
+    setupRotationMethod();
+}
 
-    propertyName = "Placement"; // default name
+Placement::~Placement()
+{
+    connectAct.disconnect();
+    delete ui;
+}
+
+void Placement::setupUi()
+{
     ui = new Ui_Placement();
     ui->setupUi(this);
     ui->gridLayout->removeItem(ui->vSpacer);
+}
 
+void Placement::setupConnections()
+{
+    connect(ui->applyButton, &QPushButton::clicked,
+            this, &Placement::onApplyButtonClicked);
+    connect(ui->applyIncrementalPlacement, &QCheckBox::toggled,
+            this, &Placement::onApplyIncrementalPlacementToggled);
+    connect(ui->resetButton, &QPushButton::clicked,
+            this, &Placement::onResetButtonClicked);
+    connect(ui->centerOfMass, &QCheckBox::toggled,
+            this, &Placement::onCenterOfMassToggled);
+    connect(ui->selectedVertex, &QPushButton::clicked,
+            this, &Placement::onSelectedVertexClicked);
+    connect(ui->applyAxial, &QPushButton::clicked,
+            this, &Placement::onApplyAxialClicked);
+}
+
+void Placement::setupUnits()
+{
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
     ui->zPos->setUnit(Base::Unit::Length);
@@ -107,7 +141,10 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     ui->yawAngle->setUnit(Base::Unit::Angle);
     ui->pitchAngle->setUnit(Base::Unit::Angle);
     ui->rollAngle->setUnit(Base::Unit::Angle);
+}
 
+void Placement::setupSignalMapper()
+{
     // create a signal mapper in order to have one slot to perform the change
     signalMapper = new QSignalMapper(this);
     signalMapper->setMapping(this, 0);
@@ -119,23 +156,25 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
         signalMapper->setMapping(it, id++);
     }
 
-    connect(signalMapper, SIGNAL(mapped(int)),
-            this, SLOT(onPlacementChanged(int)));
+    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
+            this, &Placement::onPlacementChanged);
+}
+
+void Placement::setupDocument()
+{
     connectAct = Application::Instance->signalActiveDocument.connect
         (boost::bind(&Placement::slotActiveDocument, this, bp::_1));
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (activeDoc) documents.insert(activeDoc->getName());
+    if (activeDoc)
+        documents.insert(activeDoc->getName());
+}
 
+void Placement::setupRotationMethod()
+{
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Placement");
     long index = hGrp->GetInt("RotationMethod");
     ui->rotationInput->setCurrentIndex(index);
     ui->stackedWidget->setCurrentIndex(index);
-}
-
-Placement::~Placement()
-{
-    connectAct.disconnect();
-    delete ui;
 }
 
 void Placement::showDefaultButtons(bool ok)
@@ -333,7 +372,7 @@ void Placement::onPlacementChanged(int)
     Q_EMIT placementChanged(data, incr, false);
 }
 
-void Placement::on_centerOfMass_toggled(bool on)
+void Placement::onCenterOfMassToggled(bool on)
 {
     ui->xCnt->setDisabled(on);
     ui->yCnt->setDisabled(on);
@@ -359,7 +398,7 @@ void Placement::on_centerOfMass_toggled(bool on)
     }
 }
 
-void Placement::on_selectedVertex_clicked()
+void Placement::onSelectedVertexClicked()
 {
     cntOfMass.Set(0,0,0);
     ui->centerOfMass->setChecked(false);
@@ -512,7 +551,7 @@ convenience when Shift + click is used the appropriate distance or angle is copi
     }
 }
 
-void Placement::on_applyAxial_clicked()
+void Placement::onApplyAxialClicked()
 {
     signalMapper->blockSignals(true);
     double axPos = ui->axialPos->value().getValue();
@@ -536,11 +575,11 @@ void Placement::on_applyAxial_clicked()
     onPlacementChanged(0);
 }
 
-void Placement::on_applyIncrementalPlacement_toggled(bool on)
+void Placement::onApplyIncrementalPlacementToggled(bool on)
 {
     if (on) {
         this->ref = getPlacementData();
-        on_resetButton_clicked();
+        onResetButtonClicked();
     }
     else {
         Base::Placement p = getPlacementData();
@@ -584,7 +623,7 @@ void Placement::accept()
     }
 }
 
-void Placement::on_applyButton_clicked()
+void Placement::onApplyButtonClicked()
 {
     onApply();
 }
@@ -629,7 +668,7 @@ bool Placement::onApply()
     return true;
 }
 
-void Placement::on_resetButton_clicked()
+void Placement::onResetButtonClicked()
 {
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
     for (auto & it : sb) {
@@ -641,6 +680,21 @@ void Placement::on_resetButton_clicked()
     onPlacementChanged(0);
 }
 
+/*!
+ * \brief Placement::setSelection
+ * Sets the array of selection objects.
+ * \param selection
+ */
+void Placement::setSelection(const std::vector<SelectionObject>& selection)
+{
+    selectionObjects = selection;
+}
+
+/*!
+ * \brief Placement::bindObject
+ * Binds the spin boxes to the placement components of the first object of the selection.
+ * This requires the call of \a setSelection() beforehand.
+ */
 void Placement::bindObject()
 {
     if (!selectionObjects.empty()) {
@@ -845,6 +899,22 @@ TaskPlacement::~TaskPlacement()
     // automatically deleted in the sub-class
 }
 
+
+/*!
+ * \brief TaskPlacement::setSelection
+ * Sets the array of selection objects.
+ * \param selection
+ */
+void TaskPlacement::setSelection(const std::vector<SelectionObject>& selection)
+{
+    widget->setSelection(selection);
+}
+
+/*!
+ * \brief TaskPlacement::bindObject
+ * Binds the spin boxes to the placement components of the first object of the selection.
+ * This requires the call of \a setSelection() beforehand.
+ */
 void TaskPlacement::bindObject()
 {
     widget->bindObject();
@@ -892,7 +962,7 @@ bool TaskPlacement::reject()
 void TaskPlacement::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {
-        widget->on_applyButton_clicked();
+        widget->onApplyButtonClicked();
     }
 }
 

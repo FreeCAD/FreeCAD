@@ -2487,6 +2487,7 @@ void PlacementEditor::browse()
     }
     task->setPlacement(value().value<Base::Placement>());
     task->setPropertyName(propertyname);
+    task->setSelection(Gui::Selection().getSelectionEx());
     task->bindObject();
     Gui::Control().showDialog(task);
 }

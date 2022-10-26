@@ -94,6 +94,7 @@ void TaskTrajectoryDressUpParameter::writeValues()
 void TaskTrajectoryDressUpParameter::createPlacementDlg()
 {
     Gui::Dialog::Placement plc;
+    plc.setSelection(Gui::Selection().getSelectionEx());
     plc.setPlacement(PosAdd);
     if (plc.exec() == QDialog::Accepted) {
         PosAdd = plc.getPlacement();
