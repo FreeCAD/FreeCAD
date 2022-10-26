@@ -13,7 +13,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 
 The FreeCAD Contribution Process is expressed here with the following specific goals in mind:
 
-1. To provide transparency and fairness in the contribution process.
+1. To provide transparency and fairness in /the contribution process.
 2. To allow useful contributions to be included as quickly as possible.
 3. To preserve and improve the code quality while encouraging appropriate experimentation and risk-taking.
 4. To minimize dependence on individual Contributors by encouraging a large pool of active Contributors.
@@ -60,7 +60,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 ## 6. Process
 
 1. Change on the project follows the pattern of accurately identifying problems and applying minimal, accurate solutions to these problems.
-2. To request changes, a User (end user, Contributor, Maintainer, or Administrator) logs an issue on the project Platform issue tracker.
+2. To request changes, a User logs an issue on the project Platform issue tracker.
 3. The User or Contributor SHOULD write the issue by describing the problem they face or observe. Links to the forum or other resources are permitted but the issue SHOULD be complete and accurate and SHOULD NOT require the reader to visit the forum or any other Platform to understand what is being described.
 4. Issue authors SHOULD strive to describe the minimum acceptable condition.
 5. Issue authors SHOULD focus on User tasks and avoid comparisons to other software solutions.
