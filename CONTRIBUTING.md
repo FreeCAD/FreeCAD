@@ -27,13 +27,13 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 2. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization, hereafter referred to as 'the Platform'.
 3. Problems are discrete, well-defined limitations or bugs.
 4. FreeCAD uses the Platform's issue-tracking system to track problems.
-5. Patches are sets of code changes that resolve a single problem.
-6. FreeCAD uses the Pull Request workflow for evaluating and accepting patches.
+5. Contributions are sets of code changes that resolve a single problem.
+6. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
 
 ## 3. Roles
 1. "User": An member of the wider FreeCAD community who uses the software.
-2. "Contributor":  A person who submits a patch that resolves a previously identified problem. Contributors do not have commit access to the repository unless they are also Maintainers. Everyone, without distinction or discrimination, SHALL have an equal right to become a Contributor.
-3. "Maintainer": A person who merges patches. Maintainers may or may not be Contributors. Their role is to enforce the process. Maintainers have commit access to the repository.
+2. "Contributor":  A person who submits a contribution that resolves a previously identified problem. Contributors do not have commit access to the repository unless they are also Maintainers. Everyone, without distinction or discrimination, SHALL have an equal right to become a Contributor.
+3. "Maintainer": A person who merges contributions. Maintainers may or may not be Contributors. Their role is to enforce the process. Maintainers have commit access to the repository.
 4. "Administrator": Administrators have additional authority to maintain the list of designated Maintainers.
 
 ## 4. Licensing, Ownership, and Credit
@@ -45,7 +45,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 
 ## 5. Contribution Requirements
 
-1. Patches are submitted in the form of Pull Requests (PR).
+1. Contributions are submitted in the form of Pull Requests (PR).
 2. Maintainers and Contributors MUST have a Platform account and SHOULD use their real names or a well-known alias. If the Platform alias differs from the account alias on the FreeCAD Forum, effort SHOULD be taken to avoid confusion.
 3. A PR SHOULD be a minimal and accurate answer to exactly one identified and agreed-on problem.
 4. A PR SHOULD refrain from adding additional dependencies to the FreeCAD project unless no other option is available.
@@ -76,9 +76,9 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 12. Maintainers SHALL merge valid PRs from other Contributors rapidly.
 13. Maintainers MAY, at their discretion merge PRs that have not met all criteria to be considered valid to:
     1. end fruitless discussions
-    2. capture toxic patches in the historical record
-    3. engage with the Contributor on improving their patch quality.
-14. Maintainers SHALL NOT make value judgments on correct patches.
+    2. capture toxic contributions in the historical record
+    3. engage with the Contributor on improving their contribution quality.
+14. Maintainers SHALL NOT make value judgments on correct contributions.
 15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
 16. The User who created an issue SHOULD close the issue after checking the PR is successful.
 17. Maintainers SHOULD close User issues that are left open without action or update for an unreasonable period.
