@@ -54,7 +54,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 7. A PR SHALL NOT include non-trivial code from other projects unless the Contributor is the original author of that code.
 8. A PR MUST compile cleanly and pass project self-tests on all target Platforms.
 9. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
-10. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consits of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed.
+10. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed.
 11. A “Valid PR” is one which satisfies the above requirements.
 
 ## 6. Process
@@ -95,4 +95,4 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 2. A new Contributor who has had more than one PR accepted and who clearly understands the project goals and this process SHOULD be invited to become a Maintainer.
 3. Administrators SHOULD remove Maintainers who are inactive for an extended period, or who repeatedly fail to apply this process accurately.
 4. The list of Maintainers SHALL be publicly accessible and reflective of current activity on the project.
-5. Administrators SHOULD block or ban “bad actors” who cause stress, animosity, or confusion to others in the project. This SHOULD be done after public discussion, with a chance for all parties to speak. A bad actor is someone who repeatedly ignores the rules and culture of the project, who is hostile or is offensive, who impedes the productive exchange of information, and who is unable to self-correct their behavior when asked to do so by others.
+5. Administrators SHOULD block or ban “bad actors” who cause stress, animosity, or confusion to others in the project. This SHOULD be done after public discussion, with a chance for all parties to speak. A bad actor is someone who repeatedly ignores the rules and culture of the project, who is hostile or offensive, who impedes the productive exchange of information, and who is unable to self-correct their behavior when asked to do so by others.
