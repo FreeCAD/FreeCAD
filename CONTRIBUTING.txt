@@ -54,8 +54,8 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
     6. If a PR contains multiple commits, each commit MUST compile cleanly and add value to the history of the project. Checkpoint commits SHOULD be squashed.
     7. A PR SHALL NOT include non-trivial code from other projects unless the Contributor is the original author of that code.
     8. A PR MUST compile cleanly and pass project self-tests on all target Platforms.
-    9. Each commit message in a PR MUST succinctly explain what the commit achieves.
-    10. The PR Description MUST consist of a single short (less than 50 characters) line stating the problem (“Problem: …") being solved, followed by a blank line and then the proposed solution (“Solution: …").
+    9. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
+    10. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consits of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed.
     11. A “Valid PR” is one which satisfies the above requirements.
 
 6. Process
@@ -82,7 +82,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
     14. Maintainers SHALL NOT make value judgments on correct patches.
     15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
     16. The User who created an issue SHOULD close the issue after checking the PR is successful.
-    17. Maintainers SHOULD close User issues that are left open without action or update for an uncomfortable period.
+    17. Maintainers SHOULD close User issues that are left open without action or update for an unreasonable period.
 
 7. Branches and Releases
 
