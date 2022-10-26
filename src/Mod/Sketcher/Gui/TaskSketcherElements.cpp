@@ -739,6 +739,8 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                     QSignalBlocker sigblk(ui->listWidgetElements);
                     for (int i = 0; i < ui->listWidgetElements->count(); i++) {
                         ElementItem* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+                        if(item->isSelected())
+                            item->setSelected(false); //if already selected, we need to reset setSelected or it won't draw subelements correctly if selecting several.
                         item->setSelected(item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected || item->isMidPointSelected);
                     }
                 }
@@ -1143,8 +1145,8 @@ void TaskSketcherElements::changeEvent(QEvent *e)
 /* Settings menu ==================================================*/
 void TaskSketcherElements::createSettingsButtonActions()
 {
-    QAction* action = new QAction(QString::fromLatin1("Extended information"), this);
-    QAction* action2 = new QAction(QString::fromLatin1("Auto collapse filter"), this);
+    QAction* action = new QAction(tr("Extended information"), this);
+    QAction* action2 = new QAction(tr("Auto collapse filter"), this);
 
     action->setCheckable(true);
     action2->setCheckable(true);
@@ -1160,24 +1162,32 @@ void TaskSketcherElements::createSettingsButtonActions()
     ui->settingsButton->addAction(action2);
 
     isNamingBoxChecked = hGrp->GetBool("ExtendedNaming", false);
-    collapseFilter = hGrp->GetBool("AutoCollapseFilter", false);
+    collapseFilter = hGrp->GetBool("AutoCollapseFilter", true);
 }
 
 void TaskSketcherElements::on_settings_extendedInformation_changed()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
-    hGrp->SetBool("ExtendedNaming", ui->settingsButton->actions()[0]->isChecked());
-
     isNamingBoxChecked = ui->settingsButton->actions()[0]->isChecked();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
+    hGrp->SetBool("ExtendedNaming", isNamingBoxChecked);
+
     slotElementsChanged();
 }
 
 void TaskSketcherElements::on_settings_autoCollapseFilter_changed()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
-    hGrp->SetBool("AutoCollapseFilter", ui->settingsButton->actions()[1]->isChecked());
-
     collapseFilter = ui->settingsButton->actions()[1]->isChecked();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
+    hGrp->SetBool("AutoCollapseFilter", collapseFilter);
+
+    if (collapseFilter) {
+        ui->listMultiFilter->setVisible(false);
+    }
+    else {
+        ui->listMultiFilter->setVisible(ui->filterBox->checkState() == Qt::Checked);
+    }
 }
 
 void TaskSketcherElements::on_settingsButton_clicked(bool)
