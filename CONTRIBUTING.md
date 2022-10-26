@@ -41,7 +41,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 2. All contributions to FreeCAD MUST use a compatible license.
 3. All contributions are owned by their authors unless assigned to another.
 4. FreeCAD does not have a mandatory copyright assignment policy.
-5. A Contributor who wishes to be identified in the Credits section of the application "About" dialog is responsible for identifying themselves appropriately by notifying an Administrator or Maintainer.
+5. A Contributor who wishes to be identified in the Credits section of the application "About" dialog is responsible for identifying themselves. They should modify the Contributors file and submit a PR with a single commit for this modification only. The contributors file is found at https://github.com/FreeCAD/FreeCAD/blob/master/src/Doc/CONTRIBUTORS 
 
 ## 5. Contribution Requirements
 
