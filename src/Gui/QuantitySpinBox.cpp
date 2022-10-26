@@ -412,6 +412,13 @@ QString Gui::QuantitySpinBox::expressionText() const
     return QString();
 }
 
+void QuantitySpinBox::evaluateExpression()
+{
+    if (isBound() && getExpression()) {
+        showValidExpression(Number::SetIfNumber);
+    }
+}
+
 void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
     lineEdit()->setText(getUserString(expr->getQuantity()));
