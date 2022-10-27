@@ -14,7 +14,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 The FreeCAD Contribution Process is expressed here with the following specific goals in mind:
 
 1. To provide transparency and fairness in /the contribution process.
-2. To allow useful contributions to be included as quickly as possible.
+2. To allow contributions to be included as quickly as possible.
 3. To preserve and improve the code quality while encouraging appropriate experimentation and risk-taking.
 4. To minimize dependence on individual Contributors by encouraging a large pool of active Contributors.
 5. To be inclusive of many viewpoints and to harness a diverse set of skills.
@@ -26,7 +26,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 1. FreeCAD uses the git distributed revision control system.
 2. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization, hereafter referred to as 'the Platform'.
 3. Problems are discrete, well-defined limitations or bugs.
-4. FreeCAD uses the Platform's issue-tracking system to track problems.
+4. FreeCAD uses the Platform's issue-tracking system to track problems and contributions.  For help requests and general discussions, use the project forum. 
 5. Contributions are sets of code changes that resolve a single problem.
 6. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
 
@@ -50,7 +50,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 3. A PR SHOULD be a minimal and accurate answer to exactly one identified and agreed-on problem.
 4. A PR SHOULD refrain from adding additional dependencies to the FreeCAD project unless no other option is available.
 5. Code submissions MUST adhere to the code style guidelines of the project if these are defined.
-6. If a PR contains multiple commits, each commit MUST compile cleanly and add value to the history of the project. Checkpoint commits SHOULD be squashed.
+6. If a PR contains multiple commits, each commit MUST compile cleanly when merged with all previous commits of the same PR. Each commit SHOULD add value to the history of the project. Checkpoint commits SHOULD be squashed.
 7. A PR SHALL NOT include non-trivial code from other projects unless the Contributor is the original author of that code.
 8. A PR MUST compile cleanly and pass project self-tests on all target Platforms.
 9. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
