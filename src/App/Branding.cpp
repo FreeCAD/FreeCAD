@@ -50,6 +50,7 @@ Branding::Branding()
     filter.push_back("SplashAlignment");
     filter.push_back("SplashTextColor");
     filter.push_back("SplashInfoColor");
+    filter.push_back("SplashInfoVersion");
 
     filter.push_back("StartWorkbench");
 

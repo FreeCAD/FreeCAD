@@ -2468,6 +2468,8 @@ void Application::initConfig(int argc, char ** argv)
     Branding brand;
     QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
     QFileInfo fi(binDir, QString::fromLatin1("branding.xml"));
+    if (!fi.exists())
+        fi = QFileInfo(binDir, QString::fromLatin1("branding_toponaming.xml"));
     if (fi.exists() && brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
         for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {

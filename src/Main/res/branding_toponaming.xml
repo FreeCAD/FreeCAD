@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Branding>
+    <Application>FreeCAD</Application>
+    <MaintainerUrl>https://github.com/FreeCAD/FreeCAD/tree/development/toponaming</MaintainerUrl>
+    <WindowIcon>:/icons/freecad_toponaming.svg</WindowIcon>
+    <SplashInfoColor>#f0f0f0</SplashInfoColor>
+    <SplashInfoExeName>FreeCAD</SplashInfoExeName>
+    <SplashInfoVersion>Topo-Naming v1</SplashInfoVersion>
+    <WindowTitle>FreeCAD Topo-Naming v1</WindowTitle>
+    <BuildVersionMajor>Topo-Naming v1</BuildVersionMajor>
+    <BuildVersionMinor>0</BuildVersionMinor>
+</Branding>
