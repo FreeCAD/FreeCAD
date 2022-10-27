@@ -13,7 +13,7 @@ FreeCAD is in a transition period. The following are to be regarded as GUIDELINE
 
 The FreeCAD Contribution Process is expressed here with the following specific goals in mind:
 
-1. To provide transparency and fairness in /the contribution process.
+1. To provide transparency and fairness in the contribution process.
 2. To allow contributions to be included as quickly as possible.
 3. To preserve and improve the code quality while encouraging appropriate experimentation and risk-taking.
 4. To minimize dependence on individual Contributors by encouraging a large pool of active Contributors.
@@ -70,8 +70,8 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 9. To discuss a proposed solution, Users MAY comment on the Platform Pull Request. Forum conversations regarding the solution SHOULD be discouraged and conversation redirected to the Pull Request or the related issue.
 10. To accept or reject a Pull Request, a Maintainer SHALL use the Platform interface.
 11. Maintainers SHOULD NOT merge their own PRs except:
-    1. in exceptional cases, such as non-responsiveness from other Maintainers for an extended period (more than 1-2 days).
-    2. If the Maintainer is also the Primary Developer of the workbench or subsystem.
+    1. in exceptional cases, such as non-responsiveness from other Maintainers for an extended period.
+    2. If the Maintainer is also the primary developer of the workbench or subsystem.
 
 12. Maintainers SHALL merge valid PRs from other Contributors rapidly.
 13. Maintainers MAY, at their discretion merge PRs that have not met all criteria to be considered valid to:
@@ -81,7 +81,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 14. Maintainers SHALL NOT make value judgments on correct contributions.
 15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
 16. The User who created an issue SHOULD close the issue after checking the PR is successful.
-17. Maintainers SHOULD close User issues that are left open without action or update for an unreasonable period.
+17. Maintainers SHOULD close issues that are left open without action or update for an unreasonable period.
 
 ## 7. Branches and Releases
 
