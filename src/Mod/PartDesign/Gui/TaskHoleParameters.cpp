@@ -46,9 +46,7 @@ namespace bp = boost::placeholders;
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("PartDesignGui::TaskHoleParameters", "Counterbore");
     qApp->translate("PartDesignGui::TaskHoleParameters", "Countersink");
-    qApp->translate("PartDesignGui::TaskHoleParameters", "Cheesehead (deprecated)");
-    qApp->translate("PartDesignGui::TaskHoleParameters", "Countersink socket screw (deprecated)");
-    qApp->translate("PartDesignGui::TaskHoleParameters", "Cap screw (deprecated)");
+    qApp->translate("PartDesignGui::TaskHoleParameters", "Counterdrill");
 #endif
 
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
