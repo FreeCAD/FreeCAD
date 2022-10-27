@@ -1,10 +1,8 @@
 #add_defintions(-D_FC_GUI_ENABLED_)
 #add_defintions(-DFREECADMAINPY)
 
-configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
-configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
-
 if(FREECAD_TOPONAMING_BRANDING)
+    set(PACKAGE_VERSION_SUFFIX "toponaming")
     configure_file(icon_toponaming.ico ${CMAKE_CURRENT_BINARY_DIR}/icon.ico COPYONLY)
     configure_file(res/branding_toponaming.xml ${CMAKE_BINARY_DIR}/bin/branding_toponaming.xml COPYONLY)
     INSTALL(FILES res/branding_toponaming.xml DESTINATION ${CMAKE_INSTALL_BINDIR})
@@ -12,6 +10,9 @@ else(FREECAD_TOPONAMING_BRANDING)
     configure_file(icon.ico ${CMAKE_CURRENT_BINARY_DIR}/icon.ico COPYONLY)
     file(REMOVE ${CMAKE_BINARY_DIR}/bin/branding_toponaming.xml)
 endif(FREECAD_TOPONAMING_BRANDING)
+
+configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
+configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
 
 if(BUILD_GUI)
     include_directories(
