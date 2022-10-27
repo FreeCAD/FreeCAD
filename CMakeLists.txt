@@ -17,9 +17,9 @@ project(FreeCAD)
 
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
-set(PACKAGE_VERSION_MINOR "21")
+set(PACKAGE_VERSION_MINOR "20")
 set(PACKAGE_VERSION_PATCH "0")
-set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
+set(PACKAGE_VERSION_SUFFIX "toponaming") # either "dev" for development snapshot or "" (empty string)
 set(FREECAD_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
 
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
