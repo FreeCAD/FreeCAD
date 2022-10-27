@@ -65,6 +65,7 @@ protected:
     std::shared_ptr<App::Expression> getExpression() const;
     std::string getExpressionString(bool no_throw=true) const;
     std::string getEscapedExpressionString() const;
+    bool assignToProperty(const std::string & propName, double);
     virtual void setExpression(std::shared_ptr<App::Expression> expr);
 
     //gets called when the bound expression is changed, either by this binding or any external action

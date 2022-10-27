@@ -39,7 +39,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
-#include <App/PropertyGeo.h>
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
@@ -370,24 +369,7 @@ bool QuantitySpinBox::apply(const std::string & propName)
 {
     if (!ExpressionBinding::apply(propName)) {
         double dValue = value().getValue();
-        if (isBound()) {
-            const App::ObjectIdentifier & path = getPath();
-            const Property * prop = path.getProperty();
-
-            /* Skip update if property is bound and we know it is read-only */
-            if (prop && prop->isReadOnly())
-                return true;
-
-            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-                std::string p = path.getSubPathStr();
-                if (p == ".Rotation.Angle") {
-                    dValue = Base::toRadians(dValue);
-                }
-            }
-        }
-
-        Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), dValue);
-        return true;
+        return assignToProperty(propName, dValue);
     }
 
     return false;
