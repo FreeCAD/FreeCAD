@@ -199,16 +199,14 @@ class GeneratorTBoneVertical(Generator):
 
 class GeneratorTBoneOnShort(Generator):
     def angle(self, kink):
-        if kink.m0.pathLength() < kink.m1.pathLength():
-            if kink.goesRight():
-                return Path.Geom.normalizeAngle(kink.t0 + PI/2)
-            else:
-                return Path.Geom.normalizeAngle(kink.t0 - PI/2)
+        if kink.goesRight():
+            rot = PI/2
         else:
-            if kink.goesLeft():
-                return Path.Geom.normalizeAngle(kink.t1 + PI/2)
-            else:
-                return Path.Geom.normalizeAngle(kink.t1 - PI/2)
+            rot = -PI/2
+        if kink.m0.pathLength() < kink.m1.pathLength():
+            return Path.Geom.normalizeAngle(kink.t0 + rot)
+        else:
+            return Path.Geom.normalizeAngle(kink.t1 + rot)
 
 class GeneratorTBoneOnLong(Generator):
     def angle(self, kink):

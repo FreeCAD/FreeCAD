@@ -328,8 +328,8 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
     def test40(self):
         """Verify TBone_S style"""
 
-        def check_tbone_s(i, path, out, right):
-            obj = CreateDressup(f"({i:02})/{path}")
+        def check_tbone_s(d, i, path, out, right):
+            obj = CreateDressup(f"(m{d}.{i:02})/{path}")
             obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
             if right:
                 obj.Side = Path.Dressup.DogboneII.Side.Right
@@ -337,9 +337,10 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
                 obj.Side = Path.Dressup.DogboneII.Side.Left
             obj.Style = Path.Dressup.DogboneII.Style.Tbone_S
             obj.Proxy.execute(obj)
-            self.assertEqualPath(obj.Path, f"({i:02})/{out}")
+            self.assertEqualPath(obj.Path, f"(m{d}.{i:02})/{out}")
 
-        test_data = [
+        # short edge m0
+        test_data_0 = [
                 # CCW
                 ('G1X10/G1Y20', 'G1X10/G1Y-1/G1Y0/G1Y20', True),
                 ('G1X10Y10/G1X-10Y30', 'G1X10Y10/G1X10.71Y9.29/G1X10Y10/G1X-10Y30', True),
@@ -361,8 +362,34 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
                 ('G1X10Y-10/G1X-10Y-30', 'G1X10Y-10/G1X10.71Y-9.29/G1X10Y-10/G1X-10Y-30', False),
                 ]
 
-        for i, (path, out, right) in enumerate(test_data):
-            check_tbone_s(i, path, out, right)
+        for i, (path, out, right) in enumerate(test_data_0):
+            check_tbone_s('0', i, path, out, right)
+
+        # short edge m1
+        test_data_1 = [
+                # CCW
+                ('G1X20/G1Y10', 'G1X20/G1X21/G1X20/G1Y10', True),
+                ('G1X20Y20/G1X10Y30', 'G1X20Y20/G1X20.71Y20.71/G1X20Y20/G1X10Y30', True),
+                ('G1Y20/G1X-10', 'G1Y20/G1Y21/G1Y20/G1X-10', True),
+                ('G1X-20Y20/G1X-30Y10', 'G1X-20Y20/G1X-20.71Y20.71/G1X-20Y20/G1X-30Y10', True),
+                ('G1X-20/G1Y-10', 'G1X-20/G1X-21/G1X-20/G1Y-10', True),
+                ('G1X-20Y-20/G1X-10Y-30', 'G1X-20Y-20/G1X-20.71Y-20.71/G1X-20Y-20/G1X-10Y-30', True),
+                ('G1Y-20/G1X10', 'G1Y-20/G1Y-21/G1Y-20/G1X10', True),
+                ('G1X20Y-20/G1X30Y-10', 'G1X20Y-20/G1X20.71Y-20.71/G1X20Y-20/G1X30Y-10', True),
+
+                # CW
+                ('G1X20/G1Y-10', 'G1X20/G1X21/G1X20/G1Y-10', False),
+                ('G1X20Y20/G1X30Y10', 'G1X20Y20/G1X20.71Y20.71/G1X20Y20/G1X30Y10', False),
+                ('G1Y20/G1X10', 'G1Y20/G1Y21/G1Y20/G1X10', False),
+                ('G1X-20Y20/G1X-10Y30', 'G1X-20Y20/G1X-20.71Y20.71/G1X-20Y20/G1X-10Y30', False),
+                ('G1X-20/G1Y10', 'G1X-20/G1X-21/G1X-20/G1Y10', False),
+                ('G1X-20Y-20/G1X-30Y-10', 'G1X-20Y-20/G1X-20.71Y-20.71/G1X-20Y-20/G1X-30Y-10', False),
+                ('G1Y-20/G1X-10', 'G1Y-20/G1Y-21/G1Y-20/G1X-10', False),
+                ('G1X20Y-20/G1X10Y-30', 'G1X20Y-20/G1X20.71Y-20.71/G1X20Y-20/G1X10Y-30', False),
+                ]
+
+        for i, (path, out, right) in enumerate(test_data_1):
+            check_tbone_s('1', i, path, out, right)
 
     def test50(self):
         """Verify TBone_L style"""

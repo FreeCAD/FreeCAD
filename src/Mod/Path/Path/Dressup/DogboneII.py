@@ -27,8 +27,9 @@ import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
 import math
 
-Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-Path.Log.trackModule(Path.Log.thisModule())
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
 
 PI = math.pi
 
