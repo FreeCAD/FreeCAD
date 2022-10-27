@@ -7,6 +7,6 @@
     <SplashInfoExeName>FreeCAD</SplashInfoExeName>
     <SplashInfoVersion>Topo-Naming v1</SplashInfoVersion>
     <WindowTitle>FreeCAD Topo-Naming v1</WindowTitle>
-    <BuildVersionMajor>Topo-Naming v1</BuildVersionMajor>
-    <BuildVersionMinor>0</BuildVersionMinor>
+    <!-- <BuildVersionMajor>Topo-Naming v1</BuildVersionMajor> -->
+    <!-- <BuildVersionMinor>0</BuildVersionMinor> -->
 </Branding>
