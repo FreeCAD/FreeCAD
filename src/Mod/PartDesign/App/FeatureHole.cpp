@@ -479,10 +479,7 @@ std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums = {
     "None",
     "Counterbore",
     "Countersink",
-    "Counterdrill",
-    "Cheesehead (deprecated)",
-    "Countersink socket screw (deprecated)",
-    "Cap screw (deprecated)"};
+    "Counterdrill"};
 const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1.4", "M1.6",
                                                      "M1.8", "M2",   "M2.2", "M2.5", "M3",
                                                      "M3.5", "M4",   "M4.5", "M5",   "M6",
@@ -497,10 +494,7 @@ std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums = {
     "None",
     "Counterbore",
     "Countersink",
-    "Counterdrill",
-    "Cheesehead (deprecated)",
-    "Countersink socket screw (deprecated)",
-    "Cap screw (deprecated)"};
+    "Counterdrill"};
 const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
     "M1x0.2",      "M1.1x0.2",    "M1.2x0.2",    "M1.4x0.2",
     "M1.6x0.2",    "M1.8x0.2",    "M2x0.25",     "M2.2x0.25",
@@ -798,6 +792,37 @@ void Hole::updateHoleCutParams()
             HoleCutCountersinkAngle.setReadOnly(false);
         }
 
+        // handle since FreeCAD 0.18 deprecated types that were
+        // removed after FreeCAD 0.20
+        if (holeCutTypeStr == "Cheesehead (deprecated)") {
+            HoleCutType.setValue("Counterbore");
+            holeCutTypeStr = "Counterbore";
+            HoleCutDiameter.setValue(diameterVal * 1.6);
+            HoleCutDepth.setValue(diameterVal * 0.6);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+        }
+        else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
+            HoleCutType.setValue("Countersink");
+            holeCutTypeStr = "Countersink";
+            HoleCutDiameter.setValue(diameterVal * 2.0);
+            HoleCutDepth.setValue(diameterVal * 0.0);
+            if (HoleCutCountersinkAngle.getValue() == 0.0) {
+                HoleCutCountersinkAngle.setValue(90.0);
+            }
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            HoleCutCountersinkAngle.setReadOnly(false);
+        }
+        else if (holeCutTypeStr == "Cap screw (deprecated)") {
+            HoleCutType.setValue("Counterbore");
+            holeCutTypeStr = "Counterbore";
+            HoleCutDiameter.setValue(diameterVal * 1.5);
+            HoleCutDepth.setValue(diameterVal * 1.25);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+        }
+
         // cut definition
         CutDimensionKey key{ threadTypeStr, holeCutTypeStr };
         if (HoleCutTypeMap.count(key)) {
@@ -880,31 +905,7 @@ void Hole::updateHoleCutParams()
                 }
             }
         }
-
-        // handle legacy types but don't change user settings for
-        // user defined None, Counterbore and Countersink
-        else if (holeCutTypeStr == "Cheesehead (deprecated)") {
-            HoleCutDiameter.setValue(diameterVal * 1.6);
-            HoleCutDepth.setValue(diameterVal * 0.6);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-        }
-        else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
-            HoleCutDiameter.setValue(diameterVal * 2.0);
-            HoleCutDepth.setValue(diameterVal * 0.0);
-            if (HoleCutCountersinkAngle.getValue() == 0.0) {
-                HoleCutCountersinkAngle.setValue(90.0);
-            }
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
-        }
-        else if (holeCutTypeStr == "Cap screw (deprecated)") {
-            HoleCutDiameter.setValue(diameterVal * 1.5);
-            HoleCutDepth.setValue(diameterVal * 1.25);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-        }
+            
     }
     else { // we have an UTS profile or none
 
@@ -1716,11 +1717,8 @@ App::DocumentObjectExecReturn* Hole::execute()
         const std::string holeCutType = HoleCutType.getValueAsString();
         const std::string threadType = ThreadType.getValueAsString();
         bool isCountersink = (holeCutType == "Countersink" ||
-            holeCutType == "Countersink socket screw (deprecated)" ||
             isDynamicCountersink(threadType, holeCutType));
         bool isCounterbore = (holeCutType == "Counterbore" ||
-            holeCutType == "Cheesehead (deprecated)" ||
-            holeCutType == "Cap screw (deprecated)" ||
             isDynamicCounterbore(threadType, holeCutType));
         bool isCounterdrill = (holeCutType == "Counterdrill");
 
