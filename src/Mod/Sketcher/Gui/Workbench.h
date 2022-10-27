@@ -49,6 +49,7 @@ protected:
 };
 
 SketcherGuiExport void addSketcherWorkbenchSketchActions(Gui::MenuItem& sketch);
+SketcherGuiExport void addSketcherWorkbenchSketchEditModeActions(Gui::MenuItem& sketch);
 SketcherGuiExport void addSketcherWorkbenchGeometries(Gui::MenuItem& geom);
 SketcherGuiExport void addSketcherWorkbenchConstraints(Gui::MenuItem& cons);
 SketcherGuiExport void addSketcherWorkbenchTools(Gui::MenuItem& consaccel);
@@ -56,6 +57,7 @@ SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::MenuItem& bspline);
 SketcherGuiExport void addSketcherWorkbenchVirtualSpace(Gui::MenuItem& virtualspace);
 
 SketcherGuiExport void addSketcherWorkbenchSketchActions(Gui::ToolBarItem& sketch);
+SketcherGuiExport void addSketcherWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch);
 SketcherGuiExport void addSketcherWorkbenchGeometries(Gui::ToolBarItem& geom);
 SketcherGuiExport void addSketcherWorkbenchConstraints(Gui::ToolBarItem& cons);
 SketcherGuiExport void addSketcherWorkbenchTools(Gui::ToolBarItem& consaccel);
