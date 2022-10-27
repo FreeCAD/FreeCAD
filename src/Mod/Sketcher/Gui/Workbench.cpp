@@ -96,6 +96,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, sketch);
     sketch->setCommand("S&ketch");
     addSketcherWorkbenchSketchActions(*sketch);
+    addSketcherWorkbenchSketchEditModeActions(*sketch);
     *sketch << geom
             << cons
             << consaccel
@@ -112,6 +113,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* sketcher = new Gui::ToolBarItem(root);
     sketcher->setCommand("Sketcher");
     addSketcherWorkbenchSketchActions(*sketcher);
+
+    Gui::ToolBarItem* sketcherEditMode = new Gui::ToolBarItem(root);
+    sketcherEditMode->setCommand("Sketcher");
+    addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");
@@ -147,40 +152,48 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 namespace SketcherGui {
 
 template <typename T>
-inline void SketcherAddWorkspaceSketchExtra(T& /*sketch*/) { }
+void SketcherAddWorkbenchSketchActions(T& sketch);
 
 template <>
-inline void SketcherAddWorkspaceSketchExtra<Gui::MenuItem>(Gui::MenuItem& sketch)
+inline void SketcherAddWorkbenchSketchActions(Gui::MenuItem& sketch)
 {
-    sketch  << "Sketcher_ReorientSketch"
+    sketch  << "Sketcher_NewSketch"
+            << "Sketcher_EditSketch"
+            << "Sketcher_MapSketch"
+            << "Sketcher_ReorientSketch"
             << "Sketcher_ValidateSketch"
             << "Sketcher_MergeSketches"
-            << "Sketcher_MirrorSketch"
-            << "Sketcher_StopOperation";
+            << "Sketcher_MirrorSketch";
 }
-
 template <>
-inline void SketcherAddWorkspaceSketchExtra<Gui::ToolBarItem>(Gui::ToolBarItem& sketch)
+inline void SketcherAddWorkbenchSketchActions(Gui::ToolBarItem& sketch)
 {
-    sketch  << "Sketcher_ReorientSketch"
+    sketch  << "Sketcher_NewSketch"
+            << "Sketcher_EditSketch"
+            << "Sketcher_MapSketch"
+            << "Sketcher_ReorientSketch"
             << "Sketcher_ValidateSketch"
             << "Sketcher_MergeSketches"
             << "Sketcher_MirrorSketch";
 }
 
 template <typename T>
-void SketcherAddWorkbenchSketchActions(T& sketch);
+void SketcherAddWorkbenchSketchEditModeActions(T& sketch);
 
-template <typename T>
-inline void SketcherAddWorkbenchSketchActions(T& sketch)
+template <>
+inline void SketcherAddWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
 {
-    sketch  << "Sketcher_NewSketch"
-            << "Sketcher_EditSketch"
-            << "Sketcher_LeaveSketch"
+    sketch  << "Sketcher_LeaveSketch"
             << "Sketcher_ViewSketch"
             << "Sketcher_ViewSection"
-            << "Sketcher_MapSketch";
-    SketcherAddWorkspaceSketchExtra(sketch);
+            << "Sketcher_StopOperation";
+}
+template <>
+inline void SketcherAddWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
+{
+    sketch  << "Sketcher_LeaveSketch"
+            << "Sketcher_ViewSketch"
+            << "Sketcher_ViewSection";
 }
 
 template <typename T>
@@ -444,6 +457,11 @@ void addSketcherWorkbenchSketchActions(Gui::MenuItem& sketch)
     SketcherAddWorkbenchSketchActions(sketch);
 }
 
+void addSketcherWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
+{
+    SketcherAddWorkbenchSketchEditModeActions(sketch);
+}
+
 void addSketcherWorkbenchGeometries(Gui::MenuItem& geom)
 {
     SketcherAddWorkbenchGeometries(geom);
@@ -472,6 +490,11 @@ void addSketcherWorkbenchVirtualSpace(Gui::MenuItem& virtualspace)
 void addSketcherWorkbenchSketchActions(Gui::ToolBarItem& sketch)
 {
     SketcherAddWorkbenchSketchActions(sketch);
+}
+
+void addSketcherWorkbenchSketchEditModeActions(Gui::ToolBarItem& sketch)
+{
+    SketcherAddWorkbenchSketchEditModeActions(sketch);
 }
 
 void addSketcherWorkbenchGeometries(Gui::ToolBarItem& geom)
