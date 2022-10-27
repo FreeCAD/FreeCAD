@@ -73,7 +73,9 @@ class MockFeaturePython(object):
     def __getattr__(self, name):
         if name == 'prop':
             return super().__getattr__(name)
-        typ, val = self.prop[name]
+        typ, val = self.prop.get(name, (None, None))
+        if typ is None and val is None:
+            raise AttributeError
         if typ == 'App::PropertyLength':
             if type(val) == float or type(val) == int:
                 return FreeCAD.Units.Quantity(val, FreeCAD.Units.Length)
@@ -252,15 +254,78 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
     def test30(self):
         """Verify TBone_V style"""
 
-        obj = CreateDressup("G1X10/G1Y20")
-        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
-        obj.Side = Path.Dressup.DogboneII.Side.Right
+        def check_tbone(d, i, path, out, right):
+            obj = CreateDressup(f"({d}.{i:02})/{path}")
+            obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+            if right:
+                obj.Side = Path.Dressup.DogboneII.Side.Right
+            else:
+                obj.Side = Path.Dressup.DogboneII.Side.Left
+            obj.Style = Path.Dressup.DogboneII.Style.Tbone_V
+            obj.Proxy.execute(obj)
+            self.assertEqualPath(obj.Path, f"({d}.{i:02})/{out}")
 
-        obj.Style = Path.Dressup.DogboneII.Style.Tbone_V
-        obj.Proxy.execute(obj)
-        self.assertEqualPath(obj.Path, 'G1X10/G1Y-1/G1Y0/G1Y20')
+        # test data with a horizontal lead in
+        test_data_h = [
+                # top right quadrant
+                ('G1X10Y0/G1X10Y10', 'G1X10Y0/G1Y-1/G1Y0/G1X10Y10', True),
+                ('G1X10Y0/G1X20Y10', 'G1X10Y0/G1Y-1/G1Y0/G1X20Y10', True),
+                ('G1X10Y0/G1X90Y10', 'G1X10Y0/G1Y-1/G1Y0/G1X90Y10', True),
+                ('G1X10Y0/G1X0Y10', 'G1X10Y0/G1Y-1/G1Y0/G1X0Y10', True),
 
-    def test40(self):
+                # bottom right quadrant
+                ('G1X10Y0/G1X90Y-10', 'G1X10Y0/G1Y1/G1Y0/G1X90Y-10', False),
+                ('G1X10Y0/G1X20Y-10', 'G1X10Y0/G1Y1/G1Y0/G1X20Y-10', False),
+                ('G1X10Y0/G1X10Y-10', 'G1X10Y0/G1Y1/G1Y0/G1X10Y-10', False),
+                ('G1X10Y0/G1X0Y-10', 'G1X10Y0/G1Y1/G1Y0/G1X0Y-10', False),
+
+                # top left quadrant
+                ('G1X-10Y0/G1X-10Y10', 'G1X-10Y0/G1Y-1/G1Y0/G1X-10Y10', False),
+                ('G1X-10Y0/G1X-20Y10', 'G1X-10Y0/G1Y-1/G1Y0/G1X-20Y10', False),
+                ('G1X-10Y0/G1X-90Y10', 'G1X-10Y0/G1Y-1/G1Y0/G1X-90Y10', False),
+                ('G1X-10Y0/G1X-0Y10', 'G1X-10Y0/G1Y-1/G1Y0/G1X-0Y10', False),
+
+                # bottom left quadrant
+                ('G1X-10Y0/G1X-90Y-10', 'G1X-10Y0/G1Y1/G1Y0/G1X-90Y-10', True),
+                ('G1X-10Y0/G1X-20Y-10', 'G1X-10Y0/G1Y1/G1Y0/G1X-20Y-10', True),
+                ('G1X-10Y0/G1X-10Y-10', 'G1X-10Y0/G1Y1/G1Y0/G1X-10Y-10', True),
+                ('G1X-10Y0/G1X-0Y-10', 'G1X-10Y0/G1Y1/G1Y0/G1X-0Y-10', True),
+                ]
+
+        for i, (path, out, right) in enumerate(test_data_h):
+            check_tbone('h', i, path, out, right)
+
+        # test data with a vertical lead in
+        test_data_v = [
+                # top right quadrant
+                ('G1X0Y10/G1X10Y10', 'G1X0Y10/G1Y11/G1Y10/G1X10Y10', False),
+                ('G1X0Y10/G1X10Y20', 'G1X0Y10/G1Y11/G1Y10/G1X10Y20', False),
+                ('G1X0Y10/G1X10Y90', 'G1X0Y10/G1Y11/G1Y10/G1X10Y90', False),
+                ('G1X0Y10/G1X10Y0', 'G1X0Y10/G1Y11/G1Y10/G1X10Y0', False),
+
+                # bottom right quadrant
+                ('G1X0Y-10/G1X10Y-90', 'G1X0Y-10/G1Y-11/G1Y-10/G1X10Y-90', True),
+                ('G1X0Y-10/G1X10Y-20', 'G1X0Y-10/G1Y-11/G1Y-10/G1X10Y-20', True),
+                ('G1X0Y-10/G1X10Y-10', 'G1X0Y-10/G1Y-11/G1Y-10/G1X10Y-10', True),
+                ('G1X0Y-10/G1X10Y-0', 'G1X0Y-10/G1Y-11/G1Y-10/G1X10Y-0', True),
+
+                # top left quadrant
+                ('G1X0Y10/G1X-10Y10', 'G1X0Y10/G1Y11/G1Y10/G1X-10Y10', True),
+                ('G1X0Y10/G1X-10Y20', 'G1X0Y10/G1Y11/G1Y10/G1X-10Y20', True),
+                ('G1X0Y10/G1X-10Y90', 'G1X0Y10/G1Y11/G1Y10/G1X-10Y90', True),
+                ('G1X0Y10/G1X-10Y0', 'G1X0Y10/G1Y11/G1Y10/G1X-10Y0', True),
+
+                # bottom left quadrant
+                ('G1X0Y-10/G1X-10Y-90', 'G1X0Y-10/G1Y-11/G1Y-10/G1X-10Y-90', False),
+                ('G1X0Y-10/G1X-10Y-20', 'G1X0Y-10/G1Y-11/G1Y-10/G1X-10Y-20', False),
+                ('G1X0Y-10/G1X-10Y-10', 'G1X0Y-10/G1Y-11/G1Y-10/G1X-10Y-10', False),
+                ('G1X0Y-10/G1X-10Y-0', 'G1X0Y-10/G1Y-11/G1Y-10/G1X-10Y-0', False),
+                ]
+
+        for i, (path, out, right) in enumerate(test_data_v):
+            check_tbone('v', i, path, out, right)
+
+    def _test40(self):
         """Verify TBone_S style"""
         obj = CreateDressup("G1X10/G1Y20")
         obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
@@ -330,3 +395,29 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
         obj.Proxy.execute(obj)
         self.assertEqualPath(obj.Path, 'G1X10/G1X10.09Y-0.15/G1X10Y0/G1X20Y20')
 
+    def test90(self):
+        """Verify dogbone blacklist"""
+
+        obj = CreateDressup("G0Z10/G1Z0/G1X10/G1Y10/G1X0/G1Y0/G0Z10")
+        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj.Side = Path.Dressup.DogboneII.Side.Right
+        obj.BoneBlacklist = [0, 2]
+        obj.Proxy.execute(obj)
+        self.assertEqualPath(obj.Path, 'G0Z10/G1Z0/G1X10/G1Y10/G1X11/G1X10/G1X0/G1Y0/G1X-1/G1X0/G0Z10')
+        return obj
+
+    def test91(self):
+        """Verify dogbone on dogbone"""
+
+        obj = self.test90()
+
+        obj2 = MockFeaturePython("DogboneII_")
+        db2 = Path.Dressup.DogboneII.Proxy(obj2, obj)
+        obj2.Proxy = db2
+        obj2.Incision = Path.Dressup.DogboneII.Incision.Fixed
+        obj2.Style = Path.Dressup.DogboneII.Style.Tbone_H
+        obj2.Side = Path.Dressup.DogboneII.Side.Right
+        obj2.BoneBlacklist = [1]
+        obj2.Proxy.execute(obj2)
+        self.assertEqualPath(obj2.Path, 'G0Z10/G1Z0/G1X10/G1X11/G1X10/G1Y10/G1X11/G1X10/G1X0/G1X-1/G1X0/G1Y0/G1X-1/G1X0/G0Z10')

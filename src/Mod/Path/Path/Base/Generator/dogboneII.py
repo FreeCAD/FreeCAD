@@ -25,6 +25,8 @@ import Path
 import Path.Base.Language as PathLanguage
 import math
 
+#Path.Log.trackModule(Path.Log.thisModule())
+
 PI = math.pi
 
 class Kink (object):
@@ -98,8 +100,8 @@ class Bone (object):
 
     def tip(self):
         '''tip() ... return the tip of the bone.'''
-        dx = self.length * math.cos(self.angle)
-        dy = self.length * math.sin(self.angle)
+        dx = abs(self.length) * math.cos(self.angle)
+        dy = abs(self.length) * math.sin(self.angle)
         return self.position() + FreeCAD.Vector(dx, dy, 0)
 
 def kink_to_path(kink, g0=False):
@@ -144,17 +146,24 @@ def generate_bone(kink, length, angle):
     # These two special cases could be removed, they are more efficient though because they
     # don't require trigonometric function calls. They are also a gentle introduction into
     # the dog/t/bone world, so we'll leave them here for now
-    if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(abs(angle), PI):
-        return generate_tbone(kink, length, 'X')
-    if Path.Geom.isRoughly(abs(angle), PI/2):
-        return generate_tbone(kink, length, 'Y')
+    #if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(abs(angle), PI):
+    #    return generate_tbone(kink, length, 'X')
+    #if Path.Geom.isRoughly(abs(angle), PI/2):
+    #    return generate_tbone(kink, length, 'Y')
 
     dx = length * math.cos(angle)
     dy = length * math.sin(angle)
     p0 = kink.position()
 
-    moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
-    moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
+    if Path.Geom.isRoughly(0, dx):
+        moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'Y': p0.y + dy})
+        moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'Y': p0.y})
+    elif Path.Geom.isRoughly(0, dy):
+        moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx})
+        moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x})
+    else:
+        moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
+        moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
 
     return Bone(kink, angle, length, [moveIn, moveOut])
 
@@ -176,17 +185,17 @@ class Generator(object):
 
 class GeneratorTBoneHorizontal(Generator):
     def angle(self, kink):
-        if kink.m0.positionEnd().x < kink.m1.positionEnd().x:
+        if abs(kink.normAngle()) > (PI/2):
             return -PI
         else:
             return 0
 
 class GeneratorTBoneVertical(Generator):
     def angle(self, kink):
-        if kink.m0.positionEnd().y < kink.m1.positionEnd().y:
-            return -PI/2
-        else:
+        if kink.normAngle() > 0:
             return PI/2
+        else:
+            return -PI/2
 
 class GeneratorTBoneOnShort(Generator):
     def angle(self, kink):

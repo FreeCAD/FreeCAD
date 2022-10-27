@@ -27,12 +27,14 @@ import Path.Base.Generator.dogboneII as dogboneII
 import Path.Base.Language as PathLanguage
 import math
 
-#Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 PI = math.pi
 
 def calc_length_adaptive(kink, angle, nominal_length, custom_length):
+    Path.Log.track(kink, angle, nominal_length, custom_length)
+
     if Path.Geom.isRoughly(abs(kink.deflection()), 0):
         return 0
 
@@ -181,6 +183,7 @@ class BoneState(object):
         return self.bone.length
 
 class Proxy(object):
+
     def __init__(self, obj, base):
         obj.addProperty(
             "App::PropertyLink",
@@ -197,7 +200,15 @@ class Proxy(object):
             QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
         )
         obj.Side = Side.All
-        obj.Side = Side.Right
+        if hasattr(base, 'BoneBlacklist'):
+            obj.Side = base.Side
+        else:
+            side = Side.Right
+            if hasattr(obj.Base, "Side") and obj.Base.Side == "Inside":
+                side = Side.Left
+            if hasattr(obj.Base, "Direction") and obj.Base.Direction == "CCW":
+                side = Side.oppositeOf(side)
+            obj.Side = side
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -248,11 +259,13 @@ class Proxy(object):
         return None
 
     def toolRadius(self, obj):
+        if not hasattr(obj.Base, 'ToolController'):
+            return self.toolRadius(obj.Base)
         return obj.Base.ToolController.Tool.Diameter.Value / 2
 
     def createBone(self, obj, move0, move1): 
-        Path.Log.debug(f"createBone({obj.Label}, {move0}, {move1})")
         kink = dogboneII.Kink(move0, move1)
+        Path.Log.debug(f"{obj.Label}.createBone({kink})")
         if insertBone(obj, kink):
             generator = Style.Generator[obj.Style]
             calc_length = Incision.Calc[obj.Incision]
@@ -267,9 +280,10 @@ class Proxy(object):
         bones = []
         lastMove = None
         moveAfterPlunge = None
+        dressingUpDogbone = hasattr(obj.Base, 'BoneBlacklist')
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
             for i, instr in enumerate(PathLanguage.Maneuver.FromPath(obj.Base.Path).instr):
-                Path.Log.debug(f"instr: {instr}")
+                #Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():
                     thisMove = instr
                     bone = None
@@ -286,8 +300,10 @@ class Proxy(object):
                         lastMove = thisMove
                     if bone:
                         enabled = not len(bones) in obj.BoneBlacklist
-                        if enabled:
+                        if enabled and not (dressingUpDogbone and obj.Base.Proxy.includesBoneAt(bone.position())):
                             maneuver.addInstructions(bone.instr)
+                        else:
+                            Path.Log.debug(f"{bone.kink} disabled {enabled}")
                         bones.append(bone)
                     maneuver.addInstruction(thisMove)
                 else:
@@ -298,6 +314,7 @@ class Proxy(object):
             Path.Log.info(f"No Path found to dress up in op {obj.Base}")
         self.maneuver = maneuver
         self.bones = bones
+        self.boneTips = None
         obj.Path = maneuver.toPath()
 
     def boneStates(self, obj):
@@ -313,6 +330,13 @@ class Proxy(object):
                 if nr in obj.BoneBlacklist:
                     state[loc].enabled = False
         return state.values()
+
+    def includesBoneAt(self, pos):
+        if hasattr(self, 'bones'):
+            for nr, bone in enumerate(self.bones):
+                if Path.Geom.pointsCoincide(bone.position(), pos):
+                    return not (nr in self.obj.BoneBlacklist)
+        return False
 
 
 def Create(base, name="DressupDogbone"):
