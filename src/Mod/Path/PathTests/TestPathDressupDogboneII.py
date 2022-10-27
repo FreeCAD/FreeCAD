@@ -393,13 +393,70 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
 
     def test50(self):
         """Verify TBone_L style"""
-        obj = CreateDressup("G1X10/G1Y20")
-        obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
-        obj.Side = Path.Dressup.DogboneII.Side.Right
 
-        obj.Style = Path.Dressup.DogboneII.Style.Tbone_L
-        obj.Proxy.execute(obj)
-        self.assertEqualPath(obj.Path, 'G1X10/G1X11/G1X10/G1Y20')
+        def check_tbone_l(d, i, path, out, right):
+            obj = CreateDressup(f"(m{d}.{i:02})/{path}")
+            obj.Incision = Path.Dressup.DogboneII.Incision.Fixed
+            if right:
+                obj.Side = Path.Dressup.DogboneII.Side.Right
+            else:
+                obj.Side = Path.Dressup.DogboneII.Side.Left
+            obj.Style = Path.Dressup.DogboneII.Style.Tbone_L
+            obj.Proxy.execute(obj)
+            self.assertEqualPath(obj.Path, f"(m{d}.{i:02})/{out}")
+
+        # long edge m1
+        test_data_1 = [
+                # CCW
+                ('G1X10/G1Y20', 'G1X10/G1X11/G1X10/G1Y20', True),
+                ('G1X10Y10/G1X-10Y30', 'G1X10Y10/G1X10.71Y10.71/G1X10Y10/G1X-10Y30', True),
+                ('G1Y10/G1X-20', 'G1Y10/G1Y11/G1Y10/G1X-20', True),
+                ('G1X-10Y10/G1X-30Y-10', 'G1X-10Y10/G1X-10.71Y10.71/G1X-10Y10/G1X-30Y-10', True),
+                ('G1X-10/G1Y-20', 'G1X-10/G1X-11/G1X-10/G1Y-20', True),
+                ('G1X-10Y-10/G1X10Y-30', 'G1X-10Y-10/G1X-10.71Y-10.71/G1X-10Y-10/G1X10Y-30', True),
+                ('G1Y-10/G1X20', 'G1Y-10/G1Y-11/G1Y-10/G1X20', True),
+                ('G1X10Y-10/G1X30Y10', 'G1X10Y-10/G1X10.71Y-10.71/G1X10Y-10/G1X30Y10', True),
+
+                # CW
+                ('G1X10/G1Y-20', 'G1X10/G1X11/G1X10/G1Y-20', False),
+                ('G1X10Y10/G1X30Y-10', 'G1X10Y10/G1X10.71Y10.71/G1X10Y10/G1X30Y-10', False),
+                ('G1Y10/G1X20', 'G1Y10/G1Y11/G1Y10/G1X20', False),
+                ('G1X-10Y10/G1X10Y30', 'G1X-10Y10/G1X-10.71Y10.71/G1X-10Y10/G1X10Y30', False),
+                ('G1X-10/G1Y20', 'G1X-10/G1X-11/G1X-10/G1Y20', False),
+                ('G1X-10Y-10/G1X-30Y10', 'G1X-10Y-10/G1X-10.71Y-10.71/G1X-10Y-10/G1X-30Y10', False),
+                ('G1Y-10/G1X-20', 'G1Y-10/G1Y-11/G1Y-10/G1X-20', False),
+                ('G1X10Y-10/G1X-10Y-30', 'G1X10Y-10/G1X10.71Y-10.71/G1X10Y-10/G1X-10Y-30', False),
+                ]
+
+        for i, (path, out, right) in enumerate(test_data_1):
+            check_tbone_l('1', i, path, out, right)
+
+        # long edge m0
+        test_data_0 = [
+                # CCW
+                ('G1X20/G1Y10', 'G1X20/G1Y-1/G1Y0/G1Y10', True),
+                ('G1X20Y20/G1X10Y30', 'G1X20Y20/G1X20.71Y19.29/G1X20Y20/G1X10Y30', True),
+                ('G1Y20/G1X-10', 'G1Y20/G1X1/G1X0/G1X-10', True),
+                ('G1X-20Y20/G1X-30Y10', 'G1X-20Y20/G1X-19.29Y20.71/G1X-20Y20/G1X-30Y10', True),
+                ('G1X-20/G1Y-10', 'G1X-20/G1Y1/G1Y0/G1Y-10', True),
+                ('G1X-20Y-20/G1X-10Y-30', 'G1X-20Y-20/G1X-20.71Y-19.29/G1X-20Y-20/G1X-10Y-30', True),
+                ('G1Y-20/G1X10', 'G1Y-20/G1X-1/G1X0/G1X10', True),
+                ('G1X20Y-20/G1X30Y-10', 'G1X20Y-20/G1X19.29Y-20.71/G1X20Y-20/G1X30Y-10', True),
+
+                # CW
+                ('G1X20/G1Y-10', 'G1X20/G1Y1/G1Y0/G1Y-10', False),
+                ('G1X20Y20/G1X30Y10', 'G1X20Y20/G1X19.29Y20.71/G1X20Y20/G1X30Y10', False),
+                ('G1Y20/G1X10', 'G1Y20/G1X-1/G1X0/G1X10', False),
+                ('G1X-20Y20/G1X-10Y30', 'G1X-20Y20/G1X-20.71Y19.29/G1X-20Y20/G1X-10Y30', False),
+                ('G1X-20/G1Y10', 'G1X-20/G1Y-1/G1Y0/G1Y10', False),
+                ('G1X-20Y-20/G1X-30Y-10', 'G1X-20Y-20/G1X-19.29Y-20.71/G1X-20Y-20/G1X-30Y-10', False),
+                ('G1Y-20/G1X-10', 'G1Y-20/G1X1/G1X0/G1X-10', False),
+                ('G1X20Y-20/G1X10Y-30', 'G1X20Y-20/G1X20.71Y-19.29/G1X20Y-20/G1X10Y-30', False),
+                ]
+
+        for i, (path, out, right) in enumerate(test_data_0):
+            check_tbone_l('0', i, path, out, right)
+
 
     def test60(self):
         """Verify Dogbone style"""
