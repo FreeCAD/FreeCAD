@@ -42,7 +42,8 @@ using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView, QWidget* parent) :
-    QWidget(parent), sketchView(sketchView),
+    QWidget(parent),
+    sketchView(sketchView),
     ui(new Ui_TaskSketcherMessages)
 {
     ui->setupUi(this);
