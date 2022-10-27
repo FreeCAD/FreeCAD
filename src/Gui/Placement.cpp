@@ -156,8 +156,13 @@ void Placement::setupSignalMapper()
         signalMapper->setMapping(it, id++);
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
             this, &Placement::onPlacementChanged);
+#else
+    connect(signalMapper, &QSignalMapper::mappedInt,
+            this, &Placement::onPlacementChanged);
+#endif
 }
 
 void Placement::setupDocument()
@@ -229,7 +234,8 @@ void Placement::revertTransformation()
 {
     for (const auto & it : documents) {
         Gui::Document* document = Application::Instance->getDocument(it.c_str());
-        if (!document) continue;
+        if (!document)
+            continue;
 
         if (!changeProperty) {
             std::vector<App::DocumentObject*> obj = document->getDocument()->
@@ -245,7 +251,9 @@ void Placement::revertTransformation()
                         auto property = static_cast<App::PropertyPlacement*>(jt->second);
                         Base::Placement cur = property->getValue();
                         Gui::ViewProvider* vp = document->getViewProvider(it);
-                        if (vp) vp->setTransformation(cur.toMatrix());
+                        if (vp) {
+                            vp->setTransformation(cur.toMatrix());
+                        }
                     }
                 }
             }
@@ -282,7 +290,9 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
 
                 if (!changeProperty) {
                     Gui::ViewProvider* vp = document->getViewProvider(it);
-                    if (vp) vp->setTransformation(cur.toMatrix());
+                    if (vp) {
+                        vp->setTransformation(cur.toMatrix());
+                    }
                 }
                 else {
                     property->setValue(cur);
