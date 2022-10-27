@@ -42,12 +42,10 @@ using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
 TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView, QWidget* parent) :
-    sketchView(sketchView),
+    QWidget(parent), sketchView(sketchView),
     ui(new Ui_TaskSketcherMessages)
 {
     ui->setupUi(this);
-
-    QMetaObject::connectSlotsByName(this);
 
     connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this, bp::_1, bp::_2, bp::_3, bp::_4));
 
