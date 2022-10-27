@@ -43,7 +43,7 @@
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
+#include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
 #include <HLRAlgo_Projector.hxx>
