@@ -25,7 +25,10 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QtGui>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
