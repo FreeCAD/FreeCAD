@@ -107,6 +107,8 @@ SET(TechDrawGui_SRCS
     CommandExtensionDims.cpp
     CommandExtensionPack.cpp
     CommandStack.cpp
+    DimensionValidators.cpp
+    DimensionValidators.h
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h

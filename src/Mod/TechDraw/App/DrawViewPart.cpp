@@ -762,6 +762,53 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
     return result;
 }
 
+TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
+{
+    const std::vector<TechDraw::VertexPtr> allVertex(DrawViewPart::getVertexGeometry());
+    size_t iTarget = DrawUtil::getIndexFromName(vertexName);
+    if (allVertex.empty()) {
+        //should not happen
+        throw Base::IndexError("DVP::getVertex - No vertices found.");
+    }
+    if (iTarget > allVertex.size()) {
+        //should not happen
+        throw Base::IndexError("DVP::getVertex - Vertex not found.");
+    }
+
+    return allVertex.at(iTarget);
+}
+
+//! returns existing BaseGeom of 2D Edge
+TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
+{
+    const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
+    if (geoms.empty()) {
+        //should not happen
+        throw Base::IndexError("DVP::getEdge - No edges found.");
+    }
+    size_t iEdge = DrawUtil::getIndexFromName(edgeName);
+    if ((unsigned)iEdge >= geoms.size()) {
+        throw Base::IndexError("DVP::getEdge - Edge not found.");
+    }
+    return geoms.at(iEdge);
+}
+
+//! returns existing 2d Face
+TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
+{
+    const std::vector<TechDraw::FacePtr> &faces = getFaceGeometry();
+    if (faces.empty()) {
+        //should not happen
+        throw Base::IndexError("DVP::getFace - No faces found.");
+    }
+    size_t iFace = DrawUtil::getIndexFromName(faceName);
+    if (iFace >= faces.size()) {
+        throw Base::IndexError("DVP::getFace - Face not found.");
+    }
+    return faces.at(iFace);
+}
+
+
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
     std::vector<TechDraw::FacePtr> result;

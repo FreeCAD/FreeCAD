@@ -127,6 +127,10 @@ public:
     bool hasGeometry() const;
     TechDraw::GeometryObjectPtr getGeometryObject() const { return geometryObject; }
 
+    TechDraw::VertexPtr getVertex(std::string vertexName) const;
+    TechDraw::BaseGeomPtr getEdge(std::string edgeName) const;
+    TechDraw::FacePtr getFace(std::string faceName) const;
+
     TechDraw::BaseGeomPtr getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDraw::VertexPtr getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
     TechDraw::VertexPtr getProjVertexByCosTag(std::string cosTag);

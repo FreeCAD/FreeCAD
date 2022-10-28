@@ -269,13 +269,16 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
+    *dims << "TechDraw_LinearGroup";
+//    *dims << "TechDraw_LengthDimension";
+//    *dims << "TechDraw_HorizontalDimension";
+//    *dims << "TechDraw_VerticalDimension";
+    *dims << "TechDraw_RadialGroup";
+//    *dims << "TechDraw_RadiusDimension";
+//    *dims << "TechDraw_DiameterDimension";
+    *dims << "TechDraw_AngularGroup";
+//    *dims << "TechDraw_AngleDimension";
+//    *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
 //    *dims << "TechDraw_HorizontalExtentDimension";
 //    *dims << "TechDraw_VerticalExtentDimension";
@@ -416,13 +419,16 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
+    *dims << "TechDraw_LinearGroup";
+//    *dims << "TechDraw_LengthDimension";
+//    *dims << "TechDraw_HorizontalDimension";
+//    *dims << "TechDraw_VerticalDimension";
+    *dims << "TechDraw_RadialGroup";
+//    *dims << "TechDraw_RadiusDimension";
+//    *dims << "TechDraw_DiameterDimension";
+    *dims << "TechDraw_AngularGroup";
+//    *dims << "TechDraw_AngleDimension";
+//    *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
 //    *dims << "TechDraw_HorizontalExtentDimension";
 //    *dims << "TechDraw_VerticalExtentDimension";
