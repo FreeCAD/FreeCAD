@@ -917,7 +917,9 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.hide()
 
         if self.haveStepDown():
-            self.stepDown = PathGuiUtil.QuantitySpinBox(self.form.stepDown, obj, "StepDown")
+            self.stepDown = PathGuiUtil.QuantitySpinBox(
+                self.form.stepDown, obj, "StepDown"
+            )
         else:
             self.form.stepDown.hide()
             self.form.stepDownLabel.hide()
@@ -1389,7 +1391,9 @@ def Create(res):
         diag.setWindowModality(QtCore.Qt.ApplicationModal)
         diag.exec_()
     except PathOp.PathNoTCException:
-        Path.Log.warning(translate("PathOp", "No tool controller, aborting op creation"))
+        Path.Log.warning(
+            translate("PathOp", "No tool controller, aborting op creation")
+        )
 
     FreeCAD.ActiveDocument.abortTransaction()
     FreeCAD.ActiveDocument.recompute()

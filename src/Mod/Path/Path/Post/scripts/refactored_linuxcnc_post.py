@@ -140,7 +140,9 @@ def init_arguments_visible(arguments_visible):
 
 def init_arguments(values, argument_defaults, arguments_visible):
     """Initialize the shared argument definitions."""
-    parser = PostUtilsArguments.init_shared_arguments(values, argument_defaults, arguments_visible)
+    parser = PostUtilsArguments.init_shared_arguments(
+        values, argument_defaults, arguments_visible
+    )
     #
     # Add any argument definitions that are not shared with all other postprocessors here.
     #

@@ -849,7 +849,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # verify that wire chosen is not inside the physical model
         if wi > 0:  # and isInterior is False:
-            Path.Log.debug("Multiple wires in cut area. First choice is not 0. Testing.")
+            Path.Log.debug(
+                "Multiple wires in cut area. First choice is not 0. Testing."
+            )
             testArea = fcShp.cut(base.Shape)
 
             isReady = self._checkTagIntersection(iTAG, eTAG, self.cutSide, testArea)
@@ -863,7 +865,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 workShp = pfcShp.cut(fcShp)
 
             if testArea.Area < minArea:
-                Path.Log.debug("offset area is less than minArea of {}.".format(minArea))
+                Path.Log.debug(
+                    "offset area is less than minArea of {}.".format(minArea)
+                )
                 Path.Log.debug("Using wire index {}.".format(wi - 1))
                 pWire = Part.Wire(Part.__sortEdges__(workShp.Wires[wi - 1].Edges))
                 pfcShp = Part.Face(pWire)

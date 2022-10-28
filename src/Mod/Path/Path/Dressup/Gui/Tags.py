@@ -244,7 +244,9 @@ class PathDressupTagTaskPanel:
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            Path.Log.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
+            Path.Log.notice(
+                "ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0)
+            )
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -588,8 +590,7 @@ class CommandPathDressupTag:
         FreeCAD.ActiveDocument.openTransaction("Create Tag Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Tags")
         FreeCADGui.doCommand(
-            "Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)"
-            % baseObject.Name
+            "Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)" % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

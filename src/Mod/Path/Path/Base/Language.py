@@ -31,8 +31,9 @@ __doc__ = "Functions to extract and convert between Path.Command and Part.Edge a
 
 CmdMoveStraight = Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid
 
-class Instruction (object):
-    '''An Instruction is a pure python replacement of Path.Command which also tracks its begin position.'''
+
+class Instruction(object):
+    """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
 
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
@@ -53,51 +54,56 @@ class Instruction (object):
         self.begin = begin
 
     def positionBegin(self):
-        '''positionBegin() ... returns a Vector of the begin position'''
+        """positionBegin() ... returns a Vector of the begin position"""
         return self.begin
 
     def positionEnd(self):
-        '''positionEnd() ... returns a Vector of the end position'''
-        return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z))
+        """positionEnd() ... returns a Vector of the end position"""
+        return FreeCAD.Vector(
+            self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z)
+        )
 
     def pathLength(self):
-        '''pathLength() ... returns the lenght in mm'''
+        """pathLength() ... returns the lenght in mm"""
         return 0
 
     def isMove(self):
         return False
 
     def isPlunge(self):
-        '''isPlunge() ... return true if this moves up or down'''
-        return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+        """isPlunge() ... return true if this moves up or down"""
+        return self.isMove() and not Path.Geom.isRoughly(
+            self.begin.z, self.z(self.begin.z)
+        )
 
     def leadsInto(self, instr):
-        '''leadsInto(instr) ... return true if instr is a continuation of self'''
+        """leadsInto(instr) ... return true if instr is a continuation of self"""
         return Path.Geom.pointsCoincide(self.positionEnd(), instr.positionBegin())
 
     def x(self, default=0):
-        return self.param.get('X', default)
+        return self.param.get("X", default)
 
     def y(self, default=0):
-        return self.param.get('Y', default)
+        return self.param.get("Y", default)
 
     def z(self, default=0):
-        return self.param.get('Z', default)
+        return self.param.get("Z", default)
 
     def i(self, default=0):
-        return self.param.get('I', default)
+        return self.param.get("I", default)
 
     def j(self, default=0):
-        return self.param.get('J', default)
+        return self.param.get("J", default)
 
     def k(self, default=0):
-        return self.param.get('K', default)
+        return self.param.get("K", default)
 
     def xyBegin(self):
-        '''xyBegin() ... internal convenience function'''
+        """xyBegin() ... internal convenience function"""
         return FreeCAD.Vector(self.begin.x, self.begin.y, 0)
+
     def xyEnd(self):
-        '''xyEnd() ... internal convenience function'''
+        """xyEnd() ... internal convenience function"""
         return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), 0)
 
     def __repr__(self):
@@ -111,10 +117,10 @@ class Instruction (object):
             s = [fmt.format(k, v) for k, v in self.param.items()]
         return f"{self.cmd}{{{', '.join(s)}}}"
 
-class MoveStraight (Instruction):
 
+class MoveStraight(Instruction):
     def anglesOfTangents(self):
-        '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
+        """anglesOfTangents() ... return a tuple with the tangent angles at begin and end position"""
         begin = self.xyBegin()
         end = self.xyEnd()
         if end == begin:
@@ -128,10 +134,10 @@ class MoveStraight (Instruction):
     def pathLength(self):
         return (self.positionEnd() - self.positionBegin()).Length
 
-class MoveArc (Instruction):
 
+class MoveArc(Instruction):
     def anglesOfTangents(self):
-        '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
+        """anglesOfTangents() ... return a tuple with the tangent angles at begin and end position"""
         begin = self.xyBegin()
         end = self.xyEnd()
         center = self.xyCenter()
@@ -140,7 +146,10 @@ class MoveArc (Instruction):
         s1 = Path.Geom.getAngle(end - center)
         # the tangents are perpendicular to the hypotenuse with the sign determined by the
         # direction of the arc
-        return (Path.Geom.normalizeAngle(s0 + self.arcDirection()), Path.Geom.normalizeAngle(s1 + self.arcDirection()))
+        return (
+            Path.Geom.normalizeAngle(s0 + self.arcDirection()),
+            Path.Geom.normalizeAngle(s1 + self.arcDirection()),
+        )
 
     def isMove(self):
         return True
@@ -155,7 +164,7 @@ class MoveArc (Instruction):
         return self.arcDirection() > 0
 
     def arcAngle(self):
-        '''arcAngle() ... return the angle of the arc opening'''
+        """arcAngle() ... return the angle of the arc opening"""
         begin = self.xyBegin()
         end = self.xyEnd()
         center = self.xyCenter()
@@ -173,7 +182,7 @@ class MoveArc (Instruction):
         return s1 - s0
 
     def arcRadius(self):
-        '''arcRadius() ... return the radius'''
+        """arcRadius() ... return the radius"""
         return (self.xyBegin() - self.xyCenter()).Length
 
     def pathLength(self):
@@ -182,16 +191,19 @@ class MoveArc (Instruction):
     def xyCenter(self):
         return FreeCAD.Vector(self.begin.x + self.i(), self.begin.y + self.j(), 0)
 
-class MoveArcCW (MoveArc):
-    def arcDirection(self):
-        return -math.pi/2
 
-class MoveArcCCW (MoveArc):
+class MoveArcCW(MoveArc):
     def arcDirection(self):
-        return math.pi/2
+        return -math.pi / 2
 
-class Maneuver (object):
-    '''A series of instructions and moves'''
+
+class MoveArcCCW(MoveArc):
+    def arcDirection(self):
+        return math.pi / 2
+
+
+class Maneuver(object):
+    """A series of instructions and moves"""
 
     def __init__(self, begin=None, instr=None):
         self.instr = instr if instr else []
@@ -220,8 +232,8 @@ class Maneuver (object):
 
     def __repr__(self):
         if self.instr:
-            return '\n'.join([str(i) for i in self.instr])
-        return ''
+            return "\n".join([str(i) for i in self.instr])
+        return ""
 
     @classmethod
     def InstructionFromCommand(cls, cmd, begin=None):
@@ -252,6 +264,6 @@ class Maneuver (object):
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
 
+
 def instruction_to_command(instr):
     return Path.Command(instr.cmd, instr.param)
-

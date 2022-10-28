@@ -260,9 +260,7 @@ class CommandPathDressupPathBoundary:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupPathBoundary", "Boundary"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "Boundary"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupPathBoundary",
                 "Creates a Path Boundary Dress-up object from a selected path",
@@ -291,8 +289,7 @@ class CommandPathDressupPathBoundary:
         FreeCAD.ActiveDocument.openTransaction("Create Path Boundary Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Boundary")
         FreeCADGui.doCommand(
-            "Path.Dressup.Gui.Boundary.Create(App.ActiveDocument.%s)"
-            % baseObject.Name
+            "Path.Dressup.Gui.Boundary.Create(App.ActiveDocument.%s)" % baseObject.Name
         )
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

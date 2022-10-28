@@ -63,7 +63,9 @@ class AdvancedPreferencesPage:
         self.form.WarningSuppressOpenCamLib.setChecked(
             Path.Preferences.suppressOpenCamLibWarning()
         )
-        self.form.WarningSuppressVelocity.setChecked(Path.Preferences.suppressVelocity())
+        self.form.WarningSuppressVelocity.setChecked(
+            Path.Preferences.suppressVelocity()
+        )
         self.updateSelection()
 
     def updateSelection(self, state=None):

@@ -626,7 +626,9 @@ class ProcessSelectedFaces:
                         if fcShp:
                             Path.Log.debug("vShapes[{}]: {}".format(m, vShapes[m]))
                             if vShapes[m]:
-                                Path.Log.debug(" -Cutting void from base profile shape.")
+                                Path.Log.debug(
+                                    " -Cutting void from base profile shape."
+                                )
                                 adjPS = prflShp.cut(vShapes[m][0])
                                 self.profileShapes[m] = [adjPS]
                             else:

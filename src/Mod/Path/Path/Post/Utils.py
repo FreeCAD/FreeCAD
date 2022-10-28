@@ -52,13 +52,16 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
 
         self.highlightingRules = [
-            (QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns
+            (QtCore.QRegularExpression(pattern), keywordFormat)
+            for pattern in keywordPatterns
         ]
 
         speedFormat = QtGui.QTextCharFormat()
         speedFormat.setFontWeight(QtGui.QFont.Bold)
         speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
+        self.highlightingRules.append(
+            (QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat)
+        )
 
     def highlightBlock(self, text):
         for pattern, hlFormat in self.highlightingRules:

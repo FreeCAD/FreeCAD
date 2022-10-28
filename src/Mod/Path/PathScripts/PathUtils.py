@@ -63,6 +63,7 @@ def waiting_effects(function):
         if not FreeCAD.GuiUp:
             return function(*args, **kwargs)
         from PySide import QtGui
+
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         res = None
         try:

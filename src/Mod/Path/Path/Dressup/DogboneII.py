@@ -33,6 +33,7 @@ if False:
 
 PI = math.pi
 
+
 def calc_length_adaptive(kink, angle, nominal_length, custom_length):
     Path.Log.track(kink, angle, nominal_length, custom_length)
 
@@ -69,31 +70,37 @@ def calc_length_adaptive(kink, angle, nominal_length, custom_length):
     # If the corner's direction is PI/4 off the bone angle the intersecion of the tool
     # with the corner is the projection of the corner onto the bone.
     # If the corner's direction is perpendicular to the bone's angle there is, strictly
-    # speaking no intersection and the bone is ineffective. However, giving it our 
+    # speaking no intersection and the bone is ineffective. However, giving it our
     # best shot we should probably move the entire depth.
 
     da = Path.Geom.normalizeAngle(kink.normAngle() - angle)
     depth = dist * math.cos(da)
     if depth < 0:
-        Path.Log.debug(f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0")
+        Path.Log.debug(
+            f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0"
+        )
         depth = 0
     else:
         height = dist * abs(math.sin(da))
         if height < nominal_length:
             depth = depth - math.sqrt(nominal_length * nominal_length - height * height)
-        Path.Log.debug(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
+        Path.Log.debug(
+            f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}"
+        )
 
     return depth
 
+
 def calc_length_nominal(kink, angle, nominal_length, custom_length):
     return nominal_length
+
 
 def calc_length_custom(kink, angle, nominal_length, custom_length):
     return custom_length
 
 
 class Style(object):
-    '''Style - enumeration class for the supported bone styles'''
+    """Style - enumeration class for the supported bone styles"""
 
     Dogbone = "Dogbone"
     Tbone_H = "T-bone horizontal"
@@ -103,15 +110,16 @@ class Style(object):
     All = [Dogbone, Tbone_H, Tbone_V, Tbone_L, Tbone_S]
 
     Generator = {
-        Dogbone : dogboneII.GeneratorDogbone,
-        Tbone_H : dogboneII.GeneratorTBoneHorizontal,
-        Tbone_V : dogboneII.GeneratorTBoneVertical,
-        Tbone_S : dogboneII.GeneratorTBoneOnShort,
-        Tbone_L : dogboneII.GeneratorTBoneOnLong,
-        }
+        Dogbone: dogboneII.GeneratorDogbone,
+        Tbone_H: dogboneII.GeneratorTBoneHorizontal,
+        Tbone_V: dogboneII.GeneratorTBoneVertical,
+        Tbone_S: dogboneII.GeneratorTBoneOnShort,
+        Tbone_L: dogboneII.GeneratorTBoneOnLong,
+    }
+
 
 class Side(object):
-    '''Side - enumeration class for the side of the path to attach bones'''
+    """Side - enumeration class for the side of the path to attach bones"""
 
     Left = "Left"
     Right = "Right"
@@ -127,7 +135,7 @@ class Side(object):
 
 
 class Incision(object):
-    '''Incision - enumeration class for the different depths of bone incision'''
+    """Incision - enumeration class for the different depths of bone incision"""
 
     Fixed = "fixed"
     Adaptive = "adaptive"
@@ -135,14 +143,14 @@ class Incision(object):
     All = [Adaptive, Fixed, Custom]
 
     Calc = {
-        Fixed : calc_length_nominal,
-        Adaptive : calc_length_adaptive,
-        Custom : calc_length_custom,
-        }
+        Fixed: calc_length_nominal,
+        Adaptive: calc_length_adaptive,
+        Custom: calc_length_custom,
+    }
 
 
 def insertBone(obj, kink):
-    '''insertBone(kink, side) - return True if a bone should be inserted into the kink'''
+    """insertBone(kink, side) - return True if a bone should be inserted into the kink"""
     if not kink.isKink():
         Path.Log.debug(f"not a kink")
         return False
@@ -153,11 +161,11 @@ def insertBone(obj, kink):
         return False
     return True
 
-class BoneState(object):
 
+class BoneState(object):
     def __init__(self, bone, nr, enabled=True):
         self.bone = bone
-        self.bones = {nr : bone}
+        self.bones = {nr: bone}
         self.enabled = enabled
         pos = bone.position()
         self.pos = FreeCAD.Vector(pos.x, pos.y, 0)
@@ -183,8 +191,8 @@ class BoneState(object):
     def length(self):
         return self.bone.length
 
-class Proxy(object):
 
+class Proxy(object):
     def __init__(self, obj, base):
         obj.addProperty(
             "App::PropertyLink",
@@ -201,7 +209,7 @@ class Proxy(object):
             QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
         )
         obj.Side = Side.All
-        if hasattr(base, 'BoneBlacklist'):
+        if hasattr(base, "BoneBlacklist"):
             obj.Side = base.Side
         else:
             side = Side.Right
@@ -235,7 +243,9 @@ class Proxy(object):
             "App::PropertyLength",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == Incision.Custom"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Dressup length if Incision == Incision.Custom"
+            ),
         )
         obj.Custom = 0.0
 
@@ -260,11 +270,11 @@ class Proxy(object):
         return None
 
     def toolRadius(self, obj):
-        if not hasattr(obj.Base, 'ToolController'):
+        if not hasattr(obj.Base, "ToolController"):
             return self.toolRadius(obj.Base)
         return obj.Base.ToolController.Tool.Diameter.Value / 2
 
-    def createBone(self, obj, move0, move1): 
+    def createBone(self, obj, move0, move1):
         kink = dogboneII.Kink(move0, move1)
         Path.Log.debug(f"{obj.Label}.createBone({kink})")
         if insertBone(obj, kink):
@@ -281,15 +291,21 @@ class Proxy(object):
         bones = []
         lastMove = None
         moveAfterPlunge = None
-        dressingUpDogbone = hasattr(obj.Base, 'BoneBlacklist')
+        dressingUpDogbone = hasattr(obj.Base, "BoneBlacklist")
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
-            for i, instr in enumerate(PathLanguage.Maneuver.FromPath(obj.Base.Path).instr):
-                #Path.Log.debug(f"instr: {instr}")
+            for i, instr in enumerate(
+                PathLanguage.Maneuver.FromPath(obj.Base.Path).instr
+            ):
+                # Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():
                     thisMove = instr
                     bone = None
                     if thisMove.isPlunge():
-                        if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
+                        if (
+                            lastMove
+                            and moveAfterPlunge
+                            and lastMove.leadsInto(moveAfterPlunge)
+                        ):
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)
                         lastMove = None
                         moveAfterPlunge = None
@@ -301,7 +317,10 @@ class Proxy(object):
                         lastMove = thisMove
                     if bone:
                         enabled = not len(bones) in obj.BoneBlacklist
-                        if enabled and not (dressingUpDogbone and obj.Base.Proxy.includesBoneAt(bone.position())):
+                        if enabled and not (
+                            dressingUpDogbone
+                            and obj.Base.Proxy.includesBoneAt(bone.position())
+                        ):
                             maneuver.addInstructions(bone.instr)
                         else:
                             Path.Log.debug(f"{bone.kink} disabled {enabled}")
@@ -320,7 +339,7 @@ class Proxy(object):
 
     def boneStates(self, obj):
         state = {}
-        if hasattr(self, 'bones'):
+        if hasattr(self, "bones"):
             for nr, bone in enumerate(self.bones):
                 pos = bone.position()
                 loc = f"({pos.x:.4f}, {pos.y:.4f})"
@@ -333,7 +352,7 @@ class Proxy(object):
         return state.values()
 
     def includesBoneAt(self, pos):
-        if hasattr(self, 'bones'):
+        if hasattr(self, "bones"):
             for nr, bone in enumerate(self.bones):
                 if Path.Geom.pointsCoincide(bone.position(), pos):
                     return not (nr in self.obj.BoneBlacklist)

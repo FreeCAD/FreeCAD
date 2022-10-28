@@ -895,9 +895,7 @@ class CommandPathDressupRampEntry:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupRampEntry", "RampEntry"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupRampEntry", "RampEntry"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupRampEntry",
                 "Creates a Ramp Entry Dress-up object from a selected path",
@@ -940,9 +938,7 @@ class CommandPathDressupRampEntry:
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")'
         )
-        FreeCADGui.doCommand(
-            "dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)"
-        )
+        FreeCADGui.doCommand("dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)")
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")

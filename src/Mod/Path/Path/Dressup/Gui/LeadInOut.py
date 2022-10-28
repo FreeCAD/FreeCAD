@@ -753,9 +753,7 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "LeadInOutDressup")'
         )
-        FreeCADGui.doCommand(
-            "dbo = Path.Dressup.Gui.LeadInOut.ObjectDressup(obj)"
-        )
+        FreeCADGui.doCommand("dbo = Path.Dressup.Gui.LeadInOut.ObjectDressup(obj)")
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")

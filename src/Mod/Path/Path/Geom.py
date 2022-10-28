@@ -135,6 +135,7 @@ def normalizeAngle(a):
         a = a + 2 * math.pi
     return a
 
+
 def getAngle(vector):
     """getAngle(vector)
     Returns the angle [-pi,pi] of a vector using the X-axis as the reference.

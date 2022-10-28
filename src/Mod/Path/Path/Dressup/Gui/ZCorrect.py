@@ -174,7 +174,10 @@ class ObjectDressup:
                             Path.Log.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
                             zval = newparams.get("Z", currLocation["Z"])
-                            if c.Name in Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveArc:
+                            if (
+                                c.Name
+                                in Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveArc
+                            ):
                                 curVec = FreeCAD.Vector(
                                     currLocation["X"],
                                     currLocation["Y"],
@@ -340,9 +343,7 @@ class CommandPathDressup:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupZCorrect", "Z Depth Correction"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Z Depth Correction"),
             "Accel": "",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupZCorrect", "Use Probe Map to correct Z depth"

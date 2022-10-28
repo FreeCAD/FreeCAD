@@ -853,7 +853,9 @@ class ObjectDressup(object):
                         # debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
                         if Path.Geom.pointsCoincide(
                             pt, e1.valueAt(e1.LastParameter)
-                        ) or Path.Geom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
+                        ) or Path.Geom.pointsCoincide(
+                            pt, e2.valueAt(e2.FirstParameter)
+                        ):
                             continue
                         # debugMarker(pt, "it", (0.0, 1.0, 1.0))
                         # 1. remove all redundant commands
@@ -1402,7 +1404,7 @@ class CommandDressupDogbone(object):
 
 
 # obsolete, replaced by DogboneII
-#if FreeCAD.GuiUp:
+# if FreeCAD.GuiUp:
 #    import FreeCADGui
 #    from PySide import QtGui
 #    from pivy import coin

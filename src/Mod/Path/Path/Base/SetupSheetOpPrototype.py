@@ -65,11 +65,11 @@ class Property(object):
     def setupProperty(self, obj, name, category, value):
         created = False
         if not hasattr(obj, name):
-            Path.Log.track('add', obj.Name, name, self.propType)
+            Path.Log.track("add", obj.Name, name, self.propType)
             obj.addProperty(self.propType, name, category, self.info)
             self.initProperty(obj, name)
             created = True
-        Path.Log.track('set', obj.Name, name, value, type(value))
+        Path.Log.track("set", obj.Name, name, value, type(value))
         setattr(obj, name, value)
         return created
 
@@ -130,7 +130,9 @@ class PropertyFloat(Property):
         try:
             return float(string)
         except ValueError:
-            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
+            Path.Log.error(
+                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
+            )
             raise
 
 
@@ -142,7 +144,9 @@ class PropertyInteger(Property):
         try:
             return int(string)
         except ValueError:
-            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
+            Path.Log.error(
+                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
+            )
             raise
 
 
@@ -159,7 +163,9 @@ class PropertyBool(Property):
         try:
             return bool(string)
         except ValueError:
-            Path.Log.error(f"{self.category}.{self.name} [{self.propType}] : '{string}'")
+            Path.Log.error(
+                f"{self.category}.{self.name} [{self.propType}] : '{string}'"
+            )
             raise
 
 

@@ -37,7 +37,9 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, chipBreak=False):
+def generate(
+    edge, dwelltime=0.0, peckdepth=0.0, repeat=1, retractheight=None, chipBreak=False
+):
     """
     Generates Gcode for drilling a single hole.
 

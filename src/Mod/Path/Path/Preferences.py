@@ -169,7 +169,6 @@ def searchPathsTool(sub):
     return paths
 
 
-
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 

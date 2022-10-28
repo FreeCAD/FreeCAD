@@ -36,6 +36,7 @@ else:
 
 translate = FreeCAD.Qt.translate
 
+
 class Marker(object):
     def __init__(self, pt, r, h, ena):
         if Path.Geom.isRoughly(h, 0):
@@ -162,7 +163,9 @@ class TaskPanel(object):
 
         markers = []
         self.form.bones.clear()
-        for item in sorted(itemList, key=lambda item: item.data(self.DataState).boneIDs()[0]):
+        for item in sorted(
+            itemList, key=lambda item: item.data(self.DataState).boneIDs()[0]
+        ):
             self.form.bones.addItem(item)
             state = item.data(self.DataState)
             loc = state.boneTip()
@@ -205,7 +208,9 @@ class TaskPanel(object):
     def setFields(self):
         self.setupCombo(self.form.styleCombo, self.obj.Style, DogboneII.Style.All)
         self.setupCombo(self.form.sideCombo, self.obj.Side, DogboneII.Side.All)
-        self.setupCombo(self.form.incisionCombo, self.obj.Incision, DogboneII.Incision.All)
+        self.setupCombo(
+            self.form.incisionCombo, self.obj.Incision, DogboneII.Incision.All
+        )
         self.form.custom.setMinimum(0.0)
         self.form.custom.setDecimals(3)
         self.form.custom.setValue(self.obj.Custom)
