@@ -24,7 +24,7 @@ import FreeCAD
 import Path
 import math
 
-__title__ = "PathLanguage - classes for an internal language/representaion for Path"
+__title__ = "PathLanguage - classes for an internal language/representation for Path"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
@@ -64,7 +64,7 @@ class Instruction(object):
         )
 
     def pathLength(self):
-        """pathLength() ... returns the lenght in mm"""
+        """pathLength() ... returns the length in mm"""
         return 0
 
     def isMove(self):
