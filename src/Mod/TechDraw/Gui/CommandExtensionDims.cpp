@@ -569,8 +569,8 @@ void execPosHorizChainDimension(Gui::Command* cmd) {
     for (auto dim : validDimension) {
         dim->Y.setValue(yMaster);
         pointPair pp = dim->getLinearPoints();
-        Base::Vector3d p1 = pp.first;
-        Base::Vector3d p2 = pp.second;
+        Base::Vector3d p1 = pp.first();
+        Base::Vector3d p2 = pp.second();
         dim->X.setValue((p1.x + p2.x) / 2.0);
     }
     Gui::Command::commitCommand();
@@ -631,8 +631,8 @@ void execPosVertChainDimension(Gui::Command* cmd) {
     for (auto dim : validDimension) {
         dim->X.setValue(xMaster);
         pointPair pp = dim->getLinearPoints();
-        Base::Vector3d p1 = pp.first;
-        Base::Vector3d p2 = pp.second;
+        Base::Vector3d p1 = pp.first();
+        Base::Vector3d p2 = pp.second();
         dim->Y.setValue((p1.y + p2.y) / -2.0 + 0.5 * fontSize);
     }
     Gui::Command::commitCommand();
@@ -692,7 +692,7 @@ void execPosObliqueChainDimension(Gui::Command* cmd) {
     float yMaster = validDimension[0]->Y.getValue();
     Base::Vector3d pMaster(xMaster, yMaster, 0.0);
     pointPair pp = validDimension[0]->getLinearPoints();
-    Base::Vector3d dirMaster = pp.second - pp.first;
+    Base::Vector3d dirMaster = pp.second() - pp.first();
     dirMaster.y = -dirMaster.y;
     for (auto dim : validDimension) {
         float xDim = dim->X.getValue();
@@ -881,8 +881,8 @@ void execCascadeHorizDimension(Gui::Command* cmd) {
     for (auto dim : validDimension) {
         dim->Y.setValue(yMaster);
         pointPair pp = dim->getLinearPoints();
-        Base::Vector3d p1 = pp.first;
-        Base::Vector3d p2 = pp.second;
+        Base::Vector3d p1 = pp.first();
+        Base::Vector3d p2 = pp.second();
         dim->X.setValue((p1.x + p2.x) / 2.0);
         yMaster = yMaster + dimDistance;
     }
@@ -948,8 +948,8 @@ void execCascadeVertDimension(Gui::Command* cmd) {
     for (auto dim : validDimension) {
         dim->X.setValue(xMaster);
         pointPair pp = dim->getLinearPoints();
-        Base::Vector3d p1 = pp.first;
-        Base::Vector3d p2 = pp.second;
+        Base::Vector3d p1 = pp.first();
+        Base::Vector3d p2 = pp.second();
         dim->Y.setValue((p1.y + p2.y) / -2.0 + 0.5 * fontSize);
         xMaster = xMaster + dimDistance;
     }
@@ -1011,7 +1011,7 @@ void execCascadeObliqueDimension(Gui::Command* cmd) {
     float yMaster = validDimension[0]->Y.getValue();
     Base::Vector3d pMaster(xMaster, yMaster, 0.0);
     pointPair pp = validDimension[0]->getLinearPoints();
-    Base::Vector3d dirMaster = pp.second - pp.first;
+    Base::Vector3d dirMaster = pp.second() - pp.first();
     dirMaster.y = -dirMaster.y;
     Base::Vector3d origin(0.0, 0.0, 0.0);
     Base::Vector3d ipDelta = _getTrianglePoint(pMaster, dirMaster, origin);
@@ -1206,7 +1206,7 @@ void execCreateHorizChainDimension(Gui::Command* cmd) {
             TechDraw::DrawViewDimension* dim;
             dim = _createLinDimension(cmd, objFeat, allVertexes[n].name, allVertexes[n + 1].name, "DistanceX");
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+            Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
             dim->X.setValue(mid.x);
             if (n == 0)
                 yMaster = -mid.y;
@@ -1271,7 +1271,7 @@ void execCreateVertChainDimension(Gui::Command* cmd) {
             TechDraw::DrawViewDimension* dim;
             dim = _createLinDimension(cmd, objFeat, allVertexes[n].name, allVertexes[n + 1].name, "DistanceY");
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+            Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
             if (n == 0)
                 xMaster = mid.x;
             dim->X.setValue(xMaster);
@@ -1363,7 +1363,7 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
             TechDraw::DrawViewDimension* dim;
             dim = _createLinDimension(cmd, objFeat, carrierVertexes[n].name, carrierVertexes[n + 1].name, "Distance");
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second) / 2.0 + delta;
+            Base::Vector3d mid = (pp.first() + pp.second()) / 2.0 + delta;
             dim->X.setValue(mid.x);
             dim->Y.setValue(-mid.y + 0.5 * fontSize);
         }
@@ -1548,7 +1548,7 @@ void execCreateHorizCoordDimension(Gui::Command* cmd) {
             TechDraw::DrawViewDimension* dim;
             dim = _createLinDimension(cmd, objFeat, allVertexes[0].name, allVertexes[n + 1].name, "DistanceX");
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+            Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
             dim->X.setValue(mid.x);
             dim->Y.setValue(-yMaster - dimDistance * n);
         }
@@ -1620,7 +1620,7 @@ void execCreateVertCoordDimension(Gui::Command* cmd) {
             TechDraw::DrawViewDimension* dim;
             dim = _createLinDimension(cmd, objFeat, allVertexes[0].name, allVertexes[n + 1].name, "DistanceY");
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+            Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
             dim->X.setValue(xMaster + dimDistance * n);
             dim->Y.setValue(-mid.y + 0.5 * fontSize);
         }
@@ -1717,7 +1717,7 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
             TechDraw::DrawViewDimension* dim;
             dim = _createLinDimension(cmd, objFeat, carrierVertexes[0].name, carrierVertexes[n + 1].name, "Distance");
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second) / 2.0 + delta * (n + 1);
+            Base::Vector3d mid = (pp.first() + pp.second()) / 2.0 + delta * (n + 1);
             dim->X.setValue(mid.x);
             dim->Y.setValue(-mid.y + 0.5 * fontSize);
         }
@@ -1905,7 +1905,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
         if (std::signbit(allVertexes[0].point.y))
             yMax = -yMax;
         TechDraw::pointPair pp = dim->getLinearPoints();
-        Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+        Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
         dim->X.setValue(mid.x);
         dim->Y.setValue(-yMax);
         float dx = allVertexes[0].point.x - allVertexes[1].point.x;
@@ -1972,7 +1972,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
         if (std::signbit(allVertexes[0].point.x))
             xMax = -xMax;
         TechDraw::pointPair pp = dim->getLinearPoints();
-        Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+        Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
         dim->X.setValue(xMax);
         dim->Y.setValue(-mid.y);
         float dx = allVertexes[0].point.x - allVertexes[1].point.x;
@@ -2169,7 +2169,7 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
         TechDraw::DrawViewDimension* dim;
         dim = _createLinDimension(this, objFeat, startName.str(), endName.str(), "Distance");
         TechDraw::pointPair pp = dim->getLinearPoints();
-        Base::Vector3d mid = (pp.first + pp.second) / 2.0;
+        Base::Vector3d mid = (pp.first() + pp.second()) / 2.0;
         dim->X.setValue(mid.x);
         dim->Y.setValue(-mid.y);
         Base::Vector3d radVec1 = startPt - centerPt;

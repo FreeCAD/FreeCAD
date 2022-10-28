@@ -114,6 +114,9 @@ public:
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }
     PyObject* getPyObject() override;
 
+    static TopoDS_Shape centerScaleRotate(DrawViewPart* dvp,
+                                            TopoDS_Shape& inOutShape,
+                                            Base::Vector3d centroid);
     std::vector<TechDraw::DrawHatch*> getHatches() const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches() const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
@@ -127,10 +130,13 @@ public:
     bool hasGeometry() const;
     TechDraw::GeometryObjectPtr getGeometryObject() const { return geometryObject; }
 
-    TechDraw::BaseGeomPtr
-    getGeomByIndex(int idx) const;//get existing geom for edge idx in projection
-    TechDraw::VertexPtr
-    getProjVertexByIndex(int idx) const;//get existing geom for vertex idx in projection
+    TechDraw::VertexPtr getVertex(std::string vertexName) const;
+    TechDraw::BaseGeomPtr getEdge(std::string edgeName) const;
+    TechDraw::FacePtr getFace(std::string faceName) const;
+
+    TechDraw::BaseGeomPtr getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
+    TechDraw::VertexPtr getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
+
     TechDraw::VertexPtr getProjVertexByCosTag(std::string cosTag);
     std::vector<TechDraw::BaseGeomPtr>
     getFaceEdgesByIndex(int idx) const;//get edges for face idx in projection

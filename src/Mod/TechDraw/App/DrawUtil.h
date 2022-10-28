@@ -29,6 +29,7 @@
 #include <QPointF>
 #include <QString>
 
+#include <Geom_Curve.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Dir2d.hxx>
@@ -98,6 +99,12 @@ class TechDrawExport DrawUtil {
                                                                         Base::Vector3d dir,
                                                                         double xRange,
                                                                         double yRange) ;
+        static bool apparentIntersection(const Handle(Geom_Curve) curve1,
+                                         const Handle(Geom_Curve) curve2,
+                                         Base::Vector3d& result);
+
+
+
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
 
         static std::string formatVector(const Base::Vector3d& v);
