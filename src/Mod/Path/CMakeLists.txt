@@ -225,6 +225,7 @@ SET(PathScripts_SRCS
 )
 
 SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/rotation.py
