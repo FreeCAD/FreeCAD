@@ -139,7 +139,7 @@ jobs:
                             pyqt5-dev-tools                             \
                             libqt5opengl5-dev                           \
                             libqt5svg5-dev                              \
-                            libqt5webkit5-dev                           \
+                            qtwebengine5-dev                            \
                             libqt5x11extras5-dev                        \
                             libqt5xmlpatterns5-dev                      \
                             qtbase5-dev                                 \
